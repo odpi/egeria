@@ -38,7 +38,7 @@ public interface CSVFileStore extends BasicFileStore
      * @throws FileException there is a problem accessing the file
      * @throws FileReadException unable to retrieve the column names
      */
-    List<String>      getColumnNames() throws FileException, FileReadException;
+    List<String> getColumnNames() throws FileException, FileReadException;
 
 
     /**

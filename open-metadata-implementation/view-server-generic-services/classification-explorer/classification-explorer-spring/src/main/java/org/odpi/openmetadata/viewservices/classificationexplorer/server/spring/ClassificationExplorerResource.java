@@ -461,65 +461,6 @@ public class ClassificationExplorerResource
 
 
     /**
-     * Retrieve the elements linked via a "Stakeholder" relationship to the requested element.
-     *
-     * @param serverName  name of the server instance to connect to
-     * @param urlMarker  view service URL marker
-     * @param elementGUID unique identifier of the element that the returned elements are linked to
-     * @param requestBody properties for relationship request
-     *
-     * @return linked elements or
-     * InvalidParameterException full path or userId is null or
-     * PropertyServerException problem accessing property server or
-     * UserNotAuthorizedException security access problem
-     */
-    @PostMapping(path = "/elements/{elementGUID}/stakeholders")
-
-    @Operation(summary="getStakeholders",
-            description="Retrieve the elements linked via a Stakeholders relationship to the requested element.",
-            externalDocs=@ExternalDocumentation(description="Stakeholders", url="https://egeria-project.org/types/1/0120-Assignment-Scopes/"))
-
-    public RelatedMetadataElementSummariesResponse getStakeholders(@PathVariable String                        serverName,
-                                                                   @PathVariable String                        urlMarker,
-                                                                   @PathVariable String                        elementGUID,
-                                                                   @RequestBody  (required = false)
-                                                                   FindProperties requestBody)
-    {
-        return restAPI.getStakeholders(serverName, urlMarker, elementGUID,  requestBody);
-    }
-
-
-
-    /**
-     * Retrieve the elements linked via a "Stakeholder" relationship to the requested stakeholder.
-     *
-     * @param serverName  name of the server instance to connect to
-     * @param urlMarker  view service URL marker
-     * @param stakeholderGUID unique identifier of the element that the returned elements are linked to
-     * @param requestBody properties for relationship request
-     *
-     * @return linked elements or
-     * InvalidParameterException full path or userId is null or
-     * PropertyServerException problem accessing property server or
-     * UserNotAuthorizedException security access problem
-     */
-    @PostMapping(path = "/elements/stakeholders/{stakeholderGUID}")
-
-    @Operation(summary="getStakeholderElements",
-            description="Retrieve the elements linked via a Stakeholders relationship to the requested stakeholder.",
-            externalDocs=@ExternalDocumentation(description="Stakeholders", url="https://egeria-project.org/types/1/0120-Assignment-Scopes/"))
-
-    public RelatedMetadataElementSummariesResponse getStakeholderElements(@PathVariable String serverName,
-                                                                          @PathVariable String urlMarker,
-                                                                          @PathVariable String stakeholderGUID,
-                                                                          @RequestBody  (required = false)
-                                                                          FindProperties requestBody)
-    {
-        return restAPI.getStakeholderElements(serverName, urlMarker, stakeholderGUID, requestBody);
-    }
-
-
-    /**
      * Retrieve the elements linked via a "ScopedBy" relationship to the requested scope.
      *
      * @param serverName  name of the server instance to connect to

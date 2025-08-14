@@ -14,7 +14,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
 /**
- * QueryOptions carries the date/time for a query along with other common search parameters.
+ * GetOptions carries the date/time for a query along with other common search parameters.
  */
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -52,6 +52,7 @@ public class GetOptions extends BasicOptions
         {
             asOfTime                      = template.getAsOfTime();
             metadataElementTypeName       = template.getMetadataElementTypeName();
+            metadataElementSubtypeNames   = template.getMetadataElementSubtypeNames();
             skipRelationships             = template.getSkipRelationships();
             includeOnlyRelationships      = template.getIncludeOnlyRelationships();
             skipClassifiedElements        = template.getSkipClassifiedElements();
@@ -293,6 +294,7 @@ public class GetOptions extends BasicOptions
         return graphQueryDepth == that.graphQueryDepth &&
                 Objects.equals(asOfTime, that.asOfTime) &&
                 Objects.equals(metadataElementTypeName, that.metadataElementTypeName) &&
+                Objects.equals(metadataElementSubtypeNames, that.metadataElementSubtypeNames) &&
                 Objects.equals(skipRelationships, that.skipRelationships) &&
                 Objects.equals(includeOnlyRelationships, that.includeOnlyRelationships) &&
                 Objects.equals(skipClassifiedElements, that.skipClassifiedElements) &&
@@ -307,6 +309,6 @@ public class GetOptions extends BasicOptions
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), asOfTime, metadataElementTypeName, skipRelationships, includeOnlyRelationships, skipClassifiedElements, includeOnlyClassifiedElements, graphQueryDepth);
+        return Objects.hash(super.hashCode(), asOfTime, metadataElementTypeName, metadataElementSubtypeNames, skipRelationships, includeOnlyRelationships, skipClassifiedElements, includeOnlyClassifiedElements, graphQueryDepth);
     }
 }

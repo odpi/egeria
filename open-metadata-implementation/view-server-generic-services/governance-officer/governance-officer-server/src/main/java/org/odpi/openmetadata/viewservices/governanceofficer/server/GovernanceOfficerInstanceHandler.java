@@ -31,7 +31,7 @@ public class GovernanceOfficerInstanceHandler extends OMVSServiceInstanceHandler
 
 
     /**
-     * This method returns an Open Metadata Store client.
+     * This method returns a handler.
      *
      * @param serverName           name of the server that the request is for
      * @param userId               local server userid

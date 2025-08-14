@@ -6,6 +6,7 @@ import org.odpi.openmetadata.frameworks.connectors.ConnectorProvider;
 import org.odpi.openmetadata.frameworks.connectors.mapper.OpenConnectorsValidValues;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.ConnectorType;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.*;
+import org.odpi.openmetadata.frameworks.openmetadata.refdata.AssignmentType;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 import org.odpi.openmetadata.frameworks.openmetadata.refdata.DeployedImplementationType;
@@ -1654,16 +1655,16 @@ public class SimpleCatalogArchiveHelper
     {
         final String methodName = "addTeamLeadershipRelationship";
 
-        String guid1 = idToGUIDMap.getGUID(teamQName);
-        String guid2 = idToGUIDMap.getGUID(personRoleQName);
+        String guid1 = idToGUIDMap.getGUID(personRoleQName);
+        String guid2 = idToGUIDMap.getGUID(teamQName);
 
         EntityProxy end1 = archiveHelper.getEntityProxy(archiveBuilder.getEntity(guid1));
         EntityProxy end2 = archiveHelper.getEntityProxy(archiveBuilder.getEntity(guid2));
 
-        InstanceProperties properties = archiveHelper.addStringPropertyToInstance(archiveRootName, null, OpenMetadataProperty.POSITION_NAME.name, position, methodName);
+        InstanceProperties properties = archiveHelper.addStringPropertyToInstance(archiveRootName, null, OpenMetadataProperty.ASSIGNMENT_TYPE.name, position, methodName);
 
-        archiveBuilder.addRelationship(archiveHelper.getRelationship(OpenMetadataType.TEAM_LEADERSHIP_RELATIONSHIP.typeName,
-                                                                     idToGUIDMap.getGUID(guid1 + "_to_" + guid2 + "_team_leadership_relationship"),
+        archiveBuilder.addRelationship(archiveHelper.getRelationship(OpenMetadataType.ASSIGNMENT_SCOPE_RELATIONSHIP.typeName,
+                                                                     idToGUIDMap.getGUID(guid1 + "_to_" + guid2 + "_team_leadership_associated_scope_relationship"),
                                                                      properties,
                                                                      InstanceStatus.ACTIVE,
                                                                      end1,
@@ -1684,16 +1685,16 @@ public class SimpleCatalogArchiveHelper
     {
         final String methodName = "addTeamMembershipRelationship";
 
-        String guid1 = idToGUIDMap.getGUID(teamQName);
-        String guid2 = idToGUIDMap.getGUID(personRoleQName);
+        String guid1 = idToGUIDMap.getGUID(personRoleQName);
+        String guid2 = idToGUIDMap.getGUID(teamQName);
 
         EntityProxy end1 = archiveHelper.getEntityProxy(archiveBuilder.getEntity(guid1));
         EntityProxy end2 = archiveHelper.getEntityProxy(archiveBuilder.getEntity(guid2));
 
-        InstanceProperties properties = archiveHelper.addStringPropertyToInstance(archiveRootName, null, OpenMetadataProperty.POSITION_NAME.name, position, methodName);
+        InstanceProperties properties = archiveHelper.addStringPropertyToInstance(archiveRootName, null, OpenMetadataProperty.ASSIGNMENT_TYPE.name, position, methodName);
 
-        archiveBuilder.addRelationship(archiveHelper.getRelationship(OpenMetadataType.TEAM_MEMBERSHIP_RELATIONSHIP.typeName,
-                                                                     idToGUIDMap.getGUID(guid1 + "_to_" + guid2 + "_team_membership_relationship"),
+        archiveBuilder.addRelationship(archiveHelper.getRelationship(OpenMetadataType.ASSIGNMENT_SCOPE_RELATIONSHIP.typeName,
+                                                                     idToGUIDMap.getGUID(guid1 + "_to_" + guid2 + "_team_membership_assignment_scope_relationship"),
                                                                      properties,
                                                                      InstanceStatus.ACTIVE,
                                                                      end1,
@@ -1972,30 +1973,6 @@ public class SimpleCatalogArchiveHelper
 
 
     /**
-     * Link a referenceable to its stakeholders.
-     *
-     * @param referenceableQName qualified name of the parent project
-     * @param actorQName qualified name of the subproject
-     */
-    public void addStakeHolderRelationship(String  referenceableQName,
-                                           String  actorQName)
-    {
-        String guid1 = idToGUIDMap.getGUID(referenceableQName);
-        String guid2 = idToGUIDMap.getGUID(actorQName);
-
-        EntityProxy end1 = archiveHelper.getEntityProxy(archiveBuilder.getEntity(guid1));
-        EntityProxy end2 = archiveHelper.getEntityProxy(archiveBuilder.getEntity(guid2));
-
-        archiveBuilder.addRelationship(archiveHelper.getRelationship(OpenMetadataType.STAKEHOLDER_RELATIONSHIP.typeName,
-                                                                     idToGUIDMap.getGUID(guid1 + "_to_" + guid2 + "_stakeholder_relationship"),
-                                                                     null,
-                                                                     InstanceStatus.ACTIVE,
-                                                                     end1,
-                                                                     end2));
-    }
-
-
-    /**
      * Link a project to another project that it depends on.
      *
      * @param projectQName qualified name of the project
@@ -2029,26 +2006,26 @@ public class SimpleCatalogArchiveHelper
     /**
      * Link a project to a team.  A project may have multiple teams.
      *
-     * @param personQName qualified name of the person profile
+     * @param projectQName qualified name of the person profile
      * @param personRoleQName qualified name of the person role
      * @param teamRole role of this team in the project
      */
-    public void addProjectTeamRelationship(String  personQName,
+    public void addProjectTeamRelationship(String  projectQName,
                                            String  personRoleQName,
                                            String  teamRole)
     {
         final String methodName = "addProjectTeamRelationship";
 
-        String guid1 = idToGUIDMap.getGUID(personQName);
-        String guid2 = idToGUIDMap.getGUID(personRoleQName);
+        String guid1 = idToGUIDMap.getGUID(personRoleQName);
+        String guid2 = idToGUIDMap.getGUID(projectQName);
 
         EntityProxy end1 = archiveHelper.getEntityProxy(archiveBuilder.getEntity(guid1));
         EntityProxy end2 = archiveHelper.getEntityProxy(archiveBuilder.getEntity(guid2));
 
-        InstanceProperties properties = archiveHelper.addStringPropertyToInstance(archiveRootName, null, OpenMetadataProperty.TEAM_ROLE.name, teamRole, methodName);
+        InstanceProperties properties = archiveHelper.addStringPropertyToInstance(archiveRootName, null, OpenMetadataProperty.ASSIGNMENT_TYPE.name, teamRole, methodName);
 
-        archiveBuilder.addRelationship(archiveHelper.getRelationship(OpenMetadataType.PROJECT_TEAM_RELATIONSHIP.typeName,
-                                                                     idToGUIDMap.getGUID(guid1 + "_to_" + guid2 + "_project_team_relationship"),
+        archiveBuilder.addRelationship(archiveHelper.getRelationship(OpenMetadataType.ASSIGNMENT_SCOPE_RELATIONSHIP.typeName,
+                                                                     idToGUIDMap.getGUID(guid1 + "_to_" + guid2 + "_project_team_assignment_scope_relationship"),
                                                                      properties,
                                                                      InstanceStatus.ACTIVE,
                                                                      end1,
@@ -2065,15 +2042,17 @@ public class SimpleCatalogArchiveHelper
     public void addProjectManagementRelationship(String  projectQName,
                                                  String  projectManagerRoleQName)
     {
-        String guid1 = idToGUIDMap.getGUID(projectQName);
-        String guid2 = idToGUIDMap.getGUID(projectManagerRoleQName);
+        final String methodName = "addProjectManagementRelationship";
+
+        String guid1 = idToGUIDMap.getGUID(projectManagerRoleQName);
+        String guid2 = idToGUIDMap.getGUID(projectQName);
 
         EntityProxy end1 = archiveHelper.getEntityProxy(archiveBuilder.getEntity(guid1));
         EntityProxy end2 = archiveHelper.getEntityProxy(archiveBuilder.getEntity(guid2));
 
-        archiveBuilder.addRelationship(archiveHelper.getRelationship(OpenMetadataType.PROJECT_MANAGEMENT_RELATIONSHIP.typeName,
-                                                                     idToGUIDMap.getGUID(guid1 + "_to_" + guid2 + "_project_management_relationship"),
-                                                                     null,
+        archiveBuilder.addRelationship(archiveHelper.getRelationship(OpenMetadataType.ASSIGNMENT_SCOPE_RELATIONSHIP.typeName,
+                                                                     idToGUIDMap.getGUID(guid1 + "_to_" + guid2 + "_project_management_assignment_scope_relationship"),
+                                                                     archiveHelper.addStringPropertyToInstance(archiveRootName, null, OpenMetadataProperty.ASSIGNMENT_TYPE.name, AssignmentType.LEADER.getName(), methodName),
                                                                      InstanceStatus.ACTIVE,
                                                                      end1,
                                                                      end2));
@@ -2137,22 +2116,20 @@ public class SimpleCatalogArchiveHelper
      */
     public void addCommunityMembershipRelationship(String  communityQName,
                                                    String  membershipRoleQName,
-                                                   int     membershipType)
+                                                   String  membershipType)
     {
         final String methodName = "addCommunityMembershipRelationship";
 
-        EnumElementDef enumElement = archiveHelper.getEnumElement(CommunityMembershipType.getOpenTypeName(), membershipType);
-
-        String guid1 = idToGUIDMap.getGUID(communityQName);
-        String guid2 = idToGUIDMap.getGUID(membershipRoleQName);
+        String guid1 = idToGUIDMap.getGUID(membershipRoleQName);
+        String guid2 = idToGUIDMap.getGUID(communityQName);
 
         EntityProxy end1 = archiveHelper.getEntityProxy(archiveBuilder.getEntity(guid1));
         EntityProxy end2 = archiveHelper.getEntityProxy(archiveBuilder.getEntity(guid2));
 
-        InstanceProperties properties = archiveHelper.addEnumPropertyToInstance(archiveRootName, null, OpenMetadataProperty.MEMBERSHIP_TYPE.name, CommunityMembershipType.getOpenTypeGUID(), CommunityMembershipType.getOpenTypeName(), enumElement.getOrdinal(), enumElement.getValue(), enumElement.getDescription(), methodName);
+        InstanceProperties properties = archiveHelper.addStringPropertyToInstance(archiveRootName, null, OpenMetadataProperty.ASSIGNMENT_TYPE.name, membershipType, methodName);
 
-        archiveBuilder.addRelationship(archiveHelper.getRelationship(OpenMetadataType.COMMUNITY_MEMBERSHIP_RELATIONSHIP.typeName,
-                                                                     idToGUIDMap.getGUID(guid1 + "_to_" + guid2 + "_community_membership_relationship"),
+        archiveBuilder.addRelationship(archiveHelper.getRelationship(OpenMetadataType.ASSIGNMENT_SCOPE_RELATIONSHIP.typeName,
+                                                                     idToGUIDMap.getGUID(guid1 + "_to_" + guid2 + "_community_membership_assignment_scope_relationship"),
                                                                      properties,
                                                                      InstanceStatus.ACTIVE,
                                                                      end1,

@@ -6,6 +6,7 @@ package org.odpi.openmetadata.adapters.connectors.datastore.csvfile;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLogReportingComponent;
 import org.odpi.openmetadata.frameworks.auditlog.ComponentDevelopmentStatus;
 import org.odpi.openmetadata.frameworks.connectors.ConnectorProviderBase;
+import org.odpi.openmetadata.frameworks.connectors.TabularDataSource;
 import org.odpi.openmetadata.frameworks.connectors.controls.SupportedTechnologyType;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.ConnectorType;
 import org.odpi.openmetadata.frameworks.openmetadata.refdata.DeployedImplementationType;
@@ -67,6 +68,7 @@ public class CSVFileStoreProvider extends ConnectorProviderBase
         super.setConnectorClassName(connectorClass);
 
         connectorInterfaces.add(CSVFileStore.class.getName());
+        connectorInterfaces.add(TabularDataSource.class.getName());
 
         ConnectorType connectorType = new ConnectorType();
 

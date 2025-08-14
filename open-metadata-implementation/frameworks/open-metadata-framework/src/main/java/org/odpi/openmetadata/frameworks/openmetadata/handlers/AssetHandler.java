@@ -22,8 +22,8 @@ import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.processes
 import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.processes.ProcessProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.processes.actions.ActionProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.processes.actions.ActionRequesterProperties;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.processes.actions.ActionSponsorProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.processes.actions.ActionTargetProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.refdata.AssignmentType;
 import org.odpi.openmetadata.frameworks.openmetadata.search.*;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
@@ -227,11 +227,13 @@ public class AssetHandler extends OpenMetadataHandlerBase
             if (actionSponsorGUID != null)
             {
                 openMetadataClient.createRelatedElementsInStore(userId,
-                                                                OpenMetadataType.ACTION_SPONSOR_RELATIONSHIP.typeName,
+                                                                OpenMetadataType.ASSIGNMENT_SCOPE_RELATIONSHIP.typeName,
                                                                 actionSponsorGUID,
                                                                 toDoGUID,
                                                                 anchorOptions,
-                                                                relationshipBuilder.getNewElementProperties(new ActionSponsorProperties()));
+                                                                new NewElementProperties(propertyHelper.addStringProperty(null,
+                                                                                                                          OpenMetadataProperty.ASSIGNMENT_TYPE.name,
+                                                                                                                          AssignmentType.SPONSOR.getName())));
             }
 
             if (newActionTargets != null)
@@ -1087,7 +1089,7 @@ public class AssetHandler extends OpenMetadataHandlerBase
                                   elementGUID,
                                   guidParameterName,
                                   activityStatus,
-                                  OpenMetadataType.ACTION_SPONSOR_RELATIONSHIP.typeName,
+                                  OpenMetadataType.ASSIGNMENT_SCOPE_RELATIONSHIP.typeName,
                                   1,
                                   queryOptions,
                                   methodName);

@@ -166,7 +166,6 @@ public class OpenMetadataTypesArchive3_8
          */
         update0011ManagingReferenceables();
         update0015LinkedMediaTypes();
-        update0160NoteLogs();
         update0030OperatingPlatforms();
         update0057SoftwareServices();
         update0070NetworksAndGateways();
@@ -446,64 +445,6 @@ public class OpenMetadataTypesArchive3_8
      * -------------------------------------------------------------------------------------------------------
      */
 
-
-    /**
-     * Enable any person role to author note logs.
-     */
-    private void update0160NoteLogs()
-    {
-        this.archiveBuilder.addTypeDefPatch(updateNoteLogAuthorshipRelationship());
-    }
-
-
-    private TypeDefPatch updateNoteLogAuthorshipRelationship()
-    {
-        /*
-         * Create the Patch
-         */
-        TypeDefPatch  typeDefPatch = archiveBuilder.getPatchForType(OpenMetadataType.NOTE_LOG_AUTHORSHIP_RELATIONSHIP.typeName);
-
-        typeDefPatch.setUpdatedBy(originatorName);
-        typeDefPatch.setUpdateTime(creationDate);
-
-        RelationshipEndDef relationshipEndDef;
-
-        /*
-         * Set up end 2.
-         */
-        final String                     end1AttributeName            = "authors";
-        final String                     end1AttributeDescription     = "Person contributing to the note log.";
-        final String                     end1AttributeDescriptionGUID = null;
-
-        relationshipEndDef = archiveHelper.getRelationshipEndDef(this.archiveBuilder.getEntityDef(OpenMetadataType.PERSON_ROLE.typeName),
-                                                                 end1AttributeName,
-                                                                 end1AttributeDescription,
-                                                                 end1AttributeDescriptionGUID,
-                                                                 RelationshipEndCardinality.ANY_NUMBER);
-        typeDefPatch.setEndDef2(relationshipEndDef);
-
-
-        /*
-         * Set up end 1.
-         */
-        final String                     end2AttributeName            = "authoredNoteLogs";
-        final String                     end2AttributeDescription     = "Note log containing contributions.";
-        final String                     end2AttributeDescriptionGUID = null;
-
-        relationshipEndDef = archiveHelper.getRelationshipEndDef(this.archiveBuilder.getEntityDef(OpenMetadataType.NOTE_LOG.typeName),
-                                                                 end2AttributeName,
-                                                                 end2AttributeDescription,
-                                                                 end2AttributeDescriptionGUID,
-                                                                 RelationshipEndCardinality.ANY_NUMBER);
-        typeDefPatch.setEndDef1(relationshipEndDef);
-
-        return typeDefPatch;
-    }
-
-
-    /*
-     * -------------------------------------------------------------------------------------------------------
-     */
 
 
     /**

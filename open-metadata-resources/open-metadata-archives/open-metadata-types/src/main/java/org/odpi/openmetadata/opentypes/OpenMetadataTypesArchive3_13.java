@@ -218,7 +218,6 @@ public class OpenMetadataTypesArchive3_13
         this.archiveBuilder.addTypeDefPatch(updateActorProfile());
         this.archiveBuilder.addTypeDefPatch(updateUserIdentity());
         this.archiveBuilder.addTypeDefPatch(updatePersonRole());
-        this.archiveBuilder.addTypeDefPatch(updateProjectTeam());
         this.archiveBuilder.addTypeDefPatch(updateCrowdSourcingContribution());
     }
 
@@ -269,37 +268,6 @@ public class OpenMetadataTypesArchive3_13
         typeDefPatch.setUpdatedBy(originatorName);
         typeDefPatch.setUpdateTime(creationDate);
         typeDefPatch.setSuperType(this.archiveBuilder.getEntityDef(OpenMetadataType.ACTOR.typeName));
-
-        return typeDefPatch;
-    }
-
-
-    private TypeDefPatch updateProjectTeam()
-    {
-        /*
-         * Create the Patch
-         */
-        TypeDefPatch  typeDefPatch = archiveBuilder.getPatchForType(OpenMetadataType.PROJECT_TEAM_RELATIONSHIP.typeName);
-
-        typeDefPatch.setUpdatedBy(originatorName);
-        typeDefPatch.setUpdateTime(creationDate);
-
-
-        /*
-         * Set up end 2.
-         */
-        final String                     end2AttributeName            = "supportingActors";
-        final String                     end2AttributeDescription     = "People and teams supporting this project.";
-        final String                     end2AttributeDescriptionGUID = null;
-
-        RelationshipEndDef relationshipEndDef = archiveHelper.getRelationshipEndDef(this.archiveBuilder.getEntityDef(OpenMetadataType.ACTOR.typeName),
-                                                                                    end2AttributeName,
-                                                                                    end2AttributeDescription,
-                                                                                    end2AttributeDescriptionGUID,
-                                                                                    RelationshipEndCardinality.ANY_NUMBER);
-
-
-        typeDefPatch.setEndDef2(relationshipEndDef);
 
         return typeDefPatch;
     }

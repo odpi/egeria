@@ -895,14 +895,14 @@ Content-Type: application/json
 
 ###
 
-@actorGUID=add guid here
-@scopeElementGUID=add guid here
+@governanceMetricGUID=add guid here
+@dataAssetGUID=add guid here
 
 ###
-# @name linkAssignmentScope
-# Attach an actor to an element that describes its scope. Request body is optional.
-# https://egeria-project.org/concepts/actor/
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/governance-officer/elements/{{scopeElementGUID}}/actors/{{actorGUID}}/attach
+# @name linkGovernanceResults
+# Attach a governance metric to a data asset that describes where its measurements are kept. Request body is optional.
+# https://egeria-project.org/concepts/governance-definition/
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/governance-officer/governance-metrics/{{governanceMetricGUID}}/measurements/{{dataAssetGUID}}/attach
 Authorization: Bearer {{token}}
 Content-Type: application/json
 
@@ -914,7 +914,7 @@ Content-Type: application/json
   "forLineage" : false,
   "forDuplicateProcessing" : false,
   "properties": {
-    "class": "ImplementationResourceProperties",
+    "class": "GovernanceResultsProperties",
     "description": "",
     "effectiveFrom": "{{$isoTimestamp}}",
     "effectiveTo": "{{$isoTimestamp}}"
@@ -922,10 +922,10 @@ Content-Type: application/json
 }
 
 ###
-# @name detachAssignmentScope
-# Detach an actor from the element that describes its scope. Request body is optional.
-# https://egeria-project.org/concepts/actor/
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/governance-officer/elements/{{scopeElementGUID}}/actors/{{actorGUID}}/detach
+# @name detachGovernanceResults
+# Detach an governance metric from its measurements data set. Request body is optional.
+# https://egeria-project.org/concepts/governance-definition/
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/governance-officer/governance-metrics/{{governanceMetricGUID}}/measurements/{{dataAssetGUID}}/detach
 Authorization: Bearer {{token}}
 Content-Type: application/json
 

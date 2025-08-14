@@ -143,7 +143,7 @@ public class GlossaryBrowserResource
                     url="https://egeria-project.org/types/3/0310-Glossary/"))
 
     public OpenMetadataRootElementsResponse   getGlossariesByName(@PathVariable String                  serverName,
-                                                          @RequestBody(required = false)  FilterRequestBody         requestBody)
+                                                                  @RequestBody(required = false)  FilterRequestBody         requestBody)
     {
         return restAPI.getGlossariesByName(serverName, requestBody);
     }
@@ -154,14 +154,14 @@ public class GlossaryBrowserResource
      *
      * @param serverName name of the server to route the request to
      * @param glossaryGUID unique identifier of the requested metadata element
-     * @param requestBody asset manager identifiers
+     * @param requestBody search options
      *
      * @return matching metadata element or
      * InvalidParameterException  one of the parameters is invalid
      * UserNotAuthorizedException the user is not authorized to issue this request
      * PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    @PostMapping(path = "/glossaries/{glossaryGUID}/retrieve")
+    @PostMapping(path = "/glossaries/{glossaryGUID}")
 
     @Operation(summary="getGlossaryByGUID",
             description="Retrieve the glossary metadata element with the supplied unique identifier.  The optional request body allows you to specify that the glossary element should only be returned if it was effective at a particular time.",
@@ -169,8 +169,8 @@ public class GlossaryBrowserResource
                     url="https://egeria-project.org/types/3/0310-Glossary/"))
 
     public OpenMetadataRootElementResponse getGlossaryByGUID(@PathVariable String                        serverName,
-                                                     @PathVariable String                        glossaryGUID,
-                                                     @RequestBody(required = false) GetRequestBody requestBody)
+                                                             @PathVariable String                        glossaryGUID,
+                                                             @RequestBody(required = false) GetRequestBody requestBody)
     {
         return restAPI.getGlossaryByGUID(serverName, glossaryGUID, requestBody);
     }
@@ -187,7 +187,7 @@ public class GlossaryBrowserResource
      * UserNotAuthorizedException the user is not authorized to issue this request
      * PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    @PostMapping(path = "/glossaries/for-term/{glossaryTermGUID}/retrieve")
+    @PostMapping(path = "/glossaries/for-term/{glossaryTermGUID}")
 
     @Operation(summary="getGlossaryForTerm",
             description="Retrieve the glossary metadata element for the requested term.  The optional request body allows you to specify that the glossary element should only be returned if it was effective at a particular time.",
@@ -195,9 +195,9 @@ public class GlossaryBrowserResource
                     url="https://egeria-project.org/types/3/0310-Glossary/"))
 
     public OpenMetadataRootElementResponse getGlossaryForTerm(@PathVariable String                        serverName,
-                                                      @PathVariable String                        glossaryTermGUID,
-                                                      @RequestBody(required = false)
-                                                                  GetRequestBody requestBody)
+                                                              @PathVariable String                        glossaryTermGUID,
+                                                              @RequestBody(required = false)
+                                                              GetRequestBody requestBody)
     {
         return restAPI.getGlossaryForTerm(serverName, glossaryTermGUID, requestBody);
     }
@@ -208,7 +208,7 @@ public class GlossaryBrowserResource
      * The search string is treated as a regular expression.
      *
      * @param serverName name of the server to route the request to
-     * @param requestBody asset manager identifiers and search string
+     * @param requestBody query
      *
      * @return list of matching metadata elements or
      * InvalidParameterException  one of the parameters is invalid
@@ -262,11 +262,11 @@ public class GlossaryBrowserResource
      * UserNotAuthorizedException the user is not authorized to issue this request
      * PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    @PostMapping(path = "/glossaries/terms/{glossaryTermGUID}/retrieve")
+    @PostMapping(path = "/glossaries/terms/{glossaryTermGUID}")
 
     public OpenMetadataRootElementResponse getGlossaryTermByGUID(@PathVariable String                             serverName,
-                                                             @PathVariable String                             glossaryTermGUID,
-                                                             @RequestBody(required = false) GetRequestBody requestBody)
+                                                                 @PathVariable String                             glossaryTermGUID,
+                                                                 @RequestBody(required = false) GetRequestBody requestBody)
     {
         return restAPI.getGlossaryTermByGUID(serverName, glossaryTermGUID, requestBody);
     }

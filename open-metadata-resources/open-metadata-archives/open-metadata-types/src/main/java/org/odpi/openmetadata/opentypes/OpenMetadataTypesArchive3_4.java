@@ -168,7 +168,6 @@ public class OpenMetadataTypesArchive3_4
          */
         correct0040SoftwareServers();
         extend0110Actors();
-        update0112Team();
         update0115ITProfile();
         extend0423SecurityDefinitions();
         update0223Events();
@@ -285,110 +284,6 @@ public class OpenMetadataTypesArchive3_4
         properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.DESCRIPTION));
 
         typeDefPatch.setPropertyDefinitions(properties);
-
-        return typeDefPatch;
-    }
-
-
-    /*
-     * -------------------------------------------------------------------------------------------------------
-     */
-
-    /**
-     * Enable any person role to participate in multiple team leadership or team membership relationships.
-     */
-    private void update0112Team()
-    {
-        this.archiveBuilder.addTypeDefPatch(updateTeamMembershipRelationship());
-        this.archiveBuilder.addTypeDefPatch(updateTeamLeadershipRelationship());
-    }
-
-
-    private TypeDefPatch updateTeamMembershipRelationship()
-    {
-        /*
-         * Create the Patch
-         */
-        TypeDefPatch  typeDefPatch = archiveBuilder.getPatchForType(OpenMetadataType.TEAM_MEMBERSHIP_RELATIONSHIP.typeName);
-
-        typeDefPatch.setUpdatedBy(originatorName);
-        typeDefPatch.setUpdateTime(creationDate);
-
-        RelationshipEndDef relationshipEndDef;
-
-        /*
-         * Set up end 2.
-         */
-        final String                     end1AttributeName            = "teamMembers";
-        final String                     end1AttributeDescription     = "The members of the team.";
-        final String                     end1AttributeDescriptionGUID = null;
-
-        relationshipEndDef = archiveHelper.getRelationshipEndDef(this.archiveBuilder.getEntityDef(OpenMetadataType.PERSON_ROLE.typeName),
-                                                                 end1AttributeName,
-                                                                 end1AttributeDescription,
-                                                                 end1AttributeDescriptionGUID,
-                                                                 RelationshipEndCardinality.ANY_NUMBER);
-        typeDefPatch.setEndDef2(relationshipEndDef);
-
-
-        /*
-         * Set up end 1.
-         */
-        final String                     end2AttributeName            = "memberOfTeam";
-        final String                     end2AttributeDescription     = "The team that this role is a member of.";
-        final String                     end2AttributeDescriptionGUID = null;
-
-        relationshipEndDef = archiveHelper.getRelationshipEndDef(this.archiveBuilder.getEntityDef(OpenMetadataType.TEAM.typeName),
-                                                                 end2AttributeName,
-                                                                 end2AttributeDescription,
-                                                                 end2AttributeDescriptionGUID,
-                                                                 RelationshipEndCardinality.ANY_NUMBER);
-        typeDefPatch.setEndDef1(relationshipEndDef);
-
-        return typeDefPatch;
-    }
-
-
-    private TypeDefPatch updateTeamLeadershipRelationship()
-    {
-        /*
-         * Create the Patch
-         */
-        TypeDefPatch  typeDefPatch = archiveBuilder.getPatchForType(OpenMetadataType.TEAM_LEADERSHIP_RELATIONSHIP.typeName);
-
-        typeDefPatch.setUpdatedBy(originatorName);
-        typeDefPatch.setUpdateTime(creationDate);
-
-        RelationshipEndDef relationshipEndDef;
-
-        /*
-         * Set up end 2.
-         */
-        final String                     end1AttributeName            = "teamLeaders";
-        final String                     end1AttributeDescription     = "The leaders of the team.";
-        final String                     end1AttributeDescriptionGUID = null;
-
-        relationshipEndDef = archiveHelper.getRelationshipEndDef(this.archiveBuilder.getEntityDef(OpenMetadataType.PERSON_ROLE.typeName),
-                                                                 end1AttributeName,
-                                                                 end1AttributeDescription,
-                                                                 end1AttributeDescriptionGUID,
-                                                                 RelationshipEndCardinality.ANY_NUMBER);
-        typeDefPatch.setEndDef2(relationshipEndDef);
-
-
-        /*
-         * Set up end 1.
-         */
-        final String                     end2AttributeName            = "leadsTeam";
-        final String                     end2AttributeDescription     = "The team lead by this person role.";
-        final String                     end2AttributeDescriptionGUID = null;
-
-        relationshipEndDef = archiveHelper.getRelationshipEndDef(this.archiveBuilder.getEntityDef(OpenMetadataType.TEAM.typeName),
-                                                                 end2AttributeName,
-                                                                 end2AttributeDescription,
-                                                                 end2AttributeDescriptionGUID,
-                                                                 RelationshipEndCardinality.ANY_NUMBER);
-        typeDefPatch.setEndDef1(relationshipEndDef);
 
         return typeDefPatch;
     }

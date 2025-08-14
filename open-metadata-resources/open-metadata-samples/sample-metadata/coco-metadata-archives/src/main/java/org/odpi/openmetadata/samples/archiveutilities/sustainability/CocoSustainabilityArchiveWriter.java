@@ -4,8 +4,8 @@ package org.odpi.openmetadata.samples.archiveutilities.sustainability;
 
 
 import org.odpi.openmetadata.archiveutilities.openconnectors.core.CorePackArchiveWriter;
-import org.odpi.openmetadata.frameworks.openmetadata.enums.CommunityMembershipType;
 import org.odpi.openmetadata.frameworks.openmetadata.mapper.OpenMetadataValidValues;
+import org.odpi.openmetadata.frameworks.openmetadata.refdata.AssignmentType;
 import org.odpi.openmetadata.frameworks.openmetadata.refdata.ResourceUse;
 import org.odpi.openmetadata.frameworks.openmetadata.types.DataType;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
@@ -201,7 +201,7 @@ public class CocoSustainabilityArchiveWriter extends EgeriaBaseArchiveWriter
 
             archiveHelper.addCommunityMembershipRelationship(communityQName,
                                                              roleDefinition.getQualifiedName(),
-                                                             CommunityMembershipType.CONTRIBUTOR.getOrdinal());
+                                                             AssignmentType.CONTRIBUTOR.getName());
 
             if (roleDefinition.getBusinessArea() != null)
             {

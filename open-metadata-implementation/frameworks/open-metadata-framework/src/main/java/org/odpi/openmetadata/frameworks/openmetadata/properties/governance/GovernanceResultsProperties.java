@@ -22,6 +22,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 public class GovernanceResultsProperties extends RelationshipBeanProperties
 {
     private String query = null;
+    private String queryType = null;
 
 
     /**
@@ -46,6 +47,7 @@ public class GovernanceResultsProperties extends RelationshipBeanProperties
         if (template != null)
         {
             this.query = getQuery();
+            this.queryType = getQueryType();
         }
     }
 
@@ -71,6 +73,26 @@ public class GovernanceResultsProperties extends RelationshipBeanProperties
         this.query = query;
     }
 
+    /**
+     * Return the format/language used for the query.
+     *
+     * @return string
+     */
+    public String getQueryType()
+    {
+        return queryType;
+    }
+
+
+    /**
+     * Set up the format/language used for the query.
+     *
+     * @param queryType string
+     */
+    public void setQueryType(String queryType)
+    {
+        this.queryType = queryType;
+    }
 
     /**
      * JSON-style toString
@@ -81,11 +103,9 @@ public class GovernanceResultsProperties extends RelationshipBeanProperties
     public String toString()
     {
         return "GovernanceResultsProperties{" +
-                       "query='" + query + '\'' +
-                       ", effectiveFrom=" + getEffectiveFrom() +
-                       ", effectiveTo=" + getEffectiveTo() +
-                       ", extendedProperties=" + getExtendedProperties() +
-                       '}';
+                "query='" + query + '\'' +
+                ", queryType='" + queryType + '\'' +
+                "} " + super.toString();
     }
 
 
@@ -111,7 +131,7 @@ public class GovernanceResultsProperties extends RelationshipBeanProperties
             return false;
         }
         GovernanceResultsProperties that = (GovernanceResultsProperties) objectToCompare;
-        return Objects.equals(query, that.query);
+        return Objects.equals(query, that.query) && Objects.equals(queryType, that.queryType);
     }
 
 
@@ -123,6 +143,6 @@ public class GovernanceResultsProperties extends RelationshipBeanProperties
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), query);
+        return Objects.hash(super.hashCode(), query, queryType);
     }
 }

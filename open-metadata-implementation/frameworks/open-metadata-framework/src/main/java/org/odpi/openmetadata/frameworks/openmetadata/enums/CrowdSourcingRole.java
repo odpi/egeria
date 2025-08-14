@@ -209,6 +209,6 @@ public enum CrowdSourcingRole implements OpenMetadataEnum
     @Override
     public String toString()
     {
-        return "CommunityMembershipType : " + name;
+        return "CrowdSourcingRole : " + name;
     }
 }

@@ -34,6 +34,14 @@ public enum PostgresErrorCode implements ExceptionMessageSet
                      "Update the connection's endpoint to include the connection string needed to connect to the desired database."),
 
     /**
+     * POSTGRES-CONNECTOR-400-002 - Connection {0} has been configured without the embedded JDBC database connection
+     */
+    NO_DATABASE_CONNECTION(400, "POSTGRES-CONNECTOR-400-002",
+             "Connection {0} has been configured without the embedded JDBC database connection",
+             "The connector is unable to start because it does not have a connector to the database.",
+             "Update the connection to include the embedded connection needed to connect to the desired database."),
+
+    /**
      * POSTGRES-CONNECTOR-500-001 - The {0} postgreSQL connector received an unexpected exception {1} during method {2}; the error message was: {3}
      */
     UNEXPECTED_EXCEPTION(500, "POSTGRES-CONNECTOR-500-001",

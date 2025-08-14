@@ -132,7 +132,7 @@ Content-Type: application/json
 ###
 # @name getCollectionsByName (restricted by classificationName)
 # Returns the list of collections with a particular name.
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/collection-manager/collections/by-name?classificationName=DataSpec
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/collection-manager/collections/by-name
 Authorization: Bearer {{token}}
 Content-Type: application/json
 

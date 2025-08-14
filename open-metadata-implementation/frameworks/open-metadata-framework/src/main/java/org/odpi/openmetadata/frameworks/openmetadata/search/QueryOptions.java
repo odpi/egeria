@@ -23,6 +23,8 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 public class QueryOptions extends PagingOptions
 {
     private String              anchorGUID                    = null;
+    private String              anchorDomainName              = null;
+    private String              anchorScopeGUID               = null;
     private List<ElementStatus> limitResultsByStatus          = null;
     private SequencingOrder     sequencingOrder               = SequencingOrder.LAST_UPDATE_RECENT;
     private String              sequencingProperty            = null;
@@ -49,6 +51,8 @@ public class QueryOptions extends PagingOptions
         if (template != null)
         {
             anchorGUID           = template.getAnchorGUID();
+            anchorScopeGUID      = template.getAnchorScopeGUID();
+            anchorDomainName     = template.getAnchorDomainName();
             limitResultsByStatus = template.getLimitResultsByStatus();
             sequencingOrder      = template.getSequencingOrder();
             sequencingProperty   = template.getSequencingProperty();
@@ -79,7 +83,7 @@ public class QueryOptions extends PagingOptions
 
 
     /**
-     * Return the unique identifier of the glossary scope.
+     * Return the unique identifier of the anchor to limit the search results to.
      *
      * @return string guid
      */
@@ -90,13 +94,57 @@ public class QueryOptions extends PagingOptions
 
 
     /**
-     * Set up the unique identifier of the glossary scope.
+     * Set up the unique identifier of the anchor to limit the search results to.
      *
      * @param anchorGUID string
      */
     public void setAnchorGUID(String anchorGUID)
     {
         this.anchorGUID = anchorGUID;
+    }
+
+
+    /**
+     * Return the unique identifier of the anchor scope to link the search results to.
+     *
+     * @return string
+     */
+    public String getAnchorScopeGUID()
+    {
+        return anchorScopeGUID;
+    }
+
+
+    /**
+     * Set up the unique identifier of the anchor scope to link the search results to.
+     *
+     * @param anchorScopeGUID string
+     */
+    public void setAnchorScopeGUID(String anchorScopeGUID)
+    {
+        this.anchorScopeGUID = anchorScopeGUID;
+    }
+
+
+    /**
+     * Return the type name of the anchor's domain.
+     *
+     * @return string
+     */
+    public String getAnchorDomainName()
+    {
+        return anchorDomainName;
+    }
+
+
+    /**
+     * Set up the type name of the anchor's domain.
+     *
+     * @param anchorDomainName string
+     */
+    public void setAnchorDomainName(String anchorDomainName)
+    {
+        this.anchorDomainName = anchorDomainName;
     }
 
 
@@ -182,6 +230,8 @@ public class QueryOptions extends PagingOptions
     {
         return "QueryOptions{" +
                 "anchorGUID='" + anchorGUID + '\'' +
+                ", anchorDomainName='" + anchorDomainName + '\'' +
+                ", anchorScopeGUID='" + anchorScopeGUID + '\'' +
                 ", limitResultsByStatus=" + limitResultsByStatus +
                 ", sequencingOrder=" + sequencingOrder +
                 ", sequencingProperty='" + sequencingProperty + '\'' +
@@ -203,6 +253,8 @@ public class QueryOptions extends PagingOptions
         if (!super.equals(objectToCompare)) return false;
         QueryOptions that = (QueryOptions) objectToCompare;
         return Objects.equals(anchorGUID, that.anchorGUID) &&
+                Objects.equals(anchorDomainName, that.anchorDomainName) &&
+                Objects.equals(anchorScopeGUID, that.anchorScopeGUID) &&
                 Objects.equals(limitResultsByStatus, that.limitResultsByStatus) &&
                 sequencingOrder == that.sequencingOrder &&
                 Objects.equals(sequencingProperty, that.sequencingProperty);
@@ -217,6 +269,6 @@ public class QueryOptions extends PagingOptions
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), anchorGUID, limitResultsByStatus, sequencingOrder, sequencingProperty);
+        return Objects.hash(super.hashCode(), anchorGUID, anchorDomainName, anchorScopeGUID, limitResultsByStatus, sequencingOrder, sequencingProperty);
     }
 }

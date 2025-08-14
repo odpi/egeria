@@ -737,50 +737,6 @@ Content-Type: application/json
    "effectiveTime" : "{{$isoTimestamp}}"
 }
 
-
-###
-
-@stakeholderGUID=add guid here
-
-###
-# @name addStakeholderToElement
-# Link a stakeholder to an element using the Stakeholder relationship.
-#
-# Stakeholders: https://egeria-project.org/types/1/0120-Assignment-Scopes/
-
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/classification-manager/elements/{{elementGUID}}/stakeholders/{{stakeholderGUID}}
-Authorization: Bearer {{token}}
-Content-Type: application/json
-
-{
-   "class" : "NewRelationshipRequestBody",
-   "externalSourceGUID": "Add guid here",
-   "externalSourceName": "Add qualified name here",
-   "forLineage": false,
-   "forDuplicateProcessing": false,
-   "effectiveTime" : "{{$isoTimestamp}}"
-}
-
-
-###
-# @name removeStakeholderFromElement
-# Remove the Stakeholder relationship between a stakeholder (typically Actor) and an element.
-#
-# Skakeholders: https://egeria-project.org/types/1/0120-Assignment-Scopes/
-
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/classification-manager/elements/{{elementGUID}}/stakeholders/{{stakeholderGUID}}/remove
-Authorization: Bearer {{token}}
-Content-Type: application/json
-
-{
-   "class" : "MetadataSourceRequestBody",
-   "externalSourceGUID": "Add guid here",
-   "externalSourceName": "Add qualified name here",
-   "forLineage": false,
-   "forDuplicateProcessing": false,
-   "effectiveTime" : "{{$isoTimestamp}}"
-}
-
 ###
 
 @scopeGUID=add guid here

@@ -2082,7 +2082,7 @@
     </mxGraphModel>
   </diagram>
   <diagram id="ae98eXXyAuwWG8x9FIlC" name="product-catalog">
-    <mxGraphModel dx="2412" dy="959" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+    <mxGraphModel dx="2061" dy="827" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
@@ -2173,6 +2173,11 @@
         </mxCell>
         <mxCell id="uuuReAQL-LnaAJT_kez0-57" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" edge="1" parent="1" source="uuuReAQL-LnaAJT_kez0-51" target="uuuReAQL-LnaAJT_kez0-56">
           <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="uuuReAQL-LnaAJT_kez0-139" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="uuuReAQL-LnaAJT_kez0-51">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="280" y="980" as="targetPoint" />
+          </mxGeometry>
         </mxCell>
         <mxCell id="uuuReAQL-LnaAJT_kez0-51" value="Digital Product" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" vertex="1" parent="1">
           <mxGeometry x="370" y="1070" width="120" height="60" as="geometry" />
@@ -2373,6 +2378,9 @@
         </mxCell>
         <mxCell id="uuuReAQL-LnaAJT_kez0-138" value="CollectionMembership" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;" vertex="1" parent="1">
           <mxGeometry x="430" y="580" width="140" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="uuuReAQL-LnaAJT_kez0-140" value="Dependent products" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;" vertex="1" parent="1">
+          <mxGeometry x="205" y="938" width="130" height="30" as="geometry" />
         </mxCell>
       </root>
     </mxGraphModel>

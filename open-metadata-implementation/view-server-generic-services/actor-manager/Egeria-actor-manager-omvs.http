@@ -251,135 +251,6 @@ Content-Type: application/json
 
 ###
 
-@personOneGUID=add guid here
-@personTwoGUID=add guid here
-
-###
-# @name linkPeerPerson
-# Attach a person profile to one of its peers.
-#
-# @param personOneGUID          unique identifier of the first person profile
-# @param personTwoGUID          unique identifier of the second person profile
-# Request body provides  description of the relationship.
-#
-# Returns void or
-#  InvalidParameterException  one of the parameters is null or invalid.
-#  PropertyServerException    there is a problem retrieving information from the property server(s).
-#  UserNotAuthorizedException the requesting user is not authorized to issue this request.
-#
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/actor-manager/actor-profiles/{{personOneGUID}}/peer-persons/{{personTwoGUID}}/attach
-Authorization: Bearer {{token}}
-Content-Type: application/json
-
-{
-  "class" : "NewRelationshipRequestBody",
-  "externalSourceGUID": "add guid here",
-  "externalSourceName": "add qualified name here",
-  "effectiveTime" : "{{$isoTimestamp}}",
-  "forLineage" : false,
-  "forDuplicateProcessing" : false,
-  "properties": {
-    "class": "RelationshipProperties",
-    "effectiveFrom": "{{$isoTimestamp}}",
-    "effectiveTo": "{{$isoTimestamp}}"
-  }
-}
-
-
-###
-# @name detachSupportingDefinition
-# Detach a person profile from one of its peers.
-#
-# @param personOneGUID          unique identifier of the first person profile
-# @param personTwoGUID          unique identifier of the second person profile
-# Request body provides  description of the relationship.
-#
-# Returns void or
-#  InvalidParameterException  one of the parameters is null or invalid.
-#  PropertyServerException    there is a problem retrieving information from the property server(s).
-#  UserNotAuthorizedException the requesting user is not authorized to issue this request.
-#
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/actor-manager/actor-profiles/{{personOneGUID}}/peer-persons/{{personTwoGUID}}/detach
-Authorization: Bearer {{token}}
-Content-Type: application/json
-
-{
-  "class" : "DeleteRequestBody",
-  "deleteMethod": "LOOK_FOR_LINEAGE",
-  "externalSourceGUID": "add guid here",
-  "externalSourceName": "add qualified name here",
-  "effectiveTime" : "{{$isoTimestamp}}",
-  "forLineage" : false,
-  "forDuplicateProcessing" : false
-}
-
-###
-
-@superTeamGUID=add guid here
-@subteamGUID=add guid here
-
-###
-# @name linkTeamStructure
-# Attach a super team to a subteam.
-#
-# @param superTeamGUID          unique identifier of the super team
-# @param subteamGUID            unique identifier of the subteam
-# Request body provides  description of the relationship.
-#
-# Returns void or
-#  InvalidParameterException  one of the parameters is null or invalid.
-#  PropertyServerException    there is a problem retrieving information from the property server(s).
-#  UserNotAuthorizedException the requesting user is not authorized to issue this request.
-#
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/actor-manager/actor-profiles/{{superTeamGUID}}/team-structures/{{subteamGUID}}/attach
-Authorization: Bearer {{token}}
-Content-Type: application/json
-
-{
-  "class" : "NewRelationshipRequestBody",
-  "externalSourceGUID": "add guid here",
-  "externalSourceName": "add qualified name here",
-  "effectiveTime" : "{{$isoTimestamp}}",
-  "forLineage" : false,
-  "forDuplicateProcessing" : false,
-  "properties": {
-    "class": "TeamStructureProperties",
-    "delegationEscalationAuthority": true,
-    "effectiveFrom": "{{$isoTimestamp}}",
-    "effectiveTo": "{{$isoTimestamp}}"
-  }
-}
-
-
-###
-# @name detachTeamStructure
-# Detach a super team from a subteam.
-#
-# @param superTeamGUID          unique identifier of the super team
-# @param subteamGUID            unique identifier of the subteam
-# Request body provides  description of the relationship.
-#
-# Returns void or
-#  InvalidParameterException  one of the parameters is null or invalid.
-#  PropertyServerException    there is a problem retrieving information from the property server(s).
-#  UserNotAuthorizedException the requesting user is not authorized to issue this request.
-#
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/actor-manager/actor-profiles/{{superTeamGUID}}/team-structures/{{subteamGUID}}/detach
-Authorization: Bearer {{token}}
-Content-Type: application/json
-
-{
-  "class" : "DeleteRequestBody",
-  "deleteMethod": "LOOK_FOR_LINEAGE",
-  "externalSourceGUID": "add guid here",
-  "externalSourceName": "add qualified name here",
-  "effectiveTime" : "{{$isoTimestamp}}",
-  "forLineage" : false,
-  "forDuplicateProcessing" : false
-}
-
-###
-
 @assetGUID=add guid here
 @itProfileGUID=add guid here
 
@@ -432,131 +303,6 @@ Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-  "class" : "DeleteRequestBody",
-  "deleteMethod": "LOOK_FOR_LINEAGE",
-  "externalSourceGUID": "add guid here",
-  "externalSourceName": "add qualified name here",
-  "effectiveTime" : "{{$isoTimestamp}}",
-  "forLineage" : false,
-  "forDuplicateProcessing" : false
-}
-
-###
-
-@teamGUID=add guid here
-
-###
-# @name linkTeamToMembershipRole
-# Attach a team to its membership role.
-#
-# @param teamGUID               unique identifier of the team
-# @param personRoleGUID         unique identifier of the associated person role
-# Request body provides  description of the relationship.
-#
-# Returns void or
-#  InvalidParameterException  one of the parameters is null or invalid.
-#  PropertyServerException    there is a problem retrieving information from the property server(s).
-#  UserNotAuthorizedException the requesting user is not authorized to issue this request.
-#
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/actor-manager/actor-profiles/{{teamGUID}}/team-membership-roles/{{personRoleGUID}}/attach
-Authorization: Bearer {{token}}
-Content-Type: application/json
-
-{
-  "class" : "NewRelationshipRequestBody",
-  "externalSourceGUID": "add guid here",
-  "externalSourceName": "add qualified name here",
-  "effectiveTime" : "{{$isoTimestamp}}",
-  "forLineage" : false,
-  "forDuplicateProcessing" : false,
-  "properties": {
-    "class": "TeamMembershipProperties",
-    "positionName": "",
-    "effectiveFrom": "{{$isoTimestamp}}",
-    "effectiveTo": "{{$isoTimestamp}}"
-  }
-}
-
-
-###
-# @name detachTeamFromMembershipRole
-# Detach a team profile from its membership role.
-#
-# @param teamGUID               unique identifier of the team
-# @param personRoleGUID         unique identifier of the associated person role
-# Request body provides  description of the relationship.
-#
-# Returns void or
-#  InvalidParameterException  one of the parameters is null or invalid.
-#  PropertyServerException    there is a problem retrieving information from the property server(s).
-#  UserNotAuthorizedException the requesting user is not authorized to issue this request.
-#
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/actor-manager/actor-profiles/{{teamGUID}}/team-membership-roles/{{personRoleGUID}}/detach
-Authorization: Bearer {{token}}
-Content-Type: application/json
-
-{
-  "class" : "DeleteRequestBody",
-  "deleteMethod": "LOOK_FOR_LINEAGE",
-  "externalSourceGUID": "add guid here",
-  "externalSourceName": "add qualified name here",
-  "effectiveTime" : "{{$isoTimestamp}}",
-  "forLineage" : false,
-  "forDuplicateProcessing" : false
-}
-
-
-###
-# @name linkTeamToLeadershipRole
-# Attach a team to its leadership role.
-#
-# @param teamGUID               unique identifier of the team
-# @param personRoleGUID         unique identifier of the associated person role
-# Request body provides  description of the relationship.
-#
-# Returns void or
-#  InvalidParameterException  one of the parameters is null or invalid.
-#  PropertyServerException    there is a problem retrieving information from the property server(s).
-#  UserNotAuthorizedException the requesting user is not authorized to issue this request.
-#
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/actor-manager/actor-profiles/{{teamGUID}}/team-leadership-roles/{{personRoleGUID}}/attach
-Authorization: Bearer {{token}}
-Content-Type: application/json
-
-{
-  "class" : "NewRelationshipRequestBody",
-  "externalSourceGUID": "add guid here",
-  "externalSourceName": "add qualified name here",
-  "effectiveTime" : "{{$isoTimestamp}}",
-  "forLineage" : false,
-  "forDuplicateProcessing" : false,
-  "properties": {
-    "class": "TeamLeadershipProperties",
-    "positionName": "",
-    "effectiveFrom": "{{$isoTimestamp}}",
-    "effectiveTo": "{{$isoTimestamp}}"
-  }
-}
-
-
-###
-# @name detachTeamFromLeadershipRole
-# Detach a team profile from its leadership role.
-#
-# @param teamGUID               unique identifier of the team
-# @param personRoleGUID         unique identifier of the associated person role
-# Request body provides  description of the relationship.
-#
-# Returns void or
-#  InvalidParameterException  one of the parameters is null or invalid.
-#  PropertyServerException    there is a problem retrieving information from the property server(s).
-#  UserNotAuthorizedException the requesting user is not authorized to issue this request.
-#
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/actor-manager/actor-profiles/{{teamGUID}}/team-leadership-roles/{{personRoleGUID}}/detach
-Authorization: Bearer {{token}}
-Content-Type: application/json
-
- {
   "class" : "DeleteRequestBody",
   "deleteMethod": "LOOK_FOR_LINEAGE",
   "externalSourceGUID": "add guid here",
@@ -1583,3 +1329,51 @@ Content-Type: application/json
   "forLineage" : false,
   "forDuplicateProcessing" : false
 }
+
+
+###
+
+@actorGUID=add guid here
+@scopeElementGUID=add guid here
+
+###
+# @name linkAssignmentScope
+# Attach an actor to an element that describes its scope. Request body is optional.
+# https://egeria-project.org/concepts/actor/
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/governance-officer/elements/{{scopeElementGUID}}/actors/{{actorGUID}}/attach
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "NewRelationshipRequestBody",
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false,
+  "properties": {
+    "class": "AssignmentScopeProperties",
+    "description": "",
+    "effectiveFrom": "{{$isoTimestamp}}",
+    "effectiveTo": "{{$isoTimestamp}}"
+  }
+}
+
+###
+# @name detachAssignmentScope
+# Detach an actor from the element that describes its scope. Request body is optional.
+# https://egeria-project.org/concepts/actor/
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/governance-officer/elements/{{scopeElementGUID}}/actors/{{actorGUID}}/detach
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "DeleteRequestBody",
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
+}
+
+###

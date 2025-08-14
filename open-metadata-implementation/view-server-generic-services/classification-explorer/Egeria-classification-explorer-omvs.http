@@ -475,52 +475,6 @@ Content-Type: application/json
 
 ###
 
-@stakeholderGUID=add guid here
-
-###
-# @name getStakeholders
-# Retrieve the stakeholders linked via the Stakeholder relationship to the requested element.
-#
-# Stakeholders: https://egeria-project.org/types/1/0120-Assignment-Scopes/
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/classification-explorer/elements/{{elementGUID}}/stakeholders?startFrom=0&pageSize=10
-Authorization: Bearer {{token}}
-Content-Type: application/json
-
-{
-    "class" : "FindProperties",
-    "effectiveTime" : "{{$isoTimestamp}}",
-    "asOfTime" : "{{$isoTimestamp}}",
-    "forLineage" : false,
-    "forDuplicateProcessing" : false,
-    "openMetadataTypeName" : "GlossaryTerm",
-    "limitResultsByStatus" : [ "ACTIVE", "DRAFT"],
-    "sequencingProperty" : "???",
-    "sequencingOrder" : "LAST_UPDATE_RECENT"
-}
-
-###
-# @name getStakeholderElements
-# Retrieve the elements linked via the Stakeholder relationship to the stakeholder.
-#
-# Stakeholders: https://egeria-project.org/types/1/0120-Assignment-Scopes/
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/classification-explorer/elements/stakeholders/{{stakeholderGUID}}/?startFrom=0&pageSize=10
-Authorization: Bearer {{token}}
-Content-Type: application/json
-
-{
-    "class" : "FindProperties",
-    "effectiveTime" : "{{$isoTimestamp}}",
-    "asOfTime" : "{{$isoTimestamp}}",
-    "forLineage" : false,
-    "forDuplicateProcessing" : false,
-    "openMetadataTypeName" : "GlossaryTerm",
-    "limitResultsByStatus" : [ "ACTIVE", "DRAFT"],
-    "sequencingProperty" : "???",
-    "sequencingOrder" : "LAST_UPDATE_RECENT"
-}
-
-###
-
 @scopeGUID=add guid here
 
 ###

@@ -6,10 +6,13 @@ package org.odpi.openmetadata.viewservices.subjectarea.server;
 import org.odpi.openmetadata.commonservices.ffdc.RESTCallLogger;
 import org.odpi.openmetadata.commonservices.ffdc.RESTCallToken;
 import org.odpi.openmetadata.commonservices.ffdc.RESTExceptionHandler;
-import org.odpi.openmetadata.commonservices.ffdc.rest.*;
+import org.odpi.openmetadata.commonservices.ffdc.rest.DeleteRequestBody;
+import org.odpi.openmetadata.commonservices.ffdc.rest.NewClassificationRequestBody;
+import org.odpi.openmetadata.commonservices.ffdc.rest.NewRelationshipRequestBody;
+import org.odpi.openmetadata.commonservices.ffdc.rest.VoidResponse;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.openmetadata.handlers.GovernanceDefinitionHandler;
-import org.odpi.openmetadata.frameworks.openmetadata.handlers.StewardshipManagementHandler;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.governance.SubjectAreaHierarchyProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.governance.SubjectAreaProperties;
 import org.odpi.openmetadata.tokencontroller.TokenController;
 import org.slf4j.LoggerFactory;
@@ -37,7 +40,7 @@ public class SubjectAreaRESTServices extends TokenController
 
 
     /**
-     * Attach a data field to a data structure.
+     * Link subject area definitions in a hierarchy.
      *
      * @param serverName         name of called server
      * @param subjectAreaGUID    unique identifier of the parent subject area.
@@ -72,11 +75,26 @@ public class SubjectAreaRESTServices extends TokenController
 
             if (requestBody != null)
             {
-                handler.linkSubjectAreas(userId,
-                                         subjectAreaGUID,
-                                         nestedSubjectAreaGUID,
-                                         requestBody,
-                                         requestBody.getProperties());
+                if (requestBody.getProperties() instanceof SubjectAreaHierarchyProperties subjectAreaHierarchyProperties)
+                {
+                    handler.linkSubjectAreas(userId,
+                                             subjectAreaGUID,
+                                             nestedSubjectAreaGUID,
+                                             requestBody,
+                                             subjectAreaHierarchyProperties);
+                }
+                else if (requestBody.getProperties() == null)
+                {
+                    handler.linkSubjectAreas(userId,
+                                             subjectAreaGUID,
+                                             nestedSubjectAreaGUID,
+                                             requestBody,
+                                             null);
+                }
+                else
+                {
+                    restExceptionHandler.handleInvalidPropertiesObject(SubjectAreaHierarchyProperties.class.getName(), methodName);
+                }
             }
             else
             {
@@ -98,7 +116,7 @@ public class SubjectAreaRESTServices extends TokenController
 
 
     /**
-     * Detach a data field from a data structure.
+     * Detach subject area definitions from their hierarchical relationship..
      *
      * @param serverName         name of called server
      * @param subjectAreaGUID    unique identifier of the parent data structure.

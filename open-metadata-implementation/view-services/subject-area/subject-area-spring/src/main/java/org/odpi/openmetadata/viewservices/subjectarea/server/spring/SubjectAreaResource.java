@@ -65,7 +65,7 @@ public class SubjectAreaResource
 
 
     /**
-     * Detach a data field from a subject area definition.
+     * Detach a subject area definition from a hierarchical relationship.
      *
      * @param serverName         name of called server
      * @param parentSubjectAreaGUID  unique identifier of the first subject area definition

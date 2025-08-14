@@ -72,10 +72,6 @@ public class AttributedElementConverterBase<B> extends OpenMetadataConverterBase
             attributedMetadataElement.setActionSource(super.getRelatedElement(OpenMetadataType.ACTION_REQUESTER_RELATIONSHIP.typeName, relatedMetadataElements, true));
             processedRelationshipTypes.add(OpenMetadataType.ACTION_REQUESTER_RELATIONSHIP.typeName);
 
-            attributedMetadataElement.setTrackedActions(super.getRelatedElements(OpenMetadataType.ACTION_SPONSOR_RELATIONSHIP.typeName, relatedMetadataElements, false));
-            attributedMetadataElement.setActionSponsors(super.getRelatedElements(OpenMetadataType.ACTION_SPONSOR_RELATIONSHIP.typeName, relatedMetadataElements, true));
-            processedRelationshipTypes.add(OpenMetadataType.ACTION_SPONSOR_RELATIONSHIP.typeName);
-
             attributedMetadataElement.setRelatedActions(super.getRelatedElements(OpenMetadataType.ACTIONS_RELATIONSHIP.typeName, relatedMetadataElements, false));
             attributedMetadataElement.setActionCause(super.getRelatedElements(OpenMetadataType.ACTIONS_RELATIONSHIP.typeName, relatedMetadataElements, true));
             processedRelationshipTypes.add(OpenMetadataType.ACTIONS_RELATIONSHIP.typeName);
@@ -155,10 +151,6 @@ public class AttributedElementConverterBase<B> extends OpenMetadataConverterBase
             attributedMetadataElement.setAssignmentScope(super.getRelatedElements(OpenMetadataType.ASSIGNMENT_SCOPE_RELATIONSHIP.typeName, relatedMetadataElements, false));
             attributedMetadataElement.setAssignedActors(super.getRelatedElements(OpenMetadataType.ASSIGNMENT_SCOPE_RELATIONSHIP.typeName, relatedMetadataElements, true));
             processedRelationshipTypes.add(OpenMetadataType.ASSIGNMENT_SCOPE_RELATIONSHIP.typeName);
-
-            attributedMetadataElement.setCommissionedElements(super.getRelatedElements(OpenMetadataType.STAKEHOLDER_RELATIONSHIP.typeName, relatedMetadataElements, false));
-            attributedMetadataElement.setCommissionedBy(super.getRelatedElements(OpenMetadataType.STAKEHOLDER_RELATIONSHIP.typeName, relatedMetadataElements, true));
-            processedRelationshipTypes.add(OpenMetadataType.STAKEHOLDER_RELATIONSHIP.typeName);
 
             attributedMetadataElement.setManagedProjects(super.getRelatedElements(OpenMetadataType.PROJECT_HIERARCHY_RELATIONSHIP.typeName, relatedMetadataElements, false));
             attributedMetadataElement.setManagingProjects(super.getRelatedElements(OpenMetadataType.PROJECT_HIERARCHY_RELATIONSHIP.typeName, relatedMetadataElements, true));

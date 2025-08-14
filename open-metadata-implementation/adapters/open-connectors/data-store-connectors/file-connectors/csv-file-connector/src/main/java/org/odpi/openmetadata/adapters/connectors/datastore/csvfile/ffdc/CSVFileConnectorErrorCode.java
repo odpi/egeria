@@ -73,7 +73,15 @@ public enum CSVFileConnectorErrorCode implements ExceptionMessageSet
     UNEXPECTED_IO_EXCEPTION(500, "CSV-FILE-CONNECTOR-500-001",
              "The connector received an unexpected IO exception when reading the file named {0}; the error message was: {1}",
              "The connector is unable to process the structure file.",
-             "Use details from the error message to determine the cause of the error and retry the request once it is resolved.");
+             "Use details from the error message to determine the cause of the error and retry the request once it is resolved."),
+
+    /**
+     * CSV-FILE-CONNECTOR-500-002 - The connector cannot change its column names because they are fixed in the connector's configuration
+     */
+    FIXED_COLUMN_NAMES(500, "CSV-FILE-CONNECTOR-500-002",
+                                    "The connector cannot change its column names because they are fixed in the connector's configuration",
+                                    "The connector is unable to process the new column descriptions.",
+                                    "Remove the column names definition from the configuration properties to enable new column names to be specified.");
 
 
     private final int    httpErrorCode;

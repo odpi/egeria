@@ -8,10 +8,12 @@ import org.odpi.openmetadata.commonservices.ffdc.RESTCallToken;
 import org.odpi.openmetadata.commonservices.ffdc.RESTExceptionHandler;
 import org.odpi.openmetadata.commonservices.ffdc.rest.*;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
+import org.odpi.openmetadata.frameworks.openmetadata.handlers.GovernanceDefinitionHandler;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.actors.*;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.governance.SupportingDefinitionProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.locations.ProfileLocationProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.security.SecurityGroupMembershipProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.solutions.SolutionBlueprintCompositionProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.search.MetadataSourceOptions;
 import org.odpi.openmetadata.frameworks.openmetadata.handlers.ActorProfileHandler;
 import org.odpi.openmetadata.frameworks.openmetadata.handlers.ActorRoleHandler;
@@ -2097,4 +2099,140 @@ public class ActorManagerRESTServices extends TokenController
         restCallLogger.logRESTCallReturn(token, response.toString());
         return response;
     }
+
+
+
+
+    /**
+     * Attach a actor to an element such as a team, project, community, that defines its scope.
+     *
+     * @param serverName         name of called server
+     * @param urlMarker  view service URL marker
+     * @param scopeElementGUID            unique identifier of the element
+     * @param actorGUID unique identifier of the actor
+     * @param requestBody  description of the relationship.
+     *
+     * @return void or
+     *  InvalidParameterException  one of the parameters is null or invalid.
+     *  PropertyServerException    there is a problem retrieving information from the property server(s).
+     *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public VoidResponse linkAssignmentScope(String                     serverName,
+                                            String                     urlMarker,
+                                            String                     scopeElementGUID,
+                                            String                     actorGUID,
+                                            NewRelationshipRequestBody requestBody)
+    {
+        final String methodName = "linkAssignmentScope";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
+
+        VoidResponse response = new VoidResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+            GovernanceDefinitionHandler handler = instanceHandler.getGovernanceDefinitionHandler(userId, serverName, urlMarker, methodName);
+
+            if (requestBody != null)
+            {
+                if (requestBody.getProperties() instanceof AssignmentScopeProperties properties)
+                {
+                    handler.linkAssignmentScope(userId,
+                                                scopeElementGUID,
+                                                actorGUID,
+                                                requestBody,
+                                                properties);
+                }
+                else if (requestBody.getProperties() == null)
+                {
+                    handler.linkAssignmentScope(userId,
+                                                scopeElementGUID,
+                                                actorGUID,
+                                                requestBody,
+                                                null);
+                }
+                else
+                {
+                    restExceptionHandler.handleInvalidPropertiesObject(SolutionBlueprintCompositionProperties.class.getName(), methodName);
+                }
+            }
+            else
+            {
+                handler.linkAssignmentScope(userId,
+                                            scopeElementGUID,
+                                            actorGUID,
+                                            requestBody,
+                                            null);
+            }
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+        return response;
+    }
+
+
+    /**
+     * Detach an actor from its scope.
+     *
+     * @param serverName         name of called server
+     * @param urlMarker  view service URL marker
+     * @param scopeElementGUID            unique identifier of the element
+     * @param actorGUID unique identifier of the actor
+     * @param requestBody  description of the relationship.
+     *
+     * @return void or
+     *  InvalidParameterException  one of the parameters is null or invalid.
+     *  PropertyServerException    there is a problem retrieving information from the property server(s).
+     *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public VoidResponse detachAssignmentScope(String            serverName,
+                                              String            urlMarker,
+                                              String            scopeElementGUID,
+                                              String            actorGUID,
+                                              DeleteRequestBody requestBody)
+    {
+        final String methodName = "detachAssignmentScope";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
+
+        VoidResponse response = new VoidResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            GovernanceDefinitionHandler handler = instanceHandler.getGovernanceDefinitionHandler(userId, serverName, urlMarker, methodName);
+
+            handler.detachAssignmentScope(userId,
+                                          scopeElementGUID,
+                                          actorGUID,
+                                          requestBody);
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+        return response;
+    }
+
+
+
+
 }

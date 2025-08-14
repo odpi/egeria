@@ -20,6 +20,7 @@ import org.odpi.openmetadata.frameworks.openmetadata.properties.contextevents.Co
 import org.odpi.openmetadata.frameworks.openmetadata.properties.contextevents.ContextEventProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.contextevents.DependentContextEventProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.contextevents.RelatedContextEventProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.refdata.AssignmentType;
 import org.odpi.openmetadata.frameworks.openmetadata.search.*;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
@@ -676,7 +677,6 @@ public abstract class OpenMetadataClientBase extends OpenMetadataClient
 
         requestBody.setSearchString(searchString);
         requestBody.setSearchStringParameterName(searchStringParameterName);
-        requestBody.setTypeName(queryTypeName);
 
         OpenMetadataElementsResponse restResult = restClient.callOpenMetadataElementsPostRESTCall(methodName,
                                                                                                   urlTemplate,
@@ -2293,11 +2293,13 @@ public abstract class OpenMetadataClientBase extends OpenMetadataClient
                  * Link the "to do" and the sponsor
                  */
                 this.createRelatedElementsInStore(userId,
-                                                  OpenMetadataType.ACTION_SPONSOR_RELATIONSHIP.typeName,
+                                                  OpenMetadataType.ASSIGNMENT_SCOPE_RELATIONSHIP.typeName,
                                                   sponsorGUID,
                                                   toDoGUID,
                                                   metadataSourceOptions,
-                                                  null);
+                                                  new NewElementProperties(propertyHelper.addStringProperty(null,
+                                                                                                            OpenMetadataProperty.ASSIGNMENT_TYPE.name,
+                                                                                                            AssignmentType.SPONSOR.getName())));
             }
 
             if (originatorGUID != null)

@@ -11,6 +11,7 @@ import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterExcept
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.openmetadata.handlers.ActorProfileHandler;
 import org.odpi.openmetadata.frameworks.openmetadata.handlers.ActorRoleHandler;
+import org.odpi.openmetadata.frameworks.openmetadata.handlers.GovernanceDefinitionHandler;
 import org.odpi.openmetadata.frameworks.openmetadata.handlers.UserIdentityHandler;
 
 import java.util.List;
@@ -24,10 +25,10 @@ public class ActorManagerInstance extends OMVSServiceInstance
 {
     private static final ViewServiceDescription myDescription = ViewServiceDescription.ACTOR_MANAGER;
 
-    private final ViewServiceClientMap<ActorProfileHandler> actorProfileHandlerMap;
-    private final ViewServiceClientMap<ActorRoleHandler>    actorRoleHandlerMap;
-    private final ViewServiceClientMap<UserIdentityHandler> userIdentityHandlerMap;
-
+    private final ViewServiceClientMap<ActorProfileHandler>         actorProfileHandlerMap;
+    private final ViewServiceClientMap<ActorRoleHandler>            actorRoleHandlerMap;
+    private final ViewServiceClientMap<UserIdentityHandler>         userIdentityHandlerMap;
+    private final ViewServiceClientMap<GovernanceDefinitionHandler> governanceDefinitionClientMap;
 
 
     /**
@@ -84,6 +85,14 @@ public class ActorManagerInstance extends OMVSServiceInstance
                                                             activeViewServices,
                                                             myDescription.getViewServiceFullName(),
                                                             maxPageSize);
+        this.governanceDefinitionClientMap = new ViewServiceClientMap<>(GovernanceDefinitionHandler.class,
+                                                                        serverName,
+                                                                        localServerUserId,
+                                                                        localServerUserPassword,
+                                                                        auditLog,
+                                                                        activeViewServices,
+                                                                        myDescription.getViewServiceFullName(),
+                                                                        maxPageSize);
     }
 
 
@@ -140,5 +149,23 @@ public class ActorManagerInstance extends OMVSServiceInstance
                                                                                 PropertyServerException
     {
         return userIdentityHandlerMap.getClient(viewServiceURLMarker, methodName);
+    }
+
+
+    /**
+     * Return the client.  This client is from the Open Metadata Store services and is for maintaining
+     * governance definition artifacts.
+     *
+     * @param viewServiceURLMarker calling view service
+     * @param methodName calling operation
+     * @return client
+     * @throws InvalidParameterException bad client initialization
+     * @throws PropertyServerException bad client handler class
+     */
+    public GovernanceDefinitionHandler getGovernanceDefinitionHandler(String viewServiceURLMarker,
+                                                                      String methodName) throws InvalidParameterException,
+                                                                                                PropertyServerException
+    {
+        return governanceDefinitionClientMap.getClient(viewServiceURLMarker, methodName);
     }
 }

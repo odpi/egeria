@@ -688,7 +688,6 @@ public class GlossaryTermHandler extends OpenMetadataHandlerBase
     {
         final String methodName  = "findGlossaryTerms";
 
-        // todo include glossary GUID in search
         return super.findRootElements(userId, searchString, queryOptions, methodName);
     }
 
