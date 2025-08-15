@@ -1823,84 +1823,6 @@ public class MermaidGraphBuilderBase
 
 
     /**
-     * Add a data field to graph.  If it has sub-fields, they are recursively added.
-     *
-     * @param dataFieldElement element to process
-     */
-    protected void addDataFieldToGraph(DataFieldElement dataFieldElement)
-
-    {
-        if (dataFieldElement != null)
-        {
-            String currentDisplayName = dataFieldElement.getProperties().getDisplayName();
-
-            if (currentDisplayName == null)
-            {
-                currentDisplayName = dataFieldElement.getProperties().getQualifiedName();
-            }
-
-            this.appendNewMermaidNode(dataFieldElement.getElementHeader().getGUID(),
-                                      currentDisplayName,
-                                      dataFieldElement.getElementHeader().getType().getTypeName(),
-                                      getVisualStyleForEntity(dataFieldElement.getElementHeader(), VisualStyle.DATA_FIELD));
-
-            if (dataFieldElement.getNestedDataFields() != null)
-            {
-                for (MemberDataField nestedDataField: dataFieldElement.getNestedDataFields())
-                {
-                    if (nestedDataField != null)
-                    {
-                        addMemberDataFieldToGraph(dataFieldElement.getElementHeader().getGUID(), nestedDataField);
-                    }
-                }
-            }
-
-            this.addRelatedElementSummaries(dataFieldElement.getExternalReferences(),
-                                            VisualStyle.EXTERNAL_REFERENCE,
-                                            dataFieldElement.getElementHeader().getGUID());
-
-            this.addRelatedElementSummaries(dataFieldElement.getAssignedDataClasses(),
-                                            VisualStyle.DATA_CLASS,
-                                            dataFieldElement.getElementHeader().getGUID());
-
-            this.addRelatedElementSummaries(dataFieldElement.getAssignedMeanings(),
-                                            VisualStyle.GLOSSARY_TERM,
-                                            dataFieldElement.getElementHeader().getGUID());
-
-            this.addRelatedElementSummaries(dataFieldElement.getMemberOfCollections(),
-                                             VisualStyle.COLLECTION,
-                                             dataFieldElement.getElementHeader().getGUID());
-
-            this.addRelatedElementSummaries(dataFieldElement.getOtherRelatedElements(),
-                                             VisualStyle.LINKED_ELEMENT,
-                                             dataFieldElement.getElementHeader().getGUID());
-        }
-    }
-
-
-    /**
-     * Add a nested data field to graph.  If it has sub-fields, they are recursively added.
-     *
-     * @param parentNodeName identifier of the parent node (maybe null)
-     * @param memberDataField element to process
-     */
-    protected void addMemberDataFieldToGraph(String           parentNodeName,
-                                             MemberDataField  memberDataField)
-
-    {
-        if (memberDataField != null)
-        {
-            addDataFieldToGraph(memberDataField);
-
-            this.appendMermaidLine(null,
-                                   parentNodeName,
-                                   this.getListLabel(Collections.singletonList(getCardinalityLinkName(memberDataField.getMemberDataFieldProperties()))),
-                                   memberDataField.getElementHeader().getGUID());
-        }
-    }
-
-
-    /**
      * Link the related element into the graph.
      *
      * @param relatedMetadataElement related element (if null, nothing is added to the graph)
@@ -2038,6 +1960,14 @@ public class MermaidGraphBuilderBase
                                         label,
                                         relatedMetadataElement.getRelatedElement().getElementHeader().getGUID(),
                                         lineStyle);
+            }
+
+            if (relatedMetadataElement instanceof RelatedMetadataHierarchySummary relatedMetadataHierarchySummary)
+            {
+                this.addRelatedElementSummaries(relatedMetadataHierarchySummary.getNestedElements(),
+                                                visualStyle,
+                                                relatedMetadataHierarchySummary.getRelatedElement().getElementHeader().getGUID(),
+                                                lineStyle);
             }
         }
     }

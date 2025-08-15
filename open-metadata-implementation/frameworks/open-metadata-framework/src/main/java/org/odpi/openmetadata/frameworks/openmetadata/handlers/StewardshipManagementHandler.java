@@ -1660,58 +1660,6 @@ public class StewardshipManagementHandler
 
 
     /**
-     * Add the governance measurements results Data Set classification for an element.
-     *
-     * @param userId calling user
-     * @param elementGUID element to link it to - its type must inherit from Referenceable.
-     * @param metadataSourceOptions  options to control access to open metadata
-     * @param properties details of the ownership
-
-     *
-     * @throws InvalidParameterException element not known, null userId or guid
-     * @throws PropertyServerException problem accessing property server
-     * @throws UserNotAuthorizedException security access problem
-     */
-    public void  addGovernanceMeasurementsResultsDataSet(String                                         userId,
-                                                         String                                         elementGUID,
-                                                         GovernanceMeasurementsResultsDataSetProperties properties,
-                                                         MetadataSourceOptions                          metadataSourceOptions) throws InvalidParameterException,
-                                                                                                                                      UserNotAuthorizedException,
-                                                                                                                                      PropertyServerException
-    {
-        openMetadataClient.classifyMetadataElementInStore(userId,
-                                                          elementGUID,
-                                                          OpenMetadataType.GOVERNANCE_MEASUREMENTS_RESULTS_DATA_SET_CLASSIFICATION.typeName,
-                                                          metadataSourceOptions,
-                                                          classificationBuilder.getNewElementProperties(properties));
-    }
-
-
-    /**
-     * Remove the governance measurements results data set classification from an element.
-     *
-     * @param userId calling user
-     * @param elementGUID element where the classification needs to be removed.
-     * @param metadataSourceOptions  options to control access to open metadata
-     *
-     * @throws InvalidParameterException asset or element not known, null userId or guid
-     * @throws PropertyServerException problem accessing property server
-     * @throws UserNotAuthorizedException security access problem
-     */
-    public void clearGovernanceMeasurementsResultsDataSet(String                userId,
-                                                          String                elementGUID,
-                                                          MetadataSourceOptions metadataSourceOptions) throws InvalidParameterException,
-                                                                                                              UserNotAuthorizedException,
-                                                                                                              PropertyServerException
-    {
-        openMetadataClient.declassifyMetadataElementInStore(userId,
-                                                            elementGUID,
-                                                            OpenMetadataType.GOVERNANCE_MEASUREMENTS_RESULTS_DATA_SET_CLASSIFICATION.typeName,
-                                                            metadataSourceOptions);
-    }
-
-
-    /**
      * Add the security tags for an element.
      *
      * @param userId calling user

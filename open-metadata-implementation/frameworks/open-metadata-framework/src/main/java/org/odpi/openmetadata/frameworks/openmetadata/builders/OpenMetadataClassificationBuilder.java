@@ -290,12 +290,6 @@ public class OpenMetadataClassificationBuilder
                                                                          OpenMetadataProperty.MEASUREMENT_FLAGS.name,
                                                                          governanceMeasurementsProperties.getFlags());
             }
-            else if (properties instanceof GovernanceMeasurementsResultsDataSetProperties governanceMeasurementsResultsDataSetProperties)
-            {
-                elementProperties = propertyHelper.addStringProperty(elementProperties,
-                                                                     OpenMetadataProperty.DESCRIPTION.name,
-                                                                     governanceMeasurementsResultsDataSetProperties.getDescription());
-            }
             else if (properties instanceof OwnershipProperties ownershipProperties)
             {
                 elementProperties = propertyHelper.addStringProperty(elementProperties,

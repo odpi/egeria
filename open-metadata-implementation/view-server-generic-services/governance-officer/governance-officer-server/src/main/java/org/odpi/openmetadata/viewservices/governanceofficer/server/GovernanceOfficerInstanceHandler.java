@@ -8,6 +8,7 @@ import org.odpi.openmetadata.commonservices.multitenant.OMVSServiceInstanceHandl
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
+import org.odpi.openmetadata.frameworks.openmetadata.handlers.GovernanceDefinitionGraphHandler;
 import org.odpi.openmetadata.frameworks.openmetadata.handlers.GovernanceDefinitionHandler;
 
 
@@ -54,6 +55,36 @@ public class GovernanceOfficerInstanceHandler extends OMVSServiceInstanceHandler
         if (instance != null)
         {
             return instance.getGovernanceDefinitionHandler(viewServiceURLMarker, serviceOperationName);
+        }
+
+        return null;
+    }
+
+
+    /**
+     * This method returns a handler.
+     *
+     * @param serverName           name of the server that the request is for
+     * @param userId               local server userid
+     * @param viewServiceURLMarker optional view service URL marker (overrides accessServiceURLMarker)
+     * @param serviceOperationName service operation - usually the top level rest call
+     * @return  client
+     * @throws InvalidParameterException unknown server/service
+     * @throws UserNotAuthorizedException User not authorized to call this service
+     * @throws PropertyServerException internal error
+     */
+    public GovernanceDefinitionGraphHandler getGovernanceDefinitionGraphHandler(String userId,
+                                                                                String serverName,
+                                                                                String viewServiceURLMarker,
+                                                                                String serviceOperationName) throws InvalidParameterException,
+                                                                                                          PropertyServerException,
+                                                                                                          UserNotAuthorizedException
+    {
+        GovernanceOfficerInstance instance = (GovernanceOfficerInstance) getServerServiceInstance(userId, serverName, serviceOperationName);
+
+        if (instance != null)
+        {
+            return instance.getGovernanceDefinitionGraphHandler(viewServiceURLMarker, serviceOperationName);
         }
 
         return null;

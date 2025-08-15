@@ -5,18 +5,14 @@ package org.odpi.openmetadata.frameworks.openmetadata.handlers;
 
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.openmetadata.client.OpenMetadataClient;
-import org.odpi.openmetadata.frameworks.openmetadata.converters.DataFieldConverter;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.*;
-import org.odpi.openmetadata.frameworks.openmetadata.mermaid.DataFieldMermaidGraphBuilder;
-import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.DataFieldElement;
-import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.MemberDataField;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.OpenMetadataRootElement;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.*;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.datadictionaries.*;
 import org.odpi.openmetadata.frameworks.openmetadata.search.*;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
@@ -249,29 +245,18 @@ public class DataFieldHandler extends OpenMetadataHandlerBase
      * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    public List<DataFieldElement> getDataFieldsByName(String       userId,
-                                                      String       name,
-                                                      QueryOptions queryOptions) throws InvalidParameterException,
+    public List<OpenMetadataRootElement> getDataFieldsByName(String       userId,
+                                                             String       name,
+                                                             QueryOptions queryOptions) throws InvalidParameterException,
                                                                                         PropertyServerException,
                                                                                         UserNotAuthorizedException
     {
         final String methodName = "getDataFieldsByName";
-        final String nameParameterName = "name";
-
-        propertyHelper.validateUserId(userId, methodName);
-        propertyHelper.validateMandatoryName(name, nameParameterName, methodName);
-
-        propertyHelper.validatePaging(queryOptions, openMetadataClient.getMaxPagingSize(), methodName);
 
         List<String> propertyNames = Arrays.asList(OpenMetadataProperty.QUALIFIED_NAME.name,
                                                    OpenMetadataProperty.DISPLAY_NAME.name);
 
-        List<OpenMetadataElement> openMetadataElements = openMetadataClient.findMetadataElements(userId,
-                                                                                                 propertyHelper.getSearchPropertiesByName(propertyNames, name, PropertyComparisonOperator.EQ),
-                                                                                                 null,
-                                                                                                 super.addDefaultType(queryOptions));
-
-        return convertDataFields(userId, openMetadataElements, queryOptions, methodName);
+        return super.getRootElementsByName(userId, name, propertyNames, queryOptions, methodName);
     }
 
 
@@ -286,11 +271,11 @@ public class DataFieldHandler extends OpenMetadataHandlerBase
      * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    public DataFieldElement getDataFieldByGUID(String     userId,
-                                               String     dataFieldGUID,
-                                               GetOptions getOptions) throws InvalidParameterException,
-                                                                             PropertyServerException,
-                                                                             UserNotAuthorizedException
+    public OpenMetadataRootElement getDataFieldByGUID(String     userId,
+                                                      String     dataFieldGUID,
+                                                      GetOptions getOptions) throws InvalidParameterException,
+                                                                                    PropertyServerException,
+                                                                                    UserNotAuthorizedException
     {
         final String methodName = "getDataFieldByGUID";
         final String guidParameterName = "dataFieldGUID";
@@ -298,19 +283,7 @@ public class DataFieldHandler extends OpenMetadataHandlerBase
         propertyHelper.validateUserId(userId, methodName);
         propertyHelper.validateGUID(dataFieldGUID, guidParameterName, methodName);
 
-        OpenMetadataElement openMetadataElement = openMetadataClient.getMetadataElementByGUID(userId,
-                                                                                              dataFieldGUID,
-                                                                                              getOptions);
-
-        if ((openMetadataElement != null) && (propertyHelper.isTypeOf(openMetadataElement, metadataElementTypeName)))
-        {
-            return convertDataField(userId,
-                                    openMetadataElement,
-                                    new QueryOptions(getOptions),
-                                    methodName);
-        }
-
-        return null;
+        return super.getRootElementByGUID(userId, dataFieldGUID, getOptions, methodName);
     }
 
 
@@ -326,24 +299,17 @@ public class DataFieldHandler extends OpenMetadataHandlerBase
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public List<DataFieldElement> findDataFields(String        userId,
-                                                 String        searchString,
-                                                 SearchOptions searchOptions) throws InvalidParameterException,
-                                                                                     UserNotAuthorizedException,
-                                                                                     PropertyServerException
+    public List<OpenMetadataRootElement> findDataFields(String        userId,
+                                                        String        searchString,
+                                                        SearchOptions searchOptions) throws InvalidParameterException,
+                                                                                            UserNotAuthorizedException,
+                                                                                            PropertyServerException
     {
         final String methodName = "findDataFields";
-        final String searchStringParameterName = "searchString";
 
-        propertyHelper.validateUserId(userId, methodName);
-        propertyHelper.validateSearchString(searchString, searchStringParameterName, methodName);
-
-        List<OpenMetadataElement> openMetadataElements = openMetadataClient.findMetadataElementsWithString(userId,
-                                                                                                           searchString,
-                                                                                                           super.addDefaultType(searchOptions));
-
-        return convertDataFields(userId, openMetadataElements, super.addDefaultType(searchOptions), methodName);
+        return super.findRootElements(userId, searchString, searchOptions, methodName);
     }
+
 
     /*
      * Converter functions
@@ -351,131 +317,34 @@ public class DataFieldHandler extends OpenMetadataHandlerBase
 
 
     /**
-     * Convert the open metadata elements retrieved into data field elements.
+     * Add a standard mermaid graph to the root element.  This method may be overridden by the subclasses if
+     * they have a more fancy graph to display.
      *
      * @param userId calling user
-     * @param openMetadataElements elements extracted from the repository
-     * @param queryOptions multiple options to control the query
-     * @param methodName calling method
-     * @return list of data fields (or null)
-     * @throws PropertyServerException problem with the conversion process
+     * @param rootElement new root element
+     * @param queryOptions options from the caller
+     * @return root element with graph
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    private List<DataFieldElement> convertDataFields(String                    userId,
-                                                     List<OpenMetadataElement> openMetadataElements,
-                                                     QueryOptions              queryOptions,
-                                                     String                    methodName) throws PropertyServerException
+    protected OpenMetadataRootElement addMermaidToRootElement(String                  userId,
+                                                              OpenMetadataRootElement rootElement,
+                                                              QueryOptions            queryOptions) throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException
     {
-        if (openMetadataElements != null)
+        if (rootElement != null)
         {
-            List<DataFieldElement> dataFieldElements = new ArrayList<>();
+            rootElement.setNestedDataFields(super.getElementHierarchies(userId,
+                                                                        rootElement.getElementHeader().getGUID(),
+                                                                        rootElement.getNestedDataFields(),
+                                                                        1,
+                                                                        OpenMetadataType.NESTED_DATA_FIELD_RELATIONSHIP.typeName,
+                                                                        queryOptions,
+                                                                        1));
 
-            for (OpenMetadataElement openMetadataElement : openMetadataElements)
-            {
-                if (openMetadataElement != null)
-                {
-                    dataFieldElements.add(convertDataField(userId, openMetadataElement, queryOptions, methodName));
-                }
-            }
-
-            return dataFieldElements;
+            super.addMermaidToRootElement(userId, rootElement, queryOptions);
         }
 
-        return null;
-    }
-
-
-    /**
-     * Return the data field extracted from the open metadata element.
-     *
-     * @param userId calling user
-     * @param openMetadataElement element extracted from the repository
-     * @param queryOptions multiple options to control the query
-     * @param methodName calling method
-     * @return bean or null
-     * @throws PropertyServerException problem with the conversion process
-     */
-    private DataFieldElement convertDataField(String              userId,
-                                              OpenMetadataElement openMetadataElement,
-                                              QueryOptions        queryOptions,
-                                              String              methodName) throws PropertyServerException
-    {
-        try
-        {
-            List<MemberDataField>        nestedDataFields = new ArrayList<>();
-            List<RelatedMetadataElement> otherRelatedElements = new ArrayList<>();
-
-            QueryOptions workingQueryOptions = new QueryOptions(queryOptions);
-            workingQueryOptions.setStartFrom(0);
-            workingQueryOptions.setPageSize(openMetadataClient.getMaxPagingSize());
-
-            RelatedMetadataElementList relatedMetadataElementList = openMetadataClient.getRelatedMetadataElements(userId,
-                                                                                                                  openMetadataElement.getElementGUID(),
-                                                                                                                  0,
-                                                                                                                  null,
-                                                                                                                  workingQueryOptions);
-            while ((relatedMetadataElementList != null) && (relatedMetadataElementList.getElementList() != null))
-            {
-                for (RelatedMetadataElement relatedMetadataElement : relatedMetadataElementList.getElementList())
-                {
-                    if (relatedMetadataElement != null)
-                    {
-                        if ((propertyHelper.isTypeOf(relatedMetadataElement, OpenMetadataType.NESTED_DATA_FIELD_RELATIONSHIP.typeName)) && (!relatedMetadataElement.getElementAtEnd1()))
-                        {
-                            nestedDataFields.add(this.convertMemberDataField(userId, relatedMetadataElement, queryOptions, methodName));
-                        }
-                        else
-                        {
-                            otherRelatedElements.add(relatedMetadataElement);
-                        }
-                    }
-                }
-
-                workingQueryOptions.setStartFrom(workingQueryOptions.getStartFrom() + openMetadataClient.getMaxPagingSize());
-                relatedMetadataElementList = openMetadataClient.getRelatedMetadataElements(userId,
-                                                                                           openMetadataElement.getElementGUID(),
-                                                                                           0,
-                                                                                           null,
-                                                                                           workingQueryOptions);
-            }
-
-            DataFieldConverter<DataFieldElement> converter = new DataFieldConverter<>(propertyHelper, localServiceName, localServerName);
-            DataFieldElement dataFieldElement = converter.getNewComplexBean(DataFieldElement.class,
-                                                                            openMetadataElement,
-                                                                            otherRelatedElements,
-                                                                            methodName);
-            if (dataFieldElement != null)
-            {
-                if (! nestedDataFields.isEmpty())
-                {
-                    dataFieldElement.setNestedDataFields(nestedDataFields);
-                }
-
-                DataFieldMermaidGraphBuilder graphBuilder = new DataFieldMermaidGraphBuilder(dataFieldElement);
-
-                dataFieldElement.setMermaidGraph(graphBuilder.getMermaidGraph());
-            }
-
-            return dataFieldElement;
-        }
-        catch (Exception error)
-        {
-            if (auditLog != null)
-            {
-                auditLog.logException(methodName,
-                                      OMFAuditCode.UNEXPECTED_CONVERTER_EXCEPTION.getMessageDefinition(error.getClass().getName(),
-                                                                                                               methodName,
-                                                                                                       localServiceName,
-                                                                                                               error.getMessage()),
-                                      error);
-            }
-
-            throw new PropertyServerException(OMFErrorCode.UNEXPECTED_CONVERTER_EXCEPTION.getMessageDefinition(error.getClass().getName(),
-                                                                                                                       methodName,
-                                                                                                               localServiceName,
-                                                                                                                       error.getMessage()),
-                                              error.getClass().getName(),
-                                              methodName,
-                                              error);
-        }
+        return rootElement;
     }
 }

@@ -567,7 +567,7 @@ Content-Type: application/json
   "effectiveTime" : "{{$isoTimestamp}}",
   "forLineage" : false,
   "forDuplicateProcessing" : false,
-  "status": "ACTIVE"
+  "newStatus": "ACTIVE"
 }
 
 ###

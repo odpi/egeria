@@ -220,7 +220,7 @@ Content-Type: application/json
 ###
 # @name findAllDataStructures
 # Retrieve the list of data structure metadata elements that contain the search string.
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/data-designer/data-structures/by-search-string?startFrom=0&pageSize=10&startsWith=true&endsWith=false&ignoreCase=false
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/data-designer/data-structures/by-search-string
 Authorization: Bearer {{token}}
 Content-Type: application/json
 
@@ -228,12 +228,17 @@ Content-Type: application/json
 ###
 # @name findAllDataStructures - with full request body
 # Retrieve the list of data structure metadata elements that contain the search string.
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/data-designer/data-structures/by-search-string?startFrom=0&pageSize=10&startsWith=true&endsWith=false&ignoreCase=false
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/data-designer/data-structures/by-search-string
 Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-  "class" : "FilterRequestBody",
+  "class" : "SearchStringRequestBody",
+  "startsWith" : false,
+  "endsWith" : false,
+  "ignoreCase" : true,
+  "startFrom" : 0,
+  "pageSize": 0,
   "asOfTime" : "{{$isoTimestamp}}",
   "effectiveTime" : "{{$isoTimestamp}}",
   "forLineage" : false,
@@ -247,26 +252,31 @@ Content-Type: application/json
 ###
 # @name findDataStructures
 # Retrieve the list of data structure metadata elements that contain the search string.
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/data-designer/data-structures/by-search-string?startFrom=0&pageSize=10&startsWith=true&endsWith=false&ignoreCase=false
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/data-designer/data-structures/by-search-string
 Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-  "class" : "FilterRequestBody",
-  "filter" : "Add name here"
+  "class" : "SearchStringRequestBody",
+  "searchString" : "Add name here"
 }
 
 
 ###
 # @name findDataStructures - with full request body
 # Retrieve the list of data structure metadata elements that contain the search string.
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/data-designer/data-structures/by-search-string?startFrom=0&pageSize=10&startsWith=true&endsWith=false&ignoreCase=false
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/data-designer/data-structures/by-search-string
 Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-  "class" : "FilterRequestBody",
-  "filter" : "Add name here",
+  "class" : "SearchStringRequestBody",
+  "searchString" : "Add name here",
+  "startsWith" : false,
+  "endsWith" : false,
+  "ignoreCase" : true,
+  "startFrom" : 0,
+  "pageSize": 0,
   "asOfTime" : "{{$isoTimestamp}}",
   "effectiveTime" : "{{$isoTimestamp}}",
   "forLineage" : false,
@@ -280,7 +290,7 @@ Content-Type: application/json
 
 # @name getDataStructuresByName
 # Returns the list of data structures with a particular name.
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/data-designer/data-structures/by-name?startFrom=0&pageSize=10
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/data-designer/data-structures/by-name
 Authorization: Bearer {{token}}
 Content-Type: application/json
 
@@ -294,7 +304,7 @@ Content-Type: application/json
 
 # @name getDataStructuresByName - with full request body
 # Returns the list of data structures with a particular name.
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/data-designer/data-structures/by-name?startFrom=0&pageSize=10
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/data-designer/data-structures/by-name
 Authorization: Bearer {{token}}
 Content-Type: application/json
 
@@ -557,23 +567,21 @@ Content-Type: application/json
 }
 
 
-###
-# @name findAllDataFields
-# Retrieve the list of data field metadata elements that contain the search string.
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/data-designer/data-fields/by-search-string?startFrom=0&pageSize=10&startsWith=true&endsWith=false&ignoreCase=false
-Authorization: Bearer {{token}}
-Content-Type: application/json
-
 
 ###
 # @name findAllDataFields - with full request body
 # Retrieve the list of data field metadata elements that contain the search string.
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/data-designer/data-fields/by-search-string?startFrom=0&pageSize=10&startsWith=true&endsWith=false&ignoreCase=false
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/data-designer/data-fields/by-search-string
 Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-  "class" : "FilterRequestBody",
+  "class" : "SearchStringRequestBody",
+  "startsWith" : false,
+  "endsWith" : false,
+  "ignoreCase" : true,
+  "startFrom" : 0,
+  "pageSize": 0,
   "asOfTime" : "{{$isoTimestamp}}",
   "effectiveTime" : "{{$isoTimestamp}}",
   "forLineage" : false,
@@ -587,26 +595,31 @@ Content-Type: application/json
 ###
 # @name findDataFields
 # Retrieve the list of data field metadata elements that contain the search string.
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/data-designer/data-fields/by-search-string?startFrom=0&pageSize=10&startsWith=true&endsWith=false&ignoreCase=false
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/data-designer/data-fields/by-search-string
 Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-  "class" : "FilterRequestBody",
-  "filter" : "Add name here"
+  "class" : "SearchStringRequestBody",
+  "searchString" : "Add name here"
 }
 
 
 ###
 # @name findDataFields - with full request body
 # Retrieve the list of data field metadata elements that contain the search string.
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/data-designer/data-fields/by-search-string?startFrom=0&pageSize=10&startsWith=true&endsWith=false&ignoreCase=false
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/data-designer/data-fields/by-search-string
 Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-  "class" : "FilterRequestBody",
-  "filter" : "Add name here",
+  "class" : "SearchStringRequestBody",
+  "searchString" : "Add name here",
+  "startsWith" : false,
+  "endsWith" : false,
+  "ignoreCase" : true,
+  "startFrom" : 0,
+  "pageSize": 0,
   "asOfTime" : "{{$isoTimestamp}}",
   "effectiveTime" : "{{$isoTimestamp}}",
   "forLineage" : false,
@@ -620,7 +633,7 @@ Content-Type: application/json
 
 # @name getDataFieldsByName
 # Returns the list of data fields with a particular name.
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/data-designer/data-fields/by-name?startFrom=0&pageSize=10
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/data-designer/data-fields/by-name
 Authorization: Bearer {{token}}
 Content-Type: application/json
 
@@ -634,7 +647,7 @@ Content-Type: application/json
 
 # @name getDataFieldsByName - with full request body
 # Returns the list of data fields with a particular name.
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/data-designer/data-fields/by-name?startFrom=0&pageSize=10
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/data-designer/data-fields/by-name
 Authorization: Bearer {{token}}
 Content-Type: application/json
 
@@ -931,20 +944,42 @@ Content-Type: application/json
 ###
 # @name findAllDataClasses
 # Retrieve the list of data class metadata elements that contain the search string.
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/data-designer/data-classes/by-search-string?startFrom=0&pageSize=10&startsWith=true&endsWith=false&ignoreCase=false
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/data-designer/data-classes/by-search-string
 Authorization: Bearer {{token}}
 Content-Type: application/json
+
+{
+  "class" : "SearchStringRequestBody",
+  "startsWith" : false,
+  "endsWith" : false,
+  "ignoreCase" : true,
+  "startFrom" : 0,
+  "pageSize": 0,
+  "asOfTime" : "{{$isoTimestamp}}",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false,
+  "limitResultsByStatus" : ["ACTIVE"],
+  "sequencingOrder" : "PROPERTY_ASCENDING",
+  "sequencingProperty" : "qualifiedName"
+}
 
 
 ###
 # @name findAllDataClasses - with full request body
 # Retrieve the list of data class metadata elements that contain the search string.
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/data-designer/data-classes/by-search-string?startFrom=0&pageSize=10&startsWith=true&endsWith=false&ignoreCase=false
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/data-designer/data-classes/by-search-string
 Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-  "class" : "FilterRequestBody",
+  "class" : "SearchStringRequestBody",
+  "searchString" : "Add name here",
+  "startsWith" : false,
+  "endsWith" : false,
+  "ignoreCase" : true,
+  "startFrom" : 0,
+  "pageSize": 0,
   "asOfTime" : "{{$isoTimestamp}}",
   "effectiveTime" : "{{$isoTimestamp}}",
   "forLineage" : false,
@@ -958,52 +993,45 @@ Content-Type: application/json
 ###
 # @name findDataClasses
 # Retrieve the list of data class metadata elements that contain the search string.
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/data-designer/data-classes/by-search-string?startFrom=0&pageSize=10&startsWith=true&endsWith=false&ignoreCase=false
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/data-designer/data-classes/by-search-string
 Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-  "filter" : "Add name here"
+  "class" : "SearchStringRequestBody",
+  "searchString" : "Add name here"
 }
 
 
 ###
 # @name findDataClasses - with full request body
 # Retrieve the list of data class metadata elements that contain the search string.
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/data-designer/data-classes/by-search-string?startFrom=0&pageSize=10&startsWith=true&endsWith=false&ignoreCase=false
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/data-designer/data-classes/by-search-string
 Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-  "class" : "FilterRequestBody",
+  "class" : "SearchStringRequestBody",
+  "searchString" : "Add name here",
+  "startsWith" : false,
+  "endsWith" : false,
+  "ignoreCase" : true,
+  "startFrom" : 0,
+  "pageSize": 0,
   "asOfTime" : "{{$isoTimestamp}}",
   "effectiveTime" : "{{$isoTimestamp}}",
   "forLineage" : false,
   "forDuplicateProcessing" : false,
   "limitResultsByStatus" : ["ACTIVE"],
   "sequencingOrder" : "PROPERTY_ASCENDING",
-  "sequencingProperty" : "qualifiedName",
-  "filter" : "Add name here"
+  "sequencingProperty" : "qualifiedName"
 }
 
 ###
 
 # @name getDataClassesByName
 # Returns the list of data classes with a particular name.
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/data-designer/data-classes/by-name?startFrom=0&pageSize=10
-Authorization: Bearer {{token}}
-Content-Type: application/json
-
-{
-  "filter" : "Add name here"
-}
-
-
-###
-
-# @name getDataClassesByName - with full request body
-# Returns the list of data classes with a particular name.
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/data-designer/data-classes/by-name?startFrom=0&pageSize=10
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/data-designer/data-classes/by-name
 Authorization: Bearer {{token}}
 Content-Type: application/json
 
@@ -1022,13 +1050,6 @@ Content-Type: application/json
 
 ###
 # @name getDataClassByGUID
-# Return the properties of a specific data class.
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/data-designer/data-classes/{{dataClassGUID}}/retrieve
-Authorization: Bearer {{token}}
-Content-Type: application/json
-
-###
-# @name getDataClassByGUID - with request body
 # Return the properties of a specific data class.
 POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/data-designer/data-classes/{{dataClassGUID}}/retrieve
 Authorization: Bearer {{token}}

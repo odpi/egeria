@@ -408,51 +408,6 @@ Content-Type: application/json
 }
 
 
-
-###
-# @name addGovernanceMeasurementsResultsDataSet
-# Add the governance measurements results data set classification to an element.
-#
-# Governance Rollout: https://egeria-project.org/types/4/0450-Governance-Rollout/
-
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/classification-manager/elements/{{elementGUID}}/governance-measurements-results-data-set
-Authorization: Bearer {{token}}
-Content-Type: application/json
-
-{
-   "class" : "NewClassificationRequestBody",
-   "properties" : {
-       "class" : "GovernanceMeasurementsResultsDataSetProperties",
-       "description" : "Add description of the measures this data set contains"
-   },
-   "externalSourceGUID": "Add guid here",
-   "externalSourceName": "Add qualified name here",
-   "forLineage": false,
-   "forDuplicateProcessing": false,
-   "effectiveTime" : "{{$isoTimestamp}}"
-}
-
-
-###
-# @name clearGovernanceMeasurementsResultsDataSet
-# Remove the governance measurements results data set classification from an element.
-#
-# Governance Rollout: https://egeria-project.org/types/4/0450-Governance-Rollout/
-
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/classification-manager/elements/{{elementGUID}}/governance-measurements-results-data-set/remove
-Authorization: Bearer {{token}}
-Content-Type: application/json
-
-{
-   "class" : "MetadataSourceRequestBody",
-   "externalSourceGUID": "Add guid here",
-   "externalSourceName": "Add qualified name here",
-   "forLineage": false,
-   "forDuplicateProcessing": false,
-   "effectiveTime" : "{{$isoTimestamp}}"
-}
-
-
 ###
 # @name addSecurityTags
 # Add the security tags for an element.

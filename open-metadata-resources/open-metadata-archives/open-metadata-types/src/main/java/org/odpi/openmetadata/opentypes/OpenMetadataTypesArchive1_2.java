@@ -7275,8 +7275,6 @@ public class OpenMetadataTypesArchive1_2
         this.archiveBuilder.addEntityDef(getGovernanceMetricEntity());
 
         this.archiveBuilder.addRelationshipDef(getGovernanceResultsRelationship());
-
-        this.archiveBuilder.addClassificationDef(getGovernanceMeasurementsDataSetClassification());
     }
 
 
@@ -7329,7 +7327,7 @@ public class OpenMetadataTypesArchive1_2
         final String                     end2AttributeDescription     = "The data set that captures the measurements for this governance metric.";
         final String                     end2AttributeDescriptionGUID = null;
 
-        relationshipEndDef = archiveHelper.getRelationshipEndDef(this.archiveBuilder.getEntityDef(OpenMetadataType.DATA_SET.typeName),
+        relationshipEndDef = archiveHelper.getRelationshipEndDef(this.archiveBuilder.getEntityDef(OpenMetadataType.ASSET.typeName),
                                                                  end2AttributeName,
                                                                  end2AttributeDescription,
                                                                  end2AttributeDescriptionGUID,
@@ -7347,26 +7345,6 @@ public class OpenMetadataTypesArchive1_2
         relationshipDef.setPropertiesDefinition(properties);
 
         return relationshipDef;
-    }
-
-
-    private ClassificationDef getGovernanceMeasurementsDataSetClassification()
-    {
-        ClassificationDef classificationDef = archiveHelper.getClassificationDef(OpenMetadataType.GOVERNANCE_MEASUREMENTS_RESULTS_DATA_SET_CLASSIFICATION,
-                                                                                 null,
-                                                                                 this.archiveBuilder.getEntityDef(OpenMetadataType.DATA_SET.typeName),
-                                                                                 false);
-
-        /*
-         * Build the attributes
-         */
-        List<TypeDefAttribute> properties = new ArrayList<>();
-
-        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.DESCRIPTION));
-
-        classificationDef.setPropertiesDefinition(properties);
-
-        return classificationDef;
     }
 
 
@@ -9001,7 +8979,7 @@ public class OpenMetadataTypesArchive1_2
 
     private RelationshipDef getDataClassHierarchyRelationship()
     {
-        RelationshipDef relationshipDef = archiveHelper.getBasicRelationshipDef(OpenMetadataType.DATA_CLASS_HIERARCHY,
+        RelationshipDef relationshipDef = archiveHelper.getBasicRelationshipDef(OpenMetadataType.DATA_CLASS_HIERARCHY_RELATIONSHIP,
                                                                                 null,
                                                                                 ClassificationPropagationRule.NONE);
 
@@ -9042,7 +9020,7 @@ public class OpenMetadataTypesArchive1_2
 
     private RelationshipDef getDataClassCompositionRelationship()
     {
-        RelationshipDef relationshipDef = archiveHelper.getBasicRelationshipDef(OpenMetadataType.DATA_CLASS_COMPOSITION,
+        RelationshipDef relationshipDef = archiveHelper.getBasicRelationshipDef(OpenMetadataType.DATA_CLASS_COMPOSITION_RELATIONSHIP,
                                                                                 null,
                                                                                 ClassificationPropagationRule.NONE);
 
@@ -9083,7 +9061,7 @@ public class OpenMetadataTypesArchive1_2
 
     private RelationshipDef getDataClassAssignmentRelationship()
     {
-        RelationshipDef relationshipDef = archiveHelper.getBasicRelationshipDef(OpenMetadataType.DATA_CLASS_ASSIGNMENT,
+        RelationshipDef relationshipDef = archiveHelper.getBasicRelationshipDef(OpenMetadataType.DATA_CLASS_ASSIGNMENT_RELATIONSHIP,
                                                                                 null,
                                                                                 ClassificationPropagationRule.NONE);
 

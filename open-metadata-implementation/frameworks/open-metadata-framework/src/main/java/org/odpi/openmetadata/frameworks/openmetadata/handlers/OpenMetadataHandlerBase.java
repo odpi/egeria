@@ -8,7 +8,6 @@ import org.odpi.openmetadata.frameworks.openmetadata.builders.OpenMetadataClassi
 import org.odpi.openmetadata.frameworks.openmetadata.builders.OpenMetadataElementBuilder;
 import org.odpi.openmetadata.frameworks.openmetadata.builders.OpenMetadataRelationshipBuilder;
 import org.odpi.openmetadata.frameworks.openmetadata.client.OpenMetadataClient;
-import org.odpi.openmetadata.frameworks.openmetadata.converters.DataFieldConverter;
 import org.odpi.openmetadata.frameworks.openmetadata.converters.OpenMetadataRootConverter;
 import org.odpi.openmetadata.frameworks.openmetadata.converters.SolutionComponentConverter;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.ElementStatus;
@@ -349,7 +348,8 @@ public class OpenMetadataHandlerBase
 
 
     /**
-     * Retrieve the related elements for an item and filter for relevant relationships.
+     * Retrieve the related elements for an item and filter for relevant relationships.  If graphQueryDepth
+     * is zero or less, do not retrieve relationships.
      *
      * @param userId                   calling user
      * @param openMetadataElement      element extracted from the repository
@@ -367,30 +367,35 @@ public class OpenMetadataHandlerBase
     {
         List<RelatedMetadataElement> relatedMetadataElements = new ArrayList<>();
 
-        QueryOptions workingQueryOptions= new QueryOptions(queryOptions);
+        QueryOptions workingQueryOptions = new QueryOptions(queryOptions);
 
-        workingQueryOptions.setStartFrom(0);
-        workingQueryOptions.setPageSize(openMetadataClient.getMaxPagingSize());
-
-        RelatedMetadataElementList relatedMetadataElementList = openMetadataClient.getRelatedMetadataElements(userId,
-                                                                                                              openMetadataElement.getElementGUID(),
-                                                                                                              0,
-                                                                                                              null,
-                                                                                                              workingQueryOptions);
-        while ((relatedMetadataElementList != null) && (relatedMetadataElementList.getElementList() != null))
+        if (queryOptions.getGraphQueryDepth() > 0)
         {
-            relatedMetadataElements.addAll(this.getRelevantRelationships(relatedMetadataElementList.getElementList(), queryOptions));
+            workingQueryOptions.setStartFrom(0);
+            workingQueryOptions.setPageSize(openMetadataClient.getMaxPagingSize());
 
-            workingQueryOptions.setStartFrom(workingQueryOptions.getStartFrom() + openMetadataClient.getMaxPagingSize());
+            RelatedMetadataElementList relatedMetadataElementList = openMetadataClient.getRelatedMetadataElements(userId,
+                                                                                                                  openMetadataElement.getElementGUID(),
+                                                                                                                  0,
+                                                                                                                  null,
+                                                                                                                  workingQueryOptions);
+            while ((relatedMetadataElementList != null) && (relatedMetadataElementList.getElementList() != null))
+            {
+                relatedMetadataElements.addAll(this.getRelevantRelationships(relatedMetadataElementList.getElementList(), queryOptions));
 
-            relatedMetadataElementList = openMetadataClient.getRelatedMetadataElements(userId,
-                                                                                       openMetadataElement.getElementGUID(),
-                                                                                       0,
-                                                                                       null,
-                                                                                       workingQueryOptions);
+                workingQueryOptions.setStartFrom(workingQueryOptions.getStartFrom() + openMetadataClient.getMaxPagingSize());
+
+                relatedMetadataElementList = openMetadataClient.getRelatedMetadataElements(userId,
+                                                                                           openMetadataElement.getElementGUID(),
+                                                                                           0,
+                                                                                           null,
+                                                                                           workingQueryOptions);
+            }
+
+            return relatedMetadataElements;
         }
 
-        return relatedMetadataElements;
+        return null;
     }
 
 
@@ -457,100 +462,6 @@ public class OpenMetadataHandlerBase
         }
 
         return relevantRelationships;
-    }
-
-    /**
-     * Return the member data field related element extracted from the open metadata element.
-     *
-     * @param userId                  calling user
-     * @param startingMetadataElement element extracted from the repository
-     * @param queryOptions            multiple options to control the query
-     * @param methodName              calling method
-     * @return bean or null
-     * @throws PropertyServerException problem with the conversion process
-     */
-    protected MemberDataField convertMemberDataField(String                 userId,
-                                                     RelatedMetadataElement startingMetadataElement,
-                                                     QueryOptions           queryOptions,
-                                                     String                 methodName) throws PropertyServerException
-    {
-        if (startingMetadataElement != null)
-        {
-            try
-            {
-                DataFieldConverter<DataFieldElement> converter = new DataFieldConverter<>(propertyHelper, localServiceName, localServerName);
-
-                /*
-                 * Set up the description of the data field element
-                 */
-                MemberDataField memberDataField = new MemberDataField(converter.getNewBean(DataFieldElement.class,
-                                                                                           startingMetadataElement,
-                                                                                           methodName));
-                memberDataField.setMemberDataFieldProperties(converter.getMemberDataFieldProperties(startingMetadataElement));
-
-                /*
-                 * Add in details of any nested data fields.
-                 */
-                List<MemberDataField> nestedDataFields = new ArrayList<>();
-                QueryOptions workingQueryOptions= new QueryOptions(queryOptions);
-
-                workingQueryOptions.setStartFrom(0);
-                workingQueryOptions.setPageSize(openMetadataClient.getMaxPagingSize());
-
-                RelatedMetadataElementList relatedMetadataElementList = openMetadataClient.getRelatedMetadataElements(userId,
-                                                                                                                      startingMetadataElement.getElement().getElementGUID(),
-                                                                                                                      1,
-                                                                                                                      OpenMetadataType.NESTED_DATA_FIELD_RELATIONSHIP.typeName,
-                                                                                                                      workingQueryOptions);
-                while ((relatedMetadataElementList != null) && (relatedMetadataElementList.getElementList() != null))
-                {
-                    for (RelatedMetadataElement relatedMetadataElement : relatedMetadataElementList.getElementList())
-                    {
-                        if (relatedMetadataElement != null)
-                        {
-                            nestedDataFields.add(this.convertMemberDataField(userId, relatedMetadataElement, queryOptions, methodName));
-                        }
-                    }
-
-                    workingQueryOptions.setStartFrom(workingQueryOptions.getStartFrom() + openMetadataClient.getMaxPagingSize());
-                    relatedMetadataElementList = openMetadataClient.getRelatedMetadataElements(userId,
-                                                                                               startingMetadataElement.getElement().getElementGUID(),
-                                                                                               1,
-                                                                                               OpenMetadataType.NESTED_DATA_FIELD_RELATIONSHIP.typeName,
-                                                                                               workingQueryOptions);
-                }
-
-
-                if (!nestedDataFields.isEmpty())
-                {
-                    memberDataField.setNestedDataFields(nestedDataFields);
-                }
-
-                return memberDataField;
-            }
-            catch (Exception error)
-            {
-                if (auditLog != null)
-                {
-                    auditLog.logException(methodName,
-                                          OMFAuditCode.UNEXPECTED_CONVERTER_EXCEPTION.getMessageDefinition(error.getClass().getName(),
-                                                                                                           methodName,
-                                                                                                           localServiceName,
-                                                                                                           error.getMessage()),
-                                          error);
-                }
-
-                throw new PropertyServerException(OMFErrorCode.UNEXPECTED_CONVERTER_EXCEPTION.getMessageDefinition(error.getClass().getName(),
-                                                                                                                   methodName,
-                                                                                                                   localServiceName,
-                                                                                                                   error.getMessage()),
-                                                  error.getClass().getName(),
-                                                  methodName,
-                                                  error);
-            }
-        }
-
-        return null;
     }
 
 
@@ -983,7 +894,6 @@ public class OpenMetadataHandlerBase
 
 
 
-
     /**
      * Return the generic element extracted from the open metadata element plus linked elements.
      *
@@ -999,37 +909,102 @@ public class OpenMetadataHandlerBase
                                                          QueryOptions        queryOptions,
                                                          String              methodName) throws PropertyServerException
     {
-        try
+        if (filterByClassifications(openMetadataElement.getClassifications(), queryOptions))
         {
-            OpenMetadataRootConverter<OpenMetadataRootElement> converter = new OpenMetadataRootConverter<>(propertyHelper, localServiceName, localServerName);
-
-            OpenMetadataRootElement rootElement = converter.getNewComplexBean(OpenMetadataRootElement.class,
-                                                                              openMetadataElement,
-                                                                              this.getElementRelatedElements(userId, openMetadataElement, queryOptions),
-                                                                              methodName);
-
-            return addMermaidToRootElement(rootElement);
-        }
-        catch (Exception error)
-        {
-            if (auditLog != null)
+            try
             {
-                auditLog.logException(methodName,
-                                      OMFAuditCode.UNEXPECTED_CONVERTER_EXCEPTION.getMessageDefinition(error.getClass().getName(),
-                                                                                                       methodName,
-                                                                                                       localServiceName,
-                                                                                                       error.getMessage()),
-                                      error);
+                OpenMetadataRootConverter<OpenMetadataRootElement> converter = new OpenMetadataRootConverter<>(propertyHelper, localServiceName, localServerName);
+
+                OpenMetadataRootElement rootElement = converter.getNewComplexBean(OpenMetadataRootElement.class,
+                                                                                  openMetadataElement,
+                                                                                  this.getElementRelatedElements(userId, openMetadataElement, queryOptions),
+                                                                                  methodName);
+
+                return addMermaidToRootElement(userId, rootElement, queryOptions);
+            }
+            catch (Exception error)
+            {
+                if (auditLog != null)
+                {
+                    auditLog.logException(methodName,
+                                          OMFAuditCode.UNEXPECTED_CONVERTER_EXCEPTION.getMessageDefinition(error.getClass().getName(),
+                                                                                                           methodName,
+                                                                                                           localServiceName,
+                                                                                                           error.getMessage()),
+                                          error);
+                }
+
+                throw new PropertyServerException(OMFErrorCode.UNEXPECTED_CONVERTER_EXCEPTION.getMessageDefinition(error.getClass().getName(),
+                                                                                                                   methodName,
+                                                                                                                   localServiceName,
+                                                                                                                   error.getMessage()),
+                                                  error.getClass().getName(),
+                                                  methodName,
+                                                  error);
+            }
+        }
+
+        return null;
+    }
+
+
+    /**
+     * The aim is to push down the filtering requirements to the repository as much as possible.  This
+     * function is a last check to make sure the classification requirements have been fulfilled.
+     *
+     * @param retrievedClassifications list of classification for an element
+     * @param queryOptions requested options
+     * @return boolean; true if element is to be returned
+     */
+    private boolean filterByClassifications(List<AttachedClassification> retrievedClassifications,
+                                            QueryOptions                 queryOptions)
+    {
+        if (queryOptions != null)
+        {
+            if (queryOptions.getIncludeOnlyClassifiedElements() != null)
+            {
+                if (retrievedClassifications != null)
+                {
+                    for (String requiredClassificationName : queryOptions.getIncludeOnlyClassifiedElements())
+                    {
+                        if (requiredClassificationName != null)
+                        {
+                            for (AttachedClassification retrievedClassification : retrievedClassifications)
+                            {
+                                if ((retrievedClassification != null) && (retrievedClassification.getClassificationName().equals(requiredClassificationName)))
+                                {
+                                    return true;
+                                }
+                            }
+                        }
+                    }
+                }
+
+                return false;
             }
 
-            throw new PropertyServerException(OMFErrorCode.UNEXPECTED_CONVERTER_EXCEPTION.getMessageDefinition(error.getClass().getName(),
-                                                                                                               methodName,
-                                                                                                               localServiceName,
-                                                                                                               error.getMessage()),
-                                              error.getClass().getName(),
-                                              methodName,
-                                              error);
+            if (queryOptions.getSkipClassifiedElements() != null)
+            {
+                if (retrievedClassifications != null)
+                {
+                    for (String forbiddenClassificationName : queryOptions.getSkipClassifiedElements())
+                    {
+                        if (forbiddenClassificationName != null)
+                        {
+                            for (AttachedClassification retrievedClassification : retrievedClassifications)
+                            {
+                                if ((retrievedClassification != null) && (retrievedClassification.getClassificationName().equals(forbiddenClassificationName)))
+                                {
+                                    return false;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
         }
+
+        return true;
     }
 
 
@@ -1048,37 +1023,42 @@ public class OpenMetadataHandlerBase
                                                          QueryOptions           queryOptions,
                                                          String                 methodName) throws PropertyServerException
     {
-        try
+        if (filterByClassifications(relatedMetadataElement.getElement().getClassifications(), queryOptions))
         {
-            OpenMetadataRootConverter<OpenMetadataRootElement> converter = new OpenMetadataRootConverter<>(propertyHelper, localServiceName, localServerName);
-
-            OpenMetadataRootElement rootElement = converter.getNewComplexBean(OpenMetadataRootElement.class,
-                                                                              relatedMetadataElement,
-                                                                              this.getElementRelatedElements(userId, relatedMetadataElement.getElement(), queryOptions),
-                                                                              methodName);
-
-            return addMermaidToRootElement(rootElement);
-        }
-        catch (Exception error)
-        {
-            if (auditLog != null)
+            try
             {
-                auditLog.logException(methodName,
-                                      OMFAuditCode.UNEXPECTED_CONVERTER_EXCEPTION.getMessageDefinition(error.getClass().getName(),
-                                                                                                       methodName,
-                                                                                                       localServiceName,
-                                                                                                       error.getMessage()),
-                                      error);
-            }
+                OpenMetadataRootConverter<OpenMetadataRootElement> converter = new OpenMetadataRootConverter<>(propertyHelper, localServiceName, localServerName);
 
-            throw new PropertyServerException(OMFErrorCode.UNEXPECTED_CONVERTER_EXCEPTION.getMessageDefinition(error.getClass().getName(),
-                                                                                                               methodName,
-                                                                                                               localServiceName,
-                                                                                                               error.getMessage()),
-                                              error.getClass().getName(),
-                                              methodName,
-                                              error);
+                OpenMetadataRootElement rootElement = converter.getNewComplexBean(OpenMetadataRootElement.class,
+                                                                                  relatedMetadataElement,
+                                                                                  this.getElementRelatedElements(userId, relatedMetadataElement.getElement(), queryOptions),
+                                                                                  methodName);
+
+                return addMermaidToRootElement(userId, rootElement, queryOptions);
+            }
+            catch (Exception error)
+            {
+                if (auditLog != null)
+                {
+                    auditLog.logException(methodName,
+                                          OMFAuditCode.UNEXPECTED_CONVERTER_EXCEPTION.getMessageDefinition(error.getClass().getName(),
+                                                                                                           methodName,
+                                                                                                           localServiceName,
+                                                                                                           error.getMessage()),
+                                          error);
+                }
+
+                throw new PropertyServerException(OMFErrorCode.UNEXPECTED_CONVERTER_EXCEPTION.getMessageDefinition(error.getClass().getName(),
+                                                                                                                   methodName,
+                                                                                                                   localServiceName,
+                                                                                                                   error.getMessage()),
+                                                  error.getClass().getName(),
+                                                  methodName,
+                                                  error);
+            }
         }
+
+        return null;
     }
 
 
@@ -1086,10 +1066,18 @@ public class OpenMetadataHandlerBase
      * Add a standard mermaid graph to the root element.  This method may be overridden by the subclasses if
      * they have a more fancy graph to display.
      *
+     * @param userId calling user
      * @param rootElement new root element
+     * @param queryOptions options from the caller
      * @return root element with graph
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    protected OpenMetadataRootElement addMermaidToRootElement(OpenMetadataRootElement rootElement)
+    @SuppressWarnings(value = "unused")
+    protected OpenMetadataRootElement addMermaidToRootElement(String                  userId,
+                                                              OpenMetadataRootElement rootElement,
+                                                              QueryOptions            queryOptions) throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException
     {
         if (rootElement != null)
         {
@@ -1099,6 +1087,136 @@ public class OpenMetadataHandlerBase
         }
 
         return rootElement;
+    }
+
+
+    /**
+     * Return the nested elements to the required depth.
+     *
+     * @param userId calling user
+     * @param startingElementGUID guid where the query started
+     * @param retrievedElements elements to query against
+     * @param parentEnd start at end 1 or 2?
+     * @param relationshipName name of the relationship to follow
+     * @param queryOptions callers query options
+     * @param currentDepth how far away are we from the original element?
+     * @return the hierarchy under/over this element
+     * @throws InvalidParameterException  one of the parameters is invalid.
+     * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    protected List<RelatedMetadataElementSummary> getElementHierarchies(String                              userId,
+                                                                        String                              startingElementGUID,
+                                                                        List<RelatedMetadataElementSummary> retrievedElements,
+                                                                        int                                 parentEnd,
+                                                                        String                              relationshipName,
+                                                                        QueryOptions                        queryOptions,
+                                                                        int                                 currentDepth) throws InvalidParameterException,
+                                                                                                                                 PropertyServerException,
+                                                                                                                                 UserNotAuthorizedException
+    {
+        if (retrievedElements != null)
+        {
+            List<RelatedMetadataElementSummary> results = new ArrayList<>();
+
+            for (RelatedMetadataElementSummary retrievedElement : retrievedElements)
+            {
+                if (retrievedElement != null)
+                {
+                    List<String> coveredElementsGUIDs = new ArrayList<>(List.of(startingElementGUID));
+
+                    results.add(getElementHierarchy(userId,
+                                                    retrievedElement,
+                                                    parentEnd,
+                                                    relationshipName,
+                                                    queryOptions,
+                                                    currentDepth,
+                                                    coveredElementsGUIDs));
+                }
+            }
+
+            return results;
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Return the nested elements to the required depth.
+     *
+     * @param userId calling user
+     * @param retrievedElement element to query against
+     * @param parentEnd start at end 1 or 2?
+     * @param relationshipName name of the relationship to follow
+     * @param queryOptions callers query options
+     * @param currentDepth how far away are we from the original element?
+     * @param coveredElementsGUIDs do not revisit elements already processed
+     * @return the hierarchy under/over this element
+     * @throws InvalidParameterException  one of the parameters is invalid.
+     * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    protected RelatedMetadataElementSummary getElementHierarchy(String                        userId,
+                                                                RelatedMetadataElementSummary retrievedElement,
+                                                                int                           parentEnd,
+                                                                String                        relationshipName,
+                                                                QueryOptions                  queryOptions,
+                                                                int                           currentDepth,
+                                                                List<String>                  coveredElementsGUIDs) throws InvalidParameterException,
+                                                                                                                           PropertyServerException,
+                                                                                                                           UserNotAuthorizedException
+    {
+        final String methodName = "getElementHierarchy";
+
+        if (queryOptions.getGraphQueryDepth() > currentDepth)
+        {
+            QueryOptions workingQueryOptions = new QueryOptions(queryOptions);
+            workingQueryOptions.setStartFrom(0);
+            workingQueryOptions.setPageSize(openMetadataClient.getMaxPagingSize());
+
+
+            List<RelatedMetadataElementSummary> nestedElements = new ArrayList<>();
+
+            RelatedMetadataElementList relatedMetadataElementList = openMetadataClient.getRelatedMetadataElements(userId,
+                                                                                                                  retrievedElement.getRelatedElement().getElementHeader().getGUID(),
+                                                                                                                  parentEnd,
+                                                                                                                  relationshipName,
+                                                                                                                  workingQueryOptions);
+            while ((relatedMetadataElementList != null) && (relatedMetadataElementList.getElementList() != null))
+            {
+                for (RelatedMetadataElement relatedMetadataElement : relatedMetadataElementList.getElementList())
+                {
+                    if ((relatedMetadataElement != null) && (! coveredElementsGUIDs.contains(relatedMetadataElement.getElement().getElementGUID())))
+                    {
+                        RelatedMetadataElementSummary nestedElement = propertyHelper.getRelatedElementSummary(relatedMetadataElement, methodName);
+
+                        coveredElementsGUIDs.add(relatedMetadataElement.getElement().getElementGUID());
+                        nestedElements.add(getElementHierarchy(userId,
+                                                               nestedElement,
+                                                               parentEnd,
+                                                               relationshipName,
+                                                               queryOptions,
+                                                               currentDepth + 1,
+                                                               coveredElementsGUIDs));
+                    }
+                }
+
+                workingQueryOptions.setStartFrom(workingQueryOptions.getStartFrom() + openMetadataClient.getMaxPagingSize());
+                relatedMetadataElementList = openMetadataClient.getRelatedMetadataElements(userId,
+                                                                                           retrievedElement.getRelatedElement().getElementHeader().getGUID(),
+                                                                                           parentEnd,
+                                                                                           relationshipName,
+                                                                                           workingQueryOptions);
+            }
+
+            if (! nestedElements.isEmpty())
+            {
+                return new RelatedMetadataHierarchySummary(retrievedElement, nestedElements);
+            }
+        }
+
+        return retrievedElement;
     }
 
 
@@ -1183,12 +1301,7 @@ public class OpenMetadataHandlerBase
         propertyHelper.validateMandatoryName(name, nameParameterName, methodName);
         propertyHelper.validatePaging(suppliedQueryOptions, openMetadataClient.getMaxPagingSize(), methodName);
 
-        QueryOptions queryOptions = suppliedQueryOptions;
-
-        if (queryOptions == null)
-        {
-            queryOptions = new QueryOptions();
-        }
+        QueryOptions queryOptions = new QueryOptions(suppliedQueryOptions);
 
         if (queryOptions.getMetadataElementTypeName() == null)
         {

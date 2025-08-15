@@ -270,8 +270,6 @@ public class GovernanceOfficerResource
     }
 
 
-
-
     /**
      * Link a governance definition to an element using the GovernedBy relationship.
      *
@@ -333,6 +331,72 @@ public class GovernanceOfficerResource
                                                                   DeleteRequestBody requestBody)
     {
         return restAPI.removeGovernanceDefinitionFromElement(serverName, urlMarker, elementGUID, definitionGUID, requestBody);
+    }
+
+
+
+
+    /**
+     * Attach a governance metric to an asset that represents the data store where the measurements are located.
+     *
+     * @param serverName  name of the server instance to connect to
+     * @param urlMarker  view service URL marker
+     * @param governanceMetricGUID            unique identifier of the metric
+     * @param dataSourceGUID                   unique identifier of the asset
+     * @param requestBody properties for relationship request
+     *
+     * @return void or
+     * InvalidParameterException full path or userId is null or
+     * PropertyServerException problem accessing property server or
+     * UserNotAuthorizedException security access problem
+     */
+    @PostMapping(path = "/governance-metrics/{governanceMetricGUID}/measurements/{dataSourceGUID}")
+
+    @Operation(summary="linkGovernanceResults",
+            description="Attach a governance metric to an asset that represents the data store where the measurements are located.",
+            externalDocs=@ExternalDocumentation(description="Governance Definitions",
+                    url="https://egeria-project.org/types/4/0401-Governance-Definitions/"))
+
+    public VoidResponse linkGovernanceResults(@PathVariable String       serverName,
+                                              @PathVariable String       urlMarker,
+                                              @PathVariable String       governanceMetricGUID,
+                                              @PathVariable String       dataSourceGUID,
+                                              @RequestBody  (required = false)
+                                                  NewRelationshipRequestBody requestBody)
+    {
+        return restAPI.linkGovernanceResults(serverName, urlMarker, governanceMetricGUID, dataSourceGUID, requestBody);
+    }
+
+
+    /**
+     * Detach a governance metric from an asset that represents the data store where the measurements are located.
+     *
+     * @param serverName  name of the server instance to connect to
+     * @param urlMarker  view service URL marker
+     * @param governanceMetricGUID            unique identifier of the metric
+     * @param dataSourceGUID                   unique identifier of the asset
+     * @param requestBody properties for relationship request
+     *
+     * @return void or
+     * InvalidParameterException full path or userId is null or
+     * PropertyServerException problem accessing property server or
+     * UserNotAuthorizedException security access problem
+     */
+    @PostMapping(path = "/governance-metrics/{governanceMetricGUID}/measurements/{dataSourceGUID}/remove")
+
+    @Operation(summary="detachGovernanceResults",
+            description="Detach a governance metric from an asset that represents the data store where the measurements are located.",
+            externalDocs=@ExternalDocumentation(description="Governance Definitions",
+                    url="https://egeria-project.org/types/4/0401-Governance-Definitions/"))
+
+    public VoidResponse detachGovernanceResults(@PathVariable String  serverName,
+                                                              @PathVariable String  urlMarker,
+                                                              @PathVariable String  governanceMetricGUID,
+                                                              @PathVariable String  dataSourceGUID,
+                                                              @RequestBody  (required = false)
+                                                              DeleteRequestBody requestBody)
+    {
+        return restAPI.detachGovernanceResults(serverName, urlMarker, governanceMetricGUID, dataSourceGUID, requestBody);
     }
 
 

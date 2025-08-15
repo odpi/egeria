@@ -226,7 +226,7 @@ public class DataDesignerResource
             externalDocs=@ExternalDocumentation(description="Further Information",
                     url="https://egeria-project.org/concepts/data-structure"))
 
-    public DataStructuresResponse getDataStructuresByName(@PathVariable
+    public OpenMetadataRootElementsResponse getDataStructuresByName(@PathVariable
                                                           String            serverName,
                                                           @RequestBody (required = false)
                                                           FilterRequestBody requestBody)
@@ -252,7 +252,7 @@ public class DataDesignerResource
             externalDocs=@ExternalDocumentation(description="Further Information",
                     url="https://egeria-project.org/concepts/data-structure"))
 
-    public DataStructuresResponse findDataStructures(@PathVariable
+    public OpenMetadataRootElementsResponse findDataStructures(@PathVariable
                                                      String                  serverName,
                                                      @RequestBody (required = false)
                                                      SearchStringRequestBody requestBody)
@@ -279,7 +279,7 @@ public class DataDesignerResource
             externalDocs=@ExternalDocumentation(description="Further Information",
                     url="https://egeria-project.org/concepts/data-structure"))
 
-    public DataStructureResponse getDataStructureByGUID(@PathVariable
+    public OpenMetadataRootElementResponse getDataStructureByGUID(@PathVariable
                                                         String             serverName,
                                                         @PathVariable
                                                         String             dataStructureGUID,
@@ -487,7 +487,7 @@ public class DataDesignerResource
             externalDocs=@ExternalDocumentation(description="Further Information",
                     url="https://egeria-project.org/concepts/data-field"))
 
-    public DataFieldsResponse getDataFieldsByName(@PathVariable
+    public OpenMetadataRootElementsResponse getDataFieldsByName(@PathVariable
                                                   String            serverName,
                                                   @RequestBody (required = false)
                                                   FilterRequestBody requestBody)
@@ -513,10 +513,10 @@ public class DataDesignerResource
             externalDocs=@ExternalDocumentation(description="Further Information",
                     url="https://egeria-project.org/concepts/data-field"))
 
-    public DataFieldsResponse findDataFields(@PathVariable
-                                             String                  serverName,
-                                             @RequestBody (required = false)
-                                             SearchStringRequestBody requestBody)
+    public OpenMetadataRootElementsResponse findDataFields(@PathVariable
+                                                               String                  serverName,
+                                                           @RequestBody (required = false)
+                                                           SearchStringRequestBody requestBody)
     {
         return restAPI.findDataFields(serverName, requestBody);
     }
@@ -541,7 +541,7 @@ public class DataDesignerResource
             externalDocs=@ExternalDocumentation(description="Further Information",
                     url="https://egeria-project.org/concepts/data-field"))
 
-    public DataFieldResponse getDataFieldByGUID(@PathVariable
+    public OpenMetadataRootElementResponse getDataFieldByGUID(@PathVariable
                                                 String             serverName,
                                                 @PathVariable
                                                 String             dataFieldGUID,

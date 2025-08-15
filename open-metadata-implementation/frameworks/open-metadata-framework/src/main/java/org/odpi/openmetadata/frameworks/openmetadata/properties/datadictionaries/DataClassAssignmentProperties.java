@@ -40,7 +40,7 @@ public class DataClassAssignmentProperties extends RelationshipBeanProperties
     public DataClassAssignmentProperties()
     {
         super();
-        super.setTypeName(OpenMetadataType.DATA_CLASS_ASSIGNMENT.typeName);
+        super.setTypeName(OpenMetadataType.DATA_CLASS_ASSIGNMENT_RELATIONSHIP.typeName);
     }
 
 
