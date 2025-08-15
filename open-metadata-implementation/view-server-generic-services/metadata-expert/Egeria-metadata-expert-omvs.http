@@ -104,810 +104,350 @@ Content-Type: application/json
 > {% client.global.set("sustainabilityGlossaryGUID", response.body.guid); %}
 
 
-###
-# This guid is the valid value set for the resourceUse property from the ResourceUse relationship.
-@elementGUID=81969abe-0140-4001-85cd-5c44668961ea
 
 ###
-# @name getMetadataElementByGUID
-# Retrieve the metadata element using its unique identifier.
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/metadata-expert/metadata-elements/{{elementGUID}}
+# =====================================================================================================================
+# Maintain the metadata elements that makes up the template
+
+@metadataElementGUID=add guid here
+@classificationName=add name here
+@relationshipGUID=add guid here
+
+###
+# @name createMetadataElementInStore
+# Create a new metadata element in the metadata store.  The type name comes from the open metadata types.
+# The selected type also controls the names and types of the properties that are allowed.
+# This version of the method allows access to advanced features such as multiple states and
+# effectivity dates.
+     
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/metadata-expert/metadata-elements
 Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-  "class" : "GetRequestBody",
+  "class" : "NewOpenMetadataElementRequestBody",
+  "externalSourceGUID" : "",
+  "externalSourceName" : "",
+  "typeName" : "",
+  "initialStatus" : "ACTIVE",
+  "initialClassifications" : {},
+  "anchorGUID" : "",
+  "isOwnAnchor" : false,
+  "effectiveFrom" : "{{$isoTimestamp}}",
+  "effectiveTo": "{{$isoTimestamp}}",
+  "properties" : {},
+  "parentGUID" : "",
+  "parentRelationshipTypeName" : "",
+  "parentRelationshipProperties" : {},
+  "parentAtEnd1" : true,
   "effectiveTime" : "{{$isoTimestamp}}"
 }
 
 
 ###
-# @name getAnchoredElementsGraph
-# Retrieve the metadata element using its unique identifier.
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/metadata-expert/metadata-elements/{{elementGUID}}/with-anchored-elements
+# @name createMetadataElementFromTemplate
+# Create a new metadata element in the metadata store using a template.  The type name comes from the open metadata types.
+# The selected type also controls the names and types of the properties that are allowed.
+
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/metadata-expert/metadata-elements/from-template
 Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-  "class" : "GetRequestBody",
-  "effectiveTime" : "{{$isoTimestamp}}"
-}
-
-
-###
-# @name getAnchoredElementsGraph (active metadata store)
-# Retrieve the metadata element using its unique identifier.
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/metadata-expert/metadata-elements/{{activeMetadataStoreGUID}}/with-anchored-elements
-Authorization: Bearer {{token}}
-Content-Type: application/json
-
-{
-  "class" : "GetRequestBody",
-  "effectiveTime" : "{{$isoTimestamp}}"
-}
-
-###
-# @name getMetadataElementByUniqueName
-# Retrieve the metadata element using its unique name (typically the *qualifiedName* attribute but other attributes can be used if they are unique - such as *pathName* for a file).
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/metadata-expert/metadata-elements/by-unique-name
-Authorization: Bearer {{token}}
-Content-Type: application/json
-
-{
-  "class" : "UniqueNameRequestBody",
-  "effectiveTime" : "{{$isoTimestamp}}",
-  "name" : "active-metadata-store",
-  "namePropertyName" : "displayName"
-}
-
-
-###
-# @name getMetadataElementGUIDByUniqueName
-# Retrieve the metadata element guid using its unique name (typically the qualified name as shown).
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/metadata-expert/metadata-elements/guid-by-unique-name
-Authorization: Bearer {{token}}
-Content-Type: application/json
-
-{
-  "class" : "UniqueNameRequestBody",
-  "effectiveTime" : "{{$isoTimestamp}}",
-  "name" : "active-metadata-store",
-  "namePropertyName" : "displayName"
-}
-
-
-
-###
-# @name getMetadataElementGUIDByUniqueName (fails)
-# Retrieve the metadata element using its unique name (typically the qualified name as shown).
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/metadata-expert/metadata-elements/guid-by-unique-name
-Authorization: Bearer {{token}}
-Content-Type: application/json
-
-{
-  "class" : "UniqueRequestBody",
-  "effectiveTime" : "{{$isoTimestamp}}",
-  "name" : "Metadata Access Server",
-  "namePropertyName" : "deployedImplementationType"
-}
-
-
-
-###
-# @name getMetadataElementHistory
-# Retrieve all the versions of an element.
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/metadata-expert/metadata-elements/{{elementGUID}}/history?startFrom=0&pageSize=10&oldestFirst=true
-Authorization: Bearer {{token}}
-Content-Type: application/json
-
-{
-  "class" : "HistoryRequestBody",
-  "effectiveTime" : "{{$isoTimestamp}}"
-}
-
-
-###
-# @name findMetadataElementsWithString (Glossary called .*Cloud.*)
-# Retrieve the metadata elements that contain the requested string.
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/metadata-expert/metadata-elements/by-search-string?startFrom=0&pageSize=10
-Authorization: Bearer {{token}}
-Content-Type: application/json
-
-{
-  "class" : "SearchStringRequestBody",
-  "searchString" : "Cloud",
-  "typeName" : "ValidValueDefinition",
-  "effectiveTime" : "{{$isoTimestamp}}",
-  "limitResultsByStatus" : ["ACTIVE"],
-  "asOfTime" : "{{$isoTimestamp}}",
-  "sequencingOrder": "CREATION_DATE_RECENT",
-  "sequencingProperty": ""
-}
-
-
-###
-# @name findMetadataElementsWithString (GlossaryTerm for CO2)
-# Retrieve the metadata elements that contain the requested string.
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/metadata-expert/metadata-elements/by-search-string?startFrom=0&pageSize=10
-Authorization: Bearer {{token}}
-Content-Type: application/json
-
-{
-  "class" : "SearchStringRequestBody",
-  "searchString" : "CO2",
-  "typeName" : "GlossaryTerm",
-  "effectiveTime" : "{{$isoTimestamp}}",
-  "limitResultsByStatus" : ["ACTIVE"],
-  "asOfTime" : "{{$isoTimestamp}}",
-  "sequencingOrder": "CREATION_DATE_RECENT",
-  "sequencingProperty": ""
-}
-
-
-###
-# @name findMetadataElementsWithString (all glossary terms)
-# Retrieve the metadata elements that contain the requested string.
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/metadata-expert/metadata-elements/by-search-string?startFrom=0&pageSize=20
-Authorization: Bearer {{token}}
-Content-Type: application/json
-
-{
-  "class" : "SearchStringRequestBody",
-  "typeName" : "GlossaryTerm",
-  "effectiveTime" : "{{$isoTimestamp}}",
-  "limitResultsByStatus" : ["ACTIVE"],
-  "asOfTime" : "{{$isoTimestamp}}",
-  "sequencingOrder": "CREATION_DATE_RECENT",
-  "sequencingProperty": ""
-}
-
-
-###
-# @name findMetadataElementsWithString
-# Retrieve the metadata elements that contain the requested string.
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/metadata-expert/metadata-elements/by-search-string?startFrom=0&pageSize=20
-Authorization: Bearer {{token}}
-Content-Type: application/json
-
-{
-  "class" : "SearchStringRequestBody",
-  "typeName" : "GlossaryTerm",
-  "effectiveTime" : "{{$isoTimestamp}}",
-  "limitResultsByStatus" : ["ACTIVE"],
-  "asOfTime" : "{{$isoTimestamp}}",
-  "sequencingOrder": "CREATION_DATE_RECENT",
-  "sequencingProperty": ""
-}
-
-###
-# @name findMetadataElementsWithString
-# Retrieve the metadata elements that contain the requested string in any attribute.
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/metadata-expert/metadata-elements/by-search-string
-Authorization: Bearer {{token}}
-Content-Type: application/json
-
-{
-  "class" : "SearchStringRequestBody",
-  "searchString" : "Cancer",
-  "typeName" : "Location",
-  "effectiveTime" : "{{$isoTimestamp}}",
-  "limitResultsByStatus" : ["ACTIVE"],
-  "asOfTime" : "{{$isoTimestamp}}",
-  "sequencingOrder": "CREATION_DATE_RECENT",
-  "sequencingProperty": ""
-}
-
-###
-
-@anchorGUID=put guid here
-
-###
-# @name findElementsForAnchor
-# Return a list of elements with the requested search string in their (display, resource)name, qualified name,
-# title, text, summary, identifier or description.  The search string is interpreted as a regular expression (RegEx).
-# The breadth of the search is determined by the supplied anchorGUID.
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/metadata-expert/metadata-elements/by-search-string/for-anchor/{{anchorGUID}}
-Authorization: Bearer {{token}}
-Content-Type: application/json
-
-{
-  "class" : "SearchStringRequestBody",
-  "searchString" : "Cancer",
-  "typeName" : "Location",
-  "effectiveTime" : "{{$isoTimestamp}}",
-  "limitResultsByStatus" : ["ACTIVE"],
-  "asOfTime" : "{{$isoTimestamp}}",
-  "sequencingOrder": "CREATION_DATE_RECENT",
-  "sequencingProperty": ""
-}
-
-###
-# @name findElementsForAnchor (cim glossary)
-# Return a list of elements with the requested search string in their (display, resource)name, qualified name,
-# title, text, summary, identifier or description.  The search string is interpreted as a regular expression (RegEx).
-# The breadth of the search is determined by the supplied anchorGUID.
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/metadata-expert/metadata-elements/by-search-string/for-anchor/{{cimGlossaryGUID}}
-Authorization: Bearer {{token}}
-Content-Type: application/json
-
-{
-  "class" : "SearchStringRequestBody",
-  "searchString" : "Party",
-  "effectiveTime" : "{{$isoTimestamp}}",
-  "limitResultsByStatus" : ["ACTIVE"],
-  "asOfTime" : "{{$isoTimestamp}}",
-  "sequencingOrder": "CREATION_DATE_RECENT",
-  "sequencingProperty": ""
-}
-
-###
-# @name findElementsForAnchor (sustainability glossary)
-# Return a list of elements with the requested search string in their (display, resource)name, qualified name,
-# title, text, summary, identifier or description.  The search string is interpreted as a regular expression (RegEx).
-# The breadth of the search is determined by the supplied anchorGUID.
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/metadata-expert/metadata-elements/by-search-string/for-anchor/{{cimGlossaryGUID}}
-Authorization: Bearer {{token}}
-Content-Type: application/json
-
-{
-  "class" : "SearchStringRequestBody",
-  "searchString" : "Party",
-  "effectiveTime" : "{{$isoTimestamp}}",
-  "limitResultsByStatus" : ["ACTIVE"],
-  "asOfTime" : "{{$isoTimestamp}}",
-  "sequencingOrder": "CREATION_DATE_RECENT",
-  "sequencingProperty": ""
-}
-
-
-
-###
-
-@anchorDomainName=GlossaryTerm
-
-###
-# @name findElementsInAnchorDomain
-# Return a list of elements with the requested search string in their (display, resource)name, qualified name,
-# title, text, summary, identifier or description.  The search string is interpreted as a regular expression (RegEx).
-# The breadth of the search is determined by the supplied domain name. The results are organized by anchor element.
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/metadata-expert/metadata-elements/by-search-string/in-anchor-domain/{{anchorDomainName}}
-Authorization: Bearer {{token}}
-Content-Type: application/json
-
-{
-  "class" : "SearchStringRequestBody",
-  "searchString" : "Party",
-  "effectiveTime" : "{{$isoTimestamp}}",
-  "limitResultsByStatus" : ["ACTIVE"],
-  "asOfTime" : "{{$isoTimestamp}}",
-  "sequencingOrder": "CREATION_DATE_RECENT",
-  "sequencingProperty": ""
-}
-
-###
-
-@anchorScopeGUID=add guid here
-
-###
-# @name findElementsInAnchorScope
-# Return a list of elements with the requested search string in their (display, resource)name, qualified name,
-# title, text, summary, identifier or description.  The search string is interpreted as a regular expression (RegEx).
-# The breadth of the search is determined by the supplied scope guid. The results are organized by anchor element.
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/metadata-expert/metadata-elements/by-search-string/in-anchor-scope/{{anchorScopeGUID}}
-Authorization: Bearer {{token}}
-Content-Type: application/json
-
-{
-  "class" : "SearchStringRequestBody",
-  "searchString" : "Cancer",
-  "typeName" : "Location",
-  "effectiveTime" : "{{$isoTimestamp}}",
-  "limitResultsByStatus" : ["ACTIVE"],
-  "asOfTime" : "{{$isoTimestamp}}",
-  "sequencingOrder": "CREATION_DATE_RECENT",
-  "sequencingProperty": ""
-}
-
-###
-# @name findElementsInAnchorScope (cim Glossary)
-# Return a list of elements with the requested search string in their (display, resource)name, qualified name,
-# title, text, summary, identifier or description.  The search string is interpreted as a regular expression (RegEx).
-# The breadth of the search is determined by the supplied scope guid. The results are organized by anchor element.
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/metadata-expert/metadata-elements/by-search-string/in-anchor-scope/{{cimGlossaryGUID}}
-Authorization: Bearer {{token}}
-Content-Type: application/json
-
-{
-  "class" : "SearchStringRequestBody",
-  "searchString" : "Party",
-  "typeName" : "GlossaryCategory",
-  "effectiveTime" : "{{$isoTimestamp}}",
-  "limitResultsByStatus" : ["ACTIVE"],
-  "asOfTime" : "{{$isoTimestamp}}",
-  "sequencingOrder": "CREATION_DATE_RECENT",
-  "sequencingProperty": ""
-}
-
-
-###
-# @name findElementsInAnchorScope (cim Glossary - just categories)
-# Return a list of elements with the requested search string in their (display, resource)name, qualified name,
-# title, text, summary, identifier or description.  The search string is interpreted as a regular expression (RegEx).
-# The breadth of the search is determined by the supplied scope guid. The results are organized by anchor element.
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/metadata-expert/metadata-elements/by-search-string/in-anchor-scope/{{cimGlossaryGUID}}
-Authorization: Bearer {{token}}
-Content-Type: application/json
-
-{
-  "class" : "SearchStringRequestBody",
-  "searchString" : "Party",
-  "effectiveTime" : "{{$isoTimestamp}}",
-  "limitResultsByStatus" : ["ACTIVE"],
-  "asOfTime" : "{{$isoTimestamp}}",
-  "sequencingOrder": "CREATION_DATE_RECENT",
-  "sequencingProperty": ""
-}
-
-
-###
-# @name getAllRelatedMetadataElements
-# Retrieve the metadata elements connected to the supplied element.
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/metadata-expert/related-elements/{{elementGUID}}/any-type?startingAtEnd=0&startFrom=0&pageSize=100
-Authorization: Bearer {{token}}
-Content-Type: application/json
-
-{
-  "class" : "ResultsRequestBody",
-  "effectiveTime" : "{{$isoTimestamp}}",
-  "limitResultsByStatus" : ["ACTIVE"],
-  "asOfTime" : "{{$isoTimestamp}}",
-  "sequencingOrder": "CREATION_DATE_RECENT",
-  "sequencingProperty": ""
-}
-
-
-###
-# @name getAllRelatedMetadataElements
-# Retrieve the metadata elements connected to the supplied element.
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/metadata-expert/related-elements/{{elementGUID}}/any-type?startingAtEnd=0&startFrom=0&pageSize=100
-Authorization: Bearer {{token}}
-Content-Type: application/json
-
-{
-  "class" : "ResultsRequestBody",
-  "effectiveTime" : "{{$isoTimestamp}}",
-  "limitResultsByStatus" : ["ACTIVE"],
-  "asOfTime" : "{{$isoTimestamp}}",
-  "sequencingOrder": "PROPERTY_ASCENDING",
-  "sequencingProperty": "preferredValue"
-}
-
-
-###
-
-@relationshipTypeName=TermAnchor
-
-###
-# @name get GlossaryTerms linked to the Sustainability Glossary
-# Retrieve the metadata elements connected to the supplied element via a specific relationship type.
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/metadata-expert/related-elements/{{sustainabilityGlossaryGUID}}/type/{{relationshipTypeName}}?startingAtEnd=0&startFrom=0&pageSize=1000
-Authorization: Bearer {{token}}
-Content-Type: application/json
-
-{
-  "class" : "ResultsRequestBody",
-  "effectiveTime" : "{{$isoTimestamp}}",
-  "limitResultsByStatus" : ["ACTIVE"],
-  "asOfTime" : "{{$isoTimestamp}}",
-  "sequencingOrder": "CREATION_DATE_RECENT",
-  "sequencingProperty": ""
-}
-
-
-###
-
-@metadataElementAtEnd1GUID=6204f340-d7fd-4cc8-922a-8851fb889dc2
-@metadataElementAtEnd2GUID=bd8de890-fa79-4c24-aab8-20b41b5893dd
-
-###
-# @name getAllMetadataElementRelationships
-# Retrieve the relationships linking the supplied elements.
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/metadata-expert/metadata-elements/{{metadataElementAtEnd1GUID}}/linked-by-any-type/to-elements/{{metadataElementAtEnd2GUID}}?startFrom=0&pageSize=10
-Authorization: Bearer {{token}}
-Content-Type: application/json
-
-{
-  "class" : "ResultsRequestBody",
-  "effectiveTime" : "{{$isoTimestamp}}",
-  "limitResultsByStatus" : ["ACTIVE"],
-  "asOfTime" : "{{$isoTimestamp}}",
-  "sequencingOrder": "CREATION_DATE_RECENT",
-  "sequencingProperty": ""
-}
-
-
-###
-# @name getMetadataElementRelationships
-# Retrieve the relationships linking the supplied elements via a specific type of relationship.
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/metadata-expert/metadata-elements/{{metadataElementAtEnd1GUID}}/linked-by-type/{{relationshipTypeName}}/to-elements/{{metadataElementAtEnd2GUID}}?startFrom=0&pageSize=10
-Authorization: Bearer {{token}}
-Content-Type: application/json
-
-{
-  "class" : "ResultsRequestBody",
-  "effectiveTime" : "{{$isoTimestamp}}",
-  "limitResultsByStatus" : ["ACTIVE"],
-  "asOfTime" : "{{$isoTimestamp}}",
-  "sequencingOrder": "CREATION_DATE_RECENT",
-  "sequencingProperty": ""
-}
-
-
-###
-# @name findMetadataElements (nested condition)
-# Return a list of metadata elements that match the supplied criteria.  The results can be returned over many pages.
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/metadata-expert/metadata-elements/by-search-conditions?startFrom=0&pageSize=100
-Authorization: Bearer {{token}}
-Content-Type: application/json
-
-{
-  "class" : "FindRequestBody",
-  "metadataElementTypeName": "Location",
-  "metadataElementSubtypeNames": [],
-  "searchProperties": {
-     "class" : "SearchProperties",
-     "conditions": [ {
-         "nestedConditions": {
-               "class" : "SearchProperties",
-               "conditions": [
-               {
-                   "property" : "identifier",
-                   "operator": "LIKE",
-                   "value": {
-                      "class" : "PrimitiveTypePropertyValue",
-                      "typeName" : "string",
-                      "primitiveValue" : "AMS"
-                   }
-               },
-               {
-                   "property" : "identifier",
-                   "operator": "LIKE",
-                   "value": {
-                      "class" : "PrimitiveTypePropertyValue",
-                      "typeName" : "string",
-                      "primitiveValue" : "OFFICE"
-                   }
-               }],
-               "matchCriteria": "ANY"
-         }},
-         {
-             "property" : "displayName",
-             "operator": "LIKE",
-             "value": {
-                      "class" : "PrimitiveTypePropertyValue",
-                      "typeName" : "string",
-                      "primitiveValue" : "Cancer"
-                   }
-
-     }],
-     "matchCriteria": "ALL"
+  "class" : "TemplateRequestBody",
+  "externalSourceGUID" :  "",
+  "externalSourceName" : "",
+  "typeName" : "",
+  "templateGUID" : "",
+  "anchorGUID" : "",
+  "isOwnAnchor" : false,
+  "effectiveFrom" : "{{$isoTimestamp}}",
+  "effectiveTo": "{{$isoTimestamp}}",
+  "replacementProperties" : {
+    "class": "ElementProperties",
+    "propertyValueMap" : {
+      "propertyName" : {
+        "class": "PrimitiveTypePropertyValue",
+        "typeName": "string",
+        "primitiveValue" : "value of property"
+      }
+    }
   },
-  "effectiveTime" : "{{$isoTimestamp}}",
-  "limitResultsByStatus" : ["ACTIVE"],
-  "asOfTime" : "{{$isoTimestamp}}",
-  "sequencingOrder": "CREATION_DATE_RECENT",
-  "sequencingProperty": ""
-}
-
-
-
-###
-# @name findMetadataElements anchored to the SoftwareServer entity for active-metadata-store
-# Return a list of metadata elements that match the supplied criteria.  The results can be returned over many pages.
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/metadata-expert/metadata-elements/by-search-conditions?startFrom=0&pageSize=10
-Authorization: Bearer {{token}}
-Content-Type: application/json
-
-{
-  "class" : "FindRequestBody",
-  "matchClassifications": {
-     "class" : "SearchClassifications",
-     "conditions": [{
-         "name" : "Anchors",
-         "searchProperties": {
-            "class" : "SearchProperties",
-               "conditions": [
-               {
-                   "property" : "anchorGUID",
-                   "operator": "EQ",
-                   "value": {
-                      "class" : "PrimitiveTypePropertyValue",
-                      "typeName" : "string",
-                      "primitiveValue" : "{{activeMetadataStoreGUID}}"
-                   }
-               }],
-               "matchCriteria": "ALL"
-         }
-     }],
-     "matchCriteria": "ANY"
-  }
-}
-
-
-###
-
-@glossaryGUID={{sustainabilityGlossaryGUID}}
-
-###
-# @name find GlossaryTerms for a glossary
-# Return a list of metadata elements that match the supplied criteria.  The results can be returned over many pages.
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/metadata-expert/metadata-elements/by-search-conditions?startFrom=0&pageSize=10
-Authorization: Bearer {{token}}
-Content-Type: application/json
-
-{
-  "class" : "FindRequestBody",
-  "metadataElementTypeName": "GlossaryTerm",
-  "matchClassifications": {
-     "class" : "SearchClassifications",
-     "conditions": [{
-         "name" : "Anchors",
-         "searchProperties": {
-            "class" : "SearchProperties",
-               "conditions": [
-               {
-                   "property" : "anchorGUID",
-                   "operator": "EQ",
-                   "value": {
-                      "class" : "PrimitiveTypePropertyValue",
-                      "typeName" : "string",
-                      "primitiveValue" : "{{sustainabilityGlossaryGUID}}"
-                   }
-               }],
-               "matchCriteria": "ALL"
-         }
-     }],
-     "matchCriteria": "ALL"
-  }
-}
-
-
-
-###
-# @name find anchored Glossary elements (Glossary Terms, Glossary Categories, etc containing "shipping"
-# Return a list of metadata elements that match the supplied criteria.  The results can be returned over many pages.
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/metadata-expert/metadata-elements/by-search-conditions?startFrom=0&pageSize=10
-Authorization: Bearer {{token}}
-Content-Type: application/json
-
-{
-  "class" : "FindRequestBody",
-  "searchProperties": {
-     "class" : "SearchProperties",
-     "conditions": [ {
-         "property" : "description",
-         "operator": "LIKE",
-         "value": {
-            "class" : "PrimitiveTypePropertyValue",
-            "typeName" : "string",
-            "primitiveValue" : "shipping"
-          }},
-         {
-            "property" : "displayName",
-            "operator": "LIKE",
-            "value": {
-               "class" : "PrimitiveTypePropertyValue",
-               "typeName" : "string",
-              "primitiveValue" : "shipping"
-            }
-         },
-       {
-         "property" : "summary",
-         "operator": "LIKE",
-         "value": {
-           "class" : "PrimitiveTypePropertyValue",
-           "typeName" : "string",
-           "primitiveValue" : "shipping"
-         }
-     }],
-     "matchCriteria": "ANY"
+  "placeholderPropertyValues" : {
+     "placeholderName1" : "placeholderValue1",
+     "placeholderName2" : "placeholderValue2"
   },
-  "matchClassifications": {
-     "class" : "SearchClassifications",
-     "conditions": [{
-         "name" : "Anchors",
-         "searchProperties": {
-            "class" : "SearchProperties",
-               "conditions": [
-               {
-                   "property" : "anchorDomainName",
-                   "operator": "EQ",
-                   "value": {
-                      "class" : "PrimitiveTypePropertyValue",
-                      "typeName" : "string",
-                      "primitiveValue" : "Glossary"
-                   }
-               }],
-               "matchCriteria": "ALL"
-         }
-     }],
-     "matchCriteria": "ANY"
-  }
-}
-
-
-###
-# @name find CO2 Glossary terms
-# Return a list of metadata elements that match the supplied criteria.  The results can be returned over many pages.
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/metadata-expert/metadata-elements/by-search-conditions?startFrom=0&pageSize=50
-Authorization: Bearer {{token}}
-Content-Type: application/json
-
-{
-  "class" : "FindRequestBody",
-  "metadataElementTypeName": "GlossaryTerm",
-  "searchProperties": {
-    "class" : "SearchProperties",
-    "conditions": [ {
-      "property" : "abbreviation",
-      "operator": "EQ",
-      "value": {
-        "class" : "PrimitiveTypePropertyValue",
-        "typeName" : "string",
-        "primitiveValue" : "CO2"
-      }}],
-    "matchCriteria": "ANY"
-  }
-}
-
-
-
-###
-# @name find Unity Catalog Technology Types
-# Return a list of metadata elements that match the supplied criteria.  The results can be returned over many pages.
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/metadata-expert/metadata-elements/by-search-conditions?startFrom=0&pageSize=50
-Authorization: Bearer {{token}}
-Content-Type: application/json
-
-{
-  "class" : "FindRequestBody",
-  "metadataElementTypeName": "ValidValueDefinition",
-  "searchProperties": {
-    "class" : "SearchProperties",
-    "conditions": [ {
-      "property" : "preferredValue",
-      "operator": "LIKE",
-      "value": {
-        "class" : "PrimitiveTypePropertyValue",
-        "typeName" : "string",
-        "primitiveValue" : ".*Data File"
-      }},
-      {
-        "property" : "category",
-        "operator": "LIKE",
-        "value": {
-          "class" : "PrimitiveTypePropertyValue",
-          "typeName" : "string",
-          "primitiveValue" : ".*deployedImplementationType"
-        }},
-      {
-        "property" : "usage",
-        "operator": "EQ",
-        "value": {
-          "class" : "PrimitiveTypePropertyValue",
-          "typeName" : "string",
-          "primitiveValue" : "Used to control valid values in open metadata."
-        }}],
-    "matchCriteria": "ALL"
-  }
-}
-
-
-
-###
-# @name find  Glossary terms with abbreviations != CO2
-# Return a list of metadata elements that match the supplied criteria.  The results can be returned over many pages.
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/metadata-expert/metadata-elements/by-search-conditions?startFrom=0&pageSize=50
-Authorization: Bearer {{token}}
-Content-Type: application/json
-
-{
-  "class" : "FindRequestBody",
-  "metadataElementTypeName": "GlossaryTerm",
-  "searchProperties": {
-    "class" : "SearchProperties",
-    "conditions": [ {
-      "property" : "abbreviation",
-      "operator": "NEQ",
-      "value": {
-        "class" : "PrimitiveTypePropertyValue",
-        "typeName" : "string",
-        "primitiveValue" : "CO2"
-      }}],
-    "matchCriteria": "ANY"
-  }
-}
-
-
-###
-# @name find  Glossary terms with abbreviations != CO2
-# Return a list of metadata elements that match the supplied criteria.  The results can be returned over many pages.
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/metadata-expert/metadata-elements/by-search-conditions?startFrom=0&pageSize=50
-Authorization: Bearer {{token}}
-Content-Type: application/json
-
-{
-  "class" : "FindRequestBody",
-  "metadataElementTypeName": "GlossaryTerm",
-  "searchProperties": {
-    "class" : "SearchProperties",
-    "conditions": [ {
-      "property" : "abbreviation",
-      "operator": "NOT_NULL"}],
-    "matchCriteria": "ANY"
-  }
-}
-
-
-
-###
-# @name findRelationshipsBetweenMetadataElements
-# Return a list of relationships that match the requested conditions.  The results can be received as a series of pages.
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/metadata-expert/relationships/by-search-conditions?startFrom=0&pageSize=10
-Authorization: Bearer {{token}}
-Content-Type: application/json
-
-{
-  "class" : "FindRelationshipRequestBody",
-  "relationshipTypeName": "ResourceList",
-  "searchProperties": {
-            "class" : "SearchProperties",
-               "conditions": [
-               {
-                   "property" : "resourceUse",
-                   "operator": "EQ",
-                   "value": {
-                      "class" : "PrimitiveTypePropertyValue",
-                      "typeName" : "string",
-                      "primitiveValue" : "Survey Resource"
-                   }
-               }],
-               "matchCriteria": "ALL"
-         },
-  "effectiveTime" : "{{$isoTimestamp}}",
-  "limitResultsByStatus" : ["ACTIVE"],
-  "asOfTime" : "{{$isoTimestamp}}",
-  "sequencingOrder": "CREATION_DATE_RECENT",
-  "sequencingProperty": ""
-}
-
-###
-
-@relationshipGUID=6690ba52-34f5-4bd6-98b7-06585b35e043
-
-###
-# @name getRelationshipByGUID
-# Retrieve the relationship using its unique identifier.
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/metadata-expert/relationships/by-guid/{{relationshipGUID}}
-Authorization: Bearer {{token}}
-Content-Type: application/json
-
-{
-  "class" : "GetRequestBody",
+  "parentGUID" : "",
+  "parentRelationshipTypeName" : "",
+  "parentRelationshipProperties" : {},
+  "parentAtEnd1" : true,
   "effectiveTime" : "{{$isoTimestamp}}"
 }
 
 
-
 ###
-# @name getRelationshipHistory
-# Retrieve all the versions of a relationship.
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/metadata-expert/relationships/{{relationshipGUID}}/history?startFrom=0&pageSize=10&oldestFirst=true
+# @name updateMetadataElementInStore
+# Update the properties of a specific metadata element.  The properties must match the type definition associated with the
+# metadata element when it was created.  However, it is possible to update a few properties, or replace all them by
+# the value used in the replaceProperties flag.
+
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/metadata-expert/metadata-elements/{{metadataElementGUID}}/update-properties
 Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-  "class" : "HistoryRequestBody",
+  "class" : "UpdatePropertiesRequestBody",
+  "externalSourceGUID" :  "",
+  "externalSourceName" : "",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false,
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "properties" : {
+    "class": "ElementProperties",
+    "propertyValueMap" : {
+      "description" : {
+        "class": "PrimitiveTypePropertyValue",
+        "typeName": "string",
+        "primitiveValue" : "New description"
+      }
+    }
+  },
+  "replaceProperties" : false
+}
+
+
+###
+# @name updateMetadataElementStatusInStore
+# Update the status of specific metadata element. The new status must match a status value that is defined for the element's type
+# assigned when it was created.
+
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/metadata-expert/metadata-elements/{{metadataElementGUID}}/update-status
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "UpdateStatusRequestBody",
+  "externalSourceGUID" :  "",
+  "externalSourceName" : "",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false,
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "newStatus" : "ACTIVE"
+}
+
+
+###
+# @name updateMetadataElementEffectivityInStore
+# Update the effectivity dates control the visibility of the element through specific APIs.
+
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/metadata-expert/metadata-elements/{{metadataElementGUID}}/update-effectivity
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "UpdateEffectivityDatesRequestBody",
+  "externalSourceGUID" :  "",
+  "externalSourceName" : "",
+  "effectiveFrom" : "{{$isoTimestamp}}",
+  "effectiveTo": "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false,
+  "effectiveTime" : "{{$isoTimestamp}}"
+}
+
+
+###
+# @name deleteMetadataElementInStore
+# Delete a specific metadata element.
+
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/metadata-expert/metadata-elements/{{metadataElementGUID}}/delete
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "OpenMetadataDeleteRequestBody",
+  "externalSourceGUID" :  "",
+  "externalSourceName" : "",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false,
+  "effectiveTime" : "{{$isoTimestamp}}"
+}
+
+
+###
+# @name archiveMetadataElementInStore
+# Archive a specific metadata element.
+
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/metadata-expert/metadata-elements/{{metadataElementGUID}}/archive
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "ArchiveRequestBody",
+  "externalSourceGUID" :  "",
+  "externalSourceName" : "",
+  "archiveProperties" : {
+    "archiveDate" : "{{$isoTimestamp}}",
+    "archiveProcess" : "",
+    "archiveProperties": {
+       "propertyName1" : "propertyValue1",
+       "propertyName2" : "propertyValue2"
+    }
+  },
+  "forLineage" : false,
+  "forDuplicateProcessing" : false,
+  "effectiveTime" : "{{$isoTimestamp}}"
+}
+
+
+###
+# @name classifyMetadataElementInStore
+# Add a new classification to the metadata element.  Note that only one classification with the same name can be attached to
+# a metadata element.
+
+ POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/metadata-expert/metadata-elements/{{metadataElementGUID}}/classifications/{{classificationName}}
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "NewClassificationRequestBody",
+  "externalSourceGUID" :  "",
+  "externalSourceName" : "",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false,
+  "effectiveTime" : "{{$isoTimestamp}}"
+}
+
+
+###
+# @name reclassifyMetadataElementInStore
+# Update the properties of a classification that is currently attached to a specific metadata element.
+
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/metadata-expert/metadata-elements/{{metadataElementGUID}}/classifications/{{classificationName}}/update-properties
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "UpdatePropertiesRequestBody",
+  "externalSourceGUID" :  "",
+  "externalSourceName" : "",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false,
+  "effectiveTime" : "{{$isoTimestamp}}"
+}
+
+
+###
+# @name updateClassificationEffectivityInStore
+# Update the effectivity dates of a specific classification attached to a metadata element.
+# The effectivity dates control the visibility of the classification through specific APIs.
+
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/metadata-expert/metadata-elements/{{metadataElementGUID}}/classifications/{{classificationName}}/update-effectivity
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "UpdateEffectivityDatesRequestBody",
+  "externalSourceGUID" :  "",
+  "externalSourceName" : "",
+  "effectiveFrom" : "{{$isoTimestamp}}",
+  "effectiveTo": "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false,
+  "effectiveTime" : "{{$isoTimestamp}}"
+}
+
+
+###
+# @name declassifyMetadataElementInStore
+# Remove the named classification from a specific metadata element.
+
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/metadata-expert/metadata-elements/{{metadataElementGUID}}/classifications/{{classificationName}}/delete
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "MetadataSourceRequestBody",
+  "externalSourceGUID" :  "",
+  "externalSourceName" : "",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false,
+  "effectiveTime" : "{{$isoTimestamp}}"
+}
+
+
+###
+# @name createRelatedElementsInStore
+# Create a relationship between two metadata elements.  It is important to put the right element at each end of the relationship
+# according to the type definition since this will affect how the relationship is interpreted.
+
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/metadata-expert/related-elements
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "NewRelatedElementsRequestBody",
+  "externalSourceGUID" :  "",
+  "externalSourceName" : "",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false,
+  "effectiveTime" : "{{$isoTimestamp}}"
+}
+
+
+###
+# @name updateRelatedElementsInStore
+# Update the properties associated with a relationship.
+
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/metadata-expert/related-elements/{{relationshipGUID}}/update-properties
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "UpdatePropertiesRequestBody",
+  "externalSourceGUID" :  "",
+  "externalSourceName" : "",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false,
+  "effectiveTime" : "{{$isoTimestamp}}"
+}
+
+
+###
+# @name updateRelatedElementsEffectivityInStore
+# Update the effectivity dates of a specific relationship between metadata elements.
+# The effectivity dates control the visibility of the classification through specific APIs.
+
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/metadata-expert/related-elements/{{relationshipGUID}}/update-effectivity
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "UpdateEffectivityDatesRequestBody",
+  "externalSourceGUID" :  "",
+  "externalSourceName" : "",
+  "effectiveFrom" : "{{$isoTimestamp}}",
+  "effectiveTo": "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false,
+  "effectiveTime" : "{{$isoTimestamp}}"
+}
+
+
+###
+# @name deleteRelatedElementsInStore
+# Delete a relationship between two metadata elements.
+
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/metadata-expert/related-elements/{{relationshipGUID}}/delete
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "OpenMetadataDeleteRequestBody",
+  "externalSourceGUID" :  "",
+  "externalSourceName" : "",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false,
   "effectiveTime" : "{{$isoTimestamp}}"
 }
 

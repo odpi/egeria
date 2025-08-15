@@ -94,10 +94,10 @@ public class CloudInformationModelArchiveWriter extends OMRSArchiveWriter
 
             String  dataDictionaryId = archiveHelper.addCollection(null,
                                                                    null,
-                                                                   OpenMetadataType.COLLECTION.typeName,
-                                                                   OpenMetadataType.COLLECTION.typeName,
-                                                                   null,
                                                                    OpenMetadataType.DATA_DICTIONARY_COLLECTION.typeName,
+                                                                   OpenMetadataType.DATA_DICTIONARY_COLLECTION.typeName,
+                                                                   null,
+                                                                   null,
                                                                    "DataDictionary::" + model.getModelName(),
                                                                    model.getModelName(),
                                                                    model.getModelSummary(),

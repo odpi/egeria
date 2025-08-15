@@ -483,7 +483,7 @@ public class OpenMetadataTypesArchive5_3
         /*
          * Set up end 2.
          */
-        final String                     end2AttributeName            = "containedDataFields";
+        final String                     end2AttributeName            = "containsDataFields";
         final String                     end2AttributeDescription     = "Contained data fields.";
         final String                     end2AttributeDescriptionGUID = null;
 
@@ -510,7 +510,7 @@ public class OpenMetadataTypesArchive5_3
 
     private RelationshipDef getSchemaAttributeDefinitionRelationship()
     {
-        RelationshipDef relationshipDef = archiveHelper.getBasicRelationshipDef(OpenMetadataType.SCHEMA_ATTRIBUTE_DEFINITION,
+        RelationshipDef relationshipDef = archiveHelper.getBasicRelationshipDef(OpenMetadataType.SCHEMA_ATTRIBUTE_DEFINITION_RELATIONSHIP,
                                                                                 null,
                                                                                 ClassificationPropagationRule.NONE);
 
@@ -519,7 +519,7 @@ public class OpenMetadataTypesArchive5_3
         /*
          * Set up end 1.
          */
-        final String                     end1AttributeName            = "dataFields";
+        final String                     end1AttributeName            = "derivedFromDataField";
         final String                     end1AttributeDescription     = "The data fields using this schema.";
         final String                     end1AttributeDescriptionGUID = null;
 
@@ -527,14 +527,14 @@ public class OpenMetadataTypesArchive5_3
                                                                  end1AttributeName,
                                                                  end1AttributeDescription,
                                                                  end1AttributeDescriptionGUID,
-                                                                 RelationshipEndCardinality.ANY_NUMBER);
+                                                                 RelationshipEndCardinality.AT_MOST_ONE);
         relationshipDef.setEndDef1(relationshipEndDef);
 
 
         /*
          * Set up end 2.
          */
-        final String                     end2AttributeName            = "schemaAttributeDefinition";
+        final String                     end2AttributeName            = "equivalentSchemaAttribute";
         final String                     end2AttributeDescription     = "Official schema attribute definition.";
         final String                     end2AttributeDescriptionGUID = null;
 
@@ -656,7 +656,7 @@ public class OpenMetadataTypesArchive5_3
 
     private RelationshipDef getSchemaTypeDefinitionRelationship()
     {
-        RelationshipDef relationshipDef = archiveHelper.getBasicRelationshipDef(OpenMetadataType.SCHEMA_TYPE_DEFINITION,
+        RelationshipDef relationshipDef = archiveHelper.getBasicRelationshipDef(OpenMetadataType.SCHEMA_TYPE_DEFINITION_RELATIONSHIP,
                                                                                 null,
                                                                                 ClassificationPropagationRule.NONE);
 
@@ -665,7 +665,7 @@ public class OpenMetadataTypesArchive5_3
         /*
          * Set up end 1.
          */
-        final String                     end1AttributeName            = "dataStructure";
+        final String                     end1AttributeName            = "derivedFromDataStructure";
         final String                     end1AttributeDescription     = "The description of the structure.";
         final String                     end1AttributeDescriptionGUID = null;
 

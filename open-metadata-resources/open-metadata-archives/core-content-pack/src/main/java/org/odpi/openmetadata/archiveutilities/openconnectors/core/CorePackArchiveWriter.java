@@ -476,7 +476,7 @@ public class CorePackArchiveWriter extends ContentPackBaseArchiveWriter
                                             OpenMetadataProperty.CRITICALITY_LEVEL_IDENTIFIER.name,
                                             new ArrayList<>(Arrays.asList(CriticalityLevel.values())));
 
-        addOpenMetadataEnumValidNames(OpenMetadataType.DATA_CLASS_ASSIGNMENT.typeName,
+        addOpenMetadataEnumValidNames(OpenMetadataType.DATA_CLASS_ASSIGNMENT_RELATIONSHIP.typeName,
                                       OpenMetadataProperty.DATA_CLASS_ASSIGNMENT_STATUS.name,
                                       DataClassAssignmentStatus.getOpenTypeName(),
                                       new ArrayList<>(Arrays.asList(DataClassAssignmentStatus.values())));

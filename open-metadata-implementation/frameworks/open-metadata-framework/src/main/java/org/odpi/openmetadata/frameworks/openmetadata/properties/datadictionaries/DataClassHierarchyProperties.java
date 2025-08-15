@@ -26,7 +26,7 @@ public class DataClassHierarchyProperties extends RelationshipBeanProperties
     public DataClassHierarchyProperties()
     {
         super();
-        super.setTypeName(OpenMetadataType.DATA_CLASS_HIERARCHY.typeName);
+        super.setTypeName(OpenMetadataType.DATA_CLASS_HIERARCHY_RELATIONSHIP.typeName);
     }
 
 

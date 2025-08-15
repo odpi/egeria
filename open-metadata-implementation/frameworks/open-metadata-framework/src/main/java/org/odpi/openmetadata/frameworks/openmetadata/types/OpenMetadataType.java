@@ -3224,11 +3224,11 @@ public enum OpenMetadataType
     /**
      * Links a security access control to a security group.
      */
-    ASSOCIATED_GROUP_RELATIONSHIP("e47a19d0-7e12-4cf7-9ad7-50856da7faa2",
-                                  "AssociatedGroup",
-                                  OpenMetadataWikiPages.MODEL_0423_SECURITY_DEFINITIONS,
-                                  "de70d92a-ac47-4221-914b-bdb52bf1a161",
-                                  "Links a security access control to a security group."),
+    ASSOCIATED_SECURITY_GROUP_RELATIONSHIP("e47a19d0-7e12-4cf7-9ad7-50856da7faa2",
+                                           "AssociatedSecurityGroup",
+                                           OpenMetadataWikiPages.MODEL_0423_SECURITY_DEFINITIONS,
+                                           "de70d92a-ac47-4221-914b-bdb52bf1a161",
+                                           "Links a security access control to a security group."),
 
     /**
      * Defines the element's membership of the governance zones.
@@ -3563,15 +3563,6 @@ public enum OpenMetadataType
                                            OpenMetadataWikiPages.MODEL_0450_GOVERNANCE_ROLLOUT,
                                            "380b61ea-68b8-4ec1-b24a-831d76d12b97",
                                            "A set of measurements on the performance and use of the connected resource."),
-
-    /**
-     * A data set containing measurements for a governance metric.
-     */
-    GOVERNANCE_MEASUREMENTS_RESULTS_DATA_SET_CLASSIFICATION("789f2e89-accd-4489-8eca-dc43b432c022",
-                                                            "GovernanceMeasurementsResultsDataSet",
-                                                            OpenMetadataWikiPages.MODEL_0450_GOVERNANCE_ROLLOUT,
-                                                            "c9e91e4a-02ae-4ffa-a783-155bba268667",
-                                                            "A data set containing measurements for a governance metric."),
 
     /**
      * A set of expected values on the performance and use of the connected resource.
@@ -4735,11 +4726,11 @@ public enum OpenMetadataType
     /**
      * Links a data class to an asset or schema element to define its logical data type.
      */
-    DATA_CLASS_ASSIGNMENT("4df37335-7f0c-4ced-82df-3b2fd07be1bd",
-                          "DataClassAssignment",
-                          OpenMetadataWikiPages.MODEL_0540_DATA_CLASSES,
-                          "296c55bc-0d5e-4a84-bb58-c5484d363ec2",
-                          "Links a data class to an asset or schema element to define its logical data type."),
+    DATA_CLASS_ASSIGNMENT_RELATIONSHIP("4df37335-7f0c-4ced-82df-3b2fd07be1bd",
+                                       "DataClassAssignment",
+                                       OpenMetadataWikiPages.MODEL_0540_DATA_CLASSES,
+                                       "296c55bc-0d5e-4a84-bb58-c5484d363ec2",
+                                       "Links a data class to an asset or schema element to define its logical data type."),
 
     /**
      * Links a referencable with its data value specification in the form of a data class.
@@ -4753,20 +4744,20 @@ public enum OpenMetadataType
     /**
      * Links a data class to another in a parent child hierarchy.
      */
-    DATA_CLASS_HIERARCHY("6b947ccc-1a70-4785-9ca3-d6326bc51291",
-                          "DataClassHierarchy",
-                          OpenMetadataWikiPages.MODEL_0540_DATA_CLASSES,
-                          "1949ace2-59c2-4f8f-9f3b-62def8b3d029",
-                          "Links a data class to another in a parent child hierarchy."),
+    DATA_CLASS_HIERARCHY_RELATIONSHIP("6b947ccc-1a70-4785-9ca3-d6326bc51291",
+                                      "DataClassHierarchy",
+                                      OpenMetadataWikiPages.MODEL_0540_DATA_CLASSES,
+                                      "1949ace2-59c2-4f8f-9f3b-62def8b3d029",
+                                      "Links a data class to another in a parent child hierarchy."),
 
     /**
      * Links a data class to another in a part of hierarchy.
      */
-    DATA_CLASS_COMPOSITION("767fb343-4699-49c1-a0f8-af6da78505f8",
-                          "DataClassComposition",
-                          OpenMetadataWikiPages.MODEL_0540_DATA_CLASSES,
-                          "e11693b6-f2f7-4693-aac7-a7a98c6c1c49",
-                          "Links a data class to another in a part of hierarchy."),
+    DATA_CLASS_COMPOSITION_RELATIONSHIP("767fb343-4699-49c1-a0f8-af6da78505f8",
+                                        "DataClassComposition",
+                                        OpenMetadataWikiPages.MODEL_0540_DATA_CLASSES,
+                                        "e11693b6-f2f7-4693-aac7-a7a98c6c1c49",
+                                        "Links a data class to another in a part of hierarchy."),
 
     /**
      * A single valid value for a referenceable.
@@ -5120,20 +5111,20 @@ public enum OpenMetadataType
     /**
      * Link between data field analysis and the identified schema attribute definition.
      */
-    SCHEMA_ATTRIBUTE_DEFINITION("60f1e263-e24d-4f20-8c0d-b5e21232cd54",
-                                "SchemaAttributeDefinition",
-                                OpenMetadataWikiPages.MODEL_0581_DATA_FIELD_IMPLEMENTATION,
-                                "d21adefa-7721-4820-8f40-228647e6cbe8",
-                                "Link between data field analysis and the identified schema attribute definition."),
+    SCHEMA_ATTRIBUTE_DEFINITION_RELATIONSHIP("60f1e263-e24d-4f20-8c0d-b5e21232cd54",
+                                             "SchemaAttributeDefinition",
+                                             OpenMetadataWikiPages.MODEL_0581_DATA_FIELD_IMPLEMENTATION,
+                                             "d21adefa-7721-4820-8f40-228647e6cbe8",
+                                             "Link between data field analysis and the identified schema attribute definition."),
 
     /**
      * Link between data structure and an equivalent schema type.
      */
-    SCHEMA_TYPE_DEFINITION("51a2d263-e24d-4f20-8c0d-b5e12356cd54",
-                           "SchemaTypeDefinition",
-                           OpenMetadataWikiPages.MODEL_0581_DATA_FIELD_IMPLEMENTATION,
-                           "d59f28e7-fdd4-4310-a0fb-dfc20cae5b49",
-                           "Link between data structure and an equivalent schema type."),
+    SCHEMA_TYPE_DEFINITION_RELATIONSHIP("51a2d263-e24d-4f20-8c0d-b5e12356cd54",
+                                        "SchemaTypeDefinition",
+                                        OpenMetadataWikiPages.MODEL_0581_DATA_FIELD_IMPLEMENTATION,
+                                        "d59f28e7-fdd4-4310-a0fb-dfc20cae5b49",
+                                        "Link between data structure and an equivalent schema type."),
 
 
 

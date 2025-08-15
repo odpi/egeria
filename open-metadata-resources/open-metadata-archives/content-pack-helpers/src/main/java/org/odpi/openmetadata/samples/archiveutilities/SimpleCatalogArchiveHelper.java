@@ -2539,7 +2539,7 @@ public class SimpleCatalogArchiveHelper
         EntityProxy end1 = archiveHelper.getEntityProxy(entity1);
         EntityProxy end2 = archiveHelper.getEntityProxy(entity2);
 
-        archiveBuilder.addRelationship(archiveHelper.getRelationship(OpenMetadataType.SCHEMA_TYPE_DEFINITION.typeName,
+        archiveBuilder.addRelationship(archiveHelper.getRelationship(OpenMetadataType.SCHEMA_TYPE_DEFINITION_RELATIONSHIP.typeName,
                                                                      idToGUIDMap.getGUID(dataStructureGUID + "_to_" + schemaTypeGUID + "_schema_type_definition_relationship"),
                                                                      null,
                                                                      InstanceStatus.ACTIVE,

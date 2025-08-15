@@ -8,10 +8,7 @@ import org.odpi.openmetadata.frameworks.openmetadata.client.OpenMetadataClient;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
-import org.odpi.openmetadata.frameworks.openmetadata.mermaid.DataClassMermaidGraphBuilder;
-import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.DataClassElement;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.OpenMetadataRootElement;
-import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.RelatedMetadataElementSummary;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.ClassificationProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.RelationshipProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.datadictionaries.DataClassCompositionProperties;
@@ -21,7 +18,6 @@ import org.odpi.openmetadata.frameworks.openmetadata.search.*;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
@@ -177,7 +173,7 @@ public class DataClassHandler extends OpenMetadataHandlerBase
         propertyHelper.validateGUID(childDataClassGUID, end2GUIDParameterName, methodName);
 
         openMetadataClient.createRelatedElementsInStore(userId,
-                                                        OpenMetadataType.DATA_CLASS_COMPOSITION.typeName,
+                                                        OpenMetadataType.DATA_CLASS_COMPOSITION_RELATIONSHIP.typeName,
                                                         parentDataClassGUID,
                                                         childDataClassGUID,
                                                         metadataSourceOptions,
@@ -213,7 +209,7 @@ public class DataClassHandler extends OpenMetadataHandlerBase
         propertyHelper.validateGUID(childDataClassGUID, end2GUIDParameterName, methodName);
 
         openMetadataClient.detachRelatedElementsInStore(userId,
-                                                        OpenMetadataType.DATA_CLASS_COMPOSITION.typeName,
+                                                        OpenMetadataType.DATA_CLASS_COMPOSITION_RELATIONSHIP.typeName,
                                                         parentDataClassGUID,
                                                         childDataClassGUID,
                                                         deleteOptions);
@@ -249,7 +245,7 @@ public class DataClassHandler extends OpenMetadataHandlerBase
         propertyHelper.validateGUID(childDataClassGUID, end2GUIDParameterName, methodName);
 
         openMetadataClient.createRelatedElementsInStore(userId,
-                                                        OpenMetadataType.DATA_CLASS_HIERARCHY.typeName,
+                                                        OpenMetadataType.DATA_CLASS_HIERARCHY_RELATIONSHIP.typeName,
                                                         parentDataClassGUID,
                                                         childDataClassGUID,
                                                         metadataSourceOptions,
@@ -285,7 +281,7 @@ public class DataClassHandler extends OpenMetadataHandlerBase
         propertyHelper.validateGUID(childDataClassGUID, end2GUIDParameterName, methodName);
 
         openMetadataClient.detachRelatedElementsInStore(userId,
-                                                        OpenMetadataType.DATA_CLASS_HIERARCHY.typeName,
+                                                        OpenMetadataType.DATA_CLASS_HIERARCHY_RELATIONSHIP.typeName,
                                                         parentDataClassGUID,
                                                         childDataClassGUID,
                                                         deleteOptions);
@@ -389,71 +385,42 @@ public class DataClassHandler extends OpenMetadataHandlerBase
     }
 
 
+
     /**
-     * Add relevant relationships and mermaid graph to the returned element.
+     * Add a standard mermaid graph to the root element.  This method may be overridden by the subclasses if
+     * they have a more fancy graph to display.
      *
+     * @param userId calling user
      * @param rootElement new root element
+     * @param queryOptions options from the caller
      * @return root element with graph
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    protected OpenMetadataRootElement addMermaidToRootElement(OpenMetadataRootElement rootElement)
+    protected OpenMetadataRootElement addMermaidToRootElement(String                  userId,
+                                                              OpenMetadataRootElement rootElement,
+                                                              QueryOptions            queryOptions) throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException
     {
         if (rootElement != null)
         {
-            DataClassElement dataClassElement = new DataClassElement(rootElement);
+            rootElement.setSubDataClasses(super.getElementHierarchies(userId,
+                                                                        rootElement.getElementHeader().getGUID(),
+                                                                        rootElement.getSubDataClasses(),
+                                                                        1,
+                                                                        OpenMetadataType.DATA_CLASS_HIERARCHY_RELATIONSHIP.typeName,
+                                                                        queryOptions,
+                                                                        1));
 
-            List<RelatedMetadataElementSummary> semanticDefinitions   = new ArrayList<>();
-            List<RelatedMetadataElementSummary> dataClassHierarchy    = new ArrayList<>();
-            List<RelatedMetadataElementSummary> dataClassCompositions = new ArrayList<>();
-            List<RelatedMetadataElementSummary> others                = new ArrayList<>();
+            rootElement.setPartOfDataClasses(super.getElementHierarchies(userId,
+                                                                      rootElement.getElementHeader().getGUID(),
+                                                                      rootElement.getPartOfDataClasses(),
+                                                                      1,
+                                                                      OpenMetadataType.DATA_CLASS_COMPOSITION_RELATIONSHIP.typeName,
+                                                                      queryOptions,
+                                                                      1));
 
-            if (dataClassElement.getOtherRelatedElements() != null)
-            {
-                for (RelatedMetadataElementSummary relatedMetadataElement : dataClassElement.getOtherRelatedElements())
-                {
-                    if (relatedMetadataElement != null)
-                    {
-                        if ((propertyHelper.isTypeOf(relatedMetadataElement.getRelationshipHeader(), OpenMetadataType.SEMANTIC_DEFINITION_RELATIONSHIP.typeName) && (! relatedMetadataElement.getRelatedElementAtEnd1())))
-                        {
-                            semanticDefinitions.add(relatedMetadataElement);
-                        }
-                        else if ((propertyHelper.isTypeOf(relatedMetadataElement.getRelationshipHeader(), OpenMetadataType.DATA_CLASS_HIERARCHY.typeName)) && (! relatedMetadataElement.getRelatedElementAtEnd1()))
-                        {
-                            dataClassHierarchy.add(relatedMetadataElement);
-                        }
-                        else if ((propertyHelper.isTypeOf(relatedMetadataElement.getRelationshipHeader(), OpenMetadataType.DATA_CLASS_COMPOSITION.typeName)) && (! relatedMetadataElement.getRelatedElementAtEnd1()))
-                        {
-                            dataClassCompositions.add(relatedMetadataElement);
-                        }
-                        else
-                        {
-                            others.add(relatedMetadataElement);
-                        }
-                    }
-                }
-            }
-
-            if (! semanticDefinitions.isEmpty())
-            {
-                dataClassElement.setAssignedMeanings(semanticDefinitions);
-            }
-            if (! dataClassHierarchy.isEmpty())
-            {
-                dataClassElement.setSpecializedDataClasses(dataClassHierarchy);
-            }
-            if (! dataClassCompositions.isEmpty())
-            {
-                dataClassElement.setNestedDataClasses(dataClassHierarchy);
-            }
-            if (! others.isEmpty())
-            {
-                dataClassElement.setOtherRelatedElements(others);
-            }
-
-            DataClassMermaidGraphBuilder graphBuilder = new DataClassMermaidGraphBuilder(dataClassElement);
-
-            dataClassElement.setMermaidGraph(graphBuilder.getMermaidGraph());
-
-            return dataClassElement;
+            super.addMermaidToRootElement(userId, rootElement, queryOptions);
         }
 
         return rootElement;

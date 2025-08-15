@@ -8,8 +8,6 @@ import org.odpi.openmetadata.frameworks.openmetadata.client.OpenMetadataClient;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
-import org.odpi.openmetadata.frameworks.openmetadata.mermaid.OpenMetadataRootHierarchyMermaidGraphBuilder;
-import org.odpi.openmetadata.frameworks.openmetadata.mermaid.VisualStyle;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.*;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.ClassificationProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.RelationshipProperties;
@@ -434,73 +432,73 @@ public class GovernanceDefinitionHandler extends OpenMetadataHandlerBase
 
 
     /**
-     * Attach an actor to an element that describes its scope.
+     * Attach a governance metric to an asset that represents the data store where the measurements are located.
      *
      * @param userId                        userId of user making request
-     * @param scopeElementGUID            unique identifier of the element
-     * @param actorGUID unique identifier of the actor
+     * @param governanceMetricGUID            unique identifier of the metric
+     * @param dataSourceGUID unique identifier of the asset
      * @param metadataSourceOptions         options to control access to open metadata
      * @param relationshipProperties        description of the relationship.
      * @throws InvalidParameterException  one of the parameters is null or invalid.
      * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    public void linkGovernanceResults(String                   userId,
-                                    String                    scopeElementGUID,
-                                    String                    actorGUID,
-                                    MetadataSourceOptions     metadataSourceOptions,
-                                    AssignmentScopeProperties relationshipProperties) throws InvalidParameterException,
-                                                                                             PropertyServerException,
-                                                                                             UserNotAuthorizedException
+    public void linkGovernanceResults(String                      userId,
+                                      String                      governanceMetricGUID,
+                                      String                      dataSourceGUID,
+                                      MetadataSourceOptions       metadataSourceOptions,
+                                      GovernanceResultsProperties relationshipProperties) throws InvalidParameterException,
+                                                                                                 PropertyServerException,
+                                                                                                 UserNotAuthorizedException
     {
-        final String methodName            = "linkAssignmentScope";
-        final String end1GUIDParameterName = "scopeElementGUID";
-        final String end2GUIDParameterName = "actorGUID";
+        final String methodName            = "linkGovernanceResults";
+        final String end1GUIDParameterName = "governanceMetricGUID";
+        final String end2GUIDParameterName = "dataSourceGUID";
 
         propertyHelper.validateUserId(userId, methodName);
-        propertyHelper.validateGUID(scopeElementGUID, end1GUIDParameterName, methodName);
-        propertyHelper.validateGUID(actorGUID, end2GUIDParameterName, methodName);
+        propertyHelper.validateGUID(governanceMetricGUID, end1GUIDParameterName, methodName);
+        propertyHelper.validateGUID(dataSourceGUID, end2GUIDParameterName, methodName);
 
         openMetadataClient.createRelatedElementsInStore(userId,
-                                                        OpenMetadataType.ASSIGNMENT_SCOPE_RELATIONSHIP.typeName,
-                                                        actorGUID,
-                                                        scopeElementGUID,
+                                                        OpenMetadataType.GOVERNANCE_RESULTS_RELATIONSHIP.typeName,
+                                                        dataSourceGUID,
+                                                        governanceMetricGUID,
                                                         metadataSourceOptions,
                                                         relationshipBuilder.getNewElementProperties(relationshipProperties));
     }
 
 
     /**
-     * Detach an actor from the element that describes its scope.
+     * Detach a governance metric from an asset that represents the data store where the measurements are located.
      *
      * @param userId                      userId of user making request.
-     * @param scopeElementGUID            unique identifier of the element
-     * @param actorGUID                   unique identifier of the actor
+     * @param governanceMetricGUID            unique identifier of the metric
+     * @param dataSourceGUID                   unique identifier of the asset
      * @param deleteOptions               options to control access to open metadata
      * @throws InvalidParameterException  one of the parameters is null or invalid.
      * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public void detachGovernanceResults(String        userId,
-                                      String        scopeElementGUID,
-                                      String        actorGUID,
-                                      DeleteOptions deleteOptions) throws InvalidParameterException,
-                                                                          PropertyServerException,
-                                                                          UserNotAuthorizedException
+                                        String        governanceMetricGUID,
+                                        String        dataSourceGUID,
+                                        DeleteOptions deleteOptions) throws InvalidParameterException,
+                                                                            PropertyServerException,
+                                                                            UserNotAuthorizedException
     {
-        final String methodName = "detachAssignmentScope";
+        final String methodName = "detachGovernanceResults";
 
-        final String end1GUIDParameterName = "scopeElementGUID";
-        final String end2GUIDParameterName = "actorGUID";
+        final String end1GUIDParameterName = "governanceMetricGUID";
+        final String end2GUIDParameterName = "dataSourceGUID";
 
         propertyHelper.validateUserId(userId, methodName);
-        propertyHelper.validateGUID(scopeElementGUID, end1GUIDParameterName, methodName);
-        propertyHelper.validateGUID(actorGUID, end2GUIDParameterName, methodName);
+        propertyHelper.validateGUID(governanceMetricGUID, end1GUIDParameterName, methodName);
+        propertyHelper.validateGUID(dataSourceGUID, end2GUIDParameterName, methodName);
 
         openMetadataClient.detachRelatedElementsInStore(userId,
-                                                        OpenMetadataType.ASSIGNMENT_SCOPE_RELATIONSHIP.typeName,
-                                                        actorGUID,
-                                                        scopeElementGUID,
+                                                        OpenMetadataType.GOVERNANCE_RESULTS_RELATIONSHIP.typeName,
+                                                        dataSourceGUID,
+                                                        governanceMetricGUID,
                                                         deleteOptions);
     }
 
@@ -959,140 +957,6 @@ public class GovernanceDefinitionHandler extends OpenMetadataHandlerBase
 
 
     /**
-     * Retrieve the definition metadata element with the supplied unique identifier.
-     *
-     * @param userId calling user
-     * @param governanceDefinitionGUID unique identifier of the requested metadata element
-     * @param queryOptions           multiple options to control the query
-     *
-     * @return matching metadata element
-     *
-     * @throws InvalidParameterException  one of the parameters is invalid
-     * @throws UserNotAuthorizedException the user is not authorized to issue this request
-     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
-     */
-    public OpenMetadataRootHierarchy getGovernanceDefinitionInContext(String       userId,
-                                                                      String       governanceDefinitionGUID,
-                                                                      QueryOptions queryOptions) throws InvalidParameterException,
-                                                                                                        UserNotAuthorizedException,
-                                                                                                        PropertyServerException
-    {
-        OpenMetadataRootElement rootElement = this.getGovernanceDefinitionByGUID(userId, governanceDefinitionGUID, queryOptions);
-
-        if (rootElement != null)
-        {
-            OpenMetadataRootHierarchy openMetadataRootHierarchy = new OpenMetadataRootHierarchy(rootElement);
-
-            Set<String>  processedGovernanceDefinitions = new HashSet<>(Collections.singletonList(governanceDefinitionGUID));
-
-            openMetadataRootHierarchy.setOpenMetadataRootHierarchies(this.getRelatedGovernanceDefinitions(userId,
-                                                                                                          new OpenMetadataRootHierarchy(rootElement),
-                                                                                                          queryOptions,
-                                                                                                          processedGovernanceDefinitions));
-
-            /*
-             * Replaces the graph added by addMermaidToRootElement().
-             */
-            OpenMetadataRootHierarchyMermaidGraphBuilder mermaidGraphBuilder = new OpenMetadataRootHierarchyMermaidGraphBuilder(openMetadataRootHierarchy,
-                                                                                                                                "Related Governance Definitions",
-                                                                                                                                VisualStyle.GOVERNANCE_DEFINITION);
-
-            openMetadataRootHierarchy.setMermaidGraph(mermaidGraphBuilder.getMermaidGraph());
-
-            return openMetadataRootHierarchy;
-        }
-
-        return null;
-    }
-
-
-    /**
-     * Retrieve the list of related governance definitions not currently in the list.
-     *
-     * @param userId calling user
-     * @param startingGovernanceDefinition place to start
-     * @param queryOptions type of query
-     * @param processedGovernanceDefinitions list of guids of governance definitions already processed.
-     * @return list of connected governance definitions not yet processed
-     * @throws InvalidParameterException  one of the parameters is invalid
-     * @throws UserNotAuthorizedException the user is not authorized to issue this request
-     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
-     */
-    private List<OpenMetadataRootHierarchy> getRelatedGovernanceDefinitions(String                      userId,
-                                                                            OpenMetadataRootHierarchy   startingGovernanceDefinition,
-                                                                            QueryOptions                queryOptions,
-                                                                            Set<String>                 processedGovernanceDefinitions) throws InvalidParameterException,
-                                                                                                                                                PropertyServerException,
-                                                                                                                                                UserNotAuthorizedException
-    {
-        List<OpenMetadataRootHierarchy> relatedElements = new ArrayList<>();
-
-        if (! processedGovernanceDefinitions.contains(startingGovernanceDefinition.getElementHeader().getGUID()))
-        {
-            if (startingGovernanceDefinition.getPeerGovernanceDefinitions() != null)
-            {
-                for (RelatedMetadataElementSummary relatedDefinition : startingGovernanceDefinition.getPeerGovernanceDefinitions())
-                {
-                    if ((relatedDefinition != null) && (! processedGovernanceDefinitions.contains(relatedDefinition.getRelatedElement().getElementHeader().getGUID())))
-                    {
-                        OpenMetadataRootHierarchy relatedElement = new OpenMetadataRootHierarchy(
-                                this.getGovernanceDefinitionByGUID(userId,
-                                                                   relatedDefinition.getRelatedElement().getElementHeader().getGUID(),
-                                                                   queryOptions));
-
-                        relatedElements.add(relatedElement);
-                        processedGovernanceDefinitions.add(relatedElement.getElementHeader().getGUID());
-
-                        getRelatedGovernanceDefinitions(userId, relatedElement, queryOptions, processedGovernanceDefinitions);
-                    }
-                }
-            }
-
-            if (startingGovernanceDefinition.getSupportingGovernanceDefinitions() != null)
-            {
-                for (RelatedMetadataElementSummary relatedDefinition : startingGovernanceDefinition.getSupportingGovernanceDefinitions())
-                {
-                    if ((relatedDefinition != null) && (! processedGovernanceDefinitions.contains(relatedDefinition.getRelatedElement().getElementHeader().getGUID())))
-                    {
-                        OpenMetadataRootHierarchy relatedElement = new OpenMetadataRootHierarchy(
-                                this.getGovernanceDefinitionByGUID(userId,
-                                                                   relatedDefinition.getRelatedElement().getElementHeader().getGUID(),
-                                                                   queryOptions));
-
-                        relatedElements.add(relatedElement);
-                        processedGovernanceDefinitions.add(relatedElement.getElementHeader().getGUID());
-
-                        getRelatedGovernanceDefinitions(userId, relatedElement, queryOptions, processedGovernanceDefinitions);
-                    }
-                }
-            }
-
-            if (startingGovernanceDefinition.getSupportedGovernanceDefinitions() != null)
-            {
-                for (RelatedMetadataElementSummary relatedDefinition : startingGovernanceDefinition.getSupportedGovernanceDefinitions())
-                {
-                    if ((relatedDefinition != null) && (! processedGovernanceDefinitions.contains(relatedDefinition.getRelatedElement().getElementHeader().getGUID())))
-                    {
-                        OpenMetadataRootHierarchy relatedElement = new OpenMetadataRootHierarchy(
-                                this.getGovernanceDefinitionByGUID(userId,
-                                                                   relatedDefinition.getRelatedElement().getElementHeader().getGUID(),
-                                                                   queryOptions));
-
-                        relatedElements.add(relatedElement);
-                        processedGovernanceDefinitions.add(relatedElement.getElementHeader().getGUID());
-
-                        getRelatedGovernanceDefinitions(userId, relatedElement, queryOptions, processedGovernanceDefinitions);
-                    }
-                }
-            }
-        }
-
-        return relatedElements;
-    }
-
-
-
-    /**
      * Attach a design object such as a solution component or governance definition to its implementation via the ImplementedBy relationship.
      *
      * @param userId                  userId of user making request
@@ -1235,5 +1099,65 @@ public class GovernanceDefinitionHandler extends OpenMetadataHandlerBase
                                                         designGUID,
                                                         implementationResourceGUID,
                                                         deleteOptions);
+    }
+
+
+
+    /*
+     * Converter functions
+     */
+
+    /**
+     * Add a standard mermaid graph to the root element.  This method may be overridden by the subclasses if
+     * they have a more fancy graph to display.
+     *
+     * @param userId calling user
+     * @param rootElement new root element
+     * @param queryOptions options from the caller
+     * @return root element with graph
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    protected OpenMetadataRootElement addMermaidToRootElement(String                  userId,
+                                                              OpenMetadataRootElement rootElement,
+                                                              QueryOptions            queryOptions) throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException
+    {
+        if (rootElement != null)
+        {
+            List<RelatedMetadataElementSummary> nestedElements1 = super.getElementHierarchies(userId,
+                                                                                       rootElement.getElementHeader().getGUID(),
+                                                                                       rootElement.getSupportedGovernanceDefinitions(),
+                                                                                       1,
+                                                                                       OpenMetadataType.GOVERNANCE_RESPONSE_RELATIONSHIP.typeName,
+                                                                                       queryOptions,
+                                                                                       1);
+
+            List<RelatedMetadataElementSummary> nestedElements2 = super.getElementHierarchies(userId,
+                                                                                              rootElement.getElementHeader().getGUID(),
+                                                                                              rootElement.getSupportedGovernanceDefinitions(),
+                                                                                              1,
+                                                                                              OpenMetadataType.GOVERNANCE_MECHANISM_RELATIONSHIP.typeName,
+                                                                                              queryOptions,
+                                                                                              1);
+
+            if (nestedElements1 != null)
+            {
+                if (nestedElements2 != null)
+                {
+                    nestedElements1.addAll(nestedElements2);
+                }
+
+                rootElement.setSupportedGovernanceDefinitions(nestedElements1);
+            }
+            else if (nestedElements2 != null)
+            {
+                rootElement.setSupportedGovernanceDefinitions(nestedElements2);
+            }
+
+            super.addMermaidToRootElement(userId, rootElement, queryOptions);
+        }
+
+        return rootElement;
     }
 }

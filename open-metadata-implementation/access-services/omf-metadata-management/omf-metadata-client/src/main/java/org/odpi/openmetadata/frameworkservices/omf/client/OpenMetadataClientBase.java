@@ -1467,7 +1467,7 @@ public abstract class OpenMetadataClientBase extends OpenMetadataClient
 
         requestBody.setNewStatus(newElementStatus);
 
-        restClient.callGUIDPostRESTCall(methodName,
+        restClient.callVoidPostRESTCall(methodName,
                                         urlTemplate,
                                         requestBody,
                                         serverName,

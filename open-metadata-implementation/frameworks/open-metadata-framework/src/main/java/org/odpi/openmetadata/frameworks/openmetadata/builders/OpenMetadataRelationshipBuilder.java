@@ -485,6 +485,24 @@ public class OpenMetadataRelationshipBuilder
                                                                      OpenMetadataProperty.SOURCE.name,
                                                                      glossaryTermRelationship.getSource());
             }
+            else if (properties instanceof GovernanceResultsProperties governanceResultsProperties)
+            {
+                elementProperties = propertyHelper.addStringProperty(elementProperties,
+                                                                     OpenMetadataProperty.QUERY.name,
+                                                                     governanceResultsProperties.getQuery());
+                elementProperties = propertyHelper.addStringProperty(elementProperties,
+                                                                     OpenMetadataProperty.QUERY_TYPE.name,
+                                                                     governanceResultsProperties.getQueryType());
+            }
+            else if (properties instanceof GovernedByProperties governedByProperties)
+            {
+                elementProperties = propertyHelper.addStringProperty(elementProperties,
+                                                                     OpenMetadataProperty.LABEL.name,
+                                                                     governedByProperties.getLabel());
+                elementProperties = propertyHelper.addStringProperty(elementProperties,
+                                                                     OpenMetadataProperty.DESCRIPTION.name,
+                                                                     governedByProperties.getDescription());
+            }
             else if (properties instanceof GraphEdgeLinkProperties graphEdgeLinkProperties)
             {
                 elementProperties = propertyHelper.addStringProperty(elementProperties,

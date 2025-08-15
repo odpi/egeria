@@ -451,63 +451,6 @@ public class ClassificationManagerResource
     }
 
 
-
-    /**
-     * Add the governance measurements results data set classification to an element.
-     *
-     * @param serverName  name of the server instance to connect to
-     * @param elementGUID unique identifier of element to attach to
-     * @param requestBody list of security labels and properties
-     *
-     * @return void or
-     * InvalidParameterException full path or userId is null or
-     * PropertyServerException problem accessing property server or
-     * UserNotAuthorizedException security access problem
-     */
-    @PostMapping(path = "/elements/{elementGUID}/governance-measurements-results-data-set")
-
-    @Operation(summary="addGovernanceMeasurementsResultsDataSet",
-            description="Add the governance measurements results data set classification to an element.",
-            externalDocs=@ExternalDocumentation(description="Governance Rollout",
-                    url="https://egeria-project.org/types/4/0450-Governance-Rollout//"))
-
-    public VoidResponse addGovernanceMeasurementsResultsDataSet(@PathVariable String                    serverName,
-                                                                @PathVariable String                    elementGUID,
-                                                                @RequestBody  (required = false)
-                                                                    NewClassificationRequestBody requestBody)
-    {
-        return restAPI.addGovernanceMeasurementsResultsDataSet(serverName, elementGUID, requestBody);
-    }
-
-
-    /**
-     * Remove the governance measurements results data set classification from an element.
-     *
-     * @param serverName  name of the server instance to connect to
-     * @param elementGUID   unique identifier of element
-     * @param requestBody null request body
-     *
-     * @return void or
-     * InvalidParameterException full path or userId is null or
-     * PropertyServerException problem accessing property server or
-     * UserNotAuthorizedException security access problem
-     */
-    @PostMapping(path = "/elements/{elementGUID}/governance-measurements-results-data-set/remove")
-
-    @Operation(summary="clearGovernanceMeasurementsResultsDataSet",
-            description="Clear the governance measurements results data set classification from an element.",
-            externalDocs=@ExternalDocumentation(description="Governance Rollout",
-                    url="https://egeria-project.org/types/4/0450-Governance-Rollout/"))
-
-    public VoidResponse clearGovernanceMeasurementsResultsDataSet(@PathVariable String          serverName,
-                                                                  @PathVariable String          elementGUID,
-                                                                  @RequestBody(required = false)
-                                                                  MetadataSourceRequestBody requestBody)
-    {
-        return restAPI.clearGovernanceMeasurementsResultsDataSet(serverName, elementGUID, requestBody);
-    }
-
-
     /**
      * Add the security tags for an element.
      *

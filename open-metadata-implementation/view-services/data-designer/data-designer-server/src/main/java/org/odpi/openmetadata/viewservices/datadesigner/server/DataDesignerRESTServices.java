@@ -106,7 +106,6 @@ public class DataDesignerRESTServices extends TokenController
     }
 
 
-
     /**
      * Create a new metadata element to represent a data structure using an existing metadata element as a template.
      * The template defines additional classifications and relationships that should be added to the new element.
@@ -321,9 +320,9 @@ public class DataDesignerRESTServices extends TokenController
      *  PropertyServerException    there is a problem retrieving information from the property server(s).
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    public VoidResponse detachMemberDataField(String                   serverName,
-                                              String                   dataStructureGUID,
-                                              String                   dataFieldGUID,
+    public VoidResponse detachMemberDataField(String            serverName,
+                                              String            dataStructureGUID,
+                                              String            dataFieldGUID,
                                               DeleteRequestBody requestBody)
     {
         final String methodName = "detachMemberDataField";
@@ -367,8 +366,8 @@ public class DataDesignerRESTServices extends TokenController
      *  PropertyServerException    there is a problem retrieving information from the property server(s).
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    public VoidResponse deleteDataStructure(String                   serverName,
-                                            String                   dataStructureGUID,
+    public VoidResponse deleteDataStructure(String            serverName,
+                                            String            dataStructureGUID,
                                             DeleteRequestBody requestBody)
     {
         final String methodName = "deleteDataStructure";
@@ -411,15 +410,15 @@ public class DataDesignerRESTServices extends TokenController
      *  UserNotAuthorizedException the user is not authorized to issue this request
      *  PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public DataStructuresResponse getDataStructuresByName(String            serverName,
-                                                          FilterRequestBody requestBody)
+    public OpenMetadataRootElementsResponse getDataStructuresByName(String            serverName,
+                                                                    FilterRequestBody requestBody)
     {
         final String methodName = "getDataStructuresByName";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
 
-        DataStructuresResponse response = new DataStructuresResponse();
-        AuditLog                        auditLog = null;
+        OpenMetadataRootElementsResponse response = new OpenMetadataRootElementsResponse();
+        AuditLog                         auditLog = null;
 
         try
         {
@@ -462,16 +461,16 @@ public class DataDesignerRESTServices extends TokenController
      *  UserNotAuthorizedException the user is not authorized to issue this request
      *  PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public DataStructureResponse getDataStructureByGUID(String             serverName,
-                                                        String             dataStructureGUID,
-                                                        GetRequestBody requestBody)
+    public OpenMetadataRootElementResponse getDataStructureByGUID(String             serverName,
+                                                                  String             dataStructureGUID,
+                                                                  GetRequestBody requestBody)
     {
         final String methodName = "getDataStructureByGUID";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
 
-        DataStructureResponse response = new DataStructureResponse();
-        AuditLog                      auditLog = null;
+        OpenMetadataRootElementResponse response = new OpenMetadataRootElementResponse();
+        AuditLog                        auditLog = null;
 
         try
         {
@@ -506,15 +505,15 @@ public class DataDesignerRESTServices extends TokenController
      *  UserNotAuthorizedException the user is not authorized to issue this request
      *  PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public DataStructuresResponse findDataStructures(String            serverName,
-                                                     SearchStringRequestBody requestBody)
+    public OpenMetadataRootElementsResponse findDataStructures(String                  serverName,
+                                                               SearchStringRequestBody requestBody)
     {
         final String methodName = "findDataStructures";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
 
-        DataStructuresResponse response = new DataStructuresResponse();
-        AuditLog                        auditLog = null;
+        OpenMetadataRootElementsResponse response = new OpenMetadataRootElementsResponse();
+        AuditLog                         auditLog = null;
 
         try
         {
@@ -616,7 +615,6 @@ public class DataDesignerRESTServices extends TokenController
         restCallLogger.logRESTCallReturn(token, response.toString());
         return response;
     }
-
 
 
     /**
@@ -923,15 +921,15 @@ public class DataDesignerRESTServices extends TokenController
      *  UserNotAuthorizedException the user is not authorized to issue this request
      *  PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public DataFieldsResponse getDataFieldsByName(String            serverName,
-                                                  FilterRequestBody requestBody)
+    public OpenMetadataRootElementsResponse getDataFieldsByName(String            serverName,
+                                                                FilterRequestBody requestBody)
     {
         final String methodName = "getDataFieldsByName";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
 
-        DataFieldsResponse response = new DataFieldsResponse();
-        AuditLog                        auditLog = null;
+        OpenMetadataRootElementsResponse response = new OpenMetadataRootElementsResponse();
+        AuditLog                         auditLog = null;
 
         try
         {
@@ -973,15 +971,15 @@ public class DataDesignerRESTServices extends TokenController
      *  UserNotAuthorizedException the user is not authorized to issue this request
      *  PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public DataFieldsResponse findDataFields(String                  serverName,
-                                             SearchStringRequestBody requestBody)
+    public OpenMetadataRootElementsResponse findDataFields(String                  serverName,
+                                                           SearchStringRequestBody requestBody)
     {
         final String methodName = "findDataFields";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
 
-        DataFieldsResponse response = new DataFieldsResponse();
-        AuditLog                        auditLog = null;
+        OpenMetadataRootElementsResponse response = new OpenMetadataRootElementsResponse();
+        AuditLog                         auditLog = null;
 
         try
         {
@@ -1026,16 +1024,16 @@ public class DataDesignerRESTServices extends TokenController
      *  UserNotAuthorizedException the user is not authorized to issue this request
      *  PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public DataFieldResponse getDataFieldByGUID(String             serverName,
-                                                String             dataFieldGUID,
-                                                GetRequestBody requestBody)
+    public OpenMetadataRootElementResponse getDataFieldByGUID(String             serverName,
+                                                              String             dataFieldGUID,
+                                                              GetRequestBody requestBody)
     {
         final String methodName = "getDataFieldByGUID";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
 
-        DataFieldResponse response = new DataFieldResponse();
-        AuditLog                      auditLog = null;
+        OpenMetadataRootElementResponse response = new OpenMetadataRootElementResponse();
+        AuditLog                        auditLog = null;
 
         try
         {
@@ -1127,7 +1125,6 @@ public class DataDesignerRESTServices extends TokenController
         restCallLogger.logRESTCallReturn(token, response.toString());
         return response;
     }
-
 
 
     /**

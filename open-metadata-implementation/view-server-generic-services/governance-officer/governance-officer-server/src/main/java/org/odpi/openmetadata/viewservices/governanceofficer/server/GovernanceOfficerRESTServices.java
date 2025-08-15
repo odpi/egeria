@@ -8,13 +8,11 @@ import org.odpi.openmetadata.commonservices.ffdc.RESTCallToken;
 import org.odpi.openmetadata.commonservices.ffdc.RESTExceptionHandler;
 import org.odpi.openmetadata.commonservices.ffdc.rest.*;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
-import org.odpi.openmetadata.frameworks.openmetadata.handlers.CollectionHandler;
+import org.odpi.openmetadata.frameworks.openmetadata.handlers.GovernanceDefinitionGraphHandler;
 import org.odpi.openmetadata.frameworks.openmetadata.handlers.GovernanceDefinitionHandler;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.actors.AssignmentScopeProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.governance.*;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.implementations.ImplementationResourceProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.implementations.ImplementedByProperties;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.solutions.SolutionBlueprintCompositionProperties;
 import org.odpi.openmetadata.tokencontroller.TokenController;
 import org.slf4j.LoggerFactory;
 
@@ -638,6 +636,129 @@ public class GovernanceOfficerRESTServices extends TokenController
 
 
 
+    /**
+     * Attach a governance metric to an asset that represents the data store where the measurements are located.
+     *
+     * @param serverName  name of the server instance to connect to
+     * @param urlMarker  view service URL marker
+     * @param governanceMetricGUID unique identifier of the metric to link
+     * @param dataSourceGUID identifier of the asset to link
+     * @param requestBody properties for relationship request
+     *
+     * @return void or
+     * InvalidParameterException full path or userId is null or
+     * PropertyServerException problem accessing property server or
+     * UserNotAuthorizedException security access problem
+     */
+    public VoidResponse linkGovernanceResults(String                     serverName,
+                                              String                     urlMarker,
+                                              String                     governanceMetricGUID,
+                                              String                     dataSourceGUID,
+                                              NewRelationshipRequestBody requestBody)
+    {
+        final String methodName = "linkGovernanceResults";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
+
+        VoidResponse response = new VoidResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+            GovernanceDefinitionHandler handler = instanceHandler.getGovernanceDefinitionHandler(userId, serverName, urlMarker, methodName);
+
+            if (requestBody == null)
+            {
+                handler.linkGovernanceResults(userId,
+                                              governanceMetricGUID,
+                                              dataSourceGUID,
+                                              null,
+                                              null);
+            }
+            else
+            {
+                if (requestBody.getProperties() instanceof GovernanceResultsProperties governedByProperties)
+                {
+                    handler.linkGovernanceResults(userId,
+                                                  governanceMetricGUID,
+                                                  dataSourceGUID,
+                                                  requestBody,
+                                                  governedByProperties);
+                }
+                else if (requestBody.getProperties() == null)
+                {
+                    handler.linkGovernanceResults(userId,
+                                                  governanceMetricGUID,
+                                                  dataSourceGUID,
+                                                  requestBody,
+                                                  null);
+                }
+            }
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+
+        return response;
+    }
+
+
+    /**
+     * Detach a governance metric from an asset that represents the data store where the measurements are located.
+     *
+     * @param serverName  name of the server instance to connect to
+     * @param urlMarker  view service URL marker
+     * @param governanceMetricGUID unique identifier of the metric
+     * @param dataSourceGUID identifier of the asset to unlink
+     * @param requestBody properties for relationship request
+     *
+     * @return void or
+     * InvalidParameterException full path or userId is null or
+     * PropertyServerException problem accessing property server or
+     * UserNotAuthorizedException security access problem
+     */
+    public VoidResponse detachGovernanceResults(String            serverName,
+                                                String            urlMarker,
+                                                String            governanceMetricGUID,
+                                                String            dataSourceGUID,
+                                                DeleteRequestBody requestBody)
+    {
+        final String methodName = "detachGovernanceResults";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
+
+        VoidResponse response = new VoidResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+            GovernanceDefinitionHandler handler = instanceHandler.getGovernanceDefinitionHandler(userId, serverName, urlMarker, methodName);
+
+            handler.detachGovernanceResults(userId, governanceMetricGUID, dataSourceGUID, requestBody);
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+        return response;
+    }
+
+
     /* =======================================
      * Licenses
      */
@@ -1230,7 +1351,7 @@ public class GovernanceOfficerRESTServices extends TokenController
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            GovernanceDefinitionHandler handler = instanceHandler.getGovernanceDefinitionHandler(userId, serverName, urlMarker, methodName);
+            GovernanceDefinitionGraphHandler handler = instanceHandler.getGovernanceDefinitionGraphHandler(userId, serverName, urlMarker, methodName);
 
             response.setElement(handler.getGovernanceDefinitionInContext(userId,
                                                                          governanceDefinitionGUID,

@@ -80,7 +80,6 @@ Content-Type: application/json
   "sequencingProperty" : "qualifiedName"
 }
 
-
 ###
 # @name findCollections (restricted by classificationName)
 # Returns the list of collections matching the search string.

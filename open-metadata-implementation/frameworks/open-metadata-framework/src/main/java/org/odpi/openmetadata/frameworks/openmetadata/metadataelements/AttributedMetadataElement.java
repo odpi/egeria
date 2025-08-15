@@ -174,16 +174,14 @@ public class AttributedMetadataElement implements MetadataElement
     private List<RelatedMetadataElementSummary> certifications    = null; // Certification (0482)
     private List<RelatedMetadataElementSummary> certifiedElements = null; // Certification (0482)
 
-    private List<RelatedMetadataElementSummary> agreementItems        = null; // AgreementItem (0484)
-    private List<RelatedMetadataElementSummary> agreementContents     = null; // AgreementItem (0484)
-    private List<RelatedMetadataElementSummary> agreementActors       = null; // AgreementActor (0484)
-    private List<RelatedMetadataElementSummary> involvedInAgreements  = null; // AgreementActor (0484)
-    private List<RelatedMetadataElementSummary> contracts             = null; // ContractLink (0484)
-    private List<RelatedMetadataElementSummary> agreementsForContract = null; // ContractLink (0484)
+
 
     /*
      * Area 5
      */
+    private RelatedMetadataElementSummary       rootSchemaType                = null; // AssetSchemaType (0503)
+    private RelatedMetadataElementSummary       describesStructureForAsset    = null; // AssetSchemaType (0503)
+
     private List<RelatedMetadataElementSummary> parentSchemaElements = null; // SchemaTypeOption (0501), AttributeForSchema, NestedSchemaAttribute (0505)
     private List<RelatedMetadataElementSummary> schemaOptions        = null; // SchemaTypeOption (0501)
     private List<RelatedMetadataElementSummary> schemaAttributes     = null;  // AttributeForSchema, NestedSchemaAttribute (0505)
@@ -197,8 +195,16 @@ public class AttributedMetadataElement implements MetadataElement
     private List<RelatedMetadataElementSummary> vertices               = null; // GraphEdgeLink (0533)
     private List<RelatedMetadataElementSummary> edges                  = null; // GraphEdgeLink (0533)
 
-    private RelatedMetadataElementSummary       rootSchemaType                = null; // AssetSchemaType (0503)
-    private RelatedMetadataElementSummary       describesStructureForAsset    = null; // AssetSchemaType (0503)
+
+    private List<RelatedMetadataElementSummary> describedByDataClass = null; // DataClassDefinition (0540)
+    private RelatedMetadataElementSummary       dataClassDefinition  = null; // DataClassDefinition (0540)
+    private List<RelatedMetadataElementSummary> assignedToDataClass  = null; // DataClassAssignment (0540)
+    private List<RelatedMetadataElementSummary> assignedDataClasses  = null; // DataClassAssignment (0540)
+    private RelatedMetadataElementSummary       superDataClass       = null; // DataClassHierarchy (0540)
+    private List<RelatedMetadataElementSummary> subDataClasses       = null; // DataClassHierarchy (0540)
+    private List<RelatedMetadataElementSummary> madeOfDataClasses    = null; // DataClassComposition (0540)
+    private List<RelatedMetadataElementSummary> partOfDataClasses    = null; // DataClassComposition (0540)
+
 
     private List<RelatedMetadataElementSummary> validValues               = null; // ValidValueAssignment (0545)
     private List<RelatedMetadataElementSummary> validValueConsumers       = null; // ValidValueAssignment (0545)
@@ -214,12 +220,33 @@ public class AttributedMetadataElement implements MetadataElement
     private List<RelatedMetadataElementSummary> specificationProperties    = null; // SpecificationPropertyAssignment (0545)
     private List<RelatedMetadataElementSummary> specificationPropertyUsers = null; // SpecificationPropertyAssignment (0545)
 
+    private RelatedMetadataElementSummary       dataStructureDefinition   = null; // DataStructureDefinition (0580)
+    private List<RelatedMetadataElementSummary> usedInCertifications      = null; // DataStructureDefinition (0580)
+    private List<RelatedMetadataElementSummary> containsDataFields        = null; // MemberDataField (0580)
+    private List<RelatedMetadataElementSummary> partOfDataStructures      = null; // MemberDataField (0580)
+    private List<RelatedMetadataElementSummary> parentDataFields          = null; // NestedDataField (0581)
+    private List<RelatedMetadataElementSummary> nestedDataFields          = null; // NestedDataField (0581)
+    private List<RelatedMetadataElementSummary> linkedToDataFields        = null; // LinkedDataField (0581)
+    private List<RelatedMetadataElementSummary> linkedFromDataFields      = null; // LinkedDataField (0581)
+    private RelatedMetadataElementSummary       derivedFromDataStructure  = null; // SchemaTypeDefinition (0581)
+    private RelatedMetadataElementSummary       equivalentSchemaType      = null; // SchemaTypeDefinition (0581)
+    private RelatedMetadataElementSummary       derivedFromDataField      = null; // SchemaAttributeDefinition (0581)
+    private RelatedMetadataElementSummary       equivalentSchemaAttribute = null; // SchemaAttributeDefinition (0581)
+
+
+
     /*
      * Area 7
      */
     private List<RelatedMetadataElementSummary> usedByDigitalProducts = null;
     private List<RelatedMetadataElementSummary> usesDigitalProducts   = null;
 
+    private List<RelatedMetadataElementSummary> agreementItems        = null; // AgreementItem (0711)
+    private List<RelatedMetadataElementSummary> agreementContents     = null; // AgreementItem (0711)
+    private List<RelatedMetadataElementSummary> agreementActors       = null; // AgreementActor (0711)
+    private List<RelatedMetadataElementSummary> involvedInAgreements  = null; // AgreementActor (0711)
+    private List<RelatedMetadataElementSummary> contracts             = null; // ContractLink (0711)
+    private List<RelatedMetadataElementSummary> agreementsForContract = null; // ContractLink (0711)
 
     private List<RelatedMetadataElementSummary> digitalSubscribers = null;
     private List<RelatedMetadataElementSummary> digitalSubscriptions = null;
@@ -443,6 +470,15 @@ public class AttributedMetadataElement implements MetadataElement
             vertices = template.getVertices();
             edges    = template.getEdges();
 
+            describedByDataClass = template.getDescribedByDataClass();
+            dataClassDefinition  = template.getDataClassDefinition();
+            assignedToDataClass    = template.getAssignedToDataClass();
+            assignedDataClasses    = template.getAssignedDataClasses();
+            superDataClass         = template.getSuperDataClass();
+            subDataClasses         = template.getSubDataClasses();
+            madeOfDataClasses      = template.getMadeOfDataClasses();
+            partOfDataClasses      = template.getPartOfDataClasses();
+
             validValues               = template.getValidValues();
             validValueConsumers       = template.getValidValueConsumers();
             referenceValues           = template.getReferenceValues();
@@ -456,6 +492,20 @@ public class AttributedMetadataElement implements MetadataElement
             canonicalValidValues      = template.getCanonicalValidValues();
             specificationProperties    = template.getSpecificationProperties();
             specificationPropertyUsers = template.getSpecificationPropertyUsers();
+
+            dataStructureDefinition    = template.getDataStructureDefinition();
+            usedInCertifications       = template.getUsedInCertifications();
+            containsDataFields         = template.getContainsDataFields();
+            partOfDataStructures       = template.getPartOfDataStructures();
+
+            parentDataFields          = template.getParentDataFields();
+            nestedDataFields          = template.getNestedDataFields();
+            linkedToDataFields        = template.getLinkedToDataFields();
+            linkedFromDataFields      = template.getLinkedFromDataFields();
+            derivedFromDataStructure  = template.getDerivedFromDataStructure();
+            equivalentSchemaType      = template.getEquivalentSchemaType();
+            derivedFromDataField      = template.getDerivedFromDataField();
+            equivalentSchemaAttribute = template.getEquivalentSchemaAttribute();
 
             /*
              * Area 6
@@ -2365,6 +2415,98 @@ public class AttributedMetadataElement implements MetadataElement
         this.edges = edges;
     }
 
+    public List<RelatedMetadataElementSummary> getDescribedByDataClass()
+    {
+        return describedByDataClass;
+    }
+
+    public void setDescribedByDataClass(List<RelatedMetadataElementSummary> describedByDataClass)
+    {
+        this.describedByDataClass = describedByDataClass;
+    }
+
+    public RelatedMetadataElementSummary getDataClassDefinition()
+    {
+        return dataClassDefinition;
+    }
+
+    public void setDataClassDefinition(RelatedMetadataElementSummary dataClassDefinition)
+    {
+        this.dataClassDefinition = dataClassDefinition;
+    }
+
+    public List<RelatedMetadataElementSummary> getAssignedToDataClass()
+    {
+        return assignedToDataClass;
+    }
+
+    public void setAssignedToDataClass(List<RelatedMetadataElementSummary> assignedToDataClass)
+    {
+        this.assignedToDataClass = assignedToDataClass;
+    }
+
+
+    /**
+     * Return the assigned data classes that describes the content in this data field.
+     *
+     * @return related elements
+     */
+    public List<RelatedMetadataElementSummary> getAssignedDataClasses()
+    {
+        return assignedDataClasses;
+    }
+
+
+    /**
+     * Set up the assigned data classes that describes the content in this data field.
+     *
+     * @param assignedDataClasses related elements
+     */
+    public void setAssignedDataClasses(List<RelatedMetadataElementSummary> assignedDataClasses)
+    {
+        this.assignedDataClasses = assignedDataClasses;
+    }
+
+    public RelatedMetadataElementSummary getSuperDataClass()
+    {
+        return superDataClass;
+    }
+
+    public void setSuperDataClass(RelatedMetadataElementSummary superDataClass)
+    {
+        this.superDataClass = superDataClass;
+    }
+
+    public List<RelatedMetadataElementSummary> getSubDataClasses()
+    {
+        return subDataClasses;
+    }
+
+    public void setSubDataClasses(List<RelatedMetadataElementSummary> subDataClasses)
+    {
+        this.subDataClasses = subDataClasses;
+    }
+
+    public List<RelatedMetadataElementSummary> getMadeOfDataClasses()
+    {
+        return madeOfDataClasses;
+    }
+
+    public void setMadeOfDataClasses(List<RelatedMetadataElementSummary> madeOfDataClasses)
+    {
+        this.madeOfDataClasses = madeOfDataClasses;
+    }
+
+    public List<RelatedMetadataElementSummary> getPartOfDataClasses()
+    {
+        return partOfDataClasses;
+    }
+
+    public void setPartOfDataClasses(List<RelatedMetadataElementSummary> partOfDataClasses)
+    {
+        this.partOfDataClasses = partOfDataClasses;
+    }
+
     /**
      * Return any valid values associated with this element.
      *
@@ -2512,6 +2654,127 @@ public class AttributedMetadataElement implements MetadataElement
         this.specificationPropertyUsers = specificationPropertyUsers;
     }
 
+
+    public RelatedMetadataElementSummary getDataStructureDefinition()
+    {
+        return dataStructureDefinition;
+    }
+
+    public void setDataStructureDefinition(RelatedMetadataElementSummary dataStructureDefinition)
+    {
+        this.dataStructureDefinition = dataStructureDefinition;
+    }
+
+    public List<RelatedMetadataElementSummary> getUsedInCertifications()
+    {
+        return usedInCertifications;
+    }
+
+    public void setUsedInCertifications(List<RelatedMetadataElementSummary> usedInCertifications)
+    {
+        this.usedInCertifications = usedInCertifications;
+    }
+
+    public List<RelatedMetadataElementSummary> getContainsDataFields()
+    {
+        return containsDataFields;
+    }
+
+    public void setContainsDataFields(List<RelatedMetadataElementSummary> containsDataFields)
+    {
+        this.containsDataFields = containsDataFields;
+    }
+
+    public List<RelatedMetadataElementSummary> getPartOfDataStructures()
+    {
+        return partOfDataStructures;
+    }
+
+    public void setPartOfDataStructures(List<RelatedMetadataElementSummary> partOfDataStructures)
+    {
+        this.partOfDataStructures = partOfDataStructures;
+    }
+
+
+    public List<RelatedMetadataElementSummary> getParentDataFields()
+    {
+        return parentDataFields;
+    }
+
+    public void setParentDataFields(List<RelatedMetadataElementSummary> parentDataFields)
+    {
+        this.parentDataFields = parentDataFields;
+    }
+
+    public List<RelatedMetadataElementSummary> getNestedDataFields()
+    {
+        return nestedDataFields;
+    }
+
+    public void setNestedDataFields(List<RelatedMetadataElementSummary> nestedDataFields)
+    {
+        this.nestedDataFields = nestedDataFields;
+    }
+
+    public List<RelatedMetadataElementSummary> getLinkedToDataFields()
+    {
+        return linkedToDataFields;
+    }
+
+    public void setLinkedToDataFields(List<RelatedMetadataElementSummary> linkedToDataFields)
+    {
+        this.linkedToDataFields = linkedToDataFields;
+    }
+
+    public List<RelatedMetadataElementSummary> getLinkedFromDataFields()
+    {
+        return linkedFromDataFields;
+    }
+
+    public void setLinkedFromDataFields(List<RelatedMetadataElementSummary> linkedFromDataFields)
+    {
+        this.linkedFromDataFields = linkedFromDataFields;
+    }
+
+    public RelatedMetadataElementSummary getDerivedFromDataStructure()
+    {
+        return derivedFromDataStructure;
+    }
+
+    public void setDerivedFromDataStructure(RelatedMetadataElementSummary derivedFromDataStructure)
+    {
+        this.derivedFromDataStructure = derivedFromDataStructure;
+    }
+
+    public RelatedMetadataElementSummary getEquivalentSchemaType()
+    {
+        return equivalentSchemaType;
+    }
+
+    public void setEquivalentSchemaType(RelatedMetadataElementSummary equivalentSchemaType)
+    {
+        this.equivalentSchemaType = equivalentSchemaType;
+    }
+
+    public RelatedMetadataElementSummary getDerivedFromDataField()
+    {
+        return derivedFromDataField;
+    }
+
+    public void setDerivedFromDataField(RelatedMetadataElementSummary derivedFromDataField)
+    {
+        this.derivedFromDataField = derivedFromDataField;
+    }
+
+    public RelatedMetadataElementSummary getEquivalentSchemaAttribute()
+    {
+        return equivalentSchemaAttribute;
+    }
+
+    public void setEquivalentSchemaAttribute(RelatedMetadataElementSummary equivalentSchemaAttribute)
+    {
+        this.equivalentSchemaAttribute = equivalentSchemaAttribute;
+    }
 
     public List<RelatedMetadataElementSummary> getUsedByDigitalProducts()
     {

@@ -5,18 +5,17 @@ package org.odpi.openmetadata.frameworks.openmetadata.handlers;
 
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.openmetadata.client.OpenMetadataClient;
-import org.odpi.openmetadata.frameworks.openmetadata.converters.DataStructureConverter;
-import org.odpi.openmetadata.frameworks.openmetadata.ffdc.*;
-import org.odpi.openmetadata.frameworks.openmetadata.mermaid.DataStructureMermaidGraphBuilder;
-import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.DataStructureElement;
-import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.MemberDataField;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.*;
+import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
+import org.odpi.openmetadata.frameworks.openmetadata.ffdc.PropertyServerException;
+import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.OpenMetadataRootElement;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.ClassificationProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.RelationshipProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.datadictionaries.*;
 import org.odpi.openmetadata.frameworks.openmetadata.search.*;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
@@ -252,11 +251,11 @@ public class DataStructureHandler extends OpenMetadataHandlerBase
      * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    public List<DataStructureElement> getDataStructuresByName(String       userId,
-                                                              String       name,
-                                                              QueryOptions queryOptions) throws InvalidParameterException,
-                                                                                                PropertyServerException,
-                                                                                                UserNotAuthorizedException
+    public List<OpenMetadataRootElement> getDataStructuresByName(String       userId,
+                                                                 String       name,
+                                                                 QueryOptions queryOptions) throws InvalidParameterException,
+                                                                                                   PropertyServerException,
+                                                                                                   UserNotAuthorizedException
     {
         final String methodName = "getDataStructuresByName";
         final String nameParameterName = "name";
@@ -265,16 +264,14 @@ public class DataStructureHandler extends OpenMetadataHandlerBase
         propertyHelper.validateMandatoryName(name, nameParameterName, methodName);
 
         List<String> propertyNames = Arrays.asList(OpenMetadataProperty.QUALIFIED_NAME.name,
-                                                   OpenMetadataProperty.DISPLAY_NAME.name);
+                                                   OpenMetadataProperty.DISPLAY_NAME.name,
+                                                   OpenMetadataProperty.NAMESPACE.name);
 
-        propertyHelper.validatePaging(queryOptions, openMetadataClient.getMaxPagingSize(), methodName);
-
-        List<OpenMetadataElement> openMetadataElements = openMetadataClient.findMetadataElements(userId,
-                                                                                                 propertyHelper.getSearchPropertiesByName(propertyNames, name, PropertyComparisonOperator.EQ),
-                                                                                                 null,
-                                                                                                 super.addDefaultType(queryOptions));
-
-        return convertDataStructures(userId, openMetadataElements, queryOptions, methodName);
+        return super.getRootElementsByName(userId,
+                                           name,
+                                           propertyNames,
+                                           queryOptions,
+                                           methodName);
     }
 
 
@@ -289,11 +286,11 @@ public class DataStructureHandler extends OpenMetadataHandlerBase
      * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    public DataStructureElement getDataStructureByGUID(String  userId,
-                                                       String  dataStructureGUID,
-                                                       GetOptions getOptions) throws InvalidParameterException,
-                                                                                     PropertyServerException,
-                                                                                     UserNotAuthorizedException
+    public OpenMetadataRootElement getDataStructureByGUID(String  userId,
+                                                          String  dataStructureGUID,
+                                                          GetOptions getOptions) throws InvalidParameterException,
+                                                                                        PropertyServerException,
+                                                                                        UserNotAuthorizedException
     {
         final String methodName = "getDataStructureByGUID";
         final String guidParameterName = "dataStructureGUID";
@@ -301,17 +298,7 @@ public class DataStructureHandler extends OpenMetadataHandlerBase
         propertyHelper.validateUserId(userId, methodName);
         propertyHelper.validateGUID(dataStructureGUID, guidParameterName, methodName);
 
-        OpenMetadataElement openMetadataElement = openMetadataClient.getMetadataElementByGUID(userId, dataStructureGUID, getOptions);
-
-        if ((openMetadataElement != null) && (propertyHelper.isTypeOf(openMetadataElement, metadataElementTypeName)))
-        {
-            return convertDataStructure(userId,
-                                        openMetadataElement,
-                                        new QueryOptions(getOptions),
-                                        methodName);
-        }
-
-        return null;
+        return super.getRootElementByGUID(userId, dataStructureGUID, getOptions, methodName);
     }
 
 
@@ -327,23 +314,15 @@ public class DataStructureHandler extends OpenMetadataHandlerBase
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public List<DataStructureElement> findDataStructures(String        userId,
-                                                         String        searchString,
-                                                         SearchOptions searchOptions) throws InvalidParameterException,
-                                                                                             UserNotAuthorizedException,
-                                                                                             PropertyServerException
+    public List<OpenMetadataRootElement> findDataStructures(String        userId,
+                                                            String        searchString,
+                                                            SearchOptions searchOptions) throws InvalidParameterException,
+                                                                                                UserNotAuthorizedException,
+                                                                                                PropertyServerException
     {
         final String methodName = "findDataStructures";
-        final String searchStringParameterName = "searchString";
 
-        propertyHelper.validateUserId(userId, methodName);
-        propertyHelper.validateSearchString(searchString, searchStringParameterName, methodName);
-
-        List<OpenMetadataElement> openMetadataElements = openMetadataClient.findMetadataElementsWithString(userId,
-                                                                                                           searchString,
-                                                                                                           super.addDefaultType(searchOptions));
-
-        return convertDataStructures(userId, openMetadataElements, searchOptions, methodName);
+        return super.findRootElements(userId, searchString, searchOptions, methodName);
     }
 
 
@@ -573,138 +552,35 @@ public class DataStructureHandler extends OpenMetadataHandlerBase
      * Converter functions
      */
 
-
     /**
-     * Convert the open metadata elements retrieved into data structure elements.
+     * Add a standard mermaid graph to the root element.  This method may be overridden by the subclasses if
+     * they have a more fancy graph to display.
      *
      * @param userId calling user
-     * @param openMetadataElements elements extracted from the repository
-     * @param queryOptions multiple options to control the query
-     * @param methodName calling method
-     * @return list of data structures (or null)
-     * @throws PropertyServerException problem with the conversion process
+     * @param rootElement new root element
+     * @param queryOptions options from the caller
+     * @return root element with graph
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    private List<DataStructureElement> convertDataStructures(String                    userId,
-                                                             List<OpenMetadataElement> openMetadataElements,
-                                                             QueryOptions              queryOptions,
-                                                             String                    methodName) throws PropertyServerException
+    protected OpenMetadataRootElement addMermaidToRootElement(String                  userId,
+                                                              OpenMetadataRootElement rootElement,
+                                                              QueryOptions            queryOptions) throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException
     {
-        if (openMetadataElements != null)
+        if (rootElement != null)
         {
-            List<DataStructureElement> dataStructureElements = new ArrayList<>();
+            rootElement.setContainsDataFields(super.getElementHierarchies(userId,
+                                                                        rootElement.getElementHeader().getGUID(),
+                                                                        rootElement.getContainsDataFields(),
+                                                                        1,
+                                                                        OpenMetadataType.MEMBER_DATA_FIELD_RELATIONSHIP.typeName,
+                                                                        queryOptions,
+                                                                        1));
 
-            for (OpenMetadataElement openMetadataElement : openMetadataElements)
-            {
-                if (openMetadataElement != null)
-                {
-                    dataStructureElements.add(convertDataStructure(userId, openMetadataElement, queryOptions, methodName));
-                }
-            }
-
-            return dataStructureElements;
+            super.addMermaidToRootElement(userId, rootElement, queryOptions);
         }
 
-        return null;
-    }
-
-
-
-    /**
-     * Return the data structure extracted from the open metadata element.
-     *
-     * @param userId calling user
-     * @param openMetadataElement element extracted from the repository
-     * @param queryOptions multiple options to control the query
-     * @param methodName calling method
-     * @return bean or null
-     * @throws PropertyServerException problem with the conversion process
-     */
-    private DataStructureElement convertDataStructure(String              userId,
-                                                      OpenMetadataElement openMetadataElement,
-                                                      QueryOptions        queryOptions,
-                                                      String              methodName) throws PropertyServerException
-    {
-        try
-        {
-            List<MemberDataField>        relatedFields        = new ArrayList<>();
-            List<RelatedMetadataElement> otherRelatedElements = new ArrayList<>();
-
-            QueryOptions workingQueryOptions = new QueryOptions(queryOptions);
-            workingQueryOptions.setStartFrom(0);
-            workingQueryOptions.setPageSize(openMetadataClient.getMaxPagingSize());
-
-            RelatedMetadataElementList relatedMetadataElementList = openMetadataClient.getRelatedMetadataElements(userId,
-                                                                                                                  openMetadataElement.getElementGUID(),
-                                                                                                                  0,
-                                                                                                                  null,
-                                                                                                                  workingQueryOptions);
-            while ((relatedMetadataElementList != null) && (relatedMetadataElementList.getElementList() != null))
-            {
-                for (RelatedMetadataElement relatedMetadataElement : relatedMetadataElementList.getElementList())
-                {
-                    if (relatedMetadataElement != null)
-                    {
-                        if (propertyHelper.isTypeOf(relatedMetadataElement, OpenMetadataType.MEMBER_DATA_FIELD_RELATIONSHIP.typeName))
-                        {
-                            relatedFields.add(this.convertMemberDataField(userId,
-                                                                          relatedMetadataElement,
-                                                                          queryOptions,
-                                                                          methodName));
-                        }
-                        else
-                        {
-                            otherRelatedElements.add(relatedMetadataElement);
-                        }
-                    }
-                }
-
-                workingQueryOptions.setStartFrom(workingQueryOptions.getStartFrom() + openMetadataClient.getMaxPagingSize());
-                relatedMetadataElementList = openMetadataClient.getRelatedMetadataElements(userId,
-                                                                                           openMetadataElement.getElementGUID(),
-                                                                                           0,
-                                                                                           null,
-                                                                                           workingQueryOptions);
-            }
-
-
-            DataStructureConverter<DataStructureElement> converter = new DataStructureConverter<>(propertyHelper, localServiceName, localServerName);
-            DataStructureElement dataStructureElement = converter.getNewComplexBean(DataStructureElement.class,
-                                                                                    openMetadataElement,
-                                                                                    otherRelatedElements,
-                                                                                    methodName);
-            if (dataStructureElement != null)
-            {
-                if (! relatedFields.isEmpty())
-                {
-                    dataStructureElement.setMemberDataFields(relatedFields);
-                }
-
-                DataStructureMermaidGraphBuilder graphBuilder = new DataStructureMermaidGraphBuilder(dataStructureElement);
-
-                dataStructureElement.setMermaidGraph(graphBuilder.getMermaidGraph());
-            }
-
-            return dataStructureElement;
-        }
-        catch (Exception error)
-        {
-            if (auditLog != null)
-            {
-                auditLog.logException(methodName,
-                                      OMFAuditCode.UNEXPECTED_CONVERTER_EXCEPTION.getMessageDefinition(error.getClass().getName(),
-                                                                                                       methodName,
-                                                                                                       localServiceName,
-                                                                                                       error.getMessage()),
-                                      error);
-            }
-
-            throw new PropertyServerException(OMFErrorCode.UNEXPECTED_CONVERTER_EXCEPTION.getMessageDefinition(error.getClass().getName(),
-                                                                                                               methodName,
-                                                                                                               localServiceName,
-                                                                                                               error.getMessage()),
-                                              error.getClass().getName(),
-                                              methodName,
-                                              error);
-        }
+        return rootElement;
     }
 }

@@ -395,6 +395,21 @@ public class AttributedElementConverterBase<B> extends OpenMetadataConverterBase
             attributedMetadataElement.setEdges(super.getRelatedElements(OpenMetadataType.GRAPH_EDGE_LINK_RELATIONSHIP.typeName, relatedMetadataElements, true));
             processedRelationshipTypes.add(OpenMetadataType.GRAPH_EDGE_LINK_RELATIONSHIP.typeName);
 
+
+            attributedMetadataElement.setDataClassDefinition(super.getRelatedElement(OpenMetadataType.DATA_CLASS_DEFINITION_RELATIONSHIP.typeName, relatedMetadataElements, false));
+            attributedMetadataElement.setDescribedByDataClass(super.getRelatedElements(OpenMetadataType.DATA_CLASS_DEFINITION_RELATIONSHIP.typeName, relatedMetadataElements, true));
+            processedRelationshipTypes.add(OpenMetadataType.DATA_CLASS_DEFINITION_RELATIONSHIP.typeName);
+            attributedMetadataElement.setAssignedDataClasses(super.getRelatedElements(OpenMetadataType.DATA_CLASS_ASSIGNMENT_RELATIONSHIP.typeName, relatedMetadataElements, false));
+            attributedMetadataElement.setAssignedToDataClass(super.getRelatedElements(OpenMetadataType.DATA_CLASS_ASSIGNMENT_RELATIONSHIP.typeName, relatedMetadataElements, true));
+            processedRelationshipTypes.add(OpenMetadataType.DATA_CLASS_ASSIGNMENT_RELATIONSHIP.typeName);
+            attributedMetadataElement.setSubDataClasses(super.getRelatedElements(OpenMetadataType.DATA_CLASS_HIERARCHY_RELATIONSHIP.typeName, relatedMetadataElements, false));
+            attributedMetadataElement.setSuperDataClass(super.getRelatedElement(OpenMetadataType.DATA_CLASS_HIERARCHY_RELATIONSHIP.typeName, relatedMetadataElements, true));
+            processedRelationshipTypes.add(OpenMetadataType.DATA_CLASS_HIERARCHY_RELATIONSHIP.typeName);
+            attributedMetadataElement.setMadeOfDataClasses(super.getRelatedElements(OpenMetadataType.DATA_CLASS_COMPOSITION_RELATIONSHIP.typeName, relatedMetadataElements, false));
+            attributedMetadataElement.setPartOfDataClasses(super.getRelatedElements(OpenMetadataType.DATA_CLASS_COMPOSITION_RELATIONSHIP.typeName, relatedMetadataElements, true));
+            processedRelationshipTypes.add(OpenMetadataType.DATA_CLASS_COMPOSITION_RELATIONSHIP.typeName);
+
+
             attributedMetadataElement.setValidValues(super.getRelatedElements(OpenMetadataType.VALID_VALUES_ASSIGNMENT_RELATIONSHIP.typeName, relatedMetadataElements, false));
             attributedMetadataElement.setValidValueConsumers(super.getRelatedElements(OpenMetadataType.VALID_VALUES_ASSIGNMENT_RELATIONSHIP.typeName, relatedMetadataElements, true));
             processedRelationshipTypes.add(OpenMetadataType.VALID_VALUES_ASSIGNMENT_RELATIONSHIP.typeName);
@@ -423,6 +438,29 @@ public class AttributedElementConverterBase<B> extends OpenMetadataConverterBase
             attributedMetadataElement.setSpecificationProperties(super.getRelatedElements(OpenMetadataType.SPECIFICATION_PROPERTY_ASSIGNMENT_RELATIONSHIP.typeName, relatedMetadataElements, false));
             attributedMetadataElement.setSpecificationPropertyUsers(super.getRelatedElements(OpenMetadataType.SPECIFICATION_PROPERTY_ASSIGNMENT_RELATIONSHIP.typeName, relatedMetadataElements, true));
             processedRelationshipTypes.add(OpenMetadataType.SPECIFICATION_PROPERTY_ASSIGNMENT_RELATIONSHIP.typeName);
+
+
+            attributedMetadataElement.setDataStructureDefinition(super.getRelatedElement(OpenMetadataType.DATA_STRUCTURE_DEFINITION_RELATIONSHIP.typeName, relatedMetadataElements, false));
+            attributedMetadataElement.setUsedInCertifications(super.getRelatedElements(OpenMetadataType.DATA_STRUCTURE_DEFINITION_RELATIONSHIP.typeName, relatedMetadataElements, true));
+            processedRelationshipTypes.add(OpenMetadataType.DATA_STRUCTURE_DEFINITION_RELATIONSHIP.typeName);
+            attributedMetadataElement.setContainsDataFields(super.getRelatedElements(OpenMetadataType.MEMBER_DATA_FIELD_RELATIONSHIP.typeName, relatedMetadataElements, false));
+            attributedMetadataElement.setPartOfDataStructures(super.getRelatedElements(OpenMetadataType.MEMBER_DATA_FIELD_RELATIONSHIP.typeName, relatedMetadataElements, true));
+            processedRelationshipTypes.add(OpenMetadataType.MEMBER_DATA_FIELD_RELATIONSHIP.typeName);
+
+
+            attributedMetadataElement.setLinkedToDataFields(super.getRelatedElements(OpenMetadataType.LINKED_DATA_FIELD_RELATIONSHIP.typeName, relatedMetadataElements, false));
+            attributedMetadataElement.setLinkedFromDataFields(super.getRelatedElements(OpenMetadataType.LINKED_DATA_FIELD_RELATIONSHIP.typeName, relatedMetadataElements, true));
+            processedRelationshipTypes.add(OpenMetadataType.LINKED_DATA_FIELD_RELATIONSHIP.typeName);
+            attributedMetadataElement.setNestedDataFields(super.getRelatedElements(OpenMetadataType.NESTED_DATA_FIELD_RELATIONSHIP.typeName, relatedMetadataElements, false));
+            attributedMetadataElement.setParentDataFields(super.getRelatedElements(OpenMetadataType.NESTED_DATA_FIELD_RELATIONSHIP.typeName, relatedMetadataElements, true));
+            processedRelationshipTypes.add(OpenMetadataType.NESTED_DATA_FIELD_RELATIONSHIP.typeName);
+            attributedMetadataElement.setEquivalentSchemaType(super.getRelatedElement(OpenMetadataType.SCHEMA_TYPE_DEFINITION_RELATIONSHIP.typeName, relatedMetadataElements, false));
+            attributedMetadataElement.setDerivedFromDataStructure(super.getRelatedElement(OpenMetadataType.SCHEMA_TYPE_DEFINITION_RELATIONSHIP.typeName, relatedMetadataElements, true));
+            processedRelationshipTypes.add(OpenMetadataType.SCHEMA_TYPE_DEFINITION_RELATIONSHIP.typeName);
+            attributedMetadataElement.setEquivalentSchemaAttribute(super.getRelatedElement(OpenMetadataType.SCHEMA_ATTRIBUTE_DEFINITION_RELATIONSHIP.typeName, relatedMetadataElements, false));
+            attributedMetadataElement.setDerivedFromDataField(super.getRelatedElement(OpenMetadataType.SCHEMA_ATTRIBUTE_DEFINITION_RELATIONSHIP.typeName, relatedMetadataElements, true));
+            processedRelationshipTypes.add(OpenMetadataType.SCHEMA_ATTRIBUTE_DEFINITION_RELATIONSHIP.typeName);
+
 
             /*
              * Area 7

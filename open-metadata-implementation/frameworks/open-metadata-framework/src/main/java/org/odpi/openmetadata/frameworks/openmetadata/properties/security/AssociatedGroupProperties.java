@@ -30,7 +30,7 @@ public class AssociatedGroupProperties extends RelationshipBeanProperties
     public AssociatedGroupProperties()
     {
         super();
-        super.setTypeName(OpenMetadataType.ASSOCIATED_GROUP_RELATIONSHIP.typeName);
+        super.setTypeName(OpenMetadataType.ASSOCIATED_SECURITY_GROUP_RELATIONSHIP.typeName);
     }
 
 
