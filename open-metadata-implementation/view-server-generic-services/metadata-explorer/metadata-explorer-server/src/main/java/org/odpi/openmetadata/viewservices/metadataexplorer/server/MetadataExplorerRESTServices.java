@@ -43,7 +43,7 @@ public class MetadataExplorerRESTServices extends TokenController
      *
      * @param serverName     name of server instance to route request to
      * @param elementGUID unique identifier for the metadata element
-     * @param viewServiceURLMarker  view service URL marker
+     * @param urlMarker  view service URL marker
 
      * @param requestBody only return the element if it is effective at this time. Null means anytime. Use "new Date()" for now.
      *
@@ -54,7 +54,7 @@ public class MetadataExplorerRESTServices extends TokenController
      */
     public OpenMetadataElementResponse getMetadataElementByGUID(String             serverName,
                                                                 String             elementGUID,
-                                                                String             viewServiceURLMarker,
+                                                                String             urlMarker,
                                                                 GetRequestBody requestBody)
     {
         final String methodName = "getMetadataElementByGUID";
@@ -72,7 +72,7 @@ public class MetadataExplorerRESTServices extends TokenController
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            OpenMetadataClient handler = instanceHandler.getOpenMetadataHandler(userId, serverName, viewServiceURLMarker, methodName);
+            OpenMetadataClient handler = instanceHandler.getOpenMetadataHandler(userId, serverName, urlMarker, methodName);
 
             response.setElement(handler.getMetadataElementByGUID(userId, elementGUID, requestBody));
         }
@@ -90,7 +90,7 @@ public class MetadataExplorerRESTServices extends TokenController
      * Retrieve the metadata element using its unique name (typically the qualified name).
      *
      * @param serverName     name of server instance to route request to
-     * @param viewServiceURLMarker  view service URL marker
+     * @param urlMarker  view service URL marker
      * @param requestBody unique name for the metadata element
      *
      * @return metadata element properties or
@@ -99,7 +99,7 @@ public class MetadataExplorerRESTServices extends TokenController
      *  PropertyServerException there is a problem accessing the metadata store
      */
     public OpenMetadataElementResponse getMetadataElementByUniqueName(String                serverName,
-                                                                      String                viewServiceURLMarker,
+                                                                      String                urlMarker,
                                                                       UniqueNameRequestBody requestBody)
     {
         final String methodName = "getMetadataElementByUniqueName";
@@ -119,7 +119,7 @@ public class MetadataExplorerRESTServices extends TokenController
 
             if (requestBody != null)
             {
-                OpenMetadataClient handler = instanceHandler.getOpenMetadataHandler(userId, serverName, viewServiceURLMarker, methodName);
+                OpenMetadataClient handler = instanceHandler.getOpenMetadataHandler(userId, serverName, urlMarker, methodName);
 
                 response.setElement(handler.getMetadataElementByUniqueName(userId,
                                                                            requestBody.getName(),
@@ -145,7 +145,7 @@ public class MetadataExplorerRESTServices extends TokenController
      * Retrieve the unique identifier of a metadata element using its unique name (typically the qualified name).
      *
      * @param serverName     name of server instance to route request to
-     * @param viewServiceURLMarker  view service URL marker
+     * @param urlMarker  view service URL marker
      * @param requestBody unique name for the metadata element
      *
      * @return metadata element unique identifier (guid) or
@@ -154,7 +154,7 @@ public class MetadataExplorerRESTServices extends TokenController
      *  PropertyServerException there is a problem accessing the metadata store
      */
     public GUIDResponse getMetadataElementGUIDByUniqueName(String                serverName,
-                                                           String                viewServiceURLMarker,
+                                                           String                urlMarker,
                                                            UniqueNameRequestBody requestBody)
     {
         final String methodName = "getMetadataElementGUIDByUniqueName";
@@ -174,7 +174,7 @@ public class MetadataExplorerRESTServices extends TokenController
 
             if (requestBody != null)
             {
-                OpenMetadataClient handler = instanceHandler.getOpenMetadataHandler(userId, serverName, viewServiceURLMarker, methodName);
+                OpenMetadataClient handler = instanceHandler.getOpenMetadataHandler(userId, serverName, urlMarker, methodName);
 
                 response.setGUID(handler.getMetadataElementGUIDByUniqueName(userId,
                                                                             requestBody.getName(),
@@ -201,7 +201,7 @@ public class MetadataExplorerRESTServices extends TokenController
      *
      * @param serverName     name of server instance to route request to
      * @param elementGUID unique identifier for the metadata element
-     * @param viewServiceURLMarker  view service URL marker
+     * @param urlMarker  view service URL marker
      * @param requestBody the time window required
      *
      * @return list of matching metadata elements (or null if no elements match the name) or
@@ -211,7 +211,7 @@ public class MetadataExplorerRESTServices extends TokenController
      */
     public OpenMetadataElementsResponse getMetadataElementHistory(String             serverName,
                                                                   String             elementGUID,
-                                                                  String             viewServiceURLMarker,
+                                                                  String             urlMarker,
                                                                   HistoryRequestBody requestBody)
     {
         final String methodName = "getMetadataElementHistory";
@@ -229,7 +229,7 @@ public class MetadataExplorerRESTServices extends TokenController
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            OpenMetadataClient handler = instanceHandler.getOpenMetadataHandler(userId, serverName, viewServiceURLMarker, methodName);
+            OpenMetadataClient handler = instanceHandler.getOpenMetadataHandler(userId, serverName, urlMarker, methodName);
 
             response.setElementList(handler.getMetadataElementHistory(userId, elementGUID, requestBody));
         }
@@ -247,7 +247,7 @@ public class MetadataExplorerRESTServices extends TokenController
      * Retrieve the metadata elements that contain the requested string.
      *
      * @param serverName     name of server instance to route request to
-     * @param viewServiceURLMarker  view service URL marker
+     * @param urlMarker  view service URL marker
      * @param requestBody searchString  to retrieve
      *
      * @return list of matching metadata elements (or null if no elements match the name) or
@@ -256,7 +256,7 @@ public class MetadataExplorerRESTServices extends TokenController
      *  PropertyServerException there is a problem accessing the metadata store
      */
     public OpenMetadataElementsResponse findMetadataElementsWithString(String                  serverName,
-                                                                       String                  viewServiceURLMarker,
+                                                                       String                  urlMarker,
                                                                        SearchStringRequestBody requestBody)
     {
         final String methodName = "findMetadataElementsWithString";
@@ -276,7 +276,7 @@ public class MetadataExplorerRESTServices extends TokenController
 
             if (requestBody != null)
             {
-                OpenMetadataClient handler = instanceHandler.getOpenMetadataHandler(userId, serverName, viewServiceURLMarker, methodName);
+                OpenMetadataClient handler = instanceHandler.getOpenMetadataHandler(userId, serverName, urlMarker, methodName);
 
                 response.setElementList(handler.findMetadataElementsWithString(userId,
                                                                                requestBody.getSearchString(),
@@ -305,7 +305,7 @@ public class MetadataExplorerRESTServices extends TokenController
      * The breadth of the search is determined by the supplied anchorGUID.
      *
      * @param serverName     name of server instance to route request to
-     * @param viewServiceURLMarker  view service URL marker
+     * @param urlMarker  view service URL marker
      * @param anchorGUID unique identifier of anchor
      * @param requestBody searchString  to retrieve
      *
@@ -315,7 +315,7 @@ public class MetadataExplorerRESTServices extends TokenController
      *  PropertyServerException there is a problem accessing the metadata store
      */
     public AnchorSearchMatchesResponse findElementsForAnchor(String                  serverName,
-                                                             String                  viewServiceURLMarker,
+                                                             String                  urlMarker,
                                                              String                  anchorGUID,
                                                              SearchStringRequestBody requestBody)
     {
@@ -336,7 +336,7 @@ public class MetadataExplorerRESTServices extends TokenController
 
             if (requestBody != null)
             {
-                OpenMetadataClient handler = instanceHandler.getOpenMetadataHandler(userId, serverName, viewServiceURLMarker, methodName);
+                OpenMetadataClient handler = instanceHandler.getOpenMetadataHandler(userId, serverName, urlMarker, methodName);
 
                 response.setElement(handler.findElementsForAnchor(userId,
                                                                   requestBody.getSearchString(),
@@ -364,7 +364,7 @@ public class MetadataExplorerRESTServices extends TokenController
      * The breadth of the search is determined by the supplied domain name. The results are organized by anchor element.
      *
      * @param serverName     name of server instance to route request to
-     * @param viewServiceURLMarker  view service URL marker
+     * @param urlMarker  view service URL marker
      * @param anchorDomainName name of open metadata type for the domain
      * @param requestBody searchString  to retrieve
      *
@@ -374,7 +374,7 @@ public class MetadataExplorerRESTServices extends TokenController
      *  PropertyServerException there is a problem accessing the metadata store
      */
     public AnchorSearchMatchesListResponse findElementsInAnchorDomain(String                  serverName,
-                                                                      String                  viewServiceURLMarker,
+                                                                      String                  urlMarker,
                                                                       String                  anchorDomainName,
                                                                       SearchStringRequestBody requestBody)
     {
@@ -395,7 +395,7 @@ public class MetadataExplorerRESTServices extends TokenController
 
             if (requestBody != null)
             {
-                OpenMetadataClient handler = instanceHandler.getOpenMetadataHandler(userId, serverName, viewServiceURLMarker, methodName);
+                OpenMetadataClient handler = instanceHandler.getOpenMetadataHandler(userId, serverName, urlMarker, methodName);
 
                 response.setElements(handler.findElementsInAnchorDomain(userId,
                                                                         requestBody.getSearchString(),
@@ -423,7 +423,7 @@ public class MetadataExplorerRESTServices extends TokenController
      * The breadth of the search is determined by the supplied scope guid. The results are organized by anchor element.
      *
      * @param serverName     name of server instance to route request to
-     * @param viewServiceURLMarker  view service URL marker
+     * @param urlMarker  view service URL marker
      * @param anchorScopeGUID unique identifier of the scope to use
      * @param requestBody searchString  to retrieve
      *
@@ -433,7 +433,7 @@ public class MetadataExplorerRESTServices extends TokenController
      *  PropertyServerException there is a problem accessing the metadata store
      */
     public AnchorSearchMatchesListResponse findElementsInAnchorScope(String                  serverName,
-                                                                     String                  viewServiceURLMarker,
+                                                                     String                  urlMarker,
                                                                      String                  anchorScopeGUID,
                                                                      SearchStringRequestBody requestBody)
     {
@@ -454,7 +454,7 @@ public class MetadataExplorerRESTServices extends TokenController
 
             if (requestBody != null)
             {
-                OpenMetadataClient handler = instanceHandler.getOpenMetadataHandler(userId, serverName, viewServiceURLMarker, methodName);
+                OpenMetadataClient handler = instanceHandler.getOpenMetadataHandler(userId, serverName, urlMarker, methodName);
 
                 response.setElements(handler.findElementsInAnchorScope(userId,
                                                                        requestBody.getSearchString(),
@@ -482,7 +482,7 @@ public class MetadataExplorerRESTServices extends TokenController
      * @param serverName     name of server instance to route request to
      * @param elementGUID unique identifier for the starting metadata element
      * @param relationshipTypeName type name of relationships to follow (or null for all)
-     * @param viewServiceURLMarker  view service URL marker
+     * @param urlMarker  view service URL marker
      * @param startingAtEnd indicates which end to retrieve from (0 is "either end"; 1 is end1; 2 is end 2)
      * @param requestBody only return an element if it is effective at this time. Null means anytime. Use "new Date()" for now.
      *
@@ -494,7 +494,7 @@ public class MetadataExplorerRESTServices extends TokenController
     public RelatedMetadataElementListResponse getRelatedMetadataElements(String             serverName,
                                                                          String             elementGUID,
                                                                          String             relationshipTypeName,
-                                                                         String             viewServiceURLMarker,
+                                                                         String             urlMarker,
                                                                          int                startingAtEnd,
                                                                          ResultsRequestBody requestBody)
     {
@@ -513,7 +513,7 @@ public class MetadataExplorerRESTServices extends TokenController
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            OpenMetadataClient handler = instanceHandler.getOpenMetadataHandler(userId, serverName, viewServiceURLMarker, methodName);
+            OpenMetadataClient handler = instanceHandler.getOpenMetadataHandler(userId, serverName, urlMarker, methodName);
 
             response.setRelatedElementList(handler.getRelatedMetadataElements(userId,
                                                                               elementGUID,
@@ -536,7 +536,7 @@ public class MetadataExplorerRESTServices extends TokenController
      * Return all the elements that are anchored to an asset plus relationships between these elements and to other elements.
      *
      * @param serverName name of the server instances for this request
-     * @param viewServiceURLMarker      the identifier of the view service
+     * @param urlMarker      the identifier of the view service
      * @param elementGUID  unique identifier for the element
      * @param requestBody effective time and asOfTime
      *
@@ -546,7 +546,7 @@ public class MetadataExplorerRESTServices extends TokenController
      * UserNotAuthorizedException - the requesting user is not authorized to issue this request.
      */
     public OpenMetadataGraphResponse getAnchoredElementsGraph(String             serverName,
-                                                              String             viewServiceURLMarker,
+                                                              String             urlMarker,
                                                               String             elementGUID,
                                                               ResultsRequestBody requestBody)
     {
@@ -565,7 +565,7 @@ public class MetadataExplorerRESTServices extends TokenController
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            OpenMetadataClient handler = instanceHandler.getOpenMetadataHandler(userId, serverName, viewServiceURLMarker, methodName);
+            OpenMetadataClient handler = instanceHandler.getOpenMetadataHandler(userId, serverName, urlMarker, methodName);
 
             response.setElementGraph(handler.getAnchoredElementsGraph(userId, elementGUID, requestBody));
         }
@@ -586,7 +586,7 @@ public class MetadataExplorerRESTServices extends TokenController
      * @param metadataElementAtEnd1GUID unique identifier of the metadata element at end 1 of the relationship
      * @param metadataElementAtEnd2GUID unique identifier of the metadata element at end 2 of the relationship
      * @param relationshipTypeName type name of relationships to follow (or null for all)
-     * @param viewServiceURLMarker  view service URL marker
+     * @param urlMarker  view service URL marker
      * @param requestBody only return an element if it is effective at this time. Null means anytime. Use "new Date()" for now.
      *
      * @return list of related elements
@@ -598,7 +598,7 @@ public class MetadataExplorerRESTServices extends TokenController
                                                                                 String             metadataElementAtEnd1GUID,
                                                                                 String             relationshipTypeName,
                                                                                 String             metadataElementAtEnd2GUID,
-                                                                                String             viewServiceURLMarker,
+                                                                                String             urlMarker,
                                                                                 ResultsRequestBody requestBody)
     {
         final String methodName = "getMetadataElementRelationships";
@@ -616,7 +616,7 @@ public class MetadataExplorerRESTServices extends TokenController
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            OpenMetadataClient handler = instanceHandler.getOpenMetadataHandler(userId, serverName, viewServiceURLMarker, methodName);
+            OpenMetadataClient handler = instanceHandler.getOpenMetadataHandler(userId, serverName, urlMarker, methodName);
 
             response.setRelationshipList(handler.getMetadataElementRelationships(userId,
                                                                                  metadataElementAtEnd1GUID,
@@ -638,7 +638,7 @@ public class MetadataExplorerRESTServices extends TokenController
      * Return a list of metadata elements that match the supplied criteria.  The results can be returned over many pages.
      *
      * @param serverName     name of server instance to route request to
-     * @param viewServiceURLMarker  view service URL marker
+     * @param urlMarker  view service URL marker
      * @param requestBody properties defining the search criteria
      *
      * @return a list of elements matching the supplied criteria; null means no matching elements in the metadata store.
@@ -647,7 +647,7 @@ public class MetadataExplorerRESTServices extends TokenController
      *  PropertyServerException there is a problem accessing the metadata store
      */
     public OpenMetadataElementsResponse findMetadataElements(String          serverName,
-                                                             String          viewServiceURLMarker,
+                                                             String          urlMarker,
                                                              FindRequestBody requestBody)
     {
         final String methodName = "findMetadataElements";
@@ -667,7 +667,7 @@ public class MetadataExplorerRESTServices extends TokenController
 
             if (requestBody != null)
             {
-                OpenMetadataClient handler = instanceHandler.getOpenMetadataHandler(userId, serverName, viewServiceURLMarker, methodName);
+                OpenMetadataClient handler = instanceHandler.getOpenMetadataHandler(userId, serverName, urlMarker, methodName);
 
                 response.setElementList(handler.findMetadataElements(userId,
                                                                      requestBody.getSearchProperties(),
@@ -693,7 +693,7 @@ public class MetadataExplorerRESTServices extends TokenController
      * Return a list of relationships that match the requested conditions.  The results can be received as a series of pages.
      *
      * @param serverName     name of server instance to route request to
-     * @param viewServiceURLMarker  view service URL marker
+     * @param urlMarker  view service URL marker
      * @param requestBody properties defining the search criteria
      *
      * @return a list of relationships - null means no matching relationships - or
@@ -702,7 +702,7 @@ public class MetadataExplorerRESTServices extends TokenController
      *  PropertyServerException there is a problem accessing the metadata store
      */
     public OpenMetadataRelationshipListResponse findRelationshipsBetweenMetadataElements(String                      serverName,
-                                                                                         String                      viewServiceURLMarker,
+                                                                                         String                      urlMarker,
                                                                                          FindRelationshipRequestBody requestBody)
     {
         final String methodName = "findRelationshipsBetweenMetadataElements";
@@ -722,7 +722,7 @@ public class MetadataExplorerRESTServices extends TokenController
 
             if (requestBody != null)
             {
-                OpenMetadataClient handler = instanceHandler.getOpenMetadataHandler(userId, serverName, viewServiceURLMarker, methodName);
+                OpenMetadataClient handler = instanceHandler.getOpenMetadataHandler(userId, serverName, urlMarker, methodName);
 
                 response.setRelationshipList(handler.findRelationshipsBetweenMetadataElements(userId,
                                                                                               requestBody.getRelationshipTypeName(),
@@ -750,7 +750,7 @@ public class MetadataExplorerRESTServices extends TokenController
      *
      * @param serverName     name of server instance to route request to
      * @param relationshipGUID unique identifier for the relationship
-     * @param viewServiceURLMarker  view service URL marker
+     * @param urlMarker  view service URL marker
      * @param requestBody only return the element if it is effective at this time. Null means anytime. Use "new Date()" for now.
      *
      * @return metadata element properties or
@@ -761,7 +761,7 @@ public class MetadataExplorerRESTServices extends TokenController
     @SuppressWarnings(value = "unused")
     public OpenMetadataRelationshipResponse getRelationshipByGUID(String             serverName,
                                                                   String             relationshipGUID,
-                                                                  String             viewServiceURLMarker,
+                                                                  String             urlMarker,
                                                                   GetRequestBody requestBody)
     {
         final String methodName = "getRelationshipByGUID";
@@ -780,7 +780,7 @@ public class MetadataExplorerRESTServices extends TokenController
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            OpenMetadataClient handler = instanceHandler.getOpenMetadataHandler(userId, serverName, viewServiceURLMarker, methodName);
+            OpenMetadataClient handler = instanceHandler.getOpenMetadataHandler(userId, serverName, urlMarker, methodName);
 
             response.setElement(handler.getRelationshipByGUID(userId, relationshipGUID, requestBody));
         }
@@ -800,7 +800,7 @@ public class MetadataExplorerRESTServices extends TokenController
      *
      * @param serverName     name of server instance to route request to
      * @param relationshipGUID unique identifier for the metadata element
-     * @param viewServiceURLMarker  view service URL marker
+     * @param urlMarker  view service URL marker
      * @param requestBody the time window required
      *
      * @return list of matching metadata elements (or null if no elements match the name) or
@@ -810,7 +810,7 @@ public class MetadataExplorerRESTServices extends TokenController
      */
     public OpenMetadataRelationshipListResponse getRelationshipHistory(String             serverName,
                                                                        String             relationshipGUID,
-                                                                       String             viewServiceURLMarker,
+                                                                       String             urlMarker,
                                                                        HistoryRequestBody requestBody)
     {
         final String methodName = "getRelationshipHistory";
@@ -828,7 +828,7 @@ public class MetadataExplorerRESTServices extends TokenController
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            OpenMetadataClient handler = instanceHandler.getOpenMetadataHandler(userId, serverName, viewServiceURLMarker, methodName);
+            OpenMetadataClient handler = instanceHandler.getOpenMetadataHandler(userId, serverName, urlMarker, methodName);
 
             response.setRelationshipList(handler.getRelationshipHistory(userId, relationshipGUID, requestBody));
         }

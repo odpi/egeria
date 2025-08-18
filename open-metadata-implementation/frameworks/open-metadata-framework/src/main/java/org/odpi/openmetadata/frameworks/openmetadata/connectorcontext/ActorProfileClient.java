@@ -13,7 +13,7 @@ import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.OpenMetada
 import org.odpi.openmetadata.frameworks.openmetadata.properties.ClassificationProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.RelationshipProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.actors.*;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.locations.ProfileLocationProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.locations.KnownLocationProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.search.*;
 
 import java.util.List;
@@ -149,48 +149,6 @@ public class ActorProfileClient extends ConnectorContextClientBase
         {
             parentContext.getIntegrationReportWriter().reportElementUpdate(actorProfileGUID);
         }
-    }
-
-
-    /**
-     * Attach a profile to a location.
-     *
-     * @param actorProfileGUID       unique identifier of the actor profile
-     * @param locationGUID           unique identifier of the location
-     * @param metadataSourceOptions  options to control access to open metadata
-     * @param relationshipProperties description of the relationship.
-     * @throws InvalidParameterException  one of the parameters is null or invalid.
-     * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
-     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
-     */
-    public void linkLocationToProfile(String                    actorProfileGUID,
-                                      String                    locationGUID,
-                                      MetadataSourceOptions     metadataSourceOptions,
-                                      ProfileLocationProperties relationshipProperties) throws InvalidParameterException,
-                                                                                               PropertyServerException,
-                                                                                               UserNotAuthorizedException
-    {
-        actorProfileHandler.linkLocationToProfile(connectorUserId, actorProfileGUID, locationGUID, metadataSourceOptions, relationshipProperties);
-    }
-
-
-    /**
-     * Detach an actor profile from a location.
-     *
-     * @param actorProfileGUID       unique identifier of the actor profile
-     * @param locationGUID           unique identifier of the location
-     * @param deleteOptions  options to control access to open metadata
-     * @throws InvalidParameterException  one of the parameters is null or invalid.
-     * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
-     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
-     */
-    public void detachLocationFromProfile(String        actorProfileGUID,
-                                          String        locationGUID,
-                                          DeleteOptions deleteOptions) throws InvalidParameterException,
-                                                                              PropertyServerException,
-                                                                              UserNotAuthorizedException
-    {
-        actorProfileHandler.detachLocationFromProfile(connectorUserId, actorProfileGUID, locationGUID, deleteOptions);
     }
 
 

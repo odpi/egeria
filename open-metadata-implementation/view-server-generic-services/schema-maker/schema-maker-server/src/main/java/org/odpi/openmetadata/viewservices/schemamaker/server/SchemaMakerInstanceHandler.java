@@ -35,7 +35,7 @@ public class SchemaMakerInstanceHandler extends OMVSServiceInstanceHandler
      *
      * @param serverName           name of the server that the request is for
      * @param userId               local server userid
-     * @param viewServiceURLMarker optional view service URL marker (overrides accessServiceURLMarker)
+     * @param urlMarker optional view service URL marker (overrides accessServiceURLMarker)
      * @param serviceOperationName service operation - usually the top level rest call
      * @return  client
      * @throws InvalidParameterException unknown server/service
@@ -44,7 +44,7 @@ public class SchemaMakerInstanceHandler extends OMVSServiceInstanceHandler
      */
     public SchemaTypeHandler getSchemaTypeHandler(String userId,
                                                   String serverName,
-                                                  String viewServiceURLMarker,
+                                                  String urlMarker,
                                                   String serviceOperationName) throws InvalidParameterException,
                                                                                       PropertyServerException,
                                                                                       UserNotAuthorizedException
@@ -53,7 +53,7 @@ public class SchemaMakerInstanceHandler extends OMVSServiceInstanceHandler
 
         if (instance != null)
         {
-            return instance.getSchemaTypeHandler(viewServiceURLMarker, serviceOperationName);
+            return instance.getSchemaTypeHandler(urlMarker, serviceOperationName);
         }
 
         return null;
@@ -65,7 +65,7 @@ public class SchemaMakerInstanceHandler extends OMVSServiceInstanceHandler
      *
      * @param serverName           name of the server that the request is for
      * @param userId               local server userid
-     * @param viewServiceURLMarker optional view service URL marker (overrides accessServiceURLMarker)
+     * @param urlMarker optional view service URL marker (overrides accessServiceURLMarker)
      * @param serviceOperationName service operation - usually the top level rest call
      * @return  client
      * @throws InvalidParameterException unknown server/service
@@ -74,7 +74,7 @@ public class SchemaMakerInstanceHandler extends OMVSServiceInstanceHandler
      */
     public SchemaAttributeHandler getSchemaAttributeHandler(String userId,
                                                             String serverName,
-                                                            String viewServiceURLMarker,
+                                                            String urlMarker,
                                                             String serviceOperationName) throws InvalidParameterException,
                                                                                                 PropertyServerException,
                                                                                                 UserNotAuthorizedException
@@ -83,7 +83,7 @@ public class SchemaMakerInstanceHandler extends OMVSServiceInstanceHandler
 
         if (instance != null)
         {
-            return instance.getSchemaAttributeHandler(viewServiceURLMarker, serviceOperationName);
+            return instance.getSchemaAttributeHandler(urlMarker, serviceOperationName);
         }
 
         return null;

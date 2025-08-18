@@ -70,16 +70,16 @@ public class MetadataExpertInstance extends OMVSServiceInstance
     /**
      * Return the open metadata handler.
      *
-     * @param viewServiceURLMarker  view service URL marker
+     * @param urlMarker  view service URL marker
      * @param methodName calling method
      * @throws InvalidParameterException bad client initialization
      * @throws PropertyServerException bad client handler class
      * @return client
      */
-    public OpenMetadataClient getOpenMetadataHandler(String viewServiceURLMarker,
+    public OpenMetadataClient getOpenMetadataHandler(String urlMarker,
                                                      String methodName) throws InvalidParameterException,
                                                                                PropertyServerException
     {
-        return openMetadataHandlerMap.getClient(viewServiceURLMarker, methodName);
+        return openMetadataHandlerMap.getClient(urlMarker, methodName);
     }
 }

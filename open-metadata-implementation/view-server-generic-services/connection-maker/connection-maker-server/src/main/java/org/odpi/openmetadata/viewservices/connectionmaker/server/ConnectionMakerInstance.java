@@ -102,11 +102,11 @@ public class ConnectionMakerInstance extends OMVSServiceInstance
      * @throws InvalidParameterException bad client initialization
      * @throws PropertyServerException bad client handler class
      */
-    public ConnectionHandler getConnectionHandler(String viewServiceURLMarker,
+    public ConnectionHandler getConnectionHandler(String urlMarker,
                                                   String methodName) throws InvalidParameterException,
                                                                             PropertyServerException
     {
-        return connectionHandlerMap.getClient(viewServiceURLMarker, methodName);
+        return connectionHandlerMap.getClient(urlMarker, methodName);
     }
 
 
@@ -118,11 +118,11 @@ public class ConnectionMakerInstance extends OMVSServiceInstance
      * @throws InvalidParameterException bad client initialization
      * @throws PropertyServerException bad client handler class
      */
-    public ConnectorTypeHandler getConnectorTypeHandler(String viewServiceURLMarker,
+    public ConnectorTypeHandler getConnectorTypeHandler(String urlMarker,
                                                 String methodName) throws InvalidParameterException,
                                                                           PropertyServerException
     {
-        return connectorTypeHandlerMap.getClient(viewServiceURLMarker, methodName);
+        return connectorTypeHandlerMap.getClient(urlMarker, methodName);
     }
 
 
@@ -134,10 +134,10 @@ public class ConnectionMakerInstance extends OMVSServiceInstance
      * @throws InvalidParameterException bad client initialization
      * @throws PropertyServerException bad client handler class
      */
-    public EndpointHandler getEndpointHandler(String viewServiceURLMarker,
+    public EndpointHandler getEndpointHandler(String urlMarker,
                                               String methodName) throws InvalidParameterException,
                                                                         PropertyServerException
     {
-        return endpointHandlerMap.getClient(viewServiceURLMarker, methodName);
+        return endpointHandlerMap.getClient(urlMarker, methodName);
     }
 }

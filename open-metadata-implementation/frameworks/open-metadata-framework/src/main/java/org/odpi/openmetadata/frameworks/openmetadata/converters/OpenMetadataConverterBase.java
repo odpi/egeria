@@ -6910,6 +6910,53 @@ public class OpenMetadataConverterBase<B>
     }
 
 
+
+    /**
+     * Extract and delete the property from the supplied element properties.
+     *
+     * @param elementProperties properties from element
+     * @return date
+     */
+    protected Date removeConnectorShutdownDate(ElementProperties elementProperties)
+
+    {
+        final String methodName = "removeConnectorShutdownDate";
+
+        if (elementProperties != null)
+        {
+            return propertyHelper.removeDateProperty(localServiceName,
+                                                     OpenMetadataProperty.CONNECTOR_SHUTDOWN_DATE.name,
+                                                     elementProperties,
+                                                     methodName);
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Extract and delete the property from the supplied element properties.
+     *
+     * @param elementProperties properties from element
+     * @return long
+     */
+    protected long removeRefreshTimeInterval(ElementProperties elementProperties)
+
+    {
+        final String methodName = "removeRefreshTimeInterval";
+
+        if (elementProperties != null)
+        {
+            return propertyHelper.removeLongProperty(localServiceName,
+                                                     OpenMetadataProperty.REFRESH_TIME_INTERVAL.name,
+                                                     elementProperties,
+                                                     methodName);
+        }
+
+        return 0L;
+    }
+
+
     /**
      * Extract and delete the plannedEndDate property from the supplied element properties.
      *

@@ -35,6 +35,7 @@ import org.odpi.openmetadata.frameworks.openmetadata.properties.feedback.SearchK
 import org.odpi.openmetadata.frameworks.openmetadata.properties.glossaries.GlossaryCategoryProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.governance.*;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.governanceactions.GovernanceActionTypeProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.locations.LocationProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.projects.ProjectProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.schema.*;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.schema.databases.RelationalColumnProperties;
@@ -652,6 +653,15 @@ public class OpenMetadataRootConverter<B> extends AttributedElementConverterBase
                             {
                                 beanProperties = new ServiceLevelObjectiveProperties();
                             }
+                            else if (propertyHelper.isTypeOf(openMetadataElement, OpenMetadataType.NOTIFICATION_TYPE.typeName))
+                            {
+                                beanProperties = new NotificationTypeProperties();
+
+                                ((NotificationTypeProperties)beanProperties).setStartDate(this.removeStartDate(elementProperties));
+                                ((NotificationTypeProperties)beanProperties).setRefreshTimeInterval(this.removeRefreshTimeInterval(elementProperties));
+                                ((NotificationTypeProperties)beanProperties).setConnectorShutdownDate(this.removeConnectorShutdownDate(elementProperties));
+
+                            }
                             else if (propertyHelper.isTypeOf(openMetadataElement, OpenMetadataType.GOVERNANCE_ACTION.typeName))
                             {
                                 if (propertyHelper.isTypeOf(openMetadataElement, OpenMetadataType.GOVERNANCE_ACTION_PROCESS.typeName))
@@ -810,6 +820,12 @@ public class OpenMetadataRootConverter<B> extends AttributedElementConverterBase
                     ((GovernanceDefinitionProperties)beanProperties).setOutcomes(this.removeOutcomes(elementProperties));
                     ((GovernanceDefinitionProperties)beanProperties).setResults(this.removeResults(elementProperties));
                     ((GovernanceDefinitionProperties)beanProperties).setUserDefinedStatus(this.removeUserDefinedStatus(elementProperties));
+                }
+                else if (propertyHelper.isTypeOf(openMetadataElement, OpenMetadataType.LOCATION.typeName))
+                {
+                    beanProperties = new LocationProperties();
+
+                    ((LocationProperties)beanProperties).setIdentifier(this.removeIdentifier(elementProperties));
                 }
                 else if (propertyHelper.isTypeOf(openMetadataElement, OpenMetadataType.PROJECT.typeName))
                 {

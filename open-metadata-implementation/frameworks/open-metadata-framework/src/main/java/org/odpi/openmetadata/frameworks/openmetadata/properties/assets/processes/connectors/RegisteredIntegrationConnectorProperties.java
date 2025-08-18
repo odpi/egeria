@@ -48,6 +48,8 @@ public class RegisteredIntegrationConnectorProperties extends RelationshipBeanPr
      */
     public RegisteredIntegrationConnectorProperties(RegisteredIntegrationConnectorProperties template)
     {
+        super(template);
+
         if (template != null)
         {
             connectorName                    = template.getConnectorName();
@@ -261,15 +263,15 @@ public class RegisteredIntegrationConnectorProperties extends RelationshipBeanPr
     public String toString()
     {
         return "RegisteredIntegrationConnectorProperties{" +
-                ", connectorName='" + connectorName + '\'' +
+                "connectorName='" + connectorName + '\'' +
                 ", connectorUserId='" + connectorUserId + '\'' +
                 ", metadataSourceQualifiedName='" + metadataSourceQualifiedName + '\'' +
                 ", startDate=" + startDate +
                 ", refreshTimeInterval=" + refreshTimeInterval +
-                ", stopDate=" + connectorShutdownDate +
+                ", connectorShutdownDate=" + connectorShutdownDate +
                 ", permittedSynchronization=" + permittedSynchronization +
                 ", generateIntegrationReports=" + generateIntegrationReports +
-                '}';
+                "} " + super.toString();
     }
 
 
@@ -282,23 +284,18 @@ public class RegisteredIntegrationConnectorProperties extends RelationshipBeanPr
     @Override
     public boolean equals(Object objectToCompare)
     {
-        if (this == objectToCompare)
-        {
-            return true;
-        }
-        if (objectToCompare == null || getClass() != objectToCompare.getClass())
-        {
-            return false;
-        }
+        if (this == objectToCompare) return true;
+        if (objectToCompare == null || getClass() != objectToCompare.getClass()) return false;
+        if (!super.equals(objectToCompare)) return false;
         RegisteredIntegrationConnectorProperties that = (RegisteredIntegrationConnectorProperties) objectToCompare;
-        return getRefreshTimeInterval() == that.getRefreshTimeInterval() &&
-                getGenerateIntegrationReports() == that.getGenerateIntegrationReports() &&
-                Objects.equals(getConnectorName(), that.getConnectorName()) &&
-                Objects.equals(getConnectorUserId(), that.getConnectorUserId()) &&
-                Objects.equals(getStartDate(), that.getStartDate()) &&
-                Objects.equals(getMetadataSourceQualifiedName(), that.getMetadataSourceQualifiedName()) &&
-                Objects.equals(getConnectorShutdownDate(), that.getConnectorShutdownDate()) &&
-                Objects.equals(getPermittedSynchronization(), that.getPermittedSynchronization());
+        return refreshTimeInterval == that.refreshTimeInterval &&
+                generateIntegrationReports == that.generateIntegrationReports &&
+                Objects.equals(connectorName, that.connectorName) &&
+                Objects.equals(connectorUserId, that.connectorUserId) &&
+                Objects.equals(metadataSourceQualifiedName, that.metadataSourceQualifiedName) &&
+                Objects.equals(startDate, that.startDate) &&
+                Objects.equals(connectorShutdownDate, that.connectorShutdownDate) &&
+                permittedSynchronization == that.permittedSynchronization;
     }
 
 
@@ -310,7 +307,6 @@ public class RegisteredIntegrationConnectorProperties extends RelationshipBeanPr
     @Override
     public int hashCode()
     {
-        return Objects.hash(connectorName, connectorUserId, metadataSourceQualifiedName, startDate, refreshTimeInterval, connectorShutdownDate,
-                            permittedSynchronization, generateIntegrationReports);
+        return Objects.hash(super.hashCode(), connectorName, connectorUserId, metadataSourceQualifiedName, startDate, refreshTimeInterval, connectorShutdownDate, permittedSynchronization, generateIntegrationReports);
     }
 }

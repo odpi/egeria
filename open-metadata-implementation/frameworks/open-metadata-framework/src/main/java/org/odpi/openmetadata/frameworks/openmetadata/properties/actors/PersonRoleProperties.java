@@ -4,6 +4,9 @@ package org.odpi.openmetadata.frameworks.openmetadata.properties.actors;
 
 
 import com.fasterxml.jackson.annotation.*;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.communities.CommunityMemberProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.communities.CrowdSourcingContributorProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.projects.ProjectManagerProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 
 import java.util.Objects;
@@ -25,8 +28,13 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
         property = "class")
 @JsonSubTypes(
         {
-                @JsonSubTypes.Type(value = GovernanceRoleProperties.class, name = "GovernanceRoleProperties"),
+                @JsonSubTypes.Type(value = CommunityMemberProperties.class, name = "CommunityMemberProperties"),
+                @JsonSubTypes.Type(value = CrowdSourcingContributorProperties.class, name = "CrowdSourcingContributorProperties"),
                 @JsonSubTypes.Type(value = DigitalProductManagerProperties.class, name = "DigitalProductManagerProperties"),
+                @JsonSubTypes.Type(value = GovernanceRoleProperties.class, name = "GovernanceRoleProperties"),
+                @JsonSubTypes.Type(value = ProjectManagerProperties.class, name = "ProjectManagerProperties"),
+                @JsonSubTypes.Type(value = TeamMemberProperties.class, name = "TeamMemberProperties"),
+                @JsonSubTypes.Type(value = TeamLeaderProperties.class, name = "TeamLeaderProperties"),
         })
 public class PersonRoleProperties extends ActorRoleProperties
 {

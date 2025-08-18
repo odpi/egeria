@@ -35,7 +35,7 @@ public class ConnectionMakerInstanceHandler extends OMVSServiceInstanceHandler
      *
      * @param serverName           name of the server that the request is for
      * @param userId               local server userid
-     * @param viewServiceURLMarker optional view service URL marker (overrides accessServiceURLMarker)
+     * @param urlMarker optional view service URL marker (overrides accessServiceURLMarker)
      * @param serviceOperationName service operation - usually the top level rest call
      * @return  client
      * @throws InvalidParameterException unknown server/service
@@ -44,7 +44,7 @@ public class ConnectionMakerInstanceHandler extends OMVSServiceInstanceHandler
      */
     public ConnectionHandler getConnectionHandler(String userId,
                                                       String serverName,
-                                                      String viewServiceURLMarker,
+                                                      String urlMarker,
                                                       String serviceOperationName) throws InvalidParameterException,
                                                                                           PropertyServerException,
                                                                                           UserNotAuthorizedException
@@ -53,7 +53,7 @@ public class ConnectionMakerInstanceHandler extends OMVSServiceInstanceHandler
 
         if (instance != null)
         {
-            return instance.getConnectionHandler(viewServiceURLMarker, serviceOperationName);
+            return instance.getConnectionHandler(urlMarker, serviceOperationName);
         }
 
         return null;
@@ -65,7 +65,7 @@ public class ConnectionMakerInstanceHandler extends OMVSServiceInstanceHandler
      *
      * @param serverName           name of the server that the request is for
      * @param userId               local server userid
-     * @param viewServiceURLMarker optional view service URL marker (overrides accessServiceURLMarker)
+     * @param urlMarker optional view service URL marker (overrides accessServiceURLMarker)
      * @param serviceOperationName service operation - usually the top level rest call
      * @return  client
      * @throws InvalidParameterException unknown server/service
@@ -74,7 +74,7 @@ public class ConnectionMakerInstanceHandler extends OMVSServiceInstanceHandler
      */
     public ConnectorTypeHandler getConnectorTypeHandler(String userId,
                                                 String serverName,
-                                                String viewServiceURLMarker,
+                                                String urlMarker,
                                                 String serviceOperationName) throws InvalidParameterException,
                                                                                     PropertyServerException,
                                                                                     UserNotAuthorizedException
@@ -83,7 +83,7 @@ public class ConnectionMakerInstanceHandler extends OMVSServiceInstanceHandler
 
         if (instance != null)
         {
-            return instance.getConnectorTypeHandler(viewServiceURLMarker, serviceOperationName);
+            return instance.getConnectorTypeHandler(urlMarker, serviceOperationName);
         }
 
         return null;
@@ -95,7 +95,7 @@ public class ConnectionMakerInstanceHandler extends OMVSServiceInstanceHandler
      *
      * @param serverName           name of the server that the request is for
      * @param userId               local server userid
-     * @param viewServiceURLMarker optional view service URL marker (overrides accessServiceURLMarker)
+     * @param urlMarker optional view service URL marker (overrides accessServiceURLMarker)
      * @param serviceOperationName service operation - usually the top level rest call
      * @return  client
      * @throws InvalidParameterException unknown server/service
@@ -104,7 +104,7 @@ public class ConnectionMakerInstanceHandler extends OMVSServiceInstanceHandler
      */
     public EndpointHandler getEndpointHandler(String userId,
                                                       String serverName,
-                                                      String viewServiceURLMarker,
+                                                      String urlMarker,
                                                       String serviceOperationName) throws InvalidParameterException,
                                                                                           PropertyServerException,
                                                                                           UserNotAuthorizedException
@@ -113,7 +113,7 @@ public class ConnectionMakerInstanceHandler extends OMVSServiceInstanceHandler
 
         if (instance != null)
         {
-            return instance.getEndpointHandler(viewServiceURLMarker, serviceOperationName);
+            return instance.getEndpointHandler(urlMarker, serviceOperationName);
         }
 
         return null;

@@ -165,7 +165,6 @@ public class OpenMetadataTypesArchive3_11
          */
         update0010BaseModel();
         add0022Translations();
-        update0025Locations();
         update0110ActorProfile();
         updateResponsibilityAssignments();
         update04xxExplicitNames();
@@ -283,37 +282,6 @@ public class OpenMetadataTypesArchive3_11
     }
 
 
-    /*
-     * -------------------------------------------------------------------------------------------------------
-     */
-
-    private void update0025Locations()
-    {
-        this.archiveBuilder.addTypeDefPatch(updateLocation());
-    }
-
-
-    private TypeDefPatch updateLocation()
-    {
-        /*
-         * Create the Patch
-         */
-        TypeDefPatch  typeDefPatch = archiveBuilder.getPatchForType(OpenMetadataType.LOCATION.typeName);
-
-        typeDefPatch.setUpdatedBy(originatorName);
-        typeDefPatch.setUpdateTime(creationDate);
-
-        /*
-         * Build the attributes
-         */
-        List<TypeDefAttribute> properties = new ArrayList<>();
-
-        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.IDENTIFIER));
-
-        typeDefPatch.setPropertyDefinitions(properties);
-
-        return typeDefPatch;
-    }
 
     /*
      * -------------------------------------------------------------------------------------------------------
@@ -326,7 +294,6 @@ public class OpenMetadataTypesArchive3_11
         this.archiveBuilder.addTypeDefPatch(updatePersonRole());
         this.archiveBuilder.addTypeDefPatch(updateTeam());
         this.archiveBuilder.addTypeDefPatch(updateContactDetails());
-        this.archiveBuilder.addRelationshipDef(getProfileLocationRelationship());
     }
 
 
@@ -444,54 +411,6 @@ public class OpenMetadataTypesArchive3_11
         return typeDefPatch;
     }
 
-
-    private RelationshipDef getProfileLocationRelationship()
-    {
-        RelationshipDef relationshipDef = archiveHelper.getBasicRelationshipDef(OpenMetadataType.PROFILE_LOCATION_RELATIONSHIP,
-                                                                                null,
-                                                                                ClassificationPropagationRule.NONE);
-
-        RelationshipEndDef relationshipEndDef;
-
-        /*
-         * Set up end 1.
-         */
-        final String                     end1AttributeName            = "associatedProfiles";
-        final String                     end1AttributeDescription     = "Profiles of actors associated with the location.";
-        final String                     end1AttributeDescriptionGUID = null;
-
-        relationshipEndDef = archiveHelper.getRelationshipEndDef(this.archiveBuilder.getEntityDef(OpenMetadataType.ACTOR_PROFILE.typeName),
-                                                                 end1AttributeName,
-                                                                 end1AttributeDescription,
-                                                                 end1AttributeDescriptionGUID,
-                                                                 RelationshipEndCardinality.ANY_NUMBER);
-        relationshipDef.setEndDef1(relationshipEndDef);
-
-        /*
-         * Set up end 2.
-         */
-        final String                     end2AttributeName            = "associatedLocations";
-        final String                     end2AttributeDescription     = "Locations that the actor is associated with.";
-        final String                     end2AttributeDescriptionGUID = null;
-
-        relationshipEndDef = archiveHelper.getRelationshipEndDef(this.archiveBuilder.getEntityDef(OpenMetadataType.LOCATION.typeName),
-                                                                 end2AttributeName,
-                                                                 end2AttributeDescription,
-                                                                 end2AttributeDescriptionGUID,
-                                                                 RelationshipEndCardinality.ANY_NUMBER);
-        relationshipDef.setEndDef2(relationshipEndDef);
-
-        /*
-         * Build the attributes
-         */
-        List<TypeDefAttribute> properties = new ArrayList<>();
-
-        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.ASSOCIATION_TYPE));
-
-        relationshipDef.setPropertiesDefinition(properties);
-
-        return relationshipDef;
-    }
 
 
     /*

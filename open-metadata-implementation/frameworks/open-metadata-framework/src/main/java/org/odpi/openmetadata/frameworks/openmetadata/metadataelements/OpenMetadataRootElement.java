@@ -22,8 +22,6 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
         property = "class")
 @JsonSubTypes(
         {
-                @JsonSubTypes.Type(value = ActorProfileElement.class, name = "ActorProfileElement"),
-                @JsonSubTypes.Type(value = ActorRoleElement.class, name = "ActorRoleElement"),
                 @JsonSubTypes.Type(value = AssetGraph.class, name = "AssetGraph"),
                 @JsonSubTypes.Type(value = AssetLineageGraphNode.class, name = "AssetLineageGraphNode"),
                 @JsonSubTypes.Type(value = AssetSearchMatches.class, name = "AssetSearchMatches"),

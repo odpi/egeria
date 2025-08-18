@@ -82,17 +82,17 @@ public class GovernanceOfficerInstance extends OMVSServiceInstance
      * Return the client.  This client is from the Open Metadata Store services and is for maintaining
      * governance definition artifacts.
      *
-     * @param viewServiceURLMarker calling view service
+     * @param urlMarker calling view service
      * @param methodName calling operation
      * @return client
      * @throws InvalidParameterException bad client initialization
      * @throws PropertyServerException bad client handler class
      */
-    public GovernanceDefinitionHandler getGovernanceDefinitionHandler(String viewServiceURLMarker,
+    public GovernanceDefinitionHandler getGovernanceDefinitionHandler(String urlMarker,
                                                                       String methodName) throws InvalidParameterException,
                                                                                                 PropertyServerException
     {
-        return governanceDefinitionHandlerMap.getClient(viewServiceURLMarker, methodName);
+        return governanceDefinitionHandlerMap.getClient(urlMarker, methodName);
     }
 
 
@@ -101,16 +101,16 @@ public class GovernanceOfficerInstance extends OMVSServiceInstance
      * Return the client.  This client is from the Open Metadata Store services and is for maintaining
      * governance definition artifacts.
      *
-     * @param viewServiceURLMarker calling view service
+     * @param urlMarker calling view service
      * @param methodName calling operation
      * @return client
      * @throws InvalidParameterException bad client initialization
      * @throws PropertyServerException bad client handler class
      */
-    public GovernanceDefinitionGraphHandler getGovernanceDefinitionGraphHandler(String viewServiceURLMarker,
+    public GovernanceDefinitionGraphHandler getGovernanceDefinitionGraphHandler(String urlMarker,
                                                                                 String methodName) throws InvalidParameterException,
                                                                                                           PropertyServerException
     {
-        return governanceDefinitionGraphHandlerMap.getClient(viewServiceURLMarker, methodName);
+        return governanceDefinitionGraphHandlerMap.getClient(urlMarker, methodName);
     }
 }

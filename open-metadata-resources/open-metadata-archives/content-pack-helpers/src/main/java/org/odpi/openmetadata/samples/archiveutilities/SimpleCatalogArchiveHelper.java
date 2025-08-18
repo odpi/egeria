@@ -1094,17 +1094,17 @@ public class SimpleCatalogArchiveHelper
 
 
     /**
-     * Add the MobileAsset classification to the requested asset.
+     * Add the MobileResource classification to the requested asset.
      *
-     * @param assetGUID unique identifier of the element to classify
+     * @param elementGUID unique identifier of the element to classify
      */
-    public void addMobileAssetClassification(String assetGUID)
+    public void addMobileResourceClassification(String elementGUID)
     {
-        EntityDetail assetEntity = archiveBuilder.getEntity(assetGUID);
+        EntityDetail assetEntity = archiveBuilder.getEntity(elementGUID);
 
         EntityProxy entityProxy = archiveHelper.getEntityProxy(assetEntity);
 
-        Classification  classification = archiveHelper.getClassification(OpenMetadataType.MOBILE_ASSET_CLASSIFICATION.typeName,
+        Classification  classification = archiveHelper.getClassification(OpenMetadataType.MOBILE_RESOURCE_CLASSIFICATION.typeName,
                                                                          null,
                                                                          InstanceStatus.ACTIVE);
 
@@ -1161,22 +1161,22 @@ public class SimpleCatalogArchiveHelper
 
 
     /**
-     * Link a location to an asset.
+     * Link a location to an element.
      *
      * @param locationQName qualified name of the location
-     * @param assetQName qualified name of the asset
+     * @param elementQName qualified name of the element
      */
-    public void addAssetLocationRelationship(String locationQName,
-                                             String assetQName)
+    public void addKnownLocationRelationship(String locationQName,
+                                             String elementQName)
     {
         String locationId = idToGUIDMap.getGUID(locationQName);
-        String assetId = idToGUIDMap.getGUID(assetQName);
+        String elementId = idToGUIDMap.getGUID(elementQName);
 
-        EntityProxy end1 = archiveHelper.getEntityProxy(archiveBuilder.getEntity(assetId));
+        EntityProxy end1 = archiveHelper.getEntityProxy(archiveBuilder.getEntity(elementId));
         EntityProxy end2 = archiveHelper.getEntityProxy(archiveBuilder.getEntity(locationId));
 
-        archiveBuilder.addRelationship(archiveHelper.getRelationship(OpenMetadataType.ASSET_LOCATION_RELATIONSHIP.typeName,
-                                                                     idToGUIDMap.getGUID(locationId + "_to_" + assetId + "_asset_location_relationship"),
+        archiveBuilder.addRelationship(archiveHelper.getRelationship(OpenMetadataType.KNOWN_LOCATION_RELATIONSHIP.typeName,
+                                                                     idToGUIDMap.getGUID(locationId + "_to_" + elementId + "_known_location_relationship"),
                                                                      null,
                                                                      InstanceStatus.ACTIVE,
                                                                      end1,
@@ -1215,36 +1215,6 @@ public class SimpleCatalogArchiveHelper
         archiveBuilder.addEntity(userIdentity);
 
         return userIdentity.getGUID();
-    }
-
-
-    /**
-     * Link a location to a profile.
-     *
-     * @param profileQName qualified name of the profile
-     * @param locationQName qualified name of the location
-     * @param associationType identifier that describes the purpose of the association.
-     */
-    public void addProfileLocationRelationship(String profileQName,
-                                               String locationQName,
-                                               String associationType)
-    {
-        final String methodName = "addProfileLocationRelationship";
-
-        String entity1GUID = idToGUIDMap.getGUID(locationQName);
-        String entity2GUID = idToGUIDMap.getGUID(profileQName);
-
-        EntityProxy end1 = archiveHelper.getEntityProxy(archiveBuilder.getEntity(entity1GUID));
-        EntityProxy end2 = archiveHelper.getEntityProxy(archiveBuilder.getEntity(entity2GUID));
-
-        InstanceProperties properties = archiveHelper.addStringPropertyToInstance(archiveRootName, null, OpenMetadataProperty.ASSOCIATION_TYPE.name, associationType, methodName);
-
-        archiveBuilder.addRelationship(archiveHelper.getRelationship(OpenMetadataType.PROFILE_LOCATION_RELATIONSHIP.typeName,
-                                                                     idToGUIDMap.getGUID(entity1GUID + "_to_" + entity2GUID + "_profile_location_relationship"),
-                                                                     properties,
-                                                                     InstanceStatus.ACTIVE,
-                                                                     end1,
-                                                                     end2));
     }
 
 
@@ -1991,7 +1961,7 @@ public class SimpleCatalogArchiveHelper
         EntityProxy end1 = archiveHelper.getEntityProxy(archiveBuilder.getEntity(guid1));
         EntityProxy end2 = archiveHelper.getEntityProxy(archiveBuilder.getEntity(guid2));
 
-        InstanceProperties properties = archiveHelper.addStringPropertyToInstance(archiveRootName, null, OpenMetadataProperty.DEPENDENCY_SUMMARY.name, dependencySummary, methodName);
+        InstanceProperties properties = archiveHelper.addStringPropertyToInstance(archiveRootName, null, OpenMetadataProperty.DESCRIPTION.name, dependencySummary, methodName);
 
         archiveBuilder.addRelationship(archiveHelper.getRelationship(OpenMetadataType.PROJECT_DEPENDENCY_RELATIONSHIP.typeName,
                                                                      idToGUIDMap.getGUID(guid1 + "_to_" + guid2 + "_project_dependency_relationship"),
@@ -3172,23 +3142,26 @@ public class SimpleCatalogArchiveHelper
      *
      * @param businessCapabilityQName qualified name of the specialized term
      * @param teamQName qualified name of the generalized term
-     * @param scope scope of the team's ability to support the business capability
+     * @param assignmentType assignmentType of the team's ability to support the business capability
+     * @param description description of the team's ability to support the business capability
      */
     public void addBusinessCapabilityTeamRelationship(String businessCapabilityQName,
                                                       String teamQName,
-                                                      String scope)
+                                                      String assignmentType,
+                                                      String description)
     {
         final String methodName = "addBusinessCapabilityTeamRelationship";
 
-        String end1GUID = idToGUIDMap.getGUID(businessCapabilityQName);
-        String end2GUID = idToGUIDMap.getGUID(teamQName);
+        String end1GUID = idToGUIDMap.getGUID(teamQName);
+        String end2GUID = idToGUIDMap.getGUID(businessCapabilityQName);
         EntityProxy end1 = archiveHelper.getEntityProxy(archiveBuilder.getEntity(end1GUID));
         EntityProxy end2 = archiveHelper.getEntityProxy(archiveBuilder.getEntity(end2GUID));
 
-        InstanceProperties properties = archiveHelper.addStringPropertyToInstance(archiveRootName, null, OpenMetadataProperty.SCOPE.name, scope, methodName);
+        InstanceProperties properties = archiveHelper.addStringPropertyToInstance(archiveRootName, null, OpenMetadataProperty.ASSIGNMENT_TYPE.name, assignmentType, methodName);
+        properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.DESCRIPTION.name, description, methodName);
 
-        archiveBuilder.addRelationship(archiveHelper.getRelationship(OpenMetadataType.BUSINESS_CAPABILITY_TEAM_RELATIONSHIP.typeName,
-                                                                     idToGUIDMap.getGUID(end1GUID + "_to_" + end2GUID + "_organizational_capability_relationship"),
+        archiveBuilder.addRelationship(archiveHelper.getRelationship(OpenMetadataType.ASSIGNMENT_SCOPE_RELATIONSHIP.typeName,
+                                                                     idToGUIDMap.getGUID(end1GUID + "_to_" + end2GUID + "_assignment_scope_relationship"),
                                                                      properties,
                                                                      InstanceStatus.ACTIVE,
                                                                      end1,

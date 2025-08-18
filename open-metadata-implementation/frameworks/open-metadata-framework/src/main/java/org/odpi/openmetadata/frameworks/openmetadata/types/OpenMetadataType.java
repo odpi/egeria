@@ -502,31 +502,22 @@ public enum OpenMetadataType
                                   "A digital location."),
 
     /**
-     * An asset not restricted to a single physical location.
+     * A resource that is not restricted to a single physical location.
      */
-    MOBILE_ASSET_CLASSIFICATION("b25fb90d-8fa2-4aa9-b884-ff0a6351a697",
-                                "MobileAsset",
-                                OpenMetadataWikiPages.MODEL_0025_LOCATIONS,
-                                "ccc9a6f2-f6dc-4236-8a9b-e122a2988bc3",
-                                "An asset not restricted to a single physical location."),
+    MOBILE_RESOURCE_CLASSIFICATION("b25fb90d-8fa2-4aa9-b884-ff0a6351a697",
+                                   "MobileResource",
+                                   OpenMetadataWikiPages.MODEL_0025_LOCATIONS,
+                                   "ccc9a6f2-f6dc-4236-8a9b-e122a2988bc3",
+                                   "A resource that is not restricted to a single physical location."),
 
     /**
-     * Location of an Asset.
+     * Location of a person or object represented by the linked to element.
      */
-    ASSET_LOCATION_RELATIONSHIP("bc236b62-d0e6-4c5c-93a1-3a35c3dba7b1",
-                                "AssetLocation",
+    KNOWN_LOCATION_RELATIONSHIP("bc236b62-d0e6-4c5c-93a1-3a35c3dba7b1",
+                                "KnownLocation",
                                 OpenMetadataWikiPages.MODEL_0025_LOCATIONS,
                                 "1879264f-938b-457a-9e4a-cd8960195868",
-                                "Location of an Asset."),
-
-    /**
-     * Identifies an association between an Actor Profile and a Location, such as a person's primary work location.
-     */
-    PROFILE_LOCATION_RELATIONSHIP("4d652ef7-99c7-4ec3-a2fd-b10c0a1ab4b4",
-                                  "ProfileLocation",
-                                  OpenMetadataWikiPages.MODEL_0025_LOCATIONS,
-                                  "7e772ba9-56b4-4236-9512-b559d2c0ab43",
-                                  "Identifies an association between an Actor Profile and a Location, such as a person's primary work location."),
+                                "Location of a person or object represented by the linked to element."),
 
     /**
      * Link between two locations to show one is nested inside another.
@@ -1686,6 +1677,16 @@ public enum OpenMetadataType
 
 
     /**
+     * Information for an individual.
+     */
+    NOTIFICATION("96d104b6-4dbe-45c2-b21a-3f3a4545dabe",
+          "Notification",
+          OpenMetadataWikiPages.MODEL_0135_ACTIONS_FOR_PEOPLE,
+          "78af3743-fd24-4e94-b2d8-d3e70f1d32b7",
+          "Information for an individual."),
+
+
+    /**
      * A group of people with a common interest or skill.
      */
     COMMUNITY("fbd42379-f6c3-4f08-b6f7-378565cda993",
@@ -1797,11 +1798,11 @@ public enum OpenMetadataType
     /**
      * Defines one of the actors contributing content to a new description or asset.
      */
-    CROWD_SOURCING_CONTRIBUTION("4db83564-b200-4956-94a4-c95a5c30e65a",
-                                "CrowdSourcingContribution",
-                                 OpenMetadataWikiPages.MODEL_0155_CROWD_SOURCING,
-                                "715c667a-7a9b-45f0-b44e-06c1c0401929",
-                                "Defines one of the actors contributing content to a new description or asset."),
+    CROWD_SOURCING_CONTRIBUTION_RELATIONSHIP("4db83564-b200-4956-94a4-c95a5c30e65a",
+                                             "CrowdSourcingContribution",
+                                             OpenMetadataWikiPages.MODEL_0155_CROWD_SOURCING,
+                                             "715c667a-7a9b-45f0-b44e-06c1c0401929",
+                                             "Defines one of the actors contributing content to a new description or asset."),
 
     /**
      * An ordered list of related notes.
@@ -2585,11 +2586,11 @@ public enum OpenMetadataType
     /**
      * Links a report to another related report.  There is a sense of time in this relationship.
      */
-    REPORT_DEPENDENCY("67015095-61d5-45bb-82a1-f802dc01b071",
-                      "ReportDependency",
-                      OpenMetadataWikiPages.MODEL_0239_REPORTS,
-                      "7f6fdb6a-afa3-46de-a257-be2b4bc3a148",
-                      "Links a report to another related report.  There is a sense of time in this relationship."),
+    REPORT_DEPENDENCY_RELATIONSHIP("67015095-61d5-45bb-82a1-f802dc01b071",
+                                   "ReportDependency",
+                                   OpenMetadataWikiPages.MODEL_0239_REPORTS,
+                                   "7f6fdb6a-afa3-46de-a257-be2b4bc3a148",
+                                   "Links a report to another related report.  There is a sense of time in this relationship."),
 
     /**
      * A structure used to request new data.
@@ -3312,6 +3313,34 @@ public enum OpenMetadataType
                       "Technical control expressed as one or more actions."),
 
     /**
+     * A definition of a situation that should be detected and acted upon.
+     */
+    NOTIFICATION_TYPE("7eac2b07-9942-4d9b-9c5c-899289b0b1a5",
+                      "NotificationType",
+                      OpenMetadataWikiPages.MODEL_0430_TECHNICAL_CONTROLS,
+                      "44440e36-3fc0-4b27-81a7-2baa89eb93a3",
+                      "A definition of a situation that should be detected and acted upon."),
+
+    /**
+     * An element that will act on the instance of notification.
+     */
+    NOTIFICATION_SUBSCRIBER_RELATIONSHIP("9ba4b190-43ff-484e-b5f5-322dce3760d6",
+                                         "NotificationSubscriber",
+                                         OpenMetadataWikiPages.MODEL_0451_NOTIFICATIONS,
+                                         "8ca8e5e9-0e09-4448-a739-fc5c8430a087",
+                                         "An element that will act on the instance of notification."),
+
+    /**
+     * An element that needs to be monitored to support a notification type.
+     */
+    MONITORED_RESOURCE_RELATIONSHIP("5c3b0f7a-60ab-431b-a041-52094aaf63d4",
+                                    "MonitoredResource",
+                                    OpenMetadataWikiPages.MODEL_0451_NOTIFICATIONS,
+                                    "605fdf3c-655a-499a-a495-8fe39aa93b67",
+                                    "An element that needs to be monitored to support a notification type."),
+
+
+    /**
      * Describes the capability where policies are maintained.
      */
     POLICY_ADMINISTRATION_POINT_CLASSIFICATION("4f13baa3-31b3-4a85-985e-2abc784900b8",
@@ -3784,22 +3813,13 @@ public enum OpenMetadataType
 
 
     /**
-     * The element(s) that form the initial list of targets for action that are passed to the engine action as part of a request to run this governance action type.  Additional targets for action can be supplied by the caller.
+     * The element(s) that form the initial list of targets for action that are passed to the engine action as part of a request to run this governance action.  Additional targets for action can be supplied by the caller.
      */
-    TARGET_FOR_ACTION_TYPE_RELATIONSHIP("059ed11f-f8dd-45cc-991e-2cf9ad3be4a7",
-                                        "TargetForActionType",
-                                        OpenMetadataWikiPages.MODEL_0462_GOVERNANCE_ACTION_PROCESSES,
-                                        "433f34f5-572e-44cf-888d-653bed1bce54",
-                                        "The element(s) that form the initial list of targets for action that are passed to the engine action as part of a request to run this governance action type.  Additional targets for action can be supplied by the caller."),
-
-    /**
-     * The element(s) that form the initial list of targets for action that are passed to the engine action as part of a request to run this governance action process.  Additional targets for action can be supplied by the caller.
-     */
-    TARGET_FOR_ACTION_PROCESS_RELATIONSHIP("7a72262e-c466-49cf-b67d-01b7b45c3f19",
-                                           "TargetForActionProcess",
-                                           OpenMetadataWikiPages.MODEL_0462_GOVERNANCE_ACTION_PROCESSES,
-                                           "90dea768-2b9e-4a3c-b065-95efcfd5a48f",
-                                           "The element(s) that form the initial list of targets for action that are passed to the engine action as part of a request to run this governance action process.  Additional targets for action can be supplied by the caller."),
+    TARGET_FOR_GOVERNANCE_ACTION_RELATIONSHIP("059ed11f-f8dd-45cc-991e-2cf9ad3be4a7",
+                                              "TargetForGovernanceAction",
+                                              OpenMetadataWikiPages.MODEL_0462_GOVERNANCE_ACTION_PROCESSES,
+                                              "433f34f5-572e-44cf-888d-653bed1bce54",
+                                              "The element(s) that form the initial list of targets for action that are passed to the engine action as part of a request to run this governance action.  Additional targets for action can be supplied by the caller."),
 
     /**
      * Represents a single run of a governance action process.  It is linked to the parent governance action process using the GovernedBy relationship.
@@ -5441,14 +5461,13 @@ public enum OpenMetadataType
 
 
     /**
-     * Describes the relationship between a team and the business capabilities it supports.
+     * Describes the dependency relationship between business capabilities.
      */
-    BUSINESS_CAPABILITY_TEAM_RELATIONSHIP("47f0ad39-db77-41b0-b406-36b1598e0ba7",
-                                          "BusinessCapabilityTeam",
+    BUSINESS_CAPABILITY_DEPENDENCY_RELATIONSHIP("d3959ca9-24ef-4d3f-b524-0cc5956370c4",
+                                          "BusinessCapabilityDependency",
                                           OpenMetadataWikiPages.MODEL_0715_DIGITAL_PRODUCT_MANAGEMENT,
-                                          "0cf949bc-70cf-4ae1-887a-4738d30c9317",
-                                          "Describes the relationship between a team and the business capabilities it supports."),
-
+                                          "2673f14b-30bb-4a53-8ca8-30806bf7a6e9",
+                                          "Describes the dependency relationship between business capabilities."),
 
     /**
      * A description of a managed flow of information between multiple systems.

@@ -1,6 +1,6 @@
-# Egeria-schema=maker-view-service
-# The Schema Maker OMVS provides APIs for supporting the creation and editing of schema types,
-#schema attributes and user identities.
+# Egeria-schema-maker-view-service
+# The Schema Maker OMVS provides APIs for supporting the creation and editing of schema types and
+# schema attributes.
 
 @baseURL=https://localhost:9443
 @viewServer=view-server
@@ -40,7 +40,7 @@ Content-Type: application/json
 #  PropertyServerException    there is a problem retrieving information from the property server(s).
 #  UserNotAuthorizedException the requesting user is not authorized to issue this request.
 #
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/schema=maker/schema-types
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/schema-maker/schema-types
 Authorization: Bearer {{token}}
 Content-Type: application/json
 
@@ -98,7 +98,7 @@ Content-Type: application/json
 #  UserNotAuthorizedException the user is not authorized to issue this request
 #  PropertyServerException    there is a problem reported in the open metadata server(s)
 #
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/schema=maker/schema-types/from-template
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/schema-maker/schema-types/from-template
 Authorization: Bearer {{token}}
 Content-Type: application/json
 
@@ -156,7 +156,7 @@ Content-Type: application/json
 #  PropertyServerException    there is a problem retrieving information from the property server(s).
 #  UserNotAuthorizedException the requesting user is not authorized to issue this request.
 #
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/schema=maker/schema-types/{{schemaTypeGUID}}/update
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/schema-maker/schema-types/{{schemaTypeGUID}}/update
 Authorization: Bearer {{token}}
 Content-Type: application/json
 
@@ -186,381 +186,6 @@ Content-Type: application/json
   }
 }
 
-###
-
-@locationGUID=add guid here
-
-###
-# @name linkLocationToProfile
-# Attach a profile to a location.
-#
-# @param locationGUID           unique identifier of the location
-# @param schemaTypeGUID       unique identifier of the schema type
-# Request body provides  description of the relationship.
-#
-# Returns void or
-#  InvalidParameterException  one of the parameters is null or invalid.
-#  PropertyServerException    there is a problem retrieving information from the property server(s).
-#  UserNotAuthorizedException the requesting user is not authorized to issue this request.
-#
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/schema=maker/schema-types/{{schemaTypeGUID}}/profile-locations/{{locationGUID}}/attach
-Authorization: Bearer {{token}}
-Content-Type: application/json
-
-{
-  "class" : "NewRelationshipRequestBody",
-  "externalSourceGUID": "add guid here",
-  "externalSourceName": "add qualified name here",
-  "effectiveTime" : "{{$isoTimestamp}}",
-  "forLineage" : false,
-  "forDuplicateProcessing" : false,
-  "properties": {
-    "class": "ProfileLocationProperties",
-    "associationType": "",
-    "effectiveFrom": "{{$isoTimestamp}}",
-    "effectiveTo": "{{$isoTimestamp}}"
-  }
-}
-
-
-###
-# @name detachLocationFromProfile
-# Detach a schema type from a location.
-#
-# @param schemaTypeGUID       unique identifier of the schema type
-# @param locationGUID           unique identifier of the location
-# Request body provides  description of the relationship.
-#
-# Returns void or
-#  InvalidParameterException  one of the parameters is null or invalid.
-#  PropertyServerException    there is a problem retrieving information from the property server(s).
-#  UserNotAuthorizedException the requesting user is not authorized to issue this request.
-#
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/schema=maker/schema-types/{{schemaTypeGUID}}/profile-locations/{{locationGUID}}/detach
-Authorization: Bearer {{token}}
-Content-Type: application/json
-
-{
-  "class" : "MetadataSourceRequestBody",
-  "externalSourceGUID": "add guid here",
-  "externalSourceName": "add qualified name here",
-  "effectiveTime" : "{{$isoTimestamp}}",
-  "forLineage" : false,
-  "forDuplicateProcessing" : false
-}
-
-###
-
-@personOneGUID=add guid here
-@personTwoGUID=add guid here
-
-###
-# @name linkPeerPerson
-# Attach a person profile to one of its peers.
-#
-# @param personOneGUID          unique identifier of the first person profile
-# @param personTwoGUID          unique identifier of the second person profile
-# Request body provides  description of the relationship.
-#
-# Returns void or
-#  InvalidParameterException  one of the parameters is null or invalid.
-#  PropertyServerException    there is a problem retrieving information from the property server(s).
-#  UserNotAuthorizedException the requesting user is not authorized to issue this request.
-#
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/schema=maker/schema-types/{{personOneGUID}}/peer-persons/{{personTwoGUID}}/attach
-Authorization: Bearer {{token}}
-Content-Type: application/json
-
-{
-  "class" : "NewRelationshipRequestBody",
-  "externalSourceGUID": "add guid here",
-  "externalSourceName": "add qualified name here",
-  "effectiveTime" : "{{$isoTimestamp}}",
-  "forLineage" : false,
-  "forDuplicateProcessing" : false,
-  "properties": {
-    "class": "RelationshipProperties",
-    "effectiveFrom": "{{$isoTimestamp}}",
-    "effectiveTo": "{{$isoTimestamp}}"
-  }
-}
-
-
-###
-# @name detachSupportingDefinition
-# Detach a person profile from one of its peers.
-#
-# @param personOneGUID          unique identifier of the first person profile
-# @param personTwoGUID          unique identifier of the second person profile
-# Request body provides  description of the relationship.
-#
-# Returns void or
-#  InvalidParameterException  one of the parameters is null or invalid.
-#  PropertyServerException    there is a problem retrieving information from the property server(s).
-#  UserNotAuthorizedException the requesting user is not authorized to issue this request.
-#
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/schema=maker/schema-types/{{personOneGUID}}/peer-persons/{{personTwoGUID}}/detach
-Authorization: Bearer {{token}}
-Content-Type: application/json
-
-{
-  "class" : "MetadataSourceRequestBody",
-  "externalSourceGUID": "add guid here",
-  "externalSourceName": "add qualified name here",
-  "effectiveTime" : "{{$isoTimestamp}}",
-  "forLineage" : false,
-  "forDuplicateProcessing" : false
-}
-
-###
-
-@superTeamGUID=add guid here
-@subteamGUID=add guid here
-
-###
-# @name linkTeamStructure
-# Attach a super team to a subteam.
-#
-# @param superTeamGUID          unique identifier of the super team
-# @param subteamGUID            unique identifier of the subteam
-# Request body provides  description of the relationship.
-#
-# Returns void or
-#  InvalidParameterException  one of the parameters is null or invalid.
-#  PropertyServerException    there is a problem retrieving information from the property server(s).
-#  UserNotAuthorizedException the requesting user is not authorized to issue this request.
-#
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/schema=maker/schema-types/{{superTeamGUID}}/team-structures/{{subteamGUID}}/attach
-Authorization: Bearer {{token}}
-Content-Type: application/json
-
-{
-  "class" : "NewRelationshipRequestBody",
-  "externalSourceGUID": "add guid here",
-  "externalSourceName": "add qualified name here",
-  "effectiveTime" : "{{$isoTimestamp}}",
-  "forLineage" : false,
-  "forDuplicateProcessing" : false,
-  "properties": {
-    "class": "TeamStructureProperties",
-    "delegationEscalationAuthority": true,
-    "effectiveFrom": "{{$isoTimestamp}}",
-    "effectiveTo": "{{$isoTimestamp}}"
-  }
-}
-
-
-###
-# @name detachTeamStructure
-# Detach a super team from a subteam.
-#
-# @param superTeamGUID          unique identifier of the super team
-# @param subteamGUID            unique identifier of the subteam
-# Request body provides  description of the relationship.
-#
-# Returns void or
-#  InvalidParameterException  one of the parameters is null or invalid.
-#  PropertyServerException    there is a problem retrieving information from the property server(s).
-#  UserNotAuthorizedException the requesting user is not authorized to issue this request.
-#
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/schema=maker/schema-types/{{superTeamGUID}}/team-structures/{{subteamGUID}}/detach
-Authorization: Bearer {{token}}
-Content-Type: application/json
-
-{
-  "class" : "MetadataSourceRequestBody",
-  "externalSourceGUID": "add guid here",
-  "externalSourceName": "add qualified name here",
-  "effectiveTime" : "{{$isoTimestamp}}",
-  "forLineage" : false,
-  "forDuplicateProcessing" : false
-}
-
-###
-
-@assetGUID=add guid here
-@itProfileGUID=add guid here
-
-###
-# @name linkAssetToProfile
-# Attach an asset to an IT profile.
-#
-# @param assetGUID       unique identifier of the asset
-# @param itProfileGUID            unique identifier of the IT profile
-# Request body provides  description of the relationship.
-#
-# Returns void or
-#  InvalidParameterException  one of the parameters is null or invalid.
-#  PropertyServerException    there is a problem retrieving information from the property server(s).
-#  UserNotAuthorizedException the requesting user is not authorized to issue this request.
-#
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/schema=maker/assets/{{assetGUID}}/it-profiles/{{itProfileGUID}}/attach
-Authorization: Bearer {{token}}
-Content-Type: application/json
-
-{
-  "class" : "NewRelationshipRequestBody",
-  "externalSourceGUID": "add guid here",
-  "externalSourceName": "add qualified name here",
-  "effectiveTime" : "{{$isoTimestamp}}",
-  "forLineage" : false,
-  "forDuplicateProcessing" : false,
-  "properties": {
-    "class": "RelationshipProperties",
-    "effectiveFrom": "{{$isoTimestamp}}",
-    "effectiveTo": "{{$isoTimestamp}}"
-  }
-}
-
-###
-# @name detachAssetFromProfile
-# Detach an asset from an IT profile.
-#
-# @param assetGUID       unique identifier of the asset
-# @param itProfileGUID            unique identifier of the IT profile
-# Request body provides  description of the relationship.
-#
-# Returns void or
-#  InvalidParameterException  one of the parameters is null or invalid.
-#  PropertyServerException    there is a problem retrieving information from the property server(s).
-#  UserNotAuthorizedException the requesting user is not authorized to issue this request.
-#
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/schema=maker/assets/{{assetGUID}}/it-profiles/{{itProfileGUID}}/detach
-Authorization: Bearer {{token}}
-Content-Type: application/json
-
-{
-  "class" : "MetadataSourceRequestBody",
-  "externalSourceGUID": "add guid here",
-  "externalSourceName": "add qualified name here",
-  "effectiveTime" : "{{$isoTimestamp}}",
-  "forLineage" : false,
-  "forDuplicateProcessing" : false
-}
-
-###
-
-@teamGUID=add guid here
-
-###
-# @name linkTeamToMembershipRole
-# Attach a team to its membership role.
-#
-# @param teamGUID               unique identifier of the team
-# @param personRoleGUID         unique identifier of the associated person role
-# Request body provides  description of the relationship.
-#
-# Returns void or
-#  InvalidParameterException  one of the parameters is null or invalid.
-#  PropertyServerException    there is a problem retrieving information from the property server(s).
-#  UserNotAuthorizedException the requesting user is not authorized to issue this request.
-#
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/schema=maker/schema-types/{{teamGUID}}/team-membership-roles/{{personRoleGUID}}/attach
-Authorization: Bearer {{token}}
-Content-Type: application/json
-
-{
-  "class" : "NewRelationshipRequestBody",
-  "externalSourceGUID": "add guid here",
-  "externalSourceName": "add qualified name here",
-  "effectiveTime" : "{{$isoTimestamp}}",
-  "forLineage" : false,
-  "forDuplicateProcessing" : false,
-  "properties": {
-    "class": "TeamMembershipProperties",
-    "positionName": "",
-    "effectiveFrom": "{{$isoTimestamp}}",
-    "effectiveTo": "{{$isoTimestamp}}"
-  }
-}
-
-
-###
-# @name detachTeamFromMembershipRole
-# Detach a team profile from its membership role.
-#
-# @param teamGUID               unique identifier of the team
-# @param personRoleGUID         unique identifier of the associated person role
-# Request body provides  description of the relationship.
-#
-# Returns void or
-#  InvalidParameterException  one of the parameters is null or invalid.
-#  PropertyServerException    there is a problem retrieving information from the property server(s).
-#  UserNotAuthorizedException the requesting user is not authorized to issue this request.
-#
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/schema=maker/schema-types/{{teamGUID}}/team-membership-roles/{{personRoleGUID}}/detach
-Authorization: Bearer {{token}}
-Content-Type: application/json
-
-{
-  "class" : "MetadataSourceRequestBody",
-  "externalSourceGUID": "add guid here",
-  "externalSourceName": "add qualified name here",
-  "effectiveTime" : "{{$isoTimestamp}}",
-  "forLineage" : false,
-  "forDuplicateProcessing" : false
-}
-
-
-###
-# @name linkTeamToLeadershipRole
-# Attach a team to its leadership role.
-#
-# @param teamGUID               unique identifier of the team
-# @param personRoleGUID         unique identifier of the associated person role
-# Request body provides  description of the relationship.
-#
-# Returns void or
-#  InvalidParameterException  one of the parameters is null or invalid.
-#  PropertyServerException    there is a problem retrieving information from the property server(s).
-#  UserNotAuthorizedException the requesting user is not authorized to issue this request.
-#
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/schema=maker/schema-types/{{teamGUID}}/team-leadership-roles/{{personRoleGUID}}/attach
-Authorization: Bearer {{token}}
-Content-Type: application/json
-
-{
-  "class" : "NewRelationshipRequestBody",
-  "externalSourceGUID": "add guid here",
-  "externalSourceName": "add qualified name here",
-  "effectiveTime" : "{{$isoTimestamp}}",
-  "forLineage" : false,
-  "forDuplicateProcessing" : false,
-  "properties": {
-    "class": "TeamLeadershipProperties",
-    "positionName": "",
-    "effectiveFrom": "{{$isoTimestamp}}",
-    "effectiveTo": "{{$isoTimestamp}}"
-  }
-}
-
-
-###
-# @name detachTeamFromLeadershipRole
-# Detach a team profile from its leadership role.
-#
-# @param teamGUID               unique identifier of the team
-# @param personRoleGUID         unique identifier of the associated person role
-# Request body provides  description of the relationship.
-#
-# Returns void or
-#  InvalidParameterException  one of the parameters is null or invalid.
-#  PropertyServerException    there is a problem retrieving information from the property server(s).
-#  UserNotAuthorizedException the requesting user is not authorized to issue this request.
-#
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/schema=maker/schema-types/{{teamGUID}}/team-leadership-roles/{{personRoleGUID}}/detach
-Authorization: Bearer {{token}}
-Content-Type: application/json
-
- {
-  "class" : "MetadataSourceRequestBody",
-  "externalSourceGUID": "add guid here",
-  "externalSourceName": "add qualified name here",
-  "effectiveTime" : "{{$isoTimestamp}}",
-  "forLineage" : false,
-  "forDuplicateProcessing" : false
-}
-
 
 ###
 # @name deleteSchemaType
@@ -575,7 +200,7 @@ Content-Type: application/json
 #  PropertyServerException    there is a problem retrieving information from the property server(s).
 #  UserNotAuthorizedException the requesting user is not authorized to issue this request.
 #
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/schema=maker/schema-types/{{schemaTypeGUID}}/delete
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/schema-maker/schema-types/{{schemaTypeGUID}}/delete
 Authorization: Bearer {{token}}
 Content-Type: application/json
 
@@ -602,7 +227,7 @@ Content-Type: application/json
 #  UserNotAuthorizedException the user is not authorized to issue this request
 #  PropertyServerException    there is a problem reported in the open metadata server(s)
 #
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/schema=maker/schema-types/by-name
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/schema-maker/schema-types/by-name
 Authorization: Bearer {{token}}
 Content-Type: application/json
 
@@ -635,7 +260,7 @@ Content-Type: application/json
 #  UserNotAuthorizedException the user is not authorized to issue this request
 #  PropertyServerException    there is a problem reported in the open metadata server(s)
 #
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/schema=maker/schema-types/by-search-string?startFrom=0&pageSize=10&startsWith=true&endsWith=false&ignoreCase=false
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/schema-maker/schema-types/by-search-string?startFrom=0&pageSize=10&startsWith=true&endsWith=false&ignoreCase=false
 Authorization: Bearer {{token}}
 Content-Type: application/json
 
@@ -664,7 +289,7 @@ Content-Type: application/json
 #  UserNotAuthorizedException the user is not authorized to issue this request
 #  PropertyServerException    there is a problem reported in the open metadata server(s)
 #
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/schema=maker/schema-types/{{schemaTypeGUID}}/retrieve
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/schema-maker/schema-types/{{schemaTypeGUID}}/retrieve
 Authorization: Bearer {{token}}
 Content-Type: application/json
 
@@ -688,7 +313,7 @@ Content-Type: application/json
 #  PropertyServerException    there is a problem retrieving information from the property server(s).
 #  UserNotAuthorizedException the requesting user is not authorized to issue this request.
 #
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/schema=maker/schema-attributes
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/schema-maker/schema-attributes
 Authorization: Bearer {{token}}
 Content-Type: application/json
 
@@ -748,7 +373,7 @@ Content-Type: application/json
 #  UserNotAuthorizedException the user is not authorized to issue this request
 #  PropertyServerException    there is a problem reported in the open metadata server(s)
 #
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/schema=maker/schema-attributes/from-template
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/schema-maker/schema-attributes/from-template
 Authorization: Bearer {{token}}
 Content-Type: application/json
 
@@ -806,7 +431,7 @@ Content-Type: application/json
 #  PropertyServerException    there is a problem retrieving information from the property server(s).
 #  UserNotAuthorizedException the requesting user is not authorized to issue this request.
 #
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/schema=maker/schema-attributes/update
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/schema-maker/schema-attributes/update
 Authorization: Bearer {{token}}
 Content-Type: application/json
 
@@ -838,193 +463,7 @@ Content-Type: application/json
   }
 }
 
-###
 
-@personRoleGUID=add guid here
-@personProfileGUID=add guid here
-
-###
-# @name linkPersonRoleToProfile
-# Attach a person role to a person profile.
-#
-# @param personRoleGUID       unique identifier of the person role
-# @param personProfileGUID            unique identifier of the person profile
-# Request body provides  description of the relationship.
-#
-# Returns void or
-#  InvalidParameterException  one of the parameters is null or invalid.
-#  PropertyServerException    there is a problem retrieving information from the property server(s).
-#  UserNotAuthorizedException the requesting user is not authorized to issue this request.
-#
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/schema=maker/schema-attributes/{{personRoleGUID}}/person-role-appointments/{{personProfileGUID}}/attach
-Authorization: Bearer {{token}}
-Content-Type: application/json
-
-{
-  "class" : "NewRelationshipRequestBody",
-  "externalSourceGUID": "add guid here",
-  "externalSourceName": "add qualified name here",
-  "effectiveTime" : "{{$isoTimestamp}}",
-  "forLineage" : false,
-  "forDuplicateProcessing" : false,
-  "properties": {
-    "class": "PersonRoleAppointmentProperties",
-    "isPublic": true,
-    "expectedTimeAllocationPercent": 100,
-    "effectiveFrom": "{{$isoTimestamp}}",
-    "effectiveTo": "{{$isoTimestamp}}"
-  }
-}
-
-
-###
-# @name detachPersonRoleFromProfile
-# Detach a person role from a profile.
-#
-# @param personRoleGUID       unique identifier of the person role
-# @param personProfileGUID            unique identifier of the person profile
-# Request body provides  description of the relationship.
-#
-# Returns void or
-#  InvalidParameterException  one of the parameters is null or invalid.
-#  PropertyServerException    there is a problem retrieving information from the property server(s).
-#  UserNotAuthorizedException the requesting user is not authorized to issue this request.
-#
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/schema=maker/schema-attributes/{{personRoleGUID}}/person-role-appointments/{{personProfileGUID}}/detach
-Authorization: Bearer {{token}}
-Content-Type: application/json
-
-{
-  "class" : "MetadataSourceRequestBody",
-  "externalSourceGUID": "add guid here",
-  "externalSourceName": "add qualified name here",
-  "effectiveTime" : "{{$isoTimestamp}}",
-  "forLineage" : false,
-  "forDuplicateProcessing" : false
-}
-
-###
-
-@teamRoleGUID=add guid here
-@teamProfileGUID=add guid here
-
-###
-# @name linkTeamRoleToProfile
-# Attach a team role to a team profile.
-#
-# @param teamRoleGUID           unique identifier of the team role
-# @param teamProfileGUID        unique identifier of the team profile
-# Request body provides  description of the relationship.
-#
-# Returns void or
-#  InvalidParameterException  one of the parameters is null or invalid.
-#  PropertyServerException    there is a problem retrieving information from the property server(s).
-#  UserNotAuthorizedException the requesting user is not authorized to issue this request.
-#
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/schema=maker/schema-attributes/{{teamRoleGUID}}/team-role-appointments/{{teamProfileGUID}}/attach
-Authorization: Bearer {{token}}
-Content-Type: application/json
-
-{
-  "class" : "NewRelationshipRequestBody",
-  "externalSourceGUID": "add guid here",
-  "externalSourceName": "add qualified name here",
-  "effectiveTime" : "{{$isoTimestamp}}",
-  "forLineage" : false,
-  "forDuplicateProcessing" : false,
-  "properties": {
-    "class": "TeamRoleAppointmentProperties",
-    "expectedTimeAllocationPercent": 100,
-    "effectiveFrom": "{{$isoTimestamp}}",
-    "effectiveTo": "{{$isoTimestamp}}"
-  }
-}
-
-
-###
-# @name Detach a team role from a team profile.
-# Detach a team role from a team profile.
-#
-# @param teamRoleGUID           unique identifier of the team role
-# @param teamProfileGUID        unique identifier of the team profile
-# Request body provides  description of the relationship.
-#
-# Returns void or
-#  InvalidParameterException  one of the parameters is null or invalid.
-#  PropertyServerException    there is a problem retrieving information from the property server(s).
-#  UserNotAuthorizedException the requesting user is not authorized to issue this request.
-#
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/schema=maker/schema-attributes/{{teamRoleGUID}}/team-role-appointments/{{teamProfileGUID}}/detach
-Authorization: Bearer {{token}}
-Content-Type: application/json
-
-{
-  "class" : "MetadataSourceRequestBody",
-  "externalSourceGUID": "add guid here",
-  "externalSourceName": "add qualified name here",
-  "effectiveTime" : "{{$isoTimestamp}}",
-  "forLineage" : false,
-  "forDuplicateProcessing" : false
-}
-
-
-###
-# @name linkITProfileRoleToProfile
-# Attach an IT profile role to an IT profile.
-#
-# @param itProfileRoleGUID      unique identifier of the IT profile role
-# @param itProfileGUID          unique identifier of the IT profile
-# Request body provides  description of the relationship.
-#
-# Returns void or
-#  InvalidParameterException  one of the parameters is null or invalid.
-#  PropertyServerException    there is a problem retrieving information from the property server(s).
-#  UserNotAuthorizedException the requesting user is not authorized to issue this request.
-#
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/schema=maker/schema-attributes/{{itProfileRoleGUID}}/it-profile-role-appointments/{{itProfileGUID}}/attach
-Authorization: Bearer {{token}}
-Content-Type: application/json
-
-{
-  "class" : "NewRelationshipRequestBody",
-  "externalSourceGUID": "add guid here",
-  "externalSourceName": "add qualified name here",
-  "effectiveTime" : "{{$isoTimestamp}}",
-  "forLineage" : false,
-  "forDuplicateProcessing" : false,
-  "properties": {
-    "class": "ITProfileRoleAppointmentProperties",
-    "effectiveFrom": "{{$isoTimestamp}}",
-    "effectiveTo": "{{$isoTimestamp}}"
-  }
-}
-
-
-###
-# @name detachITProfileRoleFromProfile
-# Detach an IT profile role from an IT profile.
-#
-# @param itProfileRoleGUID      unique identifier of the IT profile role
-# @param itProfileGUID          unique identifier of the IT profile
-# Request body provides  description of the relationship.
-#
-# Returns void or
-#  InvalidParameterException  one of the parameters is null or invalid.
-#  PropertyServerException    there is a problem retrieving information from the property server(s).
-#  UserNotAuthorizedException the requesting user is not authorized to issue this request.
-#
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/schema=maker/schema-attributes/{{itProfileRoleGUID}}/it-profile-role-appointments/{{itProfileGUID}}/detach
-Authorization: Bearer {{token}}
-Content-Type: application/json
-
-{
-  "class" : "MetadataSourceRequestBody",
-  "externalSourceGUID": "add guid here",
-  "externalSourceName": "add qualified name here",
-  "effectiveTime" : "{{$isoTimestamp}}",
-  "forLineage" : false,
-  "forDuplicateProcessing" : false
-}
 
 
 ###
@@ -1040,7 +479,7 @@ Content-Type: application/json
 #  PropertyServerException    there is a problem retrieving information from the property server(s).
 #  UserNotAuthorizedException the requesting user is not authorized to issue this request.
 #
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/schema=maker/schema-attributes/delete
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/schema-maker/schema-attributes/delete
 Authorization: Bearer {{token}}
 Content-Type: application/json
 
@@ -1067,7 +506,7 @@ Content-Type: application/json
 #  UserNotAuthorizedException the user is not authorized to issue this request
 #  PropertyServerException    there is a problem reported in the open metadata server(s)
 #
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/schema=maker/schema-attributes/by-name
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/schema-maker/schema-attributes/by-name
 Authorization: Bearer {{token}}
 Content-Type: application/json
 
@@ -1100,7 +539,7 @@ Content-Type: application/json
 #  UserNotAuthorizedException the user is not authorized to issue this request
 #  PropertyServerException    there is a problem reported in the open metadata server(s)
 #
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/schema=maker/schema-attributes/by-search-string?startFrom=0&pageSize=10&startsWith=true&endsWith=false&ignoreCase=false
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/schema-maker/schema-attributes/by-search-string?startFrom=0&pageSize=10&startsWith=true&endsWith=false&ignoreCase=false
 Authorization: Bearer {{token}}
 Content-Type: application/json
 
@@ -1129,7 +568,7 @@ Content-Type: application/json
 #  UserNotAuthorizedException the user is not authorized to issue this request
 #  PropertyServerException    there is a problem reported in the open metadata server(s)
 #
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/schema=maker/schema-attributes/{{schemaAttributeGUID}}/retrieve"})
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/schema-maker/schema-attributes/{{schemaAttributeGUID}}/retrieve"})
 Authorization: Bearer {{token}}
 Content-Type: application/json
 
@@ -1141,398 +580,3 @@ Content-Type: application/json
   "forDuplicateProcessing" : false
 }
 
-###
-
-@userIdentityGUID=add guid here
-
-###
-# @name createUserIdentity
-# Create a user identity.
-#
-# Request body provides             properties for the user identity.
-#
-# Returns unique identifier of the newly created element
-#  InvalidParameterException  one of the parameters is invalid.
-#  PropertyServerException    there is a problem retrieving information from the property server(s).
-#  UserNotAuthorizedException the requesting user is not authorized to issue this request.
-#
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/schema=maker/user-identities
-Authorization: Bearer {{token}}
-Content-Type: application/json
-
-{
-  "class" : "NewElementRequestBody",
-  "externalSourceGUID": "add guid here",
-  "externalSourceName": "add qualified name here",
-  "effectiveTime" : "{{$isoTimestamp}}",
-  "forLineage" : false,
-  "forDuplicateProcessing" : false,
-  "anchorGUID" : "add guid here",
-  "isOwnAnchor": false,
-  "parentGUID": "add guid here",
-  "parentRelationshipTypeName": "add type name here",
-  "parentRelationshipProperties": {
-    "class": "RelationshipElementProperties",
-    "propertyValueMap" : {
-      "description" : {
-        "class": "PrimitiveTypePropertyValue",
-        "typeName": "string",
-        "primitiveValue" : "New description"
-      }
-    }
-  },
-  "parentAtEnd1": false,
-  "properties": {
-    "class" : "UserIdentityProperties",
-    "typeName" : "enter the type of the element",
-    "qualifiedName": "add unique name here",
-    "userId":"add name here",
-    "distinguishedName": "add name here",
-    "additionalProperties": {
-      "property1" : "propertyValue1",
-      "property2" : "propertyValue2"
-    },
-    "extendedProperties": {
-      "property1" : "propertyValue1",
-      "property2" : "propertyValue2"
-    },
-    "effectiveFrom": "{{$isoTimestamp}}",
-    "effectiveTo": "{{$isoTimestamp}}"
-  }
-}
-
-
-###
-# @name createUserIdentityFromTemplate
-# Create a new metadata element to represent a user identity using an existing metadata element as a template.
-# The template defines additional classifications and relationships that should be added to the new element.
-#
-# Request body provides properties that override the template
-#
-# Returns unique identifier of the new metadata element
-#  InvalidParameterException  one of the parameters is invalid
-#  UserNotAuthorizedException the user is not authorized to issue this request
-#  PropertyServerException    there is a problem reported in the open metadata server(s)
-#
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/schema=maker/user-identities/from-template
-Authorization: Bearer {{token}}
-Content-Type: application/json
-
-{
-  "class" : "TemplateRequestBody",
-  "externalSourceGUID": "add guid here",
-  "externalSourceName": "add qualified name here",
-  "effectiveTime" : "{{$isoTimestamp}}",
-  "forLineage" : false,
-  "forDuplicateProcessing" : false,
-  "anchorGUID" : "add guid here",
-  "isOwnAnchor": false,
-  "parentGUID": "add guid here",
-  "parentRelationshipTypeName": "add type name here",
-  "parentRelationshipProperties": {
-    "class": "RelationshipElementProperties",
-    "propertyValueMap" : {
-      "description" : {
-        "class": "PrimitiveTypePropertyValue",
-        "typeName": "string",
-        "primitiveValue" : "New description"
-      }
-    }
-  },
-  "parentAtEnd1": false,
-  "templateGUID": "add guid here",
-  "replacementProperties": {
-    "class": "ElementProperties",
-    "propertyValueMap" : {
-      "description" : {
-        "class": "PrimitiveTypePropertyValue",
-        "typeName": "string",
-        "primitiveValue" : "New description"
-      }
-    }
-  },
-  "placeholderPropertyValues":  {
-    "placeholder1" : "propertyValue1",
-    "placeholder2" : "propertyValue2"
-  }
-}
-
-
-###
-# @name updateUserIdentity
-# Update the properties of a user identity.
-#
-# @param userIdentityGUID unique identifier of the user identity (returned from create)
-# @param replaceAllProperties flag to indicate whether to completely replace the existing properties with the new properties, or just update
-#                          the individual properties specified on the request.
-# Request body provides     properties for the new element.
-#
-# Returns void or
-#  InvalidParameterException  one of the parameters is invalid.
-#  PropertyServerException    there is a problem retrieving information from the property server(s).
-#  UserNotAuthorizedException the requesting user is not authorized to issue this request.
-#
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/schema=maker/user-identities/{{userIdentityGUID}}/update
-Authorization: Bearer {{token}}
-Content-Type: application/json
-
-{
-  "class" : "UpdateElementRequestBody",
-  "externalSourceGUID": "add guid here",
-  "externalSourceName": "add qualified name here",
-  "effectiveTime" : "{{$isoTimestamp}}",
-  "forLineage" : false,
-  "forDuplicateProcessing" : false,
-  "properties": {
-    "class" : "UserIdentityProperties",
-    "typeName" : "enter the type of the element",
-    "qualifiedName": "add unique name here",
-    "userId":"add name here",
-    "distinguishedName": "add name here",
-    "additionalProperties": {
-      "property1" : "propertyValue1",
-      "property2" : "propertyValue2"
-    },
-    "extendedProperties": {
-      "property1" : "propertyValue1",
-      "property2" : "propertyValue2"
-    },
-    "effectiveFrom": "{{$isoTimestamp}}",
-    "effectiveTo": "{{$isoTimestamp}}"
-  }
-}
-
-
-###
-# @name linkIdentityToProfile
-# Attach a profile to a user identity.
-#
-# @param userIdentityGUID unique identifier of the user identity
-# @param profileGUID unique identifier of the schema type
-# Request body provides  description of the relationship.
-#
-# Returns void or
-#  InvalidParameterException  one of the parameters is null or invalid.
-#  PropertyServerException    there is a problem retrieving information from the property server(s).
-#  UserNotAuthorizedException the requesting user is not authorized to issue this request.
-#
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/schema=maker/user-identities/{{userIdentityGUID}}/profile-identity/{{schemaTypeGUID}}/attach
-Authorization: Bearer {{token}}
-Content-Type: application/json
-
-{
-  "class" : "NewRelationshipRequestBody",
-  "externalSourceGUID": "add guid here",
-  "externalSourceName": "add qualified name here",
-  "effectiveTime" : "{{$isoTimestamp}}",
-  "forLineage" : false,
-  "forDuplicateProcessing" : false,
-  "properties": {
-    "class": "ProfileIdentityProperties",
-    "roleTypeName": "",
-    "roleGUID": "",
-    "description": "",
-    "effectiveFrom": "{{$isoTimestamp}}",
-    "effectiveTo": "{{$isoTimestamp}}"
-  }
-}
-
-
-###
-# @name detachProfileIdentity
-# Detach a schema type from a user identity.
-#
-# @param userIdentityGUID unique identifier of the user identity
-# @param profileGUID unique identifier of the schema type
-# Request body provides  description of the relationship.
-#
-# Returns void or
-#  InvalidParameterException  one of the parameters is null or invalid.
-#  PropertyServerException    there is a problem retrieving information from the property server(s).
-#  UserNotAuthorizedException the requesting user is not authorized to issue this request.
-#
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/schema=maker/user-identities/{{userIdentityGUID}}/profile-identity/{{schemaTypeGUID}}/detach
-Authorization: Bearer {{token}}
-Content-Type: application/json
-
- {
-  "class" : "MetadataSourceRequestBody",
-  "externalSourceGUID": "add guid here",
-  "externalSourceName": "add qualified name here",
-  "effectiveTime" : "{{$isoTimestamp}}",
-  "forLineage" : false,
-  "forDuplicateProcessing" : false
-}
-
-
-###
-# @name addSecurityGroupMembership
-# Add the SecurityGroupMembership classification to the user identity.
-#
-# @param userIdentityGUID unique identifier of the user identity
-# Request body provides  description of the relationship.
-#
-# Returns void or
-#  InvalidParameterException  one of the parameters is null or invalid.
-#  PropertyServerException    there is a problem retrieving information from the property server(s).
-#  UserNotAuthorizedException the requesting user is not authorized to issue this request.
-#
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/schema=maker/user-identities/{{userIdentityGUID}}/security-group-memberships/classify
-Authorization: Bearer {{token}}
-Content-Type: application/json
-
-
-{
-  "class" : "NewClassificationRequestBody",
-  "externalSourceGUID": "add guid here",
-  "externalSourceName": "add qualified name here",
-  "effectiveTime" : "{{$isoTimestamp}}",
-  "forLineage" : false,
-  "forDuplicateProcessing" : false,
-  "properties": {
-    "class": "SecurityGroupMembershipProperties",
-    "groups": [""],
-    "effectiveFrom": "{{$isoTimestamp}}",
-    "effectiveTo": "{{$isoTimestamp}}"
-  }
-}
-
-###
-# @name removeAllSecurityGroupMembership
-# Remove the SecurityGroupMembership classification from the user identity.
-#
-# @param userIdentityGUID unique identifier of the user identity
-# Request body provides  description of the relationship.
-#
-# Returns void or
-#  InvalidParameterException  one of the parameters is null or invalid.
-#  PropertyServerException    there is a problem retrieving information from the property server(s).
-#  UserNotAuthorizedException the requesting user is not authorized to issue this request.
-#
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/schema=maker/user-identities/{{userIdentityGUID}}/security-group-memberships/declassify
-Authorization: Bearer {{token}}
-Content-Type: application/json
-
-{
-  "class" : "MetadataSourceRequestBody",
-  "externalSourceGUID": "add guid here",
-  "externalSourceName": "add qualified name here",
-  "effectiveTime" : "{{$isoTimestamp}}",
-  "forLineage" : false,
-  "forDuplicateProcessing" : false
-}
-
-
-###
-# @name deleteUserIdentity
-# Delete a user identity.
-#
-# @param userIdentityGUID  unique identifier of the element to delete
-# @param cascadedDelete can user identities be deleted if data fields are attached?
-# Request body provides  description of the relationship.
-#
-# Returns void or
-#  InvalidParameterException  one of the parameters is null or invalid.
-#  PropertyServerException    there is a problem retrieving information from the property server(s).
-#  UserNotAuthorizedException the requesting user is not authorized to issue this request.
-#
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/schema=maker/user-identities/{{userIdentityGUID}}/delete
-Authorization: Bearer {{token}}
-Content-Type: application/json
-
-{
-  "class" : "MetadataSourceRequestBody",
-  "externalSourceGUID": "add guid here",
-  "externalSourceName": "add qualified name here",
-  "effectiveTime" : "{{$isoTimestamp}}",
-  "forLineage" : false,
-  "forDuplicateProcessing" : false
-}
-
-
-###
-# @name getUserIdentitiesByName
-# Returns the list of user identities with a particular name.
-#
-# @param startFrom paging start point
-# @param pageSize maximum results that can be returned
-# Request body provides string to find in the properties
-#
-# Returns list of matching metadata elements or
-#  InvalidParameterException  one of the parameters is invalid
-#  UserNotAuthorizedException the user is not authorized to issue this request
-#  PropertyServerException    there is a problem reported in the open metadata server(s)
-#
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/schema=maker/user-identities/by-name
-Authorization: Bearer {{token}}
-Content-Type: application/json
-
-{
-  "class" : "FilterRequestBody",
-  "asOfTime" : "{{$isoTimestamp}}",
-  "effectiveTime" : "{{$isoTimestamp}}",
-  "forLineage" : false,
-  "forDuplicateProcessing" : false,
-  "limitResultsByStatus" : ["ACTIVE"],
-  "sequencingOrder" : "PROPERTY_ASCENDING",
-  "sequencingProperty" : "qualifiedName",
-  "filter" : "Add name here"
-}
-
-
-###
-# @name findUserIdentities
-# Retrieve the list of user identity metadata elements that contain the search string.
-#
-# @param startsWith does the value start with the supplied string?
-# @param endsWith does the value end with the supplied string?
-# @param ignoreCase should the search ignore case?
-# @param startFrom paging start point
-# @param pageSize maximum results that can be returned
-# Request body provides string to find in the properties
-#
-# Returns list of matching metadata elements or
-#  InvalidParameterException  one of the parameters is invalid
-#  UserNotAuthorizedException the user is not authorized to issue this request
-#  PropertyServerException    there is a problem reported in the open metadata server(s)
-#
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/schema=maker/user-identities/by-search-string?startFrom=0&pageSize=10&startsWith=true&endsWith=false&ignoreCase=false
-Authorization: Bearer {{token}}
-Content-Type: application/json
-
-{
-  "class" : "FilterRequestBody",
-  "asOfTime" : "{{$isoTimestamp}}",
-  "effectiveTime" : "{{$isoTimestamp}}",
-  "forLineage" : false,
-  "forDuplicateProcessing" : false,
-  "limitResultsByStatus" : ["ACTIVE"],
-  "sequencingOrder" : "PROPERTY_ASCENDING",
-  "sequencingProperty" : "qualifiedName",
-  "filter" : "Add name here"
-}
-
-
-###
-# @name getUserIdentityByGUID
-# Return the properties of a specific user identity.
-#
-# @param userIdentityGUID    unique identifier of the required element
-# Request body provides string to find in the properties
-#
-# Returns list of matching metadata elements or
-#  InvalidParameterException  one of the parameters is invalid
-#  UserNotAuthorizedException the user is not authorized to issue this request
-#  PropertyServerException    there is a problem reported in the open metadata server(s)
-#
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/schema=maker/user-identities/{{userIdentityGUID}}/retrieve
-Authorization: Bearer {{token}}
-Content-Type: application/json
-
-{
-  "class" : "GetRequestBody",
-  "asOfTime" : "{{$isoTimestamp}}",
-  "effectiveTime" : "{{$isoTimestamp}}",
-  "forLineage" : false,
-  "forDuplicateProcessing" : false
-}

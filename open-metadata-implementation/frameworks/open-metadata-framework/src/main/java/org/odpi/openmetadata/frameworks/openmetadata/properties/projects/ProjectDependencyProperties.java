@@ -22,7 +22,8 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class ProjectDependencyProperties extends RelationshipBeanProperties
 {
-    String dependencySummary = null;
+    private String label       = null;
+    private String description = null;
 
     /**
      * Default constructor
@@ -45,31 +46,56 @@ public class ProjectDependencyProperties extends RelationshipBeanProperties
 
         if (template != null)
         {
-            this.dependencySummary = template.getDependencySummary();
+            this.label = template.getLabel();
+            this.description = template.getDescription();
         }
     }
 
 
+
     /**
-     * Return the membership type.
+     * Return the label.
      *
-     * @return membership type
+     * @return string
      */
-    public String getDependencySummary()
+    public String getLabel()
     {
-        return dependencySummary;
+        return label;
     }
 
 
     /**
-     * Set up the membership type.
+     * Set up the label.
      *
-     * @param dependencySummary membership type
+     * @param label string
      */
-    public void setDependencySummary(String dependencySummary)
+    public void setLabel(String label)
     {
-        this.dependencySummary = dependencySummary;
+        this.label = label;
     }
+
+
+    /**
+     * Return the reasons why the elements are related.
+     *
+     * @return description
+     */
+    public String getDescription()
+    {
+        return description;
+    }
+
+
+    /**
+     * Set up the reasons why the elements are related.
+     *
+     * @param description description
+     */
+    public void setDescription(String description)
+    {
+        this.description = description;
+    }
+
 
 
     /**
@@ -81,7 +107,8 @@ public class ProjectDependencyProperties extends RelationshipBeanProperties
     public String toString()
     {
         return "ProjectDependencyProperties{" +
-                "dependencySummary='" + dependencySummary + '\'' +
+                "label='" + label + '\'' +
+                ", description='" + description + '\'' +
                 "} " + super.toString();
     }
 
@@ -108,7 +135,8 @@ public class ProjectDependencyProperties extends RelationshipBeanProperties
             return false;
         }
         ProjectDependencyProperties that = (ProjectDependencyProperties) objectToCompare;
-        return Objects.equals(dependencySummary, that.dependencySummary);
+        return Objects.equals(label, that.label) &&
+                Objects.equals(description, that.description);
     }
 
 
@@ -120,6 +148,6 @@ public class ProjectDependencyProperties extends RelationshipBeanProperties
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), dependencySummary);
+        return Objects.hash(super.hashCode(), label, description);
     }
 }

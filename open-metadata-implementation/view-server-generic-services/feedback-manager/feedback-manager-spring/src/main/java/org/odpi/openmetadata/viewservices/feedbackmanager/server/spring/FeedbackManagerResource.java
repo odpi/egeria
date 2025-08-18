@@ -58,12 +58,12 @@ public class FeedbackManagerResource
                                                    url="https://egeria-project.org/patterns/metadata-manager/overview/#asset-feedback"))
 
     public GUIDResponse addCommentReply(@PathVariable String                         serverName,
-                                        @PathVariable String                        urlMarker,
+                                        @PathVariable String                         urlMarker,
                                         @PathVariable String                         elementGUID,
                                         @PathVariable String                         commentGUID,
                                         @RequestBody(required = false) NewFeedbackRequestBody requestBody)
     {
-        return restAPI.addCommentReply(serverName, elementGUID, commentGUID, urlMarker, requestBody);
+        return restAPI.addCommentReply(serverName, urlMarker, elementGUID, commentGUID, requestBody);
     }
 
 
@@ -93,7 +93,7 @@ public class FeedbackManagerResource
                                             @PathVariable String                 elementGUID,
                                             @RequestBody(required = false)  NewFeedbackRequestBody requestBody)
     {
-        return restAPI.addCommentToElement(serverName, elementGUID, urlMarker, requestBody);
+        return restAPI.addCommentToElement(serverName, urlMarker, elementGUID, requestBody);
     }
 
 
@@ -124,7 +124,7 @@ public class FeedbackManagerResource
                                          @RequestBody (required = false)
                                              UpdateElementRequestBody requestBody)
     {
-        return restAPI.addLikeToElement(serverName, elementGUID, urlMarker, requestBody);
+        return restAPI.addLikeToElement(serverName, urlMarker, elementGUID, requestBody);
     }
 
 
@@ -149,11 +149,11 @@ public class FeedbackManagerResource
                                                    url="https://egeria-project.org/patterns/metadata-manager/overview/#asset-feedback"))
 
     public VoidResponse addRatingToElement(@PathVariable String           serverName,
-                                           @PathVariable String                        urlMarker,
+                                           @PathVariable String           urlMarker,
                                            @PathVariable String           elementGUID,
                                            @RequestBody(required = false)  UpdateElementRequestBody requestBody)
     {
-        return restAPI.addRatingToElement(serverName, elementGUID, urlMarker, requestBody);
+        return restAPI.addRatingToElement(serverName, urlMarker, elementGUID, requestBody);
     }
 
 
@@ -185,7 +185,7 @@ public class FeedbackManagerResource
                                         @RequestBody (required = false)
                                             MetadataSourceRequestBody requestBody)
     {
-        return restAPI.addTagToElement(serverName, elementGUID, tagGUID, urlMarker, requestBody);
+        return restAPI.addTagToElement(serverName, urlMarker, elementGUID, tagGUID, requestBody);
     }
 
 
@@ -244,7 +244,7 @@ public class FeedbackManagerResource
                                     @RequestBody(required = false)
                                         DeleteRequestBody requestBody)
     {
-        return restAPI.deleteTag(serverName, tagGUID, urlMarker, requestBody);
+        return restAPI.deleteTag(serverName, urlMarker, tagGUID, requestBody);
     }
 
 
@@ -254,8 +254,6 @@ public class FeedbackManagerResource
      * @param serverName name of the server instances for this request
      * @param urlMarker  view service URL marker
      * @param tagGUID unique identifier of tag.
-     * @param startFrom  index of the list to start from (0 for start)
-     * @param pageSize   maximum number of elements to return.
      * @param requestBody optional effective time
      *
      * @return element stubs list or
@@ -270,16 +268,14 @@ public class FeedbackManagerResource
                externalDocs=@ExternalDocumentation(description="Element classifiers",
                                                    url="https://egeria-project.org/patterns/metadata-manager/overview/#asset-classifiers"))
 
-    public RelatedMetadataElementStubsResponse getElementsByTag(@PathVariable String serverName,
+    public OpenMetadataRootElementsResponse getElementsByTag(@PathVariable String serverName,
                                                     @PathVariable String                        urlMarker,
                                                     @PathVariable String tagGUID,
-                                                    @RequestParam(required = false, defaultValue = "0") int    startFrom,
-                                                    @RequestParam(required = false, defaultValue = "0") int    pageSize,
                                                     @RequestBody(required = false)
                                                         ResultsRequestBody requestBody)
 
     {
-        return restAPI.getElementsByTag(serverName, tagGUID, startFrom, pageSize, urlMarker, requestBody);
+        return restAPI.getElementsByTag(serverName, urlMarker, tagGUID, requestBody);
     }
 
 
@@ -303,13 +299,13 @@ public class FeedbackManagerResource
                externalDocs=@ExternalDocumentation(description="Informal Tag",
                                                    url="https://egeria-project.org/concepts/informal-tag/"))
 
-    public InformalTagResponse getTag(@PathVariable String   serverName,
+    public OpenMetadataRootElementResponse getTag(@PathVariable String   serverName,
                                       @PathVariable String                        urlMarker,
                                       @PathVariable String   tagGUID,
                                       @RequestBody(required = false)
                                           GetRequestBody requestBody)
     {
-        return restAPI.getTag(serverName, tagGUID, urlMarker, requestBody);
+        return restAPI.getTag(serverName, urlMarker, tagGUID, requestBody);
     }
 
 
@@ -331,7 +327,7 @@ public class FeedbackManagerResource
                externalDocs=@ExternalDocumentation(description="Informal Tag",
                                                    url="https://egeria-project.org/concepts/informal-tag/"))
 
-    public InformalTagsResponse getTagsByName(@PathVariable String          serverName,
+    public OpenMetadataRootElementsResponse getTagsByName(@PathVariable String          serverName,
                                               @PathVariable String                        urlMarker,
                                               @RequestBody(required = false) FilterRequestBody requestBody)
     {
@@ -358,7 +354,7 @@ public class FeedbackManagerResource
                externalDocs=@ExternalDocumentation(description="Comment",
                                                    url="https://egeria-project.org/concepts/comment/"))
 
-    public CommentElementsResponse findComments(@PathVariable String                  serverName,
+    public OpenMetadataRootElementsResponse findComments(@PathVariable String                  serverName,
                                                 @PathVariable String                        urlMarker,
                                                 @RequestBody  (required = false)
                                                     SearchStringRequestBody              requestBody)
@@ -386,7 +382,7 @@ public class FeedbackManagerResource
                externalDocs=@ExternalDocumentation(description="Informal Tag",
                                                    url="https://egeria-project.org/concepts/informal-tag/"))
 
-    public InformalTagsResponse findTags(@PathVariable String                  serverName,
+    public OpenMetadataRootElementsResponse findTags(@PathVariable String                  serverName,
                                          @PathVariable String                        urlMarker,
                                          @RequestBody  (required = false)
                                              SearchStringRequestBody              requestBody)
@@ -414,7 +410,7 @@ public class FeedbackManagerResource
                externalDocs=@ExternalDocumentation(description="Informal Tag",
                                                    url="https://egeria-project.org/concepts/informal-tag/"))
 
-    public InformalTagsResponse findMyTags(@PathVariable String                  serverName,
+    public OpenMetadataRootElementsResponse findMyTags(@PathVariable String                  serverName,
                                            @PathVariable String                        urlMarker,
                                            @RequestBody  (required = false)
                                                SearchStringRequestBody              requestBody)
@@ -449,7 +445,7 @@ public class FeedbackManagerResource
                                                  @RequestBody(required = false)
                                                      DeleteRequestBody requestBody)
     {
-        return restAPI.removeCommentFromElement(serverName,  commentGUID, urlMarker, requestBody);
+        return restAPI.removeCommentFromElement(serverName, urlMarker,  commentGUID, requestBody);
     }
 
 
@@ -472,13 +468,13 @@ public class FeedbackManagerResource
             externalDocs=@ExternalDocumentation(description="Element Feedback",
                     url="https://egeria-project.org/patterns/metadata-manager/overview/#asset-feedback"))
 
-    public CommentResponse getComment(@PathVariable String                        serverName,
-                                      @PathVariable String                        urlMarker,
-                                      @PathVariable String                        commentGUID,
-                                      @RequestBody(required = false)
-                                          GetRequestBody requestBody)
+    public OpenMetadataRootElementResponse getComment(@PathVariable String                        serverName,
+                                                      @PathVariable String                        urlMarker,
+                                                      @PathVariable String                        commentGUID,
+                                                      @RequestBody(required = false)
+                                                          GetRequestBody requestBody)
     {
-        return restAPI.getCommentByGUID(serverName, commentGUID, urlMarker, requestBody);
+        return restAPI.getCommentByGUID(serverName, urlMarker, commentGUID, requestBody);
     }
 
 
@@ -501,12 +497,12 @@ public class FeedbackManagerResource
             externalDocs=@ExternalDocumentation(description="Element Feedback",
                     url="https://egeria-project.org/patterns/metadata-manager/overview/#asset-feedback"))
 
-    public RatingElementsResponse getAttachedRatings(@PathVariable String                        serverName,
+    public OpenMetadataRootElementsResponse getAttachedRatings(@PathVariable String                        serverName,
                                                      @PathVariable String                        urlMarker,
                                                      @PathVariable String                        elementGUID,
                                                      @RequestBody(required = false) ResultsRequestBody requestBody)
     {
-        return restAPI.getAttachedRatings(serverName, elementGUID, urlMarker, requestBody);
+        return restAPI.getAttachedRatings(serverName, urlMarker, elementGUID, requestBody);
     }
 
 
@@ -529,12 +525,12 @@ public class FeedbackManagerResource
             externalDocs=@ExternalDocumentation(description="Element Feedback",
                     url="https://egeria-project.org/patterns/metadata-manager/overview/#asset-feedback"))
 
-    public LikeElementsResponse getAttachedLikes(@PathVariable String                        serverName,
+    public OpenMetadataRootElementsResponse getAttachedLikes(@PathVariable String                        serverName,
                                                  @PathVariable String                        urlMarker,
                                                  @PathVariable String                        elementGUID,
                                                  @RequestBody(required = false) ResultsRequestBody requestBody)
     {
-        return restAPI.getAttachedLikes(serverName, elementGUID, urlMarker, requestBody);
+        return restAPI.getAttachedLikes(serverName, urlMarker, elementGUID, requestBody);
     }
 
 
@@ -557,12 +553,12 @@ public class FeedbackManagerResource
             externalDocs=@ExternalDocumentation(description="Element Feedback",
                     url="https://egeria-project.org/patterns/metadata-manager/overview/#asset-feedback"))
 
-    public CommentElementsResponse getAttachedComments(@PathVariable String                        serverName,
+    public OpenMetadataRootElementsResponse getAttachedComments(@PathVariable String                        serverName,
                                                        @PathVariable String                        urlMarker,
                                                        @PathVariable String                        elementGUID,
                                                        @RequestBody(required = false) ResultsRequestBody requestBody)
     {
-        return restAPI.getAttachedComments(serverName, elementGUID, urlMarker, requestBody);
+        return restAPI.getAttachedComments(serverName, urlMarker, elementGUID, requestBody);
     }
 
 
@@ -585,12 +581,12 @@ public class FeedbackManagerResource
             externalDocs=@ExternalDocumentation(description="Element Feedback",
                     url="https://egeria-project.org/patterns/metadata-manager/overview/#asset-feedback"))
 
-    public InformalTagsResponse getAttachedTags(@PathVariable String                        serverName,
+    public OpenMetadataRootElementsResponse getAttachedTags(@PathVariable String                        serverName,
                                                 @PathVariable String                        urlMarker,
                                                 @PathVariable String                        elementGUID,
                                                 @RequestBody(required = false) ResultsRequestBody requestBody)
     {
-        return restAPI.getAttachedTags(serverName, elementGUID, urlMarker, requestBody);
+        return restAPI.getAttachedTags(serverName, urlMarker, elementGUID, requestBody);
     }
 
 
@@ -620,7 +616,7 @@ public class FeedbackManagerResource
                                                 @RequestBody(required = false)
                                                     DeleteRequestBody requestBody)
     {
-        return restAPI.removeLikeFromElement(serverName, elementGUID, urlMarker, requestBody);
+        return restAPI.removeLikeFromElement(serverName, urlMarker, elementGUID, requestBody);
     }
 
 
@@ -650,7 +646,7 @@ public class FeedbackManagerResource
                                                   @RequestBody(required = false)
                                                       DeleteRequestBody requestBody)
     {
-        return restAPI.removeRatingFromElement(serverName, elementGUID, urlMarker, requestBody);
+        return restAPI.removeRatingFromElement(serverName, urlMarker, elementGUID, requestBody);
     }
 
 
@@ -682,7 +678,7 @@ public class FeedbackManagerResource
                                              @RequestBody(required = false)
                                                  DeleteRequestBody requestBody)
     {
-        return restAPI.removeTagFromElement(serverName, elementGUID, tagGUID, urlMarker, requestBody);
+        return restAPI.removeTagFromElement(serverName, urlMarker, elementGUID, tagGUID, requestBody);
     }
 
 
@@ -711,7 +707,7 @@ public class FeedbackManagerResource
                                         @PathVariable String                         commentGUID,
                                         @RequestBody(required = false)  UpdateElementRequestBody requestBody)
     {
-        return restAPI.updateComment(serverName, commentGUID, urlMarker, requestBody);
+        return restAPI.updateComment(serverName, urlMarker, commentGUID, requestBody);
     }
 
 
@@ -737,17 +733,13 @@ public class FeedbackManagerResource
                     url="https://egeria-project.org/patterns/metadata-manager/overview/#asset-feedback"))
 
     public VoidResponse setupAcceptedAnswer(@PathVariable String                  serverName,
-                                            @PathVariable String                        urlMarker,
+                                            @PathVariable String                  urlMarker,
                                             @PathVariable String                  questionCommentGUID,
                                             @PathVariable String                  answerCommentGUID,
                                             @RequestBody (required = false)
                                                 NewRelationshipRequestBody requestBody)
     {
-        return restAPI.setupAcceptedAnswer(serverName,
-                                           questionCommentGUID,
-                                           answerCommentGUID,
-                                           urlMarker,
-                                           requestBody);
+        return restAPI.setupAcceptedAnswer(serverName, urlMarker, questionCommentGUID, answerCommentGUID, requestBody);
     }
 
 
@@ -779,11 +771,7 @@ public class FeedbackManagerResource
                                             @RequestBody  (required = false)
                                                 DeleteRequestBody requestBody)
     {
-        return restAPI.clearAcceptedAnswer(serverName,
-                                           questionCommentGUID,
-                                           answerCommentGUID,
-                                           urlMarker,
-                                           requestBody);
+        return restAPI.clearAcceptedAnswer(serverName, urlMarker, questionCommentGUID, answerCommentGUID, requestBody);
     }
 
 
@@ -812,7 +800,7 @@ public class FeedbackManagerResource
                                                @PathVariable String                       tagGUID,
                                                @RequestBody  UpdateElementRequestBody requestBody)
     {
-        return restAPI.updateTagDescription(serverName, tagGUID, urlMarker, requestBody);
+        return restAPI.updateTagDescription(serverName, urlMarker, tagGUID, requestBody);
     }
 
 
@@ -848,7 +836,7 @@ public class FeedbackManagerResource
                                       @PathVariable String            elementGUID,
                                       @RequestBody NewFeedbackRequestBody requestBody)
     {
-        return restAPI.createNoteLog(serverName, elementGUID, urlMarker, requestBody);
+        return restAPI.createNoteLog(serverName, urlMarker, elementGUID, requestBody);
     }
 
 
@@ -878,7 +866,7 @@ public class FeedbackManagerResource
                                         @PathVariable String                         noteLogGUID,
                                         @RequestBody UpdateElementRequestBody requestBody)
     {
-        return restAPI.updateNoteLog(serverName, noteLogGUID, urlMarker, requestBody);
+        return restAPI.updateNoteLog(serverName, urlMarker, noteLogGUID, requestBody);
     }
 
 
@@ -909,7 +897,7 @@ public class FeedbackManagerResource
                                         @RequestBody (required = false)
                                             DeleteRequestBody requestBody)
     {
-        return restAPI.deleteNoteLog(serverName, noteLogGUID, urlMarker, requestBody);
+        return restAPI.deleteNoteLog(serverName, urlMarker, noteLogGUID, requestBody);
     }
 
 
@@ -932,10 +920,10 @@ public class FeedbackManagerResource
             externalDocs=@ExternalDocumentation(description="Element Feedback",
                     url="https://egeria-project.org/patterns/metadata-manager/overview/#asset-feedback"))
 
-    public NoteLogsResponse findNoteLogs(@PathVariable String                  serverName,
-                                         @PathVariable String                        urlMarker,
-                                         @RequestBody  (required = false)
-                                             SearchStringRequestBody              requestBody)
+    public OpenMetadataRootElementsResponse findNoteLogs(@PathVariable String                  serverName,
+                                                         @PathVariable String                        urlMarker,
+                                                         @RequestBody  (required = false)
+                                                             SearchStringRequestBody              requestBody)
     {
         return restAPI.findNoteLogs(serverName, urlMarker, requestBody);
     }
@@ -961,9 +949,9 @@ public class FeedbackManagerResource
             externalDocs=@ExternalDocumentation(description="Element Feedback",
                     url="https://egeria-project.org/patterns/metadata-manager/overview/#asset-feedback"))
 
-    public NoteLogsResponse getNoteLogsByName(@PathVariable String          serverName,
-                                              @PathVariable String                        urlMarker,
-                                              @RequestBody  FilterRequestBody requestBody)
+    public OpenMetadataRootElementsResponse getNoteLogsByName(@PathVariable String          serverName,
+                                                              @PathVariable String            urlMarker,
+                                                              @RequestBody(required = false)  FilterRequestBody requestBody)
     {
         return restAPI.getNoteLogsByName(serverName, urlMarker, requestBody);
     }
@@ -989,12 +977,12 @@ public class FeedbackManagerResource
             externalDocs=@ExternalDocumentation(description="Element Feedback",
                     url="https://egeria-project.org/patterns/metadata-manager/overview/#asset-feedback"))
 
-    public NoteLogsResponse getNoteLogsForElement(@PathVariable String          serverName,
-                                                  @PathVariable String                        urlMarker,
-                                                  @PathVariable String          elementGUID,
-                                                  @RequestBody(required = false) ResultsRequestBody requestBody)
+    public OpenMetadataRootElementsResponse getNoteLogsForElement(@PathVariable String          serverName,
+                                                                  @PathVariable String                        urlMarker,
+                                                                  @PathVariable String          elementGUID,
+                                                                  @RequestBody(required = false) ResultsRequestBody requestBody)
     {
-        return restAPI.getNoteLogsForElement(serverName, elementGUID, urlMarker,requestBody);
+        return restAPI.getNoteLogsForElement(serverName, urlMarker, elementGUID, requestBody);
     }
 
 
@@ -1018,12 +1006,12 @@ public class FeedbackManagerResource
             externalDocs=@ExternalDocumentation(description="Element Feedback",
                     url="https://egeria-project.org/patterns/metadata-manager/overview/#asset-feedback"))
 
-    public NoteLogResponse getNoteLogByGUID(@PathVariable String                        serverName,
+    public OpenMetadataRootElementResponse getNoteLogByGUID(@PathVariable String                        serverName,
                                             @PathVariable String                        urlMarker,
                                             @PathVariable String                        noteLogGUID,
                                             @RequestBody(required = false) GetRequestBody requestBody)
     {
-        return restAPI.getNoteLogByGUID(serverName, noteLogGUID, urlMarker, requestBody);
+        return restAPI.getNoteLogByGUID(serverName, urlMarker, noteLogGUID, requestBody);
     }
 
 
@@ -1057,7 +1045,7 @@ public class FeedbackManagerResource
                                    @PathVariable String         noteLogGUID,
                                    @RequestBody NewFeedbackRequestBody requestBody)
     {
-        return restAPI.createNote(serverName, noteLogGUID, urlMarker, requestBody);
+        return restAPI.createNote(serverName, urlMarker, noteLogGUID, requestBody);
     }
 
 
@@ -1086,7 +1074,7 @@ public class FeedbackManagerResource
                                      @PathVariable String                         noteGUID,
                                      @RequestBody  UpdateElementRequestBody requestBody)
     {
-        return restAPI.updateNote(serverName, noteGUID, urlMarker, requestBody);
+        return restAPI.updateNote(serverName, urlMarker, noteGUID, requestBody);
     }
 
 
@@ -1116,7 +1104,7 @@ public class FeedbackManagerResource
                                      @RequestBody(required = false)
                                          DeleteRequestBody requestBody)
     {
-        return restAPI.deleteNote(serverName, noteGUID, urlMarker, requestBody);
+        return restAPI.deleteNote(serverName, urlMarker, noteGUID, requestBody);
     }
 
 
@@ -1139,10 +1127,10 @@ public class FeedbackManagerResource
             externalDocs=@ExternalDocumentation(description="Element Feedback",
                     url="https://egeria-project.org/patterns/metadata-manager/overview/#asset-feedback"))
 
-    public NotesResponse findNotes(@PathVariable String                  serverName,
-                                   @PathVariable String                        urlMarker,
-                                   @RequestBody  (required = false)
-                                       SearchStringRequestBody              requestBody)
+    public OpenMetadataRootElementsResponse findNotes(@PathVariable String                  serverName,
+                                                      @PathVariable String                        urlMarker,
+                                                      @RequestBody  (required = false)
+                                                          SearchStringRequestBody              requestBody)
     {
         return restAPI.findNotes(serverName, urlMarker, requestBody);
     }
@@ -1168,13 +1156,13 @@ public class FeedbackManagerResource
             externalDocs=@ExternalDocumentation(description="Element Feedback",
                     url="https://egeria-project.org/patterns/metadata-manager/overview/#asset-feedback"))
 
-    public NotesResponse getNotesForNoteLog(@PathVariable String                        serverName,
-                                            @PathVariable String                        urlMarker,
-                                            @PathVariable String                        noteLogGUID,
-                                            @RequestBody(required = false)
-                                                       ResultsRequestBody requestBody)
+    public OpenMetadataRootElementsResponse getNotesForNoteLog(@PathVariable String                        serverName,
+                                                               @PathVariable String                        urlMarker,
+                                                               @PathVariable String                        noteLogGUID,
+                                                               @RequestBody(required = false)
+                                                                   ResultsRequestBody requestBody)
     {
-        return restAPI.getNotesForNoteLog(serverName, noteLogGUID, urlMarker, requestBody);
+        return restAPI.getNotesForNoteLog(serverName, urlMarker, noteLogGUID, requestBody);
     }
 
 
@@ -1197,12 +1185,12 @@ public class FeedbackManagerResource
             externalDocs=@ExternalDocumentation(description="Element Feedback",
                     url="https://egeria-project.org/patterns/metadata-manager/overview/#asset-feedback"))
 
-    public NoteResponse getNoteByGUID(@PathVariable String                              serverName,
+    public OpenMetadataRootElementResponse getNoteByGUID(@PathVariable String                              serverName,
                                       @PathVariable String                              urlMarker,
                                       @PathVariable String                              noteGUID,
                                       @RequestBody(required = false) GetRequestBody requestBody)
     {
-        return restAPI.getNoteByGUID(serverName, noteGUID, urlMarker, requestBody);
+        return restAPI.getNoteByGUID(serverName, urlMarker, noteGUID, requestBody);
     }
 }
 

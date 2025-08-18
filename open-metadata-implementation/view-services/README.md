@@ -32,6 +32,10 @@ The view services are as follows:
 
   The Data Discovery OMVS is a REST API designed to support user interfaces (UIs) for locating the data needed for a project.
 
+* **[Data Engineer](data-engineer)** - define and search for new data pipelines and reference data.
+
+  The Data Engineer OMVS is a REST API designed to support user interfaces (UIs) for managing data pipelines and reference data.
+
 * **[Data Officer](data-officer)** - manage the governance of data.
 
   The Data Officer OMVS is a REST API designed to support user interfaces (UIs) for supporting a Data Officer as they lead the data governance program.  This builds on the capabilities of the Governance Officer OMVS.

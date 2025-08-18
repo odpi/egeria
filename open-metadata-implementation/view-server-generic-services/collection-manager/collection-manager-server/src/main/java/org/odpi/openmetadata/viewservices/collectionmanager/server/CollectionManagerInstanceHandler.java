@@ -34,7 +34,7 @@ public class CollectionManagerInstanceHandler extends OMVSServiceInstanceHandler
      *
      * @param userId               local server userid
      * @param serverName           name of the server that the request is for
-     * @param viewServiceURLMarker optional view service URL marker (overrides accessServiceURLMarker)
+     * @param urlMarker optional view service URL marker (overrides accessServiceURLMarker)
      * @param serviceOperationName service operation - usually the top level rest call
      * @return client
      * @throws InvalidParameterException unknown server/service
@@ -43,7 +43,7 @@ public class CollectionManagerInstanceHandler extends OMVSServiceInstanceHandler
      */
     public CollectionHandler getCollectionHandler(String userId,
                                                   String serverName,
-                                                  String viewServiceURLMarker,
+                                                  String urlMarker,
                                                   String serviceOperationName) throws InvalidParameterException,
                                                                                       PropertyServerException,
                                                                                       UserNotAuthorizedException
@@ -52,7 +52,7 @@ public class CollectionManagerInstanceHandler extends OMVSServiceInstanceHandler
 
         if (instance != null)
         {
-            return instance.getCollectionHandler(viewServiceURLMarker, serviceOperationName);
+            return instance.getCollectionHandler(urlMarker, serviceOperationName);
         }
 
         return null;

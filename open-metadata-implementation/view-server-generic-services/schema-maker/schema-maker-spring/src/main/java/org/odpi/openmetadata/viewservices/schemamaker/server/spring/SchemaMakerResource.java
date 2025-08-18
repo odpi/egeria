@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.*;
 
 @Tag(name="API: Schema Maker OMVS", description="The Schema Maker OMVS provides APIs for supporting the creation and editing of schema types, schema attributes and user identities.",
         externalDocs=@ExternalDocumentation(description="Further Information",
-                url="https://egeria-project.org/services/omvs/schema=maker/overview/"))
+                url="https://egeria-project.org/services/omvs/schema-maker/overview/"))
 
 public class SchemaMakerResource
 {
@@ -53,9 +53,9 @@ public class SchemaMakerResource
                     url="https://egeria-project.org/concepts/schema-type"))
 
     public GUIDResponse createSchemaType(@PathVariable String                               serverName,
-                                           @PathVariable String             urlMarker,
-                                           @RequestBody (required = false)
-                                           NewElementRequestBody requestBody)
+                                         @PathVariable String             urlMarker,
+                                         @RequestBody (required = false)
+                                         NewElementRequestBody requestBody)
     {
         return restAPI.createSchemaType(serverName, urlMarker, requestBody);
     }
@@ -81,10 +81,10 @@ public class SchemaMakerResource
                     url="https://egeria-project.org/concepts/schema-type"))
 
     public GUIDResponse createSchemaTypeFromTemplate(@PathVariable
-                                                       String              serverName,
-                                                       @PathVariable String             urlMarker,
-                                                       @RequestBody (required = false)
-                                                       TemplateRequestBody requestBody)
+                                                     String              serverName,
+                                                     @PathVariable String             urlMarker,
+                                                     @RequestBody (required = false)
+                                                     TemplateRequestBody requestBody)
     {
         return restAPI.createSchemaTypeFromTemplate(serverName, urlMarker, requestBody);
     }
@@ -110,12 +110,12 @@ public class SchemaMakerResource
                     url="https://egeria-project.org/concepts/schema-type"))
 
     public VoidResponse updateSchemaType(@PathVariable
-                                           String                                  serverName,
-                                           @PathVariable String             urlMarker,
-                                           @PathVariable
-                                           String                                  schemaTypeGUID,
-                                           @RequestBody (required = false)
-                                           UpdateElementRequestBody requestBody)
+                                         String                                  serverName,
+                                         @PathVariable String             urlMarker,
+                                         @PathVariable
+                                         String                                  schemaTypeGUID,
+                                         @RequestBody (required = false)
+                                         UpdateElementRequestBody requestBody)
     {
         return restAPI.updateSchemaType(serverName, urlMarker, schemaTypeGUID, requestBody);
     }
@@ -141,12 +141,12 @@ public class SchemaMakerResource
                     url="https://egeria-project.org/concepts/schema-type"))
 
     public VoidResponse deleteSchemaType(@PathVariable
-                                           String                    serverName,
-                                           @PathVariable String             urlMarker,
-                                           @PathVariable
-                                           String                    schemaTypeGUID,
-                                           @RequestBody (required = false)
-                                             DeleteRequestBody requestBody)
+                                         String                    serverName,
+                                         @PathVariable String             urlMarker,
+                                         @PathVariable
+                                         String                    schemaTypeGUID,
+                                         @RequestBody (required = false)
+                                         DeleteRequestBody requestBody)
     {
         return restAPI.deleteSchemaType(serverName, urlMarker, schemaTypeGUID, requestBody);
     }
@@ -171,10 +171,10 @@ public class SchemaMakerResource
                     url="https://egeria-project.org/concepts/schema-type"))
 
     public OpenMetadataRootElementsResponse getSchemaTypesByName(@PathVariable
-                                                        String            serverName,
-                                                        @PathVariable String             urlMarker,
-                                                        @RequestBody (required = false)
-                                                        FilterRequestBody requestBody)
+                                                                 String            serverName,
+                                                                 @PathVariable String             urlMarker,
+                                                                 @RequestBody (required = false)
+                                                                 FilterRequestBody requestBody)
     {
         return restAPI.getSchemaTypesByName(serverName, urlMarker, requestBody);
     }
@@ -199,10 +199,10 @@ public class SchemaMakerResource
                     url="https://egeria-project.org/concepts/schema-type"))
 
     public OpenMetadataRootElementsResponse findSchemaTypes(@PathVariable
-                                                   String                  serverName,
-                                                   @PathVariable String             urlMarker,
-                                                   @RequestBody (required = false)
-                                                   SearchStringRequestBody requestBody)
+                                                            String                  serverName,
+                                                            @PathVariable String             urlMarker,
+                                                            @RequestBody (required = false)
+                                                            SearchStringRequestBody requestBody)
     {
         return restAPI.findSchemaTypes(serverName, urlMarker,  requestBody);
     }
@@ -228,12 +228,12 @@ public class SchemaMakerResource
                     url="https://egeria-project.org/concepts/schema-type"))
 
     public OpenMetadataRootElementResponse getSchemaTypeByGUID(@PathVariable
-                                                      String             serverName,
-                                                      @PathVariable String             urlMarker,
-                                                      @PathVariable
-                                                      String             schemaTypeGUID,
-                                                      @RequestBody (required = false)
-                                                                   GetRequestBody requestBody)
+                                                               String             serverName,
+                                                               @PathVariable String             urlMarker,
+                                                               @PathVariable
+                                                               String             schemaTypeGUID,
+                                                               @RequestBody (required = false)
+                                                               GetRequestBody requestBody)
     {
         return restAPI.getSchemaTypeByGUID(serverName, urlMarker, schemaTypeGUID, requestBody);
     }
@@ -259,9 +259,9 @@ public class SchemaMakerResource
                     url="https://egeria-project.org/concepts/schema-attribute"))
 
     public GUIDResponse createSchemaAttribute(@PathVariable String                               serverName,
-                                        @PathVariable String             urlMarker,
-                                        @RequestBody (required = false)
-                                        NewElementRequestBody requestBody)
+                                              @PathVariable String             urlMarker,
+                                              @RequestBody (required = false)
+                                              NewElementRequestBody requestBody)
     {
         return restAPI.createSchemaAttribute(serverName, urlMarker, requestBody);
     }
@@ -287,10 +287,10 @@ public class SchemaMakerResource
                     url="https://egeria-project.org/concepts/schema-attribute"))
 
     public GUIDResponse createSchemaAttributeFromTemplate(@PathVariable
-                                                    String              serverName,
-                                                    @PathVariable String             urlMarker,
-                                                    @RequestBody (required = false)
-                                                    TemplateRequestBody requestBody)
+                                                          String              serverName,
+                                                          @PathVariable String             urlMarker,
+                                                          @RequestBody (required = false)
+                                                          TemplateRequestBody requestBody)
     {
         return restAPI.createSchemaAttributeFromTemplate(serverName, urlMarker, requestBody);
     }
@@ -316,12 +316,12 @@ public class SchemaMakerResource
                     url="https://egeria-project.org/concepts/schema-attribute"))
 
     public VoidResponse updateSchemaAttribute(@PathVariable
-                                        String                                  serverName,
-                                        @PathVariable String             urlMarker,
-                                        @PathVariable
-                                        String                                  schemaAttributeGUID,
-                                        @RequestBody (required = false)
-                                        UpdateElementRequestBody requestBody)
+                                              String                                  serverName,
+                                              @PathVariable String             urlMarker,
+                                              @PathVariable
+                                              String                                  schemaAttributeGUID,
+                                              @RequestBody (required = false)
+                                              UpdateElementRequestBody requestBody)
     {
         return restAPI.updateSchemaAttribute(serverName, urlMarker, schemaAttributeGUID, requestBody);
     }
@@ -348,12 +348,12 @@ public class SchemaMakerResource
                     url="https://egeria-project.org/concepts/schema-attribute"))
 
     public VoidResponse deleteSchemaAttribute(@PathVariable
-                                        String                    serverName,
-                                        @PathVariable String             urlMarker,
-                                        @PathVariable
-                                        String                    schemaAttributeGUID,
-                                        @RequestBody (required = false)
-                                                  DeleteRequestBody requestBody)
+                                              String                    serverName,
+                                              @PathVariable String             urlMarker,
+                                              @PathVariable
+                                              String                    schemaAttributeGUID,
+                                              @RequestBody (required = false)
+                                              DeleteRequestBody requestBody)
     {
         return restAPI.deleteSchemaAttribute(serverName, urlMarker, schemaAttributeGUID, requestBody);
     }
@@ -378,10 +378,10 @@ public class SchemaMakerResource
                     url="https://egeria-project.org/concepts/schema-attribute"))
 
     public OpenMetadataRootElementsResponse getSchemaAttributesByName(@PathVariable
-                                                  String            serverName,
-                                                  @PathVariable String             urlMarker,
-                                                  @RequestBody (required = false)
-                                                  FilterRequestBody requestBody)
+                                                                      String            serverName,
+                                                                      @PathVariable String             urlMarker,
+                                                                      @RequestBody (required = false)
+                                                                      FilterRequestBody requestBody)
     {
         return restAPI.getSchemaAttributesByName(serverName, urlMarker, requestBody);
     }
@@ -407,10 +407,10 @@ public class SchemaMakerResource
                     url="https://egeria-project.org/concepts/schema-attribute"))
 
     public OpenMetadataRootElementsResponse findSchemaAttributes(@PathVariable
-                                             String                  serverName,
-                                             @PathVariable String             urlMarker,
-                                             @RequestBody (required = false)
-                                             SearchStringRequestBody requestBody)
+                                                                 String                  serverName,
+                                                                 @PathVariable String             urlMarker,
+                                                                 @RequestBody (required = false)
+                                                                 SearchStringRequestBody requestBody)
     {
         return restAPI.findSchemaAttributes(serverName, urlMarker,  requestBody);
     }
@@ -436,12 +436,12 @@ public class SchemaMakerResource
                     url="https://egeria-project.org/concepts/schema-attribute"))
 
     public OpenMetadataRootElementResponse getSchemaAttributeByGUID(@PathVariable
-                                                String             serverName,
-                                                @PathVariable String             urlMarker,
-                                                @PathVariable
-                                                String             schemaAttributeGUID,
-                                                @RequestBody (required = false)
-                                                                        GetRequestBody requestBody)
+                                                                    String             serverName,
+                                                                    @PathVariable String             urlMarker,
+                                                                    @PathVariable
+                                                                    String             schemaAttributeGUID,
+                                                                    @RequestBody (required = false)
+                                                                    GetRequestBody requestBody)
     {
         return restAPI.getSchemaAttributeByGUID(serverName, urlMarker, schemaAttributeGUID, requestBody);
     }

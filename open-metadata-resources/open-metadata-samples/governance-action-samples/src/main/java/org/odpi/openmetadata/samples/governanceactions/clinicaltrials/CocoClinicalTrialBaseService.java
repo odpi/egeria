@@ -192,7 +192,7 @@ public class CocoClinicalTrialBaseService extends GeneralGovernanceActionService
                                                                             PropertyServerException,
                                                                             UserNotAuthorizedException
     {
-        governanceContext.getOpenMetadataStore().createRelatedElementsInStore(OpenMetadataType.TARGET_FOR_ACTION_PROCESS_RELATIONSHIP.typeName,
+        governanceContext.getOpenMetadataStore().createRelatedElementsInStore(OpenMetadataType.TARGET_FOR_GOVERNANCE_ACTION_RELATIONSHIP.typeName,
                                                                               processGUID,
                                                                               actionTargetGUID,
                                                                               null,

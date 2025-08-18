@@ -36,7 +36,7 @@ public class GovernanceOfficerInstanceHandler extends OMVSServiceInstanceHandler
      *
      * @param serverName           name of the server that the request is for
      * @param userId               local server userid
-     * @param viewServiceURLMarker optional view service URL marker (overrides accessServiceURLMarker)
+     * @param urlMarker optional view service URL marker (overrides accessServiceURLMarker)
      * @param serviceOperationName service operation - usually the top level rest call
      * @return  client
      * @throws InvalidParameterException unknown server/service
@@ -45,7 +45,7 @@ public class GovernanceOfficerInstanceHandler extends OMVSServiceInstanceHandler
      */
     public GovernanceDefinitionHandler getGovernanceDefinitionHandler(String userId,
                                                                       String serverName,
-                                                                      String viewServiceURLMarker,
+                                                                      String urlMarker,
                                                                       String serviceOperationName) throws InvalidParameterException,
                                                                                                           PropertyServerException,
                                                                                                           UserNotAuthorizedException
@@ -54,7 +54,7 @@ public class GovernanceOfficerInstanceHandler extends OMVSServiceInstanceHandler
 
         if (instance != null)
         {
-            return instance.getGovernanceDefinitionHandler(viewServiceURLMarker, serviceOperationName);
+            return instance.getGovernanceDefinitionHandler(urlMarker, serviceOperationName);
         }
 
         return null;
@@ -66,7 +66,7 @@ public class GovernanceOfficerInstanceHandler extends OMVSServiceInstanceHandler
      *
      * @param serverName           name of the server that the request is for
      * @param userId               local server userid
-     * @param viewServiceURLMarker optional view service URL marker (overrides accessServiceURLMarker)
+     * @param urlMarker optional view service URL marker (overrides accessServiceURLMarker)
      * @param serviceOperationName service operation - usually the top level rest call
      * @return  client
      * @throws InvalidParameterException unknown server/service
@@ -75,7 +75,7 @@ public class GovernanceOfficerInstanceHandler extends OMVSServiceInstanceHandler
      */
     public GovernanceDefinitionGraphHandler getGovernanceDefinitionGraphHandler(String userId,
                                                                                 String serverName,
-                                                                                String viewServiceURLMarker,
+                                                                                String urlMarker,
                                                                                 String serviceOperationName) throws InvalidParameterException,
                                                                                                           PropertyServerException,
                                                                                                           UserNotAuthorizedException
@@ -84,7 +84,7 @@ public class GovernanceOfficerInstanceHandler extends OMVSServiceInstanceHandler
 
         if (instance != null)
         {
-            return instance.getGovernanceDefinitionGraphHandler(viewServiceURLMarker, serviceOperationName);
+            return instance.getGovernanceDefinitionGraphHandler(urlMarker, serviceOperationName);
         }
 
         return null;

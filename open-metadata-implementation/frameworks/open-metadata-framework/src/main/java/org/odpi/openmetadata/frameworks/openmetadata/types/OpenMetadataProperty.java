@@ -1772,12 +1772,6 @@ public enum OpenMetadataProperty
     ASSIGNMENT_TYPE("assignmentType", DataType.STRING.getName(), "What is the scope or nature of the assignment.", null, "6d6af0b8-1b56-4941-a0c9-524331c46038"),
 
     /**
-     * Reasons for the project dependency.
-     */
-    DEPENDENCY_SUMMARY("dependencySummary", DataType.STRING.getName(), "Reasons for the project dependency.", null, "c1e02d1e-efb8-4299-be32-529b4a5976c1"),
-
-
-    /**
      * Breadth of responsibility or coverage.
      */
     SCOPE("scope", DataType.STRING.getName(), "Breadth of responsibility or coverage.", OpenMetadataValidValues.OPEN_METADATA_ECOSYSTEM_SCOPE, "033b4f92-fa46-4151-a095-c0bae938de8f"),

@@ -31,7 +31,7 @@ public class MyProfileInstanceHandler extends OMVSServiceInstanceHandler
 
 
     /**
-     * This method returns a Community Profile OMAS client.
+     * This method returns an open metadata handler.
      *
      * @param serverName           name of the server that the request is for
      * @param userId               local server userid
@@ -59,7 +59,7 @@ public class MyProfileInstanceHandler extends OMVSServiceInstanceHandler
 
 
     /**
-     * This method returns a handler for ToDos.
+     * This method returns an open metadata handler.
      *
      * @param serverName           name of the server that the request is for
      * @param userId               local server userid

@@ -187,70 +187,6 @@ Content-Type: application/json
 
 ###
 
-@locationGUID=add guid here
-
-###
-# @name linkLocationToProfile
-# Attach a profile to a location.
-#
-# @param locationGUID           unique identifier of the location
-# @param actorProfileGUID       unique identifier of the actor profile
-# Request body provides  description of the relationship.
-#
-# Returns void or
-#  InvalidParameterException  one of the parameters is null or invalid.
-#  PropertyServerException    there is a problem retrieving information from the property server(s).
-#  UserNotAuthorizedException the requesting user is not authorized to issue this request.
-#
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/actor-manager/actor-profiles/{{actorProfileGUID}}/profile-locations/{{locationGUID}}/attach
-Authorization: Bearer {{token}}
-Content-Type: application/json
-
-{
-  "class" : "NewRelationshipRequestBody",
-  "externalSourceGUID": "add guid here",
-  "externalSourceName": "add qualified name here",
-  "effectiveTime" : "{{$isoTimestamp}}",
-  "forLineage" : false,
-  "forDuplicateProcessing" : false,
-  "properties": {
-    "class": "ProfileLocationProperties",
-    "associationType": "",
-    "effectiveFrom": "{{$isoTimestamp}}",
-    "effectiveTo": "{{$isoTimestamp}}"
-  }
-}
-
-
-###
-# @name detachLocationFromProfile
-# Detach an actor profile from a location.
-#
-# @param actorProfileGUID       unique identifier of the actor profile
-# @param locationGUID           unique identifier of the location
-# Request body provides  description of the relationship.
-#
-# Returns void or
-#  InvalidParameterException  one of the parameters is null or invalid.
-#  PropertyServerException    there is a problem retrieving information from the property server(s).
-#  UserNotAuthorizedException the requesting user is not authorized to issue this request.
-#
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/actor-manager/actor-profiles/{{actorProfileGUID}}/profile-locations/{{locationGUID}}/detach
-Authorization: Bearer {{token}}
-Content-Type: application/json
-
-{
-  "class" : "DeleteRequestBody",
-  "deleteMethod": "LOOK_FOR_LINEAGE",
-  "externalSourceGUID": "add guid here",
-  "externalSourceName": "add qualified name here",
-  "effectiveTime" : "{{$isoTimestamp}}",
-  "forLineage" : false,
-  "forDuplicateProcessing" : false
-}
-
-###
-
 @assetGUID=add guid here
 @itProfileGUID=add guid here
 
@@ -872,6 +808,10 @@ Content-Type: application/json
   "sequencingProperty" : "qualifiedName",
   "filter" : "Add name here"
 }
+
+###
+
+@actorRoleGUID=add guid here
 
 
 ###

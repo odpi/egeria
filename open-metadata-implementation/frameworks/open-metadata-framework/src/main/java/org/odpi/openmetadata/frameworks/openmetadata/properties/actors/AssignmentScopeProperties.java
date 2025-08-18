@@ -105,12 +105,9 @@ public class AssignmentScopeProperties extends RelationshipBeanProperties
     public String toString()
     {
         return "AssignmentScopeProperties{" +
-                       "assignmentType='" + assignmentType + '\'' +
-                       ", description='" + description + '\'' +
-                       ", effectiveFrom=" + getEffectiveFrom() +
-                       ", effectiveTo=" + getEffectiveTo() +
-                       ", extendedProperties=" + getExtendedProperties() +
-                       '}';
+                "assignmentType='" + assignmentType + '\'' +
+                ", description='" + description + '\'' +
+                "} " + super.toString();
     }
 
 
