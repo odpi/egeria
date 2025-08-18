@@ -350,11 +350,6 @@ public class OpenMetadataWikiPages
     public static final String MODEL_0330_TERMS                        = "https://egeria-project.org/types/3/0330-Terms/";
 
     /**
-     * <a href="https://egeria-project.org/types/3/0335-Primary-Category/">...</a>
-     */
-    public static final String MODEL_0335_PRIMARY_CATEGORY             = "https://egeria-project.org/types/3/0335-Primary-Category/";
-
-    /**
      * <a href="https://egeria-project.org/types/3/0340-Dictionary/">...</a>
      */
     public static final String MODEL_0340_DICTIONARY                   = "https://egeria-project.org/types/3/0340-Dictionary/";
@@ -373,11 +368,6 @@ public class OpenMetadataWikiPages
      * <a href="https://egeria-project.org/types/3/0370-Semantic-Assignment/">...</a>
      */
     public static final String MODEL_0370_SEMANTIC_ASSIGNMENT          = "https://egeria-project.org/types/3/0370-Semantic-Assignment/";
-
-    /**
-     * <a href="https://egeria-project.org/types/3/0380-Spine-Objects/">...</a>
-     */
-    public static final String MODEL_0380_SPINE_OBJECTS                = "https://egeria-project.org/types/3/0380-Spine-Objects/";
 
     /**
      * <a href="https://egeria-project.org/types/3/0385-Controlled-Glossary-Development/">...</a>
@@ -465,11 +455,6 @@ public class OpenMetadataWikiPages
     public static final String MODEL_0440_ORG_CONTROLS                 = "https://egeria-project.org/types/4/0440-Organizational-Controls/";
 
     /**
-     * <a href="https://egeria-project.org/types/4/0442-Project-Charter/">...</a>
-     */
-    public static final String MODEL_0442_PROJECT_CHARTER              = "https://egeria-project.org/types/4/0442-Project-Charter/";
-
-    /**
      * <a href="https://egeria-project.org/types/4/0445-Governance-Roles/">...</a>
      */
     public static final String MODEL_0445_GOVERNANCE_ROLES             = "https://egeria-project.org/types/4/0445-Governance-Roles/";
@@ -478,6 +463,11 @@ public class OpenMetadataWikiPages
      * <a href="https://egeria-project.org/types/4/0450-Governance-Rollout/">...</a>
      */
     public static final String MODEL_0450_GOVERNANCE_ROLLOUT           = "https://egeria-project.org/types/4/0450-Governance-Rollout/";
+
+    /**
+     * <a href="https://egeria-project.org/types/4/0451-Notification/">...</a>
+     */
+    public static final String MODEL_0451_NOTIFICATIONS              = "https://egeria-project.org/types/4/0451-Notification/";
 
     /**
      * <a href="https://egeria-project.org/types/4/0455-Exception-Management/">...</a>
@@ -538,11 +528,6 @@ public class OpenMetadataWikiPages
      * <a href="https://egeria-project.org/types/4/0482-Certifications/">...</a>
      */
     public static final String MODEL_0482_CERTIFICATIONS               = "https://egeria-project.org/types/4/0482-Certifications/";
-
-    /**
-     * <a href="https://egeria-project.org/types/4/0483-Terms-And-Conditions/">...</a>
-     */
-    public static final String MODEL_0483_TERMS_AND_CONDITIONS         = "https://egeria-project.org/types/4/0483-Terms-And-Conditions/";
 
     /**
      * <a href="https://egeria-project.org/types/4/0484-Agreements/">...</a>
@@ -721,11 +706,6 @@ public class OpenMetadataWikiPages
      * <a href="https://egeria-project.org/types/6/0615-Schema-Extraction/">...</a>
      */
     public static final String MODEL_0615_SCHEMA_EXTRACTION            = "https://egeria-project.org/types/6/0615-Schema-Extraction/";
-
-    /**
-     * <a href="https://egeria-project.org/types/6/0617-Data-Field-Analysis/">...</a>
-     */
-    public static final String MODEL_0617_DATA_FIELD_ANALYSIS          = "https://egeria-project.org/types/6/0617-Data-Field-Analysis/";
 
     /**
      * <a href="https://egeria-project.org/types/6/0620-Resource-Profiling/">...</a>

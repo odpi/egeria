@@ -16,23 +16,35 @@ public enum ViewServiceDescription
     ASSET_MAKER(801,
                      ComponentDevelopmentStatus.IN_DEVELOPMENT,
                      "Asset Maker",
-                     "Asset Maker OMVS",
                      "asset-maker",
-                     "Create new assets, software capabilities and link them to other elements.",
-                     "https://egeria-project.org/services/omvs/asset-maker/overview/",
-                     AccessServiceDescription.OMF_METADATA_MANAGEMENT.getServiceName()),
+                     "Create new assets, software capabilities and link them to other elements."),
 
     /**
      * Provides advanced metadata management features for experts in open metadata.
      */
-    METADATA_EXPERT(801,
+    METADATA_EXPERT(802,
                 ComponentDevelopmentStatus.STABLE,
                 "Metadata Expert",
-                "Metadata Expert OMVS",
                 "metadata-expert",
-                "Provides advanced metadata management features for experts in open metadata.",
-                "https://egeria-project.org/services/omvs/metadata-expert/overview/",
-                AccessServiceDescription.OMF_METADATA_MANAGEMENT.getServiceName()),
+                "Provides advanced metadata management features for experts in open metadata."),
+
+    /**
+     * Supports the development and maintenance of digital products.
+     */
+    PRODUCT_MANAGER(803,
+                    ComponentDevelopmentStatus.STABLE,
+                    "Product Manager",
+                    "product-manager",
+                    "Supports the development and maintenance of digital products."),
+
+    /**
+     * Supports the development and maintenance of digital products.
+     */
+    PRODUCT_CATALOG(804,
+                    ComponentDevelopmentStatus.STABLE,
+                    "Product Catalog",
+                    "product-catalog",
+                    "Supports researching the available digital products and managing the subscriptions."),
 
     /**
      * View glossary terms and categories within a glossary.
@@ -40,11 +52,8 @@ public enum ViewServiceDescription
     GLOSSARY_BROWSER(805,
                      ComponentDevelopmentStatus.STABLE,
                      "Glossary Browser",
-                     "Glossary Browser OMVS",
                      "glossary-browser",
-                     "View glossary terms and categories within a glossary.",
-                     "https://egeria-project.org/services/omvs/glossary-browser/overview/",
-                     AccessServiceDescription.OMF_METADATA_MANAGEMENT.getServiceName()),
+                     "View glossary terms and categories within a glossary."),
 
     /**
      * Create glossary terms and organize them into categories as part of a controlled workflow process. It supports the editing glossary and multiple states.
@@ -52,11 +61,8 @@ public enum ViewServiceDescription
     GLOSSARY_MANAGER(806,
                      ComponentDevelopmentStatus.STABLE,
                      "Glossary Manager",
-                     "Glossary Manager OMVS",
                      "glossary-manager",
-                     "Create glossary terms and organize them into categories as part of a controlled workflow process. It supports the editing glossary and multiple states.",
-                     "https://egeria-project.org/services/omvs/glossary-manager/overview/",
-                     AccessServiceDescription.OMF_METADATA_MANAGEMENT.getServiceName()),
+                     "Create glossary terms and organize them into categories as part of a controlled workflow process. It supports the editing glossary and multiple states."),
 
     /**
      * Manage information about the logged on user as well as their preferences.
@@ -64,11 +70,8 @@ public enum ViewServiceDescription
     MY_PROFILE(807,
                ComponentDevelopmentStatus.STABLE,
                "My Profile",
-               "My Profile OMVS",
                "my-profile",
-               "Manage information about the logged on user as well as their preferences.",
-               "https://egeria-project.org/services/omvs/my-profile/overview/",
-               AccessServiceDescription.OMF_METADATA_MANAGEMENT.getServiceName()),
+               "Manage information about the logged on user as well as their preferences."),
 
     /**
      * Search and understand your assets.
@@ -76,11 +79,8 @@ public enum ViewServiceDescription
     ASSET_CATALOG (808,
                    ComponentDevelopmentStatus.STABLE,
                    "Asset Catalog",
-                   "Asset Catalog OMVS",
                    "asset-catalog",
-                   "Search and understand your assets.",
-                   "https://egeria-project.org/services/omvs/asset-catalog/overview/",
-                   AccessServiceDescription.OMF_METADATA_MANAGEMENT.getServiceName()),
+                   "Search and understand your assets."),
 
     /**
      * Build collections of asset and other metadata.
@@ -88,11 +88,8 @@ public enum ViewServiceDescription
     COLLECTION_MANAGER  (809,
                          ComponentDevelopmentStatus.STABLE,
                          "Collection Manager",
-                         "Collection Manager OMVS",
                          "collection-manager",
-                         "Build collections of asset and other metadata.",
-                         "https://egeria-project.org/services/omvs/collection-manager/overview/",
-                         AccessServiceDescription.OMF_METADATA_MANAGEMENT.getServiceName()),
+                         "Build collections of asset and other metadata."),
 
     /**
      * Manage Egeria's automation services.
@@ -100,11 +97,8 @@ public enum ViewServiceDescription
     AUTOMATED_CURATION  (810,
                          ComponentDevelopmentStatus.STABLE,
                          "Automated Curation",
-                         "Automated Curation OMVS",
                          "automated-curation",
-                         "Manage Egeria's automation services.",
-                         "https://egeria-project.org/services/omvs/automated-curation/overview/",
-                         AccessServiceDescription.OMF_METADATA_MANAGEMENT.getServiceName()),
+                         "Manage Egeria's automation services."),
 
     /**
      * Work with notelogs, comments, informal tags, ratings/reviews and likes.
@@ -112,11 +106,8 @@ public enum ViewServiceDescription
     FEEDBACK_MANAGER  (811,
                          ComponentDevelopmentStatus.STABLE,
                          "Feedback Manager",
-                         "Feedback Manager OMVS",
                          "feedback-manager",
-                         "Work with note logs, comments, informal tags, ratings/reviews and likes.",
-                         "https://egeria-project.org/services/omvs/feedback-manager/overview/",
-                       AccessServiceDescription.OMF_METADATA_MANAGEMENT.getServiceName()),
+                         "Work with note logs, comments, informal tags, ratings/reviews and likes."),
 
     /**
      * Maintain definitions of governance actions such as governance action processes and governance action types.
@@ -124,11 +115,8 @@ public enum ViewServiceDescription
     ACTION_AUTHOR(812,
                   ComponentDevelopmentStatus.STABLE,
                   "Action Author",
-                  "Action Author OMVS",
                   "action-author",
-                  "Maintain definitions of governance actions such as governance action processes and governance action types.",
-                  "https://egeria-project.org/services/omvs/action-author/overview/",
-                  AccessServiceDescription.OMF_METADATA_MANAGEMENT.getServiceName()),
+                  "Maintain definitions of governance actions such as governance action processes and governance action types."),
 
     /**
      * Set up and manage projects.
@@ -136,11 +124,8 @@ public enum ViewServiceDescription
     PROJECT_MANAGER  (813,
                          ComponentDevelopmentStatus.STABLE,
                          "Project Manager",
-                         "Project Manager OMVS",
                          "project-manager",
-                         "Set up and manage projects.",
-                         "https://egeria-project.org/services/omvs/project-manager/overview/",
-                      AccessServiceDescription.OMF_METADATA_MANAGEMENT.getServiceName()),
+                         "Set up and manage projects."),
 
 
     /**
@@ -149,11 +134,8 @@ public enum ViewServiceDescription
     DATA_DISCOVERY  (814,
                       ComponentDevelopmentStatus.IN_DEVELOPMENT,
                       "Data Discovery",
-                      "Data Discovery OMVS",
                       "data-discovery",
-                      "Define and search for new data resources.",
-                      "https://egeria-project.org/services/omvs/data-discovery/overview/",
-                     AccessServiceDescription.OMF_METADATA_MANAGEMENT.getServiceName()),
+                      "Define and search for new data resources."),
 
     /**
      * Retrieve and refine the templates for use during cataloguing.
@@ -161,11 +143,8 @@ public enum ViewServiceDescription
     TEMPLATE_MANAGER  (815,
                      ComponentDevelopmentStatus.STABLE,
                      "Template Manager",
-                     "Template Manager OMVS",
                      "template-manager",
-                     "Retrieve and refine the templates for use during cataloguing.",
-                     "https://egeria-project.org/services/omvs/template-manager/overview/",
-                       AccessServiceDescription.OMF_METADATA_MANAGEMENT.getServiceName()),
+                     "Retrieve and refine the templates for use during cataloguing."),
 
     /**
      * Work with code tables and associated reference data.
@@ -173,11 +152,8 @@ public enum ViewServiceDescription
     REFERENCE_DATA  (816,
                        ComponentDevelopmentStatus.IN_DEVELOPMENT,
                        "Reference Data",
-                       "Reference Data OMVS",
                        "reference-data",
-                       "Work with code tables and associated reference data.",
-                       "https://egeria-project.org/services/omvs/reference-data/overview/",
-                     AccessServiceDescription.OMF_METADATA_MANAGEMENT.getServiceName()),
+                       "Work with code tables and associated reference data."),
 
     /**
      * Maintain and query valid values for metadata.
@@ -185,11 +161,8 @@ public enum ViewServiceDescription
     VALID_METADATA (817,
                      ComponentDevelopmentStatus.STABLE,
                      "Valid Metadata",
-                     "Valid Metadata OMVS",
                      "valid-metadata",
-                     "Maintain and query valid values for metadata.",
-                     "https://egeria-project.org/services/omvs/valid-metadata/overview/",
-                    AccessServiceDescription.OMF_METADATA_MANAGEMENT.getServiceName()),
+                     "Maintain and query valid values for metadata."),
 
     /**
      * Maintain classifications and relationships used to organize open metadata elements.
@@ -197,11 +170,8 @@ public enum ViewServiceDescription
     CLASSIFICATION_MANAGER (818,
                             ComponentDevelopmentStatus.STABLE,
                             "Classification Manager",
-                            "Classification Manager OMVS",
                             "classification-manager",
-                            "Maintain classifications and relationships used to organize open metadata elements.",
-                            "https://egeria-project.org/services/omvs/classification-manager/overview/",
-                            AccessServiceDescription.OMF_METADATA_MANAGEMENT.getServiceName()),
+                            "Maintain classifications and relationships used to organize open metadata elements."),
 
     /**
      * Manage the metadata about the assets managed by a DevOps pipeline.
@@ -209,11 +179,8 @@ public enum ViewServiceDescription
     DEVOPS_PIPELINE (819,
                      ComponentDevelopmentStatus.IN_DEVELOPMENT,
                      "DevOps Pipeline",
-                     "DevOps Pipeline OMVS",
                      "devops-pipeline",
-                     "Maintain the metadata about the assets managed by a devops pipeline.",
-                     "https://egeria-project.org/services/omvs/devops-pipeline/overview/",
-                     AccessServiceDescription.OMF_METADATA_MANAGEMENT.getServiceName()),
+                     "Maintain the metadata about the assets managed by a devops pipeline."),
 
 
     /**
@@ -222,11 +189,8 @@ public enum ViewServiceDescription
     SECURITY_OFFICER (820,
                       ComponentDevelopmentStatus.IN_DEVELOPMENT,
                       "Security Officer",
-                      "Security Officer OMVS",
                       "security-officer",
-                      "Set up and review rules and security tags to protect data and systems.",
-                      "https://egeria-project.org/services/omvs/security-officer/overview/",
-                      AccessServiceDescription.OMF_METADATA_MANAGEMENT.getServiceName()),
+                      "Set up and review rules and security tags to protect data and systems."),
 
 
     /**
@@ -235,11 +199,8 @@ public enum ViewServiceDescription
     PRIVACY_OFFICER (821,
                      ComponentDevelopmentStatus.IN_DEVELOPMENT,
                      "Privacy Officer",
-                     "Privacy Officer OMVS",
                      "privacy-officer",
-                     "Manage the governance of privacy.",
-                     "https://egeria-project.org/services/omvs/privacy-officer/overview/",
-                     AccessServiceDescription.OMF_METADATA_MANAGEMENT.getServiceName()),
+                     "Manage the governance of privacy."),
 
     /**
      * Manage governance of data.
@@ -247,11 +208,8 @@ public enum ViewServiceDescription
     DATA_OFFICER (822,
                   ComponentDevelopmentStatus.IN_DEVELOPMENT,
                   "Data Officer",
-                  "Data Officer OMVS",
                   "data-officer",
-                  "Manage the governance of data.",
-                  "https://egeria-project.org/services/omvs/data-officer/overview/",
-                  AccessServiceDescription.OMF_METADATA_MANAGEMENT.getServiceName()),
+                  "Manage the governance of data."),
 
     /**
      * Describe teams and organizational structure.
@@ -259,11 +217,8 @@ public enum ViewServiceDescription
     PEOPLE_ORGANIZER (823,
                   ComponentDevelopmentStatus.IN_DEVELOPMENT,
                   "People Organizer",
-                  "People Organizer OMVS",
                   "people-organizer",
-                  "Describe teams, roles and organizational structure.",
-                  "https://egeria-project.org/services/omvs/people-organizer/overview/",
-                      AccessServiceDescription.OMF_METADATA_MANAGEMENT.getServiceName()),
+                  "Describe teams, roles and organizational structure."),
 
 
     /**
@@ -272,11 +227,8 @@ public enum ViewServiceDescription
     RUNTIME_MANAGER (824,
                       ComponentDevelopmentStatus.STABLE,
                       "Runtime Manager",
-                      "Runtime Manager OMVS",
                       "runtime-manager",
-                      "Retrieve configuration and status from platforms and servers.",
-                      "https://egeria-project.org/services/omvs/runtime-manager/overview/",
-                     AccessServiceDescription.OMF_METADATA_MANAGEMENT.getServiceName()),
+                      "Retrieve configuration and status from platforms and servers."),
 
     /**
      * Maintain governance definitions used in all governance domains.
@@ -284,11 +236,8 @@ public enum ViewServiceDescription
     GOVERNANCE_OFFICER (825,
                      ComponentDevelopmentStatus.STABLE,
                      "Governance Officer",
-                     "Governance Officer OMVS",
                      "governance-officer",
-                     "Maintain governance definitions used to define any governance domain.",
-                     "https://egeria-project.org/services/omvs/governance-officer/overview/",
-                        AccessServiceDescription.OMF_METADATA_MANAGEMENT.getServiceName()),
+                     "Maintain governance definitions used to define any governance domain."),
 
     /**
      * Create schema definitions to describe the structure of data.
@@ -296,11 +245,8 @@ public enum ViewServiceDescription
     DATA_DESIGNER (826,
                    ComponentDevelopmentStatus.STABLE,
                    "Data Designer",
-                   "Data Designer OMVS",
                    "data-designer",
-                   "Create data specifications to describe data requirements.",
-                   "https://egeria-project.org/services/omvs/data-designer/overview/",
-                   AccessServiceDescription.OMF_METADATA_MANAGEMENT.getServiceName()),
+                   "Create data specifications to describe data requirements."),
 
 
     /**
@@ -309,11 +255,8 @@ public enum ViewServiceDescription
     METADATA_EXPLORER (827,
                    ComponentDevelopmentStatus.STABLE,
                    "Metadata Explorer",
-                   "Metadata Explorer OMVS",
                    "metadata-explorer",
-                   "Provides generic search, query and retrieval operations for open metadata.",
-                   "https://egeria-project.org/services/omvs/metadata-explorer/overview/",
-                       AccessServiceDescription.OMF_METADATA_MANAGEMENT.getServiceName()),
+                   "Provides generic search, query and retrieval operations for open metadata."),
 
 
     /**
@@ -322,11 +265,8 @@ public enum ViewServiceDescription
     NOTIFICATION_MANAGER (828,
                        ComponentDevelopmentStatus.IN_DEVELOPMENT,
                        "Notification Manager",
-                       "Notification Manager OMVS",
                        "notification-manager",
-                       "Manages the definitions of notifications.  This includes the definition of the trigger for the notification, the style of notification and the recipient.",
-                       "https://egeria-project.org/services/omvs/notification-manager/overview/",
-                          AccessServiceDescription.OMF_METADATA_MANAGEMENT.getServiceName()),
+                       "Manages the definitions of notifications.  This includes the definition of the trigger for the notification, the style of notification and the recipient."),
 
     /**
      * Manages the definitions of information supply chains and solution components.
@@ -334,11 +274,8 @@ public enum ViewServiceDescription
     SOLUTION_ARCHITECT (829,
                           ComponentDevelopmentStatus.STABLE,
                           "Solution Architect",
-                          "Solution Architect OMVS",
                           "solution-architect",
-                          "Manages the definitions of information supply chains and solution components.",
-                          "https://egeria-project.org/services/omvs/solution-architect/overview/",
-                        AccessServiceDescription.OMF_METADATA_MANAGEMENT.getServiceName()),
+                          "Manages the definitions of information supply chains and solution components."),
 
     /**
      * Retrieve elements based on type or the classifications/relationships attached to these metadata elements.
@@ -346,11 +283,8 @@ public enum ViewServiceDescription
     CLASSIFICATION_EXPLORER (830,
                             ComponentDevelopmentStatus.STABLE,
                             "Classification Explorer",
-                            "Classification Explorer OMVS",
                             "classification-explorer",
-                            "Retrieve elements based on type or the classifications/relationships attached to these metadata elements.",
-                            "https://egeria-project.org/services/omvs/classification-explorer/overview/",
-                             AccessServiceDescription.OMF_METADATA_MANAGEMENT.getServiceName()),
+                            "Retrieve elements based on type or the classifications/relationships attached to these metadata elements."),
 
     /**
      * Manages context events and other time related behaviour.
@@ -358,11 +292,8 @@ public enum ViewServiceDescription
     TIME_KEEPER (831,
                              ComponentDevelopmentStatus.IN_DEVELOPMENT,
                              "Time Keeper",
-                             "Time Keeper OMVS",
                              "time-keeper",
-                             "Manages context events and other time related behaviour.",
-                             "https://egeria-project.org/services/omvs/time-keeper/overview/",
-                 AccessServiceDescription.OMF_METADATA_MANAGEMENT.getServiceName()),
+                             "Manages context events and other time related behaviour."),
 
 
     /**
@@ -371,11 +302,8 @@ public enum ViewServiceDescription
     ACTOR_MANAGER (832,
                  ComponentDevelopmentStatus.STABLE,
                  "Actor Manager",
-                 "Actor Manager OMVS",
                  "actor-manager",
-                 "Manages the definitions of user identities, actor profiles, contact details and actor roles.",
-                 "https://egeria-project.org/services/omvs/actor-manager/overview/",
-                   AccessServiceDescription.OMF_METADATA_MANAGEMENT.getServiceName()),
+                 "Manages the definitions of user identities, actor profiles, contact details and actor roles."),
 
     /**
      * Manages the definitions of communities, their leaders and membership.
@@ -383,11 +311,8 @@ public enum ViewServiceDescription
     COMMUNITY_MATTERS (833,
                    ComponentDevelopmentStatus.IN_DEVELOPMENT,
                    "Community Matters",
-                   "Community Matters OMVS",
                    "community-matters",
-                   "Manages the definitions of communities, their leaders and membership.",
-                   "https://egeria-project.org/services/omvs/community-matters/overview/",
-                       AccessServiceDescription.OMF_METADATA_MANAGEMENT.getServiceName()),
+                   "Manages the definitions of communities, their leaders and membership."),
 
     /**
      * Manages the definition of subject areas and reporting on their contents.
@@ -395,11 +320,8 @@ public enum ViewServiceDescription
     SUBJECT_AREA (834,
                        ComponentDevelopmentStatus.IN_DEVELOPMENT,
                        "Subject Area",
-                       "Subject Area OMVS",
                        "subject-area",
-                       "Manages the definition of subject areas and reporting on their contents.",
-                       "https://egeria-project.org/services/omvs/subject-area/overview/",
-                  AccessServiceDescription.OMF_METADATA_MANAGEMENT.getServiceName()),
+                       "Manages the definition of subject areas and reporting on their contents."),
 
     /**
      * Manages the creation and maintenance of connections, connector types and endpoints.
@@ -407,11 +329,8 @@ public enum ViewServiceDescription
     CONNECTION_MAKER (835,
                       ComponentDevelopmentStatus.IN_DEVELOPMENT,
                       "Connection Maker",
-                      "Connection Maker OMVS",
                       "connection-maker",
-                      "Manages the creation and maintenance of connections, connector types and endpoints.",
-                      "https://egeria-project.org/services/omvs/connection-maker/overview/",
-                      AccessServiceDescription.OMF_METADATA_MANAGEMENT.getServiceName()),
+                      "Manages the creation and maintenance of connections, connector types and endpoints."),
 
 
     /**
@@ -420,11 +339,8 @@ public enum ViewServiceDescription
     SCHEMA_MAKER (836,
                       ComponentDevelopmentStatus.IN_DEVELOPMENT,
                       "Schema Maker",
-                      "Schema Maker OMVS",
                       "schema-maker",
-                      "Manages the creation and maintenance of schema elements.",
-                      "https://egeria-project.org/services/omvs/schema-maker/overview/",
-                  AccessServiceDescription.OMF_METADATA_MANAGEMENT.getServiceName()),
+                      "Manages the creation and maintenance of schema elements."),
 
 
     /**
@@ -433,11 +349,54 @@ public enum ViewServiceDescription
     LOCATION_ARENA(837,
                    ComponentDevelopmentStatus.IN_DEVELOPMENT,
                    "Location Arena",
-                   "Location Arena OMVS",
                    "location-arena",
-                   "Manages the creation and maintenance of locations.",
-                   "https://egeria-project.org/services/omvs/location-arena/overview/",
-                   AccessServiceDescription.OMF_METADATA_MANAGEMENT.getServiceName()),
+                   "Manages the creation and maintenance of locations."),
+
+
+    /**
+     * Manages the creation and maintenance of translations for open metadata elements.
+     */
+    MULTI_LANGUAGE(838,
+                   ComponentDevelopmentStatus.IN_DEVELOPMENT,
+                   "Multi Language",
+                   "multi-language",
+                   "Manages the creation and maintenance of translations for open metadata elements."),
+
+    /**
+     * Manages the creation and maintenance of lineage relationships.
+     */
+    LINEAGE_LINKER(839,
+                   ComponentDevelopmentStatus.IN_DEVELOPMENT,
+                   "Lineage Linker",
+                   "lineage-linker",
+                   "Manages the creation and maintenance of lineage relationships."),
+
+    /**
+     * Manages the creation and maintenance of locations.
+     */
+    EXTERNAL_REFERENCES(840,
+                   ComponentDevelopmentStatus.IN_DEVELOPMENT,
+                   "External References",
+                   "external-references",
+                   "Manages the creation and maintenance of locations."),
+
+    /**
+     * Manages the creation and maintenance of locations.
+     */
+    DIGITAL_BUSINESS(841,
+                   ComponentDevelopmentStatus.IN_DEVELOPMENT,
+                   "Digital Business",
+                   "digital-business",
+                   "Manages the definition and maintenance of the business context description used to identify where business value is being derived from."),
+
+    /**
+     * Manages the creation and maintenance of data pipelines, open metadata templates and reference data.
+     */
+    DATA_ENGINEER(842,
+                   ComponentDevelopmentStatus.IN_DEVELOPMENT,
+                   "Data Engineer",
+                   "data-engineer",
+                   "Manages the creation and maintenance of data pipelines, open metadata templates and reference data."),
 
     ;
 
@@ -445,11 +404,8 @@ public enum ViewServiceDescription
     private final int                        viewServiceCode;
     private final ComponentDevelopmentStatus viewServiceDevelopmentStatus;
     private final String                     viewServiceName;
-    private final String                     viewServiceFullName;
     private final String                     viewServiceURLMarker;
     private final String                     viewServiceDescription;
-    private final String                     viewServiceWiki;
-    private final String                     viewServicePartnerService;
 
 
     /**
@@ -460,16 +416,12 @@ public enum ViewServiceDescription
      * @param viewServiceURLMarker   string used in URLs
      * @param viewServiceName        symbolic name for this UI view
      * @param viewServiceDescription short description for this UI view
-     * @param viewServiceWiki        wiki page for the UI view for this UI view
      */
     ViewServiceDescription(int                        viewServiceCode,
                            ComponentDevelopmentStatus viewServiceDevelopmentStatus,
                            String                     viewServiceName,
-                           String                     viewServiceFullName,
                            String                     viewServiceURLMarker,
-                           String                     viewServiceDescription,
-                           String                     viewServiceWiki,
-                           String                     viewServicePartnerService)
+                           String                     viewServiceDescription)
     {
         /*
          * Save the values supplied
@@ -477,11 +429,8 @@ public enum ViewServiceDescription
         this.viewServiceCode = viewServiceCode;
         this.viewServiceDevelopmentStatus = viewServiceDevelopmentStatus;
         this.viewServiceName = viewServiceName;
-        this.viewServiceFullName = viewServiceFullName;
         this.viewServiceURLMarker = viewServiceURLMarker;
         this.viewServiceDescription = viewServiceDescription;
-        this.viewServiceWiki = viewServiceWiki;
-        this.viewServicePartnerService = viewServicePartnerService;
     }
 
 
@@ -522,7 +471,7 @@ public enum ViewServiceDescription
      * @return String default name
      */
     public String getViewServiceFullName() {
-        return viewServiceFullName;
+        return viewServiceName + " OMVS";
     }
 
     /**
@@ -550,8 +499,9 @@ public enum ViewServiceDescription
      *
      * @return String URL for the wiki page
      */
-    public String getViewServiceWiki() {
-        return viewServiceWiki;
+    public String getViewServiceWiki() 
+    {
+        return "https://egeria-project.org/services/omvs/" + viewServiceURLMarker + "/overview/";
     }
 
 
@@ -562,6 +512,6 @@ public enum ViewServiceDescription
      */
     public String getViewServicePartnerService()
     {
-        return viewServicePartnerService;
+        return AccessServiceDescription.OMF_METADATA_MANAGEMENT.getServiceName();
     }
 }

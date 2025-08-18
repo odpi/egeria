@@ -61,7 +61,7 @@ public class ClassificationExplorerResource
     public MetadataElementSummariesResponse getImpactClassifiedElements(@PathVariable String                      serverName,
                                                                         @PathVariable String                        urlMarker,
                                                                         @RequestBody(required = false)
-                                                                            LevelIdentifierQueryProperties requestBody)
+                                                                        LevelIdentifierQueryProperties requestBody)
     {
         return restAPI.getImpactClassifiedElements(serverName, urlMarker, requestBody);
     }
@@ -224,7 +224,7 @@ public class ClassificationExplorerResource
     public MetadataElementSummariesResponse getOwnersElements(@PathVariable String                      serverName,
                                                               @PathVariable String                        urlMarker,
                                                               @RequestBody(required = false)
-                                                                  FindNameProperties requestBody)
+                                                              FindNameProperties requestBody)
     {
         return restAPI.getOwnersElements(serverName, urlMarker, requestBody);
     }
@@ -365,7 +365,7 @@ public class ClassificationExplorerResource
                                                                        @PathVariable String                        urlMarker,
                                                                        @PathVariable String                        governanceDefinitionGUID,
                                                                        @RequestBody(required = false)
-                                                                           FindProperties requestBody)
+                                                                       FindProperties requestBody)
     {
         return restAPI.getGovernedElements(serverName, urlMarker, governanceDefinitionGUID, requestBody);
     }
@@ -538,10 +538,10 @@ public class ClassificationExplorerResource
             externalDocs=@ExternalDocumentation(description="Scopes", url="https://egeria-project.org/types/0/0019-More-Information/"))
 
     public RelatedMetadataElementSummariesResponse getResourceList(@PathVariable String                        serverName,
-                                                             @PathVariable String                        urlMarker,
-                                                             @PathVariable String                        elementGUID,
-                                                             @RequestBody  (required = false)
-                                                             FindProperties requestBody)
+                                                                   @PathVariable String                        urlMarker,
+                                                                   @PathVariable String                        elementGUID,
+                                                                   @RequestBody  (required = false)
+                                                                   FindProperties requestBody)
     {
         return restAPI.getResourceList(serverName, urlMarker, elementGUID, requestBody);
     }
@@ -567,10 +567,10 @@ public class ClassificationExplorerResource
             externalDocs=@ExternalDocumentation(description="Scopes", url="https://egeria-project.org/types/0/0019-More-Information/"))
 
     public RelatedMetadataElementSummariesResponse getSupportedByResource(@PathVariable String                        serverName,
-                                                                     @PathVariable String                        urlMarker,
-                                                                     @PathVariable String resourceGUID,
-                                                                     @RequestBody  (required = false)
-                                                                     FindProperties requestBody)
+                                                                          @PathVariable String                        urlMarker,
+                                                                          @PathVariable String resourceGUID,
+                                                                          @RequestBody  (required = false)
+                                                                          FindProperties requestBody)
     {
         return restAPI.getSupportedByResource(serverName, urlMarker, resourceGUID, requestBody);
     }
@@ -696,7 +696,7 @@ public class ClassificationExplorerResource
                                                                    @PathVariable String                        urlMarker,
                                                                    @PathVariable String  elementGUID,
                                                                    @RequestBody  (required = false)
-                                                                       FindRequest requestBody)
+                                                                   FindRequest requestBody)
     {
         return restAPI.getMetadataElementByGUID(serverName, urlMarker, elementGUID, requestBody);
     }
@@ -805,7 +805,7 @@ public class ClassificationExplorerResource
     public MetadataElementSummariesResponse getElementsByPropertyValue(@PathVariable String                       serverName,
                                                                        @PathVariable String                        urlMarker,
                                                                        @RequestBody  (required = false)
-                                                                           FindPropertyNamesProperties requestBody)
+                                                                       FindPropertyNamesProperties requestBody)
     {
         return restAPI.getElementsByPropertyValue(serverName, urlMarker, requestBody);
     }

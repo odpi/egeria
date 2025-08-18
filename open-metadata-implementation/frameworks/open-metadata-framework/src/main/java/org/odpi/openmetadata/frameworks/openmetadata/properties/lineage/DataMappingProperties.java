@@ -19,17 +19,13 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class DataMappingProperties extends RelationshipBeanProperties
+public class DataMappingProperties extends LineageRelationshipProperties
 {
-    private String label            = null;
-    private String description      = null;
-    private String formula          = null;
-    private String formulaType      = null;
-    private String queryId          = null;
-    private String query            = null;
-    private String queryType        = null;
-    private String iscQualifiedName = null;
-
+    private String formula     = null;
+    private String formulaType = null;
+    private String queryId     = null;
+    private String query       = null;
+    private String queryType   = null;
 
 
     /**
@@ -53,61 +49,13 @@ public class DataMappingProperties extends RelationshipBeanProperties
 
         if (template != null)
         {
-            label            = template.getLabel();
-            description      = template.getDescription();
             formula          = template.getFormula();
             formulaType      = template.getFormulaType();
             queryId          = template.getQueryId();
             query            = template.getQuery();
             queryType        = template.getQueryType();
-            iscQualifiedName = template.getISCQualifiedName();
         }
     }
-
-
-    /**
-     * Return the label used when displaying this relationship.
-     *
-     * @return string
-     */
-    public String getLabel()
-    {
-        return label;
-    }
-
-
-    /**
-     * Set up the label used when displaying this relationship.
-     *
-     * @param label string
-     */
-    public void setLabel(String label)
-    {
-        this.label = label;
-    }
-
-
-    /**
-     * Return the description of the relationship.
-     *
-     * @return string text
-     */
-    public String getDescription()
-    {
-        return description;
-    }
-
-
-    /**
-     * Set up the description of the relationship.
-     *
-     * @param description string text
-     */
-    public void setDescription(String description)
-    {
-        this.description = description;
-    }
-
 
 
     /**
@@ -213,29 +161,6 @@ public class DataMappingProperties extends RelationshipBeanProperties
     }
 
 
-
-    /**
-     * Set up the fully qualified name of the associated information supply chain.
-     *
-     * @param iscQualifiedName String name
-     */
-    public void setISCQualifiedName(String iscQualifiedName)
-    {
-        this.iscQualifiedName = iscQualifiedName;
-    }
-
-
-    /**
-     * Returns the stored qualified name of the associated information supply chain.
-     *
-     * @return qualifiedName
-     */
-    public String getISCQualifiedName()
-    {
-        return iscQualifiedName;
-    }
-
-
     /**
      * Standard toString method.
      *
@@ -245,15 +170,11 @@ public class DataMappingProperties extends RelationshipBeanProperties
     public String toString()
     {
         return "DataMappingProperties{" +
-                "label='" + label + '\'' +
-                ", description='" + description + '\'' +
-                ", formula='" + formula + '\'' +
+                "formula='" + formula + '\'' +
                 ", formulaType='" + formulaType + '\'' +
                 ", queryId='" + queryId + '\'' +
                 ", query='" + query + '\'' +
                 ", queryType='" + queryType + '\'' +
-                ", iscQualifiedName='" + iscQualifiedName + '\'' +
-                ", ISCQualifiedName='" + getISCQualifiedName() + '\'' +
                 "} " + super.toString();
     }
 
@@ -271,14 +192,11 @@ public class DataMappingProperties extends RelationshipBeanProperties
         if (objectToCompare == null || getClass() != objectToCompare.getClass()) return false;
         if (!super.equals(objectToCompare)) return false;
         DataMappingProperties that = (DataMappingProperties) objectToCompare;
-        return Objects.equals(label, that.label) &&
-                Objects.equals(description, that.description) &&
-                Objects.equals(formula, that.formula) &&
+        return Objects.equals(formula, that.formula) &&
                 Objects.equals(formulaType, that.formulaType) &&
                 Objects.equals(queryId, that.queryId) &&
                 Objects.equals(query, that.query) &&
-                Objects.equals(queryType, that.queryType) &&
-                Objects.equals(iscQualifiedName, that.iscQualifiedName);
+                Objects.equals(queryType, that.queryType);
     }
 
     /**
@@ -289,6 +207,6 @@ public class DataMappingProperties extends RelationshipBeanProperties
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), label, description, formula, formulaType, queryId, query, queryType, iscQualifiedName);
+        return Objects.hash(super.hashCode(), formula, formulaType, queryId, query, queryType);
     }
 }

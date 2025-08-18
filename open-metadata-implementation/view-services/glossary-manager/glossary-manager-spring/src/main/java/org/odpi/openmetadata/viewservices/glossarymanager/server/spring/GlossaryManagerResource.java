@@ -412,9 +412,9 @@ public class GlossaryManagerResource
      */
     @PostMapping(path = "/glossaries/terms/from-template/{templateGUID}")
 
-    public GUIDResponse createGlossaryTermFromTemplate(@PathVariable String                      serverName,
-                                                       @PathVariable String                      templateGUID,
-                                                       @RequestBody  GlossaryTemplateRequestBody requestBody)
+    public GUIDResponse createGlossaryTermFromTemplate(@PathVariable String              serverName,
+                                                       @PathVariable String              templateGUID,
+                                                       @RequestBody  TemplateRequestBody requestBody)
     {
         return restAPI.createGlossaryTermFromTemplate(serverName, templateGUID,  requestBody);
     }

@@ -36,7 +36,7 @@ public class ActorManagerInstanceHandler extends OMVSServiceInstanceHandler
      *
      * @param serverName           name of the server that the request is for
      * @param userId               local server userid
-     * @param viewServiceURLMarker optional view service URL marker (overrides accessServiceURLMarker)
+     * @param urlMarker optional view service URL marker (overrides accessServiceURLMarker)
      * @param serviceOperationName service operation - usually the top level rest call
      * @return  client
      * @throws InvalidParameterException unknown server/service
@@ -45,7 +45,7 @@ public class ActorManagerInstanceHandler extends OMVSServiceInstanceHandler
      */
     public ActorProfileHandler getActorProfileHandler(String userId,
                                                       String serverName,
-                                                      String viewServiceURLMarker,
+                                                      String urlMarker,
                                                       String serviceOperationName) throws InvalidParameterException,
                                                                                           PropertyServerException,
                                                                                           UserNotAuthorizedException
@@ -54,7 +54,7 @@ public class ActorManagerInstanceHandler extends OMVSServiceInstanceHandler
 
         if (instance != null)
         {
-            return instance.getActorProfileHandler(viewServiceURLMarker, serviceOperationName);
+            return instance.getActorProfileHandler(urlMarker, serviceOperationName);
         }
 
         return null;
@@ -66,7 +66,7 @@ public class ActorManagerInstanceHandler extends OMVSServiceInstanceHandler
      *
      * @param serverName           name of the server that the request is for
      * @param userId               local server userid
-     * @param viewServiceURLMarker optional view service URL marker (overrides accessServiceURLMarker)
+     * @param urlMarker optional view service URL marker (overrides accessServiceURLMarker)
      * @param serviceOperationName service operation - usually the top level rest call
      * @return  client
      * @throws InvalidParameterException unknown server/service
@@ -75,7 +75,7 @@ public class ActorManagerInstanceHandler extends OMVSServiceInstanceHandler
      */
     public ActorRoleHandler getActorRoleHandler(String userId,
                                                 String serverName,
-                                                String viewServiceURLMarker,
+                                                String urlMarker,
                                                 String serviceOperationName) throws InvalidParameterException,
                                                                                     PropertyServerException,
                                                                                     UserNotAuthorizedException
@@ -84,7 +84,7 @@ public class ActorManagerInstanceHandler extends OMVSServiceInstanceHandler
 
         if (instance != null)
         {
-            return instance.getActorRoleHandler(viewServiceURLMarker, serviceOperationName);
+            return instance.getActorRoleHandler(urlMarker, serviceOperationName);
         }
 
         return null;
@@ -96,7 +96,7 @@ public class ActorManagerInstanceHandler extends OMVSServiceInstanceHandler
      *
      * @param serverName           name of the server that the request is for
      * @param userId               local server userid
-     * @param viewServiceURLMarker optional view service URL marker (overrides accessServiceURLMarker)
+     * @param urlMarker optional view service URL marker (overrides accessServiceURLMarker)
      * @param serviceOperationName service operation - usually the top level rest call
      * @return  client
      * @throws InvalidParameterException unknown server/service
@@ -105,7 +105,7 @@ public class ActorManagerInstanceHandler extends OMVSServiceInstanceHandler
      */
     public UserIdentityHandler getUserIdentityHandler(String userId,
                                                       String serverName,
-                                                      String viewServiceURLMarker,
+                                                      String urlMarker,
                                                       String serviceOperationName) throws InvalidParameterException,
                                                                                           PropertyServerException,
                                                                                           UserNotAuthorizedException
@@ -114,7 +114,7 @@ public class ActorManagerInstanceHandler extends OMVSServiceInstanceHandler
 
         if (instance != null)
         {
-            return instance.getUserIdentityHandler(viewServiceURLMarker, serviceOperationName);
+            return instance.getUserIdentityHandler(urlMarker, serviceOperationName);
         }
 
         return null;
@@ -126,7 +126,7 @@ public class ActorManagerInstanceHandler extends OMVSServiceInstanceHandler
      *
      * @param serverName           name of the server that the request is for
      * @param userId               local server userid
-     * @param viewServiceURLMarker optional view service URL marker (overrides accessServiceURLMarker)
+     * @param urlMarker optional view service URL marker (overrides accessServiceURLMarker)
      * @param serviceOperationName service operation - usually the top level rest call
      * @return  client
      * @throws InvalidParameterException unknown server/service
@@ -135,7 +135,7 @@ public class ActorManagerInstanceHandler extends OMVSServiceInstanceHandler
      */
     public GovernanceDefinitionHandler getGovernanceDefinitionHandler(String userId,
                                                                       String serverName,
-                                                                      String viewServiceURLMarker,
+                                                                      String urlMarker,
                                                                       String serviceOperationName) throws InvalidParameterException,
                                                                                                           PropertyServerException,
                                                                                                           UserNotAuthorizedException
@@ -144,7 +144,7 @@ public class ActorManagerInstanceHandler extends OMVSServiceInstanceHandler
 
         if (instance != null)
         {
-            return instance.getGovernanceDefinitionHandler(viewServiceURLMarker, serviceOperationName);
+            return instance.getGovernanceDefinitionHandler(urlMarker, serviceOperationName);
         }
 
         return null;

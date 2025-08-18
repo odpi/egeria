@@ -13,7 +13,6 @@ import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterExcept
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.NewActionTarget;
-import org.odpi.openmetadata.frameworks.openmetadata.enums.ProcessContainmentType;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 import org.odpi.openmetadata.metadatasecurity.server.OpenMetadataServerSecurityVerifier;
@@ -409,8 +408,8 @@ public class EngineActionHandler<B> extends OpenMetadataAPIGenericHandler<B>
         List<Relationship> targetsForAction = repositoryHandler.getRelationshipsByType(userId,
                                                                                        governanceActionTypeEntity,
                                                                                        OpenMetadataType.GOVERNANCE_ACTION_TYPE.typeName,
-                                                                                       OpenMetadataType.TARGET_FOR_ACTION_TYPE_RELATIONSHIP.typeGUID,
-                                                                                       OpenMetadataType.TARGET_FOR_ACTION_TYPE_RELATIONSHIP.typeName,
+                                                                                       OpenMetadataType.TARGET_FOR_GOVERNANCE_ACTION_RELATIONSHIP.typeGUID,
+                                                                                       OpenMetadataType.TARGET_FOR_GOVERNANCE_ACTION_RELATIONSHIP.typeName,
                                                                                        2,
                                                                                        null,
                                                                                        null,
@@ -452,8 +451,8 @@ public class EngineActionHandler<B> extends OpenMetadataAPIGenericHandler<B>
             targetsForAction = repositoryHandler.getRelationshipsByType(userId,
                                                                         governanceActionTypeEntity,
                                                                         OpenMetadataType.GOVERNANCE_ACTION_TYPE.typeName,
-                                                                        OpenMetadataType.TARGET_FOR_ACTION_TYPE_RELATIONSHIP.typeGUID,
-                                                                        OpenMetadataType.TARGET_FOR_ACTION_TYPE_RELATIONSHIP.typeName,
+                                                                        OpenMetadataType.TARGET_FOR_GOVERNANCE_ACTION_RELATIONSHIP.typeGUID,
+                                                                        OpenMetadataType.TARGET_FOR_GOVERNANCE_ACTION_RELATIONSHIP.typeName,
                                                                         2,
                                                                         null,
                                                                         null,
@@ -691,8 +690,8 @@ public class EngineActionHandler<B> extends OpenMetadataAPIGenericHandler<B>
                 List<Relationship> targetsForAction = repositoryHandler.getRelationshipsByType(userId,
                                                                                                governanceActionProcessEntity,
                                                                                                OpenMetadataType.GOVERNANCE_ACTION_PROCESS.typeName,
-                                                                                               OpenMetadataType.TARGET_FOR_ACTION_PROCESS_RELATIONSHIP.typeGUID,
-                                                                                               OpenMetadataType.TARGET_FOR_ACTION_PROCESS_RELATIONSHIP.typeName,
+                                                                                               OpenMetadataType.TARGET_FOR_GOVERNANCE_ACTION_RELATIONSHIP.typeGUID,
+                                                                                               OpenMetadataType.TARGET_FOR_GOVERNANCE_ACTION_RELATIONSHIP.typeName,
                                                                                                2,
                                                                                                null,
                                                                                                null,
@@ -727,8 +726,8 @@ public class EngineActionHandler<B> extends OpenMetadataAPIGenericHandler<B>
                     targetsForAction = repositoryHandler.getRelationshipsByType(userId,
                                                                                 governanceActionProcessEntity,
                                                                                 OpenMetadataType.GOVERNANCE_ACTION_PROCESS.typeName,
-                                                                                OpenMetadataType.TARGET_FOR_ACTION_PROCESS_RELATIONSHIP.typeGUID,
-                                                                                OpenMetadataType.TARGET_FOR_ACTION_PROCESS_RELATIONSHIP.typeName,
+                                                                                OpenMetadataType.TARGET_FOR_GOVERNANCE_ACTION_RELATIONSHIP.typeGUID,
+                                                                                OpenMetadataType.TARGET_FOR_GOVERNANCE_ACTION_RELATIONSHIP.typeName,
                                                                                 2,
                                                                                 null,
                                                                                 null,
@@ -1076,8 +1075,8 @@ public class EngineActionHandler<B> extends OpenMetadataAPIGenericHandler<B>
         targetsForAction = repositoryHandler.getRelationshipsByType(userId,
                                                                     governanceActionProcessStepEntity,
                                                                     OpenMetadataType.GOVERNANCE_ACTION_TYPE.typeName,
-                                                                    OpenMetadataType.TARGET_FOR_ACTION_TYPE_RELATIONSHIP.typeGUID,
-                                                                    OpenMetadataType.TARGET_FOR_ACTION_TYPE_RELATIONSHIP.typeName,
+                                                                    OpenMetadataType.TARGET_FOR_GOVERNANCE_ACTION_RELATIONSHIP.typeGUID,
+                                                                    OpenMetadataType.TARGET_FOR_GOVERNANCE_ACTION_RELATIONSHIP.typeName,
                                                                     2,
                                                                     null,
                                                                     null,
@@ -1112,8 +1111,8 @@ public class EngineActionHandler<B> extends OpenMetadataAPIGenericHandler<B>
             targetsForAction = repositoryHandler.getRelationshipsByType(userId,
                                                                         governanceActionProcessStepEntity,
                                                                         OpenMetadataType.GOVERNANCE_ACTION_TYPE.typeName,
-                                                                        OpenMetadataType.TARGET_FOR_ACTION_TYPE_RELATIONSHIP.typeGUID,
-                                                                        OpenMetadataType.TARGET_FOR_ACTION_TYPE_RELATIONSHIP.typeName,
+                                                                        OpenMetadataType.TARGET_FOR_GOVERNANCE_ACTION_RELATIONSHIP.typeGUID,
+                                                                        OpenMetadataType.TARGET_FOR_GOVERNANCE_ACTION_RELATIONSHIP.typeName,
                                                                         2,
                                                                         null,
                                                                         null,

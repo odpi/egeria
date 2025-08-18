@@ -8,21 +8,20 @@ import org.odpi.openmetadata.frameworks.openmetadata.client.OpenMetadataClient;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
-import org.odpi.openmetadata.frameworks.openmetadata.mermaid.ActorProfileMermaidGraphBuilder;
-import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.ActorProfileElement;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.OpenMetadataRootElement;
-import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.RelatedMetadataElementSummary;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.ClassificationProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.OpenMetadataElement;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.RelatedMetadataElement;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.RelationshipProperties;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.actors.*;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.locations.ProfileLocationProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.actors.ActorProfileProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.actors.ITInfrastructureProfileProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.actors.PeerProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.actors.TeamStructureProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.locations.KnownLocationProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.search.*;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
@@ -171,13 +170,13 @@ public class ActorProfileHandler extends OpenMetadataHandlerBase
      * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    public void linkLocationToProfile(String                    userId,
-                                      String                    actorProfileGUID,
-                                      String                    locationGUID,
-                                      MetadataSourceOptions     metadataSourceOptions,
-                                      ProfileLocationProperties relationshipProperties) throws InvalidParameterException,
-                                                                                               PropertyServerException,
-                                                                                               UserNotAuthorizedException
+    public void linkLocationToProfile(String                  userId,
+                                      String                  actorProfileGUID,
+                                      String                  locationGUID,
+                                      MetadataSourceOptions   metadataSourceOptions,
+                                      KnownLocationProperties relationshipProperties) throws InvalidParameterException,
+                                                                                             PropertyServerException,
+                                                                                             UserNotAuthorizedException
     {
         final String methodName            = "linkLocationToProfile";
         final String end1GUIDParameterName = "actorProfileGUID";
@@ -188,7 +187,7 @@ public class ActorProfileHandler extends OpenMetadataHandlerBase
         propertyHelper.validateGUID(locationGUID, end2GUIDParameterName, methodName);
 
         openMetadataClient.createRelatedElementsInStore(userId,
-                                                        OpenMetadataType.PROFILE_LOCATION_RELATIONSHIP.typeName,
+                                                        OpenMetadataType.KNOWN_LOCATION_RELATIONSHIP.typeName,
                                                         actorProfileGUID,
                                                         locationGUID,
                                                         metadataSourceOptions,
@@ -224,7 +223,7 @@ public class ActorProfileHandler extends OpenMetadataHandlerBase
         propertyHelper.validateGUID(locationGUID, end2GUIDParameterName, methodName);
 
         openMetadataClient.detachRelatedElementsInStore(userId,
-                                                        OpenMetadataType.PROFILE_LOCATION_RELATIONSHIP.typeName,
+                                                        OpenMetadataType.KNOWN_LOCATION_RELATIONSHIP.typeName,
                                                         locationGUID,
                                                         actorProfileGUID,
                                                         deleteOptions);
@@ -597,138 +596,5 @@ public class ActorProfileHandler extends OpenMetadataHandlerBase
         final String methodName  = "findActorProfiles";
 
         return super.findRootElements(userId, searchString, searchOptions, methodName);
-    }
-
-
-    /**
-     * If the actor role has linked solution components, they are extracted and the OpenMetadataRootElement is
-     * converted into an ActorRoleElement before the mermaid graph is added.  Otherwise, the standard mermaid
-     * graph is added.
-     *
-     * @param rootElement element extracted from the repository
-     * @return bean or null
-     */
-    protected OpenMetadataRootElement addMermaidToRootElement(OpenMetadataRootElement rootElement)
-    {
-        if (rootElement != null)
-        {
-            ActorProfileElement actorProfileElement = new ActorProfileElement(rootElement);
-
-            if (actorProfileElement.getOtherRelatedElements() != null)
-            {
-                List<RelatedMetadataElementSummary> actorRoles           = new ArrayList<>();
-                List<RelatedMetadataElementSummary> peers                = new ArrayList<>();
-                List<RelatedMetadataElementSummary> locations            = new ArrayList<>();
-                List<RelatedMetadataElementSummary> userIdentities       = new ArrayList<>();
-                List<RelatedMetadataElementSummary> subTeams             = new ArrayList<>();
-                List<RelatedMetadataElementSummary> businessCapabilities = new ArrayList<>();
-                List<RelatedMetadataElementSummary> linkedInfrastructure = new ArrayList<>();
-                List<RelatedMetadataElementSummary> other                = new ArrayList<>();
-
-                for (RelatedMetadataElementSummary relatedMetadataElementSummary : actorProfileElement.getOtherRelatedElements())
-                {
-                    if (relatedMetadataElementSummary != null)
-                    {
-                        if (propertyHelper.isTypeOf(relatedMetadataElementSummary.getRelationshipHeader(), OpenMetadataType.CONTRIBUTION_RELATIONSHIP.typeName))
-                        {
-                            actorProfileElement.setContributionRecord(relatedMetadataElementSummary);
-                        }
-                        else if ((propertyHelper.isTypeOf(relatedMetadataElementSummary.getRelationshipHeader(), OpenMetadataType.PERSON_ROLE_APPOINTMENT_RELATIONSHIP.typeName)) ||
-                                (propertyHelper.isTypeOf(relatedMetadataElementSummary.getRelationshipHeader(), OpenMetadataType.TEAM_ROLE_APPOINTMENT_RELATIONSHIP.typeName)) ||
-                                (propertyHelper.isTypeOf(relatedMetadataElementSummary.getRelationshipHeader(), OpenMetadataType.IT_PROFILE_ROLE_APPOINTMENT_RELATIONSHIP.typeName)))
-                        {
-                            actorRoles.add(relatedMetadataElementSummary);
-                        }
-                        else if (propertyHelper.isTypeOf(relatedMetadataElementSummary.getRelationshipHeader(), OpenMetadataType.PEER_RELATIONSHIP.typeName))
-                        {
-                            peers.add(relatedMetadataElementSummary);
-                        }
-                        else if (propertyHelper.isTypeOf(relatedMetadataElementSummary.getRelationshipHeader(), OpenMetadataType.PROFILE_LOCATION_RELATIONSHIP.typeName))
-                        {
-                            locations.add(relatedMetadataElementSummary);
-                        }
-                        else if (propertyHelper.isTypeOf(relatedMetadataElementSummary.getRelationshipHeader(), OpenMetadataType.PROFILE_IDENTITY_RELATIONSHIP.typeName))
-                        {
-                            userIdentities.add(relatedMetadataElementSummary);
-                        }
-                        else if (propertyHelper.isTypeOf(relatedMetadataElementSummary.getRelationshipHeader(), OpenMetadataType.TEAM_STRUCTURE_RELATIONSHIP.typeName))
-                        {
-                            if (relatedMetadataElementSummary.getRelatedElementAtEnd1())
-                            {
-                                actorProfileElement.setSuperTeam(relatedMetadataElementSummary);
-                            }
-                            else
-                            {
-                                subTeams.add(relatedMetadataElementSummary);
-                            }
-                        }
-                        else if (propertyHelper.isTypeOf(relatedMetadataElementSummary.getRelationshipHeader(), OpenMetadataType.BUSINESS_CAPABILITY_TEAM_RELATIONSHIP.typeName))
-                        {
-                            businessCapabilities.add(relatedMetadataElementSummary);
-                        }
-                        else if (propertyHelper.isTypeOf(relatedMetadataElementSummary.getRelationshipHeader(), OpenMetadataType.IT_INFRASTRUCTURE_PROFILE_RELATIONSHIP.typeName))
-                        {
-                            linkedInfrastructure.add(relatedMetadataElementSummary);
-                        }
-                        else
-                        {
-                            other.add(relatedMetadataElementSummary);
-                        }
-                    }
-                }
-
-                if (! actorRoles.isEmpty())
-                {
-                    actorProfileElement.setActorRoles(actorRoles);
-                }
-
-                if (! peers.isEmpty())
-                {
-                    actorProfileElement.setPeerGovernanceDefinitions(peers);
-                }
-
-                if (! locations.isEmpty())
-                {
-                    actorProfileElement.setLocations(locations);
-                }
-
-                if (! userIdentities.isEmpty())
-                {
-                    actorProfileElement.setUserIdentities(userIdentities);
-                }
-
-                if (! subTeams.isEmpty())
-                {
-                    actorProfileElement.setSubTeams(subTeams);
-                }
-
-                if (! businessCapabilities.isEmpty())
-                {
-                    actorProfileElement.setBusinessCapabilities(businessCapabilities);
-                }
-
-                if (! linkedInfrastructure.isEmpty())
-                {
-                    actorProfileElement.setLinkedInfrastructure(linkedInfrastructure);
-                }
-
-                if (! other.isEmpty())
-                {
-                    actorProfileElement.setOtherRelatedElements(other);
-                }
-                else
-                {
-                    actorProfileElement.setOtherRelatedElements(null);
-                }
-            }
-
-            ActorProfileMermaidGraphBuilder graphBuilder = new ActorProfileMermaidGraphBuilder(actorProfileElement);
-
-            actorProfileElement.setMermaidGraph(graphBuilder.getMermaidGraph());
-
-            return actorProfileElement;
-        }
-
-        return null;
     }
 }

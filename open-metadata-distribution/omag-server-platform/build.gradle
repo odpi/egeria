@@ -329,78 +329,103 @@ distributions {
                         { include 'Egeria*.http' }
                 from { "$rootProject.projectDir/open-metadata-implementation/server-operations" }
                         { include 'Egeria*.http' }
+                from { "$rootProject.projectDir/open-metadata-implementation/user-security/user-authn" }
+                        { include 'Egeria*.http' }
                 from { "$rootProject.projectDir/open-metadata-implementation/governance-server-services/integration-daemon-services" }
                         { include 'Egeria*.http' }
                 from { "$rootProject.projectDir/open-metadata-implementation/governance-server-services/engine-host-services" }
                         { include 'Egeria*.http' }
-                from { "$rootProject.projectDir/open-metadata-implementation/view-services/my-profile" }
+
+                from { "$rootProject.projectDir/open-metadata-implementation/view-server-generic-services/actor-manager" }
                         { include 'Egeria*.http' }
-                from { "$rootProject.projectDir/open-metadata-implementation/view-server-generic-services/metadata-explorer" }
+                from { "$rootProject.projectDir/open-metadata-implementation/view-server-generic-services/asset-maker" }
+                        { include 'Egeria*.http' }
+                from { "$rootProject.projectDir/open-metadata-implementation/view-server-generic-services/classification-explorer" }
+                        { include 'Egeria*.http' }
+                from { "$rootProject.projectDir/open-metadata-implementation/view-server-generic-services/collection-manager" }
+                        { include 'Egeria*.http' }
+                from { "$rootProject.projectDir/open-metadata-implementation/view-server-generic-services/connection-maker" }
+                        { include 'Egeria*.http' }
+                from { "$rootProject.projectDir/open-metadata-implementation/view-server-generic-services/external-references" }
+                        { include 'Egeria*.http' }
+                from { "$rootProject.projectDir/open-metadata-implementation/view-server-generic-services/feedback-manager" }
+                        { include 'Egeria*.http' }
+                from { "$rootProject.projectDir/open-metadata-implementation/view-server-generic-services/governance-officer" }
+                        { include 'Egeria*.http' }
+                from { "$rootProject.projectDir/open-metadata-implementation/view-server-generic-services/lineage-linker" }
                         { include 'Egeria*.http' }
                 from { "$rootProject.projectDir/open-metadata-implementation/view-server-generic-services/metadata-expert" }
                         { include 'Egeria*.http' }
-                from { "$rootProject.projectDir/open-metadata-implementation/view-services/data-designer" }
+                from { "$rootProject.projectDir/open-metadata-implementation/view-server-generic-services/metadata-explorer" }
                         { include 'Egeria*.http' }
-                from { "$rootProject.projectDir/open-metadata-implementation/view-services/community-matters" }
+                from { "$rootProject.projectDir/open-metadata-implementation/view-server-generic-services/schema-maker" }
                         { include 'Egeria*.http' }
-                from { "$rootProject.projectDir/open-metadata-implementation/view-services/data-discovery" }
+                from { "$rootProject.projectDir/open-metadata-implementation/view-server-generic-services/time-keeper" }
                         { include 'Egeria*.http' }
-                from { "$rootProject.projectDir/open-metadata-implementation/view-services/devops-pipeline" }
+                from { "$rootProject.projectDir/open-metadata-implementation/view-server-generic-services/valid-metadata" }
                         { include 'Egeria*.http' }
-                from { "$rootProject.projectDir/open-metadata-implementation/view-services/people-organizer" }
-                        { include 'Egeria*.http' }
-                from { "$rootProject.projectDir/open-metadata-implementation/view-services/reference-data" }
-                        { include 'Egeria*.http' }
-                from { "$rootProject.projectDir/open-metadata-implementation/view-services/solution-architect" }
-                        { include 'Egeria*.http' }
-                from { "$rootProject.projectDir/open-metadata-implementation/view-services/runtime-manager" }
-                        { include 'Egeria*.http' }
-                from { "$rootProject.projectDir/open-metadata-implementation/view-services/template-manager" }
-                        { include 'Egeria*.http' }
-                from { "$rootProject.projectDir/open-metadata-implementation/view-services/time-keeper" }
-                        { include 'Egeria*.http' }
-                from { "$rootProject.projectDir/open-metadata-implementation/view-services/valid-metadata" }
+
+                from { "$rootProject.projectDir/open-metadata-implementation/view-services/action-author" }
                         { include 'Egeria*.http' }
                 from { "$rootProject.projectDir/open-metadata-implementation/view-services/asset-catalog" }
                         { include 'Egeria*.http' }
                 from { "$rootProject.projectDir/open-metadata-implementation/view-services/automated-curation" }
                         { include 'Egeria*.http' }
-                from { "$rootProject.projectDir/open-metadata-implementation/view-server-generic-services/collection-manager" }
-                        { include 'Egeria*.http' }
-                from { "$rootProject.projectDir/open-metadata-implementation/view-services/notification-manager" }
-                        { include 'Egeria*.http' }
-                from { "$rootProject.projectDir/open-metadata-implementation/view-services/project-manager" }
-                        { include 'Egeria*.http' }
-                from { "$rootProject.projectDir/open-metadata-implementation/view-server-generic-services/classification-explorer" }
-                        { include 'Egeria*.http' }
                 from { "$rootProject.projectDir/open-metadata-implementation/view-services/classification-manager" }
                         { include 'Egeria*.http' }
-                from { "$rootProject.projectDir/open-metadata-implementation/view-server-generic-services/feedback-manager" }
+                from { "$rootProject.projectDir/open-metadata-implementation/view-services/community-matters" }
+                        { include 'Egeria*.http' }
+                from { "$rootProject.projectDir/open-metadata-implementation/view-services/data-designer" }
+                        { include 'Egeria*.http' }
+                from { "$rootProject.projectDir/open-metadata-implementation/view-services/data-discovery" }
+                        { include 'Egeria*.http' }
+                from { "$rootProject.projectDir/open-metadata-implementation/view-services/data-engineer" }
+                        { include 'Egeria*.http' }
+                from { "$rootProject.projectDir/open-metadata-implementation/view-services/data-officer" }
+                        { include 'Egeria*.http' }
+                from { "$rootProject.projectDir/open-metadata-implementation/view-services/devops-pipeline" }
+                        { include 'Egeria*.http' }
+                from { "$rootProject.projectDir/open-metadata-implementation/view-services/digital-business" }
                         { include 'Egeria*.http' }
                 from { "$rootProject.projectDir/open-metadata-implementation/view-services/glossary-browser" }
                         { include 'Egeria*.http' }
                 from { "$rootProject.projectDir/open-metadata-implementation/view-services/glossary-manager" }
                         { include 'Egeria*.http' }
-                from { "$rootProject.projectDir/open-metadata-implementation/view-server-generic-services/governance-officer" }
+                from { "$rootProject.projectDir/open-metadata-implementation/view-services/location-arena" }
                         { include 'Egeria*.http' }
-                from { "$rootProject.projectDir/open-metadata-implementation/view-server-generic-services/actor-manager" }
+                from { "$rootProject.projectDir/open-metadata-implementation/view-services/multi-language" }
                         { include 'Egeria*.http' }
-                from { "$rootProject.projectDir/open-metadata-implementation/view-server-generic-services/connection-maker" }
+                from { "$rootProject.projectDir/open-metadata-implementation/view-services/my-profile" }
                         { include 'Egeria*.http' }
-                from { "$rootProject.projectDir/open-metadata-implementation/view-server-generic-services/schema-maker" }
+                from { "$rootProject.projectDir/open-metadata-implementation/view-services/notification-manager" }
                         { include 'Egeria*.http' }
-                from { "$rootProject.projectDir/open-metadata-implementation/view-services/data-officer" }
-                        { include 'Egeria*.http' }
-                from { "$rootProject.projectDir/open-metadata-implementation/view-services/subject-area" }
-                        { include 'Egeria*.http' }
-                from { "$rootProject.projectDir/open-metadata-implementation/view-services/security-officer" }
+                from { "$rootProject.projectDir/open-metadata-implementation/view-services/people-organizer" }
                         { include 'Egeria*.http' }
                 from { "$rootProject.projectDir/open-metadata-implementation/view-services/privacy-officer" }
                         { include 'Egeria*.http' }
-                from { "$rootProject.projectDir/open-metadata-implementation/view-services/action-author" }
+                from { "$rootProject.projectDir/open-metadata-implementation/view-services/product-catalog" }
                         { include 'Egeria*.http' }
-                from { "$rootProject.projectDir/open-metadata-implementation/user-security/user-authn" }
+                from { "$rootProject.projectDir/open-metadata-implementation/view-services/product-manager" }
                         { include 'Egeria*.http' }
+                from { "$rootProject.projectDir/open-metadata-implementation/view-services/project-manager" }
+                        { include 'Egeria*.http' }
+                from { "$rootProject.projectDir/open-metadata-implementation/view-services/security-officer" }
+                        { include 'Egeria*.http' }
+                from { "$rootProject.projectDir/open-metadata-implementation/view-services/solution-architect" }
+                        { include 'Egeria*.http' }
+                from { "$rootProject.projectDir/open-metadata-implementation/view-services/subject-area" }
+                        { include 'Egeria*.http' }
+                from { "$rootProject.projectDir/open-metadata-implementation/view-services/reference-data" }
+                        { include 'Egeria*.http' }
+                from { "$rootProject.projectDir/open-metadata-implementation/view-services/runtime-manager" }
+                        { include 'Egeria*.http' }
+                from { "$rootProject.projectDir/open-metadata-implementation/view-services/template-manager" }
+                        { include 'Egeria*.http' }
+
+
+
+
+
                 fileMode = 0755
             }
         }

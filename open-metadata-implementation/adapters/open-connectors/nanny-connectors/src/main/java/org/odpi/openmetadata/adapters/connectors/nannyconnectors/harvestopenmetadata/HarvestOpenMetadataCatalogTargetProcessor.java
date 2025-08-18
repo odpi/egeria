@@ -549,7 +549,7 @@ public class HarvestOpenMetadataCatalogTargetProcessor extends CatalogTargetProc
         {
             RelatedMetadataElementList relatedElements = openMetadataStore.getRelatedMetadataElements(assetGUID,
                                                                                                       1,
-                                                                                                      OpenMetadataType.ASSET_LOCATION_RELATIONSHIP.typeName,
+                                                                                                      OpenMetadataType.KNOWN_LOCATION_RELATIONSHIP.typeName,
                                                                                                       0,
                                                                                                       openMetadataStore.getMaxPagingSize());
 
@@ -599,7 +599,7 @@ public class HarvestOpenMetadataCatalogTargetProcessor extends CatalogTargetProc
         {
             RelatedMetadataElementList relatedElements = openMetadataStore.getRelatedMetadataElements(profileGUID,
                                                                                                       1,
-                                                                                                      OpenMetadataType.PROFILE_LOCATION_RELATIONSHIP.typeName,
+                                                                                                      OpenMetadataType.KNOWN_LOCATION_RELATIONSHIP.typeName,
                                                                                                       0,
                                                                                                       openMetadataStore.getMaxPagingSize());
 

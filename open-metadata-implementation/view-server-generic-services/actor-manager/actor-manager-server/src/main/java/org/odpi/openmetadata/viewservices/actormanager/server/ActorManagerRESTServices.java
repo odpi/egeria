@@ -10,10 +10,7 @@ import org.odpi.openmetadata.commonservices.ffdc.rest.*;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.openmetadata.handlers.GovernanceDefinitionHandler;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.actors.*;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.governance.SupportingDefinitionProperties;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.locations.ProfileLocationProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.security.SecurityGroupMembershipProperties;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.solutions.SolutionBlueprintCompositionProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.search.MetadataSourceOptions;
 import org.odpi.openmetadata.frameworks.openmetadata.handlers.ActorProfileHandler;
 import org.odpi.openmetadata.frameworks.openmetadata.handlers.ActorRoleHandler;
@@ -232,128 +229,6 @@ public class ActorManagerRESTServices extends TokenController
 
 
     /**
-     * Attach a profile to a location.
-     *
-     * @param serverName         name of called server
-     * @param urlMarker  view service URL marker
-     * @param actorProfileGUID       unique identifier of the actor profile
-     * @param locationGUID           unique identifier of the location
-     * @param requestBody  description of the relationship.
-     *
-     * @return void or
-     *  InvalidParameterException  one of the parameters is null or invalid.
-     *  PropertyServerException    there is a problem retrieving information from the property server(s).
-     *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
-     */
-    public VoidResponse linkLocationToProfile(String                  serverName,
-                                              String                  urlMarker,
-                                              String                  actorProfileGUID,
-                                              String                  locationGUID,
-                                              NewRelationshipRequestBody requestBody)
-    {
-        final String methodName = "linkLocationToProfile";
-
-        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
-
-        VoidResponse response = new VoidResponse();
-        AuditLog     auditLog = null;
-
-        try
-        {
-            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
-
-            restCallLogger.setUserId(token, userId);
-
-            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-            ActorProfileHandler handler = instanceHandler.getActorProfileHandler(userId, serverName, urlMarker, methodName);
-
-            if (requestBody != null)
-            {
-                if (requestBody.getProperties() instanceof ProfileLocationProperties profileLocationProperties)
-                {
-                    handler.linkLocationToProfile(userId,
-                                                  actorProfileGUID,
-                                                  locationGUID,
-                                                  requestBody,
-                                                  profileLocationProperties);
-                }
-                else
-                {
-                    restExceptionHandler.handleInvalidPropertiesObject(ProfileLocationProperties.class.getName(), methodName);
-                }
-            }
-            else
-            {
-                MetadataSourceOptions metadataSourceOptions = new MetadataSourceOptions();
-                metadataSourceOptions.setEffectiveTime(new Date());
-
-                handler.linkLocationToProfile(userId,
-                                              actorProfileGUID,
-                                              locationGUID,
-                                              metadataSourceOptions,
-                                              null);
-            }
-        }
-        catch (Throwable error)
-        {
-            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
-        }
-
-        restCallLogger.logRESTCallReturn(token, response.toString());
-        return response;
-    }
-
-
-    /**
-     * Detach an actor profile from a location.
-     *
-     * @param serverName         name of called server
-     * @param urlMarker  view service URL marker
-     * @param actorProfileGUID       unique identifier of the actor profile
-     * @param locationGUID           unique identifier of the location
-     * @param requestBody  description of the relationship.
-     *
-     * @return void or
-     *  InvalidParameterException  one of the parameters is null or invalid.
-     *  PropertyServerException    there is a problem retrieving information from the property server(s).
-     *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
-     */
-    public VoidResponse detachLocationFromProfile(String                   serverName,
-                                                  String                   urlMarker,
-                                                  String                   actorProfileGUID,
-                                                  String                   locationGUID,
-                                                  DeleteRequestBody requestBody)
-    {
-        final String methodName = "detachLocationFromProfile";
-
-        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
-
-        VoidResponse response = new VoidResponse();
-        AuditLog     auditLog = null;
-
-        try
-        {
-            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
-
-            restCallLogger.setUserId(token, userId);
-
-            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-
-            ActorProfileHandler handler = instanceHandler.getActorProfileHandler(userId, serverName, urlMarker, methodName);
-
-            handler.detachLocationFromProfile(userId, actorProfileGUID, locationGUID, requestBody);
-        }
-        catch (Throwable error)
-        {
-            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
-        }
-
-        restCallLogger.logRESTCallReturn(token, response.toString());
-        return response;
-    }
-
-
-    /**
      * Attach an asset to an IT profile.
      *
      * @param serverName         name of called server
@@ -367,10 +242,10 @@ public class ActorManagerRESTServices extends TokenController
      *  PropertyServerException    there is a problem retrieving information from the property server(s).
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    public VoidResponse linkAssetToProfile(String                  serverName,
-                                           String                  urlMarker,
-                                           String                  assetGUID,
-                                           String                  itProfileGUID,
+    public VoidResponse linkAssetToProfile(String                     serverName,
+                                           String                     urlMarker,
+                                           String                     assetGUID,
+                                           String                     itProfileGUID,
                                            NewRelationshipRequestBody requestBody)
     {
         final String methodName = "linkAssetToProfile";
@@ -398,6 +273,14 @@ public class ActorManagerRESTServices extends TokenController
                                                itProfileGUID,
                                                requestBody,
                                                itInfrastructureProfileProperties);
+                }
+                else if (requestBody.getProperties() == null)
+                {
+                    handler.linkAssetToProfile(userId,
+                                               assetGUID,
+                                               itProfileGUID,
+                                               requestBody,
+                                               null);
                 }
                 else
                 {
@@ -440,10 +323,10 @@ public class ActorManagerRESTServices extends TokenController
      *  PropertyServerException    there is a problem retrieving information from the property server(s).
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    public VoidResponse detachAssetFromProfile(String                   serverName,
-                                               String                   urlMarker,
-                                               String                   assetGUID,
-                                               String                   itProfileGUID,
+    public VoidResponse detachAssetFromProfile(String            serverName,
+                                               String            urlMarker,
+                                               String            assetGUID,
+                                               String            itProfileGUID,
                                                DeleteRequestBody requestBody)
     {
         final String methodName = "detachAssetFromProfile";
@@ -1137,16 +1020,23 @@ public class ActorManagerRESTServices extends TokenController
             {
                 if (requestBody.getProperties() instanceof ITProfileRoleAppointmentProperties properties)
                 {
-
                     handler.linkITProfileRoleToProfile(userId,
                                                        itProfileRoleGUID,
                                                        itProfileGUID,
                                                        requestBody,
                                                        properties);
                 }
+                else if (requestBody.getProperties() == null)
+                {
+                    handler.linkITProfileRoleToProfile(userId,
+                                                       itProfileRoleGUID,
+                                                       itProfileGUID,
+                                                       requestBody,
+                                                       null);
+                }
                 else
                 {
-                    restExceptionHandler.handleInvalidPropertiesObject(SupportingDefinitionProperties.class.getName(), methodName);
+                    restExceptionHandler.handleInvalidPropertiesObject(ITProfileRoleAppointmentProperties.class.getName(), methodName);
                 }
             }
             else
@@ -2159,7 +2049,7 @@ public class ActorManagerRESTServices extends TokenController
                 }
                 else
                 {
-                    restExceptionHandler.handleInvalidPropertiesObject(SolutionBlueprintCompositionProperties.class.getName(), methodName);
+                    restExceptionHandler.handleInvalidPropertiesObject(AssignmentScopeProperties.class.getName(), methodName);
                 }
             }
             else

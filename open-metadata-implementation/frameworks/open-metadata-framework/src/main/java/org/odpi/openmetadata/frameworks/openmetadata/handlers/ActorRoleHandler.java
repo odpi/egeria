@@ -8,18 +8,20 @@ import org.odpi.openmetadata.frameworks.openmetadata.client.OpenMetadataClient;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
-import org.odpi.openmetadata.frameworks.openmetadata.mermaid.ActorRoleMermaidGraphBuilder;
-import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.ActorRoleElement;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.OpenMetadataRootElement;
-import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.RelatedMetadataElementSummary;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.*;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.actors.*;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.ClassificationProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.RelationshipProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.actors.ActorRoleProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.actors.ITProfileRoleAppointmentProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.actors.PersonRoleAppointmentProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.actors.TeamRoleAppointmentProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.search.*;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 
-
-import java.util.*;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Map;
 
 /**
  * ActorRoleHandler provides methods to define actor roles.
@@ -465,65 +467,5 @@ public class ActorRoleHandler extends OpenMetadataHandlerBase
         final String methodName = "findActorRoles";
 
         return super.findRootElements(userId, searchString, searchOptions, methodName);
-    }
-
-
-    /**
-     * If the actor role has linked solution components, they are extracted and the OpenMetadataRootElement is
-     * converted into an ActorRoleElement before the mermaid graph is added.  Otherwise, the standard mermaid
-     * graph is added.
-     *
-     * @param rootElement element extracted from the repository
-     * @return bean or null
-     */
-    protected OpenMetadataRootElement addMermaidToRootElement(OpenMetadataRootElement rootElement)
-    {
-        if (rootElement != null)
-        {
-            ActorRoleElement actorRoleElement = new ActorRoleElement(rootElement);
-
-            if (actorRoleElement.getOtherRelatedElements() != null)
-            {
-                List<RelatedMetadataElementSummary> others             = new ArrayList<>();
-                List<RelatedMetadataElementSummary> solutionComponents = new ArrayList<>();
-
-                for (RelatedMetadataElementSummary relatedMetadataElementSummary : rootElement.getOtherRelatedElements())
-                {
-                    if (relatedMetadataElementSummary != null)
-                    {
-                        if (propertyHelper.isTypeOf(relatedMetadataElementSummary.getRelationshipHeader(), OpenMetadataType.SOLUTION_COMPONENT_ACTOR_RELATIONSHIP.typeName))
-                        {
-                            solutionComponents.add(relatedMetadataElementSummary);
-                        }
-                        else
-                        {
-                            others.add(relatedMetadataElementSummary);
-                        }
-                    }
-                }
-
-                if (! solutionComponents.isEmpty())
-                {
-                    actorRoleElement.setSolutionComponents(solutionComponents);
-                }
-
-                if (! others.isEmpty())
-                {
-                    actorRoleElement.setOtherRelatedElements(others);
-                }
-                else
-                {
-                    actorRoleElement.setOtherRelatedElements(null);
-                }
-            }
-
-            ActorRoleMermaidGraphBuilder graphBuilder = new ActorRoleMermaidGraphBuilder(actorRoleElement);
-
-            actorRoleElement.setMermaidGraph(graphBuilder.getMermaidGraph());
-
-            return actorRoleElement;
-        }
-
-        return null;
     }
 }

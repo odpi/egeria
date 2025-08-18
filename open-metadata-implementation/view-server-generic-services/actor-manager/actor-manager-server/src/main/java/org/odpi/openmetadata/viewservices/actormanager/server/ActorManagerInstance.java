@@ -100,17 +100,17 @@ public class ActorManagerInstance extends OMVSServiceInstance
      * Return the client.  This client is from the Open Metadata Store services and is for maintaining
      * actor profile artifacts.
      *
-     * @param viewServiceURLMarker calling view service
+     * @param urlMarker calling view service
      * @param methodName calling operation
      * @return client
      * @throws InvalidParameterException bad client initialization
      * @throws PropertyServerException bad client handler class
      */
-    public ActorProfileHandler getActorProfileHandler(String viewServiceURLMarker,
+    public ActorProfileHandler getActorProfileHandler(String urlMarker,
                                                       String methodName) throws InvalidParameterException,
                                                                                 PropertyServerException
     {
-        return actorProfileHandlerMap.getClient(viewServiceURLMarker, methodName);
+        return actorProfileHandlerMap.getClient(urlMarker, methodName);
     }
 
 
@@ -118,17 +118,17 @@ public class ActorManagerInstance extends OMVSServiceInstance
      * Return the client.  This client is from the Open Metadata Store services and is for maintaining
      * actor role artifacts.
      *
-     * @param viewServiceURLMarker calling view service
+     * @param urlMarker calling view service
      * @param methodName calling operation
      * @return client
      * @throws InvalidParameterException bad client initialization
      * @throws PropertyServerException bad client handler class
      */
-    public ActorRoleHandler getActorRoleHandler(String viewServiceURLMarker,
+    public ActorRoleHandler getActorRoleHandler(String urlMarker,
                                                 String methodName) throws InvalidParameterException,
                                                                           PropertyServerException
     {
-        return actorRoleHandlerMap.getClient(viewServiceURLMarker, methodName);
+        return actorRoleHandlerMap.getClient(urlMarker, methodName);
     }
 
 
@@ -138,17 +138,17 @@ public class ActorManagerInstance extends OMVSServiceInstance
      * Return the client.  This client is from the Open Metadata Store services and is for maintaining
      * governance definition artifacts.
      *
-     * @param viewServiceURLMarker calling view service
+     * @param urlMarker calling view service
      * @param methodName calling operation
      * @return client
      * @throws InvalidParameterException bad client initialization
      * @throws PropertyServerException bad client handler class
      */
-    public UserIdentityHandler getUserIdentityHandler(String viewServiceURLMarker,
+    public UserIdentityHandler getUserIdentityHandler(String urlMarker,
                                                       String methodName) throws InvalidParameterException,
                                                                                 PropertyServerException
     {
-        return userIdentityHandlerMap.getClient(viewServiceURLMarker, methodName);
+        return userIdentityHandlerMap.getClient(urlMarker, methodName);
     }
 
 
@@ -156,16 +156,16 @@ public class ActorManagerInstance extends OMVSServiceInstance
      * Return the client.  This client is from the Open Metadata Store services and is for maintaining
      * governance definition artifacts.
      *
-     * @param viewServiceURLMarker calling view service
+     * @param urlMarker calling view service
      * @param methodName calling operation
      * @return client
      * @throws InvalidParameterException bad client initialization
      * @throws PropertyServerException bad client handler class
      */
-    public GovernanceDefinitionHandler getGovernanceDefinitionHandler(String viewServiceURLMarker,
+    public GovernanceDefinitionHandler getGovernanceDefinitionHandler(String urlMarker,
                                                                       String methodName) throws InvalidParameterException,
                                                                                                 PropertyServerException
     {
-        return governanceDefinitionClientMap.getClient(viewServiceURLMarker, methodName);
+        return governanceDefinitionClientMap.getClient(urlMarker, methodName);
     }
 }

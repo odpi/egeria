@@ -14,7 +14,7 @@ import org.odpi.openmetadata.frameworks.openmetadata.properties.OpenMetadataElem
 import org.odpi.openmetadata.frameworks.openmetadata.properties.RelatedMetadataElement;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.RelationshipProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.actors.*;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.locations.ProfileLocationProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.locations.KnownLocationProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.validvalues.ValidValueDefinitionProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.search.*;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
@@ -165,9 +165,9 @@ public class ValidValueDefinitionHandler extends OpenMetadataHandlerBase
                                       String                    validValueDefinitionGUID,
                                       String                    locationGUID,
                                       MetadataSourceOptions     metadataSourceOptions,
-                                      ProfileLocationProperties relationshipProperties) throws InvalidParameterException,
-                                                                                               PropertyServerException,
-                                                                                               UserNotAuthorizedException
+                                      KnownLocationProperties relationshipProperties) throws InvalidParameterException,
+                                                                                             PropertyServerException,
+                                                                                             UserNotAuthorizedException
     {
         final String methodName            = "linkLocationToProfile";
         final String end1GUIDParameterName = "validValueDefinitionGUID";
@@ -178,7 +178,7 @@ public class ValidValueDefinitionHandler extends OpenMetadataHandlerBase
         propertyHelper.validateGUID(locationGUID, end2GUIDParameterName, methodName);
 
         openMetadataClient.createRelatedElementsInStore(userId,
-                                                        OpenMetadataType.PROFILE_LOCATION_RELATIONSHIP.typeName,
+                                                        OpenMetadataType.VALID_VALUES_IMPL_RELATIONSHIP.typeName,
                                                         validValueDefinitionGUID,
                                                         locationGUID,
                                                         metadataSourceOptions,
@@ -214,7 +214,7 @@ public class ValidValueDefinitionHandler extends OpenMetadataHandlerBase
         propertyHelper.validateGUID(locationGUID, end2GUIDParameterName, methodName);
 
         openMetadataClient.detachRelatedElementsInStore(userId,
-                                                        OpenMetadataType.PROFILE_LOCATION_RELATIONSHIP.typeName,
+                                                        OpenMetadataType.VALID_VALUES_IMPL_RELATIONSHIP.typeName,
                                                         locationGUID,
                                                         validValueDefinitionGUID,
                                                         deleteOptions);

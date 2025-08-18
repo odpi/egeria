@@ -68,16 +68,16 @@ public class CollectionManagerInstance extends OMVSServiceInstance
     /**
      * Return the collection management client.
      *
-     * @param viewServiceURLMarker calling view service
+     * @param urlMarker calling view service
      * @param methodName calling operation
      * @return client
      * @throws InvalidParameterException bad client initialization
      * @throws PropertyServerException bad client handler class
      */
-    public CollectionHandler getCollectionHandler(String viewServiceURLMarker,
+    public CollectionHandler getCollectionHandler(String urlMarker,
                                                   String methodName) throws InvalidParameterException,
                                                                             PropertyServerException
     {
-        return viewServiceClientMap.getClient(viewServiceURLMarker, methodName);
+        return viewServiceClientMap.getClient(urlMarker, methodName);
     }
 }

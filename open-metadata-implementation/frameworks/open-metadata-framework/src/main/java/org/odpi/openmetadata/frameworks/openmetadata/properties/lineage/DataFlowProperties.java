@@ -19,11 +19,8 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class DataFlowProperties extends RelationshipBeanProperties
+public class DataFlowProperties extends LineageRelationshipProperties
 {
-    private String iscQualifiedName = null;
-    private String label            = null;
-    private String description      = null;
     private String formula          = null;
     private String formulaType      = null;
 
@@ -45,80 +42,13 @@ public class DataFlowProperties extends RelationshipBeanProperties
      */
     public DataFlowProperties(DataFlowProperties template)
     {
+        super(template);
+
         if (template != null)
         {
-            iscQualifiedName = template.getISCQualifiedName();
-            label            = template.getLabel();
-            description      = template.getDescription();
             formula          = template.getFormula();
             formulaType      = template.getFormulaType();
         }
-    }
-
-
-    /**
-     * Set up the fully qualified name of the associated information supply chain.
-     *
-     * @param iscQualifiedName String name
-     */
-    public void setISCQualifiedName(String iscQualifiedName)
-    {
-        this.iscQualifiedName = iscQualifiedName;
-    }
-
-
-    /**
-     * Returns the stored qualified name of the associated information supply chain.
-     *
-     * @return qualifiedName
-     */
-    public String getISCQualifiedName()
-    {
-        return iscQualifiedName;
-    }
-
-
-    /**
-     * Return the label used when displaying this relationship.
-     *
-     * @return string
-     */
-    public String getLabel()
-    {
-        return label;
-    }
-
-
-    /**
-     * Set up the label used when displaying this relationship.
-     *
-     * @param label string
-     */
-    public void setLabel(String label)
-    {
-        this.label = label;
-    }
-
-
-    /**
-     * Return the description of the relationship.
-     *
-     * @return string text
-     */
-    public String getDescription()
-    {
-        return description;
-    }
-
-
-    /**
-     * Set up the description of the relationship.
-     *
-     * @param description string text
-     */
-    public void setDescription(String description)
-    {
-        this.description = description;
     }
 
 
@@ -175,9 +105,6 @@ public class DataFlowProperties extends RelationshipBeanProperties
     public String toString()
     {
         return "DataFlowProperties{" +
-                "iscQualifiedName='" + iscQualifiedName + '\'' +
-                ", label='" + label + '\'' +
-                ", description='" + description + '\'' +
                 ", formula='" + formula + '\'' +
                 ", formulaType='" + formulaType + '\'' +
                 "} " + super.toString();
@@ -193,21 +120,11 @@ public class DataFlowProperties extends RelationshipBeanProperties
     @Override
     public boolean equals(Object objectToCompare)
     {
-        if (this == objectToCompare)
-        {
-            return true;
-        }
-        if (objectToCompare == null || getClass() != objectToCompare.getClass())
-        {
-            return false;
-        }
+        if (this == objectToCompare) return true;
+        if (objectToCompare == null || getClass() != objectToCompare.getClass()) return false;
         if (!super.equals(objectToCompare)) return false;
         DataFlowProperties that = (DataFlowProperties) objectToCompare;
-        return Objects.equals(getISCQualifiedName(), that.getISCQualifiedName()) &&
-                Objects.equals(getLabel(), that.getLabel()) &&
-                Objects.equals(getDescription(), that.getDescription()) &&
-                Objects.equals(getFormula(), that.getFormula()) &&
-                Objects.equals(getFormulaType(), that.getFormulaType());
+        return Objects.equals(formula, that.formula) && Objects.equals(formulaType, that.formulaType);
     }
 
 
@@ -219,6 +136,6 @@ public class DataFlowProperties extends RelationshipBeanProperties
     @Override
     public int hashCode()
     {
-        return Objects.hash(iscQualifiedName, label, description, formula, formulaType);
+        return Objects.hash(super.hashCode(), formula, formulaType);
     }
 }

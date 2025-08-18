@@ -42,7 +42,7 @@ public class ConnectionMakerRESTServices extends TokenController
      * Create a connection.
      *
      * @param serverName                 name of called server.
-     * @param viewServiceURLMarker  view service URL marker
+     * @param urlMarker  view service URL marker
      * @param requestBody             properties for the connection.
      *
      * @return unique identifier of the newly created element
@@ -51,7 +51,7 @@ public class ConnectionMakerRESTServices extends TokenController
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public GUIDResponse createConnection(String                serverName,
-                                         String                viewServiceURLMarker,
+                                         String                urlMarker,
                                          NewElementRequestBody requestBody)
     {
         final String methodName = "createConnection";
@@ -71,7 +71,7 @@ public class ConnectionMakerRESTServices extends TokenController
 
             if (requestBody != null)
             {
-                ConnectionHandler handler = instanceHandler.getConnectionHandler(userId, serverName, viewServiceURLMarker, methodName);
+                ConnectionHandler handler = instanceHandler.getConnectionHandler(userId, serverName, urlMarker, methodName);
 
                 if (requestBody.getProperties() instanceof ConnectionProperties connectionProperties)
                 {
@@ -106,7 +106,7 @@ public class ConnectionMakerRESTServices extends TokenController
      * The template defines additional classifications and relationships that should be added to the new element.
      *
      * @param serverName             calling user
-     * @param viewServiceURLMarker  view service URL marker
+     * @param urlMarker  view service URL marker
      * @param requestBody properties that override the template
      *
      * @return unique identifier of the new metadata element
@@ -115,7 +115,7 @@ public class ConnectionMakerRESTServices extends TokenController
      *  PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     public GUIDResponse createConnectionFromTemplate(String              serverName,
-                                                     String              viewServiceURLMarker,
+                                                     String              urlMarker,
                                                      TemplateRequestBody requestBody)
     {
         final String methodName = "createConnectionFromTemplate";
@@ -135,7 +135,7 @@ public class ConnectionMakerRESTServices extends TokenController
 
             if (requestBody != null)
             {
-                ConnectionHandler handler = instanceHandler.getConnectionHandler(userId, serverName, viewServiceURLMarker, methodName);
+                ConnectionHandler handler = instanceHandler.getConnectionHandler(userId, serverName, urlMarker, methodName);
 
                 response.setGUID(handler.createConnectionFromTemplate(userId,
                                                                       requestBody,
@@ -163,7 +163,7 @@ public class ConnectionMakerRESTServices extends TokenController
      * Update the properties of a connection.
      *
      * @param serverName         name of called server.
-     * @param viewServiceURLMarker  view service URL marker
+     * @param urlMarker  view service URL marker
      * @param connectionGUID unique identifier of the connection (returned from create)
      * @param requestBody     properties for the new element.
      *
@@ -173,7 +173,7 @@ public class ConnectionMakerRESTServices extends TokenController
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public VoidResponse updateConnection(String                   serverName,
-                                         String                   viewServiceURLMarker,
+                                         String                   urlMarker,
                                          String                   connectionGUID,
                                          UpdateElementRequestBody requestBody)
     {
@@ -194,7 +194,7 @@ public class ConnectionMakerRESTServices extends TokenController
 
             if (requestBody != null)
             {
-                ConnectionHandler handler = instanceHandler.getConnectionHandler(userId, serverName, viewServiceURLMarker, methodName);
+                ConnectionHandler handler = instanceHandler.getConnectionHandler(userId, serverName, urlMarker, methodName);
 
                 if (requestBody.getProperties() instanceof ConnectionProperties connectionProperties)
                 {
@@ -234,7 +234,7 @@ public class ConnectionMakerRESTServices extends TokenController
      * Create a ConnectionConnectorType relationship between a connection and a connector type.
      *
      * @param serverName         name of called server
-     * @param viewServiceURLMarker  view service URL marker
+     * @param urlMarker  view service URL marker
      * @param connectionGUID       unique identifier of the connection
      * @param connectorTypeGUID           unique identifier of the connector type
      * @param requestBody  description of the relationship.
@@ -245,7 +245,7 @@ public class ConnectionMakerRESTServices extends TokenController
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public VoidResponse linkConnectionConnectorType(String                  serverName,
-                                                    String                  viewServiceURLMarker,
+                                                    String                  urlMarker,
                                                     String                  connectionGUID,
                                                     String                  connectorTypeGUID,
                                                     NewRelationshipRequestBody requestBody)
@@ -264,7 +264,7 @@ public class ConnectionMakerRESTServices extends TokenController
             restCallLogger.setUserId(token, userId);
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-            ConnectionHandler handler = instanceHandler.getConnectionHandler(userId, serverName, viewServiceURLMarker, methodName);
+            ConnectionHandler handler = instanceHandler.getConnectionHandler(userId, serverName, urlMarker, methodName);
 
             if (requestBody != null)
             {
@@ -315,7 +315,7 @@ public class ConnectionMakerRESTServices extends TokenController
      * Remove the ConnectionConnectorType relationship between a connection and a connector type.
      *
      * @param serverName         name of called server
-     * @param viewServiceURLMarker  view service URL marker
+     * @param urlMarker  view service URL marker
      * @param connectionGUID       unique identifier of the connection
      * @param connectorTypeGUID           unique identifier of the connector type
      * @param requestBody  description of the relationship.
@@ -326,7 +326,7 @@ public class ConnectionMakerRESTServices extends TokenController
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public VoidResponse detachConnectionConnectorType(String                   serverName,
-                                                      String                   viewServiceURLMarker,
+                                                      String                   urlMarker,
                                                       String                   connectionGUID,
                                                       String                   connectorTypeGUID,
                                                       DeleteRequestBody requestBody)
@@ -346,7 +346,7 @@ public class ConnectionMakerRESTServices extends TokenController
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            ConnectionHandler handler = instanceHandler.getConnectionHandler(userId, serverName, viewServiceURLMarker, methodName);
+            ConnectionHandler handler = instanceHandler.getConnectionHandler(userId, serverName, urlMarker, methodName);
 
             handler.detachConnectionConnectorType(userId,
                                                   connectionGUID,
@@ -367,7 +367,7 @@ public class ConnectionMakerRESTServices extends TokenController
      * Create a ConnectToEndpoint relationship between a connection and an endpoint.
      *
      * @param serverName         name of called server
-     * @param viewServiceURLMarker  view service URL marker
+     * @param urlMarker  view service URL marker
      * @param connectionGUID unique identifier of the connection
      * @param endpointGUID unique identifier of the endpoint
      * @param requestBody  description of the relationship.
@@ -378,7 +378,7 @@ public class ConnectionMakerRESTServices extends TokenController
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public VoidResponse linkConnectionEndpoint(String                  serverName,
-                                               String                  viewServiceURLMarker,
+                                               String                  urlMarker,
                                                String                  connectionGUID,
                                                String                  endpointGUID,
                                                NewRelationshipRequestBody requestBody)
@@ -397,7 +397,7 @@ public class ConnectionMakerRESTServices extends TokenController
             restCallLogger.setUserId(token, userId);
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-            ConnectionHandler handler = instanceHandler.getConnectionHandler(userId, serverName, viewServiceURLMarker, methodName);
+            ConnectionHandler handler = instanceHandler.getConnectionHandler(userId, serverName, urlMarker, methodName);
 
             if (requestBody != null)
             {
@@ -445,7 +445,7 @@ public class ConnectionMakerRESTServices extends TokenController
      * Remove the ConnectToEndpoint relationship between a connection and an endpoint.
      *
      * @param serverName         name of called server
-     * @param viewServiceURLMarker  view service URL marker
+     * @param urlMarker  view service URL marker
      * @param connectionGUID          unique identifier of the connection
      * @param endpointGUID          unique identifier of the endpoint
      * @param requestBody  description of the relationship.
@@ -456,7 +456,7 @@ public class ConnectionMakerRESTServices extends TokenController
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public VoidResponse detachConnectionEndpoint(String                   serverName,
-                                                 String                   viewServiceURLMarker,
+                                                 String                   urlMarker,
                                                  String                   connectionGUID,
                                                  String                   endpointGUID,
                                                  DeleteRequestBody requestBody)
@@ -476,7 +476,7 @@ public class ConnectionMakerRESTServices extends TokenController
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            ConnectionHandler handler = instanceHandler.getConnectionHandler(userId, serverName, viewServiceURLMarker, methodName);
+            ConnectionHandler handler = instanceHandler.getConnectionHandler(userId, serverName, urlMarker, methodName);
 
             handler.detachConnectionEndpoint(userId,
                                              connectionGUID,
@@ -497,7 +497,7 @@ public class ConnectionMakerRESTServices extends TokenController
      * Create an EmbeddedConnection relationship between a virtual connection and an embedded connection.
      *
      * @param serverName         name of called server
-     * @param viewServiceURLMarker  view service URL marker
+     * @param urlMarker  view service URL marker
      * @param connectionGUID unique identifier of the virtual connection
      * @param embeddedConnectionGUID unique identifier of the embedded connection
      * @param requestBody  description of the relationship.
@@ -508,7 +508,7 @@ public class ConnectionMakerRESTServices extends TokenController
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public VoidResponse linkEmbeddedConnection(String                  serverName,
-                                               String                  viewServiceURLMarker,
+                                               String                  urlMarker,
                                                String                  connectionGUID,
                                                String                  embeddedConnectionGUID,
                                                NewRelationshipRequestBody requestBody)
@@ -527,7 +527,7 @@ public class ConnectionMakerRESTServices extends TokenController
             restCallLogger.setUserId(token, userId);
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-            ConnectionHandler handler = instanceHandler.getConnectionHandler(userId, serverName, viewServiceURLMarker, methodName);
+            ConnectionHandler handler = instanceHandler.getConnectionHandler(userId, serverName, urlMarker, methodName);
 
             if (requestBody != null)
             {
@@ -575,7 +575,7 @@ public class ConnectionMakerRESTServices extends TokenController
      * Remove an EmbeddedConnection relationship between a virtual connection and an embedded connection.
      *
      * @param serverName         name of called server
-     * @param viewServiceURLMarker  view service URL marker
+     * @param urlMarker  view service URL marker
      * @param connectionGUID unique identifier of the virtual connection
      * @param embeddedConnectionGUID unique identifier of the embedded connection
      * @param requestBody  description of the relationship.
@@ -586,7 +586,7 @@ public class ConnectionMakerRESTServices extends TokenController
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public VoidResponse detachEmbeddedConnection(String                   serverName,
-                                                 String                   viewServiceURLMarker,
+                                                 String                   urlMarker,
                                                  String                   connectionGUID,
                                                  String                   embeddedConnectionGUID,
                                                  DeleteRequestBody requestBody)
@@ -606,7 +606,7 @@ public class ConnectionMakerRESTServices extends TokenController
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            ConnectionHandler handler = instanceHandler.getConnectionHandler(userId, serverName, viewServiceURLMarker, methodName);
+            ConnectionHandler handler = instanceHandler.getConnectionHandler(userId, serverName, urlMarker, methodName);
 
             handler.detachEmbeddedConnection(userId,
                                              connectionGUID,
@@ -627,7 +627,7 @@ public class ConnectionMakerRESTServices extends TokenController
      * Create an AssetConnection relationship between an asset and its connection.
      *
      * @param serverName         name of called server
-     * @param viewServiceURLMarker  view service URL marker
+     * @param urlMarker  view service URL marker
      * @param assetGUID       unique identifier of the asset
      * @param connectionGUID            unique identifier of the connection
      * @param requestBody  description of the relationship.
@@ -638,7 +638,7 @@ public class ConnectionMakerRESTServices extends TokenController
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public VoidResponse linkAssetToConnection(String                  serverName,
-                                              String                  viewServiceURLMarker,
+                                              String                  urlMarker,
                                               String                  assetGUID,
                                               String                  connectionGUID,
                                               NewRelationshipRequestBody requestBody)
@@ -657,7 +657,7 @@ public class ConnectionMakerRESTServices extends TokenController
             restCallLogger.setUserId(token, userId);
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-            ConnectionHandler handler = instanceHandler.getConnectionHandler(userId, serverName, viewServiceURLMarker, methodName);
+            ConnectionHandler handler = instanceHandler.getConnectionHandler(userId, serverName, urlMarker, methodName);
 
             if (requestBody != null)
             {
@@ -705,7 +705,7 @@ public class ConnectionMakerRESTServices extends TokenController
      * Detach an asset from one of its connections.
      *
      * @param serverName         name of called server
-     * @param viewServiceURLMarker  view service URL marker
+     * @param urlMarker  view service URL marker
      * @param assetGUID       unique identifier of the asset
      * @param connectionGUID            unique identifier of the IT profile
      * @param requestBody  description of the relationship.
@@ -716,7 +716,7 @@ public class ConnectionMakerRESTServices extends TokenController
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public VoidResponse detachAssetFromConnection(String                   serverName,
-                                                  String                   viewServiceURLMarker,
+                                                  String                   urlMarker,
                                                   String                   assetGUID,
                                                   String                   connectionGUID,
                                                   DeleteRequestBody requestBody)
@@ -736,7 +736,7 @@ public class ConnectionMakerRESTServices extends TokenController
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            ConnectionHandler handler = instanceHandler.getConnectionHandler(userId, serverName, viewServiceURLMarker, methodName);
+            ConnectionHandler handler = instanceHandler.getConnectionHandler(userId, serverName, urlMarker, methodName);
 
             handler.detachAssetFromConnection(userId,
                                               assetGUID,
@@ -757,7 +757,7 @@ public class ConnectionMakerRESTServices extends TokenController
      * Attach an endpoint to an infrastructure asset.
      *
      * @param serverName         name of called server
-     * @param viewServiceURLMarker  view service URL marker
+     * @param urlMarker  view service URL marker
      * @param itAssetGUID             unique identifier of the infrastructure asset
      * @param endpointGUID            unique identifier of the endpoint
      * @param requestBody  description of the relationship.
@@ -768,7 +768,7 @@ public class ConnectionMakerRESTServices extends TokenController
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public VoidResponse linkEndpointToITAsset(String                  serverName,
-                                              String                  viewServiceURLMarker,
+                                              String                  urlMarker,
                                               String                  itAssetGUID,
                                               String                  endpointGUID,
                                               NewRelationshipRequestBody requestBody)
@@ -787,7 +787,7 @@ public class ConnectionMakerRESTServices extends TokenController
             restCallLogger.setUserId(token, userId);
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-            EndpointHandler handler = instanceHandler.getEndpointHandler(userId, serverName, viewServiceURLMarker, methodName);
+            EndpointHandler handler = instanceHandler.getEndpointHandler(userId, serverName, urlMarker, methodName);
 
             if (requestBody != null)
             {
@@ -835,7 +835,7 @@ public class ConnectionMakerRESTServices extends TokenController
      * Detach an endpoint from an infrastructure asset.
      *
      * @param serverName         name of called server
-     * @param viewServiceURLMarker  view service URL marker
+     * @param urlMarker  view service URL marker
      * @param itAssetGUID            unique identifier of the infrastructure asset
      * @param endpointGUID       unique identifier of the endpoint
      * @param requestBody  description of the relationship.
@@ -846,7 +846,7 @@ public class ConnectionMakerRESTServices extends TokenController
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public VoidResponse detachEndpointFromITAsset(String                   serverName,
-                                                  String                   viewServiceURLMarker,
+                                                  String                   urlMarker,
                                                   String                   itAssetGUID,
                                                   String                   endpointGUID,
                                                   DeleteRequestBody requestBody)
@@ -866,7 +866,7 @@ public class ConnectionMakerRESTServices extends TokenController
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            EndpointHandler handler = instanceHandler.getEndpointHandler(userId, serverName, viewServiceURLMarker, methodName);
+            EndpointHandler handler = instanceHandler.getEndpointHandler(userId, serverName, urlMarker, methodName);
 
             handler.detachEndpointFromITAsset(userId,
                                               itAssetGUID,
@@ -887,7 +887,7 @@ public class ConnectionMakerRESTServices extends TokenController
      * Delete a connection.
      *
      * @param serverName         name of called server
-     * @param viewServiceURLMarker  view service URL marker
+     * @param urlMarker  view service URL marker
      * @param connectionGUID  unique identifier of the element to delete
      * @param requestBody  description of the relationship.
      *
@@ -897,7 +897,7 @@ public class ConnectionMakerRESTServices extends TokenController
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public VoidResponse deleteConnection(String            serverName,
-                                         String            viewServiceURLMarker,
+                                         String            urlMarker,
                                          String            connectionGUID,
                                          DeleteRequestBody requestBody)
     {
@@ -916,7 +916,7 @@ public class ConnectionMakerRESTServices extends TokenController
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            ConnectionHandler handler = instanceHandler.getConnectionHandler(userId, serverName, viewServiceURLMarker, methodName);
+            ConnectionHandler handler = instanceHandler.getConnectionHandler(userId, serverName, urlMarker, methodName);
 
             handler.deleteConnection(userId, connectionGUID, requestBody);
         }
@@ -934,7 +934,7 @@ public class ConnectionMakerRESTServices extends TokenController
      * Retrieve the list of connection metadata elements that contain the search string.
      *
      * @param serverName name of the service to route the request to
-     * @param viewServiceURLMarker  view service URL marker
+     * @param urlMarker  view service URL marker
      * @param requestBody string to find in the properties
      *
      * @return list of matching metadata elements or
@@ -943,7 +943,7 @@ public class ConnectionMakerRESTServices extends TokenController
      *  PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     public OpenMetadataRootElementsResponse getConnectionsByName(String            serverName,
-                                                                 String            viewServiceURLMarker,
+                                                                 String            urlMarker,
                                                                  FilterRequestBody requestBody)
     {
         final String methodName = "getConnectionsByName";
@@ -961,7 +961,7 @@ public class ConnectionMakerRESTServices extends TokenController
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            ConnectionHandler handler = instanceHandler.getConnectionHandler(userId, serverName, viewServiceURLMarker, methodName);
+            ConnectionHandler handler = instanceHandler.getConnectionHandler(userId, serverName, urlMarker, methodName);
 
             if (requestBody != null)
             {
@@ -986,7 +986,7 @@ public class ConnectionMakerRESTServices extends TokenController
      * Retrieve the list of connection metadata elements that contain the search string.
      *
      * @param serverName name of the service to route the request to
-     * @param viewServiceURLMarker  view service URL marker
+     * @param urlMarker  view service URL marker
      * @param connectionGUID    unique identifier of the required element
      * @param requestBody string to find in the properties
      *
@@ -996,7 +996,7 @@ public class ConnectionMakerRESTServices extends TokenController
      *  PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     public OpenMetadataRootElementResponse getConnectionByGUID(String             serverName,
-                                                               String             viewServiceURLMarker,
+                                                               String             urlMarker,
                                                                String             connectionGUID,
                                                                GetRequestBody requestBody)
     {
@@ -1015,7 +1015,7 @@ public class ConnectionMakerRESTServices extends TokenController
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            ConnectionHandler handler = instanceHandler.getConnectionHandler(userId, serverName, viewServiceURLMarker, methodName);
+            ConnectionHandler handler = instanceHandler.getConnectionHandler(userId, serverName, urlMarker, methodName);
 
             response.setElement(handler.getConnectionByGUID(userId, connectionGUID, requestBody));
         }
@@ -1033,7 +1033,7 @@ public class ConnectionMakerRESTServices extends TokenController
      * Retrieve the list of connection metadata elements that contain the search string.
      *
      * @param serverName name of the service to route the request to
-     * @param viewServiceURLMarker  view service URL marker
+     * @param urlMarker  view service URL marker
      *
      * @return list of matching metadata elements or
      *  InvalidParameterException  one of the parameters is invalid
@@ -1041,7 +1041,7 @@ public class ConnectionMakerRESTServices extends TokenController
      *  PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     public OpenMetadataRootElementsResponse findConnections(String                  serverName,
-                                                            String                  viewServiceURLMarker,
+                                                            String                  urlMarker,
                                                             SearchStringRequestBody requestBody)
     {
         final String methodName = "findConnections";
@@ -1059,7 +1059,7 @@ public class ConnectionMakerRESTServices extends TokenController
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            ConnectionHandler handler = instanceHandler.getConnectionHandler(userId, serverName, viewServiceURLMarker, methodName);
+            ConnectionHandler handler = instanceHandler.getConnectionHandler(userId, serverName, urlMarker, methodName);
 
             if (requestBody != null)
             {
@@ -1085,7 +1085,7 @@ public class ConnectionMakerRESTServices extends TokenController
      * Create a connectorType.
      *
      * @param serverName                 name of called server.
-     * @param viewServiceURLMarker  view service URL marker
+     * @param urlMarker  view service URL marker
      * @param requestBody             properties for the connectorType.
      *
      * @return unique identifier of the newly created element
@@ -1094,7 +1094,7 @@ public class ConnectionMakerRESTServices extends TokenController
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public GUIDResponse createConnectorType(String                serverName,
-                                            String                viewServiceURLMarker,
+                                            String                urlMarker,
                                             NewElementRequestBody requestBody)
     {
         final String methodName = "createConnectorType";
@@ -1114,7 +1114,7 @@ public class ConnectionMakerRESTServices extends TokenController
 
             if (requestBody != null)
             {
-                ConnectorTypeHandler handler = instanceHandler.getConnectorTypeHandler(userId, serverName, viewServiceURLMarker, methodName);
+                ConnectorTypeHandler handler = instanceHandler.getConnectorTypeHandler(userId, serverName, urlMarker, methodName);
 
                 if (requestBody.getProperties() instanceof ConnectorTypeProperties connectorTypeProperties)
                 {
@@ -1149,7 +1149,7 @@ public class ConnectionMakerRESTServices extends TokenController
      * The template defines additional classifications and relationships that should be added to the new element.
      *
      * @param serverName             calling user
-     * @param viewServiceURLMarker  view service URL marker
+     * @param urlMarker  view service URL marker
      * @param requestBody properties that override the template
      *
      * @return unique identifier of the new metadata element
@@ -1158,7 +1158,7 @@ public class ConnectionMakerRESTServices extends TokenController
      *  PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     public GUIDResponse createConnectorTypeFromTemplate(String              serverName,
-                                                        String              viewServiceURLMarker,
+                                                        String              urlMarker,
                                                         TemplateRequestBody requestBody)
     {
         final String methodName = "createConnectorTypeFromTemplate";
@@ -1178,7 +1178,7 @@ public class ConnectionMakerRESTServices extends TokenController
 
             if (requestBody != null)
             {
-                ConnectorTypeHandler handler = instanceHandler.getConnectorTypeHandler(userId, serverName, viewServiceURLMarker, methodName);
+                ConnectorTypeHandler handler = instanceHandler.getConnectorTypeHandler(userId, serverName, urlMarker, methodName);
 
                 response.setGUID(handler.createConnectorTypeFromTemplate(userId,
                                                                          requestBody,
@@ -1206,7 +1206,7 @@ public class ConnectionMakerRESTServices extends TokenController
      * Update the properties of a connectorType.
      *
      * @param serverName         name of called server.
-     * @param viewServiceURLMarker  view service URL marker
+     * @param urlMarker  view service URL marker
      * @param connectorTypeGUID unique identifier of the connectorType (returned from create)
      * @param requestBody     properties for the new element.
      *
@@ -1216,7 +1216,7 @@ public class ConnectionMakerRESTServices extends TokenController
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public VoidResponse updateConnectorType(String                   serverName,
-                                            String                   viewServiceURLMarker,
+                                            String                   urlMarker,
                                             String                   connectorTypeGUID,
                                             UpdateElementRequestBody requestBody)
     {
@@ -1237,7 +1237,7 @@ public class ConnectionMakerRESTServices extends TokenController
 
             if (requestBody != null)
             {
-                ConnectorTypeHandler handler = instanceHandler.getConnectorTypeHandler(userId, serverName, viewServiceURLMarker, methodName);
+                ConnectorTypeHandler handler = instanceHandler.getConnectorTypeHandler(userId, serverName, urlMarker, methodName);
 
                 if (requestBody.getProperties() instanceof ConnectorTypeProperties connectorTypeProperties)
                 {
@@ -1270,7 +1270,7 @@ public class ConnectionMakerRESTServices extends TokenController
      * Delete a connectorType.
      *
      * @param serverName         name of called server
-     * @param viewServiceURLMarker  view service URL marker
+     * @param urlMarker  view service URL marker
      * @param connectorTypeGUID  unique identifier of the element to delete
      * @param requestBody  description of the relationship.
      *
@@ -1280,7 +1280,7 @@ public class ConnectionMakerRESTServices extends TokenController
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public VoidResponse deleteConnectorType(String                   serverName,
-                                            String                   viewServiceURLMarker,
+                                            String                   urlMarker,
                                             String                   connectorTypeGUID,
                                             DeleteRequestBody requestBody)
     {
@@ -1299,7 +1299,7 @@ public class ConnectionMakerRESTServices extends TokenController
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            ConnectorTypeHandler handler = instanceHandler.getConnectorTypeHandler(userId, serverName, viewServiceURLMarker, methodName);
+            ConnectorTypeHandler handler = instanceHandler.getConnectorTypeHandler(userId, serverName, urlMarker, methodName);
 
             handler.deleteConnectorType(userId, connectorTypeGUID, requestBody);
         }
@@ -1317,7 +1317,7 @@ public class ConnectionMakerRESTServices extends TokenController
      * Retrieve the list of connectorType metadata elements that contain the search string.
      *
      * @param serverName name of the service to route the request to
-     * @param viewServiceURLMarker  view service URL marker
+     * @param urlMarker  view service URL marker
      * @param requestBody string to find in the properties
      *
      * @return list of matching metadata elements or
@@ -1326,7 +1326,7 @@ public class ConnectionMakerRESTServices extends TokenController
      *  PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     public OpenMetadataRootElementsResponse getConnectorTypesByName(String            serverName,
-                                                                    String            viewServiceURLMarker,
+                                                                    String            urlMarker,
                                                                     FilterRequestBody requestBody)
     {
         final String methodName = "getConnectorTypesByName";
@@ -1344,7 +1344,7 @@ public class ConnectionMakerRESTServices extends TokenController
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            ConnectorTypeHandler handler = instanceHandler.getConnectorTypeHandler(userId, serverName, viewServiceURLMarker, methodName);
+            ConnectorTypeHandler handler = instanceHandler.getConnectorTypeHandler(userId, serverName, urlMarker, methodName);
 
             if (requestBody != null)
             {
@@ -1369,7 +1369,7 @@ public class ConnectionMakerRESTServices extends TokenController
      * Retrieve the list of connectorType metadata elements that contain the search string.
      *
      * @param serverName name of the service to route the request to
-     * @param viewServiceURLMarker  view service URL marker
+     * @param urlMarker  view service URL marker
      * @param connectorTypeGUID    unique identifier of the required element
      * @param requestBody string to find in the properties
      *
@@ -1379,7 +1379,7 @@ public class ConnectionMakerRESTServices extends TokenController
      *  PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     public OpenMetadataRootElementResponse getConnectorTypeByGUID(String             serverName,
-                                                                  String             viewServiceURLMarker,
+                                                                  String             urlMarker,
                                                                   String             connectorTypeGUID,
                                                                   GetRequestBody requestBody)
     {
@@ -1398,7 +1398,7 @@ public class ConnectionMakerRESTServices extends TokenController
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            ConnectorTypeHandler handler = instanceHandler.getConnectorTypeHandler(userId, serverName, viewServiceURLMarker, methodName);
+            ConnectorTypeHandler handler = instanceHandler.getConnectorTypeHandler(userId, serverName, urlMarker, methodName);
 
             response.setElement(handler.getConnectorTypeByGUID(userId, connectorTypeGUID, requestBody));
         }
@@ -1416,7 +1416,7 @@ public class ConnectionMakerRESTServices extends TokenController
      * Retrieve the list of connectorType metadata elements that contain the search string.
      *
      * @param serverName name of the service to route the request to
-     * @param viewServiceURLMarker  view service URL marker
+     * @param urlMarker  view service URL marker
      * @param requestBody string to find in the properties
      *
      * @return list of matching metadata elements or
@@ -1425,7 +1425,7 @@ public class ConnectionMakerRESTServices extends TokenController
      *  PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     public OpenMetadataRootElementsResponse findConnectorTypes(String                  serverName,
-                                                               String                  viewServiceURLMarker,
+                                                               String                  urlMarker,
                                                                SearchStringRequestBody requestBody)
     {
         final String methodName = "findConnectorTypes";
@@ -1443,7 +1443,7 @@ public class ConnectionMakerRESTServices extends TokenController
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            ConnectorTypeHandler handler = instanceHandler.getConnectorTypeHandler(userId, serverName, viewServiceURLMarker, methodName);
+            ConnectorTypeHandler handler = instanceHandler.getConnectorTypeHandler(userId, serverName, urlMarker, methodName);
 
             if (requestBody != null)
             {
@@ -1468,7 +1468,7 @@ public class ConnectionMakerRESTServices extends TokenController
      * Create an endpoint.
      *
      * @param serverName                 name of called server.
-     * @param viewServiceURLMarker  view service URL marker
+     * @param urlMarker  view service URL marker
      * @param requestBody             properties for the endpoint.
      *
      * @return unique identifier of the newly created element
@@ -1477,7 +1477,7 @@ public class ConnectionMakerRESTServices extends TokenController
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public GUIDResponse createEndpoint(String                serverName,
-                                       String                viewServiceURLMarker,
+                                       String                urlMarker,
                                        NewElementRequestBody requestBody)
     {
         final String methodName = "createEndpoint";
@@ -1497,7 +1497,7 @@ public class ConnectionMakerRESTServices extends TokenController
 
             if (requestBody != null)
             {
-                EndpointHandler handler = instanceHandler.getEndpointHandler(userId, serverName, viewServiceURLMarker, methodName);
+                EndpointHandler handler = instanceHandler.getEndpointHandler(userId, serverName, urlMarker, methodName);
 
                 if (requestBody.getProperties() instanceof EndpointProperties endpointProperties)
                 {
@@ -1532,7 +1532,7 @@ public class ConnectionMakerRESTServices extends TokenController
      * The template defines additional classifications and relationships that should be added to the new element.
      *
      * @param serverName             calling user
-     * @param viewServiceURLMarker  view service URL marker
+     * @param urlMarker  view service URL marker
      * @param requestBody properties that override the template
      *
      * @return unique identifier of the new metadata element
@@ -1541,7 +1541,7 @@ public class ConnectionMakerRESTServices extends TokenController
      *  PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     public GUIDResponse createEndpointFromTemplate(String              serverName,
-                                                   String              viewServiceURLMarker,
+                                                   String              urlMarker,
                                                    TemplateRequestBody requestBody)
     {
         final String methodName = "createEndpointFromTemplate";
@@ -1561,7 +1561,7 @@ public class ConnectionMakerRESTServices extends TokenController
 
             if (requestBody != null)
             {
-                EndpointHandler handler = instanceHandler.getEndpointHandler(userId, serverName, viewServiceURLMarker, methodName);
+                EndpointHandler handler = instanceHandler.getEndpointHandler(userId, serverName, urlMarker, methodName);
 
                 response.setGUID(handler.createEndpointFromTemplate(userId,
                                                                     requestBody,
@@ -1589,7 +1589,7 @@ public class ConnectionMakerRESTServices extends TokenController
      * Update the properties of an endpoint.
      *
      * @param serverName         name of called server.
-     * @param viewServiceURLMarker  view service URL marker
+     * @param urlMarker  view service URL marker
      * @param endpointGUID unique identifier of the endpoint (returned from create)
      * @param requestBody     properties for the new element.
      *
@@ -1599,7 +1599,7 @@ public class ConnectionMakerRESTServices extends TokenController
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public VoidResponse updateEndpoint(String                   serverName,
-                                       String                   viewServiceURLMarker,
+                                       String                   urlMarker,
                                        String                   endpointGUID,
                                        UpdateElementRequestBody requestBody)
     {
@@ -1620,7 +1620,7 @@ public class ConnectionMakerRESTServices extends TokenController
 
             if (requestBody != null)
             {
-                EndpointHandler handler = instanceHandler.getEndpointHandler(userId, serverName, viewServiceURLMarker, methodName);
+                EndpointHandler handler = instanceHandler.getEndpointHandler(userId, serverName, urlMarker, methodName);
 
                 if (requestBody.getProperties() instanceof EndpointProperties endpointProperties)
                 {
@@ -1660,7 +1660,7 @@ public class ConnectionMakerRESTServices extends TokenController
      * Delete a endpoint.
      *
      * @param serverName         name of called server
-     * @param viewServiceURLMarker  view service URL marker
+     * @param urlMarker  view service URL marker
      * @param endpointGUID  unique identifier of the element to delete
      * @param requestBody  description of the relationship.
      *
@@ -1670,7 +1670,7 @@ public class ConnectionMakerRESTServices extends TokenController
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public VoidResponse deleteEndpoint(String                   serverName,
-                                       String                   viewServiceURLMarker,
+                                       String                   urlMarker,
                                        String                   endpointGUID,
                                        DeleteRequestBody requestBody)
     {
@@ -1689,7 +1689,7 @@ public class ConnectionMakerRESTServices extends TokenController
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            EndpointHandler handler = instanceHandler.getEndpointHandler(userId, serverName, viewServiceURLMarker, methodName);
+            EndpointHandler handler = instanceHandler.getEndpointHandler(userId, serverName, urlMarker, methodName);
 
             handler.deleteEndpoint(userId, endpointGUID, requestBody);
         }
@@ -1707,7 +1707,7 @@ public class ConnectionMakerRESTServices extends TokenController
      * Retrieve the list of endpoint metadata elements that contain the search string.
      *
      * @param serverName name of the service to route the request to
-     * @param viewServiceURLMarker  view service URL marker
+     * @param urlMarker  view service URL marker
      * @param requestBody string to find in the properties
      *
      * @return list of matching metadata elements or
@@ -1716,7 +1716,7 @@ public class ConnectionMakerRESTServices extends TokenController
      *  PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     public OpenMetadataRootElementsResponse getEndpointsByName(String            serverName,
-                                                               String            viewServiceURLMarker,
+                                                               String            urlMarker,
                                                                FilterRequestBody requestBody)
     {
         final String methodName = "getEndpointsByName";
@@ -1734,7 +1734,7 @@ public class ConnectionMakerRESTServices extends TokenController
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            EndpointHandler handler = instanceHandler.getEndpointHandler(userId, serverName, viewServiceURLMarker, methodName);
+            EndpointHandler handler = instanceHandler.getEndpointHandler(userId, serverName, urlMarker, methodName);
 
             if (requestBody != null)
             {
@@ -1759,7 +1759,7 @@ public class ConnectionMakerRESTServices extends TokenController
      * Retrieve the list of endpoint metadata elements that are attached to a specific infrastructure element.
      *
      * @param serverName name of the service to route the request to
-     * @param viewServiceURLMarker  view service URL marker
+     * @param urlMarker  view service URL marker
      * @param infrastructureGUID element to search for
      * @param requestBody time parameters
      *
@@ -1769,7 +1769,7 @@ public class ConnectionMakerRESTServices extends TokenController
      *  PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     public OpenMetadataRootElementsResponse getEndpointsForInfrastructure(String             serverName,
-                                                                          String             viewServiceURLMarker,
+                                                                          String             urlMarker,
                                                                           String             infrastructureGUID,
                                                                           ResultsRequestBody requestBody)
     {
@@ -1788,7 +1788,7 @@ public class ConnectionMakerRESTServices extends TokenController
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            EndpointHandler handler = instanceHandler.getEndpointHandler(userId, serverName, viewServiceURLMarker, methodName);
+            EndpointHandler handler = instanceHandler.getEndpointHandler(userId, serverName, urlMarker, methodName);
 
             if (requestBody != null)
             {
@@ -1814,7 +1814,7 @@ public class ConnectionMakerRESTServices extends TokenController
      * There are no wildcards supported on this request.
      *
      * @param serverName name of the service to route the request to
-     * @param viewServiceURLMarker  view service URL marker
+     * @param urlMarker  view service URL marker
      * @param requestBody string to find in the properties
      *
      * @return list of matching metadata elements or
@@ -1823,7 +1823,7 @@ public class ConnectionMakerRESTServices extends TokenController
      *  PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     public OpenMetadataRootElementsResponse getEndpointsByNetworkAddress(String            serverName,
-                                                                         String            viewServiceURLMarker,
+                                                                         String            urlMarker,
                                                                          FilterRequestBody requestBody)
     {
         final String methodName = "getEndpointsByNetworkAddress";
@@ -1841,7 +1841,7 @@ public class ConnectionMakerRESTServices extends TokenController
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            EndpointHandler handler = instanceHandler.getEndpointHandler(userId, serverName, viewServiceURLMarker, methodName);
+            EndpointHandler handler = instanceHandler.getEndpointHandler(userId, serverName, urlMarker, methodName);
 
             if (requestBody != null)
             {
@@ -1866,7 +1866,7 @@ public class ConnectionMakerRESTServices extends TokenController
      * Retrieve the list of endpoint metadata elements that contain the search string.
      *
      * @param serverName name of the service to route the request to
-     * @param viewServiceURLMarker  view service URL marker
+     * @param urlMarker  view service URL marker
      * @param endpointGUID    unique identifier of the required element
      * @param requestBody string to find in the properties
      *
@@ -1876,7 +1876,7 @@ public class ConnectionMakerRESTServices extends TokenController
      *  PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     public OpenMetadataRootElementResponse getEndpointByGUID(String             serverName,
-                                                             String             viewServiceURLMarker,
+                                                             String             urlMarker,
                                                              String             endpointGUID,
                                                              GetRequestBody requestBody)
     {
@@ -1895,7 +1895,7 @@ public class ConnectionMakerRESTServices extends TokenController
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            EndpointHandler handler = instanceHandler.getEndpointHandler(userId, serverName, viewServiceURLMarker, methodName);
+            EndpointHandler handler = instanceHandler.getEndpointHandler(userId, serverName, urlMarker, methodName);
 
             response.setElement(handler.getEndpointByGUID(userId, endpointGUID, requestBody));
         }
@@ -1913,7 +1913,7 @@ public class ConnectionMakerRESTServices extends TokenController
      * Retrieve the list of endpoint metadata elements that contain the search string.
      *
      * @param serverName name of the service to route the request to
-     * @param viewServiceURLMarker  view service URL marker
+     * @param urlMarker  view service URL marker
      * @param requestBody string to find in the properties
      *
      * @return list of matching metadata elements or
@@ -1922,7 +1922,7 @@ public class ConnectionMakerRESTServices extends TokenController
      *  PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     public OpenMetadataRootElementsResponse findEndpoints(String                  serverName,
-                                                          String                  viewServiceURLMarker,
+                                                          String                  urlMarker,
                                                           SearchStringRequestBody requestBody)
     {
         final String methodName = "findEndpoints";
@@ -1940,7 +1940,7 @@ public class ConnectionMakerRESTServices extends TokenController
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            EndpointHandler handler = instanceHandler.getEndpointHandler(userId, serverName, viewServiceURLMarker, methodName);
+            EndpointHandler handler = instanceHandler.getEndpointHandler(userId, serverName, urlMarker, methodName);
 
             if (requestBody != null)
             {

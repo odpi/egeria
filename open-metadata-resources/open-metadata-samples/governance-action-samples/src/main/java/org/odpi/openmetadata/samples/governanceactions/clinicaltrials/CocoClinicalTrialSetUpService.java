@@ -590,7 +590,7 @@ public class CocoClinicalTrialSetUpService extends CocoClinicalTrialBaseService
 
                 RelatedMetadataElementList actionTargets = governanceContext.getOpenMetadataStore().getRelatedMetadataElements(governanceActionTypeGUID,
                                                                                                                                1,
-                                                                                                                               OpenMetadataType.TARGET_FOR_ACTION_TYPE_RELATIONSHIP.typeName,
+                                                                                                                               OpenMetadataType.TARGET_FOR_GOVERNANCE_ACTION_RELATIONSHIP.typeName,
                                                                                                                                0,
                                                                                                                                0);
 
@@ -600,7 +600,7 @@ public class CocoClinicalTrialSetUpService extends CocoClinicalTrialBaseService
                     {
                         if (actionTarget != null)
                         {
-                            governanceContext.getOpenMetadataStore().createRelatedElementsInStore(OpenMetadataType.TARGET_FOR_ACTION_PROCESS_RELATIONSHIP.typeName,
+                            governanceContext.getOpenMetadataStore().createRelatedElementsInStore(OpenMetadataType.TARGET_FOR_GOVERNANCE_ACTION_RELATIONSHIP.typeName,
                                                                                                   processGUID,
                                                                                                   actionTarget.getElement().getElementGUID(),
                                                                                                   null,
@@ -949,7 +949,7 @@ public class CocoClinicalTrialSetUpService extends CocoClinicalTrialBaseService
                                                                               dataSpecProjectGUID,
                                                                               null,
                                                                               null,
-                                                                              propertyHelper.addStringProperty(null, OpenMetadataProperty.DEPENDENCY_SUMMARY.name, "The data specification defines the shape of the data that the data sharing agreement must protect."));
+                                                                              propertyHelper.addStringProperty(null, OpenMetadataProperty.DESCRIPTION.name, "The data specification defines the shape of the data that the data sharing agreement must protect."));
         return projectGUID;
     }
 
@@ -1009,7 +1009,7 @@ public class CocoClinicalTrialSetUpService extends CocoClinicalTrialBaseService
                                                                               dataSpecProjectGUID,
                                                                               null,
                                                                               null,
-                                                                              propertyHelper.addStringProperty(null, OpenMetadataProperty.DEPENDENCY_SUMMARY.name, "The data specification defines the shape of the data that the components need to support."));
+                                                                              propertyHelper.addStringProperty(null, OpenMetadataProperty.DESCRIPTION.name, "The data specification defines the shape of the data that the components need to support."));
 
         return projectGUID;
     }
@@ -1178,7 +1178,7 @@ public class CocoClinicalTrialSetUpService extends CocoClinicalTrialBaseService
                                                                               dataSharingAgreementProjectGUID,
                                                                               null,
                                                                               null,
-                                                                              propertyHelper.addStringProperty(null, OpenMetadataProperty.DEPENDENCY_SUMMARY.name, "The data specification defines the data needed in the data sharing agreements."));
+                                                                              propertyHelper.addStringProperty(null, OpenMetadataProperty.DESCRIPTION.name, "The data specification defines the data needed in the data sharing agreements."));
 
         return projectGUID;
     }
@@ -1237,7 +1237,7 @@ public class CocoClinicalTrialSetUpService extends CocoClinicalTrialBaseService
                                                                               devProjectGUID,
                                                                               null,
                                                                               null,
-                                                                              propertyHelper.addStringProperty(null, OpenMetadataProperty.DEPENDENCY_SUMMARY.name, "The new components are needed to set up the pipelines."));
+                                                                              propertyHelper.addStringProperty(null, OpenMetadataProperty.DESCRIPTION.name, "The new components are needed to set up the pipelines."));
 
         return projectGUID;
     }
@@ -1297,7 +1297,7 @@ public class CocoClinicalTrialSetUpService extends CocoClinicalTrialBaseService
                                                                               onboardingPipelinesProjectGUID,
                                                                               null,
                                                                               null,
-                                                                              propertyHelper.addStringProperty(null, OpenMetadataProperty.DEPENDENCY_SUMMARY.name, "The pipelines deliver the data for the analysis."));
+                                                                              propertyHelper.addStringProperty(null, OpenMetadataProperty.DESCRIPTION.name, "The pipelines deliver the data for the analysis."));
 
         return projectGUID;
     }

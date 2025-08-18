@@ -341,7 +341,7 @@ Content-Type: application/json
     "displayName" : "Add name here",
     "arguments" : {
       "argument1" : "argument1Value",
-      "argument2" : "arcument2Value"
+      "argument2" : "argument2Value"
     },
     "effectiveFrom": "{{$isoTimestamp}}",
     "effectiveTo": "{{$isoTimestamp}}"

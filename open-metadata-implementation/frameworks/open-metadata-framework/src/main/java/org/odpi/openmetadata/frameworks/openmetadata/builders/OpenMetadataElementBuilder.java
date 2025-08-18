@@ -39,6 +39,7 @@ import org.odpi.openmetadata.frameworks.openmetadata.properties.glossaries.Gloss
 import org.odpi.openmetadata.frameworks.openmetadata.properties.glossaries.GlossaryTermProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.governance.*;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.informationsupplychains.InformationSupplyChainProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.locations.LocationProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.projects.ProjectProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.schema.*;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.security.GovernanceZoneProperties;
@@ -119,7 +120,7 @@ public class OpenMetadataElementBuilder
                 }
                 else if (properties instanceof RatingProperties ratingProperties)
                 {
-                    elementProperties = propertyHelper.addStringProperty(null,
+                    elementProperties = propertyHelper.addStringProperty(elementProperties,
                                                                          OpenMetadataProperty.REVIEW.name,
                                                                          ratingProperties.getReview());
 
@@ -133,7 +134,7 @@ public class OpenMetadataElementBuilder
                 }
                 else if (properties instanceof SearchKeywordProperties searchKeywordProperties)
                 {
-                    elementProperties = propertyHelper.addStringProperty(null,
+                    elementProperties = propertyHelper.addStringProperty(elementProperties,
                                                                          OpenMetadataProperty.KEYWORD.name,
                                                                          searchKeywordProperties.getKeyword());
 
@@ -706,7 +707,7 @@ public class OpenMetadataElementBuilder
                     }
                     else if (properties instanceof ContactDetailsProperties contactDetailsProperties)
                     {
-                        elementProperties = propertyHelper.addStringProperty(null,
+                        elementProperties = propertyHelper.addStringProperty(elementProperties,
                                                                              OpenMetadataProperty.CONTACT_TYPE.name,
                                                                              contactDetailsProperties.getContactType());
 
@@ -1062,37 +1063,67 @@ public class OpenMetadataElementBuilder
                         }
                         else if (governanceDefinitionProperties instanceof GovernanceControlProperties governanceControlProperties)
                         {
-                            if (governanceDefinitionProperties instanceof SecurityGroupProperties securityGroupProperties)
+                            if (governanceControlProperties instanceof TechnicalControlProperties technicalControlProperties)
                             {
-                                elementProperties = propertyHelper.addStringProperty(elementProperties,
-                                                                                     OpenMetadataProperty.DISTINGUISHED_NAME.name,
-                                                                                     securityGroupProperties.getDistinguishedName());
-                            }
-                            else if (governanceDefinitionProperties instanceof NamingStandardRuleProperties namingStandardRuleProperties)
-                            {
-                                elementProperties = propertyHelper.addStringArrayProperty(elementProperties,
-                                                                                          OpenMetadataProperty.NAME_PATTERNS.name,
-                                                                                          namingStandardRuleProperties.getNamePatterns());
-                            }
-                            else if (governanceDefinitionProperties instanceof TermsAndConditionsProperties termsAndConditionsProperties)
-                            {
-                                elementProperties = propertyHelper.addStringMapProperty(elementProperties,
-                                                                                        OpenMetadataProperty.ENTITLEMENTS.name,
-                                                                                        termsAndConditionsProperties.getEntitlements());
-                                elementProperties = propertyHelper.addStringMapProperty(elementProperties,
-                                                                                        OpenMetadataProperty.RESTRICTIONS.name,
-                                                                                        termsAndConditionsProperties.getRestrictions());
-                                elementProperties = propertyHelper.addStringMapProperty(elementProperties,
-                                                                                        OpenMetadataProperty.OBLIGATIONS.name,
-                                                                                        termsAndConditionsProperties.getObligations());
-                            }
-                            else if (governanceControlProperties instanceof SecurityAccessControlProperties)
-                            {
-                                if (properties instanceof GovernanceZoneProperties governanceZoneProperties)
+                                if (technicalControlProperties instanceof SecurityGroupProperties securityGroupProperties)
                                 {
                                     elementProperties = propertyHelper.addStringProperty(elementProperties,
-                                                                                         OpenMetadataProperty.CRITERIA.name,
-                                                                                         governanceZoneProperties.getCriteria());
+                                                                                         OpenMetadataProperty.DISTINGUISHED_NAME.name,
+                                                                                         securityGroupProperties.getDistinguishedName());
+                                }
+                                else if (technicalControlProperties instanceof GovernanceMetricProperties governanceMetricProperties)
+                                {
+                                    elementProperties = propertyHelper.addStringProperty(elementProperties,
+                                                                                         OpenMetadataProperty.MEASUREMENT.name,
+                                                                                         governanceMetricProperties.getMeasurement());
+                                    elementProperties = propertyHelper.addStringProperty(elementProperties,
+                                                                                         OpenMetadataProperty.TARGET.name,
+                                                                                         governanceMetricProperties.getTarget());
+                                }
+                                else if (technicalControlProperties instanceof NotificationTypeProperties notificationTypeProperties)
+                                {
+                                    elementProperties = propertyHelper.addDateProperty(elementProperties,
+                                                                                         OpenMetadataProperty.START_DATE.name,
+                                                                                         notificationTypeProperties.getStartDate());
+                                    elementProperties = propertyHelper.addLongProperty(elementProperties,
+                                                                                         OpenMetadataProperty.REFRESH_TIME_INTERVAL.name,
+                                                                                         notificationTypeProperties.getRefreshTimeInterval());
+                                    elementProperties = propertyHelper.addDateProperty(elementProperties,
+                                                                                       OpenMetadataProperty.CONNECTOR_SHUTDOWN_DATE.name,
+                                                                                       notificationTypeProperties.getConnectorShutdownDate());
+                                }
+                                else if (technicalControlProperties instanceof GovernanceRuleProperties governanceRuleProperties)
+                                {
+                                    if (governanceRuleProperties instanceof NamingStandardRuleProperties namingStandardRuleProperties)
+                                    {
+                                        elementProperties = propertyHelper.addStringArrayProperty(elementProperties,
+                                                                                                  OpenMetadataProperty.NAME_PATTERNS.name,
+                                                                                                  namingStandardRuleProperties.getNamePatterns());
+                                    }
+                                }
+                                else if (technicalControlProperties instanceof SecurityAccessControlProperties)
+                                {
+                                    if (properties instanceof GovernanceZoneProperties governanceZoneProperties)
+                                    {
+                                        elementProperties = propertyHelper.addStringProperty(elementProperties,
+                                                                                             OpenMetadataProperty.CRITERIA.name,
+                                                                                             governanceZoneProperties.getCriteria());
+                                    }
+                                }
+                            }
+                            else if (governanceControlProperties instanceof OrganizationalControlProperties organizationalControlProperties)
+                            {
+                                if (organizationalControlProperties instanceof TermsAndConditionsProperties termsAndConditionsProperties)
+                                {
+                                    elementProperties = propertyHelper.addStringMapProperty(elementProperties,
+                                                                                            OpenMetadataProperty.ENTITLEMENTS.name,
+                                                                                            termsAndConditionsProperties.getEntitlements());
+                                    elementProperties = propertyHelper.addStringMapProperty(elementProperties,
+                                                                                            OpenMetadataProperty.RESTRICTIONS.name,
+                                                                                            termsAndConditionsProperties.getRestrictions());
+                                    elementProperties = propertyHelper.addStringMapProperty(elementProperties,
+                                                                                            OpenMetadataProperty.OBLIGATIONS.name,
+                                                                                            termsAndConditionsProperties.getObligations());
                                 }
                             }
 
@@ -1116,6 +1147,12 @@ public class OpenMetadataElementBuilder
                         elementProperties = propertyHelper.addStringArrayProperty(elementProperties,
                                                                                   OpenMetadataProperty.PURPOSES.name,
                                                                                   informationSupplyChainProperties.getPurposes());
+                    }
+                    else if (properties instanceof LocationProperties locationProperties)
+                    {
+                        elementProperties = propertyHelper.addStringProperty(elementProperties,
+                                                                             OpenMetadataProperty.IDENTIFIER.name,
+                                                                             locationProperties.getIdentifier());
                     }
                     else if (properties instanceof PortProperties portProperties)
                     {

@@ -41,7 +41,7 @@ public class SchemaMakerRESTServices extends TokenController
      * Create a schema type.
      *
      * @param serverName                 name of called server.
-     * @param viewServiceURLMarker  view service URL marker
+     * @param urlMarker  view service URL marker
      * @param requestBody             properties for the schema type.
      *
      * @return unique identifier of the newly created element
@@ -50,7 +50,7 @@ public class SchemaMakerRESTServices extends TokenController
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public GUIDResponse createSchemaType(String                serverName,
-                                         String                viewServiceURLMarker,
+                                         String                urlMarker,
                                          NewElementRequestBody requestBody)
     {
         final String methodName = "createSchemaType";
@@ -70,7 +70,7 @@ public class SchemaMakerRESTServices extends TokenController
 
             if (requestBody != null)
             {
-                SchemaTypeHandler handler = instanceHandler.getSchemaTypeHandler(userId, serverName, viewServiceURLMarker, methodName);
+                SchemaTypeHandler handler = instanceHandler.getSchemaTypeHandler(userId, serverName, urlMarker, methodName);
 
                 if (requestBody.getProperties() instanceof SchemaTypeProperties schemaTypeProperties)
                 {
@@ -105,7 +105,7 @@ public class SchemaMakerRESTServices extends TokenController
      * The template defines additional classifications and relationships that should be added to the new element.
      *
      * @param serverName             calling user
-     * @param viewServiceURLMarker  view service URL marker
+     * @param urlMarker  view service URL marker
      * @param requestBody properties that override the template
      *
      * @return unique identifier of the new metadata element
@@ -114,7 +114,7 @@ public class SchemaMakerRESTServices extends TokenController
      *  PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     public GUIDResponse createSchemaTypeFromTemplate(String              serverName,
-                                                     String              viewServiceURLMarker,
+                                                     String              urlMarker,
                                                      TemplateRequestBody requestBody)
     {
         final String methodName = "createSchemaTypeFromTemplate";
@@ -134,7 +134,7 @@ public class SchemaMakerRESTServices extends TokenController
 
             if (requestBody != null)
             {
-                SchemaTypeHandler handler = instanceHandler.getSchemaTypeHandler(userId, serverName, viewServiceURLMarker, methodName);
+                SchemaTypeHandler handler = instanceHandler.getSchemaTypeHandler(userId, serverName, urlMarker, methodName);
 
                 response.setGUID(handler.createSchemaTypeFromTemplate(userId,
                                                                       requestBody,
@@ -162,7 +162,7 @@ public class SchemaMakerRESTServices extends TokenController
      * Update the properties of a schema type.
      *
      * @param serverName         name of called server.
-     * @param viewServiceURLMarker  view service URL marker
+     * @param urlMarker  view service URL marker
      * @param schemaTypeGUID unique identifier of the schema type (returned from create)
      * @param requestBody     properties for the new element.
      *
@@ -172,7 +172,7 @@ public class SchemaMakerRESTServices extends TokenController
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public VoidResponse updateSchemaType(String                   serverName,
-                                         String                   viewServiceURLMarker,
+                                         String                   urlMarker,
                                          String                   schemaTypeGUID,
                                          UpdateElementRequestBody requestBody)
     {
@@ -193,7 +193,7 @@ public class SchemaMakerRESTServices extends TokenController
 
             if (requestBody != null)
             {
-                SchemaTypeHandler handler = instanceHandler.getSchemaTypeHandler(userId, serverName, viewServiceURLMarker, methodName);
+                SchemaTypeHandler handler = instanceHandler.getSchemaTypeHandler(userId, serverName, urlMarker, methodName);
 
                 if (requestBody.getProperties() instanceof SchemaTypeProperties schemaTypeProperties)
                 {
@@ -226,7 +226,7 @@ public class SchemaMakerRESTServices extends TokenController
      * Delete a schema type.
      *
      * @param serverName         name of called server
-     * @param viewServiceURLMarker  view service URL marker
+     * @param urlMarker  view service URL marker
      * @param schemaTypeGUID  unique identifier of the element to delete
      * @param requestBody  description of the relationship.
      *
@@ -236,7 +236,7 @@ public class SchemaMakerRESTServices extends TokenController
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public VoidResponse deleteSchemaType(String                   serverName,
-                                         String                   viewServiceURLMarker,
+                                         String                   urlMarker,
                                          String                   schemaTypeGUID,
                                          DeleteRequestBody requestBody)
     {
@@ -255,7 +255,7 @@ public class SchemaMakerRESTServices extends TokenController
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            SchemaTypeHandler handler = instanceHandler.getSchemaTypeHandler(userId, serverName, viewServiceURLMarker, methodName);
+            SchemaTypeHandler handler = instanceHandler.getSchemaTypeHandler(userId, serverName, urlMarker, methodName);
 
             handler.deleteSchemaType(userId, schemaTypeGUID, requestBody);
         }
@@ -273,7 +273,7 @@ public class SchemaMakerRESTServices extends TokenController
      * Retrieve the list of schema type metadata elements that contain the search string.
      *
      * @param serverName name of the service to route the request to
-     * @param viewServiceURLMarker  view service URL marker
+     * @param urlMarker  view service URL marker
      * @param requestBody string to find in the properties
      *
      * @return list of matching metadata elements or
@@ -282,7 +282,7 @@ public class SchemaMakerRESTServices extends TokenController
      *  PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     public OpenMetadataRootElementsResponse getSchemaTypesByName(String            serverName,
-                                                                 String            viewServiceURLMarker,
+                                                                 String            urlMarker,
                                                                  FilterRequestBody requestBody)
     {
         final String methodName = "getSchemaTypesByName";
@@ -300,7 +300,7 @@ public class SchemaMakerRESTServices extends TokenController
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            SchemaTypeHandler handler = instanceHandler.getSchemaTypeHandler(userId, serverName, viewServiceURLMarker, methodName);
+            SchemaTypeHandler handler = instanceHandler.getSchemaTypeHandler(userId, serverName, urlMarker, methodName);
 
             if (requestBody != null)
             {
@@ -327,7 +327,7 @@ public class SchemaMakerRESTServices extends TokenController
      * Retrieve the list of schema type metadata elements that contain the search string.
      *
      * @param serverName name of the service to route the request to
-     * @param viewServiceURLMarker  view service URL marker
+     * @param urlMarker  view service URL marker
      * @param schemaTypeGUID    unique identifier of the required element
      * @param requestBody string to find in the properties
      *
@@ -337,7 +337,7 @@ public class SchemaMakerRESTServices extends TokenController
      *  PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     public OpenMetadataRootElementResponse getSchemaTypeByGUID(String             serverName,
-                                                               String             viewServiceURLMarker,
+                                                               String             urlMarker,
                                                                String             schemaTypeGUID,
                                                                GetRequestBody requestBody)
     {
@@ -356,7 +356,7 @@ public class SchemaMakerRESTServices extends TokenController
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            SchemaTypeHandler handler = instanceHandler.getSchemaTypeHandler(userId, serverName, viewServiceURLMarker, methodName);
+            SchemaTypeHandler handler = instanceHandler.getSchemaTypeHandler(userId, serverName, urlMarker, methodName);
 
             response.setElement(handler.getSchemaTypeByGUID(userId, schemaTypeGUID, requestBody));
         }
@@ -374,7 +374,7 @@ public class SchemaMakerRESTServices extends TokenController
      * Retrieve the list of schema type metadata elements that contain the search string.
      *
      * @param serverName name of the service to route the request to
-     * @param viewServiceURLMarker  view service URL marker
+     * @param urlMarker  view service URL marker
      * @param requestBody string to find in the properties
      *
      * @return list of matching metadata elements or
@@ -383,7 +383,7 @@ public class SchemaMakerRESTServices extends TokenController
      *  PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     public OpenMetadataRootElementsResponse findSchemaTypes(String            serverName,
-                                               String            viewServiceURLMarker,
+                                               String            urlMarker,
                                                SearchStringRequestBody requestBody)
     {
         final String methodName = "findSchemaTypes";
@@ -401,7 +401,7 @@ public class SchemaMakerRESTServices extends TokenController
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            SchemaTypeHandler handler = instanceHandler.getSchemaTypeHandler(userId, serverName, viewServiceURLMarker, methodName);
+            SchemaTypeHandler handler = instanceHandler.getSchemaTypeHandler(userId, serverName, urlMarker, methodName);
 
             if (requestBody != null)
             {
@@ -427,7 +427,7 @@ public class SchemaMakerRESTServices extends TokenController
      * Create a schemaAttribute.
      *
      * @param serverName                 name of called server.
-     * @param viewServiceURLMarker  view service URL marker
+     * @param urlMarker  view service URL marker
      * @param requestBody             properties for the schema attribute.
      *
      * @return unique identifier of the newly created element
@@ -436,7 +436,7 @@ public class SchemaMakerRESTServices extends TokenController
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public GUIDResponse createSchemaAttribute(String                serverName,
-                                              String                viewServiceURLMarker,
+                                              String                urlMarker,
                                               NewElementRequestBody requestBody)
     {
         final String methodName = "createSchemaAttribute";
@@ -456,7 +456,7 @@ public class SchemaMakerRESTServices extends TokenController
 
             if (requestBody != null)
             {
-                SchemaAttributeHandler handler = instanceHandler.getSchemaAttributeHandler(userId, serverName, viewServiceURLMarker, methodName);
+                SchemaAttributeHandler handler = instanceHandler.getSchemaAttributeHandler(userId, serverName, urlMarker, methodName);
 
                 if (requestBody.getProperties() instanceof SchemaAttributeProperties schemaAttributeProperties)
                 {
@@ -491,7 +491,7 @@ public class SchemaMakerRESTServices extends TokenController
      * The template defines additional classifications and relationships that should be added to the new element.
      *
      * @param serverName             calling user
-     * @param viewServiceURLMarker  view service URL marker
+     * @param urlMarker  view service URL marker
      * @param requestBody properties that override the template
      *
      * @return unique identifier of the new metadata element
@@ -500,7 +500,7 @@ public class SchemaMakerRESTServices extends TokenController
      *  PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     public GUIDResponse createSchemaAttributeFromTemplate(String              serverName,
-                                                          String              viewServiceURLMarker,
+                                                          String              urlMarker,
                                                           TemplateRequestBody requestBody)
     {
         final String methodName = "createSchemaAttributeFromTemplate";
@@ -520,7 +520,7 @@ public class SchemaMakerRESTServices extends TokenController
 
             if (requestBody != null)
             {
-                SchemaAttributeHandler handler = instanceHandler.getSchemaAttributeHandler(userId, serverName, viewServiceURLMarker, methodName);
+                SchemaAttributeHandler handler = instanceHandler.getSchemaAttributeHandler(userId, serverName, urlMarker, methodName);
 
                 response.setGUID(handler.createSchemaAttributeFromTemplate(userId,
                                                                            requestBody,
@@ -548,7 +548,7 @@ public class SchemaMakerRESTServices extends TokenController
      * Update the properties of a schemaAttribute.
      *
      * @param serverName         name of called server.
-     * @param viewServiceURLMarker  view service URL marker
+     * @param urlMarker  view service URL marker
      * @param schemaAttributeGUID unique identifier of the schema attribute (returned from create)
      * @param requestBody     properties for the new element.
      *
@@ -558,7 +558,7 @@ public class SchemaMakerRESTServices extends TokenController
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public VoidResponse updateSchemaAttribute(String                   serverName,
-                                              String                   viewServiceURLMarker,
+                                              String                   urlMarker,
                                               String                   schemaAttributeGUID,
                                               UpdateElementRequestBody requestBody)
     {
@@ -579,7 +579,7 @@ public class SchemaMakerRESTServices extends TokenController
 
             if (requestBody != null)
             {
-                SchemaAttributeHandler handler = instanceHandler.getSchemaAttributeHandler(userId, serverName, viewServiceURLMarker, methodName);
+                SchemaAttributeHandler handler = instanceHandler.getSchemaAttributeHandler(userId, serverName, urlMarker, methodName);
 
                 if (requestBody.getProperties() instanceof SchemaAttributeProperties schemaAttributeProperties)
                 {
@@ -612,7 +612,7 @@ public class SchemaMakerRESTServices extends TokenController
      * Delete a schemaAttribute.
      *
      * @param serverName         name of called server
-     * @param viewServiceURLMarker  view service URL marker
+     * @param urlMarker  view service URL marker
      * @param schemaAttributeGUID  unique identifier of the element to delete
      * @param requestBody  description of the relationship.
      *
@@ -622,7 +622,7 @@ public class SchemaMakerRESTServices extends TokenController
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public VoidResponse deleteSchemaAttribute(String                   serverName,
-                                              String                   viewServiceURLMarker,
+                                              String                   urlMarker,
                                               String                   schemaAttributeGUID,
                                               DeleteRequestBody requestBody)
     {
@@ -641,7 +641,7 @@ public class SchemaMakerRESTServices extends TokenController
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            SchemaAttributeHandler handler = instanceHandler.getSchemaAttributeHandler(userId, serverName, viewServiceURLMarker, methodName);
+            SchemaAttributeHandler handler = instanceHandler.getSchemaAttributeHandler(userId, serverName, urlMarker, methodName);
 
             handler.deleteSchemaAttribute(userId, schemaAttributeGUID, requestBody);
         }
@@ -659,7 +659,7 @@ public class SchemaMakerRESTServices extends TokenController
      * Retrieve the list of schema attribute metadata elements that contain the search string.
      *
      * @param serverName name of the service to route the request to
-     * @param viewServiceURLMarker  view service URL marker
+     * @param urlMarker  view service URL marker
      * @param requestBody string to find in the properties
      *
      * @return list of matching metadata elements or
@@ -668,7 +668,7 @@ public class SchemaMakerRESTServices extends TokenController
      *  PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     public OpenMetadataRootElementsResponse getSchemaAttributesByName(String            serverName,
-                                                                      String            viewServiceURLMarker,
+                                                                      String            urlMarker,
                                                                       FilterRequestBody requestBody)
     {
         final String methodName = "getSchemaAttributesByName";
@@ -686,7 +686,7 @@ public class SchemaMakerRESTServices extends TokenController
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            SchemaAttributeHandler handler = instanceHandler.getSchemaAttributeHandler(userId, serverName, viewServiceURLMarker, methodName);
+            SchemaAttributeHandler handler = instanceHandler.getSchemaAttributeHandler(userId, serverName, urlMarker, methodName);
 
             if (requestBody != null)
             {
@@ -713,7 +713,7 @@ public class SchemaMakerRESTServices extends TokenController
      * Retrieve the list of schema attribute metadata elements that contain the search string.
      *
      * @param serverName name of the service to route the request to
-     * @param viewServiceURLMarker  view service URL marker
+     * @param urlMarker  view service URL marker
      * @param schemaAttributeGUID    unique identifier of the required element
      * @param requestBody string to find in the properties
      *
@@ -723,7 +723,7 @@ public class SchemaMakerRESTServices extends TokenController
      *  PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     public OpenMetadataRootElementResponse getSchemaAttributeByGUID(String             serverName,
-                                                                    String             viewServiceURLMarker,
+                                                                    String             urlMarker,
                                                                     String             schemaAttributeGUID,
                                                                     GetRequestBody requestBody)
     {
@@ -742,7 +742,7 @@ public class SchemaMakerRESTServices extends TokenController
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            SchemaAttributeHandler handler = instanceHandler.getSchemaAttributeHandler(userId, serverName, viewServiceURLMarker, methodName);
+            SchemaAttributeHandler handler = instanceHandler.getSchemaAttributeHandler(userId, serverName, urlMarker, methodName);
 
             response.setElement(handler.getSchemaAttributeByGUID(userId, schemaAttributeGUID, requestBody));
         }
@@ -760,7 +760,7 @@ public class SchemaMakerRESTServices extends TokenController
      * Retrieve the list of schema attribute metadata elements that contain the search string.
      *
      * @param serverName name of the service to route the request to
-     * @param viewServiceURLMarker  view service URL marker
+     * @param urlMarker  view service URL marker
      * @param requestBody string to find in the properties
      *
      * @return list of matching metadata elements or
@@ -769,7 +769,7 @@ public class SchemaMakerRESTServices extends TokenController
      *  PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     public OpenMetadataRootElementsResponse findSchemaAttributes(String            serverName,
-                                                                 String            viewServiceURLMarker,
+                                                                 String            urlMarker,
                                                                  SearchStringRequestBody requestBody)
     {
         final String methodName = "findSchemaAttributes";
@@ -787,7 +787,7 @@ public class SchemaMakerRESTServices extends TokenController
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            SchemaAttributeHandler handler = instanceHandler.getSchemaAttributeHandler(userId, serverName, viewServiceURLMarker, methodName);
+            SchemaAttributeHandler handler = instanceHandler.getSchemaAttributeHandler(userId, serverName, urlMarker, methodName);
 
             response.setElements(handler.findSchemaAttributes(userId,
                                                               requestBody.getSearchString(),

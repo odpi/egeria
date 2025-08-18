@@ -859,7 +859,7 @@ public class CocoClinicalTrialHospitalOnboardingService extends CocoClinicalTria
                                                                                             OpenMetadataProperty.ACTION_TARGET_NAME.name,
                                                                                             ActionTarget.STEWARD.getName());
 
-                governanceContext.getOpenMetadataStore().createRelatedElementsInStore(OpenMetadataType.TARGET_FOR_ACTION_PROCESS_RELATIONSHIP.typeName,
+                governanceContext.getOpenMetadataStore().createRelatedElementsInStore(OpenMetadataType.TARGET_FOR_GOVERNANCE_ACTION_RELATIONSHIP.typeName,
                                                                                       processGUID,
                                                                                       stewardGUID,
                                                                                       null,
@@ -870,7 +870,7 @@ public class CocoClinicalTrialHospitalOnboardingService extends CocoClinicalTria
                                                                           OpenMetadataProperty.ACTION_TARGET_NAME.name,
                                                                           CocoClinicalTrialActionTarget.DATA_QUALITY_CERTIFICATION_TYPE.getName());
 
-                governanceContext.getOpenMetadataStore().createRelatedElementsInStore(OpenMetadataType.TARGET_FOR_ACTION_PROCESS_RELATIONSHIP.typeName,
+                governanceContext.getOpenMetadataStore().createRelatedElementsInStore(OpenMetadataType.TARGET_FOR_GOVERNANCE_ACTION_RELATIONSHIP.typeName,
                                                                                       processGUID,
                                                                                       dataQualityCertificationType,
                                                                                       null,
@@ -881,7 +881,7 @@ public class CocoClinicalTrialHospitalOnboardingService extends CocoClinicalTria
                                                                           OpenMetadataProperty.ACTION_TARGET_NAME.name,
                                                                           ActionTarget.SPONSOR.getName());
 
-                governanceContext.getOpenMetadataStore().createRelatedElementsInStore(OpenMetadataType.TARGET_FOR_ACTION_PROCESS_RELATIONSHIP.typeName,
+                governanceContext.getOpenMetadataStore().createRelatedElementsInStore(OpenMetadataType.TARGET_FOR_GOVERNANCE_ACTION_RELATIONSHIP.typeName,
                                                                                       processGUID,
                                                                                       clinicalTrialGUID,
                                                                                       null,
@@ -892,7 +892,7 @@ public class CocoClinicalTrialHospitalOnboardingService extends CocoClinicalTria
                                                                           OpenMetadataProperty.ACTION_TARGET_NAME.name,
                                                                           CocoClinicalTrialActionTarget.VALIDATED_WEEKLY_FILES_DATA_SET.getName());
 
-                governanceContext.getOpenMetadataStore().createRelatedElementsInStore(OpenMetadataType.TARGET_FOR_ACTION_PROCESS_RELATIONSHIP.typeName,
+                governanceContext.getOpenMetadataStore().createRelatedElementsInStore(OpenMetadataType.TARGET_FOR_GOVERNANCE_ACTION_RELATIONSHIP.typeName,
                                                                                       processGUID,
                                                                                       validatedWeeklyFilesDataSetGUID,
                                                                                       null,
@@ -902,7 +902,7 @@ public class CocoClinicalTrialHospitalOnboardingService extends CocoClinicalTria
 
             RelatedMetadataElementList actionTargetList = governanceContext.getOpenMetadataStore().getRelatedMetadataElements(onboardingProcessGUID,
                                                                                                                               1,
-                                                                                                                              OpenMetadataType.TARGET_FOR_ACTION_PROCESS_RELATIONSHIP.typeName,
+                                                                                                                              OpenMetadataType.TARGET_FOR_GOVERNANCE_ACTION_RELATIONSHIP.typeName,
                                                                                                                               0,0);
 
             if ((actionTargetList != null) && (actionTargetList.getElementList() != null))

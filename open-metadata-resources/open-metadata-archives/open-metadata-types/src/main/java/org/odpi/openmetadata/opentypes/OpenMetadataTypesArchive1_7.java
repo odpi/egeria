@@ -163,7 +163,6 @@ public class OpenMetadataTypesArchive1_7
         update042SubjectAreas();
         add0435PolicyManagementCapabilities();
         update0438NamingStandards();
-        update0440OrganizationalControls();
         update05454ReferenceData();
         addArea7Lineage();
     }
@@ -407,37 +406,6 @@ public class OpenMetadataTypesArchive1_7
         return typeDefPatch;
     }
 
-
-    /**
-     * 0440 - Scope attribute was missing.
-     */
-    private void update0440OrganizationalControls()
-    {
-        this.archiveBuilder.addTypeDefPatch(updateBusinessCapabilityRelationship());
-    }
-
-
-    private TypeDefPatch updateBusinessCapabilityRelationship()
-    {
-        /*
-         * Create the Patch
-         */
-        TypeDefPatch  typeDefPatch = archiveBuilder.getPatchForType(OpenMetadataType.BUSINESS_CAPABILITY_TEAM_RELATIONSHIP.typeName);
-
-        typeDefPatch.setUpdatedBy(originatorName);
-        typeDefPatch.setUpdateTime(creationDate);
-
-        /*
-         * Build the attributes
-         */
-        List<TypeDefAttribute> properties = new ArrayList<>();
-
-        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.SCOPE));
-
-        typeDefPatch.setPropertyDefinitions(properties);
-
-        return typeDefPatch;
-    }
 
     /*
      * -------------------------------------------------------------------------------------------------------
@@ -705,7 +673,8 @@ public class OpenMetadataTypesArchive1_7
          */
         List<TypeDefAttribute> properties = new ArrayList<>();
 
-        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.DELEGATION_ESCALATION));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.LABEL));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.DESCRIPTION));
 
         relationshipDef.setPropertiesDefinition(properties);
 
@@ -768,6 +737,16 @@ public class OpenMetadataTypesArchive1_7
                                                                  end2AttributeDescriptionGUID,
                                                                  RelationshipEndCardinality.ANY_NUMBER);
         relationshipDef.setEndDef2(relationshipEndDef);
+
+        /*
+         * Build the attributes
+         */
+        List<TypeDefAttribute> properties = new ArrayList<>();
+
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.LABEL));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.DESCRIPTION));
+
+        relationshipDef.setPropertiesDefinition(properties);
 
         return relationshipDef;
     }

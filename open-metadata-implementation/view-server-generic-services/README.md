@@ -5,6 +5,10 @@
 
 This module contains the services that are available in all view servers.  They allow the view server URL marker of an active view service to be passed.  There is a default view service name fore each of these services.
 
+* **[Asset Maker](asset-maker)** - create and maintain assets.
+
+  The Asset Maker OMVS provides edit and query capabilities for tools and applications to support an asset curation function.
+
 * **[Collection Manager](collection-manager)** - manage collections of assets and other elements.
 
   The Collection Manager OMVS provides the REST APIs to create collections of asset and other elements such as glossary terms or policies.  The collections can be nested (like folders in a file system) and they can be classified to describe the type of collection.  For example, one type of classification for a collection is a *DigitalProduct* that allows the collections of assets and other related material to describe data and or services for a specific consumer or purpose.

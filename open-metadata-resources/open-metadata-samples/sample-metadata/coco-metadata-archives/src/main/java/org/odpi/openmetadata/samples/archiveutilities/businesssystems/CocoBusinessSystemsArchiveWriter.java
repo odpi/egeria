@@ -85,7 +85,7 @@ public class CocoBusinessSystemsArchiveWriter extends EgeriaBaseArchiveWriter
                                    additionalProperties,
                                    null);
 
-            archiveHelper.addAssetLocationRelationship(hostDefinition.getHostLocation().getQualifiedName(),
+            archiveHelper.addKnownLocationRelationship(hostDefinition.getHostLocation().getQualifiedName(),
                                                        hostDefinition.getQualifiedName());
         }
     }
@@ -179,7 +179,7 @@ public class CocoBusinessSystemsArchiveWriter extends EgeriaBaseArchiveWriter
 
             if (systemDefinition.getSystemLocation() != null)
             {
-                archiveHelper.addAssetLocationRelationship(systemDefinition.getSystemLocation().getQualifiedName(),
+                archiveHelper.addKnownLocationRelationship(systemDefinition.getSystemLocation().getQualifiedName(),
                                                            systemDefinition.getQualifiedName());
             }
 

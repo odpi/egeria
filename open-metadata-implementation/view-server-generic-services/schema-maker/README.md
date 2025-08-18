@@ -5,9 +5,9 @@
 
 # Schema Maker OMVS 
 
-The Schema Maker OMVS is for user interfaces supporting the creation and editing of a new governance domain.
+The Schema Maker OMVS is for user interfaces supporting the creation and editing of schema types and schema attributes.
 
-Link to documentation: [https://egeria-project.org/services/omvs/schema=maker/overview/](https://egeria-project.org/services/omvs/schema=maker/overview/)
+Link to documentation: [https://egeria-project.org/services/omvs/schema-maker/overview/](https://egeria-project.org/services/omvs/schema-maker/overview/)
 
 ----
 License: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/),

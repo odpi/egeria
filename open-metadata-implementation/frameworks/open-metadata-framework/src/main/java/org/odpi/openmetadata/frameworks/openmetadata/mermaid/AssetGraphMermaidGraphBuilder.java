@@ -52,8 +52,8 @@ public class AssetGraphMermaidGraphBuilder extends MermaidGraphBuilderBase
                                                                        OpenMetadataType.DATA_MAPPING_RELATIONSHIP.typeName,
                                                                        OpenMetadataType.ACTION_TARGET_RELATIONSHIP.typeName,
                                                                        OpenMetadataType.ACTION_TARGET_RELATIONSHIP.typeName,
-                                                                       OpenMetadataType.TARGET_FOR_ACTION_TYPE_RELATIONSHIP.typeName,
-                                                                       OpenMetadataType.TARGET_FOR_ACTION_PROCESS_RELATIONSHIP.typeName,
+                                                                       OpenMetadataType.TARGET_FOR_GOVERNANCE_ACTION_RELATIONSHIP.typeName,
+                                                                       OpenMetadataType.TARGET_FOR_GOVERNANCE_ACTION_RELATIONSHIP.typeName,
                                                                        OpenMetadataType.IMPACTED_RESOURCE_RELATIONSHIP.typeName))))
                 {
                     VisualStyle visualStyle = getVisualStyleForRelationship(line.getRelationshipHeader());

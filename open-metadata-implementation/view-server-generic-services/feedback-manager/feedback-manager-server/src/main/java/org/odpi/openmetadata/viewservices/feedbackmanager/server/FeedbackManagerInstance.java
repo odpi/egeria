@@ -9,7 +9,7 @@ import org.odpi.openmetadata.commonservices.multitenant.ViewServiceClientMap;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.PropertyServerException;
-import org.odpi.openmetadata.frameworks.openmetadata.handlers.FeedbackHandler;
+import org.odpi.openmetadata.frameworks.openmetadata.handlers.*;
 
 import java.util.List;
 
@@ -22,11 +22,17 @@ public class FeedbackManagerInstance extends OMVSServiceInstance
 {
     private static final ViewServiceDescription myDescription = ViewServiceDescription.FEEDBACK_MANAGER;
 
-    private final ViewServiceClientMap<FeedbackHandler> viewServiceClientMap;
+    private final ViewServiceClientMap<LikeHandler>        likeMap;
+    private final ViewServiceClientMap<RatingHandler>      ratingMap;
+    private final ViewServiceClientMap<CommentHandler>     commentMap;
+    private final ViewServiceClientMap<InformalTagHandler> informalTagMap;
+    private final ViewServiceClientMap<NoteLogHandler>     noteLogMap;
+    private final ViewServiceClientMap<NoteEntryHandler>   noteEntryMap;
 
 
     /**
-     * Set up the Feedback Manager OMVS instance*
+     * Set up the Feedback Manager OMVS instance
+     *
      * @param serverName name of this server
      * @param auditLog logging destination
      * @param localServerUserId user id to use on OMRS calls where there is no end user, or as part of an HTTP authentication mechanism with serverUserPassword.
@@ -54,30 +60,160 @@ public class FeedbackManagerInstance extends OMVSServiceInstance
               remoteServerName,
               remoteServerURL);
 
-        this.viewServiceClientMap = new ViewServiceClientMap<>(FeedbackHandler.class,
-                                                               serverName,
-                                                               localServerUserId,
-                                                               localServerUserPassword,
-                                                               auditLog,
-                                                               activeViewServices,
-                                                               myDescription.getViewServiceFullName(),
-                                                               maxPageSize);
+        this.likeMap = new ViewServiceClientMap<>(LikeHandler.class,
+                                                  serverName,
+                                                  localServerUserId,
+                                                  localServerUserPassword,
+                                                  auditLog,
+                                                  activeViewServices,
+                                                  myDescription.getViewServiceFullName(),
+                                                  maxPageSize);
+
+        this.ratingMap = new ViewServiceClientMap<>(RatingHandler.class,
+                                                    serverName,
+                                                    localServerUserId,
+                                                    localServerUserPassword,
+                                                    auditLog,
+                                                    activeViewServices,
+                                                    myDescription.getViewServiceFullName(),
+                                                    maxPageSize);
+
+        this.commentMap = new ViewServiceClientMap<>(CommentHandler.class,
+                                                     serverName,
+                                                     localServerUserId,
+                                                     localServerUserPassword,
+                                                     auditLog,
+                                                     activeViewServices,
+                                                     myDescription.getViewServiceFullName(),
+                                                     maxPageSize);
+
+        this.informalTagMap = new ViewServiceClientMap<>(InformalTagHandler.class,
+                                                         serverName,
+                                                         localServerUserId,
+                                                         localServerUserPassword,
+                                                         auditLog,
+                                                         activeViewServices,
+                                                         myDescription.getViewServiceFullName(),
+                                                         maxPageSize);
+
+        this.noteLogMap = new ViewServiceClientMap<>(NoteLogHandler.class,
+                                                     serverName,
+                                                     localServerUserId,
+                                                     localServerUserPassword,
+                                                     auditLog,
+                                                     activeViewServices,
+                                                     myDescription.getViewServiceFullName(),
+                                                     maxPageSize);
+
+        this.noteEntryMap = new ViewServiceClientMap<>(NoteEntryHandler.class,
+                                                       serverName,
+                                                       localServerUserId,
+                                                       localServerUserPassword,
+                                                       auditLog,
+                                                       activeViewServices,
+                                                       myDescription.getViewServiceFullName(),
+                                                       maxPageSize);
     }
 
 
     /**
-     * Return the collaboration manager handler.
+     * Return the open metadata handler.
      *
-     * @param viewServiceURLMarker calling view service
+     * @param urlMarker calling view service
      * @param methodName calling operation
      * @return client
      * @throws InvalidParameterException bad client initialization
      * @throws PropertyServerException bad client handler class
      */
-    public FeedbackHandler getCollaborationManagerHandler(String viewServiceURLMarker,
-                                                          String methodName) throws InvalidParameterException,
-                                                                                                PropertyServerException
+    public LikeHandler getLikeHandler(String urlMarker,
+                                      String methodName) throws InvalidParameterException,
+                                                                PropertyServerException
     {
-        return viewServiceClientMap.getClient(viewServiceURLMarker, methodName);
+        return likeMap.getClient(urlMarker, methodName);
+    }
+
+
+    /**
+     * Return the open metadata handler.
+     *
+     * @param urlMarker calling view service
+     * @param methodName calling operation
+     * @return client
+     * @throws InvalidParameterException bad client initialization
+     * @throws PropertyServerException bad client handler class
+     */
+    public RatingHandler getRatingHandler(String urlMarker,
+                                          String methodName) throws InvalidParameterException,
+                                                                    PropertyServerException
+    {
+        return ratingMap.getClient(urlMarker, methodName);
+    }
+
+
+    /**
+     * Return the open metadata handler.
+     *
+     * @param urlMarker calling view service
+     * @param methodName calling operation
+     * @return client
+     * @throws InvalidParameterException bad client initialization
+     * @throws PropertyServerException bad client handler class
+     */
+    public CommentHandler getCommentHandler(String urlMarker,
+                                            String methodName) throws InvalidParameterException,
+                                                                      PropertyServerException
+    {
+        return commentMap.getClient(urlMarker, methodName);
+    }
+
+
+    /**
+     * Return the open metadata handler.
+     *
+     * @param urlMarker calling view service
+     * @param methodName calling operation
+     * @return client
+     * @throws InvalidParameterException bad client initialization
+     * @throws PropertyServerException bad client handler class
+     */
+    public InformalTagHandler getInformalTagHandler(String urlMarker,
+                                                    String methodName) throws InvalidParameterException,
+                                                                              PropertyServerException
+    {
+        return informalTagMap.getClient(urlMarker, methodName);
+    }
+
+
+    /**
+     * Return the open metadata handler.
+     *
+     * @param urlMarker calling view service
+     * @param methodName calling operation
+     * @return client
+     * @throws InvalidParameterException bad client initialization
+     * @throws PropertyServerException bad client handler class
+     */
+    public NoteLogHandler getNoteLogHandler(String urlMarker,
+                                            String methodName) throws InvalidParameterException,
+                                                                      PropertyServerException
+    {
+        return noteLogMap.getClient(urlMarker, methodName);
+    }
+
+
+    /**
+     * Return the open metadata handler.
+     *
+     * @param urlMarker calling view service
+     * @param methodName calling operation
+     * @return client
+     * @throws InvalidParameterException bad client initialization
+     * @throws PropertyServerException bad client handler class
+     */
+    public NoteEntryHandler getNoteEntryHandler(String urlMarker,
+                                                String methodName) throws InvalidParameterException,
+                                                                          PropertyServerException
+    {
+        return noteEntryMap.getClient(urlMarker, methodName);
     }
 }

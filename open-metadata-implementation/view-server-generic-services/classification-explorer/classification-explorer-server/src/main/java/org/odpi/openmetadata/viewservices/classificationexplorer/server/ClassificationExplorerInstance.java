@@ -80,33 +80,33 @@ public class ClassificationExplorerInstance extends OMVSServiceInstance
     /**
      * Return the collaboration manager handler.
      *
-     * @param viewServiceURLMarker optional view service URL marker
+     * @param urlMarker optional view service URL marker
      * @param methodName calling method
      * @throws InvalidParameterException bad client initialization
      * @throws PropertyServerException bad client handler class
      * @return client
      */
-    public StewardshipManagementHandler getStewardshipManagerHandler(String viewServiceURLMarker,
+    public StewardshipManagementHandler getStewardshipManagerHandler(String urlMarker,
                                                                      String methodName) throws InvalidParameterException,
                                                                                                PropertyServerException
     {
-        return stewardshipManagementHandlerHashMap.getClient(viewServiceURLMarker, methodName);
+        return stewardshipManagementHandlerHashMap.getClient(urlMarker, methodName);
     }
 
 
     /**
      * Return the open metadata handler.
      *
-     * @param viewServiceURLMarker  view service URL marker
+     * @param urlMarker  view service URL marker
      * @param methodName calling method
      * @throws InvalidParameterException bad client initialization
      * @throws PropertyServerException bad client handler class
      * @return client
      */
-    public EgeriaOpenMetadataStoreHandler getOpenMetadataStoreHandler(String viewServiceURLMarker,
+    public EgeriaOpenMetadataStoreHandler getOpenMetadataStoreHandler(String urlMarker,
                                                                       String methodName) throws InvalidParameterException,
                                                                                                 PropertyServerException
     {
-        return openMetadataHandlerMap.getClient(viewServiceURLMarker, methodName);
+        return openMetadataHandlerMap.getClient(urlMarker, methodName);
     }
 }

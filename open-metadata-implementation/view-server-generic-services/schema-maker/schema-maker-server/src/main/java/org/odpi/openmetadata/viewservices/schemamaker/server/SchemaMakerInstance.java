@@ -84,17 +84,17 @@ public class SchemaMakerInstance extends OMVSServiceInstance
      * Return the client.  This client is from the Open Metadata Store services and is for maintaining
      * schema type artifacts.
      *
-     * @param viewServiceURLMarker calling view service
+     * @param urlMarker calling view service
      * @param methodName calling operation
      * @return client
      * @throws InvalidParameterException bad client initialization
      * @throws PropertyServerException bad client handler class
      */
-    public SchemaTypeHandler getSchemaTypeHandler(String viewServiceURLMarker,
+    public SchemaTypeHandler getSchemaTypeHandler(String urlMarker,
                                                   String methodName) throws InvalidParameterException,
                                                                             PropertyServerException
     {
-        return schemaTypeHandlerMap.getClient(viewServiceURLMarker, methodName);
+        return schemaTypeHandlerMap.getClient(urlMarker, methodName);
     }
 
 
@@ -104,15 +104,15 @@ public class SchemaMakerInstance extends OMVSServiceInstance
      * Return the client.  This client is from the Open Metadata Store services and is for maintaining
      * schema attribute artifacts.
      *
-     * @param viewServiceURLMarker calling view service
+     * @param urlMarker calling view service
      * @param methodName calling operation
      * @return client
      * @throws InvalidParameterException bad client initialization
      * @throws PropertyServerException bad client handler class
      */
-    public SchemaAttributeHandler getSchemaAttributeHandler(String viewServiceURLMarker,
+    public SchemaAttributeHandler getSchemaAttributeHandler(String urlMarker,
                                                             String methodName) throws InvalidParameterException, PropertyServerException
     {
-        return schemaAttributeHandlerMap.getClient(viewServiceURLMarker, methodName);
+        return schemaAttributeHandlerMap.getClient(urlMarker, methodName);
     }
 }

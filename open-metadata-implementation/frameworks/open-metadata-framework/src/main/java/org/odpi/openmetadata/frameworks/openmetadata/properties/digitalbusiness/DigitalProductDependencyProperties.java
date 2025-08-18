@@ -22,6 +22,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class DigitalProductDependencyProperties extends RelationshipBeanProperties
 {
+    private String  label   = null;
     private String description = null;
 
 
@@ -46,8 +47,31 @@ public class DigitalProductDependencyProperties extends RelationshipBeanProperti
 
         if (template != null)
         {
-            description = template.getDescription();
+            this.label = template.getLabel();
+            this.description = template.getDescription();
         }
+    }
+
+
+    /**
+     * Return the label.
+     *
+     * @return string
+     */
+    public String getLabel()
+    {
+        return label;
+    }
+
+
+    /**
+     * Set up the label.
+     *
+     * @param label string
+     */
+    public void setLabel(String label)
+    {
+        this.label = label;
     }
 
 
@@ -82,7 +106,8 @@ public class DigitalProductDependencyProperties extends RelationshipBeanProperti
     public String toString()
     {
         return "DigitalProductDependencyProperties{" +
-                "description='" + description + '\'' +
+                "label='" + label + '\'' +
+                ", description='" + description + '\'' +
                 "} " + super.toString();
     }
 
@@ -108,7 +133,8 @@ public class DigitalProductDependencyProperties extends RelationshipBeanProperti
         {
             return false;
         }
-        return Objects.equals(description, that.description);
+        return Objects.equals(label, that.label) &&
+                Objects.equals(description, that.description);
     }
 
 
@@ -120,6 +146,6 @@ public class DigitalProductDependencyProperties extends RelationshipBeanProperti
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), description);
+        return Objects.hash(super.hashCode(), label, description);
     }
 }

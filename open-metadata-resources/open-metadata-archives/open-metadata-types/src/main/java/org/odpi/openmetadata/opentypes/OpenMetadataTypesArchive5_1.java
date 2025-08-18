@@ -285,8 +285,7 @@ public class OpenMetadataTypesArchive5_1
     private void update0462GovernanceActionProcesses()
     {
         this.archiveBuilder.addEntityDef(getGovernanceActionProcessInstanceEntity());
-        this.archiveBuilder.addRelationshipDef(getTargetForActionType());
-        this.archiveBuilder.addRelationshipDef(getTargetForActionProcess());
+        this.archiveBuilder.addRelationshipDef(getTargetForGovernanceAction());
         this.archiveBuilder.addTypeDefPatch(updateGovernanceActionProcessFlow());
     }
 
@@ -297,9 +296,9 @@ public class OpenMetadataTypesArchive5_1
                                                  this.archiveBuilder.getEntityDef(OpenMetadataType.TRANSIENT_EMBEDDED_PROCESS.typeName));
     }
 
-    private RelationshipDef getTargetForActionType()
+    private RelationshipDef getTargetForGovernanceAction()
     {
-        RelationshipDef relationshipDef = archiveHelper.getBasicRelationshipDef(OpenMetadataType.TARGET_FOR_ACTION_TYPE_RELATIONSHIP,
+        RelationshipDef relationshipDef = archiveHelper.getBasicRelationshipDef(OpenMetadataType.TARGET_FOR_GOVERNANCE_ACTION_RELATIONSHIP,
                                                                                 null,
                                                                                 ClassificationPropagationRule.NONE);
 
@@ -308,61 +307,11 @@ public class OpenMetadataTypesArchive5_1
         /*
          * Set up end 1.
          */
-        final String                     end1AttributeName            = "associatedGovernanceActionType";
+        final String                     end1AttributeName            = "associatedGovernanceAction";
         final String                     end1AttributeDescription     = "Describes the governance action that will use this target for action.";
         final String                     end1AttributeDescriptionGUID = null;
 
-        relationshipEndDef = archiveHelper.getRelationshipEndDef(this.archiveBuilder.getEntityDef(OpenMetadataType.GOVERNANCE_ACTION_TYPE.typeName),
-                                                                 end1AttributeName,
-                                                                 end1AttributeDescription,
-                                                                 end1AttributeDescriptionGUID,
-                                                                 RelationshipEndCardinality.ANY_NUMBER);
-        relationshipDef.setEndDef1(relationshipEndDef);
-
-
-        /*
-         * Set up end 2.
-         */
-        final String                     end2AttributeName            = "predefinedTargetForAction";
-        final String                     end2AttributeDescription     = "Provides a fixed target for action that will be used when this governance action executes.";
-        final String                     end2AttributeDescriptionGUID = null;
-
-        relationshipEndDef = archiveHelper.getRelationshipEndDef(this.archiveBuilder.getEntityDef(OpenMetadataType.OPEN_METADATA_ROOT.typeName),
-                                                                 end2AttributeName,
-                                                                 end2AttributeDescription,
-                                                                 end2AttributeDescriptionGUID,
-                                                                 RelationshipEndCardinality.ANY_NUMBER);
-        relationshipDef.setEndDef2(relationshipEndDef);
-
-        /*
-         * Build the attributes
-         */
-        List<TypeDefAttribute> properties = new ArrayList<>();
-
-        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.ACTION_TARGET_NAME));
-
-        relationshipDef.setPropertiesDefinition(properties);
-
-        return relationshipDef;
-    }
-
-
-    private RelationshipDef getTargetForActionProcess()
-    {
-        RelationshipDef relationshipDef = archiveHelper.getBasicRelationshipDef(OpenMetadataType.TARGET_FOR_ACTION_PROCESS_RELATIONSHIP,
-                                                                                null,
-                                                                                ClassificationPropagationRule.NONE);
-
-        RelationshipEndDef relationshipEndDef;
-
-        /*
-         * Set up end 1.
-         */
-        final String                     end1AttributeName            = "associatedGovernanceActionProcess";
-        final String                     end1AttributeDescription     = "Describes the governance action that will use this target for action.";
-        final String                     end1AttributeDescriptionGUID = null;
-
-        relationshipEndDef = archiveHelper.getRelationshipEndDef(this.archiveBuilder.getEntityDef(OpenMetadataType.GOVERNANCE_ACTION_PROCESS.typeName),
+        relationshipEndDef = archiveHelper.getRelationshipEndDef(this.archiveBuilder.getEntityDef(OpenMetadataType.GOVERNANCE_ACTION.typeName),
                                                                  end1AttributeName,
                                                                  end1AttributeDescription,
                                                                  end1AttributeDescriptionGUID,

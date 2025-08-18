@@ -13,7 +13,7 @@ import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.OpenMetada
 import org.odpi.openmetadata.frameworks.openmetadata.properties.ClassificationProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.RelationshipProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.actors.*;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.locations.ProfileLocationProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.locations.KnownLocationProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.validvalues.ValidValueDefinitionProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.validvalues.ValidValueMemberProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.search.*;
@@ -204,9 +204,9 @@ public class ValidValueDefinitionClient extends ConnectorContextClientBase
     public void linkLocationToProfile(String                    validValueDefinitionGUID,
                                       String                    locationGUID,
                                       MetadataSourceOptions     metadataSourceOptions,
-                                      ProfileLocationProperties relationshipProperties) throws InvalidParameterException,
-                                                                                               PropertyServerException,
-                                                                                               UserNotAuthorizedException
+                                      KnownLocationProperties relationshipProperties) throws InvalidParameterException,
+                                                                                             PropertyServerException,
+                                                                                             UserNotAuthorizedException
     {
         validValueDefinitionHandler.linkLocationToProfile(connectorUserId, validValueDefinitionGUID, locationGUID, metadataSourceOptions, relationshipProperties);
     }

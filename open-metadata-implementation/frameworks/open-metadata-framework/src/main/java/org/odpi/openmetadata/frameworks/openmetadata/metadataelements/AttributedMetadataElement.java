@@ -22,7 +22,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class AttributedMetadataElement implements MetadataElement
 {
-    private ElementHeader                       elementHeader             = null;
+    private ElementHeader elementHeader = null;
 
     /*
      * Area 0
@@ -54,6 +54,12 @@ public class AttributedMetadataElement implements MetadataElement
     private List<RelatedMetadataElementSummary> memberOfCollections           = null; // CollectionMembership (0021)
     private List<RelatedMetadataElementSummary> collectionMembers             = null; // CollectionMembership (0021)
 
+    private List<RelatedMetadataElementSummary> knownLocations    = null; // KnownLocation (0025)
+    private List<RelatedMetadataElementSummary> localResources    = null; // KnownLocation (0025)
+    private List<RelatedMetadataElementSummary> peerLocations     = null; // AdjacentLocation (0025)
+    private List<RelatedMetadataElementSummary> groupingLocations = null; // NestedLocation (0025)
+    private List<RelatedMetadataElementSummary> nestedLocations   = null; // NestedLocation (0025)
+
 
     private List<RelatedMetadataElementSummary> serverEndpoints   = null; // ServerEndpoint (0026)
     private RelatedMetadataElementSummary       serverForEndpoint = null; // ServerEndpoint (0026)
@@ -72,27 +78,56 @@ public class AttributedMetadataElement implements MetadataElement
      * Area 1
      */
 
+    private RelatedMetadataElementSummary       userProfile    = null; // ProfileIdentity (0110)
+    private List<RelatedMetadataElementSummary> userIdentities = null; // ProfileIdentity (0110)
+
     private List<RelatedMetadataElementSummary> contactDetails = null; // ContactThrough (0111)
     private List<RelatedMetadataElementSummary> contacts       = null; // ContactThrough (0111)
+
+    private List<RelatedMetadataElementSummary> peerPersons = null; // Peer (0112)
+
+    private RelatedMetadataElementSummary       superTeam = null; // TeamStructure (0115)
+    private List<RelatedMetadataElementSummary> subTeams  = null; // TeamStructure (0115)
+
+    private List<RelatedMetadataElementSummary> profilesForAsset   = null; // ITInfrastructureProfile (0117)
+    private List<RelatedMetadataElementSummary> assetsUsingProfile = null; // ITInfrastructureProfile (0117)
+
+    private List<RelatedMetadataElementSummary> performsRoles  = null; // PersonRoleAppointment, TeamRoleAppointment, ITProfileRoleAppointment (0118)
+    private List<RelatedMetadataElementSummary> rolePerformers = null; // PersonRoleAppointment, TeamRoleAppointment, ITProfileRoleAppointment (0118)
 
     private List<RelatedMetadataElementSummary> relevantToScope           = null; // ScopedBy (0120)
     private List<RelatedMetadataElementSummary> scopedElements            = null; // ScopedBy (0120)
     private List<RelatedMetadataElementSummary> assignmentScope           = null; // AssignmentScope (0120)
     private List<RelatedMetadataElementSummary> assignedActors            = null; // AssignmentScope (0120)
 
+    private RelatedMetadataElementSummary contributionRecord = null; // ContributionRecord (0125)
+    private RelatedMetadataElementSummary contributorProfile = null; // ContributionRecord (0125)
+
     private List<RelatedMetadataElementSummary> dependentProjects = null; // ProjectDependency (0130)
     private List<RelatedMetadataElementSummary> dependsOnProjects = null; // ProjectDependency (0130)
     private List<RelatedMetadataElementSummary> managingProjects  = null; // ProjectHierarchy (0130)
     private List<RelatedMetadataElementSummary> managedProjects   = null; // ProjectHierarchy (0130)
 
-    private List<RelatedMetadataElementSummary> likes              = null;
-    private RelatedMetadataElementSummary       likedElement       = null;
-    private List<RelatedMetadataElementSummary> informalTags       = null;
-    private List<RelatedMetadataElementSummary> taggedElements     = null;
-    private List<RelatedMetadataElementSummary> reviews            = null;
-    private RelatedMetadataElementSummary       reviewedElement    = null;
-    private List<RelatedMetadataElementSummary> comments           = null;
-    private RelatedMetadataElementSummary       commentedOnElement = null;
+    private List<RelatedMetadataElementSummary> likes              = null; // AttachedLike (0150)
+    private RelatedMetadataElementSummary       likedElement       = null; // AttachedLike (0150)
+    private List<RelatedMetadataElementSummary> informalTags       = null; // AttachedTag (0150)
+    private List<RelatedMetadataElementSummary> taggedElements     = null; // AttachedTag (0150)
+    private List<RelatedMetadataElementSummary> reviews            = null; // AttachedRating (0150)
+    private RelatedMetadataElementSummary       reviewedElement    = null; // AttachedRating (0150)
+    private List<RelatedMetadataElementSummary> comments           = null; // AttachedComment (0150)
+    private RelatedMetadataElementSummary       commentedOnElement = null; // AttachedComment (0150)
+    private List<RelatedMetadataElementSummary> answeredQuestions  = null; // AcceptedAnswer (0150)
+    private List<RelatedMetadataElementSummary> acceptedAnswers    = null; // AcceptedAnswer (0150)
+
+    private List<RelatedMetadataElementSummary> crowdSourcingContributors = null; // CrowdSourcingContribution (0155)
+    private List<RelatedMetadataElementSummary> crowdSourcedContributions = null; // CrowdSourcingContribution (0155)
+
+
+    private List<RelatedMetadataElementSummary> noteLogSubjects   = null; // AttachedNoteLog (0160)
+    private List<RelatedMetadataElementSummary> noteLogs          = null; // AttachedNoteLog (0160)
+    private List<RelatedMetadataElementSummary> presentInNoteLogs = null; // AttachedNoteLogEntry (0160)
+    private List<RelatedMetadataElementSummary> noteLogEntries    = null; // AttachedNoteLogEntry (0160)
+
 
     /*
      * Area 2
@@ -168,6 +203,37 @@ public class AttributedMetadataElement implements MetadataElement
     private List<RelatedMetadataElementSummary> peerGovernanceDefinitions       = null;
     private List<RelatedMetadataElementSummary> supportedGovernanceDefinitions  = null;
     private List<RelatedMetadataElementSummary> supportingGovernanceDefinitions = null;
+
+    private List<RelatedMetadataElementSummary> usedInAccessControls = null;     // AssociatedSecurityGroup (0423)
+    private List<RelatedMetadataElementSummary> associatedSecurityGroups = null; // AssociatedSecurityGroup (0423)
+
+    private RelatedMetadataElementSummary       inheritsFromZone = null; // ZoneHierarchy (0424)
+    private List<RelatedMetadataElementSummary> controlsZones = null; // ZoneHierarchy (0424)
+
+    private RelatedMetadataElementSummary       broaderSubjectArea = null; // SubjectAreaHierarchy (0425)
+    private List<RelatedMetadataElementSummary> nestedSubjectAreas = null; // SubjectAreaHierarchy (0425)
+
+    private List<RelatedMetadataElementSummary> metrics      = null; // GovernanceResults (0450)
+    private List<RelatedMetadataElementSummary> measurements = null; // GovernanceResults (0450)
+
+    private List<RelatedMetadataElementSummary> monitoredThrough             = null; // MonitoredResource (0451)
+    private List<RelatedMetadataElementSummary> monitoredResources           = null; // MonitoredResource (0451)
+    private List<RelatedMetadataElementSummary> interestingNotificationTypes = null; // NotificationSubscriber (0451)
+    private List<RelatedMetadataElementSummary> subscribers                  = null; // NotificationSubscriber (0451)
+
+    private List<RelatedMetadataElementSummary> calledFromGovernanceEngines = null; // SupportedGovernanceService (0461)
+    private List<RelatedMetadataElementSummary> supportedGovernanceServices = null; // SupportedGovernanceService (0461)
+
+    private List<RelatedMetadataElementSummary> associatedGovernanceActions = null; // TargetForGovernanceAction (0462)
+    private List<RelatedMetadataElementSummary> predefinedTargetForAction   = null; // TargetForGovernanceAction (0462)
+    private List<RelatedMetadataElementSummary> triggeredFrom               = null; // GovernanceActionProcessFlow (0462)
+    private RelatedMetadataElementSummary       firstStep                   = null; // GovernanceActionProcessFlow (0462)
+    private List<RelatedMetadataElementSummary> dependedOnProcessSteps      = null; // NextGovernanceActionProcessStep (0462)
+    private List<RelatedMetadataElementSummary> followOnProcessSteps        = null; // NextGovernanceActionProcessStep (0462)
+    private List<RelatedMetadataElementSummary> supportsGovernanceActions   = null; // GovernanceActionExecutor (0462)
+    private RelatedMetadataElementSummary       governanceActionExecutor    = null; // GovernanceActionExecutor (0462)
+
+
 
     private List<RelatedMetadataElementSummary> licenses          = null; // License (0481)
     private List<RelatedMetadataElementSummary> licensedElements  = null; // License (0481)
@@ -248,8 +314,19 @@ public class AttributedMetadataElement implements MetadataElement
     private List<RelatedMetadataElementSummary> contracts             = null; // ContractLink (0711)
     private List<RelatedMetadataElementSummary> agreementsForContract = null; // ContractLink (0711)
 
-    private List<RelatedMetadataElementSummary> digitalSubscribers = null;
-    private List<RelatedMetadataElementSummary> digitalSubscriptions = null;
+    private List<RelatedMetadataElementSummary> digitalSubscribers   = null; // DigitalSubscriber (0712)
+    private List<RelatedMetadataElementSummary> digitalSubscriptions = null; // DigitalSubscriber (0712)
+
+    private List<RelatedMetadataElementSummary> consumingBusinessCapabilities = null; /* DigitalSupport (0715) */
+    private List<RelatedMetadataElementSummary> usesDigitalServices           = null; /* DigitalSupport (0715) */
+    private List<RelatedMetadataElementSummary> supportsBusinessCapabilities  = null; /* BusinessCapabilityDependency (0715) */
+    private List<RelatedMetadataElementSummary> dependsOnBusinessCapabilities = null; /* BusinessCapabilityDependency (0715) */
+
+
+    private List<RelatedMetadataElementSummary> usedInSolutionComponents          = null; /* SolutionComposition (0730) */
+    private List<RelatedMetadataElementSummary> nestedSolutionComponents          = null; /* SolutionComposition (0730) */
+    private List<RelatedMetadataElementSummary> interactingWithActors             = null; /* SolutionComponentActor (0730) */
+    private List<RelatedMetadataElementSummary> interactingWithSolutionComponents = null; /* SolutionComponentActor (0730) */
 
 
     private List<RelatedMetadataElementSummary> lineageLinkage            = null; // Many
@@ -320,6 +397,12 @@ public class AttributedMetadataElement implements MetadataElement
             memberOfCollections = template.getMemberOfCollections();
             collectionMembers   = template.getCollectionMembers();
 
+            knownLocations    = template.getKnownLocations();
+            localResources    = template.getLocalResources();
+            peerLocations     = template.getPeerLocations();
+            groupingLocations = template.getGroupingLocations();
+            nestedLocations   = template.getNestedLocations();
+
             serverEndpoints   = template.getServerEndpoints();
             serverForEndpoint = template.getServerForEndpoint();
 
@@ -343,13 +426,30 @@ public class AttributedMetadataElement implements MetadataElement
              * Area 1
              */
 
+            userProfile    = template.getUserProfile();
+            userIdentities = template.getUserIdentities();
+
             contactDetails = template.getContactDetails();
             contacts       = template.getContacts();
 
-            relevantToScope           = template.getRelevantToScope();
-            scopedElements            = template.getScopedElements();
-            assignmentScope           = template.getAssignmentScope();
-            assignedActors            = template.getAssignedActors();
+            peerPersons    = template.getPeerPersons();
+
+            superTeam = template.getSuperTeam();
+            subTeams  = template.getSubTeams();
+
+            profilesForAsset   = template.getProfilesForAsset();
+            assetsUsingProfile = template.getAssetsUsingProfile();
+
+            performsRoles  = template.getPerformsRoles();
+            rolePerformers = template.getRolePerformers();
+
+            relevantToScope = template.getRelevantToScope();
+            scopedElements  = template.getScopedElements();
+            assignmentScope = template.getAssignmentScope();
+            assignedActors  = template.getAssignedActors();
+
+            contributionRecord = template.getContributionRecord();
+            contributorProfile = template.getContributorProfile();
 
             dependsOnProjects = template.getDependsOnProjects();
             dependentProjects = template.getDependentProjects();
@@ -364,6 +464,16 @@ public class AttributedMetadataElement implements MetadataElement
             taggedElements     = template.getTaggedElements();
             comments           = template.getComments();
             commentedOnElement = template.getCommentedOnElement();
+            answeredQuestions  = template.getAnsweredQuestions();
+            acceptedAnswers    = template.getAcceptedAnswers();
+
+            crowdSourcingContributors = template.getCrowdSourcingContributors();
+            crowdSourcedContributions = template.getCrowdSourcedContributions();
+
+            noteLogSubjects   = template.getNoteLogSubjects();
+            noteLogs          = template.getNoteLogs();
+            presentInNoteLogs = template.getPresentInNoteLogs();
+            noteLogEntries    = template.getNoteLogEntries();
 
             /*
              * Area 2
@@ -432,10 +542,38 @@ public class AttributedMetadataElement implements MetadataElement
             governedBy                = template.getGovernedBy();
             governedElements          = template.getGovernedElements();
 
-
             peerGovernanceDefinitions      = template.getPeerGovernanceDefinitions();
             supportedGovernanceDefinitions = template.getSupportedGovernanceDefinitions();
             supportingGovernanceDefinitions = template.getSupportingGovernanceDefinitions();
+
+            usedInAccessControls = template.getUsedInAccessControls();
+            associatedSecurityGroups = template.getAssociatedSecurityGroups();
+
+            inheritsFromZone = template.getInheritsFromZone();
+            controlsZones = template.getControlsZones();
+
+            broaderSubjectArea = template.getBroaderSubjectArea();
+            nestedSubjectAreas = template.getNestedSubjectAreas();
+
+            metrics      = template.getMetrics();
+            measurements = template.getMeasurements();
+
+            monitoredThrough             = template.getMonitoredThrough();
+            monitoredResources           = template.getMonitoredResources();
+            interestingNotificationTypes = template.getInterestingNotificationTypes();
+            subscribers                  = template.getSubscribers();
+
+            calledFromGovernanceEngines = template.getCalledFromGovernanceEngines();
+            supportedGovernanceServices = template.getSupportedGovernanceServices();
+
+            associatedGovernanceActions = template.getAssociatedGovernanceActions();
+            predefinedTargetForAction   = template.getPredefinedTargetForAction();
+            triggeredFrom               = template.getTriggeredFrom();
+            firstStep                   = template.getFirstStep();
+            dependedOnProcessSteps      = template.getDependedOnProcessSteps();
+            followOnProcessSteps        = template.getFollowOnProcessSteps();
+            supportsGovernanceActions   = template.getSupportsGovernanceActions();
+            governanceActionExecutor    = template.getGovernanceActionExecutor();
 
             licenses                  = template.getLicenses();
             licensedElements          = template.getLicensedElements();
@@ -519,6 +657,16 @@ public class AttributedMetadataElement implements MetadataElement
 
             digitalSubscribers   = template.getDigitalSubscribers();
             digitalSubscriptions = template.getDigitalSubscriptions();
+
+            consumingBusinessCapabilities = template.getConsumingBusinessCapabilities();
+            usesDigitalServices           = template.getUsesDigitalServices();
+            supportsBusinessCapabilities  = template.getSupportsBusinessCapabilities();
+            dependsOnBusinessCapabilities = template.getDependsOnBusinessCapabilities();
+
+            usedInSolutionComponents          = template.getUsedInSolutionComponents();
+            nestedSolutionComponents          = template.getNestedSolutionComponents();
+            interactingWithActors             = template.getInteractingWithActors();
+            interactingWithSolutionComponents = template.getInteractingWithSolutionComponents();
 
             lineageLinkage            = template.getLineageLinkage();
             derivedFrom               = template.getDerivedFrom();
@@ -751,6 +899,56 @@ public class AttributedMetadataElement implements MetadataElement
     }
 
 
+    public List<RelatedMetadataElementSummary> getKnownLocations()
+    {
+        return knownLocations;
+    }
+
+    public void setKnownLocations(List<RelatedMetadataElementSummary> knownLocations)
+    {
+        this.knownLocations = knownLocations;
+    }
+
+    public List<RelatedMetadataElementSummary> getLocalResources()
+    {
+        return localResources;
+    }
+
+    public void setLocalResources(List<RelatedMetadataElementSummary> localResources)
+    {
+        this.localResources = localResources;
+    }
+
+    public List<RelatedMetadataElementSummary> getPeerLocations()
+    {
+        return peerLocations;
+    }
+
+    public void setPeerLocations(List<RelatedMetadataElementSummary> peerLocations)
+    {
+        this.peerLocations = peerLocations;
+    }
+
+    public List<RelatedMetadataElementSummary> getGroupingLocations()
+    {
+        return groupingLocations;
+    }
+
+    public void setGroupingLocations(List<RelatedMetadataElementSummary> groupingLocations)
+    {
+        this.groupingLocations = groupingLocations;
+    }
+
+    public List<RelatedMetadataElementSummary> getNestedLocations()
+    {
+        return nestedLocations;
+    }
+
+    public void setNestedLocations(List<RelatedMetadataElementSummary> nestedLocations)
+    {
+        this.nestedLocations = nestedLocations;
+    }
+
     public List<RelatedMetadataElementSummary> getServerEndpoints()
     {
         return serverEndpoints;
@@ -954,6 +1152,39 @@ public class AttributedMetadataElement implements MetadataElement
         this.visibleInNetworks = visibleInNetworks;
     }
 
+    public RelatedMetadataElementSummary getUserProfile()
+    {
+        return userProfile;
+    }
+
+    public void setUserProfile(RelatedMetadataElementSummary userProfile)
+    {
+        this.userProfile = userProfile;
+    }
+
+
+    /**
+     * Return the list of user identities for this element.
+     *
+     * @return list of userIds
+     */
+    public List<RelatedMetadataElementSummary> getUserIdentities()
+    {
+        return userIdentities;
+    }
+
+
+    /**
+     * Set up the list of user identities for this element.
+     *
+     * @param userIdentities list of userIds
+     */
+    public void setUserIdentities(List<RelatedMetadataElementSummary> userIdentities)
+    {
+        this.userIdentities = userIdentities;
+    }
+
+
     /**
      * Return the contact methods for this element.
      *
@@ -984,6 +1215,78 @@ public class AttributedMetadataElement implements MetadataElement
     public void setContacts(List<RelatedMetadataElementSummary> contacts)
     {
         this.contacts = contacts;
+    }
+
+
+    public List<RelatedMetadataElementSummary> getPeerPersons()
+    {
+        return peerPersons;
+    }
+
+    public void setPeerPersons(List<RelatedMetadataElementSummary> peerPersons)
+    {
+        this.peerPersons = peerPersons;
+    }
+
+
+    public RelatedMetadataElementSummary getSuperTeam()
+    {
+        return superTeam;
+    }
+
+    public void setSuperTeam(RelatedMetadataElementSummary superTeam)
+    {
+        this.superTeam = superTeam;
+    }
+
+    public List<RelatedMetadataElementSummary> getSubTeams()
+    {
+        return subTeams;
+    }
+
+    public void setSubTeams(List<RelatedMetadataElementSummary> subTeams)
+    {
+        this.subTeams = subTeams;
+    }
+
+    public List<RelatedMetadataElementSummary> getProfilesForAsset()
+    {
+        return profilesForAsset;
+    }
+
+    public void setProfilesForAsset(List<RelatedMetadataElementSummary> profilesForAsset)
+    {
+        this.profilesForAsset = profilesForAsset;
+    }
+
+    public List<RelatedMetadataElementSummary> getAssetsUsingProfile()
+    {
+        return assetsUsingProfile;
+    }
+
+    public void setAssetsUsingProfile(List<RelatedMetadataElementSummary> assetsUsingProfile)
+    {
+        this.assetsUsingProfile = assetsUsingProfile;
+    }
+
+    public List<RelatedMetadataElementSummary> getPerformsRoles()
+    {
+        return performsRoles;
+    }
+
+    public void setPerformsRoles(List<RelatedMetadataElementSummary> performsRoles)
+    {
+        this.performsRoles = performsRoles;
+    }
+
+    public List<RelatedMetadataElementSummary> getRolePerformers()
+    {
+        return rolePerformers;
+    }
+
+    public void setRolePerformers(List<RelatedMetadataElementSummary> rolePerformers)
+    {
+        this.rolePerformers = rolePerformers;
     }
 
     /**
@@ -1226,6 +1529,85 @@ public class AttributedMetadataElement implements MetadataElement
         this.reviewedElement = reviewedElement;
     }
 
+    public List<RelatedMetadataElementSummary> getAnsweredQuestions()
+    {
+        return answeredQuestions;
+    }
+
+    public void setAnsweredQuestions(List<RelatedMetadataElementSummary> answeredQuestions)
+    {
+        this.answeredQuestions = answeredQuestions;
+    }
+
+    public List<RelatedMetadataElementSummary> getAcceptedAnswers()
+    {
+        return acceptedAnswers;
+    }
+
+    public void setAcceptedAnswers(List<RelatedMetadataElementSummary> acceptedAnswers)
+    {
+        this.acceptedAnswers = acceptedAnswers;
+    }
+
+    public List<RelatedMetadataElementSummary> getCrowdSourcingContributors()
+    {
+        return crowdSourcingContributors;
+    }
+
+    public void setCrowdSourcingContributors(List<RelatedMetadataElementSummary> crowdSourcingContributors)
+    {
+        this.crowdSourcingContributors = crowdSourcingContributors;
+    }
+
+    public List<RelatedMetadataElementSummary> getCrowdSourcedContributions()
+    {
+        return crowdSourcedContributions;
+    }
+
+    public void setCrowdSourcedContributions(List<RelatedMetadataElementSummary> crowdSourcedContributions)
+    {
+        this.crowdSourcedContributions = crowdSourcedContributions;
+    }
+
+    public List<RelatedMetadataElementSummary> getNoteLogSubjects()
+    {
+        return noteLogSubjects;
+    }
+
+    public void setNoteLogSubjects(List<RelatedMetadataElementSummary> noteLogSubjects)
+    {
+        this.noteLogSubjects = noteLogSubjects;
+    }
+
+    public List<RelatedMetadataElementSummary> getNoteLogs()
+    {
+        return noteLogs;
+    }
+
+    public void setNoteLogs(List<RelatedMetadataElementSummary> noteLogs)
+    {
+        this.noteLogs = noteLogs;
+    }
+
+    public List<RelatedMetadataElementSummary> getPresentInNoteLogs()
+    {
+        return presentInNoteLogs;
+    }
+
+    public void setPresentInNoteLogs(List<RelatedMetadataElementSummary> presentInNoteLogs)
+    {
+        this.presentInNoteLogs = presentInNoteLogs;
+    }
+
+    public List<RelatedMetadataElementSummary> getNoteLogEntries()
+    {
+        return noteLogEntries;
+    }
+
+    public void setNoteLogEntries(List<RelatedMetadataElementSummary> noteLogEntries)
+    {
+        this.noteLogEntries = noteLogEntries;
+    }
 
     /**
      * Return elements linked via the resource list relationship.
@@ -1962,6 +2344,228 @@ public class AttributedMetadataElement implements MetadataElement
         this.supportingGovernanceDefinitions = supportingGovernanceDefinitions;
     }
 
+    public List<RelatedMetadataElementSummary> getUsedInAccessControls()
+    {
+        return usedInAccessControls;
+    }
+
+    public void setUsedInAccessControls(List<RelatedMetadataElementSummary> usedInAccessControls)
+    {
+        this.usedInAccessControls = usedInAccessControls;
+    }
+
+    public List<RelatedMetadataElementSummary> getAssociatedSecurityGroups()
+    {
+        return associatedSecurityGroups;
+    }
+
+    public void setAssociatedSecurityGroups(List<RelatedMetadataElementSummary> associatedSecurityGroups)
+    {
+        this.associatedSecurityGroups = associatedSecurityGroups;
+    }
+
+    public RelatedMetadataElementSummary getInheritsFromZone()
+    {
+        return inheritsFromZone;
+    }
+
+    public void setInheritsFromZone(RelatedMetadataElementSummary inheritsFromZone)
+    {
+        this.inheritsFromZone = inheritsFromZone;
+    }
+
+    public List<RelatedMetadataElementSummary> getControlsZones()
+    {
+        return controlsZones;
+    }
+
+    public void setControlsZones(List<RelatedMetadataElementSummary> controlsZones)
+    {
+        this.controlsZones = controlsZones;
+    }
+
+
+    public RelatedMetadataElementSummary getBroaderSubjectArea()
+    {
+        return broaderSubjectArea;
+    }
+
+    public void setBroaderSubjectArea(RelatedMetadataElementSummary broaderSubjectArea)
+    {
+        this.broaderSubjectArea = broaderSubjectArea;
+    }
+
+    public List<RelatedMetadataElementSummary> getNestedSubjectAreas()
+    {
+        return nestedSubjectAreas;
+    }
+
+    public void setNestedSubjectAreas(List<RelatedMetadataElementSummary> nestedSubjectAreas)
+    {
+        this.nestedSubjectAreas = nestedSubjectAreas;
+    }
+
+    public List<RelatedMetadataElementSummary> getMetrics()
+    {
+        return metrics;
+    }
+
+    public void setMetrics(List<RelatedMetadataElementSummary> metrics)
+    {
+        this.metrics = metrics;
+    }
+
+    public List<RelatedMetadataElementSummary> getMeasurements()
+    {
+        return measurements;
+    }
+
+    public void setMeasurements(List<RelatedMetadataElementSummary> measurements)
+    {
+        this.measurements = measurements;
+    }
+
+    public List<RelatedMetadataElementSummary> getMonitoredThrough()
+    {
+        return monitoredThrough;
+    }
+
+    public void setMonitoredThrough(List<RelatedMetadataElementSummary> monitoredThrough)
+    {
+        this.monitoredThrough = monitoredThrough;
+    }
+
+    public List<RelatedMetadataElementSummary> getMonitoredResources()
+    {
+        return monitoredResources;
+    }
+
+    public void setMonitoredResources(List<RelatedMetadataElementSummary> monitoredResources)
+    {
+        this.monitoredResources = monitoredResources;
+    }
+
+    public List<RelatedMetadataElementSummary> getInterestingNotificationTypes()
+    {
+        return interestingNotificationTypes;
+    }
+
+    public void setInterestingNotificationTypes(List<RelatedMetadataElementSummary> interestingNotificationTypes)
+    {
+        this.interestingNotificationTypes = interestingNotificationTypes;
+    }
+
+    public List<RelatedMetadataElementSummary> getSubscribers()
+    {
+        return subscribers;
+    }
+
+    public void setSubscribers(List<RelatedMetadataElementSummary> subscribers)
+    {
+        this.subscribers = subscribers;
+    }
+
+
+    public List<RelatedMetadataElementSummary> getCalledFromGovernanceEngines()
+    {
+        return calledFromGovernanceEngines;
+    }
+
+    public void setCalledFromGovernanceEngines(List<RelatedMetadataElementSummary> calledFromGovernanceEngines)
+    {
+        this.calledFromGovernanceEngines = calledFromGovernanceEngines;
+    }
+
+    public List<RelatedMetadataElementSummary> getSupportedGovernanceServices()
+    {
+        return supportedGovernanceServices;
+    }
+
+    public void setSupportedGovernanceServices(List<RelatedMetadataElementSummary> supportedGovernanceServices)
+    {
+        this.supportedGovernanceServices = supportedGovernanceServices;
+    }
+
+
+    public List<RelatedMetadataElementSummary> getAssociatedGovernanceActions()
+    {
+        return associatedGovernanceActions;
+    }
+
+    public void setAssociatedGovernanceActions(List<RelatedMetadataElementSummary> associatedGovernanceActions)
+    {
+        this.associatedGovernanceActions = associatedGovernanceActions;
+    }
+
+    public List<RelatedMetadataElementSummary> getPredefinedTargetForAction()
+    {
+        return predefinedTargetForAction;
+    }
+
+    public void setPredefinedTargetForAction(List<RelatedMetadataElementSummary> predefinedTargetForAction)
+    {
+        this.predefinedTargetForAction = predefinedTargetForAction;
+    }
+
+    public List<RelatedMetadataElementSummary> getTriggeredFrom()
+    {
+        return triggeredFrom;
+    }
+
+    public void setTriggeredFrom(List<RelatedMetadataElementSummary> triggeredFrom)
+    {
+        this.triggeredFrom = triggeredFrom;
+    }
+
+    public RelatedMetadataElementSummary getFirstStep()
+    {
+        return firstStep;
+    }
+
+    public void setFirstStep(RelatedMetadataElementSummary firstStep)
+    {
+        this.firstStep = firstStep;
+    }
+
+    public List<RelatedMetadataElementSummary> getDependedOnProcessSteps()
+    {
+        return dependedOnProcessSteps;
+    }
+
+    public void setDependedOnProcessSteps(List<RelatedMetadataElementSummary> dependedOnProcessSteps)
+    {
+        this.dependedOnProcessSteps = dependedOnProcessSteps;
+    }
+
+    public List<RelatedMetadataElementSummary> getFollowOnProcessSteps()
+    {
+        return followOnProcessSteps;
+    }
+
+    public void setFollowOnProcessSteps(List<RelatedMetadataElementSummary> followOnProcessSteps)
+    {
+        this.followOnProcessSteps = followOnProcessSteps;
+    }
+
+    public List<RelatedMetadataElementSummary> getSupportsGovernanceActions()
+    {
+        return supportsGovernanceActions;
+    }
+
+    public void setSupportsGovernanceActions(List<RelatedMetadataElementSummary> supportsGovernanceActions)
+    {
+        this.supportsGovernanceActions = supportsGovernanceActions;
+    }
+
+    public RelatedMetadataElementSummary getGovernanceActionExecutor()
+    {
+        return governanceActionExecutor;
+    }
+
+    public void setGovernanceActionExecutor(RelatedMetadataElementSummary governanceActionExecutor)
+    {
+        this.governanceActionExecutor = governanceActionExecutor;
+    }
 
     public List<RelatedMetadataElementSummary> getLicenses()
     {
@@ -2041,6 +2645,26 @@ public class AttributedMetadataElement implements MetadataElement
     public void setAssignedActors(List<RelatedMetadataElementSummary> assignedActors)
     {
         this.assignedActors = assignedActors;
+    }
+
+    public RelatedMetadataElementSummary getContributionRecord()
+    {
+        return contributionRecord;
+    }
+
+    public void setContributionRecord(RelatedMetadataElementSummary contributionRecord)
+    {
+        this.contributionRecord = contributionRecord;
+    }
+
+    public RelatedMetadataElementSummary getContributorProfile()
+    {
+        return contributorProfile;
+    }
+
+    public void setContributorProfile(RelatedMetadataElementSummary contributorProfile)
+    {
+        this.contributorProfile = contributorProfile;
     }
 
     /**
@@ -2836,6 +3460,29 @@ public class AttributedMetadataElement implements MetadataElement
         this.involvedInAgreements = involvedInAgreements;
     }
 
+
+
+    public List<RelatedMetadataElementSummary> getContracts()
+    {
+        return contracts;
+    }
+
+    public void setContracts(List<RelatedMetadataElementSummary> contracts)
+    {
+        this.contracts = contracts;
+    }
+
+    public List<RelatedMetadataElementSummary> getAgreementsForContract()
+    {
+        return agreementsForContract;
+    }
+
+    public void setAgreementsForContract(List<RelatedMetadataElementSummary> agreementsForContract)
+    {
+        this.agreementsForContract = agreementsForContract;
+    }
+
+
     public List<RelatedMetadataElementSummary> getDigitalSubscribers()
     {
         return digitalSubscribers;
@@ -2856,24 +3503,97 @@ public class AttributedMetadataElement implements MetadataElement
         this.digitalSubscriptions = digitalSubscriptions;
     }
 
-    public List<RelatedMetadataElementSummary> getContracts()
+
+    public List<RelatedMetadataElementSummary> getConsumingBusinessCapabilities()
     {
-        return contracts;
+        return consumingBusinessCapabilities;
     }
 
-    public void setContracts(List<RelatedMetadataElementSummary> contracts)
+    public void setConsumingBusinessCapabilities(List<RelatedMetadataElementSummary> consumingBusinessCapabilities)
     {
-        this.contracts = contracts;
+        this.consumingBusinessCapabilities = consumingBusinessCapabilities;
     }
 
-    public List<RelatedMetadataElementSummary> getAgreementsForContract()
+    public List<RelatedMetadataElementSummary> getUsesDigitalServices()
     {
-        return agreementsForContract;
+        return usesDigitalServices;
     }
 
-    public void setAgreementsForContract(List<RelatedMetadataElementSummary> agreementsForContract)
+    public void setUsesDigitalServices(List<RelatedMetadataElementSummary> usesDigitalServices)
     {
-        this.agreementsForContract = agreementsForContract;
+        this.usesDigitalServices = usesDigitalServices;
+    }
+
+    public List<RelatedMetadataElementSummary> getSupportsBusinessCapabilities()
+    {
+        return supportsBusinessCapabilities;
+    }
+
+    public void setSupportsBusinessCapabilities(List<RelatedMetadataElementSummary> supportsBusinessCapabilities)
+    {
+        this.supportsBusinessCapabilities = supportsBusinessCapabilities;
+    }
+
+    public List<RelatedMetadataElementSummary> getDependsOnBusinessCapabilities()
+    {
+        return dependsOnBusinessCapabilities;
+    }
+
+    public void setDependsOnBusinessCapabilities(List<RelatedMetadataElementSummary> dependsOnBusinessCapabilities)
+    {
+        this.dependsOnBusinessCapabilities = dependsOnBusinessCapabilities;
+    }
+
+    public List<RelatedMetadataElementSummary> getUsedInSolutionComponents()
+    {
+        return usedInSolutionComponents;
+    }
+
+    public void setUsedInSolutionComponents(List<RelatedMetadataElementSummary> usedInSolutionComponents)
+    {
+        this.usedInSolutionComponents = usedInSolutionComponents;
+    }
+
+    public List<RelatedMetadataElementSummary> getNestedSolutionComponents()
+    {
+        return nestedSolutionComponents;
+    }
+
+    public void setNestedSolutionComponents(List<RelatedMetadataElementSummary> nestedSolutionComponents)
+    {
+        this.nestedSolutionComponents = nestedSolutionComponents;
+    }
+
+    public List<RelatedMetadataElementSummary> getInteractingWithActors()
+    {
+        return interactingWithActors;
+    }
+
+    public void setInteractingWithActors(List<RelatedMetadataElementSummary> interactingWithActors)
+    {
+        this.interactingWithActors = interactingWithActors;
+    }
+
+
+    /**
+     * Return details of the relationships to solution components.
+     *
+     * @return list of element stubs
+     */
+    public List<RelatedMetadataElementSummary> getInteractingWithSolutionComponents()
+    {
+        return interactingWithSolutionComponents;
+    }
+
+
+    /**
+     * Set up details of the relationships to solution components.
+     *
+     * @param interactingWithSolutionComponents relationship details
+     */
+    public void setInteractingWithSolutionComponents(List<RelatedMetadataElementSummary> interactingWithSolutionComponents)
+    {
+        this.interactingWithSolutionComponents = interactingWithSolutionComponents;
     }
 
     /**

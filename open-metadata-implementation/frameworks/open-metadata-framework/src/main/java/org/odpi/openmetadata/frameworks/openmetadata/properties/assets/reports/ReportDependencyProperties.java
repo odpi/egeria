@@ -7,6 +7,7 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.RelationshipBeanProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 
 import java.util.Objects;
 
@@ -22,8 +23,8 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class ReportDependencyProperties extends RelationshipBeanProperties
 {
-    String  label   = null;
-    String  description   = null;
+    private String  label   = null;
+    private String  description   = null;
 
     /**
      * Default constructor
@@ -31,6 +32,7 @@ public class ReportDependencyProperties extends RelationshipBeanProperties
     public ReportDependencyProperties()
     {
         super();
+        super.setTypeName(OpenMetadataType.REPORT_DEPENDENCY_RELATIONSHIP.typeName);
     }
 
 
