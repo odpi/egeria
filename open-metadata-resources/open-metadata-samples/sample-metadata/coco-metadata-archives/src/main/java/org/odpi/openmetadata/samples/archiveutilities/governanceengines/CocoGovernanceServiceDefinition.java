@@ -5,11 +5,10 @@ package org.odpi.openmetadata.samples.archiveutilities.governanceengines;
 
 
 import org.odpi.openmetadata.adapters.connectors.governanceactions.provisioning.MoveCopyFileGovernanceActionProvider;
-import org.odpi.openmetadata.archiveutilities.openconnectors.ContentPackDefinition;
-import org.odpi.openmetadata.frameworks.governanceaction.GovernanceServiceProviderBase;
+import org.odpi.openmetadata.frameworks.opengovernance.GovernanceServiceProviderBase;
 import org.odpi.openmetadata.frameworks.openmetadata.refdata.DeployedImplementationType;
 import org.odpi.openmetadata.frameworks.openmetadata.refdata.ResourceUse;
-import org.odpi.openmetadata.frameworks.surveyaction.SurveyActionServiceProvider;
+import org.odpi.openmetadata.frameworks.opensurvey.SurveyActionServiceProvider;
 import org.odpi.openmetadata.samples.archiveutilities.GovernanceActionDescription;
 import org.odpi.openmetadata.samples.governanceactions.clinicaltrials.*;
 

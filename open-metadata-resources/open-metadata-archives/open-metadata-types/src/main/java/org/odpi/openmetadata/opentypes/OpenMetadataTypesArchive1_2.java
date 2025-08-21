@@ -2745,7 +2745,7 @@ public class OpenMetadataTypesArchive1_2
 
     private ClassificationDef getCollectionCategoryClassification()
     {
-        return archiveHelper.getClassificationDef(OpenMetadataType.COLLECTION_CATEGORY_CLASSIFICATION,
+        return archiveHelper.getClassificationDef(OpenMetadataType.COLLECTION_ROLE_CLASSIFICATION,
                                                   null,
                                                   this.archiveBuilder.getEntityDef(OpenMetadataType.COLLECTION.typeName),
                                                   false);
@@ -2754,7 +2754,7 @@ public class OpenMetadataTypesArchive1_2
     private ClassificationDef getFolderClassification()
     {
         return archiveHelper.getClassificationDef(OpenMetadataType.FOLDER_COLLECTION_CLASSIFICATION,
-                                                  this.archiveBuilder.getClassificationDef(OpenMetadataType.COLLECTION_CATEGORY_CLASSIFICATION.typeName),
+                                                  this.archiveBuilder.getClassificationDef(OpenMetadataType.COLLECTION_ROLE_CLASSIFICATION.typeName),
                                                   this.archiveBuilder.getEntityDef(OpenMetadataType.COLLECTION.typeName),
                                                   false);
     }
@@ -2762,7 +2762,7 @@ public class OpenMetadataTypesArchive1_2
     private ClassificationDef getResultsSetClassification()
     {
         return archiveHelper.getClassificationDef(OpenMetadataType.RESULTS_SET_CLASSIFICATION,
-                                                  this.archiveBuilder.getClassificationDef(OpenMetadataType.COLLECTION_CATEGORY_CLASSIFICATION.typeName),
+                                                  this.archiveBuilder.getClassificationDef(OpenMetadataType.COLLECTION_ROLE_CLASSIFICATION.typeName),
                                                   this.archiveBuilder.getEntityDef(OpenMetadataType.COLLECTION.typeName),
                                                   false);
     }
@@ -2925,7 +2925,7 @@ public class OpenMetadataTypesArchive1_2
 
     private ClassificationDef getProjectCategoryClassification()
     {
-        return archiveHelper.getClassificationDef(OpenMetadataType.PROJECT_CATEGORY_CLASSIFICATION,
+        return archiveHelper.getClassificationDef(OpenMetadataType.PROJECT_ROLE_CLASSIFICATION,
                                                   null,
                                                   this.archiveBuilder.getEntityDef(OpenMetadataType.PROJECT.typeName),
                                                   false);
@@ -2934,7 +2934,7 @@ public class OpenMetadataTypesArchive1_2
     private ClassificationDef getTaskClassification()
     {
         return archiveHelper.getClassificationDef(OpenMetadataType.TASK_CLASSIFICATION,
-                                                  this.archiveBuilder.getClassificationDef(OpenMetadataType.PROJECT_CATEGORY_CLASSIFICATION.typeName),
+                                                  this.archiveBuilder.getClassificationDef(OpenMetadataType.PROJECT_ROLE_CLASSIFICATION.typeName),
                                                   this.archiveBuilder.getEntityDef(OpenMetadataType.PROJECT.typeName),
                                                   false);
     }
@@ -2943,7 +2943,7 @@ public class OpenMetadataTypesArchive1_2
     private ClassificationDef getCampaignClassification()
     {
         return archiveHelper.getClassificationDef(OpenMetadataType.CAMPAIGN_CLASSIFICATION,
-                                                  this.archiveBuilder.getClassificationDef(OpenMetadataType.PROJECT_CATEGORY_CLASSIFICATION.typeName),
+                                                  this.archiveBuilder.getClassificationDef(OpenMetadataType.PROJECT_ROLE_CLASSIFICATION.typeName),
                                                   this.archiveBuilder.getEntityDef(OpenMetadataType.PROJECT.typeName),
                                                   false);
     }
@@ -5215,7 +5215,7 @@ public class OpenMetadataTypesArchive1_2
     private EntityDef getGlossaryEntity()
     {
         EntityDef entityDef = archiveHelper.getDefaultEntityDef(OpenMetadataType.GLOSSARY,
-                                                                this.archiveBuilder.getEntityDef(OpenMetadataType.REFERENCEABLE.typeName));
+                                                                this.archiveBuilder.getEntityDef(OpenMetadataType.COLLECTION.typeName));
 
         /*
          * Build the attributes
@@ -5234,7 +5234,7 @@ public class OpenMetadataTypesArchive1_2
     private ClassificationDef getTaxonomyClassification()
     {
         ClassificationDef classificationDef = archiveHelper.getClassificationDef(OpenMetadataType.TAXONOMY_CLASSIFICATION,
-                                                                                 null,
+                                                                                 this.archiveBuilder.getClassificationDef(OpenMetadataType.COLLECTION_ROLE_CLASSIFICATION.typeName),
                                                                                  this.archiveBuilder.getEntityDef(OpenMetadataType.GLOSSARY.typeName),
                                                                                  false);
 
@@ -5254,7 +5254,7 @@ public class OpenMetadataTypesArchive1_2
     private ClassificationDef getCanonicalVocabularyClassification()
     {
         ClassificationDef classificationDef = archiveHelper.getClassificationDef(OpenMetadataType.CANONICAL_VOCABULARY_CLASSIFICATION,
-                                                                                 null,
+                                                                                 this.archiveBuilder.getClassificationDef(OpenMetadataType.COLLECTION_ROLE_CLASSIFICATION.typeName),
                                                                                  this.archiveBuilder.getEntityDef(OpenMetadataType.GLOSSARY.typeName),
                                                                                  false);
 
@@ -5282,59 +5282,7 @@ public class OpenMetadataTypesArchive1_2
      */
     private void add0320CategoryHierarchy()
     {
-        this.archiveBuilder.addEntityDef(getGlossaryCategoryEntity());
-
-        this.archiveBuilder.addRelationshipDef(getCategoryHierarchyRelationship());
-
         this.archiveBuilder.addClassificationDef(getSubjectAreaClassification());
-    }
-
-
-    private EntityDef getGlossaryCategoryEntity()
-    {
-        return archiveHelper.getDefaultEntityDef(OpenMetadataType.GLOSSARY_CATEGORY,
-                                                 this.archiveBuilder.getEntityDef(OpenMetadataType.COLLECTION.typeName));
-    }
-
-
-    private RelationshipDef getCategoryHierarchyRelationship()
-    {
-        RelationshipDef relationshipDef = archiveHelper.getBasicRelationshipDef(OpenMetadataType.CATEGORY_HIERARCHY_RELATIONSHIP,
-                                                                                null,
-                                                                                ClassificationPropagationRule.NONE);
-
-        RelationshipEndDef relationshipEndDef;
-
-        /*
-         * Set up end 1.
-         */
-        final String                     end1AttributeName            = "associatedGlossaries";
-        final String                     end1AttributeDescription     = "Related glossary for this category hierarchy.";
-        final String                     end1AttributeDescriptionGUID = null;
-
-        relationshipEndDef = archiveHelper.getRelationshipEndDef(this.archiveBuilder.getEntityDef(OpenMetadataType.GLOSSARY.typeName),
-                                                                 end1AttributeName,
-                                                                 end1AttributeDescription,
-                                                                 end1AttributeDescriptionGUID,
-                                                                 RelationshipEndCardinality.ANY_NUMBER);
-        relationshipDef.setEndDef1(relationshipEndDef);
-
-
-        /*
-         * Set up end 2.
-         */
-        final String                     end2AttributeName            = "categories";
-        final String                     end2AttributeDescription     = "Categories of interest to this glossary.";
-        final String                     end2AttributeDescriptionGUID = null;
-
-        relationshipEndDef = archiveHelper.getRelationshipEndDef(this.archiveBuilder.getEntityDef(OpenMetadataType.GLOSSARY_CATEGORY.typeName),
-                                                                 end2AttributeName,
-                                                                 end2AttributeDescription,
-                                                                 end2AttributeDescriptionGUID,
-                                                                 RelationshipEndCardinality.ANY_NUMBER);
-        relationshipDef.setEndDef2(relationshipEndDef);
-
-        return relationshipDef;
     }
 
 
@@ -5372,8 +5320,6 @@ public class OpenMetadataTypesArchive1_2
         this.archiveBuilder.addEnumDef(getTermRelationshipStatusEnum());
 
         this.archiveBuilder.addEntityDef(getGlossaryTermEntity());
-
-        this.archiveBuilder.addRelationshipDef(getTermAnchorRelationship());
     }
 
     private EnumDef getTermRelationshipStatusEnum()
@@ -5427,47 +5373,6 @@ public class OpenMetadataTypesArchive1_2
         entityDef.setPropertiesDefinition(properties);
 
         return entityDef;
-    }
-
-
-    private RelationshipDef getTermAnchorRelationship()
-    {
-        RelationshipDef relationshipDef = archiveHelper.getBasicRelationshipDef(OpenMetadataType.PARENT_GLOSSARY_RELATIONSHIP,
-                                                                                null,
-                                                                                ClassificationPropagationRule.NONE);
-
-        RelationshipEndDef relationshipEndDef;
-
-        /*
-         * Set up end 1.
-         */
-        final String                     end1AttributeName            = "anchor";
-        final String                     end1AttributeDescription     = "Owning glossary.";
-        final String                     end1AttributeDescriptionGUID = null;
-
-        relationshipEndDef = archiveHelper.getRelationshipEndDef(this.archiveBuilder.getEntityDef(OpenMetadataType.GLOSSARY.typeName),
-                                                                 end1AttributeName,
-                                                                 end1AttributeDescription,
-                                                                 end1AttributeDescriptionGUID,
-                                                                 RelationshipEndCardinality.AT_MOST_ONE);
-        relationshipDef.setEndDef1(relationshipEndDef);
-
-
-        /*
-         * Set up end 2.
-         */
-        final String                     end2AttributeName            = "terms";
-        final String                     end2AttributeDescription     = "Terms owned by this glossary.";
-        final String                     end2AttributeDescriptionGUID = null;
-
-        relationshipEndDef = archiveHelper.getRelationshipEndDef(this.archiveBuilder.getEntityDef(OpenMetadataType.GLOSSARY_TERM.typeName),
-                                                                 end2AttributeName,
-                                                                 end2AttributeDescription,
-                                                                 end2AttributeDescriptionGUID,
-                                                                 RelationshipEndCardinality.ANY_NUMBER);
-        relationshipDef.setEndDef2(relationshipEndDef);
-
-        return relationshipDef;
     }
 
 
@@ -7040,6 +6945,8 @@ public class OpenMetadataTypesArchive1_2
         this.archiveBuilder.addEntityDef(getGovernanceRuleEntity());
         this.archiveBuilder.addEntityDef(getGovernanceActionEntity());
         this.archiveBuilder.addEntityDef(getNotificationTypeEntity());
+        this.archiveBuilder.addRelationshipDef(getMonitoredResourceRelationship());
+        this.archiveBuilder.addRelationshipDef(getNotificationSubscriberRelationship());
     }
 
 
@@ -7075,7 +6982,6 @@ public class OpenMetadataTypesArchive1_2
 
         return entityDef;
     }
-
 
 
     private RelationshipDef getNotificationSubscriberRelationship()
@@ -7127,8 +7033,6 @@ public class OpenMetadataTypesArchive1_2
 
         return relationshipDef;
     }
-
-
 
 
     private RelationshipDef getMonitoredResourceRelationship()

@@ -61,7 +61,7 @@ public class ActionAuthorInstance extends OMVSServiceInstance
 
 
     /**
-     * Return the open governance client.  This client is from the Governance Action Framework (GAF) and is for
+     * Return the open governance client.  This client is from the Open Governance Framework (OGF) and is for
      * working with automation services.
      *
      * @return client

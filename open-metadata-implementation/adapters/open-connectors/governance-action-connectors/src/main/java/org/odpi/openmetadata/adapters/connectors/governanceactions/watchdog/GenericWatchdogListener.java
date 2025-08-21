@@ -2,8 +2,8 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.adapters.connectors.governanceactions.watchdog;
 
-import org.odpi.openmetadata.frameworks.governanceaction.WatchdogGovernanceListener;
-import org.odpi.openmetadata.frameworks.governanceaction.ffdc.GovernanceServiceException;
+import org.odpi.openmetadata.frameworks.opengovernance.WatchdogGovernanceListener;
+import org.odpi.openmetadata.frameworks.opengovernance.ffdc.GovernanceServiceException;
 import org.odpi.openmetadata.frameworks.openmetadata.events.OpenMetadataOutTopicEvent;
 
 

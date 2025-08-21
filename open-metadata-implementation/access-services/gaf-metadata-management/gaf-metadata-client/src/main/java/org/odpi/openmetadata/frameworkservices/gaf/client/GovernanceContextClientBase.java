@@ -8,11 +8,11 @@ import org.odpi.openmetadata.frameworks.openmetadata.events.OpenMetadataEventTyp
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
-import org.odpi.openmetadata.frameworks.governanceaction.WatchdogGovernanceListener;
-import org.odpi.openmetadata.frameworks.governanceaction.client.GovernanceCompletionInterface;
-import org.odpi.openmetadata.frameworks.governanceaction.client.WatchDogEventInterface;
-import org.odpi.openmetadata.frameworks.governanceaction.properties.CompletionStatus;
-import org.odpi.openmetadata.frameworks.governanceaction.properties.EngineActionElement;
+import org.odpi.openmetadata.frameworks.opengovernance.WatchdogGovernanceListener;
+import org.odpi.openmetadata.frameworks.opengovernance.client.GovernanceCompletionInterface;
+import org.odpi.openmetadata.frameworks.opengovernance.client.WatchDogEventInterface;
+import org.odpi.openmetadata.frameworks.opengovernance.properties.CompletionStatus;
+import org.odpi.openmetadata.frameworks.opengovernance.properties.EngineActionElement;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.NewActionTarget;
 import org.odpi.openmetadata.frameworkservices.gaf.client.rest.GAFRESTClient;
 import org.odpi.openmetadata.frameworkservices.omf.rest.ActionTargetStatusRequestBody;

@@ -6,8 +6,8 @@ package org.odpi.openmetadata.adapters.connectors.reports.surveyreport;
 import org.odpi.openmetadata.adapters.connectors.reports.ReportGuard;
 import org.odpi.openmetadata.adapters.connectors.reports.ReportRequestParameter;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.ConnectorType;
-import org.odpi.openmetadata.frameworks.governanceaction.GovernanceActionServiceProviderBase;
-import org.odpi.openmetadata.frameworks.surveyaction.controls.SurveyActionTarget;
+import org.odpi.openmetadata.frameworks.opengovernance.GovernanceActionServiceProviderBase;
+import org.odpi.openmetadata.frameworks.opensurvey.controls.SurveyActionTarget;
 
 /**
  * SurveyReportProvider is the OCF connector provider for the "SurveyReportService" Governance Action Service.

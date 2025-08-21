@@ -3,7 +3,7 @@
 
 package org.odpi.openmetadata.adapters.connectors.postgres.survey;
 
-import org.odpi.openmetadata.frameworks.surveyaction.controls.SurveyDatabaseAnnotationType;
+import org.odpi.openmetadata.frameworks.opensurvey.controls.SurveyDatabaseAnnotationType;
 import org.odpi.openmetadata.adapters.connectors.postgres.controls.PostgresDeployedImplementationType;
 import org.odpi.openmetadata.adapters.connectors.postgres.controls.PostgresTarget;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLogReportingComponent;
@@ -11,8 +11,8 @@ import org.odpi.openmetadata.frameworks.auditlog.ComponentDevelopmentStatus;
 import org.odpi.openmetadata.frameworks.connectors.controls.SupportedTechnologyType;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.ConnectorType;
 import org.odpi.openmetadata.frameworks.openmetadata.refdata.DeployedImplementationTypeDefinition;
-import org.odpi.openmetadata.frameworks.surveyaction.SurveyActionServiceProvider;
-import org.odpi.openmetadata.frameworks.surveyaction.controls.AnalysisStep;
+import org.odpi.openmetadata.frameworks.opensurvey.SurveyActionServiceProvider;
+import org.odpi.openmetadata.frameworks.opensurvey.controls.AnalysisStep;
 
 /**
  * PostgresServerSurveyActionProvider is the OCF connector provider for the PostgreSQL survey action service.

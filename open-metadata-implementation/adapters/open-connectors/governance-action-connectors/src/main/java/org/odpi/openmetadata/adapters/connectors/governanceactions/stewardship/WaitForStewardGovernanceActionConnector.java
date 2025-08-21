@@ -4,8 +4,8 @@
 package org.odpi.openmetadata.adapters.connectors.governanceactions.stewardship;
 
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
-import org.odpi.openmetadata.frameworks.governanceaction.GeneralGovernanceActionService;
-import org.odpi.openmetadata.frameworks.governanceaction.properties.CompletionStatus;
+import org.odpi.openmetadata.frameworks.opengovernance.GeneralGovernanceActionService;
+import org.odpi.openmetadata.frameworks.opengovernance.properties.CompletionStatus;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
 
 import java.util.ArrayList;

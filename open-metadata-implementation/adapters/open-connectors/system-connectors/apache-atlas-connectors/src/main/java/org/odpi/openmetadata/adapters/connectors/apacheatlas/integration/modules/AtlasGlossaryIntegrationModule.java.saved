@@ -10,7 +10,6 @@ import org.odpi.openmetadata.frameworks.openmetadata.connectorcontext.GlossaryCl
 import org.odpi.openmetadata.frameworks.openmetadata.connectorcontext.GlossaryTermClient;
 import org.odpi.openmetadata.frameworks.openmetadata.events.OpenMetadataOutTopicEvent;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.ExternalIdentifierProperties;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.glossaries.GlossaryCategoryProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.glossaries.GlossaryProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.PermittedSynchronization;
 import org.odpi.openmetadata.adapters.connectors.apacheatlas.integration.ApacheAtlasIntegrationProvider;

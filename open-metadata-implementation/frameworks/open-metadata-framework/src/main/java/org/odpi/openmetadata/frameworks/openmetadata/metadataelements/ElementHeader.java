@@ -51,12 +51,12 @@ public class ElementHeader extends ElementControlHeader
     private ElementClassification       template                  = null;
     private ElementClassification       schemaType                = null; // TypeEmbeddedAttribute
     private ElementClassification       calculatedValue           = null;
-    private ElementClassification       primaryKey                = null;
-    private List<ElementClassification> resourceManagerCategories = null;
-    private List<ElementClassification> serverPurposes            = null;
-    private List<ElementClassification> collectionCategories      = null;
-    private List<ElementClassification> projectCategories         = null;
-    private List<ElementClassification> otherClassifications      = null;
+    private ElementClassification       primaryKey           = null;
+    private List<ElementClassification> resourceManagerRoles = null;
+    private List<ElementClassification> serverPurposes       = null;
+    private List<ElementClassification> collectionRoles      = null;
+    private List<ElementClassification> projectRoles         = null;
+    private List<ElementClassification> otherClassifications = null;
 
 
     /**
@@ -96,11 +96,11 @@ public class ElementHeader extends ElementControlHeader
             this.schemaType                = template.getSchemaType();
             this.calculatedValue           = template.getCalculatedValue();
             this.primaryKey                = template.getPrimaryKey();
-            this.serverPurposes            = template.getServerPurposes();
-            this.resourceManagerCategories = template.getResourceManagerCategories();
-            this.collectionCategories      = template.getCollectionCategories();
-            this.projectCategories         = template.getProjectCategories();
-            this.otherClassifications      = template.getOtherClassifications();
+            this.serverPurposes       = template.getServerPurposes();
+            this.resourceManagerRoles = template.getResourceManagerRoles();
+            this.collectionRoles      = template.getCollectionRoles();
+            this.projectRoles         = template.getProjectRoles();
+            this.otherClassifications = template.getOtherClassifications();
         }
     }
 
@@ -539,20 +539,20 @@ public class ElementHeader extends ElementControlHeader
      *
      * @return list
      */
-    public List<ElementClassification> getResourceManagerCategories()
+    public List<ElementClassification> getResourceManagerRoles()
     {
-        return resourceManagerCategories;
+        return resourceManagerRoles;
     }
 
 
     /**
      * Set up the resource manager classifications attached to this element.
      *
-     * @param resourceManagerCategories list
+     * @param resourceManagerRoles list
      */
-    public void setResourceManagerCategories(List<ElementClassification> resourceManagerCategories)
+    public void setResourceManagerRoles(List<ElementClassification> resourceManagerRoles)
     {
-        this.resourceManagerCategories = resourceManagerCategories;
+        this.resourceManagerRoles = resourceManagerRoles;
     }
 
 
@@ -561,20 +561,20 @@ public class ElementHeader extends ElementControlHeader
      *
      * @return list of classifications
      */
-    public List<ElementClassification> getCollectionCategories()
+    public List<ElementClassification> getCollectionRoles()
     {
-        return collectionCategories;
+        return collectionRoles;
     }
 
 
     /**
      * Set up the optional list of category classifications found on a collection entity that indicate how a collection is being used.
 
-     * @param collectionCategories list of classifications
+     * @param collectionRoles list of classifications
      */
-    public void setCollectionCategories(List<ElementClassification> collectionCategories)
+    public void setCollectionRoles(List<ElementClassification> collectionRoles)
     {
-        this.collectionCategories = collectionCategories;
+        this.collectionRoles = collectionRoles;
     }
 
 
@@ -583,20 +583,20 @@ public class ElementHeader extends ElementControlHeader
      *
      * @return list of classifications
      */
-    public List<ElementClassification> getProjectCategories()
+    public List<ElementClassification> getProjectRoles()
     {
-        return projectCategories;
+        return projectRoles;
     }
 
 
     /**
      * Set up the optional list of category classifications found on a project entity that indicate how a collection is being used.
 
-     * @param projectCategories list of classifications
+     * @param projectRoles list of classifications
      */
-    public void setProjectCategories(List<ElementClassification> projectCategories)
+    public void setProjectRoles(List<ElementClassification> projectRoles)
     {
-        this.projectCategories = projectCategories;
+        this.projectRoles = projectRoles;
     }
 
 
@@ -650,9 +650,9 @@ public class ElementHeader extends ElementControlHeader
                 ", calculatedValue=" + calculatedValue +
                 ", primaryKey=" + primaryKey +
                 ", serverPurposes=" + serverPurposes +
-                ", resourceManagerCategories=" + resourceManagerCategories +
-                ", collectionCategories=" + collectionCategories +
-                ", projectCategories=" + projectCategories +
+                ", resourceManagerCategories=" + resourceManagerRoles +
+                ", collectionCategories=" + collectionRoles +
+                ", projectCategories=" + projectRoles +
                 ", otherClassifications=" + otherClassifications +
                 "} " + super.toString();
     }
@@ -690,9 +690,9 @@ public class ElementHeader extends ElementControlHeader
                 Objects.equals(calculatedValue, that.calculatedValue) &&
                 Objects.equals(primaryKey, that.primaryKey) &&
                 Objects.equals(serverPurposes, that.serverPurposes) &&
-                Objects.equals(resourceManagerCategories, that.resourceManagerCategories) &&
-                Objects.equals(collectionCategories, that.collectionCategories) &&
-                Objects.equals(projectCategories, that.projectCategories) &&
+                Objects.equals(resourceManagerRoles, that.resourceManagerRoles) &&
+                Objects.equals(collectionRoles, that.collectionRoles) &&
+                Objects.equals(projectRoles, that.projectRoles) &&
                 Objects.equals(otherClassifications, that.otherClassifications);
     }
 
@@ -708,6 +708,6 @@ public class ElementHeader extends ElementControlHeader
         return Objects.hash(super.hashCode(), guid, anchor, zoneMembership, subjectArea, impact, criticality,
                             confidentiality, confidence, retention, executionPoints, duplicateClassifications, ownership,
                             digitalResourceOrigin, memento, template, schemaType, calculatedValue, primaryKey, serverPurposes,
-                            resourceManagerCategories, collectionCategories, projectCategories, otherClassifications);
+                            resourceManagerRoles, collectionRoles, projectRoles, otherClassifications);
     }
 }

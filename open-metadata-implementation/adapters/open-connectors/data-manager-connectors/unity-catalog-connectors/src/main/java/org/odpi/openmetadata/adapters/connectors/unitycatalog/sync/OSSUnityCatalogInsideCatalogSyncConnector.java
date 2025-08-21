@@ -11,7 +11,7 @@ import org.odpi.openmetadata.adapters.connectors.unitycatalog.ffdc.UCErrorCode;
 import org.odpi.openmetadata.adapters.connectors.unitycatalog.resource.OSSUnityCatalogResourceConnector;
 import org.odpi.openmetadata.frameworks.connectors.Connector;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
-import org.odpi.openmetadata.frameworks.governanceaction.properties.CatalogTarget;
+import org.odpi.openmetadata.frameworks.opengovernance.properties.CatalogTarget;
 import org.odpi.openmetadata.frameworks.integration.connectors.CatalogTargetIntegrator;
 import org.odpi.openmetadata.frameworks.integration.connectors.IntegrationConnectorBase;
 import org.odpi.openmetadata.frameworks.integration.ffdc.OIFAuditCode;
@@ -306,7 +306,7 @@ public class OSSUnityCatalogInsideCatalogSyncConnector extends IntegrationConnec
                                         permittedSynchronization,
                                         assetConnector,
                                         ucServerEndpoint,
-                                        requestedCatalogTarget.getTemplateProperties(),
+                                        requestedCatalogTarget.getTemplates(),
                                         requestedCatalogTarget.getConfigurationProperties());
 
                     assetConnector.disconnect();

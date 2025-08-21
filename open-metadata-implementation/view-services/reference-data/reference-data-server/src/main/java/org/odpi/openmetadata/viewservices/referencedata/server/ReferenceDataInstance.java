@@ -5,7 +5,10 @@ package org.odpi.openmetadata.viewservices.referencedata.server;
 import org.odpi.openmetadata.commonservices.multitenant.OMVSServiceInstance;
 import org.odpi.openmetadata.adminservices.configuration.registration.ViewServiceDescription;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
+import org.odpi.openmetadata.frameworks.openmetadata.client.OpenMetadataClient;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
+import org.odpi.openmetadata.frameworks.openmetadata.handlers.ValidValueDefinitionHandler;
+import org.odpi.openmetadata.frameworkservices.omf.client.handlers.EgeriaOpenMetadataStoreHandler;
 
 /**
  * ReferenceDataInstance caches references to the objects it needs for a specific server.
@@ -16,7 +19,7 @@ public class ReferenceDataInstance extends OMVSServiceInstance
 {
     private static final ViewServiceDescription myDescription = ViewServiceDescription.REFERENCE_DATA;
 
-
+    private final ValidValueDefinitionHandler validValueDefinitionHandler;
 
     /**
      * Set up theReference Data OMVS instance
@@ -47,8 +50,34 @@ public class ReferenceDataInstance extends OMVSServiceInstance
               remoteServerName,
               remoteServerURL);
 
+        OpenMetadataClient openMetadataClient;
+        if (localServerUserPassword == null)
+        {
+            openMetadataClient = new EgeriaOpenMetadataStoreHandler(remoteServerName,
+                                                                    remoteServerURL,
+                                                                    maxPageSize);
 
+        }
+        else
+        {
+            openMetadataClient = new EgeriaOpenMetadataStoreHandler(remoteServerName,
+                                                                    remoteServerURL,
+                                                                    localServerUserId,
+                                                                    localServerUserPassword,
+                                                                    maxPageSize);
+        }
+
+        validValueDefinitionHandler = new ValidValueDefinitionHandler(serverName,
+                                                                      auditLog,
+                                                                      myDescription.getViewServiceFullName(),
+                                                                      openMetadataClient);
     }
 
 
+    /**
+     * Return the open metadata handler.
+     *
+     * @return client
+     */
+    public ValidValueDefinitionHandler getValidValueDefinitionHandler() { return  validValueDefinitionHandler; }
 }

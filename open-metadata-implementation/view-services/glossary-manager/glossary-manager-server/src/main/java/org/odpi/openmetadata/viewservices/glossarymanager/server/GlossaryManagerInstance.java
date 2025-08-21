@@ -2,14 +2,14 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.viewservices.glossarymanager.server;
 
-import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceDescription;
 import org.odpi.openmetadata.commonservices.multitenant.OMVSServiceInstance;
 import org.odpi.openmetadata.adminservices.configuration.registration.ViewServiceDescription;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.openmetadata.client.OpenMetadataClient;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
-import org.odpi.openmetadata.frameworks.openmetadata.handlers.GlossaryHandler;
+import org.odpi.openmetadata.frameworks.openmetadata.handlers.CollectionHandler;
 import org.odpi.openmetadata.frameworks.openmetadata.handlers.GlossaryTermHandler;
+import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 import org.odpi.openmetadata.frameworkservices.omf.client.handlers.EgeriaOpenMetadataStoreHandler;
 
 /**
@@ -21,7 +21,7 @@ public class GlossaryManagerInstance extends OMVSServiceInstance
 {
     private static final ViewServiceDescription myDescription = ViewServiceDescription.GLOSSARY_MANAGER;
 
-    private final GlossaryHandler     glossaryHandler;
+    private final CollectionHandler   glossaryHandler;
     private final GlossaryTermHandler glossaryTermHandler;
 
     /**
@@ -69,10 +69,11 @@ public class GlossaryManagerInstance extends OMVSServiceInstance
                                                                     maxPageSize);
         }
 
-        glossaryHandler = new GlossaryHandler(serverName,
-                                              auditLog,
-                                              myDescription.getViewServiceFullName(),
-                                              openMetadataClient);
+        glossaryHandler = new CollectionHandler(serverName,
+                                                auditLog,
+                                                myDescription.getViewServiceFullName(),
+                                                openMetadataClient,
+                                                OpenMetadataType.GLOSSARY.typeName);
 
         glossaryTermHandler = new GlossaryTermHandler(serverName,
                                                       auditLog,
@@ -86,7 +87,7 @@ public class GlossaryManagerInstance extends OMVSServiceInstance
      *
      * @return client
      */
-    public GlossaryHandler getGlossaryHandler()
+    public CollectionHandler getGlossaryHandler()
     {
         return glossaryHandler;
     }

@@ -10,14 +10,14 @@ import org.odpi.openmetadata.adapters.connectors.unitycatalog.resource.OSSUnityC
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
-import org.odpi.openmetadata.frameworks.surveyaction.AnnotationStore;
-import org.odpi.openmetadata.frameworks.surveyaction.controls.AnalysisStep;
-import org.odpi.openmetadata.frameworks.surveyaction.controls.SurveyDatabaseAnnotationType;
-import org.odpi.openmetadata.frameworks.surveyaction.controls.SurveyResourceManagerAnnotationType;
-import org.odpi.openmetadata.frameworks.surveyaction.measurements.RelationalDataManagerMeasurement;
-import org.odpi.openmetadata.frameworks.surveyaction.measurements.RelationalDatabaseMetric;
-import org.odpi.openmetadata.frameworks.surveyaction.properties.ResourceMeasureAnnotation;
-import org.odpi.openmetadata.frameworks.surveyaction.properties.ResourceProfileAnnotation;
+import org.odpi.openmetadata.frameworks.opensurvey.AnnotationStore;
+import org.odpi.openmetadata.frameworks.opensurvey.controls.AnalysisStep;
+import org.odpi.openmetadata.frameworks.opensurvey.controls.SurveyDatabaseAnnotationType;
+import org.odpi.openmetadata.frameworks.opensurvey.controls.SurveyResourceManagerAnnotationType;
+import org.odpi.openmetadata.frameworks.opensurvey.measurements.RelationalDataManagerMeasurement;
+import org.odpi.openmetadata.frameworks.opensurvey.measurements.RelationalDatabaseMetric;
+import org.odpi.openmetadata.frameworks.opensurvey.properties.ResourceMeasureAnnotation;
+import org.odpi.openmetadata.frameworks.opensurvey.properties.ResourceProfileAnnotation;
 
 import java.util.Date;
 import java.util.HashMap;

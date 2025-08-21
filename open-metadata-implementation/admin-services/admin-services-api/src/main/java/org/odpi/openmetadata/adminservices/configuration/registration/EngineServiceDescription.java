@@ -66,6 +66,22 @@ public enum EngineServiceDescription
                        DeployedImplementationType.SURVEY_ACTION_SERVICE_CONNECTOR.getAssociatedTypeName(),
                        DeployedImplementationType.SURVEY_ACTION_ENGINE.getDeployedImplementationType(),
                        DeployedImplementationType.SURVEY_ACTION_SERVICE_CONNECTOR.getDeployedImplementationType()),
+
+    /**
+     * Monitors for particular situations/events and notifies registered subscribers.
+     */
+    WATCHDOG_ACTION_OMES(405,
+                       ComponentDevelopmentStatus.STABLE,
+                       "Watchdog Action",
+                       "Watchdog Action OMES",
+                       "watchdog-action",
+                       "Monitors for particular situations/events and notifies registered subscribers.",
+                       "https://egeria-project.org/services/omes/watchdog-action/overview/",
+                       AccessServiceDescription.GAF_METADATA_MANAGEMENT.getServiceName(),
+                       DeployedImplementationType.WATCHDOG_ACTION_ENGINE.getAssociatedTypeName(),
+                       DeployedImplementationType.WATCHDOG_ACTION_SERVICE_CONNECTOR.getAssociatedTypeName(),
+                       DeployedImplementationType.WATCHDOG_ACTION_ENGINE.getDeployedImplementationType(),
+                       DeployedImplementationType.WATCHDOG_ACTION_SERVICE_CONNECTOR.getDeployedImplementationType()),
     ;
 
 

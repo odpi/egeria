@@ -24,13 +24,13 @@ import org.odpi.openmetadata.frameworks.openmetadata.search.NewElementOptions;
 import org.odpi.openmetadata.frameworks.openmetadata.search.NewElementProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
-import org.odpi.openmetadata.frameworks.surveyaction.AnnotationStore;
-import org.odpi.openmetadata.frameworks.surveyaction.SurveyActionServiceConnector;
-import org.odpi.openmetadata.frameworks.surveyaction.SurveyAssetStore;
-import org.odpi.openmetadata.frameworks.surveyaction.controls.AnalysisStep;
-import org.odpi.openmetadata.frameworks.surveyaction.properties.ResourceMeasureAnnotation;
-import org.odpi.openmetadata.frameworks.surveyaction.properties.ResourceProfileAnnotation;
-import org.odpi.openmetadata.frameworks.surveyaction.properties.SchemaAnalysisAnnotation;
+import org.odpi.openmetadata.frameworks.opensurvey.AnnotationStore;
+import org.odpi.openmetadata.frameworks.opensurvey.SurveyActionServiceConnector;
+import org.odpi.openmetadata.frameworks.opensurvey.SurveyAssetStore;
+import org.odpi.openmetadata.frameworks.opensurvey.controls.AnalysisStep;
+import org.odpi.openmetadata.frameworks.opensurvey.properties.ResourceMeasureAnnotation;
+import org.odpi.openmetadata.frameworks.opensurvey.properties.ResourceProfileAnnotation;
+import org.odpi.openmetadata.frameworks.opensurvey.properties.SchemaAnalysisAnnotation;
 
 import java.util.*;
 

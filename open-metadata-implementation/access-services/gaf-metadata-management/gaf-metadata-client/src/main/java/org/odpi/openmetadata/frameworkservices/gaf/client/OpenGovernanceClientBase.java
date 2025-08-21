@@ -5,12 +5,12 @@ package org.odpi.openmetadata.frameworkservices.gaf.client;
 
 import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
 import org.odpi.openmetadata.commonservices.ffdc.rest.*;
-import org.odpi.openmetadata.frameworks.governanceaction.client.OpenGovernanceClient;
+import org.odpi.openmetadata.frameworks.opengovernance.client.OpenGovernanceClient;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.ElementStatus;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
-import org.odpi.openmetadata.frameworks.governanceaction.properties.*;
+import org.odpi.openmetadata.frameworks.opengovernance.properties.*;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.NewActionTarget;
 import org.odpi.openmetadata.frameworks.openmetadata.search.QueryOptions;
 import org.odpi.openmetadata.frameworks.openmetadata.search.SearchOptions;
@@ -24,7 +24,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * OpenGovernanceClientBase provides common governance services that originate in the Governance Action Framework (GAF).
+ * OpenGovernanceClientBase provides common governance services that originate in the Open Survey Framework (OGF).
  * This includes the ability to define and execute governance action processes as well as manage duplicates.
  */
 public class OpenGovernanceClientBase extends OpenGovernanceClient

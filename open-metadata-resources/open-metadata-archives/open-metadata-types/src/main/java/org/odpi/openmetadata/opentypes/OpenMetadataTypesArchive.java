@@ -160,7 +160,8 @@ public class OpenMetadataTypesArchive
         update00XXExternalReferences();
         update0021Collections();
         update04xxGovernanceDefinitions();
-        update0484Agreements();
+        update0461GovernanceEngines();
+        update0711Agreements();
         update07xxImplementationRelationships();
     }
 
@@ -346,7 +347,7 @@ public class OpenMetadataTypesArchive
     private ClassificationDef getNamespaceClassification()
     {
         return archiveHelper.getClassificationDef(OpenMetadataType.NAMESPACE_COLLECTION_CLASSIFICATION,
-                                                  this.archiveBuilder.getClassificationDef(OpenMetadataType.COLLECTION_CATEGORY_CLASSIFICATION.typeName),
+                                                  this.archiveBuilder.getClassificationDef(OpenMetadataType.COLLECTION_ROLE_CLASSIFICATION.typeName),
                                                   this.archiveBuilder.getEntityDef(OpenMetadataType.COLLECTION.typeName),
                                                   false);
 
@@ -356,9 +357,33 @@ public class OpenMetadataTypesArchive
     private ClassificationDef getReferenceListClassification()
     {
         return archiveHelper.getClassificationDef(OpenMetadataType.REFERENCE_LIST_CLASSIFICATION,
-                                                  this.archiveBuilder.getClassificationDef(OpenMetadataType.COLLECTION_CATEGORY_CLASSIFICATION.typeName),
+                                                  this.archiveBuilder.getClassificationDef(OpenMetadataType.COLLECTION_ROLE_CLASSIFICATION.typeName),
                                                   this.archiveBuilder.getEntityDef(OpenMetadataType.COLLECTION.typeName),
                                                   false);
+    }
+
+
+
+    /*
+     * -------------------------------------------------------------------------------------------------------
+     */
+
+    private void update0461GovernanceEngines()
+    {
+        this.archiveBuilder.addEntityDef(getWatchdogActionEngineEntity());
+        this.archiveBuilder.addEntityDef(getWatchdogActionServiceEntity());
+    }
+
+    private EntityDef getWatchdogActionEngineEntity()
+    {
+        return archiveHelper.getDefaultEntityDef(OpenMetadataType.WATCHDOG_ACTION_ENGINE,
+                                                 this.archiveBuilder.getEntityDef(OpenMetadataType.GOVERNANCE_ENGINE.typeName));
+    }
+
+    private EntityDef getWatchdogActionServiceEntity()
+    {
+        return archiveHelper.getDefaultEntityDef(OpenMetadataType.WATCHDOG_ACTION_SERVICE,
+                                                 this.archiveBuilder.getEntityDef(OpenMetadataType.GOVERNANCE_SERVICE.typeName));
     }
 
 
@@ -369,7 +394,7 @@ public class OpenMetadataTypesArchive
     /**
      * A new classification for Agreement
      */
-    private void update0484Agreements()
+    private void update0711Agreements()
     {
         this.archiveBuilder.addClassificationDef(getDataSharingAgreementClassification());
     }
@@ -377,7 +402,7 @@ public class OpenMetadataTypesArchive
     private ClassificationDef getDataSharingAgreementClassification()
     {
         return archiveHelper.getClassificationDef(OpenMetadataType.DATA_SHARING_AGREEMENT_CLASSIFICATION,
-                                                  this.archiveBuilder.getClassificationDef(OpenMetadataType.COLLECTION_CATEGORY_CLASSIFICATION.typeName),
+                                                  this.archiveBuilder.getClassificationDef(OpenMetadataType.COLLECTION_ROLE_CLASSIFICATION.typeName),
                                                   this.archiveBuilder.getEntityDef(OpenMetadataType.AGREEMENT.typeName),
                                                   false);
     }

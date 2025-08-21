@@ -4,7 +4,7 @@
 package org.odpi.openmetadata.adapters.connectors.governanceactions.watchdog;
 
 
-import org.odpi.openmetadata.frameworks.governanceaction.GovernanceActionServiceProviderBase;
+import org.odpi.openmetadata.frameworks.opengovernance.GovernanceActionServiceProviderBase;
 
 
 /**

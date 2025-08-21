@@ -4,7 +4,7 @@
 package org.odpi.openmetadata.adapters.connectors.governanceactions.watchdog;
 
 
-import org.odpi.openmetadata.frameworks.governanceaction.controls.RequestTypeType;
+import org.odpi.openmetadata.frameworks.opengovernance.controls.RequestTypeType;
 
 import java.util.ArrayList;
 import java.util.List;

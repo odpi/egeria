@@ -1,0 +1,19 @@
+/*
+ * SPDX-License-Identifier: Apache-2.0
+ * Copyright Contributors to the ODPi Egeria project.
+ */
+
+
+dependencies {
+    implementation project(':open-metadata-implementation:common-services:ffdc-services')
+    implementation project(':open-metadata-implementation:engine-services:watchdog-action:watchdog-action-server')
+    implementation 'org.springframework:spring-web'
+    implementation 'io.swagger.core.v3:swagger-annotations'
+    compileOnly 'com.fasterxml.jackson.core:jackson-annotations'
+}
+
+description = 'Watchdog Action OMES with Spring'
+
+java {
+    withJavadocJar()
+}

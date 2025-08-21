@@ -10,7 +10,8 @@ import org.odpi.openmetadata.frameworks.openmetadata.properties.RelationshipProp
 import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.processes.actions.ActionTargetProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.actors.*;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.DataSetContentProperties;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.processes.actions.TargetForGovernanceActionProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.governance.governanceactions.TargetForGovernanceActionProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.processes.connectors.CatalogTargetProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.reports.ImpactedResourceProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.reports.ReportDependencyProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.collections.CollectionMembershipProperties;
@@ -44,6 +45,7 @@ import org.odpi.openmetadata.frameworks.openmetadata.properties.security.Associa
 import org.odpi.openmetadata.frameworks.openmetadata.properties.solutions.SolutionBlueprintCompositionProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.solutions.SolutionComponentActorProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.solutions.SolutionLinkingWireProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.templates.CatalogTemplateProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.validvalues.*;
 import org.odpi.openmetadata.frameworks.openmetadata.search.ElementProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.search.NewElementProperties;
@@ -187,6 +189,50 @@ public class OpenMetadataRelationshipBuilder
                 elementProperties = propertyHelper.addStringProperty(elementProperties,
                                                                   OpenMetadataProperty.DESCRIPTION.name,
                                                                   businessCapabilityDependencyProperties.getDescription());
+            }
+            else if (properties instanceof CatalogTargetProperties catalogTargetProperties)
+            {
+                elementProperties = propertyHelper.addStringProperty(elementProperties,
+                                                                     OpenMetadataProperty.CATALOG_TARGET_NAME.name,
+                                                                     catalogTargetProperties.getCatalogTargetName());
+
+                elementProperties = propertyHelper.addStringProperty(elementProperties,
+                                                                     OpenMetadataProperty.METADATA_SOURCE_QUALIFIED_NAME.name,
+                                                                     catalogTargetProperties.getMetadataSourceQualifiedName());
+                elementProperties = propertyHelper.addStringProperty(elementProperties,
+                                                                     OpenMetadataProperty.CONNECTION_NAME.name,
+                                                                     catalogTargetProperties.getConnectionName());
+                elementProperties = propertyHelper.addMapProperty(elementProperties,
+                                                                  OpenMetadataProperty.CONFIGURATION_PROPERTIES.name,
+                                                                  catalogTargetProperties.getConfigurationProperties());
+                elementProperties = propertyHelper.addStringMapProperty(elementProperties,
+                                                                        OpenMetadataProperty.TEMPLATES.name,
+                                                                        catalogTargetProperties.getTemplates());
+                if (catalogTargetProperties.getPermittedSynchronization() != null)
+                {
+                    elementProperties = propertyHelper.addEnumProperty(elementProperties,
+                                                                       OpenMetadataProperty.PERMITTED_SYNCHRONIZATION.name,
+                                                                       PermittedSynchronization.getOpenTypeName(),
+                                                                       catalogTargetProperties.getPermittedSynchronization().getName());
+                }
+
+                if (catalogTargetProperties.getDeleteMethod() != null)
+                {
+                    elementProperties = propertyHelper.addEnumProperty(elementProperties,
+                                                                       OpenMetadataProperty.DELETE_METHOD.name,
+                                                                       DeleteMethod.getOpenTypeName(),
+                                                                       catalogTargetProperties.getDeleteMethod().getName());
+                }
+            }
+            else if (properties instanceof CatalogTemplateProperties catalogTemplateProperties)
+            {
+                elementProperties = propertyHelper.addStringProperty(elementProperties,
+                                                                     OpenMetadataProperty.LABEL.name,
+                                                                     catalogTemplateProperties.getLabel());
+
+                elementProperties = propertyHelper.addStringProperty(elementProperties,
+                                                                     OpenMetadataProperty.DESCRIPTION.name,
+                                                                     catalogTemplateProperties.getDescription());
             }
             else if (properties instanceof CertificationProperties certificationProperties)
             {
@@ -974,6 +1020,12 @@ public class OpenMetadataRelationshipBuilder
                 elementProperties = propertyHelper.addStringArrayProperty(elementProperties,
                                                                           OpenMetadataProperty.ISC_QUALIFIED_NAMES.name,
                                                                           solutionLinkingWireProperties.getISCQualifiedNames());
+            }
+            else if (properties instanceof SpecificationPropertyAssignmentProperties specificationPropertyAssignmentProperties)
+            {
+                elementProperties = propertyHelper.addStringProperty(elementProperties,
+                                                                     OpenMetadataProperty.PROPERTY_NAME.name,
+                                                                     specificationPropertyAssignmentProperties.getPropertyName());
             }
             else if (properties instanceof SupportingDefinitionProperties supportingDefinitionProperties)
             {

@@ -43,7 +43,7 @@ import static org.odpi.openmetadata.frameworks.openmetadata.mapper.OpenMetadataV
 /**
  * The OpenMetadataStoreRESTServices provides the server-side implementation of the services used by the governance
  * engine as it is managing requests to execute open governance services in the governance server.
- * These services align with the interface definitions from the Governance Action Framework (omf).
+ * These services align with the interface definitions from the Open Metadata Framework (OMF).
  */
 public class OpenMetadataStoreRESTServices
 {

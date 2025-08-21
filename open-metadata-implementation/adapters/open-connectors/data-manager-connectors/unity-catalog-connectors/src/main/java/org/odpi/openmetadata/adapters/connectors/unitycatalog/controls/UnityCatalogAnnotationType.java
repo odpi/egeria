@@ -5,8 +5,8 @@ package org.odpi.openmetadata.adapters.connectors.unitycatalog.controls;
 
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
-import org.odpi.openmetadata.frameworks.surveyaction.controls.*;
-import org.odpi.openmetadata.frameworks.surveyaction.measurements.*;
+import org.odpi.openmetadata.frameworks.opensurvey.controls.*;
+import org.odpi.openmetadata.frameworks.opensurvey.measurements.SurveyMetric;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -20,12 +20,12 @@ import java.util.Map;
 public enum UnityCatalogAnnotationType implements AnnotationType
 {
     RESOURCE_INVENTORY("Log of Unity Catalog (UC) Resources",
-                 OpenMetadataType.RESOURCE_PROFILE_ANNOTATION.typeName,
-                 "Log file of resource name, description and deployed implementation type.",
-                 "If resource are missing, check the security permissions of the survey service's userId.",
-                 AnalysisStep.PRODUCE_INVENTORY.getName(),
-                 getProfilePropertiesPropertyName(),
-                 null),
+                       OpenMetadataType.RESOURCE_PROFILE_ANNOTATION.typeName,
+                       "Log file of resource name, description and deployed implementation type.",
+                       "If resource are missing, check the security permissions of the survey service's userId.",
+                       AnalysisStep.PRODUCE_INVENTORY.getName(),
+                       getProfilePropertiesPropertyName(),
+                       null),
 
     CATALOG_LIST("Capture List of Unity Catalog (UC) Catalogs",
                  OpenMetadataType.RESOURCE_PROFILE_ANNOTATION.typeName,

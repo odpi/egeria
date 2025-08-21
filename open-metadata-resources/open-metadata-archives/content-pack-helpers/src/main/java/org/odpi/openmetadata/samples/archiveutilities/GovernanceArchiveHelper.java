@@ -5,8 +5,8 @@ package org.odpi.openmetadata.samples.archiveutilities;
 import org.odpi.openmetadata.frameworks.connectors.ConnectorProviderBase;
 import org.odpi.openmetadata.frameworks.connectors.controls.ConfigurationPropertyType;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.ConnectorType;
-import org.odpi.openmetadata.frameworks.governanceaction.GovernanceServiceProviderBase;
-import org.odpi.openmetadata.frameworks.governanceaction.controls.*;
+import org.odpi.openmetadata.frameworks.opengovernance.GovernanceServiceProviderBase;
+import org.odpi.openmetadata.frameworks.opengovernance.controls.*;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.NewActionTarget;
 import org.odpi.openmetadata.frameworks.openmetadata.controls.PlaceholderPropertyType;
 import org.odpi.openmetadata.frameworks.openmetadata.controls.ReplacementAttributeType;
@@ -16,9 +16,9 @@ import org.odpi.openmetadata.frameworks.openmetadata.refdata.DeployedImplementat
 import org.odpi.openmetadata.frameworks.openmetadata.refdata.SpecificationPropertyType;
 import org.odpi.openmetadata.frameworks.connectors.controls.TemplateType;
 import org.odpi.openmetadata.frameworks.integration.connectors.IntegrationConnectorProvider;
-import org.odpi.openmetadata.frameworks.surveyaction.SurveyActionServiceProvider;
-import org.odpi.openmetadata.frameworks.surveyaction.controls.AnalysisStepType;
-import org.odpi.openmetadata.frameworks.surveyaction.controls.AnnotationTypeType;
+import org.odpi.openmetadata.frameworks.opensurvey.SurveyActionServiceProvider;
+import org.odpi.openmetadata.frameworks.opensurvey.controls.AnalysisStepType;
+import org.odpi.openmetadata.frameworks.opensurvey.controls.AnnotationTypeType;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.archivestore.OpenMetadataArchiveBuilder;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.*;
 

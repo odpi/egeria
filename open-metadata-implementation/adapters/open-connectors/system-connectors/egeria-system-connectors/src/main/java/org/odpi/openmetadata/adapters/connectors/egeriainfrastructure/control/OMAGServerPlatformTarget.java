@@ -2,9 +2,8 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.adapters.connectors.egeriainfrastructure.control;
 
-import org.odpi.openmetadata.frameworks.governanceaction.controls.ActionTargetType;
+import org.odpi.openmetadata.frameworks.opengovernance.controls.ActionTargetType;
 import org.odpi.openmetadata.frameworks.integration.controls.CatalogTargetType;
-import org.odpi.openmetadata.frameworks.openmetadata.refdata.DeployedImplementationType;
 
 import java.util.ArrayList;
 import java.util.List;

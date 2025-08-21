@@ -167,7 +167,7 @@ public class PostgresServerIntegrationConnector extends IntegrationConnectorBase
 
                 catalogDatabases(databaseServerGUID,
                                  databaseManagerGUID,
-                                 requestedCatalogTarget.getTemplateProperties(),
+                                 requestedCatalogTarget.getTemplates(),
                                  requestedCatalogTarget.getConfigurationProperties(),
                                  assetConnector);
 
@@ -508,7 +508,7 @@ public class PostgresServerIntegrationConnector extends IntegrationConnectorBase
 
                 catalogTargetProperties.setCatalogTargetName(databaseName);
                 catalogTargetProperties.setMetadataSourceQualifiedName(dbmsQualifiedName);
-                catalogTargetProperties.setTemplateProperties(templates);
+                catalogTargetProperties.setTemplates(templates);
 
                 Map<String, Object> targetConfigurationProperties = new HashMap<>();
 

@@ -11,7 +11,7 @@ dependencies {
     implementation project(':open-metadata-implementation:frameworks:audit-log-framework')
     implementation project(':open-metadata-implementation:frameworks:open-connector-framework')
     implementation project(':open-metadata-implementation:frameworks:open-integration-framework')
-    implementation project(':open-metadata-implementation:frameworks:governance-action-framework')
+    implementation project(':open-metadata-implementation:frameworks:open-governance-framework')
 }
 
 description = 'Open Integration Service API'

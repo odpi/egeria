@@ -9,8 +9,7 @@ import org.odpi.openmetadata.commonservices.ffdc.rest.*;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.openmetadata.handlers.CollectionHandler;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.actors.AssignmentScopeProperties;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.collections.CollectionMembershipProperties;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.collections.CollectionProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.collections.*;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.digitalbusiness.*;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.resources.ResourceListProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.solutions.SolutionBlueprintCompositionProperties;
@@ -1386,6 +1385,351 @@ public class CollectionManagerRESTServices extends TokenController
 
 
     /**
+     * Classify the collection to indicate that it is an editing collection - this means it is
+     * a collection of element updates that will be merged into its source collection.
+     *
+     * @param serverName name of the server to route the request to
+     * @param urlMarker  view service URL marker
+     * @param collectionGUID unique identifier of the metadata element to remove
+     * @param requestBody properties to help with the mapping of the elements in the external asset manager and open metadata
+     *
+     * @return  void or
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public VoidResponse setEditingCollection(String                       serverName,
+                                             String                       urlMarker,
+                                             String                       collectionGUID,
+                                             NewClassificationRequestBody requestBody)
+    {
+        final String methodName = "setEditingCollection";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
+
+        VoidResponse response = new VoidResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            CollectionHandler handler = instanceHandler.getCollectionHandler(userId, serverName, urlMarker, methodName);
+
+            if (requestBody != null)
+            {
+                if (requestBody.getProperties() instanceof EditingCollectionProperties properties)
+                {
+                    handler.setEditingCollection(userId, collectionGUID, properties, requestBody);
+                }
+                else if (requestBody.getProperties() == null)
+                {
+                    handler.setEditingCollection(userId, collectionGUID, null, requestBody);
+                }
+                else
+                {
+                    restExceptionHandler.handleInvalidPropertiesObject(EditingCollectionProperties.class.getName(), methodName);
+                }
+            }
+            else
+            {
+                handler.setEditingCollection(userId, collectionGUID, null, null);
+            }
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+
+        return response;
+    }
+
+
+    /**
+     * Remove the editing collection designation from the collection.
+     *
+     * @param serverName name of the server to route the request to
+     * @param urlMarker  view service URL marker
+     * @param collectionGUID unique identifier of the metadata element to remove
+     * @param requestBody correlation properties for the external asset manager
+     *
+     * @return  void or
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public VoidResponse clearEditingCollection(String                    serverName,
+                                               String                    urlMarker,
+                                               String                    collectionGUID,
+                                               MetadataSourceRequestBody requestBody)
+    {
+        final String methodName = "clearEditingCollection";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
+
+        VoidResponse response = new VoidResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            CollectionHandler handler = instanceHandler.getCollectionHandler(userId, serverName, urlMarker, methodName);
+
+            handler.clearEditingCollection(userId, collectionGUID, requestBody);
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+
+        return response;
+    }
+
+
+    /**
+     * Classify the collection to indicate that it is a staging collection - this means it is
+     * a collection of element updates that will be transferred into another collection.
+     *
+     * @param serverName name of the server to route the request to
+     * @param urlMarker  view service URL marker
+     * @param collectionGUID unique identifier of the metadata element to remove
+     * @param requestBody properties to help with the mapping of the elements in the external asset manager and open metadata
+     *
+     * @return  void or
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public VoidResponse setStagingCollection(String                       serverName,
+                                             String                       urlMarker,
+                                             String                       collectionGUID,
+                                             NewClassificationRequestBody requestBody)
+    {
+        final String methodName = "setStagingCollection";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
+
+        VoidResponse response = new VoidResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            CollectionHandler handler = instanceHandler.getCollectionHandler(userId, serverName, urlMarker, methodName);
+
+            if (requestBody != null)
+            {
+                if (requestBody.getProperties() instanceof StagingCollectionProperties properties)
+                {
+                    handler.setStagingCollection(userId, collectionGUID, properties, requestBody);
+                }
+                else if (requestBody.getProperties() == null)
+                {
+                    handler.setStagingCollection(userId, collectionGUID, null, requestBody);
+                }
+                else
+                {
+                    restExceptionHandler.handleInvalidPropertiesObject(StagingCollectionProperties.class.getName(), methodName);
+                }
+            }
+            else
+            {
+                handler.setStagingCollection(userId, collectionGUID, null, null);
+            }
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+
+        return response;
+    }
+
+
+    /**
+     * Remove the staging collection designation from the collection.
+     *
+     * @param serverName name of the server to route the request to
+     * @param urlMarker  view service URL marker
+     * @param collectionGUID unique identifier of the metadata element to remove
+     * @param requestBody correlation properties for the external asset manager
+     *
+     * @return  void or
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public VoidResponse clearStagingCollection(String                    serverName,
+                                               String                    urlMarker,
+                                               String                    collectionGUID,
+                                               MetadataSourceRequestBody requestBody)
+    {
+        final String methodName = "clearStagingCollection";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
+
+        VoidResponse response = new VoidResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            CollectionHandler handler = instanceHandler.getCollectionHandler(userId, serverName, urlMarker, methodName);
+
+            handler.clearStagingCollection(userId, collectionGUID, requestBody);
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+
+        return response;
+    }
+
+
+    /**
+     * Classify the collection to indicate that it is a scoping collection - this means it is
+     * a collection of elements that are being considered for inclusion in a project or activity.
+     *
+     * @param serverName name of the server to route the request to
+     * @param urlMarker  view service URL marker
+     * @param collectionGUID unique identifier of the metadata element to remove
+     * @param requestBody properties to help with the mapping of the elements in the external asset manager and open metadata
+     *
+     * @return  void or
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public VoidResponse setScopingCollection(String                       serverName,
+                                             String                       urlMarker,
+                                             String                       collectionGUID,
+                                             NewClassificationRequestBody requestBody)
+    {
+        final String methodName = "setScopingCollection";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
+
+        VoidResponse response = new VoidResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            CollectionHandler handler = instanceHandler.getCollectionHandler(userId, serverName, urlMarker, methodName);
+
+            if (requestBody != null)
+            {
+                if (requestBody.getProperties() instanceof ScopingCollectionProperties properties)
+                {
+                    handler.setScopingCollection(userId, collectionGUID, properties, requestBody);
+                }
+                else if (requestBody.getProperties() == null)
+                {
+                    handler.setScopingCollection(userId, collectionGUID, null, requestBody);
+                }
+                else
+                {
+                    restExceptionHandler.handleInvalidPropertiesObject(ScopingCollectionProperties.class.getName(), methodName);
+                }
+            }
+            else
+            {
+                handler.setScopingCollection(userId, collectionGUID, null, null);
+            }
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+
+        return response;
+    }
+
+
+    /**
+     * Remove the scoping collection designation from the collection.
+     *
+     * @param serverName name of the server to route the request to
+     * @param urlMarker  view service URL marker
+     * @param collectionGUID unique identifier of the metadata element to remove
+     * @param requestBody correlation properties for the external asset manager
+     *
+     * @return  void or
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public VoidResponse clearScopingCollection(String                    serverName,
+                                               String                    urlMarker,
+                                               String                    collectionGUID,
+                                               MetadataSourceRequestBody requestBody)
+    {
+        final String methodName = "clearScopingCollection";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
+
+        VoidResponse response = new VoidResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            CollectionHandler handler = instanceHandler.getCollectionHandler(userId, serverName, urlMarker, methodName);
+
+            handler.clearScopingCollection(userId, collectionGUID, requestBody);
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+
+        return response;
+    }
+
+
+    /**
      * Delete a collection.  It is detached from all parent elements.  If members are anchored to the collection
      * then they are also deleted.
      *
@@ -1399,10 +1743,9 @@ public class CollectionManagerRESTServices extends TokenController
      *  PropertyServerException    there is a problem retrieving information from the property server(s).
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    @SuppressWarnings(value = "unused")
-    public VoidResponse deleteCollection(String                    serverName,
-                                         String                    urlMarker,
-                                         String                    collectionGUID,
+    public VoidResponse deleteCollection(String            serverName,
+                                         String            urlMarker,
+                                         String            collectionGUID,
                                          DeleteRequestBody requestBody)
     {
         final String methodName = "deleteCollection";

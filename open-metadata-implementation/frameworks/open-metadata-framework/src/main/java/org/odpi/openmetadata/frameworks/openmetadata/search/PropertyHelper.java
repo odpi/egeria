@@ -482,7 +482,7 @@ public class PropertyHelper
             List<ElementClassification> duplicateClassifications   = new ArrayList<>();
             List<ElementClassification> resourceManagersCategories = new ArrayList<>();
             List<ElementClassification> serverPurposes             = new ArrayList<>();
-            List<ElementClassification> collectionCategories       = new ArrayList<>();
+            List<ElementClassification> collectionRoles            = new ArrayList<>();
             List<ElementClassification> projectCategories          = new ArrayList<>();
             List<ElementClassification> otherClassifications       = new ArrayList<>();
 
@@ -578,11 +578,11 @@ public class PropertyHelper
                     {
                         serverPurposes.add(this.getElementClassification(attachedClassification));
                     }
-                    else if (this.isTypeOf(attachedClassification, OpenMetadataType.COLLECTION_CATEGORY_CLASSIFICATION.typeName))
+                    else if (this.isTypeOf(attachedClassification, OpenMetadataType.COLLECTION_ROLE_CLASSIFICATION.typeName))
                     {
-                        collectionCategories.add(this.getElementClassification(attachedClassification));
+                        collectionRoles.add(this.getElementClassification(attachedClassification));
                     }
-                    else if (this.isTypeOf(attachedClassification, OpenMetadataType.PROJECT_CATEGORY_CLASSIFICATION.typeName))
+                    else if (this.isTypeOf(attachedClassification, OpenMetadataType.PROJECT_ROLE_CLASSIFICATION.typeName))
                     {
                         projectCategories.add(this.getElementClassification(attachedClassification));
                     }
@@ -605,7 +605,7 @@ public class PropertyHelper
 
             if (! resourceManagersCategories.isEmpty())
             {
-                elementHeader.setResourceManagerCategories(resourceManagersCategories);
+                elementHeader.setResourceManagerRoles(resourceManagersCategories);
             }
 
             if (! serverPurposes.isEmpty())
@@ -613,14 +613,14 @@ public class PropertyHelper
                 elementHeader.setServerPurposes(serverPurposes);
             }
 
-            if (! collectionCategories.isEmpty())
+            if (! collectionRoles.isEmpty())
             {
-                elementHeader.setCollectionCategories(collectionCategories);
+                elementHeader.setCollectionRoles(collectionRoles);
             }
 
             if (! projectCategories.isEmpty())
             {
-                elementHeader.setProjectCategories(projectCategories);
+                elementHeader.setProjectRoles(projectCategories);
             }
 
             if (! otherClassifications.isEmpty())
@@ -4003,14 +4003,14 @@ public class PropertyHelper
                 return classification;
             }
 
-            classification = getClassification(elementHeader.getProjectCategories(), classificationName);
+            classification = getClassification(elementHeader.getProjectRoles(), classificationName);
 
             if (classification != null)
             {
                 return classification;
             }
 
-            classification = getClassification(elementHeader.getCollectionCategories(), classificationName);
+            classification = getClassification(elementHeader.getCollectionRoles(), classificationName);
 
             if (classification != null)
             {
@@ -4024,7 +4024,7 @@ public class PropertyHelper
                 return classification;
             }
 
-            classification = getClassification(elementHeader.getResourceManagerCategories(), classificationName);
+            classification = getClassification(elementHeader.getResourceManagerRoles(), classificationName);
 
             if (classification != null)
             {

@@ -4,8 +4,8 @@
 package org.odpi.openmetadata.adapters.connectors.governanceactions.remediation;
 
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.ConnectorType;
-import org.odpi.openmetadata.frameworks.governanceaction.GovernanceActionServiceProviderBase;
-import org.odpi.openmetadata.frameworks.governanceaction.controls.ActionTargetType;
+import org.odpi.openmetadata.frameworks.opengovernance.GovernanceActionServiceProviderBase;
+import org.odpi.openmetadata.frameworks.opengovernance.controls.ActionTargetType;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 
 import java.util.ArrayList;

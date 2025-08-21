@@ -27,7 +27,7 @@ public class CatalogTargetProperties extends RelationshipBeanProperties
     private String                   metadataSourceQualifiedName = null;
     private String                   connectionName              = null;
     private Map<String, Object>      configurationProperties     = null;
-    private Map<String, String>      templateProperties          = null;
+    private Map<String, String>      templates                   = null;
     private PermittedSynchronization permittedSynchronization    = null;
     private DeleteMethod             deleteMethod                = null;
 
@@ -55,8 +55,8 @@ public class CatalogTargetProperties extends RelationshipBeanProperties
             catalogTargetName = template.getCatalogTargetName();
             metadataSourceQualifiedName = template.getMetadataSourceQualifiedName();
             connectionName = template.getConnectionName();
-            configurationProperties = template.getConfigurationProperties();
-            templateProperties = template.getTemplateProperties();
+            configurationProperties  = template.getConfigurationProperties();
+            templates                = template.getTemplates();
             permittedSynchronization = template.getPermittedSynchronization();
             deleteMethod = template.getDeleteMethod();
         }
@@ -136,11 +136,11 @@ public class CatalogTargetProperties extends RelationshipBeanProperties
     /**
      * Set up the template properties for this connector to use when creating elements for this catalog target.
      *
-     * @param templateProperties map of template name to qualified name of template implementation
+     * @param templates map of template name to qualified name of template implementation
      */
-    public void setTemplateProperties(Map<String, String> templateProperties)
+    public void setTemplates(Map<String, String> templates)
     {
-        this.templateProperties = templateProperties;
+        this.templates = templates;
     }
 
 
@@ -149,9 +149,9 @@ public class CatalogTargetProperties extends RelationshipBeanProperties
      *
      * @return map of template name to qualified name of template implementation
      */
-    public Map<String, String> getTemplateProperties()
+    public Map<String, String> getTemplates()
     {
-        return templateProperties;
+        return templates;
     }
 
     /**
@@ -236,7 +236,7 @@ public class CatalogTargetProperties extends RelationshipBeanProperties
                 ", metadataSourceQualifiedName='" + metadataSourceQualifiedName + '\'' +
                 ", connectionName='" + connectionName + '\'' +
                 ", configurationProperties=" + configurationProperties +
-                ", templateProperties=" + templateProperties +
+                ", templateProperties=" + templates +
                 ", permittedSynchronization=" + permittedSynchronization +
                 ", deleteMethod=" + deleteMethod +
                 "} " + super.toString();
@@ -260,7 +260,7 @@ public class CatalogTargetProperties extends RelationshipBeanProperties
                 Objects.equals(metadataSourceQualifiedName, that.metadataSourceQualifiedName) &&
                 Objects.equals(connectionName, that.connectionName) &&
                 Objects.equals(configurationProperties, that.configurationProperties) &&
-                Objects.equals(templateProperties, that.templateProperties) &&
+                Objects.equals(templates, that.templates) &&
                 permittedSynchronization == that.permittedSynchronization &&
                 deleteMethod == that.deleteMethod;
     }
@@ -275,6 +275,6 @@ public class CatalogTargetProperties extends RelationshipBeanProperties
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), catalogTargetName, metadataSourceQualifiedName, connectionName, configurationProperties, templateProperties, permittedSynchronization, deleteMethod);
+        return Objects.hash(super.hashCode(), catalogTargetName, metadataSourceQualifiedName, connectionName, configurationProperties, templates, permittedSynchronization, deleteMethod);
     }
 }

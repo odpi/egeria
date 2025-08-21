@@ -13,15 +13,15 @@ import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterExcept
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.frameworks.openmetadata.client.OpenMetadataClient;
-import org.odpi.openmetadata.frameworks.governanceaction.controls.ActionTarget;
-import org.odpi.openmetadata.frameworks.governanceaction.properties.ActionTargetElement;
-import org.odpi.openmetadata.frameworks.governanceaction.properties.RequestSourceElement;
+import org.odpi.openmetadata.frameworks.opengovernance.controls.ActionTarget;
+import org.odpi.openmetadata.frameworks.opengovernance.properties.ActionTargetElement;
+import org.odpi.openmetadata.frameworks.opengovernance.properties.RequestSourceElement;
 import org.odpi.openmetadata.frameworks.openmetadata.handlers.AssetHandler;
 import org.odpi.openmetadata.frameworks.openmetadata.search.PropertyHelper;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
-import org.odpi.openmetadata.frameworks.surveyaction.AnnotationStore;
-import org.odpi.openmetadata.frameworks.surveyaction.SurveyAssetStore;
-import org.odpi.openmetadata.frameworks.surveyaction.SurveyContext;
+import org.odpi.openmetadata.frameworks.opensurvey.AnnotationStore;
+import org.odpi.openmetadata.frameworks.opensurvey.SurveyAssetStore;
+import org.odpi.openmetadata.frameworks.opensurvey.SurveyContext;
 import org.odpi.openmetadata.frameworkservices.gaf.client.GovernanceConfigurationClient;
 import org.odpi.openmetadata.frameworkservices.gaf.client.GovernanceContextClient;
 import org.odpi.openmetadata.governanceservers.enginehostservices.admin.GovernanceEngineHandler;
@@ -52,8 +52,8 @@ public class SurveyActionEngineHandler extends GovernanceEngineHandler
      * @param serverUserId user id for the server to use
      * @param configurationClient client to retrieve the configuration
      * @param engineActionClient client used by the engine host services to control the execution of governance action requests
-     * @param connectedAssetClient REST client from the OCF that is linked to the Asset Owner OMAS
-     * @param openMetadataClient REST Client from the GAF that is linked to the Asset Owner OMAS
+     * @param connectedAssetClient REST client from the OCF that is linked to the OCF Metadata Management
+     * @param openMetadataClient REST Client from the OMF that is linked to the OMF Metadata management
      * @param auditLog logging destination
      * @param maxPageSize maximum number of results that can be returned in a single request
      */
@@ -220,6 +220,7 @@ public class SurveyActionEngineHandler extends GovernanceEngineHandler
              */
             for (ActionTargetElement actionTargetElement : assetTargetElements)
             {
+                // todo check the action target is not in progress
                 if (ActionTarget.NEW_ASSET.getName().equals(actionTargetElement.getActionTargetName()))
                 {
                     if (assetGUID == null)

@@ -31,7 +31,7 @@ import org.odpi.openmetadata.frameworkservices.omf.rest.*;
 import java.util.*;
 
 /**
- * OpenMetadataClientBase provides an interface to the open metadata store.  This is part of the Governance Action Framework (GAF)
+ * OpenMetadataClientBase provides an interface to the open metadata store.  This is part of the Open Survey Framework (OGF)
  * and provides a comprehensive interface for working with all types of metadata, subject to the user's (and this OMAS's) security permissions.
  * The interface supports search, maintenance of metadata elements, classifications and relationships plus the ability to raise incident reports
  * and todos along with the ability to work with metadata valid values and translations.
@@ -3462,7 +3462,7 @@ public abstract class OpenMetadataClientBase extends OpenMetadataClient
                 if (refDataElement != null)
                 {
                     String propertyType = propertyHelper.getStringProperty(AccessServiceDescription.OMF_METADATA_MANAGEMENT.getServiceName(), 
-                                                                           OpenMetadataProperty.PROPERTY_TYPE.name,
+                                                                           OpenMetadataProperty.PROPERTY_NAME.name,
                                                                            refDataElement.getRelationshipProperties(),
                                                                            methodName);
                     if (propertyType != null)

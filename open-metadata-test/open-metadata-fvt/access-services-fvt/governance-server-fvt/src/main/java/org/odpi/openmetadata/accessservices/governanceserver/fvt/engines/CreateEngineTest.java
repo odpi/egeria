@@ -6,7 +6,7 @@ package org.odpi.openmetadata.accessservices.governanceserver.fvt.engines;
 
 import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceDescription;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
-import org.odpi.openmetadata.frameworks.governanceaction.properties.GovernanceEngineElement;
+import org.odpi.openmetadata.frameworks.opengovernance.properties.GovernanceEngineElement;
 import org.odpi.openmetadata.fvt.utilities.FVTResults;
 import org.odpi.openmetadata.fvt.utilities.auditlog.FVTAuditLogDestination;
 import org.odpi.openmetadata.fvt.utilities.exceptions.FVTUnexpectedCondition;

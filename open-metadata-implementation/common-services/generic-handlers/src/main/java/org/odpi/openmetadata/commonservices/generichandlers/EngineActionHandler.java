@@ -24,7 +24,7 @@ import org.odpi.openmetadata.repositoryservices.ffdc.exception.TypeErrorExceptio
 import java.util.*;
 
 /**
- * EngineActionHandler manages EngineAction objects from the Governance Action Framework (GAF).
+ * EngineActionHandler manages EngineAction objects from the Open Governance Framework (OGF).
  * These objects are 1-1 with an open metadata entity.
  */
 public class EngineActionHandler<B> extends OpenMetadataAPIGenericHandler<B>

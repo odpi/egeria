@@ -7,7 +7,7 @@ import org.odpi.openmetadata.frameworks.openmetadata.ffdc.PropertyServerExceptio
 import org.odpi.openmetadata.frameworks.openmetadata.enums.DeleteMethod;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.PermittedSynchronization;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
-import org.odpi.openmetadata.frameworks.governanceaction.properties.CatalogTarget;
+import org.odpi.openmetadata.frameworks.opengovernance.properties.CatalogTarget;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
@@ -77,10 +77,10 @@ public class CatalogTargetConverter<B> extends OMFConverter<B>
                                                                               OpenMetadataProperty.CONNECTION_NAME.name,
                                                                               relationship.getProperties(),
                                                                               methodName));
-                    bean.setTemplateProperties(repositoryHelper.getStringMapFromProperty(serviceName,
-                                                                                         OpenMetadataProperty.TEMPLATES.name,
-                                                                                         relationship.getProperties(),
-                                                                                         methodName));
+                    bean.setTemplates(repositoryHelper.getStringMapFromProperty(serviceName,
+                                                                                OpenMetadataProperty.TEMPLATES.name,
+                                                                                relationship.getProperties(),
+                                                                                methodName));
                     bean.setConfigurationProperties(repositoryHelper.getMapFromProperty(serviceName,
                                                                                         OpenMetadataProperty.CONFIGURATION_PROPERTIES.name,
                                                                                         relationship.getProperties(),

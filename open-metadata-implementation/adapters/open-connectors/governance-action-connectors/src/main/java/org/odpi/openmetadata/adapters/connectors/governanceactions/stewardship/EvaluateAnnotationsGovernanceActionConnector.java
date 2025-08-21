@@ -7,9 +7,9 @@ import org.odpi.openmetadata.adapters.connectors.governanceactions.ffdc.Governan
 import org.odpi.openmetadata.adapters.connectors.governanceactions.ffdc.GovernanceActionConnectorsErrorCode;
 import org.odpi.openmetadata.frameworks.auditlog.messagesets.AuditLogMessageDefinition;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
-import org.odpi.openmetadata.frameworks.governanceaction.GeneralGovernanceActionService;
-import org.odpi.openmetadata.frameworks.governanceaction.controls.ActionTarget;
-import org.odpi.openmetadata.frameworks.governanceaction.properties.*;
+import org.odpi.openmetadata.frameworks.opengovernance.GeneralGovernanceActionService;
+import org.odpi.openmetadata.frameworks.opengovernance.controls.ActionTarget;
+import org.odpi.openmetadata.frameworks.opengovernance.properties.*;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.ToDoType;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.NewActionTarget;
@@ -19,7 +19,7 @@ import org.odpi.openmetadata.frameworks.openmetadata.refdata.AssignmentType;
 import org.odpi.openmetadata.frameworks.openmetadata.search.NewElementProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
-import org.odpi.openmetadata.frameworks.surveyaction.controls.SurveyActionTarget;
+import org.odpi.openmetadata.frameworks.opensurvey.controls.SurveyActionTarget;
 
 import java.util.ArrayList;
 import java.util.List;

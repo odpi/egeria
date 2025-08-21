@@ -9,8 +9,8 @@ import org.odpi.openmetadata.adapters.connectors.egeriainfrastructure.control.OM
 import org.odpi.openmetadata.frameworks.auditlog.AuditLogReportingComponent;
 import org.odpi.openmetadata.frameworks.auditlog.ComponentDevelopmentStatus;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.ConnectorType;
-import org.odpi.openmetadata.frameworks.surveyaction.SurveyActionServiceProvider;
-import org.odpi.openmetadata.frameworks.surveyaction.controls.AnalysisStep;
+import org.odpi.openmetadata.frameworks.opensurvey.SurveyActionServiceProvider;
+import org.odpi.openmetadata.frameworks.opensurvey.controls.AnalysisStep;
 
 public class OMAGServerPlatformSurveyProvider extends SurveyActionServiceProvider
 {

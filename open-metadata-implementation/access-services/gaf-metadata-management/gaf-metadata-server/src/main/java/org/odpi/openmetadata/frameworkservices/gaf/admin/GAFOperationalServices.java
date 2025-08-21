@@ -15,7 +15,7 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 
 
 /**
- * GAFOperationalServices initializes the REST Services that support the Governance Action Framework (GAF)
+ * GAFOperationalServices initializes the REST Services that support the Open Survey Framework (OGF)
  * open metadata store calls.
  */
 public class GAFOperationalServices extends AccessServiceAdmin

@@ -217,7 +217,7 @@ public class OpenMetadataTypesArchive3_1
     private ClassificationDef addSoftwarePackageManifestClassification()
     {
         return archiveHelper.getClassificationDef(OpenMetadataType.SOFTWARE_PACKAGE_MANIFEST_CLASSIFICATION,
-                                                  this.archiveBuilder.getClassificationDef(OpenMetadataType.COLLECTION_CATEGORY_CLASSIFICATION.typeName),
+                                                  this.archiveBuilder.getClassificationDef(OpenMetadataType.COLLECTION_ROLE_CLASSIFICATION.typeName),
                                                   this.archiveBuilder.getEntityDef(OpenMetadataType.COLLECTION.typeName),
                                                   false);
     }
@@ -541,7 +541,7 @@ public class OpenMetadataTypesArchive3_1
     private ClassificationDef addConnectorTypeDirectoryClassification()
     {
         return archiveHelper.getClassificationDef(OpenMetadataType.CONNECTOR_TYPE_DIRECTORY_CLASSIFICATION,
-                                                  this.archiveBuilder.getClassificationDef(OpenMetadataType.COLLECTION_CATEGORY_CLASSIFICATION.typeName),
+                                                  this.archiveBuilder.getClassificationDef(OpenMetadataType.COLLECTION_ROLE_CLASSIFICATION.typeName),
                                                   this.archiveBuilder.getEntityDef(OpenMetadataType.COLLECTION.typeName),
                                                   false);
     }

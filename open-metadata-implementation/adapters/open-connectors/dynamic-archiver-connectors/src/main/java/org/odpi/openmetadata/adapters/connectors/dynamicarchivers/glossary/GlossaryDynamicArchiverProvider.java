@@ -6,7 +6,7 @@ package org.odpi.openmetadata.adapters.connectors.dynamicarchivers.glossary;
 
 import org.odpi.openmetadata.adapters.connectors.dynamicarchivers.DynamicArchiveProvider;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.ConnectorType;
-import org.odpi.openmetadata.frameworks.governanceaction.controls.ActionTargetType;
+import org.odpi.openmetadata.frameworks.opengovernance.controls.ActionTargetType;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 
 import java.util.ArrayList;

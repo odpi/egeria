@@ -2,7 +2,7 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.adapters.connectors.unitycatalog.controls;
 
-import org.odpi.openmetadata.frameworks.governanceaction.controls.ActionTargetType;
+import org.odpi.openmetadata.frameworks.opengovernance.controls.ActionTargetType;
 import org.odpi.openmetadata.frameworks.integration.controls.CatalogTargetType;
 import org.odpi.openmetadata.frameworks.openmetadata.refdata.DeployedImplementationType;
 

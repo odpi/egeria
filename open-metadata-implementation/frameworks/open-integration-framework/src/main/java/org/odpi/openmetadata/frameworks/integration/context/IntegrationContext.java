@@ -5,11 +5,11 @@ package org.odpi.openmetadata.frameworks.integration.context;
 
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.client.ConnectedAssetClient;
-import org.odpi.openmetadata.frameworks.governanceaction.client.GovernanceConfiguration;
-import org.odpi.openmetadata.frameworks.governanceaction.client.OpenGovernanceClient;
-import org.odpi.openmetadata.frameworks.governanceaction.connectorcontext.ConnectorConfigClient;
-import org.odpi.openmetadata.frameworks.governanceaction.connectorcontext.StewardshipAction;
-import org.odpi.openmetadata.frameworks.governanceaction.properties.CatalogTarget;
+import org.odpi.openmetadata.frameworks.opengovernance.client.GovernanceConfiguration;
+import org.odpi.openmetadata.frameworks.opengovernance.client.OpenGovernanceClient;
+import org.odpi.openmetadata.frameworks.opengovernance.connectorcontext.ConnectorConfigClient;
+import org.odpi.openmetadata.frameworks.opengovernance.connectorcontext.StewardshipAction;
+import org.odpi.openmetadata.frameworks.opengovernance.properties.CatalogTarget;
 import org.odpi.openmetadata.frameworks.integration.client.OpenIntegrationClient;
 import org.odpi.openmetadata.frameworks.integration.openlineage.OpenLineageEventListener;
 import org.odpi.openmetadata.frameworks.integration.openlineage.OpenLineageListenerManager;

@@ -29,7 +29,6 @@
 hs_err_pid*
 
 # Maven
-target*
 dependency-reduced-pom.xml
 core*.dmp
 pom.xml.releaseBackup

@@ -301,9 +301,9 @@ public class MermaidGraphBuilderBase
                 return VisualStyle.TEMPLATE;
             }
 
-            if (elementHeader.getCollectionCategories() != null)
+            if (elementHeader.getCollectionRoles() != null)
             {
-                for (ElementClassification classification : elementHeader.getCollectionCategories())
+                for (ElementClassification classification : elementHeader.getCollectionRoles())
                 {
                     if (classification != null)
                     {
@@ -317,9 +317,9 @@ public class MermaidGraphBuilderBase
                 }
             }
 
-            if (elementHeader.getProjectCategories() != null)
+            if (elementHeader.getProjectRoles() != null)
             {
-                for (ElementClassification classification : elementHeader.getProjectCategories())
+                for (ElementClassification classification : elementHeader.getProjectRoles())
                 {
                     if (classification != null)
                     {
@@ -450,9 +450,9 @@ public class MermaidGraphBuilderBase
                 }
             }
 
-            if (elementHeader.getResourceManagerCategories() != null)
+            if (elementHeader.getResourceManagerRoles() != null)
             {
-                for (ElementClassification classification : elementHeader.getResourceManagerCategories())
+                for (ElementClassification classification : elementHeader.getResourceManagerRoles())
                 {
                     addClassificationToGraph(elementHeader.getGUID(), classification);
                 }
@@ -466,17 +466,17 @@ public class MermaidGraphBuilderBase
                 }
             }
 
-            if (elementHeader.getCollectionCategories() != null)
+            if (elementHeader.getCollectionRoles() != null)
             {
-                for (ElementClassification classification : elementHeader.getCollectionCategories())
+                for (ElementClassification classification : elementHeader.getCollectionRoles())
                 {
                     addClassificationToGraph(elementHeader.getGUID(), classification);
                 }
             }
 
-            if (elementHeader.getProjectCategories() != null)
+            if (elementHeader.getProjectRoles() != null)
             {
-                for (ElementClassification classification : elementHeader.getProjectCategories())
+                for (ElementClassification classification : elementHeader.getProjectRoles())
                 {
                     addClassificationToGraph(elementHeader.getGUID(), classification);
                 }
@@ -574,9 +574,9 @@ public class MermaidGraphBuilderBase
         }
 
 
-        if (elementHeader.getProjectCategories() != null)
+        if (elementHeader.getProjectRoles() != null)
         {
-            for (ElementClassification classification : elementHeader.getProjectCategories())
+            for (ElementClassification classification : elementHeader.getProjectRoles())
             {
                 if (classification != null)
                 {
@@ -585,9 +585,9 @@ public class MermaidGraphBuilderBase
             }
         }
 
-        if (elementHeader.getCollectionCategories() != null)
+        if (elementHeader.getCollectionRoles() != null)
         {
-            for (ElementClassification classification : elementHeader.getCollectionCategories())
+            for (ElementClassification classification : elementHeader.getCollectionRoles())
             {
                 if (classification != null)
                 {
@@ -927,10 +927,6 @@ public class MermaidGraphBuilderBase
         if (propertyHelper.isTypeOf(elementControlHeader, OpenMetadataType.GLOSSARY.typeName))
         {
             return VisualStyle.GLOSSARY;
-        }
-        if (propertyHelper.isTypeOf(elementControlHeader, OpenMetadataType.GLOSSARY_CATEGORY.typeName))
-        {
-            return VisualStyle.GLOSSARY_CATEGORY;
         }
         if (propertyHelper.isTypeOf(elementControlHeader, OpenMetadataType.GLOSSARY_TERM.typeName))
         {

@@ -13,10 +13,10 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedExceptio
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.ConnectorType;
-import org.odpi.openmetadata.frameworks.governanceaction.GovernanceServiceProviderBase;
+import org.odpi.openmetadata.frameworks.opengovernance.GovernanceServiceProviderBase;
 import org.odpi.openmetadata.frameworks.integration.connectors.IntegrationConnectorProvider;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
-import org.odpi.openmetadata.frameworks.surveyaction.SurveyActionServiceProvider;
+import org.odpi.openmetadata.frameworks.opensurvey.SurveyActionServiceProvider;
 
 import java.lang.reflect.InvocationTargetException;
 

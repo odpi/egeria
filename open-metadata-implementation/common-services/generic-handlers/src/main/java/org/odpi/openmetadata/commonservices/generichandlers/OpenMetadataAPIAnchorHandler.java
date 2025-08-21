@@ -1812,13 +1812,13 @@ public class OpenMetadataAPIAnchorHandler<B> extends OpenMetadataAPIRootHandler<
         {
             anchorIdentifiers = this.getAnchorGUIDForGlossaryTerm(localServerUserId, targetGUID, targetTypeName, forLineage, forDuplicateProcessing, effectiveTime, methodName);
         }
-        else if ((repositoryHelper.isTypeOf(serviceName, targetTypeName, OpenMetadataType.GLOSSARY_CATEGORY.typeName)) ||
+        else if ((repositoryHelper.isTypeOf(serviceName, targetTypeName, OpenMetadataType.COLLECTION.typeName)) ||
                  (repositoryHelper.isTypeOf(serviceName, targetTypeName, OpenMetadataType.INFORMATION_SUPPLY_CHAIN.typeName)) ||
                  (repositoryHelper.isTypeOf(serviceName, targetTypeName, OpenMetadataType.SOLUTION_COMPONENT.typeName)) ||
                  (repositoryHelper.isTypeOf(serviceName, targetTypeName, OpenMetadataType.SOLUTION_BLUEPRINT.typeName)) ||
                  (repositoryHelper.isTypeOf(serviceName, targetTypeName, OpenMetadataType.DATA_STRUCTURE.typeName)) ||
                  (repositoryHelper.isTypeOf(serviceName, targetTypeName, OpenMetadataType.ASSET.typeName)) ||
-                 (repositoryHelper.isTypeOf(serviceName, targetTypeName, OpenMetadataType.PERSON.typeName)))
+                 (repositoryHelper.isTypeOf(serviceName, targetTypeName, OpenMetadataType.ACTOR.typeName)))
         {
             /*
              * Assume this type of Referenceable is its own anchor.

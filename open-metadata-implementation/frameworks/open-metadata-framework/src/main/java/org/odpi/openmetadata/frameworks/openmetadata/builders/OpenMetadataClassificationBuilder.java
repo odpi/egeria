@@ -11,6 +11,9 @@ import org.odpi.openmetadata.frameworks.openmetadata.properties.ClassificationEl
 import org.odpi.openmetadata.frameworks.openmetadata.properties.ClassificationProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.DataAssetEncodingProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.DataScopeProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.collections.EditingCollectionProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.collections.ScopingCollectionProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.collections.StagingCollectionProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.glossaries.*;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.governance.*;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.schema.CalculatedValueProperties;
@@ -222,11 +225,11 @@ public class OpenMetadataClassificationBuilder
                                                                         OpenMetadataProperty.ADDITIONAL_PROPERTIES.name,
                                                                         dataScopeProperties.getAdditionalProperties());
             }
-            else if (properties instanceof EditingGlossaryProperties editingGlossaryProperties)
+            else if (properties instanceof EditingCollectionProperties editingCollectionProperties)
             {
                 elementProperties = propertyHelper.addStringProperty(elementProperties,
                                                                      OpenMetadataProperty.DESCRIPTION.name,
-                                                                     editingGlossaryProperties.getDescription());
+                                                                     editingCollectionProperties.getDescription());
             }
             else if (properties instanceof GovernanceClassificationProperties governanceClassificationProperties)
             {
@@ -365,6 +368,12 @@ public class OpenMetadataClassificationBuilder
                                                                    OpenMetadataProperty.DELETE_AFTER.name,
                                                                    retentionClassificationProperties.getDeleteAfter());
             }
+            else if (properties instanceof ScopingCollectionProperties scopingCollectionProperties)
+            {
+                elementProperties = propertyHelper.addStringProperty(elementProperties,
+                                                                     OpenMetadataProperty.DESCRIPTION.name,
+                                                                     scopingCollectionProperties.getDescription());
+            }
             else if (properties instanceof SecurityGroupMembershipProperties securityGroupMembershipProperties)
             {
                 elementProperties = propertyHelper.addStringArrayProperty(elementProperties,
@@ -385,11 +394,11 @@ public class OpenMetadataClassificationBuilder
                                                                            OpenMetadataProperty.ACCESS_GROUPS.name,
                                                                            securityTagsProperties.getAccessGroups());
             }
-            else if (properties instanceof StagingGlossaryProperties stagingGlossaryProperties)
+            else if (properties instanceof StagingCollectionProperties stagingCollectionProperties)
             {
                 elementProperties = propertyHelper.addStringProperty(elementProperties,
                                                                      OpenMetadataProperty.DESCRIPTION.name,
-                                                                     stagingGlossaryProperties.getDescription());
+                                                                     stagingCollectionProperties.getDescription());
             }
             else if (properties instanceof SubjectAreaProperties subjectAreaProperties)
             {

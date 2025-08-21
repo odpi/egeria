@@ -15,7 +15,7 @@ import java.util.Map;
 
 /**
  * AnnotationReviewBuilder supports the creation of the entities and
- * relationships that describe an Governance Action Framework (GAF) AnnotationReview and the link to the
+ * relationships that describe an Open Metadata Framework (OMF) AnnotationReview and the link to the
  * annotation.
  */
 public class AnnotationReviewBuilder extends OpenMetadataAPIGenericBuilder

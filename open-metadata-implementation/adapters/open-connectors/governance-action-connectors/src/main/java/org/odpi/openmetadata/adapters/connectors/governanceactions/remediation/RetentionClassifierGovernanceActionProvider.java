@@ -4,12 +4,10 @@
 package org.odpi.openmetadata.adapters.connectors.governanceactions.remediation;
 
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.ConnectorType;
-import org.odpi.openmetadata.frameworks.governanceaction.GovernanceActionServiceProviderBase;
-import org.odpi.openmetadata.frameworks.governanceaction.controls.ActionTarget;
-import org.odpi.openmetadata.frameworks.governanceaction.controls.RequestParameter;
+import org.odpi.openmetadata.frameworks.opengovernance.GovernanceActionServiceProviderBase;
+import org.odpi.openmetadata.frameworks.opengovernance.controls.ActionTarget;
 
 import java.util.ArrayList;
-import java.util.List;
 
 /**
  * RetentionClassifierGovernanceActionProvider is the OCF connector provider for the Retention Classifier Governance Action Service.

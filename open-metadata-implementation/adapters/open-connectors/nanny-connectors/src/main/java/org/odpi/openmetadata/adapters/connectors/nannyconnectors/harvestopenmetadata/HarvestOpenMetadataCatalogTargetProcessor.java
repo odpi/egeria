@@ -20,7 +20,7 @@ import org.odpi.openmetadata.adapters.connectors.resource.jdbc.properties.JDBCDa
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.Connector;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
-import org.odpi.openmetadata.frameworks.governanceaction.properties.CatalogTarget;
+import org.odpi.openmetadata.frameworks.opengovernance.properties.CatalogTarget;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.*;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.AssetProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.externalidentifiers.ExternalIdProperties;
@@ -1887,7 +1887,6 @@ public class HarvestOpenMetadataCatalogTargetProcessor extends CatalogTargetProc
 
         try
         {
-            GlossaryClient     glossaryClient     = integrationContext.getGlossaryClient();
             GlossaryTermClient glossaryTermClient = integrationContext.getGlossaryTermClient();
 
             OpenMetadataElement associatedLicense = getAssociatedLicense(databaseConnection, glossaryElement.getElementHeader().getGUID());
@@ -1896,26 +1895,33 @@ public class HarvestOpenMetadataCatalogTargetProcessor extends CatalogTargetProc
             int numberOfCategories = 0;
             int numberOfLinkedTerms = 0;
 
-            int startFrom = 0;
-
-            List<OpenMetadataRootElement> glossaryTermElements = glossaryTermClient.getTermsForGlossary(glossaryElement.getElementHeader().getGUID(),
-                                                                                                        openMetadataStore.getQueryOptions());
-
-            while (glossaryTermElements != null)
+            if (glossaryElement.getCollectionMembers() != null)
             {
-                for (OpenMetadataRootElement glossaryTermElement : glossaryTermElements)
+                for (RelatedMetadataElementSummary glossaryMember : glossaryElement.getCollectionMembers())
                 {
-                    if (glossaryTermElement != null)
+                    if (glossaryMember != null)
                     {
-                        numberOfTerms++;
+                        if (propertyHelper.isTypeOf(glossaryMember.getRelatedElement().getElementHeader(), OpenMetadataType.GLOSSARY_TERM.typeName))
+                        {
+                            numberOfTerms = numberOfLinkedTerms++;
 
-                        processGlossaryTerm(databaseConnection, glossaryElement.getElementHeader().getGUID(), glossaryTermElement);
+                            OpenMetadataRootElement glossaryTerm = glossaryTermClient.getGlossaryTermByGUID(glossaryMember.getRelatedElement().getElementHeader().getGUID(), new GetOptions());
+
+                            if (glossaryTerm.getRelatedTerms() != null)
+                            {
+                                numberOfLinkedTerms = numberOfLinkedTerms + glossaryTerm.getRelatedTerms().size();
+                            }
+
+                            if (glossaryTerm.getMemberOfCollections() != null)
+                            {
+                                // todo - does this make sense?
+                                numberOfCategories = numberOfCategories + glossaryTerm.getMemberOfCollections().size();
+                            }
+
+                            processGlossaryTerm(databaseConnection, glossaryElement.getElementHeader().getGUID(), glossaryTerm);
+                        }
                     }
                 }
-
-                startFrom = startFrom + openMetadataStore.getMaxPagingSize();
-                glossaryTermElements = glossaryTermClient.getTermsForGlossary(glossaryElement.getElementHeader().getGUID(),
-                                                                          openMetadataStore.getQueryOptions());
             }
 
             syncGlossary(databaseConnection, glossaryElement, numberOfTerms, numberOfCategories, numberOfLinkedTerms, associatedLicense);

@@ -31,7 +31,7 @@ import org.slf4j.LoggerFactory;
 import java.util.*;
 
 /**
- * MetadataElementHandler manages MetadataElement objects from the Governance Action Framework (omf).
+ * MetadataElementHandler manages MetadataElement objects from the Open Metadata Framework (OMF).
  * These objects are 1-1 with an open metadata entity.
  */
 public class MetadataElementHandler<B> extends ReferenceableHandler<B>

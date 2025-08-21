@@ -6,7 +6,7 @@ package org.odpi.openmetadata.frameworkservices.gaf.rest;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import org.odpi.openmetadata.frameworks.governanceaction.properties.GovernanceEngineElement;
+import org.odpi.openmetadata.frameworks.opengovernance.properties.GovernanceEngineElement;
 
 import java.util.Objects;
 
@@ -15,7 +15,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 
 
 /**
- * The response structure used on the Governance Action Framework REST API calls that returns a
+ * The response structure used on the Open Survey Framework REST API calls that returns a
  * GovernanceEngine element object as a response.
  */
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)

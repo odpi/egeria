@@ -21,7 +21,7 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 
 
 /**
- * OMFOperationalServices initializes the REST Services that support the Governance Action Framework (omf)
+ * OMFOperationalServices initializes the REST Services that support the Open Metadata Framework (OMF)
  * open metadata store calls.
  */
 public class OMFOperationalServices extends AccessServiceAdmin

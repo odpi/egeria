@@ -12,7 +12,7 @@ import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterExcept
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
 
-import org.odpi.openmetadata.frameworks.surveyaction.properties.*;
+import org.odpi.openmetadata.frameworks.opensurvey.properties.*;
 import org.odpi.openmetadata.metadatasecurity.server.OpenMetadataServerSecurityVerifier;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.SequencingOrder;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
@@ -25,9 +25,9 @@ import java.util.*;
 
 /**
  * AnnotationHandler manages the storage and retrieval of metadata relating to annotations
- * as defined in the Survey Action Framework (ODF).  It has both specific support for creating annotations from
+ * as defined in the Open Survey Framework (OSF).  It has both specific support for creating annotations from
  * ODF annotation beans and generic support for retrieving annotations.  The reason for this hybrid approach is that there are a huge range
- * of annotation types in ODF and currently all OMASs that work with discovery metadata use the ODF beans on their API.
+ * of annotation types in OSF and currently all services that work with discovery metadata use the OSF beans on their API.
  * Therefore, it makes sense to have support for these beans in a common location so that the implementation can be shared.
  * Note: this handler only supports current effective time with lineage and deduplication set to false since this is all the current
  * discovery use cases need.

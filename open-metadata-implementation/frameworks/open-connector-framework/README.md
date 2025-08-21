@@ -9,7 +9,7 @@ The OCF, as the name suggests, is an open framework for supporting connectors.
 Connector provide client-side access to remote digital [Assets](https://egeria-project.org/concepts/asset)
 such as data sets, APIs and software components.
 OCF Connectors also provide access to metadata about the asset and they may call
-the [Governance Action Framework (GAF)](https://egeria-project.org/frameworks/gaf/overview) to log audit messages and execute
+the [Open Governance Framework (OGF)](https://egeria-project.org/frameworks/ogf/overview) to log audit messages and execute
 appropriate governance actions related to the use of these assets
 in real-time.
 
@@ -50,8 +50,8 @@ Thus the connector interfaces allow for the use of native data APIs to minimize 
 has to take in order to use the OCF connectors.
 
 * Governance enforcement is a complex topic, typically managed externally to the application development team.
-As a result, a separate framework called the governance action framework (GAF) manages governance enforcement.
-The role of the OCF is to bridge from the Asset access requests to the GAF where necessary.
+As a result, a separate framework called the open governance framework (OGF) manages governance enforcement.
+The role of the OCF is to bridge from the Asset access requests to the OGF where necessary.
 
 * Access to the all properties known about an Asset should be available to the consumers of the Asset.
 Therefore the OCF provides a standard interface for accessing these properties.

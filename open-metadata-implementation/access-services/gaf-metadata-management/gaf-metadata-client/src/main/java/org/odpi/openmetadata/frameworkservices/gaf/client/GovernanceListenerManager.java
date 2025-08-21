@@ -7,7 +7,7 @@ import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.openmetadata.events.OpenMetadataEventType;
 import org.odpi.openmetadata.frameworks.openmetadata.events.OpenMetadataOutTopicEvent;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
-import org.odpi.openmetadata.frameworks.governanceaction.WatchdogGovernanceListener;
+import org.odpi.openmetadata.frameworks.opengovernance.WatchdogGovernanceListener;
 import org.odpi.openmetadata.frameworkservices.gaf.ffdc.OpenGovernanceAuditCode;
 
 import java.util.HashMap;

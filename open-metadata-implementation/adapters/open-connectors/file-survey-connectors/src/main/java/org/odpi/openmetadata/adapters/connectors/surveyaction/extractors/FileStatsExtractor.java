@@ -3,17 +3,17 @@
 
 package org.odpi.openmetadata.adapters.connectors.surveyaction.extractors;
 
-import org.odpi.openmetadata.frameworks.surveyaction.controls.SurveyFileAnnotationType;
+import org.odpi.openmetadata.frameworks.opensurvey.controls.SurveyFileAnnotationType;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.frameworks.openmetadata.fileclassifier.FileClassification;
 import org.odpi.openmetadata.frameworks.openmetadata.fileclassifier.FileClassifier;
-import org.odpi.openmetadata.frameworks.surveyaction.SurveyActionServiceConnector;
-import org.odpi.openmetadata.frameworks.surveyaction.measurements.FileMeasurement;
-import org.odpi.openmetadata.frameworks.surveyaction.measurements.FileMetric;
-import org.odpi.openmetadata.frameworks.surveyaction.properties.Annotation;
-import org.odpi.openmetadata.frameworks.surveyaction.properties.ResourcePhysicalStatusAnnotation;
+import org.odpi.openmetadata.frameworks.opensurvey.SurveyActionServiceConnector;
+import org.odpi.openmetadata.frameworks.opensurvey.measurements.FileMeasurement;
+import org.odpi.openmetadata.frameworks.opensurvey.measurements.FileMetric;
+import org.odpi.openmetadata.frameworks.opensurvey.properties.Annotation;
+import org.odpi.openmetadata.frameworks.opensurvey.properties.ResourcePhysicalStatusAnnotation;
 
 import java.io.File;
 import java.io.IOException;

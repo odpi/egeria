@@ -8,6 +8,7 @@ The engine services provide the specialist interfaces to host a specific type of
 
 * **[Governance Action OMES](governance-action)** - provides support for the governance action engines.
 * **[Survey Action OMES](survey-action)** - provides support for survey action engines.
+* **[Watchdog Action OMES](watchdog-action)** - provides support for watchdog action engines.
 * **[Repository Governance OMES](repository-governance)** - provides support for the repository governance engines.
 
 These services run in the Engine Host OMAG Server.

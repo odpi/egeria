@@ -123,7 +123,7 @@ public class RuntimeManagerInstance extends OMVSServiceInstance
 
 
     /**
-     * Return the open metadata store client.  This client is from the Governance Action Framework (GAF) and is for accessing and
+     * Return the open metadata store client.  This client is from the Open Metadata Framework (OMF) and is for accessing and
      * maintaining all types of metadata.
      *
      * @return client

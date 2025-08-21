@@ -10,7 +10,7 @@ import org.odpi.openmetadata.commonservices.ffdc.properties.ConnectorReport;
 import org.odpi.openmetadata.commonservices.ffdc.rest.ConnectorReportResponse;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 
-import org.odpi.openmetadata.frameworks.governanceaction.GovernanceActionServiceConnector;
+import org.odpi.openmetadata.frameworks.opengovernance.GovernanceActionServiceConnector;
 import org.slf4j.LoggerFactory;
 
 

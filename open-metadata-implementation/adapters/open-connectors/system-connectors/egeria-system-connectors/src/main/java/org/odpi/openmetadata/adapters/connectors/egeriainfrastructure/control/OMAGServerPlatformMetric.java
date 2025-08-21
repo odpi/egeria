@@ -3,7 +3,7 @@
 
 package org.odpi.openmetadata.adapters.connectors.egeriainfrastructure.control;
 
-import org.odpi.openmetadata.frameworks.surveyaction.measurements.SurveyMetric;
+import org.odpi.openmetadata.frameworks.opensurvey.measurements.SurveyMetric;
 
 import java.util.ArrayList;
 import java.util.Arrays;

@@ -14,8 +14,8 @@ import org.odpi.openmetadata.frameworks.openmetadata.properties.OpenMetadataElem
 import org.odpi.openmetadata.frameworks.openmetadata.properties.RelatedMetadataElement;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.RelationshipProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.actors.*;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.locations.KnownLocationProperties;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.validvalues.ValidValueDefinitionProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.validvalues.*;
+import org.odpi.openmetadata.frameworks.openmetadata.refdata.SpecificationPropertyType;
 import org.odpi.openmetadata.frameworks.openmetadata.search.*;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
@@ -89,7 +89,7 @@ public class ValidValueDefinitionHandler extends OpenMetadataHandlerBase
      *
      * @param userId                       calling user
      * @param templateOptions details of the element to create
-     * @param templateGUID the unique identifier of the existing asset to copy (this will copy all the attachments such as nested content, schema
+     * @param templateGUID the unique identifier of the existing referenceable to copy (this will copy all the attachments such as nested content, schema
      *                     connection etc)
      * @param replacementProperties properties of the new metadata element.  These override the template values
      * @param placeholderProperties property name-to-property value map to replace any placeholder values in the
@@ -150,286 +150,572 @@ public class ValidValueDefinitionHandler extends OpenMetadataHandlerBase
 
 
     /**
-     * Attach a profile to a location.
+     * Attach a valid value to an implementation - probably a referenceable.
      *
      * @param userId                 userId of user making request
      * @param validValueDefinitionGUID       unique identifier of the validValueDefinition
-     * @param locationGUID           unique identifier of the location
+     * @param elementGUID           unique identifier of the location
      * @param metadataSourceOptions  options to control access to open metadata
      * @param relationshipProperties description of the relationship.
      * @throws InvalidParameterException  one of the parameters is null or invalid.
      * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    public void linkLocationToProfile(String                    userId,
-                                      String                    validValueDefinitionGUID,
-                                      String                    locationGUID,
-                                      MetadataSourceOptions     metadataSourceOptions,
-                                      KnownLocationProperties relationshipProperties) throws InvalidParameterException,
-                                                                                             PropertyServerException,
-                                                                                             UserNotAuthorizedException
+    public void linkValidValueImplementation(String                              userId,
+                                             String                              validValueDefinitionGUID,
+                                             String                              elementGUID,
+                                             MetadataSourceOptions               metadataSourceOptions,
+                                             ValidValuesImplementationProperties relationshipProperties) throws InvalidParameterException,
+                                                                                                                PropertyServerException,
+                                                                                                                UserNotAuthorizedException
     {
         final String methodName            = "linkLocationToProfile";
         final String end1GUIDParameterName = "validValueDefinitionGUID";
-        final String end2GUIDParameterName = "locationGUID";
+        final String end2GUIDParameterName = "elementGUID";
 
         propertyHelper.validateUserId(userId, methodName);
         propertyHelper.validateGUID(validValueDefinitionGUID, end1GUIDParameterName, methodName);
-        propertyHelper.validateGUID(locationGUID, end2GUIDParameterName, methodName);
+        propertyHelper.validateGUID(elementGUID, end2GUIDParameterName, methodName);
 
         openMetadataClient.createRelatedElementsInStore(userId,
                                                         OpenMetadataType.VALID_VALUES_IMPL_RELATIONSHIP.typeName,
                                                         validValueDefinitionGUID,
-                                                        locationGUID,
+                                                        elementGUID,
                                                         metadataSourceOptions,
                                                         relationshipBuilder.getNewElementProperties(relationshipProperties));
     }
 
 
     /**
-     * Detach a validValueDefinition from a location.
+     * Detach a valid value from an implementation - probably a referenceable.
      *
      * @param userId                 userId of user making request.
      * @param validValueDefinitionGUID       unique identifier of the validValueDefinition
-     * @param locationGUID           unique identifier of the location
+     * @param elementGUID           unique identifier of the location
      * @param deleteOptions  options to control access to open metadata
      * @throws InvalidParameterException  one of the parameters is null or invalid.
      * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    public void detachLocationFromProfile(String        userId,
-                                          String        validValueDefinitionGUID,
-                                          String        locationGUID,
-                                          DeleteOptions deleteOptions) throws InvalidParameterException,
-                                                                              PropertyServerException,
-                                                                              UserNotAuthorizedException
+    public void detachValidValueImplementation(String        userId,
+                                               String        validValueDefinitionGUID,
+                                               String        elementGUID,
+                                               DeleteOptions deleteOptions) throws InvalidParameterException,
+                                                                                   PropertyServerException,
+                                                                                   UserNotAuthorizedException
     {
-        final String methodName = "detachLocationFromProfile";
+        final String methodName = "detachValidValueImplementation";
 
         final String end1GUIDParameterName = "validValueDefinitionGUID";
-        final String end2GUIDParameterName = "locationGUID";
+        final String end2GUIDParameterName = "elementGUID";
 
         propertyHelper.validateUserId(userId, methodName);
         propertyHelper.validateGUID(validValueDefinitionGUID, end1GUIDParameterName, methodName);
-        propertyHelper.validateGUID(locationGUID, end2GUIDParameterName, methodName);
+        propertyHelper.validateGUID(elementGUID, end2GUIDParameterName, methodName);
 
         openMetadataClient.detachRelatedElementsInStore(userId,
                                                         OpenMetadataType.VALID_VALUES_IMPL_RELATIONSHIP.typeName,
-                                                        locationGUID,
+                                                        validValueDefinitionGUID,
+                                                        elementGUID,
+                                                        deleteOptions);
+    }
+
+
+    /**
+     * Attach a valid value to a consumer - probably a schema element or data set.
+     *
+     * @param userId                 userId of user making request
+     * @param elementGUID           unique identifier of the location
+     * @param validValueDefinitionGUID       unique identifier of the validValueDefinition
+     * @param metadataSourceOptions  options to control access to open metadata
+     * @param relationshipProperties description of the relationship.
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public void linkValidValuesAssignment(String                         userId,
+                                          String                         elementGUID,
+                                          String                         validValueDefinitionGUID,
+                                          MetadataSourceOptions          metadataSourceOptions,
+                                          ValidValueAssignmentProperties relationshipProperties) throws InvalidParameterException,
+                                                                                                        PropertyServerException,
+                                                                                                        UserNotAuthorizedException
+    {
+        final String methodName            = "linkValidValuesAssignment";
+        final String end1GUIDParameterName = "elementGUID";
+        final String end2GUIDParameterName = "validValueDefinitionGUID";
+
+        propertyHelper.validateUserId(userId, methodName);
+        propertyHelper.validateGUID(validValueDefinitionGUID, end2GUIDParameterName, methodName);
+        propertyHelper.validateGUID(elementGUID, end1GUIDParameterName, methodName);
+
+        openMetadataClient.createRelatedElementsInStore(userId,
+                                                        OpenMetadataType.VALID_VALUES_ASSIGNMENT_RELATIONSHIP.typeName,
+                                                        elementGUID,
+                                                        validValueDefinitionGUID,
+                                                        metadataSourceOptions,
+                                                        relationshipBuilder.getNewElementProperties(relationshipProperties));
+    }
+
+
+    /**
+     * Detach a valid value from a consumer - probably a schema element or data set.
+     *
+     * @param userId                 userId of user making request.
+     * @param elementGUID           unique identifier of the location
+     * @param validValueDefinitionGUID       unique identifier of the validValueDefinition
+     * @param deleteOptions  options to control access to open metadata
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public void detachValidValuesAssignment(String        userId,
+                                            String        elementGUID,
+                                            String        validValueDefinitionGUID,
+                                            DeleteOptions deleteOptions) throws InvalidParameterException,
+                                                                                PropertyServerException,
+                                                                                UserNotAuthorizedException
+    {
+        final String methodName = "detachValidValuesAssignment";
+
+        final String end1GUIDParameterName = "elementGUID";
+        final String end2GUIDParameterName = "validValueDefinitionGUID";
+
+        propertyHelper.validateUserId(userId, methodName);
+        propertyHelper.validateGUID(elementGUID, end1GUIDParameterName, methodName);
+        propertyHelper.validateGUID(validValueDefinitionGUID, end2GUIDParameterName, methodName);
+
+        openMetadataClient.detachRelatedElementsInStore(userId,
+                                                        OpenMetadataType.VALID_VALUES_ASSIGNMENT_RELATIONSHIP.typeName,
+                                                        elementGUID,
                                                         validValueDefinitionGUID,
                                                         deleteOptions);
     }
 
 
     /**
-     * Attach a person profile to one of its peers.
+     * Attach a valid value to a tagged element.
      *
      * @param userId                 userId of user making request
-     * @param personOneGUID          unique identifier of the first person profile
-     * @param personTwoGUID          unique identifier of the second person profile
+     * @param elementGUID           unique identifier of the location
+     * @param validValueDefinitionGUID       unique identifier of the validValueDefinition
      * @param metadataSourceOptions  options to control access to open metadata
      * @param relationshipProperties description of the relationship.
      * @throws InvalidParameterException  one of the parameters is null or invalid.
      * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    public void linkPeerPerson(String                userId,
-                               String                personOneGUID,
-                               String                personTwoGUID,
-                               MetadataSourceOptions metadataSourceOptions,
-                               PeerProperties        relationshipProperties) throws InvalidParameterException,
-                                                                                    PropertyServerException,
-                                                                                    UserNotAuthorizedException
+    public void linkReferenceValueAssignment(String                             userId,
+                                             String                             elementGUID,
+                                             String                             validValueDefinitionGUID,
+                                             MetadataSourceOptions              metadataSourceOptions,
+                                             ReferenceValueAssignmentProperties relationshipProperties) throws InvalidParameterException,
+                                                                                                               PropertyServerException,
+                                                                                                               UserNotAuthorizedException
     {
-        final String methodName            = "linkPeerPerson";
-        final String end1GUIDParameterName = "personOneGUID";
-        final String end2GUIDParameterName = "personTwoGUID";
+        final String methodName            = "linkReferenceValueAssignment";
+        final String end1GUIDParameterName = "elementGUID";
+        final String end2GUIDParameterName = "validValueDefinitionGUID";
 
         propertyHelper.validateUserId(userId, methodName);
-        propertyHelper.validateGUID(personOneGUID, end1GUIDParameterName, methodName);
-        propertyHelper.validateGUID(personTwoGUID, end2GUIDParameterName, methodName);
+        propertyHelper.validateGUID(validValueDefinitionGUID, end2GUIDParameterName, methodName);
+        propertyHelper.validateGUID(elementGUID, end1GUIDParameterName, methodName);
 
         openMetadataClient.createRelatedElementsInStore(userId,
-                                                        OpenMetadataType.PEER_RELATIONSHIP.typeName,
-                                                        personOneGUID,
-                                                        personTwoGUID,
+                                                        OpenMetadataType.REFERENCE_VALUE_ASSIGNMENT_RELATIONSHIP.typeName,
+                                                        elementGUID,
+                                                        validValueDefinitionGUID,
                                                         metadataSourceOptions,
                                                         relationshipBuilder.getNewElementProperties(relationshipProperties));
     }
 
 
     /**
-     * Detach a person profile from one of its peers.
+     * Detach a valid value from a tagged element.
      *
      * @param userId                 userId of user making request.
-     * @param personOneGUID          unique identifier of the first person profile
-     * @param personTwoGUID          unique identifier of the second person profile
+     * @param elementGUID           unique identifier of the location
+     * @param validValueDefinitionGUID       unique identifier of the validValueDefinition
      * @param deleteOptions  options to control access to open metadata
      * @throws InvalidParameterException  one of the parameters is null or invalid.
      * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    public void detachPeerPerson(String        userId,
-                                 String        personOneGUID,
-                                 String        personTwoGUID,
-                                 DeleteOptions deleteOptions) throws InvalidParameterException,
-                                                                     PropertyServerException,
-                                                                     UserNotAuthorizedException
+    public void detachReferenceValueAssignment(String        userId,
+                                               String        elementGUID,
+                                               String        validValueDefinitionGUID,
+                                               DeleteOptions deleteOptions) throws InvalidParameterException,
+                                                                                   PropertyServerException,
+                                                                                   UserNotAuthorizedException
     {
-        final String methodName = "detachPeerPerson";
-        final String end1GUIDParameterName = "personOneGUID";
-        final String end2GUIDParameterName = "personTwoGUID";
+        final String methodName = "detachReferenceValueAssignment";
+
+        final String end1GUIDParameterName = "elementGUID";
+        final String end2GUIDParameterName = "validValueDefinitionGUID";
 
         propertyHelper.validateUserId(userId, methodName);
-        propertyHelper.validateGUID(personOneGUID, end1GUIDParameterName, methodName);
-        propertyHelper.validateGUID(personTwoGUID, end2GUIDParameterName, methodName);
+        propertyHelper.validateGUID(elementGUID, end1GUIDParameterName, methodName);
+        propertyHelper.validateGUID(validValueDefinitionGUID, end2GUIDParameterName, methodName);
 
         openMetadataClient.detachRelatedElementsInStore(userId,
-                                                        OpenMetadataType.PEER_RELATIONSHIP.typeName,
-                                                        personOneGUID,
-                                                        personTwoGUID,
+                                                        OpenMetadataType.REFERENCE_VALUE_ASSIGNMENT_RELATIONSHIP.typeName,
+                                                        elementGUID,
+                                                        validValueDefinitionGUID,
                                                         deleteOptions);
     }
 
 
     /**
-     * Attach a super team to a subteam.
+     * Attach a valid value to one of its peers.
      *
      * @param userId                 userId of user making request
-     * @param superTeamGUID          unique identifier of the super team
-     * @param subteamGUID            unique identifier of the subteam
+     * @param validValueOneGUID          unique identifier of the first valid value
+     * @param validValueTwoGUID          unique identifier of the second valid value
      * @param metadataSourceOptions  options to control access to open metadata
      * @param relationshipProperties description of the relationship.
      * @throws InvalidParameterException  one of the parameters is null or invalid.
      * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    public void linkTeamStructure(String                  userId,
-                                  String                  superTeamGUID,
-                                  String                  subteamGUID,
-                                  MetadataSourceOptions   metadataSourceOptions,
-                                  TeamStructureProperties relationshipProperties) throws InvalidParameterException,
-                                                                                         PropertyServerException,
-                                                                                         UserNotAuthorizedException
+    public void linkAssociatedValidValues(String                          userId,
+                                          String                          validValueOneGUID,
+                                          String                          validValueTwoGUID,
+                                          MetadataSourceOptions           metadataSourceOptions,
+                                          ValidValueAssociationProperties relationshipProperties) throws InvalidParameterException,
+                                                                                                         PropertyServerException,
+                                                                                                         UserNotAuthorizedException
     {
-        final String methodName            = "linkTeamStructure";
-        final String end1GUIDParameterName = "superTeamGUID";
-        final String end2GUIDParameterName = "subteamGUID";
+        final String methodName            = "linkAssociatedValidValues";
+        final String end1GUIDParameterName = "validValueOneGUID";
+        final String end2GUIDParameterName = "validValueTwoGUID";
 
         propertyHelper.validateUserId(userId, methodName);
-        propertyHelper.validateGUID(superTeamGUID, end1GUIDParameterName, methodName);
-        propertyHelper.validateGUID(subteamGUID, end2GUIDParameterName, methodName);
+        propertyHelper.validateGUID(validValueOneGUID, end1GUIDParameterName, methodName);
+        propertyHelper.validateGUID(validValueTwoGUID, end2GUIDParameterName, methodName);
 
         openMetadataClient.createRelatedElementsInStore(userId,
-                                                        OpenMetadataType.TEAM_STRUCTURE_RELATIONSHIP.typeName,
-                                                        superTeamGUID,
-                                                        subteamGUID,
+                                                        OpenMetadataType.VALID_VALUE_ASSOCIATION_RELATIONSHIP.typeName,
+                                                        validValueOneGUID,
+                                                        validValueTwoGUID,
                                                         metadataSourceOptions,
                                                         relationshipBuilder.getNewElementProperties(relationshipProperties));
     }
 
 
     /**
-     * Detach a super team from a subteam.
+     * Detach a valid value from one of its peers.
      *
      * @param userId                 userId of user making request.
-     * @param superTeamGUID          unique identifier of the super team
-     * @param subteamGUID            unique identifier of the subteam
+     * @param validValueOneGUID          unique identifier of the first valid value
+     * @param validValueTwoGUID          unique identifier of the second valid value
      * @param deleteOptions  options to control access to open metadata
      * @throws InvalidParameterException  one of the parameters is null or invalid.
      * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    public void detachTeamStructure(String        userId,
-                                    String        superTeamGUID,
-                                    String        subteamGUID,
-                                    DeleteOptions deleteOptions) throws InvalidParameterException,
-                                                                        PropertyServerException,
-                                                                        UserNotAuthorizedException
+    public void detachAssociatedValidValues(String        userId,
+                                            String        validValueOneGUID,
+                                            String        validValueTwoGUID,
+                                            DeleteOptions deleteOptions) throws InvalidParameterException,
+                                                                                PropertyServerException,
+                                                                                UserNotAuthorizedException
     {
-        final String methodName = "detachTeamStructure";
-        final String end1GUIDParameterName = "superTeamGUID";
-        final String end2GUIDParameterName = "subteamGUID";
+        final String methodName = "detachAssociatedValidValues";
+        final String end1GUIDParameterName = "validValueOneGUID";
+        final String end2GUIDParameterName = "validValueTwoGUID";
 
         propertyHelper.validateUserId(userId, methodName);
-        propertyHelper.validateGUID(superTeamGUID, end1GUIDParameterName, methodName);
-        propertyHelper.validateGUID(subteamGUID, end2GUIDParameterName, methodName);
+        propertyHelper.validateGUID(validValueOneGUID, end1GUIDParameterName, methodName);
+        propertyHelper.validateGUID(validValueTwoGUID, end2GUIDParameterName, methodName);
 
         openMetadataClient.detachRelatedElementsInStore(userId,
-                                                        OpenMetadataType.TEAM_STRUCTURE_RELATIONSHIP.typeName,
-                                                        superTeamGUID,
-                                                        subteamGUID,
+                                                        OpenMetadataType.VALID_VALUE_ASSOCIATION_RELATIONSHIP.typeName,
+                                                        validValueOneGUID,
+                                                        validValueTwoGUID,
                                                         deleteOptions);
     }
 
 
     /**
-     * Attach an asset to an IT profile.
+     * Attach a valid value to one of its peers.
      *
      * @param userId                 userId of user making request
-     * @param assetGUID       unique identifier of the asset
-     * @param itProfileGUID            unique identifier of the IT profile
+     * @param validValueOneGUID          unique identifier of the first valid value
+     * @param validValueTwoGUID          unique identifier of the second valid value
      * @param metadataSourceOptions  options to control access to open metadata
      * @param relationshipProperties description of the relationship.
      * @throws InvalidParameterException  one of the parameters is null or invalid.
      * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    public void linkAssetToProfile(String                            userId,
-                                   String                            assetGUID,
-                                   String                            itProfileGUID,
-                                   MetadataSourceOptions             metadataSourceOptions,
-                                   ITInfrastructureProfileProperties relationshipProperties) throws InvalidParameterException,
-                                                                                                    PropertyServerException,
-                                                                                                    UserNotAuthorizedException
+    public void linkConsistentValidValues(String                          userId,
+                                          String                          validValueOneGUID,
+                                          String                          validValueTwoGUID,
+                                          MetadataSourceOptions           metadataSourceOptions,
+                                          ConsistentValidValuesProperties relationshipProperties) throws InvalidParameterException,
+                                                                                                         PropertyServerException,
+                                                                                                         UserNotAuthorizedException
     {
-        final String methodName            = "linkAssetToProfile";
-        final String end1GUIDParameterName = "assetGUID";
-        final String end2GUIDParameterName = "itProfileGUID";
+        final String methodName            = "linkConsistentValidValues";
+        final String end1GUIDParameterName = "validValueOneGUID";
+        final String end2GUIDParameterName = "validValueTwoGUID";
 
         propertyHelper.validateUserId(userId, methodName);
-        propertyHelper.validateGUID(assetGUID, end1GUIDParameterName, methodName);
-        propertyHelper.validateGUID(itProfileGUID, end2GUIDParameterName, methodName);
+        propertyHelper.validateGUID(validValueOneGUID, end1GUIDParameterName, methodName);
+        propertyHelper.validateGUID(validValueTwoGUID, end2GUIDParameterName, methodName);
 
         openMetadataClient.createRelatedElementsInStore(userId,
-                                                        OpenMetadataType.IT_INFRASTRUCTURE_PROFILE_RELATIONSHIP.typeName,
-                                                        assetGUID,
-                                                        itProfileGUID,
+                                                        OpenMetadataType.CONSISTENT_VALID_VALUES_RELATIONSHIP.typeName,
+                                                        validValueOneGUID,
+                                                        validValueTwoGUID,
                                                         metadataSourceOptions,
                                                         relationshipBuilder.getNewElementProperties(relationshipProperties));
     }
 
 
     /**
-     * Detach an asset from an IT profile.
+     * Detach a valid value from one of its peers.
      *
      * @param userId                 userId of user making request.
-     * @param assetGUID              unique identifier of the asset
-     * @param itProfileGUID          unique identifier of the IT profile
+     * @param validValueOneGUID          unique identifier of the first valid value
+     * @param validValueTwoGUID          unique identifier of the second valid value
      * @param deleteOptions  options to control access to open metadata
      * @throws InvalidParameterException  one of the parameters is null or invalid.
      * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    public void detachAssetFromProfile(String        userId,
-                                       String        assetGUID,
-                                       String        itProfileGUID,
+    public void detachConsistentValidValues(String        userId,
+                                            String        validValueOneGUID,
+                                            String        validValueTwoGUID,
+                                            DeleteOptions deleteOptions) throws InvalidParameterException,
+                                                                                PropertyServerException,
+                                                                                UserNotAuthorizedException
+    {
+        final String methodName = "detachConsistentValidValues";
+        final String end1GUIDParameterName = "validValueOneGUID";
+        final String end2GUIDParameterName = "validValueTwoGUID";
+
+        propertyHelper.validateUserId(userId, methodName);
+        propertyHelper.validateGUID(validValueOneGUID, end1GUIDParameterName, methodName);
+        propertyHelper.validateGUID(validValueTwoGUID, end2GUIDParameterName, methodName);
+
+        openMetadataClient.detachRelatedElementsInStore(userId,
+                                                        OpenMetadataType.CONSISTENT_VALID_VALUES_RELATIONSHIP.typeName,
+                                                        validValueOneGUID,
+                                                        validValueTwoGUID,
+                                                        deleteOptions);
+    }
+
+
+    /**
+     * Attach a valid value to one of its peers.
+     *
+     * @param userId                 userId of user making request
+     * @param validValueOneGUID          unique identifier of the first valid value
+     * @param validValueTwoGUID          unique identifier of the second valid value
+     * @param metadataSourceOptions  options to control access to open metadata
+     * @param relationshipProperties description of the relationship.
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public void linkMappedValidValues(String                       userId,
+                                      String                       validValueOneGUID,
+                                      String                       validValueTwoGUID,
+                                      MetadataSourceOptions        metadataSourceOptions,
+                                      ValidValuesMappingProperties relationshipProperties) throws InvalidParameterException,
+                                                                                                  PropertyServerException,
+                                                                                                  UserNotAuthorizedException
+    {
+        final String methodName            = "linkMappedValidValues";
+        final String end1GUIDParameterName = "validValueOneGUID";
+        final String end2GUIDParameterName = "validValueTwoGUID";
+
+        propertyHelper.validateUserId(userId, methodName);
+        propertyHelper.validateGUID(validValueOneGUID, end1GUIDParameterName, methodName);
+        propertyHelper.validateGUID(validValueTwoGUID, end2GUIDParameterName, methodName);
+
+        openMetadataClient.createRelatedElementsInStore(userId,
+                                                        OpenMetadataType.VALID_VALUES_MAPPING_RELATIONSHIP.typeName,
+                                                        validValueOneGUID,
+                                                        validValueTwoGUID,
+                                                        metadataSourceOptions,
+                                                        relationshipBuilder.getNewElementProperties(relationshipProperties));
+    }
+
+
+    /**
+     * Detach a valid value from one of its peers.
+     *
+     * @param userId                 userId of user making request.
+     * @param validValueOneGUID          unique identifier of the first valid value
+     * @param validValueTwoGUID          unique identifier of the second valid value
+     * @param deleteOptions  options to control access to open metadata
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public void detachMappedValidValues(String        userId,
+                                        String        validValueOneGUID,
+                                        String        validValueTwoGUID,
+                                        DeleteOptions deleteOptions) throws InvalidParameterException,
+                                                                            PropertyServerException,
+                                                                            UserNotAuthorizedException
+    {
+        final String methodName = "detachMappedValidValues";
+        final String end1GUIDParameterName = "validValueOneGUID";
+        final String end2GUIDParameterName = "validValueTwoGUID";
+
+        propertyHelper.validateUserId(userId, methodName);
+        propertyHelper.validateGUID(validValueOneGUID, end1GUIDParameterName, methodName);
+        propertyHelper.validateGUID(validValueTwoGUID, end2GUIDParameterName, methodName);
+
+        openMetadataClient.detachRelatedElementsInStore(userId,
+                                                        OpenMetadataType.VALID_VALUES_MAPPING_RELATIONSHIP.typeName,
+                                                        validValueOneGUID,
+                                                        validValueTwoGUID,
+                                                        deleteOptions);
+    }
+
+
+    /**
+     * Attach a valid value to a valid value set.
+     *
+     * @param userId                 userId of user making request
+     * @param valueValueSetGUID          unique identifier of the super team
+     * @param valueValueMemberGUID            unique identifier of the valueValueMember
+     * @param metadataSourceOptions  options to control access to open metadata
+     * @param relationshipProperties description of the relationship.
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public void linkValidValueMember(String                     userId,
+                                     String                     valueValueSetGUID,
+                                     String                     valueValueMemberGUID,
+                                     MetadataSourceOptions      metadataSourceOptions,
+                                     ValidValueMemberProperties relationshipProperties) throws InvalidParameterException,
+                                                                                               PropertyServerException,
+                                                                                               UserNotAuthorizedException
+    {
+        final String methodName            = "linkValidValueMember";
+        final String end1GUIDParameterName = "valueValueSetGUID";
+        final String end2GUIDParameterName = "valueValueMemberGUID";
+
+        propertyHelper.validateUserId(userId, methodName);
+        propertyHelper.validateGUID(valueValueSetGUID, end1GUIDParameterName, methodName);
+        propertyHelper.validateGUID(valueValueMemberGUID, end2GUIDParameterName, methodName);
+
+        openMetadataClient.createRelatedElementsInStore(userId,
+                                                        OpenMetadataType.VALID_VALUE_MEMBER_RELATIONSHIP.typeName,
+                                                        valueValueSetGUID,
+                                                        valueValueMemberGUID,
+                                                        metadataSourceOptions,
+                                                        relationshipBuilder.getNewElementProperties(relationshipProperties));
+    }
+
+
+    /**
+     * Detach a valid value from a valid value set.
+     *
+     * @param userId                 userId of user making request.
+     * @param valueValueSetGUID          unique identifier of the super team
+     * @param valueValueMemberGUID            unique identifier of the valueValueMember
+     * @param deleteOptions  options to control access to open metadata
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public void detachValidValueMember(String        userId,
+                                       String        valueValueSetGUID,
+                                       String        valueValueMemberGUID,
                                        DeleteOptions deleteOptions) throws InvalidParameterException,
                                                                            PropertyServerException,
                                                                            UserNotAuthorizedException
     {
-        final String methodName = "detachAssetFromProfile";
-        final String end1GUIDParameterName = "assetGUID";
-        final String end2GUIDParameterName = "itProfileGUID";
+        final String methodName = "detachValidValueMember";
+        final String end1GUIDParameterName = "valueValueSetGUID";
+        final String end2GUIDParameterName = "valueValueMemberGUID";
 
         propertyHelper.validateUserId(userId, methodName);
-        propertyHelper.validateGUID(assetGUID, end1GUIDParameterName, methodName);
-        propertyHelper.validateGUID(itProfileGUID, end2GUIDParameterName, methodName);
+        propertyHelper.validateGUID(valueValueSetGUID, end1GUIDParameterName, methodName);
+        propertyHelper.validateGUID(valueValueMemberGUID, end2GUIDParameterName, methodName);
 
         openMetadataClient.detachRelatedElementsInStore(userId,
-                                                        OpenMetadataType.IT_INFRASTRUCTURE_PROFILE_RELATIONSHIP.typeName,
-                                                        itProfileGUID,
-                                                        itProfileGUID,
+                                                        OpenMetadataType.VALID_VALUE_MEMBER_RELATIONSHIP.typeName,
+                                                        valueValueSetGUID,
+                                                        valueValueMemberGUID,
+                                                        deleteOptions);
+    }
+
+
+    /**
+     * Attach a referenceable to a specification property valid value.
+     *
+     * @param userId                 userId of user making request
+     * @param referenceableGUID       unique identifier of the referenceable
+     * @param validValueDefinitionGUID            unique identifier of the IT profile
+     * @param metadataSourceOptions  options to control access to open metadata
+     * @param relationshipProperties description of the relationship.
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public void linkSpecificationProperty(String                                    userId,
+                                          String                                    referenceableGUID,
+                                          String                                    validValueDefinitionGUID,
+                                          MetadataSourceOptions                     metadataSourceOptions,
+                                          SpecificationPropertyAssignmentProperties relationshipProperties) throws InvalidParameterException,
+                                                                                                   PropertyServerException,
+                                                                                                   UserNotAuthorizedException
+    {
+        final String methodName            = "linkSpecificationProperty";
+        final String end1GUIDParameterName = "referenceableGUID";
+        final String end2GUIDParameterName = "validValueDefinitionGUID";
+
+        propertyHelper.validateUserId(userId, methodName);
+        propertyHelper.validateGUID(referenceableGUID, end1GUIDParameterName, methodName);
+        propertyHelper.validateGUID(validValueDefinitionGUID, end2GUIDParameterName, methodName);
+
+        openMetadataClient.createRelatedElementsInStore(userId,
+                                                        OpenMetadataType.SPECIFICATION_PROPERTY_ASSIGNMENT_RELATIONSHIP.typeName,
+                                                        referenceableGUID,
+                                                        validValueDefinitionGUID,
+                                                        metadataSourceOptions,
+                                                        relationshipBuilder.getNewElementProperties(relationshipProperties));
+    }
+
+
+    /**
+     * Detach a referenceable to a specification property valid value.
+     *
+     * @param userId                 userId of user making request.
+     * @param referenceableGUID              unique identifier of the referenceable
+     * @param validValueDefinitionGUID          unique identifier of the IT profile
+     * @param deleteOptions  options to control access to open metadata
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public void detachSpecificationProperty(String        userId,
+                                            String        referenceableGUID,
+                                            String        validValueDefinitionGUID,
+                                            DeleteOptions deleteOptions) throws InvalidParameterException,
+                                                                                PropertyServerException,
+                                                                                UserNotAuthorizedException
+    {
+        final String methodName = "detachSpecificationProperty";
+        final String end1GUIDParameterName = "referenceableGUID";
+        final String end2GUIDParameterName = "validValueDefinitionGUID";
+
+        propertyHelper.validateUserId(userId, methodName);
+        propertyHelper.validateGUID(referenceableGUID, end1GUIDParameterName, methodName);
+        propertyHelper.validateGUID(validValueDefinitionGUID, end2GUIDParameterName, methodName);
+
+        openMetadataClient.detachRelatedElementsInStore(userId,
+                                                        OpenMetadataType.SPECIFICATION_PROPERTY_ASSIGNMENT_RELATIONSHIP.typeName,
+                                                        referenceableGUID,
+                                                        validValueDefinitionGUID,
                                                         deleteOptions);
     }
 

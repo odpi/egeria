@@ -3,8 +3,8 @@
 
 package org.odpi.openmetadata.adapters.connectors.unitycatalog.controls;
 
-import org.odpi.openmetadata.frameworks.governanceaction.controls.RequestParameterType;
-import org.odpi.openmetadata.frameworks.surveyaction.controls.SurveyRequestParameter;
+import org.odpi.openmetadata.frameworks.opengovernance.controls.RequestParameterType;
+import org.odpi.openmetadata.frameworks.opensurvey.controls.SurveyRequestParameter;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -550,7 +550,7 @@ Content-Type: application/json
 
 {
   "class" : "UpdateStatusRequestBody",
-  "status" : "APPROVED",
+  "newStatus" : "APPROVED",
   "externalSourceGUID": "add guid here",
   "externalSourceName": "add qualified name here",
   "effectiveTime" : "{{$isoTimestamp}}",

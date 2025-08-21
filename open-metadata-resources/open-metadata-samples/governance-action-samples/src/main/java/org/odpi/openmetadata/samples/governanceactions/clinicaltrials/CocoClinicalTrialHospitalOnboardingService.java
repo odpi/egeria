@@ -8,9 +8,9 @@ import org.odpi.openmetadata.adapters.connectors.governanceactions.provisioning.
 import org.odpi.openmetadata.adapters.connectors.integration.basicfiles.BasicFilesMonitoringConfigurationProperty;
 import org.odpi.openmetadata.frameworks.auditlog.messagesets.AuditLogMessageDefinition;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.*;
-import org.odpi.openmetadata.frameworks.governanceaction.controls.ActionTarget;
+import org.odpi.openmetadata.frameworks.opengovernance.controls.ActionTarget;
 import org.odpi.openmetadata.frameworks.openmetadata.controls.PlaceholderProperty;
-import org.odpi.openmetadata.frameworks.governanceaction.properties.*;
+import org.odpi.openmetadata.frameworks.opengovernance.properties.*;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.*;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.processes.connectors.CatalogTargetProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.search.ElementProperties;
@@ -953,7 +953,7 @@ public class CocoClinicalTrialHospitalOnboardingService extends CocoClinicalTria
         templateProperties.put(OpenMetadataType.DATA_FILE.typeName, templateName);
         templateProperties.put(OpenMetadataType.CSV_FILE.typeName, templateName);
 
-        catalogTargetProperties.setTemplateProperties(templateProperties);
+        catalogTargetProperties.setTemplates(templateProperties);
 
         Map<String, Object> configurationProperties = new HashMap<>();
 

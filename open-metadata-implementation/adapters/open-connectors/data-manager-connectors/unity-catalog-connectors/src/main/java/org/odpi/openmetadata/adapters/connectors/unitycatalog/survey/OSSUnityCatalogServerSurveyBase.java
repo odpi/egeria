@@ -13,12 +13,12 @@ import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterExcept
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
-import org.odpi.openmetadata.frameworks.surveyaction.SurveyActionServiceConnector;
-import org.odpi.openmetadata.frameworks.surveyaction.controls.AnalysisStep;
-import org.odpi.openmetadata.frameworks.surveyaction.controls.AnnotationType;
-import org.odpi.openmetadata.frameworks.surveyaction.controls.SurveyRequestParameter;
-import org.odpi.openmetadata.frameworks.surveyaction.properties.ResourceProfileAnnotation;
-import org.odpi.openmetadata.frameworks.surveyaction.properties.ResourceProfileLogAnnotation;
+import org.odpi.openmetadata.frameworks.opensurvey.SurveyActionServiceConnector;
+import org.odpi.openmetadata.frameworks.opensurvey.controls.AnalysisStep;
+import org.odpi.openmetadata.frameworks.opensurvey.controls.AnnotationType;
+import org.odpi.openmetadata.frameworks.opensurvey.controls.SurveyRequestParameter;
+import org.odpi.openmetadata.frameworks.opensurvey.properties.ResourceProfileAnnotation;
+import org.odpi.openmetadata.frameworks.opensurvey.properties.ResourceProfileLogAnnotation;
 
 import java.io.IOException;
 import java.util.*;

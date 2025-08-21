@@ -4,11 +4,11 @@
 package org.odpi.openmetadata.adapters.connectors.postgres.survey;
 
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.PropertyServerException;
-import org.odpi.openmetadata.frameworks.surveyaction.SurveyActionServiceConnector;
-import org.odpi.openmetadata.frameworks.surveyaction.controls.SurveyDatabaseAnnotationType;
-import org.odpi.openmetadata.frameworks.surveyaction.measurements.*;
-import org.odpi.openmetadata.frameworks.surveyaction.properties.Annotation;
-import org.odpi.openmetadata.frameworks.surveyaction.properties.ResourceMeasureAnnotation;
+import org.odpi.openmetadata.frameworks.opensurvey.SurveyActionServiceConnector;
+import org.odpi.openmetadata.frameworks.opensurvey.controls.SurveyDatabaseAnnotationType;
+import org.odpi.openmetadata.frameworks.opensurvey.measurements.*;
+import org.odpi.openmetadata.frameworks.opensurvey.properties.Annotation;
+import org.odpi.openmetadata.frameworks.opensurvey.properties.ResourceMeasureAnnotation;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -708,7 +708,7 @@ public class PostgresDatabaseStatsExtractor
     static class SchemaDetails
     {
         private final RelationalSchemaMeasurement schemaMeasurement = new RelationalSchemaMeasurement();
-        private final Map<String, TableDetails> tables = new HashMap<>();
+        private final Map<String, TableDetails>   tables            = new HashMap<>();
 
 
         /**

@@ -8,12 +8,15 @@ import org.odpi.openmetadata.frameworks.openmetadata.client.OpenMetadataClient;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
-import org.odpi.openmetadata.frameworks.openmetadata.handlers.GlossaryHandler;
+import org.odpi.openmetadata.frameworks.openmetadata.handlers.CollectionHandler;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.OpenMetadataRootElement;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.ClassificationProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.RelationshipProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.collections.EditingCollectionProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.collections.StagingCollectionProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.glossaries.*;
 import org.odpi.openmetadata.frameworks.openmetadata.search.*;
+import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 
 import java.util.List;
 import java.util.Map;
@@ -23,7 +26,7 @@ import java.util.Map;
  */
 public class GlossaryClient extends ConnectorContextClientBase
 {
-    private final GlossaryHandler glossaryHandler;
+    private final CollectionHandler collectionHandler;
 
 
     /**
@@ -53,7 +56,7 @@ public class GlossaryClient extends ConnectorContextClientBase
     {
         super(parentContext, localServerName, localServiceName, connectorUserId, connectorGUID, externalSourceGUID, externalSourceName, auditLog, maxPageSize);
 
-        this.glossaryHandler = new GlossaryHandler(localServerName, auditLog, localServiceName, openMetadataClient);
+        this.collectionHandler = new CollectionHandler(localServerName, auditLog, localServiceName, openMetadataClient, OpenMetadataType.GLOSSARY.typeName);
     }
 
 
@@ -70,14 +73,14 @@ public class GlossaryClient extends ConnectorContextClientBase
      * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    public String createGlossary(NewElementOptions                       newElementOptions,
+    public String createGlossary(NewElementOptions                     newElementOptions,
                                  Map<String, ClassificationProperties> initialClassifications,
                                  GlossaryProperties                    properties,
                                  RelationshipProperties                parentRelationshipProperties) throws InvalidParameterException,
                                                                                                             PropertyServerException,
                                                                                                             UserNotAuthorizedException
     {
-        String elementGUID = glossaryHandler.createGlossary(connectorUserId, newElementOptions, initialClassifications, properties, parentRelationshipProperties);
+        String elementGUID = collectionHandler.createCollection(connectorUserId, newElementOptions, initialClassifications, properties, parentRelationshipProperties);
 
         if (parentContext.getIntegrationReportWriter() != null)
         {
@@ -112,7 +115,7 @@ public class GlossaryClient extends ConnectorContextClientBase
                                                                                                          UserNotAuthorizedException,
                                                                                                          PropertyServerException
     {
-        String elementGUID = glossaryHandler.createGlossaryFromTemplate(connectorUserId, templateOptions, templateGUID, replacementProperties, placeholderProperties, parentRelationshipProperties);
+        String elementGUID = collectionHandler.createCollectionFromTemplate(connectorUserId, templateOptions, templateGUID, replacementProperties, placeholderProperties, parentRelationshipProperties);
 
         if (parentContext.getIntegrationReportWriter() != null)
         {
@@ -139,7 +142,7 @@ public class GlossaryClient extends ConnectorContextClientBase
                                                                      PropertyServerException,
                                                                      UserNotAuthorizedException
     {
-        glossaryHandler.updateGlossary(connectorUserId, glossaryGUID, updateOptions, properties);
+        collectionHandler.updateCollection(connectorUserId, glossaryGUID, updateOptions, properties);
 
         if (parentContext.getIntegrationReportWriter() != null)
         {
@@ -160,12 +163,12 @@ public class GlossaryClient extends ConnectorContextClientBase
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public void setGlossaryAsEditingGlossary(String                    glossaryGUID,
-                                             EditingGlossaryProperties properties,
+                                             EditingCollectionProperties properties,
                                              MetadataSourceOptions     metadataSourceOptions) throws InvalidParameterException,
                                                                                                      PropertyServerException,
                                                                                                      UserNotAuthorizedException
     {
-        glossaryHandler.setGlossaryAsEditingGlossary(connectorUserId, glossaryGUID, properties, metadataSourceOptions);
+        collectionHandler.setEditingCollection(connectorUserId, glossaryGUID, properties, metadataSourceOptions);
     }
 
 
@@ -183,7 +186,7 @@ public class GlossaryClient extends ConnectorContextClientBase
                                                                                                    PropertyServerException,
                                                                                                    UserNotAuthorizedException
     {
-        glossaryHandler.clearGlossaryAsEditingGlossary(connectorUserId, glossaryGUID, metadataSourceOptions);
+        collectionHandler.clearEditingCollection(connectorUserId, glossaryGUID, metadataSourceOptions);
     }
 
 
@@ -199,12 +202,12 @@ public class GlossaryClient extends ConnectorContextClientBase
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public void setGlossaryAsStagingGlossary(String                    glossaryGUID,
-                                             StagingGlossaryProperties properties,
+                                             StagingCollectionProperties properties,
                                              MetadataSourceOptions     metadataSourceOptions) throws InvalidParameterException,
                                                                                                      PropertyServerException,
                                                                                                      UserNotAuthorizedException
     {
-        glossaryHandler.setGlossaryAsStagingGlossary(connectorUserId, glossaryGUID, properties, metadataSourceOptions);
+        collectionHandler.setStagingCollection(connectorUserId, glossaryGUID, properties, metadataSourceOptions);
     }
 
 
@@ -222,7 +225,7 @@ public class GlossaryClient extends ConnectorContextClientBase
                                                                                                    PropertyServerException,
                                                                                                    UserNotAuthorizedException
     {
-        glossaryHandler.clearGlossaryAsStagingGlossary(connectorUserId, glossaryGUID, metadataSourceOptions);
+        collectionHandler.clearStagingCollection(connectorUserId, glossaryGUID, metadataSourceOptions);
     }
 
 
@@ -246,7 +249,7 @@ public class GlossaryClient extends ConnectorContextClientBase
                                                                                           PropertyServerException,
                                                                                           UserNotAuthorizedException
     {
-        glossaryHandler.setGlossaryAsTaxonomy(connectorUserId, glossaryGUID, properties, metadataSourceOptions);
+        collectionHandler.setGlossaryAsTaxonomy(connectorUserId, glossaryGUID, properties, metadataSourceOptions);
     }
 
 
@@ -264,7 +267,7 @@ public class GlossaryClient extends ConnectorContextClientBase
                                                                                             PropertyServerException,
                                                                                             UserNotAuthorizedException
     {
-        glossaryHandler.clearGlossaryAsTaxonomy(connectorUserId, glossaryGUID, metadataSourceOptions);
+        collectionHandler.clearGlossaryAsTaxonomy(connectorUserId, glossaryGUID, metadataSourceOptions);
     }
 
 
@@ -288,7 +291,7 @@ public class GlossaryClient extends ConnectorContextClientBase
                                                                                                    PropertyServerException,
                                                                                                    UserNotAuthorizedException
     {
-        glossaryHandler.setGlossaryAsCanonical(connectorUserId, glossaryGUID, properties, metadataSourceOptions);
+        collectionHandler.setGlossaryAsCanonical(connectorUserId, glossaryGUID, properties, metadataSourceOptions);
     }
 
 
@@ -306,7 +309,7 @@ public class GlossaryClient extends ConnectorContextClientBase
                                                                                              PropertyServerException,
                                                                                              UserNotAuthorizedException
     {
-        glossaryHandler.clearGlossaryAsCanonical(connectorUserId, glossaryGUID, metadataSourceOptions);
+        collectionHandler.clearGlossaryAsCanonical(connectorUserId, glossaryGUID, metadataSourceOptions);
     }
 
 
@@ -323,7 +326,7 @@ public class GlossaryClient extends ConnectorContextClientBase
                                                                    PropertyServerException,
                                                                    UserNotAuthorizedException
     {
-        glossaryHandler.deleteGlossary(connectorUserId, glossaryGUID, deleteOptions);
+        collectionHandler.deleteCollection(connectorUserId, glossaryGUID, deleteOptions);
 
         if (parentContext.getIntegrationReportWriter() != null)
         {
@@ -347,7 +350,7 @@ public class GlossaryClient extends ConnectorContextClientBase
                                                                                                PropertyServerException,
                                                                                                UserNotAuthorizedException
     {
-        return glossaryHandler.getGlossariesByName(connectorUserId, name, queryOptions);
+        return collectionHandler.getCollectionsByName(connectorUserId, name, queryOptions);
     }
 
 
@@ -366,7 +369,7 @@ public class GlossaryClient extends ConnectorContextClientBase
                                                                                    PropertyServerException,
                                                                                    UserNotAuthorizedException
     {
-        return glossaryHandler.getGlossaryByGUID(connectorUserId, glossaryGUID, getOptions);
+        return collectionHandler.getCollectionByGUID(connectorUserId, glossaryGUID, getOptions);
     }
 
 
@@ -387,27 +390,6 @@ public class GlossaryClient extends ConnectorContextClientBase
                                                                                             UserNotAuthorizedException,
                                                                                             PropertyServerException
     {
-        return glossaryHandler.findGlossaries(connectorUserId, searchString, searchOptions);
-    }
-
-
-    /**
-     * Retrieve the glossary metadata element for the requested glossary term.
-     *
-     * @param glossaryTermGUID unique identifier of the requested term
-     * @param getOptions multiple options to control the query
-     *
-     * @return matching metadata element
-     *
-     * @throws InvalidParameterException  one of the parameters is invalid
-     * @throws UserNotAuthorizedException the user is not authorized to issue this request
-     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
-     */
-    public OpenMetadataRootElement getGlossaryForTerm(String     glossaryTermGUID,
-                                                      GetOptions getOptions) throws InvalidParameterException,
-                                                                                    UserNotAuthorizedException,
-                                                                                    PropertyServerException
-    {
-        return glossaryHandler.getGlossaryForTerm(connectorUserId, glossaryTermGUID, getOptions);
+        return collectionHandler.findCollections(connectorUserId, searchString, searchOptions);
     }
 }

@@ -4,13 +4,13 @@ package org.odpi.openmetadata.adapters.connectors.governanceactions.verification
 
 import org.odpi.openmetadata.adapters.connectors.governanceactions.ffdc.GovernanceActionConnectorsErrorCode;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
-import org.odpi.openmetadata.frameworks.governanceaction.GeneralGovernanceActionService;
+import org.odpi.openmetadata.frameworks.opengovernance.GeneralGovernanceActionService;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.OMFCheckedExceptionBase;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
-import org.odpi.openmetadata.frameworks.governanceaction.properties.ActionTargetElement;
+import org.odpi.openmetadata.frameworks.opengovernance.properties.ActionTargetElement;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.AttachedClassification;
-import org.odpi.openmetadata.frameworks.governanceaction.properties.CompletionStatus;
+import org.odpi.openmetadata.frameworks.opengovernance.properties.CompletionStatus;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.OpenMetadataElement;
 
 import java.util.ArrayList;

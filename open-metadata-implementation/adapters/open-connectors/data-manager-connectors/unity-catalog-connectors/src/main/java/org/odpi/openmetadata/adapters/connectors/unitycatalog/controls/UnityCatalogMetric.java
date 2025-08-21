@@ -3,7 +3,7 @@
 
 package org.odpi.openmetadata.adapters.connectors.unitycatalog.controls;
 
-import org.odpi.openmetadata.frameworks.surveyaction.measurements.*;
+import org.odpi.openmetadata.frameworks.opensurvey.measurements.*;
 
 import java.util.ArrayList;
 import java.util.Arrays;

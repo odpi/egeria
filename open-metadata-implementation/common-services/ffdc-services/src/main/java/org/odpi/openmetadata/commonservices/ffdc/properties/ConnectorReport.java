@@ -9,12 +9,12 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import org.odpi.openmetadata.frameworks.auditlog.ComponentDescription;
 import org.odpi.openmetadata.frameworks.connectors.controls.ConfigurationPropertyType;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.ConnectorType;
-import org.odpi.openmetadata.frameworks.governanceaction.controls.ActionTargetType;
-import org.odpi.openmetadata.frameworks.governanceaction.controls.GuardType;
-import org.odpi.openmetadata.frameworks.governanceaction.controls.RequestParameterType;
-import org.odpi.openmetadata.frameworks.governanceaction.controls.RequestTypeType;
-import org.odpi.openmetadata.frameworks.surveyaction.controls.AnalysisStepType;
-import org.odpi.openmetadata.frameworks.surveyaction.controls.AnnotationTypeType;
+import org.odpi.openmetadata.frameworks.opengovernance.controls.ActionTargetType;
+import org.odpi.openmetadata.frameworks.opengovernance.controls.GuardType;
+import org.odpi.openmetadata.frameworks.opengovernance.controls.RequestParameterType;
+import org.odpi.openmetadata.frameworks.opengovernance.controls.RequestTypeType;
+import org.odpi.openmetadata.frameworks.opensurvey.controls.AnalysisStepType;
+import org.odpi.openmetadata.frameworks.opensurvey.controls.AnnotationTypeType;
 
 import java.util.List;
 import java.util.Objects;

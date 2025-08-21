@@ -73,7 +73,6 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
                 @JsonSubTypes.Type(value = EndpointProperties.class, name = "EndpointProperties"),
                 @JsonSubTypes.Type(value = ExternalIdProperties.class, name = "ExternalIdProperties"),
                 @JsonSubTypes.Type(value = ExternalReferenceProperties.class, name = "ExternalReferenceProperties"),
-                @JsonSubTypes.Type(value = GlossaryProperties.class, name = "GlossaryProperties"),
                 @JsonSubTypes.Type(value = GlossaryTermProperties.class, name = "GlossaryTermProperties"),
                 @JsonSubTypes.Type(value = GovernanceDefinitionProperties.class, name = "GovernanceDefinitionProperties"),
                 @JsonSubTypes.Type(value = InformationSupplyChainProperties.class, name = "InformationSupplyChainProperties"),

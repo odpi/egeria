@@ -9,7 +9,6 @@ import org.odpi.openmetadata.frameworks.openmetadata.client.OpenMetadataClient;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
-import org.odpi.openmetadata.frameworkservices.omf.client.handlers.EgeriaOpenMetadataStoreHandler;
 
 
 /**
@@ -32,11 +31,11 @@ public class MetadataExpertInstanceHandler extends OMVSServiceInstanceHandler
 
     /**
      * This method returns the object for the tenant to use to work with the
-     * Governance Action Framework Services API
+     * Open Metadata Framework Services API
      *
      * @param serverName           name of the server that the request is for
      * @param userId               local server userid
-     * @param urlMarker optional view service URL marker (overrides accessServiceURLMarker)
+     * @param urlMarker optional view service URL marker
      * @param serviceOperationName service operation - usually the top level rest call
      * @return client
      * @throws InvalidParameterException unknown server/service

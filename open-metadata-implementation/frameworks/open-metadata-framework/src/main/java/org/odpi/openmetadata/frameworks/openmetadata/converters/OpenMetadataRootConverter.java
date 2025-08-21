@@ -19,22 +19,28 @@ import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.processes
 import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.reports.*;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.topics.TopicProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.collections.CollectionProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.communities.CommunityProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.connections.ConnectionProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.connections.ConnectorTypeProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.connections.EndpointProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.connections.VirtualConnectionProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.datadictionaries.*;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.dataprocessing.DataProcessingPurposeProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.digitalbusiness.AgreementProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.digitalbusiness.BusinessCapabilityProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.digitalbusiness.DigitalProductProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.digitalbusiness.DigitalSubscriptionProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.externalidentifiers.ExternalIdProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.externalreferences.*;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.feedback.CommentProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.feedback.LikeProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.feedback.RatingProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.feedback.SearchKeywordProperties;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.glossaries.GlossaryCategoryProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.glossaries.GlossaryProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.governance.*;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.governanceactions.GovernanceActionTypeProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.governance.governanceactions.GovernanceActionProcessProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.governance.governanceactions.GovernanceActionProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.governance.governanceactions.GovernanceActionTypeProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.locations.LocationProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.projects.ProjectProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.schema.*;
@@ -425,6 +431,12 @@ public class OpenMetadataRootConverter<B> extends AttributedElementConverterBase
                     ((AssetProperties)beanProperties).setSource(this.removeSource(elementProperties));
                     ((AssetProperties)beanProperties).setUserDefinedStatus(this.removeUserDefinedStatus(elementProperties));
                 }
+                else if (propertyHelper.isTypeOf(openMetadataElement, OpenMetadataType.BUSINESS_CAPABILITY.typeName))
+                {
+                    beanProperties = new BusinessCapabilityProperties();
+
+                    ((BusinessCapabilityProperties)beanProperties).setIdentifier(this.removeIdentifier(elementProperties));
+                }
                 else if (propertyHelper.isTypeOf(openMetadataElement, OpenMetadataType.COLLECTION.typeName))
                 {
                     if (propertyHelper.isTypeOf(openMetadataElement, OpenMetadataType.DIGITAL_PRODUCT.typeName))
@@ -466,9 +478,13 @@ public class OpenMetadataRootConverter<B> extends AttributedElementConverterBase
                     {
                         beanProperties = new DataDictionaryProperties();
                     }
-                    else if (propertyHelper.isTypeOf(openMetadataElement, OpenMetadataType.GLOSSARY_CATEGORY.typeName))
+                    else if (propertyHelper.isTypeOf(openMetadataElement, OpenMetadataType.GLOSSARY.typeName))
                     {
-                        beanProperties = new GlossaryCategoryProperties();
+                        beanProperties = new GlossaryProperties();
+
+                        ((GlossaryProperties)beanProperties).setLanguage(this.removeLanguage(elementProperties));
+                        ((GlossaryProperties)beanProperties).setUsage(this.removeUsage(elementProperties));
+
                     }
                     else
                     {
@@ -480,6 +496,12 @@ public class OpenMetadataRootConverter<B> extends AttributedElementConverterBase
                     beanProperties = new CommentProperties();
 
                     ((CommentProperties)beanProperties).setCommentType(this.removeCommentType(elementProperties));
+                }
+                else if (propertyHelper.isTypeOf(openMetadataElement, OpenMetadataType.COMMUNITY.typeName))
+                {
+                    beanProperties = new CommunityProperties();
+
+                    ((CommunityProperties)beanProperties).setMission(this.removeMission(elementProperties));
                 }
                 else if (propertyHelper.isTypeOf(openMetadataElement, OpenMetadataType.CONNECTION.typeName))
                 {
@@ -565,6 +587,28 @@ public class OpenMetadataRootConverter<B> extends AttributedElementConverterBase
                     beanProperties = new DataFieldProperties();
 
                     ((DataFieldProperties)beanProperties).setUserDefinedStatus(this.removeUserDefinedStatus(elementProperties));
+                }
+                else if (propertyHelper.isTypeOf(openMetadataElement, OpenMetadataType.ENDPOINT.typeName))
+                {
+                    beanProperties = new EndpointProperties();
+
+                    ((EndpointProperties)beanProperties).setNetworkAddress(this.removeNetworkAddress(elementProperties));
+                    ((EndpointProperties)beanProperties).setProtocol(this.removeProtocol(elementProperties));
+                    ((EndpointProperties)beanProperties).setEncryptionMethod(this.removeEncryptionMethod(elementProperties));
+                }
+                else if (propertyHelper.isTypeOf(openMetadataElement, OpenMetadataType.EXTERNAL_ID.typeName))
+                {
+                    beanProperties = new ExternalIdProperties();
+
+                    ((ExternalIdProperties)beanProperties).setIdentifier(this.removeIdentifier(elementProperties));
+                    ((ExternalIdProperties)beanProperties).setKeyPattern(this.removeKeyPattern(elementProperties));
+                    ((ExternalIdProperties)beanProperties).setExternalInstanceTypeName(this.removeExternalInstanceTypeName(elementProperties));
+                    ((ExternalIdProperties)beanProperties).setExternalInstanceCreatedBy(this.removeExternalInstanceCreatedBy(elementProperties));
+                    ((ExternalIdProperties)beanProperties).setExternalInstanceCreationTime(this.removeExternalInstanceCreationTime(elementProperties));
+                    ((ExternalIdProperties)beanProperties).setExternalInstanceLastUpdatedBy(this.removeExternalInstanceLastUpdatedBy(elementProperties));
+                    ((ExternalIdProperties)beanProperties).setExternalInstanceLastUpdateTime(this.removeExternalInstanceLastUpdateTime(elementProperties));
+                    ((ExternalIdProperties)beanProperties).setExternalInstanceVersion(this.removeExternalInstanceVersion(elementProperties));
+
                 }
                 else if (propertyHelper.isTypeOf(openMetadataElement, OpenMetadataType.EXTERNAL_REFERENCE.typeName))
                 {

@@ -35,7 +35,7 @@ public class SpecificationMermaidGraphBuilder extends MermaidGraphBuilderBase
                 {
                     appendMermaidNode(propertyType,
                                       propertyType,
-                                      OpenMetadataProperty.PROPERTY_TYPE.name);
+                                      OpenMetadataProperty.PROPERTY_NAME.name);
 
                     List<Map<String, String>> propertyList = specification.get(propertyType);
 

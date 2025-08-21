@@ -15,7 +15,7 @@ import org.odpi.openmetadata.frameworks.openmetadata.ffdc.PropertyServerExceptio
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.ElementStatus;
 import org.odpi.openmetadata.frameworks.openmetadata.controls.PlaceholderProperty;
-import org.odpi.openmetadata.frameworks.governanceaction.properties.CatalogTarget;
+import org.odpi.openmetadata.frameworks.opengovernance.properties.CatalogTarget;
 import org.odpi.openmetadata.frameworks.openmetadata.search.*;
 import org.odpi.openmetadata.frameworks.integration.iterator.*;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.processes.connectors.CatalogTargetProperties;
@@ -591,7 +591,7 @@ public class OSSUnityCatalogServerSyncCatalog extends OSSUnityCatalogInsideCatal
 
                 catalogTargetProperties.setCatalogTargetName(ucCatalogName);
                 catalogTargetProperties.setMetadataSourceQualifiedName(ucCatalogQualifiedName);
-                catalogTargetProperties.setTemplateProperties(templates);
+                catalogTargetProperties.setTemplates(templates);
 
                 Map<String, Object> targetConfigurationProperties = new HashMap<>();
 

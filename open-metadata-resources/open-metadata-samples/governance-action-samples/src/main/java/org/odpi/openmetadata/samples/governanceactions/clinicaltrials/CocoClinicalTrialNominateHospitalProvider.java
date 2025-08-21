@@ -4,7 +4,7 @@
 package org.odpi.openmetadata.samples.governanceactions.clinicaltrials;
 
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.ConnectorType;
-import org.odpi.openmetadata.frameworks.governanceaction.GovernanceActionServiceProviderBase;
+import org.odpi.openmetadata.frameworks.opengovernance.GovernanceActionServiceProviderBase;
 
 public class CocoClinicalTrialNominateHospitalProvider extends GovernanceActionServiceProviderBase
 {

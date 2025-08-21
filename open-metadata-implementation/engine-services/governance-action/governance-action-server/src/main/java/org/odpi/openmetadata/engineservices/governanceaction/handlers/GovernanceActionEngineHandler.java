@@ -13,8 +13,8 @@ import org.odpi.openmetadata.frameworkservices.gaf.client.GovernanceConfiguratio
 import org.odpi.openmetadata.frameworkservices.gaf.client.GovernanceContextClient;
 import org.odpi.openmetadata.frameworkservices.gaf.client.GovernanceListenerManager;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
-import org.odpi.openmetadata.frameworks.governanceaction.properties.ActionTargetElement;
-import org.odpi.openmetadata.frameworks.governanceaction.properties.RequestSourceElement;
+import org.odpi.openmetadata.frameworks.opengovernance.properties.ActionTargetElement;
+import org.odpi.openmetadata.frameworks.opengovernance.properties.RequestSourceElement;
 import org.odpi.openmetadata.governanceservers.enginehostservices.admin.GovernanceEngineHandler;
 import org.odpi.openmetadata.governanceservers.enginehostservices.admin.GovernanceServiceCache;
 
