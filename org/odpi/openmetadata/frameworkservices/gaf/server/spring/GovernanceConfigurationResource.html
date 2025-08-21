@@ -137,10 +137,10 @@ loadScripts(document, 'script');</script>
 <div class="block">Create a governance service definition.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../../commonservices/ffdc/rest/GUIDResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">GUIDResponse</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#createIntegrationConnector(java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.governanceaction.properties.IntegrationConnectorProperties)" class="member-name-link">createIntegrationConnector</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#createIntegrationConnector(java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.opengovernance.properties.IntegrationConnectorProperties)" class="member-name-link">createIntegrationConnector</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serviceURLMarker,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
- <a href="../../../../frameworks/governanceaction/properties/IntegrationConnectorProperties.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.properties">IntegrationConnectorProperties</a>&nbsp;requestBody)</code></div>
+ <a href="../../../../frameworks/opengovernance/properties/IntegrationConnectorProperties.html" title="class in org.odpi.openmetadata.frameworks.opengovernance.properties">IntegrationConnectorProperties</a>&nbsp;requestBody)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Create an integration connector definition.</div>
 </div>
@@ -436,12 +436,12 @@ loadScripts(document, 'script');</script>
 <div class="block">Update the properties of an existing governance service definition.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#updateIntegrationConnector(java.lang.String,java.lang.String,java.lang.String,java.lang.String,boolean,org.odpi.openmetadata.frameworks.governanceaction.properties.IntegrationConnectorProperties)" class="member-name-link">updateIntegrationConnector</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#updateIntegrationConnector(java.lang.String,java.lang.String,java.lang.String,java.lang.String,boolean,org.odpi.openmetadata.frameworks.opengovernance.properties.IntegrationConnectorProperties)" class="member-name-link">updateIntegrationConnector</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serviceURLMarker,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;guid,
  boolean&nbsp;isMergeUpdate,
- <a href="../../../../frameworks/governanceaction/properties/IntegrationConnectorProperties.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.properties">IntegrationConnectorProperties</a>&nbsp;requestBody)</code></div>
+ <a href="../../../../frameworks/opengovernance/properties/IntegrationConnectorProperties.html" title="class in org.odpi.openmetadata.frameworks.opengovernance.properties">IntegrationConnectorProperties</a>&nbsp;requestBody)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Update the properties of an existing integration connector definition.</div>
 </div>
@@ -1184,7 +1184,7 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
-<section class="detail" id="createIntegrationConnector(java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.governanceaction.properties.IntegrationConnectorProperties)">
+<section class="detail" id="createIntegrationConnector(java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.opengovernance.properties.IntegrationConnectorProperties)">
 <h3>createIntegrationConnector</h3>
 <div class="member-signature"><span class="annotations">@PostMapping(path="/integration-connectors/new")
 </span><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../../../commonservices/ffdc/rest/GUIDResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">GUIDResponse</a></span>&nbsp;<span class="element-name">createIntegrationConnector</span><wbr><span class="parameters">(@PathVariable
@@ -1194,7 +1194,7 @@ loadScripts(document, 'script');</script>
  @PathVariable
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  @RequestBody
- <a href="../../../../frameworks/governanceaction/properties/IntegrationConnectorProperties.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.properties">IntegrationConnectorProperties</a>&nbsp;requestBody)</span></div>
+ <a href="../../../../frameworks/opengovernance/properties/IntegrationConnectorProperties.html" title="class in org.odpi.openmetadata.frameworks.opengovernance.properties">IntegrationConnectorProperties</a>&nbsp;requestBody)</span></div>
 <div class="block">Create an integration connector definition.  The same integration connector can be associated with multiple
  integration groups.</div>
 <dl class="notes">
@@ -1327,7 +1327,7 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
-<section class="detail" id="updateIntegrationConnector(java.lang.String,java.lang.String,java.lang.String,java.lang.String,boolean,org.odpi.openmetadata.frameworks.governanceaction.properties.IntegrationConnectorProperties)">
+<section class="detail" id="updateIntegrationConnector(java.lang.String,java.lang.String,java.lang.String,java.lang.String,boolean,org.odpi.openmetadata.frameworks.opengovernance.properties.IntegrationConnectorProperties)">
 <h3>updateIntegrationConnector</h3>
 <div class="member-signature"><span class="annotations">@PostMapping(path="/integration-connectors/{guid}/update")
 </span><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a></span>&nbsp;<span class="element-name">updateIntegrationConnector</span><wbr><span class="parameters">(@PathVariable
@@ -1341,7 +1341,7 @@ loadScripts(document, 'script');</script>
  @RequestParam
  boolean&nbsp;isMergeUpdate,
  @RequestBody
- <a href="../../../../frameworks/governanceaction/properties/IntegrationConnectorProperties.html" title="class in org.odpi.openmetadata.frameworks.governanceaction.properties">IntegrationConnectorProperties</a>&nbsp;requestBody)</span></div>
+ <a href="../../../../frameworks/opengovernance/properties/IntegrationConnectorProperties.html" title="class in org.odpi.openmetadata.frameworks.opengovernance.properties">IntegrationConnectorProperties</a>&nbsp;requestBody)</span></div>
 <div class="block">Update the properties of an existing integration connector definition.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
