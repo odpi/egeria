@@ -604,7 +604,7 @@ public class OpenMetadataTypesArchive3_13
          */
         List<TypeDefAttribute> properties = new ArrayList<>();
 
-        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.SUPPORT_LEVEL));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.SUBSCRIBER_ID));
 
         relationshipDef.setPropertiesDefinition(properties);
 

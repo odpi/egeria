@@ -65,7 +65,7 @@ public class ClassificationExplorerInstanceHandler extends OMVSServiceInstanceHa
 
     /**
      * This method returns the object for the tenant to use to work with the
-     * Governance Action Framework Services API
+     * Open Survey Framework Services API
      *
      * @param serverName           name of the server that the request is for
      * @param userId               local server userid

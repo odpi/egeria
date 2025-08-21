@@ -412,11 +412,11 @@ public enum OpenMetadataType
     /**
      * Defines how the collection is being used.
      */
-    COLLECTION_CATEGORY_CLASSIFICATION("a68bae73-40c7-4a93-8e07-a1247baaae3d",
-                                     "CollectionCategory",
-                                     OpenMetadataWikiPages.MODEL_0021_COLLECTIONS,
-                                     "db68722e-39a3-49b3-ba6f-ad00a880c91c",
-                                     "Defines how the collection is being used."),
+    COLLECTION_ROLE_CLASSIFICATION("a68bae73-40c7-4a93-8e07-a1247baaae3d",
+                                   "CollectionRole",
+                                   OpenMetadataWikiPages.MODEL_0021_COLLECTIONS,
+                                   "db68722e-39a3-49b3-ba6f-ad00a880c91c",
+                                   "Defines how the collection is being used."),
 
     /**
      * Defines that a collection should be treated like a folder.
@@ -1613,13 +1613,13 @@ public enum OpenMetadataType
                                     "A dependency relationship between projects."),
 
     /**
-     * A long-term strategic initiative that is implemented through multiple related projects.
+     * A superclass for the project classifications that identify the role that the project is playing.
      */
-    PROJECT_CATEGORY_CLASSIFICATION("42621da6-3001-479d-be1d-90f47b1fcb7f",
-                            "ProjectCategory",
-                            OpenMetadataWikiPages.MODEL_0130_PROJECTS,
-                            "bac56f15-e51f-4b53-9b95-a49fd1b2aa0f",
-                            "A superclass for the project classifications that identify a category."),
+    PROJECT_ROLE_CLASSIFICATION("42621da6-3001-479d-be1d-90f47b1fcb7f",
+                                "ProjectRole",
+                                OpenMetadataWikiPages.MODEL_0130_PROJECTS,
+                                "bac56f15-e51f-4b53-9b95-a49fd1b2aa0f",
+                                "A superclass for the project classifications that identify the role that the project is playing."),
 
     /**
      * A long-term strategic initiative that is implemented through multiple related projects.
@@ -2715,24 +2715,6 @@ public enum OpenMetadataType
                       "99d1bb1b-222a-4981-8704-a67e6d95b6e7",
                       "A collection of related glossary terms."),
 
-    /**
-     * A category that is at the top of a category hierarchy.
-     */
-    ROOT_CATEGORY_CLASSIFICATION("1d0fec82-7444-4e4c-abd4-4765bb855ce3",
-                                 "RootCategory",
-                                 OpenMetadataWikiPages.MODEL_0320_CATEGORY_HIERARCHY,
-                                 "6fdb9bca-47e4-4c22-ad70-d087a655104f",
-                                 "A category that is at the top of a category hierarchy."),
-
-    /**
-     * Connects a glossary category with its owning glossary.
-     */
-    CATEGORY_HIERARCHY_RELATIONSHIP("c628938e-815e-47db-8d1c-59bb2e84e028",
-                                    "CategoryHierarchy",
-                                    OpenMetadataWikiPages.MODEL_0320_CATEGORY_HIERARCHY,
-                                    "d6ddb8da-2e7e-474f-b6b1-ea2695440a5b",
-                                    "Connects a glossary category with its owning glossary."),
-
 
     /**
      * A semantic description of something, such as a concept, object, asset, technology, role or group.
@@ -2742,15 +2724,6 @@ public enum OpenMetadataType
                   OpenMetadataWikiPages.MODEL_0330_TERMS,
                   "a1286149-2dae-414b-8913-462da900d395",
                   "A semantic description of something, such as a concept, object, asset, technology, role or group."),
-
-    /**
-     * Links a term to its owning glossary.
-     */
-    PARENT_GLOSSARY_RELATIONSHIP("1d43d661-bdc7-4a91-a996-3239b8f82e56",
-                                 "ParentGlossary",
-                                 OpenMetadataWikiPages.MODEL_0330_TERMS,
-                                 "712d129b-1d52-41d9-8a39-861c1fc09f85",
-                                 "Links a term to its owning glossary."),
 
     /**
      * Identifies that this glossary term describes an activity.
@@ -2870,22 +2843,31 @@ public enum OpenMetadataType
                                      "Provides the semantic meaning of a definition by linking it to an appropriate glossary term."),
 
     /**
-     * A glossary holding copies of glossary content that is being edited.  The glossary content is typically sourced from another glossary
+     * A glossary holding copies of elements that are being edited.  The content is typically sourced from another collection.
      */
-    EDITING_GLOSSARY_CLASSIFICATION("173614ba-c582-4ecc-8fcc-cde5fb664548",
-                                    "EditingGlossary",
-                                    OpenMetadataWikiPages.MODEL_0385_CONTROLLED_GLOSSARY,
-                                    "b324d53e-382a-41c7-bc7d-a71693242d1b",
-                                    "A glossary holding copies of glossary content that is being edited.  The glossary content is typically sourced from another glossary"),
+    EDITING_COLLECTION_CLASSIFICATION("173614ba-c582-4ecc-8fcc-cde5fb664548",
+                                      "EditingCollection",
+                                      OpenMetadataWikiPages.MODEL_0385_CONTROLLED_GLOSSARY,
+                                      "b324d53e-382a-41c7-bc7d-a71693242d1b",
+                                      "A collection holding copies of elements that are being edited.  This content is typically sourced from another collection."),
 
     /**
-     * A glossary that is acting as a temporary home for glossary elements that are being introduced into another glossary.
+     * A collection that is acting as a temporary home for elements that are being introduced into another collection.
      */
-    STAGING_GLOSSARY_CLASSIFICATION("361fa044-e703-404c-bb83-9402f9221f54",
-                                    "StagingGlossary",
-                                    OpenMetadataWikiPages.MODEL_0385_CONTROLLED_GLOSSARY,
-                                    "cc0e0ed5-70cb-4228-abff-eddd93dd15c6",
-                                    "A glossary that is acting as a temporary home for glossary elements that are being introduced into another glossary."),
+    STAGING_COLLECTION_CLASSIFICATION("361fa044-e703-404c-bb83-9402f9221f54",
+                                      "StagingCollection",
+                                      OpenMetadataWikiPages.MODEL_0385_CONTROLLED_GLOSSARY,
+                                      "cc0e0ed5-70cb-4228-abff-eddd93dd15c6",
+                                      "A collection that is acting as a temporary home for elements that are being introduced into another collection."),
+
+    /**
+     * A collection that is acting as a grouping mechanism for elements that are being selected for a project or similar venture.
+     */
+    SCOPING_COLLECTION_CLASSIFICATION("57824198-9b6c-4877-bb26-48cdce82c609",
+                                      "ScopingCollection",
+                                      OpenMetadataWikiPages.MODEL_0385_CONTROLLED_GLOSSARY,
+                                      "f460b722-add2-4ae6-acdc-784a227c09fe",
+                                      "A collection that is acting as a grouping mechanism for elements that are being selected for a project or similar venture."),
 
     /**
      * Identifies a project that is defining new glossary terms and categories or maintaining an existing glossary.
@@ -3694,22 +3676,22 @@ public enum OpenMetadataType
                        "A connector that performs some governance operation."),
 
     /**
-     * A collection of related governance services of the same type from the Governance Action Framework (GAF).
+     * A collection of related governance services of the same type from the Open Survey Framework (OGF).
      */
     GOVERNANCE_ACTION_ENGINE("5d74250a-57ca-4197-9475-8911f620a94e",
                              "GovernanceActionEngine",
                              OpenMetadataWikiPages.MODEL_0461_GOVERNANCE_ENGINES,
                              "a8f14964-5028-4269-81be-5d23757c9caa",
-                             "A collection of related governance services of the same type from the Governance Action Framework (GAF)."),
+                             "A collection of related governance services of the same type from the Open Survey Framework (OGF)."),
 
     /**
-     * A governance service that conforms to the Governance Action Framework (GAF).
+     * A governance service that conforms to the Open Survey Framework (OGF).
      */
     GOVERNANCE_ACTION_SERVICE("ececb378-31ac-4cc3-99b4-1c44e5fbc4d9",
                               "GovernanceActionService",
                               OpenMetadataWikiPages.MODEL_0461_GOVERNANCE_ENGINES,
                               "c927dcac-3481-4246-98ec-e0662e5e3a77",
-                              "A governance service that conforms to the Governance Action Framework (GAF)."),
+                              "A governance service that conforms to the Open Survey Framework (OGF)."),
 
     /**
      * A governance engine for managing the surveying of real-world resources and capturing the results in survey report attached to the associated asset.
@@ -3728,6 +3710,25 @@ public enum OpenMetadataType
                           OpenMetadataWikiPages.MODEL_0461_GOVERNANCE_ENGINES,
                           "16009219-1913-466c-994b-853e0c5c961b",
                           "A governance service for managing the surveying of real-world resources and capturing the results in survey report attached to the associated asset."),
+
+
+    /**
+     * A governance engine for managing the monitoring of resources and situations/events and then notifying subscribers when they occur.
+     */
+    WATCHDOG_ACTION_ENGINE("61428b3b-d291-42a1-8b73-23109d6aef60",
+                         "WatchdogActionEngine",
+                         OpenMetadataWikiPages.MODEL_0461_GOVERNANCE_ENGINES,
+                         "4303ed44-2795-4702-8d87-19dc5cc05507",
+                         "A governance engine for managing the monitoring of resources and situations/events and then notifying subscribers when they occur."),
+
+    /**
+     * A governance service for managing the monitoring of resources and situations/events and then notifying subscribers when they occur.
+     */
+    WATCHDOG_ACTION_SERVICE("15cfcb2c-530b-40e0-aef7-cf7490d33a29",
+                          "WatchdogActionService",
+                          OpenMetadataWikiPages.MODEL_0461_GOVERNANCE_ENGINES,
+                          "b349e24c-e686-451d-8865-7a6b755b1c34",
+                          "A governance service for managing the monitoring of resources and situations/events and then notifying subscribers when they occur."),
 
     /**
      * A governance engine for open metadata repositories.

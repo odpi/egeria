@@ -4,9 +4,9 @@
 package org.odpi.openmetadata.adapters.connectors.egeriainfrastructure.control;
 
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
-import org.odpi.openmetadata.frameworks.surveyaction.controls.AnalysisStep;
-import org.odpi.openmetadata.frameworks.surveyaction.controls.AnnotationTypeType;
-import org.odpi.openmetadata.frameworks.surveyaction.measurements.*;
+import org.odpi.openmetadata.frameworks.opensurvey.controls.AnalysisStep;
+import org.odpi.openmetadata.frameworks.opensurvey.controls.AnnotationTypeType;
+import org.odpi.openmetadata.frameworks.opensurvey.measurements.SurveyMetric;
 
 import java.util.ArrayList;
 import java.util.HashMap;

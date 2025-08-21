@@ -201,13 +201,12 @@ Content-Type: application/json
 ###
 # @name getCollectionByGUID
 # Return the properties of a specific collection. Request body is optional
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/collection-manager/collections/{{collectionGUID}}
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/collection-manager/collections/{{collectionGUID}}/retrieve
 Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
   "class" : "GetRequestBody",
-  "metadataElementTypeName": "DataSpec",
   "asOfTime" : "{{$isoTimestamp}}",
   "effectiveTime" : "{{$isoTimestamp}}",
   "forLineage" : false,
@@ -602,7 +601,7 @@ Content-Type: application/json
 
 {
   "class" : "UpdateStatusRequestBody",
-  "status": "APPROVED",
+  "newStatus": "APPROVED",
   "externalSourceGUID": "add guid here",
   "externalSourceName": "add qualified name here",
   "effectiveTime" : "{{$isoTimestamp}}",
@@ -815,7 +814,7 @@ Content-Type: application/json
 
 {
   "class" : "UpdateStatusRequestBody",
-  "status": "APPROVED",
+  "newStatus": "APPROVED",
   "externalSourceGUID": "add guid here",
   "externalSourceName": "add qualified name here",
   "effectiveTime" : "{{$isoTimestamp}}",
@@ -1065,7 +1064,7 @@ Content-Type: application/json
 
 {
   "class" : "UpdateStatusRequestBody",
-  "status": "APPROVED",
+  "newStatus": "APPROVED",
   "externalSourceGUID": "add guid here",
   "externalSourceName": "add qualified name here",
   "effectiveTime" : "{{$isoTimestamp}}",

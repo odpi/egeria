@@ -32,7 +32,7 @@ public class MetadataExplorerInstanceHandler extends OMVSServiceInstanceHandler
 
     /**
      * This method returns the object for the tenant to use to work with the
-     * Governance Action Framework Services API
+     * Open Metadata Framework Services API
      *
      * @param serverName           name of the server that the request is for
      * @param userId               local server userid

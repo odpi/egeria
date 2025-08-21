@@ -27,7 +27,7 @@ public enum SurveyActionAuditCode implements AuditLogMessageSet
      */
     ENGINE_SERVICE_INITIALIZING("OMES-SURVEY-ACTION-0001",
                                 AuditLogRecordSeverityLevel.STARTUP,
-                                "The Survey Action engine services are initializing in server {0}; they will call Asset Owner OMAS on server {1} at {2}",
+                                "The Survey Action engine services are initializing in server {0}; they will call services on server {1} at {2}",
                                 "A new OMAG server has been started that is configured to run the Survey Action OMES.  " +
                                  "Within this engine service are one or more survey action engines that analyze the " +
                                  "content of assets on demand and create annotation metadata. The configuration for the " +
@@ -62,8 +62,8 @@ public enum SurveyActionAuditCode implements AuditLogMessageSet
                          "Verify that all configured survey action engines shut down successfully."),
 
     /**
-     * OMES-SURVEY-ACTION-0017 - The survey action service {0} is starting to analyze asset {1} with discovery request type {2}
-     * in survey action engine {3} (guid={4}); the results will be stored in discovery analysis report {5}
+     * OMES-SURVEY-ACTION-0017 - The survey action service {0} is starting to analyze asset {1} with request type {2}
+     * in survey action engine {3} (guid={4}); the results will be stored in survey report {5}
      */
     SURVEY_ACTION_SERVICE_STARTING("OMES-SURVEY-ACTION-0017",
                                    AuditLogRecordSeverityLevel.STARTUP,
@@ -73,8 +73,8 @@ public enum SurveyActionAuditCode implements AuditLogMessageSet
                                    "Verify that the survey action service ran to completion."),
 
     /**
-     * OMES-SURVEY-ACTION-0018 - The survey action service {0} threw a {1} exception during the generation of discovery analysis report
-     * {2} for asset {3} during discovery request type {4} in survey action engine {5} (guid={6}). The error message was {7}
+     * OMES-SURVEY-ACTION-0018 - The survey action service {0} threw a {1} exception during the generation of survey report
+     * {2} for asset {3} during request type {4} in survey action engine {5} (guid={6}). The error message was {7}
      */
     SURVEY_ACTION_SERVICE_FAILED("OMES-SURVEY-ACTION-0018",
                                  AuditLogRecordSeverityLevel.EXCEPTION,
@@ -84,8 +84,8 @@ public enum SurveyActionAuditCode implements AuditLogMessageSet
                                  "Review the exception to determine the cause of the error."),
 
     /**
-     * OMES-SURVEY-ACTION-0019 - The survey action service {0} has completed the analysis of asset {1} with discovery request type {2} in {3}
-     * milliseconds; the results are stored in discovery analysis report {4}
+     * OMES-SURVEY-ACTION-0019 - The survey action service {0} has completed the analysis of asset {1} with request type {2} in {3}
+     * milliseconds; the results are stored in survey report {4}
      */
     SURVEY_ACTION_SERVICE_COMPLETE("OMES-SURVEY-ACTION-0019",
                                    AuditLogRecordSeverityLevel.SHUTDOWN,
@@ -122,7 +122,7 @@ public enum SurveyActionAuditCode implements AuditLogMessageSet
                         "Method {0} can not execute in the survey action engine {1} hosted by Survey Action OMES in server {2} because the associated " +
                                 "survey action service properties are null",
                         "The survey request is not run and an error is returned to the caller.",
-                        "This may be an error in the survey action engine's logic or the Survey Action Framework (SAF) may have returned " +
+                        "This may be an error in the survey action engine's logic or the Open Survey Framework (OSF) may have returned " +
                                 "invalid configuration.  Raise an issue to get help to fix it"),
 
 

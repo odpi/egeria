@@ -10,7 +10,7 @@ import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterExcept
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
-import org.odpi.openmetadata.frameworks.governanceaction.properties.*;
+import org.odpi.openmetadata.frameworks.opengovernance.properties.*;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.DeleteMethod;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.PermittedSynchronization;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.processes.connectors.CatalogTargetProperties;
@@ -1148,7 +1148,7 @@ public class IntegrationGroupConfigurationHandler
         instanceProperties = repositoryHelper.addStringMapPropertyToInstance(serviceName,
                                                                              instanceProperties,
                                                                              OpenMetadataProperty.TEMPLATES.name,
-                                                                             properties.getTemplateProperties(),
+                                                                             properties.getTemplates(),
                                                                              methodName);
 
         instanceProperties = repositoryHelper.addMapPropertyToInstance(serviceName,
@@ -1266,7 +1266,7 @@ public class IntegrationGroupConfigurationHandler
         instanceProperties = repositoryHelper.addStringMapPropertyToInstance(serviceName,
                                                                              instanceProperties,
                                                                              OpenMetadataProperty.TEMPLATES.name,
-                                                                             properties.getTemplateProperties(),
+                                                                             properties.getTemplates(),
                                                                              methodName);
 
         instanceProperties = repositoryHelper.addMapPropertyToInstance(serviceName,

@@ -1195,9 +1195,9 @@ public enum OpenMetadataProperty
     TOPIC_TYPE("topicType", DataType.STRING.getName(), "Type of topic.", "PLAINTEXT", "17eb67ae-6805-4f47-98a7-ed124804c9a6"),
 
     /**
-     * The type of property that the valid value represents.
+     * The name of the property that the valid value represents.
      */
-    PROPERTY_TYPE("propertyType", DataType.STRING.getName(), "The type of property that the valid value represents.", "producedGuard", "f9f2eba1-943a-4611-8bdd-647c1645b036"),
+    PROPERTY_NAME("propertyName", DataType.STRING.getName(), "The name of the property that the valid value represents.", "producedGuard", "f9f2eba1-943a-4611-8bdd-647c1645b036"),
 
     /**
      * The phase in the lifecycle of the project.

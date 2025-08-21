@@ -13,7 +13,7 @@ import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
 import java.util.List;
 
 /**
- * Construct mermaid markdown graph from Governance Action Framework open metadata store structures.
+ * Construct mermaid markdown graph from Open Survey Framework open metadata store structures.
  */
 public class OpenMetadataMermaidGraphBuilder extends MermaidGraphBuilderBase
 {

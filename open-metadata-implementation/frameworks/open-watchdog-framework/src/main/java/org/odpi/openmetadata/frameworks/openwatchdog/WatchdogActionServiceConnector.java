@@ -1,0 +1,237 @@
+/* SPDX-License-Identifier: Apache-2.0 */
+/* Copyright Contributors to the ODPi Egeria project. */
+package org.odpi.openmetadata.frameworks.openwatchdog;
+
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
+import org.odpi.openmetadata.frameworks.auditlog.AuditLoggingComponent;
+import org.odpi.openmetadata.frameworks.auditlog.ComponentDescription;
+import org.odpi.openmetadata.frameworks.connectors.Connector;
+import org.odpi.openmetadata.frameworks.connectors.ConnectorBase;
+import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
+import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
+import org.odpi.openmetadata.frameworks.openmetadata.ffdc.PropertyServerException;
+import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
+import org.odpi.openmetadata.frameworks.openmetadata.search.PropertyHelper;
+import org.odpi.openmetadata.frameworks.openwatchdog.controls.WatchdogActionGuard;
+import org.odpi.openmetadata.frameworks.openwatchdog.ffdc.OWFAuditCode;
+import org.odpi.openmetadata.frameworks.openwatchdog.ffdc.OWFErrorCode;
+
+import java.util.Collections;
+import java.util.List;
+
+
+/**
+ * WatchdogActionServiceConnector describes a specific type of connector that is responsible for monitoring for
+ * a specific notification type.  Information about the notification type to support is passed in the watchdog context.
+ */
+public abstract class WatchdogActionServiceConnector extends ConnectorBase implements WatchdogActionService,
+                                                                                    AuditLoggingComponent
+{
+    protected final PropertyHelper propertyHelper = new PropertyHelper();
+
+    protected Connector connector = null;
+
+    protected static ObjectMapper objectMapper = new ObjectMapper();
+
+    protected String          watchdogActionServiceName = "<Unknown>";
+    protected WatchdogContext watchdogContext           = null;
+    protected AuditLog        auditLog                  = null;
+    protected List<Connector> embeddedConnectors        = null;
+
+
+    /**
+     * Receive an audit log object that can be used to record audit log messages.  The caller has initialized it
+     * with the correct component description and log destinations.
+     *
+     * @param auditLog audit log object
+     */
+    @Override
+    public void setAuditLog(AuditLog auditLog)
+    {
+        this.auditLog = auditLog;
+    }
+
+
+    /**
+     * Return the component description that is used by this connector in the audit log.
+     *
+     * @return id, name, description, wiki page URL.
+     */
+    @Override
+    public ComponentDescription getConnectorComponentDescription()
+    {
+        if ((this.auditLog != null) && (this.auditLog.getReport() != null))
+        {
+            return auditLog.getReport().getReportingComponent();
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Convert the supplied properties object to a JSON String.
+     *
+     * @param properties properties object
+     * @return properties as a JSON String
+     * @throws PropertyServerException parsing error
+     */
+    public String getJSONProperties(Object properties) throws PropertyServerException
+    {
+        final String methodName = "getJSONProperties";
+
+        try
+        {
+            return objectMapper.writeValueAsString(properties);
+        }
+        catch (JsonProcessingException parsingError)
+        {
+            throw new PropertyServerException(OWFErrorCode.UNEXPECTED_EXCEPTION.getMessageDefinition(watchdogActionServiceName,
+                                                                                                     parsingError.getClass().getName(),
+                                                                                                     methodName,
+                                                                                                     parsingError.getMessage()),
+                                              this.getClass().getName(),
+                                              methodName,
+                                              parsingError);
+        }
+    }
+
+
+    /**
+     * Set up details of the notification type to monitor.
+     *
+     * @param watchdogContext information about the asset to analyze and the results of analysis of
+     *                      other watchdog action service request.  Partial results from other watchdog action
+     *                      services run as part of the same watchdog action service request may also be
+     *                      stored in the newAnnotations list.
+     */
+    public void setWatchdogContext(WatchdogContext watchdogContext)
+    {
+        this.watchdogContext = watchdogContext;
+    }
+
+
+    /**
+     * Set up the watchdog action service name.  This is used in error messages.
+     *
+     * @param watchdogActionServiceName name of the watchdog action service
+     */
+    public void setWatchdogActionServiceName(String watchdogActionServiceName)
+    {
+        this.watchdogActionServiceName = watchdogActionServiceName;
+    }
+
+
+
+
+    /**
+     * Record that an asset does not have a schema.
+     *
+     * @param assetGUID unique identifier of the asset
+     * @throws ConnectorCheckedException  problem with the connector
+     * @throws InvalidParameterException  invalid property
+     * @throws PropertyServerException    problem with repositories
+     * @throws UserNotAuthorizedException security problem
+     */
+    protected void throwMissingSchemaType(String assetGUID) throws ConnectorCheckedException,
+                                                                   InvalidParameterException,
+                                                                   PropertyServerException,
+                                                                   UserNotAuthorizedException
+    {
+        final String methodName = "throwMissingSchemaType";
+
+        watchdogContext.recordCompletionStatus(WatchdogActionGuard.MONITORING_INVALID.getCompletionStatus(),
+                                               Collections.singletonList(WatchdogActionGuard.MONITORING_INVALID.getName()),
+                                               null,
+                                               null,
+                                               OWFAuditCode.NO_SCHEMA.getMessageDefinition(watchdogActionServiceName, assetGUID));
+
+        throw new ConnectorCheckedException(OWFErrorCode.NO_SCHEMA.getMessageDefinition(watchdogActionServiceName, assetGUID),
+                                            this.getClass().getName(),
+                                            methodName);
+    }
+
+
+    /**
+     * Return the survey context for this watchdog action service.  This is typically called after the disconnect()
+     * method is called.  If called before disconnect(), it may only contain partial results.
+     *
+     * @return survey context containing the results discovered (so far) by the watchdog action service.
+     * @throws UserNotAuthorizedException the service is no longer active
+     */
+    protected WatchdogContext getWatchdogContext() throws UserNotAuthorizedException
+    {
+        final String methodName = "getWatchdogContext";
+
+        watchdogContext.validateIsActive(methodName);
+        return watchdogContext;
+    }
+
+
+    /**
+     * Indicates that the watchdog action service is completely configured and can begin processing.
+     * This is where the function of the watchdog action service is implemented.
+     * This is a standard method from the Open Connector Framework (OCF) so
+     * be sure to call super.start() in your version.
+     *
+     * @throws ConnectorCheckedException there is a problem within the watchdog action service.
+     * @throws UserNotAuthorizedException the service was disconnected before/during start
+     */
+    @Override
+    public void start() throws ConnectorCheckedException, UserNotAuthorizedException
+    {
+        super.start();
+
+        final String methodName = "start";
+
+        if (watchdogContext == null)
+        {
+            throw new ConnectorCheckedException(OWFErrorCode.NULL_SURVEY_CONTEXT.getMessageDefinition(watchdogActionServiceName),
+                                                this.getClass().getName(),
+                                                methodName);
+        }
+    }
+
+
+    /**
+     * Provide a common exception for unexpected errors.
+     *
+     * @param methodName calling method
+     * @param error caught exception
+     * @throws ConnectorCheckedException wrapped exception
+     */
+    protected void handleUnexpectedException(String      methodName,
+                                             Exception   error) throws ConnectorCheckedException
+    {
+        throw new ConnectorCheckedException(OWFErrorCode.UNEXPECTED_EXCEPTION.getMessageDefinition(watchdogActionServiceName,
+                                                                                                   error.getClass().getName(),
+                                                                                                   methodName,
+                                                                                                   error.getMessage()),
+                                            this.getClass().getName(),
+                                            methodName);
+    }
+
+
+    /**
+     * Free up any resources held since the connector is no longer needed.
+     *
+     * @throws ConnectorCheckedException there is a problem within the connector.
+     */
+    @Override
+    public  synchronized void disconnect() throws ConnectorCheckedException
+    {
+        if (connector != null)
+        {
+            connector.disconnect();
+        }
+
+        if (watchdogContext != null)
+        {
+            watchdogContext.disconnect();
+        }
+
+        super.disconnect();
+    }
+}

@@ -3,9 +3,9 @@
 
 package org.odpi.openmetadata.adapters.connectors.governanceactions.remediation;
 
-import org.odpi.openmetadata.frameworks.governanceaction.controls.Guard;
-import org.odpi.openmetadata.frameworks.governanceaction.controls.GuardType;
-import org.odpi.openmetadata.frameworks.governanceaction.properties.CompletionStatus;
+import org.odpi.openmetadata.frameworks.opengovernance.controls.Guard;
+import org.odpi.openmetadata.frameworks.opengovernance.controls.GuardType;
+import org.odpi.openmetadata.frameworks.opengovernance.properties.CompletionStatus;
 
 import java.util.ArrayList;
 import java.util.List;

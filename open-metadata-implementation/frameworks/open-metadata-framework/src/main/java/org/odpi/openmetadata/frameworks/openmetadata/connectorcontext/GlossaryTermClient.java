@@ -80,7 +80,7 @@ public class GlossaryTermClient extends ConnectorContextClientBase
         newElementOptions.setAnchorScopeGUID(glossaryGUID);
         newElementOptions.setParentGUID(glossaryGUID);
         newElementOptions.setParentAtEnd1(true);
-        newElementOptions.setParentRelationshipTypeName(OpenMetadataType.PARENT_GLOSSARY_RELATIONSHIP.typeName);
+        newElementOptions.setParentRelationshipTypeName(OpenMetadataType.COLLECTION_MEMBERSHIP_RELATIONSHIP.typeName);
 
         return this.createGlossaryTerm(newElementOptions,
                                        null,
@@ -560,24 +560,5 @@ public class GlossaryTermClient extends ConnectorContextClientBase
                                                                                                     PropertyServerException
     {
         return glossaryTermHandler.findGlossaryTerms(connectorUserId, searchString, queryOptions);
-    }
-
-
-    /**
-     * Returns the list of glossary terms for a glossary with a particular glossaryGUID.
-     *
-     * @param glossaryGUID           unique identifier of the starting glossary
-     * @param queryOptions           multiple options to control the query
-     * @return a list of elements
-     * @throws InvalidParameterException  one of the parameters is null or invalid.
-     * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
-     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
-     */
-    public List<OpenMetadataRootElement> getTermsForGlossary(String       glossaryGUID,
-                                                             QueryOptions queryOptions) throws InvalidParameterException,
-                                                                                               PropertyServerException,
-                                                                                               UserNotAuthorizedException
-    {
-        return glossaryTermHandler.getTermsForGlossary(connectorUserId, glossaryGUID, queryOptions);
     }
 }

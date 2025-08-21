@@ -227,7 +227,7 @@ public class OpenMetadataTypesArchive5_0
     private ClassificationDef getRootCollectionClassification()
     {
         return archiveHelper.getClassificationDef(OpenMetadataType.ROOT_COLLECTION_CLASSIFICATION,
-                                                  this.archiveBuilder.getClassificationDef(OpenMetadataType.COLLECTION_CATEGORY_CLASSIFICATION.typeName),
+                                                  this.archiveBuilder.getClassificationDef(OpenMetadataType.COLLECTION_ROLE_CLASSIFICATION.typeName),
                                                   this.archiveBuilder.getEntityDef(OpenMetadataType.COLLECTION.typeName),
                                                   false);
     }
@@ -235,7 +235,7 @@ public class OpenMetadataTypesArchive5_0
     private ClassificationDef getHomeCollectionClassification()
     {
         return archiveHelper.getClassificationDef(OpenMetadataType.HOME_COLLECTION_CLASSIFICATION,
-                                                  this.archiveBuilder.getClassificationDef(OpenMetadataType.COLLECTION_CATEGORY_CLASSIFICATION.typeName),
+                                                  this.archiveBuilder.getClassificationDef(OpenMetadataType.COLLECTION_ROLE_CLASSIFICATION.typeName),
                                                   this.archiveBuilder.getEntityDef(OpenMetadataType.COLLECTION.typeName),
                                                   false);
     }
@@ -244,7 +244,7 @@ public class OpenMetadataTypesArchive5_0
     private ClassificationDef getRecentAccessClassification()
     {
         return archiveHelper.getClassificationDef(OpenMetadataType.RECENT_ACCESS_COLLECTION_CLASSIFICATION,
-                                                  this.archiveBuilder.getClassificationDef(OpenMetadataType.COLLECTION_CATEGORY_CLASSIFICATION.typeName),
+                                                  this.archiveBuilder.getClassificationDef(OpenMetadataType.COLLECTION_ROLE_CLASSIFICATION.typeName),
                                                   this.archiveBuilder.getEntityDef(OpenMetadataType.COLLECTION.typeName),
                                                   false);
     }
@@ -253,7 +253,7 @@ public class OpenMetadataTypesArchive5_0
     private ClassificationDef getWorkItemListClassification()
     {
         return archiveHelper.getClassificationDef(OpenMetadataType.WORK_ITEM_LIST_COLLECTION_CLASSIFICATION,
-                                                  this.archiveBuilder.getClassificationDef(OpenMetadataType.COLLECTION_CATEGORY_CLASSIFICATION.typeName),
+                                                  this.archiveBuilder.getClassificationDef(OpenMetadataType.COLLECTION_ROLE_CLASSIFICATION.typeName),
                                                   this.archiveBuilder.getEntityDef(OpenMetadataType.COLLECTION.typeName),
                                                   false);
     }
@@ -362,7 +362,7 @@ public class OpenMetadataTypesArchive5_0
     private ClassificationDef getPersonalProjectClassification()
     {
         return archiveHelper.getClassificationDef(OpenMetadataType.PERSONAL_PROJECT_CLASSIFICATION,
-                                                  this.archiveBuilder.getClassificationDef(OpenMetadataType.PROJECT_CATEGORY_CLASSIFICATION.typeName),
+                                                  this.archiveBuilder.getClassificationDef(OpenMetadataType.PROJECT_ROLE_CLASSIFICATION.typeName),
                                                   this.archiveBuilder.getEntityDef(OpenMetadataType.PROJECT.typeName),
                                                   false);
     }
@@ -377,7 +377,7 @@ public class OpenMetadataTypesArchive5_0
     private ClassificationDef getStudyProjectClassification()
     {
         return archiveHelper.getClassificationDef(OpenMetadataType.STUDY_PROJECT_CLASSIFICATION,
-                                                  this.archiveBuilder.getClassificationDef(OpenMetadataType.PROJECT_CATEGORY_CLASSIFICATION.typeName),
+                                                  this.archiveBuilder.getClassificationDef(OpenMetadataType.PROJECT_ROLE_CLASSIFICATION.typeName),
                                                   this.archiveBuilder.getEntityDef(OpenMetadataType.PROJECT.typeName),
                                                   false);
     }
@@ -439,6 +439,16 @@ public class OpenMetadataTypesArchive5_0
                                                                  end2AttributeDescriptionGUID,
                                                                  RelationshipEndCardinality.ANY_NUMBER);
         relationshipDef.setEndDef2(relationshipEndDef);
+
+        /*
+         * Build the attributes
+         */
+        List<TypeDefAttribute> properties = new ArrayList<>();
+
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.LABEL));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.DESCRIPTION));
+
+        relationshipDef.setPropertiesDefinition(properties);
 
         return relationshipDef;
 
@@ -1064,7 +1074,7 @@ public class OpenMetadataTypesArchive5_0
     private ClassificationDef getContextEventCollectionClassification()
     {
         return archiveHelper.getClassificationDef(OpenMetadataType.CONTEXT_EVENT_COLLECTION_CLASSIFICATION,
-                                                  this.archiveBuilder.getClassificationDef(OpenMetadataType.COLLECTION_CATEGORY_CLASSIFICATION.typeName),
+                                                  this.archiveBuilder.getClassificationDef(OpenMetadataType.COLLECTION_ROLE_CLASSIFICATION.typeName),
                                                   this.archiveBuilder.getEntityDef(OpenMetadataType.COLLECTION.typeName),
                                                   false);
     }
@@ -1373,7 +1383,7 @@ public class OpenMetadataTypesArchive5_0
          */
         List<TypeDefAttribute> properties = new ArrayList<>();
 
-        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.PROPERTY_TYPE));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.PROPERTY_NAME));
 
         relationshipDef.setPropertiesDefinition(properties);
 

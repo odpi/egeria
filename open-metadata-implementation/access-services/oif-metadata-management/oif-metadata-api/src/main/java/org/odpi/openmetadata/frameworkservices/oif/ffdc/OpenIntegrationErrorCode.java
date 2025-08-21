@@ -7,7 +7,7 @@ import org.odpi.openmetadata.frameworks.auditlog.messagesets.ExceptionMessageSet
 
 /**
  * The OpenIntegrationErrorCode is used to define first failure data capture (FFDC) for errors that occur when working with
- * the Governance Action Framework (GAF) Services.  It is used in conjunction with both Checked and Runtime (unchecked) exceptions.
+ * the Open Survey Framework (OGF) Services.  It is used in conjunction with both Checked and Runtime (unchecked) exceptions.
  * <p>
  * The 5 fields in the enum are:
  * <ul>

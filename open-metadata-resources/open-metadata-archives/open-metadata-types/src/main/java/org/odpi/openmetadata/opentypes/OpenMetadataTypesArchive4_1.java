@@ -284,15 +284,16 @@ public class OpenMetadataTypesArchive4_1
 
     private void update0385ControlledGlossaryDevelopment()
     {
-        this.archiveBuilder.addClassificationDef(getEditingGlossaryClassification());
-        this.archiveBuilder.addClassificationDef(getStagingGlossaryClassification());
+        this.archiveBuilder.addClassificationDef(getEditingCollectionClassification());
+        this.archiveBuilder.addClassificationDef(getStagingCollectionClassification());
+        this.archiveBuilder.addClassificationDef(getScopingCollectionClassification());
     }
 
-    private ClassificationDef getEditingGlossaryClassification()
+    private ClassificationDef getEditingCollectionClassification()
     {
-        ClassificationDef classificationDef = archiveHelper.getClassificationDef(OpenMetadataType.EDITING_GLOSSARY_CLASSIFICATION,
-                                                                                 null,
-                                                                                 this.archiveBuilder.getEntityDef(OpenMetadataType.GLOSSARY.typeName),
+        ClassificationDef classificationDef = archiveHelper.getClassificationDef(OpenMetadataType.EDITING_COLLECTION_CLASSIFICATION,
+                                                                                 this.archiveBuilder.getClassificationDef(OpenMetadataType.COLLECTION_ROLE_CLASSIFICATION.typeName),
+                                                                                 this.archiveBuilder.getEntityDef(OpenMetadataType.COLLECTION.typeName),
                                                                                  false);
 
         /*
@@ -308,11 +309,31 @@ public class OpenMetadataTypesArchive4_1
     }
 
 
-    private ClassificationDef getStagingGlossaryClassification()
+    private ClassificationDef getStagingCollectionClassification()
     {
-        ClassificationDef classificationDef = archiveHelper.getClassificationDef(OpenMetadataType.STAGING_GLOSSARY_CLASSIFICATION,
-                                                                                 null,
-                                                                                 this.archiveBuilder.getEntityDef(OpenMetadataType.REFERENCEABLE.typeName),
+        ClassificationDef classificationDef = archiveHelper.getClassificationDef(OpenMetadataType.STAGING_COLLECTION_CLASSIFICATION,
+                                                                                 this.archiveBuilder.getClassificationDef(OpenMetadataType.COLLECTION_ROLE_CLASSIFICATION.typeName),
+                                                                                 this.archiveBuilder.getEntityDef(OpenMetadataType.COLLECTION.typeName),
+                                                                                 false);
+
+        /*
+         * Build the attributes
+         */
+        List<TypeDefAttribute> properties = new ArrayList<>();
+
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.DESCRIPTION));
+
+        classificationDef.setPropertiesDefinition(properties);
+
+        return classificationDef;
+    }
+
+
+    private ClassificationDef getScopingCollectionClassification()
+    {
+        ClassificationDef classificationDef = archiveHelper.getClassificationDef(OpenMetadataType.SCOPING_COLLECTION_CLASSIFICATION,
+                                                                                 this.archiveBuilder.getClassificationDef(OpenMetadataType.COLLECTION_ROLE_CLASSIFICATION.typeName),
+                                                                                 this.archiveBuilder.getEntityDef(OpenMetadataType.COLLECTION.typeName),
                                                                                  false);
 
         /*

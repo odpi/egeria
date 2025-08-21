@@ -5,7 +5,7 @@ package org.odpi.openmetadata.frameworkservices.gaf.server;
 
 import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceDescription;
 import org.odpi.openmetadata.commonservices.generichandlers.*;
-import org.odpi.openmetadata.frameworks.governanceaction.properties.*;
+import org.odpi.openmetadata.frameworks.opengovernance.properties.*;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.OpenMetadataElement;
 import org.odpi.openmetadata.frameworkservices.gaf.converters.*;
 import org.odpi.openmetadata.frameworkservices.gaf.ffdc.OpenGovernanceErrorCode;

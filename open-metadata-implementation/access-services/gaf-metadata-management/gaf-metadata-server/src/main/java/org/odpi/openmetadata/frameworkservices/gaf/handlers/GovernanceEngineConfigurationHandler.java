@@ -14,9 +14,9 @@ import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedExcep
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
-import org.odpi.openmetadata.frameworks.governanceaction.properties.GovernanceEngineElement;
-import org.odpi.openmetadata.frameworks.governanceaction.properties.GovernanceServiceElement;
-import org.odpi.openmetadata.frameworks.governanceaction.properties.RegisteredGovernanceServiceElement;
+import org.odpi.openmetadata.frameworks.opengovernance.properties.GovernanceEngineElement;
+import org.odpi.openmetadata.frameworks.opengovernance.properties.GovernanceServiceElement;
+import org.odpi.openmetadata.frameworks.opengovernance.properties.RegisteredGovernanceServiceElement;
 import org.odpi.openmetadata.frameworks.openmetadata.refdata.DeployedImplementationType;
 import org.odpi.openmetadata.frameworkservices.gaf.converters.GovernanceEngineConverter;
 import org.odpi.openmetadata.frameworkservices.gaf.converters.GovernanceServiceConverter;

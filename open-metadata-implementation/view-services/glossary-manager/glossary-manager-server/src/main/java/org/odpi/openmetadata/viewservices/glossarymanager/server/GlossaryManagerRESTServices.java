@@ -11,8 +11,11 @@ import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.ElementStatus;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.GlossaryTermActivityType;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.GlossaryTermRelationshipStatus;
+import org.odpi.openmetadata.frameworks.openmetadata.handlers.CollectionHandler;
 import org.odpi.openmetadata.frameworks.openmetadata.handlers.GlossaryHandler;
 import org.odpi.openmetadata.frameworks.openmetadata.handlers.GlossaryTermHandler;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.collections.EditingCollectionProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.collections.StagingCollectionProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.glossaries.*;
 import org.odpi.openmetadata.tokencontroller.TokenController;
 import org.odpi.openmetadata.viewservices.glossarymanager.rest.GlossaryTermActivityTypeListResponse;
@@ -53,460 +56,6 @@ public class GlossaryManagerRESTServices extends TokenController
 
 
     /**
-     * Create a new metadata element to represent the root of a glossary.  All categories and terms are linked
-     * to a single glossary.  They are owned by this glossary and if the glossary is deleted, any linked terms and
-     * categories are deleted as well.
-     *
-     * @param serverName name of the server to route the request to
-     * @param requestBody properties to store
-     *
-     * @return unique identifier of the new metadata element or
-     * InvalidParameterException  one of the parameters is invalid
-     * UserNotAuthorizedException the user is not authorized to issue this request
-     * PropertyServerException    there is a problem reported in the open metadata server(s)
-     */
-    public GUIDResponse createGlossary(String                serverName,
-                                       NewElementRequestBody requestBody)
-    {
-        final String   methodName = "createGlossary";
-
-        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
-
-        GUIDResponse response = new GUIDResponse();
-        AuditLog     auditLog = null;
-
-        try
-        {
-            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
-
-            restCallLogger.setUserId(token, userId);
-
-            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-
-            if (requestBody != null)
-            {
-                if (requestBody.getProperties() instanceof GlossaryProperties glossaryProperties)
-                {
-                    GlossaryHandler handler = instanceHandler.getGlossaryHandler(userId, serverName, methodName);
-
-                    response.setGUID(handler.createGlossary(userId,
-                                                            requestBody,
-                                                            requestBody.getInitialClassifications(),
-                                                            glossaryProperties,
-                                                            requestBody.getParentRelationshipProperties()));
-                }
-                else
-                {
-                    restExceptionHandler.handleInvalidPropertiesObject(GlossaryProperties.class.getName(), methodName);
-                }
-            }
-            else
-            {
-                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
-            }
-        }
-        catch (Throwable error)
-        {
-            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
-        }
-
-        restCallLogger.logRESTCallReturn(token, response.toString());
-
-        return response;
-    }
-
-
-    /**
-     * Create a new metadata element to represent a glossary using an existing metadata element as a template.
-     * The template defines additional classifications and relationships that should be added to the new glossary.
-     * All categories and terms are linked to a single glossary.  They are owned by this glossary and if the
-     * glossary is deleted, any linked terms and categories are deleted as well.
-     *
-     * @param serverName name of the server to route the request to
-     * @param templateGUID unique identifier of the metadata element to copy
-     * @param requestBody properties that override the template
-     *
-     * @return unique identifier of the new metadata element or
-     * InvalidParameterException  one of the parameters is invalid
-     * UserNotAuthorizedException the user is not authorized to issue this request
-     * PropertyServerException    there is a problem reported in the open metadata server(s)
-     */
-    public GUIDResponse createGlossaryFromTemplate(String              serverName,
-                                                   String              templateGUID,
-                                                   TemplateRequestBody requestBody)
-    {
-        final String methodName = "createGlossaryFromTemplate";
-
-        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
-
-        GUIDResponse response = new GUIDResponse();
-        AuditLog     auditLog = null;
-
-        try
-        {
-            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
-
-            restCallLogger.setUserId(token, userId);
-
-            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-
-            if (requestBody != null)
-            {
-                GlossaryHandler handler = instanceHandler.getGlossaryHandler(userId, serverName, methodName);
-
-                response.setGUID(handler.createGlossaryFromTemplate(userId,
-                                                                    requestBody,
-                                                                    templateGUID,
-                                                                    null,
-                                                                    requestBody.getPlaceholderPropertyValues(),
-                                                                    requestBody.getParentRelationshipProperties()));
-            }
-            else
-            {
-                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
-            }
-        }
-        catch (Throwable error)
-        {
-            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
-        }
-
-        restCallLogger.logRESTCallReturn(token, response.toString());
-
-        return response;
-    }
-
-
-    /**
-     * Update the metadata element representing a glossary.
-     *
-     * @param serverName name of the server to route the request to
-     * @param glossaryGUID unique identifier of the metadata element to update
-     * @param requestBody new properties for this element
-     *
-     * @return  void or
-     * InvalidParameterException  one of the parameters is invalid
-     * UserNotAuthorizedException the user is not authorized to issue this request
-     * PropertyServerException    there is a problem reported in the open metadata server(s)
-     */
-    public VoidResponse updateGlossary(String                   serverName,
-                                       String                   glossaryGUID,
-                                       UpdateElementRequestBody requestBody)
-    {
-        final String methodName = "updateGlossary";
-
-        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
-
-        VoidResponse response = new VoidResponse();
-        AuditLog     auditLog = null;
-
-        try
-        {
-            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
-
-            restCallLogger.setUserId(token, userId);
-
-            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-
-            if (requestBody != null)
-            {
-                if (requestBody.getProperties() instanceof GlossaryProperties glossaryProperties)
-                {
-                    GlossaryHandler handler = instanceHandler.getGlossaryHandler(userId, serverName, methodName);
-
-                    handler.updateGlossary(userId, glossaryGUID, requestBody, glossaryProperties);
-                }
-                else
-                {
-                    restExceptionHandler.handleInvalidPropertiesObject(GlossaryProperties.class.getName(), methodName);
-                }
-            }
-            else
-            {
-                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
-            }
-        }
-        catch (Throwable error)
-        {
-            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
-        }
-
-        restCallLogger.logRESTCallReturn(token, response.toString());
-
-        return response;
-    }
-
-
-    /**
-     * Remove the metadata element representing a glossary.  This will delete the glossary and all categories
-     * and terms.
-     *
-     * @param serverName name of the server to route the request to
-     * @param glossaryGUID unique identifier of the metadata element to remove
-     * @param requestBody properties to help with the mapping of the elements in the external asset manager and open metadata
-     *
-     * @return  void or
-     * InvalidParameterException  one of the parameters is invalid
-     * UserNotAuthorizedException the user is not authorized to issue this request
-     * PropertyServerException    there is a problem reported in the open metadata server(s)
-     */
-    public VoidResponse deleteGlossary(String                   serverName,
-                                       String                   glossaryGUID,
-                                       DeleteRequestBody requestBody)
-    {
-        final String methodName = "deleteGlossary";
-
-        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
-
-        VoidResponse response = new VoidResponse();
-        AuditLog     auditLog = null;
-
-        try
-        {
-            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
-
-            restCallLogger.setUserId(token, userId);
-
-            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-
-            GlossaryHandler handler = instanceHandler.getGlossaryHandler(userId, serverName, methodName);
-
-            handler.deleteGlossary(userId, glossaryGUID, requestBody);
-        }
-        catch (Throwable error)
-        {
-            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
-        }
-
-        restCallLogger.logRESTCallReturn(token, response.toString());
-
-        return response;
-    }
-
-
-    /**
-     * Classify the glossary to indicate that it is an editing glossary - this means it is
-     * a collection of glossary updates that will be merged into its source glossary.
-     *
-     * @param serverName name of the server to route the request to
-     * @param glossaryGUID unique identifier of the metadata element to remove
-     * @param requestBody properties to help with the mapping of the elements in the external asset manager and open metadata
-     *
-     * @return  void or
-     * InvalidParameterException  one of the parameters is invalid
-     * UserNotAuthorizedException the user is not authorized to issue this request
-     * PropertyServerException    there is a problem reported in the open metadata server(s)
-     */
-    public VoidResponse setGlossaryAsEditingGlossary(String                    serverName,
-                                                     String                    glossaryGUID,
-                                                     NewClassificationRequestBody requestBody)
-    {
-        final String methodName = "setGlossaryAsEditingGlossary";
-
-        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
-
-        VoidResponse response = new VoidResponse();
-        AuditLog     auditLog = null;
-
-        try
-        {
-            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
-
-            restCallLogger.setUserId(token, userId);
-
-            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-
-            GlossaryHandler handler = instanceHandler.getGlossaryHandler(userId, serverName, methodName);
-
-            if (requestBody != null)
-            {
-                if (requestBody.getProperties() instanceof EditingGlossaryProperties properties)
-                {
-                    handler.setGlossaryAsEditingGlossary(userId, glossaryGUID, properties, requestBody);
-                }
-                else if (requestBody.getProperties() == null)
-                {
-                    handler.setGlossaryAsEditingGlossary(userId, glossaryGUID, null, requestBody);
-                }
-                else
-                {
-                    restExceptionHandler.handleInvalidPropertiesObject(EditingGlossaryProperties.class.getName(), methodName);
-                }
-            }
-            else
-            {
-                handler.setGlossaryAsEditingGlossary(userId, glossaryGUID, null, null);
-            }
-        }
-        catch (Throwable error)
-        {
-            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
-        }
-
-        restCallLogger.logRESTCallReturn(token, response.toString());
-
-        return response;
-    }
-
-
-    /**
-     * Remove the editing glossary designation from the glossary.
-     *
-     * @param serverName name of the server to route the request to
-     * @param glossaryGUID unique identifier of the metadata element to remove
-     * @param requestBody correlation properties for the external asset manager
-     *
-     * @return  void or
-     * InvalidParameterException  one of the parameters is invalid
-     * UserNotAuthorizedException the user is not authorized to issue this request
-     * PropertyServerException    there is a problem reported in the open metadata server(s)
-     */
-    public VoidResponse clearGlossaryAsEditingGlossary(String                    serverName,
-                                                       String                    glossaryGUID,
-                                                       MetadataSourceRequestBody requestBody)
-    {
-        final String methodName = "clearGlossaryAsEditingGlossary";
-
-        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
-
-        VoidResponse response = new VoidResponse();
-        AuditLog     auditLog = null;
-
-        try
-        {
-            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
-
-            restCallLogger.setUserId(token, userId);
-
-            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-
-            GlossaryHandler handler = instanceHandler.getGlossaryHandler(userId, serverName, methodName);
-
-            handler.clearGlossaryAsEditingGlossary(userId, glossaryGUID, requestBody);
-        }
-        catch (Throwable error)
-        {
-            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
-        }
-
-        restCallLogger.logRESTCallReturn(token, response.toString());
-
-        return response;
-    }
-
-
-    /**
-     * Classify the glossary to indicate that it is a staging glossary - this means it is
-     * a collection of glossary updates that will be transferred into another glossary.
-     *
-     * @param serverName name of the server to route the request to
-     * @param glossaryGUID unique identifier of the metadata element to remove
-     * @param requestBody properties to help with the mapping of the elements in the external asset manager and open metadata
-     *
-     * @return  void or
-     * InvalidParameterException  one of the parameters is invalid
-     * UserNotAuthorizedException the user is not authorized to issue this request
-     * PropertyServerException    there is a problem reported in the open metadata server(s)
-     */
-    public VoidResponse setGlossaryAsStagingGlossary(String                    serverName,
-                                                     String                    glossaryGUID,
-                                                     NewClassificationRequestBody requestBody)
-    {
-        final String methodName = "setGlossaryAsStagingGlossary";
-
-        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
-
-        VoidResponse response = new VoidResponse();
-        AuditLog     auditLog = null;
-
-        try
-        {
-            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
-
-            restCallLogger.setUserId(token, userId);
-
-            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-
-            GlossaryHandler handler = instanceHandler.getGlossaryHandler(userId, serverName, methodName);
-
-            if (requestBody != null)
-            {
-                if (requestBody.getProperties() instanceof StagingGlossaryProperties properties)
-                {
-                    handler.setGlossaryAsStagingGlossary(userId, glossaryGUID, properties, requestBody);
-                }
-                else if (requestBody.getProperties() == null)
-                {
-                    handler.setGlossaryAsStagingGlossary(userId, glossaryGUID, null, requestBody);
-                }
-                else
-                {
-                    restExceptionHandler.handleInvalidPropertiesObject(StagingGlossaryProperties.class.getName(), methodName);
-                }
-            }
-            else
-            {
-                handler.setGlossaryAsStagingGlossary(userId, glossaryGUID, null, null);
-            }
-        }
-        catch (Throwable error)
-        {
-            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
-        }
-
-        restCallLogger.logRESTCallReturn(token, response.toString());
-
-        return response;
-    }
-
-
-    /**
-     * Remove the staging glossary designation from the glossary.
-     *
-     * @param serverName name of the server to route the request to
-     * @param glossaryGUID unique identifier of the metadata element to remove
-     * @param requestBody correlation properties for the external asset manager
-     *
-     * @return  void or
-     * InvalidParameterException  one of the parameters is invalid
-     * UserNotAuthorizedException the user is not authorized to issue this request
-     * PropertyServerException    there is a problem reported in the open metadata server(s)
-     */
-    public VoidResponse clearGlossaryAsStagingGlossary(String                    serverName,
-                                                       String                    glossaryGUID,
-                                                       MetadataSourceRequestBody requestBody)
-    {
-        final String methodName = "clearGlossaryAsStagingGlossary";
-
-        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
-
-        VoidResponse response = new VoidResponse();
-        AuditLog     auditLog = null;
-
-        try
-        {
-            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
-
-            restCallLogger.setUserId(token, userId);
-
-            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-
-            GlossaryHandler handler = instanceHandler.getGlossaryHandler(userId, serverName, methodName);
-
-            handler.clearGlossaryAsStagingGlossary(userId, glossaryGUID, requestBody);
-        }
-        catch (Throwable error)
-        {
-            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
-        }
-
-        restCallLogger.logRESTCallReturn(token, response.toString());
-
-        return response;
-    }
-
-
-    /**
      * Classify the glossary to indicate that it can be used as a taxonomy.
      * This means each term is attached to one, and only one category and the categories are organized as a hierarchy
      * with a single root category.
@@ -541,7 +90,7 @@ public class GlossaryManagerRESTServices extends TokenController
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            GlossaryHandler handler = instanceHandler.getGlossaryHandler(userId, serverName, methodName);
+            CollectionHandler handler = instanceHandler.getGlossaryHandler(userId, serverName, methodName);
 
             if (requestBody != null)
             {
@@ -605,7 +154,7 @@ public class GlossaryManagerRESTServices extends TokenController
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            GlossaryHandler handler = instanceHandler.getGlossaryHandler(userId, serverName, methodName);
+            CollectionHandler handler = instanceHandler.getGlossaryHandler(userId, serverName, methodName);
 
             handler.clearGlossaryAsTaxonomy(userId, glossaryGUID, requestBody);
         }
@@ -654,7 +203,7 @@ public class GlossaryManagerRESTServices extends TokenController
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            GlossaryHandler handler = instanceHandler.getGlossaryHandler(userId, serverName, methodName);
+            CollectionHandler handler = instanceHandler.getGlossaryHandler(userId, serverName, methodName);
 
             if (requestBody != null)
             {
@@ -718,7 +267,7 @@ public class GlossaryManagerRESTServices extends TokenController
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            GlossaryHandler handler = instanceHandler.getGlossaryHandler(userId, serverName, methodName);
+            CollectionHandler handler = instanceHandler.getGlossaryHandler(userId, serverName, methodName);
 
             handler.clearGlossaryAsCanonical(userId, glossaryGUID, requestBody);
         }
@@ -1864,4 +1413,160 @@ public class GlossaryManagerRESTServices extends TokenController
 
         return response;
     }
+
+
+
+
+    /**
+     * Retrieve the list of glossary term metadata elements that contain the search string.
+     * The search string is treated as a regular expression.
+     *
+     * @param serverName name of the server to route the request to
+     * @param requestBody asset manager identifiers and search string
+     *
+     * @return list of matching metadata elements or
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public OpenMetadataRootElementsResponse findGlossaryTerms(String                  serverName,
+                                                              SearchStringRequestBody requestBody)
+    {
+        final String methodName = "findGlossaryTerms";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
+
+        OpenMetadataRootElementsResponse response = new OpenMetadataRootElementsResponse();
+        AuditLog                 auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            if (requestBody != null)
+            {
+                GlossaryTermHandler handler = instanceHandler.getGlossaryTermHandler(userId, serverName, methodName);
+
+                response.setElements(handler.findGlossaryTerms(userId,
+                                                               requestBody.getSearchString(),
+                                                               requestBody));
+            }
+            else
+            {
+                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName, SearchStringRequestBody.class.getName());
+            }
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+
+        return response;
+    }
+
+
+    /**
+     * Retrieve the list of glossary term metadata elements with a matching qualified or display name.
+     * There are no wildcards supported on this request.
+     *
+     * @param serverName name of the server to route the request to
+     * @param requestBody asset manager identifiers and name
+     *
+     * @return list of matching metadata elements or
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public OpenMetadataRootElementsResponse   getGlossaryTermsByName(String            serverName,
+                                                                     FilterRequestBody requestBody)
+    {
+        final String methodName = "getGlossaryTermsByName";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
+
+        OpenMetadataRootElementsResponse response = new OpenMetadataRootElementsResponse();
+        AuditLog                         auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            if (requestBody != null)
+            {
+                GlossaryTermHandler handler = instanceHandler.getGlossaryTermHandler(userId, serverName, methodName);
+
+                response.setElements(handler.getGlossaryTermsByName(userId, requestBody.getFilter(), requestBody));
+            }
+            else
+            {
+                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName, FilterRequestBody.class.getName());
+            }
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+
+        return response;
+    }
+
+
+    /**
+     * Retrieve the glossary term metadata element with the supplied unique identifier.
+     *
+     * @param serverName name of the server to route the request to
+     * @param guid unique identifier of the requested metadata element
+     * @param requestBody asset manager identifiers
+     *
+     * @return matching metadata element or
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public OpenMetadataRootElementResponse getGlossaryTermByGUID(String             serverName,
+                                                                 String             guid,
+                                                                 GetRequestBody requestBody)
+    {
+        final String methodName = "getGlossaryTermByGUID";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
+
+        OpenMetadataRootElementResponse response = new OpenMetadataRootElementResponse();
+        AuditLog                        auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            GlossaryTermHandler handler = instanceHandler.getGlossaryTermHandler(userId, serverName, methodName);
+
+            response.setElement(handler.getGlossaryTermByGUID(userId, guid, requestBody));
+
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+
+        return response;
+    }
+
 }

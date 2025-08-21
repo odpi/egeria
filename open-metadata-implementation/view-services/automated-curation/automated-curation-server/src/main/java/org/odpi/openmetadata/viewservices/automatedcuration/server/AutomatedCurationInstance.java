@@ -78,7 +78,7 @@ public class AutomatedCurationInstance extends OMVSServiceInstance
 
 
     /**
-     * Return the open metadata store client.  This client is from the Governance Action Framework (GAF) and is for accessing and
+     * Return the open metadata store client.  This client is from the Open Metadata Framework (OMF) and is for accessing and
      * maintaining all types of metadata.
      *
      * @return client
@@ -102,7 +102,7 @@ public class AutomatedCurationInstance extends OMVSServiceInstance
 
 
     /**
-     * Return the open governance client.  This client is from the Governance Action Framework (GAF) and is for
+     * Return the open governance client.  This client is from the Open Governance Framework (GAF) and is for
      * working with automation services.
      *
      * @return client
@@ -114,8 +114,8 @@ public class AutomatedCurationInstance extends OMVSServiceInstance
 
 
     /**
-     * Return the open integration client.  This client is from the Governance Action Framework (GAF) and is for
-     * working with automation services.
+     * Return the open integration client.  This client is from the Open Integration Framework (OIF) and is for
+     * working with integration connectors.
      *
      * @return client
      */
@@ -126,7 +126,7 @@ public class AutomatedCurationInstance extends OMVSServiceInstance
 
 
     /**
-     * Return the  governance configuration client.  This client is from the Governance Action Framework (GAF) and is for
+     * Return the  governance configuration client.  This client is from the Open Governance Framework (OGF) and is for
      * working with automation services.
      *
      * @return client

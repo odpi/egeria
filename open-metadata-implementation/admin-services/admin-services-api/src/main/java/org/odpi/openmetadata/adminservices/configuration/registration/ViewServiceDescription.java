@@ -47,22 +47,13 @@ public enum ViewServiceDescription
                     "Supports researching the available digital products and managing the subscriptions."),
 
     /**
-     * View glossary terms and categories within a glossary.
-     */
-    GLOSSARY_BROWSER(805,
-                     ComponentDevelopmentStatus.STABLE,
-                     "Glossary Browser",
-                     "glossary-browser",
-                     "View glossary terms and categories within a glossary."),
-
-    /**
-     * Create glossary terms and organize them into categories as part of a controlled workflow process. It supports the editing glossary and multiple states.
+     * Create glossary terms and organize them into folders. It supports the editing glossary and multiple states.
      */
     GLOSSARY_MANAGER(806,
                      ComponentDevelopmentStatus.STABLE,
                      "Glossary Manager",
                      "glossary-manager",
-                     "Create glossary terms and organize them into categories as part of a controlled workflow process. It supports the editing glossary and multiple states."),
+                     "Create glossary terms and organize them into folders. It supports the editing glossary and multiple states."),
 
     /**
      * Manage information about the logged on user as well as their preferences.

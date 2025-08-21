@@ -15,8 +15,8 @@ dependencies {
     implementation project(':open-metadata-implementation:frameworks:audit-log-framework')
     implementation project(':open-metadata-implementation:frameworks:open-metadata-framework')
     implementation project(':open-metadata-implementation:frameworks:open-connector-framework')
-    implementation project(':open-metadata-implementation:frameworks:governance-action-framework')
-    implementation project(':open-metadata-implementation:frameworks:survey-action-framework')
+    implementation project(':open-metadata-implementation:frameworks:open-governance-framework')
+    implementation project(':open-metadata-implementation:frameworks:open-survey-framework')
     implementation 'org.apache.commons:commons-lang3'
     implementation 'org.springframework:spring-core'
     testImplementation project(':open-metadata-test:open-metadata-ut')

@@ -20,7 +20,7 @@ The Egeria core repository contains the core Egeria functionality, and is organi
   * **[access-services](open-metadata-implementation/access-services)** - client support for the frameworks
     * **[ocf-metadata-management](open-metadata-implementation/access-services/ocf-metadata-management)** - provides metadata management for the [Open Connector Framework (OCF)](open-metadata-implementation/frameworks/open-connector-framework) properties and APIs.
     * **[oif-metadata-management](open-metadata-implementation/access-services/oif-metadata-management)** - provides metadata management for the [Open Integration Framework (OCF)](open-metadata-implementation/frameworks/open-integration-framework) properties and APIs.
-    * **[gaf-metadata-management](open-metadata-implementation/access-services/gaf-metadata-management)** - provides metadata management for the [Governance Action Framework (GAF)](open-metadata-implementation/frameworks/governance-action-framework) properties and APIs.
+    * **[gaf-metadata-management](open-metadata-implementation/access-services/gaf-metadata-management)** - provides metadata management for the [Open Governance Framework (OGF)](open-metadata-implementation/frameworks/open-governance-framework) properties and APIs.
 
   * **[adapters](open-metadata-implementation/adapters)** - pluggable component implementations.
     * **[authentication-plugins](open-metadata-implementation/adapters/authentication-plugins)** support extensions to technology such as LDAP that are used to verify the identity of an individual or service requesting access to data/metadata.
@@ -31,7 +31,7 @@ The Egeria core repository contains the core Egeria functionality, and is organi
       * **[discovery-service-connectors](open-metadata-implementation/adapters/open-connectors/discovery-service-connectors)** contain ODF discovery service implementations.
       * **[dynamic-archiver-connectors](open-metadata-implementation/adapters/open-connectors/dynamic-archiver-connectors)** contains dynamic archiver services implementations.
       * **[event-bus-connectors](open-metadata-implementation/adapters/open-connectors/event-bus-connectors)** supports different event/messaging infrastructures.  They can be plugged into the topic connectors from the access-service-connectors and repository-service-connectors.
-      * **[governance-action-connectors](open-metadata-implementation/adapters/open-connectors/governance-action-connectors)** contains GAF governance action implementations.
+      * **[governance-action-connectors](open-metadata-implementation/adapters/open-connectors/governance-action-connectors)** contains governance action implementations.
       * **[integration-connectors](open-metadata-implementation/adapters/open-connectors/integration-connectors)** contains connectors synchronously exchanging between different third party technologies.
       * **[repository-services-connectors](open-metadata-implementation/adapters/open-connectors/repository-services-connectors)** contains connector implementations for each type of connector supported by the Open Metadata Repository Services (OMRS).
         * **[audit-log-connectors](open-metadata-implementation/adapters/open-connectors/repository-services-connectors/audit-log-connectors)** supports different destinations for audit log messages.
@@ -58,15 +58,17 @@ The Egeria core repository contains the core Egeria functionality, and is organi
     * **[repository-handler](open-metadata-implementation/common-services/repository-handler)** - provides an enhanced set of services for accessing metadata from the [repository services](open-metadata-implementation/repository-services).
   
   * **[engine-services](open-metadata-implementation/engine-services)** - services that host data management and governance engines.  These run in the [Engine Host](https://egeria-project.org/concepts/engine-host) OMAG Server.
-    * **[survey-action](open-metadata-implementation/engine-services/survey-action)** - services that host [Survey Action Framework (SAF)](open-metadata-implementation/frameworks/survey-action-framework) services.
+    * **[governance-action](open-metadata-implementation/engine-services/governance-action)** - services that host [Open Governance Framework (OGF)](open-metadata-implementation/frameworks/open-governance-framework) governance action services.
+    * **[survey-action](open-metadata-implementation/engine-services/survey-action)** - services that host [Open Survey Framework (OSF)](open-metadata-implementation/frameworks/open-survey-framework) services.
+    * **[watchdog-action](open-metadata-implementation/engine-services/watchdog-action)** - services that host [Open Watchdog Framework (OWF)](open-metadata-implementation/frameworks/open-watchdog-framework) services.
     * **[repository-governance](open-metadata-implementation/engine-services/repository-governance)** - services that host dynamic governance services for open metadata repositories.
-    * **[governance-action](open-metadata-implementation/engine-services/governance-action)** - services that host [Governance Action Framework (GAF)](open-metadata-implementation/frameworks/governance-action-framework) governance action services.
 
   * **[frameworks](open-metadata-implementation/frameworks)** - frameworks that support pluggable components.
     * **[audit-log-framework](open-metadata-implementation/frameworks/audit-log-framework)** provides the interfaces and base implementations for components (called connectors) that access data-related assets. OCF connectors also provide detailed metadata about the assets they access.
     * **[open-connector-framework](open-metadata-implementation/frameworks/open-connector-framework)** provides the interfaces for diagnostics and exceptions.
-    * **[open-discovery-framework](open-metadata-implementation/frameworks/open-discovery-framework)** provides the interfaces and base implementations for components (called discovery services) that access data-related assets and extract characteristics about the data that can be stored in an open metadata repository.
-    * **[governance-action-framework](open-metadata-implementation/frameworks/governance-action-framework)** provides the interfaces and base implementations for components (called governance actions) that take action to correct a situation that is harmful the data, or the organization in some way.
+    * **[open-governance-framework](open-metadata-implementation/frameworks/open-governance-framework)** provides the interfaces and base implementations for components (called governance actions) that take action to correct a situation that is harmful the data, or the organization in some way.
+    * **[open-survey-framework](open-metadata-implementation/frameworks/open-survey-framework)** provides the interfaces and base implementations for components (called survey action services) that access data-related assets and extract characteristics about the data that can be stored in an open metadata repository.
+    * **[open-watchdog-framework](open-metadata-implementation/frameworks/open-watchdog-framework)** provides the interfaces and base implementations for components (called watchdog action services) that monitor for events and issue notification/actions to subscribers.
  
 * **[governance-servers](open-metadata-implementation/governance-servers)** - servers and daemons to run open metadata and governance function.
     * **[engine-host-services](open-metadata-implementation/governance-servers/engine-host-services)** - supports the core function of the [Engine Host](https://egeria-project.org/concepts/engine-host) OMAG Server.

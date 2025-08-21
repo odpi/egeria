@@ -14,7 +14,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * MetadataElementInterface provides an interface to the open metadata store.  This is part of the Governance Action Framework (GAF)
+ * MetadataElementInterface provides an interface to the open metadata store.  This is part of the Open Survey Framework (OGF)
  * and provides a comprehensive interface for working with all types of metadata, subject to the user's (and this OMAS's) security permissions.
  * The interface supports search, maintenance of metadata elements, classifications and relationships.
  */

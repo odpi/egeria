@@ -196,27 +196,30 @@ Content-Type: application/json
 ###
 # @name getMetadataElementHistory
 # Retrieve all the versions of an element.
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/metadata-explorer/metadata-elements/{{elementGUID}}/history?startFrom=0&pageSize=10&oldestFirst=true
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/metadata-explorer/metadata-elements/{{elementGUID}}/history
 Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
   "class" : "HistoryRequestBody",
-  "effectiveTime" : "{{$isoTimestamp}}"
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "oldestFirst": false
 }
 
 
 ###
 # @name findMetadataElementsWithString (Glossary called .*Cloud.*)
 # Retrieve the metadata elements that contain the requested string.
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/metadata-explorer/metadata-elements/by-search-string?startFrom=0&pageSize=10
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/metadata-explorer/metadata-elements/by-search-string
 Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
   "class" : "SearchStringRequestBody",
   "searchString" : "Cloud",
-  "typeName" : "ValidValueDefinition",
+  "startsWith": false,
+  "endsWith": false,
+  "metadataElementTypeName" : "Glossary",
   "effectiveTime" : "{{$isoTimestamp}}",
   "limitResultsByStatus" : ["ACTIVE"],
   "asOfTime" : "{{$isoTimestamp}}",
@@ -228,14 +231,16 @@ Content-Type: application/json
 ###
 # @name findMetadataElementsWithString (GlossaryTerm for CO2)
 # Retrieve the metadata elements that contain the requested string.
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/metadata-explorer/metadata-elements/by-search-string?startFrom=0&pageSize=10
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/metadata-explorer/metadata-elements/by-search-string
 Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
   "class" : "SearchStringRequestBody",
   "searchString" : "CO2",
-  "typeName" : "GlossaryTerm",
+  "startsWith": false,
+  "endsWith": false,
+  "metadataElementTypeName" : "GlossaryTerm",
   "effectiveTime" : "{{$isoTimestamp}}",
   "limitResultsByStatus" : ["ACTIVE"],
   "asOfTime" : "{{$isoTimestamp}}",
@@ -247,13 +252,13 @@ Content-Type: application/json
 ###
 # @name findMetadataElementsWithString (all glossary terms)
 # Retrieve the metadata elements that contain the requested string.
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/metadata-explorer/metadata-elements/by-search-string?startFrom=0&pageSize=20
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/metadata-explorer/metadata-elements/by-search-string
 Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
   "class" : "SearchStringRequestBody",
-  "typeName" : "GlossaryTerm",
+  "metadataElementTypeName" : "GlossaryTerm",
   "effectiveTime" : "{{$isoTimestamp}}",
   "limitResultsByStatus" : ["ACTIVE"],
   "asOfTime" : "{{$isoTimestamp}}",
@@ -265,13 +270,15 @@ Content-Type: application/json
 ###
 # @name findMetadataElementsWithString
 # Retrieve the metadata elements that contain the requested string.
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/metadata-explorer/metadata-elements/by-search-string?startFrom=0&pageSize=20
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/metadata-explorer/metadata-elements/by-search-string
 Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
   "class" : "SearchStringRequestBody",
-  "typeName" : "GlossaryTerm",
+  "startsWith": false,
+  "endsWith": false,
+  "searchString" : "Glossary",
   "effectiveTime" : "{{$isoTimestamp}}",
   "limitResultsByStatus" : ["ACTIVE"],
   "asOfTime" : "{{$isoTimestamp}}",
@@ -289,7 +296,7 @@ Content-Type: application/json
 {
   "class" : "SearchStringRequestBody",
   "searchString" : "Cancer",
-  "typeName" : "Location",
+  "metadataElementTypeName" : "Location",
   "effectiveTime" : "{{$isoTimestamp}}",
   "limitResultsByStatus" : ["ACTIVE"],
   "asOfTime" : "{{$isoTimestamp}}",
@@ -313,7 +320,7 @@ Content-Type: application/json
 {
   "class" : "SearchStringRequestBody",
   "searchString" : "Cancer",
-  "typeName" : "Location",
+  "metadataElementTypeName" : "Location",
   "effectiveTime" : "{{$isoTimestamp}}",
   "limitResultsByStatus" : ["ACTIVE"],
   "asOfTime" : "{{$isoTimestamp}}",
@@ -400,7 +407,7 @@ Content-Type: application/json
 {
   "class" : "SearchStringRequestBody",
   "searchString" : "Cancer",
-  "typeName" : "Location",
+  "metadataElementTypeName" : "Location",
   "effectiveTime" : "{{$isoTimestamp}}",
   "limitResultsByStatus" : ["ACTIVE"],
   "asOfTime" : "{{$isoTimestamp}}",
@@ -420,7 +427,7 @@ Content-Type: application/json
 {
   "class" : "SearchStringRequestBody",
   "searchString" : "Party",
-  "typeName" : "GlossaryCategory",
+  "metadataElementTypeName" : "GlossaryCategory",
   "effectiveTime" : "{{$isoTimestamp}}",
   "limitResultsByStatus" : ["ACTIVE"],
   "asOfTime" : "{{$isoTimestamp}}",
@@ -490,7 +497,7 @@ Content-Type: application/json
 ###
 # @name get GlossaryTerms linked to the Sustainability Glossary
 # Retrieve the metadata elements connected to the supplied element via a specific relationship type.
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/metadata-explorer/related-elements/{{sustainabilityGlossaryGUID}}/type/{{relationshipTypeName}}?startingAtEnd=0&startFrom=0&pageSize=1000
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/metadata-explorer/related-elements/{{sustainabilityGlossaryGUID}}/type/{{relationshipTypeName}}?startingAtEnd=0
 Authorization: Bearer {{token}}
 Content-Type: application/json
 
@@ -512,7 +519,7 @@ Content-Type: application/json
 ###
 # @name getAllMetadataElementRelationships
 # Retrieve the relationships linking the supplied elements.
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/metadata-explorer/metadata-elements/{{metadataElementAtEnd1GUID}}/linked-by-any-type/to-elements/{{metadataElementAtEnd2GUID}}?startFrom=0&pageSize=10
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/metadata-explorer/metadata-elements/{{metadataElementAtEnd1GUID}}/linked-by-any-type/to-elements/{{metadataElementAtEnd2GUID}}
 Authorization: Bearer {{token}}
 Content-Type: application/json
 

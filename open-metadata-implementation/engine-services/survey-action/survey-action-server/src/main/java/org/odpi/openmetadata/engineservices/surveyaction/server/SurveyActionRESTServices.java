@@ -9,7 +9,7 @@ import org.odpi.openmetadata.commonservices.ffdc.RESTExceptionHandler;
 import org.odpi.openmetadata.commonservices.ffdc.properties.ConnectorReport;
 import org.odpi.openmetadata.commonservices.ffdc.rest.ConnectorReportResponse;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
-import org.odpi.openmetadata.frameworks.surveyaction.SurveyActionServiceConnector;
+import org.odpi.openmetadata.frameworks.opensurvey.SurveyActionServiceConnector;
 import org.slf4j.LoggerFactory;
 
 

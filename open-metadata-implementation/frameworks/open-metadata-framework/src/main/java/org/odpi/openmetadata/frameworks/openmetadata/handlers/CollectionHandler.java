@@ -12,9 +12,10 @@ import org.odpi.openmetadata.frameworks.openmetadata.mermaid.VisualStyle;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.*;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.*;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.actors.AssignmentScopeProperties;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.collections.CollectionMembershipProperties;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.collections.CollectionProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.collections.*;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.digitalbusiness.*;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.glossaries.CanonicalVocabularyProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.glossaries.TaxonomyProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.resources.ResourceListProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.search.*;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
@@ -38,12 +39,31 @@ public class CollectionHandler extends OpenMetadataHandlerBase
      * @param localServiceName   local service name
      * @param openMetadataClient access to open metadata
      */
-    public CollectionHandler(String localServerName,
-                             AuditLog auditLog,
-                             String localServiceName,
+    public CollectionHandler(String             localServerName,
+                             AuditLog           auditLog,
+                             String             localServiceName,
                              OpenMetadataClient openMetadataClient)
     {
         super(localServerName, auditLog, localServiceName, openMetadataClient, OpenMetadataType.COLLECTION.typeName);
+    }
+
+
+    /**
+     * Create a new handler.
+     *
+     * @param localServerName    name of this server (view server)
+     * @param auditLog           logging destination
+     * @param localServiceName   local service name
+     * @param openMetadataClient access to open metadata
+     * @param metadataElementTypeName type of principle element
+     */
+    public CollectionHandler(String             localServerName,
+                             AuditLog           auditLog,
+                             String             localServiceName,
+                             OpenMetadataClient openMetadataClient,
+                             String             metadataElementTypeName)
+    {
+        super(localServerName, auditLog, localServiceName, openMetadataClient, metadataElementTypeName);
     }
 
 
@@ -787,6 +807,331 @@ public class CollectionHandler extends OpenMetadataHandlerBase
                                                         agreementGUID,
                                                         externalReferenceGUID,
                                                         deleteOptions);
+    }
+
+
+    /**
+     * Classify the collection to indicate that it is an editing collection - this means it is
+     * a collection of element copies that will eventually be merged back into .
+     *
+     * @param userId                 userId of user making request.
+     * @param collectionGUID    unique identifier of the collection.
+     * @param properties            properties for the classification
+     * @param metadataSourceOptions  options to control access to open metadata
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public void setEditingCollection(String                      userId,
+                                     String                      collectionGUID,
+                                     EditingCollectionProperties properties,
+                                     MetadataSourceOptions       metadataSourceOptions) throws InvalidParameterException,
+                                                                                               PropertyServerException,
+                                                                                               UserNotAuthorizedException
+    {
+        final String methodName = "setEditingCollection";
+        final String guidParameterName = "collectionGUID";
+        final String propertiesParameterName = "properties";
+
+        propertyHelper.validateUserId(userId, methodName);
+        propertyHelper.validateGUID(collectionGUID, guidParameterName, methodName);
+        propertyHelper.validateObject(properties, propertiesParameterName, methodName);
+
+        openMetadataClient.classifyMetadataElementInStore(userId,
+                                                          collectionGUID,
+                                                          OpenMetadataType.EDITING_COLLECTION_CLASSIFICATION.typeName,
+                                                          metadataSourceOptions,
+                                                          classificationBuilder.getNewElementProperties(properties));
+    }
+
+
+    /**
+     * Remove the editing collection classification from the collection.
+     *
+     * @param userId                 userId of user making request.
+     * @param collectionGUID    unique identifier of the collection.
+     * @param metadataSourceOptions  options to control access to open metadata
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public void clearEditingCollection(String                userId,
+                                       String                collectionGUID,
+                                       MetadataSourceOptions metadataSourceOptions) throws InvalidParameterException,
+                                                                                           PropertyServerException,
+                                                                                           UserNotAuthorizedException
+    {
+        final String methodName = "clearEditingCollection";
+        final String guidParameterName = "collectionGUID";
+
+        propertyHelper.validateUserId(userId, methodName);
+        propertyHelper.validateGUID(collectionGUID, guidParameterName, methodName);
+
+        openMetadataClient.declassifyMetadataElementInStore(userId,
+                                                            collectionGUID,
+                                                            OpenMetadataType.EDITING_COLLECTION_CLASSIFICATION.typeName,
+                                                            metadataSourceOptions);
+    }
+
+
+
+    /**
+     * Classify the collection to indicate that it is a staging collection.
+     *
+     * @param userId                 userId of user making request.
+     * @param collectionGUID    unique identifier of the collection.
+     * @param properties            properties for the classification
+     * @param metadataSourceOptions  options to control access to open metadata
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public void setStagingCollection(String                    userId,
+                                     String                    collectionGUID,
+                                     StagingCollectionProperties properties,
+                                     MetadataSourceOptions     metadataSourceOptions) throws InvalidParameterException,
+                                                                                             PropertyServerException,
+                                                                                             UserNotAuthorizedException
+    {
+        final String methodName = "setStagingCollection";
+        final String guidParameterName = "collectionGUID";
+        final String propertiesParameterName = "properties";
+
+        propertyHelper.validateUserId(userId, methodName);
+        propertyHelper.validateGUID(collectionGUID, guidParameterName, methodName);
+        propertyHelper.validateObject(properties, propertiesParameterName, methodName);
+
+        openMetadataClient.classifyMetadataElementInStore(userId,
+                                                          collectionGUID,
+                                                          OpenMetadataType.STAGING_COLLECTION_CLASSIFICATION.typeName,
+                                                          metadataSourceOptions,
+                                                          classificationBuilder.getNewElementProperties(properties));
+    }
+
+
+    /**
+     * Remove the staging collection classification from the collection.
+     *
+     * @param userId                 userId of user making request.
+     * @param collectionGUID    unique identifier of the collection.
+     * @param metadataSourceOptions  options to control access to open metadata
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public void clearStagingCollection(String                userId,
+                                       String                collectionGUID,
+                                       MetadataSourceOptions metadataSourceOptions) throws InvalidParameterException,
+                                                                                           PropertyServerException,
+                                                                                           UserNotAuthorizedException
+    {
+        final String methodName = "clearStagingCollection";
+        final String guidParameterName = "collectionGUID";
+
+        propertyHelper.validateUserId(userId, methodName);
+        propertyHelper.validateGUID(collectionGUID, guidParameterName, methodName);
+
+        openMetadataClient.declassifyMetadataElementInStore(userId,
+                                                            collectionGUID,
+                                                            OpenMetadataType.STAGING_COLLECTION_CLASSIFICATION.typeName,
+                                                            metadataSourceOptions);
+    }
+
+
+    /**
+     * Classify the collection to indicate that it is a scoping collection.
+     *
+     * @param userId                 userId of user making request.
+     * @param collectionGUID    unique identifier of the collection.
+     * @param properties            properties for the classification
+     * @param metadataSourceOptions  options to control access to open metadata
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public void setScopingCollection(String                      userId,
+                                     String                      collectionGUID,
+                                     ScopingCollectionProperties properties,
+                                     MetadataSourceOptions       metadataSourceOptions) throws InvalidParameterException,
+                                                                                               PropertyServerException,
+                                                                                               UserNotAuthorizedException
+    {
+        final String methodName = "setScopingCollection";
+        final String guidParameterName = "collectionGUID";
+        final String propertiesParameterName = "properties";
+
+        propertyHelper.validateUserId(userId, methodName);
+        propertyHelper.validateGUID(collectionGUID, guidParameterName, methodName);
+        propertyHelper.validateObject(properties, propertiesParameterName, methodName);
+
+        openMetadataClient.classifyMetadataElementInStore(userId,
+                                                          collectionGUID,
+                                                          OpenMetadataType.SCOPING_COLLECTION_CLASSIFICATION.typeName,
+                                                          metadataSourceOptions,
+                                                          classificationBuilder.getNewElementProperties(properties));
+    }
+
+
+    /**
+     * Remove the scoping collection classification from the collection.
+     *
+     * @param userId                 userId of user making request.
+     * @param collectionGUID    unique identifier of the collection.
+     * @param metadataSourceOptions  options to control access to open metadata
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public void clearScopingCollection(String                userId,
+                                       String                collectionGUID,
+                                       MetadataSourceOptions metadataSourceOptions) throws InvalidParameterException,
+                                                                                           PropertyServerException,
+                                                                                           UserNotAuthorizedException
+    {
+        final String methodName = "clearScopingCollection";
+        final String guidParameterName = "collectionGUID";
+
+        propertyHelper.validateUserId(userId, methodName);
+        propertyHelper.validateGUID(collectionGUID, guidParameterName, methodName);
+
+        openMetadataClient.declassifyMetadataElementInStore(userId,
+                                                            collectionGUID,
+                                                            OpenMetadataType.SCOPING_COLLECTION_CLASSIFICATION.typeName,
+                                                            metadataSourceOptions);
+    }
+
+
+    /**
+     * Classify the glossary to indicate that it can be used as a taxonomy.
+     * This means each term is attached to one, and only one category and the categories are organized as a hierarchy
+     * with a single root category.
+     * Taxonomies are used as a way of organizing assets and other related metadata.  The terms in the taxonomy
+     * are linked to the assets etc. and as such they are logically categorized by the linked category.
+     *
+     * @param userId                 userId of user making request.
+     * @param glossaryGUID    unique identifier of the glossary.
+     * @param properties            properties for the classification
+     * @param metadataSourceOptions  options to control access to open metadata
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public void setGlossaryAsTaxonomy(String                userId,
+                                      String                glossaryGUID,
+                                      TaxonomyProperties properties,
+                                      MetadataSourceOptions metadataSourceOptions) throws InvalidParameterException,
+                                                                                          PropertyServerException,
+                                                                                          UserNotAuthorizedException
+    {
+        final String methodName = "setGlossaryAsTaxonomy";
+        final String guidParameterName = "glossaryGUID";
+        final String propertiesParameterName = "properties";
+
+        propertyHelper.validateUserId(userId, methodName);
+        propertyHelper.validateGUID(glossaryGUID, guidParameterName, methodName);
+        propertyHelper.validateObject(properties, propertiesParameterName, methodName);
+
+        openMetadataClient.classifyMetadataElementInStore(userId,
+                                                          glossaryGUID,
+                                                          OpenMetadataType.TAXONOMY_CLASSIFICATION.typeName,
+                                                          metadataSourceOptions,
+                                                          classificationBuilder.getNewElementProperties(properties));
+    }
+
+
+    /**
+     * Remove the taxonomy glossary classification from the glossary.
+     *
+     * @param userId                 userId of user making request.
+     * @param glossaryGUID    unique identifier of the glossary.
+     * @param metadataSourceOptions  options to control access to open metadata
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public void clearGlossaryAsTaxonomy(String                userId,
+                                        String                glossaryGUID,
+                                        MetadataSourceOptions metadataSourceOptions) throws InvalidParameterException,
+                                                                                            PropertyServerException,
+                                                                                            UserNotAuthorizedException
+    {
+        final String methodName = "clearGlossaryAsTaxonomy";
+        final String guidParameterName = "glossaryGUID";
+
+        propertyHelper.validateUserId(userId, methodName);
+        propertyHelper.validateGUID(glossaryGUID, guidParameterName, methodName);
+
+        openMetadataClient.declassifyMetadataElementInStore(userId,
+                                                            glossaryGUID,
+                                                            OpenMetadataType.TAXONOMY_CLASSIFICATION.typeName,
+                                                            metadataSourceOptions);
+    }
+
+
+
+    /**
+     * Classify a glossary to declare that it has no two GlossaryTerm definitions with
+     * the same name.  This means there is only one definition for each term.  Typically, the terms are also of a similar
+     * level of granularity and are limited to a specific scope of use.
+     * Canonical vocabularies are used to semantically classify assets in an unambiguous way.
+     *
+     * @param userId                 userId of user making request.
+     * @param glossaryGUID    unique identifier of the glossary.
+     * @param properties            properties for the classification
+     * @param metadataSourceOptions  options to control access to open metadata
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public void setGlossaryAsCanonical(String                       userId,
+                                       String                        glossaryGUID,
+                                       CanonicalVocabularyProperties properties,
+                                       MetadataSourceOptions         metadataSourceOptions) throws InvalidParameterException,
+                                                                                                   PropertyServerException,
+                                                                                                   UserNotAuthorizedException
+    {
+        final String methodName = "setGlossaryAsCanonical";
+        final String guidParameterName = "glossaryGUID";
+        final String propertiesParameterName = "properties";
+
+        propertyHelper.validateUserId(userId, methodName);
+        propertyHelper.validateGUID(glossaryGUID, guidParameterName, methodName);
+        propertyHelper.validateObject(properties, propertiesParameterName, methodName);
+
+        openMetadataClient.classifyMetadataElementInStore(userId,
+                                                          glossaryGUID,
+                                                          OpenMetadataType.CANONICAL_VOCABULARY_CLASSIFICATION.typeName,
+                                                          metadataSourceOptions,
+                                                          classificationBuilder.getNewElementProperties(properties));
+    }
+
+
+    /**
+     * Remove the canonical designation from the glossary.
+     *
+     * @param userId                 userId of user making request.
+     * @param glossaryGUID    unique identifier of the glossary.
+     * @param metadataSourceOptions  options to control access to open metadata
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public void clearGlossaryAsCanonical(String                userId,
+                                         String                glossaryGUID,
+                                         MetadataSourceOptions metadataSourceOptions) throws InvalidParameterException,
+                                                                                             PropertyServerException,
+                                                                                             UserNotAuthorizedException
+    {
+        final String methodName = "clearGlossaryAsCanonical";
+        final String guidParameterName = "glossaryGUID";
+
+        propertyHelper.validateUserId(userId, methodName);
+        propertyHelper.validateGUID(glossaryGUID, guidParameterName, methodName);
+
+        openMetadataClient.declassifyMetadataElementInStore(userId,
+                                                            glossaryGUID,
+                                                            OpenMetadataType.CANONICAL_VOCABULARY_CLASSIFICATION.typeName,
+                                                            metadataSourceOptions);
     }
 
 

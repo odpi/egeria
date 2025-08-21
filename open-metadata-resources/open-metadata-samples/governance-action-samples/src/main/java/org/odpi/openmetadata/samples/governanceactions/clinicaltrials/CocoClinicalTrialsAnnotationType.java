@@ -4,11 +4,10 @@
 package org.odpi.openmetadata.samples.governanceactions.clinicaltrials;
 
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
-import org.odpi.openmetadata.frameworks.surveyaction.controls.AnalysisStep;
-import org.odpi.openmetadata.frameworks.surveyaction.controls.AnnotationType;
-import org.odpi.openmetadata.frameworks.surveyaction.controls.AnnotationTypeType;
-import org.odpi.openmetadata.frameworks.surveyaction.measurements.FileMetric;
-import org.odpi.openmetadata.frameworks.surveyaction.measurements.SurveyMetric;
+import org.odpi.openmetadata.frameworks.opensurvey.controls.AnalysisStep;
+import org.odpi.openmetadata.frameworks.opensurvey.controls.AnnotationType;
+import org.odpi.openmetadata.frameworks.opensurvey.controls.AnnotationTypeType;
+import org.odpi.openmetadata.frameworks.opensurvey.measurements.SurveyMetric;
 
 import java.util.ArrayList;
 import java.util.HashMap;

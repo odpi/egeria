@@ -5,7 +5,7 @@ package org.odpi.openmetadata.adapters.connectors.nannyconnectors.harvestsurveys
 
 import org.odpi.openmetadata.adapters.connectors.resource.jdbc.ddl.postgres.PostgreSQLColumn;
 import org.odpi.openmetadata.adapters.connectors.resource.jdbc.properties.ColumnType;
-import org.odpi.openmetadata.frameworks.surveyaction.measurements.*;
+import org.odpi.openmetadata.frameworks.opensurvey.measurements.*;
 
 /**
  * Describes the different types of columns found in the audit log database schema

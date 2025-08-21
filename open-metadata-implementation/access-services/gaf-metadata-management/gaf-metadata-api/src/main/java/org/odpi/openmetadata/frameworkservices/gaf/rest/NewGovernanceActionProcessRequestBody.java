@@ -6,7 +6,7 @@ package org.odpi.openmetadata.frameworkservices.gaf.rest;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import org.odpi.openmetadata.frameworks.governanceaction.properties.GovernanceActionProcessProperties;
+import org.odpi.openmetadata.frameworks.opengovernance.properties.GovernanceActionProcessProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.ElementStatus;
 
 import java.util.Objects;

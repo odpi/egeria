@@ -909,7 +909,8 @@ public class OpenMetadataHandlerBase
                                                          QueryOptions        queryOptions,
                                                          String              methodName) throws PropertyServerException
     {
-        if (filterByClassifications(openMetadataElement.getClassifications(), queryOptions))
+        if (filterBySubtypes(openMetadataElement, queryOptions) &&
+                filterByClassifications(openMetadataElement.getClassifications(), queryOptions))
         {
             try
             {
@@ -945,6 +946,37 @@ public class OpenMetadataHandlerBase
         }
 
         return null;
+    }
+
+
+    /**
+     * Check whether the subtype list provided by the caller prevents an element from being returned.
+     * Many calls do this filtering at the repository level, but not all - yet :)
+     *
+     * @param element header of the element
+     * @param getOptions options from the caller
+     * @return boolean - true to return element
+     */
+    private boolean filterBySubtypes(OpenMetadataElement element,
+                                     GetOptions          getOptions)
+    {
+        if (element == null)
+        {
+            return false;
+        }
+
+        if ((getOptions != null) && (getOptions.getMetadataElementSubtypeNames() != null))
+        {
+            for (String typeName : getOptions.getMetadataElementSubtypeNames())
+            {
+                if ((typeName != null) && (! propertyHelper.isTypeOf(element, typeName)))
+                {
+                    return false;
+                }
+            }
+        }
+
+        return true;
     }
 
 

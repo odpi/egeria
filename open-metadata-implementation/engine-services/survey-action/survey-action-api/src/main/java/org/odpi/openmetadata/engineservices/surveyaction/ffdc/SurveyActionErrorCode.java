@@ -46,9 +46,8 @@ public enum SurveyActionErrorCode implements ExceptionMessageSet
                            "The survey request is not run and an error is returned to the caller.",
                            "This may be an error in the survey action service's logic or the survey action service may not be properly deployed or " +
                                       "there is a configuration error related to the survey action engine.  " +
-                                      "The configuration that defines the discovery request type in the survey action engine and links " +
-                                      "it to the survey action service is maintained in the metadata server by the Discovery " +
-                                      "Engine OMAS's configuration API." +
+                                      "The configuration that defines the request type in the survey action engine and links " +
+                                      "it to the survey action service is maintained in the Governance Configuration API." +
                                       "Verify that this configuration is correct.  If it is then validate that the jar file containing the " +
                                       "survey action service's implementation has been deployed so the Survey Action OMES can load it.  If all this is " +
                                       "true this it is likely to be a code error in the survey action service in which case, " +

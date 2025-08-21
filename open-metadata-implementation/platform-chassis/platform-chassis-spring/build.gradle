@@ -77,7 +77,6 @@ dependencies {
         runtimeOnly project(':open-metadata-implementation:view-services:data-officer:data-officer-spring')
         runtimeOnly project(':open-metadata-implementation:view-services:devops-pipeline:devops-pipeline-spring')
         runtimeOnly project(':open-metadata-implementation:view-services:digital-business:digital-business-spring')
-        runtimeOnly project(':open-metadata-implementation:view-services:glossary-browser:glossary-browser-spring')
         runtimeOnly project(':open-metadata-implementation:view-services:glossary-manager:glossary-manager-spring')
         runtimeOnly project(':open-metadata-implementation:view-services:location-arena:location-arena-spring')
         runtimeOnly project(':open-metadata-implementation:view-services:multi-language:multi-language-spring')

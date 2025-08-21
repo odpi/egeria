@@ -15,7 +15,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 
 
 /**
- * The response structure used on the Governance Action Framework REST API calls that
+ * The response structure used on the Open Survey Framework REST API calls that
  * return the omf definition of the OpenMetadataElement.
  */
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)

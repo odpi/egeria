@@ -44,13 +44,9 @@ The view services are as follows:
 
   The Devops Pipeline OMVS is a REST API designed to support user interfaces (UIs) for supporting a devops engineer to maintain the metadata about the changing digital resources being deployed through devops pipelines.
 
-* **[Glossary Browser](glossary-browser)** - search and view the contents of specific glossaries and their links to governance definitions and assets.
+* **[Glossary Manager](glossary-manager)** - search, maintain and view the contents of specific glossary terms.
 
-  The Glossary Browser OMVS is for user interfaces that wish to provide search facilities within a single glossary (or glossaries) along with the ability to browse the structure of the glossary and view an element within a glossary along with connected governance classifications, governance definitions, user feedback and attached assets.
-
-* **[Glossary Manager](glossary-manager)** - develop new glossary terms and categories in a controlled workflow process.
-
-  The Glossary Manager OMVS is for user interfaces supporting the creation and editing of glossary content, such as glossary terms and categories, in a controlled workflow process.  This means that as terms and categories are created, updated and deleted, these changes are invisible to the general user until they are approved.
+  The Glossary Manager OMVS is for user interfaces supporting the creation and editing of glossary terms.
 
 * **[My Profile](my-profile)** - locate, retrieve and update information relating to the calling user's profile.
 

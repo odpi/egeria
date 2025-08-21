@@ -161,7 +161,7 @@ public class CollectionManagerResource
      *  PropertyServerException    there is a problem retrieving information from the property server(s).
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    @PostMapping(path = "/collections/{collectionGUID}")
+    @PostMapping(path = "/collections/{collectionGUID}/retrieve")
     @Operation(summary="getCollectionByGUID",
             description="Return the properties of a specific collection.",
             externalDocs=@ExternalDocumentation(description="Further Information",
@@ -706,7 +706,7 @@ public class CollectionManagerResource
      *  PropertyServerException    there is a problem retrieving information from the property server(s).
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    @PostMapping(path = "/collection/agreements/{agreementGUID}/contract-links/{externalReferenceGUID}/detach")
+    @PostMapping(path = "/collections/agreements/{agreementGUID}/contract-links/{externalReferenceGUID}/detach")
     @Operation(summary="detachContract",
             description="Detach an agreement from an external reference describing the location of the contract documents.",
             externalDocs=@ExternalDocumentation(description="Further Information",
@@ -723,6 +723,183 @@ public class CollectionManagerResource
                                            DeleteRequestBody requestBody)
     {
         return restAPI.detachContract(serverName, urlMarker, agreementGUID, externalReferenceGUID, requestBody);
+    }
+
+
+    /**
+     * Classify the collection to indicate that it is an editing collection - this means it is
+     * a collection of element updates that will be merged into its source collection.
+     *
+     * @param serverName name of the server to route the request to
+     * @param urlMarker  view service URL marker
+     * @param collectionGUID unique identifier of the metadata element to classify
+     * @param requestBody properties to help with the mapping of the elements in the external asset manager and open metadata
+     *
+     * @return  void or
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    @PostMapping(path = "/collections/{collectionGUID}/is-editing-collection")
+    @Operation(summary="setEditingCollection",
+            description="Classify the collection to indicate that it is an editing collection - this means it is " +
+                    "a collection of element updates that will be merged into its source collection.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/concepts/collection"))
+
+    public VoidResponse setEditingCollection(@PathVariable String                       serverName,
+                                             @PathVariable String             urlMarker,
+                                             @PathVariable String                       collectionGUID,
+                                             @RequestBody  NewClassificationRequestBody requestBody)
+    {
+        return restAPI.setEditingCollection(serverName, urlMarker, collectionGUID, requestBody);
+    }
+
+
+    /**
+     * Remove the editing collection designation from the collection.
+     *
+     * @param serverName name of the server to route the request to
+     * @param urlMarker  view service URL marker
+     * @param collectionGUID unique identifier of the metadata element to declassify
+     * @param requestBody correlation properties for the external asset manager
+     *
+     * @return  void or
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    @PostMapping(path = "/collections/{collectionGUID}/is-editing-collection/delete")
+    @Operation(summary="clearEditingCollection",
+            description="Remove the editing collection designation from the collection.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/concepts/collection"))
+
+    public VoidResponse clearEditingCollection(@PathVariable String                    serverName,
+                                               @PathVariable String             urlMarker,
+                                               @PathVariable String collectionGUID,
+                                               @RequestBody(required = false)
+                                               MetadataSourceRequestBody requestBody)
+    {
+        return restAPI.clearEditingCollection(serverName, urlMarker, collectionGUID, requestBody);
+    }
+
+
+    /**
+     * Classify the collection to indicate that it is a scoping collection - this means it is
+     * a collection of elements that are being considered for inclusion in a project or activity.
+     *
+     * @param serverName name of the server to route the request to
+     * @param urlMarker  view service URL marker
+     * @param collectionGUID unique identifier of the metadata element to classify
+     * @param requestBody properties to help with the mapping of the elements in the external asset manager and open metadata
+     *
+     * @return  void or
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    @PostMapping(path = "/collections/{collectionGUID}/is-scoping-collection")
+    @Operation(summary="setScopingCollection",
+            description="Classify the collection to indicate that it is a scoping collection - this means it is" +
+                    " a collection of elements that are being considered for inclusion in a project or activity",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/concepts/collection"))
+
+    public VoidResponse setScopingCollection(@PathVariable String                       serverName,
+                                             @PathVariable String             urlMarker,
+                                             @PathVariable String                       collectionGUID,
+                                             @RequestBody  NewClassificationRequestBody requestBody)
+    {
+        return restAPI.setScopingCollection(serverName, urlMarker, collectionGUID, requestBody);
+    }
+
+
+    /**
+     * Remove the scoping collection designation from the collection.
+     *
+     * @param serverName name of the server to route the request to
+     * @param urlMarker  view service URL marker
+     * @param collectionGUID unique identifier of the metadata element to declassify
+     * @param requestBody correlation properties for the external asset manager
+     *
+     * @return  void or
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    @PostMapping(path = "/collections/{collectionGUID}/is-scoping-collection/delete")
+    @Operation(summary="clearScopingCollection",
+            description="Remove the scoping collection designation from the collection.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/concepts/collection"))
+
+    public VoidResponse clearScopingCollection(@PathVariable String                    serverName,
+                                               @PathVariable String             urlMarker,
+                                               @PathVariable String collectionGUID,
+                                               @RequestBody(required = false)
+                                               MetadataSourceRequestBody requestBody)
+    {
+        return restAPI.clearScopingCollection(serverName, urlMarker, collectionGUID, requestBody);
+    }
+
+
+    /**
+     * Classify the collection to indicate that it is a staging collection - this means it is
+     * a collection of element updates that will be transferred into another collection
+     *
+     * @param serverName name of the server to route the request to
+     * @param urlMarker  view service URL marker
+     * @param collectionGUID unique identifier of the metadata element to classify
+     * @param requestBody properties to help with the mapping of the elements in the external asset manager and open metadata
+     *
+     * @return  void or
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    @PostMapping(path = "/collections/{collectionGUID}/is-staging-collection")
+    @Operation(summary="setStagingCollection",
+            description="Classify the collection to indicate that it is a staging collection - this means it is" +
+                    " a collection of element updates that will be transferred into another collection",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/concepts/collection"))
+
+    public VoidResponse setStagingCollection(@PathVariable String                       serverName,
+                                             @PathVariable String             urlMarker,
+                                             @PathVariable String                       collectionGUID,
+                                             @RequestBody  NewClassificationRequestBody requestBody)
+    {
+        return restAPI.setStagingCollection(serverName, urlMarker, collectionGUID, requestBody);
+    }
+
+
+    /**
+     * Remove the staging collection designation from the collection.
+     *
+     * @param serverName name of the server to route the request to
+     * @param urlMarker  view service URL marker
+     * @param collectionGUID unique identifier of the metadata element to declassify
+     * @param requestBody correlation properties for the external asset manager
+     *
+     * @return  void or
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    @PostMapping(path = "/collections/{collectionGUID}/is-staging-collection/delete")
+    @Operation(summary="clearStagingCollection",
+            description="Remove the staging collection designation from the collection.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/concepts/collection"))
+
+    public VoidResponse clearStagingCollection(@PathVariable String                    serverName,
+                                               @PathVariable String             urlMarker,
+                                               @PathVariable String collectionGUID,
+                                               @RequestBody(required = false)
+                                               MetadataSourceRequestBody requestBody)
+    {
+        return restAPI.clearStagingCollection(serverName, urlMarker, collectionGUID, requestBody);
     }
 
 

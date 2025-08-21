@@ -19,7 +19,7 @@ import org.odpi.openmetadata.adapters.connectors.unitycatalog.controls.UnityCata
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.Connector;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.*;
-import org.odpi.openmetadata.frameworks.governanceaction.properties.CatalogTarget;
+import org.odpi.openmetadata.frameworks.opengovernance.properties.CatalogTarget;
 import org.odpi.openmetadata.frameworks.integration.context.CatalogTargetContext;
 import org.odpi.openmetadata.frameworks.integration.context.ConnectedAssetContext;
 import org.odpi.openmetadata.frameworks.openmetadata.connectorcontext.OpenMetadataStore;
@@ -34,10 +34,10 @@ import org.odpi.openmetadata.frameworks.openmetadata.ffdc.PropertyServerExceptio
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
-import org.odpi.openmetadata.frameworks.surveyaction.controls.SurveyDatabaseAnnotationType;
-import org.odpi.openmetadata.frameworks.surveyaction.controls.SurveyFileAnnotationType;
-import org.odpi.openmetadata.frameworks.surveyaction.controls.SurveyFolderAnnotationType;
-import org.odpi.openmetadata.frameworks.surveyaction.measurements.*;
+import org.odpi.openmetadata.frameworks.opensurvey.controls.SurveyDatabaseAnnotationType;
+import org.odpi.openmetadata.frameworks.opensurvey.controls.SurveyFileAnnotationType;
+import org.odpi.openmetadata.frameworks.opensurvey.controls.SurveyFolderAnnotationType;
+import org.odpi.openmetadata.frameworks.opensurvey.measurements.*;
 
 import java.util.*;
 

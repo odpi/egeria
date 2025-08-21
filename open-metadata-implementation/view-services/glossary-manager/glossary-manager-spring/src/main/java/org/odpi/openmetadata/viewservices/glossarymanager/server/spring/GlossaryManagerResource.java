@@ -3,6 +3,7 @@
 package org.odpi.openmetadata.viewservices.glossarymanager.server.spring;
 
 import io.swagger.v3.oas.annotations.ExternalDocumentation;
+import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.odpi.openmetadata.commonservices.ffdc.rest.*;
 import org.odpi.openmetadata.viewservices.glossarymanager.rest.GlossaryTermActivityTypeListResponse;
@@ -50,196 +51,11 @@ public class GlossaryManagerResource
 
 
     /**
-     * Create a new metadata element to represent the root of a glossary.  All categories and terms are linked
-     * to a single glossary.  They are owned by this glossary and if the glossary is deleted, any linked terms and
-     * categories are deleted as well.
-     *
-     * @param serverName name of the server to route the request to.
-     * @param requestBody properties to store
-     *
-     * @return unique identifier of the new metadata element or
-     * InvalidParameterException  one of the parameters is invalid
-     * UserNotAuthorizedException the user is not authorized to issue this request
-     * PropertyServerException    there is a problem reported in the open metadata server(s)
-     */
-    @PostMapping(path = "/glossaries")
-
-    public GUIDResponse createGlossary(@PathVariable String                serverName,
-                                       @RequestBody  NewElementRequestBody requestBody)
-    {
-        return restAPI.createGlossary(serverName, requestBody);
-    }
-
-
-    /**
-     * Create a new metadata element to represent a glossary using an existing metadata element as a template.
-     * The template defines additional classifications and relationships that should be added to the new glossary.
-     * All categories and terms are linked to a single glossary.  They are owned by this glossary and if the
-     * glossary is deleted, any linked terms and categories are deleted as well.
-     *
-     * @param serverName name of the server to route the request to
-     * @param templateGUID unique identifier of the metadata element to copy
-     * @param requestBody properties that override the template
-     *
-     * @return unique identifier of the new metadata element or
-     * InvalidParameterException  one of the parameters is invalid
-     * UserNotAuthorizedException the user is not authorized to issue this request
-     * PropertyServerException    there is a problem reported in the open metadata server(s)
-     */
-    @PostMapping(path = "/glossaries/from-template/{templateGUID}")
-
-    public GUIDResponse createGlossaryFromTemplate(@PathVariable String              serverName,
-                                                   @PathVariable String              templateGUID,
-                                                   @RequestBody  TemplateRequestBody requestBody)
-    {
-        return restAPI.createGlossaryFromTemplate(serverName, templateGUID, requestBody);
-    }
-
-
-    /**
-     * Update the metadata element representing a glossary.
-     *
-     * @param serverName name of the server to route the request to
-     * @param glossaryGUID unique identifier of the metadata element to update
-     * @param requestBody new properties for this element
-     *
-     * @return  void or
-     * InvalidParameterException  one of the parameters is invalid
-     * UserNotAuthorizedException the user is not authorized to issue this request
-     * PropertyServerException    there is a problem reported in the open metadata server(s)
-     */
-    @PostMapping(path = "/glossaries/{glossaryGUID}/update")
-
-    public VoidResponse updateGlossary(@PathVariable String                   serverName,
-                                       @PathVariable String                   glossaryGUID,
-                                       @RequestBody  UpdateElementRequestBody requestBody)
-    {
-        return restAPI.updateGlossary(serverName, glossaryGUID, requestBody);
-    }
-
-
-    /**
-     * Remove the metadata element representing a glossary.  This will delete the glossary and all categories
-     * and terms.
-     *
-     * @param serverName name of the server to route the request to
-     * @param glossaryGUID unique identifier of the metadata element to remove
-     * @param requestBody properties to help with the mapping of the elements in the external asset manager and open metadata
-     *
-     * @return  void or
-     * InvalidParameterException  one of the parameters is invalid
-     * UserNotAuthorizedException the user is not authorized to issue this request
-     * PropertyServerException    there is a problem reported in the open metadata server(s)
-     */
-    @PostMapping(path = "/glossaries/{glossaryGUID}/delete")
-
-    public VoidResponse deleteGlossary(@PathVariable String                         serverName,
-                                       @PathVariable String                         glossaryGUID,
-                                       @RequestBody(required = false)
-                                           DeleteRequestBody requestBody)
-    {
-        return restAPI.deleteGlossary(serverName, glossaryGUID,  requestBody);
-    }
-
-
-    /**
-     * Classify the glossary to indicate that it is an editing glossary - this means it is
-     * a collection of glossary updates that will be merged into its source glossary.
-     *
-     * @param serverName name of the server to route the request to
-     * @param glossaryGUID unique identifier of the metadata element to remove
-     * @param requestBody properties to help with the mapping of the elements in the external asset manager and open metadata
-     *
-     * @return  void or
-     * InvalidParameterException  one of the parameters is invalid
-     * UserNotAuthorizedException the user is not authorized to issue this request
-     * PropertyServerException    there is a problem reported in the open metadata server(s)
-     */
-    @PostMapping(path = "/glossaries/{glossaryGUID}/is-editing-glossary")
-
-    public VoidResponse setGlossaryAsEditingGlossary(@PathVariable String                    serverName,
-                                                     @PathVariable String                    glossaryGUID,
-                                                     @RequestBody NewClassificationRequestBody requestBody)
-    {
-        return restAPI.setGlossaryAsEditingGlossary(serverName, glossaryGUID, requestBody);
-    }
-
-
-    /**
-     * Remove the editing glossary designation from the glossary.
-     *
-     * @param serverName name of the server to route the request to
-     * @param glossaryGUID unique identifier of the metadata element to remove
-     * @param requestBody correlation properties for the external asset manager
-     *
-     * @return  void or
-     * InvalidParameterException  one of the parameters is invalid
-     * UserNotAuthorizedException the user is not authorized to issue this request
-     * PropertyServerException    there is a problem reported in the open metadata server(s)
-     */
-    @PostMapping(path = "/glossaries/{glossaryGUID}/is-editing-glossary/delete")
-
-    public VoidResponse clearGlossaryAsEditingGlossary(@PathVariable String                    serverName,
-                                                       @PathVariable String                    glossaryGUID,
-                                                       @RequestBody(required = false)
-                                                                     MetadataSourceRequestBody requestBody)
-    {
-        return restAPI.clearGlossaryAsEditingGlossary(serverName, glossaryGUID, requestBody);
-    }
-
-
-    /**
-     * Classify the glossary to indicate that it is a staging glossary - this means it is
-     * a collection of glossary updates that will be transferred into another glossary.
-     *
-     * @param serverName name of the server to route the request to
-     * @param glossaryGUID unique identifier of the metadata element to remove
-     * @param requestBody properties to help with the mapping of the elements in the external asset manager and open metadata
-     *
-     * @return  void or
-     * InvalidParameterException  one of the parameters is invalid
-     * UserNotAuthorizedException the user is not authorized to issue this request
-     * PropertyServerException    there is a problem reported in the open metadata server(s)
-     */
-    @PostMapping(path = "/glossaries/{glossaryGUID}/is-staging-glossary")
-
-    public VoidResponse setGlossaryAsStagingGlossary(@PathVariable String                    serverName,
-                                                     @PathVariable String                    glossaryGUID,
-                                                     @RequestBody NewClassificationRequestBody requestBody)
-    {
-        return restAPI.setGlossaryAsStagingGlossary(serverName, glossaryGUID, requestBody);
-    }
-
-
-    /**
-     * Remove the staging glossary designation from the glossary.
-     *
-     * @param serverName name of the server to route the request to
-     * @param glossaryGUID unique identifier of the metadata element to remove
-     * @param requestBody correlation properties for the external asset manager
-     *
-     * @return  void or
-     * InvalidParameterException  one of the parameters is invalid
-     * UserNotAuthorizedException the user is not authorized to issue this request
-     * PropertyServerException    there is a problem reported in the open metadata server(s)
-     */
-    @PostMapping(path = "/glossaries/{glossaryGUID}/is-staging-glossary/delete")
-
-    public VoidResponse clearGlossaryAsStagingGlossary(@PathVariable String                    serverName,
-                                                       @PathVariable String                    glossaryGUID,
-                                                       @RequestBody(required = false)
-                                                                     MetadataSourceRequestBody requestBody)
-    {
-        return restAPI.clearGlossaryAsStagingGlossary(serverName, glossaryGUID, requestBody);
-    }
-
-
-    /**
      * Classify the glossary to indicate that it can be used as a taxonomy.
-     * This means each term is attached to one, and only one category and the categories are organized as a hierarchy
-     * with a single root category.
+     * This means each term is attached to one, and only one folder and the folders are organized as a hierarchy
+     * with a single root folder.
      * Taxonomies are used as a way of organizing assets and other related metadata.  The terms in the taxonomy
-     * are linked to the assets etc. and as such they are logically categorized by the linked category.
+     * are linked to the assets etc. and as such they are logically categorized by the linked folder.
      *
      * @param serverName name of the server to route the request to
      * @param glossaryGUID unique identifier of the metadata element to remove
@@ -251,6 +67,14 @@ public class GlossaryManagerResource
      * PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     @PostMapping(path = "/glossaries/{glossaryGUID}/is-taxonomy")
+    @Operation(summary="setGlossaryAsTaxonomy",
+            description="Classify the glossary to indicate that it can be used as a taxonomy." +
+                    " This means each term is attached to one, and only one folder and the folders are organized as a hierarchy" +
+                    " with a single root folder." +
+                    " Taxonomies are used as a way of organizing assets and other related metadata.  The terms in the taxonomy" +
+                    " are linked to the assets etc. and as such they are logically categorized by the linked folder.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/concepts/glossary"))
 
     public VoidResponse setGlossaryAsTaxonomy(@PathVariable String                    serverName,
                                               @PathVariable String                    glossaryGUID,
@@ -273,7 +97,10 @@ public class GlossaryManagerResource
      * PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     @PostMapping(path = "/glossaries/{glossaryGUID}/is-taxonomy/remove")
-
+    @Operation(summary="clearGlossaryAsTaxonomy",
+            description="Remove the taxonomy designation from the glossary.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/concepts/glossary"))
     public VoidResponse clearGlossaryAsTaxonomy(@PathVariable String                    serverName,
                                                 @PathVariable String                    glossaryGUID,
                                                 @RequestBody(required = false)
@@ -299,6 +126,13 @@ public class GlossaryManagerResource
      * PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     @PostMapping(path = "/glossaries/{glossaryGUID}/is-canonical-vocabulary")
+    @Operation(summary="setGlossaryAsCanonical",
+            description="Classify a glossary to declare that it has no two GlossaryTerm definitions with" +
+                    " the same name.  This means there is only one definition for each term.  Typically, the terms are also of a similar" +
+                    " level of granularity and are limited to a specific scope of use." +
+                    " Canonical vocabularies are used to semantically classify assets in an unambiguous way.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/concepts/glossary"))
 
     public VoidResponse setGlossaryAsCanonical(@PathVariable String                    serverName,
                                                @PathVariable String                    glossaryGUID,
@@ -321,6 +155,10 @@ public class GlossaryManagerResource
      * PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     @PostMapping(path = "/glossaries/{glossaryGUID}/is-canonical-vocabulary/remove")
+    @Operation(summary="clearGlossaryAsCanonical",
+            description="Remove the canonical vocabulary designation from the glossary.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/concepts/glossary"))
 
     public VoidResponse clearGlossaryAsCanonical(@PathVariable String                    serverName,
                                                  @PathVariable String                    glossaryGUID,
@@ -789,5 +627,75 @@ public class GlossaryManagerResource
                                                DeleteRequestBody requestBody)
     {
         return restAPI.deleteGlossaryTerm(serverName, glossaryTermGUID, requestBody);
+    }
+
+
+
+    /**
+     * Retrieve the list of glossary term metadata elements that contain the search string.
+     * The search string is treated as a regular expression.
+     *
+     * @param serverName name of the server to route the request to
+     * @param requestBody query
+     *
+     * @return list of matching metadata elements or
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    @PostMapping(path = "/glossaries/terms/by-search-string")
+
+    @Operation(summary="findGlossaryTerms",
+            description="Retrieve the list of glossary term metadata elements that contain the search string.  The search string is located in the request body and is interpreted as a plain string.  The request parameters, startsWith, endsWith and ignoreCase can be used to allow a fuzzy search.  The request body also supports the specification of a glossaryGUID to restrict the search to within a single glossary.",
+            externalDocs=@ExternalDocumentation(description="Glossary term metadata element",
+                    url="https://egeria-project.org/types/3/0330-Terms/"))
+
+    public OpenMetadataRootElementsResponse findGlossaryTerms(@PathVariable String                  serverName,
+                                                              @RequestBody(required = false)  SearchStringRequestBody requestBody)
+    {
+        return restAPI.findGlossaryTerms(serverName, requestBody);
+    }
+
+
+    /**
+     * Retrieve the list of glossary term metadata elements with a matching qualified or display name.
+     * There are no wildcards supported on this request.
+     *
+     * @param serverName name of the server to route the request to
+     * @param requestBody asset manager identifiers and name
+     *
+     * @return list of matching metadata elements or
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    @PostMapping(path = "/glossaries/terms/by-name")
+
+    public OpenMetadataRootElementsResponse   getGlossaryTermsByName(@PathVariable String             serverName,
+                                                                     @RequestBody(required = false)  FilterRequestBody requestBody)
+    {
+        return restAPI.getGlossaryTermsByName(serverName, requestBody);
+    }
+
+
+    /**
+     * Retrieve the glossary term metadata element with the supplied unique identifier.
+     *
+     * @param serverName name of the server to route the request to
+     * @param glossaryTermGUID unique identifier of the requested metadata element
+     * @param requestBody asset manager identifiers
+     *
+     * @return matching metadata element or
+     * InvalidParameterException  one of the parameters is invalid
+     * UserNotAuthorizedException the user is not authorized to issue this request
+     * PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    @PostMapping(path = "/glossaries/terms/{glossaryTermGUID}")
+
+    public OpenMetadataRootElementResponse getGlossaryTermByGUID(@PathVariable String                             serverName,
+                                                                 @PathVariable String                             glossaryTermGUID,
+                                                                 @RequestBody(required = false) GetRequestBody requestBody)
+    {
+        return restAPI.getGlossaryTermByGUID(serverName, glossaryTermGUID, requestBody);
     }
 }

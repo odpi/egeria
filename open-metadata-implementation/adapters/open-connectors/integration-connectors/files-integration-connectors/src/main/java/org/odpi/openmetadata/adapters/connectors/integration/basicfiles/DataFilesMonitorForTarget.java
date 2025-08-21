@@ -3,7 +3,7 @@
 
 package org.odpi.openmetadata.adapters.connectors.integration.basicfiles;
 
-import org.odpi.openmetadata.frameworks.governanceaction.connectorcontext.StewardshipAction;
+import org.odpi.openmetadata.frameworks.opengovernance.connectorcontext.StewardshipAction;
 import org.odpi.openmetadata.frameworks.openmetadata.connectorcontext.AssetClient;
 import org.odpi.openmetadata.frameworks.openmetadata.connectorcontext.OpenMetadataStore;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;

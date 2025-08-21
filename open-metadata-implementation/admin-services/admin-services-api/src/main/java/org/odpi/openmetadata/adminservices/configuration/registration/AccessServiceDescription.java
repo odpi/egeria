@@ -28,9 +28,9 @@ public enum AccessServiceDescription implements Serializable
      */
     GAF_METADATA_MANAGEMENT          (184,
                                       ComponentDevelopmentStatus.STABLE,
-                                      "Governance Action Framework Services",
+                                      "Open Governance Framework Services",
                                       "open-governance-service",
-                                      "Support governance action services.",
+                                      "Support open governance services.",
                                       "https://egeria-project.org/services/gaf-metadata-management",
                                       null),
 

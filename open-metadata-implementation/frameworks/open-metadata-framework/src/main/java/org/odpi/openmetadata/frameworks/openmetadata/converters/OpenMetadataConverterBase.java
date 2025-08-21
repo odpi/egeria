@@ -12,7 +12,6 @@ import org.odpi.openmetadata.frameworks.openmetadata.properties.collections.Coll
 import org.odpi.openmetadata.frameworks.openmetadata.search.ElementProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.search.PropertyHelper;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
-import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -22,7 +21,7 @@ import java.util.Map;
 
 /**
  * OpenMetadataConverterBase provides the generic methods for the bean converters used to provide translation between
- * specific API beans and the Open Metadata services beans from the Governance Action Framework (GAF).
+ * specific API beans and the Open Metadata services beans from the Open Survey Framework (OGF).
  * Generic classes have limited knowledge of the classes these are working on and this means creating a new instance of a
  * class from within a generic is a little involved.  This class provides the generic method for creating
  * and initializing an Open Metadata API bean.
@@ -682,19 +681,6 @@ public class OpenMetadataConverterBase<B>
 
 
     /**
-     * Summarize the related external references.
-     *
-     * @param relatedMetadataElements elements to summarize
-     * @return list or null
-     * @throws PropertyServerException problem in converter
-     */
-    protected List<RelatedMetadataElementSummary> getExternalReferences(List<RelatedMetadataElement> relatedMetadataElements) throws PropertyServerException
-    {
-        return getRelatedElements(OpenMetadataType.EXTERNAL_REFERENCE_LINK_RELATIONSHIP.typeName, relatedMetadataElements);
-    }
-
-
-    /**
      * Summarize the related elements of the requested type
      *
      * @param requestedRelationshipType relationship type to extract
@@ -831,6 +817,42 @@ public class OpenMetadataConverterBase<B>
                         {
                             matchingElements.add(this.getRelatedElementSummary(relatedMetadataElement, methodName));
                         }
+                    }
+                }
+            }
+
+            return matchingElements;
+        }
+
+        return null;
+    }
+
+
+
+    /**
+     * Summarize the related elements of the requested type
+     *
+     * @param requestedRelationshipTypes relationship types to extract
+     * @param relatedMetadataElements elements to summarize
+     * @return list or null
+     * @throws PropertyServerException problem in converter
+     */
+    protected List<RelatedMetadataElementSummary> getRelatedElements(List<String>                 requestedRelationshipTypes,
+                                                                     List<RelatedMetadataElement> relatedMetadataElements) throws PropertyServerException
+    {
+        final String methodName = "getRelatedElements";
+
+        if (relatedMetadataElements != null)
+        {
+            List<RelatedMetadataElementSummary> matchingElements = new ArrayList<>();
+
+            for (RelatedMetadataElement relatedMetadataElement: relatedMetadataElements)
+            {
+                if (relatedMetadataElement != null)
+                {
+                    if (propertyHelper.isTypeOf(relatedMetadataElement, requestedRelationshipTypes))
+                    {
+                        matchingElements.add(this.getRelatedElementSummary(relatedMetadataElement, methodName));
                     }
                 }
             }
@@ -1977,6 +1999,28 @@ public class OpenMetadataConverterBase<B>
                                                                OpenMetadataProperty.INCIDENT_CLASSIFIERS.name,
                                                                elementProperties,
                                                                methodName);
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Extract and delete the property from the supplied element properties.
+     *
+     * @param elementProperties properties from element
+     * @return string text or null
+     */
+    protected String removeExternalInstanceTypeName(ElementProperties  elementProperties)
+    {
+        final String methodName = "removeExternalInstanceTypeName";
+
+        if (elementProperties != null)
+        {
+            return propertyHelper.removeStringProperty(localServiceName,
+                                                       OpenMetadataProperty.EXT_INSTANCE_TYPE_NAME.name,
+                                                       elementProperties,
+                                                       methodName);
         }
 
         return null;
@@ -9679,6 +9723,37 @@ public class OpenMetadataConverterBase<B>
                 if (contactMethodType.getName().equals(retrievedProperty))
                 {
                     return contactMethodType;
+                }
+            }
+        }
+
+        return null;
+    }
+
+
+
+    /**
+     * Extract and delete the KeyPattern property from the supplied element properties.
+     *
+     * @param elementProperties properties from entity
+     * @return enum
+     */
+    KeyPattern removeKeyPattern(ElementProperties elementProperties)
+    {
+        final String methodName = "removeKeyPattern";
+
+        if (elementProperties != null)
+        {
+            String retrievedProperty = propertyHelper.removeEnumProperty(localServiceName,
+                                                                         OpenMetadataProperty.KEY_PATTERN.name,
+                                                                         elementProperties,
+                                                                         methodName);
+
+            for (KeyPattern value : KeyPattern.values())
+            {
+                if (value.getName().equals(retrievedProperty))
+                {
+                    return value;
                 }
             }
         }

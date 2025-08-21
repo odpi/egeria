@@ -5,9 +5,9 @@ package org.odpi.openmetadata.engineservices.surveyaction.admin;
 import org.odpi.openmetadata.adminservices.configuration.properties.EngineServiceConfig;
 import org.odpi.openmetadata.adminservices.configuration.registration.EngineServiceDescription;
 import org.odpi.openmetadata.adminservices.ffdc.exception.OMAGConfigurationErrorException;
+import org.odpi.openmetadata.engineservices.surveyaction.server.SurveyActionInstance;
 import org.odpi.openmetadata.engineservices.surveyaction.ffdc.SurveyActionAuditCode;
 import org.odpi.openmetadata.engineservices.surveyaction.ffdc.SurveyActionErrorCode;
-import org.odpi.openmetadata.engineservices.surveyaction.server.SurveyActionInstance;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworkservices.gaf.client.GovernanceConfigurationClient;
 import org.odpi.openmetadata.governanceservers.enginehostservices.admin.EngineServiceAdmin;
@@ -59,7 +59,7 @@ public class SurveyActionAdmin extends EngineServiceAdmin
             /*
              * The survey action services need access to an open metadata server to retrieve information about the asset they are analysing and
              * to store the resulting analysis results in Annotations.
-             * Open metadata is accessed through the Asset Owner OMAS.
+             * Open metadata is accessed through the metadata access server.
              */
             String             accessServiceRootURL    = this.getPartnerServiceRootURL(engineServiceConfig);
             String             accessServiceServerName = this.getPartnerServiceServerName(engineServiceConfig);

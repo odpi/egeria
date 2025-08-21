@@ -4,7 +4,7 @@
 package org.odpi.openmetadata.adapters.connectors.governanceactions.stewardship;
 
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.ConnectorType;
-import org.odpi.openmetadata.frameworks.governanceaction.GovernanceActionServiceProviderBase;
+import org.odpi.openmetadata.frameworks.opengovernance.GovernanceActionServiceProviderBase;
 
 /**
  * WriteAuditLogMessageGovernanceActionProvider is the OCF connector provider for the "Write to Audit Log"

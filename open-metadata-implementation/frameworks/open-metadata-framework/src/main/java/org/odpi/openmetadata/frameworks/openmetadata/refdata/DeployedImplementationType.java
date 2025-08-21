@@ -674,6 +674,16 @@ public enum DeployedImplementationType implements DeployedImplementationTypeDefi
                                     "https://egeria-project.org/concepts/survey-action-service/"),
 
     /**
+     * Watchdog Action Service - A connector that coordinates notifications based on situations/events.
+     */
+    WATCHDOG_ACTION_SERVICE_CONNECTOR("Watchdog Action Service",
+                                    DeployedImplementationType.GOVERNANCE_SERVICE,
+                                    OpenMetadataType.WATCHDOG_ACTION_SERVICE.typeName,
+                                    null,
+                                    "A connector that coordinates notifications based on situations/events.",
+                                    "https://egeria-project.org/concepts/watchdog-action-service/"),
+
+    /**
      * Survey Action Engine - A governance engine that runs survey action services.
      */
     SURVEY_ACTION_ENGINE("Survey Action Engine",
@@ -682,6 +692,16 @@ public enum DeployedImplementationType implements DeployedImplementationTypeDefi
                          null,
                          "A governance engine that runs survey action services.",
                          "https://egeria-project.org/concepts/survey-action-engine/"),
+
+    /**
+     * Watchdog Action Engine - A governance engine that runs survey action services.
+     */
+    WATCHDOG_ACTION_ENGINE("Watchdog Action Engine",
+                         DeployedImplementationType.GOVERNANCE_ENGINE,
+                         OpenMetadataType.WATCHDOG_ACTION_ENGINE.typeName,
+                         null,
+                         "A governance engine that runs watchdog action services.",
+                         "https://egeria-project.org/concepts/watchdog-action-engine/"),
 
     /**
      * Repository Governance Service - A connector that dynamically governs the activity of the open metadata repositories.

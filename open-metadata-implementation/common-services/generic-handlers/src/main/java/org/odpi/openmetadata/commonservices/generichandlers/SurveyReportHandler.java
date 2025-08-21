@@ -18,7 +18,7 @@ import java.util.List;
 
 /**
  * SurveyReportHandler manages the storage and retrieval of metadata relating to survey
- * reports as defined in the Survey Analysis Framework (SAF).
+ * reports as defined in the Open Survey Framework (OSF).
  */
 public class SurveyReportHandler<B> extends OpenMetadataAPIGenericHandler<B>
 {

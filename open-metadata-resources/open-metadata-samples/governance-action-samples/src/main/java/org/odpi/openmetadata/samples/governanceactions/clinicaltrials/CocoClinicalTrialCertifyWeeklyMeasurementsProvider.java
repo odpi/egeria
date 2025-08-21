@@ -4,9 +4,9 @@
 package org.odpi.openmetadata.samples.governanceactions.clinicaltrials;
 
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.ConnectorType;
-import org.odpi.openmetadata.frameworks.surveyaction.SurveyActionServiceProvider;
-import org.odpi.openmetadata.frameworks.surveyaction.controls.AnalysisStep;
-import org.odpi.openmetadata.frameworks.surveyaction.controls.SurveyActionGuard;
+import org.odpi.openmetadata.frameworks.opensurvey.SurveyActionServiceProvider;
+import org.odpi.openmetadata.frameworks.opensurvey.controls.AnalysisStep;
+import org.odpi.openmetadata.frameworks.opensurvey.controls.SurveyActionGuard;
 
 public class CocoClinicalTrialCertifyWeeklyMeasurementsProvider extends SurveyActionServiceProvider
 {

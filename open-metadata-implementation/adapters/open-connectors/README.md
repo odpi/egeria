@@ -30,7 +30,7 @@ and repository-service-connectors.
 
 * **[governance-action-connectors](governance-action-connectors)** contains governance action services for 
 assessing and acting on governance issues detected in the metadata ecosystem.
-These connectors support the [Governance Action Framework (GAF)](../../frameworks/governance-action-framework).
+These connectors support the [OPEN Governance Framework (GAF)](../../frameworks/open-governance-framework).
 
 * **[metadata-security-connectors](metadata-security-connectors)** manage the 
 authorization of requests to Egeria's services.
@@ -48,7 +48,7 @@ Java.
 * **[secrets-store-connectors](secrets-store-connectors)** provides connectors to access secrets (passwords, certificates etc) at runtime.
 
 * **[file-survey-connectors](file-survey-connectors)** implementations of survey action services
-  from the [Survey Action Framework (SAF)](../../frameworks/survey-action-framework).
+  from the [Open Survey Framework (OSF)](../../frameworks/open-survey-framework).
 
 * **[system-connectors](system-connectors)** provides connectors to access data and function from different systems.
 

@@ -690,34 +690,4 @@ public class GlossaryTermHandler extends OpenMetadataHandlerBase
 
         return super.findRootElements(userId, searchString, queryOptions, methodName);
     }
-
-
-    /**
-     * Returns the list of glossary terms for a glossary with a particular glossaryGUID.
-     *
-     * @param userId                 userId of user making request
-     * @param glossaryGUID           unique identifier of the starting glossary
-     * @param queryOptions           multiple options to control the query
-     * @return a list of elements
-     * @throws InvalidParameterException  one of the parameters is null or invalid.
-     * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
-     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
-     */
-    public List<OpenMetadataRootElement> getTermsForGlossary(String       userId,
-                                                             String       glossaryGUID,
-                                                             QueryOptions queryOptions) throws InvalidParameterException,
-                                                                                               PropertyServerException,
-                                                                                               UserNotAuthorizedException
-    {
-        final String methodName = "getTermsForGlossary";
-        final String guidParameterName = "glossaryGUID";
-
-        return super.getRelatedRootElements(userId,
-                                            glossaryGUID,
-                                            guidParameterName,
-                                            1,
-                                            OpenMetadataType.PARENT_GLOSSARY_RELATIONSHIP.typeName,
-                                            queryOptions,
-                                            methodName);
-    }
 }

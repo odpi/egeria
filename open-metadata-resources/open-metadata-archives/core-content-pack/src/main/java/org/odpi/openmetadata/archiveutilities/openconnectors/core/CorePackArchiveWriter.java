@@ -1582,17 +1582,17 @@ public class CorePackArchiveWriter extends ContentPackBaseArchiveWriter
                                   String attributeDescription)
     {
         String qualifiedName = constructValidValueQualifiedName(OpenMetadataType.SPECIFICATION_PROPERTY_ASSIGNMENT_RELATIONSHIP.typeName,
-                                                                OpenMetadataProperty.PROPERTY_TYPE.name,
+                                                                OpenMetadataProperty.PROPERTY_NAME.name,
                                                                 null,
                                                                 attributeName);
 
         String category = constructValidValueCategory(OpenMetadataType.SPECIFICATION_PROPERTY_ASSIGNMENT_RELATIONSHIP.typeName,
-                                                      OpenMetadataProperty.PROPERTY_TYPE.name,
+                                                      OpenMetadataProperty.PROPERTY_NAME.name,
                                                       null);
 
         String parentSetGUID = this.getParentSet(null,
                                                  OpenMetadataType.SPECIFICATION_PROPERTY_ASSIGNMENT_RELATIONSHIP.typeName,
-                                                 OpenMetadataProperty.PROPERTY_TYPE.name,
+                                                 OpenMetadataProperty.PROPERTY_NAME.name,
                                                  null);
 
         this.archiveHelper.addValidValue(null,

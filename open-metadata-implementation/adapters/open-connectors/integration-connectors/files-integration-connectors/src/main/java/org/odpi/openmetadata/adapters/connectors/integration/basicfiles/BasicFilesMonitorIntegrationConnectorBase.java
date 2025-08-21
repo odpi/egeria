@@ -12,7 +12,7 @@ import org.odpi.openmetadata.adapters.connectors.integration.basicfiles.ffdc.exc
 import org.odpi.openmetadata.frameworks.auditlog.messagesets.ExceptionMessageDefinition;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Endpoint;
-import org.odpi.openmetadata.frameworks.governanceaction.properties.CatalogTarget;
+import org.odpi.openmetadata.frameworks.opengovernance.properties.CatalogTarget;
 import org.odpi.openmetadata.frameworks.integration.connectors.IntegrationConnectorBase;
 import org.odpi.openmetadata.frameworks.openmetadata.connectorcontext.AssetClient;
 import org.odpi.openmetadata.frameworks.openmetadata.controls.PlaceholderProperty;
@@ -368,9 +368,9 @@ public abstract class BasicFilesMonitorIntegrationConnectorBase extends Integrat
                 {
                     Map<String, String> templates = defaultTemplates;
 
-                    if (catalogTarget.getTemplateProperties() != null)
+                    if (catalogTarget.getTemplates() != null)
                     {
-                        templates.putAll(catalogTarget.getTemplateProperties());
+                        templates.putAll(catalogTarget.getTemplates());
                     }
 
                     DirectoryToMonitor directoryToMonitor = checkDirectoryToMonitor(OpenMetadataType.CATALOG_TARGET_RELATIONSHIP.typeName + "::" + catalogTarget.getRelationshipGUID(),

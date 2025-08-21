@@ -9,7 +9,7 @@ import org.odpi.openmetadata.commonservices.ffdc.RESTCallToken;
 import org.odpi.openmetadata.commonservices.ffdc.RESTExceptionHandler;
 import org.odpi.openmetadata.commonservices.ffdc.rest.*;
 import org.odpi.openmetadata.commonservices.generichandlers.*;
-import org.odpi.openmetadata.frameworks.governanceaction.mermaid.GovernanceActionProcessMermaidGraphBuilder;
+import org.odpi.openmetadata.frameworks.opengovernance.mermaid.GovernanceActionProcessMermaidGraphBuilder;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.ActivityStatus;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.ElementStatus;
 import org.odpi.openmetadata.frameworks.openmetadata.mermaid.SpecificationMermaidGraphBuilder;
@@ -18,7 +18,7 @@ import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
-import org.odpi.openmetadata.frameworks.governanceaction.properties.*;
+import org.odpi.openmetadata.frameworks.opengovernance.properties.*;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.OpenMetadataElement;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.OpenMetadataElementStub;
 import org.odpi.openmetadata.frameworks.openmetadata.refdata.DeployedImplementationType;
@@ -42,7 +42,7 @@ import java.util.*;
 /**
  * The OpenGovernanceRESTServices provides the server-side implementation of the services used by the governance
  * engine as it is managing requests to execute open governance services in the governance server.
- * These services align with the interface definitions from the Governance Action Framework (GAF).
+ * These services align with the interface definitions from the Open Survey Framework (OGF).
  */
 public class OpenGovernanceRESTServices
 {

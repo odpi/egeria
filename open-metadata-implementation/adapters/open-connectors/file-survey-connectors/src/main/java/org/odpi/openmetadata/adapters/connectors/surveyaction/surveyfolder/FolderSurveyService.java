@@ -6,7 +6,7 @@ import org.apache.commons.io.FileUtils;
 import org.odpi.openmetadata.adapters.connectors.datastore.basicfile.BasicFolderConnector;
 import org.odpi.openmetadata.adapters.connectors.surveyaction.controls.FolderRequestParameter;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.OpenMetadataRootElement;
-import org.odpi.openmetadata.frameworks.surveyaction.controls.SurveyFolderAnnotationType;
+import org.odpi.openmetadata.frameworks.opensurvey.controls.SurveyFolderAnnotationType;
 import org.odpi.openmetadata.adapters.connectors.surveyaction.extractors.FileStatsExtractor;
 import org.odpi.openmetadata.adapters.connectors.surveyaction.ffdc.SurveyServiceAuditCode;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
@@ -17,13 +17,13 @@ import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedExcep
 import org.odpi.openmetadata.frameworks.openmetadata.fileclassifier.FileClassification;
 import org.odpi.openmetadata.frameworks.openmetadata.fileclassifier.FileClassifier;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
-import org.odpi.openmetadata.frameworks.surveyaction.AnnotationStore;
-import org.odpi.openmetadata.frameworks.surveyaction.SurveyActionServiceConnector;
-import org.odpi.openmetadata.frameworks.surveyaction.SurveyAssetStore;
-import org.odpi.openmetadata.frameworks.surveyaction.controls.AnalysisStep;
-import org.odpi.openmetadata.frameworks.surveyaction.measurements.FileDirectoryMeasurement;
-import org.odpi.openmetadata.frameworks.surveyaction.measurements.FileDirectoryMetric;
-import org.odpi.openmetadata.frameworks.surveyaction.properties.*;
+import org.odpi.openmetadata.frameworks.opensurvey.AnnotationStore;
+import org.odpi.openmetadata.frameworks.opensurvey.SurveyActionServiceConnector;
+import org.odpi.openmetadata.frameworks.opensurvey.SurveyAssetStore;
+import org.odpi.openmetadata.frameworks.opensurvey.controls.AnalysisStep;
+import org.odpi.openmetadata.frameworks.opensurvey.measurements.FileDirectoryMeasurement;
+import org.odpi.openmetadata.frameworks.opensurvey.measurements.FileDirectoryMetric;
+import org.odpi.openmetadata.frameworks.opensurvey.properties.*;
 
 import java.io.File;
 import java.io.IOException;
@@ -563,7 +563,7 @@ public class FolderSurveyService extends SurveyActionServiceConnector
             savedAnnotations.add(dataProfile);
 
             ResourceProfileLogAnnotation dataProfileLog = writeNameCountInventory(SurveyFolderAnnotationType.PROFILE_FILE_NAMES,
-                                                                                 "fileNameCounts",
+                                                                                  "fileNameCounts",
                                                                                   fileNameCounts,
                                                                                   surveyReportGUID);
             savedAnnotations.add(dataProfileLog);

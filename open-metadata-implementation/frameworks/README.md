@@ -24,13 +24,16 @@ OCF connectors also provide detailed metadata about the resources they access.
 * **[open-integration-framework](open-integration-framework)** - provides the interfaces and services for
 [integration connectors](https://egeria-project.org/concepts/integration-connector/).
 
-* **[Governance Action Framework (GAF)](governance-action-framework)** provides the interfaces and base implementations for components
+* **[Open Governance Framework (OGF)](open-governance-framework)** provides the interfaces and base implementations for components
 (called governance action services) that take action to assess and correct a situation that is harmful to the data,
 or the organization in some way.
 
-* **[Survey Action Framework (SAF)](survey-action-framework)** provides the interfaces and base implementations for components
-  (called survey action services) that survey and extract characteristics
-  about the real-world resources and stores them in an open metadata repository.
+* **[Open Survey Framework (OSF)](open-survey-framework)** provides the interfaces and base implementations for components
+(called survey action services) that survey and extract characteristics
+about the real-world resources and stores them in an open metadata repository.
+
+* **[Open Watchdog Framework (OWF)](open-watchdog-framework)** provides the interfaces and base implementations for components
+(called watchdog action services) that monitor for situations/events and issue notifications/actions to subscribers.
 
 
 ----
