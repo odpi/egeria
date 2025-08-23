@@ -2,26 +2,22 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.engineservices.watchdogaction.handlers;
 
+import org.odpi.openmetadata.engineservices.watchdogaction.ffdc.WatchdogActionAuditCode;
 import org.odpi.openmetadata.engineservices.watchdogaction.ffdc.WatchdogActionErrorCode;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
-import org.odpi.openmetadata.engineservices.watchdogaction.ffdc.WatchdogActionAuditCode;
-import org.odpi.openmetadata.frameworks.auditlog.MessageFormatter;
 import org.odpi.openmetadata.frameworks.auditlog.messagesets.AuditLogMessageDefinition;
 import org.odpi.openmetadata.frameworks.connectors.Connector;
-import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
+import org.odpi.openmetadata.frameworks.opengovernance.controls.Guard;
 import org.odpi.openmetadata.frameworks.opengovernance.properties.CompletionStatus;
 import org.odpi.openmetadata.frameworks.opengovernance.properties.GovernanceEngineProperties;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.NewActionTarget;
+import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.openwatchdog.WatchdogActionServiceConnector;
 import org.odpi.openmetadata.frameworks.openwatchdog.WatchdogContext;
-import org.odpi.openmetadata.frameworks.openwatchdog.controls.WatchdogActionGuard;
 import org.odpi.openmetadata.frameworkservices.gaf.client.GovernanceContextClient;
 import org.odpi.openmetadata.governanceservers.enginehostservices.admin.GovernanceServiceHandler;
 
-import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
-import java.util.List;
-import java.util.Map;
 
 /**
  * WatchdogActionServiceHandler provides the support to run a watchdog action service.
@@ -81,8 +77,16 @@ public class WatchdogActionServiceHandler extends GovernanceServiceHandler
 
         try
         {
-            this.watchdogActionService = (WatchdogActionServiceConnector) watchdogActionServiceConnector;
-            this.notificationTypeGUID  = watchdogContext.getNotificationTypeGUID();
+            watchdogActionService = (WatchdogActionServiceConnector) watchdogActionServiceConnector;
+
+            watchdogActionService.setWatchdogContext(watchdogContext);
+            watchdogActionService.setAuditLog(auditLog);
+            watchdogActionService.setWatchdogActionServiceName(governanceServiceName);
+
+            /*
+             * This tests the validity of the notification type
+             */
+            notificationTypeGUID  = watchdogContext.getNotificationTypeGUID();
         }
         catch (Exception error)
         {
@@ -116,12 +120,6 @@ public class WatchdogActionServiceHandler extends GovernanceServiceHandler
         Date startTime;
         Date endTime;
 
-        CompletionStatus          completionStatus;
-        List<String>              completionGuards;
-        AuditLogMessageDefinition completionMessage;
-        Map<String, String>       completionRequestParameters;
-        List<NewActionTarget>     completionActionTargets;
-
         final String actionDescription = "Monitor a notification type";
 
         try
@@ -135,91 +133,61 @@ public class WatchdogActionServiceHandler extends GovernanceServiceHandler
                                                                                                               governanceEngineProperties.getQualifiedName(),
                                                                                                               governanceEngineGUID));
 
-            watchdogActionService.setWatchdogContext(watchdogContext);
-            watchdogActionService.setWatchdogActionServiceName(governanceServiceName);
-
             startTime = new Date();
             watchdogActionService.start();
             endTime = new Date();
 
-            completionStatus            = watchdogContext.getCompletionStatus();
-            completionGuards            = watchdogContext.getCompletionGuards();
-            completionMessage           = watchdogContext.getCompletionMessage();
-            completionRequestParameters = watchdogContext.getCompletionRequestParameters();
-            completionActionTargets     = watchdogContext.getCompletionActionTargets();
+            CompletionStatus completionStatus = watchdogContext.getCompletionStatus();
 
             if (completionStatus == null)
             {
-                completionStatus = WatchdogActionGuard.MONITORING_COMPLETED.getCompletionStatus();
+                auditLog.logMessage(actionDescription,
+                                    WatchdogActionAuditCode.WATCHDOG_ACTION_SERVICE_RETURNED.getMessageDefinition(governanceServiceName,
+                                                                                                                  watchdogContext.getNotificationTypeGUID(),
+                                                                                                                  serviceRequestType));
             }
-
-            if ((completionGuards == null) || (completionGuards.isEmpty()))
+            else
             {
-                completionGuards = new ArrayList<>();
-                completionGuards.add(WatchdogActionGuard.MONITORING_COMPLETED.getName());
-            }
-
-            if (completionMessage == null)
-            {
-                completionMessage = WatchdogActionAuditCode.WATCHDOG_ACTION_SERVICE_COMPLETE.getMessageDefinition(governanceServiceName,
+                auditLog.logMessage(actionDescription,
+                                    WatchdogActionAuditCode.WATCHDOG_ACTION_SERVICE_COMPLETE.getMessageDefinition(governanceServiceName,
                                                                                                                   watchdogContext.getNotificationTypeGUID(),
                                                                                                                   serviceRequestType,
-                                                                                                                  Long.toString(endTime.getTime() - startTime.getTime()));
+                                                                                                                  Long.toString(endTime.getTime() - startTime.getTime())));
+                super.disconnect();
             }
         }
         catch (Exception  error)
         {
-            completionStatus            = watchdogContext.getCompletionStatus();
-            completionGuards            = watchdogContext.getCompletionGuards();
-            completionMessage           = watchdogContext.getCompletionMessage();
-            completionRequestParameters = watchdogContext.getCompletionRequestParameters();
-            completionActionTargets     = watchdogContext.getCompletionActionTargets();
+            AuditLogMessageDefinition completionMessage = WatchdogActionAuditCode.WATCHDOG_ACTION_SERVICE_FAILED.getMessageDefinition(governanceServiceName,
+                                                                                                                                      error.getClass().getName(),
+                                                                                                                                      notificationTypeGUID,
+                                                                                                                                      serviceRequestType,
+                                                                                                                                      governanceEngineProperties.getQualifiedName(),
+                                                                                                                                      governanceEngineGUID,
+                                                                                                                                      error.getMessage());
 
-            if (completionStatus == null)
+            auditLog.logException(actionDescription, completionMessage, error.toString(), error);
+
+            try
             {
-                completionStatus = WatchdogActionGuard.MONITORING_FAILED.getCompletionStatus();
-            }
+                CompletionStatus completionStatus = watchdogContext.getCompletionStatus();
 
-            if ((completionGuards == null) || (completionGuards.isEmpty()))
+                if (completionStatus == null)
+                {
+                    watchdogContext.recordCompletionStatus(Guard.SERVICE_FAILED.getCompletionStatus(), Collections.singletonList(Guard.SERVICE_FAILED.getName()), null, null, completionMessage);
+                    super.disconnect();
+                }
+            }
+            catch (Exception statusError)
             {
-                completionGuards = new ArrayList<>();
-                completionGuards.add(WatchdogActionGuard.MONITORING_FAILED.getName());
+                auditLog.logException(actionDescription,
+                                      WatchdogActionAuditCode.EXC_ON_ERROR_STATUS_UPDATE.getMessageDefinition(governanceEngineProperties.getDisplayName(),
+                                                                                                              governanceServiceName,
+                                                                                                              statusError.getClass().getName(),
+                                                                                                              statusError.getMessage()),
+                                      statusError.toString(),
+                                      statusError);
             }
-
-            if (completionMessage == null)
-            {
-                completionMessage = WatchdogActionAuditCode.WATCHDOG_ACTION_SERVICE_FAILED.getMessageDefinition(governanceServiceName,
-                                                                                                                error.getClass().getName(),
-                                                                                                                notificationTypeGUID,
-                                                                                                                serviceRequestType,
-                                                                                                                governanceEngineProperties.getQualifiedName(),
-                                                                                                                governanceEngineGUID,
-                                                                                                                error.getMessage());
-            }
-        }
-
-        try
-        {
-            if (completionActionTargets == null)
-            {
-                completionActionTargets = new ArrayList<>();
-            }
-
-            MessageFormatter messageFormatter = new MessageFormatter();
-
-            String messageText = messageFormatter.getFormattedMessage(completionMessage);
-
-            auditLog.logMessage(actionDescription, completionMessage);
-
-            super.recordCompletionStatus(completionStatus, completionGuards, completionRequestParameters, completionActionTargets, messageText);
-
-            super.disconnect();
-        }
-        catch (Exception ignore)
-        {
-            /*
-             * Ignore this exception - focus on first error.
-             */
         }
     }
 }

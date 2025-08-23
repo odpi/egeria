@@ -771,7 +771,14 @@ public class LocationArenaRESTServices extends TokenController
 
             LocationHandler handler = instanceHandler.getLocationHandler(userId, serverName, methodName);
 
-            response.setElements(handler.findLocations(userId, requestBody.getSearchString(), requestBody));
+            if (requestBody != null)
+            {
+                response.setElements(handler.findLocations(userId, requestBody.getSearchString(), requestBody));
+            }
+            else
+            {
+                response.setElements(handler.findLocations(userId, null, null));
+            }
         }
         catch (Throwable error)
         {

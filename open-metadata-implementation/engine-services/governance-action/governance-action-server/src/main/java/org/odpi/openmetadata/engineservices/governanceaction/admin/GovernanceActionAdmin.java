@@ -23,7 +23,8 @@ import org.odpi.openmetadata.governanceservers.enginehostservices.enginemap.Gove
  */
 public class GovernanceActionAdmin extends EngineServiceAdmin
 {
-    private GovernanceActionInstance  governanceActionInstance = null;
+    private GovernanceActionInstance governanceActionInstance = null;
+    private OpenMetadataEventClient  eventClient              = null;
 
     /**
      * Initialize engine service.
@@ -90,31 +91,13 @@ public class GovernanceActionAdmin extends EngineServiceAdmin
                                                                     engineServiceConfig.getOMAGServerPlatformRootURL(),
                                                                     engineServiceConfig.getOMAGServerName());
 
-            OCFRESTClient governanceEngineRESTClient;
-
-            if (localServerPassword != null)
-            {
-                governanceEngineRESTClient = new OCFRESTClient(accessServiceServerName,
-                                                               accessServiceRootURL,
-                                                               localServerUserId,
-                                                               localServerPassword,
-                                                               auditLog);
-            }
-            else
-            {
-                governanceEngineRESTClient = new OCFRESTClient(accessServiceServerName,
-                                                               accessServiceRootURL,
-                                                               auditLog);
-
-            }
-
-            OpenMetadataEventClient eventClient = new EgeriaOpenMetadataEventClient(accessServiceServerName,
-                                                                                    accessServiceRootURL,
-                                                                                    localServerUserId,
-                                                                                    localServerPassword,
-                                                                                    maxPageSize,
-                                                                                    auditLog,
-                                                                                    localServerId + localServerName + EngineServiceDescription.GOVERNANCE_ACTION_OMES.getEngineServiceName());
+            eventClient = new EgeriaOpenMetadataEventClient(accessServiceServerName,
+                                                            accessServiceRootURL,
+                                                            localServerUserId,
+                                                            localServerPassword,
+                                                            maxPageSize,
+                                                            auditLog,
+                                                            localServerId + localServerName + EngineServiceDescription.GOVERNANCE_ACTION_OMES.getEngineServiceName());
 
             eventClient.registerListener(localServerUserId, new OpenMetadataOutTopicListener(governanceEngineMap, auditLog));
         }
@@ -144,6 +127,7 @@ public class GovernanceActionAdmin extends EngineServiceAdmin
         auditLog.logMessage(actionDescription, GovernanceActionAuditCode.SERVER_SHUTTING_DOWN.getMessageDefinition(localServerName));
 
         governanceActionInstance.shutdown();
+        eventClient.disconnect();
 
         auditLog.logMessage(actionDescription, GovernanceActionAuditCode.SERVER_SHUTDOWN.getMessageDefinition(localServerName));
     }

@@ -5,11 +5,14 @@ package org.odpi.openmetadata.engineservices.watchdogaction.admin;
 import org.odpi.openmetadata.adminservices.configuration.properties.EngineServiceConfig;
 import org.odpi.openmetadata.adminservices.configuration.registration.EngineServiceDescription;
 import org.odpi.openmetadata.adminservices.ffdc.exception.OMAGConfigurationErrorException;
+import org.odpi.openmetadata.engineservices.watchdogaction.listener.OpenMetadataOutTopicListener;
 import org.odpi.openmetadata.engineservices.watchdogaction.server.WatchdogActionInstance;
 import org.odpi.openmetadata.engineservices.watchdogaction.ffdc.WatchdogActionAuditCode;
 import org.odpi.openmetadata.engineservices.watchdogaction.ffdc.WatchdogActionErrorCode;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
+import org.odpi.openmetadata.frameworks.openmetadata.events.OpenMetadataEventClient;
 import org.odpi.openmetadata.frameworkservices.gaf.client.GovernanceConfigurationClient;
+import org.odpi.openmetadata.frameworkservices.omf.client.EgeriaOpenMetadataEventClient;
 import org.odpi.openmetadata.governanceservers.enginehostservices.admin.EngineServiceAdmin;
 import org.odpi.openmetadata.governanceservers.enginehostservices.enginemap.GovernanceEngineMap;
 
@@ -18,7 +21,8 @@ import org.odpi.openmetadata.governanceservers.enginehostservices.enginemap.Gove
  */
 public class WatchdogActionAdmin extends EngineServiceAdmin
 {
-    private WatchdogActionInstance watchdogActionInstance = null;
+    private WatchdogActionInstance  watchdogActionInstance = null;
+    private OpenMetadataEventClient eventClient            = null;
 
     /**
      * Initialize engine service.
@@ -58,7 +62,7 @@ public class WatchdogActionAdmin extends EngineServiceAdmin
 
             /*
              * The watchdog action services need access to an open metadata server to retrieve information about the
-             * notificaton types they are analysing and to send notifications to the subscribers
+             * notification types they are analysing and to send notifications to the subscribers
              * Open metadata is accessed through the metadata access store.
              */
             String             accessServiceRootURL    = this.getPartnerServiceRootURL(engineServiceConfig);
@@ -86,6 +90,15 @@ public class WatchdogActionAdmin extends EngineServiceAdmin
                                                             engineServiceConfig.getOMAGServerPlatformRootURL(),
                                                             engineServiceConfig.getOMAGServerName());
 
+            eventClient = new EgeriaOpenMetadataEventClient(accessServiceServerName,
+                                                            accessServiceRootURL,
+                                                            localServerUserId,
+                                                            localServerPassword,
+                                                            maxPageSize,
+                                                            auditLog,
+                                                            localServerId + localServerName + EngineServiceDescription.GOVERNANCE_ACTION_OMES.getEngineServiceName());
+
+            eventClient.registerListener(localServerUserId, new OpenMetadataOutTopicListener(governanceEngineMap, auditLog));
         }
         catch (Exception error)
         {
@@ -113,6 +126,7 @@ public class WatchdogActionAdmin extends EngineServiceAdmin
         auditLog.logMessage(actionDescription, WatchdogActionAuditCode.SERVER_SHUTTING_DOWN.getMessageDefinition(localServerName));
 
         watchdogActionInstance.shutdown();
+        eventClient.disconnect();
 
         auditLog.logMessage(actionDescription, WatchdogActionAuditCode.SERVER_SHUTDOWN.getMessageDefinition(localServerName));
     }

@@ -26,8 +26,8 @@ public class ActionTargetElement extends NewActionTarget
     private String         actionTargetRelationshipGUID = null;
     private ActivityStatus status                       = null;
     private Date           startDate                    = null;
-    private Date               completionDate               = null;
-    private String             completionMessage            = null;
+    private Date           completionDate               = null;
+    private String         completionMessage            = null;
 
     private OpenMetadataElement targetElement = null;
 

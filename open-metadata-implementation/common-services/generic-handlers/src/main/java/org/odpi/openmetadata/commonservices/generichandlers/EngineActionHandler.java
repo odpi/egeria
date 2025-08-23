@@ -83,8 +83,9 @@ public class EngineActionHandler<B> extends OpenMetadataAPIGenericHandler<B>
      *
      * @param userId caller's userId
      * @param governanceActionTypeQualifiedName unique name to give this governance action type
-     * @param requestSourceGUIDs  request source elements for the resulting governance service
-     * @param actionTargets list of action target names to GUIDs for the resulting governance service
+     * @param actionSourceGUIDs  request source elements for the resulting engine action
+     * @param actionCauseGUIDs  request cause elements for the resulting engine action
+     * @param actionTargets list of action target names to GUIDs for the resulting engine action
      * @param requestParameters initial set of request parameters from the caller
      * @param startTime future start time or null for "as soon as possible"
      * @param originatorServiceName unique identifier of the originator - typically an ActorProfile or Process such as a GovernanceService.
@@ -99,7 +100,8 @@ public class EngineActionHandler<B> extends OpenMetadataAPIGenericHandler<B>
      */
     public String initiateGovernanceActionType(String                userId,
                                                String                governanceActionTypeQualifiedName,
-                                               List<String>          requestSourceGUIDs,
+                                               List<String>          actionSourceGUIDs,
+                                               List<String>          actionCauseGUIDs,
                                                List<NewActionTarget> actionTargets,
                                                Map<String, String>   requestParameters,
                                                Date                  startTime,
@@ -143,7 +145,8 @@ public class EngineActionHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                                governanceActionTypeEntity,
                                                startTime,
                                                requestParameters,
-                                               requestSourceGUIDs,
+                                               actionSourceGUIDs,
+                                               actionCauseGUIDs,
                                                actionTargets,
                                                governanceActionTypeQualifiedName,
                                                originatorServiceName,
@@ -338,7 +341,8 @@ public class EngineActionHandler<B> extends OpenMetadataAPIGenericHandler<B>
      * @param governanceActionTypeEntity entity to create engine action from
      * @param suppliedStartTime has the caller requested a start time?
      * @param initialRequestParameters request parameters  from the caller
-     * @param requestSourceGUIDs identifiers of the request sources
+     * @param actionSourceGUIDs identifiers of the request sources
+     * @param actionCauseGUIDs identifiers of the request causes
      * @param callersActionTargets action targets for the engine action supplied by the caller
      * @param requestSourceName name of calling source
      * @param originatorServiceName unique identifier of the originator - typically an ActorProfile or Process such as a GovernanceService.
@@ -354,7 +358,8 @@ public class EngineActionHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                                EntityDetail          governanceActionTypeEntity,
                                                Date                  suppliedStartTime,
                                                Map<String, String>   initialRequestParameters,
-                                               List<String>          requestSourceGUIDs,
+                                               List<String>          actionSourceGUIDs,
+                                               List<String>          actionCauseGUIDs,
                                                List<NewActionTarget> callersActionTargets,
                                                String                requestSourceName,
                                                String                originatorServiceName,
@@ -515,7 +520,8 @@ public class EngineActionHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                                      domainIdentifier,
                                                      displayName,
                                                      description,
-                                                     requestSourceGUIDs,
+                                                     actionSourceGUIDs,
+                                                     actionCauseGUIDs,
                                                      this.getExecutorTargetsForAction(governanceActionExecutorRelationship, newTargetsForAction),
                                                      null,
                                                      null,
@@ -564,8 +570,9 @@ public class EngineActionHandler<B> extends OpenMetadataAPIGenericHandler<B>
      *
      * @param userId caller's userId
      * @param processQualifiedName unique name to give this governance action process
-     * @param requestSourceGUIDs  request source elements for the resulting governance service
-     * @param callersActionTargets list of action target names to GUIDs for the resulting governance service
+     * @param actionSourceGUIDs  request source elements for the resulting engine action
+     * @param actionCauseGUIDs  request source elements for the resulting engine action
+     * @param callersActionTargets list of action target names to GUIDs for the resulting engine action
      * @param callersRequestParameters initial set of request parameters from the caller
      * @param requestedStartDate future start time or null for "as soon as possible"
      * @param originatorServiceName unique identifier of the originator - typically an ActorProfile or Process such as a GovernanceService.
@@ -580,7 +587,8 @@ public class EngineActionHandler<B> extends OpenMetadataAPIGenericHandler<B>
      */
     public String initiateGovernanceActionProcess(String                userId,
                                                   String                processQualifiedName,
-                                                  List<String>          requestSourceGUIDs,
+                                                  List<String>          actionSourceGUIDs,
+                                                  List<String>          actionCauseGUIDs,
                                                   List<NewActionTarget> callersActionTargets,
                                                   Map<String, String>   callersRequestParameters,
                                                   Date                  requestedStartDate,
@@ -812,7 +820,8 @@ public class EngineActionHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                                                              null,
                                                                              userId,
                                                                              combinedRequestParameters,
-                                                                             requestSourceGUIDs,
+                                                                             actionSourceGUIDs,
+                                                                             actionCauseGUIDs,
                                                                              newTargetsForAction,
                                                                              processInstanceQualifiedName,
                                                                              processQualifiedName,
@@ -869,7 +878,8 @@ public class EngineActionHandler<B> extends OpenMetadataAPIGenericHandler<B>
      * @param previousEngineActionGUID unique identifier of the previous engine action
      * @param requesterUserId original requesting user
      * @param initialRequestParameters request parameters  from the caller
-     * @param requestSourceGUIDs identifiers of the request sources
+     * @param actionSourceGUIDs identifiers of the request sources
+     * @param actionCauseGUIDs identifiers of the request causes
      * @param callersActionTargets action targets for the next governance action
      * @param processName name of process this is a part of
      * @param requestSourceName name of calling source
@@ -892,7 +902,8 @@ public class EngineActionHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                                       String                previousEngineActionGUID,
                                                       String                requesterUserId,
                                                       Map<String, String>   initialRequestParameters,
-                                                      List<String>          requestSourceGUIDs,
+                                                      List<String>          actionSourceGUIDs,
+                                                      List<String>          actionCauseGUIDs,
                                                       List<NewActionTarget> callersActionTargets,
                                                       String                processName,
                                                       String                requestSourceName,
@@ -1138,7 +1149,8 @@ public class EngineActionHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                                                 domainIdentifier,
                                                                 displayName,
                                                                 description,
-                                                                requestSourceGUIDs,
+                                                                actionSourceGUIDs,
+                                                                actionCauseGUIDs,
                                                                 newTargetsForAction,
                                                                 mandatoryGuards,
                                                                 ignoreMultipleTriggers,
@@ -1435,9 +1447,10 @@ public class EngineActionHandler<B> extends OpenMetadataAPIGenericHandler<B>
      * @param domainIdentifier governance domain associated with this action (0=ALL)
      * @param displayName display name for this action
      * @param description description for this action
-     * @param requestSourceGUIDs  request source elements for the resulting governance service
-     * @param actionTargets list of action target names to GUIDs for the resulting governance service
-     * @param mandatoryGuards list of guards that must be received in order to proceed with the governance action
+     * @param actionSourceGUIDs  action source elements for the resulting engine action
+     * @param actionCauseGUIDs  action cause elements for the resulting  engine action
+     * @param actionTargets list of action target names to GUIDs for the resulting  engine action
+     * @param mandatoryGuards list of guards that must be received in order to proceed with the engine action
      * @param receivedGuards list of guards to initiate the governance action
      * @param startTime future start time or null for "as soon as possible"
      * @param governanceEngineName name of the governance engine that should execute the request
@@ -1466,7 +1479,8 @@ public class EngineActionHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                      int                   domainIdentifier,
                                      String                displayName,
                                      String                description,
-                                     List<String>          requestSourceGUIDs,
+                                     List<String>          actionSourceGUIDs,
+                                     List<String>          actionCauseGUIDs,
                                      List<NewActionTarget> actionTargets,
                                      List<String>          mandatoryGuards,
                                      List<String>          receivedGuards,
@@ -1559,11 +1573,11 @@ public class EngineActionHandler<B> extends OpenMetadataAPIGenericHandler<B>
             /*
              * Identify the source of the work
              */
-            if ((requestSourceGUIDs != null) && (! requestSourceGUIDs.isEmpty()))
+            if ((actionSourceGUIDs != null) && (! actionSourceGUIDs.isEmpty()))
             {
-                final String requestSourceGUIDParameterName = "requestSourceGUIDs[x]";
+                final String requestSourceGUIDParameterName = "actionSourceGUIDs[x]";
 
-                for (String requestSourceGUID : requestSourceGUIDs)
+                for (String requestSourceGUID : actionSourceGUIDs)
                 {
                     if (requestSourceGUID != null)
                     {
@@ -1581,6 +1595,41 @@ public class EngineActionHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                                   serviceSupportedZones,
                                                   OpenMetadataType.ACTION_REQUESTER_RELATIONSHIP.typeGUID,
                                                   OpenMetadataType.ACTION_REQUESTER_RELATIONSHIP.typeName,
+                                                  null,
+                                                  null,
+                                                  null,
+                                                  null,
+                                                  methodName);
+                    }
+                }
+            }
+
+
+            /*
+             * Identify the cause of the work
+             */
+            if ((actionCauseGUIDs != null) && (! actionCauseGUIDs.isEmpty()))
+            {
+                final String actionCauseGUIDParameterName = "actionCauseGUIDs[x]";
+
+                for (String actionCauseGUID : actionCauseGUIDs)
+                {
+                    if (actionCauseGUID != null)
+                    {
+                        this.linkElementToElement(userId,
+                                                  null,
+                                                  null,
+                                                  actionCauseGUID,
+                                                  actionCauseGUIDParameterName,
+                                                  OpenMetadataType.OPEN_METADATA_ROOT.typeName,
+                                                  engineActionGUID,
+                                                  engineActionGUIDParameterName,
+                                                  OpenMetadataType.ENGINE_ACTION.typeName,
+                                                  true,
+                                                  true,
+                                                  serviceSupportedZones,
+                                                  OpenMetadataType.ACTIONS_RELATIONSHIP.typeGUID,
+                                                  OpenMetadataType.ACTIONS_RELATIONSHIP.typeName,
                                                   null,
                                                   null,
                                                   null,
@@ -1616,9 +1665,10 @@ public class EngineActionHandler<B> extends OpenMetadataAPIGenericHandler<B>
      * @param domainIdentifier governance domain associated with this action (0=ALL)
      * @param displayName display name for this action
      * @param description description for this action
-     * @param requestSourceGUIDs  request source elements for the resulting governance service
-     * @param actionTargets list of action target names to GUIDs for the resulting governance service
-     * @param mandatoryGuards list of guards that must be received in order to proceed with the governance action
+     * @param actionSourceGUIDs  request source elements for the resulting engine action
+     * @param actionCauseGUIDs  request cause elements for the resulting engine action
+     * @param actionTargets list of action target names to GUIDs for the resulting engine action
+     * @param mandatoryGuards list of guards that must be received in order to proceed with the engine action
      * @param ignoreMultipleTriggers only run one engine action for this governance action process step
      * @param receivedGuards list of guards to initiate the governance action
      * @param startTime future start time or null for "as soon as possible"
@@ -1649,7 +1699,8 @@ public class EngineActionHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                                               int                   domainIdentifier,
                                                               String                displayName,
                                                               String                description,
-                                                              List<String>          requestSourceGUIDs,
+                                                              List<String>          actionSourceGUIDs,
+                                                              List<String>          actionCauseGUIDs,
                                                               List<NewActionTarget> actionTargets,
                                                               List<String>          mandatoryGuards,
                                                               boolean               ignoreMultipleTriggers,
@@ -1751,7 +1802,8 @@ public class EngineActionHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                   domainIdentifier,
                                   displayName,
                                   description,
-                                  requestSourceGUIDs,
+                                  actionSourceGUIDs,
+                                  actionCauseGUIDs,
                                   actionTargets,
                                   mandatoryGuards,
                                   receivedGuards,
@@ -2906,6 +2958,7 @@ public class EngineActionHandler<B> extends OpenMetadataAPIGenericHandler<B>
                                                                     previousEngineActionGUID,
                                                                     requesterUserId,
                                                                     callerRequestParameters,
+                                                                    null,
                                                                     null,
                                                                     newActionTargets,
                                                                     processName,

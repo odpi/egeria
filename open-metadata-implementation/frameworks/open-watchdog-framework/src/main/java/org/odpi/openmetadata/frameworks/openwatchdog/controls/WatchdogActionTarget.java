@@ -15,28 +15,21 @@ import java.util.List;
 public enum WatchdogActionTarget
 {
     /**
-     * The survey report created by a watchdog action service.
+     * The notification type that the watchdog action service should monitor.
      */
-    SURVEY_REPORT("surveyReport",
-                  "The survey report created by a watchdog action service.",
-                  OpenMetadataType.SURVEY_REPORT.typeName,
-                  null),
+    NOTIFICATION_TYPE("notificationType",
+                      "The notification type that the watchdog action service should monitor.",
+                      OpenMetadataType.NOTIFICATION_TYPE.typeName,
+                      null),
 
     /**
-     * The person who can be contacted if there are problems with the data from this hospital.
+     * Requests that the watchdog action service monitors a single metadata instance.
      */
-    STEWARD("steward",
-            "The person, or team who is responsible for setting up the governance metadata associated with .",
-            OpenMetadataType.ACTOR.typeName,
-            null),
+    INSTANCE_TO_MONITOR("instanceToMonitor",
+                        "Requests that the watchdog action service monitors a single metadata instance.  This acts as an alternative to using a notification type.",
+                        OpenMetadataType.OPEN_METADATA_ROOT.typeName,
+                        null),
 
-    /**
-     * To Do element created for the steward.
-     */
-    TO_DO_ELEMENT("stewardAction",
-                  "To Do element created for the steward.",
-                  OpenMetadataType.TO_DO.typeName,
-                  null),
     ;
 
 
@@ -54,7 +47,6 @@ public enum WatchdogActionTarget
      * The open metadata type name of the element that can be this type of action target.
      */
     public final String typeName;
-
 
     /**
      * The deployed implementation type allows the service to be more specific about the resources it works with.
@@ -84,51 +76,6 @@ public enum WatchdogActionTarget
      *
      * @return list
      */
-    public static List<ActionTargetType> getStewardshipReviewActionTargetTypes()
-    {
-        List<ActionTargetType> actionTargetTypes = new ArrayList<>();
-
-        actionTargetTypes.add(STEWARD.getActionTargetType());
-        actionTargetTypes.add(SURVEY_REPORT.getActionTargetType());
-
-        return actionTargetTypes;
-    }
-
-
-    /**
-     * Return all the action targets defined in this enum.
-     *
-     * @return list
-     */
-    public static List<ActionTargetType> getStewardshipHandoverActionTargetTypes()
-    {
-        List<ActionTargetType> actionTargetTypes = new ArrayList<>();
-
-        actionTargetTypes.add(TO_DO_ELEMENT.getActionTargetType());
-
-        return actionTargetTypes;
-    }
-
-
-    /**
-     * Return all the action targets defined in this enum.
-     *
-     * @return list
-     */
-    public static List<ActionTargetType> getReportActionTargetTypes()
-    {
-        List<ActionTargetType> actionTargetTypes = new ArrayList<>();
-
-        actionTargetTypes.add(SURVEY_REPORT.getActionTargetType());
-
-        return actionTargetTypes;
-    }
-
-    /**
-     * Return all the action targets defined in this enum.
-     *
-     * @return list
-     */
     public static List<ActionTargetType> getActionTargetTypes()
     {
         List<ActionTargetType> actionTargetTypes = new ArrayList<>();
@@ -140,6 +87,38 @@ public enum WatchdogActionTarget
 
         return actionTargetTypes;
     }
+
+
+    /**
+     * Return all the action targets defined in this enum.
+     *
+     * @return list
+     */
+    public static List<ActionTargetType> getNotificationActionTargetTypes()
+    {
+        List<ActionTargetType> actionTargetTypes = new ArrayList<>();
+
+        actionTargetTypes.add(NOTIFICATION_TYPE.getActionTargetType());
+
+        return actionTargetTypes;
+    }
+
+
+    /**
+     * Return all the action targets defined in this enum.
+     *
+     * @return list
+     */
+    public static List<ActionTargetType> getInstanceActionTargetTypes()
+    {
+        List<ActionTargetType> actionTargetTypes = new ArrayList<>();
+
+        actionTargetTypes.add(INSTANCE_TO_MONITOR.getActionTargetType());
+
+        return actionTargetTypes;
+    }
+
+
 
 
     /**

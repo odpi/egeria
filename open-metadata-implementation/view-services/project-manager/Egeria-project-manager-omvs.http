@@ -68,12 +68,25 @@ Content-Type: application/json
 ###
 # @name findProjects
 # Returns the list of projects matching the search string.
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/project-manager/projects/by-search-string?startFrom=0&pageSize=0&startsWith=false&endsWith=false&ignoreCase=true
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/project-manager/projects/by-search-string
 Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-  "filter" : ""
+  "class" : "SearchStringRequestBody",
+  "searchString" : "Add value here",
+  "startsWith" : false,
+  "endsWith" : false,
+  "ignoreCase" : true,
+  "startFrom" : 0,
+  "pageSize": 10,
+  "asOfTime" : "{{$isoTimestamp}}",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false,
+  "limitResultsByStatus" : ["ACTIVE"],
+  "sequencingOrder" : "PROPERTY_ASCENDING",
+  "sequencingProperty" : "qualifiedName"
 }
 
 ###

@@ -360,7 +360,6 @@ public class EndpointHandler extends OpenMetadataHandlerBase
 
     /**
      * Retrieve the list of endpoints metadata elements that contain the search string.
-     * The search string is treated as a regular expression.
      *
      * @param userId                 calling user
      * @param searchString           string to find in the properties

@@ -21,7 +21,7 @@ import java.util.Map;
 
 /**
  * GovernanceServiceCache maintains the information about a registered governance service.  A single governance service may be registered using
- * different request types and analysis parameter pairs.
+ * different request types.
  */
 public class GovernanceServiceCache
 {

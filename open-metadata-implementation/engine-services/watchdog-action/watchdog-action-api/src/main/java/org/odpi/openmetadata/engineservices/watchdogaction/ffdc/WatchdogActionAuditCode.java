@@ -94,29 +94,40 @@ public enum WatchdogActionAuditCode implements AuditLogMessageSet
                                    "It is possible to query the result of the monitoring request through Egeria's Open Metadata REST APIs."),
 
     /**
-     * OMES-WATCHDOG-ACTION-0020 - Watchdog Action OMES in server {0} is unable to start any watchdog action engines
+     * OMES-WATCHDOG-ACTION-0020 - The {0} governance action service {1} for request type {2} is continuing to run in a background thread
      */
-    NO_WATCHDOG_ACTION_ENGINES_STARTED("OMES-WATCHDOG-ACTION-0020",
+    WATCHDOG_ACTION_SERVICE_RETURNED("OMES-WATCHDOG-ACTION-0020",
+                                       AuditLogRecordSeverityLevel.INFO,
+                                       "The {0} watchdog action service {1} for request type {2} is continuing to run in a background thread",
+                                       "A watchdog action service has returned from the start() method without setting up the completion status prior to returning.",
+                                       "Validate that this watchdog action service should still be running.  Typically you would expect a Watchdog action service to" +
+                                               "still be running at this stage because it will have registered a listener."),
+
+
+    /**
+     * OMES-WATCHDOG-ACTION-0021 - Watchdog Action OMES in server {0} is unable to start any watchdog action engines
+     */
+    NO_WATCHDOG_ACTION_ENGINES_STARTED("OMES-WATCHDOG-ACTION-0021",
                                      AuditLogRecordSeverityLevel.ERROR,
                                      "Watchdog Action OMES in server {0} is unable to start any watchdog action engines",
                                      "The engine service is not able to run any monitoring requests.  It fails to start.",
                                      "Add the configuration for at least one watchdog action engine to this engine service."),
 
     /**
-     * OMES-WATCHDOG-ACTION-0021 - Watchdog action engine {0} is unable to update the status for watchdog action service {1}.
+     * OMES-WATCHDOG-ACTION-0022 - Watchdog action engine {0} is unable to update the status for watchdog action service {1}.
      * The exception was {2} with error message {3}
      */
-    EXC_ON_ERROR_STATUS_UPDATE("OMES-WATCHDOG-ACTION-0021",
+    EXC_ON_ERROR_STATUS_UPDATE("OMES-WATCHDOG-ACTION-0022",
                                AuditLogRecordSeverityLevel.EXCEPTION,
                                  "Watchdog action engine {0} is unable to update the status for watchdog action service {1}.  The exception was {2} with error message {3}",
                                  "The server is not able to record the failed result for a monitoring watchdog request. The subscribers are not notified.",
                                  "Review the error message and any other reported failures to determine the cause of the problem.  Once this is resolved, retry the monitoring request."),
 
     /**
-     * OMES-WATCHDOG-ACTION-0022 - Method {0} can not execute in the watchdog action engine {1} hosted by Watchdog Action OMES in server {2} because the associated " +
+     * OMES-WATCHDOG-ACTION-0023 - Method {0} can not execute in the watchdog action engine {1} hosted by Watchdog Action OMES in server {2} because the associated " +
      *                                 "watchdog action service properties are null
      */
-    NULL_SURVEY_SERVICE( "OMES-WATCHDOG-ACTION-0022",
+    NULL_WATCHDOG_SERVICE( "OMES-WATCHDOG-ACTION-0023",
                         AuditLogRecordSeverityLevel.ERROR,
                         "Method {0} can not execute in the watchdog action engine {1} hosted by Watchdog Action OMES in server {2} because the associated " +
                                 "watchdog action service properties are null",
@@ -148,11 +159,22 @@ public enum WatchdogActionAuditCode implements AuditLogMessageSet
     /**
      * OMES-WATCHDOG-ACTION-0030 - The watchdog action service {0} linked to request type {1} is processing asset {2} and ignoring the following asset action targets: {3}
      */
-    IGNORING_ASSETS("OMES-WATCHDOG-ACTION-0030",
-                                  AuditLogRecordSeverityLevel.INFO,
-                                  "The watchdog action service {0} linked to request type {1} for engine action {2} is processing asset {3} and ignoring the following asset action targets: {4}",
-                                  "There are multiple assets in the action targets.  The watchdog action service can only process one of them.  The other assets are ignored.",
-                                  "Create a new engine action for each of the ignored assets so that they each run in their own watchdog action service."),
+    IGNORING_NOTIFICATION_TYPES("OMES-WATCHDOG-ACTION-0030",
+                                AuditLogRecordSeverityLevel.INFO,
+                                "The watchdog action service {0} linked to request type {1} for engine action {2} is processing asset {3} and ignoring the following asset action targets: {4}",
+                                "There are multiple assets in the action targets.  The watchdog action service can only process one of them.  The other assets are ignored.",
+                                "Create a new engine action for each of the ignored assets so that they each run in their own watchdog action service."),
+
+    /**
+     * OMES-GOVERNANCE-ACTION-0033 - The Governance Action OMES has received an unexpected {0} exception during method {1}; the error message was: {2}
+     */
+    UNEXPECTED_EXCEPTION("OMES-WATCHDOG-ACTION-0033",
+                         AuditLogRecordSeverityLevel.EXCEPTION,
+                         "The Watchdog Action OMES has received an unexpected {0} exception during method {1}; the error message was: {2}",
+                         "The service is unable to process the current request.",
+                         "Use the details from the error message to determine the cause of the error and retry the request once it is resolved."),
+
+
     ;
 
 

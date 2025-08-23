@@ -52,6 +52,11 @@ public enum ActivityStatus implements OpenMetadataEnum
     PAUSED          ("a93da12b-2bb8-4dc9-a36c-3b654bcb189b",  5,  "Paused","The work for the activity has been paused.", false),
 
     /**
+     * The work for the activity is in progress.
+     */
+    FOR_INFO     ("1a98344b-f43f-4bff-9604-323f18a999af",  6,  "For Information","The activity is designed to provide important information to the various actors.", false),
+
+    /**
      * The work for the activity has successfully completed.
      */
     COMPLETED       ("3bc841d3-8e51-475c-9283-ee9c8b7e8670", 10, "Actioned", "The work for the activity has successfully completed.", false),

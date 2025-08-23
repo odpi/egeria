@@ -81,7 +81,7 @@ public class ProjectManagerResource
      */
     @PostMapping(path = "/projects/by-classifications")
     @Operation(summary="getClassifiedProjects",
-            description="Returns the list of projects with a particular classification.  The name of the classification is supplied in the request body.  Examples of these classifications include StudyProject, PersonalProject, Campaign or Task.  There is also GlossaryProject and GovernanceProject.",
+            description="Returns the list of projects with a particular classification.  The name of the classification is supplied in the request body.  Examples of these classifications include StudyProject, PersonalProjectProperties, Campaign or Task.  There is also GlossaryProject and GovernanceProject.",
             externalDocs=@ExternalDocumentation(description="Further Information",
                     url="https://egeria-project.org/concepts/project"))
 

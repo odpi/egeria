@@ -26,7 +26,8 @@ public class InitiateGovernanceActionProcessRequestBody
 {
     private String                processQualifiedName  = null;
     private Map<String, String>   requestParameters     = null;
-    private List<String>          requestSourceGUIDs    = null;
+    private List<String>          actionSourceGUIDs     = null;
+    private List<String>          actionCauseGUIDs      = null;
     private List<NewActionTarget> actionTargets         = null;
     private Date                  startDate             = null;
     private String                originatorServiceName = null;
@@ -51,13 +52,14 @@ public class InitiateGovernanceActionProcessRequestBody
     {
         if (template != null)
         {
-            processQualifiedName = template.getProcessQualifiedName();
-            requestParameters = template.getRequestParameters();
-            requestSourceGUIDs = template.getRequestSourceGUIDs();
+            processQualifiedName  = template.getProcessQualifiedName();
+            requestParameters     = template.getRequestParameters();
+            actionSourceGUIDs     = template.getActionSourceGUIDs();
+            actionCauseGUIDs      = template.getActionCauseGUIDs();
             actionTargets         = template.getActionTargets();
             startDate             = template.getStartDate();
             originatorServiceName = template.getOriginatorServiceName();
-            originatorEngineName = template.getOriginatorEngineName();
+            originatorEngineName  = template.getOriginatorEngineName();
         }
     }
 
@@ -123,20 +125,42 @@ public class InitiateGovernanceActionProcessRequestBody
      *
      * @return list of string guids
      */
-    public List<String> getRequestSourceGUIDs()
+    public List<String> getActionSourceGUIDs()
     {
-        return requestSourceGUIDs;
+        return actionSourceGUIDs;
     }
 
 
     /**
      * Set up the list of elements that triggered this request.
      *
-     * @param requestSourceGUIDs list of string guids
+     * @param actionSourceGUIDs list of string guids
      */
-    public void setRequestSourceGUIDs(List<String> requestSourceGUIDs)
+    public void setActionSourceGUIDs(List<String> actionSourceGUIDs)
     {
-        this.requestSourceGUIDs = requestSourceGUIDs;
+        this.actionSourceGUIDs = actionSourceGUIDs;
+    }
+
+
+    /**
+     * Return the list of elements that caused this action.
+     *
+     * @return list of string guids
+     */
+    public List<String> getActionCauseGUIDs()
+    {
+        return actionCauseGUIDs;
+    }
+
+
+    /**
+     * Set up the list of elements that caused this action.
+     *
+     * @param actionCauseGUIDs list of string guids
+     */
+    public void setActionCauseGUIDs(List<String> actionCauseGUIDs)
+    {
+        this.actionCauseGUIDs = actionCauseGUIDs;
     }
 
 
@@ -237,15 +261,17 @@ public class InitiateGovernanceActionProcessRequestBody
     public String toString()
     {
         return "InitiateGovernanceActionProcessRequestBody{" +
-                       "processQualifiedName='" + processQualifiedName + '\'' +
-                       ", requestParameters=" + requestParameters +
-                       ", requestSourceGUIDs=" + requestSourceGUIDs +
-                       ", actionTargets=" + actionTargets +
-                       ", startDate=" + startDate +
-                       ", originatorServiceName='" + originatorServiceName + '\'' +
-                       ", originatorEngineName='" + originatorEngineName + '\'' +
-                       '}';
+                "processQualifiedName='" + processQualifiedName + '\'' +
+                ", requestParameters=" + requestParameters +
+                ", actionSourceGUIDs=" + actionSourceGUIDs +
+                ", actionCauseGUIDs=" + actionCauseGUIDs +
+                ", actionTargets=" + actionTargets +
+                ", startDate=" + startDate +
+                ", originatorServiceName='" + originatorServiceName + '\'' +
+                ", originatorEngineName='" + originatorEngineName + '\'' +
+                '}';
     }
+
 
 
     /**
@@ -267,7 +293,7 @@ public class InitiateGovernanceActionProcessRequestBody
         }
         InitiateGovernanceActionProcessRequestBody that = (InitiateGovernanceActionProcessRequestBody) objectToCompare;
         return Objects.equals(processQualifiedName, that.processQualifiedName) &&
-                       Objects.equals(requestSourceGUIDs, that.requestSourceGUIDs) &&
+                       Objects.equals(actionSourceGUIDs, that.actionSourceGUIDs) &&
                        Objects.equals(requestParameters, that.requestParameters) &&
                        Objects.equals(actionTargets, that.actionTargets) &&
                        Objects.equals(originatorServiceName, that.originatorServiceName) &&
@@ -284,7 +310,7 @@ public class InitiateGovernanceActionProcessRequestBody
     @Override
     public int hashCode()
     {
-        return Objects.hash(processQualifiedName, requestSourceGUIDs, requestParameters, actionTargets, startDate,
+        return Objects.hash(processQualifiedName, actionSourceGUIDs, requestParameters, actionTargets, startDate,
                             originatorServiceName, originatorEngineName);
     }
 }

@@ -10,7 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * MoveCopyFileRequestParameter provides some standard definitions for request parameters used to pass properties
+ * GenericFolderRequestParameter provides some standard definitions for request parameters used to pass properties
  * to governance actions when they run.  Using standard names for request parameters wherever necessary
  * helps to simplify the integration of governance services.
  */

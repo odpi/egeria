@@ -29,8 +29,9 @@ public interface ActionControlInterface
      * @param domainIdentifier governance domain associated with this action (0=ALL)
      * @param displayName display name for this action
      * @param description description for this action
-     * @param requestSourceGUIDs  request source elements for the resulting governance action service
-     * @param actionTargets list of action target names to GUIDs for the resulting governance action service
+     * @param actionSourceGUIDs  request source elements for the resulting engine action
+     * @param actionCauseGUIDs  request cause elements for the resulting engine action
+     * @param actionTargets list of action target names to GUIDs for the resulting engine action
      * @param receivedGuards list of guards to initiate the governance action
      * @param startTime future start time or null for "as soon as possible"
      * @param governanceEngineName name of the governance engine that should execute the request
@@ -51,7 +52,8 @@ public interface ActionControlInterface
                                 int                   domainIdentifier,
                                 String                displayName,
                                 String                description,
-                                List<String>          requestSourceGUIDs,
+                                List<String>          actionSourceGUIDs,
+                                List<String>          actionCauseGUIDs,
                                 List<NewActionTarget> actionTargets,
                                 List<String>          receivedGuards,
                                 Date                  startTime,
@@ -71,8 +73,9 @@ public interface ActionControlInterface
      *
      * @param userId caller's userId
      * @param governanceActionTypeQualifiedName unique name of the governance action type to use
-     * @param requestSourceGUIDs  request source elements for the resulting governance service
-     * @param actionTargets list of action target names to GUIDs for the resulting governance service
+     * @param actionSourceGUIDs  request source elements for the resulting engine action
+     * @param actionCauseGUIDs  request cause elements for the resulting engine action
+     * @param actionTargets list of action target names to GUIDs for the resulting engine action
      * @param startTime future start time or null for "as soon as possible".
      * @param requestParameters request properties to be passed to the engine action
      * @param originatorServiceName unique name of the requesting governance service (if initiated by a governance engine).
@@ -85,7 +88,8 @@ public interface ActionControlInterface
      */
     String initiateGovernanceActionType(String                userId,
                                         String                governanceActionTypeQualifiedName,
-                                        List<String>          requestSourceGUIDs,
+                                        List<String>          actionSourceGUIDs,
+                                        List<String>          actionCauseGUIDs,
                                         List<NewActionTarget> actionTargets,
                                         Date                  startTime,
                                         Map<String, String>   requestParameters,
@@ -100,8 +104,9 @@ public interface ActionControlInterface
      *
      * @param userId caller's userId
      * @param processQualifiedName unique name of the governance action process to use
-     * @param requestSourceGUIDs  request source elements for the resulting governance action service
-     * @param actionTargets map of action target names to GUIDs for the resulting governance action service
+     * @param actionSourceGUIDs  request source elements for the resulting engine action
+     * @param actionCauseGUIDs  request cause elements for the resulting engine action
+     * @param actionTargets list of action target names to GUIDs for the resulting engine action
      * @param startTime future start time or null for "as soon as possible"
      * @param requestParameters request properties to be passed to the first governance action
      * @param originatorServiceName unique name of the requesting governance service (if initiated by a governance engine).
@@ -114,7 +119,8 @@ public interface ActionControlInterface
      */
     String initiateGovernanceActionProcess(String                userId,
                                            String                processQualifiedName,
-                                           List<String>          requestSourceGUIDs,
+                                           List<String>          actionSourceGUIDs,
+                                           List<String>          actionCauseGUIDs,
                                            List<NewActionTarget> actionTargets,
                                            Date                  startTime,
                                            Map<String, String>   requestParameters,

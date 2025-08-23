@@ -41,7 +41,7 @@ public class GovernanceContextClientBase extends OpenGovernanceClientBase implem
     /**
      * Manages registered listeners
      */
-    protected       GovernanceListenerManager governanceListenerManager = null;
+    protected  GovernanceListenerManager governanceListenerManager = null;
     protected  String                    listenerId = null;
 
 

@@ -3,17 +3,30 @@
 package org.odpi.openmetadata.frameworks.openwatchdog;
 
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
+import org.odpi.openmetadata.frameworks.auditlog.MessageFormatter;
 import org.odpi.openmetadata.frameworks.auditlog.messagesets.AuditLogMessageDefinition;
+import org.odpi.openmetadata.frameworks.auditlog.messagesets.MessageDefinition;
+import org.odpi.openmetadata.frameworks.opengovernance.WatchdogGovernanceListener;
+import org.odpi.openmetadata.frameworks.opengovernance.client.GovernanceCompletionInterface;
+import org.odpi.openmetadata.frameworks.opengovernance.client.OpenGovernanceClient;
+import org.odpi.openmetadata.frameworks.opengovernance.client.WatchDogEventInterface;
 import org.odpi.openmetadata.frameworks.openmetadata.client.OpenMetadataClient;
 import org.odpi.openmetadata.frameworks.openmetadata.connectorcontext.ConnectorContextBase;
+import org.odpi.openmetadata.frameworks.openmetadata.enums.ActivityStatus;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.DeleteMethod;
+import org.odpi.openmetadata.frameworks.openmetadata.events.OpenMetadataEventType;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.frameworks.opengovernance.properties.ActionTargetElement;
 import org.odpi.openmetadata.frameworks.opengovernance.properties.CompletionStatus;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.OpenMetadataRootElement;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.NewActionTarget;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.processes.actions.NotificationProperties;
+import org.odpi.openmetadata.frameworks.openwatchdog.handlers.NotificationHandler;
 
+import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -22,25 +35,31 @@ import java.util.Map;
  * WatchdogContext provides a watchdog action service with access to information about
  * the survey request along with access to the open metadata repository interfaces.
  */
-public class WatchdogContext extends ConnectorContextBase
+public class WatchdogContext extends ConnectorContextBase implements WatchDogEventInterface
 {
-    private final String              notificationTypeGUID;
-    private final Map<String, String> requestParameters;
+    private final String                    notificationTypeGUID;
+    private final String                    requestType;
+    private final Map<String, String>       requestParameters;
     private final List<ActionTargetElement> actionTargetElements;
     private final String                    watchdogActionServiceName;
     private final String                    requesterUserId;
     private final AuditLog                  auditLog;
 
+    private final NotificationHandler notificationHandler;
+    private final MessageFormatter    messageFormatter = new MessageFormatter();
+
+
+    private final WatchDogEventInterface watchdogEventClient;
+    private final GovernanceCompletionInterface    governanceCompletionClient;
 
 
     /*
      * Values set by the watchdog action service for completion.
      */
     private CompletionStatus          completionStatus            = null;
-    private List<String>              completionGuards            = null;
-    private AuditLogMessageDefinition completionMessage           = null;
-    private Map<String, String>       completionRequestParameters = null;
-    private List<NewActionTarget>     completionActionTargets     = null;
+    private final String             engineActionGUID;
+
+
 
 
     /**
@@ -56,33 +75,43 @@ public class WatchdogContext extends ConnectorContextBase
      * @param connectorGUID unique identifier of the connector element that describes this connector in the open metadata store(s)
      * @param generateIntegrationReport should the context generate an integration report?
      * @param openMetadataClient client to access open metadata store
+     * @param openGovernanceClient client to the open governance services for use by the governance action service
+     * @param governanceCompletionClient client to the open governance services for use by the governance action service
+     * @param watchdogEventClient client to the open governance services for use by the governance action service
      * @param auditLog logging destination
      * @param maxPageSize max number of results
      * @param deleteMethod default delete method
+     * @param engineActionGUID unique identifier of the engine action that triggered this governance service
      * @param notificationTypeGUID unique identifier of the notification type to process
+     * @param requestType request type used to initiate the watchdog action service
      * @param requestParameters name-value properties to control the watchdog action service
      * @param actionTargetElements metadata elements that need to be worked on by the governance action service
      * @param watchdogActionServiceName name of the running service
      * @param requesterUserId original user requesting this governance service
      */
-    public WatchdogContext(String                     localServerName,
-                           String                     localServiceName,
-                           String                     externalSourceGUID,
-                           String                     externalSourceName,
-                           String                     connectorId,
-                           String                     connectorName,
-                           String                     connectorUserId,
-                           String                     connectorGUID,
-                           boolean                    generateIntegrationReport,
-                           OpenMetadataClient         openMetadataClient,
-                           AuditLog                   auditLog,
-                           int                        maxPageSize,
-                           DeleteMethod               deleteMethod,
-                           String                     notificationTypeGUID,
-                           Map<String, String>        requestParameters,
-                           List<ActionTargetElement>  actionTargetElements,
-                           String                     watchdogActionServiceName,
-                           String                     requesterUserId)
+    public WatchdogContext(String                        localServerName,
+                           String                        localServiceName,
+                           String                        externalSourceGUID,
+                           String                        externalSourceName,
+                           String                        connectorId,
+                           String                        connectorName,
+                           String                        connectorUserId,
+                           String                        connectorGUID,
+                           boolean                       generateIntegrationReport,
+                           OpenMetadataClient            openMetadataClient,
+                           OpenGovernanceClient          openGovernanceClient,
+                           GovernanceCompletionInterface governanceCompletionClient,
+                           WatchDogEventInterface        watchdogEventClient,
+                           AuditLog                      auditLog,
+                           int                           maxPageSize,
+                           DeleteMethod                  deleteMethod,
+                           String                        engineActionGUID,
+                           String                        notificationTypeGUID,
+                           String                        requestType,
+                           Map<String, String>           requestParameters,
+                           List<ActionTargetElement>     actionTargetElements,
+                           String                        watchdogActionServiceName,
+                           String                        requesterUserId)
     {
         super(localServerName,
               localServiceName,
@@ -98,12 +127,17 @@ public class WatchdogContext extends ConnectorContextBase
               maxPageSize,
               deleteMethod);
 
-        this.notificationTypeGUID      = notificationTypeGUID;
-        this.requestParameters         = requestParameters;
-        this.actionTargetElements      = actionTargetElements;
-        this.watchdogActionServiceName = watchdogActionServiceName;
-        this.requesterUserId           = requesterUserId;
-        this.auditLog                  = auditLog;
+        this.notificationHandler        = new NotificationHandler(localServerName, auditLog, localServiceName, openMetadataClient, openGovernanceClient);
+        this.notificationTypeGUID       = notificationTypeGUID;
+        this.governanceCompletionClient = governanceCompletionClient;
+        this.watchdogEventClient        = watchdogEventClient;
+        this.engineActionGUID           = engineActionGUID;
+        this.requestType                = requestType;
+        this.requestParameters          = requestParameters;
+        this.actionTargetElements       = actionTargetElements;
+        this.watchdogActionServiceName  = watchdogActionServiceName;
+        this.requesterUserId            = requesterUserId;
+        this.auditLog                   = auditLog;
     }
 
 
@@ -124,7 +158,242 @@ public class WatchdogContext extends ConnectorContextBase
 
 
     /**
-     * Return the properties that hold the parameters used to drive the watchdog action service's analysis.
+     * Return details of notification type to monitor along with its linked resources and subscribers, the actions it
+     * has caused and any additional context.
+     *
+     * @return string guid
+     * @throws InvalidParameterException an invalid property has been passed
+     * @throws UserNotAuthorizedException the user is not authorized or the connector is not active
+     * @throws PropertyServerException there is a problem communicating with the metadata server (or it has a logic error).
+     */
+    public OpenMetadataRootElement getNotificationType() throws UserNotAuthorizedException,
+                                                                InvalidParameterException,
+                                                                PropertyServerException
+    {
+        final String methodName = "getNotificationType";
+
+        validateIsActive(methodName);
+
+        if (notificationTypeGUID != null)
+        {
+            return this.governanceDefinitionClient.getGovernanceDefinitionByGUID(notificationTypeGUID,
+                                                                                 openMetadataStore.getQueryOptions());
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Register a listener to receive events about changes to metadata elements in the open metadata store.
+     * There can be only one registered listener.  If this method is called more than once, the new parameters
+     * replace the existing parameters.  This means the watchdog governance action service can change the
+     * listener and the parameters that control the types of events received while it is running.
+     * <br><br>
+     * The types of events passed to the listener are controlled by the combination of the interesting event types and
+     * the interesting metadata types.  That is an event is only passed to the listener if it matches both
+     * the interesting event types and the interesting metadata types.
+     * <br><br>
+     * If specific instance, interestingEventTypes or interestingMetadataTypes are null, it defaults to "any".
+     * If the listener parameter is null, no more events are passed to the listener.
+     * The type name specified in the interestingMetadataTypes refers to the subject of the event - so it is the type of the metadata element
+     * for metadata element types, the type of the relationship for related elements events and the name of the classification
+     * for classification events.
+     *
+     * @param listener listener object to receive events
+     * @param interestingEventTypes types of events that should be passed to the listener
+     * @param interestingMetadataTypes types of elements that are the subject of the interesting event types
+     * @param specificInstance unique identifier of a specific instance (metadata element or relationship) to watch for
+     *
+     * @throws InvalidParameterException one or more of the type names are unrecognized
+     */
+    @Override
+    public void registerListener(WatchdogGovernanceListener listener,
+                                 List<OpenMetadataEventType> interestingEventTypes,
+                                 List<String>                interestingMetadataTypes,
+                                 String                      specificInstance) throws InvalidParameterException
+    {
+        watchdogEventClient.registerListener(listener, interestingEventTypes, interestingMetadataTypes, specificInstance);
+    }
+
+
+    /**
+     * Unregister the listener permanently from the event infrastructure.
+     */
+    @Override
+    public void disconnectListener()
+    {
+        watchdogEventClient.disconnectListener();
+    }
+
+
+    /**
+     * Convert the message definitions into properties for a notification.  This includes setting
+     * the qualified name and status.
+     *
+     * @param notificationDescription description of the notification
+     * @return notification properties
+     */
+    public NotificationProperties getNotificationProperties(MessageDefinition notificationDescription)
+    {
+        NotificationProperties notificationProperties = new NotificationProperties();
+
+        notificationProperties.setQualifiedName(notificationProperties.getTypeName() + "::"  + connectorName + "::" + notificationTypeGUID + "::" + new Date());
+
+        if (notificationDescription != null)
+        {
+            notificationProperties.setActivityStatus(ActivityStatus.FOR_INFO);
+            notificationProperties.setDisplayName(messageFormatter.getFormattedMessage(notificationDescription));
+            notificationProperties.setSystemAction(notificationDescription.getSystemAction());
+            notificationProperties.setUserResponse(notificationDescription.getUserAction());
+        }
+
+        return  notificationProperties;
+    }
+
+
+    /**
+     * Return the unique identifier of the asset being discovered.
+     *
+     * @return string guid
+     * @throws InvalidParameterException an invalid property has been passed
+     * @throws UserNotAuthorizedException the user is not authorized or the connector is not active
+     * @throws PropertyServerException there is a problem communicating with the metadata server (or it has a logic error).
+     */
+    public List<OpenMetadataRootElement> getMonitoredResources() throws UserNotAuthorizedException,
+                                                                        InvalidParameterException,
+                                                                        PropertyServerException
+    {
+        final String methodName = "getMonitoredResources";
+
+        validateIsActive(methodName);
+
+        if (notificationTypeGUID != null)
+        {
+            return this.notificationHandler.getMonitoredResources(connectorUserId,
+                                                                  notificationTypeGUID,
+                                                                  openMetadataStore.getQueryOptions());
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Return the unique identifier of the asset being discovered.
+     *
+     * @return string guid
+     * @throws InvalidParameterException an invalid property has been passed
+     * @throws UserNotAuthorizedException the user is not authorized or the connector is not active
+     * @throws PropertyServerException there is a problem communicating with the metadata server (or it has a logic error).
+     */
+    public List<OpenMetadataRootElement> getNotificationSubscribers() throws UserNotAuthorizedException,
+                                                                             InvalidParameterException,
+                                                                             PropertyServerException
+    {
+        final String methodName = "getNotificationSubscribers";
+
+        validateIsActive(methodName);
+
+        if (notificationTypeGUID != null)
+        {
+            return this.notificationHandler.getNotificationSubscribers(connectorUserId,
+                                                                       notificationTypeGUID,
+                                                                       openMetadataStore.getQueryOptions());
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Create a notification/action for one of the subscribers.
+     *
+     * @param subscriberGUID unique identifier of the subscriber
+     * @param notificationProperties properties for the notification
+     * @param requestParameters properties to pass to the next governance service
+     * @param newActionTargets map of action target names to GUIDs for the resulting governance action service
+     *
+     * @throws InvalidParameterException the completion status is null
+     * @throws UserNotAuthorizedException the governance action service is not authorized to update the governance action service status
+     * @throws PropertyServerException there is a problem connecting to the metadata store
+     */
+    public void notifySubscriber(String                 subscriberGUID,
+                                 NotificationProperties notificationProperties,
+                                 Map<String, String>    requestParameters,
+                                 List<NewActionTarget>  newActionTargets)  throws InvalidParameterException,
+                                                                                  UserNotAuthorizedException,
+                                                                                  PropertyServerException
+    {
+        final String methodName = "notifySubscriber";
+
+        validateIsActive(methodName);
+
+
+        if (notificationTypeGUID != null)
+        {
+            this.notificationHandler.notifySubscriber(subscriberGUID,
+                                                      notificationTypeGUID,
+                                                      notificationProperties,
+                                                      notificationTypeGUID,
+                                                      requestParameters,
+                                                      connectorGUID,
+                                                      newActionTargets);
+        }
+    }
+
+
+    /**
+     * Create a notification/action for each of the subscribers.
+     *
+     * @param notificationProperties properties for the notification
+     * @param requestParameters properties to pass to the next governance service
+     * @param newActionTargets map of action target names to GUIDs for the resulting governance action service
+     *
+     * @throws InvalidParameterException the completion status is null
+     * @throws UserNotAuthorizedException the governance action service is not authorized to update the governance action service status
+     * @throws PropertyServerException there is a problem connecting to the metadata store
+     */
+    public void notifySubscribers(NotificationProperties notificationProperties,
+                                  Map<String, String>    requestParameters,
+                                  List<NewActionTarget>  newActionTargets)  throws InvalidParameterException,
+                                                                                  UserNotAuthorizedException,
+                                                                                  PropertyServerException
+    {
+        final String methodName = "notifySubscribers";
+
+        validateIsActive(methodName);
+
+        if (notificationTypeGUID != null)
+        {
+            this.notificationHandler.notifySubscribers(notificationTypeGUID,
+                                                       notificationProperties,
+                                                       notificationTypeGUID,
+                                                       requestParameters,
+                                                       connectorGUID,
+                                                       newActionTargets);
+        }
+    }
+
+
+    /**
+     * Return the request type that was used to start this watchdog action service.
+     *
+     * @return AdditionalProperties object storing the analysis parameters
+     * @throws UserNotAuthorizedException exception thrown if connector is no longer active
+     */
+    public String getRequestType() throws UserNotAuthorizedException
+    {
+        final String methodName = "getRequestType";
+
+        validateIsActive(methodName);
+
+        return requestType;
+    }
+
+
+    /**
+     * Return the properties that hold the parameters used to drive this watchdog action service.
      *
      * @return AdditionalProperties object storing the analysis parameters
      * @throws UserNotAuthorizedException exception thrown if connector is no longer active
@@ -162,30 +431,11 @@ public class WatchdogContext extends ConnectorContextBase
 
 
     /**
-     * Create a notification/action for each of the subscribers.
-     *
-     * @param requestParameters properties to pass to the next governance service
-     * @param newActionTargets map of action target names to GUIDs for the resulting governance action service
-     *
-     * @throws InvalidParameterException the completion status is null
-     * @throws UserNotAuthorizedException the governance action service is not authorized to update the governance action service status
-     * @throws PropertyServerException there is a problem connecting to the metadata store
-     */
-    public void notifySubscribers(Map<String, String>       requestParameters,
-                                  List<NewActionTarget>     newActionTargets)  throws InvalidParameterException,
-                                                                                      UserNotAuthorizedException,
-                                                                                      PropertyServerException
-    {
-        // todo
-    }
-
-
-    /**
      * Declare that all the processing for the governance service is finished and the status of the work.
      *
      * @param status completion status enum value
      * @param outputGuards optional guard strings for triggering subsequent action(s)
-     * @param requestParameters properties to pass to the next governance service
+     * @param newRequestParameters properties to pass to the next governance service
      * @param newActionTargets map of action target names to GUIDs for the resulting governance action service
      * @param completionMessage message to describe completion results or reasons for failure
      *
@@ -195,17 +445,74 @@ public class WatchdogContext extends ConnectorContextBase
      */
     public void recordCompletionStatus(CompletionStatus          status,
                                        List<String>              outputGuards,
-                                       Map<String, String>       requestParameters,
+                                       Map<String, String>       newRequestParameters,
                                        List<NewActionTarget>     newActionTargets,
                                        AuditLogMessageDefinition completionMessage) throws InvalidParameterException,
                                                                                            UserNotAuthorizedException,
                                                                                            PropertyServerException
     {
+        if (completionMessage != null)
+        {
+            this.recordCompletionStatus(status,
+                                        outputGuards,
+                                        newRequestParameters,
+                                        newActionTargets,
+                                        messageFormatter.getFormattedMessage(completionMessage));
+        }
+        else
+        {
+            this.recordCompletionStatus(status,
+                                        outputGuards,
+                                        newRequestParameters,
+                                        newActionTargets,
+                                        (String) null);
+        }
+    }
+
+
+    /**
+     * Declare that all the processing for the governance action service is finished and the status of the work.
+     *
+     * @param status completion status enum value
+     * @param outputGuards optional guard strings for triggering subsequent action(s)
+     * @param newRequestParameters additional request parameters.  These override/augment any request parameters defined for the next invoked service
+     * @param newActionTargets list of action target names to GUIDs for the resulting governance action service
+     * @param completionMessage message to describe completion results or reasons for failure
+     *
+     * @throws InvalidParameterException the completion status is null
+     * @throws UserNotAuthorizedException the governance action service is not authorized to update the governance
+     *                                     action service completion status
+     * @throws PropertyServerException there is a problem connecting to the metadata store
+     */
+    public  void recordCompletionStatus(CompletionStatus      status,
+                                        List<String>          outputGuards,
+                                        Map<String, String>   newRequestParameters,
+                                        List<NewActionTarget> newActionTargets,
+                                        String                completionMessage) throws InvalidParameterException,
+                                                                                        UserNotAuthorizedException,
+                                                                                        PropertyServerException
+    {
         this.completionStatus = status;
-        this.completionGuards = outputGuards;
-        this.completionRequestParameters = requestParameters;
-        this.completionActionTargets = newActionTargets;
-        this.completionMessage = completionMessage;
+
+        Map<String, String> combinedRequestParameters = new HashMap<>();
+
+        if (requestParameters != null)
+        {
+            combinedRequestParameters.putAll(requestParameters);
+        }
+
+        if (newRequestParameters != null)
+        {
+            combinedRequestParameters.putAll(newRequestParameters);
+        }
+
+        governanceCompletionClient.recordCompletionStatus(connectorUserId,
+                                                          engineActionGUID,
+                                                          combinedRequestParameters,
+                                                          status,
+                                                          outputGuards,
+                                                          newActionTargets,
+                                                          completionMessage);
     }
 
 
@@ -232,52 +539,6 @@ public class WatchdogContext extends ConnectorContextBase
 
 
     /**
-     * Return the guards provided by the watchdog action service.  If these are null then a standard
-     * guard (eg SURVEY_INVALID, SURVEY_COMPLETE, SURVEY_FAILED) is used
-     *
-     * @return list of strings
-     */
-    public List<String> getCompletionGuards()
-    {
-        return completionGuards;
-    }
-
-
-    /**
-     * Return the populated message to act as the completion message.
-     *
-     * @return audit log message definition
-     */
-    public AuditLogMessageDefinition getCompletionMessage()
-    {
-        return completionMessage;
-    }
-
-
-    /**
-     * Return any new request parameters for downstream governance actions.
-     *
-     * @return map of request parameter name to request parameter value
-     */
-    public Map<String, String> getCompletionRequestParameters()
-    {
-        return completionRequestParameters;
-    }
-
-
-    /**
-     * Return any additional action targets that should be made available to downstream governance actions.
-     * This is in addition to the actual survey report.
-     *
-     * @return list of new action targets
-     */
-    public List<NewActionTarget> getCompletionActionTargets()
-    {
-        return completionActionTargets;
-    }
-
-
-    /**
      * Standard toString method.
      *
      * @return print out of variables in a JSON-style
@@ -293,10 +554,6 @@ public class WatchdogContext extends ConnectorContextBase
                 ", requesterUserId='" + requesterUserId + '\'' +
                 ", auditLog=" + auditLog +
                 ", completionStatus=" + completionStatus +
-                ", completionGuards=" + completionGuards +
-                ", completionMessage=" + completionMessage +
-                ", completionRequestParameters=" + completionRequestParameters +
-                ", completionActionTargets=" + completionActionTargets +
                 "} " + super.toString();
     }
 }

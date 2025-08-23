@@ -27,7 +27,6 @@ public class FeedbackManagerInstance extends OMVSServiceInstance
     private final ViewServiceClientMap<CommentHandler>     commentMap;
     private final ViewServiceClientMap<InformalTagHandler> informalTagMap;
     private final ViewServiceClientMap<NoteLogHandler>     noteLogMap;
-    private final ViewServiceClientMap<NoteEntryHandler>   noteEntryMap;
 
 
     /**
@@ -104,15 +103,6 @@ public class FeedbackManagerInstance extends OMVSServiceInstance
                                                      activeViewServices,
                                                      myDescription.getViewServiceFullName(),
                                                      maxPageSize);
-
-        this.noteEntryMap = new ViewServiceClientMap<>(NoteEntryHandler.class,
-                                                       serverName,
-                                                       localServerUserId,
-                                                       localServerUserPassword,
-                                                       auditLog,
-                                                       activeViewServices,
-                                                       myDescription.getViewServiceFullName(),
-                                                       maxPageSize);
     }
 
 
@@ -198,22 +188,5 @@ public class FeedbackManagerInstance extends OMVSServiceInstance
                                                                       PropertyServerException
     {
         return noteLogMap.getClient(urlMarker, methodName);
-    }
-
-
-    /**
-     * Return the open metadata handler.
-     *
-     * @param urlMarker calling view service
-     * @param methodName calling operation
-     * @return client
-     * @throws InvalidParameterException bad client initialization
-     * @throws PropertyServerException bad client handler class
-     */
-    public NoteEntryHandler getNoteEntryHandler(String urlMarker,
-                                                String methodName) throws InvalidParameterException,
-                                                                          PropertyServerException
-    {
-        return noteEntryMap.getClient(urlMarker, methodName);
     }
 }

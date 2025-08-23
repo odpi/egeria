@@ -196,8 +196,9 @@ public  class StewardshipAction extends ConnectorContextClientBase
      * @param domainIdentifier governance domain associated with this action (0=ALL)
      * @param displayName display name for this action
      * @param description description for this action
-     * @param requestSourceGUIDs  request source elements for the resulting governance service
-     * @param actionTargets list of action target names to GUIDs for the resulting governance service
+     * @param actionSourceGUIDs  request source elements for the resulting engine action
+     * @param actionCauseGUIDs  request cause elements for the resulting engine action
+     * @param actionTargets list of action target names to GUIDs for the resulting engine action
      * @param receivedGuards list of guards to initiate the engine action
      * @param startTime future start time or null for "as soon as possible"
      * @param governanceEngineName name of the governance engine that should execute the request
@@ -217,7 +218,8 @@ public  class StewardshipAction extends ConnectorContextClientBase
                                        int                   domainIdentifier,
                                        String                displayName,
                                        String                description,
-                                       List<String>          requestSourceGUIDs,
+                                       List<String>          actionSourceGUIDs,
+                                       List<String>          actionCauseGUIDs,
                                        List<NewActionTarget> actionTargets,
                                        List<String>          receivedGuards,
                                        Date                  startTime,
@@ -231,7 +233,7 @@ public  class StewardshipAction extends ConnectorContextClientBase
                                                                                           UserNotAuthorizedException,
                                                                                           PropertyServerException
     {
-        return actionControlInterface.initiateEngineAction(userId, qualifiedName, domainIdentifier, displayName, description, requestSourceGUIDs, actionTargets, receivedGuards, startTime, governanceEngineName, requestType, requestParameters, processName, requestSourceName, originatorServiceName, originatorEngineName);
+        return actionControlInterface.initiateEngineAction(userId, qualifiedName, domainIdentifier, displayName, description, actionSourceGUIDs, actionCauseGUIDs, actionTargets, receivedGuards, startTime, governanceEngineName, requestType, requestParameters, processName, requestSourceName, originatorServiceName, originatorEngineName);
     }
 
 
@@ -239,8 +241,9 @@ public  class StewardshipAction extends ConnectorContextClientBase
      * Using the named governance action type as a template, initiate an engine action.
      *
      * @param governanceActionTypeQualifiedName unique name of the governance action type to use
-     * @param requestSourceGUIDs  request source elements for the resulting governance service
-     * @param actionTargets list of action target names to GUIDs for the resulting governance service
+     * @param actionSourceGUIDs  request source elements for the resulting engine action
+     * @param actionCauseGUIDs  request cause elements for the resulting engine action
+     * @param actionTargets list of action target names to GUIDs for the resulting engine action
      * @param startTime future start time or null for "as soon as possible".
      * @param requestParameters request properties to be passed to the engine action
      * @param originatorServiceName unique name of the requesting governance service (if initiated by a governance engine).
@@ -252,7 +255,8 @@ public  class StewardshipAction extends ConnectorContextClientBase
      * @throws PropertyServerException there is a problem with the metadata store
      */
     public String initiateGovernanceActionType(String                governanceActionTypeQualifiedName,
-                                               List<String>          requestSourceGUIDs,
+                                               List<String>          actionSourceGUIDs,
+                                               List<String>          actionCauseGUIDs,
                                                List<NewActionTarget> actionTargets,
                                                Date                  startTime,
                                                Map<String, String>   requestParameters,
@@ -261,7 +265,7 @@ public  class StewardshipAction extends ConnectorContextClientBase
                                                                                                   UserNotAuthorizedException,
                                                                                                   PropertyServerException
     {
-        return actionControlInterface.initiateGovernanceActionType(userId, governanceActionTypeQualifiedName, requestSourceGUIDs, actionTargets, startTime, requestParameters, originatorServiceName, originatorEngineName);
+        return actionControlInterface.initiateGovernanceActionType(userId, governanceActionTypeQualifiedName, actionSourceGUIDs, actionCauseGUIDs, actionTargets, startTime, requestParameters, originatorServiceName, originatorEngineName);
     }
 
 
@@ -269,8 +273,9 @@ public  class StewardshipAction extends ConnectorContextClientBase
      * Using the named governance action process as a template, initiate a chain of engine actions.
      *
      * @param processQualifiedName unique name of the governance action process to use
-     * @param requestSourceGUIDs  request source elements for the resulting governance service
-     * @param actionTargets list of action target names to GUIDs for the resulting governance service
+     * @param actionSourceGUIDs  request source elements for the resulting engine action
+     * @param actionCauseGUIDs  request cause elements for the resulting engine action
+     * @param actionTargets list of action target names to GUIDs for the resulting engine action
      * @param startTime future start time or null for "as soon as possible".
      * @param requestParameters request properties to be passed to the first engine action
      * @param originatorServiceName unique name of the requesting governance service (if initiated by a governance engine).
@@ -282,7 +287,8 @@ public  class StewardshipAction extends ConnectorContextClientBase
      * @throws PropertyServerException there is a problem with the metadata store
      */
     public String initiateGovernanceActionProcess(String                processQualifiedName,
-                                                  List<String>          requestSourceGUIDs,
+                                                  List<String>          actionSourceGUIDs,
+                                                  List<String>          actionCauseGUIDs,
                                                   List<NewActionTarget> actionTargets,
                                                   Date                  startTime,
                                                   Map<String, String>   requestParameters,
@@ -291,7 +297,7 @@ public  class StewardshipAction extends ConnectorContextClientBase
                                                                                                      UserNotAuthorizedException,
                                                                                                      PropertyServerException
     {
-        return actionControlInterface.initiateGovernanceActionProcess(userId, processQualifiedName, requestSourceGUIDs, actionTargets, startTime, requestParameters, originatorServiceName, originatorEngineName);
+        return actionControlInterface.initiateGovernanceActionProcess(userId, processQualifiedName, actionSourceGUIDs, actionCauseGUIDs, actionTargets, startTime, requestParameters, originatorServiceName, originatorEngineName);
     }
 
 

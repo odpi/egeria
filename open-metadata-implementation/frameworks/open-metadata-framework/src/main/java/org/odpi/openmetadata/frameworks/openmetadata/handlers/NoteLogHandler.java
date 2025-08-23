@@ -148,7 +148,6 @@ public class NoteLogHandler extends OpenMetadataHandlerBase
 
     /**
      * Retrieve the list of note log metadata elements that contain the search string.
-     * The search string is treated as a regular expression.
      *
      * @param userId calling user
      * @param searchString string to find in the properties
@@ -260,5 +259,37 @@ public class NoteLogHandler extends OpenMetadataHandlerBase
         final String methodName = "getNoteLogByGUID";
 
         return super.getRootElementByGUID(userId, noteLogGUID, getOptions, methodName);
+    }
+
+
+    /**
+     * Retrieve the list of note log metadata elements attached to the element.
+     *
+     * @param userId calling user
+     * @param noteLogGUID element to start from
+     * @param queryOptions multiple options to control the query
+     *
+     * @return list of matching metadata elements
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public List<OpenMetadataRootElement> getNotesForNoteLog(String       userId,
+                                                            String       noteLogGUID,
+                                                            QueryOptions queryOptions) throws InvalidParameterException,
+                                                                                                 UserNotAuthorizedException,
+                                                                                                 PropertyServerException
+    {
+        final String methodName = "getNotesForNoteLog";
+        final String guidParameterName = "noteLogGUID";
+
+        return super.getRelatedRootElements(userId,
+                                            noteLogGUID,
+                                            guidParameterName,
+                                            1,
+                                            OpenMetadataType.ATTACHED_NOTE_LOG_ENTRY_RELATIONSHIP.typeName,
+                                            queryOptions,
+                                            methodName);
     }
 }

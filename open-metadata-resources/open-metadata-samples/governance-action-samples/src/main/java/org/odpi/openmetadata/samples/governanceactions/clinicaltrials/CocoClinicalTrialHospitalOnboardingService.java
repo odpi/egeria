@@ -1043,6 +1043,7 @@ public class CocoClinicalTrialHospitalOnboardingService extends CocoClinicalTria
         actionTargets.add(newActionTarget);
         governanceContext.initiateGovernanceActionType(governanceActionTypeName,
                                                        null,
+                                                       null,
                                                        actionTargets,
                                                        null,
                                                        requestParameters,

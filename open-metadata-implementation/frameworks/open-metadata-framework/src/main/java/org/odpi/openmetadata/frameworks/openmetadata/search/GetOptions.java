@@ -26,6 +26,7 @@ public class GetOptions extends BasicOptions
     private List<String> metadataElementSubtypeNames   = null;
     private List<String> skipRelationships             = null;
     private List<String> includeOnlyRelationships      = null;
+    private int          relationshipsPageSize         = 50;
     private List<String> skipClassifiedElements        = null;
     private List<String> includeOnlyClassifiedElements = null;
     private int          graphQueryDepth               = 5;
@@ -55,6 +56,7 @@ public class GetOptions extends BasicOptions
             metadataElementSubtypeNames   = template.getMetadataElementSubtypeNames();
             skipRelationships             = template.getSkipRelationships();
             includeOnlyRelationships      = template.getIncludeOnlyRelationships();
+            relationshipsPageSize         = template.getRelationshipsPageSize();
             skipClassifiedElements        = template.getSkipClassifiedElements();
             includeOnlyClassifiedElements = template.getIncludeOnlyClassifiedElements();
             graphQueryDepth               = template.getGraphQueryDepth();
@@ -189,6 +191,28 @@ public class GetOptions extends BasicOptions
 
 
     /**
+     * Return the maximum number of relationships of a particular kind that can be returned with this element.
+     *
+     * @return int
+     */
+    public int getRelationshipsPageSize()
+    {
+        return relationshipsPageSize;
+    }
+
+
+    /**
+     * Set up the maximum number of relationships of a particular kind that can be returned with this element.
+     *
+     * @param relationshipsPageSize int
+     */
+    public void setRelationshipsPageSize(int relationshipsPageSize)
+    {
+        this.relationshipsPageSize = relationshipsPageSize;
+    }
+
+
+    /**
      * Return the list of classification names that should not be found on any returned elements. The default
      * is null which means that the classifications of an element do not add additional filters for the results.
      *
@@ -269,13 +293,16 @@ public class GetOptions extends BasicOptions
         return "GetOptions{" +
                 "asOfTime=" + asOfTime +
                 ", metadataElementTypeName='" + metadataElementTypeName + '\'' +
+                ", metadataElementSubtypeNames=" + metadataElementSubtypeNames +
                 ", skipRelationships=" + skipRelationships +
                 ", includeOnlyRelationships=" + includeOnlyRelationships +
+                ", relationshipsPageSize=" + relationshipsPageSize +
                 ", skipClassifiedElements=" + skipClassifiedElements +
                 ", includeOnlyClassifiedElements=" + includeOnlyClassifiedElements +
                 ", graphQueryDepth=" + graphQueryDepth +
                 "} " + super.toString();
     }
+
 
 
     /**
@@ -297,6 +324,7 @@ public class GetOptions extends BasicOptions
                 Objects.equals(metadataElementSubtypeNames, that.metadataElementSubtypeNames) &&
                 Objects.equals(skipRelationships, that.skipRelationships) &&
                 Objects.equals(includeOnlyRelationships, that.includeOnlyRelationships) &&
+                Objects.equals(relationshipsPageSize, that.relationshipsPageSize) &&
                 Objects.equals(skipClassifiedElements, that.skipClassifiedElements) &&
                 Objects.equals(includeOnlyClassifiedElements, that.includeOnlyClassifiedElements);
     }
@@ -309,6 +337,6 @@ public class GetOptions extends BasicOptions
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), asOfTime, metadataElementTypeName, metadataElementSubtypeNames, skipRelationships, includeOnlyRelationships, skipClassifiedElements, includeOnlyClassifiedElements, graphQueryDepth);
+        return Objects.hash(super.hashCode(), asOfTime, metadataElementTypeName, metadataElementSubtypeNames, skipRelationships, includeOnlyRelationships, relationshipsPageSize, skipClassifiedElements, includeOnlyClassifiedElements, graphQueryDepth);
     }
 }

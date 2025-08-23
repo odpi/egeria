@@ -603,7 +603,10 @@ public class MyProfileRESTServices extends TokenController
             }
             else
             {
-                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
+                response.setElements(handler.findProcesses(userId,
+                                                           null,
+                                                           null,
+                                                           null));
             }
         }
         catch (Throwable error)

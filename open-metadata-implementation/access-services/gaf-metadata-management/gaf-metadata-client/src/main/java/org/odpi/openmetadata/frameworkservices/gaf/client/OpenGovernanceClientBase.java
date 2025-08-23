@@ -104,8 +104,9 @@ public class OpenGovernanceClientBase extends OpenGovernanceClient
      * @param domainIdentifier governance domain associated with this action (0=ALL)
      * @param displayName display name for this action
      * @param description description for this action
-     * @param requestSourceGUIDs  request source elements for the resulting governance service
-     * @param actionTargets list of action target names to GUIDs for the resulting governance service
+     * @param actionSourceGUIDs  request source elements for the resulting engine action
+     * @param actionCauseGUIDs  request cause elements for the resulting engine action
+     * @param actionTargets list of action target names to GUIDs for the resulting engine action
      * @param receivedGuards list of guards to initiate the engine action
      * @param startTime future start time or null for "as soon as possible"
      * @param governanceEngineName name of the governance engine that should execute the request
@@ -127,7 +128,8 @@ public class OpenGovernanceClientBase extends OpenGovernanceClient
                                        int                   domainIdentifier,
                                        String                displayName,
                                        String                description,
-                                       List<String>          requestSourceGUIDs,
+                                       List<String>          actionSourceGUIDs,
+                                       List<String>          actionCauseGUIDs,
                                        List<NewActionTarget> actionTargets,
                                        List<String>          receivedGuards,
                                        Date                  startTime,
@@ -156,7 +158,8 @@ public class OpenGovernanceClientBase extends OpenGovernanceClient
         requestBody.setDomainIdentifier(domainIdentifier);
         requestBody.setDisplayName(displayName);
         requestBody.setDescription(description);
-        requestBody.setRequestSourceGUIDs(requestSourceGUIDs);
+        requestBody.setActionSourceGUIDs(actionSourceGUIDs);
+        requestBody.setActionCauseGUIDs(actionCauseGUIDs);
         requestBody.setActionTargets(actionTargets);
         requestBody.setReceivedGuards(receivedGuards);
         requestBody.setStartDate(startTime);
@@ -184,8 +187,9 @@ public class OpenGovernanceClientBase extends OpenGovernanceClient
      *
      * @param userId caller's userId
      * @param governanceActionTypeQualifiedName unique name of the governance action type to use
-     * @param requestSourceGUIDs  request source elements for the resulting governance service
-     * @param actionTargets list of action target names to GUIDs for the resulting governance service
+     * @param actionSourceGUIDs  request source elements for the resulting engine action
+     * @param actionCauseGUIDs  request cause elements for the resulting engine action
+     * @param actionTargets list of action target names to GUIDs for the resulting engine action
      * @param startTime future start time or null for "as soon as possible".
      * @param requestParameters request properties to be passed to the engine action
      * @param originatorServiceName unique name of the requesting governance service (if initiated by a governance engine).
@@ -199,7 +203,8 @@ public class OpenGovernanceClientBase extends OpenGovernanceClient
     @Override
     public String initiateGovernanceActionType(String                userId,
                                                String                governanceActionTypeQualifiedName,
-                                               List<String>          requestSourceGUIDs,
+                                               List<String>          actionSourceGUIDs,
+                                               List<String>          actionCauseGUIDs,
                                                List<NewActionTarget> actionTargets,
                                                Date                  startTime,
                                                Map<String, String>   requestParameters,
@@ -218,7 +223,8 @@ public class OpenGovernanceClientBase extends OpenGovernanceClient
         InitiateGovernanceActionTypeRequestBody requestBody = new InitiateGovernanceActionTypeRequestBody();
 
         requestBody.setGovernanceActionTypeQualifiedName(governanceActionTypeQualifiedName);
-        requestBody.setRequestSourceGUIDs(requestSourceGUIDs);
+        requestBody.setActionSourceGUIDs(actionSourceGUIDs);
+        requestBody.setActionCauseGUIDs(actionCauseGUIDs);
         requestBody.setActionTargets(actionTargets);
         requestBody.setStartDate(startTime);
         requestBody.setRequestParameters(requestParameters);
@@ -241,8 +247,9 @@ public class OpenGovernanceClientBase extends OpenGovernanceClient
      *
      * @param userId caller's userId
      * @param processQualifiedName unique name of the governance action process to use
-     * @param requestSourceGUIDs  request source elements for the resulting governance service
-     * @param actionTargets list of action target names to GUIDs for the resulting governance service
+     * @param actionSourceGUIDs  request source elements for the resulting engine action
+     * @param actionCauseGUIDs  request cause elements for the resulting engine action
+     * @param actionTargets list of action target names to GUIDs for the resulting engine action
      * @param startTime future start time or null for "as soon as possible".
      * @param requestParameters request properties to be passed to the first engine action
      * @param originatorServiceName unique name of the requesting governance service (if initiated by a governance engine).
@@ -256,7 +263,8 @@ public class OpenGovernanceClientBase extends OpenGovernanceClient
     @Override
     public String initiateGovernanceActionProcess(String                userId,
                                                   String                processQualifiedName,
-                                                  List<String>          requestSourceGUIDs,
+                                                  List<String>          actionSourceGUIDs,
+                                                  List<String>          actionCauseGUIDs,
                                                   List<NewActionTarget> actionTargets,
                                                   Date                  startTime,
                                                   Map<String, String>   requestParameters,
@@ -275,7 +283,8 @@ public class OpenGovernanceClientBase extends OpenGovernanceClient
         InitiateGovernanceActionProcessRequestBody requestBody = new InitiateGovernanceActionProcessRequestBody();
 
         requestBody.setProcessQualifiedName(processQualifiedName);
-        requestBody.setRequestSourceGUIDs(requestSourceGUIDs);
+        requestBody.setActionSourceGUIDs(actionSourceGUIDs);
+        requestBody.setActionCauseGUIDs(actionCauseGUIDs);
         requestBody.setActionTargets(actionTargets);
         requestBody.setStartDate(startTime);
         requestBody.setRequestParameters(requestParameters);

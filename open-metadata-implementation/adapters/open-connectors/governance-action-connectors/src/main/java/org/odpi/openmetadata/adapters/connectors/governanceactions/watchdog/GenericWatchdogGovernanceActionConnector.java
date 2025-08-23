@@ -379,6 +379,7 @@ public abstract class GenericWatchdogGovernanceActionConnector extends GeneralGo
                 governanceContext.initiateGovernanceActionProcess(processName,
                                                                   requestParameters,
                                                                   null,
+                                                                  null,
                                                                   actionTargets,
                                                                   null);
             }

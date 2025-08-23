@@ -355,7 +355,7 @@ public class OpenMetadataTypesArchive5_0
 
 
     /**
-     * Add PersonalProject classification to allow people to use projects to organize their work.
+     * Add PersonalProjectProperties classification to allow people to use projects to organize their work.
      *
      * @return classification def
      */

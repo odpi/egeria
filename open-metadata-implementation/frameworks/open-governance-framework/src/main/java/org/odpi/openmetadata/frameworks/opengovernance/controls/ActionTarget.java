@@ -50,12 +50,21 @@ public enum ActionTarget
               null),
 
     /**
-     * A newly created Asset (or a subtype of).
+     * A newly prepared Notification Type.
      */
-    NEW_NOTIFICATION_TYPE("newNotificationType",
-              "A newly prepared Notification Type.",
-              OpenMetadataType.ASSET.typeName,
-              null),
+    NOTIFICATION_TYPE("notificationType",
+                      "A Notification Type ready for monitoring.",
+                      OpenMetadataType.ASSET.typeName,
+                      null),
+
+
+    /**
+     * A recently changed metadata element.
+     */
+    CHANGED_ELEMENT("changedElement",
+                          "A recently changed metadata element.",
+                          OpenMetadataType.OPEN_METADATA_ROOT.typeName,
+                          null),
 
 
     /**

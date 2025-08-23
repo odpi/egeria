@@ -5,15 +5,16 @@ package org.odpi.openmetadata.engineservices.watchdogaction.handlers;
 
 import org.odpi.openmetadata.adminservices.configuration.properties.EngineConfig;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
-import org.odpi.openmetadata.frameworks.connectors.client.ConnectedAssetClient;
+import org.odpi.openmetadata.frameworks.opengovernance.client.OpenGovernanceClient;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
-import org.odpi.openmetadata.frameworks.openmetadata.client.OpenMetadataClient;
-import org.odpi.openmetadata.frameworkservices.ocf.metadatamanagement.client.EgeriaConnectedAssetClient;
+import org.odpi.openmetadata.frameworkservices.gaf.client.EgeriaOpenGovernanceClient;
+import org.odpi.openmetadata.frameworkservices.gaf.client.GovernanceConfigurationClient;
+import org.odpi.openmetadata.frameworkservices.gaf.client.GovernanceContextClient;
+import org.odpi.openmetadata.frameworkservices.gaf.client.rest.GAFRESTClient;
 import org.odpi.openmetadata.frameworkservices.omf.client.EgeriaOpenMetadataStoreClient;
 import org.odpi.openmetadata.governanceservers.enginehostservices.admin.GovernanceEngineHandler;
 import org.odpi.openmetadata.governanceservers.enginehostservices.registration.GovernanceEngineHandlerFactory;
-import org.odpi.openmetadata.frameworkservices.gaf.client.GovernanceConfigurationClient;
-import org.odpi.openmetadata.frameworkservices.gaf.client.GovernanceContextClient;
+
 /**
  * GovernanceEngineHandler factory class for the Watchdog Action OMES.
  */
@@ -48,13 +49,23 @@ public class WatchdogActionEngineHandlerFactory extends GovernanceEngineHandlerF
     {
         if (engineConfig != null)
         {
-            OpenMetadataClient   openMetadataClient;
+            GovernanceContextClient       governanceContextClient;
+            OpenGovernanceClient          openGovernanceClient;
+            EgeriaOpenMetadataStoreClient openMetadataClient;
+            GAFRESTClient                 restClient;
 
-            if (localServerPassword == null)
+            if ((localServerName != null) && (localServerPassword != null))
             {
                 openMetadataClient = new EgeriaOpenMetadataStoreClient(partnerServerName,
                                                                        partnerURLRoot,
                                                                        maxPageSize);
+                openGovernanceClient = new EgeriaOpenGovernanceClient(partnerServerName,
+                                                                      partnerURLRoot,
+                                                                      maxPageSize);
+                restClient = new GAFRESTClient(partnerServerName,
+                                               partnerURLRoot,
+                                               localServerUserId,
+                                               localServerPassword);
             }
             else
             {
@@ -63,14 +74,28 @@ public class WatchdogActionEngineHandlerFactory extends GovernanceEngineHandlerF
                                                                        localServerUserId,
                                                                        localServerPassword,
                                                                        maxPageSize);
+                openGovernanceClient = new EgeriaOpenGovernanceClient(partnerServerName,
+                                                                      partnerURLRoot,
+                                                                      localServerUserId,
+                                                                      localServerPassword,
+                                                                      maxPageSize);
+                restClient = new GAFRESTClient(partnerServerName, partnerURLRoot);
             }
+
+            governanceContextClient = new GovernanceContextClient(partnerServerName,
+                                                                  partnerURLRoot,
+                                                                  restClient,
+                                                                  maxPageSize);
 
             return new WatchdogActionEngineHandler(engineConfig,
                                                    localServerName,
+                                                   partnerServerName,
+                                                   partnerURLRoot,
                                                    localServerUserId,
+                                                   openMetadataClient,
                                                    configurationClient,
                                                    serverClient,
-                                                   openMetadataClient,
+                                                   governanceContextClient,
                                                    auditLog,
                                                    maxPageSize);
         }

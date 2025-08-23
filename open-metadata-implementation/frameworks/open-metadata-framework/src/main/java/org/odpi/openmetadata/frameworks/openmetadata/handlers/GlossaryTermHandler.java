@@ -670,7 +670,6 @@ public class GlossaryTermHandler extends OpenMetadataHandlerBase
     /**
      * Retrieve the list of glossary terms metadata elements that contain the search string and show which solution components (if any) are attached to it.
      * The returned glossary terms include a list of the components that are associated with it.
-     * The search string is treated as a regular expression.
      *
      * @param userId                 calling user
      * @param searchString           string to find in the properties

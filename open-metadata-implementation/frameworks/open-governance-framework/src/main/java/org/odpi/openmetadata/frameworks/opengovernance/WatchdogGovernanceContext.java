@@ -64,8 +64,9 @@ public interface WatchdogGovernanceContext extends GovernanceContext
      * @param domainIdentifier governance domain associated with this action (0=ALL)
      * @param displayName display name for this action
      * @param description description for this action
-     * @param requestSourceGUIDs  request source elements for the resulting governance action service
-     * @param actionTargets map of action target names to GUIDs for the resulting governance action service
+     * @param actionSourceGUIDs  request source elements for the resulting engine action
+     * @param actionCauseGUIDs  request cause elements for the resulting engine action
+     * @param actionTargets list of action target names to GUIDs for the resulting engine action
      * @param startTime future start time or null for "as soon as possible".
      * @param governanceEngineName name of the governance engine to run the request
      * @param requestType request type to identify the governance action service to run
@@ -81,7 +82,8 @@ public interface WatchdogGovernanceContext extends GovernanceContext
                                 int                   domainIdentifier,
                                 String                displayName,
                                 String                description,
-                                List<String>          requestSourceGUIDs,
+                                List<String>          actionSourceGUIDs,
+                                List<String>          actionCauseGUIDs,
                                 List<NewActionTarget> actionTargets,
                                 Date                  startTime,
                                 String                governanceEngineName,
@@ -100,8 +102,9 @@ public interface WatchdogGovernanceContext extends GovernanceContext
      * @param domainIdentifier governance domain associated with this action (0=ALL)
      * @param displayName display name for this action
      * @param description description for this action
-     * @param requestSourceGUIDs  request source elements for the resulting governance action service
-     * @param actionTargets map of action target names to GUIDs for the resulting governance action service
+     * @param actionSourceGUIDs  request source elements for the resulting engine action
+     * @param actionCauseGUIDs  request cause elements for the resulting engine action
+     * @param actionTargets list of action target names to GUIDs for the resulting engine action
      * @param startTime future start time or null for "as soon as possible".
      * @param governanceEngineName name of the governance engine to run the request
      * @param requestType request type to identify the governance action service to run
@@ -118,7 +121,8 @@ public interface WatchdogGovernanceContext extends GovernanceContext
                                 int                   domainIdentifier,
                                 String                displayName,
                                 String                description,
-                                List<String>          requestSourceGUIDs,
+                                List<String>          actionSourceGUIDs,
+                                List<String>          actionCauseGUIDs,
                                 List<NewActionTarget> actionTargets,
                                 Date                  startTime,
                                 String                governanceEngineName,
@@ -132,8 +136,9 @@ public interface WatchdogGovernanceContext extends GovernanceContext
      * Using the named governance action type as a template, initiate an engine action.
      *
      * @param governanceActionTypeQualifiedName unique name of the governance action type to use
-     * @param requestSourceGUIDs  request source elements for the resulting governance service
-     * @param actionTargets list of action target names to GUIDs for the resulting governance service
+     * @param actionSourceGUIDs  request source elements for the resulting engine action
+     * @param actionCauseGUIDs  request cause elements for the resulting engine action
+     * @param actionTargets list of action target names to GUIDs for the resulting engine action
      * @param startTime future start time or null for "as soon as possible".
      * @param requestParameters request properties to be passed to the engine action
      * @param originatorServiceName unique name of the requesting governance service (if initiated by a governance engine).
@@ -145,7 +150,8 @@ public interface WatchdogGovernanceContext extends GovernanceContext
      * @throws PropertyServerException there is a problem with the metadata store
      */
     String initiateGovernanceActionType(String                governanceActionTypeQualifiedName,
-                                        List<String>          requestSourceGUIDs,
+                                        List<String>          actionSourceGUIDs,
+                                        List<String>          actionCauseGUIDs,
                                         List<NewActionTarget> actionTargets,
                                         Date                  startTime,
                                         Map<String, String>   requestParameters,
@@ -159,8 +165,9 @@ public interface WatchdogGovernanceContext extends GovernanceContext
      *
      * @param processQualifiedName unique name of the governance action process to use
      * @param requestParameters request parameters to pass to the governance actions called in the governance action process
-     * @param requestSourceGUIDs  request source elements for the resulting governance action service
-     * @param actionTargets map of action target names to GUIDs for the resulting governance action service
+     * @param actionSourceGUIDs  request source elements for the resulting engine action
+     * @param actionCauseGUIDs  request cause elements for the resulting engine action
+     * @param actionTargets list of action target names to GUIDs for the resulting engine action
      * @param startTime future start time or null for "as soon as possible".
      *
      * @return unique identifier of the governance action process instance
@@ -171,7 +178,8 @@ public interface WatchdogGovernanceContext extends GovernanceContext
      */
     String initiateGovernanceActionProcess(String                processQualifiedName,
                                            Map<String, String>   requestParameters,
-                                           List<String>          requestSourceGUIDs,
+                                           List<String>          actionSourceGUIDs,
+                                           List<String>          actionCauseGUIDs,
                                            List<NewActionTarget> actionTargets,
                                            Date                  startTime) throws InvalidParameterException,
                                                                                    UserNotAuthorizedException,

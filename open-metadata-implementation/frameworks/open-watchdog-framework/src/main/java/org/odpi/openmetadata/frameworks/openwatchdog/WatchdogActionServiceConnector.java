@@ -10,6 +10,9 @@ import org.odpi.openmetadata.frameworks.auditlog.ComponentDescription;
 import org.odpi.openmetadata.frameworks.connectors.Connector;
 import org.odpi.openmetadata.frameworks.connectors.ConnectorBase;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
+import org.odpi.openmetadata.frameworks.opengovernance.WatchdogGovernanceListener;
+import org.odpi.openmetadata.frameworks.opengovernance.ffdc.GovernanceServiceException;
+import org.odpi.openmetadata.frameworks.openmetadata.events.OpenMetadataOutTopicEvent;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
@@ -27,7 +30,7 @@ import java.util.List;
  * a specific notification type.  Information about the notification type to support is passed in the watchdog context.
  */
 public abstract class WatchdogActionServiceConnector extends ConnectorBase implements WatchdogActionService,
-                                                                                    AuditLoggingComponent
+                                                                                      AuditLoggingComponent
 {
     protected final PropertyHelper propertyHelper = new PropertyHelper();
 
@@ -125,35 +128,6 @@ public abstract class WatchdogActionServiceConnector extends ConnectorBase imple
 
 
 
-
-    /**
-     * Record that an asset does not have a schema.
-     *
-     * @param assetGUID unique identifier of the asset
-     * @throws ConnectorCheckedException  problem with the connector
-     * @throws InvalidParameterException  invalid property
-     * @throws PropertyServerException    problem with repositories
-     * @throws UserNotAuthorizedException security problem
-     */
-    protected void throwMissingSchemaType(String assetGUID) throws ConnectorCheckedException,
-                                                                   InvalidParameterException,
-                                                                   PropertyServerException,
-                                                                   UserNotAuthorizedException
-    {
-        final String methodName = "throwMissingSchemaType";
-
-        watchdogContext.recordCompletionStatus(WatchdogActionGuard.MONITORING_INVALID.getCompletionStatus(),
-                                               Collections.singletonList(WatchdogActionGuard.MONITORING_INVALID.getName()),
-                                               null,
-                                               null,
-                                               OWFAuditCode.NO_SCHEMA.getMessageDefinition(watchdogActionServiceName, assetGUID));
-
-        throw new ConnectorCheckedException(OWFErrorCode.NO_SCHEMA.getMessageDefinition(watchdogActionServiceName, assetGUID),
-                                            this.getClass().getName(),
-                                            methodName);
-    }
-
-
     /**
      * Return the survey context for this watchdog action service.  This is typically called after the disconnect()
      * method is called.  If called before disconnect(), it may only contain partial results.
@@ -212,6 +186,22 @@ public abstract class WatchdogActionServiceConnector extends ConnectorBase imple
                                             this.getClass().getName(),
                                             methodName);
     }
+
+
+    /**
+     * This method is called each time a requested event is received from the open metadata repositories.
+     * It is called for events received after this listener is registered until the watchdog governance
+     * service sets its status in the context as ACTIONED, INVALID, IGNORED or FAILED or it is stopped by an administrator shutting down
+     * the hosting server or this service explicitly.
+     *
+     * @param event event containing details of a change to an open metadata element.
+     *
+     * @throws GovernanceServiceException reports that the event can not be processed (this is logged but
+     *                                    no other action is taken).  The listener will continue to be
+     *                                    called until the watchdog governance action service declares it is complete
+     *                                    or administrator action shuts down the service.
+     */
+    public abstract void processEvent(OpenMetadataOutTopicEvent event) throws GovernanceServiceException;
 
 
     /**

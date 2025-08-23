@@ -290,20 +290,27 @@ Content-Type: application/json
 ###
 # @name findAllInformationSupplyChains
 # Retrieve the list of information supply chain metadata elements that contain the search string.
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/solution-architect/information-supply-chains/by-search-string?startFrom=0&pageSize=10&startsWith=true&endsWith=false&ignoreCase=false
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/solution-architect/information-supply-chains/by-search-string
 Authorization: Bearer {{token}}
 Content-Type: application/json
+
 
 
 ###
 # @name findAllInformationSupplyChains - with full request body
 # Retrieve the list of information supply chain metadata elements that contain the search string.
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/solution-architect/information-supply-chains/by-search-string?startFrom=0&pageSize=10&startsWith=true&endsWith=false&ignoreCase=false
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/solution-architect/information-supply-chains/by-search-string
 Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-  "class" : "FilterRequestBody",
+  "class" : "SearchStringRequestBody",
+  "searchString" : "Add value here",
+  "startsWith" : false,
+  "endsWith" : false,
+  "ignoreCase" : true,
+  "startFrom" : 0,
+  "pageSize": 10,
   "asOfTime" : "{{$isoTimestamp}}",
   "effectiveTime" : "{{$isoTimestamp}}",
   "forLineage" : false,
@@ -317,32 +324,43 @@ Content-Type: application/json
 ###
 # @name findInformationSupplyChains
 # Retrieve the list of information supply chain metadata elements that contain the search string.
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/solution-architect/information-supply-chains/by-search-string?addImplementation=true&startFrom=0&pageSize=10&startsWith=true&endsWith=false&ignoreCase=false
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/solution-architect/information-supply-chains/by-search-string?addImplementation=true
 Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-  "filter" : "Add name here"
+  "class" : "SearchStringRequestBody",
+  "searchString" : "Add value here",
+  "startsWith" : false,
+  "endsWith" : false,
+  "ignoreCase" : true,
+  "startFrom" : 0,
+  "pageSize": 10
 }
 
 
 ###
 # @name findInformationSupplyChains - with full request body
 # Retrieve the list of information supply chain metadata elements that contain the search string.
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/solution-architect/information-supply-chains/by-search-string?addImplementation=true&startFrom=0&pageSize=10&startsWith=true&endsWith=false&ignoreCase=false
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/solution-architect/information-supply-chains/by-search-string?addImplementation=true
 Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-  "class" : "FilterRequestBody",
+  "class" : "SearchStringRequestBody",
+  "searchString" : "Add value here",
+  "startsWith" : false,
+  "endsWith" : false,
+  "ignoreCase" : true,
+  "startFrom" : 0,
+  "pageSize": 10,
   "asOfTime" : "{{$isoTimestamp}}",
   "effectiveTime" : "{{$isoTimestamp}}",
   "forLineage" : false,
   "forDuplicateProcessing" : false,
   "limitResultsByStatus" : ["ACTIVE"],
   "sequencingOrder" : "PROPERTY_ASCENDING",
-  "sequencingProperty" : "qualifiedName",
-  "filter" : "Add name here"
+  "sequencingProperty" : "qualifiedName"
 }
 
 ###
@@ -621,7 +639,7 @@ Content-Type: application/json
 ###
 # @name findAllSolutionBlueprints
 # Retrieve the list of solution blueprint metadata elements that contain the search string.
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/solution-architect/solution-blueprints/by-search-string?startFrom=0&pageSize=10&startsWith=true&endsWith=false&ignoreCase=false
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/solution-architect/solution-blueprints/by-search-string
 Authorization: Bearer {{token}}
 Content-Type: application/json
 
@@ -629,13 +647,18 @@ Content-Type: application/json
 ###
 # @name findAllSolutionBlueprints - with full request body
 # Retrieve the list of solution blueprint metadata elements that contain the search string.
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/solution-architect/solution-blueprints/by-search-string?startFrom=0&pageSize=10&startsWith=true&endsWith=false&ignoreCase=false
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/solution-architect/solution-blueprints/by-search-string
 Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-  "class" : "FilterRequestBody",
-  "filter" : "add name",
+  "class" : "SearchStringRequestBody",
+  "searchString" : "Add value here",
+  "startsWith" : false,
+  "endsWith" : false,
+  "ignoreCase" : true,
+  "startFrom" : 0,
+  "pageSize": 10,
   "asOfTime" : "{{$isoTimestamp}}",
   "effectiveTime" : "{{$isoTimestamp}}",
   "forLineage" : false,
@@ -649,32 +672,43 @@ Content-Type: application/json
 ###
 # @name findSolutionBlueprints
 # Retrieve the list of solution blueprint metadata elements that contain the search string.
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/solution-architect/solution-blueprints/by-search-string?startFrom=0&pageSize=10&startsWith=true&endsWith=false&ignoreCase=false
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/solution-architect/solution-blueprints/by-search-string
 Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-  "filter" : "Add name here"
+  "class" : "SearchStringRequestBody",
+  "searchString" : "Add value here",
+  "startsWith" : false,
+  "endsWith" : false,
+  "ignoreCase" : true,
+  "startFrom" : 0,
+  "pageSize": 10
 }
 
 
 ###
 # @name findSolutionBlueprints - with full request body
 # Retrieve the list of solution blueprint metadata elements that contain the search string.
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/solution-architect/solution-blueprints/by-search-string?startFrom=0&pageSize=10&startsWith=true&endsWith=false&ignoreCase=false
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/solution-architect/solution-blueprints/by-search-string
 Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-  "class" : "FilterRequestBody",
+  "class" : "SearchStringRequestBody",
+  "searchString" : "Add value here",
+  "startsWith" : false,
+  "endsWith" : false,
+  "ignoreCase" : true,
+  "startFrom" : 0,
+  "pageSize": 10,
   "asOfTime" : "{{$isoTimestamp}}",
   "effectiveTime" : "{{$isoTimestamp}}",
   "forLineage" : false,
   "forDuplicateProcessing" : false,
   "limitResultsByStatus" : ["ACTIVE"],
   "sequencingOrder" : "PROPERTY_ASCENDING",
-  "sequencingProperty" : "qualifiedName",
-  "filter" : "Add name here"
+  "sequencingProperty" : "qualifiedName"
 }
 
 ###
@@ -927,7 +961,7 @@ Content-Type: application/json
 ###
 # @name findAllSolutionRoles
 # Retrieve the list of all defines actor roles.
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/solution-architect/solution-roles/by-search-string?startFrom=0&pageSize=10&startsWith=true&endsWith=false&ignoreCase=false
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/solution-architect/solution-roles/by-search-string
 Authorization: Bearer {{token}}
 Content-Type: application/json
 
@@ -935,12 +969,17 @@ Content-Type: application/json
 ###
 # @name findAllSolutionRoles - with full request body
 # Retrieve the list of actor roles that contain the search string.
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/solution-architect/solution-roles/by-search-string?startFrom=0&pageSize=10&startsWith=true&endsWith=false&ignoreCase=false
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/solution-architect/solution-roles/by-search-string
 Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-  "class" : "FilterRequestBody",
+  "class" : "SearchStringRequestBody",
+  "startsWith" : false,
+  "endsWith" : false,
+  "ignoreCase" : true,
+  "startFrom" : 0,
+  "pageSize": 10,
   "asOfTime" : "{{$isoTimestamp}}",
   "effectiveTime" : "{{$isoTimestamp}}",
   "forLineage" : false,
@@ -954,39 +993,50 @@ Content-Type: application/json
 ###
 # @name findSolutionRoles
 # Retrieve the list of actor roles that contain the search string.
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/solution-architect/solution-roles/by-search-string?startFrom=0&pageSize=10&startsWith=true&endsWith=false&ignoreCase=false
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/solution-architect/solution-roles/by-search-string
 Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-  "filter" : "Add name here"
+  "class" : "SearchStringRequestBody",
+  "searchString" : "Add value here",
+  "startsWith" : false,
+  "endsWith" : false,
+  "ignoreCase" : true,
+  "startFrom" : 0,
+  "pageSize": 10
 }
 
 
 ###
 # @name findSolutionRoles - with full request body
 # Retrieve the list of actor roles that contain the search string.
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/solution-architect/solution-roles/by-search-string?startFrom=0&pageSize=10&startsWith=true&endsWith=false&ignoreCase=false
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/solution-architect/solution-roles/by-search-string
 Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-  "class" : "FilterRequestBody",
- "asOfTime" : "{{$isoTimestamp}}",
+  "class" : "SearchStringRequestBody",
+  "searchString" : "Add value here",
+  "startsWith" : false,
+  "endsWith" : false,
+  "ignoreCase" : true,
+  "startFrom" : 0,
+  "pageSize": 10,
+  "asOfTime" : "{{$isoTimestamp}}",
   "effectiveTime" : "{{$isoTimestamp}}",
   "forLineage" : false,
   "forDuplicateProcessing" : false,
   "limitResultsByStatus" : ["ACTIVE"],
   "sequencingOrder" : "PROPERTY_ASCENDING",
-  "sequencingProperty" : "qualifiedName",
-  "filter" : "Add name here"
+  "sequencingProperty" : "qualifiedName"
 }
 
 ###
 
 # @name getSolutionRolesByName
 # Returns the list of actor roles with a particular name.
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/solution-architect/solution-roles/by-name?startFrom=0&pageSize=10
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/solution-architect/solution-roles/by-name
 Authorization: Bearer {{token}}
 Content-Type: application/json
 
@@ -999,7 +1049,7 @@ Content-Type: application/json
 
 # @name getSolutionRolesByName - with full request body
 # Returns the list of actor roles with a particular name.
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/solution-architect/solution-roles/by-name?startFrom=0&pageSize=10
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/solution-architect/solution-roles/by-name
 Authorization: Bearer {{token}}
 Content-Type: application/json
 
@@ -1281,20 +1331,34 @@ Content-Type: application/json
 ###
 # @name findAllSolutionComponents
 # Retrieve the list of solution component metadata elements that contain the search string.
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/solution-architect/solution-components/by-search-string?startFrom=0&pageSize=10&startsWith=true&endsWith=false&ignoreCase=false
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/solution-architect/solution-components/by-search-string
 Authorization: Bearer {{token}}
 Content-Type: application/json
+
+{
+  "class" : "SearchStringRequestBody",
+  "startsWith" : false,
+  "endsWith" : false,
+  "ignoreCase" : true,
+  "startFrom" : 0,
+  "pageSize": 10
+}
 
 
 ###
 # @name findAllSolutionComponents - with full request body
 # Retrieve the list of solution component metadata elements that contain the search string.
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/solution-architect/solution-components/by-search-string?startFrom=0&pageSize=10&startsWith=true&endsWith=false&ignoreCase=false
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/solution-architect/solution-components/by-search-string
 Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-  "class" : "FilterRequestBody",
+  "class" : "SearchStringRequestBody",
+  "startsWith" : false,
+  "endsWith" : false,
+  "ignoreCase" : true,
+  "startFrom" : 0,
+  "pageSize": 10,
   "asOfTime" : "{{$isoTimestamp}}",
   "effectiveTime" : "{{$isoTimestamp}}",
   "forLineage" : false,
@@ -1308,39 +1372,50 @@ Content-Type: application/json
 ###
 # @name findSolutionComponents
 # Retrieve the list of solution component metadata elements that contain the search string.
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/solution-architect/solution-components/by-search-string?startFrom=0&pageSize=10&startsWith=true&endsWith=false&ignoreCase=false
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/solution-architect/solution-components/by-search-string
 Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-  "filter" : "Add name here"
+  "class" : "SearchStringRequestBody",
+  "searchString" : "Add value here",
+  "startsWith" : false,
+  "endsWith" : false,
+  "ignoreCase" : true,
+  "startFrom" : 0,
+  "pageSize": 10
 }
 
 
 ###
 # @name findSolutionComponents - with full request body
 # Retrieve the list of solution component metadata elements that contain the search string.
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/solution-architect/solution-components/by-search-string?startFrom=0&pageSize=10&startsWith=true&endsWith=false&ignoreCase=false
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/solution-architect/solution-components/by-search-string
 Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-  "class" : "FilterRequestBody",
- "asOfTime" : "{{$isoTimestamp}}",
+  "class" : "SearchStringRequestBody",
+  "searchString" : "Add value here",
+  "startsWith" : false,
+  "endsWith" : false,
+  "ignoreCase" : true,
+  "startFrom" : 0,
+  "pageSize": 10,
+  "asOfTime" : "{{$isoTimestamp}}",
   "effectiveTime" : "{{$isoTimestamp}}",
   "forLineage" : false,
   "forDuplicateProcessing" : false,
   "limitResultsByStatus" : ["ACTIVE"],
   "sequencingOrder" : "PROPERTY_ASCENDING",
-  "sequencingProperty" : "qualifiedName",
-  "filter" : "Add name here"
+  "sequencingProperty" : "qualifiedName"
 }
 
 ###
 
 # @name getSolutionComponentsByName
 # Returns the list of solution components with a particular name.
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/solution-architect/solution-components/by-name?startFrom=0&pageSize=10
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/solution-architect/solution-components/by-name
 Authorization: Bearer {{token}}
 Content-Type: application/json
 
@@ -1353,7 +1428,7 @@ Content-Type: application/json
 
 # @name getSolutionComponentsByName - with full request body
 # Returns the list of solution components with a particular name.
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/solution-architect/solution-components/by-name?startFrom=0&pageSize=10
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/solution-architect/solution-components/by-name
 Authorization: Bearer {{token}}
 Content-Type: application/json
 
@@ -1403,12 +1478,18 @@ Content-Type: application/json
 # @name findSolutionBlueprints
 # Retrieve the list of solution blueprint metadata elements that contain the search string.  The returned blueprints include a list of the components that are associated with it.
 # https://egeria-project.org/concepts/solution-blueprint
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/solution-architect/solution-blueprints/by-search-string?startFrom=0&pageSize=10&startsWith=true&endsWith=false&ignoreCase=false
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/solution-architect/solution-blueprints/by-search-string
 Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-  "filter" : "Add name here"
+  "class" : "SearchStringRequestBody",
+  "searchString" : "Add value here",
+  "startsWith" : false,
+  "endsWith" : false,
+  "ignoreCase" : true,
+  "startFrom" : 0,
+  "pageSize": 10
 }
 
 
@@ -1416,31 +1497,43 @@ Content-Type: application/json
 # @name findSolutionRoles
 # Retrieve the list of actor roles metadata elements that contain the search string and show which solution components (if any) are attached to it.
 # https://egeria-project.org/concepts/actor
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/solution-architect/solution-roles/by-search-string?startFrom=0&pageSize=10&startsWith=true&endsWith=false&ignoreCase=false
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/solution-architect/solution-roles/by-search-string
 Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-  "filter" : "Add name here"
+  "class" : "SearchStringRequestBody",
+  "searchString" : "Add value here",
+  "startsWith" : false,
+  "endsWith" : false,
+  "ignoreCase" : true,
+  "startFrom" : 0,
+  "pageSize": 10
 }
 
 ###
 # @name findSolutionComponents
 # Retrieve the list of solution component metadata elements that contain the search string.  The solutions components returned include information about the consumers, actors and other solution components that are associated with them.
 # https://egeria-project.org/concepts/solution-components
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/solution-architect/solution-components/by-search-string?startFrom=0&pageSize=10&startsWith=true&endsWith=false&ignoreCase=false
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/solution-architect/solution-components/by-search-string
 Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-  "filter" : "Add name here"
+  "class" : "SearchStringRequestBody",
+  "searchString" : "Add value here",
+  "startsWith" : false,
+  "endsWith" : false,
+  "ignoreCase" : true,
+  "startFrom" : 0,
+  "pageSize": 10
 }
 
 ###
 # @name getSolutionComponentImplementations
 # Retrieve the list of metadata elements that are associated with the solution component via the ImplementedBy relationship.
 # https://egeria-project.org/concepts/solution-components
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/solution-architect/solution-components/{{solutionComponentGUID}}/implementations?startFrom=0&pageSize=10&startsWith=true&endsWith=false&ignoreCase=false
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/solution-architect/solution-components/{{solutionComponentGUID}}/implementations
 Authorization: Bearer {{token}}
 Content-Type: application/json
 

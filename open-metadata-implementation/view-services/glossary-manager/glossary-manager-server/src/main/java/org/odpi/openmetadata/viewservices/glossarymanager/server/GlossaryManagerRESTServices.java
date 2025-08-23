@@ -12,16 +12,12 @@ import org.odpi.openmetadata.frameworks.openmetadata.enums.ElementStatus;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.GlossaryTermActivityType;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.GlossaryTermRelationshipStatus;
 import org.odpi.openmetadata.frameworks.openmetadata.handlers.CollectionHandler;
-import org.odpi.openmetadata.frameworks.openmetadata.handlers.GlossaryHandler;
 import org.odpi.openmetadata.frameworks.openmetadata.handlers.GlossaryTermHandler;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.collections.EditingCollectionProperties;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.collections.StagingCollectionProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.glossaries.*;
 import org.odpi.openmetadata.tokencontroller.TokenController;
 import org.odpi.openmetadata.viewservices.glossarymanager.rest.GlossaryTermActivityTypeListResponse;
 import org.odpi.openmetadata.viewservices.glossarymanager.rest.GlossaryTermRelationshipStatusListResponse;
 import org.odpi.openmetadata.viewservices.glossarymanager.rest.GlossaryTermStatusListResponse;
-
 import org.slf4j.LoggerFactory;
 
 import java.util.Arrays;
@@ -1446,18 +1442,19 @@ public class GlossaryManagerRESTServices extends TokenController
             restCallLogger.setUserId(token, userId);
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+            GlossaryTermHandler handler = instanceHandler.getGlossaryTermHandler(userId, serverName, methodName);
 
             if (requestBody != null)
             {
-                GlossaryTermHandler handler = instanceHandler.getGlossaryTermHandler(userId, serverName, methodName);
-
                 response.setElements(handler.findGlossaryTerms(userId,
                                                                requestBody.getSearchString(),
                                                                requestBody));
             }
             else
             {
-                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName, SearchStringRequestBody.class.getName());
+                response.setElements(handler.findGlossaryTerms(userId,
+                                                               null,
+                                                               null));
             }
         }
         catch (Throwable error)

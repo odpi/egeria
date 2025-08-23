@@ -678,30 +678,6 @@ public class GovernanceOfficerResource
 
 
     /**
-     * Return the governance definition associated with a unique identifier and the other governance definitions linked to it.
-     *
-     * @param serverName name of the server instance to connect to
-     * @param urlMarker  view service URL marker
-     * @param governanceDefinitionGUID unique identifier of the governance definition
-     * @param requestBody additional query parameters
-     *
-     * @return governance definition and its linked elements or
-     *  InvalidParameterException one of the parameters is invalid
-     *  UserNotAuthorizedException the caller is not authorized to issue the request
-     *  PropertyServerException the metadata service has problems
-     */
-    @PostMapping(path = "/governance-definitions/{governanceDefinitionGUID}/in-context")
-
-    public OpenMetadataRootElementResponse getGovernanceDefinitionInContext(@PathVariable String             serverName,
-                                                                              @PathVariable String             urlMarker,
-                                                                              @PathVariable String             governanceDefinitionGUID,
-                                                                              @RequestBody (required = false)  ResultsRequestBody requestBody)
-    {
-        return restAPI.getGovernanceDefinitionInContext(serverName, urlMarker, governanceDefinitionGUID, requestBody);
-    }
-
-
-    /**
      * Attach a design object such as a solution component or governance definition to its implementation via the ImplementedBy relationship. Request body is optional.
      *
      * @param serverName         name of called server

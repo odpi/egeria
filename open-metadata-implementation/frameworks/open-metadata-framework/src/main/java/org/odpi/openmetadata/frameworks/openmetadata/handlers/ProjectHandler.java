@@ -65,7 +65,7 @@ public class ProjectHandler extends OpenMetadataHandlerBase
      *
      * @param userId                 userId of user making request.
      * @param newElementOptions details of the element to create
-     * @param optionalClassification classification of the projects - eg Campaign, Task or PersonalProject
+     * @param optionalClassification classification of the projects - eg Campaign, Task or PersonalProjectProperties
      * @param initialClassifications map of classification names to classification properties to include in the entity creation request
      * @param properties             properties for the project.
      * @param parentRelationshipProperties properties to include in parent relationship
@@ -850,7 +850,6 @@ public class ProjectHandler extends OpenMetadataHandlerBase
 
     /**
      * Retrieve the list of metadata elements that contain the search string.
-     * The search string is treated as a regular expression.
      *
      * @param userId calling user
      * @param searchString string to find in the properties

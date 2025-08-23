@@ -2993,8 +2993,20 @@ public class OpenMetadataTypesArchive1_2
 
     private EntityDef getNotificationEntity()
     {
-        return archiveHelper.getDefaultEntityDef(OpenMetadataType.NOTIFICATION,
-                                                 this.archiveBuilder.getEntityDef(OpenMetadataType.ACTION.typeName));
+        EntityDef entityDef = archiveHelper.getDefaultEntityDef(OpenMetadataType.NOTIFICATION,
+                                                                this.archiveBuilder.getEntityDef(OpenMetadataType.ACTION.typeName));
+
+        /*
+         * Build the attributes
+         */
+        List<TypeDefAttribute> properties = new ArrayList<>();
+
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.SYSTEM_ACTION));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.USER_RESPONSE));
+
+        entityDef.setPropertiesDefinition(properties);
+
+        return entityDef;
     }
 
 
@@ -3491,18 +3503,11 @@ public class OpenMetadataTypesArchive1_2
      */
     private void add0160Notes()
     {
-        this.archiveBuilder.addEntityDef(getNoteEntryEntity());
         this.archiveBuilder.addEntityDef(getNoteLogEntity());
         this.archiveBuilder.addEntityDef(getNoteLogAuthorEntity());
 
         this.archiveBuilder.addRelationshipDef(getAttachedNoteLogRelationship());
         this.archiveBuilder.addRelationshipDef(getAttachedNoteLogEntryRelationship());
-    }
-
-    private EntityDef getNoteEntryEntity()
-    {
-        return archiveHelper.getDefaultEntityDef(OpenMetadataType.NOTE_ENTRY,
-                                                 this.archiveBuilder.getEntityDef(OpenMetadataType.REFERENCEABLE.typeName));
     }
 
     private EntityDef getNoteLogAuthorEntity()
@@ -3584,10 +3589,10 @@ public class OpenMetadataTypesArchive1_2
          * Set up end 2.
          */
         final String                     end2AttributeName            = "noteLogEntries";
-        final String                     end2AttributeDescription     = "Accumulated notes.";
+        final String                     end2AttributeDescription     = "Accumulated notifications.";
         final String                     end2AttributeDescriptionGUID = null;
 
-        relationshipEndDef = archiveHelper.getRelationshipEndDef(this.archiveBuilder.getEntityDef(OpenMetadataType.NOTE_ENTRY.typeName),
+        relationshipEndDef = archiveHelper.getRelationshipEndDef(this.archiveBuilder.getEntityDef(OpenMetadataType.NOTIFICATION.typeName),
                                                                  end2AttributeName,
                                                                  end2AttributeDescription,
                                                                  end2AttributeDescriptionGUID,

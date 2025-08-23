@@ -146,6 +146,17 @@ public enum GovernanceEngineDefinition
                             ContentPackDefinition.NANNY_CONTENT_PACK),
 
     /**
+     * Provides specialist governance services to Egeria's OMAG Server Platform and Servers.
+     */
+    EGERIA_WATCHDOG_ENGINE("23ec5cb2-e0a2-412c-9c2e-deefbe3d6459",
+                             "EgeriaWatchdog",
+                             "Egeria Watchdog Engine",
+                             "Provides standard watchdog services to Egeria's OMAG Server Platform and Servers.",
+                             "egeriawatchdogengine",
+                             OpenMetadataType.WATCHDOG_ACTION_ENGINE.typeName,
+                             ContentPackDefinition.CORE_CONTENT_PACK),
+
+    /**
      * Provides surveys on Apache Kafka Servers.
      */
     KAFKA_SURVEY_ENGINE("de82d12d-f723-47c7-b5e6-c9a5998a0d6a",
