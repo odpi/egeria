@@ -289,7 +289,6 @@ public class DataFieldHandler extends OpenMetadataHandlerBase
 
     /**
      * Retrieve the list of data fields metadata elements that contain the search string.
-     * The search string is treated as a regular expression.
      *
      * @param userId                 calling user
      * @param searchString           string to find in the properties
@@ -308,43 +307,5 @@ public class DataFieldHandler extends OpenMetadataHandlerBase
         final String methodName = "findDataFields";
 
         return super.findRootElements(userId, searchString, searchOptions, methodName);
-    }
-
-
-    /*
-     * Converter functions
-     */
-
-
-    /**
-     * Add a standard mermaid graph to the root element.  This method may be overridden by the subclasses if
-     * they have a more fancy graph to display.
-     *
-     * @param userId calling user
-     * @param rootElement new root element
-     * @param queryOptions options from the caller
-     * @return root element with graph
-     * @throws InvalidParameterException  one of the parameters is null or invalid.
-     * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
-     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
-     */
-    protected OpenMetadataRootElement addMermaidToRootElement(String                  userId,
-                                                              OpenMetadataRootElement rootElement,
-                                                              QueryOptions            queryOptions) throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException
-    {
-        if (rootElement != null)
-        {
-            rootElement.setNestedDataFields(super.getElementHierarchies(userId,
-                                                                        rootElement.getElementHeader().getGUID(),
-                                                                        rootElement.getNestedDataFields(),
-                                                                        1,
-                                                                        OpenMetadataType.NESTED_DATA_FIELD_RELATIONSHIP.typeName,
-                                                                        queryOptions,
-                                                                        1));
-
-            super.addMermaidToRootElement(userId, rootElement, queryOptions);
-        }
-
-        return rootElement;
     }
 }

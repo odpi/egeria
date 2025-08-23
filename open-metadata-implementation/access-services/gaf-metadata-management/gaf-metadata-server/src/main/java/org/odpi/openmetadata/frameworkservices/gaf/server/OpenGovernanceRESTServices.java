@@ -3632,10 +3632,10 @@ public class OpenGovernanceRESTServices
      *  UserNotAuthorizedException this governance action service is not authorized to create a governance action
      *  PropertyServerException there is a problem with the metadata store
      */
-    public GUIDResponse initiateEngineAction(String                  serverName,
-                                             String                  serviceURLMarker,
-                                             String                  userId,
-                                             String                  governanceEngineName,
+    public GUIDResponse initiateEngineAction(String                          serverName,
+                                             String                          serviceURLMarker,
+                                             String                          userId,
+                                             String                          governanceEngineName,
                                              InitiateEngineActionRequestBody requestBody)
     {
         final String methodName = "initiateEngineAction";
@@ -3665,7 +3665,8 @@ public class OpenGovernanceRESTServices
                                                                      requestBody.getDomainIdentifier(),
                                                                      requestBody.getDisplayName(),
                                                                      requestBody.getDescription(),
-                                                                     requestBody.getRequestSourceGUIDs(),
+                                                                     requestBody.getActionSourceGUIDs(),
+                                                                     requestBody.getActionCauseGUIDs(),
                                                                      requestBody.getActionTargets(),
                                                                      null,
                                                                      requestBody.getReceivedGuards(),
@@ -3756,7 +3757,8 @@ public class OpenGovernanceRESTServices
 
                 response.setGUID(handler.initiateGovernanceActionType(userId,
                                                                       requestBody.getGovernanceActionTypeQualifiedName(),
-                                                                      requestBody.getRequestSourceGUIDs(),
+                                                                      requestBody.getActionSourceGUIDs(),
+                                                                      requestBody.getActionCauseGUIDs(),
                                                                       requestBody.getActionTargets(),
                                                                       requestBody.getRequestParameters(),
                                                                       requestBody.getStartDate(),
@@ -3815,7 +3817,8 @@ public class OpenGovernanceRESTServices
 
                 response.setGUID(handler.initiateGovernanceActionProcess(userId,
                                                                          requestBody.getProcessQualifiedName(),
-                                                                         requestBody.getRequestSourceGUIDs(),
+                                                                         requestBody.getActionSourceGUIDs(),
+                                                                         requestBody.getActionCauseGUIDs(),
                                                                          requestBody.getActionTargets(),
                                                                          requestBody.getRequestParameters(),
                                                                          requestBody.getStartDate(),

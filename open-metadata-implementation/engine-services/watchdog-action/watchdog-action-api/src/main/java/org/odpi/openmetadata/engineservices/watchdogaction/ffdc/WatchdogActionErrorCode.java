@@ -55,10 +55,10 @@ public enum WatchdogActionErrorCode implements ExceptionMessageSet
                                       "retry the monitoring request."),
 
 
-    NO_TARGET_ASSET(400, "OMES-WATCHDOG-ACTION-400-003",
-                           "The watchdog action service {0} linked to request type {1} and engine action {2} can not be started because there is no asset action target supplied",
-                           "The monitoring request is not run and an error is recorded in the engine action.",
-                           "Retry the monitoring request and ensuring that an action target is included in the request."),
+    NO_TARGET_NOTIFICATION_TYPE(400, "OMES-WATCHDOG-ACTION-400-003",
+                                "The watchdog action service {0} linked to request type {1} and engine action {2} can not be started because there is no asset action target supplied",
+                                "The monitoring request is not run and an error is recorded in the engine action.",
+                                "Retry the monitoring request and ensuring that an action target is included in the request."),
 
 
     NULL_REQUEST(400, "OMES-WATCHDOG-ACTION-400-004",

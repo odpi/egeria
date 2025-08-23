@@ -1275,7 +1275,14 @@ public class ReferenceDataRESTServices extends TokenController
 
             ValidValueDefinitionHandler handler = instanceHandler.getValidValueDefinitionHandler(userId, serverName, methodName);
 
-            response.setElements(handler.findValidValueDefinitions(userId, requestBody.getSearchString(), requestBody));
+            if (requestBody != null)
+            {
+                response.setElements(handler.findValidValueDefinitions(userId, requestBody.getSearchString(), requestBody));
+            }
+            else
+            {
+                response.setElements(handler.findValidValueDefinitions(userId, null, null));
+            }
         }
         catch (Throwable error)
         {

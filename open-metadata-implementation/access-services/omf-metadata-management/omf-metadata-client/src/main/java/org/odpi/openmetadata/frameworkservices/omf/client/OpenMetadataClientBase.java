@@ -2181,6 +2181,218 @@ public abstract class OpenMetadataClientBase extends OpenMetadataClient
 
 
     /**
+     * Create an action request for someone to work on.
+     *
+     * @param userId caller's userId
+     * @param openMetadataTypeName type of action to create
+     * @param properties properties of the action
+     * @param actionSourceGUID unique identifier of the source of the action
+     * @param actionCauseGUIDs unique identifiers of the cause for the action to be raised
+     * @param assignToGUID unique identifier of the Actor element for the recipient
+     * @param actionTargets the list of elements that should be acted upon
+     *
+     * @return unique identifier of new action element
+     *
+     * @throws InvalidParameterException either todoQualifiedName or assignedTo are null or not recognized
+     * @throws UserNotAuthorizedException the userId is not permitted to perform this operation
+     * @throws PropertyServerException there is a problem connecting to (or inside) the metadata store
+     */
+    @Override
+    public String createActorAction(String                userId,
+                                    String                openMetadataTypeName,
+                                    NewElementProperties  properties,
+                                    String                actionSourceGUID,
+                                    List<String>          actionCauseGUIDs,
+                                    String                assignToGUID,
+                                    List<NewActionTarget> actionTargets) throws InvalidParameterException,
+                                                                           UserNotAuthorizedException,
+                                                                           PropertyServerException
+    {
+        return this.createAction(userId,
+                                 openMetadataTypeName,
+                                 properties,
+                                 actionSourceGUID,
+                                 actionCauseGUIDs,
+                                 assignToGUID,
+                                 OpenMetadataType.ASSIGNMENT_SCOPE_RELATIONSHIP.typeName,
+                                 actionTargets);
+    }
+
+
+    /**
+     * Create an entry in a note log.
+     *
+     * @param userId caller's userId
+     * @param openMetadataTypeName type of action to create
+     * @param properties properties of the action
+     * @param actionSourceGUID unique identifier of the source of the action
+     * @param actionCauseGUIDs unique identifiers of the cause for the action to be raised
+     * @param noteLogGUID unique identifier of the note log
+     * @param actionTargets the list of elements that should be acted upon
+     *
+     * @return unique identifier of new action element
+     *
+     * @throws InvalidParameterException either todoQualifiedName or assignedTo are null or not recognized
+     * @throws UserNotAuthorizedException the userId is not permitted to perform this operation
+     * @throws PropertyServerException there is a problem connecting to (or inside) the metadata store
+     */
+    @Override
+    public String createNoteLogEntry(String                userId,
+                                     String                openMetadataTypeName,
+                                     NewElementProperties  properties,
+                                     String                actionSourceGUID,
+                                     List<String>          actionCauseGUIDs,
+                                     String                noteLogGUID,
+                                     List<NewActionTarget> actionTargets) throws InvalidParameterException,
+                                                                                 UserNotAuthorizedException,
+                                                                                 PropertyServerException
+    {
+        return this.createAction(userId,
+                                 openMetadataTypeName,
+                                 properties,
+                                 actionSourceGUID,
+                                 actionCauseGUIDs,
+                                 noteLogGUID,
+                                 OpenMetadataType.ATTACHED_NOTE_LOG_ENTRY_RELATIONSHIP.typeName,
+                                 actionTargets);
+    }
+
+
+
+    /**
+     * Create an action request for someone to work on.
+     *
+     * @param userId caller's userId
+     * @param openMetadataTypeName type of action to create
+     * @param properties properties of the action
+     * @param actionSourceGUID unique identifier of the source of the action
+     * @param actionCauseGUIDs unique identifiers of the cause for the action to be raised
+     * @param assignToGUID unique identifier of the Actor element for the recipient
+     * @param assignToRelationshipTypeName typeName of the relationship
+     * @param actionTargets the list of elements that should be acted upon
+     *
+     * @return unique identifier of new action element
+     *
+     * @throws InvalidParameterException either todoQualifiedName or assignedTo are null or not recognized
+     * @throws UserNotAuthorizedException the userId is not permitted to perform this operation
+     * @throws PropertyServerException there is a problem connecting to (or inside) the metadata store
+     */
+    private String createAction(String                userId,
+                                String                openMetadataTypeName,
+                                NewElementProperties  properties,
+                                String                actionSourceGUID,
+                                List<String>          actionCauseGUIDs,
+                                String                assignToGUID,
+                                String                assignToRelationshipTypeName,
+                                List<NewActionTarget> actionTargets) throws InvalidParameterException,
+                                                                            UserNotAuthorizedException,
+                                                                            PropertyServerException
+    {
+        final String methodName = "createAction";
+        final String propertiesParameterName = "properties";
+
+        propertyHelper.validateObject(properties, propertiesParameterName, methodName);
+
+        /*
+         * Set up the API options
+         */
+        MetadataSourceOptions metadataSourceOptions = new MetadataSourceOptions();
+        metadataSourceOptions.setEffectiveTime(new Date());
+        metadataSourceOptions.setForLineage(true);
+
+        /*
+         * Create the action entity
+         */
+
+        NewElementOptions newElementOptions = new NewElementOptions(metadataSourceOptions);
+
+        newElementOptions.setInitialStatus(ElementStatus.ACTIVE);
+
+        if (actionSourceGUID != null)
+        {
+            newElementOptions.setIsOwnAnchor(false);
+            newElementOptions.setAnchorGUID(actionSourceGUID);
+            newElementOptions.setParentAtEnd1(true);
+            newElementOptions.setParentGUID(actionSourceGUID);
+            newElementOptions.setParentRelationshipTypeName(OpenMetadataType.ACTION_REQUESTER_RELATIONSHIP.typeName);
+        }
+        else
+        {
+            newElementOptions.setIsOwnAnchor(true);
+        }
+
+        String actionGUID = this.createMetadataElementInStore(userId,
+                                                              openMetadataTypeName,
+                                                              newElementOptions,
+                                                              null,
+                                                              properties,
+                                                              null);
+
+        if (actionGUID != null)
+        {
+            if (actionTargets != null)
+            {
+                /*
+                 * Link the action to the items to work on
+                 */
+                for (NewActionTarget actionTarget : actionTargets)
+                {
+                    if ((actionTarget != null) && (actionTarget.getActionTargetGUID() != null))
+                    {
+                        ElementProperties relationshipProperties = propertyHelper.addStringProperty(null,
+                                                                                                    OpenMetadataProperty.ACTION_TARGET_NAME.name,
+                                                                                                    actionTarget.getActionTargetName());
+
+                        this.createRelatedElementsInStore(userId,
+                                                          OpenMetadataType.ACTION_TARGET_RELATIONSHIP.typeName,
+                                                          actionGUID,
+                                                          actionTarget.getActionTargetGUID(),
+                                                          metadataSourceOptions,
+                                                          new NewElementProperties(relationshipProperties));
+                    }
+                }
+            }
+
+            if (assignToGUID != null)
+            {
+                /*
+                 * Link the action and the person assigned to complete the work
+                 */
+                this.createRelatedElementsInStore(userId,
+                                                  assignToRelationshipTypeName,
+                                                  assignToGUID,
+                                                  actionGUID,
+                                                  metadataSourceOptions,
+                                                  new NewElementProperties(propertyHelper.addStringProperty(null,
+                                                                                                            OpenMetadataProperty.ASSIGNMENT_TYPE.name,
+                                                                                                            AssignmentType.CONTRIBUTOR.getName())));
+            }
+
+            if (actionCauseGUIDs != null)
+            {
+                for (String actionCauseGUID : actionCauseGUIDs)
+                {
+                    if (actionCauseGUID != null)
+                    {
+                        /*
+                         * Link the action and its cause.
+                         */
+                        this.createRelatedElementsInStore(userId,
+                                                          OpenMetadataType.ACTIONS_RELATIONSHIP.typeName,
+                                                          actionCauseGUID,
+                                                          actionGUID,
+                                                          metadataSourceOptions,
+                                                          null);
+                    }
+                }
+            }
+        }
+
+        return actionGUID;
+    }
+
+
+    /**
      * Create a "To Do" request for someone to work on.
      *
      * @param userId caller's userId

@@ -52,9 +52,9 @@ public class GovernanceActionContext extends ConnectorContextBase implements Gov
     private final ActionControlInterface           actionControlClient;
     private final GovernanceActionProcessInterface governanceActionProcessClient;
     private final GovernanceCompletionInterface    governanceCompletionClient;
-    private final DuplicateManagementClient         duplicateManagementClient;
-    private final WatchDogEventInterface           watchDogEventClient;
-    private final GovernanceConfiguration          governanceConfiguration;
+    private final DuplicateManagementClient duplicateManagementClient;
+    private final WatchDogEventInterface    watchdogEventClient;
+    private final GovernanceConfiguration   governanceConfiguration;
     private final PropertyHelper                   propertyHelper = new PropertyHelper();
 
     private final MessageFormatter                 messageFormatter = new MessageFormatter();
@@ -150,8 +150,8 @@ public class GovernanceActionContext extends ConnectorContextBase implements Gov
                                                                        duplicateManagementClient,
                                                                        auditLog,
                                                                        maxPageSize);
-        this.watchDogEventClient = watchdogEventClient;
-        this.connectorConfigClient = new ConnectorConfigClient(this,
+        this.watchdogEventClient       = watchdogEventClient;
+        this.connectorConfigClient     = new ConnectorConfigClient(this,
                                                                localServerName,
                                                                localServiceName,
                                                                connectorUserId,
@@ -1150,7 +1150,7 @@ public class GovernanceActionContext extends ConnectorContextBase implements Gov
                                  List<String>                interestingMetadataTypes,
                                  String                      specificInstance) throws InvalidParameterException
     {
-        watchDogEventClient.registerListener(listener, interestingEventTypes, interestingMetadataTypes, specificInstance);
+        watchdogEventClient.registerListener(listener, interestingEventTypes, interestingMetadataTypes, specificInstance);
     }
 
 
@@ -1160,7 +1160,7 @@ public class GovernanceActionContext extends ConnectorContextBase implements Gov
     @Override
     public void disconnectListener()
     {
-        watchDogEventClient.disconnectListener();
+        watchdogEventClient.disconnectListener();
     }
 
 
@@ -1173,8 +1173,9 @@ public class GovernanceActionContext extends ConnectorContextBase implements Gov
      * @param domainIdentifier governance domain associated with this action (0=ALL)
      * @param displayName display name for this action
      * @param description description for this action
-     * @param requestSourceGUIDs  request source elements for the resulting governance action service
-     * @param actionTargets map of action target names to GUIDs for the resulting governance action service
+     * @param actionSourceGUIDs  request source elements for the resulting engine action
+     * @param actionCauseGUIDs  request cause elements for the resulting engine action
+     * @param actionTargets list of action target names to GUIDs for the resulting engine action
      * @param startTime future start time or null for "as soon as possible".
      * @param governanceEngineName name of the governance engine to run the request
      * @param requestType request type to identify the governance action service to run
@@ -1191,7 +1192,8 @@ public class GovernanceActionContext extends ConnectorContextBase implements Gov
                                        int                   domainIdentifier,
                                        String                displayName,
                                        String                description,
-                                       List<String>          requestSourceGUIDs,
+                                       List<String>          actionSourceGUIDs,
+                                       List<String>          actionCauseGUIDs,
                                        List<NewActionTarget> actionTargets,
                                        Date                  startTime,
                                        String                governanceEngineName,
@@ -1205,7 +1207,8 @@ public class GovernanceActionContext extends ConnectorContextBase implements Gov
                                                         domainIdentifier,
                                                         displayName,
                                                         description,
-                                                        requestSourceGUIDs,
+                                                        actionSourceGUIDs,
+                                                        actionCauseGUIDs,
                                                         actionTargets,
                                                         null,
                                                         startTime,
@@ -1228,8 +1231,9 @@ public class GovernanceActionContext extends ConnectorContextBase implements Gov
      * @param domainIdentifier governance domain associated with this action (0=ALL)
      * @param displayName display name for this action
      * @param description description for this action
-     * @param requestSourceGUIDs  request source elements for the resulting governance action service
-     * @param actionTargets map of action target names to GUIDs for the resulting governance action service
+     * @param actionSourceGUIDs  request source elements for the resulting engine action
+     * @param actionCauseGUIDs  request cause elements for the resulting engine action
+     * @param actionTargets list of action target names to GUIDs for the resulting engine action
      * @param startTime future start time or null for "as soon as possible".
      * @param governanceEngineName name of the governance engine to run the request
      * @param requestType request type to identify the governance action service to run
@@ -1247,7 +1251,8 @@ public class GovernanceActionContext extends ConnectorContextBase implements Gov
                                        int                   domainIdentifier,
                                        String                displayName,
                                        String                description,
-                                       List<String>          requestSourceGUIDs,
+                                       List<String>          actionSourceGUIDs,
+                                       List<String>          actionCauseGUIDs,
                                        List<NewActionTarget> actionTargets,
                                        Date                  startTime,
                                        String                governanceEngineName,
@@ -1262,7 +1267,8 @@ public class GovernanceActionContext extends ConnectorContextBase implements Gov
                                                         domainIdentifier,
                                                         displayName,
                                                         description,
-                                                        requestSourceGUIDs,
+                                                        actionSourceGUIDs,
+                                                        actionCauseGUIDs,
                                                         actionTargets,
                                                         null,
                                                         startTime,
@@ -1279,8 +1285,9 @@ public class GovernanceActionContext extends ConnectorContextBase implements Gov
      * Using the named governance action type as a template, initiate an engine action.
      *
      * @param governanceActionTypeQualifiedName unique name of the governance action type to use
-     * @param requestSourceGUIDs  request source elements for the resulting governance service
-     * @param actionTargets list of action target names to GUIDs for the resulting governance service
+     * @param actionSourceGUIDs  request source elements for the resulting engine action
+     * @param actionCauseGUIDs  request cause elements for the resulting engine action
+     * @param actionTargets list of action target names to GUIDs for the resulting engine action
      * @param startTime future start time or null for "as soon as possible".
      * @param requestParameters request properties to be passed to the engine action
      * @param originatorServiceName unique name of the requesting governance service (if initiated by a governance engine).
@@ -1292,7 +1299,8 @@ public class GovernanceActionContext extends ConnectorContextBase implements Gov
      * @throws PropertyServerException there is a problem with the metadata store
      */
     public String initiateGovernanceActionType(String                governanceActionTypeQualifiedName,
-                                               List<String>          requestSourceGUIDs,
+                                               List<String>          actionSourceGUIDs,
+                                               List<String>          actionCauseGUIDs,
                                                List<NewActionTarget> actionTargets,
                                                Date                  startTime,
                                                Map<String, String>   requestParameters,
@@ -1303,7 +1311,8 @@ public class GovernanceActionContext extends ConnectorContextBase implements Gov
     {
         return actionControlClient.initiateGovernanceActionType(userId,
                                                                 governanceActionTypeQualifiedName,
-                                                                requestSourceGUIDs,
+                                                                actionSourceGUIDs,
+                                                                actionCauseGUIDs,
                                                                 actionTargets,
                                                                 startTime,
                                                                 requestParameters,
@@ -1317,8 +1326,9 @@ public class GovernanceActionContext extends ConnectorContextBase implements Gov
      *
      * @param processQualifiedName unique name of the governance action process to use
      * @param requestParameters request parameters to pass to the governance actions called in the governance action process
-     * @param requestSourceGUIDs  request source elements for the resulting governance action service
-     * @param actionTargets map of action target names to GUIDs for the resulting governance action service
+     * @param actionSourceGUIDs  request source elements for the resulting engine action
+     * @param actionCauseGUIDs  request cause elements for the resulting engine action
+     * @param actionTargets list of action target names to GUIDs for the resulting engine action
      * @param startTime future start time or null for "as soon as possible".
      *
      * @return unique identifier of the governance action process instance
@@ -1330,7 +1340,8 @@ public class GovernanceActionContext extends ConnectorContextBase implements Gov
     @Override
     public String initiateGovernanceActionProcess(String                processQualifiedName,
                                                   Map<String, String>   requestParameters,
-                                                  List<String>          requestSourceGUIDs,
+                                                  List<String>          actionSourceGUIDs,
+                                                  List<String>          actionCauseGUIDs,
                                                   List<NewActionTarget> actionTargets,
                                                   Date                  startTime) throws InvalidParameterException,
                                                                                           UserNotAuthorizedException,
@@ -1338,7 +1349,8 @@ public class GovernanceActionContext extends ConnectorContextBase implements Gov
     {
         return actionControlClient.initiateGovernanceActionProcess(userId,
                                                                    processQualifiedName,
-                                                                   requestSourceGUIDs,
+                                                                   actionSourceGUIDs,
+                                                                   actionCauseGUIDs,
                                                                    actionTargets,
                                                                    startTime,
                                                                    requestParameters,
@@ -1368,7 +1380,7 @@ public class GovernanceActionContext extends ConnectorContextBase implements Gov
                 ", duplicateManagementClient=" + duplicateManagementClient +
                 ", governanceActionProcessClient=" + governanceActionProcessClient +
                 ", governanceCompletionClient=" + governanceCompletionClient +
-                ", watchDogEventClient=" + watchDogEventClient +
+                ", watchDogEventClient=" + watchdogEventClient +
                 ", governanceConfiguration=" + governanceConfiguration +
                 ", propertyHelper=" + propertyHelper +
                 ", messageFormatter=" + messageFormatter +

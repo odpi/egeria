@@ -537,7 +537,14 @@ public class ActorManagerRESTServices extends TokenController
 
             ActorProfileHandler handler = instanceHandler.getActorProfileHandler(userId, serverName, urlMarker, methodName);
 
-            response.setElements(handler.findActorProfiles(userId, requestBody.getSearchString(), requestBody));
+            if (requestBody != null)
+            {
+                response.setElements(handler.findActorProfiles(userId, requestBody.getSearchString(), requestBody));
+            }
+            else
+            {
+                response.setElements(handler.findActorProfiles(userId, null, null));
+            }
         }
         catch (Throwable error)
         {

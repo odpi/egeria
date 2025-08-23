@@ -10,6 +10,7 @@ import org.odpi.openmetadata.frameworks.openmetadata.properties.contextevents.Co
 import org.odpi.openmetadata.frameworks.openmetadata.properties.contextevents.ContextEventProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.contextevents.DependentContextEventProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.contextevents.RelatedContextEventProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.search.NewElementProperties;
 
 import java.util.Date;
 import java.util.List;
@@ -88,6 +89,62 @@ public interface StewardshipRequestInterface
                     List<NewActionTarget> actionTargets) throws InvalidParameterException,
                                                                 UserNotAuthorizedException,
                                                                 PropertyServerException;
+
+
+    /**
+     * Create an action request for someone to work on.
+     *
+     * @param userId caller's userId
+     * @param openMetadataTypeName type of action to create
+     * @param properties properties of the action
+     * @param actionSourceGUID unique identifier of the source of the action
+     * @param actionCauseGUIDs unique identifiers of the cause for the action to be raised
+     * @param assignToGUID unique identifier of the Actor element for the recipient
+     * @param actionTargets the list of elements that should be acted upon
+     *
+     * @return unique identifier of new action element
+     *
+     * @throws InvalidParameterException either todoQualifiedName or assignedTo are null or not recognized
+     * @throws UserNotAuthorizedException the userId is not permitted to perform this operation
+     * @throws PropertyServerException there is a problem connecting to (or inside) the metadata store
+     */
+    String createActorAction(String                userId,
+                             String                openMetadataTypeName,
+                             NewElementProperties  properties,
+                             String                actionSourceGUID,
+                             List<String>          actionCauseGUIDs,
+                             String                assignToGUID,
+                             List<NewActionTarget> actionTargets) throws InvalidParameterException,
+                                                                         UserNotAuthorizedException,
+                                                                         PropertyServerException;
+
+
+    /**
+     * Create an entry in a note log.
+     *
+     * @param userId caller's userId
+     * @param openMetadataTypeName type of action to create
+     * @param properties properties of the action
+     * @param actionSourceGUID unique identifier of the source of the action
+     * @param actionCauseGUIDs unique identifiers of the cause for the action to be raised
+     * @param noteLogGUID unique identifier of the note log
+     * @param actionTargets the list of elements that should be acted upon
+     *
+     * @return unique identifier of new action element
+     *
+     * @throws InvalidParameterException either todoQualifiedName or assignedTo are null or not recognized
+     * @throws UserNotAuthorizedException the userId is not permitted to perform this operation
+     * @throws PropertyServerException there is a problem connecting to (or inside) the metadata store
+     */
+    String createNoteLogEntry(String                userId,
+                              String                openMetadataTypeName,
+                              NewElementProperties  properties,
+                              String                actionSourceGUID,
+                              List<String>          actionCauseGUIDs,
+                              String                noteLogGUID,
+                              List<NewActionTarget> actionTargets) throws InvalidParameterException,
+                                                                          UserNotAuthorizedException,
+                                                                          PropertyServerException;
 
 
     /**

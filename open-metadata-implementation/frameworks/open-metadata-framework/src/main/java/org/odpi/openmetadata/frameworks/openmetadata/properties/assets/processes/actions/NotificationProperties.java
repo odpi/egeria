@@ -2,11 +2,13 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.frameworks.openmetadata.properties.assets.processes.actions;
 
-import com.fasterxml.jackson.annotation.JsonAutoDetect;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.*;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.processes.EmbeddedProcessProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.processes.ProcessProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.feedback.NoteProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
+
+import java.util.Objects;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
@@ -19,8 +21,19 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
+@JsonTypeInfo(
+        use = JsonTypeInfo.Id.NAME,
+        include = JsonTypeInfo.As.PROPERTY,
+        property = "class")
+@JsonSubTypes({
+        @JsonSubTypes.Type(value = NoteProperties.class, name = "NoteProperties"),
+})
 public class NotificationProperties extends ActionProperties
 {
+    private String systemAction = null;
+    private String userResponse = null;
+
+
     /**
      * Default constructor
      */
@@ -43,6 +56,49 @@ public class NotificationProperties extends ActionProperties
 
 
     /**
+     * Return the action taken by the producer of this notification.
+     *
+     * @return string
+     */
+    public String getSystemAction()
+    {
+        return systemAction;
+    }
+
+
+    /**
+     * Set up the action taken by the producer of this notification.
+     *
+     * @param systemAction string
+     */
+    public void setSystemAction(String systemAction)
+    {
+        this.systemAction = systemAction;
+    }
+
+
+    /**
+     * Return the suggested action that the receiver of this notification should take.
+     *
+     * @return string
+     */
+    public String getUserResponse()
+    {
+        return userResponse;
+    }
+
+
+    /**
+     * Set up the suggested action that the receiver of this notification should take.
+     *
+     * @param userResponse string
+     */
+    public void setUserResponse(String userResponse)
+    {
+        this.userResponse = userResponse;
+    }
+
+    /**
      * JSON-style toString
      *
      * @return return string containing the property names and values
@@ -51,6 +107,37 @@ public class NotificationProperties extends ActionProperties
     public String toString()
     {
         return "NotificationProperties{" +
+                "systemAction='" + systemAction + '\'' +
+                ", userResponse='" + userResponse + '\'' +
                 "} " + super.toString();
+    }
+
+
+    /**
+     * Compare the values of the supplied object with those stored in the current object.
+     *
+     * @param objectToCompare supplied object
+     * @return boolean result of comparison
+     */
+    @Override
+    public boolean equals(Object objectToCompare)
+    {
+        if (this == objectToCompare) return true;
+        if (objectToCompare == null || getClass() != objectToCompare.getClass()) return false;
+        if (!super.equals(objectToCompare)) return false;
+        NotificationProperties that = (NotificationProperties) objectToCompare;
+        return Objects.equals(systemAction, that.systemAction) && Objects.equals(userResponse, that.userResponse);
+    }
+
+
+    /**
+     * Return hash code based on properties.
+     *
+     * @return int
+     */
+    @Override
+    public int hashCode()
+    {
+        return Objects.hash(super.hashCode(), systemAction, userResponse);
     }
 }

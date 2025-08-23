@@ -470,9 +470,7 @@ public class SolutionComponentHandler extends OpenMetadataHandlerBase
 
 
     /**
-     * Retrieve the list of solution component metadata elements that contain the search string.  The solutions components returned include information about the consumers, actors and other solution components that are associated with them.
-     * The returned solution components include a list of the subcomponents, peer components and solution roles that are associated with it.
-     * The search string is treated as a regular expression.
+     * Retrieve the list of solution component metadata elements that contain the search string.
      *
      * @param userId               calling user
      * @param searchString         string to find in the properties

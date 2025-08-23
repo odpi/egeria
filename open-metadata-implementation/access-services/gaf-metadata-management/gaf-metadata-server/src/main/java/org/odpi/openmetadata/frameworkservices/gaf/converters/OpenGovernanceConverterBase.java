@@ -97,6 +97,8 @@ abstract public class OpenGovernanceConverterBase<B> extends OpenMetadataStoreCo
                         case 2 -> ActivityStatus.WAITING;
                         case 3 -> ActivityStatus.ACTIVATING;
                         case 4 -> ActivityStatus.IN_PROGRESS;
+                        case 5 -> ActivityStatus.PAUSED;
+                        case 6 -> ActivityStatus.FOR_INFO;
                         case 10 -> ActivityStatus.COMPLETED;
                         case 11 -> ActivityStatus.INVALID;
                         case 12 -> ActivityStatus.IGNORED;

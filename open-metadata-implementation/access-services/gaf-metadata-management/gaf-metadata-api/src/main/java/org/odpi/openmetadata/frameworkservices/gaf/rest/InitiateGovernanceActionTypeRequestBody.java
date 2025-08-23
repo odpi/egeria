@@ -27,7 +27,8 @@ public class InitiateGovernanceActionTypeRequestBody
 {
     private String                governanceActionTypeQualifiedName = null;
     private Map<String, String>   requestParameters                 = null;
-    private List<String>          requestSourceGUIDs                = null;
+    private List<String>          actionSourceGUIDs                 = null;
+    private List<String>          actionCauseGUIDs                  = null;
     private List<NewActionTarget> actionTargets                     = null;
     private Date                  startDate                         = null;
     private String                originatorServiceName             = null;
@@ -54,10 +55,11 @@ public class InitiateGovernanceActionTypeRequestBody
         {
             governanceActionTypeQualifiedName = template.getGovernanceActionTypeQualifiedName();
             requestParameters                 = template.getRequestParameters();
-            requestSourceGUIDs                = template.getRequestSourceGUIDs();
-            actionTargets         = template.getActionTargets();
-            startDate             = template.getStartDate();
-            originatorServiceName = template.getOriginatorServiceName();
+            actionSourceGUIDs                 = template.getActionSourceGUIDs();
+            actionCauseGUIDs                  = template.getActionCauseGUIDs();
+            actionTargets                     = template.getActionTargets();
+            startDate                         = template.getStartDate();
+            originatorServiceName             = template.getOriginatorServiceName();
             originatorEngineName              = template.getOriginatorEngineName();
         }
     }
@@ -124,20 +126,42 @@ public class InitiateGovernanceActionTypeRequestBody
      *
      * @return list of string guids
      */
-    public List<String> getRequestSourceGUIDs()
+    public List<String> getActionSourceGUIDs()
     {
-        return requestSourceGUIDs;
+        return actionSourceGUIDs;
     }
 
 
     /**
      * Set up the list of elements that triggered this request.
      *
-     * @param requestSourceGUIDs list of string guids
+     * @param actionSourceGUIDs list of string guids
      */
-    public void setRequestSourceGUIDs(List<String> requestSourceGUIDs)
+    public void setActionSourceGUIDs(List<String> actionSourceGUIDs)
     {
-        this.requestSourceGUIDs = requestSourceGUIDs;
+        this.actionSourceGUIDs = actionSourceGUIDs;
+    }
+
+
+    /**
+     * Return the list of elements that caused this action.
+     *
+     * @return list of string guids
+     */
+    public List<String> getActionCauseGUIDs()
+    {
+        return actionCauseGUIDs;
+    }
+
+
+    /**
+     * Set up the list of elements that caused this action.
+     *
+     * @param actionCauseGUIDs list of string guids
+     */
+    public void setActionCauseGUIDs(List<String> actionCauseGUIDs)
+    {
+        this.actionCauseGUIDs = actionCauseGUIDs;
     }
 
 
@@ -238,14 +262,15 @@ public class InitiateGovernanceActionTypeRequestBody
     public String toString()
     {
         return "InitiateGovernanceActionTypeRequestBody{" +
-                       "governanceActionTypeQualifiedName='" + governanceActionTypeQualifiedName + '\'' +
-                       ", requestParameters=" + requestParameters +
-                       ", requestSourceGUIDs=" + requestSourceGUIDs +
-                       ", actionTargets=" + actionTargets +
-                       ", startDate=" + startDate +
-                       ", originatorServiceName='" + originatorServiceName + '\'' +
-                       ", originatorEngineName='" + originatorEngineName + '\'' +
-                       '}';
+                "governanceActionTypeQualifiedName='" + governanceActionTypeQualifiedName + '\'' +
+                ", requestParameters=" + requestParameters +
+                ", actionSourceGUIDs=" + actionSourceGUIDs +
+                ", actionCauseGUIDs=" + actionCauseGUIDs +
+                ", actionTargets=" + actionTargets +
+                ", startDate=" + startDate +
+                ", originatorServiceName='" + originatorServiceName + '\'' +
+                ", originatorEngineName='" + originatorEngineName + '\'' +
+                '}';
     }
 
 
@@ -268,12 +293,13 @@ public class InitiateGovernanceActionTypeRequestBody
         }
         InitiateGovernanceActionTypeRequestBody that = (InitiateGovernanceActionTypeRequestBody) objectToCompare;
         return Objects.equals(governanceActionTypeQualifiedName, that.governanceActionTypeQualifiedName) &&
-                       Objects.equals(requestSourceGUIDs, that.requestSourceGUIDs) &&
-                       Objects.equals(requestParameters, that.requestParameters) &&
-                       Objects.equals(actionTargets, that.actionTargets) &&
-                       Objects.equals(originatorServiceName, that.originatorServiceName) &&
-                       Objects.equals(originatorEngineName, that.originatorEngineName) &&
-                       Objects.equals(startDate, that.startDate);
+                Objects.equals(actionSourceGUIDs, that.actionSourceGUIDs) &&
+                Objects.equals(actionCauseGUIDs, that.actionCauseGUIDs) &&
+                Objects.equals(requestParameters, that.requestParameters) &&
+                Objects.equals(actionTargets, that.actionTargets) &&
+                Objects.equals(originatorServiceName, that.originatorServiceName) &&
+                Objects.equals(originatorEngineName, that.originatorEngineName) &&
+                Objects.equals(startDate, that.startDate);
     }
 
 
@@ -285,7 +311,7 @@ public class InitiateGovernanceActionTypeRequestBody
     @Override
     public int hashCode()
     {
-        return Objects.hash(governanceActionTypeQualifiedName, requestSourceGUIDs, requestParameters, actionTargets, startDate,
+        return Objects.hash(governanceActionTypeQualifiedName, actionSourceGUIDs, actionCauseGUIDs, requestParameters, actionTargets, startDate,
                             originatorServiceName, originatorEngineName);
     }
 }

@@ -51,7 +51,7 @@ Content-Type: application/json
 ###
 # @name addCommentToElement
 #  Creates a comment and attaches it to an element.
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/feedback-manager/elements/{{elementGUID}}/comments?isPublic=true
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/feedback-manager/elements/{{elementGUID}}/comments
 Authorization: Bearer {{token}}
 Content-Type: application/json
 
@@ -74,7 +74,7 @@ Content-Type: application/json
 # @name addCommentReply
 # Adds a reply to a comment. Optional request parameters:
 #  
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/feedback-manager/elements/{{elementGUID}}/comments/{{commentGUID}}/replies?isPublic=true
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/feedback-manager/elements/{{elementGUID}}/comments/{{commentGUID}}/replies
 Authorization: Bearer {{token}}
 Content-Type: application/json
 
@@ -156,7 +156,7 @@ Content-Type: application/json
 ###
 # @name getAttachedComments
 # Return the comments attached to an element.
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/feedback-manager/elements/{{elementGUID}}/comments/retrieve?startFrom=0&pageSize=10
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/feedback-manager/elements/{{elementGUID}}/comments/retrieve
 Authorization: Bearer {{token}}
 Content-Type: application/json
 
@@ -164,12 +164,25 @@ Content-Type: application/json
 # @name findComments
 # Return the list of comments containing the supplied string. The search string is located in the request body and is interpreted as a plain string.  The request parameters, startsWith, endsWith and ignoreCase can be used to allow a fuzzy search.  The request body also supports the specification of an effective time to restrict the search to element that are/were effective at a particular time.
 
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/feedback-manager/comments/by-search-string?startsWith=false&endsWith=false&ignoreCase=true&startFrom=0&pageSize=10
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/feedback-manager/comments/by-search-string
 Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-  "filter" : "add search string here"
+  "class" : "SearchStringRequestBody",
+  "searchString" : "Add value here",
+  "startsWith" : false,
+  "endsWith" : false,
+  "ignoreCase" : true,
+  "startFrom" : 0,
+  "pageSize": 10,
+  "asOfTime" : "{{$isoTimestamp}}",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false,
+  "limitResultsByStatus" : ["ACTIVE"],
+  "sequencingOrder" : "PROPERTY_ASCENDING",
+  "sequencingProperty" : "qualifiedName"
 }
 
 
@@ -247,7 +260,7 @@ Content-Type: application/json
 ###
 # @name getAttachedRatings
 # Return the ratings attached to an element.
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/feedback-manager/elements/{{elementGUID}}/ratings/retrieve?startFrom=0&pageSize=10
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/feedback-manager/elements/{{elementGUID}}/ratings/retrieve
 Authorization: Bearer {{token}}
 Content-Type: application/json
 
@@ -317,42 +330,78 @@ Content-Type: application/json
 ###
 # @name getTagsByName
 # Return the tags exactly matching the supplied name.
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/feedback-manager/tags/by-name?startFrom=0&pageSize=10
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/feedback-manager/tags/by-name
 Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-  "filter" : "add name here"
+  "class" : "FilterRequestBody",
+  "filter" : "Add name here",
+  "startFrom" : 0,
+  "pageSize": 10,
+  "asOfTime" : "{{$isoTimestamp}}",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false,
+  "limitResultsByStatus" : ["ACTIVE"],
+  "sequencingOrder" : "PROPERTY_ASCENDING",
+  "sequencingProperty" : "qualifiedName"
 }
 
 
 ###
 # @name findTags
 # Return the list of informal tags containing the supplied string in their name or description. The search string is located in the request body and is interpreted as a plain string.  The request parameters, startsWith, endsWith and ignoreCase can be used to allow a fuzzy search.  The request body also supports the specification of an effective time to restrict the search to element that are/were effective at a particular time.
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/feedback-manager/tags/by-search-string?startsWith=false&endsWith=false&ignoreCase=true&startFrom=0&pageSize=10
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/feedback-manager/tags/by-search-string
 Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-  "filter" : "add name here"
+  "class" : "SearchStringRequestBody",
+  "searchString" : "Add value here",
+  "startsWith" : false,
+  "endsWith" : false,
+  "ignoreCase" : true,
+  "startFrom" : 0,
+  "pageSize": 10,
+  "asOfTime" : "{{$isoTimestamp}}",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false,
+  "limitResultsByStatus" : ["ACTIVE"],
+  "sequencingOrder" : "PROPERTY_ASCENDING",
+  "sequencingProperty" : "qualifiedName"
 }
 
 
 ###
 # @name findMyTags
-#  Return the list of the calling user's private tags containing the supplied string in either the name or description.  The search string is located in the request body and is interpreted as a plain string.  The request parameters, startsWith, endsWith and ignoreCase can be used to allow a fuzzy search.  The request body also supports the specification of an effective time to restrict the search to element that are/were effective at a particular time.
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/feedback-manager/tags/private/by-search-string?startsWith=false&endsWith=false&ignoreCase=true&startFrom=0&pageSize=10
+#  Return the list of the calling user's tags containing the supplied string in either the name or description.  The search string is located in the request body and is interpreted as a plain string.  The request parameters, startsWith, endsWith and ignoreCase can be used to allow a fuzzy search.  The request body also supports the specification of an effective time to restrict the search to element that are/were effective at a particular time.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/feedback-manager/tags/private/by-search-string
 Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-  "filter" : "add name here"
+  "class" : "SearchStringRequestBody",
+  "searchString" : "Add value here",
+  "startsWith" : false,
+  "endsWith" : false,
+  "ignoreCase" : true,
+  "startFrom" : 0,
+  "pageSize": 10,
+  "asOfTime" : "{{$isoTimestamp}}",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false,
+  "limitResultsByStatus" : ["ACTIVE"],
+  "sequencingOrder" : "PROPERTY_ASCENDING",
+  "sequencingProperty" : "qualifiedName"
 }
 
 
 ###
 # @name addTagToElement
-# Adds an informal tag (either private of public) to an element.
+# Adds an informal tag to an element.
 #
 POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/feedback-manager/elements/{{elementGUID}}/tags/{{tagGUID}}?isPublic=true
 Authorization: Bearer {{token}}
@@ -466,7 +515,20 @@ Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-    "filter" : "add search string here"
+  "class" : "SearchStringRequestBody",
+  "searchString" : "Add value here",
+  "startsWith" : false,
+  "endsWith" : false,
+  "ignoreCase" : true,
+  "startFrom" : 0,
+  "pageSize": 10,
+  "asOfTime" : "{{$isoTimestamp}}",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false,
+  "limitResultsByStatus" : ["ACTIVE"],
+  "sequencingOrder" : "PROPERTY_ASCENDING",
+  "sequencingProperty" : "qualifiedName"
 }
 
 
@@ -474,12 +536,22 @@ Content-Type: application/json
 # @name getNoteLogsByName
 # Retrieve the list of note log metadata elements with an exact matching qualifiedName or name.
 
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/feedback-manager/note-logs/by-name?startFrom=0&pageSize=0
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/feedback-manager/note-logs/by-name
 Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-  "filter" : "add name here"
+  "class" : "FilterRequestBody",
+  "filter" : "Add name here",
+  "startFrom" : 0,
+  "pageSize": 10,
+  "asOfTime" : "{{$isoTimestamp}}",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false,
+  "limitResultsByStatus" : ["ACTIVE"],
+  "sequencingOrder" : "PROPERTY_ASCENDING",
+  "sequencingProperty" : "qualifiedName"
 }
 
 
@@ -487,7 +559,7 @@ Content-Type: application/json
 # @name getNoteLogsForElement
 # Retrieve the list of note log metadata elements attached to the element.
 
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/feedback-manager/elements/{{elementGUID}}/note-logs/retrieve?startFrom=0&pageSize=0
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/feedback-manager/elements/{{elementGUID}}/note-logs/retrieve
 Authorization: Bearer {{token}}
 Content-Type: application/json
 
@@ -512,28 +584,43 @@ Content-Type: application/json
 # @name createNote
 # Creates a new note for a note log and returns the unique identifier for it.
 
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/feedback-manager/note-logs/{{noteLogGUID}}/notes
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/feedback-manager/assets
 Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-  "class" : "NewFeedbackRequestBody",
-  "initialClassifications": {
-    "ZoneMembership" : {
-      "class" : "ZoneMembershipProperties",
-      "zoneMembership" : [ "erinoverview", "peterprofile" ]
-    }
-  },
+  "class" : "NewElementRequestBody",
+  "anchorGUID" : "{{noteLogGUID}}",
+  "isOwnAnchor": false,
+  "parentGUID": "{{noteLogGUID}}",
+  "parentRelationshipTypeName": "AttachedNoteLogEntry",
+  "parentAtEnd1": true,
   "properties": {
-    "class" : "NoteProperties",
-    "qualifiedName" : "Add unique name here",
-    "title" : "Add name here",
-    "text" : "Add description here",
-    "additionalProperties" : {
-      "propertyName 1" : "property value 1",
-      "propertyName 2" : "property value 2"
-    }
-  }
+    "class" : "NotificationProperties",
+    "typeName" : "Notification",
+    "qualifiedName": "add unique name here",
+    "displayName": "add short name here",
+    "description": "add description here",
+    "systemAction" : "add optional system action that occurred as part of this notification processing",
+    "userResponse" : "add optional action that the reader should take",
+    "priority" : 1,
+    "activityStatus" : "FOR_INFO",
+    "additionalProperties": {
+      "property1" : "propertyValue1",
+      "property2" : "propertyValue2"
+    },
+    "extendedProperties": {
+      "property1" : "propertyValue1",
+      "property2" : "propertyValue2"
+    },
+    "effectiveFrom": "{{$isoTimestamp}}",
+    "effectiveTo": "{{$isoTimestamp}}"
+  },
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
 }
 
 
@@ -547,16 +634,30 @@ Content-Type: application/json
 {
   "class" : "UpdateElementRequestBody",
   "mergeUpdate": true,
-  "properties" : {
-    "class" : "NoteProperties",
-    "qualifiedName" : "Add unique name here",
-    "title" : "Add name here",
-    "text" : "Add description here",
-    "additionalProperties" : {
-      "propertyName 1" : "property value 1",
-      "propertyName 2" : "property value 2"
+  "properties": {
+    "class" : "NotificationProperties",
+    "typeName" : "Notification",
+    "qualifiedName": "add unique name here",
+    "displayName": "add short name here",
+    "description": "add description here",
+    "systemAction" : "add optional system action that occurred as part of this notification processing",
+    "userResponse" : "add optional action that the reader should take",
+    "priority" : 1,
+    "activityStatus" : "FOR_INFO",
+    "additionalProperties": {
+      "property1" : "propertyValue1",
+      "property2" : "propertyValue2"
+    },
+    "extendedProperties": {
+      "property1" : "propertyValue1",
+      "property2" : "propertyValue2"
     }
-  }
+  },
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
 }
 
 
@@ -564,21 +665,43 @@ Content-Type: application/json
 # @name removeNote
 # Removes a note from the repository.  All the relationships to referenceables are lost.
 
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/feedback-manager/notes/{{noteGUID}}/remove
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/feedback-manager/assets/{{noteGUID}}/delete
 Authorization: Bearer {{token}}
 Content-Type: application/json
+
+{
+  "class" : "DeleteElementRequestBody",
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
+}
 
 
 ###
 # @name findNotes
 # Retrieve the list of note metadata elements that contain the search string.  The search string is located in the request body and is interpreted as a plain string.  The request parameters, startsWith, endsWith and ignoreCase can be used to allow a fuzzy search.  The request body also supports the specification of an effective time to restrict the search to element that are/were effective at a particular time.
 
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/feedback-manager/note-logs/notes/by-search-string?startsWith=false&endsWith=false&ignoreCase=true&startFrom=0&pageSize=10
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/feedback-manager/assets/by-search-string
 Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-  "filter" : "add search string here"
+  "class" : "SearchStringRequestBody",
+  "searchString" : "Add value here",
+  "startsWith" : false,
+  "endsWith" : false,
+  "ignoreCase" : true,
+  "startFrom" : 0,
+  "pageSize": 10,
+  "asOfTime" : "{{$isoTimestamp}}",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false,
+  "limitResultsByStatus" : ["ACTIVE"],
+  "sequencingOrder" : "PROPERTY_ASCENDING",
+  "sequencingProperty" : "qualifiedName"
 }
 
 
@@ -586,7 +709,7 @@ Content-Type: application/json
 # @name getNotesForNoteLog
 # Retrieve the list of notes associated with a note log.
 
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/feedback-manager/note-logs/{{noteLogGUID}}/notes/retrieve?startFrom=0&pageSize=10
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/feedback-manager/note-logs/{{noteLogGUID}}/notes/retrieve
 Authorization: Bearer {{token}}
 Content-Type: application/json
 
@@ -595,7 +718,7 @@ Content-Type: application/json
 # @name getNoteByGUID
 # Retrieve the note metadata element with the supplied unique identifier.
 
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/feedback-manager/note-logs/notes/{{noteGUID}}
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/feedback-manager/assets/{{noteGUID}}/retrieve
 Authorization: Bearer {{token}}
 Content-Type: application/json
 

@@ -14,6 +14,10 @@ import org.odpi.openmetadata.frameworks.openmetadata.properties.governance.*;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.locations.CyberLocationProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.locations.FixedLocationProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.locations.SecureLocationProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.projects.CampaignProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.projects.PersonalProjectProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.projects.StudyProjectProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.projects.TaskProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.schema.CalculatedValueProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.schema.PrimaryKeyProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.schema.TypeEmbeddedAttributeProperties;
@@ -46,6 +50,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
                 @JsonSubTypes.Type(value = ActivityDescriptionProperties.class, name = "ActivityDescriptionProperties"),
                 @JsonSubTypes.Type(value = AnchorsProperties.class, name = "AnchorsProperties"),
                 @JsonSubTypes.Type(value = CalculatedValueProperties.class, name = "CalculatedValueProperties"),
+                @JsonSubTypes.Type(value = CampaignProperties.class, name = "CampaignProperties"),
                 @JsonSubTypes.Type(value = CanonicalVocabularyProperties.class, name = "CanonicalVocabularyProperties"),
                 @JsonSubTypes.Type(value = ContextDefinitionProperties.class, name = "ContextDefinitionProperties"),
                 @JsonSubTypes.Type(value = ContextEventCollectionProperties.class, name = "ContextEventCollectionProperties"),
@@ -65,6 +70,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
                 @JsonSubTypes.Type(value = ListenerInterfaceProperties.class, name = "ListenerInterfaceProperties"),
                 @JsonSubTypes.Type(value = NamespaceProperties.class, name = "NamespaceProperties"),
                 @JsonSubTypes.Type(value = OwnershipProperties.class, name = "OwnershipProperties"),
+                @JsonSubTypes.Type(value = PersonalProjectProperties.class, name = "PersonalProjectProperties"),
                 @JsonSubTypes.Type(value = PrimaryKeyProperties.class, name = "PrimaryKeyProperties"),
                 @JsonSubTypes.Type(value = PublisherInterfaceProperties.class, name = "PublisherInterfaceProperties"),
                 @JsonSubTypes.Type(value = RecentAccessProperties.class, name = "RecentAccessProperties"),
@@ -79,7 +85,9 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
                 @JsonSubTypes.Type(value = SecurityGroupMembershipProperties.class, name = "SecurityGroupMembershipProperties"),
                 @JsonSubTypes.Type(value = SecurityTagsProperties.class, name = "SecurityTagsProperties"),
                 @JsonSubTypes.Type(value = StagingCollectionProperties.class, name = "StagingCollectionProperties"),
+                @JsonSubTypes.Type(value = StudyProjectProperties.class, name = "StudyProjectProperties"),
                 @JsonSubTypes.Type(value = SubjectAreaProperties.class, name = "SubjectAreaProperties"),
+                @JsonSubTypes.Type(value = TaskProperties.class, name = "TaskProperties"),
                 @JsonSubTypes.Type(value = TaxonomyProperties.class, name = "TaxonomyProperties"),
                 @JsonSubTypes.Type(value = TemplateProperties.class, name = "TemplateProperties"),
                 @JsonSubTypes.Type(value = TypeEmbeddedAttributeProperties.class, name = "TypeEmbeddedAttributeProperties"),

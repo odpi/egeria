@@ -10,8 +10,10 @@ import org.odpi.openmetadata.frameworks.openmetadata.ffdc.PropertyServerExceptio
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.*;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.ClassificationProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.NewActionTarget;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.RelationshipProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.actors.AssignmentScopeProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.processes.actions.NotificationProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.governance.*;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.implementations.ImplementationResourceProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.implementations.ImplementedByProperties;
@@ -42,6 +44,38 @@ public class GovernanceDefinitionHandler extends OpenMetadataHandlerBase
                                        OpenMetadataClient openMetadataClient)
     {
         super(localServerName, auditLog, serviceName, openMetadataClient, OpenMetadataType.GOVERNANCE_DEFINITION.typeName);
+    }
+
+
+    /**
+     * Create a new handler.
+     *
+     * @param localServerName        name of this server (view server)
+     * @param auditLog               logging destination
+     * @param serviceName            local service name
+     * @param openMetadataClient     access to open metadata
+     * @param specificTypeName   subtype to control handler
+     */
+    public GovernanceDefinitionHandler(String             localServerName,
+                                       AuditLog           auditLog,
+                                       String             serviceName,
+                                       OpenMetadataClient openMetadataClient,
+                                       String             specificTypeName)
+    {
+        super(localServerName, auditLog, serviceName, openMetadataClient, specificTypeName);
+    }
+
+
+    /**
+     * Create a new handler.
+     *
+     * @param template        properties to copy
+     * @param specificTypeName   subtype to control handler
+     */
+    public GovernanceDefinitionHandler(GovernanceDefinitionHandler template,
+                                       String                      specificTypeName)
+    {
+        super(template, specificTypeName);
     }
 
 
@@ -200,7 +234,7 @@ public class GovernanceDefinitionHandler extends OpenMetadataHandlerBase
                                                                           PropertyServerException,
                                                                           UserNotAuthorizedException
     {
-        final String methodName = "detachMemberDataField";
+        final String methodName = "detachPeerDefinitions";
 
         final String end1GUIDParameterName = "governanceDefinitionOneGUID";
         final String end2GUIDParameterName = "governanceDefinitionTwoGUID";
@@ -911,7 +945,6 @@ public class GovernanceDefinitionHandler extends OpenMetadataHandlerBase
 
     /**
      * Retrieve the list of governance definitions metadata elements that contain the search string.
-     * The search string is treated as a regular expression.
      *
      * @param userId                 calling user
      * @param searchString           string to find in the properties
@@ -1099,65 +1132,5 @@ public class GovernanceDefinitionHandler extends OpenMetadataHandlerBase
                                                         designGUID,
                                                         implementationResourceGUID,
                                                         deleteOptions);
-    }
-
-
-
-    /*
-     * Converter functions
-     */
-
-    /**
-     * Add a standard mermaid graph to the root element.  This method may be overridden by the subclasses if
-     * they have a more fancy graph to display.
-     *
-     * @param userId calling user
-     * @param rootElement new root element
-     * @param queryOptions options from the caller
-     * @return root element with graph
-     * @throws InvalidParameterException  one of the parameters is null or invalid.
-     * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
-     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
-     */
-    protected OpenMetadataRootElement addMermaidToRootElement(String                  userId,
-                                                              OpenMetadataRootElement rootElement,
-                                                              QueryOptions            queryOptions) throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException
-    {
-        if (rootElement != null)
-        {
-            List<RelatedMetadataElementSummary> nestedElements1 = super.getElementHierarchies(userId,
-                                                                                       rootElement.getElementHeader().getGUID(),
-                                                                                       rootElement.getSupportedGovernanceDefinitions(),
-                                                                                       1,
-                                                                                       OpenMetadataType.GOVERNANCE_RESPONSE_RELATIONSHIP.typeName,
-                                                                                       queryOptions,
-                                                                                       1);
-
-            List<RelatedMetadataElementSummary> nestedElements2 = super.getElementHierarchies(userId,
-                                                                                              rootElement.getElementHeader().getGUID(),
-                                                                                              rootElement.getSupportedGovernanceDefinitions(),
-                                                                                              1,
-                                                                                              OpenMetadataType.GOVERNANCE_MECHANISM_RELATIONSHIP.typeName,
-                                                                                              queryOptions,
-                                                                                              1);
-
-            if (nestedElements1 != null)
-            {
-                if (nestedElements2 != null)
-                {
-                    nestedElements1.addAll(nestedElements2);
-                }
-
-                rootElement.setSupportedGovernanceDefinitions(nestedElements1);
-            }
-            else if (nestedElements2 != null)
-            {
-                rootElement.setSupportedGovernanceDefinitions(nestedElements2);
-            }
-
-            super.addMermaidToRootElement(userId, rootElement, queryOptions);
-        }
-
-        return rootElement;
     }
 }

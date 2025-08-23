@@ -2827,9 +2827,27 @@ public enum OpenMetadataProperty
      */
     SUBSCRIBER_ID("subscriberId",
                   DataType.STRING.getName(),
-                  "Unique identifier for the subscriber.",
+                  "Unique identifier for the subscriber.  This is typically supplied by an external subscription manager.",
                   null,
                   "a457adf0-7034-4988-968a-dd537d0ded15"),
+
+    /**
+     * The action that has been taken by the producer of the notification.
+     */
+    SYSTEM_ACTION("systemAction",
+                  DataType.STRING.getName(),
+                  "The action that has been taken by the producer of the notification.",
+                  null,
+                  "6b354ca7-1a85-4cab-8b1e-0da5ad7f3724"),
+
+    /**
+     * The action that has been taken by the producer of the notification.
+     */
+    USER_RESPONSE("userResponse",
+                  DataType.STRING.getName(),
+                  "The action that the receiver of this notification should perform.",
+                  null,
+                  "0b015138-0870-4604-9df1-5bda47101d74"),
 
     /**
      * Expression used to filter data values passing through port.

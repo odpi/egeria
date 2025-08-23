@@ -12,6 +12,7 @@ import org.odpi.openmetadata.frameworks.opengovernance.properties.ActionTargetEl
 import org.odpi.openmetadata.frameworks.opengovernance.properties.RequestSourceElement;
 import org.odpi.openmetadata.frameworks.openmetadata.client.OpenMetadataClient;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.ActivityStatus;
+import org.odpi.openmetadata.frameworks.openmetadata.events.OpenMetadataOutTopicEvent;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
@@ -20,6 +21,7 @@ import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 import org.odpi.openmetadata.frameworks.openwatchdog.WatchdogContext;
 import org.odpi.openmetadata.frameworkservices.gaf.client.GovernanceConfigurationClient;
 import org.odpi.openmetadata.frameworkservices.gaf.client.GovernanceContextClient;
+import org.odpi.openmetadata.frameworkservices.gaf.client.GovernanceListenerManager;
 import org.odpi.openmetadata.governanceservers.enginehostservices.admin.GovernanceEngineHandler;
 import org.odpi.openmetadata.governanceservers.enginehostservices.admin.GovernanceServiceCache;
 
@@ -35,33 +37,43 @@ import java.util.Map;
  */
 public class WatchdogActionEngineHandler extends GovernanceEngineHandler
 {
-    private final OpenMetadataClient   openMetadataClient;      /* Initialized in constructor */
+    private final GovernanceContextClient   governanceContextClient;    /* Initialized in constructor */
+    private final GovernanceListenerManager governanceListenerManager; /* Initialized in constructor */
 
+    private final OpenMetadataClient        openMetadataClient; /* Initialized in constructor */
+
+    private static final String supportGovernanceEngineType = OpenMetadataType.GOVERNANCE_ACTION_ENGINE.typeName;
     private final PropertyHelper       propertyHelper   = new PropertyHelper();
 
     /**
      * Create a client-side object for calling a watchdog action engine.
      *
-     * @param engineConfig the unique identifier of the watchdog action engine.
-     * @param serverName the name of the engine host server where the watchdog action engine is running
+     * @param engineConfig the unique identifier of the governance action engine.
+     * @param localServerName the name of the engine host server where the governance action engine is running
+     * @param partnerServerName name of partner server
+     * @param partnerURLRoot partner platform
      * @param serverUserId user id for the server to use
+     * @param openMetadataClient access to the open metadata store
      * @param configurationClient client to retrieve the configuration
-     * @param engineActionClient client used by the engine host services to control the execution of governance action requests
-     * @param openMetadataClient REST Client from the OMF that is linked to the gaf management services
+     * @param engineActionClient client to control the execution of governance action requests
+     * @param governanceContextClient REST client for calls made by the governance action services
      * @param auditLog logging destination
      * @param maxPageSize maximum number of results that can be returned in a single request
      */
     public WatchdogActionEngineHandler(EngineConfig                  engineConfig,
-                                       String                        serverName,
+                                       String                        localServerName,
+                                       String                        partnerServerName,
+                                       String                        partnerURLRoot,
                                        String                        serverUserId,
+                                       OpenMetadataClient            openMetadataClient,
                                        GovernanceConfigurationClient configurationClient,
                                        GovernanceContextClient       engineActionClient,
-                                       OpenMetadataClient            openMetadataClient,
+                                       GovernanceContextClient       governanceContextClient,
                                        AuditLog                      auditLog,
                                        int                           maxPageSize)
     {
         super(engineConfig,
-              serverName,
+              localServerName,
               serverUserId,
               EngineServiceDescription.WATCHDOG_ACTION_OMES.getEngineServiceFullName(),
               configurationClient,
@@ -69,7 +81,24 @@ public class WatchdogActionEngineHandler extends GovernanceEngineHandler
               auditLog,
               maxPageSize);
 
-        this.openMetadataClient   = openMetadataClient;
+        this.openMetadataClient        = openMetadataClient;
+        this.governanceListenerManager = new GovernanceListenerManager(auditLog, engineConfig.getEngineQualifiedName());
+        this.governanceContextClient   = governanceContextClient;
+
+        this.governanceContextClient.setListenerManager(governanceListenerManager, engineConfig.getEngineQualifiedName());
+    }
+
+
+    /**
+     * Pass on the watchdog event to any governance service that supports them.
+     *
+     * @param watchdogGovernanceEvent element describing the changing metadata data.
+     *
+     * @throws InvalidParameterException Vital fields of the governance action are not filled out
+     */
+    public void publishWatchdogEvent(OpenMetadataOutTopicEvent watchdogGovernanceEvent) throws InvalidParameterException
+    {
+        governanceListenerManager.processEvent(watchdogGovernanceEvent);
     }
 
 
@@ -131,19 +160,21 @@ public class WatchdogActionEngineHandler extends GovernanceEngineHandler
                 }
                 else
                 {
-                    throw new InvalidParameterException(WatchdogActionErrorCode.NO_TARGET_ASSET.getMessageDefinition(governanceServiceCache.getGovernanceServiceName(),
-                                                                                                                     governanceRequestType,
-                                                                                                                     engineActionGUID),
+                    final String guidParameterName = "notificationTypeGUID";
+
+                    throw new InvalidParameterException(WatchdogActionErrorCode.NO_TARGET_NOTIFICATION_TYPE.getMessageDefinition(governanceServiceCache.getGovernanceServiceName(),
+                                                                                                                                 governanceRequestType,
+                                                                                                                                 engineActionGUID),
                                                         this.getClass().getName(),
                                                         methodName,
-                                                        "notificationTypeGUID");
+                                                        guidParameterName);
                 }
             }
             else
             {
-                throw new InvalidParameterException(WatchdogActionErrorCode.NO_TARGET_ASSET.getMessageDefinition(governanceServiceCache.getGovernanceServiceName(),
-                                                                                                                 governanceRequestType,
-                                                                                                                 engineActionGUID),
+                throw new InvalidParameterException(WatchdogActionErrorCode.NO_TARGET_NOTIFICATION_TYPE.getMessageDefinition(governanceServiceCache.getGovernanceServiceName(),
+                                                                                                                             governanceRequestType,
+                                                                                                                             engineActionGUID),
                                                     this.getClass().getName(),
                                                     methodName,
                                                     "assetGUID");
@@ -183,7 +214,7 @@ public class WatchdogActionEngineHandler extends GovernanceEngineHandler
         final String methodName = "getNotificationTypeGUIDFromActionTargets";
 
         String NotificationTypeGUID = null;
-        List<String> ignoredAssets = new ArrayList<>();
+        List<String> ignoredNotificationTypes = new ArrayList<>();
 
         /*
          * First pick out all the assets ...
@@ -213,7 +244,7 @@ public class WatchdogActionEngineHandler extends GovernanceEngineHandler
             for (ActionTargetElement actionTargetElement : assetTargetElements)
             {
                 // todo check the action target is not in progress
-                if (ActionTarget.NEW_ASSET.getName().equals(actionTargetElement.getActionTargetName()))
+                if (ActionTarget.NOTIFICATION_TYPE.getName().equals(actionTargetElement.getActionTargetName()))
                 {
                     if (NotificationTypeGUID == null)
                     {
@@ -227,19 +258,19 @@ public class WatchdogActionEngineHandler extends GovernanceEngineHandler
                     }
                     else
                     {
-                        ignoredAssets.add(actionTargetElement.getTargetElement().getElementGUID());
+                        ignoredNotificationTypes.add(actionTargetElement.getTargetElement().getElementGUID());
                     }
                 }
             }
 
-            if (! ignoredAssets.isEmpty())
+            if (! ignoredNotificationTypes.isEmpty())
             {
                 auditLog.logMessage(methodName,
-                                    WatchdogActionAuditCode.IGNORING_ASSETS.getMessageDefinition(governanceServiceName,
-                                                                                                 governanceRequestType,
-                                                                                                 engineActionGUID,
-                                                                                                 NotificationTypeGUID,
-                                                                                                 ignoredAssets.toString()));
+                                    WatchdogActionAuditCode.IGNORING_NOTIFICATION_TYPES.getMessageDefinition(governanceServiceName,
+                                                                                                             governanceRequestType,
+                                                                                                             engineActionGUID,
+                                                                                                             NotificationTypeGUID,
+                                                                                                             ignoredNotificationTypes.toString()));
             }
         }
 
@@ -285,10 +316,15 @@ public class WatchdogActionEngineHandler extends GovernanceEngineHandler
                                                               governanceServiceCache.getGovernanceServiceGUID(),
                                                               governanceServiceCache.getGenerateIntegrationReport(),
                                                               openMetadataClient,
+                                                              engineActionClient,
+                                                              engineActionClient,
+                                                              engineActionClient,
                                                               auditLog,
                                                               maxPageSize,
                                                               governanceServiceCache.getDeleteMethod(),
+                                                              engineActionGUID,
                                                               notificationTypeGUID,
+                                                              requestType,
                                                               governanceServiceCache.getRequestParameters(requestParameters),
                                                               actionTargetElements,
                                                               governanceServiceCache.getGovernanceServiceName(),

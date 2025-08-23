@@ -362,6 +362,7 @@ public class DataFilesMonitorForTarget extends DirectoryToMonitor
 
                             stewardshipAction.initiateGovernanceActionProcess(newFileProcessName,
                                                                               null,
+                                                                              null,
                                                                               actionTargets,
                                                                               null,
                                                                               requestParameters,

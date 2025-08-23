@@ -9,6 +9,7 @@ import org.odpi.openmetadata.frameworks.openmetadata.events.OpenMetadataOutTopic
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
+import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 import org.odpi.openmetadata.frameworkservices.gaf.client.GovernanceConfigurationClient;
 import org.odpi.openmetadata.frameworkservices.gaf.client.GovernanceContextClient;
 import org.odpi.openmetadata.frameworkservices.gaf.client.GovernanceListenerManager;
@@ -31,8 +32,6 @@ public class GovernanceActionEngineHandler extends GovernanceEngineHandler
     private final GovernanceListenerManager governanceListenerManager; /* Initialized in constructor */
 
     private final OpenMetadataClient        openMetadataClient; /* Initialized in constructor */
-
-    private static final String supportGovernanceEngineType = "GovernanceActionEngine";
 
 
     /**
@@ -122,7 +121,7 @@ public class GovernanceActionEngineHandler extends GovernanceEngineHandler
     {
         final String methodName = "runGovernanceService";
 
-        super.validateGovernanceEngineInitialized(supportGovernanceEngineType, methodName);
+        super.validateGovernanceEngineInitialized(OpenMetadataType.GOVERNANCE_ACTION_ENGINE.typeName, methodName);
 
         GovernanceServiceCache governanceServiceCache = super.getServiceCache(governanceRequestType);
 

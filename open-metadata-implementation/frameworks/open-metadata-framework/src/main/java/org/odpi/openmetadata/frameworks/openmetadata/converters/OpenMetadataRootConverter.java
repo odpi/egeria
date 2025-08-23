@@ -5,10 +5,7 @@ package org.odpi.openmetadata.frameworks.openmetadata.converters;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.OpenMetadataRootElement;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.*;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.processes.actions.ActionProperties;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.processes.actions.EngineActionProperties;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.processes.actions.MeetingProperties;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.processes.actions.ToDoProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.processes.actions.*;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.actors.*;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.actors.GovernanceRoleProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.*;
@@ -37,6 +34,7 @@ import org.odpi.openmetadata.frameworks.openmetadata.properties.feedback.LikePro
 import org.odpi.openmetadata.frameworks.openmetadata.properties.feedback.RatingProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.feedback.SearchKeywordProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.glossaries.GlossaryProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.glossaries.GlossaryTermProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.governance.*;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.governance.governanceactions.GovernanceActionProcessProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.governance.governanceactions.GovernanceActionProperties;
@@ -331,6 +329,13 @@ public class OpenMetadataRootConverter<B> extends AttributedElementConverterBase
                                 ((MeetingProperties) beanProperties).setObjective(this.removeObjective(elementProperties));
                                 ((MeetingProperties) beanProperties).setMinutes(this.removeMinutes(elementProperties));
                                 ((MeetingProperties) beanProperties).setDecisions(this.removeDecisions(elementProperties));
+                            }
+                            else if (propertyHelper.isTypeOf(openMetadataElement, OpenMetadataType.NOTIFICATION.typeName))
+                            {
+                                beanProperties = new NotificationProperties();
+
+                                ((NotificationProperties) beanProperties).setSystemAction(this.removeSystemAction(elementProperties));
+                                ((NotificationProperties) beanProperties).setUserResponse(this.removeUserResponse(elementProperties));
                             }
                             else if (propertyHelper.isTypeOf(openMetadataElement, OpenMetadataType.ENGINE_ACTION.typeName))
                             {
@@ -659,6 +664,18 @@ public class OpenMetadataRootConverter<B> extends AttributedElementConverterBase
                     ((ExternalReferenceProperties)beanProperties).setCopyright(this.removeCopyright(elementProperties));
                     ((ExternalReferenceProperties)beanProperties).setLicense(this.removeLicense(elementProperties));
                     ((ExternalReferenceProperties)beanProperties).setAttribution(this.removeAttribution(elementProperties));
+
+                }
+                else if (propertyHelper.isTypeOf(openMetadataElement, OpenMetadataType.GLOSSARY_TERM.typeName))
+                {
+                    beanProperties = new GlossaryTermProperties();
+
+                    ((GlossaryTermProperties)beanProperties).setUserDefinedStatus(this.removeUserDefinedStatus(elementProperties));
+                    ((GlossaryTermProperties)beanProperties).setAliases(this.removeAliases(elementProperties));
+                    ((GlossaryTermProperties)beanProperties).setSummary(this.removeSummary(elementProperties));
+                    ((GlossaryTermProperties)beanProperties).setExamples(this.removeExamples(elementProperties));
+                    ((GlossaryTermProperties)beanProperties).setAbbreviation(this.removeAbbreviation(elementProperties));
+                    ((GlossaryTermProperties)beanProperties).setUsage(this.removeUsage(elementProperties));
 
                 }
                 else if (propertyHelper.isTypeOf(openMetadataElement, OpenMetadataType.GOVERNANCE_DEFINITION.typeName))

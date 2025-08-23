@@ -820,9 +820,16 @@ public class FeedbackManagerRESTServices extends TokenController
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            response.setElements(handler.findComments(userId,
-                                                      requestBody.getSearchString(),
-                                                      requestBody));
+            if (requestBody != null)
+            {
+                response.setElements(handler.findComments(userId,
+                                                          requestBody.getSearchString(),
+                                                          requestBody));
+            }
+            else
+            {
+                response.setElements(handler.findComments(userId, null, null));
+            }
         }
         catch (Throwable error)
         {
@@ -1127,9 +1134,16 @@ public class FeedbackManagerRESTServices extends TokenController
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            response.setElements(handler.findTags(userId,
-                                                  requestBody.getSearchString(),
-                                                  requestBody));
+            if (requestBody != null)
+            {
+                response.setElements(handler.findTags(userId,
+                                                      requestBody.getSearchString(),
+                                                      requestBody));
+            }
+            else
+            {
+                response.setElements(handler.findTags(userId, null, null));
+            }
         }
         catch (Throwable error)
         {
@@ -1174,9 +1188,16 @@ public class FeedbackManagerRESTServices extends TokenController
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            response.setElements(handler.findMyTags(userId,
-                                                    requestBody.getSearchString(),
-                                                    requestBody));
+            if (requestBody != null)
+            {
+                response.setElements(handler.findMyTags(userId,
+                                                        requestBody.getSearchString(),
+                                                        requestBody));
+            }
+            else
+            {
+                response.setElements(handler.findMyTags(userId, null, null));
+            }
         }
         catch (Throwable error)
         {
@@ -1588,7 +1609,14 @@ public class FeedbackManagerRESTServices extends TokenController
 
             NoteLogHandler handler = instanceHandler.getNoteLogHandler(userId, serverName, urlMarker, methodName);
 
-            response.setElements(handler.findNoteLogs(userId, requestBody.getSearchString(), requestBody));
+            if (requestBody != null)
+            {
+                response.setElements(handler.findNoteLogs(userId, requestBody.getSearchString(), requestBody));
+            }
+            else
+            {
+                response.setElements(handler.findNoteLogs(userId, null, null));
+            }
         }
         catch (Throwable error)
         {
@@ -1758,222 +1786,6 @@ public class FeedbackManagerRESTServices extends TokenController
 
 
     /**
-     * Creates a new note for a note log and returns the unique identifier for it.
-     *
-     * @param serverName   name of the server instances for this request
-     * @param noteLogGUID unique identifier of the  note log
-     * @param urlMarker  view service URL marker
-     * @param requestBody  contains the name of the tag and (optional) description of the tag
-     *
-     * @return guid for new tag or
-     * InvalidParameterException - one of the parameters is invalid or
-     * PropertyServerException - there is a problem retrieving information from the property server(s) or
-     * UserNotAuthorizedException - the requesting user is not authorized to issue this request.
-     */
-    public GUIDResponse createNote(String                 serverName,
-                                   String                 urlMarker,
-                                   String                 noteLogGUID,
-                                   NewFeedbackRequestBody requestBody)
-    {
-        final String   methodName = "createNote";
-
-        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
-
-        GUIDResponse  response = new GUIDResponse();
-        AuditLog      auditLog = null;
-
-        try
-        {
-            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
-
-            restCallLogger.setUserId(token, userId);
-
-            if (requestBody != null)
-            {
-                NoteEntryHandler handler = instanceHandler.getNoteEntryHandler(userId, serverName, urlMarker, methodName);
-
-                auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-
-                if (requestBody.getProperties() instanceof NoteProperties noteProperties)
-                {
-                    response.setGUID(handler.createNote(userId, noteLogGUID, requestBody, requestBody.getInitialClassifications(), noteProperties));
-                }
-                else
-                {
-                    restExceptionHandler.handleInvalidPropertiesObject(NoteProperties.class.getName(), methodName);
-                }
-            }
-            else
-            {
-                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName, NoteLogProperties.class.getName());
-            }
-        }
-        catch (Throwable error)
-        {
-            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
-        }
-
-        restCallLogger.logRESTCallReturn(token, response.toString());
-        return response;
-    }
-
-
-    /**
-     * Update an existing note.
-     *
-     * @param serverName   name of the server instances for this request.
-     * @param noteGUID  unique identifier for the note to change.
-     * @param urlMarker  view service URL marker
-     * @param requestBody  containing type of comment enum and the text of the comment.
-     *
-     * @return void or
-     * InvalidParameterException one of the parameters is null or invalid.
-     * PropertyServerException There is a problem updating the element properties in the metadata repository.
-     * UserNotAuthorizedException the requesting user is not authorized to issue this request.
-     */
-    public VoidResponse   updateNote(String                   serverName,
-                                     String                   urlMarker,
-                                     String                   noteGUID,
-                                     UpdateElementRequestBody requestBody)
-    {
-        final String methodName = "updateNote";
-
-        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
-
-        VoidResponse  response = new VoidResponse();
-        AuditLog      auditLog = null;
-
-        try
-        {
-            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
-
-            restCallLogger.setUserId(token, userId);
-
-            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-
-            if (requestBody != null)
-            {
-                if (requestBody.getProperties() instanceof  NoteProperties noteProperties)
-                {
-                    NoteEntryHandler handler = instanceHandler.getNoteEntryHandler(userId, serverName, urlMarker, methodName);
-
-                    handler.updateNote(userId, noteGUID, requestBody, noteProperties);
-                }
-                else
-                {
-                    restExceptionHandler.handleInvalidPropertiesObject(NoteProperties.class.getName(), methodName);
-                }
-            }
-            else
-            {
-                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName, UpdateElementRequestBody.class.getName());
-            }
-        }
-        catch (Throwable error)
-        {
-            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
-        }
-
-        restCallLogger.logRESTCallReturn(token, response.toString());
-        return response;
-    }
-
-
-    /**
-     * Removes a note from the repository.  All the relationships to referenceables are lost.
-     *
-     * @param serverName   name of the server instances for this request
-     * @param noteGUID   unique id for the note .
-     * @param urlMarker  view service URL marker
-     * @param requestBody optional effective time
-     *
-     * @return void or
-     * InvalidParameterException - one of the parameters is invalid or
-     * PropertyServerException - there is a problem retrieving information from the property server(s) or
-     * UserNotAuthorizedException - the requesting user is not authorized to issue this request.
-     */
-    public VoidResponse   deleteNote(String            serverName,
-                                     String            urlMarker,
-                                     String            noteGUID,
-                                     DeleteRequestBody requestBody)
-    {
-        final String methodName = "deleteNote";
-
-        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
-
-        VoidResponse  response = new VoidResponse();
-        AuditLog      auditLog = null;
-
-        try
-        {
-            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
-
-            restCallLogger.setUserId(token, userId);
-
-            NoteEntryHandler handler = instanceHandler.getNoteEntryHandler(userId, serverName, urlMarker, methodName);
-
-            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-
-            handler.removeNote(userId, noteGUID, requestBody);
-        }
-        catch (Throwable error)
-        {
-            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
-        }
-
-        restCallLogger.logRESTCallReturn(token, response.toString());
-        return response;
-    }
-
-
-    /**
-     * Retrieve the list of note metadata elements that contain the search string.
-     * The search string is treated as a regular expression.
-     *
-     * @param serverName name of the server to route the request to
-     * @param urlMarker  view service URL marker
-     * @param requestBody string to find in the properties
-     *
-     * @return list of matching metadata elements or
-     *  InvalidParameterException  one of the parameters is invalid
-     *  UserNotAuthorizedException the user is not authorized to issue this request
-     *  PropertyServerException    there is a problem reported in the open metadata server(s)
-     */
-    public OpenMetadataRootElementsResponse findNotes(String                  serverName, 
-                                                      String                  urlMarker, 
-                                                      SearchStringRequestBody requestBody)
-    {
-        final String methodName = "findNotes";
-
-        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
-
-        OpenMetadataRootElementsResponse response = new OpenMetadataRootElementsResponse();
-        AuditLog      auditLog = null;
-
-        try
-        {
-            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
-
-            restCallLogger.setUserId(token, userId);
-
-            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-
-            NoteEntryHandler handler = instanceHandler.getNoteEntryHandler(userId, serverName, urlMarker, methodName);
-
-            response.setElements(handler.findNotes(userId, requestBody.getSearchString(), requestBody));
-        }
-        catch (Throwable error)
-        {
-            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
-        }
-
-        restCallLogger.logRESTCallReturn(token, response.toString());
-
-        return response;
-    }
-
-
-    /**
      * Retrieve the list of notes associated with a note log.
      *
      * @param serverName   name of the server instances for this request
@@ -2006,7 +1818,7 @@ public class FeedbackManagerRESTServices extends TokenController
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            NoteEntryHandler handler = instanceHandler.getNoteEntryHandler(userId, serverName, urlMarker, methodName);
+            NoteLogHandler handler = instanceHandler.getNoteLogHandler(userId, serverName, urlMarker, methodName);
 
             response.setElements(handler.getNotesForNoteLog(userId, noteLogGUID, requestBody));
         }
@@ -2020,51 +1832,4 @@ public class FeedbackManagerRESTServices extends TokenController
         return response;
     }
 
-
-    /**
-     * Retrieve the note metadata element with the supplied unique identifier.
-     *
-     * @param serverName   name of the server instances for this request
-     * @param noteGUID unique identifier of the requested metadata element
-     * @param urlMarker  view service URL marker
-     * @param requestBody optional effective time
-     *
-     * @return matching metadata element or
-     *  InvalidParameterException  one of the parameters is invalid
-     *  UserNotAuthorizedException the user is not authorized to issue this request
-     *  PropertyServerException    there is a problem reported in the open metadata server(s)
-     */
-    public OpenMetadataRootElementResponse getNoteByGUID(String         serverName, 
-                                                         String         urlMarker,
-                                                         String         noteGUID,
-                                                         GetRequestBody requestBody)
-    {
-        final String methodName = "getNoteByGUID";
-
-        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
-
-        OpenMetadataRootElementResponse response = new OpenMetadataRootElementResponse();
-        AuditLog                        auditLog = null;
-
-        try
-        {
-            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
-
-            restCallLogger.setUserId(token, userId);
-
-            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-
-            NoteEntryHandler handler = instanceHandler.getNoteEntryHandler(userId, serverName, urlMarker, methodName);
-
-            response.setElement(handler.getNoteByGUID(userId, noteGUID, requestBody));
-        }
-        catch (Throwable error)
-        {
-            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
-        }
-
-        restCallLogger.logRESTCallReturn(token, response.toString());
-
-        return response;
-    }
 }

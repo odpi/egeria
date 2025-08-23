@@ -1318,54 +1318,6 @@ public class GovernanceOfficerRESTServices extends TokenController
     }
 
 
-    /**
-     * Return the governance definition associated with a unique identifier and the other governance definitions linked to it.
-     *
-     * @param serverName name of the server instance to connect to
-     * @param urlMarker  view service URL marker
-     * @param governanceDefinitionGUID unique identifier of the governance definition
-     * @param requestBody additional query parameters
-     *
-     * @return governance definition and its linked elements or
-     *  InvalidParameterException one of the parameters is invalid
-     *  UserNotAuthorizedException the caller is not authorized to issue the request
-     *  PropertyServerException the metadata service has problems
-     */
-    public OpenMetadataRootElementResponse getGovernanceDefinitionInContext(String             serverName,
-                                                                            String             urlMarker,
-                                                                            String             governanceDefinitionGUID,
-                                                                            ResultsRequestBody requestBody)
-    {
-        final String methodName = "getGovernanceDefinitionInContext";
-
-        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
-
-        OpenMetadataRootElementResponse response = new OpenMetadataRootElementResponse();
-        AuditLog                        auditLog = null;
-
-        try
-        {
-            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
-
-            restCallLogger.setUserId(token, userId);
-
-            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-
-            GovernanceDefinitionGraphHandler handler = instanceHandler.getGovernanceDefinitionGraphHandler(userId, serverName, urlMarker, methodName);
-
-            response.setElement(handler.getGovernanceDefinitionInContext(userId,
-                                                                         governanceDefinitionGUID,
-                                                                         requestBody));
-        }
-        catch (Throwable error)
-        {
-            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
-        }
-
-        restCallLogger.logRESTCallReturn(token, response.toString());
-        return response;
-    }
-
 
     /**
      * Attach a design object such as a solution component or governance definition to its implementation via the ImplementedBy relationship. Request body is optional.

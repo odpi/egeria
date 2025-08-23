@@ -789,9 +789,16 @@ public class SchemaMakerRESTServices extends TokenController
 
             SchemaAttributeHandler handler = instanceHandler.getSchemaAttributeHandler(userId, serverName, urlMarker, methodName);
 
-            response.setElements(handler.findSchemaAttributes(userId,
-                                                              requestBody.getSearchString(),
-                                                              requestBody));
+            if (requestBody != null)
+            {
+                response.setElements(handler.findSchemaAttributes(userId,
+                                                                  requestBody.getSearchString(),
+                                                                  requestBody));
+            }
+            else
+            {
+                response.setElements(handler.findSchemaAttributes(userId, null, null));
+            }
         }
         catch (Throwable error)
         {

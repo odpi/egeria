@@ -83,4 +83,10 @@ public abstract class OpenMetadataEventClient implements OpenMetadataEventInterf
                                           OpenMetadataEventListener listener) throws InvalidParameterException,
                                                                                      PropertyServerException,
                                                                                      UserNotAuthorizedException;
+
+
+    /**
+     * Shutdown the event listener.
+     */
+    public abstract void disconnect();
 }

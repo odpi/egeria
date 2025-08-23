@@ -215,20 +215,33 @@ Content-Type: application/json
 ###
 # @name findAllSubjectAreas
 # Retrieve the list of subject area metadata elements that contain the search string.
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/subject-area/governance-definitions/by-search-string?startFrom=0&pageSize=10&startsWith=true&endsWith=false&ignoreCase=false
-Authorization: Bearer {{token}}
-Content-Type: application/json
-
-
-###
-# @name findAllSubjectAreas - with full request body
-# Retrieve the list of subject area metadata elements that contain the search string.
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/subject-area/governance-definitions/by-search-string?startFrom=0&pageSize=10&startsWith=true&endsWith=false&ignoreCase=false
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/subject-area/governance-definitions/by-search-string
 Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-  "class" : "FilterRequestBody",
+  "class" : "SearchStringRequestBody",
+  "startsWith" : false,
+  "endsWith" : false,
+  "ignoreCase" : true,
+  "startFrom" : 0,
+  "pageSize": 10
+}
+
+###
+# @name findAllSubjectAreas - with full request body
+# Retrieve the list of subject area metadata elements that contain the search string.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/subject-area/governance-definitions/by-search-string
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "SearchStringRequestBody",
+  "startsWith" : false,
+  "endsWith" : false,
+  "ignoreCase" : true,
+  "startFrom" : 0,
+  "pageSize": 10,
   "asOfTime" : "{{$isoTimestamp}}",
   "effectiveTime" : "{{$isoTimestamp}}",
   "forLineage" : false,
@@ -242,39 +255,50 @@ Content-Type: application/json
 ###
 # @name findSubjectAreas
 # Retrieve the list of subject area metadata elements that contain the search string.
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/subject-area/sgovernance-definitions/by-search-string?startFrom=0&pageSize=10&startsWith=true&endsWith=false&ignoreCase=false
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/subject-area/sgovernance-definitions/by-search-string
 Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-  "filter" : "Add name here"
+  "class" : "SearchStringRequestBody",
+  "searchString" : "Add value here",
+  "startsWith" : false,
+  "endsWith" : false,
+  "ignoreCase" : true,
+  "startFrom" : 0,
+  "pageSize": 10
 }
 
 
 ###
 # @name findSubjectAreas - with full request body
 # Retrieve the list of subject area metadata elements that contain the search string.
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/subject-area/governance-definitions/by-search-string?startFrom=0&pageSize=10&startsWith=true&endsWith=false&ignoreCase=false
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/subject-area/governance-definitions/by-search-string
 Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-  "class" : "FilterRequestBody",
- "asOfTime" : "{{$isoTimestamp}}",
+  "class" : "SearchStringRequestBody",
+  "searchString" : "Add value here",
+  "startsWith" : false,
+  "endsWith" : false,
+  "ignoreCase" : true,
+  "startFrom" : 0,
+  "pageSize": 10,
+  "asOfTime" : "{{$isoTimestamp}}",
   "effectiveTime" : "{{$isoTimestamp}}",
   "forLineage" : false,
   "forDuplicateProcessing" : false,
   "limitResultsByStatus" : ["ACTIVE"],
   "sequencingOrder" : "PROPERTY_ASCENDING",
-  "sequencingProperty" : "qualifiedName",
-  "filter" : "Add name here"
+  "sequencingProperty" : "qualifiedName"
 }
 
 ###
 
 # @name getSubjectAreasByName
 # Returns the list of subject areas with a particular name.
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/subject-area/governance-definitions/by-name?startFrom=0&pageSize=10
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/subject-area/governance-definitions/by-name
 Authorization: Bearer {{token}}
 Content-Type: application/json
 
@@ -288,7 +312,7 @@ Content-Type: application/json
 
 # @name getSubjectAreasByName - with full request body
 # Returns the list of subject areas with a particular name.
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/subject-area/governance-definitions/by-name?startFrom=0&pageSize=10
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/subject-area/governance-definitions/by-name
 Authorization: Bearer {{token}}
 Content-Type: application/json
 

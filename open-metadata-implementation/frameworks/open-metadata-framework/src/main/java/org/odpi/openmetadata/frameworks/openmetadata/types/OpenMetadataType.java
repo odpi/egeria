@@ -1643,7 +1643,7 @@ public enum OpenMetadataType
      * This is an informal project that has been created by an individual to help them organize their work.
      */
     PERSONAL_PROJECT_CLASSIFICATION("3d7b8500-cebd-4f18-b85c-a459bec3e3ef",
-                                    "PersonalProject",
+                                    "PersonalProjectProperties",
                                     OpenMetadataWikiPages.MODEL_0130_PROJECTS,
                                     "da65ba96-b9d8-45e7-b16f-24342b6695c0",
                                     "This is an informal project that has been created by an individual to help them organize their work."),
@@ -1812,15 +1812,6 @@ public enum OpenMetadataType
              OpenMetadataWikiPages.MODEL_0160_NOTES,
              "cd8b86b2-115d-4a74-a6f3-8f3001a03c58",
              "An ordered list of related notes."),
-
-    /**
-     * An entry in a note log.
-     */
-    NOTE_ENTRY("2a84d94c-ac6f-4be1-a72a-07dcec7b1fe3",
-               "NoteEntry",
-               OpenMetadataWikiPages.MODEL_0160_NOTES,
-               "33e3f368-d226-4dfe-895b-38e75a49b891",
-               "An entry in a note log."),
 
     /**
      * Links a note log to an item.
@@ -2705,16 +2696,6 @@ public enum OpenMetadataType
                                         OpenMetadataWikiPages.MODEL_0310_GLOSSARY,
                                         "dd3c036e-e254-4337-9b71-b0db08b287b8",
                                         "Identifies a glossary that contains unique terms with consistent granularity."),
-
-    /**
-     * A collection of related glossary terms.
-     */
-    GLOSSARY_CATEGORY("e507485b-9b5a-44c9-8a28-6967f7ff3672",
-                      "GlossaryCategory",
-                      OpenMetadataWikiPages.MODEL_0320_CATEGORY_HIERARCHY,
-                      "99d1bb1b-222a-4981-8704-a67e6d95b6e7",
-                      "A collection of related glossary terms."),
-
 
     /**
      * A semantic description of something, such as a concept, object, asset, technology, role or group.

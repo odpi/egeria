@@ -62,6 +62,7 @@ public abstract class ConnectorContextBase
     private final   ConnectionClient           connectionClient;
     private final   ConnectorTypeClient        connectorTypeClient;
     private final   EndpointClient             endpointClient;
+    protected final   GovernanceDefinitionClient governanceDefinitionClient;
     private final   SoftwareCapabilityClient   softwareCapabilityClient;
     private final   ValidValueDefinitionClient validValueDefinitionClient;
     private final   GlossaryClient             glossaryClient;
@@ -199,6 +200,17 @@ public abstract class ConnectorContextBase
                                                  openMetadataClient,
                                                  auditLog,
                                                  maxPageSize);
+
+        this.governanceDefinitionClient = new GovernanceDefinitionClient(this,
+                                                                         localServerName,
+                                                                         localServiceName,
+                                                                         connectorUserId,
+                                                                         connectorGUID,
+                                                                         externalSourceGUID,
+                                                                         externalSourceName,
+                                                                         openMetadataClient,
+                                                                         auditLog,
+                                                                         maxPageSize);
 
         this.softwareCapabilityClient = new SoftwareCapabilityClient(this,
                                                                      localServerName,
@@ -488,6 +500,30 @@ public abstract class ConnectorContextBase
         return validValueDefinitionClient;
     }
 
+
+    /**
+     * Return the client for managing assets of a specific subtype.
+     *
+     * @param specificTypeName override type name
+     * @return connector context client
+     */
+    public GovernanceDefinitionClient getGovernanceDefinitionClient(String specificTypeName)
+    {
+        return new GovernanceDefinitionClient(governanceDefinitionClient, specificTypeName);
+    }
+
+
+    /**
+     * Return the client for managing assets.
+     *
+     * @return connector context client
+     */
+    public GovernanceDefinitionClient getGovernanceDefinitionClient()
+    {
+        return governanceDefinitionClient;
+    }
+
+
     /**
      * Return the client for managing glossaries.
      *
@@ -676,7 +712,7 @@ public abstract class ConnectorContextBase
      * Assemble the data collected and write out a report (if configured).
      *
      * @throws InvalidParameterException an invalid property has been passed
-     * @throws UserNotAuthorizedException the user is not authorized
+     * @throws UserNotAuthorizedException the user is not authorized or the connector is not active
      * @throws PropertyServerException there is a problem communicating with the metadata server (or it has a logic error).
      */
     public void publishReport() throws InvalidParameterException,

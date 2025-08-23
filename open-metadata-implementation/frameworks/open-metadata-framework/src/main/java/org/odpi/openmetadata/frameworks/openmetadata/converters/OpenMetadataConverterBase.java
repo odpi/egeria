@@ -5610,6 +5610,51 @@ public class OpenMetadataConverterBase<B>
 
 
     /**
+     * Extract and remove the property from the supplied element properties.
+     *
+     * @param elementProperties properties from element
+     * @return string text or null
+     */
+    protected String removeSystemAction(ElementProperties  elementProperties)
+    {
+        final String methodName = "removeSystemAction";
+
+        if (elementProperties != null)
+        {
+            return propertyHelper.removeStringProperty(localServiceName,
+                                                       OpenMetadataProperty.SYSTEM_ACTION.name,
+                                                       elementProperties,
+                                                       methodName);
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Extract and remove the property from the supplied element properties.
+     *
+     * @param elementProperties properties from element
+     * @return string text or null
+     */
+    protected String removeUserResponse(ElementProperties  elementProperties)
+    {
+        final String methodName = "removeUserResponse";
+
+        if (elementProperties != null)
+        {
+            return propertyHelper.removeStringProperty(localServiceName,
+                                                       OpenMetadataProperty.USER_RESPONSE.name,
+                                                       elementProperties,
+                                                       methodName);
+        }
+
+        return null;
+    }
+
+
+
+    /**
      * Extract and remove the usesBlockingCalls property from the supplied element properties.
      *
      * @param elementProperties properties from element

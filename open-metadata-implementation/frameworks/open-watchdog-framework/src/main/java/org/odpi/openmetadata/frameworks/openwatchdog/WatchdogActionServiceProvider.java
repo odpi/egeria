@@ -20,7 +20,8 @@ public abstract class WatchdogActionServiceProvider extends GovernanceServicePro
 
 
     /**
-     * Base provider for all watchdog action services.
+     * Base provider for all watchdog action services.  Sets up reasonable defaults that
+     * the individual service implementation can either accept or override.
      */
     public WatchdogActionServiceProvider()
     {

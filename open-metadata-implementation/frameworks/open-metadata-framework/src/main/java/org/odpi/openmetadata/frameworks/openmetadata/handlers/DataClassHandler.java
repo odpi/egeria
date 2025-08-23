@@ -364,7 +364,6 @@ public class DataClassHandler extends OpenMetadataHandlerBase
 
     /**
      * Retrieve the list of data classes metadata elements that contain the search string.
-     * The search string is treated as a regular expression.
      *
      * @param userId                 calling user
      * @param searchString           string to find in the properties
@@ -382,47 +381,5 @@ public class DataClassHandler extends OpenMetadataHandlerBase
         final String methodName = "findDataClasses";
 
         return super.findRootElements(userId, searchString, searchOptions, methodName);
-    }
-
-
-
-    /**
-     * Add a standard mermaid graph to the root element.  This method may be overridden by the subclasses if
-     * they have a more fancy graph to display.
-     *
-     * @param userId calling user
-     * @param rootElement new root element
-     * @param queryOptions options from the caller
-     * @return root element with graph
-     * @throws InvalidParameterException  one of the parameters is null or invalid.
-     * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
-     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
-     */
-    protected OpenMetadataRootElement addMermaidToRootElement(String                  userId,
-                                                              OpenMetadataRootElement rootElement,
-                                                              QueryOptions            queryOptions) throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException
-    {
-        if (rootElement != null)
-        {
-            rootElement.setSubDataClasses(super.getElementHierarchies(userId,
-                                                                        rootElement.getElementHeader().getGUID(),
-                                                                        rootElement.getSubDataClasses(),
-                                                                        1,
-                                                                        OpenMetadataType.DATA_CLASS_HIERARCHY_RELATIONSHIP.typeName,
-                                                                        queryOptions,
-                                                                        1));
-
-            rootElement.setPartOfDataClasses(super.getElementHierarchies(userId,
-                                                                      rootElement.getElementHeader().getGUID(),
-                                                                      rootElement.getPartOfDataClasses(),
-                                                                      1,
-                                                                      OpenMetadataType.DATA_CLASS_COMPOSITION_RELATIONSHIP.typeName,
-                                                                      queryOptions,
-                                                                      1));
-
-            super.addMermaidToRootElement(userId, rootElement, queryOptions);
-        }
-
-        return rootElement;
     }
 }

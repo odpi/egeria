@@ -5,7 +5,10 @@ package org.odpi.openmetadata.viewservices.communitymatters.server;
 import org.odpi.openmetadata.commonservices.multitenant.OMVSServiceInstance;
 import org.odpi.openmetadata.adminservices.configuration.registration.ViewServiceDescription;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
+import org.odpi.openmetadata.frameworks.openmetadata.client.OpenMetadataClient;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
+import org.odpi.openmetadata.frameworks.openmetadata.handlers.CommunityHandler;
+import org.odpi.openmetadata.frameworkservices.omf.client.handlers.EgeriaOpenMetadataStoreHandler;
 
 /**
  * CommunityMattersInstance caches references to the objects it needs for a specific server.
@@ -16,6 +19,7 @@ public class CommunityMattersInstance extends OMVSServiceInstance
 {
     private static final ViewServiceDescription myDescription = ViewServiceDescription.COMMUNITY_MATTERS;
 
+    private final CommunityHandler communityHandler;
 
 
     /**
@@ -31,12 +35,12 @@ public class CommunityMattersInstance extends OMVSServiceInstance
      * @throws InvalidParameterException problem with server name or platform URL
      */
     public CommunityMattersInstance(String       serverName,
-                                 AuditLog     auditLog,
-                                 String       localServerUserId,
-                                 String       localServerUserPassword,
-                                 int          maxPageSize,
-                                 String       remoteServerName,
-                                 String       remoteServerURL) throws InvalidParameterException
+                                    AuditLog     auditLog,
+                                    String       localServerUserId,
+                                    String       localServerUserPassword,
+                                    int          maxPageSize,
+                                    String       remoteServerName,
+                                    String       remoteServerURL) throws InvalidParameterException
     {
         super(serverName,
               myDescription.getViewServiceFullName(),
@@ -47,8 +51,38 @@ public class CommunityMattersInstance extends OMVSServiceInstance
               remoteServerName,
               remoteServerURL);
 
+        OpenMetadataClient openMetadataClient;
+        if (localServerUserPassword == null)
+        {
+            openMetadataClient = new EgeriaOpenMetadataStoreHandler(remoteServerName,
+                                                                    remoteServerURL,
+                                                                    maxPageSize);
 
+        }
+        else
+        {
+            openMetadataClient = new EgeriaOpenMetadataStoreHandler(remoteServerName,
+                                                                    remoteServerURL,
+                                                                    localServerUserId,
+                                                                    localServerUserPassword,
+                                                                    maxPageSize);
+        }
+
+        communityHandler = new CommunityHandler(serverName,
+                                                auditLog,
+                                                myDescription.getViewServiceFullName(),
+                                                openMetadataClient);
     }
 
 
+
+    /**
+     * Return the open metadata handler.
+     *
+     * @return client
+     */
+    public CommunityHandler getCommunityHandler()
+    {
+        return communityHandler;
+    }
 }

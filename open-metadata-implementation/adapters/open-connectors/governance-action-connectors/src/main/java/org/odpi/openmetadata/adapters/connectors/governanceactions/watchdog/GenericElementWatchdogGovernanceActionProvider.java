@@ -8,6 +8,8 @@ import org.odpi.openmetadata.frameworks.connectors.properties.beans.ConnectorTyp
 import org.odpi.openmetadata.frameworks.opengovernance.GovernanceActionServiceProviderBase;
 import org.odpi.openmetadata.frameworks.opengovernance.controls.ActionTargetType;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
+import org.odpi.openmetadata.frameworks.openwatchdog.controls.WatchdogActionTarget;
+import org.odpi.openmetadata.frameworks.openwatchdog.controls.WatchdogRequestParameter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -53,18 +55,8 @@ public class GenericElementWatchdogGovernanceActionProvider extends GovernanceAc
         super.setConnectorClassName(connectorClassName);
 
         supportedRequestTypes = GenericElementRequestType.getRequestTypeTypes();
-
-        supportedRequestParameters = GenericElementRequestParameter.getRequestParameterTypes();
-
-
-        supportedActionTargetTypes = new ArrayList<>();
-        ActionTargetType actionTargetType = new ActionTargetType();
-
-        actionTargetType.setName(GenericElementRequestParameter.INSTANCE_TO_MONITOR.getName());
-        actionTargetType.setDescription(GenericElementRequestParameter.INSTANCE_TO_MONITOR.getDescription());
-        actionTargetType.setTypeName(OpenMetadataType.OPEN_METADATA_ROOT.typeName);
-
-        super.supportedActionTargetTypes.add(actionTargetType);
+        supportedRequestParameters = WatchdogRequestParameter.getRequestParameterTypes();
+        supportedActionTargetTypes = WatchdogActionTarget.getInstanceActionTargetTypes();
 
         producedGuards = GenericWatchdogGuard.getGuardTypes();
 

@@ -90,10 +90,10 @@ public enum OMFServicesAuditCode implements AuditLogMessageSet
 
     
     /**
-     * OMF-SERVICES-0008 - The Open Metadata Store Services detected an unexpected {0} exception during the initialization of its services;
+     * OMF-SERVICES-0009 - The Open Metadata Store Services detected an unexpected {0} exception during the initialization of its services;
      * error message is {1}
      */
-    UNEXPECTED_INITIALIZATION_EXCEPTION("OMF-SERVICES-0008",
+    UNEXPECTED_INITIALIZATION_EXCEPTION("OMF-SERVICES-0009",
                                         AuditLogRecordSeverityLevel.EXCEPTION,
                                         "The Open Metadata Store Services detected an unexpected {0} exception during the " +
                                                 "initialization of its services; error message is {1}",
@@ -103,14 +103,28 @@ public enum OMFServicesAuditCode implements AuditLogMessageSet
                                                 " state of the Event Bus.  Once this is resolved, restart the server."),
 
     /**
-     * OMF-SERVICES-0009 - The Open Metadata Store Services are shutting down server instance {0}
+     * OMF-SERVICES-0010 - The Open Metadata Store Services are shutting down server instance {0}
      */
-    SERVICE_TERMINATING("OMF-SERVICES-0009",
+    SERVICE_TERMINATING("OMF-SERVICES-0010",
                         AuditLogRecordSeverityLevel.SHUTDOWN,
                         "The Open Metadata Store Services are shutting down server instance {0}",
                         "The local handlers has requested shut down of the Open Metadata Store Services.",
                         "No action is required.  This is part of the normal operation of the service."),
 
+    /**
+     * OMF-SERVICES-0011 The Open Metadata Store caught an unexpected {0} exception whilst shutting down the out
+     * topic listeners. The error message was: {1}
+     */
+    EVENT_SHUTDOWN_ERROR("OMF-SERVICES-0011",
+                              AuditLogRecordSeverityLevel.SHUTDOWN,
+                              "The Open Metadata Store caught an unexpected {0} exception whilst shutting down the out " +
+                                      "topic listeners. The error message was: {1}",
+                              "The local administrator has requested shut down of the engine host.  " +
+                                      "No more events will be received, although, due to this exception, the connection to the event bus may " +
+                                      "not be released properly.",
+                              "This is part of the normal shutdown of the engine host. However, an exception is not expected at this point unless it " +
+                                      "is the consequence of a previous error. Review the error message and any other reported failures to " +
+                                      "determine if this exception needs special attention."),
     /**
      * OMF-SERVICES-0012 - The Open Metadata Store Services are shutting down its instance for server {0}
      */

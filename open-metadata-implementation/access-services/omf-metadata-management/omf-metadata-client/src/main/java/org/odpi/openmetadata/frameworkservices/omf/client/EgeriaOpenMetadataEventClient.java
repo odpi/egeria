@@ -9,6 +9,7 @@ import org.odpi.openmetadata.commonservices.ffdc.rest.OCFConnectionResponse;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.Connector;
 import org.odpi.openmetadata.frameworks.connectors.ConnectorBroker;
+import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
 import org.odpi.openmetadata.frameworks.openmetadata.events.OpenMetadataEventClient;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
@@ -17,6 +18,7 @@ import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedExcep
 import org.odpi.openmetadata.frameworkservices.ocf.metadatamanagement.client.OCFRESTClient;
 import org.odpi.openmetadata.frameworks.openmetadata.events.OpenMetadataEventListener;
 import org.odpi.openmetadata.frameworkservices.omf.connectors.outtopic.OMFOutTopicClientConnector;
+import org.odpi.openmetadata.frameworkservices.omf.ffdc.OMFServicesAuditCode;
 import org.odpi.openmetadata.frameworkservices.omf.ffdc.OMFServicesErrorCode;
 
 
@@ -156,5 +158,33 @@ public class EgeriaOpenMetadataEventClient extends OpenMetadataEventClient
         }
 
         configurationEventTopicConnector.registerListener(userId, listener);
+    }
+
+
+    /**
+     * Shutdown the event listener.
+     */
+    public void disconnect()
+    {
+        final String methodName = "disconnect";
+
+        if (configurationEventTopicConnector != null)
+        {
+            try
+            {
+                configurationEventTopicConnector.disconnect();
+            }
+            catch (Exception error)
+            {
+                if (auditLog != null)
+                {
+                   auditLog.logException(methodName,
+                                         OMFServicesAuditCode.EVENT_SHUTDOWN_ERROR.getMessageDefinition(error.getClass().getName(),
+                                                                                                        error.getMessage()),
+                                         error);
+
+                }
+            }
+        }
     }
 }

@@ -28,7 +28,8 @@ public class InitiateEngineActionRequestBody
     private int                   domainIdentifier      = 0;
     private String                displayName           = null;
     private String                description           = null;
-    private List<String>          requestSourceGUIDs    = null;
+    private List<String>          actionSourceGUIDs     = null;
+    private List<String>          actionCauseGUIDs      = null;
     private List<NewActionTarget> actionTargets         = null;
     private List<String>          receivedGuards        = null;
     private Date                  startDate             = null;
@@ -57,20 +58,22 @@ public class InitiateEngineActionRequestBody
     {
         if (template != null)
         {
-            qualifiedName = template.getQualifiedName();
-            domainIdentifier = template.getDomainIdentifier();
-            displayName = template.getDisplayName();
-            description = template.getDescription();
-            requestSourceGUIDs = template.getRequestSourceGUIDs();
-            actionTargets = template.getActionTargets();
-            receivedGuards = template.getReceivedGuards();
-            startDate      = template.getStartDate();
-            requestType    = template.getRequestType();
-            requestParameters = template.getRequestParameters();
-            processName = template.getProcessName();
-            requestSourceName = template.getRequestSourceName();
+            qualifiedName         = template.getQualifiedName();
+            domainIdentifier      = template.getDomainIdentifier();
+            displayName           = template.getDisplayName();
+            description           = template.getDescription();
+            actionSourceGUIDs     = template.getActionSourceGUIDs();
+            actionCauseGUIDs      = template.getActionCauseGUIDs();
+            actionTargets         = template.getActionTargets();
+            receivedGuards        = template.getReceivedGuards();
+            startDate             = template.getStartDate();
+            requestType           = template.getRequestType();
+            requestParameters     = template.getRequestParameters();
+            processName           = template.getProcessName();
+            requestSourceName     = template.getRequestSourceName();
             originatorServiceName = template.getOriginatorServiceName();
-            originatorEngineName = template.getOriginatorEngineName();}
+            originatorEngineName  = template.getOriginatorEngineName();
+        }
     }
 
 
@@ -167,30 +170,42 @@ public class InitiateEngineActionRequestBody
      *
      * @return list of string guids
      */
-    public List<String> getRequestSourceGUIDs()
+    public List<String> getActionSourceGUIDs()
     {
-        if (requestSourceGUIDs == null)
-        {
-            return null;
-        }
-
-        if (requestSourceGUIDs.isEmpty())
-        {
-            return null;
-        }
-
-        return requestSourceGUIDs;
+        return actionSourceGUIDs;
     }
 
 
     /**
      * Set up the list of elements that triggered this request.
      *
-     * @param requestSourceGUIDs list of string guids
+     * @param actionSourceGUIDs list of string guids
      */
-    public void setRequestSourceGUIDs(List<String> requestSourceGUIDs)
+    public void setActionSourceGUIDs(List<String> actionSourceGUIDs)
     {
-        this.requestSourceGUIDs = requestSourceGUIDs;
+        this.actionSourceGUIDs = actionSourceGUIDs;
+    }
+
+
+    /**
+     * Return the list of elements that caused this action.
+     *
+     * @return list of string guids
+     */
+    public List<String> getActionCauseGUIDs()
+    {
+        return actionCauseGUIDs;
+    }
+
+
+    /**
+     * Set up the list of elements that caused this action.
+     *
+     * @param actionCauseGUIDs list of string guids
+     */
+    public void setActionCauseGUIDs(List<String> actionCauseGUIDs)
+    {
+        this.actionCauseGUIDs = actionCauseGUIDs;
     }
 
 
@@ -421,21 +436,22 @@ public class InitiateEngineActionRequestBody
     public String toString()
     {
         return "InitiateEngineActionRequestBody{" +
-                       "qualifiedName='" + qualifiedName + '\'' +
-                       ", domainIdentifier=" + domainIdentifier +
-                       ", displayName='" + displayName + '\'' +
-                       ", description='" + description + '\'' +
-                       ", requestSourceGUIDs=" + requestSourceGUIDs +
-                       ", actionTargets=" + actionTargets +
-                       ", receivedGuards=" + receivedGuards +
-                       ", startDate=" + startDate +
-                       ", requestType='" + requestType + '\'' +
-                       ", requestParameters=" + requestParameters +
-                       ", processName='" + processName + '\'' +
-                       ", requestSourceName='" + requestSourceName + '\'' +
-                       ", originatorServiceName='" + originatorServiceName + '\'' +
-                       ", originatorEngineName='" + originatorEngineName + '\'' +
-                       '}';
+                "qualifiedName='" + qualifiedName + '\'' +
+                ", domainIdentifier=" + domainIdentifier +
+                ", displayName='" + displayName + '\'' +
+                ", description='" + description + '\'' +
+                ", actionSourceGUIDs=" + actionSourceGUIDs +
+                ", actionCauseGUIDs=" + actionCauseGUIDs +
+                ", actionTargets=" + actionTargets +
+                ", receivedGuards=" + receivedGuards +
+                ", startDate=" + startDate +
+                ", requestType='" + requestType + '\'' +
+                ", requestParameters=" + requestParameters +
+                ", processName='" + processName + '\'' +
+                ", requestSourceName='" + requestSourceName + '\'' +
+                ", originatorServiceName='" + originatorServiceName + '\'' +
+                ", originatorEngineName='" + originatorEngineName + '\'' +
+                '}';
     }
 
 
@@ -461,7 +477,8 @@ public class InitiateEngineActionRequestBody
                        Objects.equals(qualifiedName, that.qualifiedName) &&
                        Objects.equals(displayName, that.displayName) &&
                        Objects.equals(description, that.description) &&
-                       Objects.equals(requestSourceGUIDs, that.requestSourceGUIDs) &&
+                       Objects.equals(actionSourceGUIDs, that.actionSourceGUIDs) &&
+                       Objects.equals(actionCauseGUIDs, that.actionCauseGUIDs) &&
                        Objects.equals(actionTargets, that.actionTargets) &&
                        Objects.equals(startDate, that.startDate) &&
                        Objects.equals(requestType, that.requestType) &&
@@ -481,7 +498,8 @@ public class InitiateEngineActionRequestBody
     @Override
     public int hashCode()
     {
-        return Objects.hash(qualifiedName, domainIdentifier, displayName, description, requestSourceGUIDs, actionTargets, startDate, requestType,
+        return Objects.hash(qualifiedName, domainIdentifier, displayName, description, actionSourceGUIDs,
+                            actionCauseGUIDs, actionTargets, startDate, requestType,
                             processName, requestSourceName, requestParameters, originatorServiceName, originatorEngineName);
     }
 }

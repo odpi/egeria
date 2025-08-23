@@ -154,7 +154,6 @@ public class FeedbackManagerInstanceHandler extends OMVSServiceInstanceHandler
     }
 
 
-
     /**
      * This method returns the object for the tenant to use to work with the
      * asset manager API
@@ -180,37 +179,6 @@ public class FeedbackManagerInstanceHandler extends OMVSServiceInstanceHandler
         if (instance != null)
         {
             return instance.getNoteLogHandler(urlMarker, serviceOperationName);
-        }
-
-        return null;
-    }
-
-
-    /**
-     * This method returns the object for the tenant to use to work with the
-     * asset manager API
-     *
-     * @param serverName           name of the server that the request is for
-     * @param userId               local server userid
-     * @param urlMarker optional view service URL marker (overrides accessServiceURLMarker)
-     * @param serviceOperationName service operation - usually the top level rest call
-     * @return client
-     * @throws InvalidParameterException unknown server/service
-     * @throws UserNotAuthorizedException User not authorized to call this service
-     * @throws PropertyServerException internal error
-     */
-    public NoteEntryHandler getNoteEntryHandler(String userId,
-                                                String serverName,
-                                                String urlMarker,
-                                                String serviceOperationName) throws InvalidParameterException,
-                                                                                    PropertyServerException,
-                                                                                    UserNotAuthorizedException
-    {
-        FeedbackManagerInstance instance = (FeedbackManagerInstance) getServerServiceInstance(userId, serverName, serviceOperationName);
-
-        if (instance != null)
-        {
-            return instance.getNoteEntryHandler(urlMarker, serviceOperationName);
         }
 
         return null;

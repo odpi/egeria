@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.*;
 
 /**
  * The LocationArenaResource provides part of the server-side implementation of the Location Arena OMVS.
-= */
+ = */
 @RestController
 @RequestMapping("/servers/{serverName}/api/open-metadata/location-arena")
 
@@ -51,8 +51,8 @@ public class LocationArenaResource
                     url="https://egeria-project.org/concepts/location"))
 
     public GUIDResponse createLocation(@PathVariable String                               serverName,
-                                           @RequestBody (required = false)
-                                           NewElementRequestBody requestBody)
+                                       @RequestBody (required = false)
+                                       NewElementRequestBody requestBody)
     {
         return restAPI.createLocation(serverName, requestBody);
     }
@@ -77,9 +77,9 @@ public class LocationArenaResource
                     url="https://egeria-project.org/concepts/location"))
 
     public GUIDResponse createLocationFromTemplate(@PathVariable
-                                                       String              serverName,
-                                                       @RequestBody (required = false)
-                                                       TemplateRequestBody requestBody)
+                                                   String              serverName,
+                                                   @RequestBody (required = false)
+                                                   TemplateRequestBody requestBody)
     {
         return restAPI.createLocationFromTemplate(serverName, requestBody);
     }
@@ -104,11 +104,11 @@ public class LocationArenaResource
                     url="https://egeria-project.org/concepts/location"))
 
     public VoidResponse updateLocation(@PathVariable
-                                           String                                  serverName,
-                                           @PathVariable
-                                           String                                  locationGUID,
-                                           @RequestBody (required = false)
-                                           UpdateElementRequestBody requestBody)
+                                       String                                  serverName,
+                                       @PathVariable
+                                       String                                  locationGUID,
+                                       @RequestBody (required = false)
+                                       UpdateElementRequestBody requestBody)
     {
         return restAPI.updateLocation(serverName, locationGUID, requestBody);
     }
@@ -134,13 +134,13 @@ public class LocationArenaResource
                     url="https://egeria-project.org/concepts/location"))
 
     public VoidResponse linkPeerLocation(@PathVariable
-                                              String                     serverName,
-                                              @PathVariable
-                                              String locationOneGUID,
-                                              @PathVariable
-                                              String locationTwoGUID,
-                                              @RequestBody (required = false)
-                                              NewRelationshipRequestBody requestBody)
+                                         String                     serverName,
+                                         @PathVariable
+                                         String locationOneGUID,
+                                         @PathVariable
+                                         String locationTwoGUID,
+                                         @RequestBody (required = false)
+                                         NewRelationshipRequestBody requestBody)
     {
         return restAPI.linkPeerLocation(serverName, locationOneGUID, locationTwoGUID, requestBody);
     }
@@ -166,13 +166,13 @@ public class LocationArenaResource
                     url="https://egeria-project.org/concepts/location"))
 
     public VoidResponse detachPeerLocations(@PathVariable
-                                                  String                    serverName,
-                                                  @PathVariable
-                                                  String locationOneGUID,
-                                                  @PathVariable
-                                                  String locationTwoGUID,
-                                                  @RequestBody (required = false)
-                                                  DeleteRequestBody requestBody)
+                                            String                    serverName,
+                                            @PathVariable
+                                            String locationOneGUID,
+                                            @PathVariable
+                                            String locationTwoGUID,
+                                            @RequestBody (required = false)
+                                            DeleteRelationshipRequestBody requestBody)
     {
         return restAPI.detachPeerLocations(serverName, locationOneGUID, locationTwoGUID, requestBody);
     }
@@ -198,13 +198,13 @@ public class LocationArenaResource
                     url="https://egeria-project.org/concepts/location"))
 
     public VoidResponse linkNestedLocation(@PathVariable
-                                              String                     serverName,
-                                              @PathVariable
-                                              String locationGUID,
-                                              @PathVariable
-                                              String nestedLocationGUID,
-                                              @RequestBody (required = false)
-                                              NewRelationshipRequestBody requestBody)
+                                           String                     serverName,
+                                           @PathVariable
+                                           String locationGUID,
+                                           @PathVariable
+                                           String nestedLocationGUID,
+                                           @RequestBody (required = false)
+                                           NewRelationshipRequestBody requestBody)
     {
         return restAPI.linkNestedLocation(serverName, locationGUID, nestedLocationGUID, requestBody);
     }
@@ -230,13 +230,13 @@ public class LocationArenaResource
                     url="https://egeria-project.org/concepts/location"))
 
     public VoidResponse detachNestedLocation(@PathVariable
-                                                  String                    serverName,
-                                                  @PathVariable
-                                                  String locationGUID,
-                                                  @PathVariable
-                                                  String nestedLocationGUID,
-                                                  @RequestBody (required = false)
-                                                  DeleteRequestBody requestBody)
+                                             String                    serverName,
+                                             @PathVariable
+                                             String locationGUID,
+                                             @PathVariable
+                                             String nestedLocationGUID,
+                                             @RequestBody (required = false)
+                                             DeleteRelationshipRequestBody requestBody)
     {
         return restAPI.detachNestedLocation(serverName, locationGUID, nestedLocationGUID, requestBody);
     }
@@ -262,13 +262,13 @@ public class LocationArenaResource
                     url="https://egeria-project.org/concepts/location"))
 
     public VoidResponse linkKnownLocation(@PathVariable
-                                           String                     serverName,
-                                           @PathVariable
-                                           String elementGUID,
-                                           @PathVariable
-                                           String locationGUID,
-                                           @RequestBody (required = false)
-                                           NewRelationshipRequestBody requestBody)
+                                          String                     serverName,
+                                          @PathVariable
+                                          String elementGUID,
+                                          @PathVariable
+                                          String locationGUID,
+                                          @RequestBody (required = false)
+                                          NewRelationshipRequestBody requestBody)
     {
         return restAPI.linkKnownLocation(serverName, elementGUID, locationGUID, requestBody);
     }
@@ -294,13 +294,13 @@ public class LocationArenaResource
                     url="https://egeria-project.org/concepts/location"))
 
     public VoidResponse detachKnownLocation(@PathVariable
-                                               String                    serverName,
-                                               @PathVariable
-                                               String elementGUID,
-                                               @PathVariable
-                                               String locationGUID,
-                                               @RequestBody (required = false)
-                                               DeleteRequestBody requestBody)
+                                            String                    serverName,
+                                            @PathVariable
+                                            String elementGUID,
+                                            @PathVariable
+                                            String locationGUID,
+                                            @RequestBody (required = false)
+                                            DeleteRelationshipRequestBody requestBody)
     {
         return restAPI.detachKnownLocation(serverName, elementGUID, locationGUID, requestBody);
     }
@@ -325,11 +325,11 @@ public class LocationArenaResource
                     url="https://egeria-project.org/concepts/location"))
 
     public VoidResponse deleteLocation(@PathVariable
-                                           String                    serverName,
-                                           @PathVariable
-                                           String                    locationGUID,
-                                           @RequestBody (required = false)
-                                           DeleteRequestBody requestBody)
+                                       String                    serverName,
+                                       @PathVariable
+                                       String                    locationGUID,
+                                       @RequestBody (required = false)
+                                       DeleteElementRequestBody requestBody)
     {
         return restAPI.deleteLocation(serverName, locationGUID, requestBody);
     }
@@ -353,9 +353,9 @@ public class LocationArenaResource
                     url="https://egeria-project.org/concepts/location"))
 
     public OpenMetadataRootElementsResponse getLocationsByName(@PathVariable
-                                                                   String            serverName,
-                                                                   @RequestBody (required = false)
-                                                                   FilterRequestBody requestBody)
+                                                               String            serverName,
+                                                               @RequestBody (required = false)
+                                                               FilterRequestBody requestBody)
     {
         return restAPI.getLocationsByName(serverName, requestBody);
     }
@@ -379,9 +379,9 @@ public class LocationArenaResource
                     url="https://egeria-project.org/concepts/location"))
 
     public OpenMetadataRootElementsResponse findLocations(@PathVariable
-                                                              String                  serverName,
-                                                              @RequestBody (required = false)
-                                                              SearchStringRequestBody requestBody)
+                                                          String                  serverName,
+                                                          @RequestBody (required = false)
+                                                          SearchStringRequestBody requestBody)
     {
         return restAPI.findLocations(serverName, requestBody);
     }
@@ -406,11 +406,11 @@ public class LocationArenaResource
                     url="https://egeria-project.org/concepts/location"))
 
     public OpenMetadataRootElementResponse getLocationByGUID(@PathVariable
-                                                                 String             serverName,
-                                                                 @PathVariable
-                                                                 String             locationGUID,
-                                                                 @RequestBody (required = false)
-                                                                 GetRequestBody requestBody)
+                                                             String             serverName,
+                                                             @PathVariable
+                                                             String             locationGUID,
+                                                             @RequestBody (required = false)
+                                                             GetRequestBody requestBody)
     {
         return restAPI.getLocationByGUID(serverName, locationGUID, requestBody);
     }

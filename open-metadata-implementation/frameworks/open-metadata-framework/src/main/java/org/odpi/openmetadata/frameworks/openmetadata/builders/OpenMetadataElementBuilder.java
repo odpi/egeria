@@ -19,6 +19,7 @@ import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.filesandf
 import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.processes.DeployedSoftwareComponentProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.processes.PortProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.processes.ProcessProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.processes.actions.NotificationProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.processes.connectors.IntegrationConnectorProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.reports.*;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.topics.TopicProperties;
@@ -404,6 +405,15 @@ public class OpenMetadataElementBuilder
                                     elementProperties = propertyHelper.addStringProperty(elementProperties,
                                                                                          OpenMetadataProperty.COMPLETION_MESSAGE.name,
                                                                                          engineActionProperties.getCompletionMessage());
+                                }
+                                else if (properties instanceof NotificationProperties notificationProperties)
+                                {
+                                    elementProperties = propertyHelper.addStringProperty(elementProperties,
+                                                                                         OpenMetadataProperty.SYSTEM_ACTION.name,
+                                                                                         notificationProperties.getSystemAction());
+                                    elementProperties = propertyHelper.addStringProperty(elementProperties,
+                                                                                         OpenMetadataProperty.USER_RESPONSE.name,
+                                                                                         notificationProperties.getUserResponse());
                                 }
                             }
                         }
