@@ -40,6 +40,7 @@ org.odpi.openmetadata.adapters.connectors.governanceactions.ffdc
 org.odpi.openmetadata.adapters.connectors.governanceactions.provisioning
 org.odpi.openmetadata.adapters.connectors.governanceactions.remediation
 org.odpi.openmetadata.adapters.connectors.governanceactions.stewardship
+org.odpi.openmetadata.adapters.connectors.governanceactions.subscriptionmanager
 org.odpi.openmetadata.adapters.connectors.governanceactions.verification
 org.odpi.openmetadata.adapters.connectors.governanceactions.watchdog
 org.odpi.openmetadata.adapters.connectors.integration.basicfiles
@@ -243,6 +244,7 @@ org.odpi.openmetadata.engineservices.watchdogaction.client
 org.odpi.openmetadata.engineservices.watchdogaction.client.rest
 org.odpi.openmetadata.engineservices.watchdogaction.ffdc
 org.odpi.openmetadata.engineservices.watchdogaction.handlers
+org.odpi.openmetadata.engineservices.watchdogaction.listener
 org.odpi.openmetadata.engineservices.watchdogaction.server
 org.odpi.openmetadata.engineservices.watchdogaction.server.spring
 org.odpi.openmetadata.frameworks.auditlog
@@ -342,6 +344,7 @@ org.odpi.openmetadata.frameworks.opensurvey.properties
 org.odpi.openmetadata.frameworks.openwatchdog
 org.odpi.openmetadata.frameworks.openwatchdog.controls
 org.odpi.openmetadata.frameworks.openwatchdog.ffdc
+org.odpi.openmetadata.frameworks.openwatchdog.handlers
 org.odpi.openmetadata.frameworkservices.gaf.admin
 org.odpi.openmetadata.frameworkservices.gaf.client
 org.odpi.openmetadata.frameworkservices.gaf.client.rest

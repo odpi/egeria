@@ -81,6 +81,10 @@ loadScripts(document, 'script');</script>
 <dt>All Implemented Interfaces:</dt>
 <dd><code><a href="../auditlog/AuditLoggingComponent.html" title="interface in org.odpi.openmetadata.frameworks.auditlog">AuditLoggingComponent</a></code></dd>
 </dl>
+<dl class="notes">
+<dt>Direct Known Subclasses:</dt>
+<dd><code><a href="../../adapters/connectors/governanceactions/subscriptionmanager/OpenMetadataNotificationServiceProvider.html" title="class in org.odpi.openmetadata.adapters.connectors.governanceactions.subscriptionmanager">OpenMetadataNotificationServiceProvider</a></code></dd>
+</dl>
 <hr>
 <div class="type-signature"><span class="modifiers">public abstract class </span><span class="element-name type-name-label">WatchdogActionServiceProvider</span>
 <span class="extends-implements">extends <a href="../opengovernance/GovernanceServiceProviderBase.html" title="class in org.odpi.openmetadata.frameworks.opengovernance">GovernanceServiceProviderBase</a></span></div>
@@ -149,7 +153,8 @@ loadScripts(document, 'script');</script>
 <section class="detail" id="&lt;init&gt;()">
 <h3>WatchdogActionServiceProvider</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="element-name">WatchdogActionServiceProvider</span>()</div>
-<div class="block">Base provider for all watchdog action services.</div>
+<div class="block">Base provider for all watchdog action services.  Sets up reasonable defaults that
+ the individual service implementation can either accept or override.</div>
 </section>
 </li>
 </ul>

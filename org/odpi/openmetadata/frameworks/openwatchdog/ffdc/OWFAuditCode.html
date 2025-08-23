@@ -115,41 +115,13 @@ implements <a href="../../auditlog/messagesets/AuditLogMessageSet.html" title="i
 <div class="summary-table two-column-summary">
 <div class="table-header col-first">Enum Constant</div>
 <div class="table-header col-last">Description</div>
-<div class="col-first even-row-color"><code><a href="#CREATING_LOG_FILE" class="member-name-link">CREATING_LOG_FILE</a></code></div>
+<div class="col-first even-row-color"><code><a href="#DISCONNECT_DETECTED" class="member-name-link">DISCONNECT_DETECTED</a></code></div>
 <div class="col-last even-row-color">
-<div class="block">OPEN-SURVEY-0003 - The watchdog action service {0} is creating log file {1}</div>
+<div class="block">OPEN-WATCHDOG-0002 - The {0} watchdog action service has been disconnected - either due to its own actions or a cancel request</div>
 </div>
-<div class="col-first odd-row-color"><code><a href="#DISCONNECT_DETECTED" class="member-name-link">DISCONNECT_DETECTED</a></code></div>
+<div class="col-first odd-row-color"><code><a href="#WRONG_TYPE_OF_SUBSCRIBER" class="member-name-link">WRONG_TYPE_OF_SUBSCRIBER</a></code></div>
 <div class="col-last odd-row-color">
-<div class="block">OPEN-SURVEY-0001 - The {0} watchdog action service has been disconnected - either due to its own actions or a cancel request</div>
-</div>
-<div class="col-first even-row-color"><code><a href="#INVALID_ROOT_SCHEMA_TYPE" class="member-name-link">INVALID_ROOT_SCHEMA_TYPE</a></code></div>
-<div class="col-last even-row-color">
-<div class="block">OPEN-SURVEY-0007 - Asset {0} has a root schema of type {1} but watchdog action service {2} only supports the following root schema type(s): {3}</div>
-</div>
-<div class="col-first odd-row-color"><code><a href="#NO_ASSET" class="member-name-link">NO_ASSET</a></code></div>
-<div class="col-last odd-row-color">
-<div class="block">OPEN-SURVEY-0005 - No information about the asset {0} has been returned from the asset store for watchdog action service {1}</div>
-</div>
-<div class="col-first even-row-color"><code><a href="#NO_SCHEMA" class="member-name-link">NO_SCHEMA</a></code></div>
-<div class="col-last even-row-color">
-<div class="block">OPEN-SURVEY-0008 - The {0} Survey Acton Service has been supplied with asset {1} which does not have a schema attached</div>
-</div>
-<div class="col-first odd-row-color"><code><a href="#NO_SCHEMA_ATTRIBUTES" class="member-name-link">NO_SCHEMA_ATTRIBUTES</a></code></div>
-<div class="col-last odd-row-color">
-<div class="block">OPEN-SURVEY-0009 - The {0} Survey Acton Service has been supplied with asset {1} which does not have any schema attributes attached</div>
-</div>
-<div class="col-first even-row-color"><code><a href="#REUSING_LOG_FILE" class="member-name-link">REUSING_LOG_FILE</a></code></div>
-<div class="col-last even-row-color">
-<div class="block">OPEN-SURVEY-0004 - The watchdog action service {0} is overriding log file {1}</div>
-</div>
-<div class="col-first odd-row-color"><code><a href="#WRONG_TYPE_OF_ASSET" class="member-name-link">WRONG_TYPE_OF_ASSET</a></code></div>
-<div class="col-last odd-row-color">
-<div class="block">OPEN-SURVEY-0006 - Asset {0} is of type {1} but watchdog action service {2} only supports the following asset type(s): {3}</div>
-</div>
-<div class="col-first even-row-color"><code><a href="#WRONG_TYPE_OF_CONNECTOR" class="member-name-link">WRONG_TYPE_OF_CONNECTOR</a></code></div>
-<div class="col-last even-row-color">
-<div class="block">OPEN-SURVEY-0002 - The {0} Watchdog Action Service has been supplied with a resource connector of class {1} rather than class {2} for asset {3}</div>
+<div class="block">OPEN-WATCHDOG-0001 - Subscriber {0} is of type {1} but watchdog action service {2} only supports the following subscriber type(s): {3}</div>
 </div>
 </div>
 </section>
@@ -212,66 +184,17 @@ the order they are declared.</div>
 <h2>Enum Constant Details</h2>
 <ul class="member-list">
 <li>
+<section class="detail" id="WRONG_TYPE_OF_SUBSCRIBER">
+<h3>WRONG_TYPE_OF_SUBSCRIBER</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OWFAuditCode.html" title="enum class in org.odpi.openmetadata.frameworks.openwatchdog.ffdc">OWFAuditCode</a></span>&nbsp;<span class="element-name">WRONG_TYPE_OF_SUBSCRIBER</span></div>
+<div class="block">OPEN-WATCHDOG-0001 - Subscriber {0} is of type {1} but watchdog action service {2} only supports the following subscriber type(s): {3}</div>
+</section>
+</li>
+<li>
 <section class="detail" id="DISCONNECT_DETECTED">
 <h3>DISCONNECT_DETECTED</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OWFAuditCode.html" title="enum class in org.odpi.openmetadata.frameworks.openwatchdog.ffdc">OWFAuditCode</a></span>&nbsp;<span class="element-name">DISCONNECT_DETECTED</span></div>
-<div class="block">OPEN-SURVEY-0001 - The {0} watchdog action service has been disconnected - either due to its own actions or a cancel request</div>
-</section>
-</li>
-<li>
-<section class="detail" id="WRONG_TYPE_OF_CONNECTOR">
-<h3>WRONG_TYPE_OF_CONNECTOR</h3>
-<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OWFAuditCode.html" title="enum class in org.odpi.openmetadata.frameworks.openwatchdog.ffdc">OWFAuditCode</a></span>&nbsp;<span class="element-name">WRONG_TYPE_OF_CONNECTOR</span></div>
-<div class="block">OPEN-SURVEY-0002 - The {0} Watchdog Action Service has been supplied with a resource connector of class {1} rather than class {2} for asset {3}</div>
-</section>
-</li>
-<li>
-<section class="detail" id="CREATING_LOG_FILE">
-<h3>CREATING_LOG_FILE</h3>
-<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OWFAuditCode.html" title="enum class in org.odpi.openmetadata.frameworks.openwatchdog.ffdc">OWFAuditCode</a></span>&nbsp;<span class="element-name">CREATING_LOG_FILE</span></div>
-<div class="block">OPEN-SURVEY-0003 - The watchdog action service {0} is creating log file {1}</div>
-</section>
-</li>
-<li>
-<section class="detail" id="REUSING_LOG_FILE">
-<h3>REUSING_LOG_FILE</h3>
-<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OWFAuditCode.html" title="enum class in org.odpi.openmetadata.frameworks.openwatchdog.ffdc">OWFAuditCode</a></span>&nbsp;<span class="element-name">REUSING_LOG_FILE</span></div>
-<div class="block">OPEN-SURVEY-0004 - The watchdog action service {0} is overriding log file {1}</div>
-</section>
-</li>
-<li>
-<section class="detail" id="NO_ASSET">
-<h3>NO_ASSET</h3>
-<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OWFAuditCode.html" title="enum class in org.odpi.openmetadata.frameworks.openwatchdog.ffdc">OWFAuditCode</a></span>&nbsp;<span class="element-name">NO_ASSET</span></div>
-<div class="block">OPEN-SURVEY-0005 - No information about the asset {0} has been returned from the asset store for watchdog action service {1}</div>
-</section>
-</li>
-<li>
-<section class="detail" id="WRONG_TYPE_OF_ASSET">
-<h3>WRONG_TYPE_OF_ASSET</h3>
-<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OWFAuditCode.html" title="enum class in org.odpi.openmetadata.frameworks.openwatchdog.ffdc">OWFAuditCode</a></span>&nbsp;<span class="element-name">WRONG_TYPE_OF_ASSET</span></div>
-<div class="block">OPEN-SURVEY-0006 - Asset {0} is of type {1} but watchdog action service {2} only supports the following asset type(s): {3}</div>
-</section>
-</li>
-<li>
-<section class="detail" id="INVALID_ROOT_SCHEMA_TYPE">
-<h3>INVALID_ROOT_SCHEMA_TYPE</h3>
-<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OWFAuditCode.html" title="enum class in org.odpi.openmetadata.frameworks.openwatchdog.ffdc">OWFAuditCode</a></span>&nbsp;<span class="element-name">INVALID_ROOT_SCHEMA_TYPE</span></div>
-<div class="block">OPEN-SURVEY-0007 - Asset {0} has a root schema of type {1} but watchdog action service {2} only supports the following root schema type(s): {3}</div>
-</section>
-</li>
-<li>
-<section class="detail" id="NO_SCHEMA">
-<h3>NO_SCHEMA</h3>
-<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OWFAuditCode.html" title="enum class in org.odpi.openmetadata.frameworks.openwatchdog.ffdc">OWFAuditCode</a></span>&nbsp;<span class="element-name">NO_SCHEMA</span></div>
-<div class="block">OPEN-SURVEY-0008 - The {0} Survey Acton Service has been supplied with asset {1} which does not have a schema attached</div>
-</section>
-</li>
-<li>
-<section class="detail" id="NO_SCHEMA_ATTRIBUTES">
-<h3>NO_SCHEMA_ATTRIBUTES</h3>
-<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OWFAuditCode.html" title="enum class in org.odpi.openmetadata.frameworks.openwatchdog.ffdc">OWFAuditCode</a></span>&nbsp;<span class="element-name">NO_SCHEMA_ATTRIBUTES</span></div>
-<div class="block">OPEN-SURVEY-0009 - The {0} Survey Acton Service has been supplied with asset {1} which does not have any schema attributes attached</div>
+<div class="block">OPEN-WATCHDOG-0002 - The {0} watchdog action service has been disconnected - either due to its own actions or a cancel request</div>
 </section>
 </li>
 </ul>

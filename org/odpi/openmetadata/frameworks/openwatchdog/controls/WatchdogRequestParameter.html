@@ -107,14 +107,34 @@ loadScripts(document, 'script');</script>
 <div class="summary-table two-column-summary">
 <div class="table-header col-first">Enum Constant</div>
 <div class="table-header col-last">Description</div>
-<div class="col-first even-row-color"><code><a href="#FINAL_ANALYSIS_STEP" class="member-name-link">FINAL_ANALYSIS_STEP</a></code></div>
-<div class="col-last even-row-color">
-<div class="block">Property name to control how much profiling the survey action service does.</div>
-</div>
-<div class="col-first odd-row-color"><code><a href="#IGNORE_ANALYSIS_STEPS" class="member-name-link">IGNORE_ANALYSIS_STEPS</a></code></div>
-<div class="col-last odd-row-color">
-<div class="block">Provide a list of analysis steps to ignore.</div>
-</div>
+<div class="col-first even-row-color"><code><a href="#ACTION_TARGET_NAME" class="member-name-link">ACTION_TARGET_NAME</a></code></div>
+<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-first odd-row-color"><code><a href="#ACTION_TARGET_TWO_NAME" class="member-name-link">ACTION_TARGET_TWO_NAME</a></code></div>
+<div class="col-last odd-row-color">&nbsp;</div>
+<div class="col-first even-row-color"><code><a href="#CHANGED_PROPERTIES" class="member-name-link">CHANGED_PROPERTIES</a></code></div>
+<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-first odd-row-color"><code><a href="#CLASSIFIED_ELEMENT_PROCESS_NAME" class="member-name-link">CLASSIFIED_ELEMENT_PROCESS_NAME</a></code></div>
+<div class="col-last odd-row-color">&nbsp;</div>
+<div class="col-first even-row-color"><code><a href="#DECLASSIFIED_ELEMENT_PROCESS_NAME" class="member-name-link">DECLASSIFIED_ELEMENT_PROCESS_NAME</a></code></div>
+<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-first odd-row-color"><code><a href="#DELETED_ELEMENT_PROCESS_NAME" class="member-name-link">DELETED_ELEMENT_PROCESS_NAME</a></code></div>
+<div class="col-last odd-row-color">&nbsp;</div>
+<div class="col-first even-row-color"><code><a href="#DELETED_RELATIONSHIP_PROCESS_NAME" class="member-name-link">DELETED_RELATIONSHIP_PROCESS_NAME</a></code></div>
+<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-first odd-row-color"><code><a href="#INSTANCE_TO_MONITOR" class="member-name-link">INSTANCE_TO_MONITOR</a></code></div>
+<div class="col-last odd-row-color">&nbsp;</div>
+<div class="col-first even-row-color"><code><a href="#INTERESTING_TYPE_NAME" class="member-name-link">INTERESTING_TYPE_NAME</a></code></div>
+<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-first odd-row-color"><code><a href="#NEW_ELEMENT_PROCESS_NAME" class="member-name-link">NEW_ELEMENT_PROCESS_NAME</a></code></div>
+<div class="col-last odd-row-color">&nbsp;</div>
+<div class="col-first even-row-color"><code><a href="#NEW_RELATIONSHIP_PROCESS_NAME" class="member-name-link">NEW_RELATIONSHIP_PROCESS_NAME</a></code></div>
+<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-first odd-row-color"><code><a href="#RECLASSIFIED_ELEMENT_PROCESS_NAME" class="member-name-link">RECLASSIFIED_ELEMENT_PROCESS_NAME</a></code></div>
+<div class="col-last odd-row-color">&nbsp;</div>
+<div class="col-first even-row-color"><code><a href="#UPDATED_ELEMENT_PROCESS_NAME" class="member-name-link">UPDATED_ELEMENT_PROCESS_NAME</a></code></div>
+<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-first odd-row-color"><code><a href="#UPDATED_RELATIONSHIP_PROCESS_NAME" class="member-name-link">UPDATED_RELATIONSHIP_PROCESS_NAME</a></code></div>
+<div class="col-last odd-row-color">&nbsp;</div>
 </div>
 </section>
 </li>
@@ -220,17 +240,87 @@ the order they are declared.</div>
 <h2>Enum Constant Details</h2>
 <ul class="member-list">
 <li>
-<section class="detail" id="FINAL_ANALYSIS_STEP">
-<h3>FINAL_ANALYSIS_STEP</h3>
-<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="WatchdogRequestParameter.html" title="enum class in org.odpi.openmetadata.frameworks.openwatchdog.controls">WatchdogRequestParameter</a></span>&nbsp;<span class="element-name">FINAL_ANALYSIS_STEP</span></div>
-<div class="block">Property name to control how much profiling the survey action service does.</div>
+<section class="detail" id="INSTANCE_TO_MONITOR">
+<h3>INSTANCE_TO_MONITOR</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="WatchdogRequestParameter.html" title="enum class in org.odpi.openmetadata.frameworks.openwatchdog.controls">WatchdogRequestParameter</a></span>&nbsp;<span class="element-name">INSTANCE_TO_MONITOR</span></div>
 </section>
 </li>
 <li>
-<section class="detail" id="IGNORE_ANALYSIS_STEPS">
-<h3>IGNORE_ANALYSIS_STEPS</h3>
-<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="WatchdogRequestParameter.html" title="enum class in org.odpi.openmetadata.frameworks.openwatchdog.controls">WatchdogRequestParameter</a></span>&nbsp;<span class="element-name">IGNORE_ANALYSIS_STEPS</span></div>
-<div class="block">Provide a list of analysis steps to ignore.  This has to be used with care because some analysis steps build on the work of earlier analysis steps, and so ignoring one of these earlier steps will prevent later steps from running.</div>
+<section class="detail" id="INTERESTING_TYPE_NAME">
+<h3>INTERESTING_TYPE_NAME</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="WatchdogRequestParameter.html" title="enum class in org.odpi.openmetadata.frameworks.openwatchdog.controls">WatchdogRequestParameter</a></span>&nbsp;<span class="element-name">INTERESTING_TYPE_NAME</span></div>
+</section>
+</li>
+<li>
+<section class="detail" id="ACTION_TARGET_NAME">
+<h3>ACTION_TARGET_NAME</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="WatchdogRequestParameter.html" title="enum class in org.odpi.openmetadata.frameworks.openwatchdog.controls">WatchdogRequestParameter</a></span>&nbsp;<span class="element-name">ACTION_TARGET_NAME</span></div>
+</section>
+</li>
+<li>
+<section class="detail" id="ACTION_TARGET_TWO_NAME">
+<h3>ACTION_TARGET_TWO_NAME</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="WatchdogRequestParameter.html" title="enum class in org.odpi.openmetadata.frameworks.openwatchdog.controls">WatchdogRequestParameter</a></span>&nbsp;<span class="element-name">ACTION_TARGET_TWO_NAME</span></div>
+</section>
+</li>
+<li>
+<section class="detail" id="NEW_ELEMENT_PROCESS_NAME">
+<h3>NEW_ELEMENT_PROCESS_NAME</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="WatchdogRequestParameter.html" title="enum class in org.odpi.openmetadata.frameworks.openwatchdog.controls">WatchdogRequestParameter</a></span>&nbsp;<span class="element-name">NEW_ELEMENT_PROCESS_NAME</span></div>
+</section>
+</li>
+<li>
+<section class="detail" id="UPDATED_ELEMENT_PROCESS_NAME">
+<h3>UPDATED_ELEMENT_PROCESS_NAME</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="WatchdogRequestParameter.html" title="enum class in org.odpi.openmetadata.frameworks.openwatchdog.controls">WatchdogRequestParameter</a></span>&nbsp;<span class="element-name">UPDATED_ELEMENT_PROCESS_NAME</span></div>
+</section>
+</li>
+<li>
+<section class="detail" id="DELETED_ELEMENT_PROCESS_NAME">
+<h3>DELETED_ELEMENT_PROCESS_NAME</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="WatchdogRequestParameter.html" title="enum class in org.odpi.openmetadata.frameworks.openwatchdog.controls">WatchdogRequestParameter</a></span>&nbsp;<span class="element-name">DELETED_ELEMENT_PROCESS_NAME</span></div>
+</section>
+</li>
+<li>
+<section class="detail" id="CLASSIFIED_ELEMENT_PROCESS_NAME">
+<h3>CLASSIFIED_ELEMENT_PROCESS_NAME</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="WatchdogRequestParameter.html" title="enum class in org.odpi.openmetadata.frameworks.openwatchdog.controls">WatchdogRequestParameter</a></span>&nbsp;<span class="element-name">CLASSIFIED_ELEMENT_PROCESS_NAME</span></div>
+</section>
+</li>
+<li>
+<section class="detail" id="RECLASSIFIED_ELEMENT_PROCESS_NAME">
+<h3>RECLASSIFIED_ELEMENT_PROCESS_NAME</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="WatchdogRequestParameter.html" title="enum class in org.odpi.openmetadata.frameworks.openwatchdog.controls">WatchdogRequestParameter</a></span>&nbsp;<span class="element-name">RECLASSIFIED_ELEMENT_PROCESS_NAME</span></div>
+</section>
+</li>
+<li>
+<section class="detail" id="DECLASSIFIED_ELEMENT_PROCESS_NAME">
+<h3>DECLASSIFIED_ELEMENT_PROCESS_NAME</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="WatchdogRequestParameter.html" title="enum class in org.odpi.openmetadata.frameworks.openwatchdog.controls">WatchdogRequestParameter</a></span>&nbsp;<span class="element-name">DECLASSIFIED_ELEMENT_PROCESS_NAME</span></div>
+</section>
+</li>
+<li>
+<section class="detail" id="NEW_RELATIONSHIP_PROCESS_NAME">
+<h3>NEW_RELATIONSHIP_PROCESS_NAME</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="WatchdogRequestParameter.html" title="enum class in org.odpi.openmetadata.frameworks.openwatchdog.controls">WatchdogRequestParameter</a></span>&nbsp;<span class="element-name">NEW_RELATIONSHIP_PROCESS_NAME</span></div>
+</section>
+</li>
+<li>
+<section class="detail" id="UPDATED_RELATIONSHIP_PROCESS_NAME">
+<h3>UPDATED_RELATIONSHIP_PROCESS_NAME</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="WatchdogRequestParameter.html" title="enum class in org.odpi.openmetadata.frameworks.openwatchdog.controls">WatchdogRequestParameter</a></span>&nbsp;<span class="element-name">UPDATED_RELATIONSHIP_PROCESS_NAME</span></div>
+</section>
+</li>
+<li>
+<section class="detail" id="DELETED_RELATIONSHIP_PROCESS_NAME">
+<h3>DELETED_RELATIONSHIP_PROCESS_NAME</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="WatchdogRequestParameter.html" title="enum class in org.odpi.openmetadata.frameworks.openwatchdog.controls">WatchdogRequestParameter</a></span>&nbsp;<span class="element-name">DELETED_RELATIONSHIP_PROCESS_NAME</span></div>
+</section>
+</li>
+<li>
+<section class="detail" id="CHANGED_PROPERTIES">
+<h3>CHANGED_PROPERTIES</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="WatchdogRequestParameter.html" title="enum class in org.odpi.openmetadata.frameworks.openwatchdog.controls">WatchdogRequestParameter</a></span>&nbsp;<span class="element-name">CHANGED_PROPERTIES</span></div>
 </section>
 </li>
 </ul>

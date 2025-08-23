@@ -121,9 +121,9 @@ implements <a href="../../../frameworks/auditlog/messagesets/AuditLogMessageSet.
 </div>
 <div class="col-first odd-row-color"><code><a href="#EXC_ON_ERROR_STATUS_UPDATE" class="member-name-link">EXC_ON_ERROR_STATUS_UPDATE</a></code></div>
 <div class="col-last odd-row-color">
-<div class="block">OMES-WATCHDOG-ACTION-0021 - Watchdog action engine {0} is unable to update the status for watchdog action service {1}.</div>
+<div class="block">OMES-WATCHDOG-ACTION-0022 - Watchdog action engine {0} is unable to update the status for watchdog action service {1}.</div>
 </div>
-<div class="col-first even-row-color"><code><a href="#IGNORING_ASSETS" class="member-name-link">IGNORING_ASSETS</a></code></div>
+<div class="col-first even-row-color"><code><a href="#IGNORING_NOTIFICATION_TYPES" class="member-name-link">IGNORING_NOTIFICATION_TYPES</a></code></div>
 <div class="col-last even-row-color">
 <div class="block">OMES-WATCHDOG-ACTION-0030 - The watchdog action service {0} linked to request type {1} is processing asset {2} and ignoring the following asset action targets: {3}</div>
 </div>
@@ -133,11 +133,11 @@ implements <a href="../../../frameworks/auditlog/messagesets/AuditLogMessageSet.
 </div>
 <div class="col-first even-row-color"><code><a href="#NO_WATCHDOG_ACTION_ENGINES_STARTED" class="member-name-link">NO_WATCHDOG_ACTION_ENGINES_STARTED</a></code></div>
 <div class="col-last even-row-color">
-<div class="block">OMES-WATCHDOG-ACTION-0020 - Watchdog Action OMES in server {0} is unable to start any watchdog action engines</div>
+<div class="block">OMES-WATCHDOG-ACTION-0021 - Watchdog Action OMES in server {0} is unable to start any watchdog action engines</div>
 </div>
-<div class="col-first odd-row-color"><code><a href="#NULL_SURVEY_SERVICE" class="member-name-link">NULL_SURVEY_SERVICE</a></code></div>
+<div class="col-first odd-row-color"><code><a href="#NULL_WATCHDOG_SERVICE" class="member-name-link">NULL_WATCHDOG_SERVICE</a></code></div>
 <div class="col-last odd-row-color">
-<div class="block">OMES-WATCHDOG-ACTION-0022 - Method {0} can not execute in the watchdog action engine {1} hosted by Watchdog Action OMES in server {2} because the associated " +
+<div class="block">OMES-WATCHDOG-ACTION-0023 - Method {0} can not execute in the watchdog action engine {1} hosted by Watchdog Action OMES in server {2} because the associated " +
                                  "watchdog action service properties are null</div>
 </div>
 <div class="col-first even-row-color"><code><a href="#SERVER_SHUTDOWN" class="member-name-link">SERVER_SHUTDOWN</a></code></div>
@@ -152,15 +152,23 @@ implements <a href="../../../frameworks/auditlog/messagesets/AuditLogMessageSet.
 <div class="col-last even-row-color">
 <div class="block">OMES-WATCHDOG-ACTION-0012 - The Watchdog Action OMES is unable to initialize a new instance of itself in server {0}; error message is {1}</div>
 </div>
-<div class="col-first odd-row-color"><code><a href="#WATCHDOG_ACTION_SERVICE_COMPLETE" class="member-name-link">WATCHDOG_ACTION_SERVICE_COMPLETE</a></code></div>
+<div class="col-first odd-row-color"><code><a href="#UNEXPECTED_EXCEPTION" class="member-name-link">UNEXPECTED_EXCEPTION</a></code></div>
 <div class="col-last odd-row-color">
+<div class="block">OMES-GOVERNANCE-ACTION-0033 - The Governance Action OMES has received an unexpected {0} exception during method {1}; the error message was: {2}</div>
+</div>
+<div class="col-first even-row-color"><code><a href="#WATCHDOG_ACTION_SERVICE_COMPLETE" class="member-name-link">WATCHDOG_ACTION_SERVICE_COMPLETE</a></code></div>
+<div class="col-last even-row-color">
 <div class="block">OMES-WATCHDOG-ACTION-0019 - The watchdog action service {0} has completed monitoring for notification type {1} with request type {2} in {3}
  milliseconds; the results are notified to subscribers {4}</div>
 </div>
-<div class="col-first even-row-color"><code><a href="#WATCHDOG_ACTION_SERVICE_FAILED" class="member-name-link">WATCHDOG_ACTION_SERVICE_FAILED</a></code></div>
-<div class="col-last even-row-color">
+<div class="col-first odd-row-color"><code><a href="#WATCHDOG_ACTION_SERVICE_FAILED" class="member-name-link">WATCHDOG_ACTION_SERVICE_FAILED</a></code></div>
+<div class="col-last odd-row-color">
 <div class="block">OMES-WATCHDOG-ACTION-0018 - The watchdog action service {0} threw a {1} exception during the notification/actioning of subscriber
  {2} for asset {3} during  request type {4} in watchdog action engine {5} (guid={6}).</div>
+</div>
+<div class="col-first even-row-color"><code><a href="#WATCHDOG_ACTION_SERVICE_RETURNED" class="member-name-link">WATCHDOG_ACTION_SERVICE_RETURNED</a></code></div>
+<div class="col-last even-row-color">
+<div class="block">OMES-WATCHDOG-ACTION-0020 - The {0} governance action service {1} for request type {2} is continuing to run in a background thread</div>
 </div>
 <div class="col-first odd-row-color"><code><a href="#WATCHDOG_ACTION_SERVICE_STARTING" class="member-name-link">WATCHDOG_ACTION_SERVICE_STARTING</a></code></div>
 <div class="col-last odd-row-color">
@@ -280,25 +288,32 @@ the order they are declared.</div>
 </section>
 </li>
 <li>
+<section class="detail" id="WATCHDOG_ACTION_SERVICE_RETURNED">
+<h3>WATCHDOG_ACTION_SERVICE_RETURNED</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="WatchdogActionAuditCode.html" title="enum class in org.odpi.openmetadata.engineservices.watchdogaction.ffdc">WatchdogActionAuditCode</a></span>&nbsp;<span class="element-name">WATCHDOG_ACTION_SERVICE_RETURNED</span></div>
+<div class="block">OMES-WATCHDOG-ACTION-0020 - The {0} governance action service {1} for request type {2} is continuing to run in a background thread</div>
+</section>
+</li>
+<li>
 <section class="detail" id="NO_WATCHDOG_ACTION_ENGINES_STARTED">
 <h3>NO_WATCHDOG_ACTION_ENGINES_STARTED</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="WatchdogActionAuditCode.html" title="enum class in org.odpi.openmetadata.engineservices.watchdogaction.ffdc">WatchdogActionAuditCode</a></span>&nbsp;<span class="element-name">NO_WATCHDOG_ACTION_ENGINES_STARTED</span></div>
-<div class="block">OMES-WATCHDOG-ACTION-0020 - Watchdog Action OMES in server {0} is unable to start any watchdog action engines</div>
+<div class="block">OMES-WATCHDOG-ACTION-0021 - Watchdog Action OMES in server {0} is unable to start any watchdog action engines</div>
 </section>
 </li>
 <li>
 <section class="detail" id="EXC_ON_ERROR_STATUS_UPDATE">
 <h3>EXC_ON_ERROR_STATUS_UPDATE</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="WatchdogActionAuditCode.html" title="enum class in org.odpi.openmetadata.engineservices.watchdogaction.ffdc">WatchdogActionAuditCode</a></span>&nbsp;<span class="element-name">EXC_ON_ERROR_STATUS_UPDATE</span></div>
-<div class="block">OMES-WATCHDOG-ACTION-0021 - Watchdog action engine {0} is unable to update the status for watchdog action service {1}.
+<div class="block">OMES-WATCHDOG-ACTION-0022 - Watchdog action engine {0} is unable to update the status for watchdog action service {1}.
  The exception was {2} with error message {3}</div>
 </section>
 </li>
 <li>
-<section class="detail" id="NULL_SURVEY_SERVICE">
-<h3>NULL_SURVEY_SERVICE</h3>
-<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="WatchdogActionAuditCode.html" title="enum class in org.odpi.openmetadata.engineservices.watchdogaction.ffdc">WatchdogActionAuditCode</a></span>&nbsp;<span class="element-name">NULL_SURVEY_SERVICE</span></div>
-<div class="block">OMES-WATCHDOG-ACTION-0022 - Method {0} can not execute in the watchdog action engine {1} hosted by Watchdog Action OMES in server {2} because the associated " +
+<section class="detail" id="NULL_WATCHDOG_SERVICE">
+<h3>NULL_WATCHDOG_SERVICE</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="WatchdogActionAuditCode.html" title="enum class in org.odpi.openmetadata.engineservices.watchdogaction.ffdc">WatchdogActionAuditCode</a></span>&nbsp;<span class="element-name">NULL_WATCHDOG_SERVICE</span></div>
+<div class="block">OMES-WATCHDOG-ACTION-0023 - Method {0} can not execute in the watchdog action engine {1} hosted by Watchdog Action OMES in server {2} because the associated " +
                                  "watchdog action service properties are null</div>
 </section>
 </li>
@@ -311,10 +326,17 @@ the order they are declared.</div>
 </section>
 </li>
 <li>
-<section class="detail" id="IGNORING_ASSETS">
-<h3>IGNORING_ASSETS</h3>
-<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="WatchdogActionAuditCode.html" title="enum class in org.odpi.openmetadata.engineservices.watchdogaction.ffdc">WatchdogActionAuditCode</a></span>&nbsp;<span class="element-name">IGNORING_ASSETS</span></div>
+<section class="detail" id="IGNORING_NOTIFICATION_TYPES">
+<h3>IGNORING_NOTIFICATION_TYPES</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="WatchdogActionAuditCode.html" title="enum class in org.odpi.openmetadata.engineservices.watchdogaction.ffdc">WatchdogActionAuditCode</a></span>&nbsp;<span class="element-name">IGNORING_NOTIFICATION_TYPES</span></div>
 <div class="block">OMES-WATCHDOG-ACTION-0030 - The watchdog action service {0} linked to request type {1} is processing asset {2} and ignoring the following asset action targets: {3}</div>
+</section>
+</li>
+<li>
+<section class="detail" id="UNEXPECTED_EXCEPTION">
+<h3>UNEXPECTED_EXCEPTION</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="WatchdogActionAuditCode.html" title="enum class in org.odpi.openmetadata.engineservices.watchdogaction.ffdc">WatchdogActionAuditCode</a></span>&nbsp;<span class="element-name">UNEXPECTED_EXCEPTION</span></div>
+<div class="block">OMES-GOVERNANCE-ACTION-0033 - The Governance Action OMES has received an unexpected {0} exception during method {1}; the error message was: {2}</div>
 </section>
 </li>
 </ul>
