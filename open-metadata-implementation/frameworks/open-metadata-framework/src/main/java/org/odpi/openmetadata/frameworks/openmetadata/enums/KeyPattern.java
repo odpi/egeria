@@ -205,6 +205,12 @@ public enum KeyPattern implements OpenMetadataEnum
     @Override
     public String toString()
     {
-        return "KeyPattern{keyPatternName='" + name + '}';
+        return "KeyPattern{keyPatternName='" +
+            "ordinal=" + ordinal +
+            ", name='" + name + '\'' +
+            ", description='" + description + '\'' +
+            ", descriptionGUID='" + descriptionGUID + '\'' +
+            ", isDefault='" +isDefault + '\'' +
+            '}';
     }
 }
