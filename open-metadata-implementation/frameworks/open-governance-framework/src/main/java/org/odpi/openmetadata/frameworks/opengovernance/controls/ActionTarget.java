@@ -49,8 +49,27 @@ public enum ActionTarget
               OpenMetadataType.ASSET.typeName,
               null),
 
+
     /**
-     * A newly prepared Notification Type.
+     * A newly created digital subscription (or a subtype of).
+     */
+    NEW_DIGITAL_SUBSCRIPTION("newDigitalSubscription",
+              "A newly created digital subscription (or a subtype of).",
+              OpenMetadataType.DIGITAL_SUBSCRIPTION.typeName,
+              null),
+
+
+    /**
+     * An actor to associate with the digital subscription.
+     */
+    DIGITAL_SUBSCRIPTION_ACTOR("digitalSubscriptionActor",
+                             "An actor to associate with the digital subscription.",
+                             OpenMetadataType.ACTOR.typeName,
+                             null),
+
+
+    /**
+     * A Notification Type ready for monitoring.
      */
     NOTIFICATION_TYPE("notificationType",
                       "A Notification Type ready for monitoring.",

@@ -21,6 +21,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class ValidValueDefinitionProperties extends ReferenceableProperties
 {
+    private String  namespace         = null;
     private String  usage             = null;
     private String  scope             = null;
     private String  preferredValue    = null;
@@ -50,13 +51,36 @@ public class ValidValueDefinitionProperties extends ReferenceableProperties
 
         if (template != null)
         {
-            usage = template.getUsage();
-            scope = template.getScope();
-            preferredValue = template.getPreferredValue();
+            namespace         = template.getNamespace();
+            usage             = template.getUsage();
+            scope             = template.getScope();
+            preferredValue    = template.getPreferredValue();
             dataType          = template.getDataType();
             userDefinedStatus = template.getUserDefinedStatus();
             isCaseSensitive   = template.getIsCaseSensitive();
         }
+    }
+
+
+    /**
+     * Return the name of the namespace that this type belongs to.
+     *
+     * @return string name
+     */
+    public String getNamespace()
+    {
+        return namespace;
+    }
+
+
+    /**
+     * Set up the name of the namespace that this type belongs to.
+     *
+     * @param namespace string name
+     */
+    public void setNamespace(String namespace)
+    {
+        this.namespace = namespace;
     }
 
 

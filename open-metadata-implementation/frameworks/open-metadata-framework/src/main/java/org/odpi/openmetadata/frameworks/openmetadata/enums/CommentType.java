@@ -10,7 +10,7 @@ import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataWikiPages
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
-import static org.odpi.openmetadata.frameworks.openmetadata.mapper.OpenMetadataValidValues.constructValidValueCategory;
+import static org.odpi.openmetadata.frameworks.openmetadata.mapper.OpenMetadataValidValues.constructValidValueNamespace;
 import static org.odpi.openmetadata.frameworks.openmetadata.mapper.OpenMetadataValidValues.constructValidValueQualifiedName;
 
 /**
@@ -217,9 +217,9 @@ public enum CommentType implements OpenMetadataEnum
      */
     public String getCategory()
     {
-        return constructValidValueCategory(ENUM_TYPE_NAME,
-                                           OpenMetadataProperty.COMMENT_TYPE.name,
-                                           null);
+        return constructValidValueNamespace(ENUM_TYPE_NAME,
+                                            OpenMetadataProperty.COMMENT_TYPE.name,
+                                            null);
     }
 
 

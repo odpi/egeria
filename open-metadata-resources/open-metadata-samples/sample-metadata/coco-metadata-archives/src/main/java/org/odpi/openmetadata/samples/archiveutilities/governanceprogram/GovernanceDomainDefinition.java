@@ -6,7 +6,7 @@ package org.odpi.openmetadata.samples.archiveutilities.governanceprogram;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
 import org.odpi.openmetadata.samples.archiveutilities.organization.PersonDefinition;
 
-import static org.odpi.openmetadata.frameworks.openmetadata.mapper.OpenMetadataValidValues.constructValidValueCategory;
+import static org.odpi.openmetadata.frameworks.openmetadata.mapper.OpenMetadataValidValues.constructValidValueNamespace;
 import static org.odpi.openmetadata.frameworks.openmetadata.mapper.OpenMetadataValidValues.constructValidValueQualifiedName;
 
 /**
@@ -150,9 +150,9 @@ public enum GovernanceDomainDefinition
      */
     public String getCategory()
     {
-        return constructValidValueCategory(null,
-                                           OpenMetadataProperty.DOMAIN_IDENTIFIER.name,
-                                           null);
+        return constructValidValueNamespace(null,
+                                            OpenMetadataProperty.DOMAIN_IDENTIFIER.name,
+                                            null);
     }
 
 

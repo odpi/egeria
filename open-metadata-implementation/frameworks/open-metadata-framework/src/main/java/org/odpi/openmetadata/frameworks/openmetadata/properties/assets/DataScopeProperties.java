@@ -303,7 +303,15 @@ public class DataScopeProperties extends ClassificationBeanProperties
         if (objectToCompare == null || getClass() != objectToCompare.getClass()) return false;
         if (!super.equals(objectToCompare)) return false;
         DataScopeProperties that = (DataScopeProperties) objectToCompare;
-        return Float.compare(minLongitude, that.minLongitude) == 0 && Float.compare(minLatitude, that.minLatitude) == 0 && Float.compare(maxLongitude, that.maxLongitude) == 0 && Float.compare(maxLatitude, that.maxLatitude) == 0 && Float.compare(minHeight, that.minHeight) == 0 && Float.compare(maxHeight, that.maxHeight) == 0 && Objects.equals(dataCollectionStartTime, that.dataCollectionStartTime) && Objects.equals(dataCollectionEndTime, that.dataCollectionEndTime) && Objects.equals(additionalProperties, that.additionalProperties);
+        return Float.compare(minLongitude, that.minLongitude) == 0 &&
+                Float.compare(minLatitude, that.minLatitude) == 0 &&
+                Float.compare(maxLongitude, that.maxLongitude) == 0 &&
+                Float.compare(maxLatitude, that.maxLatitude) == 0 &&
+                Float.compare(minHeight, that.minHeight) == 0 &&
+                Float.compare(maxHeight, that.maxHeight) == 0 &&
+                Objects.equals(dataCollectionStartTime, that.dataCollectionStartTime) &&
+                Objects.equals(dataCollectionEndTime, that.dataCollectionEndTime) &&
+                Objects.equals(additionalProperties, that.additionalProperties);
     }
 
     /**

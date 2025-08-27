@@ -135,7 +135,7 @@ public class OpenMetadataValidValues
 
 
     /**
-     * Creates the category of the element based on the properties supplied.
+     * Creates the namespace of the element based on the properties supplied.
      *
      * <ul>
      *     <li><i>Open Metadata Valid Values</i> - This is the category for the top level set.</li>
@@ -152,9 +152,9 @@ public class OpenMetadataValidValues
      * @param incomingMapName name of the mapName (can be null)
      * @return string (never null)
      */
-    public static String constructValidValueCategory(String incomingTypeName,
-                                                     String incomingPropertyName,
-                                                     String incomingMapName)
+    public static String constructValidValueNamespace(String incomingTypeName,
+                                                      String incomingPropertyName,
+                                                      String incomingMapName)
     {
         final String propertyNameStartSpacer = ":";
         final String mapNameStartSpacer = "-";

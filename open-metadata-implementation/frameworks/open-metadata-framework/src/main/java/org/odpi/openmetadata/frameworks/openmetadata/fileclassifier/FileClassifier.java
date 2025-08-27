@@ -41,17 +41,17 @@ public class FileClassifier
      * Construct the name used to find the file type reference value
      */
     private static final String fileTypeCategory =
-            OpenMetadataValidValues.constructValidValueCategory(OpenMetadataType.DATA_FILE.typeName,
-                                                                OpenMetadataProperty.FILE_TYPE.name,
-                                                                null);
+            OpenMetadataValidValues.constructValidValueNamespace(OpenMetadataType.DATA_FILE.typeName,
+                                                                 OpenMetadataProperty.FILE_TYPE.name,
+                                                                 null);
 
     /**
      * Construct the name used to find the deployed implementation type reference value
      */
     private static final String deployedImplementationTypeCategory =
-            OpenMetadataValidValues.constructValidValueCategory(OpenMetadataType.DATA_FILE.typeName,
-                                                                OpenMetadataProperty.DEPLOYED_IMPLEMENTATION_TYPE.name,
-                                                                null);
+            OpenMetadataValidValues.constructValidValueNamespace(OpenMetadataType.DATA_FILE.typeName,
+                                                                 OpenMetadataProperty.DEPLOYED_IMPLEMENTATION_TYPE.name,
+                                                                 null);
 
 
 

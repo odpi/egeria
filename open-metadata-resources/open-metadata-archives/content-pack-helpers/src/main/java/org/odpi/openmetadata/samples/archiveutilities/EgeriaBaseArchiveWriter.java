@@ -13,7 +13,7 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.archivestore.p
 
 import java.util.*;
 
-import static org.odpi.openmetadata.frameworks.openmetadata.mapper.OpenMetadataValidValues.constructValidValueCategory;
+import static org.odpi.openmetadata.frameworks.openmetadata.mapper.OpenMetadataValidValues.constructValidValueNamespace;
 import static org.odpi.openmetadata.frameworks.openmetadata.mapper.OpenMetadataValidValues.constructValidValueQualifiedName;
 
 
@@ -213,7 +213,7 @@ public abstract class EgeriaBaseArchiveWriter extends OMRSArchiveWriter
                                                          parentQualifiedName,
                                                          parentDisplayName,
                                                          parentDescription,
-                                                         constructValidValueCategory(typeName, propertyName, mapName),
+                                                         constructValidValueNamespace(typeName, propertyName, mapName),
                                                          OpenMetadataValidValues.VALID_METADATA_VALUES_USAGE,
                                                          null,
                                                          OpenMetadataValidValues.OPEN_METADATA_ECOSYSTEM_SCOPE,

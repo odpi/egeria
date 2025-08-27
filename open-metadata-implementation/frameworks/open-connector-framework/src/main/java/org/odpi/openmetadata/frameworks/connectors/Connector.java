@@ -137,6 +137,18 @@ public abstract class Connector
 
 
     /**
+     * Recalculate statistics for the supplied date.
+     *
+     * @param startDate start date for statistics calculations
+     * @throws ConnectorCheckedException An issue occurred creating the statistics
+     */
+    public void refreshStatistics(Date startDate) throws ConnectorCheckedException
+    {
+
+    }
+
+
+    /**
      * Reset (or initialize) the value of a counter.  This method reserves the counterName as a name for counters.  This means the same name
      * can not be used for a property or a timestamp.
      *
@@ -215,7 +227,7 @@ public abstract class Connector
 
             if (counterMap.get(counterName) != null)
             {
-                counterValue = counterMap.get(counterName);
+                counterValue = counterMap.get(counterName) + 1;
             }
 
             counterMap.put(counterName, counterValue);
@@ -380,7 +392,6 @@ public abstract class Connector
             return propertyMap.get(propertyName);
         }
     }
-
 
 
     /**

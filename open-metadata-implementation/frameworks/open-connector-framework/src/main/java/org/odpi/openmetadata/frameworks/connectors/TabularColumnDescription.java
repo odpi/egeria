@@ -3,6 +3,8 @@
 
 package org.odpi.openmetadata.frameworks.connectors;
 
+import org.odpi.openmetadata.frameworks.openmetadata.types.DataType;
+
 /**
  * Create a tabular column definition.  This can be extracted from the data, or used to set up a new data set.
  *
@@ -11,7 +13,7 @@ package org.odpi.openmetadata.frameworks.connectors;
  * @param description description of the data in hte column
  */
 public record TabularColumnDescription(String columnName,
-                                       String columnDataType,
+                                       DataType columnDataType,
                                        String description)
 {
 }

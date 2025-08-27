@@ -1190,62 +1190,11 @@ public class OpenMetadataTypesArchive5_0
 
     private void update0545ReferenceData()
     {
-        this.archiveBuilder.addTypeDefPatch(updateValidValueDefinition());
-        this.archiveBuilder.addTypeDefPatch(updateValidValuesImplementation());
         this.archiveBuilder.addRelationshipDef(getConsistentValidValuesRelationship());
         this.archiveBuilder.addRelationshipDef(getValidValueAssociationRelationship());
         this.archiveBuilder.addRelationshipDef(getSpecificationPropertyAssignmentRelationship());
     }
 
-    private TypeDefPatch updateValidValueDefinition()
-    {
-        /*
-         * Create the Patch
-         */
-        TypeDefPatch typeDefPatch = archiveBuilder.getPatchForType(OpenMetadataType.VALID_VALUE_DEFINITION.typeName);
-
-        typeDefPatch.setUpdatedBy(originatorName);
-        typeDefPatch.setUpdateTime(creationDate);
-
-        /*
-         * Build the attributes
-         */
-        List<TypeDefAttribute> properties = new ArrayList<>();
-
-        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.IS_CASE_SENSITIVE));
-        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.DATA_TYPE));
-
-        typeDefPatch.setPropertyDefinitions(properties);
-
-        return typeDefPatch;
-    }
-
-
-    private TypeDefPatch updateValidValuesImplementation()
-    {
-        TypeDefPatch typeDefPatch = archiveBuilder.getPatchForType(OpenMetadataType.VALID_VALUES_IMPL_RELATIONSHIP.typeName);
-
-        typeDefPatch.setUpdatedBy(originatorName);
-        typeDefPatch.setUpdateTime(creationDate);
-
-        RelationshipEndDef relationshipEndDef;
-
-        /*
-         * Update end 2.
-         */
-        final String                     end1AttributeName            = "validValueImplementations";
-        final String                     end1AttributeDescription     = "The location where mapped value is stored.";
-        final String                     end1AttributeDescriptionGUID = null;
-
-        relationshipEndDef = archiveHelper.getRelationshipEndDef(this.archiveBuilder.getEntityDef(OpenMetadataType.REFERENCEABLE.typeName),
-                                                                 end1AttributeName,
-                                                                 end1AttributeDescription,
-                                                                 end1AttributeDescriptionGUID,
-                                                                 RelationshipEndCardinality.ANY_NUMBER);
-        typeDefPatch.setEndDef1(relationshipEndDef);
-
-        return typeDefPatch;
-    }
 
     private RelationshipDef getConsistentValidValuesRelationship()
     {

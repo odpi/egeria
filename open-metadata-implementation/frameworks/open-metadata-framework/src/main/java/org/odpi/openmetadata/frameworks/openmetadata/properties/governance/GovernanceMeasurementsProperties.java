@@ -8,6 +8,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.ClassificationBeanProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 
+import java.util.Date;
 import java.util.Map;
 import java.util.Objects;
 
@@ -22,6 +23,8 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class GovernanceMeasurementsProperties extends ClassificationBeanProperties
 {
+    private Date dataCollectionStartTime = null;
+    private Date dataCollectionEndTime   = null;
     private Map<String, Integer> counts = null;
     private Map<String, String>  values = null;
     private Map<String, Boolean> flags  = null;
@@ -48,10 +51,56 @@ public class GovernanceMeasurementsProperties extends ClassificationBeanProperti
 
         if (template != null)
         {
+            dataCollectionStartTime = template.getDataCollectionStartTime();
+            dataCollectionEndTime   = template.getDataCollectionEndTime();
             counts = template.getCounts();
             values = template.getValues();
             flags = template.getFlags();
         }
+    }
+
+
+    /**
+     * Return the start time that data was collected for this asset.
+     *
+     * @return date
+     */
+    public Date getDataCollectionStartTime()
+    {
+        return dataCollectionStartTime;
+    }
+
+
+    /**
+     * Set up the start time that data was collected for this asset.
+     *
+     * @param dataCollectionStartTime date
+     */
+    public void setDataCollectionStartTime(Date dataCollectionStartTime)
+    {
+        this.dataCollectionStartTime = dataCollectionStartTime;
+    }
+
+
+    /**
+     * Return the end time that data was collected for this asset.
+     *
+     * @return date
+     */
+    public Date getDataCollectionEndTime()
+    {
+        return dataCollectionEndTime;
+    }
+
+
+    /**
+     * Set up the end time that data was collected for this asset..
+     *
+     * @param dataCollectionEndTime date
+     */
+    public void setDataCollectionEndTime(Date dataCollectionEndTime)
+    {
+        this.dataCollectionEndTime = dataCollectionEndTime;
     }
 
 
@@ -130,7 +179,9 @@ public class GovernanceMeasurementsProperties extends ClassificationBeanProperti
     public String toString()
     {
         return "GovernanceMeasurementsProperties{" +
-                "counts=" + counts +
+                "dataCollectionStartTime=" + dataCollectionStartTime +
+                ", dataCollectionEndTime=" + dataCollectionEndTime +
+                ", counts=" + counts +
                 ", values=" + values +
                 ", flags=" + flags +
                 "} " + super.toString();
@@ -158,9 +209,11 @@ public class GovernanceMeasurementsProperties extends ClassificationBeanProperti
         {
             return false;
         }
-        return Objects.equals(counts, that.counts) &&
-                       Objects.equals(values, that.values) &&
-                       Objects.equals(flags, that.flags);
+        return  Objects.equals(dataCollectionStartTime, that.dataCollectionStartTime) &&
+                Objects.equals(dataCollectionEndTime, that.dataCollectionEndTime) &&
+                Objects.equals(counts, that.counts) &&
+                Objects.equals(values, that.values) &&
+                Objects.equals(flags, that.flags);
     }
 
 
@@ -172,6 +225,6 @@ public class GovernanceMeasurementsProperties extends ClassificationBeanProperti
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), counts, values, flags);
+        return Objects.hash(super.hashCode(), dataCollectionStartTime, dataCollectionEndTime, counts, values, flags);
     }
 }

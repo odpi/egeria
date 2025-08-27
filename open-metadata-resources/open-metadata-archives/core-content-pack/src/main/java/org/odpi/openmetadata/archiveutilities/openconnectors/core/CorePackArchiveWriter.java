@@ -38,7 +38,7 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 
 import java.util.*;
 
-import static org.odpi.openmetadata.frameworks.openmetadata.mapper.OpenMetadataValidValues.constructValidValueCategory;
+import static org.odpi.openmetadata.frameworks.openmetadata.mapper.OpenMetadataValidValues.constructValidValueNamespace;
 import static org.odpi.openmetadata.frameworks.openmetadata.mapper.OpenMetadataValidValues.constructValidValueQualifiedName;
 
 /**
@@ -591,7 +591,7 @@ public class CorePackArchiveWriter extends ContentPackBaseArchiveWriter
             this.addDeployedImplementationType(deployedImplementationType.getDeployedImplementationType(),
                                                deployedImplementationType.getAssociatedTypeName(),
                                                deployedImplementationType.getQualifiedName(),
-                                               deployedImplementationType.getCategory(),
+                                               deployedImplementationType.getNamespace(),
                                                deployedImplementationType.getDescription(),
                                                deployedImplementationType.getWikiLink(),
                                                deployedImplementationType.getIsATypeOf());
@@ -607,7 +607,7 @@ public class CorePackArchiveWriter extends ContentPackBaseArchiveWriter
             this.addDeployedImplementationType(deployedImplementationType.getDeployedImplementationType(),
                                                deployedImplementationType.getAssociatedTypeName(),
                                                deployedImplementationType.getQualifiedName(),
-                                               deployedImplementationType.getCategory(),
+                                               deployedImplementationType.getNamespace(),
                                                deployedImplementationType.getDescription(),
                                                deployedImplementationType.getWikiLink(),
                                                deployedImplementationType.getIsATypeOf());
@@ -994,9 +994,9 @@ public class CorePackArchiveWriter extends ContentPackBaseArchiveWriter
                                                                               enumPreferredValue),
                                              enumValue.getName(),
                                              enumValue.getDescription(),
-                                             constructValidValueCategory(enumConsumingTypeName,
-                                                                         enumConsumingProperty,
-                                                                         null),
+                                             constructValidValueNamespace(enumConsumingTypeName,
+                                                                          enumConsumingProperty,
+                                                                          null),
                                              OpenMetadataValidValues.VALID_METADATA_VALUES_USAGE,
                                              enumTypeName,
                                              OpenMetadataValidValues.OPEN_METADATA_ECOSYSTEM_SCOPE,
@@ -1037,9 +1037,9 @@ public class CorePackArchiveWriter extends ContentPackBaseArchiveWriter
                                                                               enumPreferredValue),
                                              enumValue.getName(),
                                              enumValue.getDescription(),
-                                             constructValidValueCategory(enumConsumingTypeName,
-                                                                         enumConsumingProperty,
-                                                                         null),
+                                             constructValidValueNamespace(enumConsumingTypeName,
+                                                                          enumConsumingProperty,
+                                                                          null),
                                              OpenMetadataValidValues.VALID_METADATA_VALUES_USAGE,
                                              DataType.INT.getName(),
                                              OpenMetadataValidValues.OPEN_METADATA_ECOSYSTEM_SCOPE,
@@ -1249,9 +1249,9 @@ public class CorePackArchiveWriter extends ContentPackBaseArchiveWriter
                                                                 null,
                                                                 deployedImplementationType);
 
-        String category = constructValidValueCategory(associatedTypeName,
-                                                      OpenMetadataProperty.DEPLOYED_IMPLEMENTATION_TYPE.name,
-                                                      null);
+        String category = constructValidValueNamespace(associatedTypeName,
+                                                       OpenMetadataProperty.DEPLOYED_IMPLEMENTATION_TYPE.name,
+                                                       null);
 
         return super.addDeployedImplementationType(deployedImplementationType, associatedTypeName, qualifiedName, category, description, wikiLink, null);
     }
@@ -1274,9 +1274,9 @@ public class CorePackArchiveWriter extends ContentPackBaseArchiveWriter
                                                                 null,
                                                                 openMetadataType.typeName);
 
-        String category = constructValidValueCategory(null,
-                                                      OpenMetadataProperty.OPEN_METADATA_TYPE_NAME.name,
-                                                      null);
+        String category = constructValidValueNamespace(null,
+                                                       OpenMetadataProperty.OPEN_METADATA_TYPE_NAME.name,
+                                                       null);
 
         String validValueGUID = this.archiveHelper.addValidValue(openMetadataType.descriptionGUID,
                                                                  parentSetGUID,
@@ -1344,9 +1344,9 @@ public class CorePackArchiveWriter extends ContentPackBaseArchiveWriter
                                                                 null,
                                                                 name);
 
-        String category = constructValidValueCategory(OpenMetadataType.ASSIGNMENT_SCOPE_RELATIONSHIP.typeName,
-                                                      OpenMetadataProperty.ASSIGNMENT_TYPE.name,
-                                                      null);
+        String category = constructValidValueNamespace(OpenMetadataType.ASSIGNMENT_SCOPE_RELATIONSHIP.typeName,
+                                                       OpenMetadataProperty.ASSIGNMENT_TYPE.name,
+                                                       null);
 
 
         String parentSetGUID = this.getParentSet(null,
@@ -1398,9 +1398,9 @@ public class CorePackArchiveWriter extends ContentPackBaseArchiveWriter
                                                                 null,
                                                                 fileTypeName);
 
-        String category = constructValidValueCategory(OpenMetadataType.DATA_FILE.typeName,
-                                                      OpenMetadataProperty.FILE_TYPE.name,
-                                                      null);
+        String category = constructValidValueNamespace(OpenMetadataType.DATA_FILE.typeName,
+                                                       OpenMetadataProperty.FILE_TYPE.name,
+                                                       null);
 
         Map<String, String> additionalProperties = new HashMap<>();
 
@@ -1468,9 +1468,9 @@ public class CorePackArchiveWriter extends ContentPackBaseArchiveWriter
                                                                 null,
                                                                 fileName);
 
-        String category = constructValidValueCategory(OpenMetadataType.DATA_FILE.typeName,
-                                                      OpenMetadataProperty.FILE_NAME.name,
-                                                      null);
+        String category = constructValidValueNamespace(OpenMetadataType.DATA_FILE.typeName,
+                                                       OpenMetadataProperty.FILE_NAME.name,
+                                                       null);
 
         String parentSetGUID = this.getParentSet(null,
                                                  OpenMetadataType.DATA_FILE.typeName,
@@ -1530,9 +1530,9 @@ public class CorePackArchiveWriter extends ContentPackBaseArchiveWriter
                                                                 null,
                                                                 fileExtension);
 
-        String category = constructValidValueCategory(OpenMetadataType.DATA_FILE.typeName,
-                                                      OpenMetadataProperty.FILE_EXTENSION.name,
-                                                      null);
+        String category = constructValidValueNamespace(OpenMetadataType.DATA_FILE.typeName,
+                                                       OpenMetadataProperty.FILE_EXTENSION.name,
+                                                       null);
 
         String parentSetGUID = this.getParentSet(null,
                                                  OpenMetadataType.DATA_FILE.typeName,
@@ -1586,9 +1586,9 @@ public class CorePackArchiveWriter extends ContentPackBaseArchiveWriter
                                                                 null,
                                                                 attributeName);
 
-        String category = constructValidValueCategory(OpenMetadataType.SPECIFICATION_PROPERTY_ASSIGNMENT_RELATIONSHIP.typeName,
-                                                      OpenMetadataProperty.PROPERTY_NAME.name,
-                                                      null);
+        String category = constructValidValueNamespace(OpenMetadataType.SPECIFICATION_PROPERTY_ASSIGNMENT_RELATIONSHIP.typeName,
+                                                       OpenMetadataProperty.PROPERTY_NAME.name,
+                                                       null);
 
         String parentSetGUID = this.getParentSet(null,
                                                  OpenMetadataType.SPECIFICATION_PROPERTY_ASSIGNMENT_RELATIONSHIP.typeName,

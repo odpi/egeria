@@ -59,6 +59,8 @@ public class OpenMetadataClassificationBuilder
 
                     newElementProperties.setEffectiveFrom(classificationPropertiesMap.get(classificationName).getEffectiveFrom());
                     newElementProperties.setEffectiveTo(classificationPropertiesMap.get(classificationName).getEffectiveTo());
+
+                    initialClassifications.put(classificationName, newElementProperties);
                 }
             }
 
@@ -281,6 +283,14 @@ public class OpenMetadataClassificationBuilder
             }
             else if (properties instanceof GovernanceMeasurementsProperties governanceMeasurementsProperties)
             {
+                elementProperties = propertyHelper.addDateProperty(elementProperties,
+                                                                   OpenMetadataProperty.DATA_COLLECTION_START_TIME.name,
+                                                                   governanceMeasurementsProperties.getDataCollectionStartTime());
+
+                elementProperties = propertyHelper.addDateProperty(elementProperties,
+                                                                   OpenMetadataProperty.DATA_COLLECTION_END_TIME.name,
+                                                                   governanceMeasurementsProperties.getDataCollectionEndTime());
+
                 elementProperties = propertyHelper.addIntMapProperty(elementProperties,
                                                                      OpenMetadataProperty.MEASUREMENT_COUNTS.name,
                                                                      governanceMeasurementsProperties.getCounts());

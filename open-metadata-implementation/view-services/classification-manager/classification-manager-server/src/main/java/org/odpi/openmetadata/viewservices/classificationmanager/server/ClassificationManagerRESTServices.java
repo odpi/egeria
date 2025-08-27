@@ -583,7 +583,7 @@ public class ClassificationManagerRESTServices extends TokenController
 
 
     /**
-     * Add the governance expectations classification to  an element.
+     * Add the governance expectations classification to an element.
      *
      * @param serverName  name of the server instance to connect to
      * @param elementGUID unique identifier of element to attach to
@@ -641,6 +641,66 @@ public class ClassificationManagerRESTServices extends TokenController
     }
 
 
+
+    /**
+     * Update the governance expectations classification to an element.
+     *
+     * @param serverName  name of the server instance to connect to
+     * @param elementGUID unique identifier of element to attach to
+     * @param requestBody list of security labels and properties
+     *
+     * @return void or
+     * InvalidParameterException full path or userId is null or
+     * PropertyServerException problem accessing property server or
+     * UserNotAuthorizedException security access problem
+     */
+    public VoidResponse updateGovernanceExpectations(String                    serverName,
+                                                     String                    elementGUID,
+                                                     UpdateClassificationRequestBody requestBody)
+    {
+        final String methodName = "updateGovernanceExpectations";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
+
+        VoidResponse response = new VoidResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            if (requestBody != null)
+            {
+                if (requestBody.getProperties() instanceof GovernanceExpectationsProperties properties)
+                {
+                    StewardshipManagementHandler handler = instanceHandler.getStewardshipManagementHandler(userId, serverName, methodName);
+
+                    handler.updateGovernanceExpectations(userId, elementGUID, properties, requestBody);
+                }
+                else
+                {
+                    restExceptionHandler.handleInvalidPropertiesObject(GovernanceExpectationsProperties.class.getName(), methodName);
+                }
+            }
+            else
+            {
+                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
+            }
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+        return response;
+    }
+
+
     /**
      * Remove the governance expectations classification from an element.
      *
@@ -657,7 +717,7 @@ public class ClassificationManagerRESTServices extends TokenController
                                                     String                    elementGUID,
                                                     MetadataSourceRequestBody requestBody)
     {
-        final String methodName             = "clearGovernanceExpectations";
+        final String methodName = "clearGovernanceExpectations";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
 
@@ -683,7 +743,6 @@ public class ClassificationManagerRESTServices extends TokenController
         restCallLogger.logRESTCallReturn(token, response.toString());
         return response;
     }
-
 
 
     /**
@@ -724,6 +783,65 @@ public class ClassificationManagerRESTServices extends TokenController
                     StewardshipManagementHandler handler = instanceHandler.getStewardshipManagementHandler(userId, serverName, methodName);
 
                     handler.addGovernanceMeasurements(userId, elementGUID, properties, requestBody);
+                }
+                else
+                {
+                    restExceptionHandler.handleInvalidPropertiesObject(GovernanceMeasurementsProperties.class.getName(), methodName);
+                }
+            }
+            else
+            {
+                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
+            }
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+        return response;
+    }
+
+
+    /**
+     * Update the governance measurements for an element.
+     *
+     * @param serverName  name of the server instance to connect to
+     * @param elementGUID unique identifier of element to attach to
+     * @param requestBody list of security labels and properties
+     *
+     * @return void or
+     * InvalidParameterException full path or userId is null or
+     * PropertyServerException problem accessing property server or
+     * UserNotAuthorizedException security access problem
+     */
+    public VoidResponse updateGovernanceMeasurements(String                          serverName,
+                                                     String                          elementGUID,
+                                                     UpdateClassificationRequestBody requestBody)
+    {
+        final String methodName = "updateGovernanceMeasurements";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
+
+        VoidResponse response = new VoidResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            if (requestBody != null)
+            {
+                if (requestBody.getProperties() instanceof GovernanceMeasurementsProperties properties)
+                {
+                    StewardshipManagementHandler handler = instanceHandler.getStewardshipManagementHandler(userId, serverName, methodName);
+
+                    handler.updateGovernanceMeasurements(userId, elementGUID, properties, requestBody);
                 }
                 else
                 {
