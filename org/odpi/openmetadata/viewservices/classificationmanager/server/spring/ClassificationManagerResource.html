@@ -333,6 +333,20 @@ loadScripts(document, 'script');</script>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Create a semantic assignment relationship between a glossary term and an element (normally a schema attribute, data field or asset).</div>
 </div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#updateGovernanceExpectations(java.lang.String,java.lang.String,org.odpi.openmetadata.commonservices.ffdc.rest.UpdateClassificationRequestBody)" class="member-name-link">updateGovernanceExpectations</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;elementGUID,
+ <a href="../../../../commonservices/ffdc/rest/UpdateClassificationRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">UpdateClassificationRequestBody</a>&nbsp;requestBody)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Update the governance expectations classification to an element.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#updateGovernanceMeasurements(java.lang.String,java.lang.String,org.odpi.openmetadata.commonservices.ffdc.rest.UpdateClassificationRequestBody)" class="member-name-link">updateGovernanceMeasurements</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;elementGUID,
+ <a href="../../../../commonservices/ffdc/rest/UpdateClassificationRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">UpdateClassificationRequestBody</a>&nbsp;requestBody)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Update the governance measurements classification to an element.</div>
+</div>
 </div>
 </div>
 </div>
@@ -645,6 +659,30 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
+<section class="detail" id="updateGovernanceExpectations(java.lang.String,java.lang.String,org.odpi.openmetadata.commonservices.ffdc.rest.UpdateClassificationRequestBody)">
+<h3>updateGovernanceExpectations</h3>
+<div class="member-signature"><span class="annotations">@PostMapping(path="/elements/{elementGUID}/governance-expectations/update")
+</span><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a></span>&nbsp;<span class="element-name">updateGovernanceExpectations</span><wbr><span class="parameters">(@PathVariable
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
+ @PathVariable
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;elementGUID,
+ @RequestBody(required=false)
+ <a href="../../../../commonservices/ffdc/rest/UpdateClassificationRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">UpdateClassificationRequestBody</a>&nbsp;requestBody)</span></div>
+<div class="block">Update the governance expectations classification to an element.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>serverName</code> - name of the server instance to connect to</dd>
+<dd><code>elementGUID</code> - unique identifier of element to attach to</dd>
+<dd><code>requestBody</code> - list of security labels and properties</dd>
+<dt>Returns:</dt>
+<dd>void or
+ InvalidParameterException full path or userId is null or
+ PropertyServerException problem accessing property server or
+ UserNotAuthorizedException security access problem</dd>
+</dl>
+</section>
+</li>
+<li>
 <section class="detail" id="clearGovernanceExpectations(java.lang.String,java.lang.String,org.odpi.openmetadata.commonservices.ffdc.rest.MetadataSourceRequestBody)">
 <h3>clearGovernanceExpectations</h3>
 <div class="member-signature"><span class="annotations">@PostMapping(path="/elements/{elementGUID}/governance-expectations/remove")
@@ -679,6 +717,30 @@ loadScripts(document, 'script');</script>
  @RequestBody(required=false)
  <a href="../../../../commonservices/ffdc/rest/NewClassificationRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">NewClassificationRequestBody</a>&nbsp;requestBody)</span></div>
 <div class="block">Add the governance measurements classification to an element.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>serverName</code> - name of the server instance to connect to</dd>
+<dd><code>elementGUID</code> - unique identifier of element to attach to</dd>
+<dd><code>requestBody</code> - list of security labels and properties</dd>
+<dt>Returns:</dt>
+<dd>void or
+ InvalidParameterException full path or userId is null or
+ PropertyServerException problem accessing property server or
+ UserNotAuthorizedException security access problem</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="updateGovernanceMeasurements(java.lang.String,java.lang.String,org.odpi.openmetadata.commonservices.ffdc.rest.UpdateClassificationRequestBody)">
+<h3>updateGovernanceMeasurements</h3>
+<div class="member-signature"><span class="annotations">@PostMapping(path="/elements/{elementGUID}/governance-measurements/update")
+</span><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a></span>&nbsp;<span class="element-name">updateGovernanceMeasurements</span><wbr><span class="parameters">(@PathVariable
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
+ @PathVariable
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;elementGUID,
+ @RequestBody(required=false)
+ <a href="../../../../commonservices/ffdc/rest/UpdateClassificationRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">UpdateClassificationRequestBody</a>&nbsp;requestBody)</span></div>
+<div class="block">Update the governance measurements classification to an element.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
 <dd><code>serverName</code> - name of the server instance to connect to</dd>

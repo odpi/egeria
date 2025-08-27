@@ -37,10 +37,11 @@ org.odpi.openmetadata.adapters.connectors.egeriainfrastructure.platform.survey
 org.odpi.openmetadata.adapters.connectors.egeriainfrastructure.properties
 org.odpi.openmetadata.adapters.connectors.egeriainfrastructure.servers
 org.odpi.openmetadata.adapters.connectors.governanceactions.ffdc
+org.odpi.openmetadata.adapters.connectors.governanceactions.notifications
 org.odpi.openmetadata.adapters.connectors.governanceactions.provisioning
 org.odpi.openmetadata.adapters.connectors.governanceactions.remediation
 org.odpi.openmetadata.adapters.connectors.governanceactions.stewardship
-org.odpi.openmetadata.adapters.connectors.governanceactions.subscriptionmanager
+org.odpi.openmetadata.adapters.connectors.governanceactions.subscriptions
 org.odpi.openmetadata.adapters.connectors.governanceactions.verification
 org.odpi.openmetadata.adapters.connectors.governanceactions.watchdog
 org.odpi.openmetadata.adapters.connectors.integration.basicfiles
@@ -71,6 +72,7 @@ org.odpi.openmetadata.adapters.connectors.nannyconnectors.harvestopenmetadata.sc
 org.odpi.openmetadata.adapters.connectors.nannyconnectors.harvestsurveys
 org.odpi.openmetadata.adapters.connectors.nannyconnectors.harvestsurveys.ffdc
 org.odpi.openmetadata.adapters.connectors.nannyconnectors.harvestsurveys.schema
+org.odpi.openmetadata.adapters.connectors.nannyconnectors.harvestvalidvalues
 org.odpi.openmetadata.adapters.connectors.postgres.catalog
 org.odpi.openmetadata.adapters.connectors.postgres.controls
 org.odpi.openmetadata.adapters.connectors.postgres.ffdc
