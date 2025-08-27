@@ -6650,7 +6650,7 @@ public class SimpleCatalogArchiveHelper
      * @param typeName unique name of the valid value - ie a definition or a set
      * @param qualifiedName unique name of the valid value
      * @param name display name of the valid value
-     * @param category category of the valid value
+     * @param namespace namespace of the valid value
      * @param scope short description of the valid value
      * @param dataType type for preferred value
      * @param description description of the valid value
@@ -6672,7 +6672,7 @@ public class SimpleCatalogArchiveHelper
                                 String              qualifiedName,
                                 String              name,
                                 String              description,
-                                String              category,
+                                String              namespace,
                                 String              usage,
                                 String              dataType,
                                 String              scope,
@@ -6699,7 +6699,7 @@ public class SimpleCatalogArchiveHelper
             InstanceProperties properties = archiveHelper.addStringPropertyToInstance(archiveRootName, null, OpenMetadataProperty.QUALIFIED_NAME.name, qualifiedName, methodName);
             properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.DISPLAY_NAME.name, name, methodName);
             properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.DESCRIPTION.name, description, methodName);
-            properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.CATEGORY.name, category, methodName);
+            properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.NAMESPACE.name, namespace, methodName);
             properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.USAGE.name, usage, methodName);
             properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.DATA_TYPE.name, dataType, methodName);
             properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.SCOPE.name, scope, methodName);

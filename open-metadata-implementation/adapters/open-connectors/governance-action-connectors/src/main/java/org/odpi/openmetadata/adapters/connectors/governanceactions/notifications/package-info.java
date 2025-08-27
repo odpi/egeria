@@ -4,4 +4,4 @@
 /**
  * Supports simple notification service based on changes to monitored resources' metadata.
  */
-package org.odpi.openmetadata.adapters.connectors.governanceactions.subscriptionmanager;
+package org.odpi.openmetadata.adapters.connectors.governanceactions.notifications;

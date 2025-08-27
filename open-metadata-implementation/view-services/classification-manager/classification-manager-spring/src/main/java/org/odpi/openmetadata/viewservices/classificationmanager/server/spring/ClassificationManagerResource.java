@@ -366,6 +366,34 @@ public class ClassificationManagerResource
 
 
     /**
+     * Update the governance expectations classification to an element.
+     *
+     * @param serverName  name of the server instance to connect to
+     * @param elementGUID unique identifier of element to attach to
+     * @param requestBody list of security labels and properties
+     *
+     * @return void or
+     * InvalidParameterException full path or userId is null or
+     * PropertyServerException problem accessing property server or
+     * UserNotAuthorizedException security access problem
+     */
+    @PostMapping(path = "/elements/{elementGUID}/governance-expectations/update")
+
+    @Operation(summary="updateGovernanceExpectations",
+            description="Update the governance expectations classification to an element.",
+            externalDocs=@ExternalDocumentation(description="Governance Rollout",
+                    url="https://egeria-project.org/types/4/0450-Governance-Rollout//"))
+
+    public VoidResponse updateGovernanceExpectations(@PathVariable String                    serverName,
+                                                     @PathVariable String                    elementGUID,
+                                                     @RequestBody  (required = false)
+                                                         UpdateClassificationRequestBody requestBody)
+    {
+        return restAPI.updateGovernanceExpectations(serverName, elementGUID, requestBody);
+    }
+
+
+    /**
      * Remove the governance expectations classification from an element.
      *
      * @param serverName  name of the server instance to connect to
@@ -391,8 +419,6 @@ public class ClassificationManagerResource
     {
         return restAPI.clearGovernanceExpectations(serverName, elementGUID, requestBody);
     }
-
-
 
 
     /**
@@ -421,6 +447,35 @@ public class ClassificationManagerResource
     {
         return restAPI.addGovernanceMeasurements(serverName, elementGUID, requestBody);
     }
+
+
+    /**
+     * Update the governance measurements classification to an element.
+     *
+     * @param serverName  name of the server instance to connect to
+     * @param elementGUID unique identifier of element to attach to
+     * @param requestBody list of security labels and properties
+     *
+     * @return void or
+     * InvalidParameterException full path or userId is null or
+     * PropertyServerException problem accessing property server or
+     * UserNotAuthorizedException security access problem
+     */
+    @PostMapping(path = "/elements/{elementGUID}/governance-measurements/update")
+
+    @Operation(summary="updateGovernanceMeasurements",
+            description="Update the governance measurements classification to an element.",
+            externalDocs=@ExternalDocumentation(description="Governance Rollout",
+                    url="https://egeria-project.org/types/4/0450-Governance-Rollout//"))
+
+    public VoidResponse updateGovernanceMeasurements(@PathVariable String                    serverName,
+                                                     @PathVariable String                    elementGUID,
+                                                     @RequestBody  (required = false)
+                                                         UpdateClassificationRequestBody requestBody)
+    {
+        return restAPI.updateGovernanceMeasurements(serverName, elementGUID, requestBody);
+    }
+
 
 
     /**

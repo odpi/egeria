@@ -174,7 +174,6 @@ public class OpenMetadataTypesArchive4_0
         update0462GovernanceActionProcesses();
         create0464DynamicIntegrationGroups();
         update0484AgreementActor();
-        update0545ReferenceData();
         update0720InformationSupplyChains();
         addFormulaTypeAttribute();
     }
@@ -565,37 +564,6 @@ public class OpenMetadataTypesArchive4_0
         return relationshipDef;
     }
 
-    /*
-     * -------------------------------------------------------------------------------------------------------
-     */
-
-    private void update0545ReferenceData()
-    {
-        this.archiveBuilder.addTypeDefPatch(updateReferenceValueAssignment());
-    }
-
-
-    private TypeDefPatch updateReferenceValueAssignment()
-    {
-        /*
-         * Create the Patch
-         */
-        TypeDefPatch  typeDefPatch = archiveBuilder.getPatchForType(OpenMetadataType.REFERENCE_VALUE_ASSIGNMENT_RELATIONSHIP.typeName);
-
-        typeDefPatch.setUpdatedBy(originatorName);
-        typeDefPatch.setUpdateTime(creationDate);
-
-        /*
-         * Build the attributes
-         */
-        List<TypeDefAttribute> properties = new ArrayList<>();
-
-        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.ATTRIBUTE_NAME));
-
-        typeDefPatch.setPropertyDefinitions(properties);
-
-        return typeDefPatch;
-    }
 
     /*
      * -------------------------------------------------------------------------------------------------------

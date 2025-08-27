@@ -9,7 +9,7 @@ import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
-import static org.odpi.openmetadata.frameworks.openmetadata.mapper.OpenMetadataValidValues.constructValidValueCategory;
+import static org.odpi.openmetadata.frameworks.openmetadata.mapper.OpenMetadataValidValues.constructValidValueNamespace;
 import static org.odpi.openmetadata.frameworks.openmetadata.mapper.OpenMetadataValidValues.constructValidValueQualifiedName;
 
 /**
@@ -118,9 +118,9 @@ public enum AssociationType
      */
     public String getCategory()
     {
-        return constructValidValueCategory(null,
-                                           OpenMetadataProperty.ASSOCIATION_TYPE.name,
-                                           null);
+        return constructValidValueNamespace(null,
+                                            OpenMetadataProperty.ASSOCIATION_TYPE.name,
+                                            null);
     }
 
 

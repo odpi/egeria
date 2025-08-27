@@ -334,6 +334,42 @@ Content-Type: application/json
 
 
 ###
+# @name updateGovernanceExpectations
+# Update the governance expectations classification to an element.
+#
+# Governance Rollout: https://egeria-project.org/types/4/0450-Governance-Rollout/
+
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/classification-manager/elements/{{elementGUID}}/governance-expectations/update
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+   "class" : "UpdateClassificationRequestBody",
+   "mergeUpdate": true,
+   "properties" : {
+       "class" : "GovernanceExpectationsProperties",
+       "counts" : {
+         "countName1" : 23,
+         "countName2" : 42
+       },
+       "values" : {
+         "valueName1" : "Add string here",
+         "valueName2" : "Add string here"
+       },
+       "flags" : {
+         "flagName1" : true,
+         "flagName2" : false
+       }
+   },
+   "externalSourceGUID": "Add guid here",
+   "externalSourceName": "Add qualified name here",
+   "forLineage": false,
+   "forDuplicateProcessing": false,
+   "effectiveTime" : "{{$isoTimestamp}}"
+}
+
+
+###
 # @name clearGovernanceExpectations
 # Remove the governance expectations classification from an element.
 #
@@ -367,6 +403,47 @@ Content-Type: application/json
    "class" : "NewClassificationRequestBody",
    "properties" : {
        "class" : "GovernanceMeasurementsProperties",
+       "dataCollectionStartTime" : "{{$isoTimestamp}}",
+       "dataCollectionEndTime" : "{{$isoTimestamp}}",
+       "counts" : {
+         "countName1" : 23,
+         "countName2" : 42
+       },
+       "values" : {
+         "valueName1" : "Add string here",
+         "valueName2" : "Add string here"
+       },
+       "flags" : {
+         "flagName1" : true,
+         "flagName2" : false
+       }
+   },
+   "externalSourceGUID": "Add guid here",
+   "externalSourceName": "Add qualified name here",
+   "forLineage": false,
+   "forDuplicateProcessing": false,
+   "effectiveTime" : "{{$isoTimestamp}}"
+}
+
+
+
+###
+# @name updateGovernanceMeasurements
+# Update the governance measurements classification to an element.
+#
+# Governance Rollout: https://egeria-project.org/types/4/0450-Governance-Rollout/
+
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/classification-manager/elements/{{elementGUID}}/governance-measurements/update
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+   "class" : "UpdateClassificationRequestBody",
+   "mergeUpdate" : true,
+   "properties" : {
+       "class" : "GovernanceMeasurementsProperties",
+       "dataCollectionStartTime" : "{{$isoTimestamp}}",
+       "dataCollectionEndTime" : "{{$isoTimestamp}}",
        "counts" : {
          "countName1" : 23,
          "countName2" : 42

@@ -51,6 +51,7 @@ import org.odpi.openmetadata.frameworks.openmetadata.properties.schema.tabular.T
 import org.odpi.openmetadata.frameworks.openmetadata.properties.security.GovernanceZoneProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.security.SecurityAccessControlProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.security.SecurityGroupProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.validvalues.ValidValueDefinitionProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.search.ElementProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.search.PropertyHelper;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
@@ -1031,6 +1032,18 @@ public class OpenMetadataRootConverter<B> extends AttributedElementConverterBase
                     }
 
                     ((SchemaElementProperties)beanProperties).setUserDefinedStatus(this.removeUserDefinedStatus(elementProperties));
+                }
+                else if (propertyHelper.isTypeOf(openMetadataElement, OpenMetadataType.VALID_VALUE_DEFINITION.typeName))
+                {
+                    beanProperties = new ValidValueDefinitionProperties();
+
+                    ((ValidValueDefinitionProperties)beanProperties).setNamespace(this.removeNamespace(elementProperties));
+                    ((ValidValueDefinitionProperties)beanProperties).setUsage(this.removeUsage(elementProperties));
+                    ((ValidValueDefinitionProperties)beanProperties).setScope(this.removeScope(elementProperties));
+                    ((ValidValueDefinitionProperties)beanProperties).setPreferredValue(this.removePreferredValue(elementProperties));
+                    ((ValidValueDefinitionProperties)beanProperties).setDataType(this.removeDataType(elementProperties));
+                    ((ValidValueDefinitionProperties)beanProperties).setUserDefinedStatus(this.removeUserDefinedStatus(elementProperties));
+                    ((ValidValueDefinitionProperties)beanProperties).setIsCaseSensitive(this.removeIsCaseSensitive(elementProperties));
                 }
                 else
                 {

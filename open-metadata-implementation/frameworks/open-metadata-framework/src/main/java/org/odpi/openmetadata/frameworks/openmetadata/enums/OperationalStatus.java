@@ -10,7 +10,7 @@ import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataWikiPages
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
-import static org.odpi.openmetadata.frameworks.openmetadata.mapper.OpenMetadataValidValues.constructValidValueCategory;
+import static org.odpi.openmetadata.frameworks.openmetadata.mapper.OpenMetadataValidValues.constructValidValueNamespace;
 import static org.odpi.openmetadata.frameworks.openmetadata.mapper.OpenMetadataValidValues.constructValidValueQualifiedName;
 
 /**
@@ -188,9 +188,9 @@ public enum OperationalStatus implements OpenMetadataEnum
      */
     public String getCategory()
     {
-        return constructValidValueCategory(ENUM_TYPE_NAME,
-                                           OpenMetadataProperty.SORT_ORDER.name,
-                                           null);
+        return constructValidValueNamespace(ENUM_TYPE_NAME,
+                                            OpenMetadataProperty.SORT_ORDER.name,
+                                            null);
     }
 
 

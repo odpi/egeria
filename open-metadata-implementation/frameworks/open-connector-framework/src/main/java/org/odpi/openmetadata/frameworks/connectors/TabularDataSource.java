@@ -5,6 +5,7 @@ package org.odpi.openmetadata.frameworks.connectors;
 
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -71,6 +72,7 @@ public interface TabularDataSource
      * @throws ConnectorCheckedException there is a problem accessing the data.
      */
     void appendRecord(List<String>  dataValues) throws ConnectorCheckedException;
+
 
 
 }

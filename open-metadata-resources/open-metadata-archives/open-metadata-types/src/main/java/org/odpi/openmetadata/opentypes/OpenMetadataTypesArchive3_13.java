@@ -163,7 +163,6 @@ public class OpenMetadataTypesArchive3_13
         /*
          * Calls for new and changed types go here
          */
-        update0022Translations();
         addArea1Actors();
         add0222DataFilesAndFolders();
         add0430ServiceLevelObjectives();
@@ -171,39 +170,6 @@ public class OpenMetadataTypesArchive3_13
         add0484Agreements();
         add00711DigitalSubscription();
     }
-
-    /*
-     * -------------------------------------------------------------------------------------------------------
-     */
-
-    private void update0022Translations()
-    {
-        this.archiveBuilder.addTypeDefPatch(updateTranslation());
-    }
-
-
-    private TypeDefPatch updateTranslation()
-    {
-        /*
-         * Create the Patch
-         */
-        TypeDefPatch  typeDefPatch = archiveBuilder.getPatchForType(OpenMetadataType.TRANSLATION_DETAIL.typeName);
-
-        typeDefPatch.setUpdatedBy(originatorName);
-        typeDefPatch.setUpdateTime(creationDate);
-
-        /*
-         * Build the attributes
-         */
-        List<TypeDefAttribute> properties = new ArrayList<>();
-
-        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.LANGUAGE_CODE));
-
-        typeDefPatch.setPropertyDefinitions(properties);
-
-        return typeDefPatch;
-    }
-
 
 
     /*

@@ -4,7 +4,7 @@ package org.odpi.openmetadata.frameworks.openmetadata.refdata;
 
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
 
-import static org.odpi.openmetadata.frameworks.openmetadata.mapper.OpenMetadataValidValues.constructValidValueCategory;
+import static org.odpi.openmetadata.frameworks.openmetadata.mapper.OpenMetadataValidValues.constructValidValueNamespace;
 import static org.odpi.openmetadata.frameworks.openmetadata.mapper.OpenMetadataValidValues.constructValidValueQualifiedName;
 
 /**
@@ -139,9 +139,9 @@ public enum ProjectStatus
      */
     public String getCategory()
     {
-        return constructValidValueCategory(null,
-                                           OpenMetadataProperty.PROJECT_STATUS.name,
-                                           null);
+        return constructValidValueNamespace(null,
+                                            OpenMetadataProperty.PROJECT_STATUS.name,
+                                            null);
     }
 
 

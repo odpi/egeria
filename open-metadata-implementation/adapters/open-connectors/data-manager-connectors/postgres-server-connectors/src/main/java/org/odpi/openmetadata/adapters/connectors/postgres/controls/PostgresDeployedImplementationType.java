@@ -8,7 +8,7 @@ import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataWikiPages;
 
-import static org.odpi.openmetadata.frameworks.openmetadata.mapper.OpenMetadataValidValues.constructValidValueCategory;
+import static org.odpi.openmetadata.frameworks.openmetadata.mapper.OpenMetadataValidValues.constructValidValueNamespace;
 import static org.odpi.openmetadata.frameworks.openmetadata.mapper.OpenMetadataValidValues.constructValidValueQualifiedName;
 
 /**
@@ -200,11 +200,11 @@ public enum PostgresDeployedImplementationType implements DeployedImplementation
      * @return string
      */
     @Override
-    public String getCategory()
+    public String getNamespace()
     {
-        return constructValidValueCategory(associatedTypeName,
-                                           OpenMetadataProperty.DEPLOYED_IMPLEMENTATION_TYPE.name,
-                                           null);
+        return constructValidValueNamespace(associatedTypeName,
+                                            OpenMetadataProperty.DEPLOYED_IMPLEMENTATION_TYPE.name,
+                                            null);
     }
 
 

@@ -290,6 +290,34 @@ Content-Type: application/json
   }
 }
 
+
+###
+# @name createClassifiedCollection (own anchor)
+# Create a new generic collection.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/collection-manager/collections
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+
+  "class" : "NewElementRequestBody",
+  "isOwnAnchor" : true,
+  "initialClassifications" : {
+    "Folder" : {
+      "class": "FolderProperties"
+    }
+  },
+
+  "properties": {
+    "class" : "CollectionProperties",
+    "qualifiedName": "Folder::another",
+    "displayName" : "Another",
+    "description" : "Folder description",
+    "category": "Folder-Category"
+  }
+
+}
+
 ###
 # @name createCollection (anchored to parent)
 # Create a new generic collection.

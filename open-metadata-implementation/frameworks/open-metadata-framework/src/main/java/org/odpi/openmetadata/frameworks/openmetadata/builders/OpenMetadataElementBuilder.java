@@ -1381,6 +1381,9 @@ public class OpenMetadataElementBuilder
                     else if (properties instanceof ValidValueDefinitionProperties validValueDefinitionProperties)
                     {
                         elementProperties = propertyHelper.addStringProperty(elementProperties,
+                                                                             OpenMetadataProperty.NAMESPACE.name,
+                                                                             validValueDefinitionProperties.getNamespace());
+                        elementProperties = propertyHelper.addStringProperty(elementProperties,
                                                                              OpenMetadataProperty.USER_DEFINED_STATUS.name,
                                                                              validValueDefinitionProperties.getUserDefinedStatus());
                         elementProperties = propertyHelper.addStringProperty(elementProperties,

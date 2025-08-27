@@ -44,7 +44,7 @@ public class PostgresPackArchiveWriter extends ContentPackBaseArchiveWriter
             this.addDeployedImplementationType(deployedImplementationType.getDeployedImplementationType(),
                                                deployedImplementationType.getAssociatedTypeName(),
                                                deployedImplementationType.getQualifiedName(),
-                                               deployedImplementationType.getCategory(),
+                                               deployedImplementationType.getNamespace(),
                                                deployedImplementationType.getDescription(),
                                                deployedImplementationType.getWikiLink(),
                                                deployedImplementationType.getIsATypeOf());

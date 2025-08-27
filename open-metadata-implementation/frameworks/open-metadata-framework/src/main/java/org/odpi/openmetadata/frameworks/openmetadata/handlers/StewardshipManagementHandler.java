@@ -1585,6 +1585,33 @@ public class StewardshipManagementHandler
 
 
     /**
+     * Update the governance expectations classification for an element.
+     *
+     * @param userId calling user
+     * @param elementGUID element to link it to - its type must inherit from Referenceable.
+     * @param properties details of the ownership
+     * @param updateOptions  options to control access to open metadata
+     *
+     * @throws InvalidParameterException element not known, null userId or guid
+     * @throws PropertyServerException problem accessing property server
+     * @throws UserNotAuthorizedException security access problem
+     */
+    public void updateGovernanceExpectations(String                           userId,
+                                             String                           elementGUID,
+                                             GovernanceExpectationsProperties properties,
+                                             UpdateOptions                    updateOptions) throws InvalidParameterException,
+                                                                                                    UserNotAuthorizedException,
+                                                                                                    PropertyServerException
+    {
+        openMetadataClient.reclassifyMetadataElementInStore(userId,
+                                                            elementGUID,
+                                                            OpenMetadataType.GOVERNANCE_EXPECTATIONS_CLASSIFICATION.typeName,
+                                                            updateOptions,
+                                                            classificationBuilder.getNewElementProperties(properties));
+    }
+
+
+    /**
      * Remove the governance expectations classification from an element.
      *
      * @param userId calling user
@@ -1632,6 +1659,33 @@ public class StewardshipManagementHandler
                                                           OpenMetadataType.GOVERNANCE_MEASUREMENTS_CLASSIFICATION.typeName,
                                                           metadataSourceOptions,
                                                           classificationBuilder.getNewElementProperties(properties));
+    }
+
+
+    /**
+     * Update the governance measurements classification for an element.
+     *
+     * @param userId calling user
+     * @param elementGUID element to link it to - its type must inherit from Referenceable.
+     * @param updateOptions  options to control access to open metadata
+     * @param properties details of the ownership
+     *
+     * @throws InvalidParameterException element not known, null userId or guid
+     * @throws PropertyServerException problem accessing property server
+     * @throws UserNotAuthorizedException security access problem
+     */
+    public void updateGovernanceMeasurements(String                           userId,
+                                             String                           elementGUID,
+                                             GovernanceMeasurementsProperties properties,
+                                             UpdateOptions                    updateOptions) throws InvalidParameterException,
+                                                                                                    UserNotAuthorizedException,
+                                                                                                    PropertyServerException
+    {
+        openMetadataClient.reclassifyMetadataElementInStore(userId,
+                                                            elementGUID,
+                                                            OpenMetadataType.GOVERNANCE_MEASUREMENTS_CLASSIFICATION.typeName,
+                                                            updateOptions,
+                                                            classificationBuilder.getNewElementProperties(properties));
     }
 
 

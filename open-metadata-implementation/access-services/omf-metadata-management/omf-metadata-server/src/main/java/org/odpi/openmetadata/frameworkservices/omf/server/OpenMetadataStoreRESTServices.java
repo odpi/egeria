@@ -36,7 +36,7 @@ import org.slf4j.LoggerFactory;
 
 import java.util.*;
 
-import static org.odpi.openmetadata.frameworks.openmetadata.mapper.OpenMetadataValidValues.constructValidValueCategory;
+import static org.odpi.openmetadata.frameworks.openmetadata.mapper.OpenMetadataValidValues.constructValidValueNamespace;
 import static org.odpi.openmetadata.frameworks.openmetadata.mapper.OpenMetadataValidValues.constructValidValueQualifiedName;
 
 
@@ -1562,7 +1562,7 @@ public class OpenMetadataStoreRESTServices
         propertyList.add(OpenMetadataProperty.REVIEW.name);
         propertyList.add(OpenMetadataProperty.KEYWORD.name);
         propertyList.add(OpenMetadataProperty.DESCRIPTION.name);
-        propertyList.add(OpenMetadataProperty.CATEGORY.name);
+        propertyList.add(OpenMetadataProperty.NAMESPACE.name);
 
         return propertyList;
     }
@@ -3515,7 +3515,7 @@ public class OpenMetadataStoreRESTServices
                                             parentQualifiedName,
                                             parentDisplayName,
                                             parentDescription,
-                                            constructValidValueCategory(typeName, propertyName, mapName),
+                                            constructValidValueNamespace(typeName, propertyName, mapName),
                                             OpenMetadataValidValues.VALID_METADATA_VALUES_USAGE,
                                             OpenMetadataValidValues.OPEN_METADATA_ECOSYSTEM_SCOPE,
                                             null,
@@ -3704,7 +3704,7 @@ public class OpenMetadataStoreRESTServices
                                          constructValidValueQualifiedName(typeName, propertyName, null, requestBody.getPreferredValue()),
                                          requestBody.getDisplayName(),
                                          requestBody.getDescription(),
-                                         constructValidValueCategory(typeName, propertyName, null),
+                                         constructValidValueNamespace(typeName, propertyName, null),
                                          OpenMetadataValidValues.VALID_METADATA_VALUES_USAGE,
                                          OpenMetadataValidValues.OPEN_METADATA_ECOSYSTEM_SCOPE,
                                          requestBody.getPreferredValue(),
@@ -3790,7 +3790,7 @@ public class OpenMetadataStoreRESTServices
                                          constructValidValueQualifiedName(typeName, propertyName, requestBody.getPreferredValue(), null),
                                          requestBody.getDisplayName(),
                                          requestBody.getDescription(),
-                                         constructValidValueCategory(typeName, propertyName, null),
+                                         constructValidValueNamespace(typeName, propertyName, null),
                                          OpenMetadataValidValues.VALID_METADATA_VALUES_USAGE,
                                          OpenMetadataValidValues.OPEN_METADATA_ECOSYSTEM_SCOPE,
                                          requestBody.getPreferredValue(),
@@ -3879,7 +3879,7 @@ public class OpenMetadataStoreRESTServices
                                          constructValidValueQualifiedName(typeName, propertyName, mapName, requestBody.getPreferredValue()),
                                          requestBody.getDisplayName(),
                                          requestBody.getDescription(),
-                                         constructValidValueCategory(typeName, propertyName, mapName),
+                                         constructValidValueNamespace(typeName, propertyName, mapName),
                                          OpenMetadataValidValues.VALID_METADATA_VALUES_USAGE,
                                          OpenMetadataValidValues.OPEN_METADATA_ECOSYSTEM_SCOPE,
                                          requestBody.getPreferredValue(),
@@ -4723,7 +4723,7 @@ public class OpenMetadataStoreRESTServices
 
         PropertyCondition categoryCondition = new PropertyCondition();
         PrimitivePropertyValue   category          = new PrimitivePropertyValue();
-        categoryCondition.setProperty(OpenMetadataProperty.CATEGORY.name);
+        categoryCondition.setProperty(OpenMetadataProperty.NAMESPACE.name);
         categoryCondition.setOperator(PropertyComparisonOperator.LIKE);
         category.setPrimitiveDefCategory(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_STRING);
         category.setTypeName(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_STRING.getName());

@@ -18,6 +18,11 @@ public enum ProductCategoryDefinition
      */
     CLINICAL_TRIALS ("Clinical Trials","Support for clinical trials."),
 
+    /**
+     * Common values for code tables.
+     */
+    REFERENCE_DATA ("Reference Data","Common values for code tables."),
+
     ;
 
     public static final String validValueSetName         = "Category";

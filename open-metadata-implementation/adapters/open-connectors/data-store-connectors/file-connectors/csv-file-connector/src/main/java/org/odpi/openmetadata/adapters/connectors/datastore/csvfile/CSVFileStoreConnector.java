@@ -164,7 +164,7 @@ public class CSVFileStoreConnector extends BasicFileStoreConnector implements CS
 
             for (String columnName : columnNames)
             {
-                TabularColumnDescription columnDescription = new TabularColumnDescription(columnName, DataType.STRING.getName(), null);
+                TabularColumnDescription columnDescription = new TabularColumnDescription(columnName, DataType.STRING, null);
 
                 columnDescriptions.add(columnDescription);
             }
