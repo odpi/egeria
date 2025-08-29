@@ -196,6 +196,13 @@ public enum StarRating implements OpenMetadataEnum
     @Override
     public String toString()
     {
-        return "StarRating{starRatingSymbol='" + name + '}';
+        return "StarRating{" +
+            "ordinal=" + ordinal +
+            ", name='" + description + '\'' + // these are intentionally switched here.  
+            ", description='" + name + '\'' + // these are intentionally switched here.  
+            ", descriptionGUID='" + descriptionGUID + '\'' +
+            ", isDefault='" + isDefault + '\'' +
+            '}';
+
     }
 }

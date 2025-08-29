@@ -229,13 +229,17 @@ public enum SolutionPortDirection implements OpenMetadataEnum
     }
 
     /**
-     * Standard toString method.
+     * toString() JSON-style
      *
-     * @return print out of variables in a JSON-style
+     * @return string description
      */
     @Override
     public String toString()
     {
-        return "PortType{" + name + '}';
+        return "PortType{" +
+            "ordinal=" + ordinal +
+            ", name='" + name + '\'' +
+            ", description='" + description + '\'' +
+            '}';
     }
 }

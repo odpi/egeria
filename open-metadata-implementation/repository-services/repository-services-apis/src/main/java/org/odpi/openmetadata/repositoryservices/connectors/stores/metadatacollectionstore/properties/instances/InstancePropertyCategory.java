@@ -117,9 +117,9 @@ public enum InstancePropertyCategory implements Serializable
     public String toString()
     {
         return "InstancePropertyCategory{" +
-                "typeCode=" + typeCode +
-                ", typeName='" + typeName + '\'' +
-                ", typeDescription='" + typeDescription + '\'' +
+                "ordinal=" + typeCode +
+                ", name='" + typeName + '\'' +
+                ", description='" + typeDescription + '\'' +
                 '}';
     }
 }

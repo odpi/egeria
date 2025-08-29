@@ -194,6 +194,11 @@ public enum MediaUsage implements OpenMetadataEnum
     @Override
     public String toString()
     {
-        return "MediaUsage{mediaUsageName='" + name + '\'' + '}';
+        return "MediaUsage{" + 
+              "ordinal=" + ordinal +
+            ", name='" + name + '\'' +
+            ", description='" + description + '\'' +
+            ", descriptionGUID='" + descriptionGUID + '\'' +
+            '}';
     }
 }

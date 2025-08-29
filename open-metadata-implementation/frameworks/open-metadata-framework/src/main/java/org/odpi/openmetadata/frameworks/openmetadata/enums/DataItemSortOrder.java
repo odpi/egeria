@@ -214,6 +214,13 @@ public enum DataItemSortOrder implements OpenMetadataEnum
     @Override
     public String toString()
     {
-        return "DataItemSortOrder{name='" + name + '}';
+        return "DataItemSortOrder{" +
+            "ordinal=" + ordinal +
+            ", name='" + name + '\'' +
+            ", description='" + description + '\'' +
+            ", descriptionGUID='" + descriptionGUID + '\'' +
+            ", isDefault='" + isDefault + '\'' +
+            '}';
+
     }
 }

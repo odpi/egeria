@@ -199,7 +199,13 @@ public enum ProcessContainmentType implements OpenMetadataEnum
     @Override
     public String toString()
     {
-        return "ProcessContainmentType{codeName='" + name + '\'' + '}';
+        return "ProcessContainmentType{codeName{" +
+            "ordinal=" + ordinal +
+            ", name='" + name + '\'' +
+            ", description='" + description + '\'' +
+            ", descriptionGUID='" + descriptionGUID + '\'' +
+            '}';
+
     }
 }
 
