@@ -135,4 +135,19 @@ public enum CohortConnectionStatus implements Serializable
     {
         return statusDescription;
     }
+
+    /**
+     * toString() JSON-style
+     *
+     * @return string description
+     */
+    @Override
+    public String toString()
+    {
+        return "CohortConnectionStatus{" +
+                "ordinal=" + statusCode +
+                ", name='" + statusName + '\'' +
+                ", description='" + statusDescription + '\'' +
+                '}';
+    }
 }

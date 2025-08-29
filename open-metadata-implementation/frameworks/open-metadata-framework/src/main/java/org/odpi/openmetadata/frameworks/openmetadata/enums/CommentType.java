@@ -231,6 +231,13 @@ public enum CommentType implements OpenMetadataEnum
     @Override
     public String toString()
     {
-        return "CommentType{commentType='" + name + '}';
+        return "CommentType{" +
+            "ordinal=" + ordinal +
+            ", name='" + name + '\'' +
+            ", description='" + description + '\'' +
+            ", descriptionGUID='" + descriptionGUID + '\'' +
+            ", isDefault='" + isDefault + '\'' +
+            '}';
+
     }
 }

@@ -209,6 +209,13 @@ public enum CrowdSourcingRole implements OpenMetadataEnum
     @Override
     public String toString()
     {
-        return "CrowdSourcingRole : " + name;
+        return "CrowdSourcingRole{" +
+            "ordinal=" + ordinal +
+            ", name='" + name + '\'' +
+            ", description='" + description + '\'' +
+            ", descriptionGUID='" + descriptionGUID + '\'' +
+            ", isDefault='" + isDefault + '\'' +
+            '}';
+
     }
 }

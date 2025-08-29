@@ -154,10 +154,10 @@ public enum OpenMetadataPrimitiveDefCategory
     public String toString()
     {
         return "OpenMetadataPrimitiveDefCategory{" +
-                "code=" + code +
+                "ordinal=" + code +
                 ", name='" + name + '\'' +
-                ", javaClassName='" + javaClassName + '\'' +
-                ", guid='" + guid + '\'' +
+                ", description='" + javaClassName + '\'' +
+                ", descriptionGUID='" + guid + '\'' +
                 '}';
     }
 }

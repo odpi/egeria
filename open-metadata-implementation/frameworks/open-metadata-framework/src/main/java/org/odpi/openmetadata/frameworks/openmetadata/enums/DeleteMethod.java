@@ -198,6 +198,13 @@ public enum DeleteMethod implements OpenMetadataEnum
     @Override
     public String toString()
     {
-        return "DeleteMethod{" + name + "= name }";
+        return "DeleteMethod{" +
+            "ordinal=" + ordinal +
+            ", name='" + name + '\'' +
+            ", description='" + description + '\'' +
+            ", descriptionGUID='" + descriptionGUID + '\'' +
+            ", isDefault='" +isDefault + '\'' +
+            '}';
+
     }
 }

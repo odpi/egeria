@@ -158,9 +158,9 @@ public enum PrimitiveDefCategory implements Serializable
     public String toString()
     {
         return "PrimitiveDefCategory{" +
-                "code=" + code +
+                "ordinal=" + code +
                 ", name='" + name + '\'' +
-                ", javaClassName='" + javaClassName + '\'' +
+                ", description='" + javaClassName + '\'' +
                 ", guid='" + guid + '\'' +
                 '}';
     }

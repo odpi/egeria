@@ -95,4 +95,20 @@ public enum GovernanceEngineStatus
     {
         return statusDescription;
     }
+
+    /**
+     * toString() JSON-style
+     *
+     * @return string description
+     */
+    @Override
+    public String toString()
+    {
+        return "GovernanceEngineStatus{" +
+            "ordinal=" + ordinal +
+            ", name='" + statusName + '\'' +
+            ", description='" + statusDescription + '\'' +
+            '}';
+    }
+
 }

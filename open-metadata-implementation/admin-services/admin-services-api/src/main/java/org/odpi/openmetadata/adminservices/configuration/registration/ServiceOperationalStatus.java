@@ -77,4 +77,19 @@ public enum ServiceOperationalStatus
     {
         return typeDescription;
     }
+
+    /**
+     * toString() JSON-style
+     *
+     * @return string description
+     */
+    @Override
+    public String toString()
+    {
+        return "ServiceOperationalStatus{" +
+                "ordinal=" + typeCode +
+                ", name='" + typeName + '\'' +
+                ", description='" + typeDescription + '\'' +
+                '}';
+    }
 }

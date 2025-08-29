@@ -104,9 +104,9 @@ public enum OpenMetadataAttributeTypeDefCategory
     public String toString()
     {
         return "OpenMetadataAttributeTypeDefCategory{" +
-                "typeCode=" + typeCode +
-                ", typeName='" + typeName + '\'' +
-                ", typeDescription='" + typeDescription + '\'' +
+                "ordinal=" + typeCode +
+                ", name='" + typeName + '\'' +
+                ", description='" + typeDescription + '\'' +
                 '}';
     }
 }

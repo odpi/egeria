@@ -103,9 +103,9 @@ public enum OpenMetadataArchiveType implements Serializable
     public String toString()
     {
         return "OpenMetadataArchiveType{" +
-                "archiveTypeCode=" + archiveTypeCode +
-                ", archiveTypeName='" + archiveTypeName + '\'' +
-                ", archiveTypeDescription='" + archiveTypeDescription + '\'' +
+                "ordinal=" + archiveTypeCode +
+                ", name='" + archiveTypeName + '\'' +
+                ", description='" + archiveTypeDescription + '\'' +
                 '}';
     }
 }
