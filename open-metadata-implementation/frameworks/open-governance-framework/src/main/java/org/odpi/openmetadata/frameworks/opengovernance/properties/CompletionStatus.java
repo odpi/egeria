@@ -134,6 +134,11 @@ public enum CompletionStatus
     @Override
     public String toString()
     {
-        return "CompletionStatus{" + statusName + "}";
+        return "CompletionStatus{" +
+            "ordinal=" + statusCode +
+            ", name='" + statusName + '\'' +
+            ", description='" + statusDescription + '\'' +
+            ", openTypeOrdinal='" + openTypeOrdinal + '\'' +
+            '}';
     }
 }

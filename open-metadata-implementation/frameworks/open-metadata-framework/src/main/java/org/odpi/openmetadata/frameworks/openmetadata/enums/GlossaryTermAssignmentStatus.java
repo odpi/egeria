@@ -231,6 +231,14 @@ public enum GlossaryTermAssignmentStatus implements OpenMetadataEnum
     @Override
     public String toString()
     {
-        return "GlossaryTermAssignmentStatus{name='" + name + '}';
+        return "GlossaryTermAssignmentStatus{" +
+            "ordinal=" + ordinal +
+            ", name='" + name + '\'' +
+            ", description='" + description + '\'' +
+            ", descriptionGUID='" + descriptionGUID + '\'' +
+            ", isDefault='" + isDefault + '\'' +
+            '}';
+
+            
     }
 }

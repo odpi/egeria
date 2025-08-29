@@ -106,9 +106,9 @@ public enum AttributeTypeDefCategory implements Serializable
     public String toString()
     {
         return "AttributeTypeDefCategory{" +
-                "typeCode=" + typeCode +
-                ", typeName='" + typeName + '\'' +
-                ", typeDescription='" + typeDescription + '\'' +
+                "ordinal=" + typeCode +
+                ", name='" + typeName + '\'' +
+                ", description='" + typeDescription + '\'' +
                 '}';
     }
 }

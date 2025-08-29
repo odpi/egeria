@@ -201,6 +201,13 @@ public enum CapabilityAssetUseType implements OpenMetadataEnum
     @Override
     public String toString()
     {
-        return "SeverAssetUseType{name='" + name + '}';
+        return "CapabilityAssetUseType{" +
+            "ordinal=" + ordinal +
+            ", name='" + name + '\'' +
+            ", description='" + description + '\'' +
+            ", descriptionGUID='" + descriptionGUID + '\'' +
+            ", isDefault='" + isDefault + '\'' +
+            '}';
+
     }
 }

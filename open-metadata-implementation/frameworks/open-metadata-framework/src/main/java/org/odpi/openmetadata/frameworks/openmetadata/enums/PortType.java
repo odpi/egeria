@@ -26,7 +26,8 @@ import static org.odpi.openmetadata.frameworks.openmetadata.mapper.OpenMetadataV
 @JsonAutoDetect(getterVisibility = PUBLIC_ONLY, setterVisibility = PUBLIC_ONLY, fieldVisibility = NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown = true)
-public enum PortType implements OpenMetadataEnum
+public enum
+    PortType implements OpenMetadataEnum
 {
     /**
      * Input Port - Data is passed into the process.
@@ -234,6 +235,12 @@ public enum PortType implements OpenMetadataEnum
     @Override
     public String toString()
     {
-        return "PortType{" + name + '}';
+        return "PortType{" +
+            "ordinal=" + ordinal +
+            ", name='" + name + '\'' +
+            ", description='" + description + '\'' +
+            ", descriptionGUID='" + descriptionGUID + '\'' +
+            '}';
+
     }
 }

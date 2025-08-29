@@ -103,6 +103,11 @@ public enum PrimitiveTypeCategory
     @Override
     public String toString()
     {
-        return "PrimitiveTypeCategory{" + name + "}";
+        return "PrimitiveTypeCategory{" +
+            "ordinal=" + code +
+            ", name='" + name + '\'' +
+            ", description='" + javaClassName + '\'' +
+            '}';
+
     }
 }
