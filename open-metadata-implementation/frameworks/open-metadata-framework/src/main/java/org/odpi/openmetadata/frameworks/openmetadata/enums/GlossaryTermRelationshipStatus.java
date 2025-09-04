@@ -219,6 +219,13 @@ public enum GlossaryTermRelationshipStatus implements OpenMetadataEnum
     @Override
     public String toString()
     {
-        return "GlossaryTermRelationshipStatus{name='" + name + '}';
+        return "GlossaryTermRelationshipStatus{" +
+            "ordinal=" + ordinal +
+            ", name='" + name + '\'' +
+            ", description='" + description + '\'' +
+            ", descriptionGUID='" + descriptionGUID + '\'' +
+            ", isDefault='" + isDefault + '\'' +
+            '}';
+
     }
 }

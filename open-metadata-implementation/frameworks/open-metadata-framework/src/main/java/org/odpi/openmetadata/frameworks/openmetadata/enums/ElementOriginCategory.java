@@ -181,9 +181,9 @@ public enum ElementOriginCategory implements OpenMetadataEnum
     public String toString()
     {
         return "ElementOriginCategory{" +
-                "originCode=" + originCode +
-                ", originName='" + originName + '\'' +
-                ", originDescription='" + originDescription + '\'' +
+                "ordinal=" + originCode +
+                ", name='" + originName + '\'' +
+                ", description='" + originDescription + '\'' +
                 '}';
     }
 }

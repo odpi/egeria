@@ -231,6 +231,12 @@ public enum DataClassAssignmentStatus implements OpenMetadataEnum
     @Override
     public String toString()
     {
-        return "DataClassAssignmentStatus{name='" + name + '}';
+        return "DataClassAssignmentStatus{" + 
+            "ordinal=" + ordinal +
+            ", name='" + name + '\'' +
+            ", description='" + description + '\'' +
+            ", descriptionGUID='" + descriptionGUID + '\'' +
+            ", isDefault='" +isDefault + '\'' +
+            '}';
     }
 }

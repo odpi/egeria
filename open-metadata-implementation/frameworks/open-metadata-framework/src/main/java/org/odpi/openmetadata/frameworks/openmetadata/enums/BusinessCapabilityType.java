@@ -186,6 +186,12 @@ public enum BusinessCapabilityType implements OpenMetadataEnum
     @Override
     public String toString()
     {
-        return "BusinessCapabilityType : " + name;
+        return "BusinessCapabilityType{" +
+            "ordinal=" + ordinal +
+            ", name='" + name + '\'' +
+            ", description='" + description + '\'' +
+            ", descriptionGUID='" + descriptionGUID + '\'' +
+            ", isDefault='" + isDefault + '\'' +
+            '}';
     }
 }

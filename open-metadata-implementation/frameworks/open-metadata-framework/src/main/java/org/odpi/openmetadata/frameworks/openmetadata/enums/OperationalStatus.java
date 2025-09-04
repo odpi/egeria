@@ -202,6 +202,12 @@ public enum OperationalStatus implements OpenMetadataEnum
     @Override
     public String toString()
     {
-        return "OperationalStatus : " + name;
+        return "OperationalStatus{" +
+            "ordinal=" + ordinal +
+            ", name='" + name + '\'' +
+            ", description='" + description + '\'' +
+            ", descriptionGUID='" + descriptionGUID + '\'' +
+            ", isDefault='" + isDefault + '\'' +
+            '}';
     }
 }

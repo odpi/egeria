@@ -264,6 +264,13 @@ public enum ActivityStatus implements OpenMetadataEnum
     @Override
     public String toString()
     {
-        return "ActivityStatus{" + name + "}";
+        return "ActivityStatus{" +
+            "ordinal=" + ordinal +
+            ", name='" + name + '\'' +
+            ", description='" + description + '\'' +
+            ", descriptionGUID='" + descriptionGUID + '\'' +
+            ", isDefault='" + isDefault + '\'' +
+            '}';
+
     }
 }
