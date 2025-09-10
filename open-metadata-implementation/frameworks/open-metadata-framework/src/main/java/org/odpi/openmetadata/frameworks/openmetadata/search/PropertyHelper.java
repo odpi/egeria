@@ -2,11 +2,13 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.frameworks.openmetadata.search;
 
+import org.odpi.openmetadata.frameworks.openmetadata.converters.OpenMetadataPropertyConverterBase;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.OMFRuntimeException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.*;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.OMFErrorCode;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.AnchorsProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.AttachedClassification;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.OpenMetadataElement;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.RelatedMetadataElement;
@@ -24,6 +26,11 @@ import java.util.regex.Pattern;
  */
 public class PropertyHelper
 {
+    private static final String serviceName = "Open Metadata Framework (OMF)";
+    private final OpenMetadataPropertyConverterBase propertyConverter = new OpenMetadataPropertyConverterBase(this,
+                                                                                                              serviceName);
+
+
     /**
      * Throw an exception if the supplied userId is null
      *
@@ -385,12 +392,9 @@ public class PropertyHelper
     public String getAnchorGUID(ElementHeader elementHeader)
     {
         ElementClassification classification = elementHeader.getAnchor();
-        if ((classification != null) && (OpenMetadataType.ANCHORS_CLASSIFICATION.typeName.equals(classification.getClassificationName())))
+        if ((classification != null) && (classification.getClassificationProperties() instanceof AnchorsProperties anchorsProperties))
         {
-            if (classification.getClassificationProperties() != null)
-            {
-                return classification.getClassificationProperties().get(OpenMetadataProperty.ANCHOR_GUID.name).toString();
-            }
+            return anchorsProperties.getAnchorGUID();
         }
 
         return null;
@@ -438,7 +442,7 @@ public class PropertyHelper
             ElementClassification beanClassification = new ElementClassification(attachedClassification);
 
             beanClassification.setClassificationName(attachedClassification.getClassificationName());
-            beanClassification.setClassificationProperties(this.getElementPropertiesAsMap(attachedClassification.getClassificationProperties()));
+            beanClassification.setClassificationProperties(propertyConverter.getClassificationProperties(attachedClassification));
 
             return beanClassification;
         }
@@ -473,7 +477,7 @@ public class PropertyHelper
      * @param elementHeader header to fill in
      * @param classifications classifications
      */
-    public void addClassificationsToElementHeader(ElementHeader elementHeader,
+    public void addClassificationsToElementHeader(ElementHeader                elementHeader,
                                                   List<AttachedClassification> classifications)
     {
         if (classifications != null)
@@ -522,6 +526,14 @@ public class PropertyHelper
                     {
                         elementHeader.setRetention(this.getElementClassification(attachedClassification));
                     }
+                    else if (this.isTypeOf(attachedClassification, OpenMetadataType.GOVERNANCE_EXPECTATIONS_CLASSIFICATION.typeName))
+                    {
+                        elementHeader.setGovernanceExpectations(this.getElementClassification(attachedClassification));
+                    }
+                    else if (this.isTypeOf(attachedClassification, OpenMetadataType.GOVERNANCE_MEASUREMENTS_CLASSIFICATION.typeName))
+                    {
+                        elementHeader.setGovernanceMeasurements(this.getElementClassification(attachedClassification));
+                    }
                     else if (this.isTypeOf(attachedClassification, OpenMetadataType.KNOWN_DUPLICATE_CLASSIFICATION.typeName))
                     {
                         duplicateClassifications.add(this.getElementClassification(attachedClassification));
@@ -561,6 +573,10 @@ public class PropertyHelper
                     else if (this.isTypeOf(attachedClassification, OpenMetadataType.TYPE_EMBEDDED_ATTRIBUTE_CLASSIFICATION.typeName))
                     {
                         elementHeader.setSchemaType(this.getElementClassification(attachedClassification));
+                    }
+                    else if (this.isTypeOf(attachedClassification, OpenMetadataType.DATA_SCOPE_CLASSIFICATION.typeName))
+                    {
+                        elementHeader.setDataScope(this.getElementClassification(attachedClassification));
                     }
                     else if (this.isTypeOf(attachedClassification, OpenMetadataType.CALCULATED_VALUE_CLASSIFICATION.typeName))
                     {

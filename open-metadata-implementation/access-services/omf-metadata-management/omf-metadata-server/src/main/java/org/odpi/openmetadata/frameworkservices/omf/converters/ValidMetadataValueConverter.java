@@ -56,15 +56,14 @@ public class ValidMetadataValueConverter<B> extends OpenMetadataStoreConverter<B
              */
             B returnBean = beanClass.getDeclaredConstructor().newInstance();
 
-            if (returnBean instanceof ValidMetadataValue)
+            if (returnBean instanceof ValidMetadataValue bean)
             {
-                ValidMetadataValue bean = (ValidMetadataValue) returnBean;
 
                 if (entity != null)
                 {
                     InstanceProperties instanceProperties = new InstanceProperties(entity.getProperties());
 
-                    bean.setCategory(this.removeCategory(instanceProperties));
+                    bean.setNamespace(this.removeNamespace(instanceProperties));
                     bean.setDisplayName(this.removeName(instanceProperties));
                     bean.setDescription(this.removeDescription(instanceProperties));
                     bean.setPreferredValue(this.removePreferredValue(instanceProperties));

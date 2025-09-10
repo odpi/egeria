@@ -79,6 +79,60 @@ public enum RequestTypeDefinition
                 ContentPackDefinition.CORE_CONTENT_PACK),
 
     /**
+     * open-metadata-watchdog
+     */
+    OPEN_METADATA_WATCHDOG("open-metadata-watchdog",
+                null,
+                null,
+                null,
+                GovernanceEngineDefinition.EGERIA_WATCHDOG_ENGINE,
+                GovernanceServiceDefinition.OPEN_METADATA_NOTIFICATION,
+                "9c6e08d6-a081-4482-a173-1ae7baf3faf1",
+                DeployedImplementationType.TABULAR_DATA_SET.getQualifiedName(),
+                ContentPackDefinition.CORE_CONTENT_PACK),
+
+    /**
+     * open-metadata-watchdog
+     */
+    PROVISION_TABULAR("provision-tabular-data-set",
+                           null,
+                           null,
+                           null,
+                           GovernanceEngineDefinition.EGERIA_GOVERNANCE_ENGINE,
+                           GovernanceServiceDefinition.TABULAR_DATA_PROVISIONER,
+                           "bf03a1c7-ad5e-49b7-8f97-a66624243767",
+                           DeployedImplementationType.TABULAR_DATA_SET.getQualifiedName(),
+                           ContentPackDefinition.PRODUCTS_CONTENT_PACK),
+
+    /**
+     * create-digital-subscription
+     */
+    CREATE_SUBSCRIPTION("create-digital-subscription",
+                      null,
+                      null,
+                      null,
+                      GovernanceEngineDefinition.EGERIA_GOVERNANCE_ENGINE,
+                      GovernanceServiceDefinition.CREATE_SUBSCRIPTION,
+                      "369e63b9-56b6-4f31-96a2-3dcf26a21ca8",
+                      DeployedImplementationType.TABULAR_DATA_SET.getQualifiedName(),
+                      ContentPackDefinition.PRODUCTS_CONTENT_PACK),
+
+    /**
+     * cancel-digital-subscription
+     */
+    CANCEL_SUBSCRIPTION("cancel-digital-subscription",
+                        null,
+                        null,
+                        null,
+                        GovernanceEngineDefinition.EGERIA_GOVERNANCE_ENGINE,
+                        GovernanceServiceDefinition.CANCEL_SUBSCRIPTION,
+                        "88d9516b-6134-4cfd-bfcc-0e2fcd8dab7f",
+                        DeployedImplementationType.TABULAR_DATA_SET.getQualifiedName(),
+                        ContentPackDefinition.PRODUCTS_CONTENT_PACK),
+
+
+
+    /**
      * seek-origin-of-asset
      */
     SEEK_ORIGIN("seek-origin-of-asset",

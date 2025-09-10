@@ -3395,15 +3395,6 @@ public enum OpenMetadataType
 
 
     /**
-     * Relationship identifying the digital services supporting each business capability.
-     */
-    DIGITAL_SUPPORT_RELATIONSHIP("9e187e1e-2547-46bd-b0ee-c33ac6df4a1f",
-                                 "DigitalSupport",
-                                 OpenMetadataWikiPages.MODEL_0715_DIGITAL_PRODUCT_MANAGEMENT,
-                                 "79f27291-ed2f-4012-a603-3e3aca5bcbe7",
-                                 "Relationship identifying the digital services supporting each business capability."),
-
-    /**
      * The set of entitlements, restrictions and obligations associated with an agreement, license etc.
      */
     TERMS_AND_CONDITIONS("2ddc42d3-7791-4b4e-a064-91df9300290a",
@@ -5414,6 +5405,16 @@ public enum OpenMetadataType
 
 
     /**
+     * A collection of digital products.
+     */
+    DIGITAL_PRODUCT_CATALOG("e2c351b9-0f52-4200-bbc5-19d1fe1e3781",
+                            "DigitalProductCatalog",
+                            OpenMetadataWikiPages.MODEL_0710_DIGITAL_PRODUCT,
+                            "f2ee3ae0-773d-4a9e-ba0a-248950aa1d74",
+                            "A collection of digital products."),
+
+
+    /**
      * A specialized agreement that represents a subscription to a digital service such as a digital product.
      */
     DIGITAL_SUBSCRIPTION("ad6ed361-af14-458f-8fb7-d4c11baa45d2",
@@ -5430,6 +5431,16 @@ public enum OpenMetadataType
                                     OpenMetadataWikiPages.MODEL_0711_DIGITAL_SUBSCRIPTION,
                                     "60dac0a2-8326-4321-ad88-92b343ef89d2",
                                     "The link between a digital subscriber and the subscription details."),
+
+
+    /**
+     * Relationship identifying the digital services supporting each business capability.
+     */
+    DIGITAL_SUPPORT_RELATIONSHIP("9e187e1e-2547-46bd-b0ee-c33ac6df4a1f",
+                                 "DigitalSupport",
+                                 OpenMetadataWikiPages.MODEL_0715_DIGITAL_PRODUCT_MANAGEMENT,
+                                 "79f27291-ed2f-4012-a603-3e3aca5bcbe7",
+                                 "Relationship identifying the digital services supporting each business capability."),
 
 
     /**

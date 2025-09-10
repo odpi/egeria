@@ -110,10 +110,8 @@ public class ExternalIdentifierConverter<B> extends OpenMetadataStoreConverter<B
              */
             B returnBean = beanClass.getDeclaredConstructor().newInstance();
 
-            if (returnBean instanceof MetadataCorrelationHeader)
+            if (returnBean instanceof MetadataCorrelationHeader bean)
             {
-                MetadataCorrelationHeader bean = (MetadataCorrelationHeader) returnBean;
-
                 if (primaryEntity != null)
                 {
                     /*

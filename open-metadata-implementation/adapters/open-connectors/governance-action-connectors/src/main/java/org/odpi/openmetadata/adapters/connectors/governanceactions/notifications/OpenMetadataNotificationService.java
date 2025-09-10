@@ -16,6 +16,7 @@ import org.odpi.openmetadata.frameworks.openmetadata.events.OpenMetadataOutTopic
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.ElementHeader;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.OpenMetadataRootElement;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.AnchorsProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.NewActionTarget;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.OpenMetadataTypeDefCategory;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.governance.NotificationTypeProperties;
@@ -384,10 +385,10 @@ public class OpenMetadataNotificationService extends WatchdogActionServiceConnec
                 }
 
                 if ((potentialElement.getAnchor() != null) &&
-                        (potentialElement.getAnchor().getClassificationProperties() != null) &&
-                        (potentialElement.getAnchor().getClassificationProperties().get(OpenMetadataProperty.ANCHOR_GUID.name) != null))
+                        (potentialElement.getAnchor().getClassificationProperties() instanceof AnchorsProperties anchorsProperties) &&
+                        (anchorsProperties.getAnchorGUID() != null))
                 {
-                    return monitoredElements.containsKey(potentialElement.getAnchor().getClassificationProperties().get(OpenMetadataProperty.ANCHOR_GUID.name).toString());
+                    return monitoredElements.containsKey(anchorsProperties.getAnchorGUID());
                 }
             }
 

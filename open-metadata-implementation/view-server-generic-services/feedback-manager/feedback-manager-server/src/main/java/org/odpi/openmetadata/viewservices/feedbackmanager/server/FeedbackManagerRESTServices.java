@@ -682,7 +682,7 @@ public class FeedbackManagerRESTServices extends TokenController
 
             CommentHandler handler = instanceHandler.getCommentHandler(userId, serverName, urlMarker, methodName);
 
-            handler.removeComment(userId, commentGUID, requestBody);
+            handler.deleteComment(userId, commentGUID, requestBody);
         }
         catch (Throwable error)
         {
@@ -728,7 +728,7 @@ public class FeedbackManagerRESTServices extends TokenController
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            response.setElement(handler.getComment(userId, commentGUID, requestBody));
+            response.setElement(handler.getCommentByGUID(userId, commentGUID, requestBody));
         }
         catch (Throwable error)
         {

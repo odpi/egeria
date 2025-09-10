@@ -267,7 +267,7 @@ public class CommentHandler extends OpenMetadataHandlerBase
      * @throws PropertyServerException there is a problem updating the element properties in the property server.
      * @throws UserNotAuthorizedException the user does not have permission to perform this request.
      */
-    public void removeComment(String        userId,
+    public void deleteComment(String        userId,
                               String        commentGUID,
                               DeleteOptions deleteOptions) throws InvalidParameterException,
                                                                   PropertyServerException,
@@ -288,13 +288,13 @@ public class CommentHandler extends OpenMetadataHandlerBase
      * @throws PropertyServerException there is a problem updating the element properties in the property server.
      * @throws UserNotAuthorizedException the user does not have permission to perform this request.
      */
-    public OpenMetadataRootElement getComment(String     userId,
-                                              String     commentGUID,
-                                              GetOptions getOptions) throws InvalidParameterException,
+    public OpenMetadataRootElement getCommentByGUID(String     userId,
+                                                    String     commentGUID,
+                                                    GetOptions getOptions) throws InvalidParameterException,
                                                                             PropertyServerException,
                                                                             UserNotAuthorizedException
     {
-        final String methodName = "getComment";
+        final String methodName = "getCommentByGUID";
 
         return super.getRootElementByGUID(userId, commentGUID, getOptions, methodName);
     }

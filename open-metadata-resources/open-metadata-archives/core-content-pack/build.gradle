@@ -17,6 +17,7 @@ dependencies {
     runtimeOnly 'ch.qos.logback:logback-classic'
     compileOnly project(':open-metadata-implementation:frameworks:audit-log-framework')
     compileOnly project(':open-metadata-implementation:frameworks:open-metadata-framework')
+    compileOnly project(':open-metadata-implementation:frameworks:open-watchdog-framework')
     implementation project(':open-metadata-implementation:frameworks:open-connector-framework')
     compileOnly project(':open-metadata-implementation:frameworks:open-integration-framework')
     implementation project(':open-metadata-implementation:frameworks:open-governance-framework')

@@ -240,6 +240,12 @@ Content-Type: application/json
     },
     {
       "class": "EngineConfig",
+      "engineId": "c49e4fbf-a6e2-48c8-985c-b4949616b2c4",
+      "engineQualifiedName": "EgeriaWatchdog",
+      "engineUserId": "watchdoggovernanceengine"
+    },
+    {
+      "class": "EngineConfig",
       "engineId": "67676a0a-cf44-48b9-bedd-09b0870071b9",
       "engineQualifiedName": "MetadataObservability",
       "engineUserId": "observabilitygovernanceengine"
@@ -312,6 +318,12 @@ Content-Type: application/json
         "omagserverPlatformRootURL": "~{egeriaEndpoint}~",
         "omagserverName" : "active-metadata-store",
         "integrationGroupQualifiedName" : "Egeria:IntegrationGroup:UnityCatalog"
+    },
+    {
+        "class": "IntegrationGroupConfig",
+        "omagserverPlatformRootURL": "~{egeriaEndpoint}~",
+        "omagserverName" : "active-metadata-store",
+        "integrationGroupQualifiedName" : "Egeria:IntegrationGroup:OpenMetadataDigitalProducts"
     }
 ]
 

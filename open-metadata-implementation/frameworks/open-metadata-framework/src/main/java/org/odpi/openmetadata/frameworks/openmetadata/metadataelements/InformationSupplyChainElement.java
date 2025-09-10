@@ -21,8 +21,9 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class InformationSupplyChainElement extends AttributedMetadataElement
+public class InformationSupplyChainElement  implements MetadataElement
 {
+    private ElementHeader                    elementHeader      = null;
     private InformationSupplyChainProperties      properties        = null;
     private List<RelatedMetadataElementSummary>   parents           = null; // InformationSupplyChainComposition
     private List<InformationSupplyChainSegment>   segments          = null; // InformationSupplyChainComposition
@@ -30,6 +31,7 @@ public class InformationSupplyChainElement extends AttributedMetadataElement
     private List<InformationSupplyChainComponent> implementedByList = null; // ImplementedBy
     private List<RelationshipElement>             implementation    = null; // isc qualified name in relationship
 
+    private String                           mermaidGraph       = null;
 
     /**
      * Default constructor
@@ -47,17 +49,41 @@ public class InformationSupplyChainElement extends AttributedMetadataElement
      */
     public InformationSupplyChainElement(InformationSupplyChainElement template)
     {
-        super(template);
-
         if (template != null)
         {
+            elementHeader      = template.getElementHeader();
             properties             = template.getProperties();
             parents                = template.getParents();
             segments               = template.getSegments();
             links                  = template.getLinks();
             implementation         = template.getImplementation();
             implementedByList      = template.getImplementedByList();
+            mermaidGraph       = template.getMermaidGraph();
         }
+    }
+
+
+    /**
+     * Return the element header associated with the properties.
+     *
+     * @return element header object
+     */
+    @Override
+    public ElementHeader getElementHeader()
+    {
+        return elementHeader;
+    }
+
+
+    /**
+     * Set up the element header associated with the properties.
+     *
+     * @param header element header object
+     */
+    @Override
+    public void setElementHeader(ElementHeader header)
+    {
+        this.elementHeader = header;
     }
 
 
@@ -196,6 +222,28 @@ public class InformationSupplyChainElement extends AttributedMetadataElement
 
 
     /**
+     *
+     * @return mermaid markdown
+     */
+    public String getMermaidGraph()
+    {
+        return mermaidGraph;
+    }
+
+
+    /**
+     * Set up the graph view of the solution component.
+     *
+     * @param mermaidGraph mermaid markdown
+     */
+    public void setMermaidGraph(String mermaidGraph)
+    {
+        this.mermaidGraph = mermaidGraph;
+    }
+
+
+
+    /**
      * JSON-style toString
      *
      * @return return string containing the property names and values
@@ -204,13 +252,15 @@ public class InformationSupplyChainElement extends AttributedMetadataElement
     public String toString()
     {
         return "InformationSupplyChainElement{" +
-                "properties=" + properties +
+                "elementHeader=" + elementHeader +
+                ", properties=" + properties +
                 ", parents=" + parents +
                 ", segments=" + segments +
                 ", links=" + links +
-                ", implementation=" + implementation +
                 ", implementedByList=" + implementedByList +
-                "} " + super.toString();
+                ", implementation=" + implementation +
+                ", mermaidGraph='" + mermaidGraph + '\'' +
+                '}';
     }
 
 
@@ -227,12 +277,14 @@ public class InformationSupplyChainElement extends AttributedMetadataElement
         if (objectToCompare == null || getClass() != objectToCompare.getClass()) return false;
         if (!super.equals(objectToCompare)) return false;
         InformationSupplyChainElement that = (InformationSupplyChainElement) objectToCompare;
-        return Objects.equals(properties, that.properties) &&
+        return Objects.equals(elementHeader, that.elementHeader) &&
+                Objects.equals(properties, that.properties) &&
                 Objects.equals(parents, that.parents) &&
                 Objects.equals(segments, that.segments) &&
                 Objects.equals(links, that.links) &&
                 Objects.equals(implementation, that.implementation) &&
-                Objects.equals(implementedByList, that.implementedByList);
+                Objects.equals(implementedByList, that.implementedByList) &&
+                Objects.equals(mermaidGraph, that.mermaidGraph);
     }
 
     /**
@@ -243,6 +295,6 @@ public class InformationSupplyChainElement extends AttributedMetadataElement
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), properties, parents, segments, links, implementation, implementedByList);
+        return Objects.hash(super.hashCode(), elementHeader, properties, parents, segments, links, implementation, implementedByList, mermaidGraph);
     }
 }

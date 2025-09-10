@@ -33,6 +33,7 @@ import org.odpi.openmetadata.frameworks.openmetadata.properties.locations.Locati
 import org.odpi.openmetadata.frameworks.openmetadata.properties.projects.ProjectProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.schema.SchemaElementProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.softwarecapabilities.SoftwareCapabilityProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.solutions.SolutionBlueprintProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.solutions.SolutionComponentProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.validvalues.ValidValueDefinitionProperties;
 
@@ -83,6 +84,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
                 @JsonSubTypes.Type(value = ProjectProperties.class, name = "ProjectProperties"),
                 @JsonSubTypes.Type(value = SchemaElementProperties.class, name = "SchemaElementProperties"),
                 @JsonSubTypes.Type(value = SoftwareCapabilityProperties.class, name = "SoftwareCapabilityProperties"),
+                @JsonSubTypes.Type(value = SolutionBlueprintProperties.class, name = "SolutionBlueprintProperties"),
                 @JsonSubTypes.Type(value = SolutionComponentProperties.class, name = "SolutionComponentProperties"),
                 @JsonSubTypes.Type(value = ValidValueDefinitionProperties.class, name = "ValidValueDefinitionProperties"),
         })

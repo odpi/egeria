@@ -803,55 +803,6 @@ public class ValidValueDefinitionHandler extends OpenMetadataHandlerBase
 
 
     /**
-     * Return the properties of a specific validValueDefinition retrieved using an associated userId.
-     *
-     * @param userId                 userId of user making request
-     * @param requiredUserId         identifier of user
-     * @param getOptions multiple options to control the query
-     * @return retrieved properties
-     * @throws InvalidParameterException  one of the parameters is null or invalid.
-     * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
-     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
-     */
-    public OpenMetadataRootElement getValidValueDefinitionByUserId(String     userId,
-                                                                   String     requiredUserId,
-                                                                   GetOptions getOptions) throws InvalidParameterException,
-                                                                                                 PropertyServerException,
-                                                                                                 UserNotAuthorizedException
-    {
-        final String methodName        = "getValidValueDefinitionByUserId";
-        final String nameParameterName = "requiredUserId";
-
-        propertyHelper.validateUserId(userId, methodName);
-        propertyHelper.validateMandatoryName(requiredUserId, nameParameterName, methodName);
-
-        OpenMetadataElement userIdentityElement = openMetadataClient.getMetadataElementByUniqueName(userId,
-                                                                                                    requiredUserId,
-                                                                                                    OpenMetadataProperty.USER_ID.name,
-                                                                                                    getOptions);
-
-        if (userIdentityElement != null)
-        {
-            RelatedMetadataElement profileElement = openMetadataClient.getRelatedMetadataElement(userId,
-                                                                                                 userIdentityElement.getElementGUID(),
-                                                                                                 2,
-                                                                                                 OpenMetadataType.PROFILE_IDENTITY_RELATIONSHIP.typeName,
-                                                                                                 getOptions);
-
-            if (profileElement != null)
-            {
-                return convertRootElement(userId,
-                                          profileElement.getElement(),
-                                          new QueryOptions(getOptions),
-                                          methodName);
-            }
-        }
-
-        return null;
-    }
-
-
-    /**
      * Retrieve the list of validValueDefinitions metadata elements that contain the search string.
      *
      * @param userId                 calling user

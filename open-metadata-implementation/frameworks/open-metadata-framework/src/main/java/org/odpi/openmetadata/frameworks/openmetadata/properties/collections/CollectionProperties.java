@@ -7,6 +7,7 @@ import org.odpi.openmetadata.frameworks.openmetadata.properties.ReferenceablePro
 import org.odpi.openmetadata.frameworks.openmetadata.properties.datadictionaries.DataDictionaryProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.datadictionaries.DataSpecProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.digitalbusiness.AgreementProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.digitalbusiness.DigitalProductCatalogProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.digitalbusiness.DigitalProductProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.glossaries.GlossaryProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
@@ -29,6 +30,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
                 @JsonSubTypes.Type(value = DataDictionaryProperties.class, name = "DataDictionaryProperties"),
                 @JsonSubTypes.Type(value = DataSpecProperties.class, name = "DataSpecProperties"),
                 @JsonSubTypes.Type(value = DigitalProductProperties.class, name = "DigitalProductProperties"),
+                @JsonSubTypes.Type(value = DigitalProductCatalogProperties.class, name = "DigitalProductCatalogProperties"),
                 @JsonSubTypes.Type(value = GlossaryProperties.class, name = "GlossaryProperties"),
                 @JsonSubTypes.Type(value = NamingStandardRuleSetProperties.class, name = "NamingStandardRuleSetProperties"),
         })

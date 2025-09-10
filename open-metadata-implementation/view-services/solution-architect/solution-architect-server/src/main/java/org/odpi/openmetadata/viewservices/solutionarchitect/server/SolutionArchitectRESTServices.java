@@ -1187,15 +1187,15 @@ public class SolutionArchitectRESTServices extends TokenController
      *  UserNotAuthorizedException the user is not authorized to issue this request
      *  PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public SolutionBlueprintsResponse getSolutionBlueprintsByName(String            serverName,
-                                                                  FilterRequestBody requestBody)
+    public OpenMetadataRootElementsResponse getSolutionBlueprintsByName(String            serverName,
+                                                                        FilterRequestBody requestBody)
     {
         final String methodName = "getSolutionBlueprintsByName";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
 
-        SolutionBlueprintsResponse response = new SolutionBlueprintsResponse();
-        AuditLog                        auditLog = null;
+        OpenMetadataRootElementsResponse response = new OpenMetadataRootElementsResponse();
+        AuditLog                         auditLog = null;
 
         try
         {
@@ -1240,16 +1240,16 @@ public class SolutionArchitectRESTServices extends TokenController
      *  UserNotAuthorizedException the user is not authorized to issue this request
      *  PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public SolutionBlueprintResponse getSolutionBlueprintByGUID(String         serverName,
-                                                                String         solutionComponentGUID,
-                                                                GetRequestBody requestBody)
+    public OpenMetadataRootElementResponse getSolutionBlueprintByGUID(String         serverName,
+                                                                      String         solutionComponentGUID,
+                                                                      GetRequestBody requestBody)
     {
         final String methodName = "getSolutionBlueprintByGUID";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
 
-        SolutionBlueprintResponse response = new SolutionBlueprintResponse();
-        AuditLog                  auditLog = null;
+        OpenMetadataRootElementResponse response = new OpenMetadataRootElementResponse();
+        AuditLog                        auditLog = null;
 
         try
         {
@@ -1286,15 +1286,15 @@ public class SolutionArchitectRESTServices extends TokenController
      *  UserNotAuthorizedException the user is not authorized to issue this request
      *  PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public SolutionBlueprintsResponse findSolutionBlueprints(String                  serverName,
-                                                             SearchStringRequestBody requestBody)
+    public OpenMetadataRootElementsResponse findSolutionBlueprints(String                  serverName,
+                                                                   SearchStringRequestBody requestBody)
     {
         final String methodName = "findSolutionBlueprints";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
 
-        SolutionBlueprintsResponse response = new SolutionBlueprintsResponse();
-        AuditLog                   auditLog = null;
+        OpenMetadataRootElementsResponse response = new OpenMetadataRootElementsResponse();
+        AuditLog                         auditLog = null;
 
         try
         {
@@ -1951,15 +1951,15 @@ public class SolutionArchitectRESTServices extends TokenController
      *  UserNotAuthorizedException the user is not authorized to issue this request
      *  PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public SolutionComponentsResponse getSolutionComponentsByName(String            serverName,
-                                                                  FilterRequestBody requestBody)
+    public OpenMetadataRootElementsResponse getSolutionComponentsByName(String            serverName,
+                                                                        FilterRequestBody requestBody)
     {
         final String methodName = "getSolutionComponentsByName";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
 
-        SolutionComponentsResponse response = new SolutionComponentsResponse();
-        AuditLog                        auditLog = null;
+        OpenMetadataRootElementsResponse response = new OpenMetadataRootElementsResponse();
+        AuditLog                         auditLog = null;
 
         try
         {
@@ -2004,16 +2004,16 @@ public class SolutionArchitectRESTServices extends TokenController
      *  UserNotAuthorizedException the user is not authorized to issue this request
      *  PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public SolutionComponentResponse getSolutionComponentByGUID(String         serverName,
-                                                                String         solutionComponentGUID,
-                                                                GetRequestBody requestBody)
+    public OpenMetadataRootElementResponse getSolutionComponentByGUID(String         serverName,
+                                                                      String         solutionComponentGUID,
+                                                                      GetRequestBody requestBody)
     {
         final String methodName = "getSolutionComponentByGUID";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
 
-        SolutionComponentResponse response = new SolutionComponentResponse();
-        AuditLog                  auditLog = null;
+        OpenMetadataRootElementResponse response = new OpenMetadataRootElementResponse();
+        AuditLog                        auditLog = null;
 
         try
         {
@@ -2049,15 +2049,15 @@ public class SolutionArchitectRESTServices extends TokenController
      *  UserNotAuthorizedException the user is not authorized to issue this request
      *  PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public SolutionComponentsResponse findSolutionComponents(String                  serverName,
-                                                             SearchStringRequestBody requestBody)
+    public OpenMetadataRootElementsResponse findSolutionComponents(String                  serverName,
+                                                                   SearchStringRequestBody requestBody)
     {
         final String methodName = "findSolutionComponents";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
 
-        SolutionComponentsResponse response = new SolutionComponentsResponse();
-        AuditLog                   auditLog = null;
+        OpenMetadataRootElementsResponse response = new OpenMetadataRootElementsResponse();
+        AuditLog                         auditLog = null;
 
         try
         {

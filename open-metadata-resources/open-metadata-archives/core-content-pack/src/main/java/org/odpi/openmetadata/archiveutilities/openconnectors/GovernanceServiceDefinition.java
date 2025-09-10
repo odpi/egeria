@@ -6,12 +6,15 @@ package org.odpi.openmetadata.archiveutilities.openconnectors;
 
 import org.odpi.openmetadata.adapters.connectors.apacheatlas.survey.SurveyApacheAtlasProvider;
 import org.odpi.openmetadata.adapters.connectors.apachekafka.survey.SurveyApacheKafkaServerProvider;
+import org.odpi.openmetadata.adapters.connectors.governanceactions.notifications.OpenMetadataNotificationServiceProvider;
 import org.odpi.openmetadata.adapters.connectors.governanceactions.provisioning.MoveCopyFileGovernanceActionProvider;
+import org.odpi.openmetadata.adapters.connectors.governanceactions.provisioning.ProvisionTabularDataSetGovernanceActionProvider;
 import org.odpi.openmetadata.adapters.connectors.governanceactions.remediation.OriginSeekerGovernanceActionProvider;
 import org.odpi.openmetadata.adapters.connectors.governanceactions.remediation.QualifiedNamePeerDuplicateGovernanceActionProvider;
 import org.odpi.openmetadata.adapters.connectors.governanceactions.remediation.RetentionClassifierGovernanceActionProvider;
 import org.odpi.openmetadata.adapters.connectors.governanceactions.remediation.ZonePublisherGovernanceActionProvider;
 import org.odpi.openmetadata.adapters.connectors.governanceactions.stewardship.*;
+import org.odpi.openmetadata.adapters.connectors.governanceactions.subscriptions.CreateSubscriptionGovernanceActionProvider;
 import org.odpi.openmetadata.adapters.connectors.governanceactions.verification.VerifyAssetGovernanceActionProvider;
 import org.odpi.openmetadata.adapters.connectors.governanceactions.watchdog.GenericFolderWatchdogGovernanceActionProvider;
 import org.odpi.openmetadata.adapters.connectors.postgres.survey.PostgresDatabaseSurveyActionProvider;
@@ -47,6 +50,14 @@ public enum GovernanceServiceDefinition
                      ResourceUse.PROVISION_RESOURCE,
                      DeployedImplementationType.GOVERNANCE_ACTION_SERVICE_CONNECTOR,
                      ContentPackDefinition.CORE_CONTENT_PACK),
+
+    TABULAR_DATA_PROVISIONER("862c5534-2d07-4ccb-947e-5d58a99b50b0",
+                             "tabular-data-provisioning-governance-action-service",
+                             "Tabular Data Provisioning Pipeline Governance Action Service",
+                             new ProvisionTabularDataSetGovernanceActionProvider(),
+                             ResourceUse.PROVISION_RESOURCE,
+                             DeployedImplementationType.GOVERNANCE_ACTION_SERVICE_CONNECTOR,
+                             ContentPackDefinition.CORE_CONTENT_PACK),
 
     /**
      * New Files Watchdog Governance Action Service
@@ -326,6 +337,39 @@ public enum GovernanceServiceDefinition
                          ResourceUse.CATALOG_RESOURCE,
                          DeployedImplementationType.GOVERNANCE_ACTION_SERVICE_CONNECTOR,
                          ContentPackDefinition.CORE_CONTENT_PACK),
+
+    /**
+     * Add a new digital subscription using a template.
+     */
+    CREATE_SUBSCRIPTION("a7ea66bf-c77e-44d5-af3a-087c6e179321",
+                         "create-subscription-governance-service",
+                         "Add a new digital subscription using a template.",
+                         new CreateSubscriptionGovernanceActionProvider(),
+                         ResourceUse.PROVISION_RESOURCE,
+                         DeployedImplementationType.GOVERNANCE_ACTION_SERVICE_CONNECTOR,
+                         ContentPackDefinition.CORE_CONTENT_PACK),
+
+    /**
+     * Remove an existing digital subscription.
+     */
+    CANCEL_SUBSCRIPTION("2663ca74-a3cb-4ad8-9043-4c35a9f5ba47",
+                        "cancel-subscription-governance-service",
+                        "Remove an existing digital subscription.",
+                        new CreateSubscriptionGovernanceActionProvider(),
+                        ResourceUse.PROVISION_RESOURCE,
+                        DeployedImplementationType.GOVERNANCE_ACTION_SERVICE_CONNECTOR,
+                        ContentPackDefinition.CORE_CONTENT_PACK),
+
+    /**
+     * A Watchdog Action Service that detects changes to elements linked to a notification type.  When changed occur, all subscribers to the notification type are informed.
+     */
+    OPEN_METADATA_NOTIFICATION("a63080e3-a9f7-47a7-b4ea-2594ac86a86b",
+                        "open-metadata-notification-governance-service",
+                        "A Watchdog Action Service that detects changes to elements linked to a notification type.  When changed occur, all subscribers to the notification type are informed.",
+                        new OpenMetadataNotificationServiceProvider(),
+                        ResourceUse.INFORM_STEWARD,
+                        DeployedImplementationType.WATCHDOG_ACTION_SERVICE_CONNECTOR,
+                        ContentPackDefinition.CORE_CONTENT_PACK),
     ;
 
     private final String                               guid;

@@ -7,9 +7,9 @@ import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.openmetadata.client.OpenMetadataClient;
 import org.odpi.openmetadata.frameworks.openmetadata.converters.OpenMetadataConverterBase;
 import org.odpi.openmetadata.frameworks.openmetadata.converters.SolutionBlueprintConverter;
-import org.odpi.openmetadata.frameworks.openmetadata.enums.ElementStatus;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.*;
 import org.odpi.openmetadata.frameworks.openmetadata.mermaid.SolutionBlueprintMermaidGraphBuilder;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.OpenMetadataRootElement;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.SolutionBlueprintComponent;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.SolutionBlueprintElement;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.*;
@@ -327,31 +327,22 @@ public class SolutionBlueprintHandler extends OpenMetadataHandlerBase
      * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    public List<SolutionBlueprintElement> getSolutionBlueprintsByName(String       userId,
-                                                                      String       name,
-                                                                      QueryOptions queryOptions) throws InvalidParameterException,
-                                                                                                        PropertyServerException,
-                                                                                                        UserNotAuthorizedException
+    public List<OpenMetadataRootElement> getSolutionBlueprintsByName(String       userId,
+                                                                     String       name,
+                                                                     QueryOptions queryOptions) throws InvalidParameterException,
+                                                                                                       PropertyServerException,
+                                                                                                       UserNotAuthorizedException
     {
         final String methodName = "getSolutionBlueprintsByName";
-        final String nameParameterName = "name";
-
-        propertyHelper.validateUserId(userId, methodName);
-        propertyHelper.validateMandatoryName(name, nameParameterName, methodName);
-        propertyHelper.validatePaging(queryOptions, openMetadataClient.getMaxPagingSize(), methodName);
 
         List<String> propertyNames = Arrays.asList(OpenMetadataProperty.QUALIFIED_NAME.name,
                                                    OpenMetadataProperty.DISPLAY_NAME.name);
 
-        List<OpenMetadataElement> openMetadataElements = openMetadataClient.findMetadataElements(userId,
-                                                                                                 propertyHelper.getSearchPropertiesByName(propertyNames, name, PropertyComparisonOperator.EQ),
-                                                                                                 null,
-                                                                                                 super.addDefaultType(queryOptions));
-
-        return convertSolutionBlueprints(userId,
-                                         openMetadataElements,
-                                         queryOptions,
-                                         methodName);
+        return super.getRootElementsByName(userId,
+                                           name,
+                                           propertyNames,
+                                           queryOptions,
+                                           methodName);
     }
 
 
@@ -366,11 +357,11 @@ public class SolutionBlueprintHandler extends OpenMetadataHandlerBase
      * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    public SolutionBlueprintElement getSolutionBlueprintByGUID(String     userId,
-                                                               String     solutionBlueprintGUID,
-                                                               GetOptions getOptions) throws InvalidParameterException,
-                                                                                             PropertyServerException,
-                                                                                             UserNotAuthorizedException
+    public OpenMetadataRootElement getSolutionBlueprintByGUID(String     userId,
+                                                              String     solutionBlueprintGUID,
+                                                              GetOptions getOptions) throws InvalidParameterException,
+                                                                                            PropertyServerException,
+                                                                                            UserNotAuthorizedException
     {
         final String methodName = "getSolutionBlueprintByGUID";
         final String guidParameterName = "solutionBlueprintGUID";
@@ -378,19 +369,7 @@ public class SolutionBlueprintHandler extends OpenMetadataHandlerBase
         propertyHelper.validateUserId(userId, methodName);
         propertyHelper.validateGUID(solutionBlueprintGUID, guidParameterName, methodName);
 
-        OpenMetadataElement openMetadataElement = openMetadataClient.getMetadataElementByGUID(userId,
-                                                                                              solutionBlueprintGUID,
-                                                                                              getOptions);
-
-        if ((openMetadataElement != null) && (propertyHelper.isTypeOf(openMetadataElement, metadataElementTypeName)))
-        {
-            return convertSolutionBlueprint(userId,
-                                            openMetadataElement,
-                                            new QueryOptions(getOptions),
-                                            methodName);
-        }
-
-        return null;
+        return super.getRootElementByGUID(userId, solutionBlueprintGUID, getOptions, methodName);
     }
 
 
@@ -405,161 +384,14 @@ public class SolutionBlueprintHandler extends OpenMetadataHandlerBase
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public List<SolutionBlueprintElement> findSolutionBlueprints(String        userId,
-                                                                 String        searchString,
-                                                                 SearchOptions searchOptions) throws InvalidParameterException,
-                                                                                                           UserNotAuthorizedException,
-                                                                                                           PropertyServerException
+    public List<OpenMetadataRootElement> findSolutionBlueprints(String        userId,
+                                                                String        searchString,
+                                                                SearchOptions searchOptions) throws InvalidParameterException,
+                                                                                                    UserNotAuthorizedException,
+                                                                                                    PropertyServerException
     {
         final String methodName = "findSolutionBlueprints";
-        final String searchStringParameterName = "searchString";
 
-        propertyHelper.validateUserId(userId, methodName);
-        propertyHelper.validateSearchString(searchString, searchStringParameterName, methodName);
-
-        List<OpenMetadataElement> openMetadataElements = openMetadataClient.findMetadataElementsWithString(userId,
-                                                                                                           searchString,
-                                                                                                           super.addDefaultType(searchOptions));
-
-        return convertSolutionBlueprints(userId, openMetadataElements, searchOptions, methodName);
-    }
-
-
-    /**
-     * Convert the open metadata elements retrieve into solution blueprint elements.
-     *
-     * @param userId calling user
-     * @param openMetadataElements elements extracted from the repository
-     * @param queryOptions           multiple options to control the query
-     * @param methodName calling method
-     * @return list of solution blueprints (or null)
-     * @throws PropertyServerException problem with the conversion process
-     */
-    private List<SolutionBlueprintElement> convertSolutionBlueprints(String                    userId,
-                                                                     List<OpenMetadataElement> openMetadataElements,
-                                                                     QueryOptions              queryOptions,
-                                                                     String                    methodName) throws PropertyServerException
-    {
-        if (openMetadataElements != null)
-        {
-            List<SolutionBlueprintElement> solutionBlueprintElements = new ArrayList<>();
-
-            for (OpenMetadataElement openMetadataElement : openMetadataElements)
-            {
-                if (openMetadataElement != null)
-                {
-                    solutionBlueprintElements.add(convertSolutionBlueprint(userId, openMetadataElement, queryOptions, methodName));
-                }
-            }
-
-            return solutionBlueprintElements;
-        }
-
-        return null;
-    }
-
-
-    /**
-     * Return the solution blueprint extracted from the open metadata element.
-     *
-     * @param userId calling user
-     * @param openMetadataElement element extracted from the repository
-     * @param queryOptions           multiple options to control the query
-     * @param methodName calling method
-     * @return bean or null
-     * @throws PropertyServerException problem with the conversion process
-     */
-    private SolutionBlueprintElement convertSolutionBlueprint(String              userId,
-                                                              OpenMetadataElement openMetadataElement,
-                                                              QueryOptions        queryOptions,
-                                                              String              methodName) throws PropertyServerException
-    {
-        try
-        {
-            List<SolutionBlueprintComponent> solutionBlueprintComponents = new ArrayList<>();
-            OpenMetadataConverterBase<SolutionBlueprintComponent> solutionBlueprintConverter = new OpenMetadataConverterBase<>(propertyHelper, localServiceName, localServerName);
-
-            QueryOptions workingQueryOptions = new QueryOptions(queryOptions);
-            workingQueryOptions.setStartFrom(0);
-            workingQueryOptions.setPageSize(openMetadataClient.getMaxPagingSize());
-
-            RelatedMetadataElementList relatedMetadataElementList = openMetadataClient.getRelatedMetadataElements(userId,
-                                                                                                                  openMetadataElement.getElementGUID(),
-                                                                                                                  1,
-                                                                                                                  OpenMetadataType.SOLUTION_BLUEPRINT_COMPOSITION_RELATIONSHIP.typeName,
-                                                                                                                  workingQueryOptions);
-            while ((relatedMetadataElementList != null) && (relatedMetadataElementList.getElementList() != null))
-            {
-                for (RelatedMetadataElement relatedMetadataElement : relatedMetadataElementList.getElementList())
-                {
-                    if (relatedMetadataElement != null)
-                    {
-                        SolutionBlueprintComponent solutionBlueprintComponent = new SolutionBlueprintComponent();
-
-                        solutionBlueprintComponent.setElementHeader(solutionBlueprintConverter.getMetadataElementHeader(SolutionBlueprintComponent.class,
-                                                                                                                        relatedMetadataElement,
-                                                                                                                        relatedMetadataElement.getRelationshipGUID(),
-                                                                                                                        null,
-                                                                                                                        methodName));
-                        SolutionBlueprintCompositionProperties relationshipProperties = new SolutionBlueprintCompositionProperties();
-                        ElementProperties                      elementProperties      = new ElementProperties(relatedMetadataElement.getRelationshipProperties());
-
-                        relationshipProperties.setRole(solutionBlueprintConverter.removeRole(elementProperties));
-                        relationshipProperties.setDescription(solutionBlueprintConverter.removeDescription(elementProperties));
-                        relationshipProperties.setEffectiveFrom(relatedMetadataElement.getEffectiveFromTime());
-                        relationshipProperties.setEffectiveTo(relatedMetadataElement.getEffectiveToTime());
-                        relationshipProperties.setExtendedProperties(solutionBlueprintConverter.getRemainingExtendedProperties(elementProperties));
-
-                        solutionBlueprintComponent.setProperties(relationshipProperties);
-                        solutionBlueprintComponent.setSolutionComponent(this.convertSolutionComponent(userId,
-                                                                                                      relatedMetadataElement.getElement(),
-                                                                                                      false,
-                                                                                                      false,
-                                                                                                      queryOptions,
-                                                                                                      methodName));
-                        solutionBlueprintComponents.add(solutionBlueprintComponent);
-                    }
-                }
-
-                workingQueryOptions.setStartFrom(workingQueryOptions.getStartFrom() + openMetadataClient.getMaxPagingSize());
-                relatedMetadataElementList = openMetadataClient.getRelatedMetadataElements(userId,
-                                                                                                openMetadataElement.getElementGUID(),
-                                                                                                1,
-                                                                                                OpenMetadataType.SOLUTION_BLUEPRINT_COMPOSITION_RELATIONSHIP.typeName,
-                                                                                                workingQueryOptions);
-            }
-
-            SolutionBlueprintConverter<SolutionBlueprintElement> converter                = new SolutionBlueprintConverter<>(propertyHelper, localServiceName, localServerName, solutionBlueprintComponents);
-            SolutionBlueprintElement                             solutionBlueprintElement =  converter.getNewBean(SolutionBlueprintElement.class, openMetadataElement, methodName);
-
-            if (solutionBlueprintElement != null)
-            {
-                SolutionBlueprintMermaidGraphBuilder graphBuilder = new SolutionBlueprintMermaidGraphBuilder(solutionBlueprintElement);
-
-                solutionBlueprintElement.setMermaidGraph(graphBuilder.getMermaidGraph());
-            }
-
-            return solutionBlueprintElement;
-        }
-        catch (Exception error)
-        {
-            if (auditLog != null)
-            {
-                auditLog.logException(methodName,
-                                      OMFAuditCode.UNEXPECTED_CONVERTER_EXCEPTION.getMessageDefinition(error.getClass().getName(),
-                                                                                                               methodName,
-                                                                                                       localServiceName,
-                                                                                                               error.getMessage()),
-                                      error);
-            }
-
-            throw new PropertyServerException(OMFErrorCode.UNEXPECTED_CONVERTER_EXCEPTION.getMessageDefinition(error.getClass().getName(),
-                                                                                                                       methodName,
-                                                                                                               localServiceName,
-                                                                                                                       error.getMessage()),
-                                              error.getClass().getName(),
-                                              methodName,
-                                              error);
-        }
+        return super.findRootElements(userId, searchString, searchOptions, methodName);
     }
 }

@@ -18,7 +18,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * ContactDetailsHandler provides methods to define contact methods
+ * ContactDetailsHandler provides methods to define contact methods (contact details).
  */
 public class ContactDetailsHandler extends OpenMetadataHandlerBase
 {
@@ -57,15 +57,15 @@ public class ContactDetailsHandler extends OpenMetadataHandlerBase
      * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    public String createContactMethod(String                                userId,
-                                      NewElementOptions                     newElementOptions,
-                                      Map<String, ClassificationProperties> initialClassifications,
-                                      ContactDetailsProperties properties,
-                                      RelationshipProperties                parentRelationshipProperties) throws InvalidParameterException,
-                                                                                                                 PropertyServerException,
-                                                                                                                 UserNotAuthorizedException
+    public String createContactDetails(String                                userId,
+                                       NewElementOptions                     newElementOptions,
+                                       Map<String, ClassificationProperties> initialClassifications,
+                                       ContactDetailsProperties              properties,
+                                       RelationshipProperties                parentRelationshipProperties) throws InvalidParameterException,
+                                                                                                                  PropertyServerException,
+                                                                                                                  UserNotAuthorizedException
     {
-        final String methodName = "createContactMethod";
+        final String methodName = "createContactDetails";
 
         return super.createNewElement(userId,
                                       newElementOptions,
@@ -93,14 +93,14 @@ public class ContactDetailsHandler extends OpenMetadataHandlerBase
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public String createContactMethodFromTemplate(String                 userId,
-                                                  TemplateOptions        templateOptions,
-                                                  String                 templateGUID,
-                                                  ElementProperties      replacementProperties,
-                                                  Map<String, String>    placeholderProperties,
-                                                  RelationshipBeanProperties parentRelationshipProperties) throws InvalidParameterException,
-                                                                                                                  UserNotAuthorizedException,
-                                                                                                                  PropertyServerException
+    public String createContactDetailsFromTemplate(String                     userId,
+                                                   TemplateOptions            templateOptions,
+                                                   String                     templateGUID,
+                                                   ElementProperties          replacementProperties,
+                                                   Map<String, String>        placeholderProperties,
+                                                   RelationshipBeanProperties parentRelationshipProperties) throws InvalidParameterException,
+                                                                                                                   UserNotAuthorizedException,
+                                                                                                                   PropertyServerException
     {
         return super.createElementFromTemplate(userId,
                                                templateOptions,
@@ -115,25 +115,25 @@ public class ContactDetailsHandler extends OpenMetadataHandlerBase
      * Update the properties of a contact method.
      *
      * @param userId                 userId of user making request.
-     * @param contactMethodGUID       unique identifier of the contact method (returned from create)
+     * @param contactDetailsGUID       unique identifier of the contact method (returned from create)
      * @param updateOptions provides a structure for the additional options when updating an element.
      * @param properties             properties for the element.
      * @throws InvalidParameterException  one of the parameters is invalid.
      * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    public void updateContactMethod(String                 userId,
-                                    String                 contactMethodGUID,
-                                    UpdateOptions          updateOptions,
-                                    ContactDetailsProperties properties) throws InvalidParameterException,
-                                                                                PropertyServerException,
-                                                                                UserNotAuthorizedException
+    public void updateContactDetails(String                   userId,
+                                     String                   contactDetailsGUID,
+                                     UpdateOptions            updateOptions,
+                                     ContactDetailsProperties properties) throws InvalidParameterException,
+                                                                                 PropertyServerException,
+                                                                                 UserNotAuthorizedException
     {
-        final String methodName                 = "updateContactMethod";
-        final String guidParameterName          = "contactMethodGUID";
+        final String methodName        = "updateContactDetails";
+        final String guidParameterName = "contactDetailsGUID";
 
         super.updateElement(userId,
-                            contactMethodGUID,
+                            contactDetailsGUID,
                             guidParameterName,
                             updateOptions,
                             properties,
@@ -142,10 +142,10 @@ public class ContactDetailsHandler extends OpenMetadataHandlerBase
 
 
     /**
-     * Attach a profile to a contactDetails.
+     * Attach an element to its contact details.
      *
      * @param userId                 userId of user making request
-     * @param contactMethodGUID       unique identifier of the contact method
+     * @param elementGUID       unique identifier of the contact method
      * @param contactDetailsGUID           unique identifier of the contactDetails
      * @param metadataSourceOptions  options to control access to open metadata
      * @param relationshipProperties description of the relationship.
@@ -153,25 +153,25 @@ public class ContactDetailsHandler extends OpenMetadataHandlerBase
      * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    public void linkContactDetailsToProfile(String                    userId,
-                                            String                    contactMethodGUID,
-                                            String                    contactDetailsGUID,
-                                            MetadataSourceOptions     metadataSourceOptions,
-                                            ContactThroughProperties relationshipProperties) throws InvalidParameterException,
-                                                                                                    PropertyServerException,
-                                                                                                    UserNotAuthorizedException
+    public void linkContactDetails(String                   userId,
+                                   String                   elementGUID,
+                                   String                   contactDetailsGUID,
+                                   MetadataSourceOptions    metadataSourceOptions,
+                                   ContactThroughProperties relationshipProperties) throws InvalidParameterException,
+                                                                                           PropertyServerException,
+                                                                                           UserNotAuthorizedException
     {
-        final String methodName            = "linkContactDetailsToProfile";
-        final String end1GUIDParameterName = "contactMethodGUID";
+        final String methodName            = "linkContactDetails";
+        final String end1GUIDParameterName = "elementGUID";
         final String end2GUIDParameterName = "contactDetailsGUID";
 
         propertyHelper.validateUserId(userId, methodName);
-        propertyHelper.validateGUID(contactMethodGUID, end1GUIDParameterName, methodName);
+        propertyHelper.validateGUID(elementGUID, end1GUIDParameterName, methodName);
         propertyHelper.validateGUID(contactDetailsGUID, end2GUIDParameterName, methodName);
 
         openMetadataClient.createRelatedElementsInStore(userId,
                                                         OpenMetadataType.CONTACT_THROUGH_RELATIONSHIP.typeName,
-                                                        contactMethodGUID,
+                                                        elementGUID,
                                                         contactDetailsGUID,
                                                         metadataSourceOptions,
                                                         relationshipBuilder.getNewElementProperties(relationshipProperties));
@@ -179,36 +179,36 @@ public class ContactDetailsHandler extends OpenMetadataHandlerBase
 
 
     /**
-     * Detach a contact method from a contactDetails.
+     * Detach an element from its contact details.
      *
      * @param userId                 userId of user making request.
-     * @param contactMethodGUID       unique identifier of the contact method
-     * @param contactDetailsGUID           unique identifier of the contactDetails
+     * @param elementGUID            unique identifier of the contact method
+     * @param contactDetailsGUID       unique identifier of the contact details element
      * @param deleteOptions  options to control access to open metadata
      * @throws InvalidParameterException  one of the parameters is null or invalid.
      * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    public void detachContactDetailsFromProfile(String        userId,
-                                                String        contactMethodGUID,
-                                                String        contactDetailsGUID,
-                                                DeleteOptions deleteOptions) throws InvalidParameterException,
-                                                                                    PropertyServerException,
-                                                                                    UserNotAuthorizedException
+    public void detachContactDetails(String        userId,
+                                     String        elementGUID,
+                                     String        contactDetailsGUID,
+                                     DeleteOptions deleteOptions) throws InvalidParameterException,
+                                                                         PropertyServerException,
+                                                                         UserNotAuthorizedException
     {
-        final String methodName = "detachContactDetailsFromProfile";
+        final String methodName = "detachContactDetails";
 
-        final String end1GUIDParameterName = "contactMethodGUID";
+        final String end1GUIDParameterName = "elementGUID";
         final String end2GUIDParameterName = "contactDetailsGUID";
 
         propertyHelper.validateUserId(userId, methodName);
-        propertyHelper.validateGUID(contactMethodGUID, end1GUIDParameterName, methodName);
+        propertyHelper.validateGUID(elementGUID, end1GUIDParameterName, methodName);
         propertyHelper.validateGUID(contactDetailsGUID, end2GUIDParameterName, methodName);
 
         openMetadataClient.detachRelatedElementsInStore(userId,
                                                         OpenMetadataType.CONTACT_THROUGH_RELATIONSHIP.typeName,
+                                                        elementGUID,
                                                         contactDetailsGUID,
-                                                        contactMethodGUID,
                                                         deleteOptions);
     }
 
@@ -217,25 +217,25 @@ public class ContactDetailsHandler extends OpenMetadataHandlerBase
      * Delete a contact method.
      *
      * @param userId                 userId of user making request.
-     * @param contactMethodGUID       unique identifier of the element
+     * @param contactDetailsGUID       unique identifier of the element
      * @param deleteOptions options for a delete request
      * @throws InvalidParameterException  one of the parameters is null or invalid.
      * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    public void deleteContactMethod(String        userId,
-                                    String        contactMethodGUID,
-                                    DeleteOptions deleteOptions) throws InvalidParameterException,
-                                                                        PropertyServerException,
-                                                                        UserNotAuthorizedException
+    public void deleteContactDetails(String        userId,
+                                     String        contactDetailsGUID,
+                                     DeleteOptions deleteOptions) throws InvalidParameterException,
+                                                                         PropertyServerException,
+                                                                         UserNotAuthorizedException
     {
-        final String methodName        = "deleteContactMethod";
-        final String guidParameterName = "contactMethodGUID";
+        final String methodName        = "deleteContactDetails";
+        final String guidParameterName = "contactDetailsGUID";
 
         propertyHelper.validateUserId(userId, methodName);
-        propertyHelper.validateGUID(contactMethodGUID, guidParameterName, methodName);
+        propertyHelper.validateGUID(contactDetailsGUID, guidParameterName, methodName);
 
-        openMetadataClient.deleteMetadataElementInStore(userId, contactMethodGUID, deleteOptions);
+        openMetadataClient.deleteMetadataElementInStore(userId, contactDetailsGUID, deleteOptions);
     }
 
 
@@ -245,27 +245,18 @@ public class ContactDetailsHandler extends OpenMetadataHandlerBase
      * @param userId                 userId of user making request
      * @param name                   name of the element to return - match is full text match in qualifiedName or name
      * @param queryOptions           multiple options to control the query
-     * @param startFrom              paging start point
-     * @param pageSize               maximum results that can be returned
      * @return a list of elements
      * @throws InvalidParameterException  one of the parameters is null or invalid.
      * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    public List<OpenMetadataRootElement> getContactMethodsByName(String       userId,
+    public List<OpenMetadataRootElement> getContactDetailsByName(String       userId,
                                                                  String       name,
-                                                                 QueryOptions queryOptions,
-                                                                 int          startFrom,
-                                                                 int          pageSize) throws InvalidParameterException,
-                                                                                               PropertyServerException,
-                                                                                               UserNotAuthorizedException
+                                                                 QueryOptions queryOptions) throws InvalidParameterException,
+                                                                                                   PropertyServerException,
+                                                                                                   UserNotAuthorizedException
     {
-        final String methodName        = "getContactMethodsByName";
-        final String nameParameterName = "name";
-
-        propertyHelper.validateUserId(userId, methodName);
-        propertyHelper.validateMandatoryName(name, nameParameterName, methodName);
-        propertyHelper.validatePaging(startFrom, pageSize, openMetadataClient.getMaxPagingSize(), methodName);
+        final String methodName = "getContactDetailsByName";
 
         List<String> propertyNames = Arrays.asList(OpenMetadataProperty.QUALIFIED_NAME.name,
                                                    OpenMetadataProperty.DISPLAY_NAME.name);
@@ -278,22 +269,22 @@ public class ContactDetailsHandler extends OpenMetadataHandlerBase
      * Return the properties of a specific contact method.
      *
      * @param userId                 userId of user making request
-     * @param contactMethodGUID       unique identifier of the required element
+     * @param contactDetailsGUID       unique identifier of the required element
      * @param getOptions multiple options to control the query
      * @return retrieved properties
      * @throws InvalidParameterException  one of the parameters is null or invalid.
      * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    public OpenMetadataRootElement getContactMethodByGUID(String     userId,
-                                                          String     contactMethodGUID,
-                                                          GetOptions getOptions) throws InvalidParameterException,
-                                                                                        PropertyServerException,
-                                                                                        UserNotAuthorizedException
+    public OpenMetadataRootElement getContactDetailsByGUID(String     userId,
+                                                           String     contactDetailsGUID,
+                                                           GetOptions getOptions) throws InvalidParameterException,
+                                                                                         PropertyServerException,
+                                                                                         UserNotAuthorizedException
     {
-        final String methodName = "getContactMethodByGUID";
+        final String methodName = "getContactDetailsByGUID";
 
-        return super.getRootElementByGUID(userId, contactMethodGUID, getOptions, methodName);
+        return super.getRootElementByGUID(userId, contactDetailsGUID, getOptions, methodName);
     }
 
 
@@ -308,13 +299,13 @@ public class ContactDetailsHandler extends OpenMetadataHandlerBase
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public List<OpenMetadataRootElement> findContactMethods(String        userId,
+    public List<OpenMetadataRootElement> findContactDetails(String        userId,
                                                             String        searchString,
                                                             SearchOptions searchOptions) throws InvalidParameterException,
                                                                                                 UserNotAuthorizedException,
                                                                                                 PropertyServerException
     {
-        final String methodName = "findContactMethods";
+        final String methodName = "findContactDetails";
 
         return super.findRootElements(userId, searchString, searchOptions, methodName);
     }

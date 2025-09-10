@@ -767,7 +767,7 @@ public class GlossaryManagerRESTServices extends TokenController
 
             if (requestBody != null)
             {
-                if (requestBody.getProperties() instanceof GlossaryTermRelationship properties)
+                if (requestBody.getProperties() instanceof GlossaryTermRelationshipProperties properties)
                 {
                     GlossaryTermHandler handler = instanceHandler.getGlossaryTermHandler(userId, serverName, methodName);
 
@@ -780,7 +780,7 @@ public class GlossaryManagerRESTServices extends TokenController
                 }
                 else
                 {
-                    restExceptionHandler.handleInvalidPropertiesObject(GlossaryTermRelationship.class.getName(), methodName);
+                    restExceptionHandler.handleInvalidPropertiesObject(GlossaryTermRelationshipProperties.class.getName(), methodName);
                 }
             }
             else
@@ -836,7 +836,7 @@ public class GlossaryManagerRESTServices extends TokenController
 
             if (requestBody != null)
             {
-                if (requestBody.getProperties() instanceof GlossaryTermRelationship properties)
+                if (requestBody.getProperties() instanceof GlossaryTermRelationshipProperties properties)
                 {
                     GlossaryTermHandler handler = instanceHandler.getGlossaryTermHandler(userId, serverName, methodName);
 
@@ -849,7 +849,7 @@ public class GlossaryManagerRESTServices extends TokenController
                 }
                 else
                 {
-                    restExceptionHandler.handleInvalidPropertiesObject(GlossaryTermRelationship.class.getName(), methodName);
+                    restExceptionHandler.handleInvalidPropertiesObject(GlossaryTermRelationshipProperties.class.getName(), methodName);
                 }
             }
             else

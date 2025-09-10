@@ -6,7 +6,6 @@ package org.odpi.openmetadata.adapters.connectors.apacheatlas.integration.module
 
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
 import org.odpi.openmetadata.frameworks.integration.context.IntegrationContext;
-import org.odpi.openmetadata.frameworks.openmetadata.connectorcontext.GlossaryClient;
 import org.odpi.openmetadata.frameworks.openmetadata.connectorcontext.GlossaryTermClient;
 import org.odpi.openmetadata.frameworks.openmetadata.events.OpenMetadataOutTopicEvent;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.ExternalIdentifierProperties;
@@ -70,7 +69,7 @@ public class AtlasGlossaryIntegrationModule extends AtlasRegisteredIntegrationMo
     private String fixedEgeriaGlossaryGUID          = null;
     private String atlasGlossaryName                = null;
 
-    private final GlossaryClient     glossaryClient;
+    private final CollectionClient   glossaryClient;
     private final GlossaryTermClient glossaryTermClient;
 
     /**
@@ -149,7 +148,7 @@ public class AtlasGlossaryIntegrationModule extends AtlasRegisteredIntegrationMo
         /*
          * The glossaryExchangeService provides access to the open metadata API.
          */
-        glossaryClient = myContext.getGlossaryClient();
+        glossaryClient = myContext.getCollectionClient(OpenMetadataType.GLOSSARY.typeName);
         glossaryTermClient = myContext.getGlossaryTermClient();
 
         /*

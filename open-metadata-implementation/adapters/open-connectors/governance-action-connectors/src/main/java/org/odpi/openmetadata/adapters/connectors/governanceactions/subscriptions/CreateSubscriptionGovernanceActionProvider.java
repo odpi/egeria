@@ -21,7 +21,7 @@ import java.util.List;
 public class CreateSubscriptionGovernanceActionProvider extends GovernanceActionServiceProviderBase
 {
     private static final String  connectorTypeGUID = "488136c1-fded-4449-a820-60762b4f7fac";
-    private static final String  connectorTypeQualifiedName = "Egeria:GovernanceActionService:DigitalSubscription:Cancel";
+    private static final String  connectorTypeQualifiedName = "Egeria:GovernanceActionService:DigitalSubscription:Create";
     private static final String  connectorTypeDisplayName = "Create Digital Subscription Governance Action Service";
     private static final String  connectorTypeDescription = "Governance Action Service that creates a digital subscription and links it to the subscriber (if supplied).  The digital subscription's GUID is passed as a new action target.";
 

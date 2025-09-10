@@ -17,6 +17,7 @@ import org.odpi.openmetadata.frameworks.openmetadata.properties.AttachedClassifi
 import org.odpi.openmetadata.frameworks.openmetadata.properties.OpenMetadataElement;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.RelatedMetadataElement;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.RelatedMetadataElementList;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.templates.TemplateProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.search.*;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
@@ -234,22 +235,11 @@ public class TechnologyTypeHandler
 
                                     if (catalogTemplate.getRelatedElement().getElementHeader().getTemplate() != null)
                                     {
-                                        if (catalogTemplate.getRelatedElement().getElementHeader().getTemplate().getClassificationProperties() != null)
+                                        if (catalogTemplate.getRelatedElement().getElementHeader().getTemplate().getClassificationProperties() instanceof TemplateProperties templateProperties)
                                         {
-                                            ElementClassification classification = catalogTemplate.getRelatedElement().getElementHeader().getTemplate();
-
-                                            if (classification.getClassificationProperties().get(OpenMetadataProperty.DISPLAY_NAME.name) != null)
-                                            {
-                                                catalogTemplate.setName(classification.getClassificationProperties().get(OpenMetadataProperty.DISPLAY_NAME.name).toString());
-                                            }
-                                            else if (classification.getClassificationProperties().get(OpenMetadataProperty.DESCRIPTION.name) != null)
-                                            {
-                                                catalogTemplate.setDescription(classification.getClassificationProperties().get(OpenMetadataProperty.DESCRIPTION.name).toString());
-                                            }
-                                            else if (classification.getClassificationProperties().get(OpenMetadataProperty.VERSION_IDENTIFIER.name) != null)
-                                            {
-                                                catalogTemplate.setVersionIdentifier(classification.getClassificationProperties().get(OpenMetadataProperty.VERSION_IDENTIFIER.name).toString());
-                                            }
+                                            catalogTemplate.setName(templateProperties.getDisplayName());
+                                            catalogTemplate.setDescription(templateProperties.getDescription());
+                                            catalogTemplate.setVersionIdentifier(templateProperties.getVersionIdentifier());
                                         }
                                     }
 

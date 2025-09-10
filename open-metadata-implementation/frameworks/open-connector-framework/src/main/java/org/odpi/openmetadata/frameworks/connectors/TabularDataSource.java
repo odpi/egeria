@@ -26,7 +26,8 @@ public interface TabularDataSource
 
 
     /**
-     * Return the list of column names associated with this data source.
+     * Return the list of column descriptions associated with this data source.  The information
+     * should be sufficient to define the schema in a target data store.
      *
      * @return a list of column descriptions or null if not available.
      * @throws ConnectorCheckedException there is a problem accessing the data
@@ -74,5 +75,11 @@ public interface TabularDataSource
     void appendRecord(List<String>  dataValues) throws ConnectorCheckedException;
 
 
-
+    /**
+     * Remove the requested data record.  The first data record is record 0.
+     *
+     * @param rowNumber long
+     * @throws ConnectorCheckedException there is a problem accessing the data.
+     */
+    void deleteRecord(long rowNumber) throws ConnectorCheckedException;
 }

@@ -834,6 +834,7 @@ public class OpenMetadataTypesArchive2_4
         properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.QUERY));
         properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.QUERY_ID));
         properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.QUERY_TYPE));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.ISC_QUALIFIED_NAME));
 
         relationshipDef.setPropertiesDefinition(properties);
 

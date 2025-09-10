@@ -13,6 +13,7 @@ import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.OpenMetada
 import org.odpi.openmetadata.frameworks.openmetadata.properties.ClassificationProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.OpenMetadataRelationship;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.OpenMetadataRelationshipList;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.RelationshipProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.feedback.InformalTagProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.search.*;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
@@ -86,6 +87,41 @@ public class InformalTagHandler extends OpenMetadataHandlerBase
                                                                classificationBuilder.getInitialClassifications(initialClassifications),
                                                                elementBuilder.getNewElementProperties(properties),
                                                                null);
+    }
+
+    /**
+     * Create a new metadata element to represent an informal tag using an existing element as a template.
+     * The template defines additional classifications and relationships that should be added to the new community.
+     *
+     * @param userId                       calling user
+     * @param templateOptions details of the element to create
+     * @param templateGUID the unique identifier of the existing asset to copy (this will copy all the attachments such as nested content, schema
+     *                     connection etc)
+     * @param replacementProperties properties of the new metadata element.  These override the template values
+     * @param placeholderProperties property name-to-property value map to replace any placeholder values in the
+     *                              template element - and their anchored elements, which are also copied as part of this operation.
+     * @param parentRelationshipProperties properties to include in parent relationship
+     *
+     * @return unique identifier of the new metadata element
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public String createTagFromTemplate(String                 userId,
+                                        TemplateOptions        templateOptions,
+                                        String                 templateGUID,
+                                        ElementProperties      replacementProperties,
+                                        Map<String, String>    placeholderProperties,
+                                        RelationshipProperties parentRelationshipProperties) throws InvalidParameterException,
+                                                                                                    UserNotAuthorizedException,
+                                                                                                    PropertyServerException
+    {
+        return super.createElementFromTemplate(userId,
+                                               templateOptions,
+                                               templateGUID,
+                                               replacementProperties,
+                                               placeholderProperties,
+                                               parentRelationshipProperties);
     }
 
 
@@ -222,7 +258,7 @@ public class InformalTagHandler extends OpenMetadataHandlerBase
 
 
     /**
-     * Return the list of the calling user's private tags containing the supplied string in either the name or description.
+     * Return the list of the tags created by the calling user containing the supplied string in either the name or description.
      *
      * @param userId the name of the calling user.
      * @param tag name of tag.  This may include wild card characters.
@@ -261,7 +297,7 @@ public class InformalTagHandler extends OpenMetadataHandlerBase
 
 
     /**
-     * Adds a tag (either private of public) to an element.
+     * Adds a tag (either private or public) to an element.
      *
      * @param userId           userId of user making request.
      * @param elementGUID        unique id for the element.

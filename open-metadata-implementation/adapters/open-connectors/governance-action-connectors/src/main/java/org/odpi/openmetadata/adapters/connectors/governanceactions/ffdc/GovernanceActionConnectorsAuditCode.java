@@ -76,22 +76,22 @@ public enum GovernanceActionConnectorsAuditCode implements AuditLogMessageSet
      * GOVERNANCE-ACTION-CONNECTORS-0006 - The {0} governance action service is unable to provision file {1} 
      * to {2} destination folder using {3} file pattern
      */
-    PROVISIONING_FAILURE("GOVERNANCE-ACTION-CONNECTORS-0006",
-                         AuditLogRecordSeverityLevel.ERROR,
-                              "The {0} governance action service is unable to provision file {1} to {2} destination folder using {3} file pattern",
-                              "This message is logged and the governance action is marked as failed",
-                              "Since no exception occurred it means that there are currently files already occupying all the possible file names allowed by the file pattern.  " +
+    FILE_PATTERN_FULL("GOVERNANCE-ACTION-CONNECTORS-0006",
+                      AuditLogRecordSeverityLevel.ERROR,
+                      "The {0} governance action service is unable to provision file {1} to {2} destination folder using {3} file pattern",
+                      "This message is logged and the governance action is marked as failed",
+                      "Since no exception occurred it means that there are currently files already occupying all the possible file names allowed by the file pattern.  " +
                                       "Files in the destination folder need to be deleted or this connector needs to be reconfigured with a new destination folder or file pattern."),
 
     /**
      * GOVERNANCE-ACTION-CONNECTORS-0007 - The {0} governance action service encountered an {1} exception when provisioning file {2} to {3}
      * destination folder using the {4} file pattern.  The exception message included was {5}
      */
-    PROVISIONING_EXCEPTION("GOVERNANCE-ACTION-CONNECTORS-0007",
-                           AuditLogRecordSeverityLevel.EXCEPTION,
-                          "The {0} governance action service encountered an {1} exception when provisioning file {2} to {3} destination folder using the {4} file pattern.  The exception message included was {5}",
-                          "The exception is logged.  More messages may follow if follow on attempts are made to provision the file.  These can help to determine how to recover from this error.",
-                          "This message contains the exception that was the original cause of the problem. Use the information from the " +
+    FILE_PROVISIONING_EXCEPTION("GOVERNANCE-ACTION-CONNECTORS-0007",
+                                AuditLogRecordSeverityLevel.EXCEPTION,
+                                "The {0} governance action service encountered an {1} exception when provisioning file {2} to {3} destination folder using the {4} file pattern.  The exception message included was {5}",
+                                "The exception is logged.  More messages may follow if follow on attempts are made to provision the file.  These can help to determine how to recover from this error.",
+                                "This message contains the exception that was the original cause of the problem. Use the information from the " +
                                   "exception stack trace to determine why the connector is not able to access the directory and resolve that issue.  " +
                                   "Use the messages that where subsequently logged during the error handling to discover how to restart the " +
                                   "connector in the integration daemon once the original cause of the error has been corrected."),

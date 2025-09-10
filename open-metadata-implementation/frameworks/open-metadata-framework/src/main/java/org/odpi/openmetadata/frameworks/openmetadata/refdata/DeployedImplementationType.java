@@ -65,6 +65,17 @@ public enum DeployedImplementationType implements DeployedImplementationTypeDefi
                "A logical collection of data, either at rest or in motion.",
                "https://egeria-project.org/concepts/asset/"),
 
+
+    /**
+     * A collection of data, either at rest or in motion, organized into a tabular (columnar) format.
+     */
+    TABULAR_DATA_SET("Tabular Data Set",
+             DeployedImplementationType.DATA_SET,
+             OpenMetadataType.DATA_SET.typeName,
+             null,
+             "A logical collection of data, either at rest or in motion, organized into a tabular (columnar) format.",
+             "https://egeria-project.org/concepts/asset/"),
+
     /**
      * A file containing externally accessible data - other fields provide information on the internal format.
      */
@@ -612,6 +623,16 @@ public enum DeployedImplementationType implements DeployedImplementationTypeDefi
                   "https://egeria-project.org/concepts/connector/"),
 
     /**
+     * A pluggable software component that conforms to the Open Connector Framework (OCF).
+     */
+    RESOURCE_CONNECTOR("Resource Connector",
+                       DeployedImplementationType.OCF_CONNECTOR,
+                       OpenMetadataType.DEPLOYED_CONNECTOR.typeName,
+                       null,
+                       "A pluggable software component that conforms to the Open Connector Framework (OCF) and provides access to a digital resource.",
+                       "https://egeria-project.org/concepts/digital-resource/"),
+
+    /**
      * OMRS Repository Connector - Maps open metadata calls to a metadata repository.
      */
     REPOSITORY_CONNECTOR("OMRS Repository Connector",
@@ -743,126 +764,6 @@ public enum DeployedImplementationType implements DeployedImplementationTypeDefi
                           null,
                                     "Connector that manages metadata exchange with a third party technology.",
                                     "https://egeria-project.org/services/omvs/analytics-integrator/overview"),
-
-    /**
-     * Analytics Integration Connector - Connector that manages metadata exchange with a third-party analytics technology.
-     */
-    ANALYTICS_INTEGRATION_CONNECTOR("Analytics Integration Connector",
-                                    DeployedImplementationType.INTEGRATION_CONNECTOR,
-                                    OpenMetadataType.INTEGRATION_CONNECTOR.typeName,
-                                    null,
-                                    "Connector that manages metadata exchange with a third party analytics technology.",
-                                    "https://egeria-project.org/services/omvs/analytics-integrator/overview"),
-
-    /**
-     * API Integration Connector - Connector that manages metadata exchange with a third-party API management technology.
-     */
-    API_INTEGRATION_CONNECTOR("API Integration Connector",
-                              DeployedImplementationType.INTEGRATION_CONNECTOR,
-                              OpenMetadataType.INTEGRATION_CONNECTOR.typeName,
-                              null,
-                              "Connector that manages metadata exchange with a third party API management technology.",
-                              "https://egeria-project.org/services/omvs/api-integrator/overview"),
-
-    /**
-     * Catalog Integration Connector - Connector that manages metadata exchange with a third-party metadata catalog technology.
-     */
-    CATALOG_INTEGRATION_CONNECTOR("Catalog Integration Connector",
-                                  DeployedImplementationType.INTEGRATION_CONNECTOR,
-                                  OpenMetadataType.INTEGRATION_CONNECTOR.typeName,
-                                  null,
-                                  "Connector that manages metadata exchange with a third party metadata catalog technology.",
-                                  "https://egeria-project.org/services/omvs/catalog-integrator/overview"),
-
-    /**
-     * Database Integration Connector - Connector that manages metadata exchange with a third-party database technology.
-     */
-    DATABASE_INTEGRATION_CONNECTOR("Database Integration Connector",
-                                   DeployedImplementationType.INTEGRATION_CONNECTOR,
-                                   OpenMetadataType.INTEGRATION_CONNECTOR.typeName,
-                                   null,
-                                   "Connector that manages metadata exchange with a third party database technology.",
-                                   "https://egeria-project.org/services/omvs/database-integrator/overview"),
-
-    /**
-     * Display Integration Connector - Connector that manages metadata exchange with a third-party display (user interaction) technology.
-     */
-    DISPLAY_INTEGRATION_CONNECTOR("Display Integration Connector",
-                                  DeployedImplementationType.INTEGRATION_CONNECTOR,
-                                  OpenMetadataType.INTEGRATION_CONNECTOR.typeName,
-                                  null,
-                                  "Connector that manages metadata exchange with a third party display (user interaction) technology.",
-                                  "https://egeria-project.org/services/omvs/display-integrator/overview"),
-
-    /**
-     * Files Integration Connector - Connector that manages metadata exchange with a third-party filesystem technology.
-     */
-    FILES_INTEGRATION_CONNECTOR("Files Integration Connector",
-                                DeployedImplementationType.INTEGRATION_CONNECTOR,
-                                OpenMetadataType.INTEGRATION_CONNECTOR.typeName,
-                                null,
-                                "Connector that manages metadata exchange with a third party filesystem technology.",
-                                "https://egeria-project.org/services/omvs/files-integrator/overview"),
-
-    /**
-     * Infrastructure Integration Connector - Connector that manages metadata exchange with a third-party infrastructure catalog (CMDB) technology.
-     */
-    INFRASTRUCTURE_INTEGRATION_CONNECTOR("Infrastructure Integration Connector",
-                                         DeployedImplementationType.INTEGRATION_CONNECTOR,
-                                         OpenMetadataType.INTEGRATION_CONNECTOR.typeName,
-                                         null,
-                                         "Connector that manages metadata exchange with a third party infrastructure catalog (CMDB) technology.",
-                                         "https://egeria-project.org/services/omvs/infrastructure-integrator/overview"),
-
-    /**
-     * Lineage Integration Connector - Connector that manages metadata exchange with a third-party lineage capture technology.
-     */
-    LINEAGE_INTEGRATION_CONNECTOR("Lineage Integration Connector",
-                                  DeployedImplementationType.INTEGRATION_CONNECTOR,
-                                  OpenMetadataType.INTEGRATION_CONNECTOR.typeName,
-                                  null,
-                                  "Connector that manages metadata exchange with a third party lineage capture technology.",
-                                  "https://egeria-project.org/services/omvs/lineage-integrator/overview"),
-
-    /**
-     * Organization Integration Connector - Connector that manages metadata exchange with a third-party application containing data about people and organizations.
-     */
-    ORGANIZATION_INTEGRATION_CONNECTOR("Organization Integration Connector",
-                                       DeployedImplementationType.INTEGRATION_CONNECTOR,
-                                       OpenMetadataType.INTEGRATION_CONNECTOR.typeName,
-                                       null,
-                                       "Connector that manages metadata exchange with a third party application containing data about people and organizations.",
-                                       "https://egeria-project.org/services/omvs/organization-integrator/overview"),
-
-    /**
-     * Search Integration Connector - Connector that manages metadata exchange with a third-party search technology.
-     */
-    SEARCH_INTEGRATION_CONNECTOR("Search Integration Connector",
-                                 DeployedImplementationType.INTEGRATION_CONNECTOR,
-                                 OpenMetadataType.INTEGRATION_CONNECTOR.typeName,
-                                 null,
-                                 "Connector that manages metadata exchange with a third party search technology.",
-                                 "https://egeria-project.org/services/omvs/search-integrator/overview"),
-
-    /**
-     * Security Integration Connector - Connector that manages metadata exchange with a third-party security management technology.
-     */
-    SECURITY_INTEGRATION_CONNECTOR("Security Integration Connector",
-                                   DeployedImplementationType.INTEGRATION_CONNECTOR,
-                                   OpenMetadataType.INTEGRATION_CONNECTOR.typeName,
-                                   null,
-                                   "Connector that manages metadata exchange with a third party security management technology.",
-                                   "https://egeria-project.org/services/omvs/security-integrator/overview"),
-
-    /**
-     * Topic Integration Connector - Connector that manages metadata exchange with a third-party event management technology.
-     */
-    TOPIC_INTEGRATION_CONNECTOR("Topic Integration Connector",
-                                DeployedImplementationType.INTEGRATION_CONNECTOR,
-                                OpenMetadataType.INTEGRATION_CONNECTOR.typeName,
-                                null,
-                                "Connector that manages metadata exchange with a third party event management technology.",
-                                "https://egeria-project.org/services/omvs/topic-integrator/overview"),
 
     /**
      * Platform Metadata Security Connector - Connector that manages authorization requests to the OMAG Server Platform.

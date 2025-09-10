@@ -30,9 +30,9 @@ public enum UnityCatalogTarget
                                  null),
 
     UNITY_CATALOG_CONNECTOR_TARGET("unityCatalogConnector",
-                                   DeployedImplementationType.CATALOG_INTEGRATION_CONNECTOR.getDescription(),
-                                   DeployedImplementationType.CATALOG_INTEGRATION_CONNECTOR.getAssociatedTypeName(),
-                                   DeployedImplementationType.CATALOG_INTEGRATION_CONNECTOR.getDeployedImplementationType(),
+                                   DeployedImplementationType.INTEGRATION_CONNECTOR.getDescription(),
+                                   DeployedImplementationType.INTEGRATION_CONNECTOR.getAssociatedTypeName(),
+                                   DeployedImplementationType.INTEGRATION_CONNECTOR.getDeployedImplementationType(),
                                    null),
 
     ;

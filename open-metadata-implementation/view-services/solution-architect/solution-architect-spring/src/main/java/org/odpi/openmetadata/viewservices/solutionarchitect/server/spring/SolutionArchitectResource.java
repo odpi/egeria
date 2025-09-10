@@ -625,10 +625,8 @@ public class SolutionArchitectResource
             externalDocs=@ExternalDocumentation(description="Further Information",
                     url="https://egeria-project.org/concepts/solution-blueprint"))
 
-    public SolutionBlueprintsResponse getSolutionBlueprintsByName(@PathVariable
-                                                                  String            serverName,
-                                                                  @RequestBody (required = false)
-                                                                  FilterRequestBody requestBody)
+    public OpenMetadataRootElementsResponse getSolutionBlueprintsByName(@PathVariable String            serverName,
+                                                                        @RequestBody (required = false) FilterRequestBody requestBody)
     {
         return restAPI.getSolutionBlueprintsByName(serverName, requestBody);
     }
@@ -652,7 +650,7 @@ public class SolutionArchitectResource
             externalDocs=@ExternalDocumentation(description="Further Information",
                     url="https://egeria-project.org/concepts/solution-blueprint"))
 
-    public SolutionBlueprintResponse getSolutionBlueprintByGUID(@PathVariable
+    public OpenMetadataRootElementResponse getSolutionBlueprintByGUID(@PathVariable
                                                                 String             serverName,
                                                                 @PathVariable
                                                                 String             solutionBlueprintGUID,
@@ -680,7 +678,7 @@ public class SolutionArchitectResource
             externalDocs=@ExternalDocumentation(description="Further Information",
                     url="https://egeria-project.org/concepts/solution-blueprint"))
 
-    public SolutionBlueprintsResponse findSolutionBlueprints(@PathVariable String                  serverName,
+    public OpenMetadataRootElementsResponse findSolutionBlueprints(@PathVariable String                  serverName,
                                                              @RequestBody  (required = false)
                                                              SearchStringRequestBody requestBody)
     {
@@ -1009,7 +1007,7 @@ public class SolutionArchitectResource
             externalDocs=@ExternalDocumentation(description="Further Information",
                     url="https://egeria-project.org/concepts/solution-component"))
 
-    public SolutionComponentsResponse getSolutionComponentsByName(@PathVariable
+    public OpenMetadataRootElementsResponse getSolutionComponentsByName(@PathVariable
                                                                   String            serverName,
                                                                   @RequestBody (required = false)
                                                                   FilterRequestBody requestBody)
@@ -1035,7 +1033,7 @@ public class SolutionArchitectResource
             externalDocs=@ExternalDocumentation(description="Further Information",
                     url="https://egeria-project.org/concepts/solution-component"))
 
-    public SolutionComponentsResponse findSolutionComponents(@PathVariable String                  serverName,
+    public OpenMetadataRootElementsResponse findSolutionComponents(@PathVariable String                  serverName,
                                                              @RequestBody (required = false)
                                                              SearchStringRequestBody requestBody)
     {
@@ -1062,7 +1060,7 @@ public class SolutionArchitectResource
             externalDocs=@ExternalDocumentation(description="Further Information",
                     url="https://egeria-project.org/concepts/solution-role"))
 
-    public SolutionComponentResponse getSolutionComponentByGUID(@PathVariable
+    public OpenMetadataRootElementResponse getSolutionComponentByGUID(@PathVariable
                                                                 String             serverName,
                                                                 @PathVariable
                                                                 String             solutionComponentGUID,

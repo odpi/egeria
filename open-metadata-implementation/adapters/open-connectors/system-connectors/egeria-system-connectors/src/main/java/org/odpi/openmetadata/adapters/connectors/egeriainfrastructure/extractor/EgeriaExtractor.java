@@ -681,8 +681,6 @@ public class EgeriaExtractor
     }
 
 
-
-
     /**
      * Add a new open metadata archive to running repository.
      *

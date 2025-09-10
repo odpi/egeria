@@ -10,7 +10,6 @@ import org.odpi.openmetadata.frameworks.openmetadata.ffdc.PropertyServerExceptio
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.frameworks.openmetadata.handlers.ConnectorTypeHandler;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.OpenMetadataRootElement;
-import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.OpenMetadataRootElement;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.ClassificationProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.RelationshipProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.connections.ConnectorTypeProperties;
@@ -21,7 +20,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Provides services for connectors to work with connectorType elements.
+ * Provides services for connectors to work with connector type elements.
  */
 public class ConnectorTypeClient extends ConnectorContextClientBase
 {
@@ -60,7 +59,7 @@ public class ConnectorTypeClient extends ConnectorContextClientBase
 
 
     /**
-     * Create a new connectorType.
+     * Create a new connector type.
      *
      * @param newElementOptions details of the element to create
      * @param initialClassifications map of classification names to classification properties to include in the entity creation request
@@ -73,7 +72,7 @@ public class ConnectorTypeClient extends ConnectorContextClientBase
      */
     public String createConnectorType(NewElementOptions                     newElementOptions,
                                       Map<String, ClassificationProperties> initialClassifications,
-                                      ConnectorTypeProperties                    properties,
+                                      ConnectorTypeProperties               properties,
                                       RelationshipProperties                parentRelationshipProperties) throws InvalidParameterException,
                                                                                                                  PropertyServerException,
                                                                                                                  UserNotAuthorizedException
@@ -125,7 +124,7 @@ public class ConnectorTypeClient extends ConnectorContextClientBase
 
 
     /**
-     * Update the properties of a connectorType.
+     * Update the properties of a connector type.
      *
      * @param connectorTypeGUID       unique identifier of the connectorType (returned from create)
      * @param updateOptions provides a structure for the additional options when updating an element.
@@ -150,7 +149,7 @@ public class ConnectorTypeClient extends ConnectorContextClientBase
 
 
     /**
-     * Delete a connectorType.
+     * Delete a connector type.
      *
      * @param connectorTypeGUID       unique identifier of the element
      * @throws InvalidParameterException  one of the parameters is null or invalid.
@@ -172,7 +171,7 @@ public class ConnectorTypeClient extends ConnectorContextClientBase
 
 
     /**
-     * Returns the list of connectorTypes with a particular name.
+     * Returns the list of connector types with a particular name.
      *
      * @param name                   name of the element to return - match is full text match in qualifiedName, resourceName or displayName
      * @param queryOptions           multiple options to control the query
@@ -191,7 +190,7 @@ public class ConnectorTypeClient extends ConnectorContextClientBase
 
 
     /**
-     * Return the properties of a specific connectorType.
+     * Return the properties of a specific connector type.
      *
      * @param connectorTypeGUID       unique identifier of the required element
      * @param getOptions multiple options to control the query

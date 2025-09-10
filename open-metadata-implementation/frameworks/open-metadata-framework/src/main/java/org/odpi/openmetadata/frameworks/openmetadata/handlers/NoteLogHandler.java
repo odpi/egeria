@@ -100,6 +100,42 @@ public class NoteLogHandler extends OpenMetadataHandlerBase
 
 
     /**
+     * Create a new metadata element to represent a note log using an existing element as a template.
+     * The template defines additional classifications and relationships that should be added to the new location.
+     *
+     * @param userId                       calling user
+     * @param templateOptions details of the element to create
+     * @param templateGUID the unique identifier of the existing asset to copy (this will copy all the attachments such as nested content, schema
+     *                     connection etc)
+     * @param replacementProperties properties of the new metadata element.  These override the template values
+     * @param placeholderProperties property name-to-property value map to replace any placeholder values in the
+     *                              template element - and their anchored elements, which are also copied as part of this operation.
+     * @param parentRelationshipProperties properties to include in parent relationship
+     *
+     * @return unique identifier of the new metadata element
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public String createNoteLogFromTemplate(String                 userId,
+                                            TemplateOptions        templateOptions,
+                                            String                 templateGUID,
+                                            ElementProperties      replacementProperties,
+                                            Map<String, String>    placeholderProperties,
+                                            RelationshipProperties parentRelationshipProperties) throws InvalidParameterException,
+                                                                                                         UserNotAuthorizedException,
+                                                                                                         PropertyServerException
+    {
+        return super.createElementFromTemplate(userId,
+                                               templateOptions,
+                                               templateGUID,
+                                               replacementProperties,
+                                               placeholderProperties,
+                                               parentRelationshipProperties);
+    }
+
+
+    /**
      * Update the metadata element representing a note log.
      *
      * @param userId calling user

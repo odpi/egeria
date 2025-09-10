@@ -12,6 +12,7 @@ import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.processes
 import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.processes.actions.ActionRequesterProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.actors.*;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.apis.APIEndpointProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.glossaries.GlossaryTermRelationshipProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.governance.governanceactions.TargetForGovernanceActionProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.processes.connectors.CatalogTargetProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.processes.connectors.RegisteredIntegrationConnectorProperties;
@@ -45,7 +46,6 @@ import org.odpi.openmetadata.frameworks.openmetadata.properties.connections.Embe
 import org.odpi.openmetadata.frameworks.openmetadata.properties.contextevents.DependentContextEventProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.contextevents.RelatedContextEventProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.externalreferences.ExternalReferenceLinkProperties;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.glossaries.GlossaryTermRelationship;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.governance.*;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.informationsupplychains.InformationSupplyChainLinkProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.lineage.ControlFlowProperties;
@@ -139,7 +139,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
                 @JsonSubTypes.Type(value = FeedbackProperties.class, name = "FeedbackProperties"),
                 @JsonSubTypes.Type(value = FolderHierarchyProperties.class, name = "FolderHierarchyProperties"),
                 @JsonSubTypes.Type(value = ForeignKeyProperties.class, name = "ForeignKeyProperties"),
-                @JsonSubTypes.Type(value = GlossaryTermRelationship.class, name = "GlossaryTermRelationship"),
+                @JsonSubTypes.Type(value = GlossaryTermRelationshipProperties.class, name = "GlossaryTermRelationshipProperties"),
                 @JsonSubTypes.Type(value = GovernanceResultsProperties.class, name = "GovernanceResultsProperties"),
                 @JsonSubTypes.Type(value = GovernedByProperties.class, name = "GovernedByProperties"),
                 @JsonSubTypes.Type(value = GraphEdgeLinkProperties.class, name = "GraphEdgeLinkProperties"),

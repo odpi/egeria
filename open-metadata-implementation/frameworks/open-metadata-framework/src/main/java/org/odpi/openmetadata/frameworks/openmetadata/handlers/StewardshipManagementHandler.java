@@ -34,15 +34,11 @@ import java.util.*;
  * StewardshipExchangeClient is the client for assigning relationships and classifications that help govern both metadata and its associated
  * resources.
  */
-public class StewardshipManagementHandler
+public class StewardshipManagementHandler extends OpenMetadataHandlerBase
 {
-    private final OpenMetadataClient      openMetadataClient;
     final protected MetadataElementSummaryConverter<MetadataElementSummary> metadataElementSummaryConverter;
     final protected RelatedMetadataElementSummaryConverter<RelatedMetadataElementSummary> relatedMetadataElementSummaryConverter;
     final protected MetadataRelationshipSummaryConverter<MetadataRelationshipSummary>     metadataRelationshipSummaryConverter;
-    private final AuditLog auditLog;
-    private final String serviceName;
-    private final String serverName;
     private final PropertyHelper propertyHelper = new PropertyHelper();
 
     private final OpenMetadataClassificationBuilder classificationBuilder = new OpenMetadataClassificationBuilder();
@@ -53,27 +49,51 @@ public class StewardshipManagementHandler
      *
      * @param localServerName        name of this server (view server)
      * @param auditLog               logging destination
-     * @param serviceName            local service name
+     * @param localServiceName            local service name
      * @param openMetadataClient     access to open metadata
      */
     public StewardshipManagementHandler(String             localServerName,
                                         AuditLog           auditLog,
-                                        String             serviceName,
+                                        String             localServiceName,
                                         OpenMetadataClient openMetadataClient)
     {
-        this.openMetadataClient = openMetadataClient;
-        this.auditLog           = auditLog;
-        this.serverName         = localServerName;
-        this.serviceName        = serviceName;
+        super(localServerName,
+              auditLog,
+              localServiceName,
+              openMetadataClient,
+              OpenMetadataType.OPEN_METADATA_ROOT.typeName);
 
         this.metadataElementSummaryConverter = new MetadataElementSummaryConverter<>(propertyHelper,
-                                                                                     serviceName,
+                                                                                     localServiceName,
                                                                                      localServerName);
         this.relatedMetadataElementSummaryConverter = new RelatedMetadataElementSummaryConverter<>(propertyHelper,
-                                                                                                   serviceName,
+                                                                                                   localServiceName,
                                                                                                    localServerName);
         this.metadataRelationshipSummaryConverter = new MetadataRelationshipSummaryConverter<>(propertyHelper,
-                                                                                               serviceName,
+                                                                                               localServiceName,
+                                                                                               localServerName);
+    }
+
+
+    /**
+     * Create a new handler.
+     *
+     * @param template        properties to copy
+     * @param specificTypeName   subtype to control handler
+     */
+    public StewardshipManagementHandler(StewardshipManagementHandler template,
+                                        String       specificTypeName)
+    {
+        super(template, specificTypeName);
+
+        this.metadataElementSummaryConverter = new MetadataElementSummaryConverter<>(propertyHelper,
+                                                                                     localServiceName,
+                                                                                     localServerName);
+        this.relatedMetadataElementSummaryConverter = new RelatedMetadataElementSummaryConverter<>(propertyHelper,
+                                                                                                   localServiceName,
+                                                                                                   localServerName);
+        this.metadataRelationshipSummaryConverter = new MetadataRelationshipSummaryConverter<>(propertyHelper,
+                                                                                               localServiceName,
                                                                                                localServerName);
     }
 
@@ -1321,6 +1341,7 @@ public class StewardshipManagementHandler
      *
      * @param userId calling user
      * @param elementGUID unique identifier of the metadata element to declassify
+     * @param metadataSourceOptions  options to control access to open metadata
      *
      * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
@@ -1337,7 +1358,6 @@ public class StewardshipManagementHandler
                                                             OpenMetadataType.IMPACT_CLASSIFICATION.typeName,
                                                             metadataSourceOptions);
     }
-
 
 
     /**
