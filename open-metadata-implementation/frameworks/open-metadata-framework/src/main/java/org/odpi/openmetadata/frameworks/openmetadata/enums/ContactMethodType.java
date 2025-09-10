@@ -233,6 +233,13 @@ public enum ContactMethodType implements OpenMetadataEnum
     @Override
     public String toString()
     {
-        return "ContactMethodType : " + name;
+        return "ContactMethodType{" +
+            "ordinal=" + ordinal +
+            ", name='" + name + '\'' +
+            ", description='" + description + '\'' +
+            ", descriptionGUID='" + descriptionGUID + '\'' +
+            ", isDefault='" + isDefault + '\'' +
+            '}';
+
     }
 }

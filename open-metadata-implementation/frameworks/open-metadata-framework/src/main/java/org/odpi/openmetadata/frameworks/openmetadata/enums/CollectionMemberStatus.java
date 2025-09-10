@@ -235,6 +235,13 @@ public enum CollectionMemberStatus implements OpenMetadataEnum
     @Override
     public String toString()
     {
-        return "CollectionMemberStatus : " + name;
+        return "CollectionMemberStatus{" +
+            "ordinal=" + ordinal +
+            ", name='" + name + '\'' +
+            ", description='" + description + '\'' +
+            ", descriptionGUID='" + descriptionGUID + '\'' +
+            ", isDefault='" + isDefault + '\'' +
+            '}';
+
     }
 }

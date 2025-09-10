@@ -77,4 +77,20 @@ public enum IntegrationGroupStatus
     {
         return statusDescription;
     }
+
+    /**
+     * toString() JSON-style
+     *
+     * @return string description
+     */
+    @Override
+    public String toString()
+    {
+        return "IntegrationGroupStatus{" +
+            "ordinal=" + ordinal +
+            ", name='" + statusName + '\'' +
+            ", description='" + statusDescription + '\'' +
+            '}';
+    }
+
 }

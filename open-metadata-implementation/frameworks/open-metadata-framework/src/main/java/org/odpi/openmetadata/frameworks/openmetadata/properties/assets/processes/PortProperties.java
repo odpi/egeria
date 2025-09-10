@@ -24,7 +24,10 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class PortProperties extends ReferenceableProperties
 {
-    private PortType portType    = null;
+    private
+
+
+        PortType portType    = null;
 
 
     /**
