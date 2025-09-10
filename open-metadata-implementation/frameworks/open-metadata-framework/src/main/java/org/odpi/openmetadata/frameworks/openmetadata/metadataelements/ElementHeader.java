@@ -34,29 +34,32 @@ public class ElementHeader extends ElementControlHeader
     /*
      * Common header for entities from a metadata repository
      */
-    private String                      guid                      = null;
-    private ElementClassification       anchor                    = null;
-    private ElementClassification       zoneMembership            = null;
-    private ElementClassification       subjectArea               = null;
-    private ElementClassification       impact                    = null;
-    private ElementClassification       criticality               = null;
-    private ElementClassification       confidentiality           = null;
-    private ElementClassification       confidence                = null;
-    private ElementClassification       retention                 = null;
-    private List<ElementClassification> executionPoints           = null;
-    private List<ElementClassification> duplicateClassifications  = null;
-    private ElementClassification       digitalResourceOrigin     = null;
-    private ElementClassification       ownership                 = null;
-    private ElementClassification       memento                   = null;
-    private ElementClassification       template                  = null;
-    private ElementClassification       schemaType                = null; // TypeEmbeddedAttribute
-    private ElementClassification       calculatedValue           = null;
-    private ElementClassification       primaryKey           = null;
-    private List<ElementClassification> resourceManagerRoles = null;
-    private List<ElementClassification> serverPurposes       = null;
-    private List<ElementClassification> collectionRoles      = null;
-    private List<ElementClassification> projectRoles         = null;
-    private List<ElementClassification> otherClassifications = null;
+    private String                      guid                     = null;
+    private ElementClassification       anchor                   = null;
+    private ElementClassification       zoneMembership           = null;
+    private ElementClassification       subjectArea              = null;
+    private ElementClassification       impact                   = null;
+    private ElementClassification       criticality              = null;
+    private ElementClassification       confidentiality          = null;
+    private ElementClassification       confidence               = null;
+    private ElementClassification       retention                = null;
+    private ElementClassification       governanceExpectations   = null;
+    private ElementClassification       governanceMeasurements   = null;
+    private List<ElementClassification> executionPoints          = null;
+    private List<ElementClassification> duplicateClassifications = null;
+    private ElementClassification       digitalResourceOrigin    = null;
+    private ElementClassification       ownership                = null;
+    private ElementClassification       memento                  = null;
+    private ElementClassification       template                 = null;
+    private ElementClassification       schemaType               = null; // TypeEmbeddedAttribute
+    private ElementClassification       dataScope                = null;
+    private ElementClassification       calculatedValue          = null;
+    private ElementClassification       primaryKey               = null;
+    private List<ElementClassification> resourceManagerRoles     = null;
+    private List<ElementClassification> serverPurposes           = null;
+    private List<ElementClassification> collectionRoles          = null;
+    private List<ElementClassification> projectRoles             = null;
+    private List<ElementClassification> otherClassifications     = null;
 
 
     /**
@@ -78,29 +81,32 @@ public class ElementHeader extends ElementControlHeader
 
         if (template != null)
         {
-            this.guid                      = template.getGUID();
-            this.anchor                    = template.getAnchor();
-            this.zoneMembership            = template.getZoneMembership();
-            this.subjectArea               = template.getSubjectArea();
-            this.impact                    = template.getImpact();
-            this.criticality               = template.getCriticality();
-            this.confidentiality           = template.getConfidentiality();
-            this.confidence                = template.getConfidence();
-            this.retention                 = template.getRetention();
-            this.executionPoints           = template.getExecutionPoints();
-            this.duplicateClassifications  = template.getDuplicateClassifications();
-            this.digitalResourceOrigin     = template.getDigitalResourceOrigin();
-            this.ownership                 = template.getOwnership();
-            this.memento                   = template.getMemento();
-            this.template                  = template.getTemplate();
-            this.schemaType                = template.getSchemaType();
-            this.calculatedValue           = template.getCalculatedValue();
-            this.primaryKey                = template.getPrimaryKey();
-            this.serverPurposes       = template.getServerPurposes();
-            this.resourceManagerRoles = template.getResourceManagerRoles();
-            this.collectionRoles      = template.getCollectionRoles();
-            this.projectRoles         = template.getProjectRoles();
-            this.otherClassifications = template.getOtherClassifications();
+            this.guid                     = template.getGUID();
+            this.anchor                   = template.getAnchor();
+            this.zoneMembership           = template.getZoneMembership();
+            this.subjectArea              = template.getSubjectArea();
+            this.impact                   = template.getImpact();
+            this.criticality              = template.getCriticality();
+            this.confidentiality          = template.getConfidentiality();
+            this.confidence               = template.getConfidence();
+            this.retention                = template.getRetention();
+            this.governanceExpectations   = template.getGovernanceExpectations();
+            this.governanceMeasurements   = template.getGovernanceMeasurements();
+            this.executionPoints          = template.getExecutionPoints();
+            this.duplicateClassifications = template.getDuplicateClassifications();
+            this.digitalResourceOrigin    = template.getDigitalResourceOrigin();
+            this.ownership                = template.getOwnership();
+            this.memento                  = template.getMemento();
+            this.template                 = template.getTemplate();
+            this.schemaType               = template.getSchemaType();
+            this.dataScope                = template.getDataScope();
+            this.calculatedValue          = template.getCalculatedValue();
+            this.primaryKey               = template.getPrimaryKey();
+            this.serverPurposes           = template.getServerPurposes();
+            this.resourceManagerRoles     = template.getResourceManagerRoles();
+            this.collectionRoles          = template.getCollectionRoles();
+            this.projectRoles             = template.getProjectRoles();
+            this.otherClassifications     = template.getOtherClassifications();
         }
     }
 
@@ -315,6 +321,50 @@ public class ElementHeader extends ElementControlHeader
 
 
     /**
+     * Return the governance expectations classification.
+     *
+     * @return classification
+     */
+    public ElementClassification getGovernanceExpectations()
+    {
+        return governanceExpectations;
+    }
+
+
+    /**
+     * Set up the governance expectations classification.
+     *
+     * @param governanceExpectations classifications
+     */
+    public void setGovernanceExpectations(ElementClassification governanceExpectations)
+    {
+        this.governanceExpectations = governanceExpectations;
+    }
+
+
+    /**
+     * Return the governance measurements classification.
+     *
+     * @return classification
+     */
+    public ElementClassification getGovernanceMeasurements()
+    {
+        return governanceMeasurements;
+    }
+
+
+    /**
+     * Set up the governance measurements classification.
+     *
+     * @param governanceMeasurements classification
+     */
+    public void setGovernanceMeasurements(ElementClassification governanceMeasurements)
+    {
+        this.governanceMeasurements = governanceMeasurements;
+    }
+
+
+    /**
      * Return details of whether this element is identified as providing the implementation of one or more execution points.
      *
      * @return list
@@ -467,6 +517,27 @@ public class ElementHeader extends ElementControlHeader
         this.schemaType = schemaType;
     }
 
+
+    /**
+     * Return the DataScope classifications - used to describe the scope of data stored in the associated digital resource.
+     *
+     * @return classification
+     */
+    public ElementClassification getDataScope()
+    {
+        return dataScope;
+    }
+
+
+    /**
+     * Set up the DataScope classifications - used to describe the scope of data stored in the associated digital resource.
+     *
+     * @param dataScope classification
+     */
+    public void setDataScope(ElementClassification dataScope)
+    {
+        this.dataScope = dataScope;
+    }
 
     /**
      * Return the CalculatedValue classification - only attached to a SchemaAttribute.
@@ -640,6 +711,8 @@ public class ElementHeader extends ElementControlHeader
                 ", confidentiality=" + confidentiality +
                 ", confidence=" + confidence +
                 ", retention=" + retention +
+                ", governanceExpectations=" + governanceExpectations +
+                ", governanceMeasurements=" + governanceMeasurements +
                 ", executionPoints=" + executionPoints +
                 ", duplicateClassifications=" + duplicateClassifications +
                 ", digitalResourceOrigin=" + digitalResourceOrigin +
@@ -680,6 +753,8 @@ public class ElementHeader extends ElementControlHeader
                 Objects.equals(confidentiality, that.confidentiality) &&
                 Objects.equals(confidence, that.confidence) &&
                 Objects.equals(retention, that.retention) &&
+                Objects.equals(governanceExpectations, that.governanceExpectations) &&
+                Objects.equals(governanceMeasurements, that.governanceMeasurements) &&
                 Objects.equals(executionPoints, that.executionPoints) &&
                 Objects.equals(duplicateClassifications, that.duplicateClassifications) &&
                 Objects.equals(digitalResourceOrigin, that.digitalResourceOrigin) &&
@@ -706,8 +781,9 @@ public class ElementHeader extends ElementControlHeader
     public int hashCode()
     {
         return Objects.hash(super.hashCode(), guid, anchor, zoneMembership, subjectArea, impact, criticality,
-                            confidentiality, confidence, retention, executionPoints, duplicateClassifications, ownership,
-                            digitalResourceOrigin, memento, template, schemaType, calculatedValue, primaryKey, serverPurposes,
+                            confidentiality, confidence, retention, governanceExpectations, governanceMeasurements,
+                            executionPoints, duplicateClassifications, ownership, digitalResourceOrigin, memento,
+                            template, schemaType, calculatedValue, primaryKey, serverPurposes,
                             resourceManagerRoles, collectionRoles, projectRoles, otherClassifications);
     }
 }

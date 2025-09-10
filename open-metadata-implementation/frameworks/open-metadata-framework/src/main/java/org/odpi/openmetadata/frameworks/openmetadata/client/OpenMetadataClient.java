@@ -59,6 +59,14 @@ public abstract class OpenMetadataClient implements OpenMetadataTypesInterface,
 
 
     /**
+     * Return the url root for the metadata access server's platform.
+     *
+     * @return string url root
+     */
+    public String getServerPlatformURLRoot() { return serverPlatformURLRoot; }
+
+
+    /**
      * Get the maximum paging size.
      *
      * @return maxPagingSize new value

@@ -353,6 +353,19 @@ public class PostgresTabularDataSourceConnector extends ConnectorBase implements
     }
 
 
+    /**
+     * Remove the requested data record.  The first data record is record 0.
+     *
+     * @param rowNumber long
+     * @throws ConnectorCheckedException there is a problem accessing the data.
+     */
+    @Override
+    public void deleteRecord(long rowNumber) throws ConnectorCheckedException
+    {
+        // todo
+    }
+
+
 
     /**
      * Close the file

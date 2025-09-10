@@ -26,12 +26,14 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
                 @JsonSubTypes.Type(value = AssetLineageGraphNode.class, name = "AssetLineageGraphNode"),
                 @JsonSubTypes.Type(value = AssetSearchMatches.class, name = "AssetSearchMatches"),
                 @JsonSubTypes.Type(value = OpenMetadataRootHierarchy.class, name = "OpenMetadataRootHierarchy"),
-                @JsonSubTypes.Type(value = ExternalIdElement.class, name = "ExternalIdElement"),
+                @JsonSubTypes.Type(value = SolutionBlueprintElement.class, name = "SolutionBlueprintElement"),
                 @JsonSubTypes.Type(value = TemplateElement.class, name = "TemplateElement"),
         })
 public class OpenMetadataRootElement extends AttributedMetadataElement
 {
-    private OpenMetadataRootProperties properties = null;
+    private OpenMetadataRootProperties properties   = null;
+    private String                     mermaidGraph = null;
+    private String                     solutionBlueprintMermaidGraph = null;
 
     /**
      * Default constructor
@@ -53,7 +55,9 @@ public class OpenMetadataRootElement extends AttributedMetadataElement
 
         if (template != null)
         {
-            properties = template.getProperties();
+            properties   = template.getProperties();
+            mermaidGraph = template.getMermaidGraph();
+            solutionBlueprintMermaidGraph = template.getSolutionBlueprintMermaidGraph();
         }
     }
 
@@ -80,6 +84,54 @@ public class OpenMetadataRootElement extends AttributedMetadataElement
     }
 
 
+
+
+    /**
+     * Return the mermaid representation of this data structure.
+     *
+     * @return string markdown
+     */
+    public String getMermaidGraph()
+    {
+        return mermaidGraph;
+    }
+
+
+    /**
+     * Set up the mermaid representation of this data structure.
+     *
+     * @param mermaidGraph markdown string
+     */
+    public void setMermaidGraph(String mermaidGraph)
+    {
+        this.mermaidGraph = mermaidGraph;
+    }
+
+
+
+
+    /**
+     * Return the graph view of the solution blueprint.  This just contains the top level components linked together.
+     *
+     * @return mermaid markdown
+     */
+    public String getSolutionBlueprintMermaidGraph()
+    {
+        return solutionBlueprintMermaidGraph;
+    }
+
+
+    /**
+     * Set up the graph view of the solution component.
+     *
+     * @param solutionBlueprintMermaidGraph mermaid markdown
+     */
+    public void setSolutionBlueprintMermaidGraph(String solutionBlueprintMermaidGraph)
+    {
+        this.solutionBlueprintMermaidGraph = solutionBlueprintMermaidGraph;
+    }
+
+
     /**
      * JSON-style toString
      *
@@ -90,8 +142,11 @@ public class OpenMetadataRootElement extends AttributedMetadataElement
     {
         return "OpenMetadataRootElement{" +
                 "properties=" + properties +
+                ", mermaidGraph='" + mermaidGraph + '\'' +
+                ", solutionBlueprintMermaidGraph='" + solutionBlueprintMermaidGraph + '\'' +
                 "} " + super.toString();
     }
+
 
     /**
      * Return comparison result based on the content of the properties.
@@ -106,7 +161,9 @@ public class OpenMetadataRootElement extends AttributedMetadataElement
         if (objectToCompare == null || getClass() != objectToCompare.getClass()) return false;
         if (!super.equals(objectToCompare)) return false;
         OpenMetadataRootElement that = (OpenMetadataRootElement) objectToCompare;
-        return Objects.equals(properties, that.properties);
+        return Objects.equals(properties, that.properties) &&
+                Objects.equals(mermaidGraph, that.mermaidGraph) &&
+                Objects.equals(solutionBlueprintMermaidGraph, that.solutionBlueprintMermaidGraph);
     }
 
 
@@ -118,6 +175,6 @@ public class OpenMetadataRootElement extends AttributedMetadataElement
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), properties);
+        return Objects.hash(super.hashCode(), properties, mermaidGraph, solutionBlueprintMermaidGraph);
     }
 }

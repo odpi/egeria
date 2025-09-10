@@ -500,7 +500,8 @@ public class YAMLSecretsStoreConnector extends SecretsStoreConnector
             secretsStore = yamlObjectMapper.readValue(secretsStoreFile, SecretsStore.class);
         }
         catch (Exception error)
-        {super.logRecord(methodName,
+        {
+            super.logRecord(methodName,
                             YAMLAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(error.getClass().getName(),
                                                                                     methodName,
                                                                                     error.getMessage()));

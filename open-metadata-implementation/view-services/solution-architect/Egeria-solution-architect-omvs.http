@@ -802,7 +802,7 @@ Content-Type: application/json
   },
   "parentAtEnd1": false,
   "properties": {
-    "class" : "SolutionRoleProperties",
+    "class" : "SolutionActorRoleProperties",
     "qualifiedName": "add unique name here",
     "name": "add short name here",
     "description": "add description here",
@@ -879,7 +879,7 @@ Content-Type: application/json
 {
   "class" : "UpdateElementRequestBody",
   "properties": {
-    "class" : "SolutionRoleProperties",
+    "class" : "SolutionActorRoleProperties",
     "qualifiedName": "add unique name here",
     "name": "add short name here",
     "description": "add description here",

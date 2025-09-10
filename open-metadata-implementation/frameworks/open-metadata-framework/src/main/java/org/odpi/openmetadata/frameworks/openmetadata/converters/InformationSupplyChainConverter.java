@@ -170,11 +170,6 @@ public class InformationSupplyChainConverter<B> extends OpenMetadataConverterBas
                      */
                     bean.setParents(super.getRelatedElements(OpenMetadataType.INFORMATION_SUPPLY_CHAIN_COMPOSITION_RELATIONSHIP.typeName, relationships));
                     bean.setLinks(super.getRelatedElements(OpenMetadataType.INFORMATION_SUPPLY_CHAIN_LINK_RELATIONSHIP.typeName, relationships));
-                    bean.setExternalReferences(super.getRelatedElements(OpenMetadataType.EXTERNAL_REFERENCE_LINK_RELATIONSHIP.typeName, relationships));
-                    bean.setOtherRelatedElements(super.getOtherRelatedElements(relationships,
-                                                                               Arrays.asList(OpenMetadataType.INFORMATION_SUPPLY_CHAIN_COMPOSITION_RELATIONSHIP.typeName,
-                                                                                             OpenMetadataType.INFORMATION_SUPPLY_CHAIN_LINK_RELATIONSHIP.typeName,
-                                                                                             OpenMetadataType.EXTERNAL_REFERENCE_LINK_RELATIONSHIP.typeName)));
                 }
             }
 

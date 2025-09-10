@@ -193,10 +193,10 @@ public class MoveCopyFileGovernanceActionConnector extends GeneralGovernanceActi
         if (auditLog != null)
         {
             auditLog.logMessage(methodName,
-                                GovernanceActionConnectorsAuditCode.PROVISIONING_FAILURE.getMessageDefinition(governanceServiceName,
-                                                                                                              sourceFilePathName,
-                                                                                                              destinationFolderName,
-                                                                                                              fileNamePattern));
+                                GovernanceActionConnectorsAuditCode.FILE_PATTERN_FULL.getMessageDefinition(governanceServiceName,
+                                                                                                           sourceFilePathName,
+                                                                                                           destinationFolderName,
+                                                                                                           fileNamePattern));
         }
 
         return null;
@@ -469,12 +469,12 @@ public class MoveCopyFileGovernanceActionConnector extends GeneralGovernanceActi
         }
         catch (Exception  error)
         {
-            completionMessage = GovernanceActionConnectorsAuditCode.PROVISIONING_EXCEPTION.getMessageDefinition(governanceServiceName,
-                                                                                                                error.getClass().getName(),
-                                                                                                                sourceFileName,
-                                                                                                                destinationFolderName,
-                                                                                                                destinationFileNamePattern,
-                                                                                                                error.getMessage());
+            completionMessage = GovernanceActionConnectorsAuditCode.FILE_PROVISIONING_EXCEPTION.getMessageDefinition(governanceServiceName,
+                                                                                                                     error.getClass().getName(),
+                                                                                                                     sourceFileName,
+                                                                                                                     destinationFolderName,
+                                                                                                                     destinationFileNamePattern,
+                                                                                                                     error.getMessage());
             super.logExceptionRecord(methodName, completionMessage, error);
 
 

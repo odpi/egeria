@@ -4,7 +4,7 @@
 package org.odpi.openmetadata.frameworks.openmetadata.mermaid;
 
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.AssetGraph;
-import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.MetadataElementSummary;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.RelatedMetadataElementSummary;
 
 /**
  * Creates a mermaid graph rendering of the Open Metadata Framework's asset lineage edge graph.
@@ -34,17 +34,17 @@ public class AssetISCGraphMermaidGraphBuilder extends MermaidGraphBuilderBase
 
         if (assetGraph.getInformationSupplyChains() != null)
         {
-            for (MetadataElementSummary node : assetGraph.getInformationSupplyChains())
+            for (RelatedMetadataElementSummary node : assetGraph.getInformationSupplyChains())
             {
                 if (node != null)
                 {
-                    appendNewMermaidNode(node.getElementHeader().getGUID(),
-                                         super.getNodeDisplayName(node),
-                                         node.getElementHeader().getType().getTypeName(),
+                    appendNewMermaidNode(node.getRelatedElement().getElementHeader().getGUID(),
+                                         super.getNodeDisplayName(node.getRelatedElement()),
+                                         node.getRelatedElement().getElementHeader().getType().getTypeName(),
                                          VisualStyle.INFORMATION_SUPPLY_CHAIN);
 
                     super.appendMermaidLine(null,
-                                            node.getElementHeader().getGUID(),
+                                            node.getRelatedElement().getElementHeader().getGUID(),
                                             null,
                                             assetGraph.getElementHeader().getGUID());
                 }

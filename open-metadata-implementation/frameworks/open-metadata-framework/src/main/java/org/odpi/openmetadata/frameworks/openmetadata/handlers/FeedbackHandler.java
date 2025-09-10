@@ -18,7 +18,7 @@ import java.util.List;
 /**
  * FeedbackHandler provides common methods for ratings and likes.
  */
-public class FeedbackHandler extends OpenMetadataHandlerBase
+public abstract class FeedbackHandler extends OpenMetadataHandlerBase
 {
     /**
      * Create a new handler.
@@ -48,12 +48,13 @@ public class FeedbackHandler extends OpenMetadataHandlerBase
      * @param relationshipTypeName type of attaching relationship
      * @param metadataSourceOptions  options to control access to open metadata
      * @param feedbackProperties  properties of the feedback
+     * @return guid of new feedback element
      *
      * @throws InvalidParameterException one of the parameters is null or invalid.
      * @throws PropertyServerException there is a problem adding the element properties to the property server.
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    protected void addFeedbackToElement(String                userId,
+    protected String addFeedbackToElement(String                userId,
                                         String                elementGUID,
                                         String                feedbackTypeName,
                                         String                relationshipTypeName,
@@ -79,12 +80,12 @@ public class FeedbackHandler extends OpenMetadataHandlerBase
             newElementOptions.setParentGUID(elementGUID);
             newElementOptions.setParentRelationshipTypeName(relationshipTypeName);
 
-            openMetadataClient.createMetadataElementInStore(userId,
-                                                            feedbackTypeName,
-                                                            newElementOptions,
-                                                            null,
-                                                            feedbackProperties,
-                                                            null);
+            return openMetadataClient.createMetadataElementInStore(userId,
+                                                                   feedbackTypeName,
+                                                                   newElementOptions,
+                                                                   null,
+                                                                   feedbackProperties,
+                                                                   null);
         }
         else
         {
@@ -92,6 +93,8 @@ public class FeedbackHandler extends OpenMetadataHandlerBase
                                                             existingFeedback.getElementHeader().getGUID(),
                                                             new UpdateOptions(metadataSourceOptions),
                                                             feedbackProperties);
+
+            return existingFeedback.getElementHeader().getGUID();
         }
     }
 

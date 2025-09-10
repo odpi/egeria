@@ -10,6 +10,7 @@ import org.odpi.openmetadata.frameworks.openmetadata.properties.RelationshipProp
 import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.processes.actions.ActionTargetProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.actors.*;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.DataSetContentProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.glossaries.GlossaryTermRelationshipProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.governance.governanceactions.TargetForGovernanceActionProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.processes.connectors.CatalogTargetProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.reports.ImpactedResourceProperties;
@@ -29,7 +30,6 @@ import org.odpi.openmetadata.frameworks.openmetadata.properties.externalidentifi
 import org.odpi.openmetadata.frameworks.openmetadata.properties.externalreferences.CitedDocumentLinkProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.externalreferences.ExternalReferenceLinkProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.externalreferences.MediaReferenceProperties;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.glossaries.GlossaryTermRelationship;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.governance.*;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.implementations.ImplementationResourceProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.implementations.ImplementedByProperties;
@@ -557,35 +557,35 @@ public class OpenMetadataRelationshipBuilder
                                                                      foreignKeyProperties.getSource());
 
             }
-            else if (properties instanceof GlossaryTermRelationship glossaryTermRelationship)
+            else if (properties instanceof GlossaryTermRelationshipProperties glossaryTermRelationshipProperties)
             {
                 elementProperties = propertyHelper.addStringProperty(elementProperties,
                                                                      OpenMetadataProperty.EXPRESSION.name,
-                                                                     glossaryTermRelationship.getExpression());
+                                                                     glossaryTermRelationshipProperties.getExpression());
 
                 elementProperties = propertyHelper.addIntProperty(elementProperties,
                                                                   OpenMetadataProperty.CONFIDENCE.name,
-                                                                  glossaryTermRelationship.getConfidence());
+                                                                  glossaryTermRelationshipProperties.getConfidence());
 
                 elementProperties = propertyHelper.addStringProperty(elementProperties,
                                                                      OpenMetadataProperty.DESCRIPTION.name,
-                                                                     glossaryTermRelationship.getDescription());
+                                                                     glossaryTermRelationshipProperties.getDescription());
 
-                if (glossaryTermRelationship.getStatus() != null)
+                if (glossaryTermRelationshipProperties.getStatus() != null)
                 {
                     elementProperties = propertyHelper.addEnumProperty(elementProperties,
                                                                        OpenMetadataProperty.TERM_RELATIONSHIP_STATUS.name,
                                                                        GlossaryTermRelationshipStatus.getOpenTypeName(),
-                                                                       glossaryTermRelationship.getStatus().getName());
+                                                                       glossaryTermRelationshipProperties.getStatus().getName());
                 }
 
                 elementProperties = propertyHelper.addStringProperty(elementProperties,
                                                                      OpenMetadataProperty.STEWARD.name,
-                                                                     glossaryTermRelationship.getSteward());
+                                                                     glossaryTermRelationshipProperties.getSteward());
 
                 elementProperties = propertyHelper.addStringProperty(elementProperties,
                                                                      OpenMetadataProperty.SOURCE.name,
-                                                                     glossaryTermRelationship.getSource());
+                                                                     glossaryTermRelationshipProperties.getSource());
             }
             else if (properties instanceof GovernanceResultsProperties governanceResultsProperties)
             {

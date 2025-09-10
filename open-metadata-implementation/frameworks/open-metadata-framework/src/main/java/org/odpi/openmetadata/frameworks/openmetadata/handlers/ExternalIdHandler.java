@@ -8,10 +8,7 @@ import org.odpi.openmetadata.frameworks.openmetadata.client.OpenMetadataClient;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
-import org.odpi.openmetadata.frameworks.openmetadata.mermaid.ExternalIdMermaidGraphBuilder;
-import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.ExternalIdElement;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.OpenMetadataRootElement;
-import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.RelatedMetadataElementSummary;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.ClassificationProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.RelationshipProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.externalidentifiers.ExternalIdLinkProperties;
@@ -20,7 +17,10 @@ import org.odpi.openmetadata.frameworks.openmetadata.search.*;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 
-import java.util.*;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+import java.util.Map;
 
 /**
  * ExternalIdHandler describes how to maintain and query external identifiers.
@@ -123,9 +123,9 @@ public class ExternalIdHandler extends OpenMetadataHandlerBase
      * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    public void updateExternalId(String             userId,
-                                 String             externalIdGUID,
-                                 UpdateOptions      updateOptions,
+    public void updateExternalId(String               userId,
+                                 String               externalIdGUID,
+                                 UpdateOptions        updateOptions,
                                  ExternalIdProperties properties) throws InvalidParameterException,
                                                                          PropertyServerException,
                                                                          UserNotAuthorizedException
@@ -260,9 +260,8 @@ public class ExternalIdHandler extends OpenMetadataHandlerBase
         final String methodName = "getExternalIdsByName";
 
         List<String> propertyNames = Arrays.asList(OpenMetadataProperty.QUALIFIED_NAME.name,
-                                                   OpenMetadataProperty.USER_ID.name,
-                                                   OpenMetadataProperty.NETWORK_ADDRESS.name,
-                                                   OpenMetadataProperty.DISTINGUISHED_NAME.name);
+                                                   OpenMetadataProperty.DISPLAY_NAME.name,
+                                                   OpenMetadataProperty.IDENTIFIER.name);
 
         return super.getRootElementsByName(userId, name, propertyNames, queryOptions, methodName);
     }
@@ -292,11 +291,11 @@ public class ExternalIdHandler extends OpenMetadataHandlerBase
 
 
     /**
-     * Retrieve the list of externalId metadata elements with a matching networkAddress.
+     * Retrieve the list of externalId metadata elements with a matching identifier.
      * There are no wildcards supported on this request.
      *
      * @param userId         userId of user making request
-     * @param networkAddress networkAddress to search for
+     * @param identifier identifier to search for
      * @param queryOptions           multiple options to control the query
      *
      * @return a list of elements
@@ -305,21 +304,21 @@ public class ExternalIdHandler extends OpenMetadataHandlerBase
      * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    public List<OpenMetadataRootElement> getExternalIdsByNetworkAddress(String       userId,
-                                                                        String       networkAddress,
-                                                                        QueryOptions queryOptions) throws InvalidParameterException,
-                                                                                                          UserNotAuthorizedException,
-                                                                                                          PropertyServerException
+    public List<OpenMetadataRootElement> getExternalIdsByIdentifier(String       userId,
+                                                                    String       identifier,
+                                                                    QueryOptions queryOptions) throws InvalidParameterException,
+                                                                                                      UserNotAuthorizedException,
+                                                                                                      PropertyServerException
     {
-        final String methodName = "getExternalIdsByNetworkAddress";
-        final String nameParameterName = "networkAddress";
+        final String methodName = "getExternalIdsByIdentifier";
+        final String nameParameterName = "identifier";
 
         propertyHelper.validateUserId(userId, methodName);
-        propertyHelper.validateMandatoryName(networkAddress, nameParameterName, methodName);
+        propertyHelper.validateMandatoryName(identifier, nameParameterName, methodName);
 
-        List<String> propertyNames = Collections.singletonList(OpenMetadataProperty.NETWORK_ADDRESS.name);
+        List<String> propertyNames = Collections.singletonList(OpenMetadataProperty.IDENTIFIER.name);
 
-        return super.getRootElementsByName(userId, networkAddress, propertyNames, queryOptions, methodName);
+        return super.getRootElementsByName(userId, identifier, propertyNames, queryOptions, methodName);
     }
 
 
@@ -327,7 +326,7 @@ public class ExternalIdHandler extends OpenMetadataHandlerBase
      * Retrieve the list of externalId metadata elements that are attached to a specific infrastructure element.
      *
      * @param userId         userId of user making request
-     * @param infrastructureGUID element to search for
+     * @param elementGUID element to search for
      * @param queryOptions multiple options to control the query
      *
      * @return list of matching metadata elements
@@ -336,23 +335,23 @@ public class ExternalIdHandler extends OpenMetadataHandlerBase
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public List<OpenMetadataRootElement> getExternalIdsForInfrastructure(String       userId,
-                                                                         String       infrastructureGUID,
-                                                                         QueryOptions queryOptions) throws InvalidParameterException,
-                                                                                                           UserNotAuthorizedException,
-                                                                                                           PropertyServerException
+    public List<OpenMetadataRootElement> getExternalIdsForElement(String       userId,
+                                                                  String       elementGUID,
+                                                                  QueryOptions queryOptions) throws InvalidParameterException,
+                                                                                                    UserNotAuthorizedException,
+                                                                                                    PropertyServerException
     {
-        final String methodName = "getExternalIdsForInfrastructure";
-        final String parentGUIDParameterName = "infrastructureGUID";
+        final String methodName = "getExternalIdsForElement";
+        final String parentGUIDParameterName = "elementGUID";
 
         propertyHelper.validateUserId(userId, methodName);
-        propertyHelper.validateGUID(infrastructureGUID, parentGUIDParameterName, methodName);
+        propertyHelper.validateGUID(elementGUID, parentGUIDParameterName, methodName);
 
         return super.getRelatedRootElements(userId,
-                                            infrastructureGUID,
+                                            elementGUID,
                                             parentGUIDParameterName,
                                             1,
-                                            OpenMetadataType.SERVER_ENDPOINT_RELATIONSHIP.typeName,
+                                            OpenMetadataType.EXTERNAL_ID_LINK_RELATIONSHIP.typeName,
                                             queryOptions,
                                             methodName);
     }
@@ -378,64 +377,5 @@ public class ExternalIdHandler extends OpenMetadataHandlerBase
         final String methodName = "findExternalIds";
 
         return super.findRootElements(userId, searchString, searchOptions, methodName);
-    }
-
-
-    /**
-     * Add relevant relationships and mermaid graph to the returned element.
-     *
-     * @param rootElement new root element
-     * @return root element with graph
-     */
-    protected OpenMetadataRootElement addMermaidToRootElement(OpenMetadataRootElement rootElement)
-    {
-        if (rootElement != null)
-        {
-            ExternalIdElement externalIdElement = new ExternalIdElement(rootElement);
-
-            List<RelatedMetadataElementSummary> deployedAPIs = new ArrayList<>();
-            List<RelatedMetadataElementSummary> connections  = new ArrayList<>();
-            List<RelatedMetadataElementSummary> visibleInNetworks = new ArrayList<>();
-            List<RelatedMetadataElementSummary> others                = new ArrayList<>();
-
-            if (externalIdElement.getOtherRelatedElements() != null)
-            {
-                for (RelatedMetadataElementSummary relatedMetadataElement : externalIdElement.getOtherRelatedElements())
-                {
-                    if (relatedMetadataElement != null)
-                    {
-                        if ((propertyHelper.isTypeOf(relatedMetadataElement.getRelationshipHeader(), OpenMetadataType.API_ENDPOINT_RELATIONSHIP.typeName) && (relatedMetadataElement.getRelatedElementAtEnd1())))
-                        {
-                            deployedAPIs.add(relatedMetadataElement);
-                        }
-                        else
-                        {
-                            others.add(relatedMetadataElement);
-                        }
-                    }
-                }
-            }
-
-            if (! deployedAPIs.isEmpty())
-            {
-                externalIdElement.setExternalIdScope(deployedAPIs);
-            }
-            if (! others.isEmpty())
-            {
-                externalIdElement.setOtherRelatedElements(others);
-            }
-            else
-            {
-                externalIdElement.setOtherRelatedElements(null);
-            }
-
-            ExternalIdMermaidGraphBuilder graphBuilder = new ExternalIdMermaidGraphBuilder(externalIdElement);
-
-            externalIdElement.setMermaidGraph(graphBuilder.getMermaidGraph());
-
-            return externalIdElement;
-        }
-
-        return null;
     }
 }

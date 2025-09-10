@@ -7,6 +7,7 @@ import org.odpi.openmetadata.frameworks.openmetadata.properties.RelationshipBean
 import org.odpi.openmetadata.frameworks.openmetadata.properties.actors.ITProfileProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.actors.PersonProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.actors.TeamProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.digitalbusiness.DigitalProductDependencyProperties;
 
 import java.util.Objects;
 
@@ -29,12 +30,13 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
                 @JsonSubTypes.Type(value = ProcessCallProperties.class, name = "ProcessCallProperties"),
                 @JsonSubTypes.Type(value = LineageMappingProperties.class, name = "LineageMappingProperties"),
                 @JsonSubTypes.Type(value = DataMappingProperties.class, name = "DataMappingProperties"),
+                @JsonSubTypes.Type(value = DigitalProductDependencyProperties.class, name = "DigitalProductDependencyProperties"),
         })
 public class LineageRelationshipProperties extends RelationshipBeanProperties
 {
     private String iscQualifiedName = null;
     private String label            = null;
-    private String description     = null;
+    private String description      = null;
 
 
     /**

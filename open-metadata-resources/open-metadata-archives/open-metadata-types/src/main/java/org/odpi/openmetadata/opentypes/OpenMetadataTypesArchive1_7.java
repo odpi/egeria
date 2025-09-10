@@ -574,6 +574,7 @@ public class OpenMetadataTypesArchive1_7
     private void add0710DigitalServices()
     {
         this.archiveBuilder.addEntityDef(getDigitalProductEntity());
+        this.archiveBuilder.addEntityDef(getDigitalProductCatalogEntity());
         this.archiveBuilder.addRelationshipDef(getDigitalProductDependencyRelationship());
     }
 
@@ -607,6 +608,14 @@ public class OpenMetadataTypesArchive1_7
 
         return entityDef;
     }
+
+
+    private EntityDef getDigitalProductCatalogEntity()
+    {
+        return archiveHelper.getDefaultEntityDef(OpenMetadataType.DIGITAL_PRODUCT_CATALOG,
+                                                 this.archiveBuilder.getEntityDef(OpenMetadataType.COLLECTION.typeName));
+    }
+
 
 
     private RelationshipDef getDigitalProductDependencyRelationship()
@@ -653,6 +662,7 @@ public class OpenMetadataTypesArchive1_7
 
         properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.LABEL));
         properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.DESCRIPTION));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.ISC_QUALIFIED_NAME));
 
         relationshipDef.setPropertiesDefinition(properties);
 
@@ -677,6 +687,7 @@ public class OpenMetadataTypesArchive1_7
         return archiveHelper.getDefaultEntityDef(OpenMetadataType.DIGITAL_PRODUCT_MANAGER,
                                                  this.archiveBuilder.getEntityDef(OpenMetadataType.PERSON_ROLE.typeName));
     }
+
 
 
     private RelationshipDef getDigitalSupportRelationship()

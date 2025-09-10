@@ -310,7 +310,7 @@ public class FileClassifier
             {
                 if (consistentValue != null)
                 {
-                    if (consistentValue.getCategory().contains(OpenMetadataProperty.FILE_TYPE.name))
+                    if (consistentValue.getNamespace().contains(OpenMetadataProperty.FILE_TYPE.name))
                     {
                         fileReferenceDataCache.fileType = consistentValue.getPreferredValue();
 
@@ -341,7 +341,7 @@ public class FileClassifier
                             {
                                 if (consistentFileTypeValue != null)
                                 {
-                                    if (consistentFileTypeValue.getCategory().contains(OpenMetadataProperty.DEPLOYED_IMPLEMENTATION_TYPE.name))
+                                    if (consistentFileTypeValue.getNamespace().contains(OpenMetadataProperty.DEPLOYED_IMPLEMENTATION_TYPE.name))
                                     {
                                         fileReferenceDataCache.deployedImplementationType = consistentFileTypeValue.getPreferredValue();
                                     }
@@ -349,7 +349,7 @@ public class FileClassifier
                             }
                         }
                     }
-                    else if (consistentValue.getCategory().contains(OpenMetadataProperty.DEPLOYED_IMPLEMENTATION_TYPE.name))
+                    else if (consistentValue.getNamespace().contains(OpenMetadataProperty.DEPLOYED_IMPLEMENTATION_TYPE.name))
                     {
                         fileReferenceDataCache.deployedImplementationType = consistentValue.getPreferredValue();
                     }

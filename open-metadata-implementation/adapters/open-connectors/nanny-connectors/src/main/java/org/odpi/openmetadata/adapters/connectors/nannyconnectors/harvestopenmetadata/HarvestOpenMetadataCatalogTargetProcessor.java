@@ -24,7 +24,12 @@ import org.odpi.openmetadata.frameworks.opengovernance.properties.CatalogTarget;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.*;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.AssetProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.externalidentifiers.ExternalIdProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.governance.DigitalResourceOriginProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.governance.GovernanceClassificationBase;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.governance.OwnershipProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.schema.SchemaAttributeProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.schema.TypeEmbeddedAttributeProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.security.ZoneMembershipProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.search.*;
 import org.odpi.openmetadata.frameworks.integration.connectors.CatalogTargetProcessorBase;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.ElementOriginCategory;
@@ -172,8 +177,8 @@ public class HarvestOpenMetadataCatalogTargetProcessor extends CatalogTargetProc
             /*
              * These clients provide access to open metadata.
              */
-            AssetClient    dataAssetClient = integrationContext.getAssetClient(OpenMetadataType.DATA_ASSET.typeName);
-            GlossaryClient glossaryClient = integrationContext.getGlossaryClient();
+            AssetClient      dataAssetClient = integrationContext.getAssetClient(OpenMetadataType.DATA_ASSET.typeName);
+            CollectionClient glossaryClient = integrationContext.getCollectionClient(OpenMetadataType.GLOSSARY.typeName);
 
             /*
              * Step through the catalogued metadata elements for each interesting type.  Start with data assets.
@@ -196,7 +201,7 @@ public class HarvestOpenMetadataCatalogTargetProcessor extends CatalogTargetProc
             }
 
             workingSearchOptions.setStartFrom(0);
-            List<OpenMetadataRootElement> glossaryElements = glossaryClient.findGlossaries(null, workingSearchOptions);
+            List<OpenMetadataRootElement> glossaryElements = glossaryClient.findCollections(null, workingSearchOptions);
 
             while (glossaryElements != null)
             {
@@ -207,7 +212,7 @@ public class HarvestOpenMetadataCatalogTargetProcessor extends CatalogTargetProc
 
                 workingSearchOptions.setStartFrom(workingSearchOptions.getStartFrom() + openMetadataStore.getMaxPagingSize());
 
-                glossaryElements = glossaryClient.findGlossaries(null, workingSearchOptions);
+                glossaryElements = glossaryClient.findCollections(null, workingSearchOptions);
             }
 
 
@@ -2156,13 +2161,19 @@ public class HarvestOpenMetadataCatalogTargetProcessor extends CatalogTargetProc
                     }
                     if (elementHeader.getOwnership() != null)
                     {
-                        addValueToRow(openMetadataRecord, HarvestOpenMetadataColumn.OWNER_GUID, this.getOpenMetadataStringProperty(elementHeader.getOwnership().getClassificationProperties(), OpenMetadataProperty.OWNER.name, 80));
-                        addValueToRow(openMetadataRecord, HarvestOpenMetadataColumn.OWNER_TYPE_NAME, this.getOpenMetadataStringProperty(elementHeader.getOwnership().getClassificationProperties(), OpenMetadataProperty.OWNER_TYPE_NAME.name, 40));
+                        if (elementHeader.getOwnership().getClassificationProperties() instanceof OwnershipProperties ownershipProperties)
+                        {
+                            addValueToRow(openMetadataRecord, HarvestOpenMetadataColumn.OWNER_GUID, ownershipProperties.getOwner());
+                            addValueToRow(openMetadataRecord, HarvestOpenMetadataColumn.OWNER_TYPE_NAME, ownershipProperties.getOwnerTypeName());
+                        }
                     }
                     if (elementHeader.getDigitalResourceOrigin() != null)
                     {
-                        addValueToRow(openMetadataRecord, HarvestOpenMetadataColumn.ORIGIN_ORG_GUID, this.getOpenMetadataStringProperty(elementHeader.getDigitalResourceOrigin().getClassificationProperties(), OpenMetadataProperty.ORGANIZATION.name, 80));
-                        addValueToRow(openMetadataRecord, HarvestOpenMetadataColumn.ORIGIN_BIZ_CAP_GUID, this.getOpenMetadataStringProperty(elementHeader.getDigitalResourceOrigin().getClassificationProperties(), "businessCapability", 80));
+                        if (elementHeader.getDigitalResourceOrigin().getClassificationProperties() instanceof DigitalResourceOriginProperties digitalResourceOriginProperties)
+                        {
+                            addValueToRow(openMetadataRecord, HarvestOpenMetadataColumn.ORIGIN_ORG_GUID, digitalResourceOriginProperties.getOrganization());
+                            addValueToRow(openMetadataRecord, HarvestOpenMetadataColumn.ORIGIN_BIZ_CAP_GUID, digitalResourceOriginProperties.getBusinessCapability());
+                        }
                     }
                     if (elementHeader.getMemento() != null)
                     {
@@ -2237,28 +2248,26 @@ public class HarvestOpenMetadataCatalogTargetProcessor extends CatalogTargetProc
      * @param classificationProperties properties from the relevant classification
      * @return colon separated zone names (colons at either end too)
      */
-    private String getZoneNames(Map<String, Object> classificationProperties)
+    private String getZoneNames(ClassificationBeanProperties classificationProperties)
     {
-        if (classificationProperties != null)
+        if (classificationProperties instanceof ZoneMembershipProperties zoneMembershipProperties)
         {
-            if (classificationProperties.get("zoneMembership") instanceof List<?> zoneMembership)
+            StringBuilder zonesString = new StringBuilder(":");
+
+            if ((zoneMembershipProperties.getZoneMembership() == null) || (zoneMembershipProperties.getZoneMembership().isEmpty()))
             {
-                StringBuilder zonesString = new StringBuilder(":");
-
-                if (zoneMembership.isEmpty())
-                {
-                    zonesString.append(":");
-                }
-                else
-                {
-                    for (Object zone : zoneMembership)
-                    {
-                        zonesString.append(zone).append(":");
-                    }
-                }
-
-                return zonesString.toString();
+                zonesString.append(":");
             }
+            else
+            {
+                for (Object zone : zoneMembershipProperties.getZoneMembership())
+                {
+                    zonesString.append(zone).append(":");
+                }
+            }
+
+            return zonesString.toString();
+
         }
 
         return "::";
@@ -2271,11 +2280,11 @@ public class HarvestOpenMetadataCatalogTargetProcessor extends CatalogTargetProc
      * @param classificationProperties properties from the relevant classification
      * @return integer
      */
-    private Integer getStatusIdentifier(Map<String, Object> classificationProperties)
+    private Integer getStatusIdentifier(ClassificationBeanProperties classificationProperties)
     {
-        if (classificationProperties.get("statusIdentifier") instanceof Integer statusIdentifier)
+        if (classificationProperties instanceof GovernanceClassificationBase governanceClassification)
         {
-            return statusIdentifier;
+            return governanceClassification.getStatus();
         }
         else
         {
@@ -3236,9 +3245,9 @@ public class HarvestOpenMetadataCatalogTargetProcessor extends CatalogTargetProc
             addValueToRow(openMetadataRecord, HarvestOpenMetadataColumn.DESCRIPTION, schemaAttributeProperties.getDescription());
         }
 
-        if ((schemaAttributeElement.getElementHeader().getSchemaType() != null) && (schemaAttributeElement.getElementHeader().getSchemaType().getClassificationProperties() != null))
+        if ((schemaAttributeElement.getElementHeader().getSchemaType() != null) && (schemaAttributeElement.getElementHeader().getSchemaType().getClassificationProperties() instanceof TypeEmbeddedAttributeProperties typeEmbeddedAttributeProperties))
         {
-            addValueToRow(openMetadataRecord, HarvestOpenMetadataColumn.DATA_FIELD_TYPE, schemaAttributeElement.getElementHeader().getSchemaType().getClassificationProperties().get(OpenMetadataProperty.DATA_TYPE.name));
+            addValueToRow(openMetadataRecord, HarvestOpenMetadataColumn.DATA_FIELD_TYPE, typeEmbeddedAttributeProperties.getDataType());
         }
 
         addValueToRow(openMetadataRecord, HarvestOpenMetadataColumn.HAS_PROFILE, hasProfile);
@@ -3444,8 +3453,11 @@ public class HarvestOpenMetadataCatalogTargetProcessor extends CatalogTargetProc
 
             if (elementHeader.getOwnership() != null)
             {
-                addValueToRow(openMetadataRecord, HarvestOpenMetadataColumn.OWNER_GUID, this.getOpenMetadataStringProperty(elementHeader.getOwnership().getClassificationProperties(), OpenMetadataProperty.OWNER.name, 80));
-                addValueToRow(openMetadataRecord, HarvestOpenMetadataColumn.OWNER_TYPE_NAME, this.getOpenMetadataStringProperty(elementHeader.getOwnership().getClassificationProperties(), OpenMetadataProperty.OWNER_TYPE_NAME.name, 40));
+                if (elementHeader.getOwnership().getClassificationProperties() instanceof OwnershipProperties ownershipProperties)
+                {
+                    addValueToRow(openMetadataRecord, HarvestOpenMetadataColumn.OWNER_GUID, ownershipProperties.getOwner());
+                    addValueToRow(openMetadataRecord, HarvestOpenMetadataColumn.OWNER_TYPE_NAME, ownershipProperties.getOwnerTypeName());
+                }
             }
         }
 
@@ -3605,8 +3617,11 @@ public class HarvestOpenMetadataCatalogTargetProcessor extends CatalogTargetProc
 
             if (elementHeader.getOwnership() != null)
             {
-                addValueToRow(openMetadataRecord, HarvestOpenMetadataColumn.OWNER_GUID, this.getOpenMetadataStringProperty(elementHeader.getOwnership().getClassificationProperties(), OpenMetadataProperty.OWNER.name, 80));
-                addValueToRow(openMetadataRecord, HarvestOpenMetadataColumn.OWNER_TYPE_NAME, this.getOpenMetadataStringProperty(elementHeader.getOwnership().getClassificationProperties(), OpenMetadataProperty.OWNER_TYPE_NAME.name, 40));
+                if (elementHeader.getOwnership().getClassificationProperties() instanceof OwnershipProperties ownershipProperties)
+                {
+                    addValueToRow(openMetadataRecord, HarvestOpenMetadataColumn.OWNER_GUID, ownershipProperties.getOwner());
+                    addValueToRow(openMetadataRecord, HarvestOpenMetadataColumn.OWNER_TYPE_NAME, ownershipProperties.getOwnerTypeName());
+                }
             }
             if (elementHeader.getConfidentiality() != null)
             {

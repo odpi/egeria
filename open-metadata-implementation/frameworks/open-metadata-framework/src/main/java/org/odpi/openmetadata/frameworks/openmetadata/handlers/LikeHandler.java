@@ -48,21 +48,22 @@ public class LikeHandler extends FeedbackHandler
      * @param elementGUID   unique identifier for the element
      * @param updateOptions provides a structure for the additional options when updating an element.
      * @param properties properties
+     * @return unique identifier of the new like element
      *
      * @throws InvalidParameterException one of the parameters is null or invalid.
      * @throws PropertyServerException there is a problem adding the element properties to the property server.
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    public void addLikeToElement(String                            userId,
-                                 String                            elementGUID,
-                                 UpdateOptions                     updateOptions,
-                                 LikeProperties                    properties) throws InvalidParameterException,
+    public String addLikeToElement(String                            userId,
+                                   String                            elementGUID,
+                                   UpdateOptions                     updateOptions,
+                                   LikeProperties                    properties) throws InvalidParameterException,
                                                                                       PropertyServerException,
                                                                                       UserNotAuthorizedException
     {
         final String methodName = "addLikeToElement";
 
-        super.addFeedbackToElement(userId,
+        return super.addFeedbackToElement(userId,
                                    elementGUID,
                                    OpenMetadataType.LIKE.typeName,
                                    OpenMetadataType.ATTACHED_LIKE_RELATIONSHIP.typeName,
@@ -78,16 +79,17 @@ public class LikeHandler extends FeedbackHandler
      * @param userId   userId of user making request.
      * @param elementGUID unique identifier for the like object.
      * @param metadataSourceOptions  options to control access to open metadata
+     * @return guid of like
      *
      * @throws InvalidParameterException one of the parameters is null or invalid.
      * @throws PropertyServerException there is a problem updating the element properties in the property server.
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    public void removeLikeFromElement(String                userId,
-                                      String                elementGUID,
-                                      MetadataSourceOptions metadataSourceOptions) throws InvalidParameterException,
-                                                                                          PropertyServerException,
-                                                                                          UserNotAuthorizedException
+    public String removeLikeFromElement(String                userId,
+                                        String                elementGUID,
+                                        MetadataSourceOptions metadataSourceOptions) throws InvalidParameterException,
+                                                                                            PropertyServerException,
+                                                                                            UserNotAuthorizedException
     {
         final String methodName = "removeLikeFromElement";
 
@@ -103,7 +105,11 @@ public class LikeHandler extends FeedbackHandler
             openMetadataClient.deleteMetadataElementInStore(userId,
                                                             existingLike.getElementHeader().getGUID(),
                                                             deleteOptions);
+
+            return existingLike.getElementHeader().getGUID();
         }
+
+        return null;
     }
 
 

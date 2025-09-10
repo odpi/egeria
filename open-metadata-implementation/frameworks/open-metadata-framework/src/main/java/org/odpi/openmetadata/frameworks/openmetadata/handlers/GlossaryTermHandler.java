@@ -237,9 +237,9 @@ public class GlossaryTermHandler extends OpenMetadataHandlerBase
                                       String                   glossaryTermOneGUID,
                                       String                   glossaryTermTwoGUID,
                                       MetadataSourceOptions    metadataSourceOptions,
-                                      GlossaryTermRelationship relationshipProperties) throws InvalidParameterException,
-                                                                                              PropertyServerException,
-                                                                                              UserNotAuthorizedException
+                                      GlossaryTermRelationshipProperties relationshipProperties) throws InvalidParameterException,
+                                                                                                        PropertyServerException,
+                                                                                                        UserNotAuthorizedException
     {
         final String methodName                = "setupTermRelationship";
         final String end1GUIDParameterName     = "glossaryTermOneGUID";
@@ -278,9 +278,9 @@ public class GlossaryTermHandler extends OpenMetadataHandlerBase
                                       String                   glossaryTermOneGUID,
                                       String                   glossaryTermTwoGUID,
                                       UpdateOptions    updateOptions,
-                                      GlossaryTermRelationship relationshipProperties) throws InvalidParameterException,
-                                                                                              PropertyServerException,
-                                                                                              UserNotAuthorizedException
+                                      GlossaryTermRelationshipProperties relationshipProperties) throws InvalidParameterException,
+                                                                                                        PropertyServerException,
+                                                                                                        UserNotAuthorizedException
     {
         final String methodName                = "updateTermRelationship";
         final String end1GUIDParameterName     = "glossaryTermOneGUID";

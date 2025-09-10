@@ -22,8 +22,8 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class ValidMetadataValue
 {
-    private String  category       = null;
-    private String  displayName    = null;
+    private String namespace   = null;
+    private String displayName = null;
     private String  description    = null;
     private String  preferredValue = null;
     private String  dataType          = null;
@@ -52,7 +52,7 @@ public class ValidMetadataValue
     {
         if (template != null)
         {
-            category = template.getCategory();
+            namespace   = template.getNamespace();
             displayName = template.getDisplayName();
             description = template.getDescription();
             preferredValue = template.getPreferredValue();
@@ -71,20 +71,20 @@ public class ValidMetadataValue
      *
      * @return string name
      */
-    public String getCategory()
+    public String getNamespace()
     {
-        return category;
+        return namespace;
     }
 
 
     /**
-     * Set up the category of reference data.
+     * Set up the namespace of reference data.
      *
-     * @param category string name
+     * @param namespace string name
      */
-    public void setCategory(String category)
+    public void setNamespace(String namespace)
     {
-        this.category = category;
+        this.namespace = namespace;
     }
 
 
@@ -297,7 +297,7 @@ public class ValidMetadataValue
     public String toString()
     {
         return "ValidMetadataValue{" +
-                       "category='" + category + '\'' +
+                       "category='" + namespace + '\'' +
                        ", displayName='" + displayName + '\'' +
                        ", description='" + description + '\'' +
                        ", preferredValue='" + preferredValue + '\'' +
@@ -330,7 +330,7 @@ public class ValidMetadataValue
         }
         return userDefinedStatus == that.userDefinedStatus &&
                        isCaseSensitive == that.isCaseSensitive &&
-                       Objects.equals(category, that.category) &&
+                       Objects.equals(namespace, that.namespace) &&
                        Objects.equals(displayName, that.displayName) &&
                        Objects.equals(description, that.description) &&
                        Objects.equals(preferredValue, that.preferredValue) &&
@@ -349,6 +349,6 @@ public class ValidMetadataValue
     @Override
     public int hashCode()
     {
-        return Objects.hash(category, displayName, description, preferredValue, dataType, userDefinedStatus, isCaseSensitive, additionalProperties, effectiveFrom, effectiveTo);
+        return Objects.hash(namespace, displayName, description, preferredValue, dataType, userDefinedStatus, isCaseSensitive, additionalProperties, effectiveFrom, effectiveTo);
     }
 }

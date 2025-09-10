@@ -164,7 +164,7 @@ public class CSVFileStoreConnector extends BasicFileStoreConnector implements CS
 
             for (String columnName : columnNames)
             {
-                TabularColumnDescription columnDescription = new TabularColumnDescription(columnName, DataType.STRING, null);
+                TabularColumnDescription columnDescription = new TabularColumnDescription(columnName, DataType.STRING, null, false);
 
                 columnDescriptions.add(columnDescription);
             }
@@ -354,6 +354,19 @@ public class CSVFileStoreConnector extends BasicFileStoreConnector implements CS
                                         error,
                                         fileStoreName);
         }
+    }
+
+
+    /**
+     * Remove the requested data record.  The first data record is record 0.
+     *
+     * @param rowNumber long
+     * @throws ConnectorCheckedException there is a problem accessing the data.
+     */
+    @Override
+    public void deleteRecord(long rowNumber) throws ConnectorCheckedException
+    {
+        // todo
     }
 
 

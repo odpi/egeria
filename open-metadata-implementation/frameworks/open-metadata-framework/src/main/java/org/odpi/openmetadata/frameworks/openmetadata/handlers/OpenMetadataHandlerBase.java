@@ -13,6 +13,7 @@ import org.odpi.openmetadata.frameworks.openmetadata.converters.SolutionComponen
 import org.odpi.openmetadata.frameworks.openmetadata.enums.ElementStatus;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.*;
 import org.odpi.openmetadata.frameworks.openmetadata.mermaid.OpenMetadataRootMermaidGraphBuilder;
+import org.odpi.openmetadata.frameworks.openmetadata.mermaid.SolutionBlueprintMermaidGraphBuilder;
 import org.odpi.openmetadata.frameworks.openmetadata.mermaid.SolutionComponentMermaidGraphBuilder;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.*;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.*;
@@ -913,7 +914,7 @@ public class OpenMetadataHandlerBase
                                                                                   this.getElementRelatedElements(userId, openMetadataElement, queryOptions),
                                                                                   methodName);
 
-                return addMermaidToRootElement(userId, rootElement, queryOptions);
+                return populateRootElement(userId, rootElement, queryOptions);
             }
             catch (Exception error)
             {
@@ -1058,7 +1059,7 @@ public class OpenMetadataHandlerBase
                                                                                   this.getElementRelatedElements(userId, relatedMetadataElement.getElement(), queryOptions),
                                                                                   methodName);
 
-                return addMermaidToRootElement(userId, rootElement, queryOptions);
+                return populateRootElement(userId, rootElement, queryOptions);
             }
             catch (Exception error)
             {
@@ -1098,9 +1099,11 @@ public class OpenMetadataHandlerBase
      * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    protected OpenMetadataRootElement addMermaidToRootElement(String                  userId,
-                                                              OpenMetadataRootElement rootElement,
-                                                              QueryOptions            queryOptions) throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException
+    protected OpenMetadataRootElement populateRootElement(String                  userId,
+                                                          OpenMetadataRootElement rootElement,
+                                                          QueryOptions            queryOptions) throws InvalidParameterException,
+                                                                                                       PropertyServerException,
+                                                                                                       UserNotAuthorizedException
     {
         if (rootElement != null)
         {
@@ -1193,6 +1196,46 @@ public class OpenMetadataHandlerBase
                                                                         queryOptions,
                                                                         1));
 
+            rootElement.setContainsSolutionComponents(this.getElementHierarchies(userId,
+                                                                                 rootElement.getElementHeader().getGUID(),
+                                                                                 rootElement.getContainsSolutionComponents(),
+                                                                                 1,
+                                                                                 OpenMetadataType.SOLUTION_COMPOSITION_RELATIONSHIP.typeName,
+                                                                                 List.of(OpenMetadataType.SOLUTION_COMPONENT_ACTOR_RELATIONSHIP.typeName,
+                                                                                         OpenMetadataType.SOLUTION_LINKING_WIRE_RELATIONSHIP.typeName,
+                                                                                         OpenMetadataType.SOLUTION_COMPONENT_PORT_RELATIONSHIP.typeName,
+                                                                                         OpenMetadataType.SOLUTION_PORT_DELEGATION_RELATIONSHIP.typeName),
+                                                                                 queryOptions,
+                                                                                 1));
+
+            return addMermaidToRootElement(userId, rootElement, queryOptions);
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Add a standard mermaid graph to the root element.  This method may be overridden by the subclasses if
+     * they have a more fancy graph to display.
+     *
+     * @param userId calling user
+     * @param rootElement new root element
+     * @param queryOptions options from the caller
+     * @return root element with graph
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    @SuppressWarnings(value = "unused")
+    protected OpenMetadataRootElement addMermaidToRootElement(String                  userId,
+                                                              OpenMetadataRootElement rootElement,
+                                                              QueryOptions            queryOptions) throws InvalidParameterException,
+                                                                                                           PropertyServerException,
+                                                                                                           UserNotAuthorizedException
+    {
+        if (rootElement != null)
+        {
             OpenMetadataRootMermaidGraphBuilder graphBuilder = new OpenMetadataRootMermaidGraphBuilder(rootElement);
 
             rootElement.setMermaidGraph(graphBuilder.getMermaidGraph());
@@ -1305,7 +1348,6 @@ public class OpenMetadataHandlerBase
         }
     }
 
-
     /**
      * Return the nested elements to the required depth.
      *
@@ -1313,7 +1355,7 @@ public class OpenMetadataHandlerBase
      * @param startingElementGUID guid where the query started
      * @param retrievedElements elements to query against
      * @param parentEnd start at end 1 or 2?
-     * @param relationshipName name of the relationship to follow
+     * @param relationshipName name of the relationship to iteratively follow
      * @param queryOptions callers query options
      * @param currentDepth how far away are we from the original element?
      * @return the hierarchy under/over this element
@@ -1326,6 +1368,37 @@ public class OpenMetadataHandlerBase
                                                                         List<RelatedMetadataElementSummary> retrievedElements,
                                                                         int                                 parentEnd,
                                                                         String                              relationshipName,
+                                                                        QueryOptions                        queryOptions,
+                                                                        int                                 currentDepth) throws InvalidParameterException,
+                                                                                                                                 PropertyServerException,
+                                                                                                                                 UserNotAuthorizedException
+    {
+        return this.getElementHierarchies(userId, startingElementGUID, retrievedElements, parentEnd, relationshipName, null, queryOptions, currentDepth);
+    }
+
+
+    /**
+     * Return the nested elements to the required depth.
+     *
+     * @param userId calling user
+     * @param startingElementGUID guid where the query started
+     * @param retrievedElements elements to query against
+     * @param parentEnd start at end 1 or 2?
+     * @param relationshipName name of the relationship to iteratively follow
+     * @param sideRelationshipNames additional side relationships to capture (maybe null)
+     * @param queryOptions callers query options
+     * @param currentDepth how far away are we from the original element?
+     * @return the hierarchy under/over this element
+     * @throws InvalidParameterException  one of the parameters is invalid.
+     * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    protected List<RelatedMetadataElementSummary> getElementHierarchies(String                              userId,
+                                                                        String                              startingElementGUID,
+                                                                        List<RelatedMetadataElementSummary> retrievedElements,
+                                                                        int                                 parentEnd,
+                                                                        String                              relationshipName,
+                                                                        List<String>                        sideRelationshipNames,
                                                                         QueryOptions                        queryOptions,
                                                                         int                                 currentDepth) throws InvalidParameterException,
                                                                                                                                  PropertyServerException,
@@ -1345,6 +1418,7 @@ public class OpenMetadataHandlerBase
                                                     retrievedElement,
                                                     parentEnd,
                                                     relationshipName,
+                                                    sideRelationshipNames,
                                                     queryOptions,
                                                     currentDepth,
                                                     coveredElementsGUIDs));
@@ -1365,6 +1439,7 @@ public class OpenMetadataHandlerBase
      * @param retrievedElement element to query against
      * @param parentEnd start at end 1 or 2?
      * @param relationshipName name of the relationship to follow
+     * @param sideRelationshipNames additional side relationships to capture (maybe null)
      * @param queryOptions callers query options
      * @param currentDepth how far away are we from the original element?
      * @param coveredElementsGUIDs do not revisit elements already processed
@@ -1377,6 +1452,7 @@ public class OpenMetadataHandlerBase
                                                                 RelatedMetadataElementSummary retrievedElement,
                                                                 int                           parentEnd,
                                                                 String                        relationshipName,
+                                                                List<String>                  sideRelationshipNames,
                                                                 QueryOptions                  queryOptions,
                                                                 int                           currentDepth,
                                                                 List<String>                  coveredElementsGUIDs) throws InvalidParameterException,
@@ -1391,37 +1467,76 @@ public class OpenMetadataHandlerBase
             workingQueryOptions.setStartFrom(0);
             workingQueryOptions.setPageSize(queryOptions.getRelationshipsPageSize());
 
+            /*
+             * If there are no side relationships then we can optimise and only receive the main hierarchical relationship.
+             */
+            String receiveRelationshipName = null;
+
+            if (sideRelationshipNames == null)
+            {
+                receiveRelationshipName = relationshipName;
+            }
 
             List<RelatedMetadataElementSummary> nestedElements = new ArrayList<>();
+            List<RelatedMetadataElementSummary> sideLinks = new ArrayList<>();
 
             RelatedMetadataElementList relatedMetadataElementList = openMetadataClient.getRelatedMetadataElements(userId,
                                                                                                                   retrievedElement.getRelatedElement().getElementHeader().getGUID(),
                                                                                                                   parentEnd,
-                                                                                                                  relationshipName,
+                                                                                                                  receiveRelationshipName,
                                                                                                                   workingQueryOptions);
             if ((relatedMetadataElementList != null) && (relatedMetadataElementList.getElementList() != null))
             {
-                for (RelatedMetadataElement relatedMetadataElement : relatedMetadataElementList.getElementList())
-                {
-                    if ((relatedMetadataElement != null) && (! coveredElementsGUIDs.contains(relatedMetadataElement.getElement().getElementGUID())))
-                    {
-                        RelatedMetadataElementSummary nestedElement = propertyHelper.getRelatedElementSummary(relatedMetadataElement, methodName);
+                List<RelatedMetadataElement> relevantRelationships = this.getRelevantRelationships(relatedMetadataElementList.getElementList(), queryOptions);
 
-                        coveredElementsGUIDs.add(relatedMetadataElement.getElement().getElementGUID());
-                        nestedElements.add(getElementHierarchy(userId,
-                                                               nestedElement,
-                                                               parentEnd,
-                                                               relationshipName,
-                                                               queryOptions,
-                                                               currentDepth + 1,
-                                                               coveredElementsGUIDs));
+                for (RelatedMetadataElement relatedMetadataElement : relevantRelationships)
+                {
+                    if (relatedMetadataElement != null)
+                    {
+                        if (propertyHelper.isTypeOf(relatedMetadataElement, relationshipName))
+                        {
+                            if (! coveredElementsGUIDs.contains(relatedMetadataElement.getElement().getElementGUID()))
+                            {
+                                RelatedMetadataElementSummary nestedElement = propertyHelper.getRelatedElementSummary(relatedMetadataElement, methodName);
+
+                                coveredElementsGUIDs.add(relatedMetadataElement.getElement().getElementGUID());
+                                nestedElements.add(getElementHierarchy(userId,
+                                                                       nestedElement,
+                                                                       parentEnd,
+                                                                       relationshipName,
+                                                                       sideRelationshipNames,
+                                                                       queryOptions,
+                                                                       currentDepth + 1,
+                                                                       coveredElementsGUIDs));
+                            }
+                        }
+                        else if (sideRelationshipNames != null)
+                        {
+                            /*
+                             * Save any relevant side relationships.
+                             */
+                            for (String sideRelationshipName : sideRelationshipNames)
+                            {
+                                if (propertyHelper.isTypeOf(relatedMetadataElement, sideRelationshipName))
+                                {
+                                    sideLinks.add(propertyHelper.getRelatedElementSummary(relatedMetadataElement, methodName));
+                                }
+                            }
+                        }
                     }
                 }
             }
 
             if (! nestedElements.isEmpty())
             {
-                return new RelatedMetadataHierarchySummary(retrievedElement, nestedElements);
+                if (! sideLinks.isEmpty())
+                {
+                    return new RelatedMetadataHierarchySummary(retrievedElement, nestedElements, sideLinks);
+                }
+                else
+                {
+                    return new RelatedMetadataHierarchySummary(retrievedElement, nestedElements, null);
+                }
             }
         }
 

@@ -10,7 +10,7 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedExceptio
 import org.odpi.openmetadata.frameworks.opengovernance.GeneralGovernanceActionService;
 import org.odpi.openmetadata.frameworks.opengovernance.controls.ActionTarget;
 import org.odpi.openmetadata.frameworks.opengovernance.properties.*;
-import org.odpi.openmetadata.frameworks.openmetadata.enums.ToDoType;
+import org.odpi.openmetadata.frameworks.openmetadata.enums.ActionType;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.NewActionTarget;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.RelatedMetadataElement;
@@ -121,14 +121,14 @@ public class EvaluateAnnotationsGovernanceActionConnector extends GeneralGoverna
                                 rfaCount++;
 
                                 String toDoGUID = governanceContext.openToDo(governanceServiceName + "::" + connectorInstanceId,
-                                                                             ToDoType.REQUEST_FOR_ACTION.getDescription(),
+                                                                             ActionType.REQUEST_FOR_ACTION.getDescription(),
                                                                              "Follow the link for the request for action to discover the issue and suggested remedy.",
-                                                                             ToDoType.REQUEST_FOR_ACTION.getName(),
+                                                                             ActionType.REQUEST_FOR_ACTION.getName(),
                                                                              0,
                                                                              null,
                                                                              stewardGUID,
                                                                              reportedAnnotation.getElement().getElementGUID(),
-                                                                             ToDoType.REQUEST_FOR_ACTION.getActionTargetName());
+                                                                             ActionType.REQUEST_FOR_ACTION.getActionTargetName());
 
                                 if (toDoGUID != null)
                                 {

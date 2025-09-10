@@ -139,7 +139,7 @@ public class DataFieldHandler extends OpenMetadataHandlerBase
 
 
     /**
-     * Connect two data field as parent and child.
+     * Connect two data fields as parent and child.
      *
      * @param userId                 userId of user making request
      * @param parentDataFieldGUID    unique identifier of the parent data field

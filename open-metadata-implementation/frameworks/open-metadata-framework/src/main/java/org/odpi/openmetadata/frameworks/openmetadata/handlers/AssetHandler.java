@@ -2206,7 +2206,6 @@ public class AssetHandler extends OpenMetadataHandlerBase
              */
             List<String> iscQualifiedNames = new ArrayList<>();
 
-
             RelatedMetadataElementList relationships = openMetadataClient.getRelatedMetadataElements(userId,
                                                                                                      assetGUID,
                                                                                                      0,
@@ -2370,7 +2369,7 @@ public class AssetHandler extends OpenMetadataHandlerBase
 
             if (! informationSupplyChains.isEmpty())
             {
-                assetGraph.setInformationSupplyChains(informationSupplyChains);
+                assetGraph.setPartOfInformationSupplyChains(informationSupplyChains);
             }
 
             /*

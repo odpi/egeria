@@ -280,6 +280,10 @@ public class OpenMetadataClassificationBuilder
                 elementProperties = propertyHelper.addBooleanMapProperty(elementProperties,
                                                                          OpenMetadataProperty.FLAGS.name,
                                                                          governanceExpectationsProperties.getFlags());
+
+                elementProperties = propertyHelper.addDateMapProperty(elementProperties,
+                                                                      OpenMetadataProperty.DATES.name,
+                                                                      governanceExpectationsProperties.getDates());
             }
             else if (properties instanceof GovernanceMeasurementsProperties governanceMeasurementsProperties)
             {
@@ -292,16 +296,20 @@ public class OpenMetadataClassificationBuilder
                                                                    governanceMeasurementsProperties.getDataCollectionEndTime());
 
                 elementProperties = propertyHelper.addIntMapProperty(elementProperties,
-                                                                     OpenMetadataProperty.MEASUREMENT_COUNTS.name,
+                                                                     OpenMetadataProperty.COUNTS.name,
                                                                      governanceMeasurementsProperties.getCounts());
 
                 elementProperties = propertyHelper.addStringMapProperty(elementProperties,
-                                                                        OpenMetadataProperty.MEASUREMENT_VALUES.name,
+                                                                        OpenMetadataProperty.VALUES.name,
                                                                         governanceMeasurementsProperties.getValues());
 
                 elementProperties = propertyHelper.addBooleanMapProperty(elementProperties,
-                                                                         OpenMetadataProperty.MEASUREMENT_FLAGS.name,
+                                                                         OpenMetadataProperty.FLAGS.name,
                                                                          governanceMeasurementsProperties.getFlags());
+
+                elementProperties = propertyHelper.addDateMapProperty(elementProperties,
+                                                                      OpenMetadataProperty.DATES.name,
+                                                                      governanceMeasurementsProperties.getDates());
             }
             else if (properties instanceof OwnershipProperties ownershipProperties)
             {

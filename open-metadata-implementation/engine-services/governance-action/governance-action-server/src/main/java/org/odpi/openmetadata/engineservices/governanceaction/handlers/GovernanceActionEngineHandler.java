@@ -4,6 +4,7 @@ package org.odpi.openmetadata.engineservices.governanceaction.handlers;
 
 import org.odpi.openmetadata.adminservices.configuration.properties.EngineConfig;
 import org.odpi.openmetadata.adminservices.configuration.registration.EngineServiceDescription;
+import org.odpi.openmetadata.frameworks.connectors.client.ConnectedAssetClient;
 import org.odpi.openmetadata.frameworks.openmetadata.client.OpenMetadataClient;
 import org.odpi.openmetadata.frameworks.openmetadata.events.OpenMetadataOutTopicEvent;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
@@ -31,7 +32,8 @@ public class GovernanceActionEngineHandler extends GovernanceEngineHandler
     private final GovernanceContextClient   governanceContextClient;    /* Initialized in constructor */
     private final GovernanceListenerManager governanceListenerManager; /* Initialized in constructor */
 
-    private final OpenMetadataClient        openMetadataClient; /* Initialized in constructor */
+    private final OpenMetadataClient   openMetadataClient; /* Initialized in constructor */
+    private final ConnectedAssetClient connectedAssetClient; /* Initialized in constructor */
 
 
     /**
@@ -45,6 +47,7 @@ public class GovernanceActionEngineHandler extends GovernanceEngineHandler
      * @param partnerURLRoot partner platform
      * @param serverUserId user id for the server to use
      * @param openMetadataClient access to the open metadata store
+     * @param connectedAssetClient access to the open metadata store
      * @param configurationClient client to retrieve the configuration
      * @param engineActionClient client to control the execution of governance action requests
      * @param governanceContextClient REST client for calls made by the governance action services
@@ -57,6 +60,7 @@ public class GovernanceActionEngineHandler extends GovernanceEngineHandler
                                          String                        partnerURLRoot,
                                          String                        serverUserId,
                                          OpenMetadataClient            openMetadataClient,
+                                         ConnectedAssetClient          connectedAssetClient,
                                          GovernanceConfigurationClient configurationClient,
                                          GovernanceContextClient       engineActionClient,
                                          GovernanceContextClient       governanceContextClient,
@@ -73,6 +77,7 @@ public class GovernanceActionEngineHandler extends GovernanceEngineHandler
               maxPageSize);
 
         this.openMetadataClient        = openMetadataClient;
+        this.connectedAssetClient      = connectedAssetClient;
         this.governanceListenerManager = new GovernanceListenerManager(auditLog, engineConfig.getEngineQualifiedName());
         this.governanceContextClient   = governanceContextClient;
 
@@ -148,6 +153,7 @@ public class GovernanceActionEngineHandler extends GovernanceEngineHandler
                                                                                                                governanceServiceCache.getGovernanceServiceName(),
                                                                                                                governanceServiceCache.getNextGovernanceService(),
                                                                                                                openMetadataClient,
+                                                                                                               connectedAssetClient,
                                                                                                                governanceContextClient,
                                                                                                                configurationClient,
                                                                                                                requestedStartDate,

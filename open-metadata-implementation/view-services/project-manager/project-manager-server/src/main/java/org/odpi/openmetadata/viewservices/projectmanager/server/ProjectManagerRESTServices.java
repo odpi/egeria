@@ -727,7 +727,7 @@ public class ProjectManagerRESTServices extends TokenController
 
             ProjectHandler handler = instanceHandler.getProjectHandler(userId, serverName, methodName);
 
-            handler.removeProject(userId, projectGUID, requestBody);
+            handler.deleteProject(userId, projectGUID, requestBody);
         }
         catch (Throwable error)
         {

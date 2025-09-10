@@ -230,9 +230,10 @@ public class OpenMetadataTypesArchive2_9
         List<TypeDefAttribute> properties = new ArrayList<>();
 
         properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.DATA_COLLECTION_START_TIME));
-        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.MEASUREMENT_COUNTS));
-        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.MEASUREMENT_VALUES));
-        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.MEASUREMENT_FLAGS));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.COUNTS));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.VALUES));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.FLAGS));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.DATES));
         properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.DATA_COLLECTION_END_TIME));
 
         classificationDef.setPropertiesDefinition(properties);
