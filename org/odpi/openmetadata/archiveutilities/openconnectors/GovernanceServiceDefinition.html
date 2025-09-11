@@ -109,13 +109,21 @@ loadScripts(document, 'script');</script>
 <div class="col-last even-row-color">
 <div class="block">Apache Atlas Survey Service</div>
 </div>
-<div class="col-first odd-row-color"><code><a href="#CATALOG_TARGET_ASSET" class="member-name-link">CATALOG_TARGET_ASSET</a></code></div>
+<div class="col-first odd-row-color"><code><a href="#CANCEL_SUBSCRIPTION" class="member-name-link">CANCEL_SUBSCRIPTION</a></code></div>
 <div class="col-last odd-row-color">
+<div class="block">Remove an existing digital subscription.</div>
+</div>
+<div class="col-first even-row-color"><code><a href="#CATALOG_TARGET_ASSET" class="member-name-link">CATALOG_TARGET_ASSET</a></code></div>
+<div class="col-last even-row-color">
 <div class="block">Catalog Target Asset Governance Service</div>
 </div>
-<div class="col-first even-row-color"><code><a href="#CREATE_ASSET" class="member-name-link">CREATE_ASSET</a></code></div>
-<div class="col-last even-row-color">
+<div class="col-first odd-row-color"><code><a href="#CREATE_ASSET" class="member-name-link">CREATE_ASSET</a></code></div>
+<div class="col-last odd-row-color">
 <div class="block">Create Asset Governance Service</div>
+</div>
+<div class="col-first even-row-color"><code><a href="#CREATE_SUBSCRIPTION" class="member-name-link">CREATE_SUBSCRIPTION</a></code></div>
+<div class="col-last even-row-color">
+<div class="block">Add a new digital subscription using a template.</div>
 </div>
 <div class="col-first odd-row-color"><code><a href="#CSV_FILE_SURVEY" class="member-name-link">CSV_FILE_SURVEY</a></code></div>
 <div class="col-last odd-row-color">
@@ -153,35 +161,41 @@ loadScripts(document, 'script');</script>
 <div class="col-last odd-row-color">
 <div class="block">New Files Watchdog Governance Action Service</div>
 </div>
-<div class="col-first even-row-color"><code><a href="#ORIGIN_SEEKER" class="member-name-link">ORIGIN_SEEKER</a></code></div>
+<div class="col-first even-row-color"><code><a href="#OPEN_METADATA_NOTIFICATION" class="member-name-link">OPEN_METADATA_NOTIFICATION</a></code></div>
 <div class="col-last even-row-color">
+<div class="block">A Watchdog Action Service that detects changes to elements linked to a notification type.</div>
+</div>
+<div class="col-first odd-row-color"><code><a href="#ORIGIN_SEEKER" class="member-name-link">ORIGIN_SEEKER</a></code></div>
+<div class="col-last odd-row-color">
 <div class="block">Locate and Set Origin Governance Action Service -
  Navigates back through the lineage relationships to locate the origin classification(s) from the source(s) and sets it on the requested asset if the origin is unique.</div>
 </div>
-<div class="col-first odd-row-color"><code><a href="#POSTGRES_DATABASE_SURVEY" class="member-name-link">POSTGRES_DATABASE_SURVEY</a></code></div>
-<div class="col-last odd-row-color">
+<div class="col-first even-row-color"><code><a href="#POSTGRES_DATABASE_SURVEY" class="member-name-link">POSTGRES_DATABASE_SURVEY</a></code></div>
+<div class="col-last even-row-color">
 <div class="block">PostgreSQL Database Survey Service</div>
 </div>
-<div class="col-first even-row-color"><code><a href="#POSTGRES_SERVER_SURVEY" class="member-name-link">POSTGRES_SERVER_SURVEY</a></code></div>
-<div class="col-last even-row-color">
+<div class="col-first odd-row-color"><code><a href="#POSTGRES_SERVER_SURVEY" class="member-name-link">POSTGRES_SERVER_SURVEY</a></code></div>
+<div class="col-last odd-row-color">
 <div class="block">PostgreSQL Server Survey Service</div>
 </div>
-<div class="col-first odd-row-color"><code><a href="#PRINT_SURVEY_REPORT" class="member-name-link">PRINT_SURVEY_REPORT</a></code></div>
-<div class="col-last odd-row-color">
+<div class="col-first even-row-color"><code><a href="#PRINT_SURVEY_REPORT" class="member-name-link">PRINT_SURVEY_REPORT</a></code></div>
+<div class="col-last even-row-color">
 <div class="block">Print a Survey Report as a markdown document.</div>
 </div>
-<div class="col-first even-row-color"><code><a href="#PROVISION_UC" class="member-name-link">PROVISION_UC</a></code></div>
-<div class="col-last even-row-color">
+<div class="col-first odd-row-color"><code><a href="#PROVISION_UC" class="member-name-link">PROVISION_UC</a></code></div>
+<div class="col-last odd-row-color">
 <div class="block">Creates unity catalog elements in the appropriate metadata collection so that they are provisioned into Unity Catalog (UC).</div>
 </div>
-<div class="col-first odd-row-color"><code><a href="#QUALIFIED_NAME_DEDUP" class="member-name-link">QUALIFIED_NAME_DEDUP</a></code></div>
-<div class="col-last odd-row-color">
+<div class="col-first even-row-color"><code><a href="#QUALIFIED_NAME_DEDUP" class="member-name-link">QUALIFIED_NAME_DEDUP</a></code></div>
+<div class="col-last even-row-color">
 <div class="block">Detect elements with the same qualified names.</div>
 </div>
-<div class="col-first even-row-color"><code><a href="#RETENTION_CLASSIFIER" class="member-name-link">RETENTION_CLASSIFIER</a></code></div>
-<div class="col-last even-row-color">
+<div class="col-first odd-row-color"><code><a href="#RETENTION_CLASSIFIER" class="member-name-link">RETENTION_CLASSIFIER</a></code></div>
+<div class="col-last odd-row-color">
 <div class="block">Add a Retention classification to an Asset Governance Action Service</div>
 </div>
+<div class="col-first even-row-color"><code><a href="#TABULAR_DATA_PROVISIONER" class="member-name-link">TABULAR_DATA_PROVISIONER</a></code></div>
+<div class="col-last even-row-color">&nbsp;</div>
 <div class="col-first odd-row-color"><code><a href="#UC_CATALOG_SURVEY" class="member-name-link">UC_CATALOG_SURVEY</a></code></div>
 <div class="col-last odd-row-color">
 <div class="block">OSS Unity Catalog Inside Catalog Survey Service</div>
@@ -310,6 +324,12 @@ the order they are declared.</div>
 <h3>FILE_PROVISIONER</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="GovernanceServiceDefinition.html" title="enum class in org.odpi.openmetadata.archiveutilities.openconnectors">GovernanceServiceDefinition</a></span>&nbsp;<span class="element-name">FILE_PROVISIONER</span></div>
 <div class="block">File {move, copy, delete} Governance Action Service</div>
+</section>
+</li>
+<li>
+<section class="detail" id="TABULAR_DATA_PROVISIONER">
+<h3>TABULAR_DATA_PROVISIONER</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="GovernanceServiceDefinition.html" title="enum class in org.odpi.openmetadata.archiveutilities.openconnectors">GovernanceServiceDefinition</a></span>&nbsp;<span class="element-name">TABULAR_DATA_PROVISIONER</span></div>
 </section>
 </li>
 <li>
@@ -486,6 +506,27 @@ the order they are declared.</div>
 <h3>CATALOG_TARGET_ASSET</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="GovernanceServiceDefinition.html" title="enum class in org.odpi.openmetadata.archiveutilities.openconnectors">GovernanceServiceDefinition</a></span>&nbsp;<span class="element-name">CATALOG_TARGET_ASSET</span></div>
 <div class="block">Catalog Target Asset Governance Service</div>
+</section>
+</li>
+<li>
+<section class="detail" id="CREATE_SUBSCRIPTION">
+<h3>CREATE_SUBSCRIPTION</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="GovernanceServiceDefinition.html" title="enum class in org.odpi.openmetadata.archiveutilities.openconnectors">GovernanceServiceDefinition</a></span>&nbsp;<span class="element-name">CREATE_SUBSCRIPTION</span></div>
+<div class="block">Add a new digital subscription using a template.</div>
+</section>
+</li>
+<li>
+<section class="detail" id="CANCEL_SUBSCRIPTION">
+<h3>CANCEL_SUBSCRIPTION</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="GovernanceServiceDefinition.html" title="enum class in org.odpi.openmetadata.archiveutilities.openconnectors">GovernanceServiceDefinition</a></span>&nbsp;<span class="element-name">CANCEL_SUBSCRIPTION</span></div>
+<div class="block">Remove an existing digital subscription.</div>
+</section>
+</li>
+<li>
+<section class="detail" id="OPEN_METADATA_NOTIFICATION">
+<h3>OPEN_METADATA_NOTIFICATION</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="GovernanceServiceDefinition.html" title="enum class in org.odpi.openmetadata.archiveutilities.openconnectors">GovernanceServiceDefinition</a></span>&nbsp;<span class="element-name">OPEN_METADATA_NOTIFICATION</span></div>
+<div class="block">A Watchdog Action Service that detects changes to elements linked to a notification type.  When changed occur, all subscribers to the notification type are informed.</div>
 </section>
 </li>
 </ul>

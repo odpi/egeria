@@ -74,7 +74,7 @@ loadScripts(document, 'script');</script>
 <section class="class-description" id="class-description">
 <dl class="notes">
 <dt>All Known Implementing Classes:</dt>
-<dd><code><a href="../../adapters/connectors/datastore/csvfile/CSVFileStoreConnector.html" title="class in org.odpi.openmetadata.adapters.connectors.datastore.csvfile">CSVFileStoreConnector</a></code>, <code><a href="../../adapters/connectors/postgres/tabulardatasource/PostgresTabularDataSourceConnector.html" title="class in org.odpi.openmetadata.adapters.connectors.postgres.tabulardatasource">PostgresTabularDataSourceConnector</a></code></dd>
+<dd><code><a href="../../adapters/connectors/datastore/csvfile/CSVFileStoreConnector.html" title="class in org.odpi.openmetadata.adapters.connectors.datastore.csvfile">CSVFileStoreConnector</a></code>, <code><a href="../../adapters/connectors/postgres/tabulardatasource/PostgresTabularDataSourceConnector.html" title="class in org.odpi.openmetadata.adapters.connectors.postgres.tabulardatasource">PostgresTabularDataSourceConnector</a></code>, <code><a href="../../adapters/connectors/referencedata/tabulardatasets/ValidValueDataSetConnector.html" title="class in org.odpi.openmetadata.adapters.connectors.referencedata.tabulardatasets">ValidValueDataSetConnector</a></code></dd>
 </dl>
 <hr>
 <div class="type-signature"><span class="modifiers">public interface </span><span class="element-name type-name-label">TabularDataSource</span></div>
@@ -101,30 +101,35 @@ loadScripts(document, 'script');</script>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">
 <div class="block">Write the requested data record to the end of the data source.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="TabularColumnDescription.html" title="class in org.odpi.openmetadata.frameworks.connectors">TabularColumnDescription</a>&gt;</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#getColumnDescriptions()" class="member-name-link">getColumnDescriptions</a>()</code></div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code>void</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#deleteRecord(long)" class="member-name-link">deleteRecord</a><wbr>(long&nbsp;rowNumber)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">
-<div class="block">Return the list of column names associated with this data source.</div>
+<div class="block">Remove the requested data record.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code>long</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#getRecordCount()" class="member-name-link">getRecordCount</a>()</code></div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="TabularColumnDescription.html" title="class in org.odpi.openmetadata.frameworks.connectors">TabularColumnDescription</a>&gt;</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#getColumnDescriptions()" class="member-name-link">getColumnDescriptions</a>()</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">
+<div class="block">Return the list of column descriptions associated with this data source.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code>long</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#getRecordCount()" class="member-name-link">getRecordCount</a>()</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">
 <div class="block">Return the number of records in the data source.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#readRecord(long)" class="member-name-link">readRecord</a><wbr>(long&nbsp;rowNumber)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#readRecord(long)" class="member-name-link">readRecord</a><wbr>(long&nbsp;rowNumber)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">
 <div class="block">Return the requested data record.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code>void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#setColumnDescriptions(java.util.List)" class="member-name-link">setColumnDescriptions</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="TabularColumnDescription.html" title="class in org.odpi.openmetadata.frameworks.connectors">TabularColumnDescription</a>&gt;&nbsp;columnDescriptions)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code>void</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#setColumnDescriptions(java.util.List)" class="member-name-link">setColumnDescriptions</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="TabularColumnDescription.html" title="class in org.odpi.openmetadata.frameworks.connectors">TabularColumnDescription</a>&gt;&nbsp;columnDescriptions)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">
 <div class="block">Set up the columns associated with this tabular data source.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code>void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#writeRecord(long,java.util.List)" class="member-name-link">writeRecord</a><wbr>(long&nbsp;rowNumber,
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code>void</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#writeRecord(long,java.util.List)" class="member-name-link">writeRecord</a><wbr>(long&nbsp;rowNumber,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;&nbsp;dataValues)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">
 <div class="block">Write the requested data record.</div>
 </div>
 </div>
@@ -160,7 +165,8 @@ loadScripts(document, 'script');</script>
 <h3>getColumnDescriptions</h3>
 <div class="member-signature"><span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="TabularColumnDescription.html" title="class in org.odpi.openmetadata.frameworks.connectors">TabularColumnDescription</a>&gt;</span>&nbsp;<span class="element-name">getColumnDescriptions</span>()
                                               throws <span class="exceptions"><a href="ffdc/ConnectorCheckedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">ConnectorCheckedException</a></span></div>
-<div class="block">Return the list of column names associated with this data source.</div>
+<div class="block">Return the list of column descriptions associated with this data source.  The information
+ should be sufficient to define the schema in a target data store.</div>
 <dl class="notes">
 <dt>Returns:</dt>
 <dd>a list of column descriptions or null if not available.</dd>
@@ -225,6 +231,20 @@ loadScripts(document, 'script');</script>
 <dl class="notes">
 <dt>Parameters:</dt>
 <dd><code>dataValues</code> - Map of column descriptions to strings, each string is the value for the column.</dd>
+<dt>Throws:</dt>
+<dd><code><a href="ffdc/ConnectorCheckedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">ConnectorCheckedException</a></code> - there is a problem accessing the data.</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="deleteRecord(long)">
+<h3>deleteRecord</h3>
+<div class="member-signature"><span class="return-type">void</span>&nbsp;<span class="element-name">deleteRecord</span><wbr><span class="parameters">(long&nbsp;rowNumber)</span>
+           throws <span class="exceptions"><a href="ffdc/ConnectorCheckedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">ConnectorCheckedException</a></span></div>
+<div class="block">Remove the requested data record.  The first data record is record 0.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>rowNumber</code> - long</dd>
 <dt>Throws:</dt>
 <dd><code><a href="ffdc/ConnectorCheckedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">ConnectorCheckedException</a></code> - there is a problem accessing the data.</dd>
 </dl>

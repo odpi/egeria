@@ -144,6 +144,16 @@ implements <a href="../../../../frameworks/auditlog/messagesets/AuditLogMessageS
 <div class="block">GOVERNANCE-ACTION-CONNECTORS-0008 - The {0} governance action service encountered an {1} exception when attempting to retrieve the file 
  path name from the attached endpoint.</div>
 </div>
+<div class="col-first odd-row-color"><code><a href="#FILE_PATTERN_FULL" class="member-name-link">FILE_PATTERN_FULL</a></code></div>
+<div class="col-last odd-row-color">
+<div class="block">GOVERNANCE-ACTION-CONNECTORS-0006 - The {0} governance action service is unable to provision file {1} 
+ to {2} destination folder using {3} file pattern</div>
+</div>
+<div class="col-first even-row-color"><code><a href="#FILE_PROVISIONING_EXCEPTION" class="member-name-link">FILE_PROVISIONING_EXCEPTION</a></code></div>
+<div class="col-last even-row-color">
+<div class="block">GOVERNANCE-ACTION-CONNECTORS-0007 - The {0} governance action service encountered an {1} exception when provisioning file {2} to {3}
+ destination folder using the {4} file pattern.</div>
+</div>
 <div class="col-first odd-row-color"><code><a href="#INITIATE_PROCESS" class="member-name-link">INITIATE_PROCESS</a></code></div>
 <div class="col-last odd-row-color">
 <div class="block">GOVERNANCE-ACTION-CONNECTORS-0021 - The {0} governance action service is initiating governance action process {1} with request parameters 
@@ -223,16 +233,6 @@ implements <a href="../../../../frameworks/auditlog/messagesets/AuditLogMessageS
 <div class="col-first odd-row-color"><code><a href="#NO_ZONES" class="member-name-link">NO_ZONES</a></code></div>
 <div class="col-last odd-row-color">
 <div class="block">GOVERNANCE-ACTION-CONNECTORS-0019 - The {0} governance action service has publishZones set to null</div>
-</div>
-<div class="col-first even-row-color"><code><a href="#PROVISIONING_EXCEPTION" class="member-name-link">PROVISIONING_EXCEPTION</a></code></div>
-<div class="col-last even-row-color">
-<div class="block">GOVERNANCE-ACTION-CONNECTORS-0007 - The {0} governance action service encountered an {1} exception when provisioning file {2} to {3}
- destination folder using the {4} file pattern.</div>
-</div>
-<div class="col-first odd-row-color"><code><a href="#PROVISIONING_FAILURE" class="member-name-link">PROVISIONING_FAILURE</a></code></div>
-<div class="col-last odd-row-color">
-<div class="block">GOVERNANCE-ACTION-CONNECTORS-0006 - The {0} governance action service is unable to provision file {1} 
- to {2} destination folder using {3} file pattern</div>
 </div>
 <div class="col-first even-row-color"><code><a href="#QUALIFIED_NAME_PATH_NAME" class="member-name-link">QUALIFIED_NAME_PATH_NAME</a></code></div>
 <div class="col-last even-row-color">
@@ -373,17 +373,17 @@ the order they are declared.</div>
 </section>
 </li>
 <li>
-<section class="detail" id="PROVISIONING_FAILURE">
-<h3>PROVISIONING_FAILURE</h3>
-<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="GovernanceActionConnectorsAuditCode.html" title="enum class in org.odpi.openmetadata.adapters.connectors.governanceactions.ffdc">GovernanceActionConnectorsAuditCode</a></span>&nbsp;<span class="element-name">PROVISIONING_FAILURE</span></div>
+<section class="detail" id="FILE_PATTERN_FULL">
+<h3>FILE_PATTERN_FULL</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="GovernanceActionConnectorsAuditCode.html" title="enum class in org.odpi.openmetadata.adapters.connectors.governanceactions.ffdc">GovernanceActionConnectorsAuditCode</a></span>&nbsp;<span class="element-name">FILE_PATTERN_FULL</span></div>
 <div class="block">GOVERNANCE-ACTION-CONNECTORS-0006 - The {0} governance action service is unable to provision file {1} 
  to {2} destination folder using {3} file pattern</div>
 </section>
 </li>
 <li>
-<section class="detail" id="PROVISIONING_EXCEPTION">
-<h3>PROVISIONING_EXCEPTION</h3>
-<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="GovernanceActionConnectorsAuditCode.html" title="enum class in org.odpi.openmetadata.adapters.connectors.governanceactions.ffdc">GovernanceActionConnectorsAuditCode</a></span>&nbsp;<span class="element-name">PROVISIONING_EXCEPTION</span></div>
+<section class="detail" id="FILE_PROVISIONING_EXCEPTION">
+<h3>FILE_PROVISIONING_EXCEPTION</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="GovernanceActionConnectorsAuditCode.html" title="enum class in org.odpi.openmetadata.adapters.connectors.governanceactions.ffdc">GovernanceActionConnectorsAuditCode</a></span>&nbsp;<span class="element-name">FILE_PROVISIONING_EXCEPTION</span></div>
 <div class="block">GOVERNANCE-ACTION-CONNECTORS-0007 - The {0} governance action service encountered an {1} exception when provisioning file {2} to {3}
  destination folder using the {4} file pattern.  The exception message included was {5}</div>
 </section>
