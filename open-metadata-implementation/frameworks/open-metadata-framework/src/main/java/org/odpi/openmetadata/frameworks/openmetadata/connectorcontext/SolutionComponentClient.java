@@ -257,7 +257,6 @@ public class SolutionComponentClient extends ConnectorContextClientBase
     /**
      * Detach a solution component from an actor role.
      *
-     * @param userId                 userId of user making request.
      * @param solutionRoleGUID    unique identifier of the parent solution component.
      * @param solutionComponentGUID    unique identifier of the nested solution component.
      * @param deleteOptions  options to control access to open metadata
