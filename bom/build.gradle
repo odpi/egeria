@@ -51,7 +51,7 @@ ext {
     guavaVersion = '33.3.1-jre'
     hamcrestVersion = '3.0'
     hdrhistogramVersion = '2.2.2'
-    hibernatevalidatorVersion = '8.0.1.Final'
+    hibernatevalidatorVersion = '8.0.3.Final'
     jacksonVersion = '2.15.0'
     jacksonDatabindVersion = '2.18.0'
 //    TODO: jacksonDatabindVersion = '2.18.2' monday - failed at runtime
