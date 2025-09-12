@@ -82,6 +82,7 @@ org.odpi.openmetadata.adapters.connectors.postgres.tabulardatasource.ffdc
 org.odpi.openmetadata.adapters.connectors.postgres.utilities
 org.odpi.openmetadata.adapters.connectors.productmanager
 org.odpi.openmetadata.adapters.connectors.productmanager.ffdc
+org.odpi.openmetadata.adapters.connectors.productmanager.productcatalog
 org.odpi.openmetadata.adapters.connectors.productmanager.solutionblueprint
 org.odpi.openmetadata.adapters.connectors.referencedata.tabulardatasets
 org.odpi.openmetadata.adapters.connectors.referencedata.tabulardatasets.controls
