@@ -360,7 +360,7 @@ public class CocoClinicalTrialBaseService extends GeneralGovernanceActionService
                                                                         resourceUse.getResourceUse());
 
         properties = propertyHelper.addStringProperty(properties,
-                                                      OpenMetadataProperty.RESOURCE_USE_DESCRIPTION.name,
+                                                      OpenMetadataProperty.DESCRIPTION.name,
                                                       resourceUse.getResourceUse());
 
         return new NewElementProperties(properties);

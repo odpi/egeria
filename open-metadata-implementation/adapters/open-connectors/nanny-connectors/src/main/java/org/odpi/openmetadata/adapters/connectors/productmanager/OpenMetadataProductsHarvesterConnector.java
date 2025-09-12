@@ -42,6 +42,7 @@ public class OpenMetadataProductsHarvesterConnector extends IntegrationConnector
     private static final String validValueSetListCatalogTargetName = "ValidValueSetList";
 
     private String solutionBlueprintGUID = null;
+    private Map<String, String> productFolders = new HashMap<>();
 
 
     /**
@@ -55,7 +56,8 @@ public class OpenMetadataProductsHarvesterConnector extends IntegrationConnector
     {
         super.start();
 
-        solutionBlueprintGUID = getSolutionBlueprint();
+        solutionBlueprintGUID = this.getSolutionBlueprint();
+        productFolders = this.getProductCatalogFolders();
     }
 
 

@@ -97,6 +97,7 @@ dependencies {
         runtimeOnly project(':open-metadata-implementation:engine-services:survey-action:survey-action-spring')
         runtimeOnly project(':open-metadata-implementation:engine-services:repository-governance:repository-governance-spring')
         runtimeOnly project(':open-metadata-implementation:engine-services:governance-action:governance-action-spring')
+        runtimeOnly project(':open-metadata-implementation:engine-services:watchdog-action:watchdog-action-spring')
 
         runtimeOnly project(':open-metadata-implementation:repository-services:repository-services-spring')
 

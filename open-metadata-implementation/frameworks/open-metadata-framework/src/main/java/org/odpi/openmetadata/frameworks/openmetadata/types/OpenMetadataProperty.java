@@ -1024,16 +1024,6 @@ public enum OpenMetadataProperty
     RESOURCE_USE("resourceUse", DataType.STRING, DataType.STRING.getName(), "Identifier that describes the type of resource use.", null, "152aafd9-57c4-4341-82bb-945d213a686e"),
 
     /**
-     * Description of how the resource is used, or why it is useful.
-     */
-    RESOURCE_USE_DESCRIPTION("resourceUseDescription", DataType.STRING, DataType.STRING.getName(), "Description of how the resource is used, or why it is useful.", null, "c579fd34-4144-4968-b0d9-fa17bd81ca9c"),
-
-    /**
-     * Additional properties that explains how to use the resource.
-     */
-    RESOURCE_USE_PROPERTIES("resourceUseProperties", DataType.MAP_STRING_STRING, DataType.MAP_STRING_STRING.getName(), "Additional properties that explains how to use the resource.", null, "30c86736-c31a-4f29-8451-0c849f730a0b"),
-
-    /**
      * Indicator whether the anchor should receive notifications of changes to the resource.
      */
     WATCH_RESOURCE("watchResource", DataType.BOOLEAN, DataType.BOOLEAN.getName(), "Indicator whether the anchor should receive notifications of changes to the resource.", null, "d727b3ce-d58b-45d5-8abc-55b1394e030a"),

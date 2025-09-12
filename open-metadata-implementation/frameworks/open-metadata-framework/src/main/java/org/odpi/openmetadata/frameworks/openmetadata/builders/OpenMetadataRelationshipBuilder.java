@@ -936,11 +936,11 @@ public class OpenMetadataRelationshipBuilder
                                                                      OpenMetadataProperty.RESOURCE_USE.name,
                                                                      resourceListProperties.getResourceUse());
                 elementProperties = propertyHelper.addStringProperty(elementProperties,
-                                                                     OpenMetadataProperty.RESOURCE_USE_DESCRIPTION.name,
+                                                                     OpenMetadataProperty.DESCRIPTION.name,
                                                                      resourceListProperties.getResourceUse());
                 elementProperties = propertyHelper.addStringMapProperty(elementProperties,
-                                                                        OpenMetadataProperty.RESOURCE_USE_PROPERTIES.name,
-                                                                        resourceListProperties.getResourceUseProperties());
+                                                                        OpenMetadataProperty.ADDITIONAL_PROPERTIES.name,
+                                                                        resourceListProperties.getAdditionalProperties());
                 elementProperties = propertyHelper.addBooleanProperty(elementProperties,
                                                                       OpenMetadataProperty.WATCH_RESOURCE.name,
                                                                       resourceListProperties.getWatchResource());
