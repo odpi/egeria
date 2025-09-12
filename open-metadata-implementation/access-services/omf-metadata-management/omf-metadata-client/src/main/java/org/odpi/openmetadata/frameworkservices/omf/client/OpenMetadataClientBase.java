@@ -1425,6 +1425,8 @@ public abstract class OpenMetadataClientBase extends OpenMetadataClient
 
         UpdatePropertiesRequestBody requestBody = new UpdatePropertiesRequestBody(updateOptions);
 
+        requestBody.setProperties(properties);
+
         restClient.callVoidPostRESTCall(methodName,
                                         urlTemplate,
                                         requestBody,

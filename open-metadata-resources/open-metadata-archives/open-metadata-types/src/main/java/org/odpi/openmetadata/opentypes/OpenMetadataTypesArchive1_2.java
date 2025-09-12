@@ -2733,8 +2733,9 @@ public class OpenMetadataTypesArchive1_2
         List<TypeDefAttribute> properties = new ArrayList<>();
 
         properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.RESOURCE_USE));
-        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.RESOURCE_USE_DESCRIPTION));
-        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.RESOURCE_USE_PROPERTIES));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.DISPLAY_NAME));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.DESCRIPTION));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.ADDITIONAL_PROPERTIES));
         properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.WATCH_RESOURCE));
 
         relationshipDef.setPropertiesDefinition(properties);

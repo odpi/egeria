@@ -68,7 +68,12 @@ public class GovernanceServiceCache
             this.governanceServiceName = element.getProperties().getQualifiedName();
             this.serviceConnection = element.getProperties().getConnection();
 
-            SupportedGovernanceServiceProperties supportedGovernanceServiceProperties = element.getProperties().getRequestTypes().get(requestType);
+            SupportedGovernanceServiceProperties supportedGovernanceServiceProperties = new SupportedGovernanceServiceProperties();
+
+            if ((element.getProperties().getRequestTypes() != null) && (element.getProperties().getRequestTypes().get(requestType) != null))
+            {
+                supportedGovernanceServiceProperties = element.getProperties().getRequestTypes().get(requestType);
+            }
 
             if (supportedGovernanceServiceProperties.getServiceRequestType() != null)
             {

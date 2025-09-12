@@ -24,10 +24,11 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class ResourceListProperties extends RelationshipBeanProperties
 {
-    String              resourceUse            = null;
-    String              resourceUseDescription = null;
-    Map<String, String> resourceUseProperties  = null;
-    boolean             watchResource          = false;
+    String              resourceUse          = null;
+    String              displayName          = null;
+    String              description          = null;
+    Map<String, String> additionalProperties = null;
+    boolean             watchResource        = false;
 
     /**
      * Default constructor
@@ -50,10 +51,11 @@ public class ResourceListProperties extends RelationshipBeanProperties
 
         if (template != null)
         {
-            this.resourceUse = template.getResourceUse();
-            this.resourceUseDescription = template.getResourceUseDescription();
-            this.resourceUseProperties = template.getResourceUseProperties();
-            this.watchResource = template.getWatchResource();
+            this.resourceUse          = template.getResourceUse();
+            this.displayName          = template.getDisplayName();
+            this.description          = template.getDescription();
+            this.additionalProperties = template.getAdditionalProperties();
+            this.watchResource        = template.getWatchResource();
         }
     }
 
@@ -81,24 +83,46 @@ public class ResourceListProperties extends RelationshipBeanProperties
 
 
     /**
+     * Return the name of the resource use - used for command menus and buttons.
+     *
+     * @return string
+     */
+    public String getDisplayName()
+    {
+        return displayName;
+    }
+
+
+    /**
+     * Set up the name of the resource use - used for command menus and buttons.
+     *
+     * @param displayName name
+     */
+    public void setDisplayName(String displayName)
+    {
+        this.displayName = displayName;
+    }
+
+
+    /**
      * Return the description of how the resource is used, or why it is useful.
      *
      * @return string
      */
-    public String getResourceUseDescription()
+    public String getDescription()
     {
-        return resourceUseDescription;
+        return description;
     }
 
 
     /**
      * Set up the description of how the resource is used, or why it is useful.
      *
-     * @param resourceUseDescription string
+     * @param description string
      */
-    public void setResourceUseDescription(String resourceUseDescription)
+    public void setDescription(String description)
     {
-        this.resourceUseDescription = resourceUseDescription;
+        this.description = description;
     }
 
 
@@ -107,20 +131,20 @@ public class ResourceListProperties extends RelationshipBeanProperties
      *
      * @return map
      */
-    public Map<String, String> getResourceUseProperties()
+    public Map<String, String> getAdditionalProperties()
     {
-        return resourceUseProperties;
+        return additionalProperties;
     }
 
 
     /**
      * Set up any additional properties that explains how to use the resource.
      *
-     * @param resourceUseProperties map
+     * @param additionalProperties map
      */
-    public void setResourceUseProperties(Map<String, String> resourceUseProperties)
+    public void setAdditionalProperties(Map<String, String> additionalProperties)
     {
-        this.resourceUseProperties = resourceUseProperties;
+        this.additionalProperties = additionalProperties;
     }
 
 
@@ -156,10 +180,11 @@ public class ResourceListProperties extends RelationshipBeanProperties
     {
         return "ResourceListProperties{" +
                 "resourceUse='" + resourceUse + '\'' +
-                "resourceUseDescription='" + resourceUseDescription + '\'' +
-                "resourceUseProperties='" + resourceUseProperties + '\'' +
-                       ", watchResource=" + watchResource +
-                       '}';
+                ", displayName='" + displayName + '\'' +
+                ", description='" + description + '\'' +
+                ", additionalProperties=" + additionalProperties +
+                ", watchResource=" + watchResource +
+                "} " + super.toString();
     }
 
 
@@ -187,8 +212,9 @@ public class ResourceListProperties extends RelationshipBeanProperties
         ResourceListProperties that = (ResourceListProperties) objectToCompare;
         return watchResource == that.watchResource &&
                 Objects.equals(resourceUse, that.resourceUse) &&
-                Objects.equals(resourceUseDescription, that.resourceUseDescription) &&
-                Objects.equals(resourceUseProperties, that.resourceUseProperties);
+                Objects.equals(displayName, that.displayName) &&
+                Objects.equals(description, that.description) &&
+                Objects.equals(additionalProperties, that.additionalProperties);
     }
 
 
@@ -200,6 +226,6 @@ public class ResourceListProperties extends RelationshipBeanProperties
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), resourceUse, resourceUseDescription, resourceUseProperties, watchResource);
+        return Objects.hash(super.hashCode(), resourceUse, displayName, description, additionalProperties, watchResource);
     }
 }

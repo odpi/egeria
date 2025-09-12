@@ -210,7 +210,7 @@ public class CorePackArchiveWriter extends ContentPackBaseArchiveWriter
         {
             this.getParentSet(null,
                               OpenMetadataType.RESOURCE_LIST_RELATIONSHIP.typeName,
-                              OpenMetadataProperty.RESOURCE_USE_PROPERTIES.name,
+                              OpenMetadataProperty.ADDITIONAL_PROPERTIES.name,
                               resourceUseProperties.getName());
         }
 

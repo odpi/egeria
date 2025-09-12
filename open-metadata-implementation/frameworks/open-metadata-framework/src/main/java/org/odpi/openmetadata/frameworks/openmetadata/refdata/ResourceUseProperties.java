@@ -78,7 +78,7 @@ public enum ResourceUseProperties
     public String getQualifiedName()
     {
         return constructValidValueQualifiedName(null,
-                                                OpenMetadataProperty.RESOURCE_USE_PROPERTIES.name,
+                                                OpenMetadataProperty.ADDITIONAL_PROPERTIES.name,
                                                 null,
                                                 name);
     }
@@ -92,7 +92,7 @@ public enum ResourceUseProperties
     public String getCategory()
     {
         return constructValidValueNamespace(null,
-                                            OpenMetadataProperty.RESOURCE_USE_PROPERTIES.name,
+                                            OpenMetadataProperty.ADDITIONAL_PROPERTIES.name,
                                             null);
     }
 
