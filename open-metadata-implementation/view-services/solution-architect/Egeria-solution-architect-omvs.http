@@ -156,7 +156,7 @@ Content-Type: application/json
 ###
 # @name updateInformationSupplyChain
 # Update the properties of an information supply chain.
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/solution-architect/information-supply-chains/{{informationSupplyChainGUID}}/update?replaceAllProperties=false
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/solution-architect/information-supply-chains/{{informationSupplyChainGUID}}/update
 Authorization: Bearer {{token}}
 Content-Type: application/json
 
@@ -176,6 +176,7 @@ Content-Type: application/json
     "effectiveFrom": "{{$isoTimestamp}}",
     "effectiveTo": "{{$isoTimestamp}}"
   },
+  "mergeUpdate": true,
   "externalSourceGUID": "add guid here",
   "externalSourceName": "add qualified name here",
   "effectiveTime" : "{{$isoTimestamp}}",
@@ -529,7 +530,7 @@ Content-Type: application/json
 ###
 # @name updateSolutionBlueprint
 # Update the properties of a solution blueprint.
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/solution-architect/solution-blueprints/{{solutionBlueprintGUID}}/update?replaceAllProperties=false
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/solution-architect/solution-blueprints/{{solutionBlueprintGUID}}/update
 Authorization: Bearer {{token}}
 Content-Type: application/json
 
@@ -548,6 +549,7 @@ Content-Type: application/json
     "effectiveFrom": "{{$isoTimestamp}}",
     "effectiveTo": "{{$isoTimestamp}}"
   },
+  "mergeUpdate": true,
   "externalSourceGUID": "add guid here",
   "externalSourceName": "add qualified name here",
   "effectiveTime" : "{{$isoTimestamp}}",
@@ -769,135 +771,7 @@ Content-Type: application/json
 
 ###
 
-
-###
-# =====================================================================================================================
-# Work with Solution Roles (using Actor Manager OMVS)
-# https://egeria-project.org/concepts/solution-role
-
 @solutionRoleGUID=add guid here
-
-###
-# @name createSolutionRole
-# Create an actor role that is of type SolutionRole.
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/solution-architect/solution-roles
-Authorization: Bearer {{token}}
-Content-Type: application/json
-
-{
-  "class" : "NewElementRequestBody",
-  "anchorGUID" : "add guid here",
-  "isOwnAnchor": false,
-  "parentGUID": "add guid here",
-  "parentRelationshipTypeName": "add type name here",
-  "parentRelationshipProperties": {
-    "class": "RelationshipElementProperties",
-    "propertyValueMap" : {
-      "description" : {
-        "class": "PrimitiveTypePropertyValue",
-        "typeName": "string",
-        "primitiveValue" : "New description"
-      }
-    }
-  },
-  "parentAtEnd1": false,
-  "properties": {
-    "class" : "SolutionActorRoleProperties",
-    "qualifiedName": "add unique name here",
-    "name": "add short name here",
-    "description": "add description here",
-    "scope": "add scope of role here",
-    "additionalProperties": {
-      "property1" : "propertyValue1",
-      "property2" : "propertyValue2"
-    },
-    "effectiveFrom": "{{$isoTimestamp}}",
-    "effectiveTo": "{{$isoTimestamp}}"
-  },
-  "externalSourceGUID": "add guid here",
-  "externalSourceName": "add qualified name here",
-  "effectiveTime" : "{{$isoTimestamp}}",
-  "forLineage" : false,
-  "forDuplicateProcessing" : false
-}
-
-
-###
-# @name createSolutionRoleFromTemplate
-# Create a new metadata element to represent a actor role using an existing metadata element as a template.  The template defines additional classifications and relationships that should be added to the new element.",
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/solution-architect/solution-roles/from-template
-Authorization: Bearer {{token}}
-Content-Type: application/json
-
-{
-  "class" : "TemplateRequestBody",
-  "anchorGUID" : "add guid here",
-  "isOwnAnchor": false,
-  "parentGUID": "add guid here",
-  "parentRelationshipTypeName": "add type name here",
-  "parentRelationshipProperties": {
-    "class": "RelationshipElementProperties",
-    "propertyValueMap" : {
-      "description" : {
-        "class": "PrimitiveTypePropertyValue",
-        "typeName": "string",
-        "primitiveValue" : "New description"
-      }
-    }
-  },
-  "parentAtEnd1": false,
-  "templateGUID": "add guid here",
-  "replacementProperties": {
-    "class": "ElementProperties",
-    "propertyValueMap" : {
-      "description" : {
-        "class": "PrimitiveTypePropertyValue",
-        "typeName": "string",
-        "primitiveValue" : "New description"
-      }
-    }
-  },
-  "placeholderPropertyValues":  {
-    "placeholder1" : "propertyValue1",
-    "placeholder2" : "propertyValue2"
-  },
-  "externalSourceGUID": "add guid here",
-  "externalSourceName": "add qualified name here",
-  "effectiveTime" : "{{$isoTimestamp}}",
-  "forLineage" : false,
-  "forDuplicateProcessing" : false
-}
-
-
-###
-# @name updateSolutionRole
-# Update the properties of an actor role.
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/solution-architect/solution-roles/{{solutionRoleGUID}}/update?replaceAllProperties=false
-Authorization: Bearer {{token}}
-Content-Type: application/json
-
-{
-  "class" : "UpdateElementRequestBody",
-  "properties": {
-    "class" : "SolutionActorRoleProperties",
-    "qualifiedName": "add unique name here",
-    "name": "add short name here",
-    "description": "add description here",
-    "scope": "add scope of role here",
-    "additionalProperties": {
-      "property1" : "propertyValue1",
-      "property2" : "propertyValue2"
-    },
-    "effectiveFrom": "{{$isoTimestamp}}",
-    "effectiveTo": "{{$isoTimestamp}}"
-  },
-  "externalSourceGUID": "add guid here",
-  "externalSourceName": "add qualified name here",
-  "effectiveTime" : "{{$isoTimestamp}}",
-  "forLineage" : false,
-  "forDuplicateProcessing" : false
-}
-
 
 ###
 # @name linkSolutionComponentActor
@@ -1202,7 +1076,7 @@ Content-Type: application/json
 ###
 # @name updateSolutionComponent
 # Update the properties of a solution component.
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/solution-architect/solution-components/{{solutionComponentGUID}}/update?replaceAllProperties=false
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/solution-architect/solution-components/{{solutionComponentGUID}}/update
 Authorization: Bearer {{token}}
 Content-Type: application/json
 
@@ -1223,6 +1097,7 @@ Content-Type: application/json
     "effectiveFrom": "{{$isoTimestamp}}",
     "effectiveTo": "{{$isoTimestamp}}"
   },
+  "mergeUpdate": true,
   "externalSourceGUID": "add guid here",
   "externalSourceName": "add qualified name here",
   "effectiveTime" : "{{$isoTimestamp}}",

@@ -28,26 +28,21 @@ Content-Type: application/json
 
 ###
 # @name createGovernanceDefinition (with parent)
-# Create an anchored governance definition linked to a parent.  It may be of type:
-## * BusinessImperative
-## * RegulationArticle
-## * Threat
-## * GovernancePrinciple
-## * GovernanceObligation
-## * GovernanceApproach
-## * GovernanceProcessingPurpose
-# The type is added to the "typeName" property,
+# Create an anchored governance definition linked to a parent.  It may be of class:
+## * BusinessImperativeProperties
+## * RegulationArticleProperties
+## * ThreatProperties
+## * GovernancePrincipleProperties
+## * GovernanceObligationProperties
+## * GovernanceApproachProperties
+## * GovernanceProcessingPurposeProperties
+# The class replaces "GovernanceDefinitionProperties" in the "class" property under "properties"
 POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/governance-officer/governance-definitions
 Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
   "class" : "NewElementRequestBody",
-  "externalSourceGUID": "add guid here",
-  "externalSourceName": "add qualified name here",
-  "effectiveTime" : "{{$isoTimestamp}}",
-  "forLineage" : false,
-  "forDuplicateProcessing" : false,
   "anchorGUID" : "add guid here",
   "isOwnAnchor": false,
   "parentGUID": "add guid here",
@@ -65,7 +60,6 @@ Content-Type: application/json
   "parentAtEnd1": false,
   "properties": {
     "class" : "GovernanceDefinitionProperties",
-    "typeName" : "enter the type of the governance definition",
     "domainIdentifier": 0,
     "qualifiedName": "add unique name here",
     "displayName": "add short name here",
@@ -83,7 +77,12 @@ Content-Type: application/json
     "effectiveFrom": "{{$isoTimestamp}}",
     "effectiveTo": "{{$isoTimestamp}}"
   },
-  "initialStatus": "ACTIVE"
+  "initialStatus": "ACTIVE",
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
 }
 
 ###
@@ -95,11 +94,6 @@ Content-Type: application/json
 
 {
   "class" : "NewElementRequestBody",
-  "externalSourceGUID": "add guid here",
-  "externalSourceName": "add qualified name here",
-  "effectiveTime" : "{{$isoTimestamp}}",
-  "forLineage" : false,
-  "forDuplicateProcessing" : false,
   "anchorGUID" : "add guid here",
   "isOwnAnchor": false,
   "parentGUID": "add guid here",
@@ -117,7 +111,6 @@ Content-Type: application/json
   "parentAtEnd1": false,
   "properties": {
     "class" : "GovernanceStrategyProperties",
-    "typeName" : "GovernanceStrategy",
     "domainIdentifier": 0,
     "qualifiedName": "add unique name here",
     "displayName": "add short name here",
@@ -136,7 +129,12 @@ Content-Type: application/json
     "effectiveFrom": "{{$isoTimestamp}}",
     "effectiveTo": "{{$isoTimestamp}}"
   },
-  "initialStatus": "ACTIVE"
+  "initialStatus": "ACTIVE",
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
 }
 
 ###
@@ -148,11 +146,6 @@ Content-Type: application/json
 
 {
   "class" : "NewElementRequestBody",
-  "externalSourceGUID": "add guid here",
-  "externalSourceName": "add qualified name here",
-  "effectiveTime" : "{{$isoTimestamp}}",
-  "forLineage" : false,
-  "forDuplicateProcessing" : false,
   "anchorGUID" : "add guid here",
   "isOwnAnchor": false,
   "parentGUID": "add guid here",
@@ -170,7 +163,6 @@ Content-Type: application/json
   "parentAtEnd1": false,
   "properties": {
     "class" : "RegulationProperties",
-    "typeName" : "Regulation",
     "domainIdentifier": 0,
     "qualifiedName": "add unique name here",
     "displayName": "add short name here",
@@ -189,31 +181,31 @@ Content-Type: application/json
     "effectiveFrom": "{{$isoTimestamp}}",
     "effectiveTo": "{{$isoTimestamp}}"
   },
-  "initialStatus": "ACTIVE"
+  "initialStatus": "ACTIVE",
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
 }
 
 
 ###
 # @name createGovernanceControl (with parent)
-# Create a governance control definition. It may be of type:
-## * GovernanceRule
-## * ServiceLevelObjective
-## * GovernanceProcess
-## * GoveranceResponsibility
-## * GovernanceProcedure
-## * SecurityAccessControl
-# The type is added to the "typeName" property.
+# Create a governance control definition. It may be of class:
+## * GovernanceRuleProperties
+## * ServiceLevelObjectiveProperties
+## * GovernanceProcessProperties
+## * GoveranceResponsibilityProperties
+## * GovernanceProcedureProperties
+## * SecurityAccessControlProperties
+# The class places "GovernanceControlProperties" in the "class" property.
 POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/governance-officer/governance-definitions
 Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
   "class" : "NewElementRequestBody",
-  "externalSourceGUID": "add guid here",
-  "externalSourceName": "add qualified name here",
-  "effectiveTime" : "{{$isoTimestamp}}",
-  "forLineage" : false,
-  "forDuplicateProcessing" : false,
   "anchorGUID" : "add guid here",
   "isOwnAnchor": false,
   "parentGUID": "add guid here",
@@ -250,7 +242,12 @@ Content-Type: application/json
     "effectiveFrom": "{{$isoTimestamp}}",
     "effectiveTo": "{{$isoTimestamp}}"
   },
-  "initialStatus": "ACTIVE"
+  "initialStatus": "ACTIVE",
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
 }
 
 ###
@@ -262,11 +259,6 @@ Content-Type: application/json
 
 {
   "class" : "NewElementRequestBody",
-  "externalSourceGUID": "add guid here",
-  "externalSourceName": "add qualified name here",
-  "effectiveTime" : "{{$isoTimestamp}}",
-  "forLineage" : false,
-  "forDuplicateProcessing" : false,
   "anchorGUID" : "add guid here",
   "isOwnAnchor": false,
   "parentGUID": "add guid here",
@@ -284,7 +276,6 @@ Content-Type: application/json
   "parentAtEnd1": false,
   "properties": {
     "class" : "SecurityGroupProperties",
-    "typeName" : "SecurityGroup",
     "domainIdentifier": 0,
     "distinguishedName" : "",
     "qualifiedName": "add unique name here",
@@ -304,7 +295,12 @@ Content-Type: application/json
     "effectiveFrom": "{{$isoTimestamp}}",
     "effectiveTo": "{{$isoTimestamp}}"
   },
-  "initialStatus": "ACTIVE"
+  "initialStatus": "ACTIVE",
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
 }
 
 ###
@@ -316,11 +312,6 @@ Content-Type: application/json
 
 {
   "class" : "NewElementRequestBody",
-  "externalSourceGUID": "add guid here",
-  "externalSourceName": "add qualified name here",
-  "effectiveTime" : "{{$isoTimestamp}}",
-  "forLineage" : false,
-  "forDuplicateProcessing" : false,
   "anchorGUID" : "add guid here",
   "isOwnAnchor": false,
   "parentGUID": "add guid here",
@@ -338,7 +329,6 @@ Content-Type: application/json
   "parentAtEnd1": false,
   "properties": {
     "class" : "NamingStandardRuleProperties",
-    "typeName" : "NamingStandardRule",
     "domainIdentifier": 0,
     "qualifiedName": "add unique name here",
     "displayName": "add short name here",
@@ -358,7 +348,12 @@ Content-Type: application/json
     "effectiveFrom": "{{$isoTimestamp}}",
     "effectiveTo": "{{$isoTimestamp}}"
   },
-  "initialStatus": "ACTIVE"
+  "initialStatus": "ACTIVE",
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
 }
 
 ###
@@ -370,11 +365,6 @@ Content-Type: application/json
 
 {
   "class" : "NewElementRequestBody",
-  "externalSourceGUID": "add guid here",
-  "externalSourceName": "add qualified name here",
-  "effectiveTime" : "{{$isoTimestamp}}",
-  "forLineage" : false,
-  "forDuplicateProcessing" : false,
   "anchorGUID" : "add guid here",
   "isOwnAnchor": false,
   "parentGUID": "add guid here",
@@ -392,7 +382,6 @@ Content-Type: application/json
   "parentAtEnd1": false,
   "properties": {
     "class" : "CertificationTypeProperties",
-    "typeName" : "CertificationType",
     "domainIdentifier": 0,
     "qualifiedName": "add unique name here",
     "displayName": "add short name here",
@@ -411,7 +400,12 @@ Content-Type: application/json
     "effectiveFrom": "{{$isoTimestamp}}",
     "effectiveTo": "{{$isoTimestamp}}"
   },
-  "initialStatus": "ACTIVE"
+  "initialStatus": "ACTIVE",
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
 }
 
 ###
@@ -423,11 +417,6 @@ Content-Type: application/json
 
 {
   "class" : "NewElementRequestBody",
-  "externalSourceGUID": "add guid here",
-  "externalSourceName": "add qualified name here",
-  "effectiveTime" : "{{$isoTimestamp}}",
-  "forLineage" : false,
-  "forDuplicateProcessing" : false,
   "anchorGUID" : "add guid here",
   "isOwnAnchor": false,
   "parentGUID": "add guid here",
@@ -445,7 +434,6 @@ Content-Type: application/json
   "parentAtEnd1": false,
   "properties": {
     "class" : "LicenseTypeProperties",
-    "typeName" : "LicenseType",
     "domainIdentifier": 0,
     "qualifiedName": "add unique name here",
     "displayName": "add short name here",
@@ -465,7 +453,12 @@ Content-Type: application/json
     "effectiveFrom": "{{$isoTimestamp}}",
     "effectiveTo": "{{$isoTimestamp}}"
   },
-  "initialStatus": "ACTIVE"
+  "initialStatus": "ACTIVE",
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
 }
 
 
@@ -520,20 +513,14 @@ Content-Type: application/json
 ###
 # @name updateGovernanceDefinition
 # Update the properties of a governance definition.
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/governance-officer/governance-definitions/{{governanceDefinitionGUID}}/update?replaceAllProperties=false
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/governance-officer/governance-definitions/{{governanceDefinitionGUID}}/update
 Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
   "class" : "UpdateElementRequestBody",
-  "externalSourceGUID": "add guid here",
-  "externalSourceName": "add qualified name here",
-  "effectiveTime" : "{{$isoTimestamp}}",
-  "forLineage" : false,
-  "forDuplicateProcessing" : false,
   "properties": {
     "class" : "GovernanceDefinitionProperties",
-    "typeName" : "Add type name here",
     "qualifiedName": "add unique name here",
     "displayName": "add short name here",
     "description": "add description here",
@@ -549,7 +536,13 @@ Content-Type: application/json
     },
     "effectiveFrom": "{{$isoTimestamp}}",
     "effectiveTo": "{{$isoTimestamp}}"
-  }
+  },
+  "mergeUpdate": true,
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
 }
 
 
@@ -562,12 +555,12 @@ Content-Type: application/json
 
 {
   "class" : "UpdateStatusRequestBody",
+  "newStatus": "ACTIVE",
   "externalSourceGUID": "add guid here",
   "externalSourceName": "add qualified name here",
   "effectiveTime" : "{{$isoTimestamp}}",
   "forLineage" : false,
-  "forDuplicateProcessing" : false,
-  "newStatus": "ACTIVE"
+  "forDuplicateProcessing" : false
 }
 
 ###
@@ -589,17 +582,17 @@ Content-Type: application/json
 
 {
   "class" : "NewRelationshipRequestBody",
-  "externalSourceGUID": "add guid here",
-  "externalSourceName": "add qualified name here",
-  "effectiveTime" : "{{$isoTimestamp}}",
-  "forLineage" : false,
-  "forDuplicateProcessing" : false,
   "properties": {
     "class": "PeerDefinitionProperties",
     "description": "",
     "effectiveFrom": "{{$isoTimestamp}}",
     "effectiveTo": "{{$isoTimestamp}}"
-  }
+  },
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
 }
 
 
@@ -633,17 +626,17 @@ Content-Type: application/json
 
 {
   "class" : "NewRelationshipRequestBody",
-  "externalSourceGUID": "add guid here",
-  "externalSourceName": "add qualified name here",
-  "effectiveTime" : "{{$isoTimestamp}}",
-  "forLineage" : false,
-  "forDuplicateProcessing" : false,
   "properties": {
     "class": "SupportingDefinitionProperties",
     "rationale": "",
     "effectiveFrom": "{{$isoTimestamp}}",
     "effectiveTo": "{{$isoTimestamp}}"
-  }
+  },
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
 }
 
 
@@ -730,7 +723,7 @@ Content-Type: application/json
 
 {
   "class" : "FilterRequestBody",
- "asOfTime" : "{{$isoTimestamp}}",
+  "asOfTime" : "{{$isoTimestamp}}",
   "effectiveTime" : "{{$isoTimestamp}}",
   "forLineage" : false,
   "forDuplicateProcessing" : false,

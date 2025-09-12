@@ -146,8 +146,6 @@ Content-Type: application/json
 # Update the properties of an asset.
 #
 # @param assetGUID unique identifier of the asset (returned from create)
-# @param replaceAllProperties flag to indicate whether to completely replace the existing properties with the new properties, or just update
-#                          the individual properties specified on the request.
 # Request body provides     properties for the new element.
 #
 # Returns void or

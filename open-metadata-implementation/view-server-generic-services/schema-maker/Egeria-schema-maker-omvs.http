@@ -147,8 +147,6 @@ Content-Type: application/json
 # Update the properties of a schema type.
 #
 # @param schemaTypeGUID unique identifier of the schema type (returned from create)
-# @param replaceAllProperties flag to indicate whether to completely replace the existing properties with the new properties, or just update
-#                          the individual properties specified on the request.
 # Request body provides     properties for the new element.
 #
 # Returns void or
@@ -422,8 +420,6 @@ Content-Type: application/json
 # Update the properties of a schema attribute.
 #
 # @param schemaAttributeGUID unique identifier of the schema attribute (returned from create)
-# @param replaceAllProperties flag to indicate whether to completely replace the existing properties with the new properties, or just update
-#                          the individual properties specified on the request.
 # Request body provides     properties for the new element.
 #
 # Returns void or

@@ -281,7 +281,7 @@ Content-Type: application/json
 ###
 # @name updateProject
 # Update the properties of a project.
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/project-manager/projects/{{projectGUID}}/update?replaceAllProperties=false
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/project-manager/projects/{{projectGUID}}/update
 Authorization: Bearer {{token}}
 Content-Type: application/json
 
