@@ -1961,8 +1961,8 @@ public class StewardshipManagementHandler extends OpenMetadataHandlerBase
                                                                                                    PropertyServerException
     {
         openMetadataClient.createRelatedElementsInStore(userId,
-                                                        elementGUID,
                                                         OpenMetadataType.SEMANTIC_ASSIGNMENT_RELATIONSHIP.typeName,
+                                                        elementGUID,
                                                         glossaryTermGUID,
                                                         metadataSourceOptions,
                                                         relationshipBuilder.getNewElementProperties(properties));
@@ -2033,8 +2033,8 @@ public class StewardshipManagementHandler extends OpenMetadataHandlerBase
         propertyHelper.validateGUID(scopeGUID, end2GUIDParameterName, methodName);
 
         openMetadataClient.createRelatedElementsInStore(userId,
-                                                        elementGUID,
                                                         OpenMetadataType.SCOPED_BY_RELATIONSHIP.typeName,
+                                                        elementGUID,
                                                         scopeGUID,
                                                         metadataSourceOptions,
                                                         relationshipBuilder.getNewElementProperties(properties));
@@ -2097,8 +2097,8 @@ public class StewardshipManagementHandler extends OpenMetadataHandlerBase
                                                                                    PropertyServerException
     {
         openMetadataClient.createRelatedElementsInStore(userId,
-                                                        elementGUID,
                                                         OpenMetadataType.RESOURCE_LIST_RELATIONSHIP.typeName,
+                                                        elementGUID,
                                                         resourceGUID,
                                                         metadataSourceOptions,
                                                         relationshipBuilder.getNewElementProperties(properties));
@@ -2162,8 +2162,8 @@ public class StewardshipManagementHandler extends OpenMetadataHandlerBase
                                                                                          PropertyServerException
     {
         openMetadataClient.createRelatedElementsInStore(userId,
-                                                        elementGUID,
                                                         OpenMetadataType.MORE_INFORMATION_RELATIONSHIP.typeName,
+                                                        elementGUID,
                                                         moreInformationGUID,
                                                         metadataSourceOptions,
                                                         relationshipBuilder.getNewElementProperties(properties));

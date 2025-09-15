@@ -349,8 +349,8 @@ public class GovernanceDefinitionHandler extends OpenMetadataHandlerBase
                                                                                           PropertyServerException
     {
         openMetadataClient.createRelatedElementsInStore(userId,
-                                                        elementGUID,
                                                         OpenMetadataType.GOVERNED_BY_RELATIONSHIP.typeName,
+                                                        elementGUID,
                                                         definitionGUID,
                                                         metadataSourceOptions,
                                                         relationshipBuilder.getNewElementProperties(properties));
