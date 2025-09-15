@@ -14,9 +14,7 @@ import org.odpi.openmetadata.frameworks.opengovernance.ffdc.GovernanceServiceExc
 import org.odpi.openmetadata.frameworks.openmetadata.events.OpenMetadataEventType;
 import org.odpi.openmetadata.frameworks.openmetadata.events.OpenMetadataOutTopicEvent;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
-import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.ElementHeader;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.OpenMetadataRootElement;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.AnchorsProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.NewActionTarget;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.OpenMetadataTypeDefCategory;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.governance.NotificationTypeProperties;
@@ -26,25 +24,24 @@ import org.odpi.openmetadata.frameworks.openwatchdog.GenericWatchdogActionListen
 import org.odpi.openmetadata.frameworks.openwatchdog.WatchdogActionServiceConnector;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 
 /**
- * OpenMetadataNotificationService is a Watchdog Governance Action Service that listens for new or refreshed Assets
- * and kicks off a governance action process to validate that this Asset is correctly set up.
+ * MonitoredResourceNotificationService is a Watchdog Governance Action Service that listens for changes to its
+ * monitored resources and notifies its subscribers when a change occurs.
+ * It listens for changes to its subscribers and send welcome and cancellation notifications.
  * It is designed to run continuously and so does not set up completion status or guards.  This means its
  * Governance Action entity is never completed and this service is restarted each time the hosting engine is restarted.
  */
-public class OpenMetadataNotificationService extends WatchdogActionServiceConnector
+public class MonitoredResourceNotificationService extends WatchdogActionServiceConnector
 {
     volatile boolean completed = false;
 
     private final GenericWatchdogActionListener listener             = new GenericWatchdogActionListener(this);
     private final MonitoredElements             monitoredResources   = new MonitoredElements();
-    private final MonitoredElements monitoredSubscribers = new MonitoredElements();
-    private       String            notificationTypeName = "<unknown>";
+    private final MonitoredElements             monitoredSubscribers = new MonitoredElements();
+    private       String                        notificationTypeName = "<unknown>";
 
 
     /**
@@ -141,17 +138,12 @@ public class OpenMetadataNotificationService extends WatchdogActionServiceConnec
 
 
     /**
-     * This method is called each time a metadata change is received.  It triggers a governance action process to validate and
-     * enrich the asset as required.
+     * This method is called each time a metadata change is received.  If the element is one of the
+     * monitored resources, it notifies the subscribers.
      *
      * @param event event containing details of a change to an open metadata element.
-     *
-     * @throws GovernanceServiceException reports that the event can not be processed (this is logged but
-     *                                    no other action is taken).  The listener will continue to be
-     *                                    called until the watchdog governance action service declares it is complete
-     *                                    or administrator action shuts down the service.
      */
-    public void processEvent(OpenMetadataOutTopicEvent event) throws GovernanceServiceException
+    public void processEvent(OpenMetadataOutTopicEvent event)
     {
         final String methodName = "processEvent";
 
@@ -309,90 +301,5 @@ public class OpenMetadataNotificationService extends WatchdogActionServiceConnec
         watchdogContext.disconnectListener();
 
         super.disconnect();
-    }
-
-
-    /**
-     * Manage the list of monitored elements and support queries.
-     */
-    static class MonitoredElements
-    {
-        private final Map<String, ElementHeader> monitoredElements = new HashMap<>();
-
-        /**
-         * Set up the monitored elements.
-         *
-         * @param initialResources list of elements for the notification type.
-         */
-        public synchronized void setMonitoredElements(List<OpenMetadataRootElement> initialResources)
-        {
-            monitoredElements.clear();
-
-            if (initialResources != null)
-            {
-                for (OpenMetadataRootElement initialResource : initialResources)
-                {
-                    if (initialResource != null)
-                    {
-                        this.addMonitoredElement(initialResource.getElementHeader());
-                    }
-                }
-            }
-        }
-
-
-        /**
-         * Add a new element to the map.
-         *
-         * @param monitoredElement new resource
-         */
-        public synchronized void addMonitoredElement(ElementHeader monitoredElement)
-        {
-            if (monitoredElement != null)
-            {
-                monitoredElements.put(monitoredElement.getGUID(), monitoredElement);
-            }
-        }
-
-
-        /**
-         * Remove a element from the map.
-         *
-         * @param monitoredElement old resource
-         */
-        public synchronized void removeMonitoredElement(ElementHeader monitoredElement)
-        {
-            if (monitoredElement != null)
-            {
-                monitoredElements.remove(monitoredElement.getGUID());
-            }
-        }
-
-
-        /**
-         * Is this one of the monitored elements?
-         *
-         * @param potentialElement resource header
-         * @return boolean - true for monitored element
-         */
-        public synchronized boolean isMonitored(ElementHeader potentialElement)
-        {
-            if (potentialElement != null)
-            {
-                if (monitoredElements.containsKey(potentialElement.getGUID()))
-                {
-                    return true;
-                }
-
-                if ((potentialElement.getAnchor() != null) &&
-                        (potentialElement.getAnchor().getClassificationProperties() instanceof AnchorsProperties anchorsProperties) &&
-                        (anchorsProperties.getAnchorGUID() != null))
-                {
-                    return monitoredElements.containsKey(anchorsProperties.getAnchorGUID());
-                }
-            }
-
-            return false;
-        }
     }
 }

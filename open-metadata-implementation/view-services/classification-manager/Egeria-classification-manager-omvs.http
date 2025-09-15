@@ -684,17 +684,12 @@ Content-Type: application/json
 #
 # Semantic Assignments: https://egeria-project.org/types/3/0370-Semantic-Assignment/
 
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/classification-manager/elements/{{elementGUID}}/semantic-assignment/terms/{{glossaryTermGUID}}
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/classification-manager/elements/{{elementGUID}}/semantic-assignment/terms/{{glossaryTermGUID}}/attach
 Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
    "class" : "NewRelationshipRequestBody",
-   "externalSourceGUID": "Add guid here",
-   "externalSourceName": "Add qualified name here",
-   "forLineage": false,
-   "forDuplicateProcessing": false,
-   "effectiveTime" : "{{$isoTimestamp}}",
    "relationshipProperties" : {
      "class": "SemanticAssignmentProperties",
      "expression" : "add value here",
@@ -704,7 +699,12 @@ Content-Type: application/json
      "createdBy" : "add value here",
      "steward" : "add value here",
      "source" : "add value here"
-  }
+  },
+   "externalSourceGUID": "Add guid here",
+   "externalSourceName": "Add qualified name here",
+   "forLineage": false,
+   "forDuplicateProcessing": false,
+   "effectiveTime" : "{{$isoTimestamp}}"
 }
 
 ###
@@ -713,7 +713,7 @@ Content-Type: application/json
 #
 # Semantic Assignments: https://egeria-project.org/types/3/0370-Semantic-Assignment/
 
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/classification-manager/elements/{{elementGUID}}/semantic-assignment/terms/{{glossaryTermGUID}}/remove
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/classification-manager/elements/{{elementGUID}}/semantic-assignment/terms/{{glossaryTermGUID}}/detach
 Authorization: Bearer {{token}}
 Content-Type: application/json
 
@@ -736,12 +736,17 @@ Content-Type: application/json
 #
 # Governance Definitions: https://egeria-project.org/types/4/0401-Governance-Definitions/
 
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/classification-manager/elements/{{elementGUID}}/governed-by/definition/{{definitionGUID}}
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/classification-manager/elements/{{elementGUID}}/governed-by/definition/{{definitionGUID}}/attach
 Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
    "class" : "NewRelationshipRequestBody",
+   "properties" : {
+     "class" : "GovernedByProperties",
+     "label" : "add label here",
+     "description" : "add description here"
+   },
    "externalSourceGUID": "Add guid here",
    "externalSourceName": "Add qualified name here",
    "forLineage": false,
@@ -756,7 +761,7 @@ Content-Type: application/json
 #
 # Governance Definition: https://egeria-project.org/types/4/0401-Governance-Definitions/
 
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/classification-manager/elements/{{elementGUID}}/governed-by/definition/{{definitionGUID}}/remove
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/classification-manager/elements/{{elementGUID}}/governed-by/definition/{{definitionGUID}}/detach
 Authorization: Bearer {{token}}
 Content-Type: application/json
 
@@ -779,7 +784,7 @@ Content-Type: application/json
 #
 # Scopes: https://egeria-project.org/types/1/0120-Assignment-Scopes/
 
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/classification-manager/elements/{{elementGUID}}/scoped-by/{{scopeGUID}}
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/classification-manager/elements/{{elementGUID}}/scoped-by/{{scopeGUID}}/attach
 Authorization: Bearer {{token}}
 Content-Type: application/json
 
@@ -799,7 +804,7 @@ Content-Type: application/json
 #
 # Scopes: https://egeria-project.org/types/1/0120-Assignment-Scopes/
 
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/classification-manager/elements/{{elementGUID}}/scoped-by/{{scopeGUID}}/remove
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/classification-manager/elements/{{elementGUID}}/scoped-by/{{scopeGUID}}/detach
 Authorization: Bearer {{token}}
 Content-Type: application/json
 

@@ -9,7 +9,7 @@ import org.odpi.openmetadata.frameworks.auditlog.messagesets.ExceptionMessageSet
 
 /**
  * The OWF error code is used to define first failure data capture (FFDC) for errors that occur when working with
- * OWF Discovery Services.  It is used in conjunction with all OWF Exceptions, both Checked and Runtime (unchecked).
+ * OWF Services.  It is used in conjunction with all OWF Exceptions, both Checked and Runtime (unchecked).
  * The 5 fields in the enum are:
  * <ul>
  *     <li>HTTP Error Code for translating between REST and JAVA - Typically the numbers used are:</li>
@@ -28,77 +28,21 @@ import org.odpi.openmetadata.frameworks.auditlog.messagesets.ExceptionMessageSet
 public enum OWFErrorCode implements ExceptionMessageSet
 {
     /**
-     * OPEN-SURVEY-400-001 - No survey context supplied to the watchdog action service {0}
+     * OPEN-WATCHDOG-400-001 - No survey context supplied to the watchdog action service {0}
      */
-    NULL_SURVEY_CONTEXT(400, "OPEN-SURVEY-400-001",
-            "No survey context supplied to the watchdog action service {0}",
-            "The watchdog action service is not able to determine which asset to analyze.",
-            "This may be a configuration or a code error.  Look for other error messages and review the code of the watchdog action service.  Once the cause is resolved, retry the watchdog action request."),
-
-    /**
-     * OPEN-SURVEY-400-002 - No embedded watchdog action services supplied to the watchdog action pipeline {0}
-     */
-    NO_EMBEDDED_SURVEY_ACTION_SERVICES(400, "OPEN-SURVEY-400-002",
-            "No embedded watchdog action services supplied to the watchdog action pipeline {0}",
-            "The watchdog action pipeline is not able to watchdog action which watchdog action services to run.",
-            "This may be a configuration or a code error.  Look for other error messages and review the code of the watchdog action pipeline service.  Once the cause is resolved, retry the watchdog action request."),
-
-    /**
-     * OPEN-SURVEY-400-003 - No embedded watchdog action services supplied to the watchdog action pipeline {0}
-     */
-    INVALID_EMBEDDED_SURVEY_ACTION_SERVICE(400, "OPEN-SURVEY-400-003",
-            "No embedded watchdog action services supplied to the watchdog action pipeline {0}",
-            "The watchdog action pipeline is not able to discover which watchdog action services to run.",
-            "This may be a configuration or a code error.  Look for other error messages and review the code of the watchdog action pipeline service or the associated open watchdog action engine.  Once the cause is resolved, retry the watchdog action request."),
-
+    NULL_WATCHDOG_CONTEXT(400, "OPEN-WATCHDOG-400-001",
+                          "No context supplied to the watchdog action service {0}",
+                          "The watchdog action service is not able to determine which asset to analyze.",
+                          "This may be a configuration or a code error.  Look for other error messages and review the code of the watchdog action service.  Once the cause is resolved, retry the watchdog action request."),
 
 
     /**
-     * OPEN-SURVEY-400-005 - Asset {0} is of type {1} but watchdog action service {2} only supports the following asset type(s): {3}
+     * OPEN-WATCHDOG-500-001 - Unexpected exception in watchdog action service {0} of type {1} detected by method {2}.  The error message was {3}
      */
-    INVALID_ASSET_TYPE(400, "OPEN-SURVEY-400-005",
-                       "Asset {0} is of type {1} but watchdog action service {2} only supports the following asset type(s): {3}",
-                       "The watchdog action service terminates.",
-                       "The caller has requested a governance request type that is incompatible with the type of the " +
-                               "asset that has been supplied.  This problem could be resolved by issuing the survey request with " +
-                               "a governance request type that is compatible with the asset, or changing the watchdog action service " +
-                               "associated with the governance request type to one that supports this type of asset."),
-
-
-    /**
-     * OPEN-SURVEY-400-006 - The {0} Survey Acton Service has been supplied with a resource connector of class {1} rather than class {2} for asset {3}
-     */
-    WRONG_TYPE_OF_CONNECTOR(400, "OPEN-SURVEY-400-006",
-                            "The {0} Survey Acton Service has been supplied with a resource connector of class {1} rather than class {2} for asset {3}",
-                            "The survey is unable to continue since it is unable to work with the supplied connector.",
-                            "Use the details from the error message to determine the class of the connector.  " +
-                                    "Update the connector type associated with its Connection in the metadata store."),
-
-    /**
-     * OPEN-SURVEY-400-007 - The {0} Survey Acton Service has been supplied with asset {1} which does not have a schema attached
-     */
-    NO_SCHEMA(400, "OPEN-SURVEY-400-007",
-                            "The {0} Survey Acton Service has been supplied with asset {1} which does not have a schema attached",
-                            "The survey is unable to continue since it is unable to assess whether the data stored in the associated resource matches the desired schema.",
-                            "Update the asset to include the desired schema and re-run this survey.  If you want to discover the asset's schema then use a different survey service."),
-
-    /**
-     * OPEN-SURVEY-400-008 - The {0} Survey Acton Service has been supplied with asset {1} which does not have any schema attributes attached
-     */
-    NO_SCHEMA_ATTRIBUTES(400,"OPEN-SURVEY-400-008",
-                         "The {0} Survey Acton Service has been supplied with asset {1} which does not have any schema attributes attached",
-                         "The survey is unable to continue since it is unable to assess whether the data stored in the associated resource matches the desired schema because there are no schema attributes attached to the root schema.",
-                         "Update the asset to include the desired schema attributes and re-run this survey.  If you want to discover the asset's schema then use a different survey service."),
-
-
-
-    /**
-     * OPEN-SURVEY-500-001 - Unexpected exception in watchdog action service {0} of type {1} detected by method {2}.  The error message was {3}
-     */
-    UNEXPECTED_EXCEPTION(500, "OPEN-SURVEY-500-001",
+    UNEXPECTED_EXCEPTION(500, "OPEN-WATCHDOG-500-001",
                          "Unexpected exception in watchdog action service {0} of type {1} detected by method {2}.  The error message was {3}",
                          "The watchdog action service failed during its operation.",
-                         "This may be a configuration or a code error.  Look for other error messages and review the code of the watchdog action service.  Once the cause is resolved, retry the watchdog action request."),
+                         "Look for other error messages and review the code of the watchdog action service.  Once the cause is resolved, retry the watchdog action request."),
 
     ;
 

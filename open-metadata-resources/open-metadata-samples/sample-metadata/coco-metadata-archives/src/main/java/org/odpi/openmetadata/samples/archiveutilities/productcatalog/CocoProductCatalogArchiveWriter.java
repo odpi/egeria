@@ -16,7 +16,7 @@ import org.odpi.openmetadata.samples.archiveutilities.businesssystems.CocoBusine
 import org.odpi.openmetadata.samples.archiveutilities.governanceprogram.CocoGovernanceProgramArchiveWriter;
 import org.odpi.openmetadata.samples.archiveutilities.governanceprogram.CocoSubjectAreaDefinition;
 import org.odpi.openmetadata.samples.archiveutilities.organization.CocoOrganizationArchiveWriter;
-import org.odpi.openmetadata.samples.archiveutilities.organization.ScopeDefinition;
+import org.odpi.openmetadata.frameworks.openmetadata.refdata.ScopeDefinition;
 import org.odpi.openmetadata.samples.archiveutilities.sustainability.CocoSustainabilityArchiveWriter;
 import org.odpi.openmetadata.samples.archiveutilities.sustainability.SustainabilitySubjectAreaDefinition;
 
@@ -461,7 +461,7 @@ public class CocoProductCatalogArchiveWriter extends EgeriaBaseArchiveWriter
                                                         "English",
                                                         "For all Coco Pharmaceutical employees wishing to use or contribute to the digital product catalog.",
                                                         null,
-                                                        ScopeDefinition.ALL_COCO.getPreferredValue());
+                                                        ScopeDefinition.WITHIN_ORGANIZATION.getPreferredValue());
 
         archiveHelper.addSubjectAreaClassification(glossaryGUID, digitalProductsSubjectArea);
 

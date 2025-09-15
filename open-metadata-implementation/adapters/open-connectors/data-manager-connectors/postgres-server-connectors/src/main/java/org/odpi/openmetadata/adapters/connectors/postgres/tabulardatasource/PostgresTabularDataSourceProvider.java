@@ -8,7 +8,8 @@ import org.odpi.openmetadata.adapters.connectors.postgres.controls.PostgresDeplo
 import org.odpi.openmetadata.frameworks.auditlog.AuditLogReportingComponent;
 import org.odpi.openmetadata.frameworks.auditlog.ComponentDevelopmentStatus;
 import org.odpi.openmetadata.frameworks.connectors.ConnectorProviderBase;
-import org.odpi.openmetadata.frameworks.connectors.TabularDataSource;
+import org.odpi.openmetadata.frameworks.connectors.ReadableTabularDataSource;
+import org.odpi.openmetadata.frameworks.connectors.WritableTabularDataSource;
 import org.odpi.openmetadata.frameworks.connectors.controls.SupportedTechnologyType;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.ConnectorType;
 import org.odpi.openmetadata.frameworks.openmetadata.refdata.DeployedImplementationType;
@@ -54,7 +55,8 @@ public class PostgresTabularDataSourceProvider extends ConnectorProviderBase
 
         super.setConnectorClassName(connectorClass);
 
-        connectorInterfaces.add(TabularDataSource.class.getName());
+        connectorInterfaces.add(ReadableTabularDataSource.class.getName());
+        connectorInterfaces.add(WritableTabularDataSource.class.getName());
 
         ConnectorType connectorType = new ConnectorType();
 

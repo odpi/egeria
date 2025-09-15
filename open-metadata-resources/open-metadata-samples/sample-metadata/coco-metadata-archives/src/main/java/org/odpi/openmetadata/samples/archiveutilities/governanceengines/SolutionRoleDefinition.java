@@ -2,7 +2,7 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.samples.archiveutilities.governanceengines;
 
-import org.odpi.openmetadata.samples.archiveutilities.businesssystems.ScopeDefinition;
+import org.odpi.openmetadata.frameworks.openmetadata.refdata.ScopeDefinition;
 
 /**
  * The SolutionRoleDefinition is used to feed the definition of the solution roles for

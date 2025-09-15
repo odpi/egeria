@@ -1314,7 +1314,8 @@ public class ConnectionMakerRESTServices extends TokenController
 
 
     /**
-     * Retrieve the list of connectorType metadata elements that contain the search string.
+     * Retrieve the list of connectorType metadata elements that contain the supplied name in the displayName
+     * or qualifiedName attribute.
      *
      * @param serverName name of the service to route the request to
      * @param urlMarker  view service URL marker
@@ -1349,6 +1350,60 @@ public class ConnectionMakerRESTServices extends TokenController
             if (requestBody != null)
             {
                 response.setElements(handler.getConnectorTypesByName(userId, requestBody.getFilter(), requestBody));
+            }
+            else
+            {
+                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
+            }
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+        return response;
+    }
+
+
+    /**
+     * Returns the list of connector types with a particular connector provider class name.
+     * Provide the name of the connector provider's class name (including package; but without .class)
+     * in the filter.
+     *
+     * @param serverName name of the service to route the request to
+     * @param urlMarker  view service URL marker
+     * @param requestBody string to find in the properties
+     *
+     * @return list of matching metadata elements or
+     *  InvalidParameterException  one of the parameters is invalid
+     *  UserNotAuthorizedException the user is not authorized to issue this request
+     *  PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public OpenMetadataRootElementsResponse getConnectorTypesByConnectorProvider(String            serverName,
+                                                                                 String            urlMarker,
+                                                                                 FilterRequestBody requestBody)
+    {
+        final String methodName = "getConnectorTypesByConnectorProvider";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
+
+        OpenMetadataRootElementsResponse response = new OpenMetadataRootElementsResponse();
+        AuditLog                         auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            ConnectorTypeHandler handler = instanceHandler.getConnectorTypeHandler(userId, serverName, urlMarker, methodName);
+
+            if (requestBody != null)
+            {
+                response.setElements(handler.getConnectorTypesByConnectorProvider(userId, requestBody.getFilter(), requestBody));
             }
             else
             {

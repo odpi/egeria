@@ -8,7 +8,7 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedExceptio
 import java.util.List;
 
 /**
- * TabularDataSource defines the specific connector api for working with
+ * WritableTabularDataSource defines the specific connector api for working with
  * simple tabular data.  Each row represents a record
  * that is divided into columns.  Each row has the same list of columns and so the data source is
  * effectively a table of data.

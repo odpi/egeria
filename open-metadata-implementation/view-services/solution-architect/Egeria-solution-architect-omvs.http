@@ -381,20 +381,22 @@ Content-Type: application/json
 
 # @name getInformationSupplyChainsByName - with full request body
 # Returns the list of information supply chains with a particular name.
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/solution-architect/information-supply-chains/by-name?addImplementation=true&startFrom=0&pageSize=10
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/solution-architect/information-supply-chains/by-name?addImplementation=true
 Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
   "class" : "FilterRequestBody",
+  "filter" : "Add name here",
+  "startFrom": 0,
+  "pageSize": 10,
   "asOfTime" : "{{$isoTimestamp}}",
   "effectiveTime" : "{{$isoTimestamp}}",
   "forLineage" : false,
   "forDuplicateProcessing" : false,
   "limitResultsByStatus" : ["ACTIVE"],
   "sequencingOrder" : "PROPERTY_ASCENDING",
-  "sequencingProperty" : "qualifiedName",
-  "filter" : "Add name here"
+  "sequencingProperty" : "qualifiedName"
 }
 
 
@@ -717,7 +719,7 @@ Content-Type: application/json
 
 # @name getSolutionBlueprintsByName
 # Returns the list of solution blueprints with a particular name.
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/solution-architect/solution-blueprints/by-name?startFrom=0&pageSize=10
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/solution-architect/solution-blueprints/by-name
 Authorization: Bearer {{token}}
 Content-Type: application/json
 
@@ -730,20 +732,22 @@ Content-Type: application/json
 
 # @name getSolutionBlueprintsByName - with full request body
 # Returns the list of solution blueprints with a particular name.
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/solution-architect/solution-blueprints/by-name?startFrom=0&pageSize=10
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/solution-architect/solution-blueprints/by-name
 Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
   "class" : "FilterRequestBody",
+  "filter" : "Add name here",
+  "startFrom": 0,
+  "pageSize": 10,
   "asOfTime" : "{{$isoTimestamp}}",
   "effectiveTime" : "{{$isoTimestamp}}",
   "forLineage" : false,
   "forDuplicateProcessing" : false,
   "limitResultsByStatus" : ["ACTIVE"],
   "sequencingOrder" : "PROPERTY_ASCENDING",
-  "sequencingProperty" : "qualifiedName",
-  "filter" : "Add name here"
+  "sequencingProperty" : "qualifiedName"
 }
 
 
@@ -929,14 +933,16 @@ Content-Type: application/json
 
 {
   "class" : "FilterRequestBody",
+  "filter" : "Add name here",
+  "startFrom": 0,
+  "pageSize": 10,
   "asOfTime" : "{{$isoTimestamp}}",
   "effectiveTime" : "{{$isoTimestamp}}",
   "forLineage" : false,
   "forDuplicateProcessing" : false,
   "limitResultsByStatus" : ["ACTIVE"],
   "sequencingOrder" : "PROPERTY_ASCENDING",
-  "sequencingProperty" : "qualifiedName",
-  "filter" : "Add name here"
+  "sequencingProperty" : "qualifiedName"
 }
 
 
@@ -1309,14 +1315,16 @@ Content-Type: application/json
 
 {
   "class" : "FilterRequestBody",
+  "filter" : "Add name here",
+  "startFrom": 0,
+  "pageSize": 10,
   "asOfTime" : "{{$isoTimestamp}}",
   "effectiveTime" : "{{$isoTimestamp}}",
   "forLineage" : false,
   "forDuplicateProcessing" : false,
   "limitResultsByStatus" : ["ACTIVE"],
   "sequencingOrder" : "PROPERTY_ASCENDING",
-  "sequencingProperty" : "qualifiedName",
-  "filter" : "Add name here"
+  "sequencingProperty" : "qualifiedName"
 }
 
 

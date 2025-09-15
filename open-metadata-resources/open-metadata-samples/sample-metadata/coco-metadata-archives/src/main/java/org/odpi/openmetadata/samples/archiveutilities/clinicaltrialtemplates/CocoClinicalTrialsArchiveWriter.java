@@ -17,7 +17,7 @@ import org.odpi.openmetadata.samples.archiveutilities.governanceprogram.CocoGove
 import org.odpi.openmetadata.samples.archiveutilities.governanceprogram.CocoGovernanceZoneDefinition;
 import org.odpi.openmetadata.samples.archiveutilities.governanceprogram.DataProcessingPurposeDefinition;
 import org.odpi.openmetadata.samples.archiveutilities.governanceprogram.LicenseTypeDefinition;
-import org.odpi.openmetadata.samples.archiveutilities.organization.ScopeDefinition;
+import org.odpi.openmetadata.frameworks.openmetadata.refdata.ScopeDefinition;
 import org.odpi.openmetadata.samples.governanceactions.clinicaltrials.CocoClinicalTrialPlaceholderProperty;
 
 import java.util.*;
@@ -81,7 +81,7 @@ public class CocoClinicalTrialsArchiveWriter extends EgeriaBaseArchiveWriter
                                                         "English",
                                                         "Used for demonstration of governance and data management techniques using the Egeria technology.  Not to be used for real clinical trials.",
                                                         null,
-                                                        ScopeDefinition.ALL_COCO.getPreferredValue());
+                                                        ScopeDefinition.WITHIN_ORGANIZATION.getPreferredValue());
 
         archiveHelper.addSubjectAreaClassification(glossaryGUID, clinicalTrialsSubjectArea);
 

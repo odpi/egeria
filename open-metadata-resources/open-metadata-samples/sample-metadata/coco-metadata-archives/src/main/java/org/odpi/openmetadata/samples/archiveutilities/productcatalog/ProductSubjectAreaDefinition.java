@@ -4,7 +4,7 @@ package org.odpi.openmetadata.samples.archiveutilities.productcatalog;
 
 
 import org.odpi.openmetadata.samples.archiveutilities.governanceprogram.CocoSubjectAreaDefinition;
-import org.odpi.openmetadata.samples.archiveutilities.organization.ScopeDefinition;
+import org.odpi.openmetadata.frameworks.openmetadata.refdata.ScopeDefinition;
 
 /**
  * The CocoSubjectAreaDefinition is used to feed the definition of the subject areas for Coco Pharmaceuticals.
@@ -16,7 +16,7 @@ public enum ProductSubjectAreaDefinition
                                 CocoSubjectAreaDefinition.GOVERNANCE,
                                 "Digital Product Management",
                                 "Information relating to the management of digital products.",
-                                ScopeDefinition.ALL_COCO.getPreferredValue(),
+                                ScopeDefinition.WITHIN_ORGANIZATION.getPreferredValue(),
                                 "Development and management of digital products.",
                                 ProductDomainDefinition.DIGITAL_PRODUCT_MANAGEMENT.getDomainIdentifier()),
     ;

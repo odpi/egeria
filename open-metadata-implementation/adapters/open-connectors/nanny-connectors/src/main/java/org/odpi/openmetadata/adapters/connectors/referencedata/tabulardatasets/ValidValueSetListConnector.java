@@ -183,16 +183,17 @@ public class ValidValueSetListConnector extends ReferenceDataSetConnectorBase im
         {
             columnDescriptions = new ArrayList<>();
 
-            columnDescriptions.add(getTabularColumnDescription(OpenMetadataProperty.GUID, false));
-            columnDescriptions.add(getTabularColumnDescription(OpenMetadataProperty.QUALIFIED_NAME, false));
-            columnDescriptions.add(getTabularColumnDescription(OpenMetadataProperty.DISPLAY_NAME, true));
-            columnDescriptions.add(getTabularColumnDescription(OpenMetadataProperty.DESCRIPTION, true));
-            columnDescriptions.add(getTabularColumnDescription(OpenMetadataProperty.CATEGORY, true));
-            columnDescriptions.add(getTabularColumnDescription(OpenMetadataProperty.PREFERRED_VALUE, true));
-            columnDescriptions.add(getTabularColumnDescription(OpenMetadataProperty.IS_CASE_SENSITIVE, true));
-            columnDescriptions.add(getTabularColumnDescription(OpenMetadataProperty.DATA_TYPE, true));
-            columnDescriptions.add(getTabularColumnDescription(OpenMetadataProperty.SCOPE, true));
-            columnDescriptions.add(getTabularColumnDescription(OpenMetadataProperty.USAGE, true));
+            columnDescriptions.add(getTabularColumnDescription(OpenMetadataProperty.GUID, false, true));
+            columnDescriptions.add(getTabularColumnDescription(OpenMetadataProperty.QUALIFIED_NAME, false, false));
+            columnDescriptions.add(getTabularColumnDescription(OpenMetadataProperty.DISPLAY_NAME, true, false));
+            columnDescriptions.add(getTabularColumnDescription(OpenMetadataProperty.DESCRIPTION, true, false));
+            columnDescriptions.add(getTabularColumnDescription(OpenMetadataProperty.CATEGORY, true, false));
+            columnDescriptions.add(getTabularColumnDescription(OpenMetadataProperty.NAMESPACE, true, false));
+            columnDescriptions.add(getTabularColumnDescription(OpenMetadataProperty.PREFERRED_VALUE, true, false));
+            columnDescriptions.add(getTabularColumnDescription(OpenMetadataProperty.IS_CASE_SENSITIVE, true, false));
+            columnDescriptions.add(getTabularColumnDescription(OpenMetadataProperty.DATA_TYPE, true, false));
+            columnDescriptions.add(getTabularColumnDescription(OpenMetadataProperty.SCOPE, true, false));
+            columnDescriptions.add(getTabularColumnDescription(OpenMetadataProperty.USAGE, true, false));
         }
 
         return columnDescriptions;

@@ -1,0 +1,74 @@
+/* SPDX-License-Identifier: Apache-2.0 */
+/* Copyright Contributors to the ODPi Egeria project. */
+
+package org.odpi.openmetadata.adapters.connectors.governanceactions.notifications;
+
+
+import org.odpi.openmetadata.adapters.connectors.governanceactions.watchdog.GenericWatchdogGuard;
+import org.odpi.openmetadata.frameworks.auditlog.AuditLogReportingComponent;
+import org.odpi.openmetadata.frameworks.auditlog.ComponentDevelopmentStatus;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.ConnectorType;
+import org.odpi.openmetadata.frameworks.openwatchdog.WatchdogActionServiceProvider;
+import org.odpi.openmetadata.frameworks.openwatchdog.controls.WatchdogActionTarget;
+
+
+/**
+ * OneTimeNotificationServiceProvider is the OCF connector provider for the OneTimeNotificationService.
+ * This is a WatchDog Action Service.
+ */
+public class OneTimeNotificationServiceProvider extends WatchdogActionServiceProvider
+{
+    /*
+     * Unique identifier of the connector for the audit log.
+     */
+    private static final int    connectorComponentId       = 708;
+    private static final String connectorTypeGUID          = "1e17871b-684a-4176-bedb-8ddda09fb1e6";
+    private static final String connectorTypeQualifiedName = "Egeria:GovernanceService:Watchdog:OneTimeNotificationService";
+    private static final String connectorTypeDisplayName   = "Open Metadata Watchdog Service";
+    private static final String connectorTypeDescription   = "A Watchdog Action Service that notifies all subscribers once and then completes.";
+    private static final String connectorWikiPage          = "https://egeria-project.org/connectors/watchdog/open-metadata-notification-service/";
+
+    /*
+     * This is the name of the connector that this provider will create
+     */
+    private static final String connectorClassName = OneTimeNotificationService.class.getName();
+
+
+    public OneTimeNotificationServiceProvider()
+    {
+        super();
+        super.setConnectorClassName(connectorClassName);
+
+        supportedRequestTypes = null;
+        supportedRequestParameters = null;
+        supportedActionTargetTypes = WatchdogActionTarget.getNotificationActionTargetTypes();
+        producedGuards = GenericWatchdogGuard.getGuardTypes();
+
+        super.setConnectorClassName(connectorClassName);
+
+        ConnectorType connectorType = new ConnectorType();
+        connectorType.setGUID(connectorTypeGUID);
+        connectorType.setQualifiedName(connectorTypeQualifiedName);
+        connectorType.setDisplayName(connectorTypeDisplayName);
+        connectorType.setDescription(connectorTypeDescription);
+        connectorType.setConnectorProviderClassName(this.getClass().getName());
+
+        connectorType.setSupportedAssetTypeName(supportedAssetTypeName);
+        connectorType.setSupportedDeployedImplementationType(supportedDeployedImplementationType);
+
+        super.connectorTypeBean = connectorType;
+
+        /*
+         * Set up the component description used in the connector's audit log messages.
+         */
+        AuditLogReportingComponent componentDescription = new AuditLogReportingComponent();
+
+        componentDescription.setComponentId(connectorComponentId);
+        componentDescription.setComponentDevelopmentStatus(ComponentDevelopmentStatus.STABLE);
+        componentDescription.setComponentName(connectorTypeDisplayName);
+        componentDescription.setComponentDescription(connectorTypeDescription);
+        componentDescription.setComponentWikiURL(connectorWikiPage);
+
+        super.setConnectorComponentDescription(componentDescription);
+    }
+}

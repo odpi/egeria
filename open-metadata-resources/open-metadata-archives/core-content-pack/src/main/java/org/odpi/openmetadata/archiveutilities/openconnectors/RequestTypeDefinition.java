@@ -9,6 +9,7 @@ import org.odpi.openmetadata.adapters.connectors.egeriainfrastructure.control.Eg
 import org.odpi.openmetadata.adapters.connectors.egeriainfrastructure.control.EgeriaSoftwareServerTemplateDefinition;
 import org.odpi.openmetadata.adapters.connectors.governanceactions.stewardship.ManageAssetRequestParameter;
 import org.odpi.openmetadata.adapters.connectors.postgres.controls.PostgresDeployedImplementationType;
+import org.odpi.openmetadata.adapters.connectors.productmanager.productcatalog.GovernanceActionTypeDefinition;
 import org.odpi.openmetadata.adapters.connectors.surveyaction.controls.FolderRequestParameter;
 import org.odpi.openmetadata.adapters.connectors.unitycatalog.controls.UnityCatalogDeployedImplementationType;
 import org.odpi.openmetadata.frameworks.opengovernance.controls.ActionTarget;
@@ -79,57 +80,82 @@ public enum RequestTypeDefinition
                 ContentPackDefinition.CORE_CONTENT_PACK),
 
     /**
-     * open-metadata-watchdog
+     * monitored-resource-notification
      */
-    OPEN_METADATA_WATCHDOG("open-metadata-watchdog",
-                null,
-                null,
-                null,
-                GovernanceEngineDefinition.EGERIA_WATCHDOG_ENGINE,
-                GovernanceServiceDefinition.OPEN_METADATA_NOTIFICATION,
-                "9c6e08d6-a081-4482-a173-1ae7baf3faf1",
-                DeployedImplementationType.TABULAR_DATA_SET.getQualifiedName(),
-                ContentPackDefinition.CORE_CONTENT_PACK),
+    MONITORED_RESOURCE_WATCHDOG(GovernanceActionTypeDefinition.MONITORED_RESOURCE_WATCHDOG.getGovernanceRequestType(),
+                                null,
+                                null,
+                                null,
+                                GovernanceEngineDefinition.EGERIA_WATCHDOG_ENGINE,
+                                GovernanceServiceDefinition.MONITORED_RESOURCE_NOTIFICATION,
+                                GovernanceActionTypeDefinition.MONITORED_RESOURCE_WATCHDOG.getGovernanceActionTypeGUID(),
+                                DeployedImplementationType.TABULAR_DATA_SET.getQualifiedName(),
+                                ContentPackDefinition.CORE_CONTENT_PACK),
 
     /**
-     * open-metadata-watchdog
+     * periodic-refresh-notification
      */
-    PROVISION_TABULAR("provision-tabular-data-set",
-                           null,
-                           null,
-                           null,
-                           GovernanceEngineDefinition.EGERIA_GOVERNANCE_ENGINE,
-                           GovernanceServiceDefinition.TABULAR_DATA_PROVISIONER,
-                           "bf03a1c7-ad5e-49b7-8f97-a66624243767",
-                           DeployedImplementationType.TABULAR_DATA_SET.getQualifiedName(),
-                           ContentPackDefinition.PRODUCTS_CONTENT_PACK),
+    PERIODIC_REFRESH_WATCHDOG(GovernanceActionTypeDefinition.PERIODIC_REFRESH_WATCHDOG.getGovernanceRequestType(),
+                              null,
+                              null,
+                              null,
+                              GovernanceEngineDefinition.EGERIA_WATCHDOG_ENGINE,
+                              GovernanceServiceDefinition.PERIODIC_REFRESH_NOTIFICATION,
+                              GovernanceActionTypeDefinition.PERIODIC_REFRESH_WATCHDOG.getGovernanceActionTypeGUID(),
+                              DeployedImplementationType.TABULAR_DATA_SET.getQualifiedName(),
+                              ContentPackDefinition.CORE_CONTENT_PACK),
 
     /**
-     * create-digital-subscription
+     * one-time-notification
      */
-    CREATE_SUBSCRIPTION("create-digital-subscription",
+    ONE_TIME_NOTIFICATION(GovernanceActionTypeDefinition.ONE_TIME_NOTIFICATION.getGovernanceRequestType(),
+                          null,
+                          null,
+                          null,
+                          GovernanceEngineDefinition.EGERIA_WATCHDOG_ENGINE,
+                          GovernanceServiceDefinition.ONE_TIME_NOTIFICATION,
+                          GovernanceActionTypeDefinition.ONE_TIME_NOTIFICATION.getGovernanceActionTypeGUID(),
+                          DeployedImplementationType.TABULAR_DATA_SET.getQualifiedName(),
+                          ContentPackDefinition.CORE_CONTENT_PACK),
+
+    /**
+     * provision-tabular-data-set
+     */
+    PROVISION_TABULAR(GovernanceActionTypeDefinition.PROVISION_TABULAR.getGovernanceRequestType(),
                       null,
                       null,
                       null,
                       GovernanceEngineDefinition.EGERIA_GOVERNANCE_ENGINE,
-                      GovernanceServiceDefinition.CREATE_SUBSCRIPTION,
-                      "369e63b9-56b6-4f31-96a2-3dcf26a21ca8",
+                      GovernanceServiceDefinition.TABULAR_DATA_PROVISIONER,
+                      GovernanceActionTypeDefinition.PROVISION_TABULAR.getGovernanceActionTypeGUID(),
                       DeployedImplementationType.TABULAR_DATA_SET.getQualifiedName(),
                       ContentPackDefinition.PRODUCTS_CONTENT_PACK),
 
     /**
+     * create-digital-subscription
+     */
+    CREATE_SUBSCRIPTION(GovernanceActionTypeDefinition.CREATE_SUBSCRIPTION.getGovernanceRequestType(),
+                        null,
+                        null,
+                        null,
+                        GovernanceEngineDefinition.EGERIA_GOVERNANCE_ENGINE,
+                        GovernanceServiceDefinition.CREATE_SUBSCRIPTION,
+                        GovernanceActionTypeDefinition.CREATE_SUBSCRIPTION.getGovernanceActionTypeGUID(),
+                        DeployedImplementationType.TABULAR_DATA_SET.getQualifiedName(),
+                        ContentPackDefinition.PRODUCTS_CONTENT_PACK),
+
+    /**
      * cancel-digital-subscription
      */
-    CANCEL_SUBSCRIPTION("cancel-digital-subscription",
+    CANCEL_SUBSCRIPTION(GovernanceActionTypeDefinition.CANCEL_SUBSCRIPTION.getGovernanceRequestType(),
                         null,
                         null,
                         null,
                         GovernanceEngineDefinition.EGERIA_GOVERNANCE_ENGINE,
                         GovernanceServiceDefinition.CANCEL_SUBSCRIPTION,
-                        "88d9516b-6134-4cfd-bfcc-0e2fcd8dab7f",
+                        GovernanceActionTypeDefinition.CANCEL_SUBSCRIPTION.getGovernanceActionTypeGUID(),
                         DeployedImplementationType.TABULAR_DATA_SET.getQualifiedName(),
                         ContentPackDefinition.PRODUCTS_CONTENT_PACK),
-
 
 
     /**

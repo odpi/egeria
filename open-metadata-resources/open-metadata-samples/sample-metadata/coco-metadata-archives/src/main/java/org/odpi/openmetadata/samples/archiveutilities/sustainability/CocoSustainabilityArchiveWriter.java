@@ -14,7 +14,7 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.archivestore.p
 import org.odpi.openmetadata.samples.archiveutilities.EgeriaBaseArchiveWriter;
 import org.odpi.openmetadata.samples.archiveutilities.governanceprogram.CocoGovernanceProgramArchiveWriter;
 import org.odpi.openmetadata.samples.archiveutilities.organization.CocoOrganizationArchiveWriter;
-import org.odpi.openmetadata.samples.archiveutilities.organization.ScopeDefinition;
+import org.odpi.openmetadata.frameworks.openmetadata.refdata.ScopeDefinition;
 
 import java.util.Date;
 import java.util.HashMap;
@@ -308,7 +308,7 @@ public class CocoSustainabilityArchiveWriter extends EgeriaBaseArchiveWriter
                                                         "English",
                                                         "For all Coco Pharmaceutical employees wishing to understand more about sustainability and the organization's efforts to improve its operations.",
                                                         null,
-                                                        ScopeDefinition.ALL_COCO.getPreferredValue());
+                                                        ScopeDefinition.WITHIN_ORGANIZATION.getPreferredValue());
 
         archiveHelper.addSubjectAreaClassification(glossaryGUID, sustainabilitySubjectArea);
 

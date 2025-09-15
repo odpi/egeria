@@ -1769,7 +1769,7 @@ public enum OpenMetadataProperty
     /**
      * The value to use.
      */
-    PREFERRED_VALUE("preferredValue", DataType.STRING, DataType.STRING.getName(), "The value to use.", "Survey Resource", "b6258cbe-72f5-430b-ab62-6acb6c667e87"),
+    PREFERRED_VALUE("preferredValue", DataType.STRING, DataType.STRING.getName(), "The value to use for this field in data sets.", "Survey Resource", "b6258cbe-72f5-430b-ab62-6acb6c667e87"),
 
     /**
      * Descriptive name of the concept that this valid value applies to.

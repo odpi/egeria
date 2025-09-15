@@ -6,7 +6,6 @@ package org.odpi.openmetadata.samples.governanceactions.clinicaltrials;
 import org.odpi.openmetadata.frameworks.auditlog.messagesets.AuditLogMessageDefinition;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.*;
 import org.odpi.openmetadata.frameworks.opengovernance.properties.*;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.OpenMetadataElement;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.RelatedMetadataElement;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.RelatedMetadataElementList;
 import org.odpi.openmetadata.frameworks.openmetadata.refdata.AssignmentType;
@@ -300,12 +299,13 @@ public class CocoClinicalTrialSetUpService extends CocoClinicalTrialBaseService
                 String              hospitalCertificationTypeGUID                 = setUpCertificationType(clinicalTrialId, projectMap.get(CocoClinicalTrialActionTarget.PROJECT.getName()), hospitalCertificationTypeTemplateGUID);
                 String              dataQualityCertificationTypeGUID              = setUpCertificationType(clinicalTrialId, projectMap.get(CocoClinicalTrialActionTarget.PROJECT.getName()), dataQualityCertificationTypeTemplateGUID);
 
-                String nominateHospitalGUID = this.createProcessFromGovernanceActionType("ClinicalTrials::" + clinicalTrialId + "::nominate-hospital",
-                                                                                         "Nominate Hospital (" + clinicalTrialId + ")",
-                                                                                         "Set up the certification, data processing types and license for a hospital so that it may contribute data to the clinical trial.",
-                                                                                         genericHospitalNominationGUID,
-                                                                                         governanceContext.getRequestParameters(),
-                                                                                         projectMap.get(CocoClinicalTrialActionTarget.PROJECT.getName()));
+                String nominateHospitalGUID = governanceContext.createProcessFromGovernanceActionType("ClinicalTrials::" + clinicalTrialId + "::nominate-hospital",
+                                                                                                      "Nominate Hospital (" + clinicalTrialId + ")",
+                                                                                                      "Set up the certification, data processing types and license for a hospital so that it may contribute data to the clinical trial.",
+                                                                                                      genericHospitalNominationGUID,
+                                                                                                      governanceContext.getRequestParameters(),
+                                                                                                      null,
+                                                                                                      projectMap.get(CocoClinicalTrialActionTarget.PROJECT.getName()));
 
                 addSolutionComponentImplementedByRelationship(ClinicalTrialSolutionComponent.NOMINATE_HOSPITAL.getGUID(), nominateHospitalGUID, null, "Supports clinical trial " + clinicalTrialId);
                 addResourceListRelationship(projectMap.get(CocoClinicalTrialActionTarget.HOSPITAL_MANAGEMENT_PROJECT.getName()), nominateHospitalGUID, ResourceUse.SUPPORTING_PROCESS);
@@ -315,12 +315,14 @@ public class CocoClinicalTrialSetUpService extends CocoClinicalTrialBaseService
                 addActionTargetToProcess(nominateHospitalGUID, CocoClinicalTrialActionTarget.CLINICAL_TRIAL_OWNER.getName(), clinicalTrialOwnerGUID);
                 addActionTargetToProcess(nominateHospitalGUID, CocoClinicalTrialActionTarget.HOSPITAL_CERTIFICATION_TYPE.getName(), hospitalCertificationTypeGUID);
 
-                String certifyHospitalGUID = this.createProcessFromGovernanceActionType("ClinicalTrials::" + clinicalTrialId + "::certify-hospital",
-                                                                                        "Certify Hospital (" + clinicalTrialId + ")",
-                                                                                        "Confirms the certification for a hospital so that it may contribute data to the clinical trial.",
-                                                                                        genericHospitalCertificationGUID,
-                                                                                        governanceContext.getRequestParameters(),
-                                                                                        projectMap.get(CocoClinicalTrialActionTarget.PROJECT.getName()));
+
+                String certifyHospitalGUID = governanceContext.createProcessFromGovernanceActionType("ClinicalTrials::" + clinicalTrialId + "::certify-hospital",
+                                                                                                     "Certify Hospital (" + clinicalTrialId + ")",
+                                                                                                     "Confirms the certification for a hospital so that it may contribute data to the clinical trial.",
+                                                                                                     genericHospitalCertificationGUID,
+                                                                                                     governanceContext.getRequestParameters(),
+                                                                                                     null,
+                                                                                                     projectMap.get(CocoClinicalTrialActionTarget.PROJECT.getName()));
 
                 addSolutionComponentImplementedByRelationship(ClinicalTrialSolutionComponent.CERTIFY_HOSPITAL.getGUID(), certifyHospitalGUID, null, "Supports clinical trial " + clinicalTrialId);
                 addResourceListRelationship(projectMap.get(CocoClinicalTrialActionTarget.HOSPITAL_MANAGEMENT_PROJECT.getName()), certifyHospitalGUID, ResourceUse.SUPPORTING_PROCESS);
@@ -330,12 +332,13 @@ public class CocoClinicalTrialSetUpService extends CocoClinicalTrialBaseService
                 addActionTargetToProcess(certifyHospitalGUID, CocoClinicalTrialActionTarget.CLINICAL_TRIAL_MANAGER.getName(), clinicalTrialManagerGUID);
 
 
-                String onboardHospitalGUID = this.createProcessFromGovernanceActionType("ClinicalTrials::" + clinicalTrialId + "::onboard-hospital",
-                                                                                        "Onboard Hospital (" + clinicalTrialId + ")",
-                                                                                        "Set up the onboarding pipeline that take data from a particular hospital and adds it to the data lake.",
-                                                                                        genericHospitalOnboardingGUID,
-                                                                                        governanceContext.getRequestParameters(),
-                                                                                        projectMap.get(CocoClinicalTrialActionTarget.PROJECT.getName()));
+                String onboardHospitalGUID = governanceContext.createProcessFromGovernanceActionType("ClinicalTrials::" + clinicalTrialId + "::onboard-hospital",
+                                                                                                     "Onboard Hospital (" + clinicalTrialId + ")",
+                                                                                                     "Set up the onboarding pipeline that take data from a particular hospital and adds it to the data lake.",
+                                                                                                     genericHospitalOnboardingGUID,
+                                                                                                     governanceContext.getRequestParameters(),
+                                                                                                     null,
+                                                                                                     projectMap.get(CocoClinicalTrialActionTarget.PROJECT.getName()));
 
                 addSolutionComponentImplementedByRelationship(ClinicalTrialSolutionComponent.ONBOARD_HOSPITAL.getGUID(), onboardHospitalGUID, null, "Supports clinical trial " + clinicalTrialId);
                 addResourceListRelationship(projectMap.get(CocoClinicalTrialActionTarget.ONBOARD_PIPELINE_PROJECT.getName()), onboardHospitalGUID, ResourceUse.SUPPORTING_PROCESS);
@@ -348,12 +351,13 @@ public class CocoClinicalTrialSetUpService extends CocoClinicalTrialBaseService
                 addActionTargetToProcess(onboardHospitalGUID, CocoClinicalTrialActionTarget.INFORMATION_SUPPLY_CHAIN.getName(), treatmentValidationInformationSupplyChainGUID);
 
 
-                String setUpDataLakeProcessGUID = this.createProcessFromGovernanceActionType("ClinicalTrials::" + clinicalTrialId + "::set-up-data-lake",
-                                                                                             "Set Up Data Lake (" + clinicalTrialId + ")",
-                                                                                             "Set up the data stores for receiving data from the hospitals - this includes the file system directory and Unity Catalog Volume for incoming patient measurements, along with the data set collection for certified measurement files.",
-                                                                                             genericSetUpDataLakeGUID,
-                                                                                             governanceContext.getRequestParameters(),
-                                                                                             projectMap.get(CocoClinicalTrialActionTarget.PROJECT.getName()));
+                String setUpDataLakeProcessGUID = governanceContext.createProcessFromGovernanceActionType("ClinicalTrials::" + clinicalTrialId + "::set-up-data-lake",
+                                                                                                          "Set Up Data Lake (" + clinicalTrialId + ")",
+                                                                                                          "Set up the data stores for receiving data from the hospitals - this includes the file system directory and Unity Catalog Volume for incoming patient measurements, along with the data set collection for certified measurement files.",
+                                                                                                          genericSetUpDataLakeGUID,
+                                                                                                          governanceContext.getRequestParameters(),
+                                                                                                          null,
+                                                                                                          projectMap.get(CocoClinicalTrialActionTarget.PROJECT.getName()));
 
                 addSolutionComponentImplementedByRelationship(ClinicalTrialSolutionComponent.SET_UP_DATA_LAKE.getGUID(), setUpDataLakeProcessGUID, null, "Supports clinical trial " + clinicalTrialId);
                 addResourceListRelationship(projectMap.get(CocoClinicalTrialActionTarget.ONBOARD_PIPELINE_PROJECT.getName()), setUpDataLakeProcessGUID, ResourceUse.SUPPORTING_PROCESS);
@@ -518,124 +522,6 @@ public class CocoClinicalTrialSetUpService extends CocoClinicalTrialBaseService
                                                                                           OpenMetadataType.SCOPED_BY_RELATIONSHIP.typeName,
                                                                                           null,
                                                                                           false);
-    }
-
-
-    /**
-     * Create a specific governance action process for the clinical trial from the generic governance action type.
-     *
-     * @param processQualifiedName new qualified name for the process
-     * @param processName new name for the process
-     * @param processDescription new description for the process
-     * @param governanceActionTypeGUID the unique identifier of the governance action type
-     * @param additionalRequestParameters the additional, predefined request parameters to add to the
-     *                                   GovernanceActionProcessFlow relationship
-     * @param topLevelProjectGUID unique identifier for the top level project - used as a search scope
-     * @return unique identifier of new governance action process
-     * @throws InvalidParameterException parameter error
-     * @throws PropertyServerException repository error
-     * @throws UserNotAuthorizedException authorization error
-     */
-    private String createProcessFromGovernanceActionType(String              processQualifiedName,
-                                                         String              processName,
-                                                         String              processDescription,
-                                                         String              governanceActionTypeGUID,
-                                                         Map<String, String> additionalRequestParameters,
-                                                         String              topLevelProjectGUID) throws InvalidParameterException,
-                                                                                                         PropertyServerException,
-                                                                                                         UserNotAuthorizedException
-    {
-        String processGUID = this.createGovernanceActionProcess(processQualifiedName, processName, processDescription, topLevelProjectGUID);
-
-        OpenMetadataElement governanceActionType = governanceContext.getOpenMetadataStore().getMetadataElementByGUID(governanceActionTypeGUID);
-
-        if (governanceActionType != null)
-        {
-            RelatedMetadataElement governanceActionExecutorRelationship = governanceContext.getOpenMetadataStore().getRelatedMetadataElement(governanceActionTypeGUID,
-                                                                                                                                             1,
-                                                                                                                                             OpenMetadataType.GOVERNANCE_ACTION_EXECUTOR_RELATIONSHIP.typeName,
-                                                                                                                                             null);
-
-            if (governanceActionExecutorRelationship != null)
-            {
-                String governanceEngineGUID = governanceActionExecutorRelationship.getElement().getElementGUID();
-
-                ElementProperties processStepProperties = propertyHelper.addStringProperty(governanceActionType.getElementProperties(),
-                                                                                           OpenMetadataProperty.QUALIFIED_NAME.name,
-                                                                                           processQualifiedName + ":processStep1");
-
-                ElementProperties processFlowProperties = propertyHelper.addStringMapProperty(null,
-                                                                                              OpenMetadataProperty.REQUEST_PARAMETERS.name,
-                                                                                              additionalRequestParameters);
-
-                String processStep1GUID = governanceContext.getOpenMetadataStore().createMetadataElementInStore(OpenMetadataType.GOVERNANCE_ACTION_PROCESS_STEP.typeName,
-                                                                                                                ElementStatus.ACTIVE,
-                                                                                                                null,
-                                                                                                                processGUID,
-                                                                                                                false,
-                                                                                                                topLevelProjectGUID,
-                                                                                                                new NewElementProperties(processStepProperties),
-                                                                                                                processGUID,
-                                                                                                                OpenMetadataType.GOVERNANCE_ACTION_PROCESS_FLOW_RELATIONSHIP.typeName,
-                                                                                                                new NewElementProperties(processFlowProperties),
-                                                                                                                true);
-
-                governanceContext.getOpenMetadataStore().createRelatedElementsInStore(OpenMetadataType.GOVERNANCE_ACTION_EXECUTOR_RELATIONSHIP.typeName,
-                                                                                      processStep1GUID,
-                                                                                      governanceEngineGUID,
-                                                                                      null,
-                                                                                      null,
-                                                                                      governanceActionExecutorRelationship.getRelationshipProperties());
-
-
-                RelatedMetadataElementList actionTargets = governanceContext.getOpenMetadataStore().getRelatedMetadataElements(governanceActionTypeGUID,
-                                                                                                                               1,
-                                                                                                                               OpenMetadataType.TARGET_FOR_GOVERNANCE_ACTION_RELATIONSHIP.typeName,
-                                                                                                                               0,
-                                                                                                                               0);
-
-                if ((actionTargets != null) && (actionTargets.getElementList() != null))
-                {
-                    for (RelatedMetadataElement actionTarget : actionTargets.getElementList())
-                    {
-                        if (actionTarget != null)
-                        {
-                            governanceContext.getOpenMetadataStore().createRelatedElementsInStore(OpenMetadataType.TARGET_FOR_GOVERNANCE_ACTION_RELATIONSHIP.typeName,
-                                                                                                  processGUID,
-                                                                                                  actionTarget.getElement().getElementGUID(),
-                                                                                                  null,
-                                                                                                  null,
-                                                                                                  actionTarget.getRelationshipProperties());
-                        }
-                    }
-                }
-
-
-                RelatedMetadataElementList specifications = governanceContext.getOpenMetadataStore().getRelatedMetadataElements(governanceActionTypeGUID,
-                                                                                                                                 1,
-                                                                                                                                 OpenMetadataType.SPECIFICATION_PROPERTY_ASSIGNMENT_RELATIONSHIP.typeName,
-                                                                                                                                 0,
-                                                                                                                                 0);
-
-                if ((specifications != null) && (specifications.getElementList() != null))
-                {
-                    for (RelatedMetadataElement specification : specifications.getElementList())
-                    {
-                        if (specification != null)
-                        {
-                            governanceContext.getOpenMetadataStore().createRelatedElementsInStore(OpenMetadataType.SPECIFICATION_PROPERTY_ASSIGNMENT_RELATIONSHIP.typeName,
-                                                                                                  processGUID,
-                                                                                                  specification.getElement().getElementGUID(),
-                                                                                                  null,
-                                                                                                  null,
-                                                                                                  specification.getRelationshipProperties());
-                        }
-                    }
-                }
-            }
-        }
-
-        return processGUID;
     }
 
 

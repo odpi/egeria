@@ -7,8 +7,9 @@ import org.odpi.openmetadata.adapters.connectors.datastore.basicfile.BasicFileSt
 import org.odpi.openmetadata.adapters.connectors.datastore.basicfile.ffdc.exception.FileException;
 import org.odpi.openmetadata.adapters.connectors.datastore.basicfile.ffdc.exception.FileReadException;
 import org.odpi.openmetadata.adapters.connectors.datastore.csvfile.ffdc.CSVFileConnectorErrorCode;
+import org.odpi.openmetadata.frameworks.connectors.ReadableTabularDataSource;
 import org.odpi.openmetadata.frameworks.connectors.TabularColumnDescription;
-import org.odpi.openmetadata.frameworks.connectors.TabularDataSource;
+import org.odpi.openmetadata.frameworks.connectors.WritableTabularDataSource;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Endpoint;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
@@ -28,7 +29,9 @@ import java.util.Scanner;
 /**
  * CSVFileStoreConnector works with structured files to retrieve simple tables of data.
  */
-public class CSVFileStoreConnector extends BasicFileStoreConnector implements CSVFileStore, TabularDataSource
+public class CSVFileStoreConnector extends BasicFileStoreConnector implements CSVFileStore,
+                                                                              ReadableTabularDataSource,
+                                                                              WritableTabularDataSource
 {
     /*
      * Variables used in reading the file.
@@ -104,6 +107,37 @@ public class CSVFileStoreConnector extends BasicFileStoreConnector implements CS
 
 
     /**
+     * Locate the named column. A negative number means the column is not present.
+     *
+     * @return column
+     * @throws ConnectorCheckedException problem extracting the column descriptions
+     */
+    @Override
+    public int getColumnNumber(String columnName) throws ConnectorCheckedException
+    {
+        int columnNumber = -1; // means not present
+
+        List<TabularColumnDescription> columnDescriptions = this.getColumnDescriptions();
+        if (columnDescriptions != null)
+        {
+            int columnCount = 0;
+            for (TabularColumnDescription tabularColumnDescription : columnDescriptions)
+            {
+                if ((tabularColumnDescription != null) && (columnName.equals(tabularColumnDescription.columnName())))
+                {
+                    columnNumber = columnCount;
+                    break;
+                }
+
+                columnCount ++;
+            }
+        }
+
+        return columnNumber;
+    }
+
+
+    /**
      * Return the number of records in the file.  This is achieved by scanning the file and counting the records -
      * not recommended for very large files.
      *
@@ -164,7 +198,7 @@ public class CSVFileStoreConnector extends BasicFileStoreConnector implements CS
 
             for (String columnName : columnNames)
             {
-                TabularColumnDescription columnDescription = new TabularColumnDescription(columnName, DataType.STRING, null, false);
+                TabularColumnDescription columnDescription = new TabularColumnDescription(columnName, DataType.STRING, null, false, false);
 
                 columnDescriptions.add(columnDescription);
             }

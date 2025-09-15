@@ -6,7 +6,9 @@ package org.odpi.openmetadata.archiveutilities.openconnectors;
 
 import org.odpi.openmetadata.adapters.connectors.apacheatlas.survey.SurveyApacheAtlasProvider;
 import org.odpi.openmetadata.adapters.connectors.apachekafka.survey.SurveyApacheKafkaServerProvider;
-import org.odpi.openmetadata.adapters.connectors.governanceactions.notifications.OpenMetadataNotificationServiceProvider;
+import org.odpi.openmetadata.adapters.connectors.governanceactions.notifications.MonitoredResourceNotificationServiceProvider;
+import org.odpi.openmetadata.adapters.connectors.governanceactions.notifications.OneTimeNotificationServiceProvider;
+import org.odpi.openmetadata.adapters.connectors.governanceactions.notifications.PeriodicRefreshNotificationServiceProvider;
 import org.odpi.openmetadata.adapters.connectors.governanceactions.provisioning.MoveCopyFileGovernanceActionProvider;
 import org.odpi.openmetadata.adapters.connectors.governanceactions.provisioning.ProvisionTabularDataSetGovernanceActionProvider;
 import org.odpi.openmetadata.adapters.connectors.governanceactions.remediation.OriginSeekerGovernanceActionProvider;
@@ -363,13 +365,35 @@ public enum GovernanceServiceDefinition
     /**
      * A Watchdog Action Service that detects changes to elements linked to a notification type.  When changed occur, all subscribers to the notification type are informed.
      */
-    OPEN_METADATA_NOTIFICATION("a63080e3-a9f7-47a7-b4ea-2594ac86a86b",
-                        "open-metadata-notification-governance-service",
-                        "A Watchdog Action Service that detects changes to elements linked to a notification type.  When changed occur, all subscribers to the notification type are informed.",
-                        new OpenMetadataNotificationServiceProvider(),
-                        ResourceUse.INFORM_STEWARD,
-                        DeployedImplementationType.WATCHDOG_ACTION_SERVICE_CONNECTOR,
-                        ContentPackDefinition.CORE_CONTENT_PACK),
+    MONITORED_RESOURCE_NOTIFICATION("a63080e3-a9f7-47a7-b4ea-2594ac86a86b",
+                                    "monitored-resource-notification-governance-service",
+                                    "A Watchdog Action Service that detects changes to monitored elements linked to a notification type.  When changed occur, all subscribers to the notification type are informed.",
+                                    new MonitoredResourceNotificationServiceProvider(),
+                                    ResourceUse.INFORM_STEWARD,
+                                    DeployedImplementationType.WATCHDOG_ACTION_SERVICE_CONNECTOR,
+                                    ContentPackDefinition.CORE_CONTENT_PACK),
+
+    /**
+     * A Watchdog Action Service that periodically notifies all subscribers to the notification type.
+     */
+    PERIODIC_REFRESH_NOTIFICATION("8a978f60-9f32-48ae-9c38-1063a7c4f69e",
+                                  "periodic-refresh-notification-governance-service",
+                                  "A Watchdog Action Service that periodically notifies all subscribers to the notification type.",
+                                    new PeriodicRefreshNotificationServiceProvider(),
+                                    ResourceUse.INFORM_STEWARD,
+                                    DeployedImplementationType.WATCHDOG_ACTION_SERVICE_CONNECTOR,
+                                    ContentPackDefinition.CORE_CONTENT_PACK),
+
+    /**
+     * A Watchdog Action Service that periodically notifies all subscribers to the notification type.
+     */
+    ONE_TIME_NOTIFICATION("79e09d77-4bb1-410c-8aea-ffff32380cdf",
+                          "one-time-notification-governance-service",
+                          "A Watchdog Action Service that notifies all subscribers to the notification type once only.",
+                          new OneTimeNotificationServiceProvider(),
+                          ResourceUse.INFORM_STEWARD,
+                          DeployedImplementationType.WATCHDOG_ACTION_SERVICE_CONNECTOR,
+                          ContentPackDefinition.CORE_CONTENT_PACK),
     ;
 
     private final String                               guid;

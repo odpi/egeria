@@ -261,7 +261,7 @@ public enum ResourceUse
      *
      * @return string
      */
-    public String getCategory()
+    public String getNamespace()
     {
         return constructValidValueNamespace(null,
                                             OpenMetadataProperty.RESOURCE_USE.name,

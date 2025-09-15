@@ -284,7 +284,7 @@ public class GovernanceOfficerResource
      * PropertyServerException problem accessing property server or
      * UserNotAuthorizedException security access problem
      */
-    @PostMapping(path = "/elements/{elementGUID}/governed-by/definition/{definitionGUID}")
+    @PostMapping(path = "/elements/{elementGUID}/governed-by/definition/{definitionGUID}/attach")
 
     @Operation(summary="addGovernanceDefinitionToElement",
             description="Link a governance definition to an element using the GovernedBy relationship.",
@@ -316,7 +316,7 @@ public class GovernanceOfficerResource
      * PropertyServerException problem accessing property server or
      * UserNotAuthorizedException security access problem
      */
-    @PostMapping(path = "/elements/{elementGUID}/governed-by/definition/{definitionGUID}/remove")
+    @PostMapping(path = "/elements/{elementGUID}/governed-by/definition/{definitionGUID}/detach")
 
     @Operation(summary="removeGovernanceDefinitionFromElement",
             description="Remove the GovernedBy relationship between a governance definition and an element.",
@@ -350,7 +350,7 @@ public class GovernanceOfficerResource
      * PropertyServerException problem accessing property server or
      * UserNotAuthorizedException security access problem
      */
-    @PostMapping(path = "/governance-metrics/{governanceMetricGUID}/measurements/{dataSourceGUID}")
+    @PostMapping(path = "/governance-metrics/{governanceMetricGUID}/measurements/{dataSourceGUID}/attach")
 
     @Operation(summary="linkGovernanceResults",
             description="Attach a governance metric to an asset that represents the data store where the measurements are located.",
@@ -382,7 +382,7 @@ public class GovernanceOfficerResource
      * PropertyServerException problem accessing property server or
      * UserNotAuthorizedException security access problem
      */
-    @PostMapping(path = "/governance-metrics/{governanceMetricGUID}/measurements/{dataSourceGUID}/remove")
+    @PostMapping(path = "/governance-metrics/{governanceMetricGUID}/measurements/{dataSourceGUID}/detach")
 
     @Operation(summary="detachGovernanceResults",
             description="Detach a governance metric from an asset that represents the data store where the measurements are located.",

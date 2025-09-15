@@ -7,6 +7,7 @@ import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.openmetadata.client.ConnectorActivityReportClient;
 import org.odpi.openmetadata.frameworks.openmetadata.client.OpenMetadataClient;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.DeleteMethod;
+import org.odpi.openmetadata.frameworks.openmetadata.enums.ElementStatus;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.*;
 import org.odpi.openmetadata.frameworks.openmetadata.fileclassifier.FileClassifier;
 import org.odpi.openmetadata.frameworks.openmetadata.filelistener.FileDirectoryListenerInterface;
@@ -21,6 +22,8 @@ import org.odpi.openmetadata.frameworks.openmetadata.properties.contextevents.Co
 import org.odpi.openmetadata.frameworks.openmetadata.properties.contextevents.DependentContextEventProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.contextevents.RelatedContextEventProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.reports.ConnectorActivityReportWriter;
+import org.odpi.openmetadata.frameworks.openmetadata.search.ElementProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.search.NewElementProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.search.PropertyHelper;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
@@ -543,6 +546,30 @@ public class ConnectorContextBase
             this.connectorActivityReportWriter = null;
         }
     }
+
+    /*=========================
+     * Return details of the metadata store that this connector is talking to
+     */
+
+
+    /**
+     * Return the name of the server that this client is connected to.
+     *
+     * @return string name
+     */
+    public String getMetadataAccessServer()
+    {
+        return openMetadataClient.getServerName();
+    }
+
+
+    /**
+     * Return the url root for the metadata access server's platform.
+     *
+     * @return string url root
+     */
+    public String getMetadataAccessServerPlatformURLRoot() { return openMetadataClient.getServerPlatformURLRoot(); }
+
 
 
     /* ========================================================
@@ -1573,6 +1600,178 @@ public class ConnectorContextBase
                                                        contextEventEvidenceGUIDs,
                                                        contextEventProperties);
     }
+
+
+    /**
+     * Create a specific governance action process from a generic governance action type.
+     *
+     * @param processQualifiedName new qualified name for the process
+     * @param processName new name for the process
+     * @param processDescription new description for the process
+     * @param governanceActionTypeGUID the unique identifier of the governance action type
+     * @param additionalRequestParameters the additional, predefined request parameters to add to the
+     *                                   GovernanceActionProcessFlow relationship
+     * @param anchorScopeGUID unique identifier for the top level project - used as a search scope
+     * @return unique identifier of new governance action process
+     * @throws InvalidParameterException parameter error
+     * @throws PropertyServerException repository error
+     * @throws UserNotAuthorizedException authorization error
+     */
+    public String createProcessFromGovernanceActionType(String processQualifiedName,
+                                                        String processName,
+                                                        String processDescription,
+                                                        String governanceActionTypeGUID,
+                                                        Map<String, String> additionalRequestParameters,
+                                                        String anchorGUID,
+                                                        String anchorScopeGUID) throws InvalidParameterException,
+                                                                                                     PropertyServerException,
+                                                                                                     UserNotAuthorizedException
+    {
+        String processGUID = this.createGovernanceActionProcess(processQualifiedName, processName, processDescription,anchorGUID, anchorScopeGUID);
+
+        OpenMetadataElement governanceActionType = openMetadataStore.getMetadataElementByGUID(governanceActionTypeGUID);
+
+        if (governanceActionType != null)
+        {
+            RelatedMetadataElement governanceActionExecutorRelationship = openMetadataStore.getRelatedMetadataElement(governanceActionTypeGUID,
+                                                                                                                      1,
+                                                                                                                      OpenMetadataType.GOVERNANCE_ACTION_EXECUTOR_RELATIONSHIP.typeName,
+                                                                                                                      null);
+
+            if (governanceActionExecutorRelationship != null)
+            {
+                String governanceEngineGUID = governanceActionExecutorRelationship.getElement().getElementGUID();
+
+                ElementProperties processStepProperties = propertyHelper.addStringProperty(governanceActionType.getElementProperties(),
+                                                                                           OpenMetadataProperty.QUALIFIED_NAME.name,
+                                                                                           processQualifiedName + ":processStep1");
+
+                ElementProperties processFlowProperties = propertyHelper.addStringMapProperty(null,
+                                                                                              OpenMetadataProperty.REQUEST_PARAMETERS.name,
+                                                                                              additionalRequestParameters);
+
+                String processStep1GUID = openMetadataStore.createMetadataElementInStore(OpenMetadataType.GOVERNANCE_ACTION_PROCESS_STEP.typeName,
+                                                                                         ElementStatus.ACTIVE,
+                                                                                         null,
+                                                                                         processGUID,
+                                                                                         false,
+                                                                                         anchorScopeGUID,
+                                                                                         new NewElementProperties(processStepProperties),
+                                                                                         processGUID,
+                                                                                         OpenMetadataType.GOVERNANCE_ACTION_PROCESS_FLOW_RELATIONSHIP.typeName,
+                                                                                         new NewElementProperties(processFlowProperties),
+                                                                                         true);
+
+                openMetadataStore.createRelatedElementsInStore(OpenMetadataType.GOVERNANCE_ACTION_EXECUTOR_RELATIONSHIP.typeName,
+                                                               processStep1GUID,
+                                                               governanceEngineGUID,
+                                                               null,
+                                                               null,
+                                                               governanceActionExecutorRelationship.getRelationshipProperties());
+
+
+                /*
+                 * Copy the pre-populated governance action targets to the new process.
+                 */
+                RelatedMetadataElementList actionTargets = openMetadataStore.getRelatedMetadataElements(governanceActionTypeGUID,
+                                                                                                        1,
+                                                                                                        OpenMetadataType.TARGET_FOR_GOVERNANCE_ACTION_RELATIONSHIP.typeName,
+                                                                                                        0,
+                                                                                                        0);
+
+                if ((actionTargets != null) && (actionTargets.getElementList() != null))
+                {
+                    for (RelatedMetadataElement actionTarget : actionTargets.getElementList())
+                    {
+                        if (actionTarget != null)
+                        {
+                            openMetadataStore.createRelatedElementsInStore(OpenMetadataType.TARGET_FOR_GOVERNANCE_ACTION_RELATIONSHIP.typeName,
+                                                                           processGUID,
+                                                                           actionTarget.getElement().getElementGUID(),
+                                                                           null,
+                                                                           null,
+                                                                           actionTarget.getRelationshipProperties());
+                        }
+                    }
+                }
+
+
+                RelatedMetadataElementList specifications = openMetadataStore.getRelatedMetadataElements(governanceActionTypeGUID,
+                                                                                                         1,
+                                                                                                         OpenMetadataType.SPECIFICATION_PROPERTY_ASSIGNMENT_RELATIONSHIP.typeName,
+                                                                                                         0,
+                                                                                                         0);
+
+                if ((specifications != null) && (specifications.getElementList() != null))
+                {
+                    for (RelatedMetadataElement specification : specifications.getElementList())
+                    {
+                        if (specification != null)
+                        {
+                            openMetadataStore.createRelatedElementsInStore(OpenMetadataType.SPECIFICATION_PROPERTY_ASSIGNMENT_RELATIONSHIP.typeName,
+                                                                           processGUID,
+                                                                           specification.getElement().getElementGUID(),
+                                                                           null,
+                                                                           null,
+                                                                           specification.getRelationshipProperties());
+                        }
+                    }
+                }
+            }
+        }
+
+        return processGUID;
+    }
+
+
+    /**
+     * Create the governance action process asset.
+     *
+     * @param processQualifiedName new qualified name for the process
+     * @param processName new name for the process
+     * @param processDescription new description for the process
+     * @param anchorGUID unique identifier for the anchor = may be null
+     * @param anchorScopeGUID unique identifier for the top level folder - used as a search scope
+     * @return unique identifier of new governance action process
+     * @throws InvalidParameterException parameter error
+     * @throws PropertyServerException repository error
+     * @throws UserNotAuthorizedException authorization error
+     */
+    public String createGovernanceActionProcess(String processQualifiedName,
+                                                String processName,
+                                                String processDescription,
+                                                String anchorGUID,
+                                                String anchorScopeGUID) throws InvalidParameterException,
+                                                                               PropertyServerException,
+                                                                               UserNotAuthorizedException
+    {
+
+        ElementProperties processProperties = propertyHelper.addStringProperty(null,
+                                                                               OpenMetadataProperty.QUALIFIED_NAME.name,
+                                                                               processQualifiedName);
+
+        processProperties = propertyHelper.addStringProperty(processProperties,
+                                                             OpenMetadataProperty.DISPLAY_NAME.name,
+                                                             processName);
+
+        processProperties = propertyHelper.addStringProperty(processProperties,
+                                                             OpenMetadataProperty.DESCRIPTION.name,
+                                                             processDescription);
+
+        return openMetadataStore.createMetadataElementInStore(OpenMetadataType.GOVERNANCE_ACTION_PROCESS.typeName,
+                                                              ElementStatus.ACTIVE,
+                                                              null,
+                                                              anchorGUID,
+                                                              (anchorGUID == null),
+                                                              anchorScopeGUID,
+                                                              new NewElementProperties(processProperties),
+                                                              null,
+                                                              null,
+                                                              null,
+                                                              false);
+    }
+
+
 
 
     /**

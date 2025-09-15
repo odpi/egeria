@@ -510,7 +510,7 @@ Content-Type: application/json
 ###
 # @name findNoteLogs
 # Retrieve the list of note log metadata elements that contain the search string.  The search string is located in the request body and is interpreted as a plain string.  The request parameters, startsWith, endsWith and ignoreCase can be used to allow a fuzzy search.  The request body also supports the specification of an effective time to restrict the search to element that are/were effective at a particular time.
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/feedback-manager/note-logs/by-search-string?startsWith=false&endsWith=false&ignoreCase=true&startFrom=0&pageSize=10
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/feedback-manager/note-logs/by-search-string
 Authorization: Bearer {{token}}
 Content-Type: application/json
 

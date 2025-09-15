@@ -160,7 +160,7 @@ public class CorePackArchiveWriter extends ContentPackBaseArchiveWriter
                                              resourceUse.getQualifiedName(),
                                              resourceUse.getResourceUse(),
                                              resourceUse.getDescription(),
-                                             resourceUse.getCategory(),
+                                             resourceUse.getNamespace(),
                                              OpenMetadataValidValues.VALID_METADATA_VALUES_USAGE,
                                              DataType.STRING.getName(),
                                              OpenMetadataValidValues.OPEN_METADATA_ECOSYSTEM_SCOPE,
@@ -168,6 +168,37 @@ public class CorePackArchiveWriter extends ContentPackBaseArchiveWriter
                                              null,
                                              false,
                                              additionalProperties);
+        }
+
+
+        /*
+         * Add the valid metadata values used in the scope property found in many elements.
+         */
+        String scopeParentSetGUID = this.getParentSet(null,
+                                                      null,
+                                                      OpenMetadataProperty.SCOPE.name,
+                                                      null);
+
+        for (ScopeDefinition scopeDefinition : ScopeDefinition.values())
+        {
+            this.archiveHelper.addValidValue(null,
+                                             scopeParentSetGUID,
+                                             scopeParentSetGUID,
+                                             OpenMetadataType.VALID_VALUE_DEFINITION.typeName,
+                                             OpenMetadataType.VALID_VALUE_DEFINITION.typeName,
+                                             null,
+                                             OpenMetadataType.VALID_VALUE_DEFINITION.typeName,
+                                             scopeDefinition.getQualifiedName(),
+                                             scopeDefinition.getPreferredValue(),
+                                             scopeDefinition.getDescription(),
+                                             scopeDefinition.getNamespace(),
+                                             OpenMetadataValidValues.VALID_METADATA_VALUES_USAGE,
+                                             DataType.STRING.getName(),
+                                             OpenMetadataValidValues.OPEN_METADATA_ECOSYSTEM_SCOPE,
+                                             scopeDefinition.getPreferredValue(),
+                                             null,
+                                             false,
+                                             null);
         }
 
 

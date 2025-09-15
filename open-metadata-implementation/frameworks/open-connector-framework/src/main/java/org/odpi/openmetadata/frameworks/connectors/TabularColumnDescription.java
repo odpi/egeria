@@ -12,10 +12,12 @@ import org.odpi.openmetadata.frameworks.openmetadata.types.DataType;
  * @param columnDataType type of the column
  * @param description description of the data in the column
  * @param isNullable is a null value allowed in this column?
+ * @param isIdentifier is this field all or part of the table's unique identifier?
  */
 public record TabularColumnDescription(String   columnName,
                                        DataType columnDataType,
                                        String   description,
-                                       boolean  isNullable)
+                                       boolean  isNullable,
+                                       boolean  isIdentifier)
 {
 }

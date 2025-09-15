@@ -116,10 +116,10 @@ public class CocoComboArchiveWriter extends EgeriaBaseArchiveWriter
 
         archiveHelper.saveGUIDs();
 
-        CocoProductCatalogArchiveWriter cocoProductCatalogArchiveWriter = new CocoProductCatalogArchiveWriter();
+        // todo CocoProductCatalogArchiveWriter cocoProductCatalogArchiveWriter = new CocoProductCatalogArchiveWriter();
 
-        cocoProductCatalogArchiveWriter.setArchiveBuilder(archiveBuilder,archiveHelper);
-        cocoProductCatalogArchiveWriter.getArchiveContent();
+        // todo cocoProductCatalogArchiveWriter.setArchiveBuilder(archiveBuilder,archiveHelper);
+        // todo cocoProductCatalogArchiveWriter.getArchiveContent();
 
         archiveHelper.saveGUIDs();
 

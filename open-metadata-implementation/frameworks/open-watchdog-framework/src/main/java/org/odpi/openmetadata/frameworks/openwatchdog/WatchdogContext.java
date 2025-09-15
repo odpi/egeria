@@ -185,6 +185,26 @@ public class WatchdogContext extends ConnectorContextBase implements WatchDogEve
 
 
     /**
+     * Return an integer request parameter the default value is used if the request parameter is not provided.
+     *
+     * @param requestParameterName name of the request parameter
+     * @param defaultValue value to ues if the request parameter is not set
+     * @return int
+     */
+    public int getIntRequestParameter(String requestParameterName, int defaultValue)
+    {
+        int requestParameterValue = defaultValue;
+
+        if ((this.requestParameters != null) && (this.requestParameters.containsKey(requestParameterName)))
+        {
+            requestParameterValue = Integer.parseInt(this.requestParameters.get(requestParameterName));
+        }
+
+        return requestParameterValue;
+    }
+
+
+    /**
      * Register a listener to receive events about changes to metadata elements in the open metadata store.
      * There can be only one registered listener.  If this method is called more than once, the new parameters
      * replace the existing parameters.  This means the watchdog governance action service can change the

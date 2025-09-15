@@ -41,8 +41,25 @@ public enum OpenMetadataNotificationMessageSet implements MessageSet
      */
     MONITORED_RESOURCE_CHANGED("OPEN-METADATA-NOTIFICATION-SERVICE-0003",
               "The monitored {0} resource {1} ({2}) has changed for notification type: {3} ({4})",
-              "The notification managed has detected a change in one of the monitored resources for the notification and has sent this notification to inform you.",
+              "The notification manager has detected a change in one of the monitored resources for the notification and has sent this notification to inform you.",
               "No specific action is required.  This message is to inform you of the change.  If you no longer which to receive these types of notifications, you can unsubscribe from this notification type using the notification type guid supplied in the welcome message."),
+
+    /**
+     * OPEN-METADATA-NOTIFICATION-SERVICE-0004 - Notification type {0} ({1}) has been triggered
+     */
+    ONE_TIME_NOTIFICATION("OPEN-METADATA-NOTIFICATION-SERVICE-0004",
+                          "Notification type {0} ({1}) has been triggered",
+                          "The notification manager has been requested to send this notification to you.  It is a one-time notification.",
+                          "No specific action is required.  This message is to inform you of the one-time notification."),
+
+
+    /**
+     * OPEN-METADATA-NOTIFICATION-SERVICE-0005 - Regular notification type {0} ({1}) has been triggered.  It will trigger again in {2} milliseconds
+     */
+    PERIODIC_NOTIFICATION("OPEN-METADATA-NOTIFICATION-SERVICE-0005",
+                          "Regular notification type {0} ({1}) has been triggered.  It will trigger again in {2} milliseconds",
+                          "The notification manager has been requested to send this notification to you.  It is a periodic notification.",
+                          "No specific action is required.  This message is to inform you of the periodic notification."),
 
     ;
 
