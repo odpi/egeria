@@ -85,7 +85,7 @@ loadScripts(document, 'script');</script>
 </dl>
 <dl class="notes">
 <dt>Direct Known Subclasses:</dt>
-<dd><code><a href="../../adapters/connectors/governanceactions/notifications/OpenMetadataNotificationService.html" title="class in org.odpi.openmetadata.adapters.connectors.governanceactions.notifications">OpenMetadataNotificationService</a></code></dd>
+<dd><code><a href="../../adapters/connectors/governanceactions/notifications/MonitoredResourceNotificationService.html" title="class in org.odpi.openmetadata.adapters.connectors.governanceactions.notifications">MonitoredResourceNotificationService</a></code>, <code><a href="../../adapters/connectors/governanceactions/notifications/OneTimeNotificationService.html" title="class in org.odpi.openmetadata.adapters.connectors.governanceactions.notifications">OneTimeNotificationService</a></code>, <code><a href="../../adapters/connectors/governanceactions/notifications/PeriodicRefreshNotificationService.html" title="class in org.odpi.openmetadata.adapters.connectors.governanceactions.notifications">PeriodicRefreshNotificationService</a></code></dd>
 </dl>
 <hr>
 <div class="type-signature"><span class="modifiers">public abstract class </span><span class="element-name type-name-label">WatchdogActionServiceConnector</span>
@@ -180,40 +180,35 @@ implements <a href="WatchdogActionService.html" title="interface in org.odpi.ope
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Convert the supplied properties object to a JSON String.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>protected <a href="WatchdogContext.html" title="class in org.odpi.openmetadata.frameworks.openwatchdog">WatchdogContext</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getWatchdogContext()" class="member-name-link">getWatchdogContext</a>()</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Return the survey context for this watchdog action service.</div>
-</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>protected void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#handleUnexpectedException(java.lang.String,java.lang.Exception)" class="member-name-link">handleUnexpectedException</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;methodName,
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>protected void</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#handleUnexpectedException(java.lang.String,java.lang.Exception)" class="member-name-link">handleUnexpectedException</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;methodName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Exception.html" title="class or interface in java.lang" class="external-link">Exception</a>&nbsp;error)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Provide a common exception for unexpected errors.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code>abstract void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#processEvent(org.odpi.openmetadata.frameworks.openmetadata.events.OpenMetadataOutTopicEvent)" class="member-name-link">processEvent</a><wbr>(<a href="../openmetadata/events/OpenMetadataOutTopicEvent.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.events">OpenMetadataOutTopicEvent</a>&nbsp;event)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code>abstract void</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#processEvent(org.odpi.openmetadata.frameworks.openmetadata.events.OpenMetadataOutTopicEvent)" class="member-name-link">processEvent</a><wbr>(<a href="../openmetadata/events/OpenMetadataOutTopicEvent.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.events">OpenMetadataOutTopicEvent</a>&nbsp;event)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">
 <div class="block">This method is called each time a requested event is received from the open metadata repositories.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setAuditLog(org.odpi.openmetadata.frameworks.auditlog.AuditLog)" class="member-name-link">setAuditLog</a><wbr>(<a href="../auditlog/AuditLog.html" title="class in org.odpi.openmetadata.frameworks.auditlog">AuditLog</a>&nbsp;auditLog)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setAuditLog(org.odpi.openmetadata.frameworks.auditlog.AuditLog)" class="member-name-link">setAuditLog</a><wbr>(<a href="../auditlog/AuditLog.html" title="class in org.odpi.openmetadata.frameworks.auditlog">AuditLog</a>&nbsp;auditLog)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Receive an audit log object that can be used to record audit log messages.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setWatchdogActionServiceName(java.lang.String)" class="member-name-link">setWatchdogActionServiceName</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;watchdogActionServiceName)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setWatchdogActionServiceName(java.lang.String)" class="member-name-link">setWatchdogActionServiceName</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;watchdogActionServiceName)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Set up the watchdog action service name.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setWatchdogContext(org.odpi.openmetadata.frameworks.openwatchdog.WatchdogContext)" class="member-name-link">setWatchdogContext</a><wbr>(<a href="WatchdogContext.html" title="class in org.odpi.openmetadata.frameworks.openwatchdog">WatchdogContext</a>&nbsp;watchdogContext)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setWatchdogContext(org.odpi.openmetadata.frameworks.openwatchdog.WatchdogContext)" class="member-name-link">setWatchdogContext</a><wbr>(<a href="WatchdogContext.html" title="class in org.odpi.openmetadata.frameworks.openwatchdog">WatchdogContext</a>&nbsp;watchdogContext)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Set up details of the notification type to monitor.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#start()" class="member-name-link">start</a>()</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#start()" class="member-name-link">start</a>()</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Indicates that the watchdog action service is completely configured and can begin processing.</div>
 </div>
 </div>
@@ -368,21 +363,6 @@ implements <a href="WatchdogActionService.html" title="interface in org.odpi.ope
 <dl class="notes">
 <dt>Parameters:</dt>
 <dd><code>watchdogActionServiceName</code> - name of the watchdog action service</dd>
-</dl>
-</section>
-</li>
-<li>
-<section class="detail" id="getWatchdogContext()">
-<h3>getWatchdogContext</h3>
-<div class="member-signature"><span class="modifiers">protected</span>&nbsp;<span class="return-type"><a href="WatchdogContext.html" title="class in org.odpi.openmetadata.frameworks.openwatchdog">WatchdogContext</a></span>&nbsp;<span class="element-name">getWatchdogContext</span>()
-                                      throws <span class="exceptions"><a href="../openmetadata/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">UserNotAuthorizedException</a></span></div>
-<div class="block">Return the survey context for this watchdog action service.  This is typically called after the disconnect()
- method is called.  If called before disconnect(), it may only contain partial results.</div>
-<dl class="notes">
-<dt>Returns:</dt>
-<dd>survey context containing the results discovered (so far) by the watchdog action service.</dd>
-<dt>Throws:</dt>
-<dd><code><a href="../openmetadata/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">UserNotAuthorizedException</a></code> - the service is no longer active</dd>
 </dl>
 </section>
 </li>

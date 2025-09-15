@@ -74,7 +74,7 @@ loadScripts(document, 'script');</script>
 <section class="class-description" id="class-description">
 <dl class="notes">
 <dt>All Known Implementing Classes:</dt>
-<dd><code><a href="../../adapters/connectors/referencedata/tabulardatasets/ReferenceDataSetConnectorBase.html" title="class in org.odpi.openmetadata.adapters.connectors.referencedata.tabulardatasets">ReferenceDataSetConnectorBase</a></code>, <code><a href="../../adapters/connectors/referencedata/tabulardatasets/ValidValueDataSetConnector.html" title="class in org.odpi.openmetadata.adapters.connectors.referencedata.tabulardatasets">ValidValueDataSetConnector</a></code>, <code><a href="../../adapters/connectors/referencedata/tabulardatasets/ValidValueSetListConnector.html" title="class in org.odpi.openmetadata.adapters.connectors.referencedata.tabulardatasets">ValidValueSetListConnector</a></code></dd>
+<dd><code><a href="../../adapters/connectors/datastore/csvfile/CSVFileStoreConnector.html" title="class in org.odpi.openmetadata.adapters.connectors.datastore.csvfile">CSVFileStoreConnector</a></code>, <code><a href="../../adapters/connectors/postgres/tabulardatasource/PostgresTabularDataSourceConnector.html" title="class in org.odpi.openmetadata.adapters.connectors.postgres.tabulardatasource">PostgresTabularDataSourceConnector</a></code>, <code><a href="../../adapters/connectors/referencedata/tabulardatasets/ReferenceDataSetConnectorBase.html" title="class in org.odpi.openmetadata.adapters.connectors.referencedata.tabulardatasets">ReferenceDataSetConnectorBase</a></code>, <code><a href="../../adapters/connectors/referencedata/tabulardatasets/ValidValueDataSetConnector.html" title="class in org.odpi.openmetadata.adapters.connectors.referencedata.tabulardatasets">ValidValueDataSetConnector</a></code>, <code><a href="../../adapters/connectors/referencedata/tabulardatasets/ValidValueSetListConnector.html" title="class in org.odpi.openmetadata.adapters.connectors.referencedata.tabulardatasets">ValidValueSetListConnector</a></code></dd>
 </dl>
 <hr>
 <div class="type-signature"><span class="modifiers">public interface </span><span class="element-name type-name-label">ReadableTabularDataSource</span></div>
@@ -166,6 +166,8 @@ loadScripts(document, 'script');</script>
              throws <span class="exceptions"><a href="ffdc/ConnectorCheckedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">ConnectorCheckedException</a></span></div>
 <div class="block">Locate the named column. A negative number means the column is not present.</div>
 <dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>columnName</code> - name of the column to return</dd>
 <dt>Returns:</dt>
 <dd>column</dd>
 <dt>Throws:</dt>

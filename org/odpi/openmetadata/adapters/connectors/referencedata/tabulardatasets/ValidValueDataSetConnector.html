@@ -51,7 +51,7 @@ loadScripts(document, 'script');</script>
 </ul>
 <ul class="sub-nav-list">
 <li>Detail:&nbsp;</li>
-<li>Field&nbsp;|&nbsp;</li>
+<li><a href="#field-detail">Field</a>&nbsp;|&nbsp;</li>
 <li><a href="#constructor-detail">Constr</a>&nbsp;|&nbsp;</li>
 <li><a href="#method-detail">Method</a></li>
 </ul>
@@ -83,12 +83,12 @@ loadScripts(document, 'script');</script>
 <section class="class-description" id="class-description">
 <dl class="notes">
 <dt>All Implemented Interfaces:</dt>
-<dd><code><a href="../../../../frameworks/auditlog/AuditLoggingComponent.html" title="interface in org.odpi.openmetadata.frameworks.auditlog">AuditLoggingComponent</a></code>, <code><a href="../../../../frameworks/connectors/ReadableTabularDataSource.html" title="interface in org.odpi.openmetadata.frameworks.connectors">ReadableTabularDataSource</a></code>, <code><a href="../../../../frameworks/connectors/SecureConnectorExtension.html" title="interface in org.odpi.openmetadata.frameworks.connectors">SecureConnectorExtension</a></code>, <code><a href="../../../../frameworks/connectors/TabularDataSource.html" title="interface in org.odpi.openmetadata.frameworks.connectors">TabularDataSource</a></code>, <code><a href="../../../../frameworks/connectors/VirtualConnectorExtension.html" title="interface in org.odpi.openmetadata.frameworks.connectors">VirtualConnectorExtension</a></code></dd>
+<dd><code><a href="../../../../frameworks/auditlog/AuditLoggingComponent.html" title="interface in org.odpi.openmetadata.frameworks.auditlog">AuditLoggingComponent</a></code>, <code><a href="../../../../frameworks/connectors/ReadableTabularDataSource.html" title="interface in org.odpi.openmetadata.frameworks.connectors">ReadableTabularDataSource</a></code>, <code><a href="../../../../frameworks/connectors/SecureConnectorExtension.html" title="interface in org.odpi.openmetadata.frameworks.connectors">SecureConnectorExtension</a></code>, <code><a href="../../../../frameworks/connectors/VirtualConnectorExtension.html" title="interface in org.odpi.openmetadata.frameworks.connectors">VirtualConnectorExtension</a></code>, <code><a href="../../../../frameworks/connectors/WritableTabularDataSource.html" title="interface in org.odpi.openmetadata.frameworks.connectors">WritableTabularDataSource</a></code></dd>
 </dl>
 <hr>
 <div class="type-signature"><span class="modifiers">public class </span><span class="element-name type-name-label">ValidValueDataSetConnector</span>
 <span class="extends-implements">extends <a href="ReferenceDataSetConnectorBase.html" title="class in org.odpi.openmetadata.adapters.connectors.referencedata.tabulardatasets">ReferenceDataSetConnectorBase</a>
-implements <a href="../../../../frameworks/auditlog/AuditLoggingComponent.html" title="interface in org.odpi.openmetadata.frameworks.auditlog">AuditLoggingComponent</a>, <a href="../../../../frameworks/connectors/TabularDataSource.html" title="interface in org.odpi.openmetadata.frameworks.connectors">TabularDataSource</a></span></div>
+implements <a href="../../../../frameworks/auditlog/AuditLoggingComponent.html" title="interface in org.odpi.openmetadata.frameworks.auditlog">AuditLoggingComponent</a>, <a href="../../../../frameworks/connectors/ReadableTabularDataSource.html" title="interface in org.odpi.openmetadata.frameworks.connectors">ReadableTabularDataSource</a>, <a href="../../../../frameworks/connectors/WritableTabularDataSource.html" title="interface in org.odpi.openmetadata.frameworks.connectors">WritableTabularDataSource</a></span></div>
 <div class="block">ValidValueDataSetConnector enables interaction with a valid value set as if it is a tabular data set.</div>
 </section>
 <section class="summary">
@@ -106,9 +106,18 @@ implements <a href="../../../../frameworks/auditlog/AuditLoggingComponent.html" 
 <li>
 <section class="field-summary" id="field-summary">
 <h2>Field Summary</h2>
+<div class="caption"><span>Fields</span></div>
+<div class="summary-table three-column-summary">
+<div class="table-header col-first">Modifier and Type</div>
+<div class="table-header col-second">Field</div>
+<div class="table-header col-last">Description</div>
+<div class="col-first even-row-color"><code>protected <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
+<div class="col-second even-row-color"><code><a href="#validValueSetGUID" class="member-name-link">validValueSetGUID</a></code></div>
+<div class="col-last even-row-color">&nbsp;</div>
+</div>
 <div class="inherited-list">
 <h3 id="fields-inherited-from-class-org.odpi.openmetadata.adapters.connectors.referencedata.tabulardatasets.ReferenceDataSetConnectorBase">Fields inherited from class&nbsp;org.odpi.openmetadata.adapters.connectors.referencedata.tabulardatasets.<a href="ReferenceDataSetConnectorBase.html" title="class in org.odpi.openmetadata.adapters.connectors.referencedata.tabulardatasets">ReferenceDataSetConnectorBase</a></h3>
-<code><a href="ReferenceDataSetConnectorBase.html#auditLog">auditLog</a>, <a href="ReferenceDataSetConnectorBase.html#columnDescriptions">columnDescriptions</a>, <a href="ReferenceDataSetConnectorBase.html#connectorContext">connectorContext</a>, <a href="ReferenceDataSetConnectorBase.html#connectorName">connectorName</a>, <a href="ReferenceDataSetConnectorBase.html#validValueSetGUID">validValueSetGUID</a></code></div>
+<code><a href="ReferenceDataSetConnectorBase.html#auditLog">auditLog</a>, <a href="ReferenceDataSetConnectorBase.html#columnDescriptions">columnDescriptions</a>, <a href="ReferenceDataSetConnectorBase.html#connectorContext">connectorContext</a>, <a href="ReferenceDataSetConnectorBase.html#connectorName">connectorName</a></code></div>
 <div class="inherited-list">
 <h3 id="fields-inherited-from-class-org.odpi.openmetadata.frameworks.connectors.ConnectorBase">Fields inherited from class&nbsp;org.odpi.openmetadata.frameworks.connectors.<a href="../../../../frameworks/connectors/ConnectorBase.html" title="class in org.odpi.openmetadata.frameworks.connectors">ConnectorBase</a></h3>
 <code><a href="../../../../frameworks/connectors/ConnectorBase.html#connectionBean">connectionBean</a>, <a href="../../../../frameworks/connectors/ConnectorBase.html#connectorInstanceId">connectorInstanceId</a>, <a href="../../../../frameworks/connectors/ConnectorBase.html#embeddedConnectors">embeddedConnectors</a>, <a href="../../../../frameworks/connectors/ConnectorBase.html#messageFormatter">messageFormatter</a>, <a href="../../../../frameworks/connectors/ConnectorBase.html#secretsStoreConnectorMap">secretsStoreConnectorMap</a></code></div>
@@ -191,7 +200,7 @@ implements <a href="../../../../frameworks/auditlog/AuditLoggingComponent.html" 
 </div>
 <div class="inherited-list">
 <h3 id="methods-inherited-from-class-org.odpi.openmetadata.adapters.connectors.referencedata.tabulardatasets.ReferenceDataSetConnectorBase">Methods inherited from class&nbsp;org.odpi.openmetadata.adapters.connectors.referencedata.tabulardatasets.<a href="ReferenceDataSetConnectorBase.html" title="class in org.odpi.openmetadata.adapters.connectors.referencedata.tabulardatasets">ReferenceDataSetConnectorBase</a></h3>
-<code><a href="ReferenceDataSetConnectorBase.html#getColumnNumber(java.lang.String)">getColumnNumber</a>, <a href="ReferenceDataSetConnectorBase.html#getConnectorComponentDescription()">getConnectorComponentDescription</a>, <a href="ReferenceDataSetConnectorBase.html#getTabularColumnDescription(org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty,boolean)">getTabularColumnDescription</a>, <a href="ReferenceDataSetConnectorBase.html#setAuditLog(org.odpi.openmetadata.frameworks.auditlog.AuditLog)">setAuditLog</a>, <a href="ReferenceDataSetConnectorBase.html#setColumnDescriptions(java.util.List)">setColumnDescriptions</a>, <a href="ReferenceDataSetConnectorBase.html#setLocalEnvironment(java.lang.String,java.lang.String,java.lang.String)">setLocalEnvironment</a></code></div>
+<code><a href="ReferenceDataSetConnectorBase.html#getColumnNumber(java.lang.String)">getColumnNumber</a>, <a href="ReferenceDataSetConnectorBase.html#getConnectorComponentDescription()">getConnectorComponentDescription</a>, <a href="ReferenceDataSetConnectorBase.html#getTabularColumnDescription(org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty,boolean,boolean)">getTabularColumnDescription</a>, <a href="ReferenceDataSetConnectorBase.html#setAuditLog(org.odpi.openmetadata.frameworks.auditlog.AuditLog)">setAuditLog</a>, <a href="ReferenceDataSetConnectorBase.html#setColumnDescriptions(java.util.List)">setColumnDescriptions</a>, <a href="ReferenceDataSetConnectorBase.html#setLocalEnvironment(java.lang.String,java.lang.String,java.lang.String)">setLocalEnvironment</a></code></div>
 <div class="inherited-list">
 <h3 id="methods-inherited-from-class-org.odpi.openmetadata.frameworks.connectors.ConnectorBase">Methods inherited from class&nbsp;org.odpi.openmetadata.frameworks.connectors.<a href="../../../../frameworks/connectors/ConnectorBase.html" title="class in org.odpi.openmetadata.frameworks.connectors">ConnectorBase</a></h3>
 <code><a href="../../../../frameworks/connectors/ConnectorBase.html#combineConfigurationProperties(java.util.Map)">combineConfigurationProperties</a>, <a href="../../../../frameworks/connectors/ConnectorBase.html#disconnectConnectors(java.util.List)">disconnectConnectors</a>, <a href="../../../../frameworks/connectors/ConnectorBase.html#equals(java.lang.Object)">equals</a>, <a href="../../../../frameworks/connectors/ConnectorBase.html#getArrayConfigurationProperty(java.lang.String,java.util.Map)">getArrayConfigurationProperty</a>, <a href="../../../../frameworks/connectors/ConnectorBase.html#getArrayConfigurationProperty(java.lang.String,java.util.Map,java.lang.String)">getArrayConfigurationProperty</a>, <a href="../../../../frameworks/connectors/ConnectorBase.html#getArrayConfigurationProperty(java.lang.String,java.util.Map,java.util.List)">getArrayConfigurationProperty</a>, <a href="../../../../frameworks/connectors/ConnectorBase.html#getBooleanConfigurationProperty(java.lang.String,java.util.Map)">getBooleanConfigurationProperty</a>, <a href="../../../../frameworks/connectors/ConnectorBase.html#getConnection()">getConnection</a>, <a href="../../../../frameworks/connectors/ConnectorBase.html#getConnectorInstanceId()">getConnectorInstanceId</a>, <a href="../../../../frameworks/connectors/ConnectorBase.html#getDateConfigurationProperty(java.lang.String,java.util.Map)">getDateConfigurationProperty</a>, <a href="../../../../frameworks/connectors/ConnectorBase.html#getIntConfigurationProperty(java.lang.String,java.util.Map)">getIntConfigurationProperty</a>, <a href="../../../../frameworks/connectors/ConnectorBase.html#getLongConfigurationProperty(java.lang.String,java.util.Map)">getLongConfigurationProperty</a>, <a href="../../../../frameworks/connectors/ConnectorBase.html#getStringConfigurationProperty(java.lang.String,java.util.Map)">getStringConfigurationProperty</a>, <a href="../../../../frameworks/connectors/ConnectorBase.html#getStringConfigurationProperty(java.lang.String,java.util.Map,java.lang.String)">getStringConfigurationProperty</a>, <a href="../../../../frameworks/connectors/ConnectorBase.html#getSuppliedPlaceholderProperties(java.util.Map)">getSuppliedPlaceholderProperties</a>, <a href="../../../../frameworks/connectors/ConnectorBase.html#hashCode()">hashCode</a>, <a href="../../../../frameworks/connectors/ConnectorBase.html#initialize(java.lang.String,org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection)">initialize</a>, <a href="../../../../frameworks/connectors/ConnectorBase.html#initializeEmbeddedConnectors(java.util.List)">initializeEmbeddedConnectors</a>, <a href="../../../../frameworks/connectors/ConnectorBase.html#initializeSecretsStoreConnector(java.lang.String,org.odpi.openmetadata.frameworks.connectors.SecretsStoreConnector)">initializeSecretsStoreConnector</a>, <a href="../../../../frameworks/connectors/ConnectorBase.html#isActive()">isActive</a>, <a href="../../../../frameworks/connectors/ConnectorBase.html#logExceptionRecord(java.lang.String,org.odpi.openmetadata.frameworks.auditlog.messagesets.AuditLogMessageDefinition,java.lang.Exception)">logExceptionRecord</a>, <a href="../../../../frameworks/connectors/ConnectorBase.html#logRecord(java.lang.String,org.odpi.openmetadata.frameworks.auditlog.messagesets.AuditLogMessageDefinition)">logRecord</a>, <a href="../../../../frameworks/connectors/ConnectorBase.html#logRecord(java.lang.String,org.odpi.openmetadata.frameworks.auditlog.messagesets.AuditLogMessageDefinition,java.lang.String)">logRecord</a>, <a href="../../../../frameworks/connectors/ConnectorBase.html#throwMissingConfigurationProperty(java.lang.String,java.lang.String,java.lang.String,java.lang.String)">throwMissingConfigurationProperty</a>, <a href="../../../../frameworks/connectors/ConnectorBase.html#throwMissingEndpointAddress(java.lang.String,java.lang.String)">throwMissingEndpointAddress</a>, <a href="../../../../frameworks/connectors/ConnectorBase.html#throwMissingResource(java.lang.String,java.lang.String,java.lang.String,java.lang.String)">throwMissingResource</a>, <a href="../../../../frameworks/connectors/ConnectorBase.html#throwNoAsset(java.lang.String,java.lang.String,java.lang.String)">throwNoAsset</a>, <a href="../../../../frameworks/connectors/ConnectorBase.html#throwWrongTypeOfAsset(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String)">throwWrongTypeOfAsset</a>, <a href="../../../../frameworks/connectors/ConnectorBase.html#throwWrongTypeOfResource(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String)">throwWrongTypeOfResource</a>, <a href="../../../../frameworks/connectors/ConnectorBase.html#throwWrongTypeOfRootSchema(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String)">throwWrongTypeOfRootSchema</a>, <a href="../../../../frameworks/connectors/ConnectorBase.html#toString()">toString</a></code></div>
@@ -205,14 +214,31 @@ implements <a href="../../../../frameworks/auditlog/AuditLoggingComponent.html" 
 <h3 id="methods-inherited-from-class-org.odpi.openmetadata.frameworks.auditlog.AuditLoggingComponent">Methods inherited from interface&nbsp;org.odpi.openmetadata.frameworks.auditlog.<a href="../../../../frameworks/auditlog/AuditLoggingComponent.html" title="interface in org.odpi.openmetadata.frameworks.auditlog">AuditLoggingComponent</a></h3>
 <code><a href="../../../../frameworks/auditlog/AuditLoggingComponent.html#getConnectorComponentDescription()">getConnectorComponentDescription</a>, <a href="../../../../frameworks/auditlog/AuditLoggingComponent.html#setAuditLog(org.odpi.openmetadata.frameworks.auditlog.AuditLog)">setAuditLog</a></code></div>
 <div class="inherited-list">
-<h3 id="methods-inherited-from-class-org.odpi.openmetadata.frameworks.connectors.TabularDataSource">Methods inherited from interface&nbsp;org.odpi.openmetadata.frameworks.connectors.<a href="../../../../frameworks/connectors/TabularDataSource.html" title="interface in org.odpi.openmetadata.frameworks.connectors">TabularDataSource</a></h3>
-<code><a href="../../../../frameworks/connectors/TabularDataSource.html#setColumnDescriptions(java.util.List)">setColumnDescriptions</a></code></div>
+<h3 id="methods-inherited-from-class-org.odpi.openmetadata.frameworks.connectors.ReadableTabularDataSource">Methods inherited from interface&nbsp;org.odpi.openmetadata.frameworks.connectors.<a href="../../../../frameworks/connectors/ReadableTabularDataSource.html" title="interface in org.odpi.openmetadata.frameworks.connectors">ReadableTabularDataSource</a></h3>
+<code><a href="../../../../frameworks/connectors/ReadableTabularDataSource.html#getColumnNumber(java.lang.String)">getColumnNumber</a></code></div>
+<div class="inherited-list">
+<h3 id="methods-inherited-from-class-org.odpi.openmetadata.frameworks.connectors.WritableTabularDataSource">Methods inherited from interface&nbsp;org.odpi.openmetadata.frameworks.connectors.<a href="../../../../frameworks/connectors/WritableTabularDataSource.html" title="interface in org.odpi.openmetadata.frameworks.connectors">WritableTabularDataSource</a></h3>
+<code><a href="../../../../frameworks/connectors/WritableTabularDataSource.html#setColumnDescriptions(java.util.List)">setColumnDescriptions</a></code></div>
 </section>
 </li>
 </ul>
 </section>
 <section class="details">
 <ul class="details-list">
+<!-- ============ FIELD DETAIL =========== -->
+<li>
+<section class="field-details" id="field-detail">
+<h2>Field Details</h2>
+<ul class="member-list">
+<li>
+<section class="detail" id="validValueSetGUID">
+<h3>validValueSetGUID</h3>
+<div class="member-signature"><span class="modifiers">protected</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">validValueSetGUID</span></div>
+</section>
+</li>
+</ul>
+</section>
+</li>
 <!-- ========= CONSTRUCTOR DETAIL ======== -->
 <li>
 <section class="constructor-details" id="constructor-detail">
@@ -272,7 +298,7 @@ implements <a href="../../../../frameworks/auditlog/AuditLoggingComponent.html" 
 <dt>Specified by:</dt>
 <dd><code><a href="../../../../frameworks/connectors/ReadableTabularDataSource.html#getRecordCount()">getRecordCount</a></code>&nbsp;in interface&nbsp;<code><a href="../../../../frameworks/connectors/ReadableTabularDataSource.html" title="interface in org.odpi.openmetadata.frameworks.connectors">ReadableTabularDataSource</a></code></dd>
 <dt>Specified by:</dt>
-<dd><code><a href="../../../../frameworks/connectors/TabularDataSource.html#getRecordCount()">getRecordCount</a></code>&nbsp;in interface&nbsp;<code><a href="../../../../frameworks/connectors/TabularDataSource.html" title="interface in org.odpi.openmetadata.frameworks.connectors">TabularDataSource</a></code></dd>
+<dd><code><a href="../../../../frameworks/connectors/WritableTabularDataSource.html#getRecordCount()">getRecordCount</a></code>&nbsp;in interface&nbsp;<code><a href="../../../../frameworks/connectors/WritableTabularDataSource.html" title="interface in org.odpi.openmetadata.frameworks.connectors">WritableTabularDataSource</a></code></dd>
 <dt>Returns:</dt>
 <dd>count</dd>
 </dl>
@@ -289,7 +315,7 @@ implements <a href="../../../../frameworks/auditlog/AuditLoggingComponent.html" 
 <dt>Specified by:</dt>
 <dd><code><a href="../../../../frameworks/connectors/ReadableTabularDataSource.html#getColumnDescriptions()">getColumnDescriptions</a></code>&nbsp;in interface&nbsp;<code><a href="../../../../frameworks/connectors/ReadableTabularDataSource.html" title="interface in org.odpi.openmetadata.frameworks.connectors">ReadableTabularDataSource</a></code></dd>
 <dt>Specified by:</dt>
-<dd><code><a href="../../../../frameworks/connectors/TabularDataSource.html#getColumnDescriptions()">getColumnDescriptions</a></code>&nbsp;in interface&nbsp;<code><a href="../../../../frameworks/connectors/TabularDataSource.html" title="interface in org.odpi.openmetadata.frameworks.connectors">TabularDataSource</a></code></dd>
+<dd><code><a href="../../../../frameworks/connectors/WritableTabularDataSource.html#getColumnDescriptions()">getColumnDescriptions</a></code>&nbsp;in interface&nbsp;<code><a href="../../../../frameworks/connectors/WritableTabularDataSource.html" title="interface in org.odpi.openmetadata.frameworks.connectors">WritableTabularDataSource</a></code></dd>
 <dt>Overrides:</dt>
 <dd><code><a href="ReferenceDataSetConnectorBase.html#getColumnDescriptions()">getColumnDescriptions</a></code>&nbsp;in class&nbsp;<code><a href="ReferenceDataSetConnectorBase.html" title="class in org.odpi.openmetadata.adapters.connectors.referencedata.tabulardatasets">ReferenceDataSetConnectorBase</a></code></dd>
 <dt>Returns:</dt>
@@ -306,8 +332,6 @@ implements <a href="../../../../frameworks/auditlog/AuditLoggingComponent.html" 
 <dl class="notes">
 <dt>Specified by:</dt>
 <dd><code><a href="../../../../frameworks/connectors/ReadableTabularDataSource.html#readRecord(long)">readRecord</a></code>&nbsp;in interface&nbsp;<code><a href="../../../../frameworks/connectors/ReadableTabularDataSource.html" title="interface in org.odpi.openmetadata.frameworks.connectors">ReadableTabularDataSource</a></code></dd>
-<dt>Specified by:</dt>
-<dd><code><a href="../../../../frameworks/connectors/TabularDataSource.html#readRecord(long)">readRecord</a></code>&nbsp;in interface&nbsp;<code><a href="../../../../frameworks/connectors/TabularDataSource.html" title="interface in org.odpi.openmetadata.frameworks.connectors">TabularDataSource</a></code></dd>
 <dt>Parameters:</dt>
 <dd><code>rowNumber</code> - long</dd>
 <dt>Returns:</dt>
@@ -327,7 +351,7 @@ implements <a href="../../../../frameworks/auditlog/AuditLoggingComponent.html" 
  This process reads the entire file, inserts the record in the right place and writes it out again.</div>
 <dl class="notes">
 <dt>Specified by:</dt>
-<dd><code><a href="../../../../frameworks/connectors/TabularDataSource.html#writeRecord(long,java.util.List)">writeRecord</a></code>&nbsp;in interface&nbsp;<code><a href="../../../../frameworks/connectors/TabularDataSource.html" title="interface in org.odpi.openmetadata.frameworks.connectors">TabularDataSource</a></code></dd>
+<dd><code><a href="../../../../frameworks/connectors/WritableTabularDataSource.html#writeRecord(long,java.util.List)">writeRecord</a></code>&nbsp;in interface&nbsp;<code><a href="../../../../frameworks/connectors/WritableTabularDataSource.html" title="interface in org.odpi.openmetadata.frameworks.connectors">WritableTabularDataSource</a></code></dd>
 <dt>Parameters:</dt>
 <dd><code>requestedRowNumber</code> - long</dd>
 <dd><code>dataValues</code> - Map of column descriptions to strings, each string is the value for the column.</dd>
@@ -344,7 +368,7 @@ implements <a href="../../../../frameworks/auditlog/AuditLoggingComponent.html" 
 <div class="block">Write the requested data record to the end of the data source.</div>
 <dl class="notes">
 <dt>Specified by:</dt>
-<dd><code><a href="../../../../frameworks/connectors/TabularDataSource.html#appendRecord(java.util.List)">appendRecord</a></code>&nbsp;in interface&nbsp;<code><a href="../../../../frameworks/connectors/TabularDataSource.html" title="interface in org.odpi.openmetadata.frameworks.connectors">TabularDataSource</a></code></dd>
+<dd><code><a href="../../../../frameworks/connectors/WritableTabularDataSource.html#appendRecord(java.util.List)">appendRecord</a></code>&nbsp;in interface&nbsp;<code><a href="../../../../frameworks/connectors/WritableTabularDataSource.html" title="interface in org.odpi.openmetadata.frameworks.connectors">WritableTabularDataSource</a></code></dd>
 <dt>Parameters:</dt>
 <dd><code>dataValues</code> - Map of column descriptions to strings, each string is the value for the column.</dd>
 <dt>Throws:</dt>
@@ -360,7 +384,7 @@ implements <a href="../../../../frameworks/auditlog/AuditLoggingComponent.html" 
 <div class="block">Remove the requested data record.  The first data record is record 0.</div>
 <dl class="notes">
 <dt>Specified by:</dt>
-<dd><code><a href="../../../../frameworks/connectors/TabularDataSource.html#deleteRecord(long)">deleteRecord</a></code>&nbsp;in interface&nbsp;<code><a href="../../../../frameworks/connectors/TabularDataSource.html" title="interface in org.odpi.openmetadata.frameworks.connectors">TabularDataSource</a></code></dd>
+<dd><code><a href="../../../../frameworks/connectors/WritableTabularDataSource.html#deleteRecord(long)">deleteRecord</a></code>&nbsp;in interface&nbsp;<code><a href="../../../../frameworks/connectors/WritableTabularDataSource.html" title="interface in org.odpi.openmetadata.frameworks.connectors">WritableTabularDataSource</a></code></dd>
 <dt>Parameters:</dt>
 <dd><code>rowNumber</code> - long</dd>
 <dt>Throws:</dt>

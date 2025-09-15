@@ -125,9 +125,6 @@ implements <a href="../../../../frameworks/auditlog/AuditLoggingComponent.html" 
 <div class="col-first odd-row-color"><code>protected final <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
 <div class="col-second odd-row-color"><code><a href="#connectorName" class="member-name-link">connectorName</a></code></div>
 <div class="col-last odd-row-color">&nbsp;</div>
-<div class="col-first even-row-color"><code>protected <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second even-row-color"><code><a href="#validValueSetGUID" class="member-name-link">validValueSetGUID</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
 </div>
 <div class="inherited-list">
 <h3 id="fields-inherited-from-class-org.odpi.openmetadata.frameworks.connectors.ConnectorBase">Fields inherited from class&nbsp;org.odpi.openmetadata.frameworks.connectors.<a href="../../../../frameworks/connectors/ConnectorBase.html" title="class in org.odpi.openmetadata.frameworks.connectors">ConnectorBase</a></h3>
@@ -181,8 +178,9 @@ implements <a href="../../../../frameworks/auditlog/AuditLoggingComponent.html" 
 <div class="block">Return the component description that is used by this connector in the audit log.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>protected <a href="../../../../frameworks/connectors/TabularColumnDescription.html" title="class in org.odpi.openmetadata.frameworks.connectors">TabularColumnDescription</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getTabularColumnDescription(org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty,boolean)" class="member-name-link">getTabularColumnDescription</a><wbr>(<a href="../../../../frameworks/openmetadata/types/OpenMetadataProperty.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.types">OpenMetadataProperty</a>&nbsp;openMetadataProperty,
- boolean&nbsp;isNullable)</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getTabularColumnDescription(org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty,boolean,boolean)" class="member-name-link">getTabularColumnDescription</a><wbr>(<a href="../../../../frameworks/openmetadata/types/OpenMetadataProperty.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.types">OpenMetadataProperty</a>&nbsp;openMetadataProperty,
+ boolean&nbsp;isNullable,
+ boolean&nbsp;isIdentifier)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Convert an open metadata property enum into a tabular column description.</div>
 </div>
@@ -255,12 +253,6 @@ implements <a href="../../../../frameworks/auditlog/AuditLoggingComponent.html" 
 <section class="detail" id="connectorContext">
 <h3>connectorContext</h3>
 <div class="member-signature"><span class="modifiers">protected</span>&nbsp;<span class="return-type"><a href="../../../../frameworks/openmetadata/connectorcontext/ConnectorContextBase.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.connectorcontext">ConnectorContextBase</a></span>&nbsp;<span class="element-name">connectorContext</span></div>
-</section>
-</li>
-<li>
-<section class="detail" id="validValueSetGUID">
-<h3>validValueSetGUID</h3>
-<div class="member-signature"><span class="modifiers">protected</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">validValueSetGUID</span></div>
 </section>
 </li>
 <li>
@@ -367,14 +359,17 @@ implements <a href="../../../../frameworks/auditlog/AuditLoggingComponent.html" 
 </section>
 </li>
 <li>
-<section class="detail" id="getTabularColumnDescription(org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty,boolean)">
+<section class="detail" id="getTabularColumnDescription(org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty,boolean,boolean)">
 <h3>getTabularColumnDescription</h3>
 <div class="member-signature"><span class="modifiers">protected</span>&nbsp;<span class="return-type"><a href="../../../../frameworks/connectors/TabularColumnDescription.html" title="class in org.odpi.openmetadata.frameworks.connectors">TabularColumnDescription</a></span>&nbsp;<span class="element-name">getTabularColumnDescription</span><wbr><span class="parameters">(<a href="../../../../frameworks/openmetadata/types/OpenMetadataProperty.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.types">OpenMetadataProperty</a>&nbsp;openMetadataProperty,
- boolean&nbsp;isNullable)</span></div>
+ boolean&nbsp;isNullable,
+ boolean&nbsp;isIdentifier)</span></div>
 <div class="block">Convert an open metadata property enum into a tabular column description.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
 <dd><code>openMetadataProperty</code> - property enum</dd>
+<dd><code>isNullable</code> - is the field nullable</dd>
+<dd><code>isIdentifier</code> - is the filed all or part of the unique identifier for a row/record</dd>
 <dt>Returns:</dt>
 <dd>tabular column description</dd>
 </dl>
@@ -406,6 +401,8 @@ implements <a href="../../../../frameworks/auditlog/AuditLoggingComponent.html" 
 <dl class="notes">
 <dt>Specified by:</dt>
 <dd><code><a href="../../../../frameworks/connectors/ReadableTabularDataSource.html#getColumnNumber(java.lang.String)">getColumnNumber</a></code>&nbsp;in interface&nbsp;<code><a href="../../../../frameworks/connectors/ReadableTabularDataSource.html" title="interface in org.odpi.openmetadata.frameworks.connectors">ReadableTabularDataSource</a></code></dd>
+<dt>Parameters:</dt>
+<dd><code>columnName</code> - name of the column to return</dd>
 <dt>Returns:</dt>
 <dd>column</dd>
 <dt>Throws:</dt>

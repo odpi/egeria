@@ -973,7 +973,7 @@ loadScripts(document, 'script');</script>
 <li>
 <section class="detail" id="setupSemanticAssignment(java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.commonservices.ffdc.rest.NewRelationshipRequestBody)">
 <h3>setupSemanticAssignment</h3>
-<div class="member-signature"><span class="annotations">@PostMapping(path="/elements/{elementGUID}/semantic-assignment/terms/{glossaryTermGUID}")
+<div class="member-signature"><span class="annotations">@PostMapping(path="/elements/{elementGUID}/semantic-assignment/terms/{glossaryTermGUID}/attach")
 </span><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a></span>&nbsp;<span class="element-name">setupSemanticAssignment</span><wbr><span class="parameters">(@PathVariable
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
  @PathVariable
@@ -1001,7 +1001,7 @@ loadScripts(document, 'script');</script>
 <li>
 <section class="detail" id="clearSemanticAssignment(java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.commonservices.ffdc.rest.DeleteRequestBody)">
 <h3>clearSemanticAssignment</h3>
-<div class="member-signature"><span class="annotations">@PostMapping(path="/elements/{elementGUID}/semantic-assignment/terms/{glossaryTermGUID}/remove")
+<div class="member-signature"><span class="annotations">@PostMapping(path="/elements/{elementGUID}/semantic-assignment/terms/{glossaryTermGUID}/detach")
 </span><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a></span>&nbsp;<span class="element-name">clearSemanticAssignment</span><wbr><span class="parameters">(@PathVariable
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
  @PathVariable
@@ -1028,7 +1028,7 @@ loadScripts(document, 'script');</script>
 <li>
 <section class="detail" id="addScopeToElement(java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.commonservices.ffdc.rest.NewRelationshipRequestBody)">
 <h3>addScopeToElement</h3>
-<div class="member-signature"><span class="annotations">@PostMapping(path="/elements/{elementGUID}/scoped-by/{scopeGUID}")
+<div class="member-signature"><span class="annotations">@PostMapping(path="/elements/{elementGUID}/scoped-by/{scopeGUID}/attach")
 </span><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a></span>&nbsp;<span class="element-name">addScopeToElement</span><wbr><span class="parameters">(@PathVariable
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
  @PathVariable
@@ -1055,7 +1055,7 @@ loadScripts(document, 'script');</script>
 <li>
 <section class="detail" id="removeScopeFromElement(java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.commonservices.ffdc.rest.DeleteRequestBody)">
 <h3>removeScopeFromElement</h3>
-<div class="member-signature"><span class="annotations">@PostMapping(path="/elements/{elementGUID}/scoped-by/{scopeGUID}/remove")
+<div class="member-signature"><span class="annotations">@PostMapping(path="/elements/{elementGUID}/scoped-by/{scopeGUID}/detach")
 </span><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a></span>&nbsp;<span class="element-name">removeScopeFromElement</span><wbr><span class="parameters">(@PathVariable
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
  @PathVariable
@@ -1082,7 +1082,7 @@ loadScripts(document, 'script');</script>
 <li>
 <section class="detail" id="addResourceListToElement(java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.commonservices.ffdc.rest.NewRelationshipRequestBody)">
 <h3>addResourceListToElement</h3>
-<div class="member-signature"><span class="annotations">@PostMapping(path="/elements/{elementGUID}/resource-list/{resourceGUID}")
+<div class="member-signature"><span class="annotations">@PostMapping(path="/elements/{elementGUID}/resource-list/{resourceGUID}/attach")
 </span><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a></span>&nbsp;<span class="element-name">addResourceListToElement</span><wbr><span class="parameters">(@PathVariable
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
  @PathVariable
@@ -1109,7 +1109,7 @@ loadScripts(document, 'script');</script>
 <li>
 <section class="detail" id="removeResourceListFromElement(java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.commonservices.ffdc.rest.DeleteRequestBody)">
 <h3>removeResourceListFromElement</h3>
-<div class="member-signature"><span class="annotations">@PostMapping(path="/elements/{elementGUID}/resource-list/{resourceGUID}/remove")
+<div class="member-signature"><span class="annotations">@PostMapping(path="/elements/{elementGUID}/resource-list/{resourceGUID}/detach")
 </span><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a></span>&nbsp;<span class="element-name">removeResourceListFromElement</span><wbr><span class="parameters">(@PathVariable
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
  @PathVariable
@@ -1136,7 +1136,7 @@ loadScripts(document, 'script');</script>
 <li>
 <section class="detail" id="addMoreInformationToElement(java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.commonservices.ffdc.rest.NewRelationshipRequestBody)">
 <h3>addMoreInformationToElement</h3>
-<div class="member-signature"><span class="annotations">@PostMapping(path="/elements/{elementGUID}/more-information/{resourceGUID}")
+<div class="member-signature"><span class="annotations">@PostMapping(path="/elements/{elementGUID}/more-information/{resourceGUID}/attach")
 </span><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a></span>&nbsp;<span class="element-name">addMoreInformationToElement</span><wbr><span class="parameters">(@PathVariable
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
  @PathVariable
@@ -1163,7 +1163,7 @@ loadScripts(document, 'script');</script>
 <li>
 <section class="detail" id="removeMoreInformationFromElement(java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.commonservices.ffdc.rest.DeleteRequestBody)">
 <h3>removeMoreInformationFromElement</h3>
-<div class="member-signature"><span class="annotations">@PostMapping(path="/elements/{elementGUID}/more-information/{resourceGUID}/remove")
+<div class="member-signature"><span class="annotations">@PostMapping(path="/elements/{elementGUID}/more-information/{resourceGUID}/detach")
 </span><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a></span>&nbsp;<span class="element-name">removeMoreInformationFromElement</span><wbr><span class="parameters">(@PathVariable
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
  @PathVariable

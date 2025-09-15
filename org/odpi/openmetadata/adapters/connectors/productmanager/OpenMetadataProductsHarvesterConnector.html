@@ -90,7 +90,14 @@ loadScripts(document, 'script');</script>
 <span class="extends-implements">extends <a href="../../../frameworks/integration/connectors/IntegrationConnectorBase.html" title="class in org.odpi.openmetadata.frameworks.integration.connectors">IntegrationConnectorBase</a>
 implements <a href="../../../frameworks/integration/connectors/CatalogTargetIntegrator.html" title="interface in org.odpi.openmetadata.frameworks.integration.connectors">CatalogTargetIntegrator</a></span></div>
 <div class="block">OpenMetadataProductsHarvesterConnector converts metadata from the open metadata ecosystem into useful digital
- products.</div>
+ products.  The first phase (in the start() method) is to create all of the contextual metadata that surrounds the
+ product catalog.  The remaining phases happen in the refresh() method.  It first surveys open metadata looking for
+ metadata that could be a product.  (For example, a valid value set).  It creates an entry in the product catalog
+ for that product and registers the tabular data set asset for the product as a catalog target.
+ <br><br>
+ Once the possible products are in place, it processes the catalog targets.  For each, the appropriate metadata
+ is scanned for changes.  These changes are recorded in the asset's GovernanceMeasurement classification.
+ This triggers the notification watchdog to send the new data to the subscribers via the provisioning pipelines.</div>
 </section>
 <section class="summary">
 <ul class="summary-list">
@@ -211,7 +218,13 @@ implements <a href="../../../frameworks/integration/connectors/CatalogTargetInte
            throws <span class="exceptions"><a href="../../../frameworks/connectors/ffdc/ConnectorCheckedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">ConnectorCheckedException</a>,
 <a href="../../../frameworks/openmetadata/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">UserNotAuthorizedException</a></span></div>
 <div class="block">Indicates that the connector is completely configured and can begin processing.
- This call can be used to register with non-blocking services.</div>
+ It sets up the contextual metadata used to fill out the product catalog.
+ This includes the solution blueprint that covers the components involved in managing
+ the open metadata product catalog.  Then there is the product catalog itself with its
+ internal folders, glossary and data dictionary.  The glossary is then populated
+ with glossary terms, and the data dictionary is populated with data fields.
+ The guids for these elements are managed in instance variables to allow the products
+ to link to them.</div>
 <dl class="notes">
 <dt>Specified by:</dt>
 <dd><code><a href="../../../frameworks/integration/connectors/IntegrationConnector.html#start()">start</a></code>&nbsp;in interface&nbsp;<code><a href="../../../frameworks/integration/connectors/IntegrationConnector.html" title="interface in org.odpi.openmetadata.frameworks.integration.connectors">IntegrationConnector</a></code></dd>

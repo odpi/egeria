@@ -86,7 +86,7 @@ loadScripts(document, 'script');</script>
 <span class="extends-implements">extends <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Enum.html" title="class or interface in java.lang" class="external-link">Enum</a>&lt;<a href="OWFErrorCode.html" title="enum class in org.odpi.openmetadata.frameworks.openwatchdog.ffdc">OWFErrorCode</a>&gt;
 implements <a href="../../auditlog/messagesets/ExceptionMessageSet.html" title="interface in org.odpi.openmetadata.frameworks.auditlog.messagesets">ExceptionMessageSet</a></span></div>
 <div class="block">The OWF error code is used to define first failure data capture (FFDC) for errors that occur when working with
- OWF Discovery Services.  It is used in conjunction with all OWF Exceptions, both Checked and Runtime (unchecked).
+ OWF Services.  It is used in conjunction with all OWF Exceptions, both Checked and Runtime (unchecked).
  The 5 fields in the enum are:
  <ul>
      <li>HTTP Error Code for translating between REST and JAVA - Typically the numbers used are:</li>
@@ -121,37 +121,13 @@ implements <a href="../../auditlog/messagesets/ExceptionMessageSet.html" title="
 <div class="summary-table two-column-summary">
 <div class="table-header col-first">Enum Constant</div>
 <div class="table-header col-last">Description</div>
-<div class="col-first even-row-color"><code><a href="#INVALID_ASSET_TYPE" class="member-name-link">INVALID_ASSET_TYPE</a></code></div>
+<div class="col-first even-row-color"><code><a href="#NULL_WATCHDOG_CONTEXT" class="member-name-link">NULL_WATCHDOG_CONTEXT</a></code></div>
 <div class="col-last even-row-color">
-<div class="block">OPEN-SURVEY-400-005 - Asset {0} is of type {1} but watchdog action service {2} only supports the following asset type(s): {3}</div>
+<div class="block">OPEN-WATCHDOG-400-001 - No survey context supplied to the watchdog action service {0}</div>
 </div>
-<div class="col-first odd-row-color"><code><a href="#INVALID_EMBEDDED_SURVEY_ACTION_SERVICE" class="member-name-link">INVALID_EMBEDDED_SURVEY_ACTION_SERVICE</a></code></div>
+<div class="col-first odd-row-color"><code><a href="#UNEXPECTED_EXCEPTION" class="member-name-link">UNEXPECTED_EXCEPTION</a></code></div>
 <div class="col-last odd-row-color">
-<div class="block">OPEN-SURVEY-400-003 - No embedded watchdog action services supplied to the watchdog action pipeline {0}</div>
-</div>
-<div class="col-first even-row-color"><code><a href="#NO_EMBEDDED_SURVEY_ACTION_SERVICES" class="member-name-link">NO_EMBEDDED_SURVEY_ACTION_SERVICES</a></code></div>
-<div class="col-last even-row-color">
-<div class="block">OPEN-SURVEY-400-002 - No embedded watchdog action services supplied to the watchdog action pipeline {0}</div>
-</div>
-<div class="col-first odd-row-color"><code><a href="#NO_SCHEMA" class="member-name-link">NO_SCHEMA</a></code></div>
-<div class="col-last odd-row-color">
-<div class="block">OPEN-SURVEY-400-007 - The {0} Survey Acton Service has been supplied with asset {1} which does not have a schema attached</div>
-</div>
-<div class="col-first even-row-color"><code><a href="#NO_SCHEMA_ATTRIBUTES" class="member-name-link">NO_SCHEMA_ATTRIBUTES</a></code></div>
-<div class="col-last even-row-color">
-<div class="block">OPEN-SURVEY-400-008 - The {0} Survey Acton Service has been supplied with asset {1} which does not have any schema attributes attached</div>
-</div>
-<div class="col-first odd-row-color"><code><a href="#NULL_SURVEY_CONTEXT" class="member-name-link">NULL_SURVEY_CONTEXT</a></code></div>
-<div class="col-last odd-row-color">
-<div class="block">OPEN-SURVEY-400-001 - No survey context supplied to the watchdog action service {0}</div>
-</div>
-<div class="col-first even-row-color"><code><a href="#UNEXPECTED_EXCEPTION" class="member-name-link">UNEXPECTED_EXCEPTION</a></code></div>
-<div class="col-last even-row-color">
-<div class="block">OPEN-SURVEY-500-001 - Unexpected exception in watchdog action service {0} of type {1} detected by method {2}.</div>
-</div>
-<div class="col-first odd-row-color"><code><a href="#WRONG_TYPE_OF_CONNECTOR" class="member-name-link">WRONG_TYPE_OF_CONNECTOR</a></code></div>
-<div class="col-last odd-row-color">
-<div class="block">OPEN-SURVEY-400-006 - The {0} Survey Acton Service has been supplied with a resource connector of class {1} rather than class {2} for asset {3}</div>
+<div class="block">OPEN-WATCHDOG-500-001 - Unexpected exception in watchdog action service {0} of type {1} detected by method {2}.</div>
 </div>
 </div>
 </section>
@@ -214,59 +190,17 @@ the order they are declared.</div>
 <h2>Enum Constant Details</h2>
 <ul class="member-list">
 <li>
-<section class="detail" id="NULL_SURVEY_CONTEXT">
-<h3>NULL_SURVEY_CONTEXT</h3>
-<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OWFErrorCode.html" title="enum class in org.odpi.openmetadata.frameworks.openwatchdog.ffdc">OWFErrorCode</a></span>&nbsp;<span class="element-name">NULL_SURVEY_CONTEXT</span></div>
-<div class="block">OPEN-SURVEY-400-001 - No survey context supplied to the watchdog action service {0}</div>
-</section>
-</li>
-<li>
-<section class="detail" id="NO_EMBEDDED_SURVEY_ACTION_SERVICES">
-<h3>NO_EMBEDDED_SURVEY_ACTION_SERVICES</h3>
-<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OWFErrorCode.html" title="enum class in org.odpi.openmetadata.frameworks.openwatchdog.ffdc">OWFErrorCode</a></span>&nbsp;<span class="element-name">NO_EMBEDDED_SURVEY_ACTION_SERVICES</span></div>
-<div class="block">OPEN-SURVEY-400-002 - No embedded watchdog action services supplied to the watchdog action pipeline {0}</div>
-</section>
-</li>
-<li>
-<section class="detail" id="INVALID_EMBEDDED_SURVEY_ACTION_SERVICE">
-<h3>INVALID_EMBEDDED_SURVEY_ACTION_SERVICE</h3>
-<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OWFErrorCode.html" title="enum class in org.odpi.openmetadata.frameworks.openwatchdog.ffdc">OWFErrorCode</a></span>&nbsp;<span class="element-name">INVALID_EMBEDDED_SURVEY_ACTION_SERVICE</span></div>
-<div class="block">OPEN-SURVEY-400-003 - No embedded watchdog action services supplied to the watchdog action pipeline {0}</div>
-</section>
-</li>
-<li>
-<section class="detail" id="INVALID_ASSET_TYPE">
-<h3>INVALID_ASSET_TYPE</h3>
-<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OWFErrorCode.html" title="enum class in org.odpi.openmetadata.frameworks.openwatchdog.ffdc">OWFErrorCode</a></span>&nbsp;<span class="element-name">INVALID_ASSET_TYPE</span></div>
-<div class="block">OPEN-SURVEY-400-005 - Asset {0} is of type {1} but watchdog action service {2} only supports the following asset type(s): {3}</div>
-</section>
-</li>
-<li>
-<section class="detail" id="WRONG_TYPE_OF_CONNECTOR">
-<h3>WRONG_TYPE_OF_CONNECTOR</h3>
-<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OWFErrorCode.html" title="enum class in org.odpi.openmetadata.frameworks.openwatchdog.ffdc">OWFErrorCode</a></span>&nbsp;<span class="element-name">WRONG_TYPE_OF_CONNECTOR</span></div>
-<div class="block">OPEN-SURVEY-400-006 - The {0} Survey Acton Service has been supplied with a resource connector of class {1} rather than class {2} for asset {3}</div>
-</section>
-</li>
-<li>
-<section class="detail" id="NO_SCHEMA">
-<h3>NO_SCHEMA</h3>
-<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OWFErrorCode.html" title="enum class in org.odpi.openmetadata.frameworks.openwatchdog.ffdc">OWFErrorCode</a></span>&nbsp;<span class="element-name">NO_SCHEMA</span></div>
-<div class="block">OPEN-SURVEY-400-007 - The {0} Survey Acton Service has been supplied with asset {1} which does not have a schema attached</div>
-</section>
-</li>
-<li>
-<section class="detail" id="NO_SCHEMA_ATTRIBUTES">
-<h3>NO_SCHEMA_ATTRIBUTES</h3>
-<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OWFErrorCode.html" title="enum class in org.odpi.openmetadata.frameworks.openwatchdog.ffdc">OWFErrorCode</a></span>&nbsp;<span class="element-name">NO_SCHEMA_ATTRIBUTES</span></div>
-<div class="block">OPEN-SURVEY-400-008 - The {0} Survey Acton Service has been supplied with asset {1} which does not have any schema attributes attached</div>
+<section class="detail" id="NULL_WATCHDOG_CONTEXT">
+<h3>NULL_WATCHDOG_CONTEXT</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OWFErrorCode.html" title="enum class in org.odpi.openmetadata.frameworks.openwatchdog.ffdc">OWFErrorCode</a></span>&nbsp;<span class="element-name">NULL_WATCHDOG_CONTEXT</span></div>
+<div class="block">OPEN-WATCHDOG-400-001 - No survey context supplied to the watchdog action service {0}</div>
 </section>
 </li>
 <li>
 <section class="detail" id="UNEXPECTED_EXCEPTION">
 <h3>UNEXPECTED_EXCEPTION</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OWFErrorCode.html" title="enum class in org.odpi.openmetadata.frameworks.openwatchdog.ffdc">OWFErrorCode</a></span>&nbsp;<span class="element-name">UNEXPECTED_EXCEPTION</span></div>
-<div class="block">OPEN-SURVEY-500-001 - Unexpected exception in watchdog action service {0} of type {1} detected by method {2}.  The error message was {3}</div>
+<div class="block">OPEN-WATCHDOG-500-001 - Unexpected exception in watchdog action service {0} of type {1} detected by method {2}.  The error message was {3}</div>
 </section>
 </li>
 </ul>

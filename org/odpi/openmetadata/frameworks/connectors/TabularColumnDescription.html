@@ -83,9 +83,10 @@ loadScripts(document, 'script');</script>
 <dd><code><span id="param-columnDataType">columnDataType</span></code> - type of the column</dd>
 <dd><code><span id="param-description">description</span></code> - description of the data in the column</dd>
 <dd><code><span id="param-isNullable">isNullable</span></code> - is a null value allowed in this column?</dd>
+<dd><code><span id="param-isIdentifier">isIdentifier</span></code> - is this field all or part of the table's unique identifier?</dd>
 </dl>
 <hr>
-<div class="type-signature"><span class="modifiers">public record </span><span class="element-name type-name-label">TabularColumnDescription</span>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;columnName, <a href="../openmetadata/types/DataType.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.types">DataType</a>&nbsp;columnDataType, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;description, boolean&nbsp;isNullable)
+<div class="type-signature"><span class="modifiers">public record </span><span class="element-name type-name-label">TabularColumnDescription</span>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;columnName, <a href="../openmetadata/types/DataType.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.types">DataType</a>&nbsp;columnDataType, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;description, boolean&nbsp;isNullable, boolean&nbsp;isIdentifier)
 <span class="extends-implements">extends <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Record.html" title="class or interface in java.lang" class="external-link">Record</a></span></div>
 <div class="block">Create a tabular column definition.  This can be extracted from the data, or used to set up a new data set.</div>
 </section>
@@ -99,10 +100,11 @@ loadScripts(document, 'script');</script>
 <div class="summary-table two-column-summary">
 <div class="table-header col-first">Constructor</div>
 <div class="table-header col-last">Description</div>
-<div class="col-constructor-name even-row-color"><code><a href="#%3Cinit%3E(java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.types.DataType,java.lang.String,boolean)" class="member-name-link">TabularColumnDescription</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;columnName,
+<div class="col-constructor-name even-row-color"><code><a href="#%3Cinit%3E(java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.types.DataType,java.lang.String,boolean,boolean)" class="member-name-link">TabularColumnDescription</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;columnName,
  <a href="../openmetadata/types/DataType.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.types">DataType</a>&nbsp;columnDataType,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;description,
- boolean&nbsp;isNullable)</code></div>
+ boolean&nbsp;isNullable,
+ boolean&nbsp;isIdentifier)</code></div>
 <div class="col-last even-row-color">
 <div class="block">Creates an instance of a <code>TabularColumnDescription</code> record class.</div>
 </div>
@@ -146,13 +148,18 @@ loadScripts(document, 'script');</script>
 <div class="block">Returns a hash code value for this object.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>boolean</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#isNullable()" class="member-name-link">isNullable</a>()</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#isIdentifier()" class="member-name-link">isIdentifier</a>()</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Returns the value of the <a href="#param-isIdentifier"><code>isIdentifier</code></a> record component.</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>boolean</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#isNullable()" class="member-name-link">isNullable</a>()</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Returns the value of the <a href="#param-isNullable"><code>isNullable</code></a> record component.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>final <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#toString()" class="member-name-link">toString</a>()</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>final <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#toString()" class="member-name-link">toString</a>()</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Returns a string representation of this record class.</div>
 </div>
 </div>
@@ -173,12 +180,13 @@ loadScripts(document, 'script');</script>
 <h2>Constructor Details</h2>
 <ul class="member-list">
 <li>
-<section class="detail" id="&lt;init&gt;(java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.types.DataType,java.lang.String,boolean)">
+<section class="detail" id="&lt;init&gt;(java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.types.DataType,java.lang.String,boolean,boolean)">
 <h3>TabularColumnDescription</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="element-name">TabularColumnDescription</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;columnName,
  <a href="../openmetadata/types/DataType.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.types">DataType</a>&nbsp;columnDataType,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;description,
- boolean&nbsp;isNullable)</span></div>
+ boolean&nbsp;isNullable,
+ boolean&nbsp;isIdentifier)</span></div>
 <div class="block">Creates an instance of a <code>TabularColumnDescription</code> record class.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
@@ -186,6 +194,7 @@ loadScripts(document, 'script');</script>
 <dd><code>columnDataType</code> - the value for the <a href="#param-columnDataType"><code>columnDataType</code></a> record component</dd>
 <dd><code>description</code> - the value for the <a href="#param-description"><code>description</code></a> record component</dd>
 <dd><code>isNullable</code> - the value for the <a href="#param-isNullable"><code>isNullable</code></a> record component</dd>
+<dd><code>isIdentifier</code> - the value for the <a href="#param-isIdentifier"><code>isIdentifier</code></a> record component</dd>
 </dl>
 </section>
 </li>
@@ -279,6 +288,17 @@ loadScripts(document, 'script');</script>
 <dl class="notes">
 <dt>Returns:</dt>
 <dd>the value of the <a href="#param-isNullable"><code>isNullable</code></a> record component</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="isIdentifier()">
+<h3>isIdentifier</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">boolean</span>&nbsp;<span class="element-name">isIdentifier</span>()</div>
+<div class="block">Returns the value of the <a href="#param-isIdentifier"><code>isIdentifier</code></a> record component.</div>
+<dl class="notes">
+<dt>Returns:</dt>
+<dd>the value of the <a href="#param-isIdentifier"><code>isIdentifier</code></a> record component</dd>
 </dl>
 </section>
 </li>
