@@ -48,14 +48,14 @@ public class LineageLinkerResource
      *  PropertyServerException problem accessing property server
      *  UserNotAuthorizedException security access problem
      */
-    @PostMapping (path = "/elements/{elementOneGUID}/{relationshipTypeName}/{elementTwoGUID}/attach")
+    @PostMapping (path = "/from-elements/{elementOneGUID}/via/{relationshipTypeName}/to-elements/{elementTwoGUID}/attach")
 
     public GUIDResponse linkLineage(@PathVariable String                    serverName,
                                     @PathVariable String                    urlMarker,
                                     @PathVariable String                    elementOneGUID,
                                     @PathVariable String                    relationshipTypeName,
                                     @PathVariable String                    elementTwoGUID,
-                                    @RequestBody NewRelationshipRequestBody requestBody)
+                                    @RequestBody(required = false) NewRelationshipRequestBody requestBody)
     {
         return restAPI.linkLineage(serverName, urlMarker, elementOneGUID, relationshipTypeName, elementTwoGUID, requestBody);
     }
@@ -103,7 +103,7 @@ public class LineageLinkerResource
     public VoidResponse detachLineage(@PathVariable String           serverName,
                                       @PathVariable String           urlMarker,
                                       @PathVariable String           lineageRelationshipGUID,
-                                      @RequestBody DeleteRequestBody requestBody)
+                                      @RequestBody(required = false) DeleteRequestBody requestBody)
     {
         return restAPI.detachLineage(serverName, urlMarker, lineageRelationshipGUID, requestBody);
     }
