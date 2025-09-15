@@ -335,6 +335,7 @@ public class CollectionClient extends ConnectorContextClientBase
         collectionHandler.detachProductManager(connectorUserId, digitalProductGUID, digitalProductManagerGUID, deleteOptions);
     }
 
+
     /**
      * Attach an actor to an agreement.
      *

@@ -14,8 +14,10 @@ import org.odpi.openmetadata.frameworks.openmetadata.properties.ClassificationPr
 import org.odpi.openmetadata.frameworks.openmetadata.properties.RelationshipProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.connections.ConnectorTypeProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.search.*;
+import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
@@ -186,6 +188,25 @@ public class ConnectorTypeClient extends ConnectorContextClientBase
                                                                                                    UserNotAuthorizedException
     {
         return connectorTypeHandler.getConnectorTypesByName(connectorUserId, name, queryOptions);
+    }
+
+
+    /**
+     * Returns the list of connector types with a particular connector provider class name.
+     *
+     * @param name                   name of the connector provider's class name (including package; but without .class)
+     * @param queryOptions multiple options to control the query
+     * @return a list of elements
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public List<OpenMetadataRootElement> getConnectorTypesByConnectorProvider(String       name,
+                                                                              QueryOptions queryOptions) throws InvalidParameterException,
+                                                                                                                PropertyServerException,
+                                                                                                                UserNotAuthorizedException
+    {
+        return connectorTypeHandler.getConnectorTypesByConnectorProvider(connectorUserId, name, queryOptions);
     }
 
 

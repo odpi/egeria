@@ -37,6 +37,7 @@ public interface ReadableTabularDataSource
     /**
      * Locate the named column. A negative number means the column is not present.
      *
+     * @param columnName name of the column to return
      * @return column
      * @throws ConnectorCheckedException problem extracting the column descriptions
      */

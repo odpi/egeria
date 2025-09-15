@@ -3,8 +3,7 @@
 package org.odpi.openmetadata.samples.archiveutilities.productcatalog;
 
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
-import org.odpi.openmetadata.samples.archiveutilities.organization.ScopeDefinition;
-import org.odpi.openmetadata.samples.archiveutilities.sustainability.SustainabilityDomainDefinition;
+import org.odpi.openmetadata.frameworks.openmetadata.refdata.ScopeDefinition;
 
 import java.util.Arrays;
 import java.util.List;
@@ -26,7 +25,7 @@ public enum ProductGovernanceDefinition
                          null,
                          null,
                          ProductDomainDefinition.DIGITAL_PRODUCT_MANAGEMENT.getDomainIdentifier(),
-                         ScopeDefinition.ALL_COCO,
+                         ScopeDefinition.WITHIN_ORGANIZATION,
                          null),
 
 

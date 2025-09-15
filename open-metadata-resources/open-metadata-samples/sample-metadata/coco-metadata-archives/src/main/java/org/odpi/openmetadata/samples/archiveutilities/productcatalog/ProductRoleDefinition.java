@@ -3,7 +3,7 @@
 package org.odpi.openmetadata.samples.archiveutilities.productcatalog;
 
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
-import org.odpi.openmetadata.samples.archiveutilities.businesssystems.ScopeDefinition;
+import org.odpi.openmetadata.frameworks.openmetadata.refdata.ScopeDefinition;
 
 /**
  * The ProductRoleDefinition is used to feed the definition of the actor roles for

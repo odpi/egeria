@@ -13,34 +13,34 @@ import org.odpi.openmetadata.frameworks.openwatchdog.controls.WatchdogActionTarg
 
 
 /**
- * OpenMetadataNotificationServiceProvider is the OCF connector provider for the Open Metadata Subscription Manager Service.
+ * PeriodicRefreshNotificationServiceProvider is the OCF connector provider for the PeriodicRefreshNotificationService.
  * This is a WatchDog Action Service.
  */
-public class OpenMetadataNotificationServiceProvider extends WatchdogActionServiceProvider
+public class PeriodicRefreshNotificationServiceProvider extends WatchdogActionServiceProvider
 {
     /*
      * Unique identifier of the connector for the audit log.
      */
-    private static final int    connectorComponentId       = 704;
-    private static final String connectorTypeGUID          = "2d69894c-ebbf-4f9b-b57a-cc2ac05fdc29";
-    private static final String connectorTypeQualifiedName = "Egeria:GovernanceService:Watchdog:OpenMetadataNotificationService";
+    private static final int    connectorComponentId       = 707;
+    private static final String connectorTypeGUID          = "fcce903b-8e60-4d1e-969c-2802e0195b34";
+    private static final String connectorTypeQualifiedName = "Egeria:GovernanceService:Watchdog:PeriodicRefreshNotificationService";
     private static final String connectorTypeDisplayName   = "Open Metadata Watchdog Service";
-    private static final String connectorTypeDescription   = "A Watchdog Action Service that detects changes to elements linked to a notification type.  When changed occur, all subscribers to the notification type are informed.";
+    private static final String connectorTypeDescription   = "A Watchdog Action Service that notifies all subscribers on a regular periodic basis.  The default is daily.";
     private static final String connectorWikiPage          = "https://egeria-project.org/connectors/watchdog/open-metadata-notification-service/";
 
     /*
      * This is the name of the connector that this provider will create
      */
-    private static final String connectorClassName = OpenMetadataNotificationService.class.getName();
+    private static final String connectorClassName = PeriodicRefreshNotificationService.class.getName();
 
 
-    public OpenMetadataNotificationServiceProvider()
+    public PeriodicRefreshNotificationServiceProvider()
     {
         super();
         super.setConnectorClassName(connectorClassName);
 
         supportedRequestTypes = null;
-        supportedRequestParameters = null;
+        supportedRequestParameters = PeriodicRefreshRequestParameter.getRequestParameterTypes();
         supportedActionTargetTypes = WatchdogActionTarget.getNotificationActionTargetTypes();
         producedGuards = GenericWatchdogGuard.getGuardTypes();
 

@@ -204,51 +204,6 @@ public class CocoClinicalTrialBaseService extends GeneralGovernanceActionService
 
 
     /**
-     * Create the governance action process asset.
-     *
-     * @param processQualifiedName new qualified name for the process
-     * @param processName new name for the process
-     * @param processDescription new description for the process
-     * @param topLevelProjectGUID unique identifier for the top level project - used as a search scope
-     * @return unique identifier of new governance action process
-     * @throws InvalidParameterException parameter error
-     * @throws PropertyServerException repository error
-     * @throws UserNotAuthorizedException authorization error
-     */
-    protected String createGovernanceActionProcess(String processQualifiedName,
-                                                   String processName,
-                                                   String processDescription,
-                                                   String topLevelProjectGUID) throws InvalidParameterException,
-                                                                                      PropertyServerException,
-                                                                                      UserNotAuthorizedException
-    {
-        ElementProperties processProperties = propertyHelper.addStringProperty(null,
-                                                                               OpenMetadataProperty.QUALIFIED_NAME.name,
-                                                                               processQualifiedName);
-
-        processProperties = propertyHelper.addStringProperty(processProperties,
-                                                             OpenMetadataProperty.DISPLAY_NAME.name,
-                                                             processName);
-
-        processProperties = propertyHelper.addStringProperty(processProperties,
-                                                             OpenMetadataProperty.DESCRIPTION.name,
-                                                             processDescription);
-
-        return governanceContext.getOpenMetadataStore().createMetadataElementInStore(OpenMetadataType.GOVERNANCE_ACTION_PROCESS.typeName,
-                                                                                     ElementStatus.ACTIVE,
-                                                                                     null,
-                                                                                     null,
-                                                                                     true,
-                                                                                     topLevelProjectGUID,
-                                                                                     new NewElementProperties(processProperties),
-                                                                                     null,
-                                                                                     null,
-                                                                                     null,
-                                                                                     false);
-    }
-
-
-    /**
      * Set up the ImplementedBy relationship between an implementation component and a solution component.
      * The information supply chain qualified names ensures that the appropriate assets are returned
      * on a specific ISC lineage query.

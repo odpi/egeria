@@ -54,8 +54,8 @@ public class CocoArchivesWriter
             CocoGovernanceEnginesArchiveWriter governanceEnginesArchiveWriter = new CocoGovernanceEnginesArchiveWriter();
             governanceEnginesArchiveWriter.writeOpenMetadataArchive(folderName);
 
-            CocoProductCatalogArchiveWriter cocoProductCatalogArchiveWriter = new CocoProductCatalogArchiveWriter();
-            cocoProductCatalogArchiveWriter.writeOpenMetadataArchive(folderName);
+            // todo CocoProductCatalogArchiveWriter cocoProductCatalogArchiveWriter = new CocoProductCatalogArchiveWriter();
+            // todo cocoProductCatalogArchiveWriter.writeOpenMetadataArchive(folderName);
         }
         catch (Exception error)
         {

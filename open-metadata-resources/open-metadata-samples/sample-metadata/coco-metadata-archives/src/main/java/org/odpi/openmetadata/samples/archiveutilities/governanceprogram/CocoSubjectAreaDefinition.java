@@ -3,7 +3,7 @@
 package org.odpi.openmetadata.samples.archiveutilities.governanceprogram;
 
 
-import org.odpi.openmetadata.samples.archiveutilities.organization.ScopeDefinition;
+import org.odpi.openmetadata.frameworks.openmetadata.refdata.ScopeDefinition;
 
 /**
  * The CocoSubjectAreaDefinition is used to feed the definition of the subject areas for Coco Pharmaceuticals.
@@ -17,7 +17,7 @@ public enum CocoSubjectAreaDefinition
                     null,
                     "Organization",
                     "Information relating to an organization.",
-                    ScopeDefinition.ALL_COCO.getPreferredValue(),
+                    ScopeDefinition.WITHIN_ORGANIZATION.getPreferredValue(),
                     "Controlling data management relating to different types of organizational structures and catalogues.",
                     GovernanceDomainDefinition.ALL.getDomainIdentifier()),
 
@@ -28,7 +28,7 @@ public enum CocoSubjectAreaDefinition
                     CocoSubjectAreaDefinition.ORGANIZATION,
                     "Hospital",
                     "Information relating to a hospital's organization.",
-                    ScopeDefinition.ALL_COCO.getPreferredValue(),
+                    ScopeDefinition.WITHIN_ORGANIZATION.getPreferredValue(),
                     "Controlling data management relating to different types of hospital organizational structures and catalogues.",
                     GovernanceDomainDefinition.ALL.getDomainIdentifier()),
 
@@ -39,7 +39,7 @@ public enum CocoSubjectAreaDefinition
                     CocoSubjectAreaDefinition.ORGANIZATION,
                     "Supplier",
                     "Information relating to a supplier's organization.",
-                    ScopeDefinition.ALL_COCO.getPreferredValue(),
+                    ScopeDefinition.WITHIN_ORGANIZATION.getPreferredValue(),
                     "Controlling data management relating to different types of supplier organizational structures and catalogues.",
                     GovernanceDomainDefinition.ALL.getDomainIdentifier()),
 
@@ -50,7 +50,7 @@ public enum CocoSubjectAreaDefinition
                     null,
                     "Person",
                     "Information relating to an individual.",
-                    ScopeDefinition.ALL_COCO.getPreferredValue(),
+                    ScopeDefinition.WITHIN_ORGANIZATION.getPreferredValue(),
                     "Controlling data management relating to information that describes an individual.",
                     GovernanceDomainDefinition.ALL.getDomainIdentifier()),
 
@@ -61,7 +61,7 @@ public enum CocoSubjectAreaDefinition
                      CocoSubjectAreaDefinition.PERSON,
                     "Patient",
                     "Information relating to an individual patient.",
-                     ScopeDefinition.ALL_COCO.getPreferredValue(),
+                     ScopeDefinition.WITHIN_ORGANIZATION.getPreferredValue(),
                     "Controlling data management relating to information that describes an individual patient.",
                      GovernanceDomainDefinition.ALL.getDomainIdentifier()),
 
@@ -72,7 +72,7 @@ public enum CocoSubjectAreaDefinition
                     CocoSubjectAreaDefinition.PERSON,
                     "Clinician",
                     "Information relating to an individual who works with patients.",
-                       ScopeDefinition.ALL_COCO.getPreferredValue(),
+                       ScopeDefinition.WITHIN_ORGANIZATION.getPreferredValue(),
                     "Controlling data management relating to information that describes an individual working with patients.",
                        GovernanceDomainDefinition.ALL.getDomainIdentifier()),
 
@@ -83,7 +83,7 @@ public enum CocoSubjectAreaDefinition
                     CocoSubjectAreaDefinition.PERSON,
                     "Employee",
                     "Information relating to an individual who is employed by an organization.",
-                    ScopeDefinition.ALL_COCO.getPreferredValue(),
+                    ScopeDefinition.WITHIN_ORGANIZATION.getPreferredValue(),
                     "Controlling data management relating to information that describes an employee.",
                     GovernanceDomainDefinition.ALL.getDomainIdentifier()),
 
@@ -94,7 +94,7 @@ public enum CocoSubjectAreaDefinition
                     CocoSubjectAreaDefinition.PERSON,
                     "Collaborator",
                     "Information relating to an individual who works for a business partner.",
-                    ScopeDefinition.ALL_COCO.getPreferredValue(),
+                    ScopeDefinition.WITHIN_ORGANIZATION.getPreferredValue(),
                     "Controlling data management relating to information that describes an individuals who are business partners.",
                     GovernanceDomainDefinition.ALL.getDomainIdentifier()),
 

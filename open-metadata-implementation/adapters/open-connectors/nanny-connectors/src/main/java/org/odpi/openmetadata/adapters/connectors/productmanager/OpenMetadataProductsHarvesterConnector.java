@@ -5,26 +5,52 @@ package org.odpi.openmetadata.adapters.connectors.productmanager;
 
 import org.odpi.openmetadata.adapters.connectors.productmanager.ffdc.ProductManagerAuditCode;
 import org.odpi.openmetadata.adapters.connectors.productmanager.ffdc.ProductManagerErrorCode;
+import org.odpi.openmetadata.adapters.connectors.productmanager.productcatalog.*;
 import org.odpi.openmetadata.adapters.connectors.productmanager.solutionblueprint.*;
 import org.odpi.openmetadata.adapters.connectors.referencedata.tabulardatasets.ValidValueSetListConnector;
+import org.odpi.openmetadata.adapters.connectors.referencedata.tabulardatasets.controls.ReferenceDataConfigurationProperty;
 import org.odpi.openmetadata.frameworks.connectors.Connector;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
 import org.odpi.openmetadata.frameworks.integration.connectors.CatalogTargetIntegrator;
 import org.odpi.openmetadata.frameworks.integration.connectors.IntegrationConnectorBase;
 import org.odpi.openmetadata.frameworks.integration.context.CatalogTargetContext;
 import org.odpi.openmetadata.frameworks.integration.properties.RequestedCatalogTarget;
+import org.odpi.openmetadata.frameworks.opengovernance.connectorcontext.ConnectorConfigClient;
 import org.odpi.openmetadata.frameworks.opengovernance.properties.CatalogTarget;
-import org.odpi.openmetadata.frameworks.openmetadata.connectorcontext.ActorRoleClient;
-import org.odpi.openmetadata.frameworks.openmetadata.connectorcontext.SolutionBlueprintClient;
-import org.odpi.openmetadata.frameworks.openmetadata.connectorcontext.SolutionComponentClient;
+import org.odpi.openmetadata.frameworks.openmetadata.connectorcontext.*;
+import org.odpi.openmetadata.frameworks.openmetadata.enums.DeleteMethod;
+import org.odpi.openmetadata.frameworks.openmetadata.enums.ElementStatus;
+import org.odpi.openmetadata.frameworks.openmetadata.enums.PermittedSynchronization;
+import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
+import org.odpi.openmetadata.frameworks.openmetadata.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.OpenMetadataRootElement;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.*;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.actors.SolutionActorRoleProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.processes.connectors.CatalogTargetProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.referencedata.ReferenceDataSetProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.collections.CollectionProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.communities.CommunityProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.connections.ConnectionProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.connections.ConnectorTypeProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.connections.EndpointProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.datadictionaries.DataFieldProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.datadictionaries.DataSpecProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.datadictionaries.DataStructureProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.datadictionaries.MemberDataFieldProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.digitalbusiness.DigitalProductProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.glossaries.GlossaryTermProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.governance.GovernanceDefinitionProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.governance.GovernedByProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.governance.PeerDefinitionProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.governance.SupportingDefinitionProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.solutions.SolutionBlueprintProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.solutions.SolutionComponentActorProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.solutions.SolutionComponentProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.solutions.SolutionLinkingWireProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.search.ElementProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.search.NewElementOptions;
+import org.odpi.openmetadata.frameworks.openmetadata.search.NewElementProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 
@@ -35,19 +61,42 @@ import java.util.Map;
 
 /**
  * OpenMetadataProductsHarvesterConnector converts metadata from the open metadata ecosystem into useful digital
- * products.
+ * products.  The first phase (in the start() method) is to create all of the contextual metadata that surrounds the
+ * product catalog.  The remaining phases happen in the refresh() method.  It first surveys open metadata looking for
+ * metadata that could be a product.  (For example, a valid value set).  It creates an entry in the product catalog
+ * for that product and registers the tabular data set asset for the product as a catalog target.
+ * <br><br>
+ * Once the possible products are in place, it processes the catalog targets.  For each, the appropriate metadata
+ * is scanned for changes.  These changes are recorded in the asset's GovernanceMeasurement classification.
+ * This triggers the notification watchdog to send the new data to the subscribers via the provisioning pipelines.
  */
 public class OpenMetadataProductsHarvesterConnector extends IntegrationConnectorBase implements CatalogTargetIntegrator
 {
     private static final String validValueSetListCatalogTargetName = "ValidValueSetList";
 
-    private String solutionBlueprintGUID = null;
-    private Map<String, String> productFolders = new HashMap<>();
+    /*
+     * Set everything to null to catch issue where refresh() is called without start() since
+     * It will result in NPEs.  This is not expected.
+     */
+    private String              solutionBlueprintGUID = null;
+    private String              anchorScopeGUID       = null;
+    private Map<String, String> productFolders        = null;
+    private Map<String, String> governanceDefinitions = null;
+    private Map<String, String> glossaryTerms         = null;
+    private Map<String, String> communities           = null;
+    private Map<String, String> dataFields            = null;
+    private Map<String, String> products              = null;
 
 
     /**
      * Indicates that the connector is completely configured and can begin processing.
-     * This call can be used to register with non-blocking services.
+     * It sets up the contextual metadata used to fill out the product catalog.
+     * This includes the solution blueprint that covers the components involved in managing
+     * the open metadata product catalog.  Then there is the product catalog itself with its
+     * internal folders, glossary and data dictionary.  The glossary is then populated
+     * with glossary terms, and the data dictionary is populated with data fields.
+     * The guids for these elements are managed in instance variables to allow the products
+     * to link to them.
      *
      * @throws ConnectorCheckedException there is a problem within the connector.
      */
@@ -56,8 +105,43 @@ public class OpenMetadataProductsHarvesterConnector extends IntegrationConnector
     {
         super.start();
 
-        solutionBlueprintGUID = this.getSolutionBlueprint();
-        productFolders = this.getProductCatalogFolders();
+        final String methodName = "start";
+
+        try
+        {
+            /*
+             * These governance definitions support the product catalog initiative.
+             * They are linked to the product catalog.
+             */
+            governanceDefinitions = this.getGovernanceDefinitions();
+
+            /*
+             * The product folders are set up first so that the top level folder for the product catalog can be
+             * the anchor scope for every thing else.
+             */
+            productFolders        = this.getProductCatalogFolders();
+            solutionBlueprintGUID = this.getSolutionBlueprint();
+            glossaryTerms         = this.getGlossaryTerms();
+            communities           = this.getCommunities();
+            dataFields            = this.getDataFields();
+            products              = this.getProducts();
+        }
+        catch (Exception error)
+        {
+            auditLog.logMessage(methodName,
+                                ProductManagerAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(connectorName,
+                                                                                                  error.getClass().getName(),
+                                                                                                  methodName,
+                                                                                                  error.getMessage()));
+
+            throw new ConnectorCheckedException(ProductManagerErrorCode.UNEXPECTED_EXCEPTION.getMessageDefinition(connectorName,
+                                                                                                                  error.getClass().getName(),
+                                                                                                                  methodName,
+                                                                                                                  error.getMessage()),
+                                                this.getClass().getName(),
+                                                methodName,
+                                                error);
+        }
     }
 
 
@@ -110,7 +194,7 @@ public class OpenMetadataProductsHarvesterConnector extends IntegrationConnector
         Connector connectorToTarget;
         if (validValueSetList == null)
         {
-            connectorToTarget = createValidValueSetList();
+            connectorToTarget = createValidValueSetListConnector();
         }
         else
         {
@@ -144,12 +228,11 @@ public class OpenMetadataProductsHarvesterConnector extends IntegrationConnector
 
 
     /**
-     * This function creates the product catalog entry for the valid value set list, plus registers the tabular
-     * data set asset as a catalog target for this integration connector.
+     * This function creates a connector to the valid value set list asset.
      *
-     * @return the connector for the tabular data set that
+     * @return the connector for the tabular data set that has been registered
      */
-    private Connector createValidValueSetList()
+    private Connector createValidValueSetListConnector()
     {
         // todo
         return null;
@@ -157,6 +240,447 @@ public class OpenMetadataProductsHarvesterConnector extends IntegrationConnector
 
 
     private void createValidValueDataSet(String qualifiedName)
+    {
+        // todo
+    }
+
+
+
+    /**
+     * Return the map of qualifiedNames-to-guids for the pre-defined products that make up the
+     * fixed part of the product catalog.
+     *
+     * @return map
+     * @throws InvalidParameterException invalid parameter passed - probably a bug in this code
+     * @throws PropertyServerException repository is probably down
+     * @throws UserNotAuthorizedException connector's userId not defined to open metadata, or the connector has
+     * been disconnected.
+     */
+    private Map<String, String> getProducts() throws InvalidParameterException,
+                                                     PropertyServerException,
+                                                     UserNotAuthorizedException
+    {
+        Map<String, String> productMap = new HashMap<>();
+
+        for (ProductDefinition productDefinition : ProductDefinition.values())
+        {
+            String productGUID = this.getProduct(productDefinition);
+
+            productMap.put(productDefinition.getQualifiedName(), productGUID);
+        }
+
+        return productMap;
+    }
+
+
+    /**
+     * Return the unique identifier of a product, either by retrieving it form the open metadata
+     * repository or by creating the product.
+     *
+     * @param productDefinition description of the product
+     * @return unique identifier
+     * @throws InvalidParameterException invalid parameter passed - probably a bug in this code
+     * @throws PropertyServerException repository is probably down
+     * @throws UserNotAuthorizedException connector's userId not defined to open metadata, or the connector has
+     * been disconnected.
+     */
+    private String getProduct(ProductDefinition productDefinition) throws InvalidParameterException,
+                                                                          PropertyServerException,
+                                                                          UserNotAuthorizedException
+    {
+        CollectionClient        collectionClient        = integrationContext.getCollectionClient(OpenMetadataType.DIGITAL_PRODUCT.typeName);
+        SolutionBlueprintClient solutionBlueprintClient = integrationContext.getSolutionBlueprintClient();
+
+        /*
+         * If the product is already present then return its GUID
+         */
+        List<OpenMetadataRootElement> existingProducts = collectionClient.findCollections(productDefinition.getQualifiedName(), null);
+
+        if (existingProducts != null)
+        {
+            for (OpenMetadataRootElement existingProduct : existingProducts)
+            {
+                if (existingProduct != null)
+                {
+                    return existingProduct.getElementHeader().getGUID();
+                }
+            }
+        }
+
+        /*
+         * First time, so the product needs to be created, along with its subscription options,
+         * solution blueprint, data spec, notification type and asset.  The asset needs to be
+         * registered as a catalog target.
+         */
+        DigitalProductProperties digitalProductProperties = new DigitalProductProperties();
+
+        digitalProductProperties.setQualifiedName(productDefinition.getQualifiedName());
+        digitalProductProperties.setDisplayName(productDefinition.getDisplayName());
+        digitalProductProperties.setDescription(productDefinition.getDescription());
+        digitalProductProperties.setVersionIdentifier(productDefinition.getVersionIdentifier());
+        digitalProductProperties.setCategory(productDefinition.getCategory());
+
+        NewElementOptions newElementOptions = new NewElementOptions(collectionClient.getMetadataSourceOptions());
+
+        newElementOptions.setIsOwnAnchor(true);
+        newElementOptions.setAnchorScopeGUID(this.anchorScopeGUID);
+
+        if (productDefinition.getParent() != null)
+        {
+            newElementOptions.setParentAtEnd1(true);
+            newElementOptions.setParentGUID(productFolders.get(productDefinition.getParent().getQualifiedName()));
+            newElementOptions.setParentRelationshipTypeName(OpenMetadataType.COLLECTION_MEMBERSHIP_RELATIONSHIP.typeName);
+        }
+
+        String productGUID = collectionClient.createCollection(newElementOptions,
+                                                               null,
+                                                               digitalProductProperties,
+                                                               null);
+
+        /*
+         * All of the digital products use the same solution design
+         */
+        solutionBlueprintClient.linkSolutionDesign(productGUID,
+                                                   solutionBlueprintGUID,
+                                                   solutionBlueprintClient.getMetadataSourceOptions(),
+                                                   null);
+
+        /*
+         * Link in the license type to the product to show what type of license is granted to the subscriber.
+         */
+        String licenseTypeGUID = null;
+        if (productDefinition.getLicense() != null)
+        {
+            licenseTypeGUID = governanceDefinitions.get(productDefinition.getLicense().getQualifiedName());
+
+            GovernanceDefinitionClient governanceDefinitionClient = integrationContext.getGovernanceDefinitionClient();
+
+            GovernedByProperties governedByProperties = new GovernedByProperties();
+            governedByProperties.setLabel("subscriber's license");
+            governedByProperties.setDescription("This is the license that a subscriber's asset will be given to access the product data.");
+            governanceDefinitionClient.addGovernanceDefinitionToElement(productGUID, licenseTypeGUID, governanceDefinitionClient.getMetadataSourceOptions(), governedByProperties);
+        }
+
+        /*
+         * Link the community to the product
+         */
+        String communityGUID = null;
+        if (productDefinition.getCommunity() != null)
+        {
+            communityGUID = communities.get(productDefinition.getCommunity().getQualifiedName());
+
+            collectionClient.addToCollection(productGUID,
+                                             communityGUID,
+                                             collectionClient.getMetadataSourceOptions(),
+                                             null);
+        }
+
+        /*
+         * The data specification lists all of the data fields for this product.
+         */
+        this.addDataSpec(productDefinition, productGUID);
+
+        /*
+         * This asset has a connector to a connector that is able to mine open metadata to create a particular product.
+         */
+        String productAssetGUID = this.addProductAsset(productDefinition, productGUID);
+
+        /*
+         * The subscription options show up as governance action processes that are configured with the appropriate
+         * information.
+         */
+        this.addSubscriptionTypes(productDefinition, productGUID, productAssetGUID, licenseTypeGUID, communityGUID);
+
+        this.activateNotificationWatchdog(productDefinition, productGUID, productAssetGUID);
+
+        ConnectorConfigClient connectorConfigClient = integrationContext.getConnectorConfigClient();
+
+        CatalogTargetProperties catalogTargetProperties = new CatalogTargetProperties();
+
+        catalogTargetProperties.setCatalogTargetName(productDefinition.getCatalogTargetName());
+        catalogTargetProperties.setConnectionName(productDefinition.getProductName());
+        catalogTargetProperties.setPermittedSynchronization(PermittedSynchronization.BOTH_DIRECTIONS);
+        catalogTargetProperties.setDeleteMethod(DeleteMethod.LOOK_FOR_LINEAGE);
+
+        connectorConfigClient.addCatalogTarget(integrationContext.getIntegrationConnectorGUID(),
+                                               productAssetGUID,
+                                               catalogTargetProperties);
+
+        return productGUID;
+    }
+
+
+    /**
+     * Set up a product's data spec.
+     *
+     * @param productDefinition description of product
+     * @param productGUID unique identifier of the product
+     *
+     * @throws InvalidParameterException invalid parameter passed - probably a bug in this code
+     * @throws PropertyServerException repository is probably down
+     * @throws UserNotAuthorizedException connector's userId not defined to open metadata, or the connector has
+     * been disconnected.
+     */
+    private void addDataSpec(ProductDefinition productDefinition,
+                             String            productGUID) throws InvalidParameterException,
+                                                                   PropertyServerException,
+                                                                   UserNotAuthorizedException
+    {
+        List<ProductDataFieldDefinition> dataFieldDefinitions = productDefinition.getDataSpec();
+
+        if (dataFieldDefinitions != null)
+        {
+            DataSpecProperties dataSpecProperties = new DataSpecProperties();
+
+            dataSpecProperties.setQualifiedName(productDefinition.getQualifiedName() + "_dataSpec");
+            dataSpecProperties.setDisplayName("Data Specification for " + productDefinition.getDisplayName());
+            dataSpecProperties.setDescription("The data specification lists the fields in the " + productDefinition.getProductName() + " product.");
+            dataSpecProperties.setVersionIdentifier(productDefinition.getVersionIdentifier());
+
+            CollectionClient    collectionClient    = integrationContext.getCollectionClient(OpenMetadataType.DATA_SPEC_COLLECTION.typeName);
+            DataStructureClient dataStructureClient = integrationContext.getDataStructureClient();
+
+            NewElementOptions newElementOptions = new NewElementOptions(collectionClient.getMetadataSourceOptions());
+
+            newElementOptions.setIsOwnAnchor(false);
+            newElementOptions.setAnchorScopeGUID(this.anchorScopeGUID);
+            newElementOptions.setAnchorGUID(productGUID);
+            newElementOptions.setParentAtEnd1(true);
+            newElementOptions.setParentGUID(productGUID);
+            newElementOptions.setParentRelationshipTypeName(OpenMetadataType.COLLECTION_MEMBERSHIP_RELATIONSHIP.typeName);
+
+            String dataSpecGUID = collectionClient.createCollection(newElementOptions,
+                                                                    null,
+                                                                    dataSpecProperties,
+                                                                    null);
+
+            DataStructureProperties dataStructureProperties = new DataStructureProperties();
+
+            dataStructureProperties.setQualifiedName(productDefinition.getQualifiedName() + "_dataSpec.dataStructure");
+            dataStructureProperties.setDisplayName("Data Structure for " + productDefinition.getDisplayName());
+            dataStructureProperties.setDescription("The data structure lists the fields in the " + productDefinition.getProductName() + " product.");
+            dataStructureProperties.setVersionIdentifier(productDefinition.getVersionIdentifier());
+
+            newElementOptions.setParentGUID(dataSpecGUID);
+
+            String dataStructureGUID = dataStructureClient.createDataStructure(newElementOptions,
+                                                                               null,
+                                                                               dataStructureProperties,
+                                                                               null);
+
+            int fieldPosition = 1;
+
+            for (ProductDataFieldDefinition dataField : dataFieldDefinitions)
+            {
+                String dataFieldGUID = dataFields.get(dataField.getQualifiedName());
+
+                MemberDataFieldProperties memberDataFieldProperties = new MemberDataFieldProperties();
+
+                memberDataFieldProperties.setPosition(fieldPosition);
+                fieldPosition ++;
+
+                dataStructureClient.linkMemberDataField(dataStructureGUID,
+                                                        dataFieldGUID,
+                                                        dataStructureClient.getMetadataSourceOptions(),
+                                                        memberDataFieldProperties);
+            }
+        }
+    }
+
+
+    /**
+     * Set up a product's subscription types.  Each are governance action processes configured with an appropriate
+     * subscription template.  When the governance action process runs, it creates the subscription for the requesting
+     * actor.
+     *
+     * @param productDefinition description of product
+     * @param productGUID unique identifier of the product
+     * @param productAssetGUID unique identifier for the asset that represents the product
+     * @param licenseTypeGUID unique identifier of the licence that will be granted to the subscriber's asset
+     * @param communityGUID
+     *
+     * @throws InvalidParameterException invalid parameter passed - probably a bug in this code
+     * @throws PropertyServerException repository is probably down
+     * @throws UserNotAuthorizedException connector's userId not defined to open metadata, or the connector has
+     * been disconnected.
+     */
+    private void addSubscriptionTypes(ProductDefinition productDefinition,
+                                      String            productGUID,
+                                      String            productAssetGUID,
+                                      String            licenseTypeGUID,
+                                      String            communityGUID) throws InvalidParameterException,
+                                                                              PropertyServerException,
+                                                                              UserNotAuthorizedException
+    {
+    }
+
+
+    /**
+     * Set up a product's data spec.
+     *
+     * @param productDefinition description of product
+     * @param productGUID unique identifier of the product
+     *
+     * @throws InvalidParameterException invalid parameter passed - probably a bug in this code
+     * @throws PropertyServerException repository is probably down
+     * @throws UserNotAuthorizedException connector's userId not defined to open metadata, or the connector has
+     * been disconnected.
+     */
+    private String addProductAsset(ProductDefinition productDefinition,
+                                   String            productGUID) throws InvalidParameterException,
+                                                                         PropertyServerException,
+                                                                         UserNotAuthorizedException
+    {
+        AssetClient assetClient = integrationContext.getAssetClient(OpenMetadataType.REFERENCE_DATA_SET.typeName);
+
+        ReferenceDataSetProperties dataSetProperties = new ReferenceDataSetProperties();
+
+        dataSetProperties.setQualifiedName(productDefinition.getQualifiedName() + "_referenceDataSet");
+        dataSetProperties.setDisplayName("Reference data set for " + productDefinition.getDisplayName());
+        dataSetProperties.setDescription("This asset represents the source of data for the digital product.");
+        dataSetProperties.setVersionIdentifier(productDefinition.getVersionIdentifier());
+
+        NewElementOptions newElementOptions = new NewElementOptions(assetClient.getMetadataSourceOptions());
+
+        newElementOptions.setIsOwnAnchor(false);
+        newElementOptions.setAnchorGUID(productGUID);
+        newElementOptions.setParentAtEnd1(true);
+        newElementOptions.setParentGUID(productGUID);
+        newElementOptions.setParentRelationshipTypeName(OpenMetadataType.COLLECTION_MEMBERSHIP_RELATIONSHIP.typeName);
+
+        Map<String, ClassificationProperties> initialClassifications = new HashMap<>();
+        initialClassifications.put(OpenMetadataType.GOVERNANCE_MEASUREMENTS_CLASSIFICATION.typeName, null);
+
+        String assetGUID = assetClient.createAsset(newElementOptions,
+                                                   initialClassifications,
+                                                   dataSetProperties,
+                                                   null);
+
+        String connectorTypeGUID = this.getConnectorTypeGUID(productDefinition.getConnectorProviderClassName());
+
+        if (connectorTypeGUID != null)
+        {
+            /*
+             * Set up the connection for the asset.
+             */
+            ConnectionClient connectionClient = integrationContext.getConnectionClient();
+
+            ConnectionProperties connectionProperties = new ConnectionProperties();
+
+            connectionProperties.setQualifiedName(productDefinition.getQualifiedName() + "_referenceDataSet_connection");
+            connectionProperties.setDisplayName("Asset Connection for " + productDefinition.getDisplayName());
+            connectionProperties.setDescription("This connection provides access to the metadata access server that supplied the data for this digital product.");
+            connectionProperties.setVersionIdentifier(productDefinition.getVersionIdentifier());
+            connectionProperties.setUserId(integrationContext.getMyUserId());
+
+            Map<String, Object> connectionConfigurationProperties = new HashMap<>();
+            connectionConfigurationProperties.put(ReferenceDataConfigurationProperty.SERVER_NAME.getName(), integrationContext.getMetadataAccessServer());
+            connectionConfigurationProperties.put(ReferenceDataConfigurationProperty.MAX_PAGE_SIZE.getName(), integrationContext.getMaxPageSize());
+            connectionProperties.setConfigurationProperties(connectionConfigurationProperties);
+
+            newElementOptions.setParentAtEnd1(true);
+            newElementOptions.setParentGUID(assetGUID);
+            newElementOptions.setParentRelationshipTypeName(OpenMetadataType.ASSET_CONNECTION_RELATIONSHIP.typeName);
+
+            String connectionGUID = connectionClient.createConnection(newElementOptions,
+                                                                      null,
+                                                                      connectionProperties,
+                                                                      null);
+
+            /*
+             * Connect the connection to the connectorType
+             */
+            connectionClient.linkConnectionConnectorType(connectionGUID,
+                                                         connectorTypeGUID,
+                                                         connectionClient.getMetadataSourceOptions(),
+                                                         null);
+
+            /*
+             * Create an endpoint to carry the URL of the platform needed to connect to the metadata store.
+             */
+            EndpointProperties endpointProperties = new EndpointProperties();
+
+            endpointProperties.setQualifiedName(productDefinition.getQualifiedName() + "_referenceDataSet_endpoint");
+            endpointProperties.setDisplayName("Reference data set for " + productDefinition.getDisplayName());
+            endpointProperties.setDescription("This endpoint represents the URL of the OMAG Server Platform that hosts the metadata access store.");
+            endpointProperties.setVersionIdentifier(productDefinition.getVersionIdentifier());
+            endpointProperties.setNetworkAddress(integrationContext.getMetadataAccessServerPlatformURLRoot());
+
+            newElementOptions.setParentGUID(connectionGUID);
+            newElementOptions.setParentRelationshipTypeName(OpenMetadataType.CONNECT_TO_ENDPOINT_RELATIONSHIP.typeName);
+
+            EndpointClient endpointClient = integrationContext.getEndpointClient();
+
+            endpointClient.createEndpoint(newElementOptions, null, endpointProperties, null);
+        }
+
+
+        return assetGUID;
+    }
+
+
+    /**
+     * Return the unique identifier for an asset's connector type.
+     *
+     * @param connectorProviderClassName name of the connector provider's class
+     * @return unique identifier of the connector type
+     * @throws InvalidParameterException invalid parameter passed - probably a bug in this code
+     * @throws PropertyServerException repository is probably down
+     * @throws UserNotAuthorizedException connector's userId not defined to open metadata, or the connector has
+     * been disconnected.
+     */
+    private String getConnectorTypeGUID(String connectorProviderClassName) throws InvalidParameterException,
+                                                                                  PropertyServerException,
+                                                                                  UserNotAuthorizedException
+    {
+        ConnectorTypeClient connectorTypeClient = integrationContext.getConnectorTypeClient();
+
+        String connectorTypeGUID = null;
+
+        if (connectorProviderClassName != null)
+        {
+            List<OpenMetadataRootElement> existingConnectorTypes = connectorTypeClient.getConnectorTypesByConnectorProvider(connectorProviderClassName, null);
+
+            if (existingConnectorTypes != null)
+            {
+                for (OpenMetadataRootElement connectorType : existingConnectorTypes)
+                {
+                    if (connectorType != null)
+                    {
+                        connectorTypeGUID = connectorType.getElementHeader().getGUID();
+                        break;
+                    }
+                }
+            }
+        }
+
+        if (connectorTypeGUID == null)
+        {
+            ConnectorTypeProperties connectorTypeProperties = new ConnectorTypeProperties();
+
+            // todo create the class and set up the properties
+        }
+
+        return connectorTypeGUID;
+    }
+
+
+    /**
+     * Set up the notification watchdog.
+     *
+     * @param productDefinition description of product
+     * @param productGUID unique identifier of the product
+     *
+     * @throws InvalidParameterException invalid parameter passed - probably a bug in this code
+     * @throws PropertyServerException repository is probably down
+     * @throws UserNotAuthorizedException connector's userId not defined to open metadata, or the connector has
+     * been disconnected.
+     */
+    private void activateNotificationWatchdog(ProductDefinition productDefinition,
+                                              String            productGUID,
+                                              String            assetGUID) throws InvalidParameterException,
+                                                                                  PropertyServerException,
+                                                                                  UserNotAuthorizedException
     {
         // todo
     }
@@ -178,10 +702,559 @@ public class OpenMetadataProductsHarvesterConnector extends IntegrationConnector
     }
 
 
-    private Map<String, String> getProductCatalogFolders()
+    /**
+     * Return the map of qualifiedNames-to-guids for the nested collections that make up the
+     * Structure of the product catalog.
+     *
+     * @return map
+     * @throws InvalidParameterException invalid parameter passed - probably a bug in this code
+     * @throws PropertyServerException repository is probably down
+     * @throws UserNotAuthorizedException connector's userId not defined to open metadata, or the connector has
+     * been disconnected.
+     */
+    private Map<String, String> getProductCatalogFolders() throws InvalidParameterException,
+                                                                  PropertyServerException,
+                                                                  UserNotAuthorizedException
     {
-        // todo
-        return null;
+        /*
+         * The top level folder needs to be created first so that its guid can be the
+         * anchor scope for everything else.
+         */
+        String topLevelGUID = getProductFolder(ProductFolderDefinition.TOP_LEVEL);
+
+        Map<String, String> productFolders = new HashMap<>();
+
+        productFolders.put(ProductFolderDefinition.TOP_LEVEL.getQualifiedName(), topLevelGUID);
+        this.anchorScopeGUID = topLevelGUID;
+
+        /*
+         * Link the governance definitions to the product catalog ...
+         */
+        ClassificationManagerClient classificationManagerClient = integrationContext.getClassificationManagerClient();
+
+        classificationManagerClient.addMoreInformationToElement(topLevelGUID,
+                                                                governanceDefinitions.get(ProductGovernanceDefinition.DIGITAL_PRODUCT_CATALOG.getQualifiedName()),
+                                                                classificationManagerClient.getMetadataSourceOptions(),
+                                                                null);
+
+        /*
+         * Now set up all of the other folders.
+         */
+        for (ProductFolderDefinition productFolderDefinition : ProductFolderDefinition.values())
+        {
+            if (productFolderDefinition != ProductFolderDefinition.TOP_LEVEL)
+            {
+                String productFolderGUID = this.getProductFolder(productFolderDefinition);
+
+                productFolders.put(productFolderDefinition.getQualifiedName(), productFolderGUID);
+            }
+        }
+
+        return productFolders;
+    }
+
+
+    /**
+     * Return the guid of a product folder.  If it exists, it is retrieved from the metadata repository.
+     * Otherwise, a new collection is created of the appropriate type and with the right classification
+     * attached.  If the product folder has a parent then it is linked to the parent using the CollectionMembership
+     * relationship.
+     *
+     * @param productFolderDefinition description of the folder to create
+     * @return guid of the folder
+     * @throws InvalidParameterException invalid parameter passed - probably a bug in this code
+     * @throws PropertyServerException repository is probably down
+     * @throws UserNotAuthorizedException connector's userId not defined to open metadata, or the connector has
+     * been disconnected.
+     */
+    private String getProductFolder(ProductFolderDefinition productFolderDefinition) throws InvalidParameterException,
+                                                                                            PropertyServerException,
+                                                                                            UserNotAuthorizedException
+    {
+        CollectionClient collectionClient = integrationContext.getCollectionClient();
+
+        /*
+         * If the product folder is already present then return its GUID
+         */
+        List<OpenMetadataRootElement> collections = collectionClient.findCollections(productFolderDefinition.getQualifiedName(), null);
+
+        if (collections != null)
+        {
+            for (OpenMetadataRootElement collection : collections)
+            {
+                if (collection != null)
+                {
+                    return collection.getElementHeader().getGUID();
+                }
+            }
+        }
+
+        /*
+         * This is the first time...
+         */
+        CollectionProperties collectionProperties = new CollectionProperties();
+
+        collectionProperties.setTypeName(productFolderDefinition.getTypeName());
+        collectionProperties.setQualifiedName(productFolderDefinition.getQualifiedName());
+        collectionProperties.setDisplayName(productFolderDefinition.getDisplayName());
+        collectionProperties.setDescription(productFolderDefinition.getDescription());
+        collectionProperties.setCategory(productFolderDefinition.getCategory());
+
+        Map<String, ClassificationProperties> initialClassifications = null;
+
+        if (productFolderDefinition.getClassificationName() != null)
+        {
+            initialClassifications = new HashMap<>();
+
+            initialClassifications.put(productFolderDefinition.getClassificationName(), null);
+        }
+
+        NewElementOptions newElementOptions = new NewElementOptions(collectionClient.getMetadataSourceOptions());
+        newElementOptions.setAnchorScopeGUID(this.anchorScopeGUID);
+
+        if (productFolderDefinition.getParent() != null)
+        {
+            String parentGUID = productFolders.get(productFolderDefinition.getParent().getQualifiedName());
+
+            newElementOptions.setIsOwnAnchor(false);
+            newElementOptions.setAnchorGUID(parentGUID);
+            newElementOptions.setParentGUID(parentGUID);
+            newElementOptions.setParentRelationshipTypeName(OpenMetadataType.COLLECTION_MEMBERSHIP_RELATIONSHIP.typeName);
+            newElementOptions.setParentAtEnd1(true);
+        }
+        else
+        {
+            newElementOptions.setIsOwnAnchor(true);
+        }
+
+        return collectionClient.createCollection(newElementOptions,
+                                                 initialClassifications,
+                                                 collectionProperties,
+                                                 null);
+    }
+
+
+    /**
+     * Add all of the defined terms to the glossary at the requested folder.
+     *
+     * @return map of glossary term qualified names to GUIDs
+     * @throws InvalidParameterException invalid parameter passed - probably a bug in this code
+     * @throws PropertyServerException repository is probably down
+     * @throws UserNotAuthorizedException connector's userId not defined to open metadata, or the connector has
+     * been disconnected.
+     */
+    private Map<String, String> getGlossaryTerms() throws InvalidParameterException,
+                                                          PropertyServerException,
+                                                          UserNotAuthorizedException
+    {
+        Map<String, String> glossaryTermMap = new HashMap<>();
+
+        for (ProductGlossaryTermDefinition glossaryTermDefinition : ProductGlossaryTermDefinition.values())
+        {
+            String glossaryTermGUID = this.getGlossaryTerm(glossaryTermDefinition);
+
+            glossaryTermMap.put(glossaryTermDefinition.getQualifiedName(), glossaryTermGUID);
+        }
+
+        return glossaryTermMap;
+    }
+
+
+    /**
+     * Return the unique identifier of the glossary term either by retrieving an existing glossary term or,
+     * when that fails, creating a new one.
+     *
+     * @param glossaryTermDefinition description of the glossary term
+     * @return unique identifier of the glossary term
+     * @throws InvalidParameterException invalid parameter passed - probably a bug in this code
+     * @throws PropertyServerException repository is probably down
+     * @throws UserNotAuthorizedException connector's userId not defined to open metadata, or the connector has
+     * been disconnected.
+     */
+    private String getGlossaryTerm(ProductGlossaryTermDefinition glossaryTermDefinition) throws InvalidParameterException,
+                                                                                                PropertyServerException,
+                                                                                                UserNotAuthorizedException
+    {
+        GlossaryTermClient glossaryTermClient = integrationContext.getGlossaryTermClient();
+
+        /*
+         * If the glossary term is already present then return its GUID
+         */
+        List<OpenMetadataRootElement> terms = glossaryTermClient.findGlossaryTerms(glossaryTermDefinition.getQualifiedName(), null);
+
+        if (terms != null)
+        {
+            for (OpenMetadataRootElement term : terms)
+            {
+                if (term != null)
+                {
+                    return term.getElementHeader().getGUID();
+                }
+            }
+        }
+
+        /*
+         * This is the first time...
+         */
+        GlossaryTermProperties glossaryTermProperties = new GlossaryTermProperties();
+
+        glossaryTermProperties.setQualifiedName(glossaryTermDefinition.getQualifiedName());
+        glossaryTermProperties.setDisplayName(glossaryTermDefinition.getDisplayName());
+        glossaryTermProperties.setDescription(glossaryTermDefinition.getDescription());
+        glossaryTermProperties.setSummary(glossaryTermDefinition.getSummary());
+        glossaryTermProperties.setAbbreviation(glossaryTermDefinition.getAbbreviation());
+
+        NewElementOptions newElementOptions = new NewElementOptions(glossaryTermClient.getMetadataSourceOptions());
+        newElementOptions.setAnchorScopeGUID(this.anchorScopeGUID);
+
+        if (glossaryTermDefinition.getFolder() != null)
+        {
+            String parentGUID = productFolders.get(glossaryTermDefinition.getFolder().getQualifiedName());
+
+            newElementOptions.setIsOwnAnchor(false);
+            newElementOptions.setAnchorGUID(parentGUID);
+            newElementOptions.setParentGUID(parentGUID);
+            newElementOptions.setParentRelationshipTypeName(OpenMetadataType.COLLECTION_MEMBERSHIP_RELATIONSHIP.typeName);
+            newElementOptions.setParentAtEnd1(true);
+        }
+        else
+        {
+            newElementOptions.setIsOwnAnchor(true);
+        }
+
+        return glossaryTermClient.createGlossaryTerm(newElementOptions,
+                                                 null,
+                                                 glossaryTermProperties,
+                                                 null);
+    }
+
+
+
+    /**
+     * Add all of the defined terms to the glossary at the requested folder.
+     *
+     * @return map of glossary term qualified names to GUIDs
+     * @throws InvalidParameterException invalid parameter passed - probably a bug in this code
+     * @throws PropertyServerException repository is probably down
+     * @throws UserNotAuthorizedException connector's userId not defined to open metadata, or the connector has
+     * been disconnected.
+     */
+    private Map<String, String> getCommunities() throws InvalidParameterException,
+                                                        PropertyServerException,
+                                                        UserNotAuthorizedException
+    {
+        Map<String, String> communityMap = new HashMap<>();
+
+        for (ProductCommunityDefinition productCommunityDefinition : ProductCommunityDefinition.values())
+        {
+            String glossaryTermGUID = this.getCommunity(productCommunityDefinition);
+
+            communityMap.put(productCommunityDefinition.getQualifiedName(), glossaryTermGUID);
+        }
+
+        return communityMap;
+    }
+
+
+    /**
+     * Return the unique identifier of the community either by retrieving an existing community or,
+     * when that fails, creating a new one.
+     *
+     * @param productCommunityDefinition description of the community
+     * @return unique identifier of the community
+     * @throws InvalidParameterException invalid parameter passed - probably a bug in this code
+     * @throws PropertyServerException repository is probably down
+     * @throws UserNotAuthorizedException connector's userId not defined to open metadata, or the connector has
+     * been disconnected.
+     */
+    private String getCommunity(ProductCommunityDefinition productCommunityDefinition) throws InvalidParameterException,
+                                                                                              PropertyServerException,
+                                                                                              UserNotAuthorizedException
+    {
+        CommunityClient communityClient = integrationContext.getCommunityClient();
+
+        /*
+         * If the glossary term is already present then return its GUID
+         */
+        List<OpenMetadataRootElement> terms = communityClient.findCommunities(productCommunityDefinition.getQualifiedName(), null);
+
+        if (terms != null)
+        {
+            for (OpenMetadataRootElement term : terms)
+            {
+                if (term != null)
+                {
+                    return term.getElementHeader().getGUID();
+                }
+            }
+        }
+
+        /*
+         * This is the first time...
+         */
+        CommunityProperties communityProperties = new CommunityProperties();
+
+        communityProperties.setQualifiedName(productCommunityDefinition.getQualifiedName());
+        communityProperties.setDisplayName(productCommunityDefinition.getDisplayName());
+        communityProperties.setDescription(productCommunityDefinition.getDescription());
+
+        NewElementOptions newElementOptions = new NewElementOptions(communityClient.getMetadataSourceOptions());
+        newElementOptions.setAnchorScopeGUID(this.anchorScopeGUID);
+        newElementOptions.setIsOwnAnchor(true);
+
+        return communityClient.createCommunity(newElementOptions,
+                                               null,
+                                               communityProperties,
+                                               null);
+    }
+
+
+    /**
+     * Set up the map of data field qualified names to guids.
+     *
+     * @return map of data field qualified names to guids
+     * @throws InvalidParameterException invalid parameter passed - probably a bug in this code
+     * @throws PropertyServerException repository is probably down
+     * @throws UserNotAuthorizedException connector's userId not defined to open metadata, or the connector has
+     * been disconnected.
+     */
+    private Map<String, String> getDataFields() throws InvalidParameterException,
+                                                       PropertyServerException,
+                                                       UserNotAuthorizedException
+    {
+        Map<String, String> dataFieldMap = new HashMap<>();
+
+        for (ProductDataFieldDefinition dataFieldDefinition : ProductDataFieldDefinition.values())
+        {
+            String dataFieldGUID = this.getDataField(dataFieldDefinition);
+
+            dataFieldMap.put(dataFieldDefinition.getQualifiedName(), dataFieldGUID);
+        }
+
+        return dataFieldMap;
+    }
+
+
+    /**
+     * Return the unique identifier of the data field either by retrieving it from the metadata
+     * repository or, if that fails, creating a new one.
+     *
+     * @param dataFieldDefinition description of the data field
+     * @return unique identifier (guid)
+     * @throws InvalidParameterException invalid parameter passed - probably a bug in this code
+     * @throws PropertyServerException repository is probably down
+     * @throws UserNotAuthorizedException connector's userId not defined to open metadata, or the connector has
+     * been disconnected.
+     */
+    private String getDataField(ProductDataFieldDefinition dataFieldDefinition) throws InvalidParameterException,
+                                                                                       PropertyServerException,
+                                                                                       UserNotAuthorizedException
+    {
+        DataFieldClient dataFieldClient = integrationContext.getDataFieldClient();
+
+        /*
+         * If the data field is already present then return its GUID
+         */
+        List<OpenMetadataRootElement> existingDataFields = dataFieldClient.findDataFields(dataFieldDefinition.getQualifiedName(), null);
+
+        if (existingDataFields != null)
+        {
+            for (OpenMetadataRootElement dataField : existingDataFields)
+            {
+                if (dataField != null)
+                {
+                    return dataField.getElementHeader().getGUID();
+                }
+            }
+        }
+
+        /*
+         * This is the first time...
+         */
+        DataFieldProperties dataFieldProperties = new DataFieldProperties();
+
+        dataFieldProperties.setQualifiedName(dataFieldDefinition.getQualifiedName());
+        dataFieldProperties.setDisplayName(dataFieldDefinition.getDisplayName());
+        dataFieldProperties.setDescription(dataFieldDefinition.getDescription());
+        dataFieldProperties.setDataType(dataFieldDefinition.getDataType().getName());
+        dataFieldProperties.setDefaultValue(dataFieldDefinition.getDefaultValue());
+        dataFieldProperties.setNamePatterns(List.of(dataFieldDefinition.getNamePattern()));
+
+        NewElementOptions newElementOptions = new NewElementOptions(dataFieldClient.getMetadataSourceOptions());
+
+        String parentGUID = productFolders.get(ProductFolderDefinition.DATA_DICTIONARY.getQualifiedName());
+
+        newElementOptions.setIsOwnAnchor(false);
+        newElementOptions.setAnchorScopeGUID(this.anchorScopeGUID);
+        newElementOptions.setAnchorGUID(parentGUID);
+        newElementOptions.setParentGUID(parentGUID);
+        newElementOptions.setParentRelationshipTypeName(OpenMetadataType.COLLECTION_MEMBERSHIP_RELATIONSHIP.typeName);
+        newElementOptions.setParentAtEnd1(true);
+
+
+        Map<String, ClassificationProperties> initialClassifications = null;
+
+        if (dataFieldDefinition.isIdentifier())
+        {
+            initialClassifications = new HashMap<>();
+
+            initialClassifications.put(OpenMetadataType.OBJECT_IDENTIFIER_CLASSIFICATION.typeName, null);
+        }
+
+        return dataFieldClient.createDataField(newElementOptions,
+                                               initialClassifications,
+                                               dataFieldProperties,
+                                               null);
+    }
+
+
+    /**
+     * Add all of the defined terms to the glossary at the requested folder.
+     *
+     * @return map of governance definition qualified names to GUIDs
+     * @throws InvalidParameterException invalid parameter passed - probably a bug in this code
+     * @throws PropertyServerException repository is probably down
+     * @throws UserNotAuthorizedException connector's userId not defined to open metadata, or the connector has
+     * been disconnected.
+     */
+    private Map<String, String> getGovernanceDefinitions() throws InvalidParameterException,
+                                                                  PropertyServerException,
+                                                                  UserNotAuthorizedException
+    {
+        Map<String, String> governanceDefinitionMap = new HashMap<>();
+
+        for (ProductGovernanceDefinition governanceDefinition : ProductGovernanceDefinition.values())
+        {
+            String glossaryTermGUID = this.getGovernanceDefinition(governanceDefinition);
+
+            governanceDefinitionMap.put(governanceDefinition.getQualifiedName(), glossaryTermGUID);
+        }
+
+        /*
+         * Link the governance driver and policies together.  Typically, these definitions would be created
+         * by the governance team.
+         */
+        GovernanceDefinitionClient governanceDefinitionClient = integrationContext.getGovernanceDefinitionClient();
+
+        PeerDefinitionProperties peerDefinitionProperties = new PeerDefinitionProperties();
+
+        peerDefinitionProperties.setLabel("enables");
+        peerDefinitionProperties.setDescription("The digital product catalog(s) create a platform for managing data sharing opportunities.");
+
+        governanceDefinitionClient.linkPeerDefinitions(governanceDefinitionMap.get(ProductGovernanceDefinition.DIGITAL_PRODUCT_CATALOG.getQualifiedName()),
+                                                       governanceDefinitionMap.get(ProductGovernanceDefinition.ENABLE_DATA_SHARING.getQualifiedName()),
+                                                       OpenMetadataType.GOVERNANCE_POLICY_LINK_RELATIONSHIP.typeName,
+                                                       governanceDefinitionClient.getMetadataSourceOptions(),
+                                                       peerDefinitionProperties);
+
+        SupportingDefinitionProperties supportingDefinitionProperties = new SupportingDefinitionProperties();
+
+        supportingDefinitionProperties.setRationale("Data sharing helps to ensure that key data generated in one part of the company is available for other teams.");
+
+        governanceDefinitionClient.attachSupportingDefinition(governanceDefinitionMap.get(ProductGovernanceDefinition.DATA_DRIVEN.getQualifiedName()),
+                                                              governanceDefinitionMap.get(ProductGovernanceDefinition.ENABLE_DATA_SHARING.getQualifiedName()),
+                                                              OpenMetadataType.GOVERNANCE_RESPONSE_RELATIONSHIP.typeName,
+                                                              governanceDefinitionClient.getMetadataSourceOptions(),
+                                                              supportingDefinitionProperties);
+
+        supportingDefinitionProperties.setRationale("Digital product catalogs create a platform for exchange or requirements, ideas, skills and, of course, data.  They demonstrate the focus that senior management is placing on data sharing.");
+
+        governanceDefinitionClient.attachSupportingDefinition(governanceDefinitionMap.get(ProductGovernanceDefinition.DATA_DRIVEN.getQualifiedName()),
+                                                              governanceDefinitionMap.get(ProductGovernanceDefinition.DIGITAL_PRODUCT_CATALOG.getQualifiedName()),
+                                                              OpenMetadataType.GOVERNANCE_RESPONSE_RELATIONSHIP.typeName,
+                                                              governanceDefinitionClient.getMetadataSourceOptions(),
+                                                              supportingDefinitionProperties);
+
+        /*
+         * Return the map of governance definitions to allow the product definitions to show which governance
+         * definitions are relevant to their governance.
+         */
+        return governanceDefinitionMap;
+    }
+
+
+    /**
+     * Return the unique identifier of the governance definition either by retrieving an existing definition or,
+     * when that fails, creating a new one.
+     *
+     * @param governanceDefinition description of the governance definition
+     * @return unique identifier of the glossary term
+     * @throws InvalidParameterException invalid parameter passed - probably a bug in this code
+     * @throws PropertyServerException repository is probably down
+     * @throws UserNotAuthorizedException connector's userId not defined to open metadata, or the connector has
+     * been disconnected.
+     */
+    private String getGovernanceDefinition(ProductGovernanceDefinition governanceDefinition) throws InvalidParameterException,
+                                                                                                      PropertyServerException,
+                                                                                                      UserNotAuthorizedException
+    {
+        GovernanceDefinitionClient governanceDefinitionClient = integrationContext.getGovernanceDefinitionClient();
+
+        /*
+         * If the glossary term is already present then return its GUID
+         */
+        List<OpenMetadataRootElement> existingGovernanceDefinitions = governanceDefinitionClient.findGovernanceDefinitions(governanceDefinition.getQualifiedName(), null);
+
+        if (existingGovernanceDefinitions != null)
+        {
+            for (OpenMetadataRootElement existingGovernanceDefinition : existingGovernanceDefinitions)
+            {
+                if (existingGovernanceDefinition != null)
+                {
+                    return existingGovernanceDefinition.getElementHeader().getGUID();
+                }
+            }
+        }
+
+        /*
+         * This is the first time...
+         */
+        GovernanceDefinitionProperties governanceDefinitionProperties = new GovernanceDefinitionProperties();
+
+        governanceDefinitionProperties.setTypeName(governanceDefinition.getType());
+        governanceDefinitionProperties.setQualifiedName(governanceDefinition.getQualifiedName());
+        governanceDefinitionProperties.setDisplayName(governanceDefinition.getDisplayName());
+        governanceDefinitionProperties.setDescription(governanceDefinition.getDescription());
+        governanceDefinitionProperties.setSummary(governanceDefinition.getSummary());
+        governanceDefinitionProperties.setIdentifier(governanceDefinition.getIdentifier());
+        governanceDefinitionProperties.setDomainIdentifier(governanceDefinition.getDomain());
+        governanceDefinitionProperties.setScope(governanceDefinition.getImportance());
+        governanceDefinitionProperties.setUsage(governanceDefinition.getImportance());
+        governanceDefinitionProperties.setImportance(governanceDefinition.getImportance());
+        governanceDefinitionProperties.setImplications(governanceDefinition.getImplications());
+        governanceDefinitionProperties.setOutcomes(governanceDefinition.getOutcomes());
+        governanceDefinitionProperties.setResults(governanceDefinition.getResults());
+
+        Map<String, Object> extendedProperties = new HashMap<>();
+        if (governanceDefinition.getObligations() != null)
+        {
+            extendedProperties.put(OpenMetadataProperty.OBLIGATIONS.name, governanceDefinition.getObligations());
+        }
+        if (governanceDefinition.getEntitlements() != null)
+        {
+            extendedProperties.put(OpenMetadataProperty.ENTITLEMENTS.name, governanceDefinition.getEntitlements());
+        }
+        if (governanceDefinition.getRestrictions() != null)
+        {
+            extendedProperties.put(OpenMetadataProperty.RESTRICTIONS.name, governanceDefinition.getRestrictions());
+        }
+
+        if (! extendedProperties.isEmpty())
+        {
+            governanceDefinitionProperties.setExtendedProperties(extendedProperties);
+        }
+
+        /*
+         * Each governance definition is created as independent elements, and they are not linked together (yet)
+         */
+        NewElementOptions newElementOptions = new NewElementOptions(governanceDefinitionClient.getMetadataSourceOptions());
+        newElementOptions.setInitialStatus(ElementStatus.ACTIVE);
+        newElementOptions.setIsOwnAnchor(true);
+
+        return governanceDefinitionClient.createGovernanceDefinition(newElementOptions,
+                                                                     null,
+                                                                     governanceDefinitionProperties,
+                                                                     null);
     }
 
 
@@ -190,193 +1263,183 @@ public class OpenMetadataProductsHarvesterConnector extends IntegrationConnector
      *
      * @return guid of the blueprint or null if no blueprint can be created
      */
-    private String getSolutionBlueprint()
+    private String getSolutionBlueprint() throws InvalidParameterException,
+                                                 PropertyServerException,
+                                                 UserNotAuthorizedException
     {
-        final String methodName = "getSolutionBlueprint";
 
-        try
+        String blueprintQualifiedName = ProductSolutionBlueprint.AUTO_PRODUCT_MANAGER.getQualifiedName();
+
+        SolutionBlueprintClient solutionBlueprintClient = integrationContext.getSolutionBlueprintClient();
+
+        /*
+         * If the solution blueprint is already present then return its GUID,
+         */
+        List<OpenMetadataRootElement> solutionBlueprints = solutionBlueprintClient.findSolutionBlueprints(blueprintQualifiedName, null);
+
+        if (solutionBlueprints != null)
         {
-            String blueprintQualifiedName = ProductSolutionBlueprint.AUTO_PRODUCT_MANAGER.getQualifiedName();
-
-            SolutionBlueprintClient solutionBlueprintClient = integrationContext.getSolutionBlueprintClient();
-
-            /*
-             * If the solution blueprint is already present then return it GUID,
-             */
-            List<OpenMetadataRootElement> solutionBlueprints = solutionBlueprintClient.findSolutionBlueprints(blueprintQualifiedName, null);
-
-            if (solutionBlueprints != null)
+            for (OpenMetadataRootElement solutionBlueprint : solutionBlueprints)
             {
-                for (OpenMetadataRootElement solutionBlueprint : solutionBlueprints)
+                if (solutionBlueprint != null)
                 {
-                    if (solutionBlueprint != null)
-                    {
-                        return solutionBlueprint.getElementHeader().getGUID();
-                    }
+                    return solutionBlueprint.getElementHeader().getGUID();
                 }
             }
-
-            /*
-             * Create the blueprint as this is the first time through
-             */
-            SolutionBlueprintProperties solutionBlueprintProperties = new SolutionBlueprintProperties();
-
-            solutionBlueprintProperties.setQualifiedName(blueprintQualifiedName);
-            solutionBlueprintProperties.setDisplayName(ProductSolutionBlueprint.AUTO_PRODUCT_MANAGER.getDisplayName());
-            solutionBlueprintProperties.setDescription(ProductSolutionBlueprint.AUTO_PRODUCT_MANAGER.getDescription());
-            solutionBlueprintProperties.setVersionIdentifier(ProductSolutionBlueprint.AUTO_PRODUCT_MANAGER.getVersionIdentifier());
-
-            NewElementOptions newElementOptions = new NewElementOptions(solutionBlueprintClient.getMetadataSourceOptions());
-
-            newElementOptions.setIsOwnAnchor(true);
-
-            String blueprintGUID = solutionBlueprintClient.createSolutionBlueprint(newElementOptions,
-                                                                                           null,
-                                                                                           solutionBlueprintProperties,
-                                                                                           null);
-
-            newElementOptions.setIsOwnAnchor(false);
-            newElementOptions.setAnchorGUID(blueprintGUID);
-            newElementOptions.setParentGUID(blueprintGUID);
-            newElementOptions.setParentRelationshipTypeName(OpenMetadataType.SOLUTION_BLUEPRINT_COMPOSITION_RELATIONSHIP.typeName);
-            newElementOptions.setParentAtEnd1(true);
-
-            SolutionComponentClient solutionComponentClient = integrationContext.getSolutionComponentClient();
-            Map<String,String>      qualifiedNameToGUIDMap  = new HashMap<>();
-
-            /*
-             * Add the solution components to the blueprints.  A map of qualifiedNames to GUIDs is maintained to
-             * enable the components to be linked together - and to their solution roles.
-             */
-            for (ProductSolutionComponent solutionComponentDefinition : ProductSolutionComponent.values())
-            {
-                String componentQualifiedName = solutionComponentDefinition.getQualifiedName();
-                String componentGUID          = null;
-
-                List<OpenMetadataRootElement> solutionComponents = solutionComponentClient.findSolutionComponents(componentQualifiedName, null);
-
-                if (solutionComponents != null)
-                {
-                    for (OpenMetadataRootElement solutionComponent : solutionComponents)
-                    {
-                        if (solutionComponent != null)
-                        {
-                            componentGUID = solutionComponent.getElementHeader().getGUID();
-                            break;
-                        }
-                    }
-                }
-
-                if (componentGUID == null)
-                {
-                    SolutionComponentProperties solutionComponentProperties = new SolutionComponentProperties();
-
-                    solutionComponentProperties.setQualifiedName(componentQualifiedName);
-                    solutionComponentProperties.setDisplayName(solutionComponentDefinition.getDisplayName());
-                    solutionComponentProperties.setDescription(solutionComponentDefinition.getDescription());
-                    solutionComponentProperties.setVersionIdentifier(solutionComponentDefinition.getVersionIdentifier());
-                    solutionComponentProperties.setSolutionComponentType(solutionComponentDefinition.getComponentType());
-                    solutionComponentProperties.setPlannedDeployedImplementationType(solutionComponentDefinition.getImplementationType());
-
-                    componentGUID = solutionComponentClient.createSolutionComponent(newElementOptions,
-                                                                                    null,
-                                                                                    solutionComponentProperties,
-                                                                                    null);
-                }
-
-                qualifiedNameToGUIDMap.put(componentQualifiedName, componentGUID);
-            }
-
-            /*
-             * Link the components together
-             */
-
-            for (SolutionComponentWire solutionComponentWire : SolutionComponentWire.values())
-            {
-                SolutionLinkingWireProperties solutionLinkingWireProperties = new SolutionLinkingWireProperties();
-
-                solutionLinkingWireProperties.setLabel(solutionComponentWire.getLabel());
-                solutionLinkingWireProperties.setDescription(solutionComponentWire.getDescription());
-
-                solutionComponentClient.linkSolutionLinkingWire(qualifiedNameToGUIDMap.get(solutionComponentWire.getComponent1().getQualifiedName()),
-                                                                qualifiedNameToGUIDMap.get(solutionComponentWire.getComponent1().getQualifiedName()),
-                                                                solutionComponentClient.getMetadataSourceOptions(),
-                                                                solutionLinkingWireProperties);
-            }
-
-            /*
-             * Create the Solution Roles and capture QualifiedNames to GUIDs in the map
-             */
-            ActorRoleClient actorRoleClient = integrationContext.getActorRoleClient();
-            newElementOptions = new NewElementOptions(actorRoleClient.getMetadataSourceOptions());
-            newElementOptions.setIsOwnAnchor(true);
-
-            for (ProductRoleDefinition productRoleDefinition : ProductRoleDefinition.values())
-            {
-                String roleQualifiedName = productRoleDefinition.getQualifiedName();
-                String roleGUID          = null;
-
-                List<OpenMetadataRootElement> solutionRoles = actorRoleClient.findActorRoles(roleQualifiedName, null);
-
-                if (solutionRoles != null)
-                {
-                    for (OpenMetadataRootElement solutionRole : solutionRoles)
-                    {
-                        if (solutionRole != null)
-                        {
-                            roleGUID = solutionRole.getElementHeader().getGUID();
-                            break;
-                        }
-                    }
-                }
-
-                if (roleGUID == null)
-                {
-                    SolutionActorRoleProperties solutionActorRoleProperties = new SolutionActorRoleProperties();
-
-                    solutionActorRoleProperties.setQualifiedName(roleQualifiedName);
-                    solutionActorRoleProperties.setDisplayName(productRoleDefinition.getDisplayName());
-                    solutionActorRoleProperties.setDescription(productRoleDefinition.getDescription());
-                    solutionActorRoleProperties.setIdentifier(productRoleDefinition.getIdentifier());
-
-                    roleGUID = actorRoleClient.createActorRole(newElementOptions,
-                                                               null,
-                                                               solutionActorRoleProperties,
-                                                               null);
-                }
-
-                qualifiedNameToGUIDMap.put(roleQualifiedName, roleGUID);
-            }
-
-            /*
-             * Connect Actor Roles to Solution Components
-             */
-
-            for (SolutionComponentActor solutionComponentActor : SolutionComponentActor.values())
-            {
-                SolutionComponentActorProperties solutionComponentActorProperties = new SolutionComponentActorProperties();
-
-                solutionComponentActorProperties.setRole(solutionComponentActor.getRole());
-                solutionComponentActorProperties.setDescription(solutionComponentActor.getDescription());
-
-                solutionComponentClient.linkSolutionComponentActor(qualifiedNameToGUIDMap.get(solutionComponentActor.getSolutionRole().getQualifiedName()),
-                                                                   qualifiedNameToGUIDMap.get(solutionComponentActor.getSolutionComponent().getQualifiedName()),
-                                                                   solutionComponentClient.getMetadataSourceOptions(),
-                                                                   solutionComponentActorProperties);
-            }
-
-            return blueprintGUID;
-        }
-        catch (Exception error)
-        {
-            auditLog.logMessage(methodName,
-                                ProductManagerAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(connectorName,
-                                                                                                  error.getClass().getName(),
-                                                                                                  methodName,
-                                                                                                  error.getMessage()));
         }
 
-        return null;
+        /*
+         * Create the blueprint as this is the first time through
+         */
+        SolutionBlueprintProperties solutionBlueprintProperties = new SolutionBlueprintProperties();
+
+        solutionBlueprintProperties.setQualifiedName(blueprintQualifiedName);
+        solutionBlueprintProperties.setDisplayName(ProductSolutionBlueprint.AUTO_PRODUCT_MANAGER.getDisplayName());
+        solutionBlueprintProperties.setDescription(ProductSolutionBlueprint.AUTO_PRODUCT_MANAGER.getDescription());
+        solutionBlueprintProperties.setVersionIdentifier(ProductSolutionBlueprint.AUTO_PRODUCT_MANAGER.getVersionIdentifier());
+
+        NewElementOptions newElementOptions = new NewElementOptions(solutionBlueprintClient.getMetadataSourceOptions());
+        newElementOptions.setAnchorScopeGUID(this.anchorScopeGUID);
+        newElementOptions.setIsOwnAnchor(true);
+
+        String blueprintGUID = solutionBlueprintClient.createSolutionBlueprint(newElementOptions,
+                                                                               null,
+                                                                               solutionBlueprintProperties,
+                                                                               null);
+
+        newElementOptions.setIsOwnAnchor(false);
+        newElementOptions.setAnchorGUID(blueprintGUID);
+        newElementOptions.setParentGUID(blueprintGUID);
+        newElementOptions.setParentRelationshipTypeName(OpenMetadataType.SOLUTION_BLUEPRINT_COMPOSITION_RELATIONSHIP.typeName);
+        newElementOptions.setParentAtEnd1(true);
+
+        SolutionComponentClient solutionComponentClient = integrationContext.getSolutionComponentClient();
+        Map<String, String>     qualifiedNameToGUIDMap  = new HashMap<>();
+
+        /*
+         * Add the solution components to the blueprints.  A map of qualifiedNames to GUIDs is maintained to
+         * enable the components to be linked together - and to their solution roles.
+         */
+        for (ProductSolutionComponent solutionComponentDefinition : ProductSolutionComponent.values())
+        {
+            String componentQualifiedName = solutionComponentDefinition.getQualifiedName();
+            String componentGUID          = null;
+
+            List<OpenMetadataRootElement> solutionComponents = solutionComponentClient.findSolutionComponents(componentQualifiedName, null);
+
+            if (solutionComponents != null)
+            {
+                for (OpenMetadataRootElement solutionComponent : solutionComponents)
+                {
+                    if (solutionComponent != null)
+                    {
+                        /*
+                         * Component already exists
+                         */
+                        componentGUID = solutionComponent.getElementHeader().getGUID();
+                        break;
+                    }
+                }
+            }
+
+            if (componentGUID == null)
+            {
+                SolutionComponentProperties solutionComponentProperties = new SolutionComponentProperties();
+
+                solutionComponentProperties.setQualifiedName(componentQualifiedName);
+                solutionComponentProperties.setDisplayName(solutionComponentDefinition.getDisplayName());
+                solutionComponentProperties.setDescription(solutionComponentDefinition.getDescription());
+                solutionComponentProperties.setVersionIdentifier(solutionComponentDefinition.getVersionIdentifier());
+                solutionComponentProperties.setSolutionComponentType(solutionComponentDefinition.getComponentType());
+                solutionComponentProperties.setPlannedDeployedImplementationType(solutionComponentDefinition.getImplementationType());
+
+                componentGUID = solutionComponentClient.createSolutionComponent(newElementOptions,
+                                                                                null,
+                                                                                solutionComponentProperties,
+                                                                                null);
+            }
+
+            qualifiedNameToGUIDMap.put(componentQualifiedName, componentGUID);
+        }
+
+        /*
+         * Link the components together
+         */
+
+        for (SolutionComponentWire solutionComponentWire : SolutionComponentWire.values())
+        {
+            SolutionLinkingWireProperties solutionLinkingWireProperties = new SolutionLinkingWireProperties();
+
+            solutionLinkingWireProperties.setLabel(solutionComponentWire.getLabel());
+            solutionLinkingWireProperties.setDescription(solutionComponentWire.getDescription());
+
+            solutionComponentClient.linkSolutionLinkingWire(qualifiedNameToGUIDMap.get(solutionComponentWire.getComponent1().getQualifiedName()),
+                                                            qualifiedNameToGUIDMap.get(solutionComponentWire.getComponent1().getQualifiedName()),
+                                                            solutionComponentClient.getMetadataSourceOptions(),
+                                                            solutionLinkingWireProperties);
+        }
+
+        /*
+         * Create the Solution Roles and capture QualifiedNames to GUIDs in the map
+         */
+        ActorRoleClient actorRoleClient = integrationContext.getActorRoleClient();
+        newElementOptions = new NewElementOptions(actorRoleClient.getMetadataSourceOptions());
+        newElementOptions.setIsOwnAnchor(true);
+
+        for (ProductRoleDefinition productRoleDefinition : ProductRoleDefinition.values())
+        {
+            String roleQualifiedName = productRoleDefinition.getQualifiedName();
+            String roleGUID          = null;
+
+            List<OpenMetadataRootElement> solutionRoles = actorRoleClient.findActorRoles(roleQualifiedName, null);
+
+            if (solutionRoles != null)
+            {
+                for (OpenMetadataRootElement solutionRole : solutionRoles)
+                {
+                    if (solutionRole != null)
+                    {
+                        roleGUID = solutionRole.getElementHeader().getGUID();
+                        break;
+                    }
+                }
+            }
+
+            if (roleGUID == null)
+            {
+                SolutionActorRoleProperties solutionActorRoleProperties = new SolutionActorRoleProperties();
+
+                solutionActorRoleProperties.setQualifiedName(roleQualifiedName);
+                solutionActorRoleProperties.setDisplayName(productRoleDefinition.getDisplayName());
+                solutionActorRoleProperties.setDescription(productRoleDefinition.getDescription());
+                solutionActorRoleProperties.setIdentifier(productRoleDefinition.getIdentifier());
+
+                roleGUID = actorRoleClient.createActorRole(newElementOptions,
+                                                           null,
+                                                           solutionActorRoleProperties,
+                                                           null);
+            }
+
+            qualifiedNameToGUIDMap.put(roleQualifiedName, roleGUID);
+        }
+
+        /*
+         * Connect Actor Roles to Solution Components
+         */
+        for (SolutionComponentActor solutionComponentActor : SolutionComponentActor.values())
+        {
+            SolutionComponentActorProperties solutionComponentActorProperties = new SolutionComponentActorProperties();
+
+            solutionComponentActorProperties.setRole(solutionComponentActor.getRole());
+            solutionComponentActorProperties.setDescription(solutionComponentActor.getDescription());
+
+            solutionComponentClient.linkSolutionComponentActor(qualifiedNameToGUIDMap.get(solutionComponentActor.getSolutionRole().getQualifiedName()),
+                                                               qualifiedNameToGUIDMap.get(solutionComponentActor.getSolutionComponent().getQualifiedName()),
+                                                               solutionComponentClient.getMetadataSourceOptions(),
+                                                               solutionComponentActorProperties);
+        }
+
+        return blueprintGUID;
     }
 
 

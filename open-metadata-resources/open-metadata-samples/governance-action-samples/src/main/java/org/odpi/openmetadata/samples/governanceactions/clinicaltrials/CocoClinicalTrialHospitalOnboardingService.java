@@ -788,10 +788,11 @@ public class CocoClinicalTrialHospitalOnboardingService extends CocoClinicalTria
 
         if (genericProcess != null)
         {
-            String processGUID = super.createGovernanceActionProcess(processQualifiedName,
-                                                                     "Onboard " + hospitalName + " Landing Area Files for " + clinicalTrialName,
-                                                                     null,
-                                                                     clinicalTrialGUID);
+            String processGUID = governanceContext.createGovernanceActionProcess(processQualifiedName,
+                                                                                 "Onboard " + hospitalName + " Landing Area Files for " + clinicalTrialName,
+                                                                                 null,
+                                                                                 null,
+                                                                                 clinicalTrialGUID);
 
             addSolutionComponentImplementedByRelationship(ClinicalTrialSolutionComponent.WEEKLY_MEASUREMENTS_ONBOARDING_PIPELINE.getGUID(), processGUID, informationSupplyChainQualifiedName, "Supports clinical trial " + clinicalTrialId);
             governanceContext.createLineageRelationship(OpenMetadataType.DATA_FLOW_RELATIONSHIP.typeName,

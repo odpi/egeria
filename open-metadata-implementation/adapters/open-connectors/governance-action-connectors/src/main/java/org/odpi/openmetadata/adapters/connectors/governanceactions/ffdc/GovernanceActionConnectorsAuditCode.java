@@ -414,7 +414,7 @@ public enum GovernanceActionConnectorsAuditCode implements AuditLogMessageSet
      * GOVERNANCE-ACTION-CONNECTORS-0038 - The governance action service {0} received an unexpected {1} exception during method {2}; the error message was: {3}
      */
     SERVICE_COMPLETED_SUCCESSFULLY("GOVERNANCE-ACTION-CONNECTORS-0038",
-                         AuditLogRecordSeverityLevel.EXCEPTION,
+                         AuditLogRecordSeverityLevel.INFO,
                          "The governance service {0} has completed successfully",
                          "The service is shutting down.",
                          "No action is required except to validate that the shutdown is occurring at an appropriate time."),

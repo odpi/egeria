@@ -7,10 +7,7 @@ import org.odpi.openmetadata.adapters.connectors.postgres.controls.PostgresConfi
 import org.odpi.openmetadata.adapters.connectors.postgres.ffdc.PostgresAuditCode;
 import org.odpi.openmetadata.adapters.connectors.postgres.ffdc.PostgresErrorCode;
 import org.odpi.openmetadata.adapters.connectors.resource.jdbc.JDBCResourceConnector;
-import org.odpi.openmetadata.frameworks.connectors.Connector;
-import org.odpi.openmetadata.frameworks.connectors.ConnectorBase;
-import org.odpi.openmetadata.frameworks.connectors.TabularColumnDescription;
-import org.odpi.openmetadata.frameworks.connectors.TabularDataSource;
+import org.odpi.openmetadata.frameworks.connectors.*;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
 import org.slf4j.Logger;
@@ -23,7 +20,7 @@ import java.util.Map;
 /**
  * PostgresTabularDataSourceConnector works with structured files to retrieve simple tables of data.
  */
-public class PostgresTabularDataSourceConnector extends ConnectorBase implements TabularDataSource
+public class PostgresTabularDataSourceConnector extends ConnectorBase implements ReadableTabularDataSource, WritableTabularDataSource
 {
     /*
      * Variables used for logging and debug.
@@ -177,8 +174,7 @@ public class PostgresTabularDataSourceConnector extends ConnectorBase implements
         final String methodName = "getColumnDescriptions";
 
         try
-        {
-
+        { // todo
         }
         catch (Exception exception)
         {
@@ -201,6 +197,36 @@ public class PostgresTabularDataSourceConnector extends ConnectorBase implements
         return null;
     }
 
+    /**
+     * Locate the named column. A negative number means the column is not present.
+     *
+     * @return column
+     * @throws ConnectorCheckedException problem extracting the column descriptions
+     */
+    @Override
+    public int getColumnNumber(String columnName) throws ConnectorCheckedException
+    {
+        int columnNumber = -1; // means not present
+
+        List<TabularColumnDescription> columnDescriptions = this.getColumnDescriptions();
+        if (columnDescriptions != null)
+        {
+            int columnCount = 0;
+            for (TabularColumnDescription tabularColumnDescription : columnDescriptions)
+            {
+                if ((tabularColumnDescription != null) && (columnName.equals(tabularColumnDescription.columnName())))
+                {
+                    columnNumber = columnCount;
+                    break;
+                }
+
+                columnCount ++;
+            }
+        }
+
+        return columnNumber;
+    }
+
 
     /**
      * Return the requested data record.  The first record is record 0.  If the first line of the file is the column
@@ -216,7 +242,7 @@ public class PostgresTabularDataSourceConnector extends ConnectorBase implements
 
         try
         {
-
+//todo
         }
         catch (Exception exception)
         {
@@ -256,7 +282,7 @@ public class PostgresTabularDataSourceConnector extends ConnectorBase implements
         {
 
             List<Map<String, Object>> allData = jdbcResourceConnector.getUnmappedRows(databaseConnection, tableName);
-
+            // todo
         }
         catch (Exception exception)
         {
@@ -293,7 +319,7 @@ public class PostgresTabularDataSourceConnector extends ConnectorBase implements
 
         try
         {
-
+// todo
         }
         catch (Exception exception)
         {
@@ -381,6 +407,6 @@ public class PostgresTabularDataSourceConnector extends ConnectorBase implements
             log.debug("Ignoring unexpected exception " + exec.getClass().getSimpleName() + " with message " + exec.getMessage());
         }
 
-        log.debug("Closing Structured File Store");
+        log.debug("Closing Database Connection");
     }
 }

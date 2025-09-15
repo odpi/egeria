@@ -3,11 +3,13 @@
 
 package org.odpi.openmetadata.adapters.connectors.referencedata.tabulardatasets;
 
+import org.odpi.openmetadata.adapters.connectors.referencedata.tabulardatasets.controls.ReferenceDataConfigurationProperty;
 import org.odpi.openmetadata.adapters.connectors.referencedata.tabulardatasets.ffdc.ReferenceDataAuditCode;
 import org.odpi.openmetadata.adapters.connectors.referencedata.tabulardatasets.ffdc.ReferenceDataErrorCode;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLoggingComponent;
+import org.odpi.openmetadata.frameworks.connectors.ReadableTabularDataSource;
 import org.odpi.openmetadata.frameworks.connectors.TabularColumnDescription;
-import org.odpi.openmetadata.frameworks.connectors.TabularDataSource;
+import org.odpi.openmetadata.frameworks.connectors.WritableTabularDataSource;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.OpenMetadataRootElement;
@@ -28,13 +30,15 @@ import java.util.Map;
  * ValidValueDataSetConnector enables interaction with a valid value set as if it is a tabular data set.
  */
 public class ValidValueDataSetConnector extends ReferenceDataSetConnectorBase implements AuditLoggingComponent,
-                                                                                         TabularDataSource
+                                                                                         ReadableTabularDataSource,
+                                                                                         WritableTabularDataSource
 {
     private static final String myConnectorName = "ValidValueDataSetConnector";
     private static final Logger log = LoggerFactory.getLogger(ValidValueDataSetConnector.class);
 
     private final Map<Long, RelatedMetadataElementSummary> records                    = new HashMap<>();
     private String                                         validValueSetQualifiedName = null;
+    protected String               validValueSetGUID = null;
 
     /**
      * Default constructor
@@ -57,6 +61,16 @@ public class ValidValueDataSetConnector extends ReferenceDataSetConnectorBase im
         super.start();
 
         final String methodName = "start";
+
+        validValueSetGUID = super.getStringConfigurationProperty(ReferenceDataConfigurationProperty.VALID_VALUE_SET_GUID.getName(), connectionBean.getConfigurationProperties());
+
+        if (validValueSetGUID == null)
+        {
+            super.throwMissingConfigurationProperty(connectorName,
+                                                    this.getClass().getName(),
+                                                    ReferenceDataConfigurationProperty.VALID_VALUE_SET_GUID.getName(),
+                                                    methodName);
+        }
 
         refreshValidValueSet(methodName);
     }
@@ -175,19 +189,20 @@ public class ValidValueDataSetConnector extends ReferenceDataSetConnectorBase im
         {
             columnDescriptions = new ArrayList<>();
 
-            columnDescriptions.add(getTabularColumnDescription(OpenMetadataProperty.GUID, false));
-            columnDescriptions.add(getTabularColumnDescription(OpenMetadataProperty.CREATE_TIME, false));
-            columnDescriptions.add(getTabularColumnDescription(OpenMetadataProperty.UPDATE_TIME, true));
-            columnDescriptions.add(getTabularColumnDescription(OpenMetadataProperty.QUALIFIED_NAME, false));
-            columnDescriptions.add(getTabularColumnDescription(OpenMetadataProperty.DISPLAY_NAME, true));
-            columnDescriptions.add(getTabularColumnDescription(OpenMetadataProperty.DESCRIPTION, true));
-            columnDescriptions.add(getTabularColumnDescription(OpenMetadataProperty.CATEGORY, true));
-            columnDescriptions.add(getTabularColumnDescription(OpenMetadataProperty.PREFERRED_VALUE, true));
-            columnDescriptions.add(getTabularColumnDescription(OpenMetadataProperty.IS_CASE_SENSITIVE, true));
-            columnDescriptions.add(getTabularColumnDescription(OpenMetadataProperty.DATA_TYPE, true));
-            columnDescriptions.add(getTabularColumnDescription(OpenMetadataProperty.SCOPE, true));
-            columnDescriptions.add(getTabularColumnDescription(OpenMetadataProperty.USAGE, true));
-            columnDescriptions.add(getTabularColumnDescription(OpenMetadataProperty.IS_DEFAULT_VALUE, false));
+            columnDescriptions.add(getTabularColumnDescription(OpenMetadataProperty.GUID, false, true));
+            columnDescriptions.add(getTabularColumnDescription(OpenMetadataProperty.CREATE_TIME, false, false));
+            columnDescriptions.add(getTabularColumnDescription(OpenMetadataProperty.UPDATE_TIME, true, false));
+            columnDescriptions.add(getTabularColumnDescription(OpenMetadataProperty.QUALIFIED_NAME, false, false));
+            columnDescriptions.add(getTabularColumnDescription(OpenMetadataProperty.DISPLAY_NAME, true, false));
+            columnDescriptions.add(getTabularColumnDescription(OpenMetadataProperty.DESCRIPTION, true, false));
+            columnDescriptions.add(getTabularColumnDescription(OpenMetadataProperty.CATEGORY, true, false));
+            columnDescriptions.add(getTabularColumnDescription(OpenMetadataProperty.NAMESPACE, true, false));
+            columnDescriptions.add(getTabularColumnDescription(OpenMetadataProperty.PREFERRED_VALUE, true, false));
+            columnDescriptions.add(getTabularColumnDescription(OpenMetadataProperty.IS_CASE_SENSITIVE, true, false));
+            columnDescriptions.add(getTabularColumnDescription(OpenMetadataProperty.DATA_TYPE, false, false));
+            columnDescriptions.add(getTabularColumnDescription(OpenMetadataProperty.SCOPE, true, false));
+            columnDescriptions.add(getTabularColumnDescription(OpenMetadataProperty.USAGE, true, false));
+            columnDescriptions.add(getTabularColumnDescription(OpenMetadataProperty.IS_DEFAULT_VALUE, false, false));
         }
 
         return columnDescriptions;

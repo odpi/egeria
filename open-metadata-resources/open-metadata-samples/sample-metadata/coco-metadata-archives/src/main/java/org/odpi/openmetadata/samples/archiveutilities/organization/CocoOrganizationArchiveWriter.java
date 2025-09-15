@@ -56,7 +56,6 @@ public class CocoOrganizationArchiveWriter extends EgeriaBaseArchiveWriter
         writeJobLevelDefinitionValidValueSet();
         writeOrganizationTypeValidValueSet();
         writeWorkLocationsValidValueSet();
-        writeScopeValidValueSet();
 
         writeBusinessAreas();
         writeOrganizations();
@@ -303,48 +302,6 @@ public class CocoOrganizationArchiveWriter extends EgeriaBaseArchiveWriter
                                                                     CountryCodeDefinition.validValueSetUsage,
                                                                     CountryCodeDefinition.validValueSetScope,
                                                                     countryCodeDefinition.getPreferredValue(),
-                                                                    null,
-                                                                    null);
-
-                if (validValueGUID != null)
-                {
-                    archiveHelper.addValidValueMembershipRelationship(validValueSetQName, validValueQName, false /* no default value */);
-                }
-            }
-        }
-    }
-
-
-    /**
-     * Creates Scope valid value set to show the scope of a responsibility.
-     */
-    private void writeScopeValidValueSet()
-    {
-        String validValueSetQName = openMetadataValidValueSetPrefix + ScopeDefinition.validValueSetName;
-
-        String validValueSetGUID = archiveHelper.addValidValue(OpenMetadataType.VALID_VALUE_DEFINITION.typeName,
-                                                               validValueSetQName,
-                                                               ScopeDefinition.validValueSetName,
-                                                               ScopeDefinition.validValueSetDescription,
-                                                               ScopeDefinition.validValueSetUsage,
-                                                               ScopeDefinition.validValueSetScope,
-                                                               null,
-                                                               null,
-                                                               null);
-
-        if (validValueSetGUID != null)
-        {
-            for (ScopeDefinition scopeDefinition : ScopeDefinition.values())
-            {
-                String validValueQName = openMetadataValidValueSetPrefix + ScopeDefinition.validValueSetName + "." + scopeDefinition.getPreferredValue();
-
-                String validValueGUID = archiveHelper.addValidValue(OpenMetadataType.VALID_VALUE_DEFINITION.typeName,
-                                                                    validValueQName,
-                                                                    scopeDefinition.getDisplayName(),
-                                                                    null,
-                                                                    ScopeDefinition.validValueSetUsage,
-                                                                    ScopeDefinition.validValueSetScope,
-                                                                    scopeDefinition.getPreferredValue(),
                                                                     null,
                                                                     null);
 

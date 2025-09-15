@@ -897,47 +897,6 @@ public class SimpleCatalogArchiveHelper
 
 
 
-
-
-    /**
-     * Link a referenceable to another referenceable to indicate that the second referenceable is providing
-     * resources in support of the first.
-     *
-     * @param referenceableQName qualified name of the referenceable
-     * @param resourceQName qualified name of the second referenceable
-     * @param resourceUse string description (use ResourceUse enum from GAF)
-     * @param resourceUseDescription description of how the resource is used
-     * @param resourceUseProperties additional properties associated with the resource
-     * @param watchResource should the resource be watched (boolean)
-     */
-    public void addResourceListRelationship(String              referenceableQName,
-                                            String              resourceQName,
-                                            String              resourceUse,
-                                            String              resourceUseDescription,
-                                            Map<String, String> resourceUseProperties,
-                                            boolean             watchResource)
-    {
-        final String methodName = "addResourceListRelationship";
-
-        String guid1 = idToGUIDMap.getGUID(referenceableQName);
-        String guid2 = idToGUIDMap.getGUID(resourceQName);
-
-        EntityProxy end1 = archiveHelper.getEntityProxy(archiveBuilder.getEntity(guid1));
-        EntityProxy end2 = archiveHelper.getEntityProxy(archiveBuilder.getEntity(guid2));
-
-        InstanceProperties properties = archiveHelper.addStringPropertyToInstance(archiveRootName, null, OpenMetadataProperty.RESOURCE_USE.name, resourceUse, methodName);
-        properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.DESCRIPTION.name, resourceUseDescription, methodName);
-        properties = archiveHelper.addStringMapPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.ADDITIONAL_PROPERTIES.name, resourceUseProperties, methodName);
-        properties = archiveHelper.addBooleanPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.WATCH_RESOURCE.name, watchResource, methodName);
-
-        archiveBuilder.addRelationship(archiveHelper.getRelationship(OpenMetadataType.RESOURCE_LIST_RELATIONSHIP.typeName,
-                                                                     idToGUIDMap.getGUID(guid1 + "_to_" + guid2 + "_resource_list_relationship"),
-                                                                     properties,
-                                                                     InstanceStatus.ACTIVE,
-                                                                     end1,
-                                                                     end2));
-    }
-
     /**
      * Add a location entity to the archive.
      *

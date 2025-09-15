@@ -5,7 +5,7 @@ package org.odpi.openmetadata.samples.archiveutilities.sustainability;
 
 import org.odpi.openmetadata.samples.archiveutilities.organization.BusinessAreaDefinition;
 import org.odpi.openmetadata.samples.archiveutilities.organization.PersonDefinition;
-import org.odpi.openmetadata.samples.archiveutilities.organization.ScopeDefinition;
+import org.odpi.openmetadata.frameworks.openmetadata.refdata.ScopeDefinition;
 
 /**
  * The SustainabilityRoleDefinition is used to feed the definition of the governance roles for
@@ -22,7 +22,7 @@ public enum SustainabilityRoleDefinition
                            "1) Conduct sustainability or environment-related risk assessments.\n" +
                                    "2) Create and maintain sustainability program documents, such as schedules and budgets.\n" +
                                    "3) Write project proposals, grant applications, or other documents to pursue funding for environmental initiatives.\n",
-                           ScopeDefinition.ALL_COCO,
+                           ScopeDefinition.WITHIN_ORGANIZATION,
                            true, 1,
                            null,
                            PersonDefinition.TOM_TALLY,
@@ -35,7 +35,7 @@ public enum SustainabilityRoleDefinition
                       "RES-SUSTAINABILITY-CHAMP",
                       "Research Sustainability Champion",
                       "Provides support and education to Coco Pharmaceuticals employees to help them improve the sustainability of their work.",
-                      ScopeDefinition.ALL_COCO,
+                      ScopeDefinition.WITHIN_ORGANIZATION,
                       false, 0,
                       BusinessAreaDefinition.RESEARCH,
                       PersonDefinition.TESSA_TUBE,
@@ -48,7 +48,7 @@ public enum SustainabilityRoleDefinition
                              "C-TRL-SUSTAINABILITY-CHAMP",
                              "Clinical Trials Sustainability Champion",
                              "Provides support and education to Coco Pharmaceuticals employees to help them improve the sustainability of their work.",
-                             ScopeDefinition.ALL_COCO,
+                             ScopeDefinition.WITHIN_ORGANIZATION,
                              false, 0,
                              BusinessAreaDefinition.CLINICAL_TRIALS,
                              PersonDefinition.TANYA_TIDIE,
@@ -61,7 +61,7 @@ public enum SustainabilityRoleDefinition
                             "FIN-SUSTAINABILITY-CHAMP",
                             "Finance Sustainability Champion",
                             "Provides support and education to Coco Pharmaceuticals employees to help them improve the sustainability of their work.",
-                            ScopeDefinition.ALL_COCO,
+                            ScopeDefinition.WITHIN_ORGANIZATION,
                             false, 0,
                             BusinessAreaDefinition.FINANCE,
                             PersonDefinition.SALLY_COUNTER,
@@ -74,7 +74,7 @@ public enum SustainabilityRoleDefinition
                 "HR-SUSTAINABILITY-CHAMP",
                 "HR Sustainability Champion",
                 "Provides support and education to Coco Pharmaceuticals employees to help them improve the sustainability of their work.",
-                ScopeDefinition.ALL_COCO,
+                ScopeDefinition.WITHIN_ORGANIZATION,
                 false, 0,
                 BusinessAreaDefinition.HR,
                 PersonDefinition.FAITH_BROKER,
@@ -87,7 +87,7 @@ public enum SustainabilityRoleDefinition
                 "IT-SUSTAINABILITY-CHAMP",
                 "IT Sustainability Champion",
                 "Provides support and education to Coco Pharmaceuticals employees to help them improve the sustainability of their work.",
-                ScopeDefinition.ALL_COCO,
+                ScopeDefinition.WITHIN_ORGANIZATION,
                 false, 0,
                 BusinessAreaDefinition.IT,
                 PersonDefinition.GARY_GEEKE,
@@ -100,7 +100,7 @@ public enum SustainabilityRoleDefinition
                            "MFG-SUSTAINABILITY-CHAMP",
                            "Manufacturing Sustainability Champion",
                            "Provides support and education to Coco Pharmaceuticals employees to help them improve the sustainability of their work.",
-                           ScopeDefinition.ALL_COCO,
+                           ScopeDefinition.WITHIN_ORGANIZATION,
                            false, 0,
                            BusinessAreaDefinition.MANUFACTURING,
                            PersonDefinition.STEW_FASTER,
@@ -113,7 +113,7 @@ public enum SustainabilityRoleDefinition
                   "DIST-SUSTAINABILITY-CHAMP",
                   "Distribution Sustainability Champion",
                   "Provides support and education to Coco Pharmaceuticals employees to help them improve the sustainability of their work.",
-                  ScopeDefinition.ALL_COCO,
+                  ScopeDefinition.WITHIN_ORGANIZATION,
                   false, 0,
                   BusinessAreaDefinition.DISTRIBUTION,
                   null,
@@ -126,7 +126,7 @@ public enum SustainabilityRoleDefinition
                    "SALES-SUSTAINABILITY-CHAMP",
                    "Sales Sustainability Champion",
                    "Provides support and education to Coco Pharmaceuticals employees to help them improve the sustainability of their work.",
-                   ScopeDefinition.ALL_COCO,
+                   ScopeDefinition.WITHIN_ORGANIZATION,
                    false, 0,
                    BusinessAreaDefinition.SALES,
                    PersonDefinition.HARRY_HOPEFUL,
@@ -139,7 +139,7 @@ public enum SustainabilityRoleDefinition
                              "SUSTAINABILITY-TECH-LEAD",
                              "Sustainability Technology Lead",
                              "Builds and maintains the information supply chain for sustainability reporting.",
-                             ScopeDefinition.ALL_COCO,
+                             ScopeDefinition.WITHIN_ORGANIZATION,
                              false, 0,
                              null,
                              PersonDefinition.PETER_PROFILE,

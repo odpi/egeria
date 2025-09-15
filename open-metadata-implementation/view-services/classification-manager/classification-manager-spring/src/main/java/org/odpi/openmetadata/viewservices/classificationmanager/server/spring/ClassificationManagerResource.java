@@ -746,7 +746,7 @@ public class ClassificationManagerResource
      * PropertyServerException problem accessing property server or
      * UserNotAuthorizedException security access problem
      */
-    @PostMapping(path = "/elements/{elementGUID}/semantic-assignment/terms/{glossaryTermGUID}")
+    @PostMapping(path = "/elements/{elementGUID}/semantic-assignment/terms/{glossaryTermGUID}/attach")
 
     @Operation(summary="setupSemanticAssignment",
             description="Create a semantic assignment relationship between a glossary term and an element (normally a schema attribute, data field or asset). This relationship indicates that the data associated with the element meaning matches the description in the glossary term.",
@@ -776,7 +776,7 @@ public class ClassificationManagerResource
      * PropertyServerException problem accessing property server or
      * UserNotAuthorizedException security access problem
      */
-    @PostMapping(path = "/elements/{elementGUID}/semantic-assignment/terms/{glossaryTermGUID}/remove")
+    @PostMapping(path = "/elements/{elementGUID}/semantic-assignment/terms/{glossaryTermGUID}/detach")
 
     @Operation(summary="clearSemanticAssignment",
             description="Remove a semantic assignment relationship between an element and its glossary term.",
@@ -806,7 +806,7 @@ public class ClassificationManagerResource
      * PropertyServerException problem accessing property server or
      * UserNotAuthorizedException security access problem
      */
-    @PostMapping(path = "/elements/{elementGUID}/scoped-by/{scopeGUID}")
+    @PostMapping(path = "/elements/{elementGUID}/scoped-by/{scopeGUID}/attach")
 
     @Operation(summary="addScopeToElement",
             description="Link a scope to an element using the ScopedBy relationship.",
@@ -836,7 +836,7 @@ public class ClassificationManagerResource
      * PropertyServerException problem accessing property server or
      * UserNotAuthorizedException security access problem
      */
-    @PostMapping(path = "/elements/{elementGUID}/scoped-by/{scopeGUID}/remove")
+    @PostMapping(path = "/elements/{elementGUID}/scoped-by/{scopeGUID}/detach")
 
     @Operation(summary="removeScopeFromElement",
             description="Remove the ScopedBy relationship between a scope and an element.",
@@ -867,7 +867,7 @@ public class ClassificationManagerResource
      * PropertyServerException problem accessing property server or
      * UserNotAuthorizedException security access problem
      */
-    @PostMapping(path = "/elements/{elementGUID}/resource-list/{resourceGUID}")
+    @PostMapping(path = "/elements/{elementGUID}/resource-list/{resourceGUID}/attach")
 
     @Operation(summary="addResourceListToElement",
             description="Link a resource to an element using the ResourceList relationship.",
@@ -897,7 +897,7 @@ public class ClassificationManagerResource
      * PropertyServerException problem accessing property server or
      * UserNotAuthorizedException security access problem
      */
-    @PostMapping(path = "/elements/{elementGUID}/resource-list/{resourceGUID}/remove")
+    @PostMapping(path = "/elements/{elementGUID}/resource-list/{resourceGUID}/detach")
 
     @Operation(summary="removeResourceListFromElement",
             description="Remove the ResourceList relationship between a resource and an element.",
@@ -914,9 +914,6 @@ public class ClassificationManagerResource
     }
 
 
-
-
-
     /**
      * Link a resource to an element using the MoreInformation relationship.
      *
@@ -930,7 +927,7 @@ public class ClassificationManagerResource
      * PropertyServerException problem accessing property server or
      * UserNotAuthorizedException security access problem
      */
-    @PostMapping(path = "/elements/{elementGUID}/more-information/{resourceGUID}")
+    @PostMapping(path = "/elements/{elementGUID}/more-information/{resourceGUID}/attach")
 
     @Operation(summary="addMoreInformationToElement",
             description="Link a resource to an element using the MoreInformation relationship.",
@@ -960,7 +957,7 @@ public class ClassificationManagerResource
      * PropertyServerException problem accessing property server or
      * UserNotAuthorizedException security access problem
      */
-    @PostMapping(path = "/elements/{elementGUID}/more-information/{resourceGUID}/remove")
+    @PostMapping(path = "/elements/{elementGUID}/more-information/{resourceGUID}/detach")
 
     @Operation(summary="removeMoreInformationFromElement",
             description="Remove the MoreInformation relationship between a resource and an element.",

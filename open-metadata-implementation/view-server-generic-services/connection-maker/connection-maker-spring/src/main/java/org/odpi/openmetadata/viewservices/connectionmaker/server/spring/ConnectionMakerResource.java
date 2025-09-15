@@ -710,7 +710,7 @@ public class ConnectionMakerResource
      */
     @PostMapping(path = "/connector-types/by-name")
     @Operation(summary="getConnectorTypesByName",
-            description="Returns the list of connectorTypes with a particular name.",
+            description="Returns the list of connector types with a particular value in either qualifiedName or displayName.",
             externalDocs=@ExternalDocumentation(description="Further Information",
                     url="https://egeria-project.org/concepts/connector-type"))
 
@@ -721,6 +721,36 @@ public class ConnectionMakerResource
                                                                     FilterRequestBody requestBody)
     {
         return restAPI.getConnectorTypesByName(serverName, urlMarker, requestBody);
+    }
+
+
+    /**
+     * Returns the list of connector types with a particular connector provider class name.
+     * Provide the name of the connector provider's class name (including package; but without .class)
+     * in the filter.
+     *
+     * @param serverName name of the service to route the request to
+     * @param urlMarker  view service URL marker
+     * @param requestBody string to find in the properties
+     *
+     * @return list of matching metadata elements or
+     *  InvalidParameterException  one of the parameters is invalid
+     *  UserNotAuthorizedException the user is not authorized to issue this request
+     *  PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    @PostMapping(path = "/connector-types/by-connector-provider-class-name")
+    @Operation(summary="getConnectorTypesByConnectorProvider",
+            description="Returns the list of connectorTypes with a particular connector provider class name. Provide the name of the connector provider's class name (including package; but without .class).",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/concepts/connector-type"))
+
+    public OpenMetadataRootElementsResponse getConnectorTypesByConnectorProvider(@PathVariable
+                                                                    String            serverName,
+                                                                    @PathVariable String             urlMarker,
+                                                                    @RequestBody (required = false)
+                                                                    FilterRequestBody requestBody)
+    {
+        return restAPI.getConnectorTypesByConnectorProvider(serverName, urlMarker, requestBody);
     }
 
 

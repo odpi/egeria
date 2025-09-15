@@ -2,7 +2,7 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.samples.archiveutilities.productcatalog;
 
-import org.odpi.openmetadata.samples.archiveutilities.organization.ScopeDefinition;
+import org.odpi.openmetadata.frameworks.openmetadata.refdata.ScopeDefinition;
 
 
 /**
@@ -18,7 +18,7 @@ public enum ProductLicenseTypeDefinition
                  "This license permits the subscriber to use the data for internal systems and activities that are conducting legitimate business of Coco Pharmaceuticals.",
                  "This license provides an unrestricted use of data for purposes that support the Coco Pharmaceuticals business.  The data may not be distributed outside of Coco Pharmaceuticals.",
                  "There are no additional requirements beyond ensuring that the latest version of this data is used wherever possible.",
-                 ScopeDefinition.ALL_COCO),
+                 ScopeDefinition.WITHIN_ORGANIZATION),
     ;
 
 

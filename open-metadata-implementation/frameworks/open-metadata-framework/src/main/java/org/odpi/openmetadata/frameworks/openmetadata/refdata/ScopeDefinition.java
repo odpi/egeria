@@ -1,9 +1,13 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 /* Copyright Contributors to the ODPi Egeria project. */
-package org.odpi.openmetadata.samples.archiveutilities.organization;
+package org.odpi.openmetadata.frameworks.openmetadata.refdata;
 
 
 import org.odpi.openmetadata.frameworks.openmetadata.controls.PlaceholderProperty;
+import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
+
+import static org.odpi.openmetadata.frameworks.openmetadata.mapper.OpenMetadataValidValues.constructValidValueNamespace;
+import static org.odpi.openmetadata.frameworks.openmetadata.mapper.OpenMetadataValidValues.constructValidValueQualifiedName;
 
 /**
  * The ScopeDefinition is used to define the different scope of responsibility assigned to an individual, term, person or activity.
@@ -11,19 +15,19 @@ import org.odpi.openmetadata.frameworks.openmetadata.controls.PlaceholderPropert
 public enum ScopeDefinition
 {
     /**
-     * Everyone, both inside and outside of Coco Pharmaceuticals.
+     * Everyone, both inside and outside of this organization
      */
-    WORLD ("The world","Everyone, both inside and outside of Coco Pharmaceuticals."),
+    WORLD ("The world","Everyone, both inside and outside of this organization."),
 
     /**
-     * All of Coco Pharmaceuticals.
+     * All of this organization
      */
-    ALL_COCO ("Across Coco Pharmaceuticals","All of Coco Pharmaceuticals."),
+    WITHIN_ORGANIZATION ("Within organization","All of this organization."),
 
     /**
-     * Within the trading region (USA and Canada, UK, EU).
+     * Within a trading region (eg USA and Canada, UK, EU).
      */
-    WITHIN_REGION ("Within Region","Within the trading region (USA and Canada, UK, EU)."),
+    WITHIN_REGION ("Within Region","Within a trading region (eg USA and Canada, UK, EU)."),
 
     /**
      * Within the local country.
@@ -36,7 +40,7 @@ public enum ScopeDefinition
     WITHIN_BUSINESS_CAPABILITY("Within Business Capability", "Within a Business Area or Service."),
 
     /**
-     * Within the team.
+     * Within work of the same type performed by the same professionals for the same purposes.
      */
     WITHIN_DISCIPLINE ("Within Discipline","Within work of the same type performed by the same professionals for the same purposes."),
 
@@ -70,6 +74,19 @@ public enum ScopeDefinition
      */
     INDIVIDUAL ("Individual","Just for the individual."),
 
+    /**
+     * Just for the agreement.
+     */
+    WITHIN_AGREEMENT ("Within agreement","Within the scope of an agreement such as a subscription, data sharing agreement etc."),
+
+    /**
+     * Just for the digital product.
+     */
+    WITHIN_PRODUCT ("Within digital product","Within the scope of a digital product."),
+
+    /**
+     * When scope is used in a template
+     */
     TEMPLATE_PLACEHOLDER(PlaceholderProperty.SCOPE.getPlaceholder(), PlaceholderProperty.SCOPE.getName()),
 
     ;
@@ -78,22 +95,48 @@ public enum ScopeDefinition
     public static final String validValueSetPropertyName = "scope";
     public static final String validValueSetDescription  = "Identifies the scope of responsibility assigned to an individual term, person or activity.";
     public static final String validValueSetUsage        = "Used in relationships and definition that imply responsibility.";
-    public static final String validValueSetScope        = "For properties relating to Coco Pharmaceuticals, their employees and partners.";
+    public static final String validValueSetScope        = "For properties relating to this organization, their employees and partners.";
 
     private final String preferredValue;
-    private final String displayName;
+    private final String description;
 
 
     /**
      * The constructor creates an instance of the enum
      *
      * @param preferredValue   unique id for the enum
-     * @param displayName   name for the enum
+     * @param description   name for the enum
      */
-    ScopeDefinition(String preferredValue, String displayName)
+    ScopeDefinition(String preferredValue, String description)
     {
         this.preferredValue = preferredValue;
-        this.displayName = displayName;
+        this.description    = description;
+    }
+
+    /**
+     * Return the qualified name for this value.
+     *
+     * @return string
+     */
+    public String getQualifiedName()
+    {
+        return constructValidValueQualifiedName(null,
+                                                OpenMetadataProperty.SCOPE.name,
+                                                null,
+                                                preferredValue);
+    }
+
+
+    /**
+     * Return the namespace for this value.
+     *
+     * @return string
+     */
+    public String getNamespace()
+    {
+        return constructValidValueNamespace(null,
+                                            OpenMetadataProperty.SCOPE.name,
+                                            null);
     }
 
 
@@ -113,9 +156,9 @@ public enum ScopeDefinition
      *
      * @return string name
      */
-    public String getDisplayName()
+    public String getDescription()
     {
-        return displayName;
+        return description;
     }
 
 
@@ -127,6 +170,6 @@ public enum ScopeDefinition
     @Override
     public String toString()
     {
-        return "Scope{" + displayName + '}';
+        return "Scope{" + description + '}';
     }
 }
