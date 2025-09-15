@@ -172,7 +172,7 @@ loadScripts(document, 'script');</script>
 <li>
 <section class="detail" id="linkLineage(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.commonservices.ffdc.rest.NewRelationshipRequestBody)">
 <h3>linkLineage</h3>
-<div class="member-signature"><span class="annotations">@PostMapping(path="/elements/{elementOneGUID}/{relationshipTypeName}/{elementTwoGUID}/attach")
+<div class="member-signature"><span class="annotations">@PostMapping(path="/from-elements/{elementOneGUID}/via/{relationshipTypeName}/to-elements/{elementTwoGUID}/attach")
 </span><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../../../commonservices/ffdc/rest/GUIDResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">GUIDResponse</a></span>&nbsp;<span class="element-name">linkLineage</span><wbr><span class="parameters">(@PathVariable
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
  @PathVariable
@@ -183,7 +183,7 @@ loadScripts(document, 'script');</script>
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;relationshipTypeName,
  @PathVariable
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;elementTwoGUID,
- @RequestBody
+ @RequestBody(required=false)
  <a href="../../../../commonservices/ffdc/rest/NewRelationshipRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">NewRelationshipRequestBody</a>&nbsp;requestBody)</span></div>
 <div class="block">Create a lineage relationship between two elements that indicates that data is flowing from one element to another.</div>
 <dl class="notes">
@@ -239,7 +239,7 @@ loadScripts(document, 'script');</script>
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;urlMarker,
  @PathVariable
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;lineageRelationshipGUID,
- @RequestBody
+ @RequestBody(required=false)
  <a href="../../../../commonservices/ffdc/rest/DeleteRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">DeleteRequestBody</a>&nbsp;requestBody)</span></div>
 <div class="block">Remove a lineage relationship between two elements.</div>
 <dl class="notes">
