@@ -1130,6 +1130,11 @@ public enum OpenMetadataProperty
     PERMITTED_SYNCHRONIZATION("permittedSynchronization", DataType.STRING, PermittedSynchronization.getOpenTypeName(), "Defines the permitted directions of flow of metadata updates between open metadata and a third party technology.", null, "45f5f2fc-17ec-4f02-8d7a-8cfe8f1557fe"),
 
     /**
+     * Type of role that the attribute plays as part of the concept bead.
+     */
+    KEY("key", DataType.STRING, DataType.STRING.getName(), "The third party system identifier.", "0bea195b-2bbc-460d-8e86-8202669abf12", "fc65a493-a5d6-48e7-a805-8950471aedb3"),
+
+    /**
      * Type of identifier that identifies its lifecycle, for example, its scope and whether the value is reused.
      */
     KEY_PATTERN("keyPattern", DataType.STRING, KeyPattern.getOpenTypeName(), "Type of identifier that identifies its lifecycle, for example, its scope and whether the value is reused.", null, "a8805753-865d-4860-ab95-1e83c3eaf01d"),
@@ -1138,6 +1143,7 @@ public enum OpenMetadataProperty
      * Type of role that the attribute plays as part of the concept bead.
      */
     COVERAGE_CATEGORY("coverageCategory", DataType.STRING, ConceptModelAttributeCoverageCategory.getOpenTypeName(), "Type of role that the attribute plays as part of the concept bead.", null, "4cac11a2-1187-4a54-b94a-8fa493c0b860"),
+
 
     /**
      * The relationship of element that has been changed to the anchor.
@@ -1248,6 +1254,11 @@ public enum OpenMetadataProperty
      * Description of how the member is used, or why it is useful in this collection.
      */
     MEMBERSHIP_RATIONALE("membershipRationale", DataType.STRING, DataType.STRING.getName(), "Description of how the member is used, or why it is useful in this collection.", null, "f4c0da71-f8e8-4d05-a92c-5a1e6b4a263e"),
+
+    /**
+     * Name of the type of membership.
+     */
+    MEMBERSHIP_TYPE("membershipType", DataType.STRING, DataType.STRING.getName(), "Name of the type of membership.", null, "ebf4af8d-b9f7-45d1-8f87-8cc383df4605"),
 
     /**
      * Name of property to use for ordering.

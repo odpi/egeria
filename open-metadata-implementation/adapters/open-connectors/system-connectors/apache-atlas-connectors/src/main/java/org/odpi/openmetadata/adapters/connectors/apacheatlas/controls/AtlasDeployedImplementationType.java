@@ -150,7 +150,7 @@ public enum AtlasDeployedImplementationType implements DeployedImplementationTyp
 
 
     /**
-     * Return the category for this deployed implementation type.
+     * Return the namespace for this deployed implementation type.
      *
      * @return string
      */

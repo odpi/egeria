@@ -219,7 +219,7 @@ public enum CollectionMemberStatus implements OpenMetadataEnum
      *
      * @return string
      */
-    public String getCategory()
+    public String getNamespace()
     {
         return constructValidValueNamespace(ENUM_TYPE_NAME,
                                             OpenMetadataProperty.MEMBERSHIP_STATUS.name,

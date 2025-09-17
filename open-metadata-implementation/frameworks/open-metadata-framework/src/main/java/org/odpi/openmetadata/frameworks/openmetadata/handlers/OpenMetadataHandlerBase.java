@@ -13,7 +13,6 @@ import org.odpi.openmetadata.frameworks.openmetadata.converters.SolutionComponen
 import org.odpi.openmetadata.frameworks.openmetadata.enums.ElementStatus;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.*;
 import org.odpi.openmetadata.frameworks.openmetadata.mermaid.OpenMetadataRootMermaidGraphBuilder;
-import org.odpi.openmetadata.frameworks.openmetadata.mermaid.SolutionBlueprintMermaidGraphBuilder;
 import org.odpi.openmetadata.frameworks.openmetadata.mermaid.SolutionComponentMermaidGraphBuilder;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.*;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.*;
@@ -654,7 +653,7 @@ public class OpenMetadataHandlerBase
                     if (propertyHelper.isTypeOf(parentElement.getElement(), OpenMetadataType.INFORMATION_SUPPLY_CHAIN.typeName))
                     {
                         contexts.add(new InformationSupplyChainContext(null,
-                                                                       Collections.singletonList(propertyHelper.getRelatedElementSummary(parentElement, methodName))));
+                                                                       Collections.singletonList(propertyHelper.getRelatedElementSummary(parentElement))));
                     }
                     else
                     {
@@ -666,7 +665,7 @@ public class OpenMetadataHandlerBase
                         {
                             if (relatedMetadataElement != null)
                             {
-                                RelatedMetadataElementSummary bean = propertyHelper.getRelatedElementSummary(relatedMetadataElement, methodName);
+                                RelatedMetadataElementSummary bean = propertyHelper.getRelatedElementSummary(relatedMetadataElement);
 
                                 if (bean != null)
                                 {
@@ -1459,8 +1458,6 @@ public class OpenMetadataHandlerBase
                                                                                                                            PropertyServerException,
                                                                                                                            UserNotAuthorizedException
     {
-        final String methodName = "getElementHierarchy";
-
         if (queryOptions.getGraphQueryDepth() > currentDepth)
         {
             QueryOptions workingQueryOptions = new QueryOptions(queryOptions);
@@ -1497,7 +1494,7 @@ public class OpenMetadataHandlerBase
                         {
                             if (! coveredElementsGUIDs.contains(relatedMetadataElement.getElement().getElementGUID()))
                             {
-                                RelatedMetadataElementSummary nestedElement = propertyHelper.getRelatedElementSummary(relatedMetadataElement, methodName);
+                                RelatedMetadataElementSummary nestedElement = propertyHelper.getRelatedElementSummary(relatedMetadataElement);
 
                                 coveredElementsGUIDs.add(relatedMetadataElement.getElement().getElementGUID());
                                 nestedElements.add(getElementHierarchy(userId,
@@ -1519,7 +1516,7 @@ public class OpenMetadataHandlerBase
                             {
                                 if (propertyHelper.isTypeOf(relatedMetadataElement, sideRelationshipName))
                                 {
-                                    sideLinks.add(propertyHelper.getRelatedElementSummary(relatedMetadataElement, methodName));
+                                    sideLinks.add(propertyHelper.getRelatedElementSummary(relatedMetadataElement));
                                 }
                             }
                         }

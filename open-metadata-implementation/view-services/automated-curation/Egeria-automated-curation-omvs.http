@@ -148,7 +148,7 @@ Content-Type: application/json
 ###
 # @name getTechnologyTypesForOpenMetadataType
 # Retrieve the list of deployed implementation type metadata elements linked to a particular open metadata type.
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/automated-curation/open-metadata-types/{{typeName}}/technology-types?startFrom=0&pageSize=0
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/automated-curation/open-metadata-types/{{typeName}}/technology-types
 Authorization: Bearer {{token}}
 Content-Type: application/json
 
@@ -156,13 +156,13 @@ Content-Type: application/json
 ###
 # @name findTechnologyTypes
 # Retrieve the list of deployed implementation type metadata elements that contain the search string.
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/automated-curation/technology-types/by-search-string?startFrom=0&pageSize=0&startsWith=false&endsWith=true&ignoreCase=true
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/automated-curation/technology-types/by-search-string
 Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
   "class" : "SearchStringRequestBody",
-  "searchString": "xxx",
+  "searchString": "File",
   "startsWith" : false,
   "endsWith" : false,
   "ignoreCase" : true,

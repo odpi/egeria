@@ -5,7 +5,7 @@ package org.odpi.openmetadata.viewservices.peopleorganizer.server.spring;
 import io.swagger.v3.oas.annotations.ExternalDocumentation;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import org.odpi.openmetadata.commonservices.ffdc.rest.DeleteRequestBody;
+import org.odpi.openmetadata.commonservices.ffdc.rest.DeleteRelationshipRequestBody;
 import org.odpi.openmetadata.commonservices.ffdc.rest.NewRelationshipRequestBody;
 import org.odpi.openmetadata.commonservices.ffdc.rest.VoidResponse;
 import org.odpi.openmetadata.viewservices.peopleorganizer.server.PeopleOrganizerRESTServices;
@@ -92,7 +92,7 @@ public class PeopleOrganizerResource
                                          @PathVariable
                                          String                     personTwoGUID,
                                          @RequestBody (required = false)
-                                         DeleteRequestBody requestBody)
+                                             DeleteRelationshipRequestBody requestBody)
     {
         return restAPI.detachPeerPerson(serverName, personOneGUID, personTwoGUID, requestBody);
     }
@@ -156,7 +156,7 @@ public class PeopleOrganizerResource
                                             @PathVariable
                                             String subteamGUID,
                                             @RequestBody (required = false)
-                                            DeleteRequestBody requestBody)
+                                                DeleteRelationshipRequestBody requestBody)
     {
         return restAPI.detachTeamStructure(serverName, superTeamGUID, subteamGUID, requestBody);
     }

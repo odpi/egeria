@@ -103,7 +103,7 @@ public class LineageLinkerResource
     public VoidResponse detachLineage(@PathVariable String           serverName,
                                       @PathVariable String           urlMarker,
                                       @PathVariable String           lineageRelationshipGUID,
-                                      @RequestBody(required = false) DeleteRequestBody requestBody)
+                                      @RequestBody(required = false) DeleteRelationshipRequestBody requestBody)
     {
         return restAPI.detachLineage(serverName, urlMarker, lineageRelationshipGUID, requestBody);
     }

@@ -9,8 +9,6 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.ReferenceableProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 
-import java.util.Objects;
-
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
@@ -22,8 +20,6 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class LocationProperties extends ReferenceableProperties
 {
-    private String identifier  = null;
-
 
     /**
      * Default constructor
@@ -40,87 +36,21 @@ public class LocationProperties extends ReferenceableProperties
      *
      * @param template object to copy
      */
-    public LocationProperties(LocationProperties template)
+    public LocationProperties(ReferenceableProperties template)
     {
         super(template);
-
-        if (template != null)
-        {
-            identifier  = template.getIdentifier();
-        }
     }
 
 
     /**
-     * Return the code value or symbol used to identify the location - typically unique.
+     * JSON-style toString
      *
-     * @return string identifier
-     */
-    public String getIdentifier()
-    {
-        return identifier;
-    }
-
-
-    /**
-     * Set up the code value or symbol used to identify the location - typically unique.
-     *
-     * @param identifier string identifier
-     */
-    public void setIdentifier(String identifier)
-    {
-        this.identifier = identifier;
-    }
-
-
-    /**
-     * Standard toString method.
-     *
-     * @return print out of variables in a JSON-style
+     * @return return string containing the property names and values
      */
     @Override
     public String toString()
     {
         return "LocationProperties{" +
-                "identifier='" + identifier + '\'' +
                 "} " + super.toString();
-    }
-
-
-    /**
-     * Compare the values of the supplied object with those stored in the current object.
-     *
-     * @param objectToCompare supplied object
-     * @return boolean result of comparison
-     */
-    @Override
-    public boolean equals(Object objectToCompare)
-    {
-        if (this == objectToCompare)
-        {
-            return true;
-        }
-        if (objectToCompare == null || getClass() != objectToCompare.getClass())
-        {
-            return false;
-        }
-        if (!super.equals(objectToCompare))
-        {
-            return false;
-        }
-        LocationProperties that = (LocationProperties) objectToCompare;
-        return Objects.equals(identifier, that.identifier);
-    }
-
-
-    /**
-     * Return hash code based on properties.
-     *
-     * @return int
-     */
-    @Override
-    public int hashCode()
-    {
-        return Objects.hash(super.hashCode(), identifier);
     }
 }

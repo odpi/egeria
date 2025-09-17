@@ -40,7 +40,7 @@ public class ExternalReferenceProperties extends ReferenceableProperties
     private Map<String, String> sources           = null;
     private String              license           = null;
     private String              copyright         = null;
-    private String              attribution         = null;
+    private String              attribution       = null;
 
 
     /**

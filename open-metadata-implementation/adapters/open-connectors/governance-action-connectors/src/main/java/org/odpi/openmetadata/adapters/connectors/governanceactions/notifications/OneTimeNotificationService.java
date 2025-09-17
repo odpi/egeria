@@ -10,6 +10,7 @@ import org.odpi.openmetadata.frameworks.auditlog.messagesets.AuditLogMessageDefi
 import org.odpi.openmetadata.frameworks.auditlog.messagesets.MessageDefinition;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
 import org.odpi.openmetadata.frameworks.opengovernance.ffdc.GovernanceServiceException;
+import org.odpi.openmetadata.frameworks.openmetadata.enums.ActivityStatus;
 import org.odpi.openmetadata.frameworks.openmetadata.events.OpenMetadataOutTopicEvent;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.OpenMetadataRootElement;
@@ -64,7 +65,8 @@ public class OneTimeNotificationService extends WatchdogActionServiceConnector
 
             watchdogContext.notifySubscribers(watchdogContext.getNotificationProperties(notificationDescription),
                                               watchdogContext.getRequestParameters(),
-                                              null);
+                                              null,
+                                              ActivityStatus.COMPLETED);
         }
         catch (Exception error)
         {

@@ -146,7 +146,7 @@ public class SchemaMakerResource
                                          @PathVariable
                                          String                    schemaTypeGUID,
                                          @RequestBody (required = false)
-                                         DeleteRequestBody requestBody)
+                                         DeleteElementRequestBody requestBody)
     {
         return restAPI.deleteSchemaType(serverName, urlMarker, schemaTypeGUID, requestBody);
     }
@@ -353,7 +353,7 @@ public class SchemaMakerResource
                                               @PathVariable
                                               String                    schemaAttributeGUID,
                                               @RequestBody (required = false)
-                                              DeleteRequestBody requestBody)
+                                              DeleteElementRequestBody requestBody)
     {
         return restAPI.deleteSchemaAttribute(serverName, urlMarker, schemaAttributeGUID, requestBody);
     }

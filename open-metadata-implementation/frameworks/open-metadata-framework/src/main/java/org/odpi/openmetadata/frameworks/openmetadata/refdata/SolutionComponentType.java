@@ -128,11 +128,11 @@ public enum SolutionComponentType
 
 
     /**
-     * Return the category for this resourceUse value.
+     * Return the namespace for this solutionComponentType value.
      *
      * @return string
      */
-    public String getCategory()
+    public String getNamespace()
     {
         return constructValidValueNamespace(null,
                                             OpenMetadataProperty.SOLUTION_COMPONENT_TYPE.name,

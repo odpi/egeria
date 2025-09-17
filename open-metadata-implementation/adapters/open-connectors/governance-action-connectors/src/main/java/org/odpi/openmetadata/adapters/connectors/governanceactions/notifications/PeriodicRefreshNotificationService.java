@@ -98,6 +98,7 @@ public class PeriodicRefreshNotificationService extends WatchdogActionServiceCon
 
                         watchdogContext.notifySubscribers(watchdogContext.getNotificationProperties(notificationDescription),
                                                           watchdogContext.getRequestParameters(),
+                                                          null,
                                                           null);
                     }
                     catch (Exception cancelled)

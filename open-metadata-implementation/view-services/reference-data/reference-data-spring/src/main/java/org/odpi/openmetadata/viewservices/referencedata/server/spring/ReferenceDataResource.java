@@ -167,7 +167,7 @@ public class ReferenceDataResource
                                                        @PathVariable String validValueDefinitionGUID,
                                                        @PathVariable String elementGUID,
                                                        @RequestBody (required = false)
-                                                           DeleteRequestBody requestBody)
+                                                           DeleteRelationshipRequestBody requestBody)
     {
         return restAPI.detachValidValueImplementation(serverName, validValueDefinitionGUID, elementGUID, requestBody);
     }
@@ -231,7 +231,7 @@ public class ReferenceDataResource
                                                     @PathVariable
                                                     String validValueDefinitionGUID,
                                                     @RequestBody (required = false)
-                                                    DeleteRequestBody requestBody)
+                                                    DeleteRelationshipRequestBody requestBody)
     {
         return restAPI.detachValidValuesAssignment(serverName, elementGUID, validValueDefinitionGUID, requestBody);
     }
@@ -291,7 +291,7 @@ public class ReferenceDataResource
                                                        @PathVariable
                                                            String validValueDefinitionGUID,
                                                        @RequestBody (required = false)
-                                                           DeleteRequestBody requestBody)
+                                                           DeleteRelationshipRequestBody requestBody)
     {
         return restAPI.detachReferenceValueAssignment(serverName, elementGUID, validValueDefinitionGUID, requestBody);
     }
@@ -349,7 +349,7 @@ public class ReferenceDataResource
                                                     @PathVariable String validValueDefinitionOneGUID,
                                                     @PathVariable String validValueDefinitionTwoGUID,
                                                     @RequestBody (required = false)
-                                                        DeleteRequestBody requestBody)
+                                                        DeleteRelationshipRequestBody requestBody)
     {
         return restAPI.detachAssociatedValidValues(serverName, validValueDefinitionOneGUID, validValueDefinitionTwoGUID, requestBody);
     }
@@ -408,7 +408,7 @@ public class ReferenceDataResource
                                                     @PathVariable String validValueDefinitionOneGUID,
                                                     @PathVariable String validValueDefinitionTwoGUID,
                                                     @RequestBody (required = false)
-                                                    DeleteRequestBody requestBody)
+                                                        DeleteRelationshipRequestBody requestBody)
     {
         return restAPI.detachConsistentValidValues(serverName, validValueDefinitionOneGUID, validValueDefinitionTwoGUID, requestBody);
     }
@@ -466,7 +466,7 @@ public class ReferenceDataResource
                                                 @PathVariable String validValueDefinitionOneGUID,
                                                 @PathVariable String validValueDefinitionTwoGUID,
                                                 @RequestBody (required = false)
-                                                    DeleteRequestBody requestBody)
+                                                    DeleteRelationshipRequestBody requestBody)
     {
         return restAPI.detachMappedValidValues(serverName, validValueDefinitionOneGUID, validValueDefinitionTwoGUID, requestBody);
     }
@@ -520,14 +520,11 @@ public class ReferenceDataResource
             externalDocs=@ExternalDocumentation(description="Further Information",
                     url="https://egeria-project.org/concepts/valid-value-definition"))
 
-    public VoidResponse detachValidValueMember(@PathVariable
-                                                         String                    serverName,
-                                                         @PathVariable
-                                                         String validValueDefinitionGUID,
-                                                         @PathVariable
-                                                         String nestedValidValueDefinitionGUID,
-                                                         @RequestBody (required = false)
-                                                         DeleteRequestBody requestBody)
+    public VoidResponse detachValidValueMember(@PathVariable String                    serverName,
+                                               @PathVariable String validValueDefinitionGUID,
+                                               @PathVariable String nestedValidValueDefinitionGUID,
+                                               @RequestBody (required = false)
+                                                   DeleteRelationshipRequestBody requestBody)
     {
         return restAPI.detachValidValueMember(serverName, validValueDefinitionGUID, nestedValidValueDefinitionGUID, requestBody);
     }
@@ -557,7 +554,7 @@ public class ReferenceDataResource
                                                    @PathVariable
                                                    String            validValueDefinitionGUID,
                                                    @RequestBody (required = false)
-                                                   DeleteRequestBody requestBody)
+                                                   DeleteElementRequestBody requestBody)
     {
         return restAPI.deleteValidValueDefinition(serverName, validValueDefinitionGUID, requestBody);
     }

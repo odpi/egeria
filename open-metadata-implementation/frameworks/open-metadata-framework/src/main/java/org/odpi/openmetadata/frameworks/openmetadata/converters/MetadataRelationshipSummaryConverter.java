@@ -69,7 +69,7 @@ public class MetadataRelationshipSummaryConverter<B> extends OpenMetadataConvert
                 elementSummary.setEnd2(super.getElementStub(beanClass, relationship.getElementAtEnd2(), methodName));
                 if (relationship.getRelationshipProperties() != null)
                 {
-                    elementSummary.setProperties(relationship.getRelationshipProperties().getPropertiesAsStrings());
+                    elementSummary.setProperties(getRelationshipProperties(relationship));
                 }
             }
             return returnBean;

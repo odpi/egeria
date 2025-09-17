@@ -146,7 +146,7 @@ public class AssetMakerResource
                                          @PathVariable
                                          String                    assetGUID,
                                          @RequestBody (required = false)
-                                         DeleteRequestBody requestBody)
+                                         DeleteElementRequestBody requestBody)
     {
         return restAPI.deleteAsset(serverName, urlMarker, assetGUID, requestBody);
     }

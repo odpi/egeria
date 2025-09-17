@@ -228,9 +228,9 @@ public class CommunityMattersRESTServices extends TokenController
      *  PropertyServerException    there is a problem retrieving information from the property server(s).
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    public VoidResponse deleteCommunity(String            serverName,
-                                        String            communityGUID,
-                                        DeleteRequestBody requestBody)
+    public VoidResponse deleteCommunity(String                   serverName,
+                                        String                   communityGUID,
+                                        DeleteElementRequestBody requestBody)
     {
         final String methodName = "deleteCommunity";
 

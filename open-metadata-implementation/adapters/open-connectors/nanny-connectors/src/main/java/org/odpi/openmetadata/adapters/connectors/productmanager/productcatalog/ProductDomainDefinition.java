@@ -66,11 +66,11 @@ public enum ProductDomainDefinition
 
 
     /**
-     * Return the category for this resourceUse value.
+     * Return the namespace for this valid value.
      *
      * @return string
      */
-    public String getCategory()
+    public String getNamespace()
     {
         return constructValidValueNamespace(null,
                                             OpenMetadataProperty.DOMAIN_IDENTIFIER.name,

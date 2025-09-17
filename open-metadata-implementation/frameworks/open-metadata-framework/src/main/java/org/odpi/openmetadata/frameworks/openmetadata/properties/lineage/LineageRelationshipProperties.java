@@ -3,6 +3,7 @@
 package org.odpi.openmetadata.frameworks.openmetadata.properties.lineage;
 
 import com.fasterxml.jackson.annotation.*;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.LabeledRelationshipProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.RelationshipBeanProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.actors.ITProfileProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.actors.PersonProperties;
@@ -32,11 +33,10 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
                 @JsonSubTypes.Type(value = DataMappingProperties.class, name = "DataMappingProperties"),
                 @JsonSubTypes.Type(value = DigitalProductDependencyProperties.class, name = "DigitalProductDependencyProperties"),
         })
-public class LineageRelationshipProperties extends RelationshipBeanProperties
+public class LineageRelationshipProperties extends LabeledRelationshipProperties
 {
     private String iscQualifiedName = null;
-    private String label            = null;
-    private String description      = null;
+
 
 
     /**
@@ -60,8 +60,6 @@ public class LineageRelationshipProperties extends RelationshipBeanProperties
         if (template != null)
         {
             iscQualifiedName = template.getISCQualifiedName();
-            label            = template.getLabel();
-            description      = template.getDescription();
         }
     }
 
@@ -89,50 +87,6 @@ public class LineageRelationshipProperties extends RelationshipBeanProperties
 
 
     /**
-     * Return the label used when displaying this relationship.
-     *
-     * @return string
-     */
-    public String getLabel()
-    {
-        return label;
-    }
-
-
-    /**
-     * Set up the label used when displaying this relationship.
-     *
-     * @param label string
-     */
-    public void setLabel(String label)
-    {
-        this.label = label;
-    }
-
-
-    /**
-     * Return the description of the relationship.
-     *
-     * @return string text
-     */
-    public String getDescription()
-    {
-        return description;
-    }
-
-
-    /**
-     * Set up the description of the relationship.
-     *
-     * @param description string text
-     */
-    public void setDescription(String description)
-    {
-        this.description = description;
-    }
-
-
-    /**
      * Standard toString method.
      *
      * @return print out of variables in a JSON-style
@@ -142,8 +96,6 @@ public class LineageRelationshipProperties extends RelationshipBeanProperties
     {
         return "LineageRelationshipProperties{" +
                 "iscQualifiedName='" + iscQualifiedName + '\'' +
-                ", label='" + label + '\'' +
-                ", description='" + description + '\'' +
                 "} " + super.toString();
     }
 
@@ -167,9 +119,7 @@ public class LineageRelationshipProperties extends RelationshipBeanProperties
         }
         if (!super.equals(objectToCompare)) return false;
         LineageRelationshipProperties that = (LineageRelationshipProperties) objectToCompare;
-        return Objects.equals(getISCQualifiedName(), that.getISCQualifiedName()) &&
-                Objects.equals(getLabel(), that.getLabel()) &&
-                       Objects.equals(getDescription(), that.getDescription());
+        return Objects.equals(getISCQualifiedName(), that.getISCQualifiedName());
     }
 
 
@@ -181,6 +131,6 @@ public class LineageRelationshipProperties extends RelationshipBeanProperties
     @Override
     public int hashCode()
     {
-        return Objects.hash(iscQualifiedName, label, description);
+        return Objects.hash(super.hashCode(), iscQualifiedName);
     }
 }

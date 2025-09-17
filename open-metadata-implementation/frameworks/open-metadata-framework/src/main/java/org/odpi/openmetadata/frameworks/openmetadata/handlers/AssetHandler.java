@@ -23,6 +23,7 @@ import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.processes
 import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.processes.actions.ActionProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.processes.actions.ActionRequesterProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.processes.actions.ActionTargetProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.lineage.LineageRelationshipProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.refdata.AssignmentType;
 import org.odpi.openmetadata.frameworks.openmetadata.search.*;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
@@ -176,9 +177,9 @@ public class AssetHandler extends OpenMetadataHandlerBase
                                AnchorOptions                     anchorOptions,
                                Map<String, NewElementProperties> initialClassifications,
                                List<NewActionTarget>             newActionTargets,
-                               ActionProperties properties) throws InvalidParameterException,
-                                                                   PropertyServerException,
-                                                                   UserNotAuthorizedException
+                               ActionProperties                  properties) throws InvalidParameterException,
+                                                                                    PropertyServerException,
+                                                                                    UserNotAuthorizedException
     {
         final String methodName                 = "createAction";
         final String toDoPropertiesName         = "properties";
@@ -956,6 +957,7 @@ public class AssetHandler extends OpenMetadataHandlerBase
         final String methodName = "getAssetsByName";
 
         List<String> propertyNames = Arrays.asList(OpenMetadataProperty.QUALIFIED_NAME.name,
+                                                   OpenMetadataProperty.IDENTIFIER.name,
                                                    OpenMetadataProperty.DISPLAY_NAME.name,
                                                    OpenMetadataProperty.RESOURCE_NAME.name);
 
@@ -1018,7 +1020,7 @@ public class AssetHandler extends OpenMetadataHandlerBase
     {
         final String methodName = "getAssetsByMetadataCollectionId";
 
-        List<String> propertyNames = Collections.singletonList(OpenMetadataProperty.DEPLOYED_IMPLEMENTATION_TYPE.name);
+        List<String> propertyNames = Collections.singletonList(OpenMetadataProperty.METADATA_COLLECTION_ID.name);
 
         return super.getRootElementsByName(userId,
                                            metadataCollectionId,
@@ -1913,9 +1915,9 @@ public class AssetHandler extends OpenMetadataHandlerBase
         String relationshipName        = this.getRelationshipName(relationship);
         String relationshipSupplyChain = null;
 
-        if (relationship.getRelationshipProperties() != null)
+        if (relationship.getRelationshipProperties() instanceof LineageRelationshipProperties lineageRelationshipProperties)
         {
-            relationshipSupplyChain = relationship.getRelationshipProperties().get(OpenMetadataProperty.ISC_QUALIFIED_NAME.name);
+            relationshipSupplyChain = lineageRelationshipProperties.getISCQualifiedName();
         }
 
         LineageLink currentLineageLinks = lineageAssets.get(relationship.getRelatedElement().getElementHeader().getGUID());
@@ -1969,9 +1971,9 @@ public class AssetHandler extends OpenMetadataHandlerBase
          */
         String label = null;
 
-        if (relationship.getRelationshipProperties() != null)
+        if (relationship.getRelationshipProperties() instanceof LabeledRelationshipProperties labeledRelationshipProperties)
         {
-            label = relationship.getRelationshipProperties().get(OpenMetadataProperty.LABEL.name);
+            label = labeledRelationshipProperties.getLabel();
         }
 
         if (label != null)

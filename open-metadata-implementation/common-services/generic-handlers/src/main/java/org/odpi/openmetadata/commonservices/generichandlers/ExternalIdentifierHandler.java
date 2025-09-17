@@ -734,7 +734,7 @@ public class ExternalIdentifierHandler<EXTERNAL_ID, OPEN_METADATA_ELEMENT_HEADER
 
         InstanceProperties matchProperties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                                           null,
-                                                                                          OpenMetadataProperty.IDENTIFIER.name,
+                                                                                          OpenMetadataProperty.KEY.name,
                                                                                           identifier,
                                                                                           methodName);
 
@@ -1736,7 +1736,7 @@ public class ExternalIdentifierHandler<EXTERNAL_ID, OPEN_METADATA_ELEMENT_HEADER
 
         List<String> propertyNames = new ArrayList<>();
 
-        propertyNames.add(OpenMetadataProperty.IDENTIFIER.name);
+        propertyNames.add(OpenMetadataProperty.KEY.name);
 
         List<EntityDetail> matchingExternalIds = this.getEntitiesByValue(userId,
                                                                          externalIdentifier,

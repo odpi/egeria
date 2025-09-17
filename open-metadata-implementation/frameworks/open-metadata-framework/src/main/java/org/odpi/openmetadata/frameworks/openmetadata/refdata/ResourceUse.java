@@ -257,7 +257,7 @@ public enum ResourceUse
 
 
     /**
-     * Return the category for this resourceUse value.
+     * Return the namespace for this resourceUse value.
      *
      * @return string
      */

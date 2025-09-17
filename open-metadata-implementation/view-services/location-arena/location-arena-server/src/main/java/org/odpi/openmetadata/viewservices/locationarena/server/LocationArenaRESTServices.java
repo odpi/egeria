@@ -314,10 +314,10 @@ public class LocationArenaRESTServices extends TokenController
      *  PropertyServerException    there is a problem retrieving information from the property server(s).
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    public VoidResponse detachPeerLocations(String            serverName,
-                                            String            locationOneGUID,
-                                            String            locationTwoGUID,
-                                            DeleteRequestBody requestBody)
+    public VoidResponse detachPeerLocations(String                        serverName,
+                                            String                        locationOneGUID,
+                                            String                        locationTwoGUID,
+                                            DeleteRelationshipRequestBody requestBody)
     {
         final String methodName = "detachPeerLocations";
 
@@ -440,10 +440,10 @@ public class LocationArenaRESTServices extends TokenController
      *  PropertyServerException    there is a problem retrieving information from the property server(s).
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    public VoidResponse detachNestedLocation(String            serverName,
-                                             String            locationGUID,
-                                             String            nestedLocationGUID,
-                                             DeleteRequestBody requestBody)
+    public VoidResponse detachNestedLocation(String                        serverName,
+                                             String                        locationGUID,
+                                             String                        nestedLocationGUID,
+                                             DeleteRelationshipRequestBody requestBody)
     {
         final String methodName = "detachNestedLocation";
 
@@ -566,10 +566,10 @@ public class LocationArenaRESTServices extends TokenController
      *  PropertyServerException    there is a problem retrieving information from the property server(s).
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    public VoidResponse detachKnownLocation(String            serverName,
-                                            String            elementGUID,
-                                            String            locationGUID,
-                                            DeleteRequestBody requestBody)
+    public VoidResponse detachKnownLocation(String                        serverName,
+                                            String                        elementGUID,
+                                            String                        locationGUID,
+                                            DeleteRelationshipRequestBody requestBody)
     {
         final String methodName = "detachKnownLocation";
 
@@ -612,9 +612,9 @@ public class LocationArenaRESTServices extends TokenController
      *  PropertyServerException    there is a problem retrieving information from the property server(s).
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    public VoidResponse deleteLocation(String            serverName,
-                                       String            locationGUID,
-                                       DeleteRequestBody requestBody)
+    public VoidResponse deleteLocation(String                   serverName,
+                                       String                   locationGUID,
+                                       DeleteElementRequestBody requestBody)
     {
         final String methodName = "deleteLocation";
 

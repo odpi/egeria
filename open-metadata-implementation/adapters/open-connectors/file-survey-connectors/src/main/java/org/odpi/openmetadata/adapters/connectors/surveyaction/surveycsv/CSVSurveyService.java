@@ -7,6 +7,7 @@ import org.odpi.openmetadata.frameworks.openmetadata.enums.DeleteMethod;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.OpenMetadataRootElement;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.RelatedMetadataElementSummary;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.AssetProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.schema.SchemaAttributeProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.search.*;
 import org.odpi.openmetadata.frameworks.opensurvey.controls.SurveyFileAnnotationType;
 import org.odpi.openmetadata.adapters.connectors.surveyaction.extractors.FileStatsExtractor;
@@ -353,12 +354,15 @@ public class CSVSurveyService extends SurveyActionServiceConnector
                         {
                             DataField dataField = dataFields.get(i);
 
-                            String schemaAttributeDisplayName = schemaAttribute.getRelatedElement().getProperties().get(OpenMetadataProperty.DISPLAY_NAME.name);
-                            if (dataField.getDataFieldName().equals(schemaAttributeDisplayName))
+                            if (schemaAttribute.getRelatedElement().getProperties() instanceof SchemaAttributeProperties schemaAttributeProperties)
                             {
-                                dataField.setMatchingSchemaAttributeGUID(schemaAttribute.getRelatedElement().getElementHeader().getGUID());
-                                found = true;
-                                break;
+                                String schemaAttributeDisplayName = schemaAttributeProperties.getDisplayName();
+                                if (dataField.getDataFieldName().equals(schemaAttributeDisplayName))
+                                {
+                                    dataField.setMatchingSchemaAttributeGUID(schemaAttribute.getRelatedElement().getElementHeader().getGUID());
+                                    found = true;
+                                    break;
+                                }
                             }
                         }
 

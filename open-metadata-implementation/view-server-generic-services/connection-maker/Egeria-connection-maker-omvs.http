@@ -246,7 +246,7 @@ Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-  "class" : "DeleteRequestBody",
+  "class" : "DeleteRelationshipRequestBody",
   "cascadedDelete" : false,
   "deleteMethod" : "LOOK_FOR_LINEAGE",
   "externalSourceGUID": "add guid here",
@@ -306,7 +306,7 @@ Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-  "class" : "DeleteRequestBody",
+  "class" : "DeleteRelationshipRequestBody",
   "cascadedDelete" : false,
   "deleteMethod" : "LOOK_FOR_LINEAGE",
   "externalSourceGUID": "add guid here",
@@ -372,7 +372,7 @@ Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-  "class" : "DeleteRequestBody",
+  "class" : "DeleteRelaitonshipRequestBody",
   "cascadedDelete" : false,
   "deleteMethod" : "LOOK_FOR_LINEAGE",
   "externalSourceGUID": "add guid here",
@@ -432,7 +432,7 @@ Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-  "class" : "DeleteRequestBody",
+  "class" : "DeleteRelationshipRequestBody",
   "cascadedDelete" : false,
   "deleteMethod" : "LOOK_FOR_LINEAGE",
   "externalSourceGUID": "add guid here",
@@ -493,7 +493,7 @@ Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-  "class" : "DeleteRequestBody",
+  "class" : "DeleteRelationshipRequestBody",
   "deleteMethod" : "LOOK_FOR_LINEAGE",
   "externalSourceGUID": "add guid here",
   "externalSourceName": "add qualified name here",
@@ -520,7 +520,7 @@ Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-  "class" : "DeleteRequestBody",
+  "class" : "DeleteElementRequestBody",
   "cascadedDelete" : false,
   "deleteMethod" : "LOOK_FOR_LINEAGE",
   "externalSourceGUID": "add guid here",
@@ -810,7 +810,7 @@ Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-  "class" : "DeleteRequestBody",
+  "class" : "DeleteElementRequestBody",
   "cascadedDelete" : false,
   "deleteMethod" : "LOOK_FOR_LINEAGE",
   "externalSourceGUID": "add guid here",
@@ -1100,7 +1100,7 @@ Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-  "class" : "DeleteRequestBody",
+  "class" : "DeleteElementRequestBody",
   "cascadedDelete" : false,
   "deleteMethod" : "LOOK_FOR_LINEAGE",
   "externalSourceGUID": "add guid here",

@@ -336,6 +336,7 @@ public class SolutionBlueprintHandler extends OpenMetadataHandlerBase
         final String methodName = "getSolutionBlueprintsByName";
 
         List<String> propertyNames = Arrays.asList(OpenMetadataProperty.QUALIFIED_NAME.name,
+                                                   OpenMetadataProperty.IDENTIFIER.name,
                                                    OpenMetadataProperty.DISPLAY_NAME.name);
 
         return super.getRootElementsByName(userId,

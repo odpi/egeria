@@ -195,7 +195,7 @@ public enum PostgresDeployedImplementationType implements DeployedImplementation
 
 
     /**
-     * Return the category for this deployed implementation type.
+     * Return the namespace for this deployed implementation type.
      *
      * @return string
      */

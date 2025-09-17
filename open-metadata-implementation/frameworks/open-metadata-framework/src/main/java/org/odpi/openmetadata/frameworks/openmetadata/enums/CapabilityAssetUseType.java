@@ -185,7 +185,7 @@ public enum CapabilityAssetUseType implements OpenMetadataEnum
      *
      * @return string
      */
-    public String getCategory()
+    public String getNamespace()
     {
         return constructValidValueNamespace(ENUM_TYPE_NAME,
                                             OpenMetadataProperty.USE_TYPE.name,

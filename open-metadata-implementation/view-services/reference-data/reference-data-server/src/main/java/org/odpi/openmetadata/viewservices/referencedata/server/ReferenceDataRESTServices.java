@@ -311,10 +311,10 @@ public class ReferenceDataRESTServices extends TokenController
      *  PropertyServerException    there is a problem retrieving information from the property server(s).
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    public VoidResponse detachValidValueImplementation(String            serverName,
-                                                       String            validValueDefinitionGUID,
-                                                       String            elementGUID,
-                                                       DeleteRequestBody requestBody)
+    public VoidResponse detachValidValueImplementation(String                        serverName,
+                                                       String                        validValueDefinitionGUID,
+                                                       String                        elementGUID,
+                                                       DeleteRelationshipRequestBody requestBody)
     {
         final String methodName = "detachValidValueImplementation";
 
@@ -437,10 +437,10 @@ public class ReferenceDataRESTServices extends TokenController
      *  PropertyServerException    there is a problem retrieving information from the property server(s).
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    public VoidResponse detachValidValuesAssignment(String            serverName,
-                                                    String            elementGUID,
-                                                    String            validValueDefinitionGUID,
-                                                    DeleteRequestBody requestBody)
+    public VoidResponse detachValidValuesAssignment(String                        serverName,
+                                                    String                        elementGUID,
+                                                    String                        validValueDefinitionGUID,
+                                                    DeleteRelationshipRequestBody requestBody)
     {
         final String methodName = "detachValidValuesAssignment";
 
@@ -564,10 +564,10 @@ public class ReferenceDataRESTServices extends TokenController
      *  PropertyServerException    there is a problem retrieving information from the property server(s).
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    public VoidResponse detachReferenceValueAssignment(String            serverName,
-                                                       String            elementGUID,
-                                                       String            validValueDefinitionGUID,
-                                                       DeleteRequestBody requestBody)
+    public VoidResponse detachReferenceValueAssignment(String                        serverName,
+                                                       String                        elementGUID,
+                                                       String                        validValueDefinitionGUID,
+                                                       DeleteRelationshipRequestBody requestBody)
     {
         final String methodName = "detachReferenceValueAssignment";
 
@@ -690,10 +690,10 @@ public class ReferenceDataRESTServices extends TokenController
      *  PropertyServerException    there is a problem retrieving information from the property server(s).
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    public VoidResponse detachAssociatedValidValues(String            serverName,
-                                                    String            validValueDefinitionOneGUID,
-                                                    String            validValueDefinitionTwoGUID,
-                                                    DeleteRequestBody requestBody)
+    public VoidResponse detachAssociatedValidValues(String                        serverName,
+                                                    String                        validValueDefinitionOneGUID,
+                                                    String                        validValueDefinitionTwoGUID,
+                                                    DeleteRelationshipRequestBody requestBody)
     {
         final String methodName = "detachAssociatedValidValues";
 
@@ -817,10 +817,10 @@ public class ReferenceDataRESTServices extends TokenController
      *  PropertyServerException    there is a problem retrieving information from the property server(s).
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    public VoidResponse detachConsistentValidValues(String            serverName,
-                                                    String            validValueDefinitionOneGUID,
-                                                    String            validValueDefinitionTwoGUID,
-                                                    DeleteRequestBody requestBody)
+    public VoidResponse detachConsistentValidValues(String                        serverName,
+                                                    String                        validValueDefinitionOneGUID,
+                                                    String                        validValueDefinitionTwoGUID,
+                                                    DeleteRelationshipRequestBody requestBody)
     {
         final String methodName = "detachConsistentValidValues";
 
@@ -943,10 +943,10 @@ public class ReferenceDataRESTServices extends TokenController
      *  PropertyServerException    there is a problem retrieving information from the property server(s).
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    public VoidResponse detachMappedValidValues(String            serverName,
-                                                String            validValueDefinitionOneGUID,
-                                                String            validValueDefinitionTwoGUID,
-                                                DeleteRequestBody requestBody)
+    public VoidResponse detachMappedValidValues(String                        serverName,
+                                                String                        validValueDefinitionOneGUID,
+                                                String                        validValueDefinitionTwoGUID,
+                                                DeleteRelationshipRequestBody requestBody)
     {
         final String methodName = "detachMappedValidValues";
 
@@ -1069,10 +1069,10 @@ public class ReferenceDataRESTServices extends TokenController
      *  PropertyServerException    there is a problem retrieving information from the property server(s).
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    public VoidResponse detachValidValueMember(String            serverName,
-                                               String            validValueDefinitionGUID,
-                                               String            nestedValidValueDefinitionGUID,
-                                               DeleteRequestBody requestBody)
+    public VoidResponse detachValidValueMember(String                        serverName,
+                                               String                        validValueDefinitionGUID,
+                                               String                        nestedValidValueDefinitionGUID,
+                                               DeleteRelationshipRequestBody requestBody)
     {
         final String methodName = "detachNestedValidValueDefinition";
 
@@ -1116,9 +1116,9 @@ public class ReferenceDataRESTServices extends TokenController
      *  PropertyServerException    there is a problem retrieving information from the property server(s).
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    public VoidResponse deleteValidValueDefinition(String            serverName,
-                                                   String            validValueDefinitionGUID,
-                                                   DeleteRequestBody requestBody)
+    public VoidResponse deleteValidValueDefinition(String                   serverName,
+                                                   String                   validValueDefinitionGUID,
+                                                   DeleteElementRequestBody requestBody)
     {
         final String methodName = "deleteValidValueDefinition";
 

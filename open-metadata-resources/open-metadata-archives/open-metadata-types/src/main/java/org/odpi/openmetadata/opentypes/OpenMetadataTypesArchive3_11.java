@@ -167,7 +167,6 @@ public class OpenMetadataTypesArchive3_11
         add0022Translations();
         update0110ActorProfile();
         updateResponsibilityAssignments();
-        update04xxExplicitNames();
         update04xxNewGovernanceRoles();
         update04xxMultiLinkGovernanceImplementationTypes();
         update07xxImplementationRelationships();
@@ -292,7 +291,6 @@ public class OpenMetadataTypesArchive3_11
         this.archiveBuilder.addTypeDefPatch(updateUserIdentity());
         this.archiveBuilder.addTypeDefPatch(updatePerson());
         this.archiveBuilder.addTypeDefPatch(updatePersonRole());
-        this.archiveBuilder.addTypeDefPatch(updateTeam());
         this.archiveBuilder.addTypeDefPatch(updateContactDetails());
     }
 
@@ -365,28 +363,6 @@ public class OpenMetadataTypesArchive3_11
         return typeDefPatch;
     }
 
-
-    private TypeDefPatch updateTeam()
-    {
-        /*
-         * Create the Patch
-         */
-        TypeDefPatch  typeDefPatch = archiveBuilder.getPatchForType(OpenMetadataType.TEAM.typeName);
-
-        typeDefPatch.setUpdatedBy(originatorName);
-        typeDefPatch.setUpdateTime(creationDate);
-
-        /*
-         * Build the attributes
-         */
-        List<TypeDefAttribute> properties = new ArrayList<>();
-
-        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.IDENTIFIER));
-
-        typeDefPatch.setPropertyDefinitions(properties);
-
-        return typeDefPatch;
-    }
 
 
     private TypeDefPatch updateContactDetails()
@@ -475,40 +451,6 @@ public class OpenMetadataTypesArchive3_11
         return relationshipDef;
     }
 
-
-    /*
-     * -------------------------------------------------------------------------------------------------------
-     */
-
-
-
-    private void update04xxExplicitNames()
-    {
-        this.archiveBuilder.addTypeDefPatch(updateBusinessCapability());
-    }
-
-
-    private TypeDefPatch updateBusinessCapability()
-    {
-        /*
-         * Create the Patch
-         */
-        TypeDefPatch  typeDefPatch = archiveBuilder.getPatchForType(OpenMetadataType.BUSINESS_CAPABILITY.typeName);
-
-        typeDefPatch.setUpdatedBy(originatorName);
-        typeDefPatch.setUpdateTime(creationDate);
-
-        /*
-         * Build the attributes
-         */
-        List<TypeDefAttribute> properties = new ArrayList<>();
-
-        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.IDENTIFIER));
-
-        typeDefPatch.setPropertyDefinitions(properties);
-
-        return typeDefPatch;
-    }
 
 
     /*
