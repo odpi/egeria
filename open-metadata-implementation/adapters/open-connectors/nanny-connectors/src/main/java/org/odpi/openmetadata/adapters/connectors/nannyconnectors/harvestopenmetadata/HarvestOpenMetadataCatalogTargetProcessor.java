@@ -23,6 +23,7 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedExceptio
 import org.odpi.openmetadata.frameworks.opengovernance.properties.CatalogTarget;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.*;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.AssetProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.externalidentifiers.ExternalIdLinkProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.externalidentifiers.ExternalIdProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.governance.DigitalResourceOriginProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.governance.GovernanceClassificationBase;
@@ -2215,14 +2216,13 @@ public class HarvestOpenMetadataCatalogTargetProcessor extends CatalogTargetProc
                 {
                     for (RelatedMetadataElementSummary supplementaryProperties : dataAssetElement.getSupplementaryProperties())
                     {
-                        if ((supplementaryProperties != null) && (supplementaryProperties.getRelatedElement().getProperties() != null))
+                        if ((supplementaryProperties != null) && (supplementaryProperties.getRelatedElement().getProperties() instanceof GlossaryTermProperties glossaryTermProperties))
                         {
-                            Map<String,String> additionalDescriptiveProperties = supplementaryProperties.getRelatedElement().getProperties();
-
-                            addValueToRow(openMetadataRecord, HarvestOpenMetadataColumn.DISPLAY_DESCRIPTION, additionalDescriptiveProperties.get(OpenMetadataProperty.DISPLAY_NAME.name));
-                            addValueToRow(openMetadataRecord, HarvestOpenMetadataColumn.DISPLAY_SUMMARY, additionalDescriptiveProperties.get(OpenMetadataProperty.SUMMARY.name));
-                            addValueToRow(openMetadataRecord, HarvestOpenMetadataColumn.ABBREVIATION, additionalDescriptiveProperties.get(OpenMetadataProperty.DESCRIPTION.name));
-                            addValueToRow(openMetadataRecord, HarvestOpenMetadataColumn.USAGE, additionalDescriptiveProperties.get(OpenMetadataProperty.USAGE.name));
+                            addValueToRow(openMetadataRecord, HarvestOpenMetadataColumn.DISPLAY_NAME, glossaryTermProperties.getDisplayName());
+                            addValueToRow(openMetadataRecord, HarvestOpenMetadataColumn.DISPLAY_DESCRIPTION, glossaryTermProperties.getDescription());
+                            addValueToRow(openMetadataRecord, HarvestOpenMetadataColumn.DISPLAY_SUMMARY, glossaryTermProperties.getSummary());
+                            addValueToRow(openMetadataRecord, HarvestOpenMetadataColumn.ABBREVIATION, glossaryTermProperties.getAbbreviation());
+                            addValueToRow(openMetadataRecord, HarvestOpenMetadataColumn.USAGE, glossaryTermProperties.getUsage());
                         }
                     }
                 }
@@ -2415,7 +2415,7 @@ public class HarvestOpenMetadataCatalogTargetProcessor extends CatalogTargetProc
                                        relatedExternalId.getRelatedElement().getElementHeader().getOrigin().getHomeMetadataCollectionId(),
                                        this.getAssociatedUserIdentity(externalIdProperties.getExternalInstanceLastUpdatedBy()));
                 }
-                addValueToRow(openMetadataRecord, HarvestOpenMetadataColumn.EXTERNAL_IDENTIFIER, externalIdProperties.getIdentifier());
+                addValueToRow(openMetadataRecord, HarvestOpenMetadataColumn.EXTERNAL_IDENTIFIER, externalIdProperties.getKey());
                 addValueToRow(openMetadataRecord, HarvestOpenMetadataColumn.LAST_UPDATED_BY, externalIdProperties.getExternalInstanceLastUpdatedBy());
                 addDateValueToRow(openMetadataRecord, HarvestOpenMetadataColumn.LAST_UPDATE_TIME, externalIdProperties.getExternalInstanceLastUpdateTime());
                 addDateValueToRow(openMetadataRecord, HarvestOpenMetadataColumn.CREATION_TIME, externalIdProperties.getExternalInstanceCreationTime());
@@ -2423,10 +2423,10 @@ public class HarvestOpenMetadataCatalogTargetProcessor extends CatalogTargetProc
                 addValueToRow(openMetadataRecord, HarvestOpenMetadataColumn.VERSION, externalIdProperties.getExternalInstanceVersion());
                 addValueToRow(openMetadataRecord, HarvestOpenMetadataColumn.EXTERNAL_TYPE_NAME, externalIdProperties.getExternalInstanceTypeName());
 
-                if (relatedExternalId.getRelationshipProperties() != null)
+                if (relatedExternalId.getRelationshipProperties() instanceof ExternalIdLinkProperties externalIdLinkProperties)
                 {
-                    addValueToRow(openMetadataRecord, HarvestOpenMetadataColumn.LAST_CONFIRMED_SYNC_TIME, relatedExternalId.getRelationshipProperties().get(OpenMetadataProperty.LAST_SYNCHRONIZED.name));
-                    addValueToRow(openMetadataRecord, HarvestOpenMetadataColumn.ADDITIONAL_PROPERTIES, relatedExternalId.getRelationshipProperties().get(OpenMetadataProperty.MAPPING_PROPERTIES.name));
+                    addValueToRow(openMetadataRecord, HarvestOpenMetadataColumn.LAST_CONFIRMED_SYNC_TIME, externalIdLinkProperties.getLastSynchronized());
+                    addValueToRow(openMetadataRecord, HarvestOpenMetadataColumn.ADDITIONAL_PROPERTIES, externalIdLinkProperties.getMappingProperties());
                 }
             }
         }

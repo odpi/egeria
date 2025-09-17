@@ -54,10 +54,6 @@ public class CollectionProperties extends ReferenceableProperties
     public CollectionProperties(ReferenceableProperties template)
     {
         super(template);
-
-        if (template != null)
-        {
-        }
     }
 
 

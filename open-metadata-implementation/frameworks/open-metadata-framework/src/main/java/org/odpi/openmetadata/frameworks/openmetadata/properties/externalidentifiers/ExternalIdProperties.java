@@ -7,11 +7,9 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.KeyPattern;
-import org.odpi.openmetadata.frameworks.openmetadata.enums.PermittedSynchronization;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.ReferenceableProperties;
 
 import java.util.Date;
-import java.util.Map;
 import java.util.Objects;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
@@ -25,14 +23,14 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class ExternalIdProperties extends ReferenceableProperties
 {
-    private String                   identifier                     = null;
-    private KeyPattern               keyPattern                     = null;
-    private String                   externalInstanceTypeName       = null;
-    private String                   externalInstanceCreatedBy      = null;
-    private Date                     externalInstanceCreationTime   = null;
-    private String                   externalInstanceLastUpdatedBy  = null;
-    private Date                     externalInstanceLastUpdateTime = null;
-    private long                     externalInstanceVersion        = 0L;
+    private String     key                            = null;
+    private KeyPattern keyPattern                     = null;
+    private String     externalInstanceTypeName       = null;
+    private String     externalInstanceCreatedBy      = null;
+    private Date       externalInstanceCreationTime   = null;
+    private String     externalInstanceLastUpdatedBy  = null;
+    private Date       externalInstanceLastUpdateTime = null;
+    private long       externalInstanceVersion        = 0L;
 
 
     /**
@@ -55,8 +53,8 @@ public class ExternalIdProperties extends ReferenceableProperties
 
         if (template != null)
         {
-            identifier                     = template.getIdentifier();
-            externalInstanceTypeName       = template.getExternalInstanceTypeName();
+            key                      = template.getKey();
+            externalInstanceTypeName = template.getExternalInstanceTypeName();
             keyPattern                     = template.getKeyPattern();
             externalInstanceCreatedBy      = template.getExternalInstanceCreatedBy();
             externalInstanceCreationTime   = template.getExternalInstanceCreationTime();
@@ -72,20 +70,20 @@ public class ExternalIdProperties extends ReferenceableProperties
      *
      * @return string identifier
      */
-    public String getIdentifier()
+    public String getKey()
     {
-        return identifier;
+        return key;
     }
 
 
     /**
      * Set up the unique identifier used in the external asset manager for this element.
      *
-     * @param identifier string identifier
+     * @param key string identifier
      */
-    public void setIdentifier(String identifier)
+    public void setKey(String key)
     {
-        this.identifier = identifier;
+        this.key = key;
     }
 
 
@@ -252,7 +250,7 @@ public class ExternalIdProperties extends ReferenceableProperties
     public String toString()
     {
         return "ExternalIdProperties{" +
-                "identifier='" + identifier + '\'' +
+                "identifier='" + key + '\'' +
                 ", keyPattern=" + keyPattern +
                 ", externalInstanceTypeName='" + externalInstanceTypeName + '\'' +
                 ", externalInstanceCreatedBy='" + externalInstanceCreatedBy + '\'' +
@@ -278,7 +276,7 @@ public class ExternalIdProperties extends ReferenceableProperties
         if (!super.equals(objectToCompare)) return false;
         ExternalIdProperties that = (ExternalIdProperties) objectToCompare;
         return externalInstanceVersion == that.externalInstanceVersion &&
-                Objects.equals(identifier, that.identifier) &&
+                Objects.equals(key, that.key) &&
                 Objects.equals(externalInstanceTypeName, that.externalInstanceTypeName) &&
                 keyPattern == that.keyPattern &&
                 Objects.equals(externalInstanceCreatedBy, that.externalInstanceCreatedBy) &&
@@ -296,7 +294,7 @@ public class ExternalIdProperties extends ReferenceableProperties
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), identifier, externalInstanceTypeName, keyPattern, externalInstanceCreatedBy,
+        return Objects.hash(super.hashCode(), key, externalInstanceTypeName, keyPattern, externalInstanceCreatedBy,
                             externalInstanceCreationTime, externalInstanceLastUpdatedBy,
                             externalInstanceLastUpdateTime, externalInstanceVersion);
     }

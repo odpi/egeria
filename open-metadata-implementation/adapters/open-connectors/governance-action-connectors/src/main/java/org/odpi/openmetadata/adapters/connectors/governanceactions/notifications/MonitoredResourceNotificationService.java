@@ -174,7 +174,8 @@ public class MonitoredResourceNotificationService extends WatchdogActionServiceC
 
                         watchdogContext.notifySubscribers(watchdogContext.getNotificationProperties(notificationDescription),
                                                           watchdogContext.getRequestParameters(),
-                                                          newActionTargets);
+                                                          newActionTargets,
+                                                          null);
                     }
                 }
                 else if (event.getElementHeader().getType().getTypeCategory() == OpenMetadataTypeDefCategory.RELATIONSHIP_DEF)

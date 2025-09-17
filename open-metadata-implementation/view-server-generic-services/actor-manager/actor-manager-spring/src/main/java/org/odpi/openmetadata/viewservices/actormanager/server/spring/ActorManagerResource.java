@@ -183,7 +183,7 @@ public class ActorManagerResource
                                                @PathVariable
                                                String itProfileGUID,
                                                @RequestBody (required = false)
-                                                   DeleteRequestBody requestBody)
+                                                   DeleteRelationshipRequestBody requestBody)
     {
         return restAPI.detachAssetFromProfile(serverName, urlMarker, assetGUID, itProfileGUID, requestBody);
     }
@@ -215,7 +215,7 @@ public class ActorManagerResource
                                            @PathVariable
                                            String                    actorProfileGUID,
                                            @RequestBody (required = false)
-                                               DeleteRequestBody requestBody)
+                                               DeleteElementRequestBody requestBody)
     {
         return restAPI.deleteActorProfile(serverName, urlMarker, actorProfileGUID, requestBody);
     }
@@ -458,7 +458,7 @@ public class ActorManagerResource
                                                     @PathVariable
                                                     String personProfileGUID,
                                                     @RequestBody (required = false)
-                                                        DeleteRequestBody requestBody)
+                                                        DeleteRelationshipRequestBody requestBody)
     {
         return restAPI.detachPersonRoleFromProfile(serverName, urlMarker, personRoleGUID, personProfileGUID, requestBody);
     }
@@ -527,7 +527,7 @@ public class ActorManagerResource
                                                   @PathVariable
                                                   String teamProfileGUID,
                                                   @RequestBody (required = false)
-                                                      DeleteRequestBody requestBody)
+                                                      DeleteRelationshipRequestBody requestBody)
     {
         return restAPI.detachTeamRoleFromProfile(serverName, urlMarker, teamRoleGUID, teamProfileGUID, requestBody);
     }
@@ -595,7 +595,7 @@ public class ActorManagerResource
                                                        @PathVariable
                                                        String itProfileGUID,
                                                        @RequestBody (required = false)
-                                                           DeleteRequestBody requestBody)
+                                                           DeleteRelationshipRequestBody requestBody)
     {
         return restAPI.detachITProfileRoleFromProfile(serverName, urlMarker, itProfileRoleGUID, itProfileGUID, requestBody);
     }
@@ -626,7 +626,7 @@ public class ActorManagerResource
                                         @PathVariable
                                         String                    actorRoleGUID,
                                         @RequestBody (required = false)
-                                            DeleteRequestBody requestBody)
+                                            DeleteElementRequestBody requestBody)
     {
         return restAPI.deleteActorRole(serverName, urlMarker, actorRoleGUID, requestBody);
     }
@@ -870,7 +870,7 @@ public class ActorManagerResource
                                               @PathVariable
                                               String                     profileGUID,
                                               @RequestBody (required = false)
-                                                  DeleteRequestBody requestBody)
+                                                  DeleteRelationshipRequestBody requestBody)
     {
         return restAPI.detachProfileIdentity(serverName, urlMarker, userIdentityGUID, profileGUID, requestBody);
     }
@@ -993,7 +993,7 @@ public class ActorManagerResource
                                            @PathVariable
                                            String                    userIdentityGUID,
                                            @RequestBody (required = false)
-                                               DeleteRequestBody requestBody)
+                                               DeleteElementRequestBody requestBody)
     {
         return restAPI.deleteUserIdentity(serverName, urlMarker, userIdentityGUID, requestBody);
     }
@@ -1151,7 +1151,7 @@ public class ActorManagerResource
                                               @PathVariable
                                               String actorGUID,
                                               @RequestBody (required = false)
-                                              DeleteRequestBody requestBody)
+                                                  DeleteRelationshipRequestBody requestBody)
     {
         return restAPI.detachAssignmentScope(serverName, urlMarker, scopeElementGUID, actorGUID, requestBody);
     }

@@ -25,7 +25,6 @@ import org.odpi.openmetadata.frameworks.openmetadata.properties.externalreferenc
 import org.odpi.openmetadata.frameworks.openmetadata.properties.feedback.CommentProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.feedback.NoteLogProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.feedback.NoteProperties;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.glossaries.GlossaryProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.glossaries.GlossaryTermProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.governance.GovernanceDefinitionProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.informationsupplychains.InformationSupplyChainProperties;
@@ -91,6 +90,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 public class ReferenceableProperties extends OpenMetadataRootProperties
 {
     private String              qualifiedName        = null;
+    private String              identifier           = null;
     private String              displayName          = null;
     private String              description          = null;
     private String              versionIdentifier    = null;
@@ -119,6 +119,7 @@ public class ReferenceableProperties extends OpenMetadataRootProperties
         if (template != null)
         {
             qualifiedName        = template.getQualifiedName();
+            identifier           = template.getIdentifier();
             displayName          = template.getDisplayName();
             description          = template.getDescription();
             versionIdentifier    = template.getVersionIdentifier();
@@ -149,6 +150,30 @@ public class ReferenceableProperties extends OpenMetadataRootProperties
     {
         return qualifiedName;
     }
+
+
+
+    /**
+     * Return the code value or symbol used to identify the element - typically unique.
+     *
+     * @return string identifier
+     */
+    public String getIdentifier()
+    {
+        return identifier;
+    }
+
+
+    /**
+     * Set up the code value or symbol used to identify the element - typically unique.
+     *
+     * @param identifier string identifier
+     */
+    public void setIdentifier(String identifier)
+    {
+        this.identifier = identifier;
+    }
+
 
 
     /**
@@ -274,6 +299,7 @@ public class ReferenceableProperties extends OpenMetadataRootProperties
     {
         return "ReferenceableProperties{" +
                 "qualifiedName='" + qualifiedName + '\'' +
+                ", identifier='" + identifier + '\'' +
                 ", displayName='" + displayName + '\'' +
                 ", description='" + description + '\'' +
                 ", versionIdentifier='" + versionIdentifier + '\'' +
@@ -297,6 +323,7 @@ public class ReferenceableProperties extends OpenMetadataRootProperties
         if (!super.equals(objectToCompare)) return false;
         ReferenceableProperties that = (ReferenceableProperties) objectToCompare;
         return Objects.equals(qualifiedName, that.qualifiedName) &&
+                Objects.equals(identifier, that.identifier) &&
                 Objects.equals(displayName, that.displayName) &&
                 Objects.equals(description, that.description) &&
                 Objects.equals(versionIdentifier, that.versionIdentifier) &&
@@ -313,6 +340,6 @@ public class ReferenceableProperties extends OpenMetadataRootProperties
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), qualifiedName, displayName, description, versionIdentifier, category, additionalProperties);
+        return Objects.hash(super.hashCode(), qualifiedName, identifier, displayName, description, versionIdentifier, category, additionalProperties);
     }
 }

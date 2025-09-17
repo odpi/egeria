@@ -183,7 +183,7 @@ public class ConnectionMakerResource
                                                       @PathVariable
                                                       String connectorTypeGUID,
                                                       @RequestBody (required = false)
-                                                          DeleteRequestBody requestBody)
+                                                          DeleteRelationshipRequestBody requestBody)
     {
         return restAPI.detachConnectionConnectorType(serverName, urlMarker, connectionGUID, connectorTypeGUID, requestBody);
     }
@@ -251,7 +251,7 @@ public class ConnectionMakerResource
                                                  @PathVariable
                                                  String endpointGUID,
                                                  @RequestBody (required = false)
-                                                     DeleteRequestBody requestBody)
+                                                     DeleteRelationshipRequestBody requestBody)
     {
         return restAPI.detachConnectionEndpoint(serverName, urlMarker, connectionGUID, endpointGUID, requestBody);
     }
@@ -319,7 +319,7 @@ public class ConnectionMakerResource
                                                  @PathVariable
                                                  String embeddedConnectionGUID,
                                                  @RequestBody (required = false)
-                                                     DeleteRequestBody requestBody)
+                                                     DeleteRelationshipRequestBody requestBody)
     {
         return restAPI.detachEmbeddedConnection(serverName, urlMarker, connectionGUID, embeddedConnectionGUID, requestBody);
     }
@@ -387,7 +387,7 @@ public class ConnectionMakerResource
                                                   @PathVariable
                                                   String connectionGUID,
                                                   @RequestBody (required = false)
-                                                      DeleteRequestBody requestBody)
+                                                      DeleteRelationshipRequestBody requestBody)
     {
         return restAPI.detachAssetFromConnection(serverName, urlMarker, assetGUID, connectionGUID, requestBody);
     }
@@ -455,7 +455,7 @@ public class ConnectionMakerResource
                                                   @PathVariable
                                                   String endpointGUID,
                                                   @RequestBody (required = false)
-                                                      DeleteRequestBody requestBody)
+                                                      DeleteRelationshipRequestBody requestBody)
     {
         return restAPI.detachEndpointFromITAsset(serverName, urlMarker, assetGUID, endpointGUID, requestBody);
     }
@@ -484,7 +484,7 @@ public class ConnectionMakerResource
                                          @PathVariable
                                          String                    connectionGUID,
                                          @RequestBody (required = false)
-                                             DeleteRequestBody requestBody)
+                                             DeleteElementRequestBody requestBody)
     {
         return restAPI.deleteConnection(serverName, urlMarker, connectionGUID, requestBody);
     }
@@ -690,7 +690,7 @@ public class ConnectionMakerResource
                                             @PathVariable
                                             String                    connectorTypeGUID,
                                             @RequestBody (required = false)
-                                                DeleteRequestBody requestBody)
+                                                DeleteElementRequestBody requestBody)
     {
         return restAPI.deleteConnectorType(serverName, urlMarker, connectorTypeGUID, requestBody);
     }
@@ -926,7 +926,7 @@ public class ConnectionMakerResource
                                        @PathVariable
                                        String                    endpointGUID,
                                        @RequestBody (required = false)
-                                           DeleteRequestBody requestBody)
+                                           DeleteElementRequestBody requestBody)
     {
         return restAPI.deleteEndpoint(serverName, urlMarker, endpointGUID, requestBody);
     }

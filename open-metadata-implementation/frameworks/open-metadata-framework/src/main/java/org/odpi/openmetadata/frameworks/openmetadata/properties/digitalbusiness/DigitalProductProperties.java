@@ -25,7 +25,6 @@ public class DigitalProductProperties extends CollectionProperties
 {
     private String userDefinedStatus = null;
     private String productName       = null;
-    private String identifier        = null;
     private Date   introductionDate  = null;
     private String maturity          = null;
     private String serviceLife       = null;
@@ -56,7 +55,6 @@ public class DigitalProductProperties extends CollectionProperties
         {
             userDefinedStatus = template.getUserDefinedStatus();
             productName       = template.getProductName();
-            identifier        = template.getIdentifier();
             introductionDate  = template.getIntroductionDate();
             maturity          = template.getMaturity();
             serviceLife       = template.getServiceLife();
@@ -108,29 +106,6 @@ public class DigitalProductProperties extends CollectionProperties
     {
         this.productName = productName;
     }
-
-
-    /**
-     * Return the product's identifier
-     *
-     * @return string
-     */
-    public String getIdentifier()
-    {
-        return identifier;
-    }
-
-
-    /**
-     * Set up the product's identifier.
-     *
-     * @param identifier string
-     */
-    public void setIdentifier(String identifier)
-    {
-        this.identifier = identifier;
-    }
-
 
 
     /**
@@ -256,7 +231,6 @@ public class DigitalProductProperties extends CollectionProperties
         return "DigitalProductProperties{" +
                 "userDefinedStatus=" + userDefinedStatus +
                 ", productName='" + productName + '\'' +
-                ", identifier='" + identifier + '\'' +
                 ", introductionDate=" + introductionDate +
                 ", maturity='" + maturity + '\'' +
                 ", serviceLife='" + serviceLife + '\'' +
@@ -289,7 +263,6 @@ public class DigitalProductProperties extends CollectionProperties
         }
         return Objects.equals(userDefinedStatus, that.userDefinedStatus) &&
                        Objects.equals(productName, that.productName) &&
-                       Objects.equals(identifier, that.identifier) &&
                        Objects.equals(introductionDate, that.introductionDate) &&
                        Objects.equals(maturity, that.maturity) &&
                        Objects.equals(serviceLife, that.serviceLife)  &&
@@ -307,6 +280,6 @@ public class DigitalProductProperties extends CollectionProperties
     public int hashCode()
     {
         return Objects.hash(super.hashCode(), userDefinedStatus, productName, introductionDate,
-                            maturity, serviceLife, nextVersionDate, withdrawDate, identifier);
+                            maturity, serviceLife, nextVersionDate, withdrawDate);
     }
 }

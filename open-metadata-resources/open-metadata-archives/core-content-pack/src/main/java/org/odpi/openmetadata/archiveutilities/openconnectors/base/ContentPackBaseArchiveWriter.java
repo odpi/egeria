@@ -13,10 +13,7 @@ import org.odpi.openmetadata.frameworks.openmetadata.controls.PlaceholderPropert
 import org.odpi.openmetadata.frameworks.openmetadata.controls.ReplacementAttributeType;
 import org.odpi.openmetadata.frameworks.openmetadata.controls.TemplateDefinition;
 import org.odpi.openmetadata.frameworks.openmetadata.mapper.OpenMetadataValidValues;
-import org.odpi.openmetadata.frameworks.openmetadata.refdata.AssociationType;
-import org.odpi.openmetadata.frameworks.openmetadata.refdata.DeployedImplementationType;
-import org.odpi.openmetadata.frameworks.openmetadata.refdata.DeployedImplementationTypeDefinition;
-import org.odpi.openmetadata.frameworks.openmetadata.refdata.ResourceUse;
+import org.odpi.openmetadata.frameworks.openmetadata.refdata.*;
 import org.odpi.openmetadata.frameworks.openmetadata.types.DataType;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
@@ -1009,7 +1006,7 @@ public abstract class ContentPackBaseArchiveWriter extends EgeriaBaseArchiveWrit
      * @param deployedImplementationType preferred value
      * @param associatedTypeName         specific type name to tie it to (maybe null)
      * @param qualifiedName              qualifiedName for this value
-     * @param category                   category for this value
+     * @param namespace                   namespace for this value
      * @param description                description of this value
      * @param wikiLink                   optional URL link to more information
      * @param isATypeOf                  superType
@@ -1018,7 +1015,7 @@ public abstract class ContentPackBaseArchiveWriter extends EgeriaBaseArchiveWrit
     protected String addDeployedImplementationType(String                               deployedImplementationType,
                                                    String                               associatedTypeName,
                                                    String                               qualifiedName,
-                                                   String                               category,
+                                                   String                               namespace,
                                                    String                               description,
                                                    String                               wikiLink,
                                                    DeployedImplementationTypeDefinition isATypeOf)
@@ -1040,9 +1037,10 @@ public abstract class ContentPackBaseArchiveWriter extends EgeriaBaseArchiveWrit
                                                                  null,
                                                                  OpenMetadataType.VALID_VALUE_DEFINITION.typeName,
                                                                  qualifiedName,
+                                                                 Category.VALID_METADATA_VALUES.getName(),
                                                                  deployedImplementationType,
                                                                  description,
-                                                                 category,
+                                                                 namespace,
                                                                  OpenMetadataValidValues.VALID_METADATA_VALUES_USAGE,
                                                                  DataType.STRING.getName(),
                                                                  OpenMetadataValidValues.OPEN_METADATA_ECOSYSTEM_SCOPE,

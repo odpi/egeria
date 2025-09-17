@@ -166,8 +166,6 @@ public class OpenMetadataTypesArchive4_0
         /*
          * Add the type updates
          */
-        update0021Collections();
-        update0137ToDos();
         add0220DataFileCollectionDataSet();
         add0224TableDataSet();
         add0239DeployedReportType();
@@ -178,97 +176,6 @@ public class OpenMetadataTypesArchive4_0
         addFormulaTypeAttribute();
     }
 
-
-    /*
-     * -------------------------------------------------------------------------------------------------------
-     */
-
-    private void update0021Collections()
-    {
-        this.archiveBuilder.addEnumDef(getMembershipStatusEnum());
-        this.archiveBuilder.addTypeDefPatch(updateCollectionMembershipRelationship());
-    }
-
-    private EnumDef getMembershipStatusEnum()
-    {
-        EnumDef enumDef = archiveHelper.getEmptyEnumDef(CollectionMemberStatus.getOpenTypeGUID(),
-                                                        CollectionMemberStatus.getOpenTypeName(),
-                                                        CollectionMemberStatus.getOpenTypeDescription(),
-                                                        CollectionMemberStatus.getOpenTypeDescriptionGUID(),
-                                                        CollectionMemberStatus.getOpenTypeDescriptionWiki());
-
-        ArrayList<EnumElementDef> elementDefs = new ArrayList<>();
-        EnumElementDef            elementDef;
-
-        for (CollectionMemberStatus collectionMemberStatus : CollectionMemberStatus.values())
-        {
-            elementDef = archiveHelper.getEnumElementDef(collectionMemberStatus.getOrdinal(),
-                                                         collectionMemberStatus.getName(),
-                                                         collectionMemberStatus.getDescription(),
-                                                         collectionMemberStatus.getDescriptionGUID());
-
-            elementDefs.add(elementDef);
-
-            if (collectionMemberStatus.isDefault())
-            {
-                enumDef.setDefaultValue(elementDef);
-            }
-        }
-
-        enumDef.setElementDefs(elementDefs);
-
-        return enumDef;
-    }
-
-    private TypeDefPatch updateCollectionMembershipRelationship()
-    {
-        /*
-         * Create the Patch
-         */
-        TypeDefPatch typeDefPatch = archiveBuilder.getPatchForType(OpenMetadataType.COLLECTION_MEMBERSHIP_RELATIONSHIP.typeName);
-
-        typeDefPatch.setUpdatedBy(originatorName);
-        typeDefPatch.setUpdateTime(creationDate);
-
-        /*
-         * Build the attributes
-         */
-        List<TypeDefAttribute> properties = new ArrayList<>();
-
-        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.MEMBERSHIP_RATIONALE));
-        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.EXPRESSION));
-        properties.add(archiveHelper.getEnumTypeDefAttribute(OpenMetadataProperty.MEMBERSHIP_STATUS));
-        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.CONFIDENCE));
-        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.STEWARD));
-        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.SOURCE));
-
-        typeDefPatch.setPropertyDefinitions(properties);
-
-        return typeDefPatch;
-    }
-
-    /*
-     * -------------------------------------------------------------------------------------------------------
-     */
-
-    private void update0137ToDos()
-    {
-        this.archiveBuilder.addTypeDefPatch(updateActionTargetRelationship());
-    }
-
-    private TypeDefPatch updateActionTargetRelationship()
-    {
-        /*
-         * Create the Patch
-         */
-        TypeDefPatch typeDefPatch = archiveBuilder.getPatchForType(OpenMetadataType.ACTION_TARGET_RELATIONSHIP.typeName);
-
-        typeDefPatch.setUpdatedBy(originatorName);
-        typeDefPatch.setUpdateTime(creationDate);
-
-
-        return typeDefPatch;
-    }
 
 
     /*
@@ -322,7 +229,6 @@ public class OpenMetadataTypesArchive4_0
          */
         List<TypeDefAttribute> properties = new ArrayList<>();
 
-        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.IDENTIFIER));
         properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.PURPOSE));
         properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.AUTHOR));
         properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.CREATED_TIME));

@@ -6,6 +6,8 @@ package org.odpi.openmetadata.frameworks.openmetadata.mermaid;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.AssetGraph;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.MetadataElementSummary;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.RelatedMetadataNodeSummary;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.LabeledRelationshipProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.lineage.LineageRelationshipProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 
@@ -73,54 +75,5 @@ public class AssetActionGraphMermaidGraphBuilder extends MermaidGraphBuilderBase
         {
             super.clearGraph();
         }
-    }
-
-
-    /**
-     * Extract a suitable label depending on the type of line.
-     *
-     * @param line relationship
-     * @return label
-     */
-    private String getActionLabel(RelatedMetadataNodeSummary line)
-    {
-        Object label = null;
-
-        if (line.getRelationshipProperties() != null)
-        {
-            label = line.getRelationshipProperties().get(OpenMetadataProperty.SEVERITY_LEVEL_IDENTIFIER.name);
-
-            if (label != null)
-            {
-                label = line.getRelationshipProperties().get(OpenMetadataProperty.ACTION_TARGET_NAME.name);
-
-                if (label != null)
-                {
-                    Object status = line.getRelationshipProperties().get(OpenMetadataProperty.TERM_RELATIONSHIP_STATUS.name);
-
-                    if (status == null)
-                    {
-                        status = line.getRelationshipProperties().get(OpenMetadataProperty.TERM_ASSIGNMENT_STATUS.name);
-                    }
-
-                    if (status == null)
-                    {
-                        status = line.getRelationshipProperties().get(OpenMetadataProperty.ACTIVITY_STATUS.name);
-                    }
-
-                    if (status != null)
-                    {
-                        label = label + "[" + status + "]";
-                    }
-                }
-            }
-
-            if (label != null)
-            {
-                return super.addSpacesToTypeName(line.getRelationshipHeader().getType().getTypeName()) + " " + label;
-            }
-        }
-
-        return super.addSpacesToTypeName(line.getRelationshipHeader().getType().getTypeName());
     }
 }

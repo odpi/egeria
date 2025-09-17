@@ -6593,7 +6593,7 @@ public class SimpleCatalogArchiveHelper
                                 String              userDefinedStatus,
                                 Map<String, String> additionalProperties)
     {
-        return this.addValidValue(null, null, null, null,null, null, typeName, qualifiedName, name, description, null, usage, null, scope, preferredValue, userDefinedStatus, false, additionalProperties);
+        return this.addValidValue(null, null, null, null,null, null, typeName, qualifiedName, null, name, description, null, usage, null, scope, preferredValue, userDefinedStatus, false, additionalProperties);
     }
 
 
@@ -6603,12 +6603,12 @@ public class SimpleCatalogArchiveHelper
      * @param suppliedValidValueGUID optional unique identifier for the valid value instance
      * @param setGUID unique identifier of parent set
      * @param anchorGUID unique identifier of the anchor (or null)
-     * @param anchorTypeName unique name of type of anchor (or null)
-     * @param anchorDomainName unique name of type of anchor's domain (or null)
+     * @param anchorTypeName unique displayName of type of anchor (or null)
+     * @param anchorDomainName unique displayName of type of anchor's domain (or null)
      * @param anchorScopeGUID unique identifier of the anchor's scope
-     * @param typeName unique name of the valid value - ie a definition or a set
-     * @param qualifiedName unique name of the valid value
-     * @param name display name of the valid value
+     * @param typeName unique displayName of the valid value - ie a definition or a set
+     * @param qualifiedName unique displayName of the valid value
+     * @param displayName display displayName of the valid value
      * @param namespace namespace of the valid value
      * @param scope short description of the valid value
      * @param dataType type for preferred value
@@ -6629,7 +6629,8 @@ public class SimpleCatalogArchiveHelper
                                 String              anchorScopeGUID,
                                 String              typeName,
                                 String              qualifiedName,
-                                String              name,
+                                String              category,
+                                String              displayName,
                                 String              description,
                                 String              namespace,
                                 String              usage,
@@ -6656,7 +6657,7 @@ public class SimpleCatalogArchiveHelper
         if (archiveBuilder.queryEntity(validValueGUID) == null)
         {
             InstanceProperties properties = archiveHelper.addStringPropertyToInstance(archiveRootName, null, OpenMetadataProperty.QUALIFIED_NAME.name, qualifiedName, methodName);
-            properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.DISPLAY_NAME.name, name, methodName);
+            properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.DISPLAY_NAME.name, displayName, methodName);
             properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.DESCRIPTION.name, description, methodName);
             properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.NAMESPACE.name, namespace, methodName);
             properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.USAGE.name, usage, methodName);

@@ -188,10 +188,10 @@ public class LineageLinkerRESTServices extends TokenController
      *  PropertyServerException problem accessing property server
      *  UserNotAuthorizedException security access problem
      */
-    public VoidResponse detachLineage(String            serverName,
-                                      String            urlMarker,
-                                      String            lineageRelationshipGUID,
-                                      DeleteRequestBody requestBody)
+    public VoidResponse detachLineage(String                        serverName,
+                                      String                        urlMarker,
+                                      String                        lineageRelationshipGUID,
+                                      DeleteRelationshipRequestBody requestBody)
     {
         final String methodName = "detachLineage";
 

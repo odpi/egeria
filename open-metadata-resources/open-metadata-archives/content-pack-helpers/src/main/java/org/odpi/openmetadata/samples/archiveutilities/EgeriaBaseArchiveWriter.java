@@ -4,6 +4,7 @@ package org.odpi.openmetadata.samples.archiveutilities;
 
 
 import org.odpi.openmetadata.frameworks.openmetadata.mapper.OpenMetadataValidValues;
+import org.odpi.openmetadata.frameworks.openmetadata.refdata.Category;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 import org.odpi.openmetadata.opentypes.OpenMetadataTypesArchive;
 import org.odpi.openmetadata.repositoryservices.archiveutilities.OMRSArchiveBuilder;
@@ -211,6 +212,7 @@ public abstract class EgeriaBaseArchiveWriter extends OMRSArchiveWriter
                                                          null,
                                                          OpenMetadataType.VALID_VALUE_DEFINITION.typeName,
                                                          parentQualifiedName,
+                                                         Category.VALID_METADATA_VALUES.getName(),
                                                          parentDisplayName,
                                                          parentDescription,
                                                          constructValidValueNamespace(typeName, propertyName, mapName),

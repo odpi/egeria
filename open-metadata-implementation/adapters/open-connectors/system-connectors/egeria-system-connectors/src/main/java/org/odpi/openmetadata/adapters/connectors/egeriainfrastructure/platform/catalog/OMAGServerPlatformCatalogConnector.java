@@ -16,7 +16,6 @@ import org.odpi.openmetadata.frameworks.connectors.Connector;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
 import org.odpi.openmetadata.frameworks.integration.connectors.IntegrationConnectorBase;
 import org.odpi.openmetadata.frameworks.openmetadata.connectorcontext.AssetClient;
-import org.odpi.openmetadata.frameworks.openmetadata.connectorcontext.ConnectionClient;
 import org.odpi.openmetadata.frameworks.openmetadata.connectorcontext.OpenMetadataStore;
 import org.odpi.openmetadata.frameworks.openmetadata.controls.PlaceholderProperty;
 import org.odpi.openmetadata.frameworks.openmetadata.events.OpenMetadataEventListener;
@@ -27,6 +26,7 @@ import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedExcep
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.ElementHeader;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.OpenMetadataRootElement;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.RelatedMetadataElementSummary;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.AssetProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.infrastructure.SoftwareServerPlatformProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.connections.ConnectionProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.search.ElementProperties;
@@ -330,10 +330,10 @@ public class OMAGServerPlatformCatalogConnector extends IntegrationConnectorBase
                             for (RelatedMetadataElementSummary deploymentElement : platformElement.getHostedITAssets())
                             {
                                 if ((deploymentElement != null) &&
-                                        (deploymentElement.getRelatedElement().getProperties() != null) &&
-                                        (deploymentElement.getRelatedElement().getProperties().get(OpenMetadataProperty.DISPLAY_NAME.name) != null))
+                                        (deploymentElement.getRelatedElement().getProperties() instanceof AssetProperties assetProperties) &&
+                                        (assetProperties.getDisplayName() != null))
                                 {
-                                    String serverDisplayName = deploymentElement.getRelatedElement().getProperties().get(OpenMetadataProperty.DISPLAY_NAME.name);
+                                    String serverDisplayName = assetProperties.getDisplayName();
 
                                     OMAGServerProperties omagServerProperties = knownServerMap.get(serverDisplayName);
 
@@ -573,20 +573,11 @@ public class OMAGServerPlatformCatalogConnector extends IntegrationConnectorBase
             for (RelatedMetadataElementSummary connection : platformElement.getConnections())
             {
                 if ((connection != null) &&
-                        (connection.getRelatedElement().getProperties() != null) &&
-                        (connection.getRelatedElement().getProperties().get(OpenMetadataProperty.CONFIGURATION_PROPERTIES.name) != null))
+                        (connection.getRelatedElement().getProperties() instanceof ConnectionProperties connectionProperties) &&
+                        (connectionProperties.getConfigurationProperties() != null) &&
+                        (connectionProperties.getConfigurationProperties().get(PlaceholderProperty.SECRETS_STORE.getName()) != null))
                 {
-                    ConnectionClient connectionClient = integrationContext.getConnectionClient();
-
-                    OpenMetadataRootElement connectionElement = connectionClient.getConnectionByGUID(connection.getRelatedElement().getElementHeader().getGUID(), connectionClient.getGetOptions());
-
-                    if ((connectionElement != null) &&
-                            (connectionElement.getProperties() instanceof ConnectionProperties connectionProperties) &&
-                            (connectionProperties.getConfigurationProperties() != null) &&
-                            (connectionProperties.getConfigurationProperties().get(PlaceholderProperty.SECRETS_STORE.getName()) != null))
-                    {
-                        return connectionProperties.getConfigurationProperties().get(PlaceholderProperty.SECRETS_STORE.getName()).toString();
-                    }
+                    return connectionProperties.getConfigurationProperties().get(PlaceholderProperty.SECRETS_STORE.getName()).toString();
                 }
             }
         }

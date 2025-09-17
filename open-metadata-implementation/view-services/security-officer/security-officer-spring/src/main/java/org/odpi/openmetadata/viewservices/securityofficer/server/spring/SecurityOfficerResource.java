@@ -5,7 +5,7 @@ package org.odpi.openmetadata.viewservices.securityofficer.server.spring;
 import io.swagger.v3.oas.annotations.ExternalDocumentation;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import org.odpi.openmetadata.commonservices.ffdc.rest.DeleteRequestBody;
+import org.odpi.openmetadata.commonservices.ffdc.rest.DeleteRelationshipRequestBody;
 import org.odpi.openmetadata.commonservices.ffdc.rest.NewRelationshipRequestBody;
 import org.odpi.openmetadata.commonservices.ffdc.rest.VoidResponse;
 import org.odpi.openmetadata.viewservices.securityofficer.server.SecurityOfficerRESTServices;
@@ -93,7 +93,7 @@ public class SecurityOfficerResource
                                            @PathVariable
                                            String memberDataFieldGUID,
                                            @RequestBody (required = false)
-                                           DeleteRequestBody requestBody)
+                                                  DeleteRelationshipRequestBody requestBody)
     {
         return restAPI.detachGovernanceZones(serverName, parentGovernanceZoneGUID, memberDataFieldGUID, requestBody);
     }

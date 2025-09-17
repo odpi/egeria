@@ -11,6 +11,7 @@ import org.odpi.openmetadata.frameworks.openmetadata.enums.GlossaryTermAssignmen
 import org.odpi.openmetadata.frameworks.openmetadata.handlers.StewardshipManagementHandler;
 import org.odpi.openmetadata.frameworks.openmetadata.mermaid.CertificationMermaidGraphBuilder;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.*;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.governance.CertificationProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.governance.FindDigitalResourceOriginProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.governance.LevelIdentifierQueryProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.governance.SemanticAssignmentQueryProperties;
@@ -1453,25 +1454,25 @@ public class ClassificationExplorerRESTServices extends TokenController
                     CertificationElement certificationElement = new CertificationElement(relatedMetadataElementSummary);
 
 
-                    if (relatedMetadataElementSummary.getRelationshipProperties() != null)
+                    if (relatedMetadataElementSummary.getRelationshipProperties() instanceof CertificationProperties certificationProperties)
                     {
                         certificationElement.setCertifiedBy(getActorSummary(userId,
-                                                                            relatedMetadataElementSummary.getRelationshipProperties().get(OpenMetadataProperty.CERTIFIED_BY.name),
-                                                                            relatedMetadataElementSummary.getRelationshipProperties().get(OpenMetadataProperty.CERTIFIED_BY_PROPERTY_NAME.name),
+                                                                            certificationProperties.getCertifiedBy(),
+                                                                            certificationProperties.getCertifiedByPropertyName(),
                                                                             actorMap,
                                                                             handler,
                                                                             queryOptions));
 
                         certificationElement.setCustodian(getActorSummary(userId,
-                                                                          relatedMetadataElementSummary.getRelationshipProperties().get(OpenMetadataProperty.CUSTODIAN.name),
-                                                                          relatedMetadataElementSummary.getRelationshipProperties().get(OpenMetadataProperty.CUSTODIAN_PROPERTY_NAME.name),
+                                                                          certificationProperties.getCustodian(),
+                                                                          certificationProperties.getCustodianPropertyName(),
                                                                           actorMap,
                                                                           handler,
                                                                           queryOptions));
 
                         certificationElement.setRecipient(getActorSummary(userId,
-                                                                          relatedMetadataElementSummary.getRelationshipProperties().get(OpenMetadataProperty.RECIPIENT.name),
-                                                                          relatedMetadataElementSummary.getRelationshipProperties().get(OpenMetadataProperty.RECIPIENT_PROPERTY_NAME.name),
+                                                                          certificationProperties.getRecipient(),
+                                                                          certificationProperties.getRecipientPropertyName(),
                                                                           actorMap,
                                                                           handler,
                                                                           queryOptions));

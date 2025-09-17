@@ -153,6 +153,10 @@ public class OpenMetadataElementBuilder
                                                                          referenceableProperties.getQualifiedName());
 
                     elementProperties = propertyHelper.addStringProperty(elementProperties,
+                                                                         OpenMetadataProperty.IDENTIFIER.name,
+                                                                         referenceableProperties.getIdentifier());
+
+                    elementProperties = propertyHelper.addStringProperty(elementProperties,
                                                                          OpenMetadataProperty.DISPLAY_NAME.name,
                                                                          referenceableProperties.getDisplayName());
 
@@ -218,17 +222,10 @@ public class OpenMetadataElementBuilder
                             elementProperties = propertyHelper.addStringProperty(elementProperties,
                                                                                  OpenMetadataProperty.TEAM_TYPE.name,
                                                                                  teamProperties.getTeamType());
-                            elementProperties = propertyHelper.addStringProperty(elementProperties,
-                                                                                 OpenMetadataProperty.IDENTIFIER.name,
-                                                                                 teamProperties.getIdentifier());
                         }
                     }
                     else if (properties instanceof ActorRoleProperties actorRoleProperties)
                     {
-                        elementProperties = propertyHelper.addStringProperty(elementProperties,
-                                                                             OpenMetadataProperty.IDENTIFIER.name,
-                                                                             actorRoleProperties.getIdentifier());
-
                         elementProperties = propertyHelper.addStringProperty(elementProperties,
                                                                              OpenMetadataProperty.SCOPE.name,
                                                                              actorRoleProperties.getScope());
@@ -431,9 +428,6 @@ public class OpenMetadataElementBuilder
                                 if (properties instanceof ReportProperties reportProperties)
                                 {
                                     elementProperties = propertyHelper.addStringProperty(elementProperties,
-                                                                                         OpenMetadataProperty.IDENTIFIER.name,
-                                                                                         reportProperties.getIdentifier());
-                                    elementProperties = propertyHelper.addStringProperty(elementProperties,
                                                                                          OpenMetadataProperty.PURPOSE.name,
                                                                                          reportProperties.getPurpose());
                                     elementProperties = propertyHelper.addStringProperty(elementProperties,
@@ -559,9 +553,6 @@ public class OpenMetadataElementBuilder
                             else if (properties instanceof ReportTypeProperties reportTypeProperties)
                             {
                                 elementProperties = propertyHelper.addStringProperty(elementProperties,
-                                                                                     OpenMetadataProperty.IDENTIFIER.name,
-                                                                                     reportTypeProperties.getIdentifier());
-                                elementProperties = propertyHelper.addStringProperty(elementProperties,
                                                                                      OpenMetadataProperty.PURPOSE.name,
                                                                                      reportTypeProperties.getPurpose());
                                 elementProperties = propertyHelper.addStringProperty(elementProperties,
@@ -584,9 +575,6 @@ public class OpenMetadataElementBuilder
                         if (collectionProperties instanceof AgreementProperties agreementProperties)
                         {
                             elementProperties = propertyHelper.addStringProperty(elementProperties,
-                                                                                 OpenMetadataProperty.IDENTIFIER.name,
-                                                                                 agreementProperties.getIdentifier());
-                            elementProperties = propertyHelper.addStringProperty(elementProperties,
                                                                                  OpenMetadataProperty.USER_DEFINED_STATUS.name,
                                                                                  agreementProperties.getUserDefinedStatus());
 
@@ -602,10 +590,6 @@ public class OpenMetadataElementBuilder
                         }
                         else if (collectionProperties instanceof DigitalProductProperties digitalProductProperties)
                         {
-                            elementProperties = propertyHelper.addStringProperty(elementProperties,
-                                                                                 OpenMetadataProperty.IDENTIFIER.name,
-                                                                                 digitalProductProperties.getIdentifier());
-
                             elementProperties = propertyHelper.addStringProperty(elementProperties,
                                                                                  OpenMetadataProperty.PRODUCT_NAME.name,
                                                                                  digitalProductProperties.getProductName());
@@ -1024,8 +1008,8 @@ public class OpenMetadataElementBuilder
                     else if (properties instanceof ExternalIdProperties externalIdProperties)
                     {
                         elementProperties = propertyHelper.addStringProperty(elementProperties,
-                                                                             OpenMetadataProperty.IDENTIFIER.name,
-                                                                             externalIdProperties.getIdentifier());
+                                                                             OpenMetadataProperty.KEY.name,
+                                                                             externalIdProperties.getKey());
                         if (externalIdProperties.getKeyPattern() != null)
                         {
                             elementProperties = propertyHelper.addEnumProperty(elementProperties,
@@ -1086,10 +1070,6 @@ public class OpenMetadataElementBuilder
                     }
                     else if (properties instanceof GovernanceDefinitionProperties governanceDefinitionProperties)
                     {
-                        elementProperties = propertyHelper.addStringProperty(elementProperties,
-                                                                             OpenMetadataProperty.IDENTIFIER.name,
-                                                                             governanceDefinitionProperties.getIdentifier());
-
                         elementProperties = propertyHelper.addStringProperty(elementProperties,
                                                                              OpenMetadataProperty.SUMMARY.name,
                                                                              governanceDefinitionProperties.getSummary());
@@ -1211,12 +1191,6 @@ public class OpenMetadataElementBuilder
                                                                                   OpenMetadataProperty.PURPOSES.name,
                                                                                   informationSupplyChainProperties.getPurposes());
                     }
-                    else if (properties instanceof LocationProperties locationProperties)
-                    {
-                        elementProperties = propertyHelper.addStringProperty(elementProperties,
-                                                                             OpenMetadataProperty.IDENTIFIER.name,
-                                                                             locationProperties.getIdentifier());
-                    }
                     else if (properties instanceof PortProperties portProperties)
                     {
                         if (portProperties.getPortType() != null)
@@ -1230,10 +1204,6 @@ public class OpenMetadataElementBuilder
                     }
                     else if (properties instanceof ProjectProperties projectProperties)
                     {
-                        elementProperties = propertyHelper.addStringProperty(elementProperties,
-                                                                             OpenMetadataProperty.IDENTIFIER.name,
-                                                                             projectProperties.getIdentifier());
-
                         elementProperties = propertyHelper.addStringProperty(elementProperties,
                                                                              OpenMetadataProperty.PROJECT_PHASE.name,
                                                                              projectProperties.getProjectStatus());

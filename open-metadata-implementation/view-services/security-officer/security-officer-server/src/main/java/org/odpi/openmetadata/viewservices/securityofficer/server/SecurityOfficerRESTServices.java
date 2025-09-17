@@ -6,12 +6,11 @@ package org.odpi.openmetadata.viewservices.securityofficer.server;
 import org.odpi.openmetadata.commonservices.ffdc.RESTCallLogger;
 import org.odpi.openmetadata.commonservices.ffdc.RESTCallToken;
 import org.odpi.openmetadata.commonservices.ffdc.RESTExceptionHandler;
-import org.odpi.openmetadata.commonservices.ffdc.rest.DeleteRequestBody;
+import org.odpi.openmetadata.commonservices.ffdc.rest.DeleteRelationshipRequestBody;
 import org.odpi.openmetadata.commonservices.ffdc.rest.NewRelationshipRequestBody;
 import org.odpi.openmetadata.commonservices.ffdc.rest.VoidResponse;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.openmetadata.handlers.GovernanceDefinitionHandler;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.security.GovernanceZoneProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.security.ZoneHierarchyProperties;
 import org.odpi.openmetadata.tokencontroller.TokenController;
 import org.slf4j.LoggerFactory;
@@ -44,8 +43,8 @@ public class SecurityOfficerRESTServices extends TokenController
      * Attach governance zones in a hierarchy.
      *
      * @param serverName         name of called server
-     * @param governanceZoneGUID    unique identifier of the parent subject area.
-     * @param nestedGovernanceZoneGUID    unique identifier of the nested subject area.
+     * @param governanceZoneGUID    unique identifier of the parent governance zone.
+     * @param nestedGovernanceZoneGUID    unique identifier of the nested governance zone.
      * @param requestBody  description of the relationship.
      *
      * @return void or
@@ -53,9 +52,9 @@ public class SecurityOfficerRESTServices extends TokenController
      *  PropertyServerException    there is a problem retrieving information from the property server(s).
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    public VoidResponse linkGovernanceZones(String                  serverName,
-                                            String                  governanceZoneGUID,
-                                            String                  nestedGovernanceZoneGUID,
+    public VoidResponse linkGovernanceZones(String                     serverName,
+                                            String                     governanceZoneGUID,
+                                            String                     nestedGovernanceZoneGUID,
                                             NewRelationshipRequestBody requestBody)
     {
         final String methodName = "linkGovernanceZones";
@@ -120,8 +119,8 @@ public class SecurityOfficerRESTServices extends TokenController
      * Detach governance zone from a hierarchical relationship.
      *
      * @param serverName         name of called server
-     * @param governanceZoneGUID    unique identifier of the parent data structure.
-     * @param dataFieldGUID    unique identifier of the nested data field.
+     * @param governanceZoneGUID    unique identifier of the parent governance zone.
+     * @param nestedGovernanceZoneGUID    unique identifier of the nested governance zone.
      * @param requestBody  description of the relationship.
      *
      * @return void or
@@ -129,10 +128,10 @@ public class SecurityOfficerRESTServices extends TokenController
      *  PropertyServerException    there is a problem retrieving information from the property server(s).
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    public VoidResponse detachGovernanceZones(String            serverName,
-                                           String            governanceZoneGUID,
-                                           String            dataFieldGUID,
-                                           DeleteRequestBody requestBody)
+    public VoidResponse detachGovernanceZones(String                        serverName,
+                                              String                        governanceZoneGUID,
+                                              String                        nestedGovernanceZoneGUID,
+                                              DeleteRelationshipRequestBody requestBody)
     {
         final String methodName = "detachGovernanceZones";
 
@@ -151,7 +150,7 @@ public class SecurityOfficerRESTServices extends TokenController
 
             GovernanceDefinitionHandler handler = instanceHandler.getGovernanceDefinitionHandler(userId, serverName, methodName);
 
-            handler.detachGovernanceZones(userId, governanceZoneGUID, dataFieldGUID, requestBody);
+            handler.detachGovernanceZones(userId, governanceZoneGUID, nestedGovernanceZoneGUID, requestBody);
         }
         catch (Throwable error)
         {

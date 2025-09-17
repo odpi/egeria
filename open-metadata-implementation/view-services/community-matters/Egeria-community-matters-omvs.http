@@ -65,6 +65,7 @@ Content-Type: application/json
     "qualifiedName": "add unique name here",
     "displayName": "add short name here",
     "description": "add description here",
+    "category": "add category here",
     "mission" : "add mission here",
     "additionalProperties": {
       "property1" : "propertyValue1",
@@ -166,6 +167,7 @@ Content-Type: application/json
     "qualifiedName": "add unique name here",
     "displayName": "add short name here",
     "description": "add description here",
+    "category": "add category here",
     "mission" : "add mission here",
     "additionalProperties": {
       "property1" : "propertyValue1",
@@ -191,7 +193,6 @@ Content-Type: application/json
 # Delete a community.
 #
 # @param communityGUID  unique identifier of the element to delete
-# @param cascadedDelete ca communities be deleted if data fields are attached?
 # Request body provides  description of the relationship.
 #
 # Returns void or

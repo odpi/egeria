@@ -197,7 +197,7 @@ public class MetadataExpertResource
     public  VoidResponse archiveMetadataElementInStore(@PathVariable String           serverName,
                                                        @PathVariable String           urlMarker,
                                                        @PathVariable String           metadataElementGUID,
-                                                       @RequestBody(required = false) DeleteRequestBody requestBody)
+                                                       @RequestBody(required = false) DeleteElementRequestBody requestBody)
     {
         return restAPI.archiveMetadataElementInStore(serverName, urlMarker, metadataElementGUID, requestBody);
     }

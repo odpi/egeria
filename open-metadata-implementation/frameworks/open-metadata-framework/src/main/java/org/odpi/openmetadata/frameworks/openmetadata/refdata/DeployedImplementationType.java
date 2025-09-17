@@ -959,7 +959,7 @@ public enum DeployedImplementationType implements DeployedImplementationTypeDefi
 
 
     /**
-     * Return the category for this deployed implementation type.
+     * Return the namespace for this deployed implementation type.
      *
      * @return string
      */

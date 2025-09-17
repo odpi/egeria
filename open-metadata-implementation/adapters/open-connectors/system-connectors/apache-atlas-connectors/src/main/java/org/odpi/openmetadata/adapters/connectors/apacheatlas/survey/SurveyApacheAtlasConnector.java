@@ -19,6 +19,7 @@ import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedExcep
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.OpenMetadataRootElement;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.RelatedMetadataElementSummary;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.AssetProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.schema.SchemaAttributeProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.search.ElementProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.search.NewElementOptions;
 import org.odpi.openmetadata.frameworks.openmetadata.search.NewElementProperties;
@@ -208,9 +209,9 @@ public class SurveyApacheAtlasConnector extends SurveyActionServiceConnector
                 {
                     for (RelatedMetadataElementSummary schemaAttribute : rootSchemaType.getSchemaAttributes())
                     {
-                        if (schemaAttribute != null)
+                        if ((schemaAttribute != null) && (schemaAttribute.getRelatedElement().getProperties() instanceof SchemaAttributeProperties schemaAttributeProperties))
                         {
-                            String schemaAttributeDisplayName = schemaAttribute.getRelatedElement().getProperties().get(OpenMetadataProperty.DISPLAY_NAME.name);
+                            String schemaAttributeDisplayName = schemaAttributeProperties.getDisplayName();
 
                             if (schemaAttributeDisplayName != null)
                             {

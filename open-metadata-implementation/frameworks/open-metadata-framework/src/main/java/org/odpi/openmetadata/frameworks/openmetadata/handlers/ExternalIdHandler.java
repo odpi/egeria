@@ -261,7 +261,8 @@ public class ExternalIdHandler extends OpenMetadataHandlerBase
 
         List<String> propertyNames = Arrays.asList(OpenMetadataProperty.QUALIFIED_NAME.name,
                                                    OpenMetadataProperty.DISPLAY_NAME.name,
-                                                   OpenMetadataProperty.IDENTIFIER.name);
+                                                   OpenMetadataProperty.IDENTIFIER.name,
+                                                   OpenMetadataProperty.KEY.name);
 
         return super.getRootElementsByName(userId, name, propertyNames, queryOptions, methodName);
     }
@@ -316,7 +317,7 @@ public class ExternalIdHandler extends OpenMetadataHandlerBase
         propertyHelper.validateUserId(userId, methodName);
         propertyHelper.validateMandatoryName(identifier, nameParameterName, methodName);
 
-        List<String> propertyNames = Collections.singletonList(OpenMetadataProperty.IDENTIFIER.name);
+        List<String> propertyNames = Collections.singletonList(OpenMetadataProperty.KEY.name);
 
         return super.getRootElementsByName(userId, identifier, propertyNames, queryOptions, methodName);
     }

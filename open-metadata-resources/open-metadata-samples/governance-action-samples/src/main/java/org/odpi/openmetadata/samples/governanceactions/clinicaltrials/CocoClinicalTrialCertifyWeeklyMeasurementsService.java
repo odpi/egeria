@@ -13,6 +13,8 @@ import org.odpi.openmetadata.frameworks.opengovernance.properties.CompletionStat
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.OpenMetadataRootElement;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.RelatedMetadataElementSummary;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.schema.AttributeForSchemaProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.schema.SchemaAttributeProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.search.ElementProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
@@ -192,15 +194,16 @@ public class CocoClinicalTrialCertifyWeeklyMeasurementsService extends SurveyAct
                 {
                     for (RelatedMetadataElementSummary schemaAttribute: schemaAttributes)
                     {
-                        if (schemaAttribute.getRelatedElement().getProperties() != null)
+                        if (schemaAttribute.getRelatedElement().getProperties() instanceof SchemaAttributeProperties schemaAttributeProperties)
                         {
-                            String displayName = schemaAttribute.getRelatedElement().getProperties().get(OpenMetadataProperty.DISPLAY_NAME.name);
+                            String displayName = schemaAttributeProperties.getDisplayName();
 
                             if (displayName != null)
                             {
-                                if ((schemaAttribute.getRelationshipProperties() != null) && (schemaAttribute.getRelationshipProperties().get(OpenMetadataProperty.POSITION.name) != null))
+                                if ((schemaAttribute.getRelationshipProperties() != null) &&
+                                        (schemaAttribute.getRelationshipProperties() instanceof AttributeForSchemaProperties attributeForSchemaProperties))
                                 {
-                                    int position = Integer.parseInt(schemaAttribute.getRelationshipProperties().get(OpenMetadataProperty.POSITION.name));
+                                    int position = attributeForSchemaProperties.getPosition();
 
                                     expectedColumns.put(displayName, schemaAttribute.getRelatedElement().getElementHeader().getGUID());
                                     expectedColumnNames.put(position, displayName);

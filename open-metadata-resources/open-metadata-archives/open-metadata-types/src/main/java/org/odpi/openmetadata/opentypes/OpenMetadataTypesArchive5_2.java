@@ -211,7 +211,6 @@ public class OpenMetadataTypesArchive5_2
         List<TypeDefAttribute> properties = new ArrayList<>();
 
         properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.SCOPE));
-        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.IDENTIFIER));
 
         entityDef.setPropertiesDefinition(properties);
 

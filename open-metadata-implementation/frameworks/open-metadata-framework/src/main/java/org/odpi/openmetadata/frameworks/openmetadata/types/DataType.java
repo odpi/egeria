@@ -234,11 +234,11 @@ public enum DataType implements OpenMetadataEnum
 
 
     /**
-     * Return the category for this value.
+     * Return the namespace for this value.
      *
      * @return string
      */
-    public String getCategory()
+    public String getNamespace()
     {
         return constructValidValueNamespace("DataType",
                                             OpenMetadataProperty.DATA_TYPE.name,

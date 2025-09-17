@@ -368,7 +368,7 @@ public class WatchdogContext extends ConnectorContextBase implements WatchDogEve
      *
      * @param notificationProperties properties for the notification
      * @param requestParameters properties to pass to the next governance service
-     * @param newActionTargets map of action target names to GUIDs for the resulting governance action service
+     * @param newActionTargets map of action target names to GUIDs for the resulting engine action
      *
      * @throws InvalidParameterException the completion status is null
      * @throws UserNotAuthorizedException the governance action service is not authorized to update the governance action service status
@@ -376,9 +376,10 @@ public class WatchdogContext extends ConnectorContextBase implements WatchDogEve
      */
     public void notifySubscribers(NotificationProperties notificationProperties,
                                   Map<String, String>    requestParameters,
-                                  List<NewActionTarget>  newActionTargets)  throws InvalidParameterException,
-                                                                                  UserNotAuthorizedException,
-                                                                                  PropertyServerException
+                                  List<NewActionTarget>  newActionTargets,
+                                  ActivityStatus         newSubscriberStatus) throws InvalidParameterException,
+                                                                                     UserNotAuthorizedException,
+                                                                                     PropertyServerException
     {
         final String methodName = "notifySubscribers";
 
@@ -391,7 +392,8 @@ public class WatchdogContext extends ConnectorContextBase implements WatchDogEve
                                                        notificationTypeGUID,
                                                        requestParameters,
                                                        connectorGUID,
-                                                       newActionTargets);
+                                                       newActionTargets,
+                                                       newSubscriberStatus);
         }
     }
 

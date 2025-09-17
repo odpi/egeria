@@ -6,6 +6,8 @@ package org.odpi.openmetadata.frameworks.openmetadata.metadataelements;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.OpenMetadataRootProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.RelationshipBeanProperties;
 
 import java.util.Date;
 import java.util.Map;
@@ -23,12 +25,12 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class RelatedMetadataElementSummary
 {
-    private ElementHeader          relationshipHeader     = null;
-    private Map<String, String>    relationshipProperties = null;
-    private Date                   effectiveFromTime      = null;
-    private Date                   effectiveToTime        = null;
-    private MetadataElementSummary relatedElement         = null;
-    private boolean                relatedElementAtEnd1   = false;
+    private ElementHeader              relationshipHeader     = null;
+    private RelationshipBeanProperties relationshipProperties = null;
+    private Date                       effectiveFromTime      = null;
+    private Date                       effectiveToTime        = null;
+    private MetadataElementSummary     relatedElement         = null;
+    private boolean                    relatedElementAtEnd1   = false;
 
 
     /**
@@ -127,7 +129,7 @@ public class RelatedMetadataElementSummary
      *
      * @return relationship properties
      */
-    public Map<String, String> getRelationshipProperties()
+    public RelationshipBeanProperties getRelationshipProperties()
     {
         return relationshipProperties;
     }
@@ -138,7 +140,7 @@ public class RelatedMetadataElementSummary
      *
      * @param relationshipProperties relationship properties
      */
-    public void setRelationshipProperties(Map<String, String> relationshipProperties)
+    public void setRelationshipProperties(RelationshipBeanProperties relationshipProperties)
     {
         this.relationshipProperties = relationshipProperties;
     }

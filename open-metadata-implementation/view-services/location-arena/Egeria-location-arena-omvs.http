@@ -71,6 +71,7 @@ Content-Type: application/json
     "qualifiedName": "add unique name here",
     "displayName": "add short name here",
     "description": "add description here",
+    "category": "add category here",
     "additionalProperties": {
       "property1" : "propertyValue1",
       "property2" : "propertyValue2"
@@ -166,6 +167,7 @@ Content-Type: application/json
     "qualifiedName": "add unique name here",
     "displayName": "add short name here",
     "description": "add description here",
+    "category": "add category here",
     "additionalProperties": {
       "property1" : "propertyValue1",
       "property2" : "propertyValue2"

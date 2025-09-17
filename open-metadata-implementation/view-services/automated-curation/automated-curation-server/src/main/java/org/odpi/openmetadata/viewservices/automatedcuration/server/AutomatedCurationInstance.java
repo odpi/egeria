@@ -73,7 +73,7 @@ public class AutomatedCurationInstance extends OMVSServiceInstance
             governanceConfigurationClient = new GovernanceConfigurationClient(remoteServerName, remoteServerURL, localServerUserId, localServerUserPassword, maxPageSize);
         }
 
-        technologyTypeHandler = new TechnologyTypeHandler(openMetadataStoreClient, serviceName, serverName);
+        technologyTypeHandler = new TechnologyTypeHandler(serverName, auditLog, serviceName, openMetadataStoreClient);
     }
 
 

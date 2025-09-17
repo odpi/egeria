@@ -677,13 +677,11 @@ public class PropertyHelper
      * Extract the properties from the element.
      *
      * @param relatedElement from the repository
-     * @param methodName calling method
      * @return filled out element header
      * @throws PropertyServerException there is a problem in the use of the generic handlers because
      * the converter has been configured with a type of bean that is incompatible with the handler
      */
-    public RelatedMetadataElementSummary getRelatedElementSummary(RelatedMetadataElement relatedElement,
-                                                                  String                 methodName) throws PropertyServerException
+    public RelatedMetadataElementSummary getRelatedElementSummary(RelatedMetadataElement relatedElement) throws PropertyServerException
     {
         if ((relatedElement != null) && (relatedElement.getElement() != null))
         {
@@ -696,13 +694,13 @@ public class PropertyHelper
             relatedElementSummary.setRelationshipHeader(elementHeader);
             if (relatedElement.getRelationshipProperties() != null)
             {
-                relatedElementSummary.setRelationshipProperties(relatedElement.getRelationshipProperties().getPropertiesAsStrings());
+                relatedElementSummary.setRelationshipProperties(propertyConverter.getRelationshipProperties(relatedElement));
             }
 
             elementSummary.setElementHeader(this.getElementHeader(relatedElement.getElement()));
             if (relatedElement.getElement().getElementProperties() != null)
             {
-                elementSummary.setProperties(relatedElement.getElement().getElementProperties().getPropertiesAsStrings());
+                elementSummary.setProperties(propertyConverter.getBeanProperties(relatedElement.getElement()));
             }
 
             relatedElementSummary.setRelatedElement(elementSummary);
@@ -766,13 +764,13 @@ public class PropertyHelper
             relatedMetadataNodeSummary.setRelationshipHeader(this.getElementHeader(relatedElement, relatedElement.getRelationshipGUID(), null));
             if (relatedElement.getRelationshipProperties() != null)
             {
-                relatedMetadataNodeSummary.setRelationshipProperties(relatedElement.getRelationshipProperties().getPropertiesAsStrings());
+                relatedMetadataNodeSummary.setRelationshipProperties(propertyConverter.getRelationshipProperties(relatedElement));
             }
 
             elementSummary.setElementHeader(this.getElementHeader(relatedElement.getElement()));
             if (relatedElement.getElement().getElementProperties() != null)
             {
-                elementSummary.setProperties(relatedElement.getElement().getElementProperties().getPropertiesAsStrings());
+                elementSummary.setProperties(propertyConverter.getBeanProperties(relatedElement.getElement()));
             }
 
             relatedMetadataNodeSummary.setRelatedElement(elementSummary);
@@ -826,11 +824,7 @@ public class PropertyHelper
             MetadataElementSummary elementSummary = new MetadataElementSummary();
 
             elementSummary.setElementHeader(this.getElementHeader(openMetadataElement));
-
-            if (openMetadataElement.getElementProperties() != null)
-            {
-                elementSummary.setProperties(openMetadataElement.getElementProperties().getPropertiesAsStrings());
-            }
+            elementSummary.setProperties(propertyConverter.getBeanProperties(openMetadataElement));
 
             return elementSummary;
         }

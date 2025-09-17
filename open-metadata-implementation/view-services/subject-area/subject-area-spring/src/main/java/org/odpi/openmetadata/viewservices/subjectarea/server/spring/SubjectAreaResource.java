@@ -90,7 +90,7 @@ public class SubjectAreaResource
                                            @PathVariable
                                            String memberDataFieldGUID,
                                            @RequestBody (required = false)
-                                               DeleteRequestBody requestBody)
+                                               DeleteRelationshipRequestBody requestBody)
     {
         return restAPI.detachSubjectAreas(serverName, parentSubjectAreaGUID, memberDataFieldGUID, requestBody);
     }
@@ -147,7 +147,7 @@ public class SubjectAreaResource
     public VoidResponse removeElementFromSubjectArea(@PathVariable String                    serverName,
                                                      @PathVariable String                    elementGUID,
                                                      @RequestBody  (required = false)
-                                                     DeleteRequestBody requestBody)
+                                                     DeleteClassificationRequestBody requestBody)
     {
         return restAPI.removeElementFromSubjectArea(serverName, elementGUID, requestBody);
     }

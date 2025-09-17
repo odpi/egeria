@@ -22,7 +22,6 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class ProjectProperties extends ReferenceableProperties
 {
-    private String identifier     = null;
     private String projectPhase   = null;
     private String projectHealth  = null;
     private String projectStatus  = null;
@@ -52,7 +51,6 @@ public class ProjectProperties extends ReferenceableProperties
 
         if (template != null)
         {
-            this.identifier = template.getIdentifier();
             this.projectPhase = template.getProjectPhase();
             this.projectHealth = template.getProjectHealth();
             this.projectStatus = template.getProjectStatus();
@@ -60,28 +58,6 @@ public class ProjectProperties extends ReferenceableProperties
             this.startDate     = template.getStartDate();
             this.plannedEndDate = template.getPlannedEndDate();
         }
-    }
-
-
-    /**
-     * Return the code value or symbol used to identify the project - typically unique.
-     *
-     * @return string identifier
-     */
-    public String getIdentifier()
-    {
-        return identifier;
-    }
-
-
-    /**
-     * Set up the code value or symbol used to identify the project - typically unique.
-     *
-     * @param identifier string identifier
-     */
-    public void setIdentifier(String identifier)
-    {
-        this.identifier = identifier;
     }
 
 
@@ -225,8 +201,7 @@ public class ProjectProperties extends ReferenceableProperties
     public String toString()
     {
         return "ProjectProperties{" +
-                "identifier='" + identifier + '\'' +
-                ", projectPhase='" + projectPhase + '\'' +
+                "projectPhase='" + projectPhase + '\'' +
                 ", projectHealth='" + projectHealth + '\'' +
                 ", projectStatus='" + projectStatus + '\'' +
                 ", priority=" + priority +
@@ -249,7 +224,12 @@ public class ProjectProperties extends ReferenceableProperties
         if (objectToCompare == null || getClass() != objectToCompare.getClass()) return false;
         if (!super.equals(objectToCompare)) return false;
         ProjectProperties that = (ProjectProperties) objectToCompare;
-        return priority == that.priority && Objects.equals(identifier, that.identifier) && Objects.equals(projectPhase, that.projectPhase) && Objects.equals(projectHealth, that.projectHealth) && Objects.equals(projectStatus, that.projectStatus) && Objects.equals(startDate, that.startDate) && Objects.equals(plannedEndDate, that.plannedEndDate);
+        return priority == that.priority &&
+                Objects.equals(projectPhase, that.projectPhase) &&
+                Objects.equals(projectHealth, that.projectHealth) &&
+                Objects.equals(projectStatus, that.projectStatus) &&
+                Objects.equals(startDate, that.startDate) &&
+                Objects.equals(plannedEndDate, that.plannedEndDate);
     }
 
     /**
@@ -260,6 +240,6 @@ public class ProjectProperties extends ReferenceableProperties
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), identifier, projectPhase, projectHealth, projectStatus, priority, startDate, plannedEndDate);
+        return Objects.hash(super.hashCode(), projectPhase, projectHealth, projectStatus, priority, startDate, plannedEndDate);
     }
 }

@@ -354,6 +354,7 @@ public class InformationSupplyChainHandler extends OpenMetadataHandlerBase
         propertyHelper.validatePaging(queryOptions, openMetadataClient.getMaxPagingSize(), methodName);
 
         List<String> propertyNames = Arrays.asList(OpenMetadataProperty.QUALIFIED_NAME.name,
+                                                   OpenMetadataProperty.IDENTIFIER.name,
                                                    OpenMetadataProperty.DISPLAY_NAME.name);
 
         List<OpenMetadataElement> openMetadataElements = openMetadataClient.findMetadataElements(userId,
@@ -709,7 +710,7 @@ public class InformationSupplyChainHandler extends OpenMetadataHandlerBase
     {
         if (startingElement != null)
         {
-            InformationSupplyChainSegment informationSupplyChainComponent = new InformationSupplyChainSegment(propertyHelper.getRelatedElementSummary(startingElement, methodName));
+            InformationSupplyChainSegment informationSupplyChainComponent = new InformationSupplyChainSegment(propertyHelper.getRelatedElementSummary(startingElement));
 
             /*
              * Only pick up a single page to limit output
@@ -745,7 +746,7 @@ public class InformationSupplyChainHandler extends OpenMetadataHandlerBase
                         }
                         else
                         {
-                            nestedSegments.add(new InformationSupplyChainSegment(propertyHelper.getRelatedElementSummary(relatedMetadataElement, methodName)));
+                            nestedSegments.add(new InformationSupplyChainSegment(propertyHelper.getRelatedElementSummary(relatedMetadataElement)));
                         }
                     }
                 }
@@ -786,7 +787,7 @@ public class InformationSupplyChainHandler extends OpenMetadataHandlerBase
     {
         if (startingElement != null)
         {
-            InformationSupplyChainComponent       informationSupplyChainComponent = new InformationSupplyChainComponent(propertyHelper.getRelatedElementSummary(startingElement, methodName));
+            InformationSupplyChainComponent       informationSupplyChainComponent = new InformationSupplyChainComponent(propertyHelper.getRelatedElementSummary(startingElement));
 
             /*
              * Only pick up a single page to limit output
@@ -828,7 +829,7 @@ public class InformationSupplyChainHandler extends OpenMetadataHandlerBase
                         }
                         else
                         {
-                            nestedComponents.add(new InformationSupplyChainComponent(propertyHelper.getRelatedElementSummary(relatedMetadataElement, methodName)));
+                            nestedComponents.add(new InformationSupplyChainComponent(propertyHelper.getRelatedElementSummary(relatedMetadataElement)));
                         }
                     }
                 }

@@ -1592,7 +1592,7 @@ public abstract class OpenMetadataClient implements OpenMetadataTypesInterface,
 
 
     /**
-     * Delete all relationships of a particular type between two metadata elements.
+     * Update all relationships of a particular type between two metadata elements.
      *
      * @param userId caller's userId
      * @param relationshipTypeName name of the type of relationship to create.  This will determine the types of metadata elements that can be

@@ -4,13 +4,14 @@
 package org.odpi.openmetadata.viewservices.automatedcuration.handlers;
 
 import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
+import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.openmetadata.client.OpenMetadataClient;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
+import org.odpi.openmetadata.frameworks.openmetadata.handlers.OpenMetadataHandlerBase;
 import org.odpi.openmetadata.frameworks.openmetadata.mapper.OpenMetadataValidValues;
 import org.odpi.openmetadata.frameworks.openmetadata.mermaid.HierarchyMermaidGraphBuilder;
-import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.ElementClassification;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.ReferenceableElement;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.RelatedMetadataElementSummary;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.AttachedClassification;
@@ -21,7 +22,6 @@ import org.odpi.openmetadata.frameworks.openmetadata.properties.templates.Templa
 import org.odpi.openmetadata.frameworks.openmetadata.search.*;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
-import org.odpi.openmetadata.frameworkservices.omf.client.EgeriaOpenMetadataStoreClient;
 import org.odpi.openmetadata.viewservices.automatedcuration.converters.ReferenceableConverter;
 import org.odpi.openmetadata.viewservices.automatedcuration.converters.TechnologyTypeSummaryConverter;
 import org.odpi.openmetadata.viewservices.automatedcuration.properties.CatalogTemplate;
@@ -36,30 +36,30 @@ import java.util.List;
 /**
  * Provides additional support for retrieving technology types
  */
-public class TechnologyTypeHandler
+public class TechnologyTypeHandler extends OpenMetadataHandlerBase
 {
     private static final PropertyHelper          propertyHelper          = new PropertyHelper();
     private static final InvalidParameterHandler invalidParameterHandler = new InvalidParameterHandler();
-
-    private final OpenMetadataClient openHandler;
-    private final String             serverName;
-    private final String             serviceName;
-
+    
 
     /**
-     * Construct the handler.
+     * Create a new handler.
      *
-     * @param openHandler Open Metadata Store client
-     * @param serviceName name of this component
-     * @param serverName local server name
+     * @param localServerName        name of this server (view server)
+     * @param auditLog               logging destination
+     * @param localServiceName       local service name
+     * @param openMetadataClient     access to open metadata
      */
-    public TechnologyTypeHandler(EgeriaOpenMetadataStoreClient openHandler,
-                                 String                   serviceName,
-                                 String                   serverName)
+    public TechnologyTypeHandler(String             localServerName,
+                                 AuditLog           auditLog,
+                                 String             localServiceName,
+                                 OpenMetadataClient openMetadataClient)
     {
-        this.openHandler        = openHandler;
-        this.serviceName        = serviceName;
-        this.serverName         = serverName;
+        super(localServerName,
+              auditLog,
+              localServiceName,
+              openMetadataClient,
+              OpenMetadataType.VALID_VALUE_DEFINITION.typeName);
     }
 
 
@@ -69,7 +69,7 @@ public class TechnologyTypeHandler
      *
      * @param userId calling user
      * @param searchString string value to look for
-     * @param queryOptions multiple options to control the query
+     * @param searchOptions multiple options to control the query
 
      *
      * @return list of valid value beans
@@ -78,25 +78,19 @@ public class TechnologyTypeHandler
      * @throws UserNotAuthorizedException the user is not authorized to make this request.
      * @throws PropertyServerException the repository is not available or not working properly.
      */
-    public List<TechnologyTypeSummary> findTechnologyTypes(String       userId,
-                                                           String       searchString,
-                                                           QueryOptions queryOptions) throws InvalidParameterException,
-                                                                                             UserNotAuthorizedException,
-                                                                                             PropertyServerException
+    public List<TechnologyTypeSummary> findTechnologyTypes(String        userId,
+                                                           String        searchString,
+                                                           SearchOptions searchOptions) throws InvalidParameterException,
+                                                                                               UserNotAuthorizedException,
+                                                                                               PropertyServerException
     {
         final String methodName = "findTechnologyTypes";
-        final String parameterName = "searchString";
 
-        invalidParameterHandler.validateSearchString(searchString, parameterName, methodName);
+        SearchOptions workingSearchOptions = new SearchOptions(searchOptions);
 
-        QueryOptions workingQueryOptions = new QueryOptions(queryOptions);
+        workingSearchOptions.setMetadataElementTypeName(OpenMetadataType.VALID_VALUE_DEFINITION.typeName);
 
-        workingQueryOptions.setMetadataElementTypeName(OpenMetadataType.VALID_VALUE_DEFINITION.typeName);
-
-        List<OpenMetadataElement> openMetadataElements = openHandler.findMetadataElements(userId,
-                                                                                          this.getTechnologyTypeConditions(searchString, PropertyComparisonOperator.LIKE),
-                                                                                          null,
-                                                                                          workingQueryOptions);
+        List<OpenMetadataElement> openMetadataElements = openMetadataClient.findMetadataElementsWithString(userId, searchString, workingSearchOptions);
 
         return this.convertTechTypeSummaries(openMetadataElements, methodName);
     }
@@ -151,7 +145,7 @@ public class TechnologyTypeHandler
 
         workingQueryOptions.setMetadataElementTypeName(OpenMetadataType.VALID_VALUE_DEFINITION.typeName);
 
-        List<OpenMetadataElement> openMetadataElements = openHandler.findMetadataElements(userId,
+        List<OpenMetadataElement> openMetadataElements = openMetadataClient.findMetadataElements(userId,
                                                                                           searchProperties,
                                                                                           null,
                                                                                           workingQueryOptions);
@@ -189,7 +183,7 @@ public class TechnologyTypeHandler
 
         workingQueryOptions.setMetadataElementTypeName(OpenMetadataType.VALID_VALUE_DEFINITION.typeName);
 
-        List<OpenMetadataElement> openMetadataElements = openHandler.findMetadataElements(userId,
+        List<OpenMetadataElement> openMetadataElements = openMetadataClient.findMetadataElements(userId,
                                                                                           this.getTechnologyTypeConditions(technologyTypeName, PropertyComparisonOperator.EQ),
                                                                                           null,
                                                                                           workingQueryOptions);
@@ -206,7 +200,7 @@ public class TechnologyTypeHandler
 
                     workingQueryOptions.setMetadataElementTypeName(null);
 
-                    RelatedMetadataElementList relatedMetadataElementList = openHandler.getRelatedMetadataElements(userId,
+                    RelatedMetadataElementList relatedMetadataElementList = openMetadataClient.getRelatedMetadataElements(userId,
                                                                                                                    openMetadataElement.getElementGUID(),
                                                                                                                    1,
                                                                                                                    null,
@@ -225,7 +219,7 @@ public class TechnologyTypeHandler
                             {
                                 if (propertyHelper.isTypeOf(relatedMetadataElement, OpenMetadataType.RESOURCE_LIST_RELATIONSHIP.typeName))
                                 {
-                                    resources.add(propertyHelper.getRelatedElementSummary(relatedMetadataElement, methodName));
+                                    resources.add(propertyHelper.getRelatedElementSummary(relatedMetadataElement));
                                 }
                                 else if (propertyHelper.isTypeOf(relatedMetadataElement, OpenMetadataType.CATALOG_TEMPLATE_RELATIONSHIP.typeName))
                                 {
@@ -243,13 +237,13 @@ public class TechnologyTypeHandler
                                         }
                                     }
 
-                                    catalogTemplate.setSpecification(openHandler.getSpecification(userId, relatedMetadataElement.getElement().getElementGUID()));
+                                    catalogTemplate.setSpecification(openMetadataClient.getSpecification(userId, relatedMetadataElement.getElement().getElementGUID()));
 
                                     catalogTemplates.add(catalogTemplate);
                                 }
                                 else if (propertyHelper.isTypeOf(relatedMetadataElement, OpenMetadataType.EXTERNAL_REFERENCE_LINK_RELATIONSHIP.typeName))
                                 {
-                                    externalReferences.add(propertyHelper.getRelatedElementSummary(relatedMetadataElement, methodName));
+                                    externalReferences.add(propertyHelper.getRelatedElementSummary(relatedMetadataElement));
                                 }
                             }
                         }
@@ -308,7 +302,7 @@ public class TechnologyTypeHandler
 
         workingQueryOptions.setMetadataElementTypeName(OpenMetadataType.VALID_VALUE_DEFINITION.typeName);
 
-        List<OpenMetadataElement> openMetadataElements = openHandler.findMetadataElements(userId,
+        List<OpenMetadataElement> openMetadataElements = openMetadataClient.findMetadataElements(userId,
                                                                                           this.getTechnologyTypeConditions(technologyTypeName, PropertyComparisonOperator.EQ),
                                                                                           null,
                                                                                           workingQueryOptions);
@@ -455,7 +449,7 @@ public class TechnologyTypeHandler
     {
         final String methodName = "getSubTypes";
 
-        RelatedMetadataElementList relatedElements = openHandler.getRelatedMetadataElements(userId,
+        RelatedMetadataElementList relatedElements = openMetadataClient.getRelatedMetadataElements(userId,
                                                                                             technologyTypeGUID,
                                                                                             2,
                                                                                             OpenMetadataType.VALID_VALUE_ASSOCIATION_RELATIONSHIP.typeName,
@@ -469,7 +463,7 @@ public class TechnologyTypeHandler
             {
                 if (relatedMetadataElement != null)
                 {
-                    String associationName = propertyHelper.getStringProperty(serviceName,
+                    String associationName = propertyHelper.getStringProperty(localServiceName,
                                                                               OpenMetadataProperty.ASSOCIATION_NAME.name,
                                                                               relatedMetadataElement.getRelationshipProperties(),
                                                                               methodName);
@@ -510,15 +504,18 @@ public class TechnologyTypeHandler
         SearchProperties        searchProperties   = new SearchProperties();
         List<PropertyCondition> propertyConditions = new ArrayList<>();
 
-        PropertyCondition          preferredValueCondition = new PropertyCondition();
-        PrimitiveTypePropertyValue preferredValue          = new PrimitiveTypePropertyValue();
-        preferredValueCondition.setProperty(OpenMetadataProperty.PREFERRED_VALUE.name);
-        preferredValueCondition.setOperator(operator);
-        preferredValue.setPrimitiveTypeCategory(PrimitiveTypeCategory.OM_PRIMITIVE_TYPE_STRING);
-        preferredValue.setTypeName(PrimitiveTypeCategory.OM_PRIMITIVE_TYPE_STRING.getName());
-        preferredValue.setPrimitiveValue(propertyValue);
-        preferredValueCondition.setValue(preferredValue);
-        propertyConditions.add(preferredValueCondition);
+        if (propertyValue != null)
+        {
+            PropertyCondition          preferredValueCondition = new PropertyCondition();
+            PrimitiveTypePropertyValue preferredValue          = new PrimitiveTypePropertyValue();
+            preferredValueCondition.setProperty(OpenMetadataProperty.PREFERRED_VALUE.name);
+            preferredValueCondition.setOperator(operator);
+            preferredValue.setPrimitiveTypeCategory(PrimitiveTypeCategory.OM_PRIMITIVE_TYPE_STRING);
+            preferredValue.setTypeName(PrimitiveTypeCategory.OM_PRIMITIVE_TYPE_STRING.getName());
+            preferredValue.setPrimitiveValue(propertyValue);
+            preferredValueCondition.setValue(preferredValue);
+            propertyConditions.add(preferredValueCondition);
+        }
 
         PropertyCondition          scopeCondition  = new PropertyCondition();
         PrimitiveTypePropertyValue scope           = new PrimitiveTypePropertyValue();
@@ -532,7 +529,7 @@ public class TechnologyTypeHandler
 
         PropertyCondition          categoryCondition = new PropertyCondition();
         PrimitiveTypePropertyValue category          = new PrimitiveTypePropertyValue();
-        categoryCondition.setProperty(OpenMetadataProperty.CATEGORY.name);
+        categoryCondition.setProperty(OpenMetadataProperty.NAMESPACE.name);
         categoryCondition.setOperator(PropertyComparisonOperator.LIKE);
         category.setPrimitiveTypeCategory(PrimitiveTypeCategory.OM_PRIMITIVE_TYPE_STRING);
         category.setTypeName(PrimitiveTypeCategory.OM_PRIMITIVE_TYPE_STRING.getName());
@@ -575,7 +572,7 @@ public class TechnologyTypeHandler
 
         List<String> propertyNames = Collections.singletonList(OpenMetadataProperty.DEPLOYED_IMPLEMENTATION_TYPE.name);
 
-        List<OpenMetadataElement> openMetadataElements = openHandler.findMetadataElements(userId,
+        List<OpenMetadataElement> openMetadataElements = openMetadataClient.findMetadataElements(userId,
                                                                                           propertyHelper.getSearchPropertiesByName(propertyNames, technologyTypeName, PropertyComparisonOperator.EQ),
                                                                                           null,
                                                                                           queryOptions);
@@ -626,7 +623,7 @@ public class TechnologyTypeHandler
     private List<TechnologyTypeSummary> convertTechTypeSummaries(List<OpenMetadataElement>  openMetadataElements,
                                                                  String                     methodName) throws PropertyServerException
     {
-        TechnologyTypeSummaryConverter<TechnologyTypeSummary> converter = new TechnologyTypeSummaryConverter<>(propertyHelper, serviceName, serverName);
+        TechnologyTypeSummaryConverter<TechnologyTypeSummary> converter = new TechnologyTypeSummaryConverter<>(propertyHelper, localServiceName, localServerName);
 
         if (openMetadataElements != null)
         {
@@ -636,11 +633,17 @@ public class TechnologyTypeHandler
             {
                 if (openMetadataElement != null)
                 {
-                    TechnologyTypeSummary technologyTypeSummary = converter.getNewBean(TechnologyTypeSummary.class, openMetadataElement, methodName);
+                    String namespace = propertyHelper.getStringProperty(localServiceName, OpenMetadataProperty.NAMESPACE.name, openMetadataElement.getElementProperties(), methodName);
+                    String qualifiedName = propertyHelper.getStringProperty(localServiceName, OpenMetadataProperty.QUALIFIED_NAME.name, openMetadataElement.getElementProperties(), methodName);
 
-                    if (technologyTypeSummary != null)
+                    if ((namespace != null) && (namespace.contains(OpenMetadataProperty.DEPLOYED_IMPLEMENTATION_TYPE.name)) && (qualifiedName != null) && (qualifiedName.contains("(") && (qualifiedName.contains(")"))))
                     {
-                        technologyTypeSummaries.add(technologyTypeSummary);
+                        TechnologyTypeSummary technologyTypeSummary = converter.getNewBean(TechnologyTypeSummary.class, openMetadataElement, methodName);
+
+                        if (technologyTypeSummary != null)
+                        {
+                            technologyTypeSummaries.add(technologyTypeSummary);
+                        }
                     }
                 }
             }
@@ -665,7 +668,7 @@ public class TechnologyTypeHandler
     {
         final String methodName = "convertTechTypeSummary";
 
-        TechnologyTypeSummaryConverter<TechnologyTypeSummary> converter = new TechnologyTypeSummaryConverter<>(propertyHelper, serviceName, serverName);
+        TechnologyTypeSummaryConverter<TechnologyTypeSummary> converter = new TechnologyTypeSummaryConverter<>(propertyHelper, localServiceName, localServerName);
 
         if (openMetadataElement != null)
         {
@@ -691,7 +694,7 @@ public class TechnologyTypeHandler
     {
         final String methodName = "convertReferenceables";
 
-        ReferenceableConverter<ReferenceableElement> converter = new ReferenceableConverter<>(propertyHelper, serviceName, serverName);
+        ReferenceableConverter<ReferenceableElement> converter = new ReferenceableConverter<>(propertyHelper, localServiceName, localServerName);
 
         if (openMetadataElements != null)
         {

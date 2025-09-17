@@ -235,9 +235,9 @@ public class AssetMakerRESTServices extends TokenController
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public VoidResponse deleteAsset(String                   serverName,
-                                         String                   urlMarker,
-                                         String                   assetGUID,
-                                         DeleteRequestBody requestBody)
+                                    String                   urlMarker,
+                                    String                   assetGUID,
+                                    DeleteElementRequestBody requestBody)
     {
         final String methodName = "deleteAsset";
 
