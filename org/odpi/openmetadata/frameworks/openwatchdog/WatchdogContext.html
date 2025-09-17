@@ -223,9 +223,10 @@ implements <a href="../opengovernance/client/WatchDogEventInterface.html" title=
 <div class="block">Create a notification/action for one of the subscribers.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#notifySubscribers(org.odpi.openmetadata.frameworks.openmetadata.properties.assets.processes.actions.NotificationProperties,java.util.Map,java.util.List)" class="member-name-link">notifySubscribers</a><wbr>(<a href="../openmetadata/properties/assets/processes/actions/NotificationProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.assets.processes.actions">NotificationProperties</a>&nbsp;notificationProperties,
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#notifySubscribers(org.odpi.openmetadata.frameworks.openmetadata.properties.assets.processes.actions.NotificationProperties,java.util.Map,java.util.List,org.odpi.openmetadata.frameworks.openmetadata.enums.ActivityStatus)" class="member-name-link">notifySubscribers</a><wbr>(<a href="../openmetadata/properties/assets/processes/actions/NotificationProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.assets.processes.actions">NotificationProperties</a>&nbsp;notificationProperties,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>,<wbr><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;&nbsp;requestParameters,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../openmetadata/properties/NewActionTarget.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties">NewActionTarget</a>&gt;&nbsp;newActionTargets)</code></div>
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../openmetadata/properties/NewActionTarget.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties">NewActionTarget</a>&gt;&nbsp;newActionTargets,
+ <a href="../openmetadata/enums/ActivityStatus.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.enums">ActivityStatus</a>&nbsp;newSubscriberStatus)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Create a notification/action for each of the subscribers.</div>
 </div>
@@ -512,11 +513,12 @@ implements <a href="../opengovernance/client/WatchDogEventInterface.html" title=
 </section>
 </li>
 <li>
-<section class="detail" id="notifySubscribers(org.odpi.openmetadata.frameworks.openmetadata.properties.assets.processes.actions.NotificationProperties,java.util.Map,java.util.List)">
+<section class="detail" id="notifySubscribers(org.odpi.openmetadata.frameworks.openmetadata.properties.assets.processes.actions.NotificationProperties,java.util.Map,java.util.List,org.odpi.openmetadata.frameworks.openmetadata.enums.ActivityStatus)">
 <h3>notifySubscribers</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">notifySubscribers</span><wbr><span class="parameters">(<a href="../openmetadata/properties/assets/processes/actions/NotificationProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.assets.processes.actions">NotificationProperties</a>&nbsp;notificationProperties,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>,<wbr><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;&nbsp;requestParameters,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../openmetadata/properties/NewActionTarget.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties">NewActionTarget</a>&gt;&nbsp;newActionTargets)</span>
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../openmetadata/properties/NewActionTarget.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties">NewActionTarget</a>&gt;&nbsp;newActionTargets,
+ <a href="../openmetadata/enums/ActivityStatus.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.enums">ActivityStatus</a>&nbsp;newSubscriberStatus)</span>
                        throws <span class="exceptions"><a href="../openmetadata/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">InvalidParameterException</a>,
 <a href="../openmetadata/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">UserNotAuthorizedException</a>,
 <a href="../openmetadata/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">PropertyServerException</a></span></div>
@@ -525,7 +527,7 @@ implements <a href="../opengovernance/client/WatchDogEventInterface.html" title=
 <dt>Parameters:</dt>
 <dd><code>notificationProperties</code> - properties for the notification</dd>
 <dd><code>requestParameters</code> - properties to pass to the next governance service</dd>
-<dd><code>newActionTargets</code> - map of action target names to GUIDs for the resulting governance action service</dd>
+<dd><code>newActionTargets</code> - map of action target names to GUIDs for the resulting engine action</dd>
 <dt>Throws:</dt>
 <dd><code><a href="../openmetadata/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">InvalidParameterException</a></code> - the completion status is null</dd>
 <dd><code><a href="../openmetadata/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">UserNotAuthorizedException</a></code> - the governance action service is not authorized to update the governance action service status</dd>

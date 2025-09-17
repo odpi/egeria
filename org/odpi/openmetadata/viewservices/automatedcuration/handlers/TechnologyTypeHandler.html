@@ -45,7 +45,7 @@ loadScripts(document, 'script');</script>
 <ul class="sub-nav-list">
 <li>Summary:&nbsp;</li>
 <li>Nested&nbsp;|&nbsp;</li>
-<li>Field&nbsp;|&nbsp;</li>
+<li><a href="#field-summary">Field</a>&nbsp;|&nbsp;</li>
 <li><a href="#constructor-summary">Constr</a>&nbsp;|&nbsp;</li>
 <li><a href="#method-summary">Method</a></li>
 </ul>
@@ -72,16 +72,27 @@ loadScripts(document, 'script');</script>
 <h1 title="Class TechnologyTypeHandler" class="title">Class TechnologyTypeHandler</h1>
 </div>
 <div class="inheritance" title="Inheritance Tree"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">java.lang.Object</a>
+<div class="inheritance"><a href="../../../frameworks/openmetadata/handlers/OpenMetadataHandlerBase.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.handlers">org.odpi.openmetadata.frameworks.openmetadata.handlers.OpenMetadataHandlerBase</a>
 <div class="inheritance">org.odpi.openmetadata.viewservices.automatedcuration.handlers.TechnologyTypeHandler</div>
+</div>
 </div>
 <section class="class-description" id="class-description">
 <hr>
 <div class="type-signature"><span class="modifiers">public class </span><span class="element-name type-name-label">TechnologyTypeHandler</span>
-<span class="extends-implements">extends <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a></span></div>
+<span class="extends-implements">extends <a href="../../../frameworks/openmetadata/handlers/OpenMetadataHandlerBase.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.handlers">OpenMetadataHandlerBase</a></span></div>
 <div class="block">Provides additional support for retrieving technology types</div>
 </section>
 <section class="summary">
 <ul class="summary-list">
+<!-- =========== FIELD SUMMARY =========== -->
+<li>
+<section class="field-summary" id="field-summary">
+<h2>Field Summary</h2>
+<div class="inherited-list">
+<h3 id="fields-inherited-from-class-org.odpi.openmetadata.frameworks.openmetadata.handlers.OpenMetadataHandlerBase">Fields inherited from class&nbsp;org.odpi.openmetadata.frameworks.openmetadata.handlers.<a href="../../../frameworks/openmetadata/handlers/OpenMetadataHandlerBase.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.handlers">OpenMetadataHandlerBase</a></h3>
+<code><a href="../../../frameworks/openmetadata/handlers/OpenMetadataHandlerBase.html#auditLog">auditLog</a>, <a href="../../../frameworks/openmetadata/handlers/OpenMetadataHandlerBase.html#classificationBuilder">classificationBuilder</a>, <a href="../../../frameworks/openmetadata/handlers/OpenMetadataHandlerBase.html#elementBuilder">elementBuilder</a>, <a href="../../../frameworks/openmetadata/handlers/OpenMetadataHandlerBase.html#localServerName">localServerName</a>, <a href="../../../frameworks/openmetadata/handlers/OpenMetadataHandlerBase.html#localServiceName">localServiceName</a>, <a href="../../../frameworks/openmetadata/handlers/OpenMetadataHandlerBase.html#metadataElementTypeName">metadataElementTypeName</a>, <a href="../../../frameworks/openmetadata/handlers/OpenMetadataHandlerBase.html#openMetadataClient">openMetadataClient</a>, <a href="../../../frameworks/openmetadata/handlers/OpenMetadataHandlerBase.html#relationshipBuilder">relationshipBuilder</a></code></div>
+</section>
+</li>
 <!-- ======== CONSTRUCTOR SUMMARY ======== -->
 <li>
 <section class="constructor-summary" id="constructor-summary">
@@ -90,11 +101,12 @@ loadScripts(document, 'script');</script>
 <div class="summary-table two-column-summary">
 <div class="table-header col-first">Constructor</div>
 <div class="table-header col-last">Description</div>
-<div class="col-constructor-name even-row-color"><code><a href="#%3Cinit%3E(org.odpi.openmetadata.frameworkservices.omf.client.EgeriaOpenMetadataStoreClient,java.lang.String,java.lang.String)" class="member-name-link">TechnologyTypeHandler</a><wbr>(<a href="../../../frameworkservices/omf/client/EgeriaOpenMetadataStoreClient.html" title="class in org.odpi.openmetadata.frameworkservices.omf.client">EgeriaOpenMetadataStoreClient</a>&nbsp;openHandler,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serviceName,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName)</code></div>
+<div class="col-constructor-name even-row-color"><code><a href="#%3Cinit%3E(java.lang.String,org.odpi.openmetadata.frameworks.auditlog.AuditLog,java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.client.OpenMetadataClient)" class="member-name-link">TechnologyTypeHandler</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;localServerName,
+ <a href="../../../frameworks/auditlog/AuditLog.html" title="class in org.odpi.openmetadata.frameworks.auditlog">AuditLog</a>&nbsp;auditLog,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;localServiceName,
+ <a href="../../../frameworks/openmetadata/client/OpenMetadataClient.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.client">OpenMetadataClient</a>&nbsp;openMetadataClient)</code></div>
 <div class="col-last even-row-color">
-<div class="block">Construct the handler.</div>
+<div class="block">Create a new handler.</div>
 </div>
 </div>
 </section>
@@ -111,9 +123,9 @@ loadScripts(document, 'script');</script>
 <div class="table-header col-second">Method</div>
 <div class="table-header col-last">Description</div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../properties/TechnologyTypeSummary.html" title="class in org.odpi.openmetadata.viewservices.automatedcuration.properties">TechnologyTypeSummary</a>&gt;</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#findTechnologyTypes(java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.search.QueryOptions)" class="member-name-link">findTechnologyTypes</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#findTechnologyTypes(java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.search.SearchOptions)" class="member-name-link">findTechnologyTypes</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;searchString,
- <a href="../../../frameworks/openmetadata/search/QueryOptions.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.search">QueryOptions</a>&nbsp;queryOptions)</code></div>
+ <a href="../../../frameworks/openmetadata/search/SearchOptions.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.search">SearchOptions</a>&nbsp;searchOptions)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Locate valid values that match the search string.</div>
 </div>
@@ -154,6 +166,9 @@ loadScripts(document, 'script');</script>
 </div>
 </div>
 <div class="inherited-list">
+<h3 id="methods-inherited-from-class-org.odpi.openmetadata.frameworks.openmetadata.handlers.OpenMetadataHandlerBase">Methods inherited from class&nbsp;org.odpi.openmetadata.frameworks.openmetadata.handlers.<a href="../../../frameworks/openmetadata/handlers/OpenMetadataHandlerBase.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.handlers">OpenMetadataHandlerBase</a></h3>
+<code><a href="../../../frameworks/openmetadata/handlers/OpenMetadataHandlerBase.html#addDefaultType(org.odpi.openmetadata.frameworks.openmetadata.search.GetOptions)">addDefaultType</a>, <a href="../../../frameworks/openmetadata/handlers/OpenMetadataHandlerBase.html#addDefaultType(org.odpi.openmetadata.frameworks.openmetadata.search.QueryOptions)">addDefaultType</a>, <a href="../../../frameworks/openmetadata/handlers/OpenMetadataHandlerBase.html#addDefaultType(org.odpi.openmetadata.frameworks.openmetadata.search.SearchOptions)">addDefaultType</a>, <a href="../../../frameworks/openmetadata/handlers/OpenMetadataHandlerBase.html#addGovernanceDefinitionFamily(java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.metadataelements.OpenMetadataRootElement,org.odpi.openmetadata.frameworks.openmetadata.search.QueryOptions)">addGovernanceDefinitionFamily</a>, <a href="../../../frameworks/openmetadata/handlers/OpenMetadataHandlerBase.html#addMermaidToRootElement(java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.metadataelements.OpenMetadataRootElement,org.odpi.openmetadata.frameworks.openmetadata.search.QueryOptions)">addMermaidToRootElement</a>, <a href="../../../frameworks/openmetadata/handlers/OpenMetadataHandlerBase.html#convertRootElement(java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.properties.OpenMetadataElement,org.odpi.openmetadata.frameworks.openmetadata.search.QueryOptions,java.lang.String)">convertRootElement</a>, <a href="../../../frameworks/openmetadata/handlers/OpenMetadataHandlerBase.html#convertRootElement(java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.properties.RelatedMetadataElement,org.odpi.openmetadata.frameworks.openmetadata.search.QueryOptions,java.lang.String)">convertRootElement</a>, <a href="../../../frameworks/openmetadata/handlers/OpenMetadataHandlerBase.html#convertRootElements(java.lang.String,java.util.List,org.odpi.openmetadata.frameworks.openmetadata.search.QueryOptions,java.lang.String)">convertRootElements</a>, <a href="../../../frameworks/openmetadata/handlers/OpenMetadataHandlerBase.html#convertSolutionComponent(java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.properties.OpenMetadataElement,boolean,boolean,org.odpi.openmetadata.frameworks.openmetadata.search.QueryOptions,java.lang.String)">convertSolutionComponent</a>, <a href="../../../frameworks/openmetadata/handlers/OpenMetadataHandlerBase.html#convertSolutionPort(java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.properties.RelatedMetadataElement,org.odpi.openmetadata.frameworks.openmetadata.search.QueryOptions,java.lang.String)">convertSolutionPort</a>, <a href="../../../frameworks/openmetadata/handlers/OpenMetadataHandlerBase.html#createElementFromTemplate(java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.search.TemplateOptions,java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.search.ElementProperties,java.util.Map,org.odpi.openmetadata.frameworks.openmetadata.properties.RelationshipProperties)">createElementFromTemplate</a>, <a href="../../../frameworks/openmetadata/handlers/OpenMetadataHandlerBase.html#createNewElement(java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.search.NewElementOptions,java.util.Map,org.odpi.openmetadata.frameworks.openmetadata.properties.OpenMetadataRootProperties,org.odpi.openmetadata.frameworks.openmetadata.properties.RelationshipProperties,java.lang.String)">createNewElement</a>, <a href="../../../frameworks/openmetadata/handlers/OpenMetadataHandlerBase.html#findRootElements(java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.search.SearchOptions,java.lang.String)">findRootElements</a>, <a href="../../../frameworks/openmetadata/handlers/OpenMetadataHandlerBase.html#getElementHierarchies(java.lang.String,java.lang.String,java.util.List,int,java.lang.String,java.util.List,org.odpi.openmetadata.frameworks.openmetadata.search.QueryOptions,int)">getElementHierarchies</a>, <a href="../../../frameworks/openmetadata/handlers/OpenMetadataHandlerBase.html#getElementHierarchies(java.lang.String,java.lang.String,java.util.List,int,java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.search.QueryOptions,int)">getElementHierarchies</a>, <a href="../../../frameworks/openmetadata/handlers/OpenMetadataHandlerBase.html#getElementHierarchy(java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.metadataelements.RelatedMetadataElementSummary,int,java.lang.String,java.util.List,org.odpi.openmetadata.frameworks.openmetadata.search.QueryOptions,int,java.util.List)">getElementHierarchy</a>, <a href="../../../frameworks/openmetadata/handlers/OpenMetadataHandlerBase.html#getElementRelatedElements(java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.properties.OpenMetadataElement,org.odpi.openmetadata.frameworks.openmetadata.search.QueryOptions)">getElementRelatedElements</a>, <a href="../../../frameworks/openmetadata/handlers/OpenMetadataHandlerBase.html#getFullParentContext(java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.properties.RelatedMetadataElement,org.odpi.openmetadata.frameworks.openmetadata.search.QueryOptions,java.lang.String)">getFullParentContext</a>, <a href="../../../frameworks/openmetadata/handlers/OpenMetadataHandlerBase.html#getInformationSupplyChainContext(java.lang.String,java.util.List,org.odpi.openmetadata.frameworks.openmetadata.search.QueryOptions,java.lang.String)">getInformationSupplyChainContext</a>, <a href="../../../frameworks/openmetadata/handlers/OpenMetadataHandlerBase.html#getQueryOptions(int,int)">getQueryOptions</a>, <a href="../../../frameworks/openmetadata/handlers/OpenMetadataHandlerBase.html#getQueryOptions(java.lang.String,int,int)">getQueryOptions</a>, <a href="../../../frameworks/openmetadata/handlers/OpenMetadataHandlerBase.html#getQueryOptions(java.lang.String,java.util.List,int,int)">getQueryOptions</a>, <a href="../../../frameworks/openmetadata/handlers/OpenMetadataHandlerBase.html#getRelatedRootElements(java.lang.String,java.lang.String,java.lang.String,int,java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.search.QueryOptions,java.lang.String)">getRelatedRootElements</a>, <a href="../../../frameworks/openmetadata/handlers/OpenMetadataHandlerBase.html#getRootElementByGUID(java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.search.GetOptions,java.lang.String)">getRootElementByGUID</a>, <a href="../../../frameworks/openmetadata/handlers/OpenMetadataHandlerBase.html#getRootElementByUniqueName(java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.search.GetOptions,java.lang.String)">getRootElementByUniqueName</a>, <a href="../../../frameworks/openmetadata/handlers/OpenMetadataHandlerBase.html#getRootElementsByName(java.lang.String,java.lang.String,java.util.List,org.odpi.openmetadata.frameworks.openmetadata.search.QueryOptions,java.lang.String)">getRootElementsByName</a>, <a href="../../../frameworks/openmetadata/handlers/OpenMetadataHandlerBase.html#populateRootElement(java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.metadataelements.OpenMetadataRootElement,org.odpi.openmetadata.frameworks.openmetadata.search.QueryOptions)">populateRootElement</a>, <a href="../../../frameworks/openmetadata/handlers/OpenMetadataHandlerBase.html#updateElement(java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.search.UpdateOptions,org.odpi.openmetadata.frameworks.openmetadata.properties.OpenMetadataRootProperties,java.lang.String)">updateElement</a>, <a href="../../../frameworks/openmetadata/handlers/OpenMetadataHandlerBase.html#updateElementStatus(java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.search.MetadataSourceOptions,org.odpi.openmetadata.frameworks.openmetadata.enums.ElementStatus)">updateElementStatus</a></code></div>
+<div class="inherited-list">
 <h3 id="methods-inherited-from-class-java.lang.Object">Methods inherited from class&nbsp;java.lang.<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a></h3>
 <code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#clone()" title="class or interface in java.lang" class="external-link">clone</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#equals(java.lang.Object)" title="class or interface in java.lang" class="external-link">equals</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#finalize()" title="class or interface in java.lang" class="external-link">finalize</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#getClass()" title="class or interface in java.lang" class="external-link">getClass</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#hashCode()" title="class or interface in java.lang" class="external-link">hashCode</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#notify()" title="class or interface in java.lang" class="external-link">notify</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#notifyAll()" title="class or interface in java.lang" class="external-link">notifyAll</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#toString()" title="class or interface in java.lang" class="external-link">toString</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#wait()" title="class or interface in java.lang" class="external-link">wait</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#wait(long)" title="class or interface in java.lang" class="external-link">wait</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#wait(long,int)" title="class or interface in java.lang" class="external-link">wait</a></code></div>
 </section>
@@ -168,17 +183,19 @@ loadScripts(document, 'script');</script>
 <h2>Constructor Details</h2>
 <ul class="member-list">
 <li>
-<section class="detail" id="&lt;init&gt;(org.odpi.openmetadata.frameworkservices.omf.client.EgeriaOpenMetadataStoreClient,java.lang.String,java.lang.String)">
+<section class="detail" id="&lt;init&gt;(java.lang.String,org.odpi.openmetadata.frameworks.auditlog.AuditLog,java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.client.OpenMetadataClient)">
 <h3>TechnologyTypeHandler</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="element-name">TechnologyTypeHandler</span><wbr><span class="parameters">(<a href="../../../frameworkservices/omf/client/EgeriaOpenMetadataStoreClient.html" title="class in org.odpi.openmetadata.frameworkservices.omf.client">EgeriaOpenMetadataStoreClient</a>&nbsp;openHandler,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serviceName,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName)</span></div>
-<div class="block">Construct the handler.</div>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="element-name">TechnologyTypeHandler</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;localServerName,
+ <a href="../../../frameworks/auditlog/AuditLog.html" title="class in org.odpi.openmetadata.frameworks.auditlog">AuditLog</a>&nbsp;auditLog,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;localServiceName,
+ <a href="../../../frameworks/openmetadata/client/OpenMetadataClient.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.client">OpenMetadataClient</a>&nbsp;openMetadataClient)</span></div>
+<div class="block">Create a new handler.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
-<dd><code>openHandler</code> - Open Metadata Store client</dd>
-<dd><code>serviceName</code> - name of this component</dd>
-<dd><code>serverName</code> - local server name</dd>
+<dd><code>localServerName</code> - name of this server (view server)</dd>
+<dd><code>auditLog</code> - logging destination</dd>
+<dd><code>localServiceName</code> - local service name</dd>
+<dd><code>openMetadataClient</code> - access to open metadata</dd>
 </dl>
 </section>
 </li>
@@ -191,11 +208,11 @@ loadScripts(document, 'script');</script>
 <h2>Method Details</h2>
 <ul class="member-list">
 <li>
-<section class="detail" id="findTechnologyTypes(java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.search.QueryOptions)">
+<section class="detail" id="findTechnologyTypes(java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.search.SearchOptions)">
 <h3>findTechnologyTypes</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../properties/TechnologyTypeSummary.html" title="class in org.odpi.openmetadata.viewservices.automatedcuration.properties">TechnologyTypeSummary</a>&gt;</span>&nbsp;<span class="element-name">findTechnologyTypes</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;searchString,
- <a href="../../../frameworks/openmetadata/search/QueryOptions.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.search">QueryOptions</a>&nbsp;queryOptions)</span>
+ <a href="../../../frameworks/openmetadata/search/SearchOptions.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.search">SearchOptions</a>&nbsp;searchOptions)</span>
                                                 throws <span class="exceptions"><a href="../../../frameworks/openmetadata/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">InvalidParameterException</a>,
 <a href="../../../frameworks/openmetadata/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">UserNotAuthorizedException</a>,
 <a href="../../../frameworks/openmetadata/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">PropertyServerException</a></span></div>
@@ -205,7 +222,7 @@ loadScripts(document, 'script');</script>
 <dt>Parameters:</dt>
 <dd><code>userId</code> - calling user</dd>
 <dd><code>searchString</code> - string value to look for</dd>
-<dd><code>queryOptions</code> - multiple options to control the query</dd>
+<dd><code>searchOptions</code> - multiple options to control the query</dd>
 <dt>Returns:</dt>
 <dd>list of valid value beans</dd>
 <dt>Throws:</dt>

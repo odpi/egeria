@@ -74,14 +74,16 @@ loadScripts(document, 'script');</script>
 <div class="inheritance" title="Inheritance Tree"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">java.lang.Object</a>
 <div class="inheritance"><a href="../RelationshipProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties">org.odpi.openmetadata.frameworks.openmetadata.properties.RelationshipProperties</a>
 <div class="inheritance"><a href="../RelationshipBeanProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties">org.odpi.openmetadata.frameworks.openmetadata.properties.RelationshipBeanProperties</a>
+<div class="inheritance"><a href="../PartOfRelationshipProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties">org.odpi.openmetadata.frameworks.openmetadata.properties.PartOfRelationshipProperties</a>
 <div class="inheritance">org.odpi.openmetadata.frameworks.openmetadata.properties.datadictionaries.NestedDataFieldProperties</div>
+</div>
 </div>
 </div>
 </div>
 <section class="class-description" id="class-description">
 <hr>
 <div class="type-signature"><span class="modifiers">public class </span><span class="element-name type-name-label">NestedDataFieldProperties</span>
-<span class="extends-implements">extends <a href="../RelationshipBeanProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties">RelationshipBeanProperties</a></span></div>
+<span class="extends-implements">extends <a href="../PartOfRelationshipProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties">PartOfRelationshipProperties</a></span></div>
 <div class="block">Represents the relationship between a parent data field and a child data field.</div>
 </section>
 <section class="summary">
@@ -116,46 +118,6 @@ loadScripts(document, 'script');</script>
 <div class="table-header col-first">Modifier and Type</div>
 <div class="table-header col-second">Method</div>
 <div class="table-header col-last">Description</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>boolean</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#equals(java.lang.Object)" class="member-name-link">equals</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a>&nbsp;objectToCompare)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Compare the values of the supplied object with those stored in the current object.</div>
-</div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>int</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getMaxCardinality()" class="member-name-link">getMaxCardinality</a>()</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Return the maximum number of instances allowed for this attribute.</div>
-</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>int</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getMinCardinality()" class="member-name-link">getMinCardinality</a>()</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Return this minimum number of instances allowed for this attribute.</div>
-</div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>int</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getPosition()" class="member-name-link">getPosition</a>()</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Return the position of this data field in the data structure.</div>
-</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>int</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#hashCode()" class="member-name-link">hashCode</a>()</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Return a number that represents the contents of this object.</div>
-</div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setMaxCardinality(int)" class="member-name-link">setMaxCardinality</a><wbr>(int&nbsp;maxCardinality)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Set up the maximum number of instances allowed for this attribute.</div>
-</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setMinCardinality(int)" class="member-name-link">setMinCardinality</a><wbr>(int&nbsp;minCardinality)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Set up the minimum number of instances allowed for this attribute.</div>
-</div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setPosition(int)" class="member-name-link">setPosition</a><wbr>(int&nbsp;position)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Set up the position of this data field in the data structure.</div>
-</div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#toString()" class="member-name-link">toString</a>()</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
@@ -164,6 +126,9 @@ loadScripts(document, 'script');</script>
 </div>
 </div>
 </div>
+<div class="inherited-list">
+<h3 id="methods-inherited-from-class-org.odpi.openmetadata.frameworks.openmetadata.properties.PartOfRelationshipProperties">Methods inherited from class&nbsp;org.odpi.openmetadata.frameworks.openmetadata.properties.<a href="../PartOfRelationshipProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties">PartOfRelationshipProperties</a></h3>
+<code><a href="../PartOfRelationshipProperties.html#equals(java.lang.Object)">equals</a>, <a href="../PartOfRelationshipProperties.html#getMaxCardinality()">getMaxCardinality</a>, <a href="../PartOfRelationshipProperties.html#getMinCardinality()">getMinCardinality</a>, <a href="../PartOfRelationshipProperties.html#getPosition()">getPosition</a>, <a href="../PartOfRelationshipProperties.html#hashCode()">hashCode</a>, <a href="../PartOfRelationshipProperties.html#setMaxCardinality(int)">setMaxCardinality</a>, <a href="../PartOfRelationshipProperties.html#setMinCardinality(int)">setMinCardinality</a>, <a href="../PartOfRelationshipProperties.html#setPosition(int)">setPosition</a></code></div>
 <div class="inherited-list">
 <h3 id="methods-inherited-from-class-org.odpi.openmetadata.frameworks.openmetadata.properties.RelationshipBeanProperties">Methods inherited from class&nbsp;org.odpi.openmetadata.frameworks.openmetadata.properties.<a href="../RelationshipBeanProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties">RelationshipBeanProperties</a></h3>
 <code><a href="../RelationshipBeanProperties.html#getExtendedProperties()">getExtendedProperties</a>, <a href="../RelationshipBeanProperties.html#getTypeName()">getTypeName</a>, <a href="../RelationshipBeanProperties.html#setExtendedProperties(java.util.Map)">setExtendedProperties</a>, <a href="../RelationshipBeanProperties.html#setTypeName(java.lang.String)">setTypeName</a></code></div>
@@ -211,109 +176,15 @@ loadScripts(document, 'script');</script>
 <h2>Method Details</h2>
 <ul class="member-list">
 <li>
-<section class="detail" id="getPosition()">
-<h3>getPosition</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">int</span>&nbsp;<span class="element-name">getPosition</span>()</div>
-<div class="block">Return the position of this data field in the data structure.</div>
-<dl class="notes">
-<dt>Returns:</dt>
-<dd>int position in schema - 0 means first</dd>
-</dl>
-</section>
-</li>
-<li>
-<section class="detail" id="setPosition(int)">
-<h3>setPosition</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">setPosition</span><wbr><span class="parameters">(int&nbsp;position)</span></div>
-<div class="block">Set up the position of this data field in the data structure.</div>
-<dl class="notes">
-<dt>Parameters:</dt>
-<dd><code>position</code> - int position in schema - 0 means first</dd>
-</dl>
-</section>
-</li>
-<li>
-<section class="detail" id="getMinCardinality()">
-<h3>getMinCardinality</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">int</span>&nbsp;<span class="element-name">getMinCardinality</span>()</div>
-<div class="block">Return this minimum number of instances allowed for this attribute.</div>
-<dl class="notes">
-<dt>Returns:</dt>
-<dd>int</dd>
-</dl>
-</section>
-</li>
-<li>
-<section class="detail" id="setMinCardinality(int)">
-<h3>setMinCardinality</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">setMinCardinality</span><wbr><span class="parameters">(int&nbsp;minCardinality)</span></div>
-<div class="block">Set up the minimum number of instances allowed for this attribute.</div>
-<dl class="notes">
-<dt>Parameters:</dt>
-<dd><code>minCardinality</code> - int</dd>
-</dl>
-</section>
-</li>
-<li>
-<section class="detail" id="getMaxCardinality()">
-<h3>getMaxCardinality</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">int</span>&nbsp;<span class="element-name">getMaxCardinality</span>()</div>
-<div class="block">Return the maximum number of instances allowed for this attribute.</div>
-<dl class="notes">
-<dt>Returns:</dt>
-<dd>int (-1 means infinite)</dd>
-</dl>
-</section>
-</li>
-<li>
-<section class="detail" id="setMaxCardinality(int)">
-<h3>setMaxCardinality</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">setMaxCardinality</span><wbr><span class="parameters">(int&nbsp;maxCardinality)</span></div>
-<div class="block">Set up the maximum number of instances allowed for this attribute.</div>
-<dl class="notes">
-<dt>Parameters:</dt>
-<dd><code>maxCardinality</code> - int (-1 means infinite)</dd>
-</dl>
-</section>
-</li>
-<li>
 <section class="detail" id="toString()">
 <h3>toString</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">toString</span>()</div>
 <div class="block">Standard toString method.</div>
 <dl class="notes">
 <dt>Overrides:</dt>
-<dd><code><a href="../RelationshipBeanProperties.html#toString()">toString</a></code>&nbsp;in class&nbsp;<code><a href="../RelationshipBeanProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties">RelationshipBeanProperties</a></code></dd>
+<dd><code><a href="../PartOfRelationshipProperties.html#toString()">toString</a></code>&nbsp;in class&nbsp;<code><a href="../PartOfRelationshipProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties">PartOfRelationshipProperties</a></code></dd>
 <dt>Returns:</dt>
 <dd>print out of variables in a JSON-style</dd>
-</dl>
-</section>
-</li>
-<li>
-<section class="detail" id="equals(java.lang.Object)">
-<h3>equals</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">boolean</span>&nbsp;<span class="element-name">equals</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a>&nbsp;objectToCompare)</span></div>
-<div class="block">Compare the values of the supplied object with those stored in the current object.</div>
-<dl class="notes">
-<dt>Overrides:</dt>
-<dd><code><a href="../RelationshipBeanProperties.html#equals(java.lang.Object)">equals</a></code>&nbsp;in class&nbsp;<code><a href="../RelationshipBeanProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties">RelationshipBeanProperties</a></code></dd>
-<dt>Parameters:</dt>
-<dd><code>objectToCompare</code> - supplied object</dd>
-<dt>Returns:</dt>
-<dd>boolean result of comparison</dd>
-</dl>
-</section>
-</li>
-<li>
-<section class="detail" id="hashCode()">
-<h3>hashCode</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">int</span>&nbsp;<span class="element-name">hashCode</span>()</div>
-<div class="block">Return a number that represents the contents of this object.</div>
-<dl class="notes">
-<dt>Overrides:</dt>
-<dd><code><a href="../RelationshipBeanProperties.html#hashCode()">hashCode</a></code>&nbsp;in class&nbsp;<code><a href="../RelationshipBeanProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties">RelationshipBeanProperties</a></code></dd>
-<dt>Returns:</dt>
-<dd>int</dd>
 </dl>
 </section>
 </li>
