@@ -631,9 +631,9 @@ loadScripts(document, 'script');</script>
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
  @PathVariable
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;integrationConnectorGUID,
- @RequestParam
+ @RequestParam(required=false,defaultValue="0")
  int&nbsp;startFrom,
- @RequestParam
+ @RequestParam(required=false,defaultValue="0")
  int&nbsp;pageSize)</span></div>
 <div class="block">Retrieve the details of the metadata elements identified as catalog targets with an integration connector.</div>
 <dl class="notes">
@@ -943,9 +943,9 @@ loadScripts(document, 'script');</script>
 <div class="member-signature"><span class="annotations">@GetMapping(path="/engine-actions")
 </span><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../../../frameworkservices/gaf/rest/EngineActionElementsResponse.html" title="class in org.odpi.openmetadata.frameworkservices.gaf.rest">EngineActionElementsResponse</a></span>&nbsp;<span class="element-name">getEngineActions</span><wbr><span class="parameters">(@PathVariable
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
- @RequestParam
+ @RequestParam(required=false,defaultValue="0")
  int&nbsp;startFrom,
- @RequestParam
+ @RequestParam(required=false,defaultValue="0")
  int&nbsp;pageSize)</span></div>
 <div class="block">Retrieve the engine actions that are known to the server.</div>
 <dl class="notes">
@@ -967,9 +967,9 @@ loadScripts(document, 'script');</script>
 <div class="member-signature"><span class="annotations">@GetMapping(path="/engine-actions/active")
 </span><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../../../frameworkservices/gaf/rest/EngineActionElementsResponse.html" title="class in org.odpi.openmetadata.frameworkservices.gaf.rest">EngineActionElementsResponse</a></span>&nbsp;<span class="element-name">getActiveEngineActions</span><wbr><span class="parameters">(@PathVariable
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
- @RequestParam
+ @RequestParam(required=false,defaultValue="0")
  int&nbsp;startFrom,
- @RequestParam
+ @RequestParam(required=false,defaultValue="0")
  int&nbsp;pageSize)</span></div>
 <div class="block">Retrieve the engine actions that are still in process.</div>
 <dl class="notes">

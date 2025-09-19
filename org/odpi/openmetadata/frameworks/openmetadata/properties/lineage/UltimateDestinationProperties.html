@@ -76,7 +76,9 @@ loadScripts(document, 'script');</script>
 <div class="inheritance"><a href="../RelationshipBeanProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties">org.odpi.openmetadata.frameworks.openmetadata.properties.RelationshipBeanProperties</a>
 <div class="inheritance"><a href="../LabeledRelationshipProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties">org.odpi.openmetadata.frameworks.openmetadata.properties.LabeledRelationshipProperties</a>
 <div class="inheritance"><a href="LineageRelationshipProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.lineage">org.odpi.openmetadata.frameworks.openmetadata.properties.lineage.LineageRelationshipProperties</a>
+<div class="inheritance"><a href="LineageBoundaryProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.lineage">org.odpi.openmetadata.frameworks.openmetadata.properties.lineage.LineageBoundaryProperties</a>
 <div class="inheritance">org.odpi.openmetadata.frameworks.openmetadata.properties.lineage.UltimateDestinationProperties</div>
+</div>
 </div>
 </div>
 </div>
@@ -85,7 +87,7 @@ loadScripts(document, 'script');</script>
 <section class="class-description" id="class-description">
 <hr>
 <div class="type-signature"><span class="modifiers">public class </span><span class="element-name type-name-label">UltimateDestinationProperties</span>
-<span class="extends-implements">extends <a href="LineageRelationshipProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.lineage">LineageRelationshipProperties</a></span></div>
+<span class="extends-implements">extends <a href="LineageBoundaryProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.lineage">LineageBoundaryProperties</a></span></div>
 <div class="block">UltimateDestination describe the properties for a ultimate destination relationship.</div>
 </section>
 <section class="summary">
@@ -102,7 +104,7 @@ loadScripts(document, 'script');</script>
 <div class="col-last even-row-color">
 <div class="block">Default constructor</div>
 </div>
-<div class="col-constructor-name odd-row-color"><code><a href="#%3Cinit%3E(org.odpi.openmetadata.frameworks.openmetadata.properties.lineage.LineageRelationshipProperties)" class="member-name-link">UltimateDestinationProperties</a><wbr>(<a href="LineageRelationshipProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.lineage">LineageRelationshipProperties</a>&nbsp;template)</code></div>
+<div class="col-constructor-name odd-row-color"><code><a href="#%3Cinit%3E(org.odpi.openmetadata.frameworks.openmetadata.properties.lineage.LineageBoundaryProperties)" class="member-name-link">UltimateDestinationProperties</a><wbr>(<a href="LineageBoundaryProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.lineage">LineageBoundaryProperties</a>&nbsp;template)</code></div>
 <div class="col-last odd-row-color">
 <div class="block">Copy/clone constructor.</div>
 </div>
@@ -129,8 +131,11 @@ loadScripts(document, 'script');</script>
 </div>
 </div>
 <div class="inherited-list">
+<h3 id="methods-inherited-from-class-org.odpi.openmetadata.frameworks.openmetadata.properties.lineage.LineageBoundaryProperties">Methods inherited from class&nbsp;org.odpi.openmetadata.frameworks.openmetadata.properties.lineage.<a href="LineageBoundaryProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.lineage">LineageBoundaryProperties</a></h3>
+<code><a href="LineageBoundaryProperties.html#equals(java.lang.Object)">equals</a>, <a href="LineageBoundaryProperties.html#getHops()">getHops</a>, <a href="LineageBoundaryProperties.html#hashCode()">hashCode</a>, <a href="LineageBoundaryProperties.html#setHops(java.util.Map)">setHops</a></code></div>
+<div class="inherited-list">
 <h3 id="methods-inherited-from-class-org.odpi.openmetadata.frameworks.openmetadata.properties.lineage.LineageRelationshipProperties">Methods inherited from class&nbsp;org.odpi.openmetadata.frameworks.openmetadata.properties.lineage.<a href="LineageRelationshipProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.lineage">LineageRelationshipProperties</a></h3>
-<code><a href="LineageRelationshipProperties.html#equals(java.lang.Object)">equals</a>, <a href="LineageRelationshipProperties.html#getISCQualifiedName()">getISCQualifiedName</a>, <a href="LineageRelationshipProperties.html#hashCode()">hashCode</a>, <a href="LineageRelationshipProperties.html#setISCQualifiedName(java.lang.String)">setISCQualifiedName</a></code></div>
+<code><a href="LineageRelationshipProperties.html#getISCQualifiedName()">getISCQualifiedName</a>, <a href="LineageRelationshipProperties.html#setISCQualifiedName(java.lang.String)">setISCQualifiedName</a></code></div>
 <div class="inherited-list">
 <h3 id="methods-inherited-from-class-org.odpi.openmetadata.frameworks.openmetadata.properties.LabeledRelationshipProperties">Methods inherited from class&nbsp;org.odpi.openmetadata.frameworks.openmetadata.properties.<a href="../LabeledRelationshipProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties">LabeledRelationshipProperties</a></h3>
 <code><a href="../LabeledRelationshipProperties.html#getDescription()">getDescription</a>, <a href="../LabeledRelationshipProperties.html#getLabel()">getLabel</a>, <a href="../LabeledRelationshipProperties.html#setDescription(java.lang.String)">setDescription</a>, <a href="../LabeledRelationshipProperties.html#setLabel(java.lang.String)">setLabel</a></code></div>
@@ -162,9 +167,9 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
-<section class="detail" id="&lt;init&gt;(org.odpi.openmetadata.frameworks.openmetadata.properties.lineage.LineageRelationshipProperties)">
+<section class="detail" id="&lt;init&gt;(org.odpi.openmetadata.frameworks.openmetadata.properties.lineage.LineageBoundaryProperties)">
 <h3>UltimateDestinationProperties</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="element-name">UltimateDestinationProperties</span><wbr><span class="parameters">(<a href="LineageRelationshipProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.lineage">LineageRelationshipProperties</a>&nbsp;template)</span></div>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="element-name">UltimateDestinationProperties</span><wbr><span class="parameters">(<a href="LineageBoundaryProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.lineage">LineageBoundaryProperties</a>&nbsp;template)</span></div>
 <div class="block">Copy/clone constructor.  Retrieves values from the supplied template</div>
 <dl class="notes">
 <dt>Parameters:</dt>
@@ -187,7 +192,7 @@ loadScripts(document, 'script');</script>
 <div class="block">Standard toString method.</div>
 <dl class="notes">
 <dt>Overrides:</dt>
-<dd><code><a href="LineageRelationshipProperties.html#toString()">toString</a></code>&nbsp;in class&nbsp;<code><a href="LineageRelationshipProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.lineage">LineageRelationshipProperties</a></code></dd>
+<dd><code><a href="LineageBoundaryProperties.html#toString()">toString</a></code>&nbsp;in class&nbsp;<code><a href="LineageBoundaryProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.lineage">LineageBoundaryProperties</a></code></dd>
 <dt>Returns:</dt>
 <dd>print out of variables in a JSON-style</dd>
 </dl>
