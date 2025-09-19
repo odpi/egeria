@@ -48,11 +48,12 @@ public class TemplateOptions extends NewElementOptions
 
         if (template != null)
         {
-            effectiveFrom      = template.getEffectiveFrom();
-            effectiveTo        = template.getEffectiveTo();
-            deepCopy           = template.getDeepCopy();
-            templateSubstitute = template.getIsTemplateSubstitute();
-            allowRetrieve      = template.getAllowRetrieve();
+            effectiveFrom              = template.getEffectiveFrom();
+            effectiveTo                = template.getEffectiveTo();
+            deepCopy                   = template.getDeepCopy();
+            templateSubstitute         = template.getIsTemplateSubstitute();
+            allowRetrieve              = template.getAllowRetrieve();
+            metadataElementSubtypeName = template.getMetadataElementSubtypeName();
         }
     }
 
