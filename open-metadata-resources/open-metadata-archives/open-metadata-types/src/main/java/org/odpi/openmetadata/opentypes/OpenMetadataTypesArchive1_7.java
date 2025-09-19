@@ -1238,16 +1238,17 @@ public class OpenMetadataTypesArchive1_7
                                                                                 null,
                                                                                 ClassificationPropagationRule.NONE);
 
+        relationshipDef.setMultiLink(true);
         RelationshipEndDef relationshipEndDef;
 
         /*
          * Set up end 1.
          */
-        final String                     end1AttributeName            = "calls";
-        final String                     end1AttributeDescription     = "Caller asset.";
+        final String                     end1AttributeName            = "caller";
+        final String                     end1AttributeDescription     = "Call originator.";
         final String                     end1AttributeDescriptionGUID = null;
 
-        relationshipEndDef = archiveHelper.getRelationshipEndDef(this.archiveBuilder.getEntityDef(OpenMetadataType.ASSET.typeName),
+        relationshipEndDef = archiveHelper.getRelationshipEndDef(this.archiveBuilder.getEntityDef(OpenMetadataType.REFERENCEABLE.typeName),
                                                                  end1AttributeName,
                                                                  end1AttributeDescription,
                                                                  end1AttributeDescriptionGUID,
@@ -1258,11 +1259,11 @@ public class OpenMetadataTypesArchive1_7
         /*
          * Set up end 2.
          */
-        final String                     end2AttributeName            = "calledBy";
-        final String                     end2AttributeDescription     = "Called asset.";
+        final String                     end2AttributeName            = "called";
+        final String                     end2AttributeDescription     = "Called element that performs the processing.";
         final String                     end2AttributeDescriptionGUID = null;
 
-        relationshipEndDef = archiveHelper.getRelationshipEndDef(this.archiveBuilder.getEntityDef(OpenMetadataType.ASSET.typeName),
+        relationshipEndDef = archiveHelper.getRelationshipEndDef(this.archiveBuilder.getEntityDef(OpenMetadataType.REFERENCEABLE.typeName),
                                                                  end2AttributeName,
                                                                  end2AttributeDescription,
                                                                  end2AttributeDescriptionGUID,
@@ -1274,7 +1275,12 @@ public class OpenMetadataTypesArchive1_7
          */
         List<TypeDefAttribute> properties = new ArrayList<>();
 
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.ISC_QUALIFIED_NAME));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.LABEL));
         properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.DESCRIPTION));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.FORMULA));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.FORMULA_TYPE));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.LINE_NUMBER));
 
         relationshipDef.setPropertiesDefinition(properties);
 

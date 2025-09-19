@@ -26,12 +26,13 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
         property = "class")
 @JsonSubTypes(
         {
-                @JsonSubTypes.Type(value = DataFlowProperties.class, name = "DataFlowProperties"),
                 @JsonSubTypes.Type(value = ControlFlowProperties.class, name = "ControlFlowProperties"),
-                @JsonSubTypes.Type(value = ProcessCallProperties.class, name = "ProcessCallProperties"),
-                @JsonSubTypes.Type(value = LineageMappingProperties.class, name = "LineageMappingProperties"),
+                @JsonSubTypes.Type(value = DataFlowProperties.class, name = "DataFlowProperties"),
                 @JsonSubTypes.Type(value = DataMappingProperties.class, name = "DataMappingProperties"),
                 @JsonSubTypes.Type(value = DigitalProductDependencyProperties.class, name = "DigitalProductDependencyProperties"),
+                @JsonSubTypes.Type(value = LineageBoundaryProperties.class, name = "LineageBoundaryProperties"),
+                @JsonSubTypes.Type(value = LineageMappingProperties.class, name = "LineageMappingProperties"),
+                @JsonSubTypes.Type(value = ProcessCallProperties.class, name = "ProcessCallProperties"),
         })
 public class LineageRelationshipProperties extends LabeledRelationshipProperties
 {

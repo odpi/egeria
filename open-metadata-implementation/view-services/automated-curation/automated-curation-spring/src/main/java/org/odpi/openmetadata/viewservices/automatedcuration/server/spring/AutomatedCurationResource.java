@@ -365,8 +365,8 @@ public class AutomatedCurationResource
 
     public CatalogTargetsResponse getCatalogTargets(@PathVariable String serverName,
                                                     @PathVariable String integrationConnectorGUID,
-                                                    @RequestParam int    startFrom,
-                                                    @RequestParam int    pageSize)
+                                                    @RequestParam(required = false, defaultValue = "0") int    startFrom,
+                                                    @RequestParam(required = false, defaultValue = "0") int    pageSize)
     {
         return restAPI.getCatalogTargets(serverName, integrationConnectorGUID, startFrom, pageSize);
     }
@@ -763,8 +763,8 @@ public class AutomatedCurationResource
                     url="https://egeria-project.org/concepts/engine-action"))
 
     public EngineActionElementsResponse getEngineActions(@PathVariable String serverName,
-                                                         @RequestParam int    startFrom,
-                                                         @RequestParam int    pageSize)
+                                                         @RequestParam(required = false, defaultValue = "0") int    startFrom,
+                                                         @RequestParam(required = false, defaultValue = "0") int    pageSize)
     {
         return restAPI.getEngineActions(serverName, startFrom, pageSize);
     }
@@ -791,8 +791,8 @@ public class AutomatedCurationResource
                     url="https://egeria-project.org/concepts/engine-action"))
 
     public EngineActionElementsResponse getActiveEngineActions(@PathVariable String serverName,
-                                                               @RequestParam int    startFrom,
-                                                               @RequestParam int    pageSize)
+                                                               @RequestParam(required = false, defaultValue = "0") int    startFrom,
+                                                               @RequestParam(required = false, defaultValue = "0") int    pageSize)
     {
         return restAPI.getActiveEngineActions(serverName, startFrom, pageSize);
     }

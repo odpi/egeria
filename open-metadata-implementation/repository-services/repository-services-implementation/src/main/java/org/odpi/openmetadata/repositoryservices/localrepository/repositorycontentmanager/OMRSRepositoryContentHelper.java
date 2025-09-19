@@ -1057,7 +1057,8 @@ public class OMRSRepositoryContentHelper extends OMRSRepositoryPropertiesUtiliti
             }
             else
             {
-                throw new TypeErrorException(OMRSErrorCode.INVALID_CLASSIFICATION_FOR_ENTITY.getMessageDefinition(classificationTypeName,
+                throw new TypeErrorException(OMRSErrorCode.INVALID_CLASSIFICATION_FOR_ENTITY.getMessageDefinition(sourceName,
+                                                                                                                  classificationTypeName,
                                                                                                                   entityTypeName),
                                              this.getClass().getName(),
                                              methodName);

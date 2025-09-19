@@ -479,7 +479,6 @@ public class OpenMetadataTypesArchive4_0
     {
         this.archiveBuilder.addTypeDefPatch(updateDataSet());
         this.archiveBuilder.addTypeDefPatch(updateCalculatedValue());
-        this.archiveBuilder.addTypeDefPatch(updateProcessCall());
     }
 
 
@@ -527,27 +526,6 @@ public class OpenMetadataTypesArchive4_0
         return typeDefPatch;
     }
 
-    private TypeDefPatch updateProcessCall()
-    {
-        /*
-         * Create the Patch
-         */
-        TypeDefPatch  typeDefPatch = archiveBuilder.getPatchForType(OpenMetadataType.PROCESS_CALL_RELATIONSHIP.typeName);
-
-        typeDefPatch.setUpdatedBy(originatorName);
-        typeDefPatch.setUpdateTime(creationDate);
-
-        /*
-         * Build the attributes
-         */
-        List<TypeDefAttribute> properties = new ArrayList<>();
-
-        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.FORMULA_TYPE));
-
-        typeDefPatch.setPropertyDefinitions(properties);
-
-        return typeDefPatch;
-    }
 
 
     /*

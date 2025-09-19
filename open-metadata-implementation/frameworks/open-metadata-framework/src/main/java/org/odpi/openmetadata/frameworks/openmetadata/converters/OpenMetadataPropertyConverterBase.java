@@ -230,28 +230,6 @@ public class OpenMetadataPropertyConverterBase
 
 
     /**
-     * Extract the displayName property from the supplied element properties.
-     *
-     * @param elementProperties properties from element
-     * @return string name or null
-     */
-    protected String getDisplayName(ElementProperties  elementProperties)
-    {
-        final String methodName = "getDisplayName";
-
-        if (elementProperties != null)
-        {
-            return propertyHelper.getStringProperty(localServiceName,
-                                                    OpenMetadataProperty.DISPLAY_NAME.name,
-                                                    elementProperties,
-                                                    methodName);
-        }
-
-        return null;
-    }
-
-
-    /**
      * Extract and delete the resource name property from the supplied element properties.
      *
      * @param elementProperties properties from element
@@ -288,28 +266,6 @@ public class OpenMetadataPropertyConverterBase
                                                        OpenMetadataProperty.VERSION_IDENTIFIER.name,
                                                        elementProperties,
                                                        methodName);
-        }
-
-        return null;
-    }
-
-
-    /**
-     * Extract the description property from the supplied element properties.
-     *
-     * @param elementProperties properties from element
-     * @return string text or null
-     */
-    protected String getDescription(ElementProperties  elementProperties)
-    {
-        final String methodName = "getDescription";
-
-        if (elementProperties != null)
-        {
-            return propertyHelper.getStringProperty(localServiceName,
-                                                    OpenMetadataProperty.DESCRIPTION.name,
-                                                    elementProperties,
-                                                    methodName);
         }
 
         return null;
