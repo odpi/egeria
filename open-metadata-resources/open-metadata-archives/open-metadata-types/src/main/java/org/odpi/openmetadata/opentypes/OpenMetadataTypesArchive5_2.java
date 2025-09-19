@@ -157,7 +157,6 @@ public class OpenMetadataTypesArchive5_2
         this.update0050ApplicationsAndProcesses();
         this.add0265AnalyticsAssets();
         this.add0118ActorRoles();
-        this.addLabelToLineage();
     }
 
 
@@ -445,114 +444,6 @@ public class OpenMetadataTypesArchive5_2
                                                  this.archiveBuilder.getEntityDef(OpenMetadataType.TRANSIENT_EMBEDDED_PROCESS.typeName));
     }
 
-
-    /*
-     * -------------------------------------------------------------------------------------------------------
-     */
-
-
-    private void addLabelToLineage()
-    {
-        this.archiveBuilder.addTypeDefPatch(updateProcessCall());
-        this.archiveBuilder.addTypeDefPatch(updateUltimateSource());
-        this.archiveBuilder.addTypeDefPatch(updateUltimateDestination());
-        this.archiveBuilder.addTypeDefPatch(updateLineageMapping());
-    }
-
-
-    private TypeDefPatch updateProcessCall()
-    {
-        /*
-         * Create the Patch
-         */
-        TypeDefPatch  typeDefPatch = archiveBuilder.getPatchForType(OpenMetadataType.PROCESS_CALL_RELATIONSHIP.typeName);
-
-        typeDefPatch.setUpdatedBy(originatorName);
-        typeDefPatch.setUpdateTime(creationDate);
-
-        /*
-         * Build the attributes
-         */
-        List<TypeDefAttribute> properties = new ArrayList<>();
-
-        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.LABEL));
-
-        typeDefPatch.setPropertyDefinitions(properties);
-
-        return typeDefPatch;
-    }
-
-
-
-    private TypeDefPatch updateUltimateSource()
-    {
-        /*
-         * Create the Patch
-         */
-        TypeDefPatch  typeDefPatch = archiveBuilder.getPatchForType(OpenMetadataType.ULTIMATE_SOURCE.typeName);
-
-        typeDefPatch.setUpdatedBy(originatorName);
-        typeDefPatch.setUpdateTime(creationDate);
-
-        /*
-         * Build the attributes
-         */
-        List<TypeDefAttribute> properties = new ArrayList<>();
-
-        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.LABEL));
-
-        typeDefPatch.setPropertyDefinitions(properties);
-
-        return typeDefPatch;
-    }
-
-
-
-    private TypeDefPatch updateUltimateDestination()
-    {
-        /*
-         * Create the Patch
-         */
-        TypeDefPatch  typeDefPatch = archiveBuilder.getPatchForType(OpenMetadataType.ULTIMATE_DESTINATION.typeName);
-
-        typeDefPatch.setUpdatedBy(originatorName);
-        typeDefPatch.setUpdateTime(creationDate);
-
-        /*
-         * Build the attributes
-         */
-        List<TypeDefAttribute> properties = new ArrayList<>();
-
-        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.LABEL));
-
-        typeDefPatch.setPropertyDefinitions(properties);
-
-        return typeDefPatch;
-    }
-
-
-
-    private TypeDefPatch updateLineageMapping()
-    {
-        /*
-         * Create the Patch
-         */
-        TypeDefPatch  typeDefPatch = archiveBuilder.getPatchForType(OpenMetadataType.LINEAGE_MAPPING_RELATIONSHIP.typeName);
-
-        typeDefPatch.setUpdatedBy(originatorName);
-        typeDefPatch.setUpdateTime(creationDate);
-
-        /*
-         * Build the attributes
-         */
-        List<TypeDefAttribute> properties = new ArrayList<>();
-
-        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.LABEL));
-
-        typeDefPatch.setPropertyDefinitions(properties);
-
-        return typeDefPatch;
-    }
 
     /*
      * -------------------------------------------------------------------------------------------------------

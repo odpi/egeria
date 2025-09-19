@@ -20,11 +20,12 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class TemplateOptions extends NewElementOptions
 {
-    private Date    effectiveFrom      = null;
-    private Date    effectiveTo        = null;
-    private boolean deepCopy           = true;
-    private boolean templateSubstitute = false;
-    private boolean allowRetrieve      = true;
+    private Date    effectiveFrom              = null;
+    private Date    effectiveTo                = null;
+    private boolean deepCopy                   = true;
+    private boolean templateSubstitute         = false;
+    private boolean allowRetrieve              = true;
+    private String  metadataElementSubtypeName = null;
 
 
     /**
@@ -193,6 +194,28 @@ public class TemplateOptions extends NewElementOptions
 
 
     /**
+     * Return the optional subtype name that  can be used to create an element of a subtype to the template type.
+     *
+     * @return string
+     */
+    public String getMetadataElementSubtypeName()
+    {
+        return metadataElementSubtypeName;
+    }
+
+
+    /**
+     * Set up the optional subtype name that  can be used to create an element of a subtype to the template type.
+     *
+     * @param metadataElementSubtypeName  string
+     */
+    public void setMetadataElementSubtypeName(String metadataElementSubtypeName)
+    {
+        this.metadataElementSubtypeName = metadataElementSubtypeName;
+    }
+
+
+    /**
      * Standard toString method.
      *
      * @return JSON style description of variables.
@@ -206,6 +229,8 @@ public class TemplateOptions extends NewElementOptions
                 ", deepCopy=" + deepCopy +
                 ", templateSubstitute=" + templateSubstitute +
                 ", allowRetrieve=" + allowRetrieve +
+                ", metadataElementSubtypeName='" + metadataElementSubtypeName + '\'' +
+                ", isTemplateSubstitute=" + getIsTemplateSubstitute() +
                 "} " + super.toString();
     }
 
@@ -227,6 +252,7 @@ public class TemplateOptions extends NewElementOptions
                 deepCopy == that.deepCopy &&
                 templateSubstitute == that.templateSubstitute &&
                 Objects.equals(effectiveFrom, that.effectiveFrom) &&
+                Objects.equals(metadataElementSubtypeName, that.metadataElementSubtypeName) &&
                 Objects.equals(effectiveTo, that.effectiveTo);
     }
 
@@ -239,7 +265,7 @@ public class TemplateOptions extends NewElementOptions
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), effectiveFrom, effectiveTo, deepCopy, templateSubstitute, allowRetrieve);
+        return Objects.hash(super.hashCode(), effectiveFrom, effectiveTo, metadataElementSubtypeName, deepCopy, templateSubstitute, allowRetrieve);
     }
 }
 

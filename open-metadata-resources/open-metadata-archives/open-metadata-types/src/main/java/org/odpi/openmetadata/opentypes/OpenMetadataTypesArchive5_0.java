@@ -1598,6 +1598,8 @@ public class OpenMetadataTypesArchive5_0
         List<TypeDefAttribute> properties = new ArrayList<>();
 
         properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.ISC_QUALIFIED_NAME));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.LABEL));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.DESCRIPTION));
         properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.HOPS));
 
         relationshipDef.setPropertiesDefinition(properties);
@@ -1650,6 +1652,8 @@ public class OpenMetadataTypesArchive5_0
         List<TypeDefAttribute> properties = new ArrayList<>();
 
         properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.ISC_QUALIFIED_NAME));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.LABEL));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.DESCRIPTION));
         properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.HOPS));
 
         relationshipDef.setPropertiesDefinition(properties);

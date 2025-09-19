@@ -396,7 +396,7 @@ public class AutomatedCurationRESTServices extends TokenController
                 EgeriaOpenMetadataStoreClient openHandler = instanceHandler.getOpenMetadataStoreClient(userId, serverName, methodName);
 
                 response.setGUID(openHandler.createMetadataElementFromTemplate(userId,
-                                                                               OpenMetadataType.OPEN_METADATA_ROOT.typeName,
+                                                                               requestBody.getMetadataElementSubtypeName(),
                                                                                requestBody,
                                                                                requestBody.getTemplateGUID(),
                                                                                requestBody.getReplacementProperties(),

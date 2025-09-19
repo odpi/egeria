@@ -16,7 +16,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class UltimateSourceProperties extends LineageRelationshipProperties
+public class UltimateSourceProperties extends LineageBoundaryProperties
 {
     /**
      * Default constructor
@@ -33,7 +33,7 @@ public class UltimateSourceProperties extends LineageRelationshipProperties
      *
      * @param template element to copy
      */
-    public UltimateSourceProperties(LineageRelationshipProperties template)
+    public UltimateSourceProperties(LineageBoundaryProperties template)
     {
         super(template);
     }

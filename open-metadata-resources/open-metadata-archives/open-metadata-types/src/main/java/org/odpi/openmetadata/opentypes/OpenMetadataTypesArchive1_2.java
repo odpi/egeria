@@ -10108,6 +10108,8 @@ public class OpenMetadataTypesArchive1_2
                                                                                 null,
                                                                                 ClassificationPropagationRule.NONE);
 
+        relationshipDef.setMultiLink(true);
+
         RelationshipEndDef relationshipEndDef;
 
         /*
@@ -10117,7 +10119,7 @@ public class OpenMetadataTypesArchive1_2
         final String                     end1AttributeDescription     = "Source Attribute.";
         final String                     end1AttributeDescriptionGUID = null;
 
-        relationshipEndDef = archiveHelper.getRelationshipEndDef(this.archiveBuilder.getEntityDef(OpenMetadataType.SCHEMA_ATTRIBUTE.typeName),
+        relationshipEndDef = archiveHelper.getRelationshipEndDef(this.archiveBuilder.getEntityDef(OpenMetadataType.REFERENCEABLE.typeName),
                                                                  end1AttributeName,
                                                                  end1AttributeDescription,
                                                                  end1AttributeDescriptionGUID,
@@ -10132,13 +10134,23 @@ public class OpenMetadataTypesArchive1_2
         final String                     end2AttributeDescription     = "Target Attribute.";
         final String                     end2AttributeDescriptionGUID = null;
 
-        relationshipEndDef = archiveHelper.getRelationshipEndDef(this.archiveBuilder.getEntityDef(OpenMetadataType.SCHEMA_ATTRIBUTE.typeName),
+        relationshipEndDef = archiveHelper.getRelationshipEndDef(this.archiveBuilder.getEntityDef(OpenMetadataType.REFERENCEABLE.typeName),
                                                                  end2AttributeName,
                                                                  end2AttributeDescription,
                                                                  end2AttributeDescriptionGUID,
                                                                  RelationshipEndCardinality.ANY_NUMBER);
         relationshipDef.setEndDef2(relationshipEndDef);
 
+        /*
+         * Build the attributes
+         */
+        List<TypeDefAttribute> properties = new ArrayList<>();
+
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.ISC_QUALIFIED_NAME));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.LABEL));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.DESCRIPTION));
+
+        relationshipDef.setPropertiesDefinition(properties);
 
         return relationshipDef;
     }
