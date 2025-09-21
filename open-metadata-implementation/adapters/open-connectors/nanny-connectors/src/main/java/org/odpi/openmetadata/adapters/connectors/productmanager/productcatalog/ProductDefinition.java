@@ -46,6 +46,30 @@ public enum ProductDefinition
                          new ValidValueSetListProvider(),
                          "ValidValueSetsList"),
 
+    /**
+     * Attributes List
+     */
+    ATTRIBUTES_LIST("Open Metadata Attributes List",
+                    "OPEN-METADATA-ATTRIBUTES",
+                    ProductFolderDefinition.OPEN_METADATA_TYPES,
+                         "Open Metadata Attributes List",
+                         "A tabular data set where each record describes a type of attribute defined in the open metadata types.",
+                         ProductCategoryDefinition.REFERENCE_DATA.getPreferredValue(),
+                         ProductGovernanceDefinition.INTERNAL_USE_ONLY,
+                         ProductCommunityDefinition.REFERENCE_DATA_SIG,
+                         new ProductSubscriptionDefinition[]{
+                                 ProductSubscriptionDefinition.EVALUATION_SUBSCRIPTION,
+                                 ProductSubscriptionDefinition.DAILY_REFRESH_SUBSCRIPTION,
+                                 ProductSubscriptionDefinition.ONGOING_UPDATE},
+                         new ProductDataFieldDefinition[]{
+                                 ProductDataFieldDefinition.GUID,
+                                 ProductDataFieldDefinition.DISPLAY_NAME,
+                                 ProductDataFieldDefinition.DESCRIPTION,
+                                 ProductDataFieldDefinition.CATEGORY,
+                                 ProductDataFieldDefinition.DATA_TYPE},
+                         null,
+                         "OpenMetadataAttributesList"),
+
 
     ;
 
