@@ -96,6 +96,67 @@ public enum ProductDataFieldDefinition
              false,
              true),
 
+    /**
+     * Identifier
+     */
+    IDENTIFIER("Identifier",
+             "Identifier",
+             OpenMetadataProperty.IDENTIFIER.description,
+             OpenMetadataProperty.IDENTIFIER.dataType,
+             null,
+             null,
+             false,
+             true),
+
+    /**
+     * Element Status
+     */
+    ELEMENT_STATUS("Element Status",
+               "Element Status",
+               OpenMetadataProperty.CURRENT_STATUS.description,
+               OpenMetadataProperty.CURRENT_STATUS.dataType,
+               null,
+               null,
+               false,
+               true),
+
+
+    /**
+     * Subtypes
+     */
+    SUBTYPES("Subtypes",
+             "Subtypes",
+             "A list of subtypes for the type",
+             DataType.ARRAY_STRING,
+             null,
+             null,
+             false,
+             true),
+
+    /**
+     * Type Name
+     */
+    TYPE_NAME("Type Name",
+             "Type Name",
+             "The unique name of an open metadata type.",
+             DataType.STRING,
+             null,
+             null,
+             false,
+             true),
+
+
+    /**
+     * Attribute Name
+     */
+    ATTRIBUTE_NAME("Attribute Name",
+              "Attribute Name",
+              "The unique name of an open metadata attribute.",
+              DataType.STRING,
+              null,
+              null,
+              false,
+              true),
 
     /**
      * Namespace

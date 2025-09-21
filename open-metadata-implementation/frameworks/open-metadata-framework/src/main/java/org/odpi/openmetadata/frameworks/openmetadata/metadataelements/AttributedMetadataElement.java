@@ -39,7 +39,7 @@ public class AttributedMetadataElement implements MetadataElement
     private List<RelatedMetadataElementSummary> relatedActions                = null; // Actions (0013)
     private List<RelatedMetadataElementSummary> actionTargets                 = null; // ActionTarget (0013)
     private List<RelatedMetadataElementSummary> actionsForTarget              = null; // ActionTarget (0013)
-    private List<RelatedMetadataElementSummary> searchKeywords                 = null; // SearchKeywordLink (0012)
+    private List<RelatedMetadataElementSummary> searchKeywords                = null; // SearchKeywordLink (0012)
     private List<RelatedMetadataElementSummary> keywordElements               = null; // SearchKeywordLink (0012)
     private List<RelatedMetadataElementSummary> externalReferences            = null; // ExternalReferenceLink (0014)
     private List<RelatedMetadataElementSummary> referencingElements           = null; // ExternalReferenceLink (0014)
@@ -49,6 +49,8 @@ public class AttributedMetadataElement implements MetadataElement
     private List<RelatedMetadataElementSummary> identifierScopedTo            = null; // ExternalIdScope (0017)
     private List<RelatedMetadataElementSummary> resourceList                  = null; // ResourceList (0019)
     private List<RelatedMetadataElementSummary> resourceListUsers             = null; // ResourceList (0019)
+    private List<RelatedMetadataElementSummary> providesMoreInformation       = null; // MoreInformation (0019)
+    private List<RelatedMetadataElementSummary> describes                     = null; // MoreInformation (0019)
     private List<RelatedMetadataElementSummary> propertyFacets                = null; // ReferenceableFacet (0020)
     private List<RelatedMetadataElementSummary> facetedElements               = null; // ReferenceableFacet (0020)
     private List<RelatedMetadataElementSummary> memberOfCollections           = null; // CollectionMembership (0021)
@@ -284,6 +286,8 @@ public class AttributedMetadataElement implements MetadataElement
 
     private RelatedMetadataElementSummary       dataStructureDefinition   = null; // DataStructureDefinition (0580)
     private List<RelatedMetadataElementSummary> usedInCertifications      = null; // DataStructureDefinition (0580)
+    private List<RelatedMetadataElementSummary> dataDescription           = null; // DataDescription (0580)
+    private List<RelatedMetadataElementSummary> describesDataFor          = null; // DataDescription (0580)
     private List<RelatedMetadataElementSummary> containsDataFields        = null; // MemberDataField (0580)
     private List<RelatedMetadataElementSummary> partOfDataStructures      = null; // MemberDataField (0580)
     private List<RelatedMetadataElementSummary> parentDataFields          = null; // NestedDataField (0581)
@@ -402,8 +406,10 @@ public class AttributedMetadataElement implements MetadataElement
             identifierScopedTo            = template.getIdentifierScopedTo();
             recognizedExternalIdentifiers = template.getRecognizedExternalIdentifiers();
 
-            resourceList      = template.getResourceList();
-            resourceListUsers = template.getResourceListUsers();
+            resourceList            = template.getResourceList();
+            resourceListUsers       = template.getResourceListUsers();
+            describes               = template.getDescribes();
+            providesMoreInformation = template.getProvidesMoreInformation();
 
             propertyFacets  = template.getPropertyFacets();
             facetedElements = template.getFacetedElements();
@@ -645,6 +651,8 @@ public class AttributedMetadataElement implements MetadataElement
             usedInCertifications       = template.getUsedInCertifications();
             containsDataFields         = template.getContainsDataFields();
             partOfDataStructures       = template.getPartOfDataStructures();
+            dataDescription            = template.getDataDescription();
+            describesDataFor           = template.getDescribesDataFor();
 
             parentDataFields          = template.getParentDataFields();
             nestedDataFields          = template.getNestedDataFields();
@@ -3285,6 +3293,46 @@ public class AttributedMetadataElement implements MetadataElement
     public void setContainsDataFields(List<RelatedMetadataElementSummary> containsDataFields)
     {
         this.containsDataFields = containsDataFields;
+    }
+
+    public List<RelatedMetadataElementSummary> getProvidesMoreInformation()
+    {
+        return providesMoreInformation;
+    }
+
+    public void setProvidesMoreInformation(List<RelatedMetadataElementSummary> providesMoreInformation)
+    {
+        this.providesMoreInformation = providesMoreInformation;
+    }
+
+    public List<RelatedMetadataElementSummary> getDescribes()
+    {
+        return describes;
+    }
+
+    public void setDescribes(List<RelatedMetadataElementSummary> describes)
+    {
+        this.describes = describes;
+    }
+
+    public List<RelatedMetadataElementSummary> getDataDescription()
+    {
+        return dataDescription;
+    }
+
+    public void setDataDescription(List<RelatedMetadataElementSummary> dataDescription)
+    {
+        this.dataDescription = dataDescription;
+    }
+
+    public List<RelatedMetadataElementSummary> getDescribesDataFor()
+    {
+        return describesDataFor;
+    }
+
+    public void setDescribesDataFor(List<RelatedMetadataElementSummary> describesDataFor)
+    {
+        this.describesDataFor = describesDataFor;
     }
 
     public List<RelatedMetadataElementSummary> getPartOfDataStructures()

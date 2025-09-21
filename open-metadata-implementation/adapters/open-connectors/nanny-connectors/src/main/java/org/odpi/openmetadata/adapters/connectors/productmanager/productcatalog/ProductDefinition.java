@@ -59,11 +59,10 @@ public enum ProductDefinition
                          ProductCommunityDefinition.REFERENCE_DATA_SIG,
                          new ProductSubscriptionDefinition[]{
                                  ProductSubscriptionDefinition.EVALUATION_SUBSCRIPTION,
-                                 ProductSubscriptionDefinition.DAILY_REFRESH_SUBSCRIPTION,
                                  ProductSubscriptionDefinition.ONGOING_UPDATE},
                          new ProductDataFieldDefinition[]{
                                  ProductDataFieldDefinition.GUID,
-                                 ProductDataFieldDefinition.DISPLAY_NAME,
+                                 ProductDataFieldDefinition.ATTRIBUTE_NAME,
                                  ProductDataFieldDefinition.DESCRIPTION,
                                  ProductDataFieldDefinition.CATEGORY,
                                  ProductDataFieldDefinition.DATA_TYPE},
@@ -83,17 +82,128 @@ public enum ProductDefinition
                     ProductCommunityDefinition.REFERENCE_DATA_SIG,
                     new ProductSubscriptionDefinition[]{
                             ProductSubscriptionDefinition.EVALUATION_SUBSCRIPTION,
-                            ProductSubscriptionDefinition.DAILY_REFRESH_SUBSCRIPTION,
                             ProductSubscriptionDefinition.ONGOING_UPDATE},
                     new ProductDataFieldDefinition[]{
                             ProductDataFieldDefinition.GUID,
-                            ProductDataFieldDefinition.DISPLAY_NAME,
+                            ProductDataFieldDefinition.TYPE_NAME,
                             ProductDataFieldDefinition.DESCRIPTION,
-                            ProductDataFieldDefinition.CATEGORY},
+                            ProductDataFieldDefinition.CATEGORY,
+                            ProductDataFieldDefinition.SUBTYPES},
                     null,
                     "OpenMetadataTypesList"),
 
+    /**
+     * Open Metadata Types List
+     */
+    ATTRIBUTES_FOR_TYPES_LIST("Open Metadata Attributes For Types List",
+               "ALL-ATTRIBUTES-FOR-OPEN-METADATA-TYPES",
+               ProductFolderDefinition.OPEN_METADATA_TYPES,
+               "Open Metadata Attributes For Types List",
+               "A tabular data set where each record describes an attribute for an open metadata type. There is one row for each defined attribute for each type. This includes attributes inherited from its super type(s).",
+               ProductCategoryDefinition.REFERENCE_DATA.getPreferredValue(),
+               ProductGovernanceDefinition.CC_BY_40,
+               ProductCommunityDefinition.REFERENCE_DATA_SIG,
+               new ProductSubscriptionDefinition[]{
+                       ProductSubscriptionDefinition.EVALUATION_SUBSCRIPTION,
+                       ProductSubscriptionDefinition.ONGOING_UPDATE},
+               new ProductDataFieldDefinition[]{
+                       ProductDataFieldDefinition.GUID,
+                       ProductDataFieldDefinition.TYPE_NAME,
+                       ProductDataFieldDefinition.ATTRIBUTE_NAME,
+                       ProductDataFieldDefinition.DATA_TYPE,
+                       ProductDataFieldDefinition.DESCRIPTION},
+               null,
+               "OpenMetadataAttributesForTypesList"),
 
+
+    /**
+     * Organizations List
+     */
+    ORGANIZATIONS("Organizations List",
+                              "Organizations",
+                              ProductFolderDefinition.PARTY_PLACES_PRODUCTS,
+                              "Organizations List",
+                              "A tabular data set where each record describes an organization interacting with open metadata.",
+                              ProductCategoryDefinition.MASTER_DATA.getPreferredValue(),
+                              ProductGovernanceDefinition.INTERNAL_USE_ONLY,
+                              ProductCommunityDefinition.REFERENCE_DATA_SIG,
+                              new ProductSubscriptionDefinition[]{
+                                      ProductSubscriptionDefinition.EVALUATION_SUBSCRIPTION,
+                                      ProductSubscriptionDefinition.ONGOING_UPDATE},
+                              new ProductDataFieldDefinition[]{
+                                      ProductDataFieldDefinition.GUID,
+                                      ProductDataFieldDefinition.IDENTIFIER,
+                                      ProductDataFieldDefinition.DISPLAY_NAME,
+                                      ProductDataFieldDefinition.DESCRIPTION},
+                              null,
+                              "OrganizationsList"),
+
+    /**
+     * List of People
+     */
+    PEOPLE("List of People",
+                  "People List",
+                  ProductFolderDefinition.PARTY_PLACES_PRODUCTS,
+                  "People List",
+                  "A tabular data set where each record describes a person interacting with open metadata.",
+                  ProductCategoryDefinition.MASTER_DATA.getPreferredValue(),
+                  ProductGovernanceDefinition.PERSONAL_DATA,
+                  ProductCommunityDefinition.REFERENCE_DATA_SIG,
+                  new ProductSubscriptionDefinition[]{
+                          ProductSubscriptionDefinition.EVALUATION_SUBSCRIPTION,
+                          ProductSubscriptionDefinition.ONGOING_UPDATE},
+                  new ProductDataFieldDefinition[]{
+                          ProductDataFieldDefinition.GUID,
+                          ProductDataFieldDefinition.IDENTIFIER,
+                          ProductDataFieldDefinition.DISPLAY_NAME,
+                          ProductDataFieldDefinition.DESCRIPTION},
+                  null,
+                  "PeopleList"),
+
+    /**
+     * List of Digital Products
+     */
+    DIGITAL_PRODUCTS("Digital Product Inventory",
+           "DIGITAL-PRODUCTS-LIST",
+           ProductFolderDefinition.PARTY_PLACES_PRODUCTS,
+           "Digital Products Inventory",
+           "A tabular data set where each record describes a digital product.",
+           ProductCategoryDefinition.MASTER_DATA.getPreferredValue(),
+           ProductGovernanceDefinition.INTERNAL_USE_ONLY,
+           ProductCommunityDefinition.REFERENCE_DATA_SIG,
+           new ProductSubscriptionDefinition[]{
+                   ProductSubscriptionDefinition.EVALUATION_SUBSCRIPTION,
+                   ProductSubscriptionDefinition.ONGOING_UPDATE},
+           new ProductDataFieldDefinition[]{
+                   ProductDataFieldDefinition.GUID,
+                   ProductDataFieldDefinition.IDENTIFIER,
+                   ProductDataFieldDefinition.DISPLAY_NAME,
+                   ProductDataFieldDefinition.DESCRIPTION,
+                   ProductDataFieldDefinition.ELEMENT_STATUS},
+           null,
+           "DigitalProductsInventory"),
+
+    /**
+     * List of Locations
+     */
+    LOCATIONS("Location List",
+                     "LOCATIONS-LIST",
+                     ProductFolderDefinition.PARTY_PLACES_PRODUCTS,
+                     "List of Locations",
+                     "A tabular data set where each record describes a location.  This could be a site, or a facility within a site.",
+                     ProductCategoryDefinition.MASTER_DATA.getPreferredValue(),
+                     ProductGovernanceDefinition.INTERNAL_USE_ONLY,
+                     ProductCommunityDefinition.REFERENCE_DATA_SIG,
+                     new ProductSubscriptionDefinition[]{
+                             ProductSubscriptionDefinition.EVALUATION_SUBSCRIPTION,
+                             ProductSubscriptionDefinition.ONGOING_UPDATE},
+                     new ProductDataFieldDefinition[]{
+                             ProductDataFieldDefinition.GUID,
+                             ProductDataFieldDefinition.IDENTIFIER,
+                             ProductDataFieldDefinition.DISPLAY_NAME,
+                             ProductDataFieldDefinition.DESCRIPTION},
+                     null,
+                     "LocationsList"),
     ;
 
 
