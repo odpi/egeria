@@ -411,13 +411,33 @@ public enum GovernanceActionConnectorsAuditCode implements AuditLogMessageSet
                          "Use the details from the error message to determine the cause of the error and retry the request once it is resolved."),
 
     /**
-     * GOVERNANCE-ACTION-CONNECTORS-0038 - The governance action service {0} received an unexpected {1} exception during method {2}; the error message was: {3}
+     * GOVERNANCE-ACTION-CONNECTORS-0038 - The governance action service {0} completed successfully
      */
     SERVICE_COMPLETED_SUCCESSFULLY("GOVERNANCE-ACTION-CONNECTORS-0038",
                          AuditLogRecordSeverityLevel.INFO,
                          "The governance service {0} has completed successfully",
                          "The service is shutting down.",
                          "No action is required except to validate that the shutdown is occurring at an appropriate time."),
+
+    /**
+     * GOVERNANCE-ACTION-CONNECTORS-0039 - The {0} governance action service has not been passed a {1} request parameter
+     */
+    MISSING_REQUEST_PARAMETER("GOVERNANCE-ACTION-CONNECTORS-0039",
+                          AuditLogRecordSeverityLevel.ERROR,
+                          "The {0} governance action service has not been passed a {1} request parameter",
+                          "The governance action service returns an INVALID completion status with this message.",
+                          "This is an error in the way that the governance action service has been called since a vital piece of information is missing." +
+                                  "Identify the way it was called which could be a direct invocation through the initiateGovernanceAction() method," +
+                                  "or as part of a governance action process.  Then correct this approach so that this request parameter is set up."),
+
+    /**
+     * GOVERNANCE-ACTION-CONNECTORS-0040 - The {0} governance action service has created a new {1} digital subscription {2} for {3} {4} ({5}) requested by {6} {7} ({8})
+     */
+    NEW_SUBSCRIPTION_CREATED("GOVERNANCE-ACTION-CONNECTORS-0040",
+                      AuditLogRecordSeverityLevel.INFO,
+                      "The {0} governance action service has created a new {1} digital subscription {2} for {3} {4} ({5}) requested by {6} {7} ({8})",
+                      "The governance action service returns an ACTIONED completion status with this subscription as a new action target.",
+                      "Ensure follow-on uses of the subscription are successful."),
 
     ;
 

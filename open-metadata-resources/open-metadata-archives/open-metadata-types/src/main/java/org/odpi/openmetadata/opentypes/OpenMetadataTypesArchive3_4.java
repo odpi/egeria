@@ -361,7 +361,7 @@ public class OpenMetadataTypesArchive3_4
     private EntityDef addSecurityGroupEntity()
     {
         EntityDef entityDef = archiveHelper.getDefaultEntityDef(OpenMetadataType.SECURITY_GROUP,
-                                                                this.archiveBuilder.getEntityDef(OpenMetadataType.TECHNICAL_CONTROL.typeName));
+                                                                this.archiveBuilder.getEntityDef(OpenMetadataType.GOVERNANCE_CONTROL.typeName));
 
         /*
          * Build the attributes

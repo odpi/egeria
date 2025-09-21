@@ -196,7 +196,7 @@ Content-Type: application/json
 
 ###
 
-@collectionGUID=6b14500f-9571-4f99-8469-0e872371598d
+@collectionGUID=dcec6ddb-317e-4c64-907e-be508ceba6d9
 
 ###
 # @name getCollectionByGUID
@@ -1175,6 +1175,46 @@ Content-Type: application/json
 # @name detachCollection
 # Detach an existing collection from an element.  If the collection is anchored to the element, it is deleted.
 POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/collection-manager/metadata-elements/{{parentGUID}}/collections/{{collectionGUID}}/detach
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "DeleteRelationshipRequestBody",
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
+}
+
+
+
+
+###
+# @name attachDataDescription
+# Connect an existing data describing collection to an element using the DataDescription relationship (0580).
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/collection-manager/metadata-elements/{{parentGUID}}/data-descriptions/{{collectionGUID}}/attach?makeAnchor=false
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "NewRelationshipRequestBody",
+  "properties": {
+    "class": "DataDescriptionProperties",
+    "label": "Add label here",
+    "description": "Add description here"
+  },
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
+}
+
+###
+# @name detachDataDescription
+# Detach an existing data describing collection from an element.  If the collection is anchored to the element, it is deleted.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/collection-manager/metadata-elements/{{parentGUID}}/data-descriptions/{{collectionGUID}}/detach
 Authorization: Bearer {{token}}
 Content-Type: application/json
 

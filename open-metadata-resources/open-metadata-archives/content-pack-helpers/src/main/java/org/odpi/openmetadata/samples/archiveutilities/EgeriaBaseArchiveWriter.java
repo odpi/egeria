@@ -166,7 +166,6 @@ public abstract class EgeriaBaseArchiveWriter extends OMRSArchiveWriter
     public abstract void getArchiveContent();
 
 
-
     /**
      * Find or create the parent set for a valid value.
      *
@@ -207,10 +206,10 @@ public abstract class EgeriaBaseArchiveWriter extends OMRSArchiveWriter
             parentSetGUID =  archiveHelper.addValidValue(requestedGUID,
                                                          grandParentSetGUID,
                                                          grandParentSetGUID,
-                                                         OpenMetadataType.VALID_VALUE_DEFINITION.typeName,
+                                                         OpenMetadataType.VALID_METADATA_VALUE.typeName,
                                                          OpenMetadataType.VALID_VALUE_DEFINITION.typeName,
                                                          null,
-                                                         OpenMetadataType.VALID_VALUE_DEFINITION.typeName,
+                                                         OpenMetadataType.VALID_METADATA_VALUE.typeName,
                                                          parentQualifiedName,
                                                          Category.VALID_METADATA_VALUES.getName(),
                                                          parentDisplayName,

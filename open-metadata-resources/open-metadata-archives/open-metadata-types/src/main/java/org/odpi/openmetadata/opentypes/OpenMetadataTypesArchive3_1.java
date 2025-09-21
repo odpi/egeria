@@ -691,7 +691,7 @@ public class OpenMetadataTypesArchive3_1
     private EntityDef getDataProcessingPurposeEntity()
     {
         return archiveHelper.getDefaultEntityDef(OpenMetadataType.DATA_PROCESSING_PURPOSE,
-                                                 this.archiveBuilder.getEntityDef(OpenMetadataType.ORGANIZATIONAL_CONTROL.typeName));
+                                                 this.archiveBuilder.getEntityDef(OpenMetadataType.GOVERNANCE_CONTROL.typeName));
     }
 
 

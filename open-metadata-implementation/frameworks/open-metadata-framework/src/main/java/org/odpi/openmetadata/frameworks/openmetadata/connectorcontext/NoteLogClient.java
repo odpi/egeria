@@ -61,7 +61,6 @@ public class NoteLogClient extends ConnectorContextClientBase
      * Create a new metadata element to represent a note log and attach it to an element (if supplied).
      * Any supplied element becomes the note log's anchor, causing the note log to be deleted if/when the element is deleted.
      *
-     * @param userId calling user
      * @param elementGUID unique identifier of the element where the note log is located
      * @param metadataSourceOptions  options to control access to open metadata
      * @param initialClassifications map of classification names to classification properties to include in the entity creation request
@@ -73,8 +72,7 @@ public class NoteLogClient extends ConnectorContextClientBase
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public  String createNoteLog(String                                userId,
-                                 String                                elementGUID,
+    public  String createNoteLog(String                                elementGUID,
                                  MetadataSourceOptions                 metadataSourceOptions,
                                  Map<String, ClassificationProperties> initialClassifications,
                                  NoteLogProperties                     properties) throws InvalidParameterException,

@@ -6443,9 +6443,7 @@ public class OpenMetadataTypesArchive1_2
     private void add0420GovernanceControls()
     {
         this.archiveBuilder.addEntityDef(getGovernanceControlEntity());
-        this.archiveBuilder.addEntityDef(getTechnicalControlEntity());
         this.archiveBuilder.addEntityDef(addSecurityAccessControlEntity());
-        this.archiveBuilder.addEntityDef(getOrganizationalControlEntity());
 
         this.archiveBuilder.addRelationshipDef(getGovernanceMechanismRelationship());
         this.archiveBuilder.addRelationshipDef(getGovernanceControlLinkRelationship());
@@ -6470,26 +6468,13 @@ public class OpenMetadataTypesArchive1_2
     }
 
 
-    private EntityDef getTechnicalControlEntity()
-    {
-        return archiveHelper.getDefaultEntityDef(OpenMetadataType.TECHNICAL_CONTROL,
-                                                 this.archiveBuilder.getEntityDef(OpenMetadataType.GOVERNANCE_CONTROL.typeName));
-    }
-
-
 
     private EntityDef addSecurityAccessControlEntity()
     {
         return archiveHelper.getDefaultEntityDef(OpenMetadataType.SECURITY_ACCESS_CONTROL,
-                                                 this.archiveBuilder.getEntityDef(OpenMetadataType.TECHNICAL_CONTROL.typeName));
-    }
-
-
-    private EntityDef getOrganizationalControlEntity()
-    {
-        return archiveHelper.getDefaultEntityDef(OpenMetadataType.ORGANIZATIONAL_CONTROL,
                                                  this.archiveBuilder.getEntityDef(OpenMetadataType.GOVERNANCE_CONTROL.typeName));
     }
+
 
     private RelationshipDef getGovernanceMechanismRelationship()
     {
@@ -6990,21 +6975,21 @@ public class OpenMetadataTypesArchive1_2
     private EntityDef getGovernanceRuleEntity()
     {
         return archiveHelper.getDefaultEntityDef(OpenMetadataType.GOVERNANCE_RULE,
-                                                 this.archiveBuilder.getEntityDef(OpenMetadataType.TECHNICAL_CONTROL.typeName));
+                                                 this.archiveBuilder.getEntityDef(OpenMetadataType.GOVERNANCE_CONTROL.typeName));
     }
 
 
     private EntityDef getGovernanceActionEntity()
     {
         return archiveHelper.getDefaultEntityDef(OpenMetadataType.GOVERNANCE_ACTION,
-                                                 this.archiveBuilder.getEntityDef(OpenMetadataType.TECHNICAL_CONTROL.typeName));
+                                                 this.archiveBuilder.getEntityDef(OpenMetadataType.GOVERNANCE_CONTROL.typeName));
     }
 
 
     private EntityDef getNotificationTypeEntity()
     {
         EntityDef entityDef = archiveHelper.getDefaultEntityDef(OpenMetadataType.NOTIFICATION_TYPE,
-                                                                this.archiveBuilder.getEntityDef(OpenMetadataType.TECHNICAL_CONTROL.typeName));
+                                                                this.archiveBuilder.getEntityDef(OpenMetadataType.GOVERNANCE_CONTROL.typeName));
 
         /*
          * Build the attributes
@@ -7065,6 +7050,7 @@ public class OpenMetadataTypesArchive1_2
 
         properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.LABEL));
         properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.DESCRIPTION));
+        properties.add(archiveHelper.getEnumTypeDefAttribute(OpenMetadataProperty.ACTIVITY_STATUS));
 
         relationshipDef.setPropertiesDefinition(properties);
 
@@ -7215,7 +7201,7 @@ public class OpenMetadataTypesArchive1_2
     private EntityDef getTermsAndConditionsEntity()
     {
         EntityDef entityDef = archiveHelper.getDefaultEntityDef(OpenMetadataType.TERMS_AND_CONDITIONS,
-                                                                this.archiveBuilder.getEntityDef(OpenMetadataType.ORGANIZATIONAL_CONTROL.typeName));
+                                                                this.archiveBuilder.getEntityDef(OpenMetadataType.GOVERNANCE_CONTROL.typeName));
 
         /*
          * Build the attributes
@@ -7291,14 +7277,14 @@ public class OpenMetadataTypesArchive1_2
     private EntityDef getGovernanceResponsibilityEntity()
     {
         return archiveHelper.getDefaultEntityDef(OpenMetadataType.GOVERNANCE_RESPONSIBILITY,
-                                                 this.archiveBuilder.getEntityDef(OpenMetadataType.ORGANIZATIONAL_CONTROL.typeName));
+                                                 this.archiveBuilder.getEntityDef(OpenMetadataType.GOVERNANCE_CONTROL.typeName));
     }
 
 
     private EntityDef getGovernanceProcedureEntity()
     {
         return archiveHelper.getDefaultEntityDef(OpenMetadataType.GOVERNANCE_PROCEDURE,
-                                                 this.archiveBuilder.getEntityDef(OpenMetadataType.ORGANIZATIONAL_CONTROL.typeName));
+                                                 this.archiveBuilder.getEntityDef(OpenMetadataType.GOVERNANCE_CONTROL.typeName));
     }
 
     private RelationshipDef getBusinessCapabilityDependencyRelationship()
@@ -7418,7 +7404,7 @@ public class OpenMetadataTypesArchive1_2
     private EntityDef getGovernanceMetricEntity()
     {
         EntityDef entityDef = archiveHelper.getDefaultEntityDef(OpenMetadataType.GOVERNANCE_METRIC,
-                                                                this.archiveBuilder.getEntityDef(OpenMetadataType.TECHNICAL_CONTROL.typeName));
+                                                                this.archiveBuilder.getEntityDef(OpenMetadataType.GOVERNANCE_CONTROL.typeName));
 
         /*
          * Build the attributes
@@ -9261,8 +9247,9 @@ public class OpenMetadataTypesArchive1_2
     {
         this.archiveBuilder.addClassificationDef(getReferenceDataClassification());
 
-        this.archiveBuilder.addEntityDef(getReferenceDataSetEntity());
         this.archiveBuilder.addEntityDef(getValidValueDefinitionEntity());
+        this.archiveBuilder.addEntityDef(getReferenceDataValueEntity());
+        this.archiveBuilder.addEntityDef(getValidMetadataValueEntity());
 
         this.archiveBuilder.addRelationshipDef(getValidValuesAssignmentRelationship());
         this.archiveBuilder.addRelationshipDef(getValidValuesMemberRelationship());
@@ -9277,10 +9264,17 @@ public class OpenMetadataTypesArchive1_2
                                                   false);
     }
 
-    private EntityDef getReferenceDataSetEntity()
+    private EntityDef getReferenceDataValueEntity()
     {
-        return archiveHelper.getDefaultEntityDef(OpenMetadataType.REFERENCE_DATA_SET,
-                                                 this.archiveBuilder.getEntityDef(OpenMetadataType.DATA_SET.typeName));
+        return archiveHelper.getDefaultEntityDef(OpenMetadataType.REFERENCE_DATA_VALUE,
+                                                 this.archiveBuilder.getEntityDef(OpenMetadataType.VALID_VALUE_DEFINITION.typeName));
+    }
+
+
+    private EntityDef getValidMetadataValueEntity()
+    {
+        return archiveHelper.getDefaultEntityDef(OpenMetadataType.VALID_METADATA_VALUE,
+                                                 this.archiveBuilder.getEntityDef(OpenMetadataType.VALID_VALUE_DEFINITION.typeName));
     }
 
     private EntityDef getValidValueDefinitionEntity()

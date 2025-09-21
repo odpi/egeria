@@ -604,6 +604,18 @@ public class ConnectorContextBase
 
 
     /**
+     * Return the client for managing profiles of a specific subtype.
+     *
+     * @param specificTypeName override type name
+     * @return connector context client
+     */
+    public ActorProfileClient getActorProfileClient(String specificTypeName)
+    {
+        return new ActorProfileClient(actorProfileClient, specificTypeName);
+    }
+
+
+    /**
      * Return the client for managing actor roles.
      *
      * @return connector context client
@@ -611,6 +623,29 @@ public class ConnectorContextBase
     public ActorRoleClient getActorRoleClient()
     {
         return actorRoleClient;
+    }
+
+
+    /**
+     * Return the client for managing roles of a specific subtype.
+     *
+     * @param specificTypeName override type name
+     * @return connector context client
+     */
+    public ActorRoleClient getActorRoleClient(String specificTypeName)
+    {
+        return new ActorRoleClient(actorRoleClient, specificTypeName);
+    }
+
+
+    /**
+     * Return the client for managing assets.
+     *
+     * @return connector context client
+     */
+    public AssetClient getAssetClient()
+    {
+        return assetClient;
     }
 
 
@@ -623,17 +658,6 @@ public class ConnectorContextBase
     public AssetClient getAssetClient(String specificTypeName)
     {
         return new AssetClient(assetClient, specificTypeName);
-    }
-
-
-    /**
-     * Return the client for managing assets.
-     *
-     * @return connector context client
-     */
-    public AssetClient getAssetClient()
-    {
-        return assetClient;
     }
 
 
@@ -1026,6 +1050,20 @@ public class ConnectorContextBase
     {
         return validValueDefinitionClient;
     }
+
+
+
+    /**
+     * Return the client for managing valid value definitions.
+     *
+     * @param specialistTypeName override type name
+     * @return connector context client
+     */
+    public ValidValueDefinitionClient getValidValueDefinitionClient(String specialistTypeName)
+    {
+        return new ValidValueDefinitionClient(validValueDefinitionClient, specialistTypeName);
+    }
+
 
 
 

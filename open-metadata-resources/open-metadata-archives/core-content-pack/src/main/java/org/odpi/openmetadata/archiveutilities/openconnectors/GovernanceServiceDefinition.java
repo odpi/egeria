@@ -16,6 +16,7 @@ import org.odpi.openmetadata.adapters.connectors.governanceactions.remediation.Q
 import org.odpi.openmetadata.adapters.connectors.governanceactions.remediation.RetentionClassifierGovernanceActionProvider;
 import org.odpi.openmetadata.adapters.connectors.governanceactions.remediation.ZonePublisherGovernanceActionProvider;
 import org.odpi.openmetadata.adapters.connectors.governanceactions.stewardship.*;
+import org.odpi.openmetadata.adapters.connectors.governanceactions.subscriptions.CancelSubscriptionGovernanceActionProvider;
 import org.odpi.openmetadata.adapters.connectors.governanceactions.subscriptions.CreateSubscriptionGovernanceActionProvider;
 import org.odpi.openmetadata.adapters.connectors.governanceactions.verification.VerifyAssetGovernanceActionProvider;
 import org.odpi.openmetadata.adapters.connectors.governanceactions.watchdog.GenericFolderWatchdogGovernanceActionProvider;
@@ -347,7 +348,7 @@ public enum GovernanceServiceDefinition
                          "create-subscription-governance-service",
                          "Add a new digital subscription using a template.",
                          new CreateSubscriptionGovernanceActionProvider(),
-                         ResourceUse.PROVISION_RESOURCE,
+                         ResourceUse.CREATE_SUBSCRIPTION,
                          DeployedImplementationType.GOVERNANCE_ACTION_SERVICE_CONNECTOR,
                          ContentPackDefinition.CORE_CONTENT_PACK),
 
@@ -357,8 +358,8 @@ public enum GovernanceServiceDefinition
     CANCEL_SUBSCRIPTION("2663ca74-a3cb-4ad8-9043-4c35a9f5ba47",
                         "cancel-subscription-governance-service",
                         "Remove an existing digital subscription.",
-                        new CreateSubscriptionGovernanceActionProvider(),
-                        ResourceUse.PROVISION_RESOURCE,
+                        new CancelSubscriptionGovernanceActionProvider(),
+                        ResourceUse.CANCEL_SUBSCRIPTION,
                         DeployedImplementationType.GOVERNANCE_ACTION_SERVICE_CONNECTOR,
                         ContentPackDefinition.CORE_CONTENT_PACK),
 

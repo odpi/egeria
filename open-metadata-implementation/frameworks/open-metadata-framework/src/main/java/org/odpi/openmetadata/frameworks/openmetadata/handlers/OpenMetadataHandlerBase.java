@@ -891,16 +891,18 @@ public class OpenMetadataHandlerBase
      *
      * @param userId                   calling user
      * @param openMetadataElement      element extracted from the repository
-     * @param queryOptions             multiple options to control the query
+     * @param suppliedQueryOptions             multiple options to control the query
      * @param methodName               calling method
      * @return bean or null
      * @throws PropertyServerException problem with the conversion process
      */
     protected OpenMetadataRootElement convertRootElement(String              userId,
                                                          OpenMetadataElement openMetadataElement,
-                                                         QueryOptions        queryOptions,
+                                                         QueryOptions        suppliedQueryOptions,
                                                          String              methodName) throws PropertyServerException
     {
+        QueryOptions queryOptions = new QueryOptions(suppliedQueryOptions);
+
         if (filterBySubtypes(openMetadataElement, queryOptions) &&
                 filterByClassifications(openMetadataElement.getClassifications(), queryOptions))
         {

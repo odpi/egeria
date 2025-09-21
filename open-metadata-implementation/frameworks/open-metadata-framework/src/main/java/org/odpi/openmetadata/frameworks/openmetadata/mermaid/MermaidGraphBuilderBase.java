@@ -7,14 +7,11 @@ import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.*;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.*;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.actors.*;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.AssetProperties;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.datadictionaries.MemberDataFieldProperties;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.datadictionaries.NestedDataFieldProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.externalidentifiers.ExternalIdProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.externalreferences.ExternalReferenceProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.feedback.LikeProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.feedback.RatingProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.implementations.ImplementedByProperties;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.schema.AttributeForSchemaProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.solutions.SolutionBlueprintCompositionProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.solutions.SolutionComponentActorProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.solutions.SolutionComponentProperties;
@@ -798,6 +795,11 @@ public class MermaidGraphBuilderBase
                 return VisualStyle.DATA_SPEC;
             }
 
+            if (propertyHelper.isTypeOf(elementControlHeader, OpenMetadataType.GLOSSARY.typeName))
+            {
+                return VisualStyle.GLOSSARY;
+            }
+
             return VisualStyle.COLLECTION;
         }
         if (propertyHelper.isTypeOf(elementControlHeader, OpenMetadataType.EXTERNAL_REFERENCE.typeName))
@@ -812,10 +814,6 @@ public class MermaidGraphBuilderBase
         {
             return VisualStyle.GOVERNANCE_ACTION;
         }
-        if (propertyHelper.isTypeOf(elementControlHeader, OpenMetadataType.ENGINE_ACTION.typeName))
-        {
-            return VisualStyle.ENGINE_ACTION;
-        }
         if (propertyHelper.isTypeOf(elementControlHeader, OpenMetadataType.GOVERNANCE_ACTION_TYPE.typeName))
         {
             if (propertyHelper.isTypeOf(elementControlHeader, OpenMetadataType.GOVERNANCE_ACTION_PROCESS_STEP.typeName))
@@ -823,10 +821,6 @@ public class MermaidGraphBuilderBase
                 return VisualStyle.GOVERNANCE_ACTION_PROCESS_STEP;
             }
 
-            return VisualStyle.GOVERNANCE_ACTION;
-        }
-        if (propertyHelper.isTypeOf(elementControlHeader, OpenMetadataType.GOVERNANCE_ACTION_PROCESS_INSTANCE.typeName))
-        {
             return VisualStyle.GOVERNANCE_ACTION;
         }
         if (propertyHelper.isTypeOf(elementControlHeader, OpenMetadataType.VALID_VALUE_DEFINITION.typeName))
@@ -877,6 +871,17 @@ public class MermaidGraphBuilderBase
 
             if (propertyHelper.isTypeOf(elementControlHeader, OpenMetadataType.PROCESS.typeName))
             {
+                if (propertyHelper.isTypeOf(elementControlHeader, OpenMetadataType.ACTION.typeName))
+                {
+                    if (propertyHelper.isTypeOf(elementControlHeader, OpenMetadataType.TO_DO.typeName))
+                    {
+                        return VisualStyle.TO_DO;
+                    }
+                    if (propertyHelper.isTypeOf(elementControlHeader, OpenMetadataType.ENGINE_ACTION.typeName))
+                    {
+                        return VisualStyle.ENGINE_ACTION;
+                    }
+                }
                 if (propertyHelper.isTypeOf(elementControlHeader, OpenMetadataType.DEPLOYED_API.typeName))
                 {
                     return VisualStyle.DEPLOYED_API;
@@ -941,10 +946,6 @@ public class MermaidGraphBuilderBase
         {
             return VisualStyle.DATA_CLASS;
         }
-        if (propertyHelper.isTypeOf(elementControlHeader, OpenMetadataType.GLOSSARY.typeName))
-        {
-            return VisualStyle.GLOSSARY;
-        }
         if (propertyHelper.isTypeOf(elementControlHeader, OpenMetadataType.GLOSSARY_TERM.typeName))
         {
             return VisualStyle.GLOSSARY_TERM;
@@ -957,10 +958,7 @@ public class MermaidGraphBuilderBase
         {
             return VisualStyle.REQUEST_FOR_ACTION;
         }
-        if (propertyHelper.isTypeOf(elementControlHeader, OpenMetadataType.TO_DO.typeName))
-        {
-            return VisualStyle.TO_DO;
-        }
+
 
         return defaultVisualStyle;
     }
@@ -1905,9 +1903,19 @@ public class MermaidGraphBuilderBase
     {
         if (relatedMetadataElements != null)
         {
+            int nodeCount=0;
+
             for (RelatedMetadataElementSummary relatedMetadataElement : relatedMetadataElements)
             {
+                if (nodeCount > 5)
+                {
+                    String moreNodeId = UUID.randomUUID().toString();
+                    appendNewMermaidNode(moreNodeId, "...", "Plus " + (relatedMetadataElements.size() - nodeCount) + " Items" , VisualStyle.MORE_ELEMENTS);
+                    appendMermaidDottedLine(null, startingEndId, null, moreNodeId);
+                    break;
+                }
                 addRelatedElementSummary(relatedMetadataElement, visualStyle, startingEndId, lineStyle);
+                nodeCount++;
             }
         }
     }
@@ -1951,23 +1959,19 @@ public class MermaidGraphBuilderBase
 
             if (label == null)
             {
-                if (relatedMetadataElement.getRelationshipProperties() instanceof AttributeForSchemaProperties attributeForSchemaProperties)
+                if (relatedMetadataElement.getRelationshipProperties() instanceof PartOfRelationshipProperties partOfRelationshipProperties)
                 {
-                    label = getCardinalityLabel(attributeForSchemaProperties.getPosition(),
-                                                attributeForSchemaProperties.getMinCardinality(),
-                                                attributeForSchemaProperties.getMaxCardinality());
+                    label = getCardinalityLabel(partOfRelationshipProperties.getPosition(),
+                                                partOfRelationshipProperties.getMinCardinality(),
+                                                partOfRelationshipProperties.getMaxCardinality());
                 }
-                else if (relatedMetadataElement.getRelationshipProperties() instanceof NestedDataFieldProperties nestedDataFieldProperties)
+            }
+
+            if (label == null)
+            {
+                if (relatedMetadataElement.getRelationshipProperties() instanceof RoledRelationshipProperties roledRelationshipProperties)
                 {
-                    label = getCardinalityLabel(nestedDataFieldProperties.getPosition(),
-                                                nestedDataFieldProperties.getMinCardinality(),
-                                                nestedDataFieldProperties.getMaxCardinality());
-                }
-                else if (relatedMetadataElement.getRelationshipProperties() instanceof MemberDataFieldProperties memberDataFieldProperties)
-                {
-                    label = getCardinalityLabel(memberDataFieldProperties.getPosition(),
-                                                memberDataFieldProperties.getMinCardinality(),
-                                                memberDataFieldProperties.getMaxCardinality());
+                    label = roledRelationshipProperties.getRole();
                 }
             }
 
@@ -2005,47 +2009,6 @@ public class MermaidGraphBuilderBase
                                                 lineStyle);
             }
         }
-    }
-
-
-    /**
-     * Take the string versions of the position, minCardinality and maxCardinality and turn them into a label.
-     * If none of these properties are set then null is returned.
-     *
-     * @param positionString string value of the position attribute
-     * @param minCardinalityString string value of the minCardinality attribute
-     * @param maxCardinalityString string value of the maxCardinality attribute
-     * @return label or null
-     */
-    protected String getCardinalityLabel(String positionString,
-                                         String minCardinalityString,
-                                         String maxCardinalityString)
-    {
-        if ((positionString == null) && (minCardinalityString == null) && (maxCardinalityString == null))
-        {
-            return null;
-        }
-
-        int position = 0;
-        int minCardinality = 0;
-        int maxCardinality = -1;
-
-        if (positionString != null)
-        {
-            position = Integer.parseInt(positionString);
-        }
-
-        if (minCardinalityString != null)
-        {
-            minCardinality = Integer.parseInt(minCardinalityString);
-        }
-
-        if (minCardinalityString != null)
-        {
-            minCardinality = Integer.parseInt(minCardinalityString);
-        }
-
-        return getCardinalityLabel(position, minCardinality, maxCardinality);
     }
 
 
@@ -2090,24 +2053,6 @@ public class MermaidGraphBuilderBase
         return stringBuilder.toString();
     }
 
-
-    /**
-     * Determine the cardinality of the data field.
-     *
-     * @param memberDataFieldProperties relationship properties
-     * @return label for the mermaid graph line
-     */
-    private String getCardinalityLinkName(MemberDataFieldProperties memberDataFieldProperties)
-    {
-        if (memberDataFieldProperties != null)
-        {
-            return this.getCardinalityLabel(memberDataFieldProperties.getPosition(),
-                                            memberDataFieldProperties.getMinCardinality(),
-                                            memberDataFieldProperties.getMaxCardinality());
-        }
-
-        return "*";
-    }
 
 
     /**

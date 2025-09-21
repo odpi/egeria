@@ -9,6 +9,7 @@ package org.odpi.openmetadata.frameworks.openmetadata.mermaid;
 public enum VisualStyle
 {
     DESCRIPTION(Colour.BLACK.getColourNumber(), Colour.SAND.getColourNumber(), Colour.LIGHT_GRAY.getColourNumber(), "text"),
+    MORE_ELEMENTS(Colour.BLACK.getColourNumber(), Colour.SAND.getColourNumber(), Colour.LIGHT_GRAY.getColourNumber(), "stadium"),
 
     EXTERNAL_ID(Colour.WHITE.getColourNumber(), Colour.MEDIUM_VIOLET_RED.getColourNumber(), Colour.SLATE.getColourNumber(),"sl-rect"),
     FEEDBACK(Colour.BLACK.getColourNumber(), Colour.MEDIUM_PURPLE.getColourNumber(), Colour.SLATE.getColourNumber(),"flag"),
@@ -108,11 +109,10 @@ public enum VisualStyle
     RECENT_ACCESS(Colour.BLACK.getColourNumber(), Colour.LIME_GREEN.getColourNumber(), Colour.BLACK.getColourNumber(), "rect"),
     WORK_ITEM_LIST(Colour.BLACK.getColourNumber(), Colour.FOREST_GREEN.getColourNumber(), Colour.BLACK.getColourNumber(), "rect"),
 
-    DIGITAL_PRODUCT(Colour.WHITE.getColourNumber(), Colour.STEEL_BLUE.getColourNumber(), Colour.DARK_BLUE.getColourNumber(), "rect"),
+    DIGITAL_PRODUCT(Colour.BLACK.getColourNumber(), Colour.LAVENDER.getColourNumber(), Colour.DARK_BLUE.getColourNumber(), "rect"),
 
 
     GLOSSARY_TERM(Colour.BLACK.getColourNumber(), Colour.MEDIUM_AQUAMARINE.getColourNumber(), Colour.TEAL.getColourNumber(), "rect"),
-    GLOSSARY_CATEGORY(Colour.WHITE.getColourNumber(), Colour.TEAL.getColourNumber(), Colour.BLACK.getColourNumber(), "rect"),
     GLOSSARY(Colour.WHITE.getColourNumber(), Colour.TEAL.getColourNumber(), Colour.BLACK.getColourNumber(), "rect"),
 
     SCHEMA_ELEMENT(Colour.LIGHT_YELLOW.getColourNumber(), Colour.PURPLE.getColourNumber(), Colour.LIGHT_AQUA.getColourNumber(), "rect"),

@@ -60,15 +60,6 @@ public enum ActionTarget
 
 
     /**
-     * An actor to associate with the digital subscription.
-     */
-    DIGITAL_SUBSCRIPTION_ACTOR("digitalSubscriptionActor",
-                             "An actor to associate with the digital subscription.",
-                             OpenMetadataType.ACTOR.typeName,
-                             null),
-
-
-    /**
      * A Notification Type ready for monitoring.
      */
     NOTIFICATION_TYPE("notificationType",

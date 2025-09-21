@@ -36,7 +36,7 @@ public class OpenMetadataProductsHarvesterProvider extends IntegrationConnectorP
     /*
      * Class of the connector.
      */
-    private static final String connectorClassName      = "org.odpi.openmetadata.adapters.connectors.nannyconnectors.harvestsurveys.HarvestSurveysConnector";
+    private static final String connectorClassName      = OpenMetadataProductsHarvesterConnector.class.getName();
 
 
     /**

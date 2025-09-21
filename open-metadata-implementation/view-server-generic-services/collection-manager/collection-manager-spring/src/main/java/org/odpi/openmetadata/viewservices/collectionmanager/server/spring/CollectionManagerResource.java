@@ -280,12 +280,12 @@ public class CollectionManagerResource
 
     public VoidResponse attachCollection(@PathVariable String                  serverName,
                                          @PathVariable String             urlMarker,
-                                         @PathVariable String                  collectionGUID,
                                          @PathVariable String                  parentGUID,
+                                         @PathVariable String                  collectionGUID,
                                          @RequestBody(required = false)
                                              NewRelationshipRequestBody requestBody)
     {
-        return restAPI.attachCollection(serverName, urlMarker, collectionGUID, parentGUID, requestBody);
+        return restAPI.attachCollection(serverName, urlMarker, parentGUID, collectionGUID, requestBody);
     }
 
 
@@ -309,15 +309,75 @@ public class CollectionManagerResource
                     url="https://egeria-project.org/concepts/collection"))
 
     public VoidResponse detachCollection(@PathVariable String                    serverName,
-                                         @PathVariable String             urlMarker,
-                                         @PathVariable String                    collectionGUID,
+                                         @PathVariable String                    urlMarker,
                                          @PathVariable String                    parentGUID,
+                                         @PathVariable String                    collectionGUID,
                                          @RequestBody(required = false)
                                              DeleteRequestBody requestBody)
     {
-        return restAPI.detachCollection(serverName, urlMarker, collectionGUID, parentGUID, requestBody);
+        return restAPI.detachCollection(serverName, urlMarker, parentGUID, collectionGUID, requestBody);
     }
 
+
+    /**
+     * Connect an existing collection to an element using the ResourceList relationship (0019).
+     *
+     * @param serverName         name of called server
+     * @param urlMarker  view service URL marker
+     * @param collectionGUID unique identifier of the collection
+     * @param parentGUID     unique identifier of referenceable object that the collection should be attached to
+     * @param requestBody  description of how the collection will be used.
+     *
+     * @return void or
+     *  InvalidParameterException  one of the parameters is null or invalid.
+     *  PropertyServerException    there is a problem retrieving information from the property server(s).
+     *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    @PostMapping(path = "/metadata-elements/{parentGUID}/data-descriptions/{collectionGUID}/attach")
+    @Operation(summary="attachDataDescription",
+            description="Connect an existing data describing collection to an element using the DataDescription relationship (0580).",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/concepts/collection"))
+
+    public VoidResponse attachDataDescription(@PathVariable String                  serverName,
+                                              @PathVariable String             urlMarker,
+                                              @PathVariable String                  parentGUID,
+                                              @PathVariable String                  collectionGUID,
+                                              @RequestBody(required = false)
+                                                  NewRelationshipRequestBody requestBody)
+    {
+        return restAPI.attachDataDescription(serverName, urlMarker, parentGUID, collectionGUID, requestBody);
+    }
+
+
+    /**
+     * Detach an existing data describing collection from an element.  If the collection is anchored to the element, it is deleted.
+     *
+     * @param serverName         name of called server.
+     * @param urlMarker  view service URL marker
+     * @param collectionGUID unique identifier of the collection.
+     * @param parentGUID     unique identifier of referenceable object that the collection should be attached to.
+     *
+     * @return void or
+     *  InvalidParameterException  one of the parameters is null or invalid.
+     *  PropertyServerException    there is a problem retrieving information from the property server(s).
+     *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    @PostMapping(path = "/metadata-elements/{parentGUID}/data-descriptions/{collectionGUID}/detach")
+    @Operation(summary="detachDataDescription",
+            description="Detach an existing data describing collection from an element connected via the DataDescription relationship (0580).  If the collection is anchored to the element, it is deleted.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/concepts/collection"))
+
+    public VoidResponse detachDataDescription(@PathVariable String                    serverName,
+                                              @PathVariable String                    urlMarker,
+                                              @PathVariable String                    parentGUID,
+                                              @PathVariable String                    collectionGUID,
+                                              @RequestBody(required = false)
+                                                  DeleteRequestBody requestBody)
+    {
+        return restAPI.detachDataDescription(serverName, urlMarker, parentGUID, collectionGUID, requestBody);
+    }
 
 
     /**

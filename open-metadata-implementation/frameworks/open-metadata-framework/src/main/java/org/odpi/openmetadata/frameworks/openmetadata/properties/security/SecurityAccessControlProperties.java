@@ -22,7 +22,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
         {
                 @JsonSubTypes.Type(value = GovernanceZoneProperties.class, name = "GovernanceZoneProperties"),
         })
-public class SecurityAccessControlProperties extends TechnicalControlProperties
+public class SecurityAccessControlProperties extends GovernanceControlProperties
 {
     /**
      * Default Constructor

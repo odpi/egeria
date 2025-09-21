@@ -61,6 +61,19 @@ public class ActorProfileHandler extends OpenMetadataHandlerBase
 
 
     /**
+     * Create a new handler.
+     *
+     * @param template        properties to copy
+     * @param specificTypeName   subtype to control handler
+     */
+    public ActorProfileHandler(ActorProfileHandler template,
+                               String       specificTypeName)
+    {
+        super(template, specificTypeName);
+    }
+
+
+    /**
      * Create a new actor profile.
      *
      * @param userId                       userId of user making request.

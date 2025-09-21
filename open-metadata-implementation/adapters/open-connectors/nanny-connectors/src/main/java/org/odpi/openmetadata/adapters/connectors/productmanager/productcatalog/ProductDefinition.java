@@ -2,6 +2,9 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.adapters.connectors.productmanager.productcatalog;
 
+import org.odpi.openmetadata.adapters.connectors.productmanager.solutionblueprint.ProductRoleDefinition;
+import org.odpi.openmetadata.adapters.connectors.referencedata.tabulardatasets.ValidValueSetListProvider;
+import org.odpi.openmetadata.frameworks.connectors.ConnectorProvider;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 
 import java.util.ArrayList;
@@ -25,8 +28,9 @@ public enum ProductDefinition
                          ProductGovernanceDefinition.INTERNAL_USE_ONLY,
                          ProductCommunityDefinition.REFERENCE_DATA_SIG,
                          new ProductSubscriptionDefinition[]{
-                                 ProductSubscriptionDefinition.CSV_FILE,
-                                 ProductSubscriptionDefinition.POSTGRES_TABLE},
+                                 ProductSubscriptionDefinition.EVALUATION_SUBSCRIPTION,
+                                 ProductSubscriptionDefinition.DAILY_REFRESH_SUBSCRIPTION,
+                                 ProductSubscriptionDefinition.ONGOING_UPDATE},
                          new ProductDataFieldDefinition[]{
                                  ProductDataFieldDefinition.GUID,
                                  ProductDataFieldDefinition.QUALIFIED_NAME,
@@ -39,7 +43,7 @@ public enum ProductDefinition
                                  ProductDataFieldDefinition.DATA_TYPE,
                                  ProductDataFieldDefinition.SCOPE,
                                  ProductDataFieldDefinition.USAGE},
-                         " org.odpi.openmetadata.adapters.connectors.referencedata.tabulardatasets.ValidValueSetListProvider",
+                         new ValidValueSetListProvider(),
                          "ValidValueSetsList"),
 
 
@@ -54,10 +58,11 @@ public enum ProductDefinition
     private final String                          category;
     private final ProductGovernanceDefinition     license;
     private final ProductCommunityDefinition      community;
+    private final ProductRoleDefinition           productManager;
     private final ProductSubscriptionDefinition[] subscriptionTypes;
-    private final ProductDataFieldDefinition[]    dataSpec;
-    private final String                          connectorProviderClassName;
-    private final String                          catalogTargetName;
+    private final ProductDataFieldDefinition[] dataSpec;
+    private final ConnectorProvider            connectorProvider;
+    private final String                       catalogTargetName;
 
 
 
@@ -71,21 +76,22 @@ public enum ProductDefinition
                       ProductCommunityDefinition      community,
                       ProductSubscriptionDefinition[] subscriptionTypes,
                       ProductDataFieldDefinition[]    dataSpec,
-                      String                          connectorProviderClassName,
+                      ConnectorProvider               connectorProvider,
                       String                          catalogTargetName)
     {
-        this.productName                = productName;
-        this.identifier                 = identifier;
-        this.parent                     = parent;
-        this.displayName                = displayName;
-        this.description                = description;
-        this.category                   = category;
-        this.license                    = license;
-        this.community                  = community;
-        this.subscriptionTypes          = subscriptionTypes;
-        this.dataSpec                   = dataSpec;
-        this.connectorProviderClassName = connectorProviderClassName;
-        this.catalogTargetName          = catalogTargetName;
+        this.productName       = productName;
+        this.identifier        = identifier;
+        this.parent            = parent;
+        this.displayName       = displayName;
+        this.description       = description;
+        this.category          = category;
+        this.license           = license;
+        this.community         = community;
+        this.productManager    = ProductRoleDefinition.PRODUCT_MANAGER;
+        this.subscriptionTypes = subscriptionTypes;
+        this.dataSpec          = dataSpec;
+        this.connectorProvider = connectorProvider;
+        this.catalogTargetName = catalogTargetName;
     }
 
 
@@ -190,6 +196,17 @@ public enum ProductDefinition
 
 
     /**
+     * Return the project manager for the product.
+     *
+     * @return description of the product manager
+     */
+    public ProductRoleDefinition getProductManager()
+    {
+        return productManager;
+    }
+
+
+    /**
      * Return the list of subscription types supported by this product.
      *
      * @return list
@@ -225,9 +242,9 @@ public enum ProductDefinition
      *
      * @return string
      */
-    public String getConnectorProviderClassName()
+    public ConnectorProvider getConnectorProvider()
     {
-        return connectorProviderClassName;
+        return connectorProvider;
     }
 
 

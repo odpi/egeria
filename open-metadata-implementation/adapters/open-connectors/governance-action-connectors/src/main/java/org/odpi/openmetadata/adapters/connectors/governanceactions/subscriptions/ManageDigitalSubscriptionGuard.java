@@ -18,7 +18,8 @@ public enum ManageDigitalSubscriptionGuard
 {
     SET_UP_COMPLETE("set-up-complete", CompletionStatus.ACTIONED, "The new digital subscription has been created.  Its unique identifier (guid) is published in the 'newDigitalSubscription' action target"),
     DELETE_COMPLETE("delete-complete", CompletionStatus.ACTIONED, "The digital subscription has been deleted."),
-    MISSING_TEMPLATE("missing-template", CompletionStatus.INVALID, "The templateGUID request parameter has not been supplied."),
+    MISSING_ACTION_TARGET("missing-action-target", CompletionStatus.INVALID, "The named action target has not been supplied."),
+    MISSING_REQUEST_PARAMETER("missing-request-parameter", CompletionStatus.INVALID, "The named request parameter has not been supplied."),
     SERVICE_FAILED("service-failed", CompletionStatus.FAILED, "An unexpected error occurred while the governance service was running.  Messages are logged to the audit log explaining the source of the error."),
     ;
 

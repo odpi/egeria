@@ -12,6 +12,7 @@ import org.odpi.openmetadata.frameworks.openmetadata.properties.AnchorsPropertie
 import org.odpi.openmetadata.frameworks.openmetadata.properties.AttachedClassification;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.OpenMetadataElement;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.RelatedMetadataElement;
+import org.odpi.openmetadata.frameworks.openmetadata.types.DataType;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 
@@ -1697,6 +1698,8 @@ public class PropertyHelper
                 {
                     ArrayTypePropertyValue arrayTypePropertyValue = new ArrayTypePropertyValue();
 
+                    String elementType = "object";
+
                     if (! propertyAsList.isEmpty())
                     {
                         int index = 0;
@@ -1705,6 +1708,28 @@ public class PropertyHelper
 
                         for (Object arrayValueObject : propertyAsList)
                         {
+                            if (arrayValueObject instanceof String)
+                            {
+                                elementType = "string";
+                            }
+                            else if (arrayValueObject instanceof Boolean)
+                            {
+                                elementType = "boolean";
+                            }
+                            else if (arrayValueObject instanceof Integer)
+                            {
+                                elementType = "int";
+                            }
+                            else if (arrayValueObject instanceof Long)
+                            {
+                                elementType = "long";
+                            }
+                            else if (arrayValueObject instanceof Date)
+                            {
+                                elementType = "date";
+                            }
+
+
                             arrayPropertyAsMap.put(Integer.toString(index), arrayValueObject);
                             index++;
                         }
@@ -1713,7 +1738,7 @@ public class PropertyHelper
                         arrayTypePropertyValue.setArrayCount(index);
                     }
 
-                    arrayTypePropertyValue.setTypeName("array");
+                    arrayTypePropertyValue.setTypeName("array<" + elementType + ">");
 
                     resultingProperties.setProperty(mapPropertyName, arrayTypePropertyValue);
                     propertyCount++;
@@ -2481,7 +2506,7 @@ public class PropertyHelper
 
                 PrimitiveTypePropertyValue primitiveTypePropertyValue = new PrimitiveTypePropertyValue();
                 primitiveTypePropertyValue.setPrimitiveTypeCategory(PrimitiveTypeCategory.OM_PRIMITIVE_TYPE_DATE);
-                primitiveTypePropertyValue.setPrimitiveValue(mapPropertyValue);
+                primitiveTypePropertyValue.setPrimitiveValue(mapPropertyValue.getTime());
                 primitiveTypePropertyValue.setTypeName(PrimitiveTypeCategory.OM_PRIMITIVE_TYPE_DATE.getName());
                 resultingProperties.setProperty(mapPropertyName, primitiveTypePropertyValue);
                 propertyCount++;

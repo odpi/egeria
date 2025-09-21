@@ -267,18 +267,23 @@ public class ValidValueDataSetConnector extends ReferenceDataSetConnectorBase im
                 }
                 else if (OpenMetadataProperty.CREATE_TIME.name.equals(tabularColumnDescription.columnName()))
                 {
-                    recordValues.add(validValue.getRelatedElement().getElementHeader().getVersions().getCreateTime().toString());
+                    long time = validValue.getRelatedElement().getElementHeader().getVersions().getCreateTime().getTime();
+
+                    recordValues.add(Long.toString(time));
                 }
                 else if (OpenMetadataProperty.UPDATE_TIME.name.equals(tabularColumnDescription.columnName()))
                 {
+                    long time;
                     if (validValue.getRelatedElement().getElementHeader().getVersions().getUpdateTime() == null)
                     {
-                        recordValues.add(null);
+                        time = validValue.getRelatedElement().getElementHeader().getVersions().getCreateTime().getTime();
                     }
                     else
                     {
-                        recordValues.add(validValue.getRelatedElement().getElementHeader().getVersions().getUpdateTime().toString());
+                        time = validValue.getRelatedElement().getElementHeader().getVersions().getUpdateTime().getTime();
                     }
+
+                    recordValues.add(Long.toString(time));
                 }
                 else if (validValue.getRelatedElement().getProperties() instanceof ValidValueDefinitionProperties validValueDefinitionProperties)
                 {
