@@ -2504,11 +2504,14 @@ public class PropertyHelper
             {
                 Date mapPropertyValue = mapValues.get(mapPropertyName);
 
-                PrimitiveTypePropertyValue primitiveTypePropertyValue = new PrimitiveTypePropertyValue();
-                primitiveTypePropertyValue.setPrimitiveTypeCategory(PrimitiveTypeCategory.OM_PRIMITIVE_TYPE_DATE);
-                primitiveTypePropertyValue.setPrimitiveValue(mapPropertyValue.getTime());
-                primitiveTypePropertyValue.setTypeName(PrimitiveTypeCategory.OM_PRIMITIVE_TYPE_DATE.getName());
-                resultingProperties.setProperty(mapPropertyName, primitiveTypePropertyValue);
+                long time = 0L;
+
+                if (mapPropertyValue != null)
+                {
+                    time = mapPropertyValue.getTime();
+                }
+
+                resultingProperties.setProperty(mapPropertyName, getPrimitivePropertyValue(PrimitiveTypeCategory.OM_PRIMITIVE_TYPE_DATE, time));
                 propertyCount++;
             }
 
@@ -3179,9 +3182,13 @@ public class PropertyHelper
             {
                 Object actualPropertyValue = mapFromProperty.get(mapPropertyName);
 
-                if (actualPropertyValue != null)
+                if (actualPropertyValue instanceof Date date)
                 {
-                    dateMap.put(mapPropertyName, (Date)actualPropertyValue);
+                    dateMap.put(mapPropertyName, date);
+                }
+                else if (actualPropertyValue instanceof Long time)
+                {
+                    dateMap.put(mapPropertyName, new Date(time));
                 }
             }
 

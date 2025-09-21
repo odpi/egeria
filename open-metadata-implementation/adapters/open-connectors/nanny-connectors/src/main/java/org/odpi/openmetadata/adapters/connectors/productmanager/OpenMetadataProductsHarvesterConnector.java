@@ -912,7 +912,7 @@ public class OpenMetadataProductsHarvesterConnector extends IntegrationConnector
         if (governanceActionType.getProperties() instanceof GovernanceActionTypeProperties governanceActionTypeProperties)
         {
             return integrationContext.getOpenGovernanceClient().initiateGovernanceActionType(integrationContext.getMyUserId(),
-                                                                                             null,
+                                                                                             governanceActionTypeProperties.getQualifiedName(),
                                                                                              Collections.singletonList(integrationContext.getIntegrationConnectorGUID()),
                                                                                              Collections.singletonList(products.get(productDefinition.getQualifiedName())),
                                                                                              actionTargets,
