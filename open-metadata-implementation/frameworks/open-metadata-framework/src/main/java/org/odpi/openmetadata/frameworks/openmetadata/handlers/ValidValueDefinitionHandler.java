@@ -10,12 +10,8 @@ import org.odpi.openmetadata.frameworks.openmetadata.ffdc.PropertyServerExceptio
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.OpenMetadataRootElement;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.ClassificationProperties;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.OpenMetadataElement;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.RelatedMetadataElement;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.RelationshipProperties;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.actors.*;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.validvalues.*;
-import org.odpi.openmetadata.frameworks.openmetadata.refdata.SpecificationPropertyType;
 import org.odpi.openmetadata.frameworks.openmetadata.search.*;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
@@ -29,7 +25,6 @@ import java.util.Map;
  */
 public class ValidValueDefinitionHandler extends OpenMetadataHandlerBase
 {
-
     /**
      * Create a new handler.
      *
@@ -48,6 +43,42 @@ public class ValidValueDefinitionHandler extends OpenMetadataHandlerBase
               localServiceName,
               openMetadataClient,
               OpenMetadataType.VALID_VALUE_DEFINITION.typeName);
+    }
+
+
+    /**
+     * Create a new handler.
+     *
+     * @param localServerName        name of this server (view server)
+     * @param auditLog               logging destination
+     * @param localServiceName       local service name
+     * @param openMetadataClient     access to open metadata
+     * @param metadataElementTypeName type of principle element
+     */
+    public ValidValueDefinitionHandler(String             localServerName,
+                                       AuditLog           auditLog,
+                                       String             localServiceName,
+                                       OpenMetadataClient openMetadataClient,
+                                       String             metadataElementTypeName)
+    {
+        super(localServerName,
+              auditLog,
+              localServiceName,
+              openMetadataClient,
+              metadataElementTypeName);
+    }
+
+
+    /**
+     * Create a new handler.
+     *
+     * @param template        properties to copy
+     * @param specificTypeName   subtype  to control handler
+     */
+    public ValidValueDefinitionHandler(ValidValueDefinitionHandler template,
+                                       String                      specificTypeName)
+    {
+        super(template, specificTypeName);
     }
 
 

@@ -72,6 +72,20 @@ public enum ResourceUse
                        null),
 
     /**
+     * Supports the action to create a digital subscription to the associated element.
+     */
+    CREATE_SUBSCRIPTION("Create Subscription",
+                        "Supports the action to create a digital subscription to the associated element.",
+                        null),
+
+    /**
+     * Supports the action to cancel the linked subscription.
+     */
+    CANCEL_SUBSCRIPTION("Cancel Subscription",
+                       "Supports the action to cancel the linked subscription.",
+                       null),
+
+    /**
      * Improve the information about an element in the open metadata repositories.
      */
     IMPROVE_METADATA("Improve Metadata Element",

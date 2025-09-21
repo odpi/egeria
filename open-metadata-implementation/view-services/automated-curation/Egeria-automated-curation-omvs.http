@@ -38,6 +38,19 @@ Content-Type: application/json
 
 > {% client.global.set("activeMetadataStoreGUID", response.body.guid); %}
 
+###
+# @name addOpenMetadataArchiveFile (into active-metadata-store)
+# Add a new open metadata archive to running OMAG Server's repository.
+# An open metadata archive contains metadata types and instances.  This operation loads an open metadata archive
+# that is stored in the named file.  It can be used with OMAG servers that are of type Open Metadata Store.
+# https://egeria-project.org/concepts/open-metadata-archives/
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/runtime-manager/omag-servers/{{activeMetadataStoreGUID}}/instance/load/open-metadata-archives/file
+Authorization: Bearer {{token}}
+Content-Type: text/plain
+
+content-packs/OpenMetadataProductsContentPack.omarchive
+
+
 
 ###
 # @name addOpenMetadataArchiveFile (into active-metadata-store)
@@ -347,7 +360,7 @@ Content-Type: application/json
 ###
 # @name getTechnologyTypeElements
 # Retrieve the elements for the requested deployed implementation type. There are no wildcards allowed in the name.
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/automated-curation/technology-types/elements?startFrom=0&pageSize=10&getTemplates=false
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/automated-curation/technology-types/elements
 Authorization: Bearer {{token}}
 Content-Type: application/json
 
@@ -369,12 +382,13 @@ Content-Type: application/json
 ###
 # @name getTechnologyTypeElements (CSV Data File)
 # Retrieve the elements for the requested deployed implementation type. There are no wildcards allowed in the name.
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/automated-curation/technology-types/elements?startFrom=0&pageSize=10&getTemplates=false
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/automated-curation/technology-types/elements
 Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-  "filter" : "CSV Data File"
+  "filter" : "CSV Data File",
+  "pageSize": 10
 }
 
 
@@ -383,7 +397,7 @@ Content-Type: application/json
 ###
 # @name getTechnologyTypeElements (OMAG Server Platform)
 # Retrieve the elements for the requested deployed implementation type. There are no wildcards allowed in the name.
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/automated-curation/technology-types/elements?startFrom=0&pageSize=10&getTemplates=false
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/automated-curation/technology-types/elements
 Authorization: Bearer {{token}}
 Content-Type: application/json
 
@@ -397,12 +411,13 @@ Content-Type: application/json
 ###
 # @name getTechnologyTypeTemplates
 # Retrieve the elements for the requested deployed implementation type. There are no wildcards allowed in the name.
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/automated-curation/technology-types/elements?startFrom=0&pageSize=10&getTemplates=true
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/automated-curation/technology-types/elements
 Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-  "filter" : "File System Directory"
+  "filter" : "File System Directory",
+  "skipClassifiedElements": ["Template"]
 }
 
 
@@ -411,7 +426,7 @@ Content-Type: application/json
 ###
 # @name getTechnologyTypeTemplates (CSV Data File)
 # Retrieve the elements for the requested deployed implementation type. There are no wildcards allowed in the name.
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/automated-curation/technology-types/elements?startFrom=0&pageSize=10&getTemplates=true
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/automated-curation/technology-types/elements
 Authorization: Bearer {{token}}
 Content-Type: application/json
 

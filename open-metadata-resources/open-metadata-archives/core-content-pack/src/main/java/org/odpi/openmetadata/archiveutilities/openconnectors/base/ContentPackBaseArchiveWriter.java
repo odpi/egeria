@@ -72,6 +72,45 @@ public abstract class ContentPackBaseArchiveWriter extends EgeriaBaseArchiveWrit
 
 
     /**
+     * Add a catalog definition for this content pack (if applicable).
+     *
+     * @param contentPackDefinition which content pack is this for?
+     */
+    protected void addDigitalProductCatalogDefinition(ContentPackDefinition contentPackDefinition)
+    {
+        for (DigitalProductCatalogDefinition catalogDefinition : DigitalProductCatalogDefinition.values())
+        {
+            if (catalogDefinition.getContentPackDefinition() == contentPackDefinition)
+            {
+                archiveHelper.setGUID(catalogDefinition.getQualifiedName(), catalogDefinition.getGUID());
+
+                String collectionGUID = archiveHelper.addCollection(OpenMetadataType.COLLECTION.typeName,
+                                                                    catalogDefinition.getGUID(),
+                                                                    OpenMetadataType.COLLECTION.typeName,
+                                                                    OpenMetadataType.COLLECTION.typeName,
+                                                                    null,
+                                                                    OpenMetadataType.ROOT_COLLECTION_CLASSIFICATION.typeName,
+                                                                    catalogDefinition.getQualifiedName(),
+                                                                    catalogDefinition.getName(),
+                                                                    catalogDefinition.getDescription(),
+                                                                    null,
+                                                                    null,
+                                                                    null,
+                                                                    null);
+
+                if (catalogDefinition.getParent() != null)
+                {
+                    archiveHelper.addMemberToCollection(catalogDefinition.getParent().getGUID(),
+                                                        collectionGUID,
+                                                        null);
+                }
+            }
+        }
+    }
+
+
+
+    /**
      * Create a template for a data file and link it to the associated open metadata type.
      * The template consists of a DataFile asset plus an optional connection, linked
      * to the supplied connector type and an endpoint,
@@ -1032,10 +1071,10 @@ public abstract class ContentPackBaseArchiveWriter extends EgeriaBaseArchiveWrit
         String validValueGUID = this.archiveHelper.addValidValue(null,
                                                                  parentSetGUID,
                                                                  parentSetGUID,
-                                                                 OpenMetadataType.VALID_VALUE_DEFINITION.typeName,
+                                                                 OpenMetadataType.VALID_METADATA_VALUE.typeName,
                                                                  OpenMetadataType.VALID_VALUE_DEFINITION.typeName,
                                                                  null,
-                                                                 OpenMetadataType.VALID_VALUE_DEFINITION.typeName,
+                                                                 OpenMetadataType.VALID_METADATA_VALUE.typeName,
                                                                  qualifiedName,
                                                                  Category.VALID_METADATA_VALUES.getName(),
                                                                  deployedImplementationType,

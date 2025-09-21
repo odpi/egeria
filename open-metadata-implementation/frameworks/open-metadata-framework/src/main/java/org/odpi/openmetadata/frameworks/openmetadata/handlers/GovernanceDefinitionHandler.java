@@ -464,6 +464,149 @@ public class GovernanceDefinitionHandler extends OpenMetadataHandlerBase
     }
 
 
+    /**
+     * Attach monitored resource to a notification type.
+     *
+     * @param userId                        userId of user making request
+     * @param notificationTypeGUID            unique identifier of the notification type
+     * @param elementGUID             unique identifier of the element to monitor
+     * @param metadataSourceOptions         options to control access to open metadata
+     * @param relationshipProperties        description of the relationship.
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public void linkMonitoredResource(String                      userId,
+                                      String                      notificationTypeGUID,
+                                      String                      elementGUID,
+                                      MetadataSourceOptions       metadataSourceOptions,
+                                      MonitoredResourceProperties relationshipProperties) throws InvalidParameterException,
+                                                                                             PropertyServerException,
+                                                                                             UserNotAuthorizedException
+    {
+        final String methodName            = "linkMonitoredResource";
+        final String end1GUIDParameterName = "notificationTypeGUID";
+        final String end2GUIDParameterName = "elementGUID";
+
+        propertyHelper.validateUserId(userId, methodName);
+        propertyHelper.validateGUID(notificationTypeGUID, end1GUIDParameterName, methodName);
+        propertyHelper.validateGUID(elementGUID, end2GUIDParameterName, methodName);
+
+        openMetadataClient.createRelatedElementsInStore(userId,
+                                                        OpenMetadataType.MONITORED_RESOURCE_RELATIONSHIP.typeName,
+                                                        notificationTypeGUID,
+                                                        elementGUID,
+                                                        metadataSourceOptions,
+                                                        relationshipBuilder.getNewElementProperties(relationshipProperties));
+    }
+
+
+    /**
+     * Detach a monitored resource from a notification type.
+     *
+     * @param userId                      userId of user making request.
+     * @param notificationTypeGUID            unique identifier of the notification type
+     * @param elementGUID             unique identifier of the element to monitor
+     * @param deleteOptions               options to control access to open metadata
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public void detachMonitoredResource(String        userId,
+                                        String        notificationTypeGUID,
+                                        String        elementGUID,
+                                        DeleteOptions deleteOptions) throws InvalidParameterException,
+                                                                          PropertyServerException,
+                                                                          UserNotAuthorizedException
+    {
+        final String methodName = "detachMonitoredResource";
+
+        final String end1GUIDParameterName = "notificationTypeGUID";
+        final String end2GUIDParameterName = "elementGUID";
+
+        propertyHelper.validateUserId(userId, methodName);
+        propertyHelper.validateGUID(notificationTypeGUID, end1GUIDParameterName, methodName);
+        propertyHelper.validateGUID(elementGUID, end2GUIDParameterName, methodName);
+
+        openMetadataClient.detachRelatedElementsInStore(userId,
+                                                        OpenMetadataType.MONITORED_RESOURCE_RELATIONSHIP.typeName,
+                                                        notificationTypeGUID,
+                                                        elementGUID,
+                                                        deleteOptions);
+    }
+
+
+    /**
+     * Attach subscriber to a notification type.
+     *
+     * @param userId                        userId of user making request
+     * @param notificationTypeGUID            unique identifier of the notification type
+     * @param elementGUID             unique identifier of the element to monitor
+     * @param metadataSourceOptions         options to control access to open metadata
+     * @param relationshipProperties        description of the relationship.
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public void linkNotificationSubscriber(String                           userId,
+                                           String                           notificationTypeGUID,
+                                           String                           elementGUID,
+                                           MetadataSourceOptions            metadataSourceOptions,
+                                           NotificationSubscriberProperties relationshipProperties) throws InvalidParameterException,
+                                                                                                           PropertyServerException,
+                                                                                                           UserNotAuthorizedException
+    {
+        final String methodName            = "linkNotificationSubscriber";
+        final String end1GUIDParameterName = "notificationTypeGUID";
+        final String end2GUIDParameterName = "elementGUID";
+
+        propertyHelper.validateUserId(userId, methodName);
+        propertyHelper.validateGUID(notificationTypeGUID, end1GUIDParameterName, methodName);
+        propertyHelper.validateGUID(elementGUID, end2GUIDParameterName, methodName);
+
+        openMetadataClient.createRelatedElementsInStore(userId,
+                                                        OpenMetadataType.NOTIFICATION_SUBSCRIBER_RELATIONSHIP.typeName,
+                                                        notificationTypeGUID,
+                                                        elementGUID,
+                                                        metadataSourceOptions,
+                                                        relationshipBuilder.getNewElementProperties(relationshipProperties));
+    }
+
+
+    /**
+     * Detach a subscriber from a notification type.
+     *
+     * @param userId                      userId of user making request.
+     * @param notificationTypeGUID            unique identifier of the notification type
+     * @param elementGUID             unique identifier of the element to monitor
+     * @param deleteOptions               options to control access to open metadata
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public void detachNotificationSubscriber(String        userId,
+                                             String        notificationTypeGUID,
+                                             String        elementGUID,
+                                             DeleteOptions deleteOptions) throws InvalidParameterException,
+                                                                                 PropertyServerException,
+                                                                                 UserNotAuthorizedException
+    {
+        final String methodName = "detachNotificationSubscriber";
+
+        final String end1GUIDParameterName = "notificationTypeGUID";
+        final String end2GUIDParameterName = "elementGUID";
+
+        propertyHelper.validateUserId(userId, methodName);
+        propertyHelper.validateGUID(notificationTypeGUID, end1GUIDParameterName, methodName);
+        propertyHelper.validateGUID(elementGUID, end2GUIDParameterName, methodName);
+
+        openMetadataClient.detachRelatedElementsInStore(userId,
+                                                        OpenMetadataType.NOTIFICATION_SUBSCRIBER_RELATIONSHIP.typeName,
+                                                        notificationTypeGUID,
+                                                        elementGUID,
+                                                        deleteOptions);
+    }
+
 
     /**
      * Attach a governance metric to an asset that represents the data store where the measurements are located.

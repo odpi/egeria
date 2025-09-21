@@ -187,7 +187,7 @@ public class OpenMetadataTypesArchive1_7
     private EntityDef addSubjectAreaDefinitionEntity()
     {
         return archiveHelper.getDefaultEntityDef(OpenMetadataType.SUBJECT_AREA_DEFINITION,
-                                                                this.archiveBuilder.getEntityDef(OpenMetadataType.ORGANIZATIONAL_CONTROL.typeName));
+                                                                this.archiveBuilder.getEntityDef(OpenMetadataType.GOVERNANCE_CONTROL.typeName));
     }
 
 

@@ -135,6 +135,64 @@ public enum ProductGovernanceDefinition
                       GovernanceDomain.UNCLASSIFIED.getOrdinal(),
                       ScopeDefinition.WITHIN_ORGANIZATION,
                       "https://creativecommons.org/licenses/by/4.0/"),
+
+    /**
+     * Updates are delivered within 1 hour of receipt.
+     */
+    MONITORED_RESOURCE_SLO("SLO-WITHIN-HOUR",
+             OpenMetadataType.SERVICE_LEVEL_OBJECTIVE.typeName,
+             "Updates are delivered within 1 hour of receipt",
+             "When new data is loaded into the product's asset then the changes are sent as a delta to the subscriber's destination asset within 1 hour.",
+             "The updates are delivered record by record.  New records are appended at the end of the data set.",
+             "Used with subscriptions backed up by a monitoring resource notification watchdog service.",
+             "High",
+             null,
+             null,
+             null,
+             new String[]{"The subscriber is entitled to receive all updates to the product data."},
+             null,
+             new String[]{"The subscriber should ensure that the product data's destination is available to receive the updates."},
+             GovernanceDomain.UNCLASSIFIED.getOrdinal(),
+             ScopeDefinition.WITHIN_ORGANIZATION,
+             null),
+
+    /**
+     * A complete refresh of the product data is delivered to the product data's destination each day
+     */
+    DAILY_REFRESH_SLO("SLO-DAILY-REFRESH",
+                      OpenMetadataType.SERVICE_LEVEL_OBJECTIVE.typeName,
+                      "A complete refresh of the product data is delivered to the product data's destination each day",
+                      "All of the data for the product is sent to the subscriber's destination whether it has changed or not.",
+                      "The data is delivered record by record.  New records are appended at the end of the data set.",
+                      "Used with subscriptions backed up by a scheduled resource notification watchdog service that has been configured to notify subscribers hourly.",
+                      "High",
+                      null, null,
+                      null,
+                      new String[]{"The subscriber is entitled to receive all updates to the product data."},
+                      null,
+                      new String[]{"The subscriber should ensure that the product data's destination is available to receive the updates."},
+                      GovernanceDomain.UNCLASSIFIED.getOrdinal(),
+                      ScopeDefinition.WITHIN_ORGANIZATION,
+                      null),
+
+    /**
+     * A complete refresh of the product data is delivered to the product data's destination just once
+     */
+    ONE_TIME_SLO("SLO-ONCE-ONLY",
+                      OpenMetadataType.SERVICE_LEVEL_OBJECTIVE.typeName,
+                      "A complete copy of the product data is delivered to the product data's destination just once",
+                      "All of the data for the product is sent to the subscriber's destination.",
+                      "The data is delivered record by record.",
+                      "Used with subscriptions backed up by a one-time notification watchdog service.",
+                      "High",
+                      null, null,
+                      null,
+                      new String[]{"The subscriber is entitled to receive all updates to the product data."},
+                      null,
+                      new String[]{"The subscriber should ensure that the product data's destination is available to receive the updates."},
+                      GovernanceDomain.UNCLASSIFIED.getOrdinal(),
+                      ScopeDefinition.WITHIN_ORGANIZATION,
+                      null),
     ;
 
 

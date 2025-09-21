@@ -9,42 +9,61 @@ package org.odpi.openmetadata.adapters.connectors.productmanager.productcatalog;
 public enum ProductSubscriptionDefinition
 {
     /**
-     * Delivery to CSV File with updates pushed within 1 hour of publication to open metadata.
+     * This subscription delivers the data to the target destination just once to allow an evaluation of the product data.
      */
-    CSV_FILE("org.odpi.openmetadata.adapters.connectors.datastore.csvfile.CSVFileStoreProvider",
-             "CSV-FILE-REGULAR-REFRESH",
-             "Delivery to CSV File with updates pushed within 1 hour of publication to open metadata.",
-             "This subscription delivers data as a CSV File.  Each field is a separate column in the file and each row is a record from the data set.  The source metadata is monitored once an hour and if the content has changed, the CSV file is updated.",
-             null),
+    EVALUATION_SUBSCRIPTION(GovernanceActionTypeDefinition.ONE_TIME_NOTIFICATION.getGovernanceActionTypeGUID(),
+                            "EVALUATION-SUBSCRIPTION",
+                            "Evaluation subscription",
+                            "This subscription delivers the data to the target destination just once to allow an evaluation of the product data.",
+                            null,
+                            ProductGovernanceDefinition.ONE_TIME_SLO),
 
-    POSTGRES_TABLE("org.odpi.openmetadata.adapters.connectors.resource.jdbc.JDBCResourceConnectorProvider",
-             "POSTGRESQL-TABLE-REGULAR-REFRESH",
-             "Delivery to a PostgreSQLTable with updates pushed within 1 hour of publication to open metadata.",
-             "This subscription delivers data as a CSV File.  Each field is a separate column in the file and each row is a record from the data set.  The source metadata is monitored once an hour and if the content has changed, the CSV file is updated.",
-             null),
+    /**
+     * This subscription delivers the data to the target destination once a day.
+     */
+    DAILY_REFRESH_SUBSCRIPTION(GovernanceActionTypeDefinition.PERIODIC_REFRESH_WATCHDOG.getGovernanceActionTypeGUID(),
+                               "DAILY-REFRESH-SUBSCRIPTION",
+                               "Daily refresh subscription",
+                               "This subscription delivers the data to the target destination once a day.",
+                               null,
+                               ProductGovernanceDefinition.DAILY_REFRESH_SLO),
+
+
+    /**
+     * This subscription delivers data updates to the target destination within on hour of receiving the new data.
+     */
+    ONGOING_UPDATE(GovernanceActionTypeDefinition.MONITORED_RESOURCE_WATCHDOG.getGovernanceActionTypeGUID(),
+                   "ONGOING-UPDATE-SUBSCRIPTION",
+                   "Ongoing update subscription",
+                   "This subscription delivers data updates to the target destination within on hour of receiving the new data.",
+                   null,
+                   ProductGovernanceDefinition.MONITORED_RESOURCE_SLO),
 
 
     ;
 
 
-    private final String connectorProviderClassName;
+    private final String governanceActionTypeGUID;
     private final String identifier;
     private final String displayName;
     private final String description;
     private final String category;
+    private final ProductGovernanceDefinition serviceLevelObjective;
 
 
-    ProductSubscriptionDefinition(String connectorProviderClassName,
-                                  String identifier,
-                                  String displayName,
-                                  String description,
-                                  String category)
+    ProductSubscriptionDefinition(String                      governanceActionTypeGUID,
+                                  String                      identifier,
+                                  String                      displayName,
+                                  String                      description,
+                                  String                      category,
+                                  ProductGovernanceDefinition serviceLevelObjective)
     {
-        this.connectorProviderClassName = connectorProviderClassName;
-        this.identifier                 = identifier;
-        this.displayName                = displayName;
-        this.description                = description;
-        this.category                   = category;
+        this.governanceActionTypeGUID = governanceActionTypeGUID;
+        this.identifier               = identifier;
+        this.displayName              = displayName;
+        this.description              = description;
+        this.category                 = category;
+        this.serviceLevelObjective    = serviceLevelObjective;
     }
 
 
@@ -60,13 +79,13 @@ public enum ProductSubscriptionDefinition
 
 
     /**
-     * Returns the unique name for the collection type.
+     * Returns the unique identifier for the subscription manager's governance action type.
      *
      * @return type name
      */
-    public String getConnectorProviderClassName()
+    public String getGovernanceActionTypeGUID()
     {
-        return connectorProviderClassName;
+        return governanceActionTypeGUID;
     }
 
 
@@ -114,6 +133,12 @@ public enum ProductSubscriptionDefinition
     }
 
 
+    public ProductGovernanceDefinition getServiceLevelObjective()
+    {
+        return serviceLevelObjective;
+    }
+
+
     /**
      * String containing the definition values
      *
@@ -123,12 +148,11 @@ public enum ProductSubscriptionDefinition
     public String toString()
     {
         return "ProductSubscriptionDefinition{" +
-                "connectorProviderClassName='" + connectorProviderClassName + '\'' +
+                "connectorProviderClassName='" + governanceActionTypeGUID + '\'' +
                 ", identifier='" + identifier + '\'' +
                 ", displayName='" + displayName + '\'' +
                 ", description='" + description + '\'' +
                 ", category='" + category + '\'' +
-                ", qualifiedName='" + getQualifiedName() + '\'' +
                 "} " + super.toString();
     }
 }

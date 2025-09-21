@@ -184,6 +184,8 @@ public class ValidValueSetListConnector extends ReferenceDataSetConnectorBase im
             columnDescriptions = new ArrayList<>();
 
             columnDescriptions.add(getTabularColumnDescription(OpenMetadataProperty.GUID, false, true));
+            columnDescriptions.add(getTabularColumnDescription(OpenMetadataProperty.CREATE_TIME, false, true));
+            columnDescriptions.add(getTabularColumnDescription(OpenMetadataProperty.UPDATE_TIME, false, true));
             columnDescriptions.add(getTabularColumnDescription(OpenMetadataProperty.QUALIFIED_NAME, false, false));
             columnDescriptions.add(getTabularColumnDescription(OpenMetadataProperty.DISPLAY_NAME, true, false));
             columnDescriptions.add(getTabularColumnDescription(OpenMetadataProperty.DESCRIPTION, true, false));
@@ -254,18 +256,24 @@ public class ValidValueSetListConnector extends ReferenceDataSetConnectorBase im
                 }
                 else if (OpenMetadataProperty.CREATE_TIME.name.equals(tabularColumnDescription.columnName()))
                 {
-                    recordValues.add(validValue.getElementHeader().getVersions().getCreateTime().toString());
+                    long time = validValue.getElementHeader().getVersions().getCreateTime().getTime();
+
+                    recordValues.add(Long.toString(time));
                 }
                 else if (OpenMetadataProperty.UPDATE_TIME.name.equals(tabularColumnDescription.columnName()))
                 {
+                    long time;
+
                     if (validValue.getElementHeader().getVersions().getUpdateTime() == null)
                     {
-                        recordValues.add(null);
+                        time = validValue.getElementHeader().getVersions().getCreateTime().getTime();
                     }
                     else
                     {
-                        recordValues.add(validValue.getElementHeader().getVersions().getUpdateTime().toString());
+                        time = validValue.getElementHeader().getVersions().getUpdateTime().getTime();
                     }
+
+                    recordValues.add(Long.toString(time));
                 }
                 else if (validValue.getProperties() instanceof ValidValueDefinitionProperties validValueDefinitionProperties)
                 {

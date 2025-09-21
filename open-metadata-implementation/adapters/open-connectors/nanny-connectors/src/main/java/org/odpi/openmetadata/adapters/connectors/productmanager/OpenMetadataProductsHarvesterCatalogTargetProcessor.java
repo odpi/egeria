@@ -21,8 +21,6 @@ import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -256,7 +254,6 @@ public class OpenMetadataProductsHarvesterCatalogTargetProcessor extends Catalog
     private Date getDataSetLastUpdateTime(int lastUpdateColumnNumber) throws ConnectorCheckedException,
                                                                              ParseException
     {
-        Date dataSetLastUpdateTime = null;
         long recordCount = tabularDataSource.getRecordCount();
 
         if (recordCount > 0L)
@@ -270,19 +267,12 @@ public class OpenMetadataProductsHarvesterCatalogTargetProcessor extends Catalog
                     String lastUpdateDateAsString = recordValues.get(lastUpdateColumnNumber);
                     if (lastUpdateDateAsString != null)
                     {
-                        SimpleDateFormat formatter            = new SimpleDateFormat(DateTimeFormatter.ISO_LOCAL_DATE_TIME.toString());
-                        Date             recordLastUpdateTime = formatter.parse(lastUpdateDateAsString);
-
-                        if ((dataSetLastUpdateTime == null) ||
-                                ((recordLastUpdateTime != null) && (recordLastUpdateTime.after(dataSetLastUpdateTime))))
-                        {
-                            dataSetLastUpdateTime = recordLastUpdateTime;
-                        }
+                        return new Date(Long.parseLong(lastUpdateDateAsString));
                     }
                 }
             }
         }
 
-        return dataSetLastUpdateTime;
+        return null;
     }
 }

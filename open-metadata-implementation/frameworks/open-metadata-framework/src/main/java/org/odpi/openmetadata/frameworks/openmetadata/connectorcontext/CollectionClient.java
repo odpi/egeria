@@ -8,13 +8,13 @@ import org.odpi.openmetadata.frameworks.openmetadata.client.OpenMetadataClient;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
-import org.odpi.openmetadata.frameworks.openmetadata.handlers.AssetHandler;
 import org.odpi.openmetadata.frameworks.openmetadata.handlers.CollectionHandler;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.OpenMetadataRootElement;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.ClassificationProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.RelationshipProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.actors.AssignmentScopeProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.collections.*;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.datadictionaries.DataDescriptionProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.digitalbusiness.*;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.glossaries.CanonicalVocabularyProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.glossaries.TaxonomyProperties;
@@ -208,6 +208,51 @@ public class CollectionClient extends ConnectorContextClientBase
     {
         collectionHandler.detachCollection(connectorUserId, collectionGUID, parentGUID, deleteOptions);
     }
+
+
+
+
+    /**
+     * Connect a data describing collection to an element using the DataDescription relationship (0580).
+     *
+     * @param dataDescriptionCollectionGUID    unique identifier of the collection
+     * @param parentGUID        unique identifier of referenceable object that the collection should be attached to
+     * @param makeAnchorOptions options to control access to open metadata
+     * @param properties        description of how the collection will be used.
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public void attachDataDescription(String                    parentGUID,
+                                      String                    dataDescriptionCollectionGUID,
+                                      MakeAnchorOptions         makeAnchorOptions,
+                                      DataDescriptionProperties properties) throws InvalidParameterException,
+                                                                                   PropertyServerException,
+                                                                                   UserNotAuthorizedException
+    {
+        collectionHandler.attachDataDescription(connectorUserId, parentGUID, dataDescriptionCollectionGUID, makeAnchorOptions, properties);
+    }
+
+
+    /**
+     * Detach an existing data describing collection from an element.  If the collection is anchored to the element, it is deleted.
+     *
+     * @param dataDescriptionCollectionGUID unique identifier of the collection.
+     * @param parentGUID     unique identifier of referenceable object that the collection should be attached to.
+     * @param deleteOptions  options to control access to open metadata
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public void detachDataDescription(String        parentGUID,
+                                      String        dataDescriptionCollectionGUID,
+                                      DeleteOptions deleteOptions) throws InvalidParameterException,
+                                                                          PropertyServerException,
+                                                                          UserNotAuthorizedException
+    {
+        collectionHandler.detachDataDescription(connectorUserId, parentGUID, dataDescriptionCollectionGUID, deleteOptions);
+    }
+
 
 
     /**

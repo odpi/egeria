@@ -10,6 +10,7 @@ import org.odpi.openmetadata.frameworks.openmetadata.ffdc.OMFRuntimeException;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
+import java.util.Date;
 import java.util.Objects;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
@@ -260,10 +261,13 @@ public class PrimitiveTypePropertyValue extends PropertyValue
                      * Integer. The following conversion repatriates it to Long.
                      */
 
-                    if (primitiveValue instanceof Integer)
+                    if (primitiveValue instanceof Integer castValue)
                     {
-                        Integer castValue = (Integer)primitiveValue;
                         return castValue.longValue();
+                    }
+                    else if (primitiveValue instanceof Date date)
+                    {
+                        return date.getTime();
                     }
                     else
                     {

@@ -326,7 +326,7 @@ public class OpenMetadataTypesArchive3_13
     private EntityDef getServiceLevelObjectivesEntity()
     {
         return archiveHelper.getDefaultEntityDef(OpenMetadataType.SERVICE_LEVEL_OBJECTIVE,
-                                                 this.archiveBuilder.getEntityDef(OpenMetadataType.TECHNICAL_CONTROL.typeName));
+                                                 this.archiveBuilder.getEntityDef(OpenMetadataType.TERMS_AND_CONDITIONS.typeName));
     }
 
     /*

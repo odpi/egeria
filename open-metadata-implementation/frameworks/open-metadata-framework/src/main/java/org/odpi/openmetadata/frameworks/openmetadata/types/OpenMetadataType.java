@@ -3028,7 +3028,6 @@ public enum OpenMetadataType
                                       "b35e995c-94b5-46eb-bd29-99d51ab294be",
                                       "Identifies that a project is rolling out capability to support the governance program."),
 
-
     /**
      * An implementation of a governance capability.
      */
@@ -3037,24 +3036,6 @@ public enum OpenMetadataType
                        OpenMetadataWikiPages.MODEL_0420_GOVERNANCE_CONTROLS,
                        "e4de161c-7403-424a-a618-5f06bbf08a2c",
                        "An implementation of a governance capability."),
-
-    /**
-     * A governance control that is implemented using technology.
-     */
-    TECHNICAL_CONTROL("d8f6eb5b-36f0-49bd-9b25-bf16f370d1ec",
-                       "TechnicalControl",
-                       OpenMetadataWikiPages.MODEL_0420_GOVERNANCE_CONTROLS,
-                       "7b107e29-bb2c-491d-891c-e292371d716c",
-                       "A governance control that is implemented using technology."),
-
-    /**
-     * A governance control that is implemented using organization structure, training, roles manual procedures and reviews.
-     */
-    ORGANIZATIONAL_CONTROL("befa1458-79b8-446a-b813-536700e60fa8",
-                       "OrganizationalControl",
-                       OpenMetadataWikiPages.MODEL_0420_GOVERNANCE_CONTROLS,
-                       "ae48c751-4574-451e-9999-703259507819",
-                       "A governance control that is implemented using organization structure, training, roles manual procedures and reviews."),
 
     /**
      * Describes a responsibility of a person, team or organization that supports the implementation of a governance driver.
@@ -4762,13 +4743,22 @@ public enum OpenMetadataType
                            "A single valid value for a referenceable."),
 
     /**
-     * A data set with values defined by a valid value set.
+     * A reference data value defined by a valid value definition.
      */
-    REFERENCE_DATA_SET("001f87fc-beae-4714-b899-d620a8a8137a",
-                                  "ReferenceDataSet",
-                                  OpenMetadataWikiPages.MODEL_0545_REFERENCE_DATA,
-                                  "c9d87116-6c60-4dd6-a2f2-e774371948e0",
-                                  "A data set with values defined by a valid value set."),
+    REFERENCE_DATA_VALUE("b1350a71-6192-4fd4-9159-c3b799875626",
+                         "ReferenceDataValue",
+                         OpenMetadataWikiPages.MODEL_0545_REFERENCE_DATA,
+                         "f98b8166-c23e-4280-b1b5-2365baa32099",
+                         "A reference data value defined by a valid value definition."),
+
+    /**
+     * A valid metadata value defined by a valid value definition.
+     */
+    VALID_METADATA_VALUE("dd9f0e3a-5f11-4de4-9dad-704fc65bb275",
+                              "ValidMetadataValue",
+                              OpenMetadataWikiPages.MODEL_0545_REFERENCE_DATA,
+                              "0cce70a2-d9a5-4c4c-8ae8-12844f2d6b8a",
+                              "A valid metadata value defined by a valid value definition."),
 
     /**
      * An asset that contains trusted values for use as reference data.
@@ -5035,6 +5025,15 @@ public enum OpenMetadataType
                                OpenMetadataWikiPages.MODEL_0580_DATA_DICTIONARIES,
                                "88f2cf3d-5c6f-4b7a-b93e-8f14ea232bda",
                                "This is an organized collection of defined data fields that can be used in a data specification to describe some desired data."),
+
+    /**
+     * Represents an association between a referenceable, such as a digital product, and a collection of data fields that describes some data.
+     */
+    DATA_DESCRIPTION_RELATIONSHIP("c0708d78-20a6-4d07-8c80-09e87eccb93f",
+                               "DataDescription",
+                               OpenMetadataWikiPages.MODEL_0580_DATA_DICTIONARIES,
+                               "3c1fb940-78d3-4216-8a3c-7bc80d3c167b",
+                               "Represents an association between a referenceable, such as a digital product, and a collection of data fields that describes some data."),
 
     /**
      * A list of data fields that describe the structure of a data source.

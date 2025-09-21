@@ -75,7 +75,7 @@ public enum ProductFolderDefinition
      */
     PRODUCTS(OpenMetadataType.COLLECTION.typeName,
              OpenMetadataType.FOLDER_COLLECTION_CLASSIFICATION.typeName,
-             null,
+             TOP_LEVEL,
              "Open Metadata Digital Products",
              "Extracts of open metadata organized into useful data sets.  These digital products support a variety of subscription choices.  Data can be delivered either as a CSV file, or as a PostGreSQL table.  Updates to the subscriber's copy typically occur within 1 hour of receiving the metadata update.",
              null),
@@ -157,7 +157,16 @@ public enum ProductFolderDefinition
     private final String                  category;
 
 
-
+    /**
+     * Constructor for enum value.
+     *
+     * @param typeName type of folder
+     * @param classificationName optional classification
+     * @param parent optional parent folder
+     * @param displayName display name
+     * @param description description
+     * @param category category
+     */
     ProductFolderDefinition(String                  typeName,
                             String                  classificationName,
                             ProductFolderDefinition parent,
