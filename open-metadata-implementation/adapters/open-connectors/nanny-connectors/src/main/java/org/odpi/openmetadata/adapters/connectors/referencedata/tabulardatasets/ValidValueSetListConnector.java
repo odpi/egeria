@@ -99,6 +99,7 @@ public class ValidValueSetListConnector extends ReferenceDataSetConnectorBase im
 
             searchOptions.setPageSize(pageSize);
             searchOptions.setStartFrom(0);
+            searchOptions.setGraphQueryDepth(2);
 
             List<OpenMetadataRootElement> validValueDefinitions = connectorContext.getValidValueDefinitionClient().findValidValueDefinitions(null, searchOptions);
 

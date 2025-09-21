@@ -129,6 +129,10 @@ public class AttributedElementConverterBase<B> extends OpenMetadataConverterBase
             attributedMetadataElement.setResourceListUsers(super.getRelatedElements(OpenMetadataType.RESOURCE_LIST_RELATIONSHIP.typeName, relatedMetadataElements, true));
             processedRelationshipTypes.add(OpenMetadataType.RESOURCE_LIST_RELATIONSHIP.typeName);
 
+            attributedMetadataElement.setProvidesMoreInformation(super.getRelatedElements(OpenMetadataType.MORE_INFORMATION_RELATIONSHIP.typeName, relatedMetadataElements, false));
+            attributedMetadataElement.setDescribes(super.getRelatedElements(OpenMetadataType.MORE_INFORMATION_RELATIONSHIP.typeName, relatedMetadataElements, true));
+            processedRelationshipTypes.add(OpenMetadataType.MORE_INFORMATION_RELATIONSHIP.typeName);
+
             attributedMetadataElement.setPropertyFacets(super.getRelatedElements(OpenMetadataType.REFERENCEABLE_FACET_RELATIONSHIP.typeName, relatedMetadataElements, false));
             attributedMetadataElement.setFacetedElements(super.getRelatedElements(OpenMetadataType.REFERENCEABLE_FACET_RELATIONSHIP.typeName, relatedMetadataElements, true));
             processedRelationshipTypes.add(OpenMetadataType.REFERENCEABLE_FACET_RELATIONSHIP.typeName);
@@ -574,10 +578,12 @@ public class AttributedElementConverterBase<B> extends OpenMetadataConverterBase
             attributedMetadataElement.setDataStructureDefinition(super.getRelatedElement(OpenMetadataType.DATA_STRUCTURE_DEFINITION_RELATIONSHIP.typeName, relatedMetadataElements, false));
             attributedMetadataElement.setUsedInCertifications(super.getRelatedElements(OpenMetadataType.DATA_STRUCTURE_DEFINITION_RELATIONSHIP.typeName, relatedMetadataElements, true));
             processedRelationshipTypes.add(OpenMetadataType.DATA_STRUCTURE_DEFINITION_RELATIONSHIP.typeName);
-            attributedMetadataElement.setContainsDataFields(super.getRelatedElements(OpenMetadataType.MEMBER_DATA_FIELD_RELATIONSHIP.typeName, relatedMetadataElements, false));
-            attributedMetadataElement.setPartOfDataStructures(super.getRelatedElements(OpenMetadataType.MEMBER_DATA_FIELD_RELATIONSHIP.typeName, relatedMetadataElements, true));
-            processedRelationshipTypes.add(OpenMetadataType.MEMBER_DATA_FIELD_RELATIONSHIP.typeName);
-
+            attributedMetadataElement.setResourceList(super.getRelatedElements(OpenMetadataType.RESOURCE_LIST_RELATIONSHIP.typeName, relatedMetadataElements, false));
+            attributedMetadataElement.setResourceListUsers(super.getRelatedElements(OpenMetadataType.RESOURCE_LIST_RELATIONSHIP.typeName, relatedMetadataElements, true));
+            processedRelationshipTypes.add(OpenMetadataType.RESOURCE_LIST_RELATIONSHIP.typeName);
+            attributedMetadataElement.setDataDescription(super.getRelatedElements(OpenMetadataType.DATA_DESCRIPTION_RELATIONSHIP.typeName, relatedMetadataElements, false));
+            attributedMetadataElement.setDescribesDataFor(super.getRelatedElements(OpenMetadataType.DATA_DESCRIPTION_RELATIONSHIP.typeName, relatedMetadataElements, true));
+            processedRelationshipTypes.add(OpenMetadataType.DATA_DESCRIPTION_RELATIONSHIP.typeName);
 
             attributedMetadataElement.setLinkedToDataFields(super.getRelatedElements(OpenMetadataType.LINKED_DATA_FIELD_RELATIONSHIP.typeName, relatedMetadataElements, false));
             attributedMetadataElement.setLinkedFromDataFields(super.getRelatedElements(OpenMetadataType.LINKED_DATA_FIELD_RELATIONSHIP.typeName, relatedMetadataElements, true));

@@ -23,6 +23,13 @@ public enum ProductCategoryDefinition
      */
     REFERENCE_DATA ("Reference Data","Common values for code tables."),
 
+
+    /**
+     * Common values for code tables.
+     */
+    MASTER_DATA ("Master Data","Core entities that enable linkage across many activities."),
+
+
     ;
 
     public static final String validValueSetName         = "Category";

@@ -47,6 +47,7 @@ import org.odpi.openmetadata.frameworks.openmetadata.properties.digitalbusiness.
 import org.odpi.openmetadata.frameworks.openmetadata.properties.feedback.NoteLogProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.glossaries.GlossaryTermProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.governance.*;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.resources.ResourceListProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.solutions.SolutionBlueprintProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.solutions.SolutionComponentActorProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.solutions.SolutionComponentProperties;
@@ -540,6 +541,7 @@ public class OpenMetadataProductsHarvesterConnector extends IntegrationConnector
         }
     }
 
+
     /**
      * Set up a product's subscription types.  Each are governance action processes configured with an appropriate
      * subscription template.  When the governance action process runs, it creates the subscription for the requesting
@@ -690,6 +692,18 @@ public class OpenMetadataProductsHarvesterConnector extends IntegrationConnector
                                                        null,
                                                        null,
                                                        propertyHelper.addStringProperty(null, OpenMetadataProperty.ACTION_TARGET_NAME.name, ManageDigitalSubscriptionActionTarget.CANCELLING_ACTION_TYPE.getName()));
+
+        ClassificationManagerClient classificationManagerClient = integrationContext.getClassificationManagerClient();
+
+        ResourceListProperties resourceListProperties = new ResourceListProperties();
+
+        resourceListProperties.setResourceUse(ResourceUse.CREATE_SUBSCRIPTION.getResourceUse());
+        resourceListProperties.setDescription(ResourceUse.CREATE_SUBSCRIPTION.getDescription());
+
+        classificationManagerClient.addResourceListToElement(productGUID,
+                                                             governanceActionProcessGUID,
+                                                             classificationManagerClient.getMetadataSourceOptions(),
+                                                             resourceListProperties);
     }
 
 
