@@ -168,21 +168,29 @@ implements <a href="../../../../frameworks/auditlog/messagesets/AuditLogMessageS
 <div class="col-last odd-row-color">
 <div class="block">GOVERNANCE-ACTION-CONNECTORS-0033 - The {0} governance action service has not been passed a {1} action target</div>
 </div>
-<div class="col-first even-row-color"><code><a href="#MISSING_TEMPLATE" class="member-name-link">MISSING_TEMPLATE</a></code></div>
+<div class="col-first even-row-color"><code><a href="#MISSING_REQUEST_PARAMETER" class="member-name-link">MISSING_REQUEST_PARAMETER</a></code></div>
 <div class="col-last even-row-color">
+<div class="block">GOVERNANCE-ACTION-CONNECTORS-0039 - The {0} governance action service has not been passed a {1} request parameter</div>
+</div>
+<div class="col-first odd-row-color"><code><a href="#MISSING_TEMPLATE" class="member-name-link">MISSING_TEMPLATE</a></code></div>
+<div class="col-last odd-row-color">
 <div class="block">GOVERNANCE-ACTION-CONNECTORS-0023 - The {0} governance action service is unable to retrieve the template {1} configured in property {2}.</div>
 </div>
-<div class="col-first odd-row-color"><code><a href="#MOVE_FILE" class="member-name-link">MOVE_FILE</a></code></div>
-<div class="col-last odd-row-color">
+<div class="col-first even-row-color"><code><a href="#MOVE_FILE" class="member-name-link">MOVE_FILE</a></code></div>
+<div class="col-last even-row-color">
 <div class="block">GOVERNANCE-ACTION-CONNECTORS-0002 - The {0} governance action service is moving source file {1} to destination file {2}</div>
 </div>
-<div class="col-first even-row-color"><code><a href="#NEW_ASSET_CREATED" class="member-name-link">NEW_ASSET_CREATED</a></code></div>
-<div class="col-last even-row-color">
+<div class="col-first odd-row-color"><code><a href="#NEW_ASSET_CREATED" class="member-name-link">NEW_ASSET_CREATED</a></code></div>
+<div class="col-last odd-row-color">
 <div class="block">GOVERNANCE-ACTION-CONNECTORS-0034 - The {0} governance action service has created a new {1} asset called {2} ({3})</div>
 </div>
-<div class="col-first odd-row-color"><code><a href="#NEW_ASSET_DELETED" class="member-name-link">NEW_ASSET_DELETED</a></code></div>
-<div class="col-last odd-row-color">
+<div class="col-first even-row-color"><code><a href="#NEW_ASSET_DELETED" class="member-name-link">NEW_ASSET_DELETED</a></code></div>
+<div class="col-last even-row-color">
 <div class="block">GOVERNANCE-ACTION-CONNECTORS-0035 - The {0} governance action service has deleted the {1} asset called {2} ({3})</div>
+</div>
+<div class="col-first odd-row-color"><code><a href="#NEW_SUBSCRIPTION_CREATED" class="member-name-link">NEW_SUBSCRIPTION_CREATED</a></code></div>
+<div class="col-last odd-row-color">
+<div class="block">GOVERNANCE-ACTION-CONNECTORS-0040 - The {0} governance action service has created a new {1} digital subscription {2} for {3} {4} ({5}) requested by {6} {7} ({8})</div>
 </div>
 <div class="col-first even-row-color"><code><a href="#NO_CONNECTOR" class="member-name-link">NO_CONNECTOR</a></code></div>
 <div class="col-last even-row-color">
@@ -244,7 +252,7 @@ implements <a href="../../../../frameworks/auditlog/messagesets/AuditLogMessageS
 </div>
 <div class="col-first even-row-color"><code><a href="#SERVICE_COMPLETED_SUCCESSFULLY" class="member-name-link">SERVICE_COMPLETED_SUCCESSFULLY</a></code></div>
 <div class="col-last even-row-color">
-<div class="block">GOVERNANCE-ACTION-CONNECTORS-0038 - The governance action service {0} received an unexpected {1} exception during method {2}; the error message was: {3}</div>
+<div class="block">GOVERNANCE-ACTION-CONNECTORS-0038 - The governance action service {0} completed successfully</div>
 </div>
 <div class="col-first odd-row-color"><code><a href="#SETTING_RETENTION" class="member-name-link">SETTING_RETENTION</a></code></div>
 <div class="col-last odd-row-color">
@@ -612,7 +620,21 @@ the order they are declared.</div>
 <section class="detail" id="SERVICE_COMPLETED_SUCCESSFULLY">
 <h3>SERVICE_COMPLETED_SUCCESSFULLY</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="GovernanceActionConnectorsAuditCode.html" title="enum class in org.odpi.openmetadata.adapters.connectors.governanceactions.ffdc">GovernanceActionConnectorsAuditCode</a></span>&nbsp;<span class="element-name">SERVICE_COMPLETED_SUCCESSFULLY</span></div>
-<div class="block">GOVERNANCE-ACTION-CONNECTORS-0038 - The governance action service {0} received an unexpected {1} exception during method {2}; the error message was: {3}</div>
+<div class="block">GOVERNANCE-ACTION-CONNECTORS-0038 - The governance action service {0} completed successfully</div>
+</section>
+</li>
+<li>
+<section class="detail" id="MISSING_REQUEST_PARAMETER">
+<h3>MISSING_REQUEST_PARAMETER</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="GovernanceActionConnectorsAuditCode.html" title="enum class in org.odpi.openmetadata.adapters.connectors.governanceactions.ffdc">GovernanceActionConnectorsAuditCode</a></span>&nbsp;<span class="element-name">MISSING_REQUEST_PARAMETER</span></div>
+<div class="block">GOVERNANCE-ACTION-CONNECTORS-0039 - The {0} governance action service has not been passed a {1} request parameter</div>
+</section>
+</li>
+<li>
+<section class="detail" id="NEW_SUBSCRIPTION_CREATED">
+<h3>NEW_SUBSCRIPTION_CREATED</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="GovernanceActionConnectorsAuditCode.html" title="enum class in org.odpi.openmetadata.adapters.connectors.governanceactions.ffdc">GovernanceActionConnectorsAuditCode</a></span>&nbsp;<span class="element-name">NEW_SUBSCRIPTION_CREATED</span></div>
+<div class="block">GOVERNANCE-ACTION-CONNECTORS-0040 - The {0} governance action service has created a new {1} digital subscription {2} for {3} {4} ({5}) requested by {6} {7} ({8})</div>
 </section>
 </li>
 </ul>

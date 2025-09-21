@@ -105,12 +105,18 @@ loadScripts(document, 'script');</script>
 <div class="summary-table two-column-summary">
 <div class="table-header col-first">Enum Constant</div>
 <div class="table-header col-last">Description</div>
-<div class="col-first even-row-color"><code><a href="#CSV_FILE" class="member-name-link">CSV_FILE</a></code></div>
+<div class="col-first even-row-color"><code><a href="#DAILY_REFRESH_SUBSCRIPTION" class="member-name-link">DAILY_REFRESH_SUBSCRIPTION</a></code></div>
 <div class="col-last even-row-color">
-<div class="block">Delivery to CSV File with updates pushed within 1 hour of publication to open metadata.</div>
+<div class="block">This subscription delivers the data to the target destination once a day.</div>
 </div>
-<div class="col-first odd-row-color"><code><a href="#POSTGRES_TABLE" class="member-name-link">POSTGRES_TABLE</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
+<div class="col-first odd-row-color"><code><a href="#EVALUATION_SUBSCRIPTION" class="member-name-link">EVALUATION_SUBSCRIPTION</a></code></div>
+<div class="col-last odd-row-color">
+<div class="block">This subscription delivers the data to the target destination just once to allow an evaluation of the product data.</div>
+</div>
+<div class="col-first even-row-color"><code><a href="#ONGOING_UPDATE" class="member-name-link">ONGOING_UPDATE</a></code></div>
+<div class="col-last even-row-color">
+<div class="block">This subscription delivers data updates to the target destination within on hour of receiving the new data.</div>
+</div>
 </div>
 </section>
 </li>
@@ -131,19 +137,19 @@ loadScripts(document, 'script');</script>
 <div class="block">Returns an optional category for the collection.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getConnectorProviderClassName()" class="member-name-link">getConnectorProviderClassName</a>()</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getDescription()" class="member-name-link">getDescription</a>()</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Returns the unique name for the collection type.</div>
-</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getDescription()" class="member-name-link">getDescription</a>()</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Returns a detailed description of the contents of the collection.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getDisplayName()" class="member-name-link">getDisplayName</a>()</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getDisplayName()" class="member-name-link">getDisplayName</a>()</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Returns a descriptive name of the collection.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getGovernanceActionTypeGUID()" class="member-name-link">getGovernanceActionTypeGUID</a>()</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Returns the unique identifier for the subscription manager's governance action type.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getIdentifier()" class="member-name-link">getIdentifier</a>()</code></div>
@@ -155,19 +161,22 @@ loadScripts(document, 'script');</script>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Returns the unique name for the subject area entity.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#toString()" class="member-name-link">toString</a>()</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="ProductGovernanceDefinition.html" title="enum class in org.odpi.openmetadata.adapters.connectors.productmanager.productcatalog">ProductGovernanceDefinition</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getServiceLevelObjective()" class="member-name-link">getServiceLevelObjective</a>()</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#toString()" class="member-name-link">toString</a>()</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">String containing the definition values</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static <a href="ProductSubscriptionDefinition.html" title="enum class in org.odpi.openmetadata.adapters.connectors.productmanager.productcatalog">ProductSubscriptionDefinition</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#valueOf(java.lang.String)" class="member-name-link">valueOf</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;name)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
+<div class="col-first even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static <a href="ProductSubscriptionDefinition.html" title="enum class in org.odpi.openmetadata.adapters.connectors.productmanager.productcatalog">ProductSubscriptionDefinition</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#valueOf(java.lang.String)" class="member-name-link">valueOf</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;name)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
 <div class="block">Returns the enum constant of this class with the specified name.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static <a href="ProductSubscriptionDefinition.html" title="enum class in org.odpi.openmetadata.adapters.connectors.productmanager.productcatalog">ProductSubscriptionDefinition</a>[]</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#values()" class="member-name-link">values</a>()</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static <a href="ProductSubscriptionDefinition.html" title="enum class in org.odpi.openmetadata.adapters.connectors.productmanager.productcatalog">ProductSubscriptionDefinition</a>[]</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#values()" class="member-name-link">values</a>()</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
 <div class="block">Returns an array containing the constants of this enum class, in
 the order they are declared.</div>
 </div>
@@ -192,16 +201,24 @@ the order they are declared.</div>
 <h2>Enum Constant Details</h2>
 <ul class="member-list">
 <li>
-<section class="detail" id="CSV_FILE">
-<h3>CSV_FILE</h3>
-<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="ProductSubscriptionDefinition.html" title="enum class in org.odpi.openmetadata.adapters.connectors.productmanager.productcatalog">ProductSubscriptionDefinition</a></span>&nbsp;<span class="element-name">CSV_FILE</span></div>
-<div class="block">Delivery to CSV File with updates pushed within 1 hour of publication to open metadata.</div>
+<section class="detail" id="EVALUATION_SUBSCRIPTION">
+<h3>EVALUATION_SUBSCRIPTION</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="ProductSubscriptionDefinition.html" title="enum class in org.odpi.openmetadata.adapters.connectors.productmanager.productcatalog">ProductSubscriptionDefinition</a></span>&nbsp;<span class="element-name">EVALUATION_SUBSCRIPTION</span></div>
+<div class="block">This subscription delivers the data to the target destination just once to allow an evaluation of the product data.</div>
 </section>
 </li>
 <li>
-<section class="detail" id="POSTGRES_TABLE">
-<h3>POSTGRES_TABLE</h3>
-<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="ProductSubscriptionDefinition.html" title="enum class in org.odpi.openmetadata.adapters.connectors.productmanager.productcatalog">ProductSubscriptionDefinition</a></span>&nbsp;<span class="element-name">POSTGRES_TABLE</span></div>
+<section class="detail" id="DAILY_REFRESH_SUBSCRIPTION">
+<h3>DAILY_REFRESH_SUBSCRIPTION</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="ProductSubscriptionDefinition.html" title="enum class in org.odpi.openmetadata.adapters.connectors.productmanager.productcatalog">ProductSubscriptionDefinition</a></span>&nbsp;<span class="element-name">DAILY_REFRESH_SUBSCRIPTION</span></div>
+<div class="block">This subscription delivers the data to the target destination once a day.</div>
+</section>
+</li>
+<li>
+<section class="detail" id="ONGOING_UPDATE">
+<h3>ONGOING_UPDATE</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="ProductSubscriptionDefinition.html" title="enum class in org.odpi.openmetadata.adapters.connectors.productmanager.productcatalog">ProductSubscriptionDefinition</a></span>&nbsp;<span class="element-name">ONGOING_UPDATE</span></div>
+<div class="block">This subscription delivers data updates to the target destination within on hour of receiving the new data.</div>
 </section>
 </li>
 </ul>
@@ -255,10 +272,10 @@ not permitted.)</div>
 </section>
 </li>
 <li>
-<section class="detail" id="getConnectorProviderClassName()">
-<h3>getConnectorProviderClassName</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">getConnectorProviderClassName</span>()</div>
-<div class="block">Returns the unique name for the collection type.</div>
+<section class="detail" id="getGovernanceActionTypeGUID()">
+<h3>getGovernanceActionTypeGUID</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">getGovernanceActionTypeGUID</span>()</div>
+<div class="block">Returns the unique identifier for the subscription manager's governance action type.</div>
 <dl class="notes">
 <dt>Returns:</dt>
 <dd>type name</dd>
@@ -307,6 +324,12 @@ not permitted.)</div>
 <dt>Returns:</dt>
 <dd>string</dd>
 </dl>
+</section>
+</li>
+<li>
+<section class="detail" id="getServiceLevelObjective()">
+<h3>getServiceLevelObjective</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="ProductGovernanceDefinition.html" title="enum class in org.odpi.openmetadata.adapters.connectors.productmanager.productcatalog">ProductGovernanceDefinition</a></span>&nbsp;<span class="element-name">getServiceLevelObjective</span>()</div>
 </section>
 </li>
 <li>

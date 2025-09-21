@@ -102,7 +102,12 @@ loadScripts(document, 'script');</script>
 <div class="summary-table two-column-summary">
 <div class="table-header col-first">Constructor</div>
 <div class="table-header col-last">Description</div>
-<div class="col-constructor-name even-row-color"><code><a href="#%3Cinit%3E(org.odpi.openmetadata.frameworks.openmetadata.connectorcontext.ConnectorContextBase,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.client.OpenMetadataClient,org.odpi.openmetadata.frameworks.auditlog.AuditLog,int)" class="member-name-link">ActorProfileClient</a><wbr>(<a href="ConnectorContextBase.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.connectorcontext">ConnectorContextBase</a>&nbsp;parentContext,
+<div class="col-constructor-name even-row-color"><code><a href="#%3Cinit%3E(org.odpi.openmetadata.frameworks.openmetadata.connectorcontext.ActorProfileClient,java.lang.String)" class="member-name-link">ActorProfileClient</a><wbr>(<a href="ActorProfileClient.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.connectorcontext">ActorProfileClient</a>&nbsp;template,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;specificTypeName)</code></div>
+<div class="col-last even-row-color">
+<div class="block">Copy/clone constructor.</div>
+</div>
+<div class="col-constructor-name odd-row-color"><code><a href="#%3Cinit%3E(org.odpi.openmetadata.frameworks.openmetadata.connectorcontext.ConnectorContextBase,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.client.OpenMetadataClient,org.odpi.openmetadata.frameworks.auditlog.AuditLog,int)" class="member-name-link">ActorProfileClient</a><wbr>(<a href="ConnectorContextBase.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.connectorcontext">ConnectorContextBase</a>&nbsp;parentContext,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;localServerName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;localServiceName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;connectorUserId,
@@ -112,7 +117,7 @@ loadScripts(document, 'script');</script>
  <a href="../client/OpenMetadataClient.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.client">OpenMetadataClient</a>&nbsp;openMetadataClient,
  <a href="../../auditlog/AuditLog.html" title="class in org.odpi.openmetadata.frameworks.auditlog">AuditLog</a>&nbsp;auditLog,
  int&nbsp;maxPageSize)</code></div>
-<div class="col-last even-row-color">
+<div class="col-last odd-row-color">
 <div class="block">Constructor for connector context client.</div>
 </div>
 </div>
@@ -275,6 +280,19 @@ loadScripts(document, 'script');</script>
 <dd><code>openMetadataClient</code> - client to access the open metadata store</dd>
 <dd><code>auditLog</code> - logging destination</dd>
 <dd><code>maxPageSize</code> - max number of elements that can be returned on a query</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="&lt;init&gt;(org.odpi.openmetadata.frameworks.openmetadata.connectorcontext.ActorProfileClient,java.lang.String)">
+<h3>ActorProfileClient</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="element-name">ActorProfileClient</span><wbr><span class="parameters">(<a href="ActorProfileClient.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.connectorcontext">ActorProfileClient</a>&nbsp;template,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;specificTypeName)</span></div>
+<div class="block">Copy/clone constructor.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>template</code> - client to copy</dd>
+<dd><code>specificTypeName</code> - type name override</dd>
 </dl>
 </section>
 </li>

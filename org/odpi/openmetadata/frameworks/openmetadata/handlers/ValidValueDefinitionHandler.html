@@ -108,6 +108,19 @@ loadScripts(document, 'script');</script>
 <div class="col-last even-row-color">
 <div class="block">Create a new handler.</div>
 </div>
+<div class="col-constructor-name odd-row-color"><code><a href="#%3Cinit%3E(java.lang.String,org.odpi.openmetadata.frameworks.auditlog.AuditLog,java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.client.OpenMetadataClient,java.lang.String)" class="member-name-link">ValidValueDefinitionHandler</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;localServerName,
+ <a href="../../auditlog/AuditLog.html" title="class in org.odpi.openmetadata.frameworks.auditlog">AuditLog</a>&nbsp;auditLog,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;localServiceName,
+ <a href="../client/OpenMetadataClient.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.client">OpenMetadataClient</a>&nbsp;openMetadataClient,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;metadataElementTypeName)</code></div>
+<div class="col-last odd-row-color">
+<div class="block">Create a new handler.</div>
+</div>
+<div class="col-constructor-name even-row-color"><code><a href="#%3Cinit%3E(org.odpi.openmetadata.frameworks.openmetadata.handlers.ValidValueDefinitionHandler,java.lang.String)" class="member-name-link">ValidValueDefinitionHandler</a><wbr>(<a href="ValidValueDefinitionHandler.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.handlers">ValidValueDefinitionHandler</a>&nbsp;template,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;specificTypeName)</code></div>
+<div class="col-last even-row-color">
+<div class="block">Create a new handler.</div>
+</div>
 </div>
 </section>
 </li>
@@ -347,6 +360,38 @@ loadScripts(document, 'script');</script>
 <dd><code>auditLog</code> - logging destination</dd>
 <dd><code>localServiceName</code> - local service name</dd>
 <dd><code>openMetadataClient</code> - access to open metadata</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="&lt;init&gt;(java.lang.String,org.odpi.openmetadata.frameworks.auditlog.AuditLog,java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.client.OpenMetadataClient,java.lang.String)">
+<h3>ValidValueDefinitionHandler</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="element-name">ValidValueDefinitionHandler</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;localServerName,
+ <a href="../../auditlog/AuditLog.html" title="class in org.odpi.openmetadata.frameworks.auditlog">AuditLog</a>&nbsp;auditLog,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;localServiceName,
+ <a href="../client/OpenMetadataClient.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.client">OpenMetadataClient</a>&nbsp;openMetadataClient,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;metadataElementTypeName)</span></div>
+<div class="block">Create a new handler.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>localServerName</code> - name of this server (view server)</dd>
+<dd><code>auditLog</code> - logging destination</dd>
+<dd><code>localServiceName</code> - local service name</dd>
+<dd><code>openMetadataClient</code> - access to open metadata</dd>
+<dd><code>metadataElementTypeName</code> - type of principle element</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="&lt;init&gt;(org.odpi.openmetadata.frameworks.openmetadata.handlers.ValidValueDefinitionHandler,java.lang.String)">
+<h3>ValidValueDefinitionHandler</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="element-name">ValidValueDefinitionHandler</span><wbr><span class="parameters">(<a href="ValidValueDefinitionHandler.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.handlers">ValidValueDefinitionHandler</a>&nbsp;template,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;specificTypeName)</span></div>
+<div class="block">Create a new handler.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>template</code> - properties to copy</dd>
+<dd><code>specificTypeName</code> - subtype  to control handler</dd>
 </dl>
 </section>
 </li>
