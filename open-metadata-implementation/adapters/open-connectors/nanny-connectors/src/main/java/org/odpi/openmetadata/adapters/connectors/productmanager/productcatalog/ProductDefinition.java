@@ -55,7 +55,7 @@ public enum ProductDefinition
                          "Open Metadata Attributes List",
                          "A tabular data set where each record describes a type of attribute defined in the open metadata types.",
                          ProductCategoryDefinition.REFERENCE_DATA.getPreferredValue(),
-                         ProductGovernanceDefinition.INTERNAL_USE_ONLY,
+                         ProductGovernanceDefinition.CC_BY_40,
                          ProductCommunityDefinition.REFERENCE_DATA_SIG,
                          new ProductSubscriptionDefinition[]{
                                  ProductSubscriptionDefinition.EVALUATION_SUBSCRIPTION,
@@ -69,6 +69,29 @@ public enum ProductDefinition
                                  ProductDataFieldDefinition.DATA_TYPE},
                          null,
                          "OpenMetadataAttributesList"),
+
+    /**
+     * Open Metadata Types List
+     */
+    TYPES_LIST("Open Metadata Types List",
+                    "OPEN-METADATA-TYPES",
+                    ProductFolderDefinition.OPEN_METADATA_TYPES,
+                    "Open Metadata Types List",
+                    "A tabular data set where each record describes an open metadata type.",
+                    ProductCategoryDefinition.REFERENCE_DATA.getPreferredValue(),
+                    ProductGovernanceDefinition.CC_BY_40,
+                    ProductCommunityDefinition.REFERENCE_DATA_SIG,
+                    new ProductSubscriptionDefinition[]{
+                            ProductSubscriptionDefinition.EVALUATION_SUBSCRIPTION,
+                            ProductSubscriptionDefinition.DAILY_REFRESH_SUBSCRIPTION,
+                            ProductSubscriptionDefinition.ONGOING_UPDATE},
+                    new ProductDataFieldDefinition[]{
+                            ProductDataFieldDefinition.GUID,
+                            ProductDataFieldDefinition.DISPLAY_NAME,
+                            ProductDataFieldDefinition.DESCRIPTION,
+                            ProductDataFieldDefinition.CATEGORY},
+                    null,
+                    "OpenMetadataTypesList"),
 
 
     ;
