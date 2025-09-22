@@ -16,6 +16,7 @@ import org.odpi.openmetadata.samples.archiveutilities.EgeriaBaseArchiveWriter;
 import org.odpi.openmetadata.samples.archiveutilities.governanceprogram.CocoGovernanceProgramArchiveWriter;
 import org.odpi.openmetadata.samples.archiveutilities.organization.CocoOrganizationArchiveWriter;
 import org.odpi.openmetadata.frameworks.openmetadata.refdata.ScopeDefinition;
+import org.odpi.openmetadata.samples.archiveutilities.organization.PersonDefinition;
 
 import java.util.Date;
 import java.util.HashMap;
@@ -69,6 +70,7 @@ public class CocoSustainabilityArchiveWriter extends EgeriaBaseArchiveWriter
         writeGovernanceDefinitions();
         writeRoles();
         writeFacility();
+        writeProjects();
     }
 
 
@@ -448,6 +450,85 @@ public class CocoSustainabilityArchiveWriter extends EgeriaBaseArchiveWriter
                                                                        false,
                                                                        0);
                 }
+            }
+        }
+    }
+
+
+    /**
+     * Creates Project Hierarchy and dependencies.
+     */
+    private void writeProjects()
+    {
+        for (SustainabilityProjectDefinition projectDefinition : SustainabilityProjectDefinition.values())
+        {
+            archiveHelper.addProject(null,
+                                     projectDefinition.getQualifiedName(),
+                                     projectDefinition.getIdentifier(),
+                                     projectDefinition.getDisplayName(),
+                                     projectDefinition.getDescription(),
+                                     new Date(),
+                                     null,
+                                     null,
+                                     null,
+                                     projectDefinition.getProjectStatus().getName(),
+                                     projectDefinition.isCampaign(),
+                                     projectDefinition.isTask(),
+                                     projectDefinition.getProjectTypeClassification(),
+                                     null,
+                                     null,
+                                     null);
+
+            String projectManagerQName = projectDefinition.getQualifiedName() + ":ProjectManager";
+
+            archiveHelper.addActorRole(OpenMetadataType.PROJECT_MANAGER.typeName,
+                                       projectManagerQName,
+                                       projectDefinition.getIdentifier() + ":ProjectManager",
+                                       projectDefinition.getDisplayName() + " project manager",
+                                       null,
+                                       null,
+                                       true,
+                                       1,
+                                       null,
+                                       null);
+
+            archiveHelper.addProjectManagementRelationship(projectDefinition.getQualifiedName(),
+                                                           projectManagerQName);
+
+            if (projectDefinition.getControllingProject() != null)
+            {
+                archiveHelper.addProjectHierarchyRelationship(projectDefinition.getControllingProject().getQualifiedName(),
+                                                              projectDefinition.getQualifiedName());
+            }
+
+            if (projectDefinition.getDependentOn() != null)
+            {
+                for (SustainabilityProjectDefinition dependentOnProject : projectDefinition.getDependentOn())
+                {
+                    archiveHelper.addProjectDependencyRelationship(dependentOnProject.getQualifiedName(),
+                                                                   projectDefinition.getQualifiedName(),
+                                                                   null);
+                }
+            }
+
+            if (projectDefinition.getLeader() != null)
+            {
+                archiveHelper.addPersonRoleAppointmentRelationship(projectDefinition.getLeader().getQualifiedName(),
+                                                                   projectManagerQName,
+                                                                   false,
+                                                                   0);
+
+            }
+
+            if (projectDefinition.getMembers() != null)
+            {
+                for (PersonDefinition member : projectDefinition.getMembers())
+                {
+                    archiveHelper.addProjectTeamRelationship(projectDefinition.getQualifiedName(),
+                                                             member.getQualifiedName(),
+                                                             AssignmentType.CONTRIBUTOR.getName());
+                }
+
             }
         }
     }
