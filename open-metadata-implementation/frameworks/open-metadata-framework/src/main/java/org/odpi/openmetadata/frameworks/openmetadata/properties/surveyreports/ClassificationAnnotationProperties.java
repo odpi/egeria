@@ -1,8 +1,10 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 /* Copyright Contributors to the ODPi Egeria project. */
-package org.odpi.openmetadata.frameworks.opensurvey.properties;
+package org.odpi.openmetadata.frameworks.openmetadata.properties.surveyreports;
 
-import com.fasterxml.jackson.annotation.*;
+import com.fasterxml.jackson.annotation.JsonAutoDetect;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonInclude;
 
 import java.util.Map;
 import java.util.Objects;
@@ -11,28 +13,22 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
 /**
- * DataSourceMeasurementAnnotation describes properties that describe the characteristics of the data source as a whole.
+ * ClassificationAnnotationProperties recommends classifications for either an asset or a data field.
  */
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME,
-              include = JsonTypeInfo.As.PROPERTY,
-              property = "class")
-@JsonSubTypes(
-        {
-                @JsonSubTypes.Type(value = ResourcePhysicalStatusAnnotation.class, name = "DataSourcePhysicalStatusAnnotation")
-        })
-public class ResourceMeasureAnnotation extends Annotation
-{
-    private Map<String, String> resourceProperties = null;
 
+public class ClassificationAnnotationProperties extends DataFieldAnnotationProperties
+{
+    private Map<String, String> candidateClassifications = null;
 
     /**
      * Default constructor
      */
-    public ResourceMeasureAnnotation()
+    public ClassificationAnnotationProperties()
     {
+        super();
     }
 
 
@@ -41,36 +37,36 @@ public class ResourceMeasureAnnotation extends Annotation
      *
      * @param template object to copy
      */
-    public ResourceMeasureAnnotation(ResourceMeasureAnnotation template)
+    public ClassificationAnnotationProperties(ClassificationAnnotationProperties template)
     {
         super(template);
 
         if (template != null)
         {
-            resourceProperties = template.getResourceProperties();
+            candidateClassifications = template.getCandidateClassifications();
         }
     }
 
 
     /**
-     * Return the properties of the data source.
+     * Return a map of candidate classification names to additional characteristics
      *
-     * @return date time
+     * @return map of classification names to string
      */
-    public Map<String, String> getResourceProperties()
+    public Map<String, String> getCandidateClassifications()
     {
-        return resourceProperties;
+        return candidateClassifications;
     }
 
 
     /**
-     * Set up the properties of the data source.
+     * Set up a map of candidate classification names to additional characteristics.
      *
-     * @param resourceProperties date time
+     * @param candidateClassifications map of classification names to string
      */
-    public void setResourceProperties(Map<String, String> resourceProperties)
+    public void setCandidateClassifications(Map<String, String> candidateClassifications)
     {
-        this.resourceProperties = resourceProperties;
+        this.candidateClassifications = candidateClassifications;
     }
 
 
@@ -82,8 +78,8 @@ public class ResourceMeasureAnnotation extends Annotation
     @Override
     public String toString()
     {
-        return "ResourceMeasurementAnnotation{" +
-                "resourceProperties=" + resourceProperties +
+        return "ClassificationAnnotationProperties{" +
+                "candidateClassifications=" + candidateClassifications +
                 "} " + super.toString();
     }
 
@@ -109,8 +105,8 @@ public class ResourceMeasureAnnotation extends Annotation
         {
             return false;
         }
-        ResourceMeasureAnnotation that = (ResourceMeasureAnnotation) objectToCompare;
-        return Objects.equals(getResourceProperties(), that.getResourceProperties());
+        ClassificationAnnotationProperties that = (ClassificationAnnotationProperties) objectToCompare;
+        return Objects.equals(candidateClassifications, that.candidateClassifications);
     }
 
 
@@ -122,6 +118,6 @@ public class ResourceMeasureAnnotation extends Annotation
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), getResourceProperties());
+        return Objects.hash(super.hashCode(), candidateClassifications);
     }
 }

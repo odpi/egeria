@@ -68,7 +68,7 @@ public abstract class OpenIntegrationClient
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public abstract String createMetadataSource(String userId,
+    public abstract String createMetadataOrigin(String userId,
                                                 String softwareCapabilityTypeName,
                                                 String classificationName,
                                                 String qualifiedName,

@@ -1,7 +1,7 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 /* Copyright Contributors to the ODPi Egeria project. */
 
-package org.odpi.openmetadata.frameworks.opensurvey.properties;
+package org.odpi.openmetadata.frameworks.openmetadata.properties.surveyreports;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
@@ -14,13 +14,13 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
 /**
- * RelationshipAdviceAnnotation is used to record a recommendation that a new relationship should be made from this data field to another
+ * RelationshipAdviceAnnotationProperties is used to record a recommendation that a new relationship should be made from this data field to another
  * object in the open metadata types.
  */
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class RelationshipAdviceAnnotation extends DataFieldAnnotation
+public class RelationshipAdviceAnnotationProperties extends DataFieldAnnotationProperties
 {
     private String              relatedEntityGUID = null;
     private String              relationshipTypeName = null;
@@ -30,7 +30,7 @@ public class RelationshipAdviceAnnotation extends DataFieldAnnotation
     /**
      * Default constructor
      */
-    public RelationshipAdviceAnnotation()
+    public RelationshipAdviceAnnotationProperties()
     {
         super();
     }
@@ -41,7 +41,7 @@ public class RelationshipAdviceAnnotation extends DataFieldAnnotation
      *
      * @param template object to copy
      */
-    public RelationshipAdviceAnnotation(RelationshipAdviceAnnotation template)
+    public RelationshipAdviceAnnotationProperties(RelationshipAdviceAnnotationProperties template)
     {
         super(template);
 
@@ -128,7 +128,7 @@ public class RelationshipAdviceAnnotation extends DataFieldAnnotation
     @Override
     public String toString()
     {
-        return "RelationshipAdviceAnnotation{" +
+        return "RelationshipAdviceAnnotationProperties{" +
                 "relatedEntityGUID='" + relatedEntityGUID + '\'' +
                 ", relationshipTypeName='" + relationshipTypeName + '\'' +
                 ", relationshipProperties=" + relationshipProperties +
@@ -157,7 +157,7 @@ public class RelationshipAdviceAnnotation extends DataFieldAnnotation
         {
             return false;
         }
-        RelationshipAdviceAnnotation that = (RelationshipAdviceAnnotation) objectToCompare;
+        RelationshipAdviceAnnotationProperties that = (RelationshipAdviceAnnotationProperties) objectToCompare;
         return Objects.equals(relatedEntityGUID, that.relatedEntityGUID) &&
                 Objects.equals(relationshipTypeName, that.relationshipTypeName) &&
                 Objects.equals(relationshipProperties, that.relationshipProperties);

@@ -15,6 +15,8 @@ import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.OpenMetada
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.RelatedMetadataElementSummary;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.schema.AttributeForSchemaProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.schema.SchemaAttributeProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.surveyreports.QualityAnnotationProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.surveyreports.RequestForActionAnnotationProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.search.ElementProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
@@ -23,8 +25,6 @@ import org.odpi.openmetadata.frameworks.opensurvey.SurveyActionServiceConnector;
 import org.odpi.openmetadata.frameworks.opensurvey.SurveyAssetStore;
 import org.odpi.openmetadata.frameworks.opensurvey.controls.AnalysisStep;
 import org.odpi.openmetadata.frameworks.opensurvey.controls.SurveyActionGuard;
-import org.odpi.openmetadata.frameworks.opensurvey.properties.QualityAnnotation;
-import org.odpi.openmetadata.frameworks.opensurvey.properties.RequestForActionAnnotation;
 import org.odpi.openmetadata.samples.governanceactions.ffdc.GovernanceActionSamplesAuditCode;
 
 import java.util.*;
@@ -146,12 +146,12 @@ public class CocoClinicalTrialCertifyWeeklyMeasurementsService extends SurveyAct
                 long                    recordCount    = assetConnector.getRecordCount();
 
 
-                QualityAnnotation columnCountAnnotation = new QualityAnnotation();
-                QualityAnnotation columnNamesAnnotation = new QualityAnnotation();
-                QualityAnnotation patientIdAnnotation   = new QualityAnnotation();
-                QualityAnnotation dateAnnotation        = new QualityAnnotation();
-                QualityAnnotation angleLeftAnnotation   = new QualityAnnotation();
-                QualityAnnotation angleRightAnnotation  = new QualityAnnotation();
+                QualityAnnotationProperties columnCountAnnotation = new QualityAnnotationProperties();
+                QualityAnnotationProperties columnNamesAnnotation = new QualityAnnotationProperties();
+                QualityAnnotationProperties patientIdAnnotation   = new QualityAnnotationProperties();
+                QualityAnnotationProperties dateAnnotation        = new QualityAnnotationProperties();
+                QualityAnnotationProperties angleLeftAnnotation   = new QualityAnnotationProperties();
+                QualityAnnotationProperties angleRightAnnotation  = new QualityAnnotationProperties();
 
                 super.setUpAnnotation(columnCountAnnotation, CocoClinicalTrialsAnnotationType.SCHEMA_VALIDATION);
                 super.setUpAnnotation(columnNamesAnnotation, CocoClinicalTrialsAnnotationType.SCHEMA_VALIDATION);
@@ -408,15 +408,13 @@ public class CocoClinicalTrialCertifyWeeklyMeasurementsService extends SurveyAct
                 }
                 else
                 {
-                    RequestForActionAnnotation requestForActionAnnotation = new RequestForActionAnnotation();
+                    RequestForActionAnnotationProperties requestForActionAnnotation = new RequestForActionAnnotationProperties();
 
                     super.setUpAnnotation(requestForActionAnnotation, CocoClinicalTrialsAnnotationType.FAILED_TO_PASS_QUALITY_GATE);
 
-                    List<String> requestForActionTargetGUIDs = new ArrayList<>();
-                    requestForActionTargetGUIDs.add(stewardGUID);
-                    requestForActionAnnotation.setActionTargetGUIDs(requestForActionTargetGUIDs);
-
                     String annotationGUID = annotationStore.addAnnotation(requestForActionAnnotation, null);
+
+                    annotationStore.linkRequestForActionTarget(annotationGUID, stewardGUID, null);
 
                     /*
                      * Set up Associated Annotations as appropriate

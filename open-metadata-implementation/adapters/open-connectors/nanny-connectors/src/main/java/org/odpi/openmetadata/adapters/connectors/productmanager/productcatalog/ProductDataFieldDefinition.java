@@ -120,6 +120,18 @@ public enum ProductDataFieldDefinition
                false,
                true),
 
+    /**
+     * Sync Time
+     */
+    SYNC_TIME("Sync Time",
+                   "Sync Time",
+                   "The type when a monitoring product published its insight report.",
+                   DataType.DATE,
+                   null,
+                   null,
+                   true,
+                   true),
+
 
     /**
      * Subtypes

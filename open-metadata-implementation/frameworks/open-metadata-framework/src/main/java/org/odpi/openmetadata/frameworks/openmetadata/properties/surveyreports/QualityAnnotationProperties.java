@@ -1,6 +1,6 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 /* Copyright Contributors to the ODPi Egeria project. */
-package org.odpi.openmetadata.frameworks.opensurvey.properties;
+package org.odpi.openmetadata.frameworks.openmetadata.properties.surveyreports;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
@@ -12,7 +12,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
 /**
- * QualityAnnotation records a quality assessment of the data.  It can be attached to the whole asset or a
+ * QualityAnnotationProperties records a quality assessment of the data.  It can be attached to the whole asset or a
  * specific data field.  Since there are different aspects of quality, the quality dimension characterizes the
  * type of quality it is measuring.  Then there is a score.  This is an integer and can be used as needed.
  * However, a suggestion is to use it as a percentage score - so a number between 0 and 100 where 100
@@ -22,7 +22,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
 
-public class QualityAnnotation extends DataFieldAnnotation
+public class QualityAnnotationProperties extends DataFieldAnnotationProperties
 {
     private String qualityDimension = null;
     private int    qualityScore = 0;
@@ -31,7 +31,7 @@ public class QualityAnnotation extends DataFieldAnnotation
     /**
      * Default constructor
      */
-    public QualityAnnotation()
+    public QualityAnnotationProperties()
     {
     }
 
@@ -41,7 +41,7 @@ public class QualityAnnotation extends DataFieldAnnotation
      *
      * @param template object to copy
      */
-    public QualityAnnotation(QualityAnnotation template)
+    public QualityAnnotationProperties(QualityAnnotationProperties template)
     {
         super(template);
 
@@ -105,7 +105,7 @@ public class QualityAnnotation extends DataFieldAnnotation
     @Override
     public String toString()
     {
-        return "QualityAnnotation{" +
+        return "QualityAnnotationProperties{" +
                 "qualityDimension='" + qualityDimension + '\'' +
                 ", qualityScore=" + qualityScore +
                 "} " + super.toString();
@@ -133,7 +133,7 @@ public class QualityAnnotation extends DataFieldAnnotation
         {
             return false;
         }
-        QualityAnnotation that = (QualityAnnotation) objectToCompare;
+        QualityAnnotationProperties that = (QualityAnnotationProperties) objectToCompare;
         return qualityScore == that.qualityScore &&
                 Objects.equals(qualityDimension, that.qualityDimension);
     }

@@ -16,6 +16,7 @@ import org.odpi.openmetadata.frameworks.openmetadata.client.OpenMetadataClient;
 import org.odpi.openmetadata.frameworks.opengovernance.controls.ActionTarget;
 import org.odpi.openmetadata.frameworks.opengovernance.properties.ActionTargetElement;
 import org.odpi.openmetadata.frameworks.opengovernance.properties.RequestSourceElement;
+import org.odpi.openmetadata.frameworks.openmetadata.handlers.AnnotationHandler;
 import org.odpi.openmetadata.frameworks.openmetadata.handlers.AssetHandler;
 import org.odpi.openmetadata.frameworks.openmetadata.search.PropertyHelper;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
@@ -41,6 +42,7 @@ public class SurveyActionEngineHandler extends GovernanceEngineHandler
 {
     private final ConnectedAssetClient connectedAssetClient;    /* Initialized in constructor */
     private final OpenMetadataClient   openMetadataClient;      /* Initialized in constructor */
+    private final AnnotationHandler    annotationHandler;      /* Initialized in constructor */
 
     private final PropertyHelper       propertyHelper   = new PropertyHelper();
 
@@ -48,8 +50,8 @@ public class SurveyActionEngineHandler extends GovernanceEngineHandler
      * Create a client-side object for calling a survey action engine.
      *
      * @param engineConfig the unique identifier of the survey action engine.
-     * @param serverName the name of the engine host server where the survey action engine is running
-     * @param serverUserId user id for the server to use
+     * @param localServerName the name of the engine host server where the survey action engine is running
+     * @param engineUserId user id for the server to use
      * @param configurationClient client to retrieve the configuration
      * @param engineActionClient client used by the engine host services to control the execution of governance action requests
      * @param connectedAssetClient REST client from the OCF that is linked to the OCF Metadata Management
@@ -58,8 +60,8 @@ public class SurveyActionEngineHandler extends GovernanceEngineHandler
      * @param maxPageSize maximum number of results that can be returned in a single request
      */
     public SurveyActionEngineHandler(EngineConfig                  engineConfig,
-                                     String                        serverName,
-                                     String                        serverUserId,
+                                     String                        localServerName,
+                                     String                        engineUserId,
                                      GovernanceConfigurationClient configurationClient,
                                      GovernanceContextClient       engineActionClient,
                                      ConnectedAssetClient          connectedAssetClient,
@@ -68,8 +70,8 @@ public class SurveyActionEngineHandler extends GovernanceEngineHandler
                                      int                           maxPageSize)
     {
         super(engineConfig,
-              serverName,
-              serverUserId,
+              localServerName,
+              engineUserId,
               EngineServiceDescription.SURVEY_ACTION_OMES.getEngineServiceFullName(),
               configurationClient,
               engineActionClient,
@@ -78,6 +80,10 @@ public class SurveyActionEngineHandler extends GovernanceEngineHandler
 
         this.connectedAssetClient = connectedAssetClient;
         this.openMetadataClient   = openMetadataClient;
+        this.annotationHandler    = new AnnotationHandler(localServerName,
+                                                          auditLog,
+                                                          EngineServiceDescription.SURVEY_ACTION_OMES.getEngineServiceFullName(),
+                                                          openMetadataClient);
     }
 
 
@@ -286,7 +292,7 @@ public class SurveyActionEngineHandler extends GovernanceEngineHandler
         Date                creationTime = new Date();
         Map<String, String> analysisParameters = governanceServiceCache.getRequestParameters(requestParameters);
 
-        String reportQualifiedName = "SurveyReport::" + requestType + "::" + assetGUID + "::" + creationTime;
+        String reportQualifiedName = "SurveyReportProperties::" + requestType + "::" + assetGUID + "::" + creationTime;
         String reportDisplayName   = "Survey Report for " + assetGUID;
         String reportDescription   = "This is the " + requestType + " survey report for asset " + assetGUID + " generated at " +
                                              creationTime +
@@ -296,6 +302,7 @@ public class SurveyActionEngineHandler extends GovernanceEngineHandler
         AnnotationStore annotationStore = new AnnotationStore(engineUserId,
                                                               assetGUID,
                                                               openMetadataClient,
+                                                              annotationHandler,
                                                               null,
                                                               null,
                                                               reportQualifiedName,

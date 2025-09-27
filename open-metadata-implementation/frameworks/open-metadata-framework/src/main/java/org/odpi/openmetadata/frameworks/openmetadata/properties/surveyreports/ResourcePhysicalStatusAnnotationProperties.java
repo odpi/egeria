@@ -1,6 +1,6 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 /* Copyright Contributors to the ODPi Egeria project. */
-package org.odpi.openmetadata.frameworks.opensurvey.properties;
+package org.odpi.openmetadata.frameworks.openmetadata.properties.surveyreports;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
@@ -18,19 +18,19 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class ResourcePhysicalStatusAnnotation extends ResourceMeasureAnnotation
+public class ResourcePhysicalStatusAnnotationProperties extends ResourceMeasureAnnotationProperties
 {
-    private Date   createTime       = null;
-    private Date   modifiedTime     = null;
-    private Date   lastAccessedTime = null;
-    private long   size             = 0;
-    private String encoding         = null;
+    private Date   resourceCreateTime       = null;
+    private Date   resourceUpdateTime       = null;
+    private Date   resourceLastAccessedTime = null;
+    private long   size                     = 0L;
+    private String encodingType             = null;
 
 
     /**
      * Default constructor
      */
-    public ResourcePhysicalStatusAnnotation()
+    public ResourcePhysicalStatusAnnotationProperties()
     {
     }
 
@@ -40,17 +40,17 @@ public class ResourcePhysicalStatusAnnotation extends ResourceMeasureAnnotation
      *
      * @param template object to copy
      */
-    public ResourcePhysicalStatusAnnotation(ResourcePhysicalStatusAnnotation template)
+    public ResourcePhysicalStatusAnnotationProperties(ResourcePhysicalStatusAnnotationProperties template)
     {
         super(template);
 
         if (template != null)
         {
-            createTime       = template.getCreateTime();
-            modifiedTime     = template.getModifiedTime();
-            lastAccessedTime = template.getLastAccessedTime();
-            size             = template.getSize();
-            encoding         = template.getEncoding();
+            resourceCreateTime       = template.getResourceCreateTime();
+            resourceUpdateTime       = template.getResourceUpdateTime();
+            resourceLastAccessedTime = template.getResourceLastAccessedTime();
+            size         = template.getSize();
+            encodingType = template.getEncodingType();
         }
     }
 
@@ -60,20 +60,20 @@ public class ResourcePhysicalStatusAnnotation extends ResourceMeasureAnnotation
      *
      * @return date time
      */
-    public Date getCreateTime()
+    public Date getResourceCreateTime()
     {
-        return createTime;
+        return resourceCreateTime;
     }
 
 
     /**
      * Set up the date and time that the data source was created.
      *
-     * @param createTime date time
+     * @param resourceCreateTime date time
      */
-    public void setCreateTime(Date createTime)
+    public void setResourceCreateTime(Date resourceCreateTime)
     {
-        this.createTime = createTime;
+        this.resourceCreateTime = resourceCreateTime;
     }
 
 
@@ -82,20 +82,20 @@ public class ResourcePhysicalStatusAnnotation extends ResourceMeasureAnnotation
      *
      * @return userId
      */
-    public Date getModifiedTime()
+    public Date getResourceUpdateTime()
     {
-        return modifiedTime;
+        return resourceUpdateTime;
     }
 
 
     /**
      * Set up the time that the file was last modified.
      *
-     * @param modifiedTime date time
+     * @param resourceUpdateTime date time
      */
-    public void setModifiedTime(Date modifiedTime)
+    public void setResourceUpdateTime(Date resourceUpdateTime)
     {
-        this.modifiedTime = modifiedTime;
+        this.resourceUpdateTime = resourceUpdateTime;
     }
 
 
@@ -104,20 +104,20 @@ public class ResourcePhysicalStatusAnnotation extends ResourceMeasureAnnotation
      *
      * @return date time
      */
-    public Date getLastAccessedTime()
+    public Date getResourceLastAccessedTime()
     {
-        return lastAccessedTime;
+        return resourceLastAccessedTime;
     }
 
 
     /**
      * Set up the last time that the resource was accessed.
      *
-     * @param lastAccessedTime date time
+     * @param resourceLastAccessedTime date time
      */
-    public void setLastAccessedTime(Date lastAccessedTime)
+    public void setResourceLastAccessedTime(Date resourceLastAccessedTime)
     {
-        this.lastAccessedTime = lastAccessedTime;
+        this.resourceLastAccessedTime = resourceLastAccessedTime;
     }
 
 
@@ -148,20 +148,20 @@ public class ResourcePhysicalStatusAnnotation extends ResourceMeasureAnnotation
      *
      * @return encoding format description
      */
-    public String getEncoding()
+    public String getEncodingType()
     {
-        return encoding;
+        return encodingType;
     }
 
 
     /**
      * Set up the encoding of the data source.
      *
-     * @param encoding encoding format description
+     * @param encodingType encoding format description
      */
-    public void setEncoding(String encoding)
+    public void setEncodingType(String encodingType)
     {
-        this.encoding = encoding;
+        this.encodingType = encodingType;
     }
 
 
@@ -173,12 +173,12 @@ public class ResourcePhysicalStatusAnnotation extends ResourceMeasureAnnotation
     @Override
     public String toString()
     {
-        return "ResourcePhysicalStatusAnnotation{" +
-                "createTime=" + createTime +
-                ", modifiedTime=" + modifiedTime +
-                ", lastUpdateTime=" + lastAccessedTime +
+        return "ResourcePhysicalStatusAnnotationProperties{" +
+                "resourceCreateTime=" + resourceCreateTime +
+                ", resourceUpdateTime=" + resourceUpdateTime +
+                ", resourceLastAccessedTime=" + resourceLastAccessedTime +
                 ", size=" + size +
-                ", encoding='" + encoding + '\'' +
+                ", encodingType='" + encodingType + '\'' +
                 "} " + super.toString();
     }
 
@@ -204,12 +204,12 @@ public class ResourcePhysicalStatusAnnotation extends ResourceMeasureAnnotation
         {
             return false;
         }
-        ResourcePhysicalStatusAnnotation that = (ResourcePhysicalStatusAnnotation) objectToCompare;
+        ResourcePhysicalStatusAnnotationProperties that = (ResourcePhysicalStatusAnnotationProperties) objectToCompare;
         return getSize() == that.getSize() &&
-                       Objects.equals(getCreateTime(), that.getCreateTime()) &&
-                       Objects.equals(getModifiedTime(), that.getModifiedTime()) &&
-                       Objects.equals(getLastAccessedTime(), that.getLastAccessedTime()) &&
-                       Objects.equals(getEncoding(), that.getEncoding());
+                       Objects.equals(getResourceCreateTime(), that.getResourceCreateTime()) &&
+                       Objects.equals(getResourceUpdateTime(), that.getResourceUpdateTime()) &&
+                       Objects.equals(getResourceLastAccessedTime(), that.getResourceLastAccessedTime()) &&
+                       Objects.equals(getEncodingType(), that.getEncodingType());
     }
 
 
@@ -221,6 +221,6 @@ public class ResourcePhysicalStatusAnnotation extends ResourceMeasureAnnotation
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), getCreateTime(), getModifiedTime(), getSize(), getEncoding());
+        return Objects.hash(super.hashCode(), resourceCreateTime, resourceUpdateTime, resourceLastAccessedTime, size, encodingType);
     }
 }

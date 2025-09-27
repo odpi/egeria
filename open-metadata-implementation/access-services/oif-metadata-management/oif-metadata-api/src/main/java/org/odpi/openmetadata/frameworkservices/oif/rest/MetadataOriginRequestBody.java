@@ -13,13 +13,13 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 
 
 /**
- * MetadataSourceRequestBody is the request body structure used on OIF REST API calls that requests a new
+ * MetadataOriginRequestBody is the request body structure used on OIF REST API calls that requests a new
  * element to represent a new metadata source.
  */
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class MetadataSourceRequestBody
+public class MetadataOriginRequestBody
 {
     private String typeName                   = null;
     private String classificationName         = null;
@@ -30,7 +30,7 @@ public class MetadataSourceRequestBody
     /**
      * Default constructor
      */
-    public MetadataSourceRequestBody()
+    public MetadataOriginRequestBody()
     {
         super();
     }
@@ -41,7 +41,7 @@ public class MetadataSourceRequestBody
      *
      * @param template object to copy
      */
-    public MetadataSourceRequestBody(MetadataSourceRequestBody template)
+    public MetadataOriginRequestBody(MetadataOriginRequestBody template)
     {
         if (template != null)
         {
@@ -175,7 +175,7 @@ public class MetadataSourceRequestBody
         {
             return false;
         }
-        MetadataSourceRequestBody that = (MetadataSourceRequestBody) objectToCompare;
+        MetadataOriginRequestBody that = (MetadataOriginRequestBody) objectToCompare;
         return Objects.equals(typeName, that.typeName) &&
                        Objects.equals(classificationName, that.classificationName) &&
                        Objects.equals(qualifiedName, that.qualifiedName) &&

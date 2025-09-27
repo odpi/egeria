@@ -10,14 +10,14 @@ import org.odpi.openmetadata.adapters.connectors.unitycatalog.properties.*;
 import org.odpi.openmetadata.adapters.connectors.unitycatalog.resource.OSSUnityCatalogResourceConnector;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.surveyreports.ResourceMeasureAnnotationProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 import org.odpi.openmetadata.frameworks.opensurvey.AnnotationStore;
 import org.odpi.openmetadata.frameworks.opensurvey.controls.AnalysisStep;
 import org.odpi.openmetadata.frameworks.opensurvey.controls.SurveyDatabaseAnnotationType;
 import org.odpi.openmetadata.frameworks.opensurvey.controls.SurveyResourceManagerAnnotationType;
 import org.odpi.openmetadata.frameworks.opensurvey.measurements.RelationalDatabaseMetric;
-import org.odpi.openmetadata.frameworks.opensurvey.properties.ResourceMeasureAnnotation;
-import org.odpi.openmetadata.frameworks.opensurvey.properties.ResourceProfileAnnotation;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.surveyreports.ResourceProfileAnnotationProperties;
 
 import java.util.Date;
 import java.util.HashMap;
@@ -241,9 +241,9 @@ public class OSSUnityCatalogServerSurveyService extends OSSUnityCatalogServerSur
                 }
             }
 
-            ResourceMeasureAnnotation resourceMeasureAnnotation = new ResourceMeasureAnnotation();
+            ResourceMeasureAnnotationProperties resourceMeasureAnnotationProperties = new ResourceMeasureAnnotationProperties();
 
-            setUpAnnotation(resourceMeasureAnnotation, UnityCatalogAnnotationType.SERVER_METRICS);
+            setUpAnnotation(resourceMeasureAnnotationProperties, UnityCatalogAnnotationType.SERVER_METRICS);
 
             Map<String, String> resourceProperties = new HashMap<>();
 
@@ -265,16 +265,16 @@ public class OSSUnityCatalogServerSurveyService extends OSSUnityCatalogServerSur
             resourceCounts.put(UnityCatalogMetric.NO_OF_VOLUMES.getPropertyName(), volumeCount);
             resourceCounts.put(UnityCatalogMetric.NO_OF_MODELS.getPropertyName(), modelCount);
 
-            resourceMeasureAnnotation.setJsonProperties(this.getJSONProperties(resourceCounts));
-            resourceMeasureAnnotation.setResourceProperties(resourceProperties);
+            resourceMeasureAnnotationProperties.setJsonProperties(this.getJSONProperties(resourceCounts));
+            resourceMeasureAnnotationProperties.setResourceProperties(resourceProperties);
 
-            annotationStore.addAnnotation(resourceMeasureAnnotation, null);
+            annotationStore.addAnnotation(resourceMeasureAnnotationProperties, null);
 
             if (! finalAnalysisStep.equals(AnalysisStep.MEASURE_RESOURCE.getName()))
             {
                 annotationStore.setAnalysisStep(AnalysisStep.PROFILING_ASSOCIATED_RESOURCES.getName());
 
-                ResourceProfileAnnotation resourceProfileAnnotation = this.getNameListAnnotation(UnityCatalogAnnotationType.CATALOG_LIST, catalogList);
+                ResourceProfileAnnotationProperties resourceProfileAnnotation = this.getNameListAnnotation(UnityCatalogAnnotationType.CATALOG_LIST, catalogList);
 
                 annotationStore.addAnnotation(resourceProfileAnnotation, null);
 

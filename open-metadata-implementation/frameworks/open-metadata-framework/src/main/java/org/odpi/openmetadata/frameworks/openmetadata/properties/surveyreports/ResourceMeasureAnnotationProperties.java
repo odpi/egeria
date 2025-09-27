@@ -1,10 +1,8 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 /* Copyright Contributors to the ODPi Egeria project. */
-package org.odpi.openmetadata.frameworks.opensurvey.properties;
+package org.odpi.openmetadata.frameworks.openmetadata.properties.surveyreports;
 
-import com.fasterxml.jackson.annotation.JsonAutoDetect;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.*;
 
 import java.util.Map;
 import java.util.Objects;
@@ -13,22 +11,28 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
 /**
- * ClassificationAnnotation recommends classifications for either an asset or a data field.
+ * DataSourceMeasurementAnnotation describes properties that describe the characteristics of the data source as a whole.
  */
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-
-public class ClassificationAnnotation extends DataFieldAnnotation
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME,
+              include = JsonTypeInfo.As.PROPERTY,
+              property = "class")
+@JsonSubTypes(
+        {
+                @JsonSubTypes.Type(value = ResourcePhysicalStatusAnnotationProperties.class, name = "DataSourcePhysicalStatusAnnotation")
+        })
+public class ResourceMeasureAnnotationProperties extends AnnotationProperties
 {
-    private Map<String, String> candidateClassifications = null;
+    private Map<String, String> resourceProperties = null;
+
 
     /**
      * Default constructor
      */
-    public ClassificationAnnotation()
+    public ResourceMeasureAnnotationProperties()
     {
-        super();
     }
 
 
@@ -37,36 +41,36 @@ public class ClassificationAnnotation extends DataFieldAnnotation
      *
      * @param template object to copy
      */
-    public ClassificationAnnotation(ClassificationAnnotation template)
+    public ResourceMeasureAnnotationProperties(ResourceMeasureAnnotationProperties template)
     {
         super(template);
 
         if (template != null)
         {
-            candidateClassifications = template.getCandidateClassifications();
+            resourceProperties = template.getResourceProperties();
         }
     }
 
 
     /**
-     * Return a map of candidate classification names to additional characteristics
+     * Return the properties of the data source.
      *
-     * @return map of classification names to string
+     * @return date time
      */
-    public Map<String, String> getCandidateClassifications()
+    public Map<String, String> getResourceProperties()
     {
-        return candidateClassifications;
+        return resourceProperties;
     }
 
 
     /**
-     * Set up a map of candidate classification names to additional characteristics.
+     * Set up the properties of the data source.
      *
-     * @param candidateClassifications map of classification names to string
+     * @param resourceProperties date time
      */
-    public void setCandidateClassifications(Map<String, String> candidateClassifications)
+    public void setResourceProperties(Map<String, String> resourceProperties)
     {
-        this.candidateClassifications = candidateClassifications;
+        this.resourceProperties = resourceProperties;
     }
 
 
@@ -78,8 +82,8 @@ public class ClassificationAnnotation extends DataFieldAnnotation
     @Override
     public String toString()
     {
-        return "ClassificationAnnotation{" +
-                "candidateClassifications=" + candidateClassifications +
+        return "ResourceMeasurementAnnotation{" +
+                "resourceProperties=" + resourceProperties +
                 "} " + super.toString();
     }
 
@@ -105,8 +109,8 @@ public class ClassificationAnnotation extends DataFieldAnnotation
         {
             return false;
         }
-        ClassificationAnnotation that = (ClassificationAnnotation) objectToCompare;
-        return Objects.equals(candidateClassifications, that.candidateClassifications);
+        ResourceMeasureAnnotationProperties that = (ResourceMeasureAnnotationProperties) objectToCompare;
+        return Objects.equals(getResourceProperties(), that.getResourceProperties());
     }
 
 
@@ -118,6 +122,6 @@ public class ClassificationAnnotation extends DataFieldAnnotation
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), candidateClassifications);
+        return Objects.hash(super.hashCode(), getResourceProperties());
     }
 }

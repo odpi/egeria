@@ -12,13 +12,13 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedExceptio
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.surveyreports.ResourceProfileAnnotationProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
 import org.odpi.openmetadata.frameworks.opensurvey.SurveyActionServiceConnector;
 import org.odpi.openmetadata.frameworks.opensurvey.controls.AnalysisStep;
 import org.odpi.openmetadata.frameworks.opensurvey.controls.AnnotationType;
 import org.odpi.openmetadata.frameworks.opensurvey.controls.SurveyRequestParameter;
-import org.odpi.openmetadata.frameworks.opensurvey.properties.ResourceProfileAnnotation;
-import org.odpi.openmetadata.frameworks.opensurvey.properties.ResourceProfileLogAnnotation;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.surveyreports.ResourceProfileLogAnnotationProperties;
 
 import java.io.IOException;
 import java.util.*;
@@ -82,8 +82,8 @@ public class OSSUnityCatalogServerSurveyBase extends SurveyActionServiceConnecto
      * @param nameProperties list of names with properties
      * @return annotation
      */
-    protected ResourceProfileAnnotation getNameListAnnotation(AnnotationType                  annotationType,
-                                                              Map<String, ResourceProperties> nameProperties)
+    protected ResourceProfileAnnotationProperties getNameListAnnotation(AnnotationType                  annotationType,
+                                                                        Map<String, ResourceProperties> nameProperties)
     {
         Map<String, String> nameList = new HashMap<>();
 
@@ -95,7 +95,7 @@ public class OSSUnityCatalogServerSurveyBase extends SurveyActionServiceConnecto
             }
         }
 
-        ResourceProfileAnnotation resourceProfileAnnotation = new ResourceProfileAnnotation();
+        ResourceProfileAnnotationProperties resourceProfileAnnotation = new ResourceProfileAnnotationProperties();
 
         setUpAnnotation(resourceProfileAnnotation, annotationType);
 
@@ -237,11 +237,11 @@ public class OSSUnityCatalogServerSurveyBase extends SurveyActionServiceConnecto
         this.addResourcesToPropertyList(UnityCatalogDeployedImplementationType.OSS_UC_FUNCTION.getDeployedImplementationType(), functionList, propertyList);
         this.addResourcesToPropertyList(UnityCatalogDeployedImplementationType.OSS_UC_VOLUME.getDeployedImplementationType(), volumeList, propertyList);
 
-        ResourceProfileLogAnnotation annotation = super.writePropertyListInventory(UnityCatalogAnnotationType.RESOURCE_INVENTORY,
-                                                                                   inventoryName,
-                                                                                   propertyNames,
-                                                                                   propertyList,
-                                                                                   surveyContext.getAnnotationStore().getSurveyReportGUID());
+        ResourceProfileLogAnnotationProperties annotation = super.writePropertyListInventory(UnityCatalogAnnotationType.RESOURCE_INVENTORY,
+                                                                                             inventoryName,
+                                                                                             propertyNames,
+                                                                                             propertyList,
+                                                                                             surveyContext.getAnnotationStore().getSurveyReportGUID());
 
         surveyContext.getAnnotationStore().addAnnotation(annotation, null);
     }

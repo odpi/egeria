@@ -10,7 +10,7 @@ import org.odpi.openmetadata.commonservices.ffdc.rest.NameRequestBody;
 import org.odpi.openmetadata.commonservices.generichandlers.SoftwareCapabilityHandler;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
-import org.odpi.openmetadata.frameworkservices.oif.rest.MetadataSourceRequestBody;
+import org.odpi.openmetadata.frameworkservices.oif.rest.MetadataOriginRequestBody;
 import org.slf4j.LoggerFactory;
 
 import java.util.Date;
@@ -116,7 +116,7 @@ public class OpenIntegrationRESTServices
     public GUIDResponse createMetadataSource(String                    serverName,
                                              String                    serviceURLMarker,
                                              String                    userId,
-                                             MetadataSourceRequestBody requestBody)
+                                             MetadataOriginRequestBody requestBody)
     {
         final String methodName = "createMetadataSource";
 

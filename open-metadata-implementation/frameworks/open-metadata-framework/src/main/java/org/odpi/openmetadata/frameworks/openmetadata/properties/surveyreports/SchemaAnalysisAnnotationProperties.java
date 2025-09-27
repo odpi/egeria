@@ -1,6 +1,6 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 /* Copyright Contributors to the ODPi Egeria project. */
-package org.odpi.openmetadata.frameworks.opensurvey.properties;
+package org.odpi.openmetadata.frameworks.openmetadata.properties.surveyreports;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
@@ -12,22 +12,22 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
 /**
- * SchemaAnalysisAnnotation is used to describe the results of reviewing the structure of the content of an asset.
+ * SchemaAnalysisAnnotationProperties is used to describe the results of reviewing the structure of the content of an asset.
  * This structure is expressed as what is called a schema.
  */
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class SchemaAnalysisAnnotation extends Annotation
+public class SchemaAnalysisAnnotationProperties extends AnnotationProperties
 {
-    private String schemaName           = null;
-    private String schemaTypeName       = null;
+    private String schemaName = null;
+    private String schemaType = null;
 
 
     /**
      * Default constructor
      */
-    public SchemaAnalysisAnnotation()
+    public SchemaAnalysisAnnotationProperties()
     {
         super();
     }
@@ -38,14 +38,14 @@ public class SchemaAnalysisAnnotation extends Annotation
      *
      * @param template object to copy
      */
-    public SchemaAnalysisAnnotation(SchemaAnalysisAnnotation  template)
+    public SchemaAnalysisAnnotationProperties(SchemaAnalysisAnnotationProperties template)
     {
         super(template);
 
         if (template != null)
         {
             this.schemaName = template.getSchemaName();
-            this.schemaTypeName = template.getSchemaTypeName();
+            this.schemaType = template.getSchemaType();
         }
     }
 
@@ -79,20 +79,20 @@ public class SchemaAnalysisAnnotation extends Annotation
      *
      * @return name
      */
-    public String getSchemaTypeName()
+    public String getSchemaType()
     {
-        return schemaTypeName;
+        return schemaType;
     }
 
 
     /**
      * Set up the name of the schema type for this asset.
      *
-     * @param schemaTypeName name
+     * @param schemaType name
      */
-    public void setSchemaTypeName(String schemaTypeName)
+    public void setSchemaType(String schemaType)
     {
-        this.schemaTypeName = schemaTypeName;
+        this.schemaType = schemaType;
     }
 
 
@@ -104,9 +104,9 @@ public class SchemaAnalysisAnnotation extends Annotation
     @Override
     public String toString()
     {
-        return "SchemaAnalysisAnnotation{" +
+        return "SchemaAnalysisAnnotationProperties{" +
                 "schemaName='" + schemaName + '\'' +
-                ", schemaTypeName='" + schemaTypeName + '\'' +
+                ", schemaType='" + schemaType + '\'' +
                 "} " + super.toString();
     }
 
@@ -133,9 +133,9 @@ public class SchemaAnalysisAnnotation extends Annotation
         {
             return false;
         }
-        SchemaAnalysisAnnotation that = (SchemaAnalysisAnnotation) objectToCompare;
+        SchemaAnalysisAnnotationProperties that = (SchemaAnalysisAnnotationProperties) objectToCompare;
         return Objects.equals(schemaName, that.schemaName) &&
-                Objects.equals(schemaTypeName, that.schemaTypeName);
+                Objects.equals(schemaType, that.schemaType);
     }
 
 
@@ -147,6 +147,6 @@ public class SchemaAnalysisAnnotation extends Annotation
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), getSchemaName(), getSchemaTypeName());
+        return Objects.hash(super.hashCode(), getSchemaName(), getSchemaType());
     }
 }

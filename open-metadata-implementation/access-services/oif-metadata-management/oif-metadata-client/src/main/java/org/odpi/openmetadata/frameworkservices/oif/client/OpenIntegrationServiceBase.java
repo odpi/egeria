@@ -11,7 +11,7 @@ import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterExcept
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.frameworkservices.oif.client.rest.OpenIntegrationRESTClient;
-import org.odpi.openmetadata.frameworkservices.oif.rest.MetadataSourceRequestBody;
+import org.odpi.openmetadata.frameworkservices.oif.rest.MetadataOriginRequestBody;
 
 
 /**
@@ -170,7 +170,7 @@ public class OpenIntegrationServiceBase extends OpenIntegrationClient
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public String createMetadataSource(String userId,
+    public String createMetadataOrigin(String userId,
                                        String softwareCapabilityTypeName,
                                        String classificationName,
                                        String qualifiedName,
@@ -178,7 +178,7 @@ public class OpenIntegrationServiceBase extends OpenIntegrationClient
                                                                                  UserNotAuthorizedException,
                                                                                  PropertyServerException
     {
-        final String methodName                  = "createMetadataSource";
+        final String methodName                  = "createMetadataOrigin";
         final String qualifiedNameParameterName  = "qualifiedName";
 
         invalidParameterHandler.validateUserId(userId, methodName);
@@ -186,7 +186,7 @@ public class OpenIntegrationServiceBase extends OpenIntegrationClient
 
         final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/{1}/open-integration/users/{2}/metadata-sources/new";
 
-        MetadataSourceRequestBody requestBody = new MetadataSourceRequestBody();
+        MetadataOriginRequestBody requestBody = new MetadataOriginRequestBody();
 
         requestBody.setQualifiedName(qualifiedName);
         requestBody.setTypeName(softwareCapabilityTypeName);

@@ -14,6 +14,7 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.*;
 import org.odpi.openmetadata.frameworks.openmetadata.connectorcontext.AssetClient;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.OpenMetadataRootElement;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.RelatedMetadataElementSummary;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.surveyreports.ResourceProfileLogAnnotationProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.search.PropertyHelper;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.PropertyServerException;
@@ -23,8 +24,7 @@ import org.odpi.openmetadata.frameworks.opensurvey.controls.AnnotationType;
 import org.odpi.openmetadata.frameworks.opensurvey.controls.SurveyActionGuard;
 import org.odpi.openmetadata.frameworks.opensurvey.ffdc.OSFAuditCode;
 import org.odpi.openmetadata.frameworks.opensurvey.ffdc.OSFErrorCode;
-import org.odpi.openmetadata.frameworks.opensurvey.properties.Annotation;
-import org.odpi.openmetadata.frameworks.opensurvey.properties.ResourceProfileLogAnnotation;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.surveyreports.AnnotationProperties;
 
 import java.io.File;
 import java.io.IOException;
@@ -353,7 +353,7 @@ public abstract class SurveyActionServiceConnector extends ConnectorBase impleme
      * @param annotation     output annotation
      * @param annotationType annotation type definition
      */
-    protected void setUpAnnotation(Annotation annotation,
+    protected void setUpAnnotation(AnnotationProperties annotation,
                                    AnnotationType annotationType)
     {
         annotation.setAnnotationType(annotationType.getName());
@@ -378,17 +378,17 @@ public abstract class SurveyActionServiceConnector extends ConnectorBase impleme
      * @throws UserNotAuthorizedException authorization problem creating CSV file asset
      * @throws ConnectorCheckedException survey has been asked to stop
      */
-    protected ResourceProfileLogAnnotation writePropertyListInventory(AnnotationType            annotationType,
-                                                                      String                    inventoryName,
-                                                                      List<String>              propertyNames,
-                                                                      List<Map<String, String>> propertyList,
-                                                                      String                    surveyReportGUID) throws InvalidParameterException,
+    protected ResourceProfileLogAnnotationProperties writePropertyListInventory(AnnotationType            annotationType,
+                                                                                String                    inventoryName,
+                                                                                List<String>              propertyNames,
+                                                                                List<Map<String, String>> propertyList,
+                                                                                String                    surveyReportGUID) throws InvalidParameterException,
                                                                                                                          PropertyServerException,
                                                                                                                          UserNotAuthorizedException,
                                                                                                                          IOException,
                                                                                                                          ConnectorCheckedException
     {
-        ResourceProfileLogAnnotation inventoryLog = new ResourceProfileLogAnnotation();
+        ResourceProfileLogAnnotationProperties inventoryLog = new ResourceProfileLogAnnotationProperties();
 
         setUpAnnotation(inventoryLog, annotationType);
 
@@ -529,16 +529,16 @@ public abstract class SurveyActionServiceConnector extends ConnectorBase impleme
      * @throws UserNotAuthorizedException authorization problem creating CSV file asset
      * @throws ConnectorCheckedException survey has been asked to stop
      */
-    protected ResourceProfileLogAnnotation writeNameListInventory(AnnotationType annotationType,
-                                                                  String         inventoryName,
-                                                                  List<String>   names,
-                                                                   String        surveyReportGUID) throws InvalidParameterException,
+    protected ResourceProfileLogAnnotationProperties writeNameListInventory(AnnotationType annotationType,
+                                                                            String         inventoryName,
+                                                                            List<String>   names,
+                                                                            String        surveyReportGUID) throws InvalidParameterException,
                                                                                                           PropertyServerException,
                                                                                                           UserNotAuthorizedException,
                                                                                                           IOException,
                                                                                                           ConnectorCheckedException
     {
-        ResourceProfileLogAnnotation inventoryLog = new ResourceProfileLogAnnotation();
+        ResourceProfileLogAnnotationProperties inventoryLog = new ResourceProfileLogAnnotationProperties();
 
         setUpAnnotation(inventoryLog, annotationType);
 
@@ -635,16 +635,16 @@ public abstract class SurveyActionServiceConnector extends ConnectorBase impleme
      * @throws UserNotAuthorizedException authorization problem creating CSV file asset
      * @throws ConnectorCheckedException survey has been asked to stop
      */
-    protected ResourceProfileLogAnnotation writeNameCountInventory(AnnotationType       annotationType,
-                                                                   String               inventoryName,
-                                                                   Map<String, Integer> nameCounts,
-                                                                   String               surveyReportGUID) throws InvalidParameterException,
+    protected ResourceProfileLogAnnotationProperties writeNameCountInventory(AnnotationType       annotationType,
+                                                                             String               inventoryName,
+                                                                             Map<String, Integer> nameCounts,
+                                                                             String               surveyReportGUID) throws InvalidParameterException,
                                                                                                                  PropertyServerException,
                                                                                                                  UserNotAuthorizedException,
                                                                                                                  IOException,
                                                                                                                  ConnectorCheckedException
     {
-        ResourceProfileLogAnnotation inventoryLog = new ResourceProfileLogAnnotation();
+        ResourceProfileLogAnnotationProperties inventoryLog = new ResourceProfileLogAnnotationProperties();
 
         setUpAnnotation(inventoryLog, annotationType);
 
@@ -740,16 +740,16 @@ public abstract class SurveyActionServiceConnector extends ConnectorBase impleme
      * @throws UserNotAuthorizedException authorization problem creating CSV file asset
      * @throws ConnectorCheckedException survey has been asked to stop
      */
-    protected ResourceProfileLogAnnotation writeNameDescriptionInventory(AnnotationType       annotationType,
-                                                                         String               inventoryName,
-                                                                         Map<String, String>  nameDescriptions,
-                                                                         String               surveyReportGUID) throws InvalidParameterException,
+    protected ResourceProfileLogAnnotationProperties writeNameDescriptionInventory(AnnotationType       annotationType,
+                                                                                   String               inventoryName,
+                                                                                   Map<String, String>  nameDescriptions,
+                                                                                   String               surveyReportGUID) throws InvalidParameterException,
                                                                                                                        PropertyServerException,
                                                                                                                        UserNotAuthorizedException,
                                                                                                                        IOException,
                                                                                                                        ConnectorCheckedException
     {
-        ResourceProfileLogAnnotation inventoryLog = new ResourceProfileLogAnnotation();
+        ResourceProfileLogAnnotationProperties inventoryLog = new ResourceProfileLogAnnotationProperties();
 
         setUpAnnotation(inventoryLog, annotationType);
 

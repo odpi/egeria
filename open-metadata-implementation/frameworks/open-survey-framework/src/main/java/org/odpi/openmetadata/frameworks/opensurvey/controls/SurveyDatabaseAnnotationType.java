@@ -102,7 +102,7 @@ public enum SurveyDatabaseAnnotationType implements AnnotationType
      * @param openMetadataTypeName the open metadata type used for this annotation type
      * @param summary short explanation of the annotation type
      * @param explanation explanation of the annotation type
-     * @param profilePropertyNames list of property names filled out in the ResourceProfileAnnotation
+     * @param profilePropertyNames list of property names filled out in the ResourceProfileAnnotationProperties
      * @param metrics optional metrics
      */
     SurveyDatabaseAnnotationType(String                name,

@@ -7,7 +7,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDResponse;
 import org.odpi.openmetadata.commonservices.ffdc.rest.NameRequestBody;
-import org.odpi.openmetadata.frameworkservices.oif.rest.MetadataSourceRequestBody;
+import org.odpi.openmetadata.frameworkservices.oif.rest.MetadataOriginRequestBody;
 import org.odpi.openmetadata.frameworkservices.oif.server.OpenIntegrationRESTServices;
 import org.springframework.web.bind.annotation.*;
 
@@ -80,7 +80,7 @@ public class OpenIntegrationResource
     public GUIDResponse createMetadataSource(@PathVariable String                    serverName,
                                              @PathVariable String                    serviceURLMarker,
                                              @PathVariable String                    userId,
-                                             @RequestBody  MetadataSourceRequestBody requestBody)
+                                             @RequestBody MetadataOriginRequestBody requestBody)
     {
         return restAPI.createMetadataSource(serverName, serviceURLMarker, userId, requestBody);
     }

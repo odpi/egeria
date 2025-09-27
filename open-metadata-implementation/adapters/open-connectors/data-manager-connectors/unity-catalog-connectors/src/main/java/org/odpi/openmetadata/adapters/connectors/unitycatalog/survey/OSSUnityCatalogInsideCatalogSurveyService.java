@@ -9,6 +9,7 @@ import org.odpi.openmetadata.adapters.connectors.unitycatalog.properties.*;
 import org.odpi.openmetadata.adapters.connectors.unitycatalog.resource.OSSUnityCatalogResourceConnector;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.surveyreports.ResourceMeasureAnnotationProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 import org.odpi.openmetadata.frameworks.opensurvey.AnnotationStore;
 import org.odpi.openmetadata.frameworks.opensurvey.controls.AnalysisStep;
@@ -16,8 +17,7 @@ import org.odpi.openmetadata.frameworks.opensurvey.controls.SurveyDatabaseAnnota
 import org.odpi.openmetadata.frameworks.opensurvey.controls.SurveyResourceManagerAnnotationType;
 import org.odpi.openmetadata.frameworks.opensurvey.measurements.RelationalDataManagerMeasurement;
 import org.odpi.openmetadata.frameworks.opensurvey.measurements.RelationalDatabaseMetric;
-import org.odpi.openmetadata.frameworks.opensurvey.properties.ResourceMeasureAnnotation;
-import org.odpi.openmetadata.frameworks.opensurvey.properties.ResourceProfileAnnotation;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.surveyreports.ResourceProfileAnnotationProperties;
 
 import java.util.Date;
 import java.util.HashMap;
@@ -219,9 +219,9 @@ public class OSSUnityCatalogInsideCatalogSurveyService extends OSSUnityCatalogSe
                 }
             }
 
-            ResourceMeasureAnnotation resourceMeasureAnnotation = new ResourceMeasureAnnotation();
+            ResourceMeasureAnnotationProperties resourceMeasureAnnotationProperties = new ResourceMeasureAnnotationProperties();
 
-            setUpAnnotation(resourceMeasureAnnotation, UnityCatalogAnnotationType.CATALOG_METRICS);
+            setUpAnnotation(resourceMeasureAnnotationProperties, UnityCatalogAnnotationType.CATALOG_METRICS);
 
             RelationalDataManagerMeasurement relationalDataManagerMeasurement = new RelationalDataManagerMeasurement();
 
@@ -230,7 +230,7 @@ public class OSSUnityCatalogInsideCatalogSurveyService extends OSSUnityCatalogSe
             relationalDataManagerMeasurement.setTableCount(tableCount);
             relationalDataManagerMeasurement.setColumnCount(columnCount);
 
-            resourceMeasureAnnotation.setJsonProperties(this.getJSONProperties(relationalDataManagerMeasurement));
+            resourceMeasureAnnotationProperties.setJsonProperties(this.getJSONProperties(relationalDataManagerMeasurement));
 
             Map<String, String> resourceProperties = new HashMap<>();
 
@@ -250,16 +250,16 @@ public class OSSUnityCatalogInsideCatalogSurveyService extends OSSUnityCatalogSe
             resourceCounts.put(UnityCatalogMetric.NO_OF_VOLUMES.getPropertyName(), volumeCount);
             resourceCounts.put(UnityCatalogMetric.NO_OF_MODELS.getPropertyName(), modelCount);
 
-            resourceMeasureAnnotation.setJsonProperties(this.getJSONProperties(resourceCounts));
-            resourceMeasureAnnotation.setResourceProperties(resourceProperties);
+            resourceMeasureAnnotationProperties.setJsonProperties(this.getJSONProperties(resourceCounts));
+            resourceMeasureAnnotationProperties.setResourceProperties(resourceProperties);
 
-            annotationStore.addAnnotation(resourceMeasureAnnotation, null);
+            annotationStore.addAnnotation(resourceMeasureAnnotationProperties, null);
 
             if (! finalAnalysisStep.equals(AnalysisStep.MEASURE_RESOURCE.getName()))
             {
                 annotationStore.setAnalysisStep(AnalysisStep.PROFILING_ASSOCIATED_RESOURCES.getName());
 
-                ResourceProfileAnnotation resourceProfileAnnotation = this.getNameListAnnotation(SurveyDatabaseAnnotationType.SCHEMA_LIST, schemaList);
+                ResourceProfileAnnotationProperties resourceProfileAnnotation = this.getNameListAnnotation(SurveyDatabaseAnnotationType.SCHEMA_LIST, schemaList);
 
                 annotationStore.addAnnotation(resourceProfileAnnotation, null);
 

@@ -1,6 +1,6 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 /* Copyright Contributors to the ODPi Egeria project. */
-package org.odpi.openmetadata.frameworks.opensurvey.properties;
+package org.odpi.openmetadata.frameworks.openmetadata.properties.surveyreports;
 
 import com.fasterxml.jackson.annotation.*;
 
@@ -11,7 +11,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
 /**
- * SemanticAnnotation provides a recommendation as to the likely meaning of data.  This can be expressed informally with
+ * SemanticAnnotationProperties provides a recommendation as to the likely meaning of data.  This can be expressed informally with
  * explicit strings, or via lists of GUIDs that match elements in a formal glossary.  It can be attached to an asset
  * or a data field within an asset.
  */
@@ -19,18 +19,17 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
 
-public class SemanticAnnotation extends DataFieldAnnotation
+public class SemanticAnnotationProperties extends DataFieldAnnotationProperties
 {
-    private String informalTerm = null;
-    private String informalTopic = null;
-
-    private List<String> candidateGlossaryTermGUIDs = null;
-    private List<String> candidateGlossaryCategoryGUIDs = null;
+    private String       informalTerm                 = null;
+    private String       subjectAreaName              = null;
+    private List<String> candidateGlossaryTermGUIDs   = null;
+    private List<String> candidateGlossaryFolderGUIDs = null;
 
     /**
      * Default constructor
      */
-    public SemanticAnnotation()
+    public SemanticAnnotationProperties()
     {
     }
 
@@ -40,16 +39,16 @@ public class SemanticAnnotation extends DataFieldAnnotation
      *
      * @param template object to copy
      */
-    public SemanticAnnotation(SemanticAnnotation template)
+    public SemanticAnnotationProperties(SemanticAnnotationProperties template)
     {
         super(template);
 
         if (template != null)
         {
-            informalTerm = template.getInformalTerm();
-            informalTopic = template.getInformalTopic();
-            candidateGlossaryTermGUIDs = template.getCandidateGlossaryTermGUIDs();
-            candidateGlossaryCategoryGUIDs = template.getCandidateGlossaryCategoryGUIDs();
+            informalTerm               = template.getInformalTerm();
+            subjectAreaName            = template.getSubjectAreaName();
+            candidateGlossaryTermGUIDs   = template.getCandidateGlossaryTermGUIDs();
+            candidateGlossaryFolderGUIDs = template.getCandidateGlossaryFolderGUIDs();
         }
     }
 
@@ -81,20 +80,20 @@ public class SemanticAnnotation extends DataFieldAnnotation
      *
      * @return string name
      */
-    public String getInformalTopic()
+    public String getSubjectAreaName()
     {
-        return informalTopic;
+        return subjectAreaName;
     }
 
 
     /**
      * Set up a string that describes the topic that this data is about.
      *
-     * @param informalTopic string name
+     * @param subjectAreaName string name
      */
-    public void setInformalTopic(String informalTopic)
+    public void setSubjectAreaName(String subjectAreaName)
     {
-        this.informalTopic = informalTopic;
+        this.subjectAreaName = subjectAreaName;
     }
 
 
@@ -125,20 +124,20 @@ public class SemanticAnnotation extends DataFieldAnnotation
      *
      * @return list of guids
      */
-    public List<String> getCandidateGlossaryCategoryGUIDs()
+    public List<String> getCandidateGlossaryFolderGUIDs()
     {
-        return candidateGlossaryCategoryGUIDs;
+        return candidateGlossaryFolderGUIDs;
     }
 
 
     /**
      * Set up a list of unique identifiers of glossary categories that describe the topic of the data.
      *
-     * @param candidateGlossaryCategoryGUIDs list of guids
+     * @param candidateGlossaryFolderGUIDs list of guids
      */
-    public void setCandidateGlossaryCategoryGUIDs(List<String> candidateGlossaryCategoryGUIDs)
+    public void setCandidateGlossaryFolderGUIDs(List<String> candidateGlossaryFolderGUIDs)
     {
-        this.candidateGlossaryCategoryGUIDs = candidateGlossaryCategoryGUIDs;
+        this.candidateGlossaryFolderGUIDs = candidateGlossaryFolderGUIDs;
     }
 
 
@@ -150,11 +149,11 @@ public class SemanticAnnotation extends DataFieldAnnotation
     @Override
     public String toString()
     {
-        return "SemanticAnnotation{" +
+        return "SemanticAnnotationProperties{" +
                 "informalTerm='" + informalTerm + '\'' +
-                ", informalTopic='" + informalTopic + '\'' +
+                ", subjectAreaName='" + subjectAreaName + '\'' +
                 ", candidateGlossaryTermGUIDs=" + candidateGlossaryTermGUIDs +
-                ", candidateGlossaryCategoryGUIDs=" + candidateGlossaryCategoryGUIDs +
+                ", candidateGlossaryFolderGUIDs=" + candidateGlossaryFolderGUIDs +
                 "} " + super.toString();
     }
 
@@ -180,11 +179,11 @@ public class SemanticAnnotation extends DataFieldAnnotation
         {
             return false;
         }
-        SemanticAnnotation that = (SemanticAnnotation) objectToCompare;
+        SemanticAnnotationProperties that = (SemanticAnnotationProperties) objectToCompare;
         return Objects.equals(informalTerm, that.informalTerm) &&
-                Objects.equals(informalTopic, that.informalTopic) &&
+                Objects.equals(subjectAreaName, that.subjectAreaName) &&
                 Objects.equals(candidateGlossaryTermGUIDs, that.candidateGlossaryTermGUIDs) &&
-                Objects.equals(candidateGlossaryCategoryGUIDs, that.candidateGlossaryCategoryGUIDs);
+                Objects.equals(candidateGlossaryFolderGUIDs, that.candidateGlossaryFolderGUIDs);
     }
 
 
@@ -196,6 +195,6 @@ public class SemanticAnnotation extends DataFieldAnnotation
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), informalTerm, informalTopic, candidateGlossaryTermGUIDs, candidateGlossaryCategoryGUIDs);
+        return Objects.hash(super.hashCode(), informalTerm, subjectAreaName, candidateGlossaryTermGUIDs, candidateGlossaryFolderGUIDs);
     }
 }

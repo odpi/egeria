@@ -421,8 +421,6 @@ public class OpenGovernanceResource
      * @param serverName name of the service to route the request to
      * @param serviceURLMarker the identifier of the access service (for example asset-owner for the Asset Owner OMAS)
      * @param userId calling user
-     * @param startFrom paging start point
-     * @param pageSize maximum results that can be returned
      * @param requestBody name to search for
      *
      * @return list of matching metadata elements or
@@ -439,11 +437,9 @@ public class OpenGovernanceResource
     public GovernanceActionProcessElementsResponse getGovernanceActionProcessesByName(@PathVariable String          serverName,
                                                                                       @PathVariable String          serviceURLMarker,
                                                                                       @PathVariable String          userId,
-                                                                                      @RequestParam int             startFrom,
-                                                                                      @RequestParam int             pageSize,
                                                                                       @RequestBody  NameRequestBody requestBody)
     {
-        return restAPI.getGovernanceActionProcessesByName(serverName, serviceURLMarker, userId, startFrom, pageSize, requestBody);
+        return restAPI.getGovernanceActionProcessesByName(serverName, serviceURLMarker, userId, requestBody);
     }
 
 

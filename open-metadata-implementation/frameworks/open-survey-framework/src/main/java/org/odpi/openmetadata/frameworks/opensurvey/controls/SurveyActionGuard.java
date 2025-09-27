@@ -100,7 +100,7 @@ public enum SurveyActionGuard
 
     /**
      * Return details of the guards used on a survey that is validating the structure and content of data.
-     * Each check produces a Qualify Annotation.  If all checks pass, the certification is added to the asset.
+     * Each check produces a Qualify AnnotationProperties.  If all checks pass, the certification is added to the asset.
      * If any checks fail, a request for action is created for the asset, linking the failing quality annotations.
      *
      * @return guard types

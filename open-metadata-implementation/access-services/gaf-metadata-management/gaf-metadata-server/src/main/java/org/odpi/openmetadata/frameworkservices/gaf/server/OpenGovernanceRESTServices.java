@@ -1212,8 +1212,6 @@ public class OpenGovernanceRESTServices
      * @param serverName name of the service to route the request to
      * @param serviceURLMarker the identifier of the access service (for example asset-owner for the Asset Owner OMAS)
      * @param userId calling user
-     * @param startFrom paging start point
-     * @param pageSize maximum results that can be returned
      * @param requestBody name to search for
      *
      * @return list of matching metadata elements or
@@ -1224,8 +1222,6 @@ public class OpenGovernanceRESTServices
     public GovernanceActionProcessElementsResponse getGovernanceActionProcessesByName(String          serverName,
                                                                                       String          serviceURLMarker,
                                                                                       String          userId,
-                                                                                      int             startFrom,
-                                                                                      int             pageSize,
                                                                                       NameRequestBody requestBody)
     {
         final String methodName = "getGovernanceActionProcessesByName";
@@ -1252,10 +1248,10 @@ public class OpenGovernanceRESTServices
                                                                                         requestBody.getName(),
                                                                                         nameParameterName,
                                                                                         supportedZones,
-                                                                                        startFrom,
-                                                                                        pageSize,
-                                                                                        false,
-                                                                                        false,
+                                                                                        requestBody.getStartFrom(),
+                                                                                        requestBody.getPageSize(),
+                                                                                        requestBody.getForLineage(),
+                                                                                        requestBody.getForDuplicateProcessing(),
                                                                                         requestBody.getEffectiveTime(),
                                                                                         methodName);
 
@@ -1376,7 +1372,7 @@ public class OpenGovernanceRESTServices
                         completeGovernanceActionProcessElement(userId, processHandler, supportedZones, processHandler.getBeanFromRepository(userId,
                                                                                                                                             processGUID,
                                                                                                                                             processGUIDParameterName,
-                                                                                                                                            OpenMetadataType.PROCESS.typeName,
+                                                                                                                                            OpenMetadataType.REFERENCEABLE.typeName,
                                                                                                                                             requestBody.getForLineage(),
                                                                                                                                             requestBody.getForDuplicateProcessing(),
                                                                                                                                             supportedZones,
@@ -1389,7 +1385,7 @@ public class OpenGovernanceRESTServices
                         completeGovernanceActionProcessElement(userId, processHandler, supportedZones, processHandler.getBeanFromRepository(userId,
                                                                                                                                             processGUID,
                                                                                                                                             processGUIDParameterName,
-                                                                                                                                            OpenMetadataType.PROCESS.typeName,
+                                                                                                                                            OpenMetadataType.REFERENCEABLE.typeName,
                                                                                                                                             false,
                                                                                                                                             false,
                                                                                                                                             supportedZones,

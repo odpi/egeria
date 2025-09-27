@@ -6,7 +6,7 @@ package org.odpi.openmetadata.commonservices.ffdc.rest;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import org.odpi.openmetadata.frameworks.opensurvey.properties.SurveyReport;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.surveyreports.SurveyReportProperties;
 
 import java.util.List;
 import java.util.Objects;
@@ -17,14 +17,14 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 
 /**
  * SurveyReportsResponse is the response structure used on OMAS REST API calls that return a
- * list of SurveyReport properties objects as a response.
+ * list of SurveyReportProperties properties objects as a response.
  */
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class SurveyReportsResponse extends FFDCResponseBase
 {
-    private List<SurveyReport> surveyReports = null;
+    private List<SurveyReportProperties> surveyReportProperties = null;
 
     /**
      * Default constructor
@@ -46,7 +46,7 @@ public class SurveyReportsResponse extends FFDCResponseBase
 
         if (template != null)
         {
-            this.surveyReports = template.getSurveyReports();
+            this.surveyReportProperties = template.getSurveyReports();
         }
     }
 
@@ -56,20 +56,20 @@ public class SurveyReportsResponse extends FFDCResponseBase
      *
      * @return list of properties objects
      */
-    public List<SurveyReport> getSurveyReports()
+    public List<SurveyReportProperties> getSurveyReports()
     {
-        return surveyReports;
+        return surveyReportProperties;
     }
 
 
     /**
      * Set up the properties objects.
      *
-     * @param surveyReports  list of properties objects
+     * @param surveyReportProperties  list of properties objects
      */
-    public void setSurveyReports(List<SurveyReport> surveyReports)
+    public void setSurveyReports(List<SurveyReportProperties> surveyReportProperties)
     {
-        this.surveyReports = surveyReports;
+        this.surveyReportProperties = surveyReportProperties;
     }
 
 
@@ -82,7 +82,7 @@ public class SurveyReportsResponse extends FFDCResponseBase
     public String toString()
     {
         return "SurveyReportsResponse{" +
-                "surveyReports=" + surveyReports +
+                "surveyReportProperties=" + surveyReportProperties +
                 "} " + super.toString();
     }
 

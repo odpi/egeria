@@ -8,9 +8,7 @@ import org.odpi.openmetadata.frameworks.openmetadata.properties.EntityElementPro
 import org.odpi.openmetadata.frameworks.openmetadata.properties.EntityProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.OpenMetadataRootProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.ReferenceableProperties;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.processes.actions.ActionProperties;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.processes.actions.EngineActionProperties;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.processes.actions.MeetingProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.processes.actions.*;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.actors.*;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.actors.GovernanceRoleProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.*;
@@ -19,9 +17,9 @@ import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.filesandf
 import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.processes.DeployedSoftwareComponentProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.processes.PortProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.processes.ProcessProperties;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.processes.actions.NotificationProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.processes.connectors.IntegrationConnectorProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.reports.*;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.reports.SurveyReportProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.topics.TopicProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.collections.CollectionProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.communities.CommunityProperties;
@@ -43,7 +41,6 @@ import org.odpi.openmetadata.frameworks.openmetadata.properties.glossaries.Gloss
 import org.odpi.openmetadata.frameworks.openmetadata.properties.glossaries.GlossaryTermProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.governance.*;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.informationsupplychains.InformationSupplyChainProperties;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.locations.LocationProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.projects.ProjectProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.schema.*;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.security.GovernanceZoneProperties;
@@ -52,11 +49,13 @@ import org.odpi.openmetadata.frameworks.openmetadata.properties.security.Securit
 import org.odpi.openmetadata.frameworks.openmetadata.properties.solutions.SolutionBlueprintProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.solutions.SolutionComponentProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.solutions.SolutionPortProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.surveyreports.*;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.validvalues.ValidValueDefinitionProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.search.ElementProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.search.NewElementProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.search.PropertyHelper;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
+import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 
 public class OpenMetadataElementBuilder
 {
@@ -106,7 +105,253 @@ public class OpenMetadataElementBuilder
             }
             else if (properties instanceof OpenMetadataRootProperties openMetadataRootProperties)
             {
-                if (properties instanceof InformalTagProperties informalTagProperties)
+                if (properties instanceof AnnotationProperties annotationProperties)
+                {
+                    elementProperties = propertyHelper.addStringProperty(elementProperties,
+                                                                         OpenMetadataProperty.ANNOTATION_TYPE.name,
+                                                                         annotationProperties.getAnnotationType());
+
+                    elementProperties = propertyHelper.addStringProperty(elementProperties,
+                                                                         OpenMetadataProperty.SUMMARY.name,
+                                                                         annotationProperties.getSummary());
+
+                    elementProperties = propertyHelper.addIntProperty(elementProperties,
+                                                                      OpenMetadataProperty.CONFIDENCE_LEVEL.name,
+                                                                      annotationProperties.getConfidenceLevel());
+
+                    elementProperties = propertyHelper.addStringProperty(elementProperties,
+                                                                         OpenMetadataProperty.EXPRESSION.name,
+                                                                         annotationProperties.getExpression());
+                    elementProperties = propertyHelper.addStringProperty(elementProperties,
+                                                                         OpenMetadataProperty.EXPLANATION.name,
+                                                                         annotationProperties.getExplanation());
+                    elementProperties = propertyHelper.addStringProperty(elementProperties,
+                                                                         OpenMetadataProperty.ANALYSIS_STEP.name,
+                                                                         annotationProperties.getAnalysisStep());
+                    elementProperties = propertyHelper.addStringProperty(elementProperties,
+                                                                         OpenMetadataProperty.JSON_PROPERTIES.name,
+                                                                         annotationProperties.getJsonProperties());
+                    elementProperties = propertyHelper.addStringMapProperty(elementProperties,
+                                                                            OpenMetadataProperty.ADDITIONAL_PROPERTIES.name,
+                                                                            annotationProperties.getAdditionalProperties());
+
+                    if (properties instanceof DataFieldAnnotationProperties)
+                    {
+                        if (properties instanceof ClassificationAnnotationProperties classificationAnnotationProperties)
+                        {
+                            elementProperties = propertyHelper.addStringMapProperty(elementProperties,
+                                                                                    OpenMetadataProperty.CANDIDATE_CLASSIFICATIONS.name,
+                                                                                    classificationAnnotationProperties.getCandidateClassifications());
+                        }
+                        else if (properties instanceof DataClassAnnotationProperties dataClassAnnotationProperties)
+                        {
+                            elementProperties = propertyHelper.addStringArrayProperty(elementProperties,
+                                                                                      OpenMetadataProperty.CANDIDATE_DATA_CLASS_GUIDS.name,
+                                                                                      dataClassAnnotationProperties.getCandidateDataClassGUIDs());
+
+                            elementProperties = propertyHelper.addLongProperty(elementProperties,
+                                                                               OpenMetadataProperty.MATCHING_VALUES.name,
+                                                                               dataClassAnnotationProperties.getMatchingValues());
+
+                            elementProperties = propertyHelper.addLongProperty(elementProperties,
+                                                                               OpenMetadataProperty.NON_MATCHING_VALUES.name,
+                                                                               dataClassAnnotationProperties.getNonMatchingValues());
+                        }
+                        else if (properties instanceof FingerprintAnnotationProperties fingerprintAnnotationProperties)
+                        {
+                            elementProperties = propertyHelper.addStringProperty(elementProperties,
+                                                                                 OpenMetadataProperty.FINGERPRINT.name,
+                                                                                 fingerprintAnnotationProperties.getFingerprint());
+
+                            elementProperties = propertyHelper.addStringProperty(elementProperties,
+                                                                                 OpenMetadataProperty.FINGERPRINT_ALGORITHM.name,
+                                                                                 fingerprintAnnotationProperties.getFingerprintAlgorithm());
+
+                            elementProperties = propertyHelper.addLongProperty(elementProperties,
+                                                                               OpenMetadataProperty.HASH.name,
+                                                                               fingerprintAnnotationProperties.getHash());
+
+                            elementProperties = propertyHelper.addStringProperty(elementProperties,
+                                                                                 OpenMetadataProperty.HASH_ALGORITHM.name,
+                                                                                 fingerprintAnnotationProperties.getHashAlgorithm());
+                        }
+                        else if (properties instanceof QualityAnnotationProperties qualityAnnotationProperties)
+                        {
+                            elementProperties = propertyHelper.addStringProperty(elementProperties,
+                                                                                 OpenMetadataProperty.QUALITY_DIMENSION.name,
+                                                                                 qualityAnnotationProperties.getQualityDimension());
+
+                            elementProperties = propertyHelper.addIntProperty(elementProperties,
+                                                                              OpenMetadataProperty.QUALITY_SCORE.name,
+                                                                              qualityAnnotationProperties.getQualityScore());
+                        }
+                        else if (properties instanceof RelationshipAdviceAnnotationProperties relationshipAdviceAnnotationProperties)
+                        {
+                            elementProperties = propertyHelper.addStringProperty(elementProperties,
+                                                                                 OpenMetadataProperty.RELATED_ENTITY_GUID.name,
+                                                                                 relationshipAdviceAnnotationProperties.getRelatedEntityGUID());
+
+                            elementProperties = propertyHelper.addStringProperty(elementProperties,
+                                                                                 OpenMetadataProperty.RELATIONSHIP_TYPE_NAME.name,
+                                                                                 relationshipAdviceAnnotationProperties.getRelationshipTypeName());
+
+                            elementProperties = propertyHelper.addStringMapProperty(elementProperties,
+                                                                                    OpenMetadataProperty.RELATIONSHIP_PROPERTIES.name,
+                                                                                    relationshipAdviceAnnotationProperties.getRelationshipProperties());
+                        }
+                        else if (properties instanceof RequestForActionAnnotationProperties requestForActionAnnotationProperties)
+                        {
+                            elementProperties = propertyHelper.addStringProperty(elementProperties,
+                                                                                 OpenMetadataProperty.ACTION_SOURCE_NAME.name,
+                                                                                 requestForActionAnnotationProperties.getActionSourceName());
+
+                            elementProperties = propertyHelper.addStringProperty(elementProperties,
+                                                                                 OpenMetadataProperty.ACTION_REQUESTED.name,
+                                                                                 requestForActionAnnotationProperties.getActionRequested());
+
+                            elementProperties = propertyHelper.addStringMapProperty(elementProperties,
+                                                                                    OpenMetadataProperty.ACTION_PROPERTIES.name,
+                                                                                    requestForActionAnnotationProperties.getActionProperties());
+                        }
+                        else if (properties instanceof ResourceProfileAnnotationProperties resourceProfileAnnotationProperties)
+                        {
+                            elementProperties = propertyHelper.addStringArrayProperty(elementProperties,
+                                                                                      OpenMetadataProperty.PROFILE_PROPERTY_NAMES.name,
+                                                                                      resourceProfileAnnotationProperties.getProfilePropertyNames());
+
+                            elementProperties = propertyHelper.addIntProperty(elementProperties,
+                                                                              OpenMetadataProperty.LENGTH.name,
+                                                                              resourceProfileAnnotationProperties.getLength());
+
+                            elementProperties = propertyHelper.addStringProperty(elementProperties,
+                                                                                 OpenMetadataProperty.INFERRED_DATA_TYPE.name,
+                                                                                 resourceProfileAnnotationProperties.getInferredDataType());
+
+                            elementProperties = propertyHelper.addStringProperty(elementProperties,
+                                                                                 OpenMetadataProperty.INFERRED_FORMAT.name,
+                                                                                 resourceProfileAnnotationProperties.getInferredFormat());
+
+                            elementProperties = propertyHelper.addIntProperty(elementProperties,
+                                                                              OpenMetadataProperty.INFERRED_LENGTH.name,
+                                                                              resourceProfileAnnotationProperties.getInferredLength());
+
+                            elementProperties = propertyHelper.addIntProperty(elementProperties,
+                                                                              OpenMetadataProperty.INFERRED_PRECISION.name,
+                                                                              resourceProfileAnnotationProperties.getInferredPrecision());
+
+                            elementProperties = propertyHelper.addIntProperty(elementProperties,
+                                                                              OpenMetadataProperty.INFERRED_SCALE.name,
+                                                                              resourceProfileAnnotationProperties.getInferredScale());
+
+                            elementProperties = propertyHelper.addDateProperty(elementProperties,
+                                                                               OpenMetadataProperty.PROFILE_START_DATE.name,
+                                                                               resourceProfileAnnotationProperties.getProfileStartDate());
+
+                            elementProperties = propertyHelper.addDateProperty(elementProperties,
+                                                                               OpenMetadataProperty.PROFILE_END_DATE.name,
+                                                                               resourceProfileAnnotationProperties.getProfileStartDate());
+
+                            elementProperties = propertyHelper.addStringMapProperty(elementProperties,
+                                                                                    OpenMetadataProperty.PROFILE_PROPERTIES.name,
+                                                                                    resourceProfileAnnotationProperties.getProfileProperties());
+
+                            elementProperties = propertyHelper.addBooleanMapProperty(elementProperties,
+                                                                                     OpenMetadataProperty.PROFILE_FLAGS.name,
+                                                                                     resourceProfileAnnotationProperties.getProfileFlags());
+
+                            elementProperties = propertyHelper.addDateMapProperty(elementProperties,
+                                                                                  OpenMetadataProperty.PROFILE_DATES.name,
+                                                                                  resourceProfileAnnotationProperties.getProfileDates());
+
+                            elementProperties = propertyHelper.addLongMapProperty(elementProperties,
+                                                                                  OpenMetadataProperty.PROFILE_COUNTS.name,
+                                                                                  resourceProfileAnnotationProperties.getProfileCounts());
+
+                            elementProperties = propertyHelper.addDoubleMapProperty(elementProperties,
+                                                                                    OpenMetadataProperty.PROFILE_DOUBLES.name,
+                                                                                    resourceProfileAnnotationProperties.getProfileDoubles());
+
+                            elementProperties = propertyHelper.addStringArrayProperty(elementProperties,
+                                                                                      OpenMetadataProperty.VALUE_LIST.name,
+                                                                                      resourceProfileAnnotationProperties.getValueList());
+
+                            elementProperties = propertyHelper.addIntMapProperty(elementProperties,
+                                                                                 OpenMetadataProperty.VALUE_COUNT.name,
+                                                                                 resourceProfileAnnotationProperties.getValueCount());
+
+                            elementProperties = propertyHelper.addStringProperty(elementProperties,
+                                                                                 OpenMetadataProperty.VALUE_RANGE_FROM.name,
+                                                                                 resourceProfileAnnotationProperties.getValueRangeFrom());
+
+                            elementProperties = propertyHelper.addStringProperty(elementProperties,
+                                                                                 OpenMetadataProperty.VALUE_RANGE_TO.name,
+                                                                                 resourceProfileAnnotationProperties.getValueRangeTo());
+
+                            elementProperties = propertyHelper.addStringProperty(elementProperties,
+                                                                                 OpenMetadataProperty.AVERAGE_VALUE.name,
+                                                                                 resourceProfileAnnotationProperties.getAverageValue());
+
+                        }
+                        else if (properties instanceof SemanticAnnotationProperties semanticAnnotationProperties)
+                        {
+                            elementProperties = propertyHelper.addStringProperty(elementProperties,
+                                                                                 OpenMetadataProperty.INFORMAL_TERM.name,
+                                                                                 semanticAnnotationProperties.getInformalTerm());
+
+                            elementProperties = propertyHelper.addStringProperty(elementProperties,
+                                                                                 OpenMetadataProperty.SUBJECT_AREA_NAME.name,
+                                                                                 semanticAnnotationProperties.getSubjectAreaName());
+
+                            elementProperties = propertyHelper.addStringArrayProperty(elementProperties,
+                                                                                      OpenMetadataProperty.CANDIDATE_GLOSSARY_TERM_GUIDS.name,
+                                                                                      semanticAnnotationProperties.getCandidateGlossaryTermGUIDs());
+
+                            elementProperties = propertyHelper.addStringArrayProperty(elementProperties,
+                                                                                      OpenMetadataProperty.CANDIDATE_GLOSSARY_FOLDER_GUIDS.name,
+                                                                                      semanticAnnotationProperties.getCandidateGlossaryFolderGUIDs());
+                        }
+                    }
+                    else if (properties instanceof ResourceMeasureAnnotationProperties resourceMeasureAnnotationProperties)
+                    {
+                        elementProperties = propertyHelper.addStringMapProperty(elementProperties,
+                                                                                OpenMetadataProperty.RESOURCE_PROPERTIES.name,
+                                                                                resourceMeasureAnnotationProperties.getResourceProperties());
+
+                        if (properties instanceof ResourcePhysicalStatusAnnotationProperties resourcePhysicalStatusAnnotationProperties)
+                        {
+                            elementProperties = propertyHelper.addDateProperty(elementProperties,
+                                                                               OpenMetadataProperty.RESOURCE_CREATE_TIME.name,
+                                                                               resourcePhysicalStatusAnnotationProperties.getResourceCreateTime());
+
+                            elementProperties = propertyHelper.addDateProperty(elementProperties,
+                                                                               OpenMetadataProperty.RESOURCE_UPDATE_TIME.name,
+                                                                               resourcePhysicalStatusAnnotationProperties.getResourceUpdateTime());
+
+                            elementProperties = propertyHelper.addDateProperty(elementProperties,
+                                                                               OpenMetadataProperty.RESOURCE_LAST_ACCESSED_TIME.name,
+                                                                               resourcePhysicalStatusAnnotationProperties.getResourceLastAccessedTime());
+
+                            elementProperties = propertyHelper.addLongProperty(elementProperties,
+                                                                               OpenMetadataProperty.SIZE.name,
+                                                                               resourcePhysicalStatusAnnotationProperties.getSize());
+
+                            elementProperties = propertyHelper.addStringProperty(elementProperties,
+                                                                                 OpenMetadataProperty.ENCODING_TYPE.name,
+                                                                                 resourcePhysicalStatusAnnotationProperties.getEncodingType());
+                        }
+                    }
+                    else if (properties instanceof SchemaAnalysisAnnotationProperties schemaAnalysisAnnotationProperties)
+                    {
+                        elementProperties = propertyHelper.addStringProperty(elementProperties,
+                                                                             OpenMetadataProperty.SCHEMA_NAME.name,
+                                                                             schemaAnalysisAnnotationProperties.getSchemaName());
+
+                        elementProperties = propertyHelper.addStringProperty(elementProperties,
+                                                                             OpenMetadataProperty.SCHEMA_TYPE.name,
+                                                                             schemaAnalysisAnnotationProperties.getSchemaType());
+                    }
+                }
+                else if (properties instanceof InformalTagProperties informalTagProperties)
                 {
                     elementProperties = propertyHelper.addStringProperty(elementProperties,
                                                                          OpenMetadataProperty.DISPLAY_NAME.name,
@@ -411,6 +656,26 @@ public class OpenMetadataElementBuilder
                                     elementProperties = propertyHelper.addStringProperty(elementProperties,
                                                                                          OpenMetadataProperty.USER_RESPONSE.name,
                                                                                          notificationProperties.getUserResponse());
+                                }
+                                else if (properties instanceof ReviewProperties reviewProperties)
+                                {
+                                    elementProperties = propertyHelper.addDateProperty(elementProperties,
+                                                                                         OpenMetadataProperty.REVIEW_DATE.name,
+                                                                                         reviewProperties.getReviewDate());
+                                    elementProperties = propertyHelper.addStringProperty(elementProperties,
+                                                                                         OpenMetadataProperty.COMMENT.name,
+                                                                                         reviewProperties.getComment());
+
+                                    if (properties instanceof AnnotationReviewProperties annotationReviewProperties)
+                                    {
+                                        if (annotationReviewProperties.getAnnotationStatus() != null)
+                                        {
+                                            elementProperties = propertyHelper.addEnumProperty(elementProperties,
+                                                                                               OpenMetadataProperty.ANNOTATION_STATUS.name,
+                                                                                               AnnotationStatus.getOpenTypeName(),
+                                                                                               annotationReviewProperties.getAnnotationStatus().getName());
+                                        }
+                                    }
                                 }
                             }
                         }

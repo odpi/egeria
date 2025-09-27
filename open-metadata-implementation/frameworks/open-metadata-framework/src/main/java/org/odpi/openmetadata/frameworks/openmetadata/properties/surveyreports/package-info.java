@@ -4,4 +4,4 @@
 /**
  * Property beans used on the Open Survey Framework interfaces.
  */
-package org.odpi.openmetadata.frameworks.opensurvey.properties;
+package org.odpi.openmetadata.frameworks.openmetadata.properties.surveyreports;

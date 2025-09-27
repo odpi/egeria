@@ -9,18 +9,20 @@ import org.odpi.openmetadata.frameworks.openmetadata.builders.OpenMetadataElemen
 import org.odpi.openmetadata.frameworks.openmetadata.builders.OpenMetadataRelationshipBuilder;
 import org.odpi.openmetadata.frameworks.openmetadata.client.OpenMetadataClient;
 import org.odpi.openmetadata.frameworks.openmetadata.converters.OpenMetadataRootConverter;
-import org.odpi.openmetadata.frameworks.openmetadata.converters.SolutionComponentConverter;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.ElementStatus;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.*;
 import org.odpi.openmetadata.frameworks.openmetadata.mermaid.OpenMetadataRootMermaidGraphBuilder;
-import org.odpi.openmetadata.frameworks.openmetadata.mermaid.SolutionComponentMermaidGraphBuilder;
+import org.odpi.openmetadata.frameworks.openmetadata.mermaid.SolutionBlueprintMermaidGraphBuilder;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.*;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.*;
 import org.odpi.openmetadata.frameworks.openmetadata.search.*;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.Map;
 
 /**
  * OpenMetadataHandlerBase provides a base class for the handlers.
@@ -487,142 +489,6 @@ public class OpenMetadataHandlerBase
                                                               elementGUID,
                                                               metadataSourceOptions,
                                                               status);
-    }
-
-
-    /**
-     * Return the solution component extracted from the open metadata element.
-     *
-     * @param userId              calling user
-     * @param openMetadataElement element extracted from the repository
-     * @param addParentContext    should parent information supply chains, segments and solution components be added?
-     * @param queryOptions        multiple options to control the query
-     * @param fullDisplay         print all elements
-     * @param methodName          calling method
-     * @return bean or null
-     * @throws PropertyServerException problem with the conversion process
-     */
-    protected SolutionComponentElement convertSolutionComponent(String              userId,
-                                                                OpenMetadataElement openMetadataElement,
-                                                                boolean             addParentContext,
-                                                                boolean             fullDisplay,
-                                                                QueryOptions        queryOptions,
-                                                                String              methodName) throws PropertyServerException
-    {
-        try
-        {
-            List<RelatedMetadataElement>   relatedMetadataElements      = new ArrayList<>();
-            List<RelatedMetadataElement>   relatedParentElements        = new ArrayList<>();
-            List<SolutionPortElement>      relatedPortElements          = new ArrayList<>();
-            List<SolutionComponentElement> relatedSubComponentsElements = new ArrayList<>();
-
-            QueryOptions workingQueryOptions= new QueryOptions(queryOptions);
-
-            workingQueryOptions.setStartFrom(0);
-            workingQueryOptions.setPageSize(openMetadataClient.getMaxPagingSize());
-
-            RelatedMetadataElementList relatedMetadataElementList = openMetadataClient.getRelatedMetadataElements(userId,
-                                                                                                                  openMetadataElement.getElementGUID(),
-                                                                                                                  0,
-                                                                                                                  null,
-                                                                                                                  workingQueryOptions);
-            while ((relatedMetadataElementList != null) && (relatedMetadataElementList.getElementList() != null))
-            {
-                for (RelatedMetadataElement relatedMetadataElement : relatedMetadataElementList.getElementList())
-                {
-                    if (relatedMetadataElement != null)
-                    {
-                        if (propertyHelper.isTypeOf(relatedMetadataElement, OpenMetadataType.SOLUTION_COMPOSITION_RELATIONSHIP.typeName))
-                        {
-                            if (relatedMetadataElement.getElementAtEnd1())
-                            {
-                                relatedParentElements.add(relatedMetadataElement);
-                            }
-                            else
-                            {
-                                relatedSubComponentsElements.add(this.convertSolutionComponent(userId,
-                                                                                               relatedMetadataElement.getElement(),
-                                                                                               addParentContext,
-                                                                                               fullDisplay,
-                                                                                               queryOptions,
-                                                                                               methodName));
-                            }
-                        }
-                        else if (propertyHelper.isTypeOf(relatedMetadataElement, OpenMetadataType.IMPLEMENTED_BY_RELATIONSHIP.typeName))
-                        {
-                            if (relatedMetadataElement.getElementAtEnd1())
-                            {
-                                relatedParentElements.add(relatedMetadataElement);
-                            }
-                            else
-                            {
-                                relatedMetadataElements.add(relatedMetadataElement);
-                            }
-                        }
-                        else if (propertyHelper.isTypeOf(relatedMetadataElement, OpenMetadataType.SOLUTION_COMPONENT_PORT_RELATIONSHIP.typeName))
-                        {
-                            relatedPortElements.add(this.convertSolutionPort(userId, relatedMetadataElement, queryOptions, methodName));
-                        }
-                        else
-                        {
-                            relatedMetadataElements.add(relatedMetadataElement);
-                        }
-                    }
-                }
-
-                workingQueryOptions.setStartFrom(workingQueryOptions.getStartFrom() + openMetadataClient.getMaxPagingSize());
-
-                relatedMetadataElementList = openMetadataClient.getRelatedMetadataElements(userId,
-                                                                                           openMetadataElement.getElementGUID(),
-                                                                                           0,
-                                                                                           null,
-                                                                                           workingQueryOptions);
-            }
-
-            SolutionComponentConverter<SolutionComponentElement> converter = new SolutionComponentConverter<>(propertyHelper, localServiceName, localServerName, relatedSubComponentsElements, relatedPortElements);
-            SolutionComponentElement solutionComponentElement = converter.getNewComplexBean(SolutionComponentElement.class,
-                                                                                            openMetadataElement,
-                                                                                            relatedMetadataElements,
-                                                                                            methodName);
-
-            if (solutionComponentElement != null)
-            {
-                if (addParentContext)
-                {
-                    solutionComponentElement.setContext(this.getInformationSupplyChainContext(userId,
-                                                                                              relatedParentElements,
-                                                                                              queryOptions,
-                                                                                              methodName));
-                }
-
-                SolutionComponentMermaidGraphBuilder graphBuilder = new SolutionComponentMermaidGraphBuilder(solutionComponentElement,
-                                                                                                             fullDisplay);
-
-                solutionComponentElement.setMermaidGraph(graphBuilder.getMermaidGraph());
-            }
-
-            return solutionComponentElement;
-        }
-        catch (Exception error)
-        {
-            if (auditLog != null)
-            {
-                auditLog.logException(methodName,
-                                      OMFAuditCode.UNEXPECTED_CONVERTER_EXCEPTION.getMessageDefinition(error.getClass().getName(),
-                                                                                                       methodName,
-                                                                                                       localServiceName,
-                                                                                                       error.getMessage()),
-                                      error);
-            }
-
-            throw new PropertyServerException(OMFErrorCode.UNEXPECTED_CONVERTER_EXCEPTION.getMessageDefinition(error.getClass().getName(),
-                                                                                                               methodName,
-                                                                                                               localServiceName,
-                                                                                                               error.getMessage()),
-                                              error.getClass().getName(),
-                                              methodName,
-                                              error);
-        }
     }
 
 
@@ -1240,6 +1106,14 @@ public class OpenMetadataHandlerBase
             OpenMetadataRootMermaidGraphBuilder graphBuilder = new OpenMetadataRootMermaidGraphBuilder(rootElement);
 
             rootElement.setMermaidGraph(graphBuilder.getMermaidGraph());
+
+            if (rootElement.getContainsSolutionComponents() != null)
+            {
+                SolutionBlueprintMermaidGraphBuilder solutionBlueprintMermaidGraphBuilder = new SolutionBlueprintMermaidGraphBuilder(rootElement);
+
+                rootElement.setSolutionBlueprintMermaidGraph(solutionBlueprintMermaidGraphBuilder.getMermaidGraph());
+            }
+
         }
 
         return rootElement;
