@@ -169,9 +169,8 @@ loadScripts(document, 'script');</script>
 <div class="block">Remove a valid value for a property.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../commonservices/ffdc/rest/GUIDResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">GUIDResponse</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#createMetadataElementFromTemplate(java.lang.String,java.lang.String,boolean,org.odpi.openmetadata.frameworkservices.omf.rest.OpenMetadataTemplateRequestBody)" class="member-name-link">createMetadataElementFromTemplate</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#createMetadataElementFromTemplate(java.lang.String,java.lang.String,org.odpi.openmetadata.frameworkservices.omf.rest.OpenMetadataTemplateRequestBody)" class="member-name-link">createMetadataElementFromTemplate</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
- boolean&nbsp;allowRetrieve,
  <a href="../rest/OpenMetadataTemplateRequestBody.html" title="class in org.odpi.openmetadata.frameworkservices.omf.rest">OpenMetadataTemplateRequestBody</a>&nbsp;requestBody)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Create a new metadata element in the metadata store using a template.</div>
@@ -1263,11 +1262,10 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
-<section class="detail" id="createMetadataElementFromTemplate(java.lang.String,java.lang.String,boolean,org.odpi.openmetadata.frameworkservices.omf.rest.OpenMetadataTemplateRequestBody)">
+<section class="detail" id="createMetadataElementFromTemplate(java.lang.String,java.lang.String,org.odpi.openmetadata.frameworkservices.omf.rest.OpenMetadataTemplateRequestBody)">
 <h3>createMetadataElementFromTemplate</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../../commonservices/ffdc/rest/GUIDResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">GUIDResponse</a></span>&nbsp;<span class="element-name">createMetadataElementFromTemplate</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
- boolean&nbsp;allowRetrieve,
  <a href="../rest/OpenMetadataTemplateRequestBody.html" title="class in org.odpi.openmetadata.frameworkservices.omf.rest">OpenMetadataTemplateRequestBody</a>&nbsp;requestBody)</span></div>
 <div class="block">Create a new metadata element in the metadata store using a template.  The type name comes from the open metadata types.
  The selected type also controls the names and types of the properties that are allowed.</div>
@@ -1275,7 +1273,6 @@ loadScripts(document, 'script');</script>
 <dt>Parameters:</dt>
 <dd><code>serverName</code> - name of server instance to route request to</dd>
 <dd><code>userId</code> - caller's userId</dd>
-<dd><code>allowRetrieve</code> - can an existing element be returned if it exists</dd>
 <dd><code>requestBody</code> - properties for the new element</dd>
 <dt>Returns:</dt>
 <dd>unique identifier of the new metadata element

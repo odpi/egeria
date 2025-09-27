@@ -91,9 +91,10 @@ loadScripts(document, 'script');</script>
 <div class="summary-table two-column-summary">
 <div class="table-header col-first">Constructor</div>
 <div class="table-header col-last">Description</div>
-<div class="col-constructor-name even-row-color"><code><a href="#%3Cinit%3E(java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.client.OpenMetadataClient,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String)" class="member-name-link">AnnotationStore</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
+<div class="col-constructor-name even-row-color"><code><a href="#%3Cinit%3E(java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.client.OpenMetadataClient,org.odpi.openmetadata.frameworks.openmetadata.handlers.AnnotationHandler,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String)" class="member-name-link">AnnotationStore</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;assetGUID,
  <a href="../openmetadata/client/OpenMetadataClient.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.client">OpenMetadataClient</a>&nbsp;openMetadataStore,
+ <a href="../openmetadata/handlers/AnnotationHandler.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.handlers">AnnotationHandler</a>&nbsp;annotationHandler,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;externalSourceGUID,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;externalSourceName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;reportQualifiedName,
@@ -120,14 +121,14 @@ loadScripts(document, 'script');</script>
 <div class="table-header col-second">Method</div>
 <div class="table-header col-last">Description</div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#addAnnotation(org.odpi.openmetadata.frameworks.opensurvey.properties.Annotation,java.lang.String)" class="member-name-link">addAnnotation</a><wbr>(<a href="properties/Annotation.html" title="class in org.odpi.openmetadata.frameworks.opensurvey.properties">Annotation</a>&nbsp;annotation,
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#addAnnotation(org.odpi.openmetadata.frameworks.openmetadata.properties.surveyreports.AnnotationProperties,java.lang.String)" class="member-name-link">addAnnotation</a><wbr>(<a href="../openmetadata/properties/surveyreports/AnnotationProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.surveyreports">AnnotationProperties</a>&nbsp;annotationProperties,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;associatedElementGUID)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Add a new annotation to the annotation store as a top level annotation linked directly off of the report.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#addAnnotationExtension(java.lang.String,org.odpi.openmetadata.frameworks.opensurvey.properties.Annotation)" class="member-name-link">addAnnotationExtension</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;parentAnnotationGUID,
- <a href="properties/Annotation.html" title="class in org.odpi.openmetadata.frameworks.opensurvey.properties">Annotation</a>&nbsp;annotation)</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#addAnnotationExtension(java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.properties.surveyreports.AnnotationProperties)" class="member-name-link">addAnnotationExtension</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;parentAnnotationGUID,
+ <a href="../openmetadata/properties/surveyreports/AnnotationProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.surveyreports">AnnotationProperties</a>&nbsp;annotationProperties)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Add a new annotation and link it to an existing annotation.</div>
 </div>
@@ -136,96 +137,105 @@ loadScripts(document, 'script');</script>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Remove an annotation from the annotation store.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getAnalysisStep()" class="member-name-link">getAnalysisStep</a>()</code></div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#detachRequestForActionTarget(java.lang.String,java.lang.String)" class="member-name-link">detachRequestForActionTarget</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;annotationGUID,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;elementGUID)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Detach a request for action annotation from its intended target element.</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getAnalysisStep()" class="member-name-link">getAnalysisStep</a>()</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Return the locally defined analysis step.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="properties/Annotation.html" title="class in org.odpi.openmetadata.frameworks.opensurvey.properties">Annotation</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getAnnotation(java.lang.String)" class="member-name-link">getAnnotation</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;annotationGUID)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../openmetadata/metadataelements/OpenMetadataRootElement.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.metadataelements">OpenMetadataRootElement</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getAnnotation(java.lang.String)" class="member-name-link">getAnnotation</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;annotationGUID)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Return a specific annotation stored in the annotation store (previous or new).</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="properties/Annotation.html" title="class in org.odpi.openmetadata.frameworks.opensurvey.properties">Annotation</a>&gt;</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getAnnotationsForElement(java.lang.String,int,int)" class="member-name-link">getAnnotationsForElement</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;elementGUID,
- int&nbsp;startFrom,
- int&nbsp;pageSize)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../openmetadata/metadataelements/OpenMetadataRootElement.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.metadataelements">OpenMetadataRootElement</a>&gt;</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getAnnotationsForElement(java.lang.String)" class="member-name-link">getAnnotationsForElement</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;elementGUID)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Return the list of Annotations created for the element by previous runs of the survey action service.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="properties/Annotation.html" title="class in org.odpi.openmetadata.frameworks.opensurvey.properties">Annotation</a>&gt;</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getExtendedAnnotations(java.lang.String,int,int)" class="member-name-link">getExtendedAnnotations</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;annotationGUID,
- int&nbsp;startFrom,
- int&nbsp;pageSize)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../openmetadata/metadataelements/OpenMetadataRootElement.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.metadataelements">OpenMetadataRootElement</a>&gt;</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getExtendedAnnotations(java.lang.String)" class="member-name-link">getExtendedAnnotations</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;annotationGUID)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Return any annotations attached to this annotation.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>protected <a href="../openmetadata/search/GetOptions.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.search">GetOptions</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getGetOptions()" class="member-name-link">getGetOptions</a>()</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>protected <a href="../openmetadata/search/GetOptions.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.search">GetOptions</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getGetOptions()" class="member-name-link">getGetOptions</a>()</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Return the default get options.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>protected <a href="../openmetadata/search/MetadataSourceOptions.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.search">MetadataSourceOptions</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getMetadataSourceOptions()" class="member-name-link">getMetadataSourceOptions</a>()</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>protected <a href="../openmetadata/search/MetadataSourceOptions.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.search">MetadataSourceOptions</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getMetadataSourceOptions()" class="member-name-link">getMetadataSourceOptions</a>()</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Return the default metadata source options.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="properties/Annotation.html" title="class in org.odpi.openmetadata.frameworks.opensurvey.properties">Annotation</a>&gt;</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getNewAnnotations(int,int)" class="member-name-link">getNewAnnotations</a><wbr>(int&nbsp;startFrom,
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../openmetadata/metadataelements/OpenMetadataRootElement.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.metadataelements">OpenMetadataRootElement</a>&gt;</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getNewAnnotations(int,int)" class="member-name-link">getNewAnnotations</a><wbr>(int&nbsp;startFrom,
  int&nbsp;pageSize)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Return the current list of annotations created by this survey run.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>protected <a href="../openmetadata/search/QueryOptions.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.search">QueryOptions</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getQueryOptions()" class="member-name-link">getQueryOptions</a>()</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Return the default get options.</div>
-</div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>protected <a href="../openmetadata/search/QueryOptions.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.search">QueryOptions</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getQueryOptions(int,int)" class="member-name-link">getQueryOptions</a><wbr>(int&nbsp;startFrom,
- int&nbsp;pageSize)</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getQueryOptions()" class="member-name-link">getQueryOptions</a>()</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Return the default get options.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getReportDisplayName()" class="member-name-link">getReportDisplayName</a>()</code></div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>protected <a href="../openmetadata/search/QueryOptions.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.search">QueryOptions</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getQueryOptions(int,int)" class="member-name-link">getQueryOptions</a><wbr>(int&nbsp;startFrom,
+ int&nbsp;pageSize)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Return the default get options.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getReportDisplayName()" class="member-name-link">getReportDisplayName</a>()</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Return the display name of the survey report that will result from this survey request.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getReportQualifiedName()" class="member-name-link">getReportQualifiedName</a>()</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getReportQualifiedName()" class="member-name-link">getReportQualifiedName</a>()</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Return the unique name of the survey report that will result from this survey request.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getSurveyDescription()" class="member-name-link">getSurveyDescription</a>()</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getSurveyDescription()" class="member-name-link">getSurveyDescription</a>()</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Return the description for the survey report that will result from this survey request.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getSurveyPurpose()" class="member-name-link">getSurveyPurpose</a>()</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getSurveyPurpose()" class="member-name-link">getSurveyPurpose</a>()</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Return the purpose of the survey.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getSurveyReportGUID()" class="member-name-link">getSurveyReportGUID</a>()</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getSurveyReportGUID()" class="member-name-link">getSurveyReportGUID</a>()</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Return the report identifier for this survey context.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>boolean</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#isForDuplicateProcessing()" class="member-name-link">isForDuplicateProcessing</a>()</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>boolean</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#isForDuplicateProcessing()" class="member-name-link">isForDuplicateProcessing</a>()</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Return the forDuplicateProcessing setting.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>boolean</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#isForLineage()" class="member-name-link">isForLineage</a>()</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>boolean</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#isForLineage()" class="member-name-link">isForLineage</a>()</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Return the forLineage setting.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>boolean</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#isUseCurrentEffectiveTime()" class="member-name-link">isUseCurrentEffectiveTime</a>()</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>boolean</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#isUseCurrentEffectiveTime()" class="member-name-link">isUseCurrentEffectiveTime</a>()</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Return the boolean setting for whether the current time for requests or null.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#linkRequestForActionTarget(java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.properties.surveyreports.RequestForActionTargetProperties)" class="member-name-link">linkRequestForActionTarget</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;annotationGUID,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;elementGUID,
+ <a href="../openmetadata/properties/surveyreports/RequestForActionTargetProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.surveyreports">RequestForActionTargetProperties</a>&nbsp;relationshipProperties)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Attach a request for action annotation to the element that needs attention.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setAnalysisStep(java.lang.String)" class="member-name-link">setAnalysisStep</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;analysisStep)</code></div>
@@ -278,7 +288,8 @@ loadScripts(document, 'script');</script>
 <div class="block">Set up the boolean setting for whether the current time for requests or null.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#updateAnnotation(org.odpi.openmetadata.frameworks.opensurvey.properties.Annotation)" class="member-name-link">updateAnnotation</a><wbr>(<a href="properties/Annotation.html" title="class in org.odpi.openmetadata.frameworks.opensurvey.properties">Annotation</a>&nbsp;annotation)</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#updateAnnotation(java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.properties.surveyreports.AnnotationProperties)" class="member-name-link">updateAnnotation</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;annotationGUID,
+ <a href="../openmetadata/properties/surveyreports/AnnotationProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.surveyreports">AnnotationProperties</a>&nbsp;annotationProperties)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Replace the current properties of an annotation.</div>
 </div>
@@ -300,11 +311,12 @@ loadScripts(document, 'script');</script>
 <h2>Constructor Details</h2>
 <ul class="member-list">
 <li>
-<section class="detail" id="&lt;init&gt;(java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.client.OpenMetadataClient,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String)">
+<section class="detail" id="&lt;init&gt;(java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.client.OpenMetadataClient,org.odpi.openmetadata.frameworks.openmetadata.handlers.AnnotationHandler,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String)">
 <h3>AnnotationStore</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="element-name">AnnotationStore</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;assetGUID,
  <a href="../openmetadata/client/OpenMetadataClient.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.client">OpenMetadataClient</a>&nbsp;openMetadataStore,
+ <a href="../openmetadata/handlers/AnnotationHandler.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.handlers">AnnotationHandler</a>&nbsp;annotationHandler,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;externalSourceGUID,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;externalSourceName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;reportQualifiedName,
@@ -322,6 +334,7 @@ loadScripts(document, 'script');</script>
 <dd><code>userId</code> - calling user</dd>
 <dd><code>assetGUID</code> - unique of the asset that describes the resource being surveyed</dd>
 <dd><code>openMetadataStore</code> - access to the open metadata repositories</dd>
+<dd><code>annotationHandler</code> - client capable of managing annotation</dd>
 <dd><code>externalSourceGUID</code> - unique identifier of the external source that is supplying the survey data</dd>
 <dd><code>externalSourceName</code> - unique name of the external source that is supplying the survey data</dd>
 <dd><code>reportQualifiedName</code> - qualified name of report</dd>
@@ -600,12 +613,10 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
-<section class="detail" id="getAnnotationsForElement(java.lang.String,int,int)">
+<section class="detail" id="getAnnotationsForElement(java.lang.String)">
 <h3>getAnnotationsForElement</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="properties/Annotation.html" title="class in org.odpi.openmetadata.frameworks.opensurvey.properties">Annotation</a>&gt;</span>&nbsp;<span class="element-name">getAnnotationsForElement</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;elementGUID,
- int&nbsp;startFrom,
- int&nbsp;pageSize)</span>
-                                          throws <span class="exceptions"><a href="../openmetadata/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">InvalidParameterException</a>,
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../openmetadata/metadataelements/OpenMetadataRootElement.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.metadataelements">OpenMetadataRootElement</a>&gt;</span>&nbsp;<span class="element-name">getAnnotationsForElement</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;elementGUID)</span>
+                                                       throws <span class="exceptions"><a href="../openmetadata/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">InvalidParameterException</a>,
 <a href="../openmetadata/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">UserNotAuthorizedException</a>,
 <a href="../openmetadata/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">PropertyServerException</a></span></div>
 <div class="block">Return the list of Annotations created for the element by previous runs of the survey action service.
@@ -613,8 +624,6 @@ loadScripts(document, 'script');</script>
 <dl class="notes">
 <dt>Parameters:</dt>
 <dd><code>elementGUID</code> - unique identifier of the element to query</dd>
-<dd><code>startFrom</code> - starting position in the list.</dd>
-<dd><code>pageSize</code> - maximum number of elements that can be returned</dd>
 <dt>Returns:</dt>
 <dd>list of annotation (or null if none are registered)</dd>
 <dt>Throws:</dt>
@@ -627,9 +636,9 @@ loadScripts(document, 'script');</script>
 <li>
 <section class="detail" id="getNewAnnotations(int,int)">
 <h3>getNewAnnotations</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="properties/Annotation.html" title="class in org.odpi.openmetadata.frameworks.opensurvey.properties">Annotation</a>&gt;</span>&nbsp;<span class="element-name">getNewAnnotations</span><wbr><span class="parameters">(int&nbsp;startFrom,
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../openmetadata/metadataelements/OpenMetadataRootElement.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.metadataelements">OpenMetadataRootElement</a>&gt;</span>&nbsp;<span class="element-name">getNewAnnotations</span><wbr><span class="parameters">(int&nbsp;startFrom,
  int&nbsp;pageSize)</span>
-                                   throws <span class="exceptions"><a href="../openmetadata/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">InvalidParameterException</a>,
+                                                throws <span class="exceptions"><a href="../openmetadata/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">InvalidParameterException</a>,
 <a href="../openmetadata/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">UserNotAuthorizedException</a>,
 <a href="../openmetadata/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">PropertyServerException</a></span></div>
 <div class="block">Return the current list of annotations created by this survey run.
@@ -648,22 +657,18 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
-<section class="detail" id="getExtendedAnnotations(java.lang.String,int,int)">
+<section class="detail" id="getExtendedAnnotations(java.lang.String)">
 <h3>getExtendedAnnotations</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="properties/Annotation.html" title="class in org.odpi.openmetadata.frameworks.opensurvey.properties">Annotation</a>&gt;</span>&nbsp;<span class="element-name">getExtendedAnnotations</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;annotationGUID,
- int&nbsp;startFrom,
- int&nbsp;pageSize)</span>
-                                        throws <span class="exceptions"><a href="../openmetadata/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">InvalidParameterException</a>,
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../openmetadata/metadataelements/OpenMetadataRootElement.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.metadataelements">OpenMetadataRootElement</a>&gt;</span>&nbsp;<span class="element-name">getExtendedAnnotations</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;annotationGUID)</span>
+                                                     throws <span class="exceptions"><a href="../openmetadata/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">InvalidParameterException</a>,
 <a href="../openmetadata/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">UserNotAuthorizedException</a>,
 <a href="../openmetadata/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">PropertyServerException</a></span></div>
 <div class="block">Return any annotations attached to this annotation.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
 <dd><code>annotationGUID</code> - parent annotation</dd>
-<dd><code>startFrom</code> - starting position in the list</dd>
-<dd><code>pageSize</code> - maximum number of annotations that can be returned.</dd>
 <dt>Returns:</dt>
-<dd>list of Annotation objects</dd>
+<dd>list of AnnotationProperties objects</dd>
 <dt>Throws:</dt>
 <dd><code><a href="../openmetadata/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">InvalidParameterException</a></code> - one of the parameters is null or invalid.</dd>
 <dd><code><a href="../openmetadata/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">UserNotAuthorizedException</a></code> - user not authorized to issue this request.</dd>
@@ -674,8 +679,8 @@ loadScripts(document, 'script');</script>
 <li>
 <section class="detail" id="getAnnotation(java.lang.String)">
 <h3>getAnnotation</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="properties/Annotation.html" title="class in org.odpi.openmetadata.frameworks.opensurvey.properties">Annotation</a></span>&nbsp;<span class="element-name">getAnnotation</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;annotationGUID)</span>
-                         throws <span class="exceptions"><a href="../openmetadata/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">InvalidParameterException</a>,
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../openmetadata/metadataelements/OpenMetadataRootElement.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.metadataelements">OpenMetadataRootElement</a></span>&nbsp;<span class="element-name">getAnnotation</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;annotationGUID)</span>
+                                      throws <span class="exceptions"><a href="../openmetadata/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">InvalidParameterException</a>,
 <a href="../openmetadata/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">UserNotAuthorizedException</a>,
 <a href="../openmetadata/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">PropertyServerException</a></span></div>
 <div class="block">Return a specific annotation stored in the annotation store (previous or new).</div>
@@ -692,9 +697,9 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
-<section class="detail" id="addAnnotation(org.odpi.openmetadata.frameworks.opensurvey.properties.Annotation,java.lang.String)">
+<section class="detail" id="addAnnotation(org.odpi.openmetadata.frameworks.openmetadata.properties.surveyreports.AnnotationProperties,java.lang.String)">
 <h3>addAnnotation</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">addAnnotation</span><wbr><span class="parameters">(<a href="properties/Annotation.html" title="class in org.odpi.openmetadata.frameworks.opensurvey.properties">Annotation</a>&nbsp;annotation,
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">addAnnotation</span><wbr><span class="parameters">(<a href="../openmetadata/properties/surveyreports/AnnotationProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.surveyreports">AnnotationProperties</a>&nbsp;annotationProperties,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;associatedElementGUID)</span>
                      throws <span class="exceptions"><a href="../openmetadata/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">InvalidParameterException</a>,
 <a href="../openmetadata/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">UserNotAuthorizedException</a>,
@@ -702,7 +707,7 @@ loadScripts(document, 'script');</script>
 <div class="block">Add a new annotation to the annotation store as a top level annotation linked directly off of the report.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
-<dd><code>annotation</code> - annotation object</dd>
+<dd><code>annotationProperties</code> - annotation object</dd>
 <dd><code>associatedElementGUID</code> - unique identifier of the element to associate this annotation with
                               (it is associated with the survey report automatically).
                               This value may be null to indicate that it is only to be linked to the report.</dd>
@@ -716,10 +721,10 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
-<section class="detail" id="addAnnotationExtension(java.lang.String,org.odpi.openmetadata.frameworks.opensurvey.properties.Annotation)">
+<section class="detail" id="addAnnotationExtension(java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.properties.surveyreports.AnnotationProperties)">
 <h3>addAnnotationExtension</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">addAnnotationExtension</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;parentAnnotationGUID,
- <a href="properties/Annotation.html" title="class in org.odpi.openmetadata.frameworks.opensurvey.properties">Annotation</a>&nbsp;annotation)</span>
+ <a href="../openmetadata/properties/surveyreports/AnnotationProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.surveyreports">AnnotationProperties</a>&nbsp;annotationProperties)</span>
                               throws <span class="exceptions"><a href="../openmetadata/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">InvalidParameterException</a>,
 <a href="../openmetadata/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">UserNotAuthorizedException</a>,
 <a href="../openmetadata/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">PropertyServerException</a></span></div>
@@ -727,7 +732,7 @@ loadScripts(document, 'script');</script>
 <dl class="notes">
 <dt>Parameters:</dt>
 <dd><code>parentAnnotationGUID</code> - unique identifier of the annotation that this new one is to be attached to</dd>
-<dd><code>annotation</code> - annotation object</dd>
+<dd><code>annotationProperties</code> - annotation object</dd>
 <dt>Returns:</dt>
 <dd>unique identifier of new annotation</dd>
 <dt>Throws:</dt>
@@ -738,20 +743,63 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
-<section class="detail" id="updateAnnotation(org.odpi.openmetadata.frameworks.opensurvey.properties.Annotation)">
+<section class="detail" id="updateAnnotation(java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.properties.surveyreports.AnnotationProperties)">
 <h3>updateAnnotation</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">updateAnnotation</span><wbr><span class="parameters">(<a href="properties/Annotation.html" title="class in org.odpi.openmetadata.frameworks.opensurvey.properties">Annotation</a>&nbsp;annotation)</span>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">updateAnnotation</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;annotationGUID,
+ <a href="../openmetadata/properties/surveyreports/AnnotationProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.surveyreports">AnnotationProperties</a>&nbsp;annotationProperties)</span>
                       throws <span class="exceptions"><a href="../openmetadata/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">InvalidParameterException</a>,
 <a href="../openmetadata/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">UserNotAuthorizedException</a>,
 <a href="../openmetadata/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">PropertyServerException</a></span></div>
 <div class="block">Replace the current properties of an annotation.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
-<dd><code>annotation</code> - new properties</dd>
+<dd><code>annotationProperties</code> - new properties</dd>
 <dt>Throws:</dt>
 <dd><code><a href="../openmetadata/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">InvalidParameterException</a></code> - one of the parameters is invalid</dd>
 <dd><code><a href="../openmetadata/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">UserNotAuthorizedException</a></code> - the user id not authorized to issue this request</dd>
 <dd><code><a href="../openmetadata/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">PropertyServerException</a></code> - there was a problem updating the annotation in the annotation store.</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="linkRequestForActionTarget(java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.properties.surveyreports.RequestForActionTargetProperties)">
+<h3>linkRequestForActionTarget</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">linkRequestForActionTarget</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;annotationGUID,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;elementGUID,
+ <a href="../openmetadata/properties/surveyreports/RequestForActionTargetProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.surveyreports">RequestForActionTargetProperties</a>&nbsp;relationshipProperties)</span>
+                                throws <span class="exceptions"><a href="../openmetadata/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">InvalidParameterException</a>,
+<a href="../openmetadata/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">PropertyServerException</a>,
+<a href="../openmetadata/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">UserNotAuthorizedException</a></span></div>
+<div class="block">Attach a request for action annotation to the element that needs attention.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>annotationGUID</code> - unique identifier of the annotation</dd>
+<dd><code>elementGUID</code> - unique identifier of the associated element</dd>
+<dd><code>relationshipProperties</code> - description of the relationship.</dd>
+<dt>Throws:</dt>
+<dd><code><a href="../openmetadata/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">InvalidParameterException</a></code> - one of the parameters is null or invalid.</dd>
+<dd><code><a href="../openmetadata/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">PropertyServerException</a></code> - there is a problem retrieving information from the property server(s).</dd>
+<dd><code><a href="../openmetadata/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">UserNotAuthorizedException</a></code> - the requesting user is not authorized to issue this request.</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="detachRequestForActionTarget(java.lang.String,java.lang.String)">
+<h3>detachRequestForActionTarget</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">detachRequestForActionTarget</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;annotationGUID,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;elementGUID)</span>
+                                  throws <span class="exceptions"><a href="../openmetadata/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">InvalidParameterException</a>,
+<a href="../openmetadata/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">PropertyServerException</a>,
+<a href="../openmetadata/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">UserNotAuthorizedException</a></span></div>
+<div class="block">Detach a request for action annotation from its intended target element.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>annotationGUID</code> - unique identifier of the annotation</dd>
+<dd><code>elementGUID</code> - unique identifier of the associated element</dd>
+<dt>Throws:</dt>
+<dd><code><a href="../openmetadata/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">InvalidParameterException</a></code> - one of the parameters is null or invalid.</dd>
+<dd><code><a href="../openmetadata/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">PropertyServerException</a></code> - there is a problem retrieving information from the property server(s).</dd>
+<dd><code><a href="../openmetadata/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">UserNotAuthorizedException</a></code> - the requesting user is not authorized to issue this request.</dd>
 </dl>
 </section>
 </li>

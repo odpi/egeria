@@ -339,6 +339,7 @@ org.odpi.openmetadata.frameworks.openmetadata.properties.schema.tabular
 org.odpi.openmetadata.frameworks.openmetadata.properties.security
 org.odpi.openmetadata.frameworks.openmetadata.properties.softwarecapabilities
 org.odpi.openmetadata.frameworks.openmetadata.properties.solutions
+org.odpi.openmetadata.frameworks.openmetadata.properties.surveyreports
 org.odpi.openmetadata.frameworks.openmetadata.properties.templates
 org.odpi.openmetadata.frameworks.openmetadata.properties.validvalues
 org.odpi.openmetadata.frameworks.openmetadata.refdata
@@ -347,10 +348,8 @@ org.odpi.openmetadata.frameworks.openmetadata.search
 org.odpi.openmetadata.frameworks.openmetadata.types
 org.odpi.openmetadata.frameworks.opensurvey
 org.odpi.openmetadata.frameworks.opensurvey.controls
-org.odpi.openmetadata.frameworks.opensurvey.converters
 org.odpi.openmetadata.frameworks.opensurvey.ffdc
 org.odpi.openmetadata.frameworks.opensurvey.measurements
-org.odpi.openmetadata.frameworks.opensurvey.properties
 org.odpi.openmetadata.frameworks.openwatchdog
 org.odpi.openmetadata.frameworks.openwatchdog.controls
 org.odpi.openmetadata.frameworks.openwatchdog.ffdc

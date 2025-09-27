@@ -255,11 +255,9 @@ loadScripts(document, 'script');</script>
 <div class="block">Retrieve the governance action process metadata element with the supplied unique identifier.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../rest/GovernanceActionProcessElementsResponse.html" title="class in org.odpi.openmetadata.frameworkservices.gaf.rest">GovernanceActionProcessElementsResponse</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getGovernanceActionProcessesByName(java.lang.String,java.lang.String,java.lang.String,int,int,org.odpi.openmetadata.commonservices.ffdc.rest.NameRequestBody)" class="member-name-link">getGovernanceActionProcessesByName</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getGovernanceActionProcessesByName(java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.commonservices.ffdc.rest.NameRequestBody)" class="member-name-link">getGovernanceActionProcessesByName</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serviceURLMarker,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
- int&nbsp;startFrom,
- int&nbsp;pageSize,
  <a href="../../../commonservices/ffdc/rest/NameRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">NameRequestBody</a>&nbsp;requestBody)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Retrieve the list of governance action process metadata elements with a matching qualified or display name.</div>
@@ -832,13 +830,11 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
-<section class="detail" id="getGovernanceActionProcessesByName(java.lang.String,java.lang.String,java.lang.String,int,int,org.odpi.openmetadata.commonservices.ffdc.rest.NameRequestBody)">
+<section class="detail" id="getGovernanceActionProcessesByName(java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.commonservices.ffdc.rest.NameRequestBody)">
 <h3>getGovernanceActionProcessesByName</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../rest/GovernanceActionProcessElementsResponse.html" title="class in org.odpi.openmetadata.frameworkservices.gaf.rest">GovernanceActionProcessElementsResponse</a></span>&nbsp;<span class="element-name">getGovernanceActionProcessesByName</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serviceURLMarker,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
- int&nbsp;startFrom,
- int&nbsp;pageSize,
  <a href="../../../commonservices/ffdc/rest/NameRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">NameRequestBody</a>&nbsp;requestBody)</span></div>
 <div class="block">Retrieve the list of governance action process metadata elements with a matching qualified or display name.
  There are no wildcards supported on this request.</div>
@@ -847,8 +843,6 @@ loadScripts(document, 'script');</script>
 <dd><code>serverName</code> - name of the service to route the request to</dd>
 <dd><code>serviceURLMarker</code> - the identifier of the access service (for example asset-owner for the Asset Owner OMAS)</dd>
 <dd><code>userId</code> - calling user</dd>
-<dd><code>startFrom</code> - paging start point</dd>
-<dd><code>pageSize</code> - maximum results that can be returned</dd>
 <dd><code>requestBody</code> - name to search for</dd>
 <dt>Returns:</dt>
 <dd>list of matching metadata elements or
