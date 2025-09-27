@@ -987,7 +987,6 @@ public class OpenMetadataStoreResource
      *
      * @param serverName     name of server instance to route request to
      * @param userId caller's userId
-     * @param allowRetrieve can an existing element be returned if it exists
      * @param requestBody properties for the new element
      *
      * @return unique identifier of the new metadata element
@@ -999,11 +998,9 @@ public class OpenMetadataStoreResource
 
     public GUIDResponse createMetadataElementFromTemplate(@PathVariable String                          serverName,
                                                           @PathVariable String                          userId,
-                                                          @RequestParam(required = false, defaultValue = "false")
-                                                                        boolean                         allowRetrieve,
                                                           @RequestBody  OpenMetadataTemplateRequestBody requestBody)
     {
-        return restAPI.createMetadataElementFromTemplate(serverName, userId, allowRetrieve, requestBody);
+        return restAPI.createMetadataElementFromTemplate(serverName, userId, requestBody);
     }
 
 

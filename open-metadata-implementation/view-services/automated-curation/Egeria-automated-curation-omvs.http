@@ -452,9 +452,10 @@ Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-   "templateGUID" : "add guid here",
-   "isOwnAnchor" : true,
-   "placeholderPropertyValues" : {
+  "templateGUID" : "add guid here",
+  "isOwnAnchor" : true,
+  "allowRetrieve" : false,
+  "placeholderPropertyValues" : {
        "placeholderPropertyName1" : "placeholderPropertyValue1",
        "placeholderPropertyName2" : "placeholderPropertyValue2"
    }
@@ -466,13 +467,14 @@ Content-Type: application/json
 # @name getElementFromTemplate
 # Retrieve existing element/create a new element from a template.
 # Further Information: https://egeria-project.org/features/templated-cataloguing/overview/
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/automated-curation/catalog-templates/get-element
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/automated-curation/catalog-templates/new-element
 Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
   "templateGUID" : "add guid here",
   "isOwnAnchor" : true,
+  "allowRetrieve" : true,
   "placeholderPropertyValues" : {
     "placeholderPropertyName1" : "placeholderPropertyValue1",
     "placeholderPropertyName2" : "placeholderPropertyValue2"
@@ -854,12 +856,16 @@ POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/automated-curation/gov
 Authorization: Bearer {{token}}
 Content-Type: application/json
 
+###
+# @name getGovernanceActionProcessesByName
+# Retrieve the list of governance action process metadata elements with a matching qualified or display name.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/automated-curation/governance-action-processes/by-name
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
 {
-  "class" : "SearchStringRequestBody",
-  "searchString": "xxx",
-  "startsWith" : false,
-  "endsWith" : false,
-  "ignoreCase" : true,
+  "class" : "FilterRequestBody",
+  "filter": "xxx",
   "startFrom" : 0,
   "pageSize": 0,
   "asOfTime" : "{{$isoTimestamp}}",
@@ -870,6 +876,21 @@ Content-Type: application/json
   "sequencingOrder" : "PROPERTY_ASCENDING",
   "sequencingProperty" : "qualifiedName"
 }
+
+###
+# @name getGovernanceActionProcessesByName
+# Retrieve the list of governance action process metadata elements with a matching qualified or display name.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/automated-curation/governance-action-processes/by-name
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "FilterRequestBody",
+  "filter": "GovernanceActionProcess::Valid Value Sets List::Create Subscription::EVALUATION-SUBSCRIPTION",
+  "startFrom" : 0,
+  "pageSize": 0
+}
+
 
 
 ###
@@ -1073,6 +1094,18 @@ Content-Type: application/json
 
 {
   "processQualifiedName": "Egeria:DailyGovernanceActionProcess"
+}
+
+###
+# @name initiateGovernanceActionProcess (Create Subscription)
+# Using the named governance action process as a template, initiate a chain of engine actions.
+
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/automated-curation/governance-action-processes/initiate
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "processQualifiedName": "GovernanceActionProcess::Valid Value Sets List::Create Subscription::EVALUATION-SUBSCRIPTION"
 }
 
 ###

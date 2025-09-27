@@ -228,7 +228,7 @@ public class WatchdogContext extends ConnectorContextBase implements WatchDogEve
      * @throws InvalidParameterException one or more of the type names are unrecognized
      */
     @Override
-    public void registerListener(WatchdogGovernanceListener listener,
+    public void registerListener(WatchdogGovernanceListener  listener,
                                  List<OpenMetadataEventType> interestingEventTypes,
                                  List<String>                interestingMetadataTypes,
                                  String                      specificInstance) throws InvalidParameterException
@@ -387,7 +387,7 @@ public class WatchdogContext extends ConnectorContextBase implements WatchDogEve
 
         if (notificationTypeGUID != null)
         {
-            this.notificationHandler.notifySubscribers(notificationTypeGUID,
+            this.notificationHandler.notifySubscribers(connectorUserId,
                                                        notificationProperties,
                                                        notificationTypeGUID,
                                                        requestParameters,

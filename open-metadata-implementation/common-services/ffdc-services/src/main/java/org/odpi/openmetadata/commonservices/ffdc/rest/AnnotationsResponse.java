@@ -6,7 +6,7 @@ package org.odpi.openmetadata.commonservices.ffdc.rest;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import org.odpi.openmetadata.frameworks.opensurvey.properties.Annotation;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.surveyreports.AnnotationProperties;
 
 import java.util.List;
 import java.util.Objects;
@@ -24,7 +24,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class AnnotationsResponse extends FFDCResponseBase
 {
-    private List<Annotation> elements = null;
+    private List<AnnotationProperties> elements = null;
 
     /**
      * Default constructor
@@ -56,7 +56,7 @@ public class AnnotationsResponse extends FFDCResponseBase
      *
      * @return list of properties objects
      */
-    public List<Annotation> getElements()
+    public List<AnnotationProperties> getElements()
     {
         return elements;
     }
@@ -67,7 +67,7 @@ public class AnnotationsResponse extends FFDCResponseBase
      *
      * @param elements  list of properties objects
      */
-    public void setElements(List<Annotation> elements)
+    public void setElements(List<AnnotationProperties> elements)
     {
         this.elements = elements;
     }

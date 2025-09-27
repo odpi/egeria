@@ -1496,7 +1496,7 @@ public class OpenMetadataTypesArchive5_0
 
     private RelationshipDef getRequestForActionTargetRelationship()
     {
-        RelationshipDef relationshipDef = archiveHelper.getBasicRelationshipDef(OpenMetadataType.REQUEST_FOR_ACTION_TARGET,
+        RelationshipDef relationshipDef = archiveHelper.getBasicRelationshipDef(OpenMetadataType.REQUEST_FOR_ACTION_TARGET_RELATIONSHIP,
                                                                                 null,
                                                                                 ClassificationPropagationRule.NONE);
 

@@ -478,8 +478,8 @@ public class AssetHandler extends OpenMetadataHandlerBase
 
         openMetadataClient.detachRelatedElementsInStore(userId,
                                                         OpenMetadataType.DEPLOYED_ON_RELATIONSHIP.typeName,
-                                                        destinationGUID,
                                                         assetGUID,
+                                                        destinationGUID,
                                                         deleteOptions);
     }
 
@@ -488,8 +488,8 @@ public class AssetHandler extends OpenMetadataHandlerBase
      * Attach a data set to another asset (typically a data store) that is supplying the data.
      *
      * @param userId                 userId of user making request
-     * @param dataSetGUID          unique identifier of the first person profile
-     * @param dataContentAssetGUID          unique identifier of the second person profile
+     * @param dataSetGUID          unique identifier of the data set
+     * @param dataContentAssetGUID          unique identifier of the data asset supplying the data
      * @param metadataSourceOptions  options to control access to open metadata
      * @param relationshipProperties description of the relationship.
      * @throws InvalidParameterException  one of the parameters is null or invalid.
@@ -525,8 +525,8 @@ public class AssetHandler extends OpenMetadataHandlerBase
      * Detach a data set from another asset that was supplying the data and is no more.
      *
      * @param userId                 userId of user making request.
-     * @param dataSetGUID          unique identifier of the first person profile
-     * @param dataContentAssetGUID          unique identifier of the second person profile
+     * @param dataSetGUID          unique identifier of the data set
+     * @param dataContentAssetGUID          unique identifier of the data asset supplying the data
      * @param deleteOptions  options to control access to open metadata
      * @throws InvalidParameterException  one of the parameters is null or invalid.
      * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
@@ -691,7 +691,7 @@ public class AssetHandler extends OpenMetadataHandlerBase
 
         openMetadataClient.detachRelatedElementsInStore(userId,
                                                         OpenMetadataType.PROCESS_HIERARCHY_RELATIONSHIP.typeName,
-                                                        childProcessGUID,
+                                                        parentProcessGUID,
                                                         childProcessGUID,
                                                         deleteOptions);
     }
@@ -1655,7 +1655,7 @@ public class AssetHandler extends OpenMetadataHandlerBase
             /*
              * Pick up requests for actions and ToDos
              */
-            lineageRelationshipTypeNames.add(OpenMetadataType.REQUEST_FOR_ACTION_TARGET.typeName);
+            lineageRelationshipTypeNames.add(OpenMetadataType.REQUEST_FOR_ACTION_TARGET_RELATIONSHIP.typeName);
             lineageRelationshipTypeNames.add(OpenMetadataType.ASSIGNMENT_SCOPE_RELATIONSHIP.typeName);
             lineageRelationshipTypeNames.add(OpenMetadataType.ACTION_REQUESTER_RELATIONSHIP.typeName);
         }

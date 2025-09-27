@@ -6,11 +6,11 @@ import org.odpi.openmetadata.adapters.connectors.datastore.basicfile.BasicFileSt
 import org.odpi.openmetadata.adapters.connectors.surveyaction.extractors.FileStatsExtractor;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.surveyreports.AnnotationProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 import org.odpi.openmetadata.frameworks.opensurvey.AnnotationStore;
 import org.odpi.openmetadata.frameworks.opensurvey.SurveyActionServiceConnector;
 import org.odpi.openmetadata.frameworks.opensurvey.controls.AnalysisStep;
-import org.odpi.openmetadata.frameworks.opensurvey.properties.Annotation;
 
 import java.io.File;
 
@@ -52,7 +52,7 @@ public class FileSurveyService extends SurveyActionServiceConnector
                                                                            surveyContext.getFileClassifier(),
                                                                            this);
 
-            Annotation measurementAnnotation = fileStatsExtractor.getAnnotation();
+            AnnotationProperties measurementAnnotation = fileStatsExtractor.getAnnotation();
 
             if (measurementAnnotation != null)
             {

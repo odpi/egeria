@@ -1,6 +1,6 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 /* Copyright Contributors to the ODPi Egeria project. */
-package org.odpi.openmetadata.frameworks.opensurvey.properties;
+package org.odpi.openmetadata.frameworks.openmetadata.properties.surveyreports;
 
 import com.fasterxml.jackson.annotation.*;
 
@@ -17,14 +17,14 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class ResourceProfileLogAnnotation extends DataFieldAnnotation
+public class ResourceProfileLogAnnotationProperties extends DataFieldAnnotationProperties
 {
     private List<String> resourceProfileLogGUIDs = null;
 
     /**
      * Default constructor
      */
-    public ResourceProfileLogAnnotation()
+    public ResourceProfileLogAnnotationProperties()
     {
     }
 
@@ -34,7 +34,7 @@ public class ResourceProfileLogAnnotation extends DataFieldAnnotation
      *
      * @param template object to copy
      */
-    public ResourceProfileLogAnnotation(ResourceProfileLogAnnotation template)
+    public ResourceProfileLogAnnotationProperties(ResourceProfileLogAnnotationProperties template)
     {
         super(template);
 
@@ -75,7 +75,7 @@ public class ResourceProfileLogAnnotation extends DataFieldAnnotation
     @Override
     public String toString()
     {
-        return "ResourceProfileLogAnnotation{" +
+        return "ResourceProfileLogAnnotationProperties{" +
                 "resourceProfileLogFiles=" + resourceProfileLogGUIDs +
                 "} " + super.toString();
     }
@@ -102,7 +102,7 @@ public class ResourceProfileLogAnnotation extends DataFieldAnnotation
         {
             return false;
         }
-        ResourceProfileLogAnnotation that = (ResourceProfileLogAnnotation) objectToCompare;
+        ResourceProfileLogAnnotationProperties that = (ResourceProfileLogAnnotationProperties) objectToCompare;
         return Objects.equals(resourceProfileLogGUIDs, that.resourceProfileLogGUIDs);
     }
 

@@ -1,10 +1,9 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 /* Copyright Contributors to the ODPi Egeria project. */
-package org.odpi.openmetadata.frameworks.opensurvey.properties;
+package org.odpi.openmetadata.frameworks.openmetadata.properties.surveyreports;
 
 import com.fasterxml.jackson.annotation.*;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.OpenMetadataElement;
-import org.odpi.openmetadata.frameworks.openmetadata.enums.AnnotationStatus;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.OpenMetadataRootProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 
 import java.util.*;
@@ -13,7 +12,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
 /**
- * Annotation is used to record information gleaned from a survey action service.  The subtypes contain more detail.
+ * AnnotationProperties is used to record information gleaned from a survey action service.  The subtypes contain more detail.
  */
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -23,42 +22,29 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
         property = "class")
 @JsonSubTypes(
         {
-                @JsonSubTypes.Type(value = SchemaAnalysisAnnotation.class, name = "SchemaAnalysisAnnotation"),
-                @JsonSubTypes.Type(value = ResourceMeasureAnnotation.class, name = "DataSourceMeasurementAnnotation"),
-                @JsonSubTypes.Type(value = DataFieldAnnotation.class, name = "DataFieldAnnotation"),
+                @JsonSubTypes.Type(value = SchemaAnalysisAnnotationProperties.class, name = "SchemaAnalysisAnnotationProperties"),
+                @JsonSubTypes.Type(value = ResourceMeasureAnnotationProperties.class, name = "DataSourceMeasurementAnnotation"),
+                @JsonSubTypes.Type(value = DataFieldAnnotationProperties.class, name = "DataFieldAnnotationProperties"),
         })
-public class Annotation extends PropertyBase
+public class AnnotationProperties extends OpenMetadataRootProperties
 {
-    private String           annotationType   = null;
-    private String           summary          = null;
-    private int              confidenceLevel  = 0;
-    private String           expression       = null;
-    private String           explanation      = null;
-    private String           analysisStep     = null;
-    private String           jsonProperties   = null;
-
-    /*
-     * Associated Elements
-     */
-    List<OpenMetadataElement> annotationSubjects = null;
-
-    /*
-     * Details from the latest AnnotationReview entity.
-     */
-    private AnnotationStatus annotationStatus = AnnotationStatus.NEW_ANNOTATION;
-    private Date             reviewDate       = null;
-    private String           steward          = null;
-    private String           reviewComment    = null;
-    private Map<String, String>  additionalProperties = null;
+    private String              annotationType       = null;
+    private String              summary              = null;
+    private int                 confidenceLevel      = 0;
+    private String              expression           = null;
+    private String              explanation          = null;
+    private String              analysisStep         = null;
+    private String              jsonProperties       = null;
+    private Map<String, String> additionalProperties = null;
 
 
     /**
      * Default constructor used by subclasses
      */
-    public Annotation()
+    public AnnotationProperties()
     {
         super();
-        super.setOpenMetadataTypeName(OpenMetadataType.ANNOTATION.typeName);
+        super.setTypeName(OpenMetadataType.ANNOTATION.typeName);
     }
 
 
@@ -67,7 +53,7 @@ public class Annotation extends PropertyBase
      *
      * @param template template object to copy.
      */
-    public Annotation(Annotation template)
+    public AnnotationProperties(AnnotationProperties template)
     {
         super(template);
 
@@ -80,11 +66,6 @@ public class Annotation extends PropertyBase
             this.explanation = template.getExplanation();
             this.analysisStep = template.getAnalysisStep();
             this.jsonProperties = template.getJsonProperties();
-            this.annotationSubjects = template.getAnnotationSubjects();
-            this.annotationStatus = template.getAnnotationStatus();
-            this.reviewDate = template.getReviewDate();
-            this.steward = template.getSteward();
-            this.reviewComment = template.getReviewComment();
             this.additionalProperties = template.getAdditionalProperties();
         }
     }
@@ -246,117 +227,7 @@ public class Annotation extends PropertyBase
 
 
     /**
-     * Return the list of elements that are linked to this annotation via the AssociatedAnnotation relationship.
-     *
-     * @return open metadata elements
-     */
-    public List<OpenMetadataElement> getAnnotationSubjects()
-    {
-        return annotationSubjects;
-    }
-
-
-    /**
-     * Set up the list of elements that are linked to this annotation via the AssociatedAnnotation relationship.
-     *
-     * @param annotationSubjects open metadata elements
-     */
-    public void setAnnotationSubjects(List<OpenMetadataElement> annotationSubjects)
-    {
-        this.annotationSubjects = annotationSubjects;
-    }
-
-
-    /**
-     * Return the current status of the annotation.
-     *
-     * @return AnnotationStatus current status of annotation
-     */
-    public AnnotationStatus getAnnotationStatus()
-    {
-        return annotationStatus;
-    }
-
-
-    /**
-     * Set up the current status of the annotation.
-     *
-     * @param annotationStatus current status of annotation
-     */
-    public void setAnnotationStatus(AnnotationStatus annotationStatus)
-    {
-        this.annotationStatus = annotationStatus;
-    }
-
-
-    /**
-     * Return the date that this annotation was reviewed.  If no review has taken place then this property is null.
-     *
-     * @return Date review date
-     */
-    public Date getReviewDate()
-    {
-        return reviewDate;
-    }
-
-
-    /**
-     * Set up the date that this annotation was reviewed.  If no review has taken place then this property is null.
-     *
-     * @param reviewDate review date
-     */
-    public void setReviewDate(Date reviewDate)
-    {
-        this.reviewDate = reviewDate;
-    }
-
-
-    /**
-     * Return the name of the steward that reviewed the annotation.
-     *
-     * @return String steward's name.
-     */
-    public String getSteward()
-    {
-        return steward;
-    }
-
-
-    /**
-     * Set up the name of the steward that reviewed the annotation.
-     *
-     * @param steward steward's name.
-     */
-    public void setSteward(String steward)
-    {
-        this.steward = steward;
-    }
-
-
-    /**
-     * Return any comments made by the steward during the review.
-     *
-     * @return String review comment
-     */
-    public String getReviewComment()
-    {
-        return reviewComment;
-    }
-
-
-    /**
-     * Set up any comments made by the steward during the review.
-     *
-     * @param reviewComment review comment
-     */
-    public void setReviewComment(String reviewComment)
-    {
-        this.reviewComment = reviewComment;
-    }
-
-
-    /**
-     * Return the additional properties for the Annotation.
+     * Return the additional properties for the AnnotationProperties.
      *
      * @return properties map
      */
@@ -367,7 +238,7 @@ public class Annotation extends PropertyBase
 
 
     /**
-     * Set up the additional properties for the Annotation.
+     * Set up the additional properties for the AnnotationProperties.
      *
      * @param additionalProperties properties map
      */
@@ -385,7 +256,7 @@ public class Annotation extends PropertyBase
     @Override
     public String toString()
     {
-        return "Annotation{" +
+        return "AnnotationProperties{" +
                 "annotationType='" + annotationType + '\'' +
                 ", summary='" + summary + '\'' +
                 ", confidenceLevel=" + confidenceLevel +
@@ -393,14 +264,10 @@ public class Annotation extends PropertyBase
                 ", explanation='" + explanation + '\'' +
                 ", analysisStep='" + analysisStep + '\'' +
                 ", jsonProperties='" + jsonProperties + '\'' +
-                ", annotationSubjects=" + annotationSubjects +
-                ", annotationStatus=" + annotationStatus +
-                ", reviewDate=" + reviewDate +
-                ", steward='" + steward + '\'' +
-                ", reviewComment='" + reviewComment + '\'' +
                 ", additionalProperties=" + additionalProperties +
                 "} " + super.toString();
     }
+
 
     /**
      * Compare the values of the supplied object with those stored in the current object.
@@ -411,15 +278,10 @@ public class Annotation extends PropertyBase
     @Override
     public boolean equals(Object objectToCompare)
     {
-        if (this == objectToCompare)
-        {
-            return true;
-        }
-        if (objectToCompare == null || getClass() != objectToCompare.getClass())
-        {
-            return false;
-        }
-        Annotation that = (Annotation) objectToCompare;
+        if (this == objectToCompare) return true;
+        if (objectToCompare == null || getClass() != objectToCompare.getClass()) return false;
+        if (!super.equals(objectToCompare)) return false;
+        AnnotationProperties that = (AnnotationProperties) objectToCompare;
         return confidenceLevel == that.confidenceLevel &&
                 Objects.equals(annotationType, that.annotationType) &&
                 Objects.equals(summary, that.summary) &&
@@ -427,13 +289,9 @@ public class Annotation extends PropertyBase
                 Objects.equals(explanation, that.explanation) &&
                 Objects.equals(analysisStep, that.analysisStep) &&
                 Objects.equals(jsonProperties, that.jsonProperties) &&
-                Objects.equals(annotationSubjects, that.annotationSubjects) &&
-                annotationStatus == that.annotationStatus &&
-                Objects.equals(reviewDate, that.reviewDate) &&
-                Objects.equals(steward, that.steward) &&
-                Objects.equals(reviewComment, that.reviewComment) &&
                 Objects.equals(additionalProperties, that.additionalProperties);
     }
+
 
     /**
      * Create a hash code for this element type.
@@ -443,8 +301,6 @@ public class Annotation extends PropertyBase
     @Override
     public int hashCode()
     {
-        return Objects.hash(annotationType, summary, confidenceLevel, expression, explanation, analysisStep,
-                            jsonProperties, annotationSubjects, annotationStatus, reviewDate, steward,
-                            reviewComment, additionalProperties);
+        return Objects.hash(super.hashCode(), annotationType, summary, confidenceLevel, expression, explanation, analysisStep, jsonProperties, additionalProperties);
     }
 }

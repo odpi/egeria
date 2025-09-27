@@ -14,7 +14,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
 /**
- * AnnotationStatusRequestBody provides a structure for passing the annotation status of an Annotation. This value is used to
+ * AnnotationStatusRequestBody provides a structure for passing the annotation status of an AnnotationProperties. This value is used to
  * restrict the values that are returned.
  */
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)

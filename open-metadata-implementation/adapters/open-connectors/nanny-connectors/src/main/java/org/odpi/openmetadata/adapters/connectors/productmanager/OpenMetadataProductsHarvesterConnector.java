@@ -569,6 +569,9 @@ public class OpenMetadataProductsHarvesterConnector extends IntegrationConnector
                                                                                               PropertyServerException,
                                                                                               UserNotAuthorizedException
     {
+        /*
+         * The notification of changes to a subscription is managed via a notification type.
+         */
         GovernanceDefinitionClient notificationTypeClient = integrationContext.getGovernanceDefinitionClient(OpenMetadataType.NOTIFICATION_TYPE.typeName);
 
         NotificationTypeProperties notificationTypeProperties = new NotificationTypeProperties();
@@ -597,7 +600,7 @@ public class OpenMetadataProductsHarvesterConnector extends IntegrationConnector
          * and subscribers are attached to ensure the notification watchdog sees their attachment events and
          * sends out the welcome messages.
          */
-        String engineActionGUID = this.activateNotificationWatchdog(productDefinition, productSubscriptionDefinition, productGUID, productAssetGUID, notificationTypeGUID);
+        String engineActionGUID = this.activateNotificationWatchdog(productDefinition, productSubscriptionDefinition, notificationTypeGUID);
 
         MonitoredResourceProperties monitoredResourceProperties = new MonitoredResourceProperties();
 
@@ -619,7 +622,7 @@ public class OpenMetadataProductsHarvesterConnector extends IntegrationConnector
         notificationTypeClient.linkNotificationSubscriber(notificationTypeGUID, communityNoteLogGUID, notificationTypeClient.getMetadataSourceOptions(), notificationSubscriberProperties);
 
         /*
-         * The subscription manager is running.  Now build the governance action process that is
+         * The subscription notification watchdog manager is running.  Now build the governance action process that is
          * used to add a new subscription of this type.
          */
         Map<String, String> additionalRequestParameters = new HashMap<>();
@@ -630,7 +633,7 @@ public class OpenMetadataProductsHarvesterConnector extends IntegrationConnector
         String governanceActionProcessGUID = integrationContext.createProcessFromGovernanceActionType(OpenMetadataType.GOVERNANCE_ACTION_PROCESS.typeName + "::" + productDefinition.getProductName() + "::" + ResourceUse.CREATE_SUBSCRIPTION.getResourceUse() + "::" + productSubscriptionDefinition.getIdentifier(),
                                                                                                       "Create " + productSubscriptionDefinition.getDisplayName() + " for " + productDefinition.getProductName(),
                                                                                                       productSubscriptionDefinition.getDescription() + "  Supply the requester (actor entity) as an action target called digitalSubscriptionRequester and the asset where the data is to be sent to as action target named destinationDataSet.",
-                                                                                                      productSubscriptionDefinition.getGovernanceActionTypeGUID(),
+                                                                                                      GovernanceActionTypeDefinition.CREATE_SUBSCRIPTION.getGovernanceActionTypeGUID(),
                                                                                                       additionalRequestParameters,
                                                                                                       productGUID,
                                                                                                       productGUID);
@@ -895,7 +898,8 @@ public class OpenMetadataProductsHarvesterConnector extends IntegrationConnector
      * Set up the notification watchdog.
      *
      * @param productDefinition description of product
-     * @param productGUID unique identifier of the product
+     * @param productSubscriptionDefinition details of the specific subscription type
+     * @param notificationTypeGUID notification type that is to be monitored
      *
      * @return engine action guid
      * @throws InvalidParameterException invalid parameter passed - probably a bug in this code
@@ -903,13 +907,11 @@ public class OpenMetadataProductsHarvesterConnector extends IntegrationConnector
      * @throws UserNotAuthorizedException connector's userId not defined to open metadata, or the connector has
      * been disconnected.
      */
-    private String activateNotificationWatchdog(ProductDefinition productDefinition,
+    private String activateNotificationWatchdog(ProductDefinition             productDefinition,
                                                 ProductSubscriptionDefinition productSubscriptionDefinition,
-                                                String            productGUID,
-                                                String            assetGUID,
-                                                String            notificationTypeGUID) throws InvalidParameterException,
-                                                                                               PropertyServerException,
-                                                                                               UserNotAuthorizedException
+                                                String                        notificationTypeGUID) throws InvalidParameterException,
+                                                                                                           PropertyServerException,
+                                                                                                           UserNotAuthorizedException
     {
         List<NewActionTarget> actionTargets = new ArrayList<>();
         NewActionTarget notificationTarget = new NewActionTarget();

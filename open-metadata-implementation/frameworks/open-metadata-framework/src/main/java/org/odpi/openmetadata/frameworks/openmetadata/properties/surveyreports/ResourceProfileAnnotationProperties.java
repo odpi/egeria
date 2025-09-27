@@ -1,6 +1,6 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 /* Copyright Contributors to the ODPi Egeria project. */
-package org.odpi.openmetadata.frameworks.opensurvey.properties;
+package org.odpi.openmetadata.frameworks.openmetadata.properties.surveyreports;
 
 import com.fasterxml.jackson.annotation.*;
 
@@ -15,7 +15,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class ResourceProfileAnnotation extends DataFieldAnnotation
+public class ResourceProfileAnnotationProperties extends DataFieldAnnotationProperties
 {
     private List<String>         profilePropertyNames = null;
     private int                  length               = 0;
@@ -41,7 +41,7 @@ public class ResourceProfileAnnotation extends DataFieldAnnotation
     /**
      * Default constructor
      */
-    public ResourceProfileAnnotation()
+    public ResourceProfileAnnotationProperties()
     {
     }
 
@@ -51,7 +51,7 @@ public class ResourceProfileAnnotation extends DataFieldAnnotation
      *
      * @param template object to copy
      */
-    public ResourceProfileAnnotation(ResourceProfileAnnotation template)
+    public ResourceProfileAnnotationProperties(ResourceProfileAnnotationProperties template)
     {
         super(template);
 
@@ -505,7 +505,7 @@ public class ResourceProfileAnnotation extends DataFieldAnnotation
     @Override
     public String toString()
     {
-        return "ResourceProfileAnnotation{" +
+        return "ResourceProfileAnnotationProperties{" +
                 "length=" + length +
                 ", profilePropertyNames='" + profilePropertyNames + '\'' +
                 ", inferredDataType='" + inferredDataType + '\'' +
@@ -550,7 +550,7 @@ public class ResourceProfileAnnotation extends DataFieldAnnotation
         {
             return false;
         }
-        ResourceProfileAnnotation that = (ResourceProfileAnnotation) objectToCompare;
+        ResourceProfileAnnotationProperties that = (ResourceProfileAnnotationProperties) objectToCompare;
         return length == that.length &&
                 inferredLength == that.inferredLength &&
                 inferredPrecision == that.inferredPrecision &&

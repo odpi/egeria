@@ -6,7 +6,7 @@ package org.odpi.openmetadata.commonservices.ffdc.rest;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import org.odpi.openmetadata.frameworks.opensurvey.properties.Annotation;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.surveyreports.AnnotationProperties;
 
 import java.util.Objects;
 
@@ -16,14 +16,14 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 
 /**
  * AnnotationResponse is the response structure used on the OMAS REST API calls that return a
- * Annotation object as a response.
+ * AnnotationProperties object as a response.
  */
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class AnnotationResponse extends FFDCResponseBase
 {
-    private Annotation annotation = null;
+    private AnnotationProperties annotation = null;
 
     /**
      * Default constructor
@@ -51,22 +51,22 @@ public class AnnotationResponse extends FFDCResponseBase
 
 
     /**
-     * Return the Annotation object.
+     * Return the AnnotationProperties object.
      *
      * @return annotation
      */
-    public Annotation getAnnotation()
+    public AnnotationProperties getAnnotation()
     {
         return annotation;
     }
 
 
     /**
-     * Set up the Annotation object.
+     * Set up the AnnotationProperties object.
      *
      * @param annotation - annotation object
      */
-    public void setAnnotation(Annotation annotation)
+    public void setAnnotation(AnnotationProperties annotation)
     {
         this.annotation = annotation;
     }

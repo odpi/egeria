@@ -37,6 +37,8 @@ import org.odpi.openmetadata.frameworks.openmetadata.properties.schema.ForeignKe
 import org.odpi.openmetadata.frameworks.openmetadata.properties.schema.GraphEdgeLinkProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.security.AssociatedSecurityGroupProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.solutions.SolutionLinkingWireProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.surveyreports.DataClassMatchProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.surveyreports.RequestForActionTargetProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.validvalues.*;
 import org.odpi.openmetadata.frameworks.openmetadata.search.ElementProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.search.NewElementProperties;
@@ -497,12 +499,12 @@ public class OpenMetadataRelationshipBuilder
                                                                      OpenMetadataProperty.METHOD.name,
                                                                      dataClassAssignmentProperties.getMethod());
 
-                if (dataClassAssignmentProperties.getStatus() != null)
+                if (dataClassAssignmentProperties.getDataClassAssignmentStatus() != null)
                 {
                     elementProperties = propertyHelper.addEnumProperty(elementProperties,
                                                                        OpenMetadataProperty.DATA_CLASS_ASSIGNMENT_STATUS.name,
                                                                        DataClassAssignmentStatus.getOpenTypeName(),
-                                                                       dataClassAssignmentProperties.getStatus().getName());
+                                                                       dataClassAssignmentProperties.getDataClassAssignmentStatus().getName());
                 }
 
                 elementProperties = propertyHelper.addIntProperty(elementProperties,
@@ -526,6 +528,16 @@ public class OpenMetadataRelationshipBuilder
                 elementProperties = propertyHelper.addStringProperty(elementProperties,
                                                                      OpenMetadataProperty.SOURCE.name,
                                                                      dataClassAssignmentProperties.getSource());
+            }
+            else if (properties instanceof DataClassMatchProperties dataClassMatchProperties)
+            {
+                elementProperties = propertyHelper.addStringProperty(elementProperties,
+                                                                     OpenMetadataProperty.METHOD.name,
+                                                                     dataClassMatchProperties.getMethod());
+
+                elementProperties = propertyHelper.addIntProperty(elementProperties,
+                                                                  OpenMetadataProperty.THRESHOLD.name,
+                                                                  dataClassMatchProperties.getThreshold());
             }
             else if (properties instanceof DataSetContentProperties dataSetContentProperties)
             {
@@ -867,6 +879,12 @@ public class OpenMetadataRelationshipBuilder
                 elementProperties = propertyHelper.addStringProperty(elementProperties,
                                                                      OpenMetadataProperty.NOTES.name,
                                                                      relatedContextEventProperties.getNotes());
+            }
+            else if (properties instanceof RequestForActionTargetProperties requestForActionTargetProperties)
+            {
+                elementProperties = propertyHelper.addStringProperty(elementProperties,
+                                                                     OpenMetadataProperty.ACTION_TARGET_NAME.name,
+                                                                     requestForActionTargetProperties.getActionTargetName());
             }
             else if (properties instanceof ResourceListProperties resourceListProperties)
             {

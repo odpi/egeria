@@ -142,7 +142,7 @@ public abstract class IntegrationContextManager implements OpenLineageListenerMa
 
             if (metadataSourceGUID == null)
             {
-                metadataSourceGUID = openIntegrationClient.createMetadataSource(localServerUserId,
+                metadataSourceGUID = openIntegrationClient.createMetadataOrigin(localServerUserId,
                                                                                 typeName,
                                                                                 classificationName,
                                                                                 metadataSourceQualifiedName,

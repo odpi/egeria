@@ -913,14 +913,9 @@ public enum OpenMetadataProperty
     CANDIDATE_GLOSSARY_TERM_GUIDS("candidateGlossaryTermGUIDs", DataType.ARRAY_STRING, DataType.ARRAY_STRING.getName(), "List of potentially matching glossary terms.", null, "8be05385-75fe-42e2-a87f-2adb47289395"),
 
     /**
-     * Suggested category based on the analysis.
+     * List of glossary folders that contain potentially matching glossary terms.
      */
-    INFORMAL_CATEGORY("informalCategory", DataType.STRING, DataType.STRING.getName(), "Suggested category based on the analysis.", null, "15b33606-c660-43b8-b6fc-8b715aeac55f"),
-
-    /**
-     * List of potentially matching glossary categories.
-     */
-    CANDIDATE_GLOSSARY_CATEGORY_GUIDS("candidateGlossaryCategoryGUIDs", DataType.ARRAY_STRING, DataType.ARRAY_STRING.getName(), "List of potentially matching glossary categories.", null, "5b865d63-65b8-4d29-b382-e0490de041c9"),
+    CANDIDATE_GLOSSARY_FOLDER_GUIDS("candidateGlossaryFolderGUIDs", DataType.ARRAY_STRING, DataType.ARRAY_STRING.getName(), "List of glossary folders that contain potentially matching glossary terms.", null, "5b865d63-65b8-4d29-b382-e0490de041c9"),
 
     /**
      * Type of quality calculation.

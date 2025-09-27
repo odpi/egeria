@@ -2995,6 +2995,7 @@ public class OpenMetadataTypesArchive1_2
         this.archiveBuilder.addEntityDef(getMeetingEntity());
         this.archiveBuilder.addEntityDef(getToDoEntity());
         this.archiveBuilder.addEntityDef(getNotificationEntity());
+        this.archiveBuilder.addEntityDef(getReviewEntity());
     }
 
 
@@ -3037,6 +3038,25 @@ public class OpenMetadataTypesArchive1_2
 
         properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.SYSTEM_ACTION));
         properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.USER_RESPONSE));
+
+        entityDef.setPropertiesDefinition(properties);
+
+        return entityDef;
+    }
+
+
+    private EntityDef getReviewEntity()
+    {
+        EntityDef entityDef = archiveHelper.getDefaultEntityDef(OpenMetadataType.REVIEW,
+                                                                this.archiveBuilder.getEntityDef(OpenMetadataType.ACTION.typeName));
+
+        /*
+         * Build the attributes
+         */
+        List<TypeDefAttribute> properties = new ArrayList<>();
+
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.REVIEW_DATE));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.COMMENT));
 
         entityDef.setPropertiesDefinition(properties);
 
@@ -10262,7 +10282,7 @@ public class OpenMetadataTypesArchive1_2
      */
 
     /**
-     * 0612 Annotation Review defines the outcome of a stewardship review of the annotations in a discovery
+     * 0612 AnnotationProperties Review defines the outcome of a stewardship review of the annotations in a discovery
      * analysis report.
      */
     private void add0612AnnotationReviews()
@@ -10270,8 +10290,6 @@ public class OpenMetadataTypesArchive1_2
         this.archiveBuilder.addEnumDef(getAnnotationStatusEnum());
 
         this.archiveBuilder.addEntityDef(getAnnotationReviewEntity());
-
-        this.archiveBuilder.addRelationshipDef(getAnnotationReviewLinkRelationship());
     }
 
 
@@ -10302,59 +10320,7 @@ public class OpenMetadataTypesArchive1_2
     private EntityDef getAnnotationReviewEntity()
     {
         EntityDef entityDef = archiveHelper.getDefaultEntityDef(OpenMetadataType.ANNOTATION_REVIEW,
-                                                                this.archiveBuilder.getEntityDef(OpenMetadataType.OPEN_METADATA_ROOT.typeName));
-
-        /*
-         * Build the attributes
-         */
-        List<TypeDefAttribute> properties = new ArrayList<>();
-
-        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.REVIEW_DATE));
-        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.STEWARD));
-        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.COMMENT));
-
-        entityDef.setPropertiesDefinition(properties);
-
-        return entityDef;
-    }
-
-
-    private RelationshipDef getAnnotationReviewLinkRelationship()
-    {
-        RelationshipDef relationshipDef = archiveHelper.getBasicRelationshipDef(OpenMetadataType.ANNOTATION_REVIEW_LINK_RELATIONSHIP,
-                                                                                null,
-                                                                                ClassificationPropagationRule.NONE);
-
-        RelationshipEndDef relationshipEndDef;
-
-        /*
-         * Set up end 1.
-         */
-        final String                     end1AttributeName            = "reviewedAnnotations";
-        final String                     end1AttributeDescription     = "The annotations being reviewed.";
-        final String                     end1AttributeDescriptionGUID = null;
-
-        relationshipEndDef = archiveHelper.getRelationshipEndDef(this.archiveBuilder.getEntityDef(OpenMetadataType.ANNOTATION.typeName),
-                                                                 end1AttributeName,
-                                                                 end1AttributeDescription,
-                                                                 end1AttributeDescriptionGUID,
-                                                                 RelationshipEndCardinality.ANY_NUMBER);
-        relationshipDef.setEndDef1(relationshipEndDef);
-
-
-        /*
-         * Set up end 2.
-         */
-        final String                     end2AttributeName            = "annotationReviews";
-        final String                     end2AttributeDescription     = "The feedback about the annotations.";
-        final String                     end2AttributeDescriptionGUID = null;
-
-        relationshipEndDef = archiveHelper.getRelationshipEndDef(this.archiveBuilder.getEntityDef(OpenMetadataType.ANNOTATION_REVIEW.typeName),
-                                                                 end2AttributeName,
-                                                                 end2AttributeDescription,
-                                                                 end2AttributeDescriptionGUID,
-                                                                 RelationshipEndCardinality.ANY_NUMBER);
-        relationshipDef.setEndDef2(relationshipEndDef);
+                                                                this.archiveBuilder.getEntityDef(OpenMetadataType.REVIEW.typeName));
 
         /*
          * Build the attributes
@@ -10363,9 +10329,9 @@ public class OpenMetadataTypesArchive1_2
 
         properties.add(archiveHelper.getEnumTypeDefAttribute(OpenMetadataProperty.ANNOTATION_STATUS));
 
-        relationshipDef.setPropertiesDefinition(properties);
+        entityDef.setPropertiesDefinition(properties);
 
-        return relationshipDef;
+        return entityDef;
     }
 
 
@@ -10621,8 +10587,8 @@ public class OpenMetadataTypesArchive1_2
 
         properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.INFORMAL_TERM));
         properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.CANDIDATE_GLOSSARY_TERM_GUIDS));
-        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.INFORMAL_CATEGORY));
-        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.CANDIDATE_GLOSSARY_CATEGORY_GUIDS));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.SUBJECT_AREA_NAME));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.CANDIDATE_GLOSSARY_FOLDER_GUIDS));
 
         entityDef.setPropertiesDefinition(properties);
 
@@ -10833,6 +10799,7 @@ public class OpenMetadataTypesArchive1_2
 
         properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.RESOURCE_CREATE_TIME));
         properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.RESOURCE_UPDATE_TIME));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.RESOURCE_LAST_ACCESSED_TIME));
         properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.SIZE));
         properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.ENCODING_TYPE));
 

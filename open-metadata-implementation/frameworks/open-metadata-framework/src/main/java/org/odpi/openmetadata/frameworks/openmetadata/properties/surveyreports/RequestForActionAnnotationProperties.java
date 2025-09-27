@@ -1,13 +1,12 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 /* Copyright Contributors to the ODPi Egeria project. */
 
-package org.odpi.openmetadata.frameworks.opensurvey.properties;
+package org.odpi.openmetadata.frameworks.openmetadata.properties.surveyreports;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
-import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
@@ -15,24 +14,23 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
 /**
- * RequestForActionAnnotation is used to record an issue that has been discovered.  It is typically used when the
+ * RequestForActionAnnotationProperties is used to record an issue that has been discovered.  It is typically used when the
  * survey action service is running quality rules and data values are discovered that are not correct.
  */
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class RequestForActionAnnotation extends DataFieldAnnotation
+public class RequestForActionAnnotationProperties extends DataFieldAnnotationProperties
 {
-    private String              surveyActivity  = null;
-    private String              actionRequested = null;
-    private Map<String, String> actionProperties  = null;
-    private List<String>        actionTargetGUIDs = null;
+    private String              actionSourceName = null;
+    private String              actionRequested  = null;
+    private Map<String, String> actionProperties = null;
 
 
     /**
      * Default constructor
      */
-    public RequestForActionAnnotation()
+    public RequestForActionAnnotationProperties()
     {
         super();
     }
@@ -43,47 +41,46 @@ public class RequestForActionAnnotation extends DataFieldAnnotation
      *
      * @param template object to copy
      */
-    public RequestForActionAnnotation(RequestForActionAnnotation template)
+    public RequestForActionAnnotationProperties(RequestForActionAnnotationProperties template)
     {
         super(template);
 
         if (template != null)
         {
-            surveyActivity  = template.getSurveyActivity();
-            actionRequested = template.getActionRequested();
+            actionSourceName = template.getActionSourceName();
+            actionRequested  = template.getActionRequested();
             actionProperties  = template.getActionProperties();
-            actionTargetGUIDs  = template.getActionTargetGUIDs();
         }
     }
 
 
     /**
-     * Return the unique name of the discovery activity.  It should be possible for the stewardship processes to know what
-     * discovery processing was running for this value.
+     * Return the unique name of the survey activity.  It should be possible for the stewardship processes to know what
+     * survey processing was running for this value.
      *
      * @return string name
      */
-    public String getSurveyActivity()
+    public String getActionSourceName()
     {
-        return surveyActivity;
+        return actionSourceName;
     }
 
 
     /**
-     * Set up the unique name of the discovery activity.  It should be possible for the stewardship processes to know what
-     * discovery processing was running for this value.
+     * Set up the unique name of the survey activity.  It should be possible for the stewardship processes to know what
+     * survey processing was running for this value.
      *
-     * @param surveyActivity string name
+     * @param actionSourceName string name
      */
-    public void setSurveyActivity(String surveyActivity)
+    public void setActionSourceName(String actionSourceName)
     {
-        this.surveyActivity = surveyActivity;
+        this.actionSourceName = actionSourceName;
     }
 
 
     /**
-     * Return the identifier of the type of action that needs to be run. It should be possible for the stewardship processes to know what
-     * to run from this value.
+     * Return the identifier of the type of action that needs to be run. It should be possible for the stewardship
+     * processes to know what to run from this value.
      *
      * @return string name
      */
@@ -128,28 +125,6 @@ public class RequestForActionAnnotation extends DataFieldAnnotation
 
 
     /**
-     * Return the list of unique identifiers for the request for action target elements.
-     *
-     * @return list of guids
-     */
-    public List<String> getActionTargetGUIDs()
-    {
-        return actionTargetGUIDs;
-    }
-
-
-    /**
-     * Set up the list of unique identifiers for the request for action target elements.
-     *
-     * @param actionTargetGUIDs list of guids
-     */
-    public void setActionTargetGUIDs(List<String> actionTargetGUIDs)
-    {
-        this.actionTargetGUIDs = actionTargetGUIDs;
-    }
-
-
-    /**
      * Standard toString method.
      *
      * @return print out of variables in a JSON-style
@@ -157,11 +132,10 @@ public class RequestForActionAnnotation extends DataFieldAnnotation
     @Override
     public String toString()
     {
-        return "RequestForActionAnnotation{" +
-                "surveyActivity='" + surveyActivity + '\'' +
+        return "RequestForActionAnnotationProperties{" +
+                "surveyActivity='" + actionSourceName + '\'' +
                 ", actionRequested='" + actionRequested + '\'' +
                 ", actionProperties=" + actionProperties +
-                ", actionTargetGUIDs=" + actionTargetGUIDs +
                 "} " + super.toString();
     }
 
@@ -186,11 +160,10 @@ public class RequestForActionAnnotation extends DataFieldAnnotation
         {
             return false;
         }
-        RequestForActionAnnotation that = (RequestForActionAnnotation) objectToCompare;
-        return Objects.equals(surveyActivity, that.surveyActivity) &&
+        RequestForActionAnnotationProperties that = (RequestForActionAnnotationProperties) objectToCompare;
+        return Objects.equals(actionSourceName, that.actionSourceName) &&
                 Objects.equals(actionRequested, that.actionRequested) &&
-                Objects.equals(actionProperties, that.actionProperties) &&
-                Objects.equals(actionTargetGUIDs, that.actionTargetGUIDs);
+                Objects.equals(actionProperties, that.actionProperties);
     }
 
 
@@ -202,6 +175,6 @@ public class RequestForActionAnnotation extends DataFieldAnnotation
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), surveyActivity, actionRequested, actionProperties, actionTargetGUIDs);
+        return Objects.hash(super.hashCode(), actionSourceName, actionRequested, actionProperties);
     }
 }

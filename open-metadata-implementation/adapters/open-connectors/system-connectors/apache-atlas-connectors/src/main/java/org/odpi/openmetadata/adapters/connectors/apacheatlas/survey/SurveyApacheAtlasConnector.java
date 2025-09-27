@@ -20,6 +20,8 @@ import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.OpenMetada
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.RelatedMetadataElementSummary;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.AssetProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.schema.SchemaAttributeProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.surveyreports.ResourceProfileAnnotationProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.surveyreports.SchemaAnalysisAnnotationProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.search.ElementProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.search.NewElementOptions;
 import org.odpi.openmetadata.frameworks.openmetadata.search.NewElementProperties;
@@ -29,9 +31,7 @@ import org.odpi.openmetadata.frameworks.opensurvey.AnnotationStore;
 import org.odpi.openmetadata.frameworks.opensurvey.SurveyActionServiceConnector;
 import org.odpi.openmetadata.frameworks.opensurvey.SurveyAssetStore;
 import org.odpi.openmetadata.frameworks.opensurvey.controls.AnalysisStep;
-import org.odpi.openmetadata.frameworks.opensurvey.properties.ResourceMeasureAnnotation;
-import org.odpi.openmetadata.frameworks.opensurvey.properties.ResourceProfileAnnotation;
-import org.odpi.openmetadata.frameworks.opensurvey.properties.SchemaAnalysisAnnotation;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.surveyreports.ResourceMeasureAnnotationProperties;
 
 import java.util.*;
 
@@ -130,7 +130,7 @@ public class SurveyApacheAtlasConnector extends SurveyActionServiceConnector
                 AtlasMetricsTag     atlasMetricsTag     = atlasMetrics.getData().getTag();
                 AtlasTypesDef       atlasTypes          = atlasConnector.getAllTypes();
 
-                ResourceMeasureAnnotation measurementAnnotation = new ResourceMeasureAnnotation();
+                ResourceMeasureAnnotationProperties measurementAnnotation = new ResourceMeasureAnnotationProperties();
                 super.setUpAnnotation(measurementAnnotation, AtlasAnnotationType.MEASUREMENTS);
 
                 Map<String, String> metrics = new HashMap<>();
@@ -179,13 +179,13 @@ public class SurveyApacheAtlasConnector extends SurveyActionServiceConnector
                  */
                 annotationStore.setAnalysisStep(AnalysisStep.SCHEMA_EXTRACTION.getName());
 
-                SchemaAnalysisAnnotation schemaAnalysisAnnotation = new SchemaAnalysisAnnotation();
+                SchemaAnalysisAnnotationProperties schemaAnalysisAnnotationProperties = new SchemaAnalysisAnnotationProperties();
 
-                super.setUpAnnotation(schemaAnalysisAnnotation, AtlasAnnotationType.TYPE_ANALYSIS);
-                schemaAnalysisAnnotation.setSchemaName("Apache Atlas Types: " + atlasVersion.getVersion());
-                schemaAnalysisAnnotation.setSchemaTypeName(atlasVersion.getName());
+                super.setUpAnnotation(schemaAnalysisAnnotationProperties, AtlasAnnotationType.TYPE_ANALYSIS);
+                schemaAnalysisAnnotationProperties.setSchemaName("Apache Atlas Types: " + atlasVersion.getVersion());
+                schemaAnalysisAnnotationProperties.setSchemaType(atlasVersion.getName());
 
-                annotationStore.addAnnotation(schemaAnalysisAnnotation,null);
+                annotationStore.addAnnotation(schemaAnalysisAnnotationProperties, null);
 
                 /*
                  * The schemaType is the root of the graph schema that describes the apache Atlas types.
@@ -347,7 +347,7 @@ public class SurveyApacheAtlasConnector extends SurveyActionServiceConnector
                         /*
                          * Attached classifications
                          */
-                        ResourceProfileAnnotation resourceProfileAnnotation = new ResourceProfileAnnotation();
+                        ResourceProfileAnnotationProperties resourceProfileAnnotation = new ResourceProfileAnnotationProperties();
 
                         super.setUpAnnotation(resourceProfileAnnotation, AtlasAnnotationType.ENTITY_ATTACHED_CLASSIFICATIONS);
 
@@ -359,7 +359,7 @@ public class SurveyApacheAtlasConnector extends SurveyActionServiceConnector
                         /*
                          * Attached to Relationship At End 1
                          */
-                        resourceProfileAnnotation = new ResourceProfileAnnotation();
+                        resourceProfileAnnotation = new ResourceProfileAnnotationProperties();
 
                         super.setUpAnnotation(resourceProfileAnnotation, AtlasAnnotationType.ENTITY_ATTACHED_TO_END1);
                         resourceProfileAnnotation.setValueCount(entityTypeMetrics.relationshipEnd1Count);
@@ -370,7 +370,7 @@ public class SurveyApacheAtlasConnector extends SurveyActionServiceConnector
                         /*
                          * Attached to Relationship At End 2
                          */
-                        resourceProfileAnnotation = new ResourceProfileAnnotation();
+                        resourceProfileAnnotation = new ResourceProfileAnnotationProperties();
 
                         super.setUpAnnotation(resourceProfileAnnotation, AtlasAnnotationType.ENTITY_ATTACHED_TO_END2);
                         resourceProfileAnnotation.setValueCount(entityTypeMetrics.relationshipEnd2Count);
@@ -381,7 +381,7 @@ public class SurveyApacheAtlasConnector extends SurveyActionServiceConnector
                         /*
                          * Attached Labels
                          */
-                        resourceProfileAnnotation = new ResourceProfileAnnotation();
+                        resourceProfileAnnotation = new ResourceProfileAnnotationProperties();
 
                         super.setUpAnnotation(resourceProfileAnnotation, AtlasAnnotationType.ENTITY_ATTACHED_LABELS);
                         resourceProfileAnnotation.setValueCount(entityTypeMetrics.labelCount);
@@ -392,7 +392,7 @@ public class SurveyApacheAtlasConnector extends SurveyActionServiceConnector
                         /*
                          * Attached Business Metadata
                          */
-                        resourceProfileAnnotation = new ResourceProfileAnnotation();
+                        resourceProfileAnnotation = new ResourceProfileAnnotationProperties();
 
                         super.setUpAnnotation(resourceProfileAnnotation, AtlasAnnotationType.ENTITY_ATTACHED_BIZ_METADATA);
                         resourceProfileAnnotation.setValueCount(entityTypeMetrics.labelCount);
@@ -408,7 +408,7 @@ public class SurveyApacheAtlasConnector extends SurveyActionServiceConnector
                     {
                         TagTypeMetrics classificationTypeMetrics = classificationTypeMetricsMap.get(classificationName);
 
-                        ResourceProfileAnnotation resourceProfileAnnotation = new ResourceProfileAnnotation();
+                        ResourceProfileAnnotationProperties resourceProfileAnnotation = new ResourceProfileAnnotationProperties();
 
                         super.setUpAnnotation(resourceProfileAnnotation, AtlasAnnotationType.CLASSIFICATION_ATTACHED_ENTITIES);
                         resourceProfileAnnotation.setValueCount(classificationTypeMetrics.entityCount);
@@ -428,7 +428,7 @@ public class SurveyApacheAtlasConnector extends SurveyActionServiceConnector
                     {
                         TagTypeMetrics businessMetadataMetrics = businessMetadataMetricsMap.get(businessMetadataName);
 
-                        ResourceProfileAnnotation resourceProfileAnnotation = new ResourceProfileAnnotation();
+                        ResourceProfileAnnotationProperties resourceProfileAnnotation = new ResourceProfileAnnotationProperties();
 
                         super.setUpAnnotation(resourceProfileAnnotation, AtlasAnnotationType.CLASSIFICATION_ATTACHED_ENTITIES);
                         resourceProfileAnnotation.setValueCount(businessMetadataMetrics.entityCount);
@@ -456,7 +456,7 @@ public class SurveyApacheAtlasConnector extends SurveyActionServiceConnector
                         /*
                          * End 1
                          */
-                        ResourceProfileAnnotation resourceProfileAnnotation = new ResourceProfileAnnotation();
+                        ResourceProfileAnnotationProperties resourceProfileAnnotation = new ResourceProfileAnnotationProperties();
 
                         super.setUpAnnotation(resourceProfileAnnotation, AtlasAnnotationType.END1_ENTITY_TYPES);
                         resourceProfileAnnotation.setValueCount(relationshipTypeMetrics.entityAtEnd1Count);
@@ -467,7 +467,7 @@ public class SurveyApacheAtlasConnector extends SurveyActionServiceConnector
                         /*
                          * End 2
                          */
-                        resourceProfileAnnotation = new ResourceProfileAnnotation();
+                        resourceProfileAnnotation = new ResourceProfileAnnotationProperties();
 
                         super.setUpAnnotation(resourceProfileAnnotation, AtlasAnnotationType.END2_ENTITY_TYPES);
                         resourceProfileAnnotation.setValueCount(relationshipTypeMetrics.entityAtEnd2Count);
@@ -478,7 +478,7 @@ public class SurveyApacheAtlasConnector extends SurveyActionServiceConnector
                         /*
                          * Pair
                          */
-                        resourceProfileAnnotation = new ResourceProfileAnnotation();
+                        resourceProfileAnnotation = new ResourceProfileAnnotationProperties();
 
                         super.setUpAnnotation(resourceProfileAnnotation, AtlasAnnotationType.PAIRED_ENTITY_TYPES);
                         resourceProfileAnnotation.setValueCount(relationshipTypeMetrics.entityPairCount);
@@ -809,7 +809,7 @@ public class SurveyApacheAtlasConnector extends SurveyActionServiceConnector
      * @throws InvalidParameterException the dataField is invalid or the annotation GUID points to an annotation
      *                                   that can not be associated with a data field.
      * @throws UserNotAuthorizedException the user id not authorized to issue this request
-     * @throws PropertyServerException there was a problem  adding the data field to the Annotation store.
+     * @throws PropertyServerException there was a problem  adding the data field to the AnnotationProperties store.
      */
     private void getSchemaAttributeForAtlasEntityDef(AtlasEntityDef          atlasEntityDef,
                                                      OpenMetadataRootElement assetUniverse,
@@ -929,7 +929,7 @@ public class SurveyApacheAtlasConnector extends SurveyActionServiceConnector
      * @param openMetadataStore annotation store for saving new data field link
      * @throws InvalidParameterException one of the  dataFields is invalid.
      * @throws UserNotAuthorizedException the user id not authorized to issue this request
-     * @throws PropertyServerException there was a problem adding the data field link to the Annotation store.
+     * @throws PropertyServerException there was a problem adding the data field link to the AnnotationProperties store.
      */
     private void addRelationshipEnd(String                   relationshipSchemaAttributeGUID,
                                     boolean                  isEnd1,
@@ -994,7 +994,7 @@ public class SurveyApacheAtlasConnector extends SurveyActionServiceConnector
      * @throws InvalidParameterException the dataField is invalid or the annotation GUID points to an annotation
      *                                   that can not be associated with a data field.
      * @throws UserNotAuthorizedException the user id not authorized to issue this request
-     * @throws PropertyServerException there was a problem  adding the data field to the Annotation store.
+     * @throws PropertyServerException there was a problem  adding the data field to the AnnotationProperties store.
      */
     private String getSchemaAttributeForTypeDef(String                   openMetadataTypeName,
                                                 OpenMetadataRootElement  assetUniverse,

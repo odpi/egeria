@@ -8,6 +8,8 @@ import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.OpenMetada
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.RelatedMetadataElementSummary;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.AssetProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.schema.SchemaAttributeProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.surveyreports.AnnotationProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.surveyreports.ResourceProfileAnnotationProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.search.*;
 import org.odpi.openmetadata.frameworks.opensurvey.controls.SurveyFileAnnotationType;
 import org.odpi.openmetadata.adapters.connectors.surveyaction.extractors.FileStatsExtractor;
@@ -24,10 +26,8 @@ import org.odpi.openmetadata.frameworks.opensurvey.AnnotationStore;
 import org.odpi.openmetadata.frameworks.opensurvey.SurveyActionServiceConnector;
 import org.odpi.openmetadata.frameworks.opensurvey.SurveyAssetStore;
 import org.odpi.openmetadata.frameworks.opensurvey.controls.AnalysisStep;
-import org.odpi.openmetadata.frameworks.opensurvey.properties.Annotation;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.AnnotationStatus;
-import org.odpi.openmetadata.frameworks.opensurvey.properties.ResourceProfileAnnotation;
-import org.odpi.openmetadata.frameworks.opensurvey.properties.SchemaAnalysisAnnotation;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.surveyreports.SchemaAnalysisAnnotationProperties;
 
 import java.io.File;
 import java.util.*;
@@ -195,7 +195,7 @@ public class CSVSurveyService extends SurveyActionServiceConnector
                                                                            surveyContext.getFileClassifier(),
                                                                            this);
 
-            Annotation measurementAnnotation = fileStatsExtractor.getAnnotation();
+            AnnotationProperties measurementAnnotation = fileStatsExtractor.getAnnotation();
 
             if (measurementAnnotation != null)
             {
@@ -232,15 +232,14 @@ public class CSVSurveyService extends SurveyActionServiceConnector
             /*
              * Store the key dimensions of the schema.
              */
-            SchemaAnalysisAnnotation  schemaAnnotation = new SchemaAnalysisAnnotation();
+            SchemaAnalysisAnnotationProperties schemaAnnotation = new SchemaAnalysisAnnotationProperties();
 
             schemaAnnotation.setAnnotationType(SurveyFileAnnotationType.DERIVE_SCHEMA_FROM_DATA.getName());
             schemaAnnotation.setSummary(SurveyFileAnnotationType.DERIVE_SCHEMA_FROM_DATA.getSummary());
             schemaAnnotation.setExplanation(SurveyFileAnnotationType.DERIVE_SCHEMA_FROM_DATA.getExplanation());
             schemaAnnotation.setAnalysisStep(SurveyFileAnnotationType.DERIVE_SCHEMA_FROM_DATA.getAnalysisStep());
             schemaAnnotation.setSchemaName(schemaName);
-            schemaAnnotation.setSchemaTypeName(schemaType);
-            schemaAnnotation.setAnnotationStatus(AnnotationStatus.NEW_ANNOTATION);
+            schemaAnnotation.setSchemaType(schemaType);
 
             Map<String, String> additionalProperties = new HashMap<>();
 
@@ -279,7 +278,7 @@ public class CSVSurveyService extends SurveyActionServiceConnector
                         dataField.setDataFieldPosition(position);
                         dataField.setDataFieldName(columnName);
 
-                        ResourceProfileAnnotation dataProfile = dataField.getDataProfileAnnotation();
+                        ResourceProfileAnnotationProperties dataProfile = dataField.getDataProfileAnnotation();
 
                         dataProfile.setAnnotationType("InspectDataValues");
                         dataProfile.setSummary("Iterate through values to determine values present and how often they appear.");
@@ -300,8 +299,8 @@ public class CSVSurveyService extends SurveyActionServiceConnector
 
                         for (String fieldValue : recordValues)
                         {
-                            DataField                 dataField   = dataFields.get(columnPosition);
-                            ResourceProfileAnnotation dataProfile = dataField.getDataProfileAnnotation();
+                            DataField                           dataField   = dataFields.get(columnPosition);
+                            ResourceProfileAnnotationProperties dataProfile = dataField.getDataProfileAnnotation();
 
                             dataField.setDataFieldType(this.getDataFieldType(dataField.getDataFieldType(), fieldValue));
 
@@ -574,9 +573,9 @@ public class CSVSurveyService extends SurveyActionServiceConnector
     {
         private       String                    dataFieldName               = null;
         private       String                    dataFieldType               = null;
-        private       int                       dataFieldPosition           = 0;
-        private final ResourceProfileAnnotation resourceProfileAnnotation   = new ResourceProfileAnnotation();
-        private       String                    matchingSchemaAttributeGUID = null;
+        private       int                                 dataFieldPosition           = 0;
+        private final ResourceProfileAnnotationProperties resourceProfileAnnotation   = new ResourceProfileAnnotationProperties();
+        private       String                              matchingSchemaAttributeGUID = null;
 
 
         /**
@@ -671,7 +670,7 @@ public class CSVSurveyService extends SurveyActionServiceConnector
          *
          * @return data profile annotation
          */
-        public ResourceProfileAnnotation getDataProfileAnnotation()
+        public ResourceProfileAnnotationProperties getDataProfileAnnotation()
         {
             return resourceProfileAnnotation;
         }

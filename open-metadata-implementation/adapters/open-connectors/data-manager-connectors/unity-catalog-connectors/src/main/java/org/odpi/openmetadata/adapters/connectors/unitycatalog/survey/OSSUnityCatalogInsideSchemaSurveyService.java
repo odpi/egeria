@@ -17,8 +17,8 @@ import org.odpi.openmetadata.frameworks.opensurvey.controls.SurveyDatabaseAnnota
 import org.odpi.openmetadata.frameworks.opensurvey.controls.SurveyResourceManagerAnnotationType;
 import org.odpi.openmetadata.frameworks.opensurvey.measurements.RelationalDataManagerMeasurement;
 import org.odpi.openmetadata.frameworks.opensurvey.measurements.RelationalDatabaseMetric;
-import org.odpi.openmetadata.frameworks.opensurvey.properties.ResourceMeasureAnnotation;
-import org.odpi.openmetadata.frameworks.opensurvey.properties.ResourceProfileAnnotation;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.surveyreports.ResourceMeasureAnnotationProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.surveyreports.ResourceProfileAnnotationProperties;
 
 import java.util.Date;
 import java.util.HashMap;
@@ -194,9 +194,9 @@ public class OSSUnityCatalogInsideSchemaSurveyService extends OSSUnityCatalogSer
                 }
             }
 
-            ResourceMeasureAnnotation resourceMeasureAnnotation = new ResourceMeasureAnnotation();
+            ResourceMeasureAnnotationProperties resourceMeasureAnnotationProperties = new ResourceMeasureAnnotationProperties();
 
-            setUpAnnotation(resourceMeasureAnnotation, UnityCatalogAnnotationType.SCHEMA_METRICS);
+            setUpAnnotation(resourceMeasureAnnotationProperties, UnityCatalogAnnotationType.SCHEMA_METRICS);
 
             RelationalDataManagerMeasurement relationalDataManagerMeasurement = new RelationalDataManagerMeasurement();
 
@@ -204,7 +204,7 @@ public class OSSUnityCatalogInsideSchemaSurveyService extends OSSUnityCatalogSer
             relationalDataManagerMeasurement.setTableCount(tableCount);
             relationalDataManagerMeasurement.setColumnCount(columnCount);
 
-            resourceMeasureAnnotation.setJsonProperties(this.getJSONProperties(relationalDataManagerMeasurement));
+            resourceMeasureAnnotationProperties.setJsonProperties(this.getJSONProperties(relationalDataManagerMeasurement));
 
             Map<String, String> resourceProperties = new HashMap<>();
 
@@ -222,17 +222,17 @@ public class OSSUnityCatalogInsideSchemaSurveyService extends OSSUnityCatalogSer
             resourceCounts.put(UnityCatalogMetric.NO_OF_VOLUMES.getPropertyName(), volumeCount);
             resourceCounts.put(UnityCatalogMetric.NO_OF_MODELS.getPropertyName(), modelCount);
 
-            resourceMeasureAnnotation.setJsonProperties(this.getJSONProperties(resourceCounts));
-            resourceMeasureAnnotation.setResourceProperties(resourceProperties);
+            resourceMeasureAnnotationProperties.setJsonProperties(this.getJSONProperties(resourceCounts));
+            resourceMeasureAnnotationProperties.setResourceProperties(resourceProperties);
 
 
-            annotationStore.addAnnotation(resourceMeasureAnnotation, null);
+            annotationStore.addAnnotation(resourceMeasureAnnotationProperties, null);
 
             if (! finalAnalysisStep.equals(AnalysisStep.MEASURE_RESOURCE.getName()))
             {
                 annotationStore.setAnalysisStep(AnalysisStep.PROFILING_ASSOCIATED_RESOURCES.getName());
 
-                ResourceProfileAnnotation resourceProfileAnnotation = this.getNameListAnnotation(SurveyResourceManagerAnnotationType.FUNCTION_LIST, functionList);
+                ResourceProfileAnnotationProperties resourceProfileAnnotation = this.getNameListAnnotation(SurveyResourceManagerAnnotationType.FUNCTION_LIST, functionList);
 
                 annotationStore.addAnnotation(resourceProfileAnnotation, null);
 

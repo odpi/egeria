@@ -3,10 +3,9 @@
 package org.odpi.openmetadata.frameworks.surveyaction.properties;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.odpi.openmetadata.frameworks.openmetadata.enums.AnnotationStatus;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.ElementClassification;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.ElementType;
-import org.odpi.openmetadata.frameworks.opensurvey.properties.Annotation;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.surveyreports.AnnotationProperties;
 import org.testng.annotations.Test;
 
 import java.util.*;
@@ -15,7 +14,7 @@ import static org.testng.Assert.assertFalse;
 import static org.testng.Assert.assertTrue;
 
 /**
- * Validate that the Annotation bean can be cloned, compared, serialized, deserialized and printed as a String.
+ * Validate that the AnnotationProperties bean can be cloned, compared, serialized, deserialized and printed as a String.
  */
 public class AnnotationTest
 {
@@ -40,9 +39,9 @@ public class AnnotationTest
      *
      * @return filled in object
      */
-    private Annotation getTestObject()
+    private AnnotationProperties getTestObject()
     {
-        Annotation testObject = new Annotation();
+        AnnotationProperties testObject = new AnnotationProperties();
 
         testObject.setAnnotationType("TestAnnotationType");
         testObject.setSummary("TestSummary");
@@ -51,9 +50,6 @@ public class AnnotationTest
         testObject.setExplanation("TestExplanation");
         testObject.setAnalysisStep("TestAnalysisStep");
         testObject.setJsonProperties("TestJsonProperties");
-        testObject.setAnnotationStatus(AnnotationStatus.UNKNOWN_STATUS);
-        testObject.setSteward("TestSteward");
-        testObject.setReviewComment("TestReviewComment");
         testObject.setAdditionalProperties(additionalProperties);
 
         return testObject;
@@ -65,7 +61,7 @@ public class AnnotationTest
      *
      * @param resultObject object returned by the test
      */
-    private void validateResultObject(Annotation  resultObject)
+    private void validateResultObject(AnnotationProperties resultObject)
     {
         assertTrue(resultObject.getAnnotationType().equals("TestAnnotationType"));
         assertTrue(resultObject.getSummary().equals("TestSummary"));
@@ -74,9 +70,6 @@ public class AnnotationTest
         assertTrue(resultObject.getExplanation().equals("TestExplanation"));
         assertTrue(resultObject.getAnalysisStep().equals("TestAnalysisStep"));
         assertTrue(resultObject.getJsonProperties().equals("TestJsonProperties"));
-        assertTrue(resultObject.getAnnotationStatus().equals(AnnotationStatus.UNKNOWN_STATUS));
-        assertTrue(resultObject.getSteward().equals("TestSteward"));
-        assertTrue(resultObject.getReviewComment().equals("TestReviewComment"));
         assertTrue(resultObject.getAdditionalProperties().equals(additionalProperties));
     }
 
@@ -86,7 +79,7 @@ public class AnnotationTest
      */
     @Test public void testNullObject()
     {
-        Annotation    nullObject = new Annotation();
+        AnnotationProperties nullObject = new AnnotationProperties();
 
         assertTrue(nullObject.getAnnotationType() == null);
         assertTrue(nullObject.getSummary() == null);
@@ -95,12 +88,9 @@ public class AnnotationTest
         assertTrue(nullObject.getExplanation() == null);
         assertTrue(nullObject.getAnalysisStep() == null);
         assertTrue(nullObject.getJsonProperties() == null);
-        assertTrue(nullObject.getAnnotationStatus() == AnnotationStatus.NEW_ANNOTATION);
-        assertTrue(nullObject.getSteward() == null);
-        assertTrue(nullObject.getReviewComment() == null);
         assertTrue(nullObject.getAdditionalProperties() == null);
 
-        nullObject = new Annotation(null);
+        nullObject = new AnnotationProperties(null);
 
         assertTrue(nullObject.getAnnotationType() == null);
         assertTrue(nullObject.getSummary() == null);
@@ -109,9 +99,6 @@ public class AnnotationTest
         assertTrue(nullObject.getExplanation() == null);
         assertTrue(nullObject.getAnalysisStep() == null);
         assertTrue(nullObject.getJsonProperties() == null);
-        assertTrue(nullObject.getAnnotationStatus() == AnnotationStatus.NEW_ANNOTATION);
-        assertTrue(nullObject.getSteward() == null);
-        assertTrue(nullObject.getReviewComment() == null);
         assertTrue(nullObject.getAdditionalProperties() == null);
     }
 
@@ -126,11 +113,11 @@ public class AnnotationTest
         assertFalse(getTestObject().equals("DummyString"));
         assertTrue(getTestObject().equals(getTestObject()));
 
-        Annotation  sameObject = getTestObject();
+        AnnotationProperties sameObject = getTestObject();
         assertTrue(sameObject.equals(sameObject));
 
-        Annotation  differentObject = getTestObject();
-        differentObject.setSteward("Different");
+        AnnotationProperties differentObject = getTestObject();
+        differentObject.setExplanation("Different");
         assertFalse(getTestObject().equals(differentObject));
     }
 
@@ -149,7 +136,7 @@ public class AnnotationTest
      */
     @Test public void testClone()
     {
-        validateResultObject(new Annotation(getTestObject()));
+        validateResultObject(new AnnotationProperties(getTestObject()));
     }
 
 
@@ -176,7 +163,7 @@ public class AnnotationTest
 
         try
         {
-            validateResultObject(objectMapper.readValue(jsonString, Annotation.class));
+            validateResultObject(objectMapper.readValue(jsonString, AnnotationProperties.class));
         }
         catch (Exception   exc)
         {
@@ -190,6 +177,6 @@ public class AnnotationTest
      */
     @Test public void testToString()
     {
-        assertTrue(getTestObject().toString().contains("Annotation"));
+        assertTrue(getTestObject().toString().contains("AnnotationProperties"));
     }
 }
