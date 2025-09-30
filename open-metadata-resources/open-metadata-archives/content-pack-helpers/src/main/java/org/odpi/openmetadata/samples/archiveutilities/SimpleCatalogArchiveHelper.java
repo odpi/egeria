@@ -2424,12 +2424,16 @@ public class SimpleCatalogArchiveHelper
      * @param dataStructureGUID unique identifier of the data structure
      * @param memberDataFieldGUID unique identifier of the member
      * @param position position of the data field in the parent
+     * @param minCardinality min cardinality
+     * @param maxCardinality max cardinality
+     * @param coverageCategory is this all or part of the identifier for the data structure
      */
-    public void addMemberDataField(String dataStructureGUID,
-                                   String memberDataFieldGUID,
-                                   int    position,
-                                   int    minCardinality,
-                                   int    maxCardinality)
+    public void addMemberDataField(String           dataStructureGUID,
+                                   String           memberDataFieldGUID,
+                                   int              position,
+                                   int              minCardinality,
+                                   int              maxCardinality,
+                                   CoverageCategory coverageCategory)
     {
         final String methodName = "addMemberDataField";
 
@@ -2442,6 +2446,19 @@ public class SimpleCatalogArchiveHelper
         InstanceProperties properties = archiveHelper.addIntPropertyToInstance(archiveRootName, null, OpenMetadataProperty.POSITION.name, position, methodName);
         properties = archiveHelper.addIntPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.MIN_CARDINALITY.name, minCardinality, methodName);
         properties = archiveHelper.addIntPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.MAX_CARDINALITY.name, maxCardinality, methodName);
+
+        if (coverageCategory != null)
+        {
+            properties = archiveHelper.addEnumPropertyToInstance(archiveRootName,
+                                                                 properties,
+                                                                 OpenMetadataProperty.COVERAGE_CATEGORY.name,
+                                                                 CoverageCategory.getOpenTypeGUID(),
+                                                                 CoverageCategory.getOpenTypeName(),
+                                                                 coverageCategory.getOrdinal(),
+                                                                 coverageCategory.getName(),
+                                                                 coverageCategory.getDescription(),
+                                                                 methodName);
+        }
 
         archiveBuilder.addRelationship(archiveHelper.getRelationship(OpenMetadataType.MEMBER_DATA_FIELD_RELATIONSHIP.typeName,
                                                                      idToGUIDMap.getGUID(dataStructureGUID + "_to_" + memberDataFieldGUID + "_member_data_field_relationship"),
@@ -3278,7 +3295,7 @@ public class SimpleCatalogArchiveHelper
             EntityProxy end1 = archiveHelper.getEntityProxy(designModelEntity);
             EntityProxy end2 = archiveHelper.getEntityProxy(designModelElementEntity);
 
-            archiveBuilder.addRelationship(archiveHelper.getRelationship(OpenMetadataType.DESIGN_MODEL_GROUP_MEMBERSHIP_RELATIONSHIP.typeName,
+            archiveBuilder.addRelationship(archiveHelper.getRelationship(OpenMetadataType.COLLECTION_MEMBERSHIP_RELATIONSHIP.typeName,
                                                                          idToGUIDMap.getGUID(designModelGUID + "_to_" + newEntity.getGUID() + "_design_model_group_membership_relationship"),
                                                                          null,
                                                                          InstanceStatus.ACTIVE,
@@ -3305,7 +3322,7 @@ public class SimpleCatalogArchiveHelper
         EntityProxy end1 = archiveHelper.getEntityProxy(designModelGroupEntity);
         EntityProxy end2 = archiveHelper.getEntityProxy(designModelElementEntity);
 
-        archiveBuilder.addRelationship(archiveHelper.getRelationship(OpenMetadataType.DESIGN_MODEL_GROUP_MEMBERSHIP_RELATIONSHIP.typeName,
+        archiveBuilder.addRelationship(archiveHelper.getRelationship(OpenMetadataType.COLLECTION_MEMBERSHIP_RELATIONSHIP.typeName,
                                                                      idToGUIDMap.getGUID(groupGUID + "_to_" + memberGUID + "_design_model_group_membership_relationship"),
                                                                      null,
                                                                      InstanceStatus.ACTIVE,
@@ -3357,7 +3374,7 @@ public class SimpleCatalogArchiveHelper
         properties = archiveHelper.addBooleanPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.ORDERED_VALUES.name, orderedValues, methodName);
         properties = archiveHelper.addBooleanPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.NAVIGABLE.name, navigable, methodName);
 
-        archiveBuilder.addRelationship(archiveHelper.getRelationship(OpenMetadataType.DESIGN_MODEL_GROUP_MEMBERSHIP_RELATIONSHIP.typeName,
+        archiveBuilder.addRelationship(archiveHelper.getRelationship(OpenMetadataType.CONCEPT_BEAD_RELATIONSHIP_END.typeName,
                                                                      idToGUIDMap.getGUID(conceptBeadLinkGUID + "_to_" + conceptBeadGUID + "_concept_bead_relationship_end_relationship"),
                                                                      properties,
                                                                      InstanceStatus.ACTIVE,
@@ -3399,7 +3416,7 @@ public class SimpleCatalogArchiveHelper
         properties = archiveHelper.addBooleanPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.UNIQUE_VALUES.name, uniqueValues, methodName);
         properties = archiveHelper.addBooleanPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.ORDERED_VALUES.name, orderedValues, methodName);
 
-        archiveBuilder.addRelationship(archiveHelper.getRelationship(OpenMetadataType.DESIGN_MODEL_GROUP_MEMBERSHIP_RELATIONSHIP.typeName,
+        archiveBuilder.addRelationship(archiveHelper.getRelationship(OpenMetadataType.CONCEPT_BEAD_ATTRIBUTE_LINK.typeName,
                                                                      idToGUIDMap.getGUID(conceptBeadGUID + "_to_" + conceptBeadAttributeGUID + "_concept_bead_attribute_link_relationship"),
                                                                      properties,
                                                                      InstanceStatus.ACTIVE,

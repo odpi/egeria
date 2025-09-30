@@ -9,7 +9,6 @@ import org.odpi.openmetadata.commonservices.ffdc.RESTExceptionHandler;
 import org.odpi.openmetadata.commonservices.ffdc.rest.*;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.openmetadata.handlers.LocationHandler;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.actors.ITInfrastructureProfileProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.locations.AdjacentLocationProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.locations.KnownLocationProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.locations.LocationProperties;
@@ -276,7 +275,7 @@ public class LocationArenaRESTServices extends TokenController
                 }
                 else
                 {
-                    restExceptionHandler.handleInvalidPropertiesObject(KnownLocationProperties.class.getName(), methodName);
+                    restExceptionHandler.handleInvalidPropertiesObject(AdjacentLocationProperties.class.getName(), methodName);
                 }
             }
             else
@@ -402,7 +401,7 @@ public class LocationArenaRESTServices extends TokenController
                 }
                 else
                 {
-                    restExceptionHandler.handleInvalidPropertiesObject(KnownLocationProperties.class.getName(), methodName);
+                    restExceptionHandler.handleInvalidPropertiesObject(NestedLocationProperties.class.getName(), methodName);
                 }
             }
             else
@@ -528,7 +527,7 @@ public class LocationArenaRESTServices extends TokenController
                 }
                 else
                 {
-                    restExceptionHandler.handleInvalidPropertiesObject(ITInfrastructureProfileProperties.class.getName(), methodName);
+                    restExceptionHandler.handleInvalidPropertiesObject(KnownLocationProperties.class.getName(), methodName);
                 }
             }
             else

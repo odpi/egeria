@@ -10,6 +10,7 @@ import org.odpi.openmetadata.adapters.connectors.productmanager.ffdc.ProductMana
 import org.odpi.openmetadata.adapters.connectors.productmanager.productcatalog.*;
 import org.odpi.openmetadata.adapters.connectors.productmanager.solutionblueprint.*;
 import org.odpi.openmetadata.adapters.connectors.referencedata.tabulardatasets.ValidValueSetListConnector;
+import org.odpi.openmetadata.adapters.connectors.referencedata.tabulardatasets.ValidValueSetListProvider;
 import org.odpi.openmetadata.adapters.connectors.referencedata.tabulardatasets.controls.ReferenceDataConfigurationProperty;
 import org.odpi.openmetadata.frameworks.connectors.Connector;
 import org.odpi.openmetadata.frameworks.connectors.ConnectorProvider;
@@ -24,6 +25,7 @@ import org.odpi.openmetadata.frameworks.opengovernance.controls.ActionTarget;
 import org.odpi.openmetadata.frameworks.opengovernance.properties.CatalogTarget;
 import org.odpi.openmetadata.frameworks.opengovernance.properties.GovernanceActionTypeProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.connectorcontext.*;
+import org.odpi.openmetadata.frameworks.openmetadata.enums.CoverageCategory;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.DeleteMethod;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.ElementStatus;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.PermittedSynchronization;
@@ -52,6 +54,7 @@ import org.odpi.openmetadata.frameworks.openmetadata.properties.solutions.Soluti
 import org.odpi.openmetadata.frameworks.openmetadata.properties.solutions.SolutionComponentActorProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.solutions.SolutionComponentProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.solutions.SolutionLinkingWireProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.validvalues.ValidValueDefinitionProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.refdata.ResourceUse;
 import org.odpi.openmetadata.frameworks.openmetadata.search.NewElementOptions;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
@@ -112,6 +115,10 @@ public class OpenMetadataProductsHarvesterConnector extends IntegrationConnector
 
         try
         {
+            auditLog.logMessage(methodName, ProductManagerAuditCode.STARTING_CONNECTOR.getMessageDefinition(connectorName,
+                                                                                                            integrationContext.getMetadataAccessServer(),
+                                                                                                            integrationContext.getMetadataAccessServerPlatformURLRoot()));
+
             /*
              * These governance definitions support the product catalog initiative.
              * They are linked to the product catalog.
@@ -195,6 +202,8 @@ public class OpenMetadataProductsHarvesterConnector extends IntegrationConnector
      */
     private void harvestValidValues(Map<String, RequestedCatalogTarget>  existingDataSources) throws ConnectorCheckedException
     {
+        final String methodName = "harvestValidValues";
+
         RequestedCatalogTarget validValueSetList = existingDataSources.get(validValueSetListCatalogTargetName);
 
         if (validValueSetList != null)
@@ -218,7 +227,26 @@ public class OpenMetadataProductsHarvesterConnector extends IntegrationConnector
 
                             if ((qualifiedName != null) && (! existingDataSources.containsKey(qualifiedName)))
                             {
-                                createValidValueDataSet(qualifiedName);
+                                try
+                                {
+                                    String productGUID = createValidValueDataSet(qualifiedName);
+
+                                    if (productGUID != null)
+                                    {
+                                        auditLog.logMessage(methodName,
+                                                            ProductManagerAuditCode.NEW_VALID_VALUE_PRODUCT.getMessageDefinition(connectorName, productGUID, qualifiedName));
+
+                                    }
+                                }
+                                catch (Exception error)
+                                {
+                                    auditLog.logException(methodName,
+                                                          ProductManagerAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(connectorName,
+                                                                                                                            error.getClass().getName(),
+                                                                                                                            methodName,
+                                                                                                                            error.getMessage()),
+                                                          error);
+                                }
                             }
                         }
                     }
@@ -228,9 +256,64 @@ public class OpenMetadataProductsHarvesterConnector extends IntegrationConnector
     }
 
 
-    private void createValidValueDataSet(String qualifiedName)
+    /**
+     * Create a product that represents a single valid value set.
+     *
+     * @param qualifiedName unique name of the valid value set
+     * @return unique identifier of the product
+     */
+    private String createValidValueDataSet(String qualifiedName) throws InvalidParameterException,
+                                                                        PropertyServerException,
+                                                                        UserNotAuthorizedException
     {
-        // todo
+        ValidValueDefinitionClient validValueDefinitionClient = integrationContext.getValidValueDefinitionClient();
+
+        List<OpenMetadataRootElement> validValueSets = validValueDefinitionClient.getValidValueDefinitionsByName(qualifiedName,
+                                                                                                                 validValueDefinitionClient.getQueryOptions());
+
+        /*
+         * There should be just one valid value set.
+         */
+        if (validValueSets != null)
+        {
+            for (OpenMetadataRootElement validValueSet : validValueSets)
+            {
+                if ((validValueSet != null) && (validValueSet.getProperties() instanceof ValidValueDefinitionProperties validValueDefinitionProperties))
+                {
+                    ProductDefinition productDefinition = new ProductDefinitionBean("Valid Value Set: " + validValueDefinitionProperties.getDisplayName(),
+                                                                                    "OPEN-METADATA-" + OpenMetadataType.VALID_VALUE_DEFINITION.typeName + "-" + validValueDefinitionProperties.getQualifiedName(),
+                                                                                    ProductFolderDefinition.VALID_VALUE_SETS,
+                                                                                    validValueDefinitionProperties.getDisplayName(),
+                                                                                    validValueDefinitionProperties.getDescription(),
+                                                                                    ProductCategoryDefinition.REFERENCE_DATA.getPreferredValue(),
+                                                                                    ProductGovernanceDefinition.INTERNAL_USE_ONLY,
+                                                                                    ProductCommunityDefinition.REFERENCE_DATA_SIG,
+                                                                                    new ProductSubscriptionDefinition[]{
+                                                                                            ProductSubscriptionDefinition.EVALUATION_SUBSCRIPTION,
+                                                                                            ProductSubscriptionDefinition.ONGOING_UPDATE},
+                                                                                    "Valid Value Set " + validValueDefinitionProperties.getDisplayName(),
+                                                                                    new ProductDataFieldDefinition[]{
+                                                                                            ProductDataFieldDefinition.GUID},
+                                                                                    new ProductDataFieldDefinition[]{
+                                                                                            ProductDataFieldDefinition.QUALIFIED_NAME,
+                                                                                            ProductDataFieldDefinition.DISPLAY_NAME,
+                                                                                            ProductDataFieldDefinition.DESCRIPTION,
+                                                                                            ProductDataFieldDefinition.CATEGORY,
+                                                                                            ProductDataFieldDefinition.NAMESPACE,
+                                                                                            ProductDataFieldDefinition.PREFERRED_VALUE,
+                                                                                            ProductDataFieldDefinition.IS_CASE_SENSITIVE,
+                                                                                            ProductDataFieldDefinition.DATA_TYPE,
+                                                                                            ProductDataFieldDefinition.SCOPE,
+                                                                                            ProductDataFieldDefinition.USAGE},
+                                                                                    new ValidValueSetListProvider(),
+                                                                                    "ValidValueSet:" + qualifiedName);
+
+                    return this.getProduct(productDefinition);
+                }
+            }
+        }
+
+        return null;
     }
 
 
@@ -251,7 +334,7 @@ public class OpenMetadataProductsHarvesterConnector extends IntegrationConnector
     {
         Map<String, String> productMap = new HashMap<>();
 
-        for (ProductDefinition productDefinition : ProductDefinition.values())
+        for (ProductDefinition productDefinition : ProductDefinitionEnum.values())
         {
             String productGUID = this.getProduct(productDefinition);
 
@@ -281,6 +364,8 @@ public class OpenMetadataProductsHarvesterConnector extends IntegrationConnector
         ClassificationManagerClient classificationManagerClient = integrationContext.getClassificationManagerClient();
         SolutionBlueprintClient     solutionBlueprintClient     = integrationContext.getSolutionBlueprintClient();
 
+        final String methodName = "getProduct";
+
         /*
          * If the product is already present then return its GUID
          */
@@ -292,6 +377,11 @@ public class OpenMetadataProductsHarvesterConnector extends IntegrationConnector
             {
                 if (existingProduct != null)
                 {
+                    auditLog.logMessage(methodName,
+                                        ProductManagerAuditCode.RETRIEVING_OPEN_METADATA_PRODUCT.getMessageDefinition(connectorName,
+                                                                                                                      existingProduct.getElementHeader().getGUID(),
+                                                                                                                      productDefinition.getProductName()));
+
                     return existingProduct.getElementHeader().getGUID();
                 }
             }
@@ -327,6 +417,10 @@ public class OpenMetadataProductsHarvesterConnector extends IntegrationConnector
                                                                digitalProductProperties,
                                                                null);
 
+        auditLog.logMessage(methodName,
+                            ProductManagerAuditCode.NEW_OPEN_METADATA_PRODUCT.getMessageDefinition(connectorName,
+                                                                                                   productGUID,
+                                                                                                   productDefinition.getProductName()));
         /*
          * All of the digital products use the same solution design
          */
@@ -334,6 +428,8 @@ public class OpenMetadataProductsHarvesterConnector extends IntegrationConnector
                                                    solutionBlueprintGUID,
                                                    solutionBlueprintClient.getMetadataSourceOptions(),
                                                    null);
+
+
 
         /*
          * Link the product manager
@@ -432,9 +528,10 @@ public class OpenMetadataProductsHarvesterConnector extends IntegrationConnector
                                                                    PropertyServerException,
                                                                    UserNotAuthorizedException
     {
-        List<ProductDataFieldDefinition> dataFieldDefinitions = productDefinition.getDataSpec();
+        List<ProductDataFieldDefinition> dataFieldIdentifiers = productDefinition.getDataSpecIdentifiers();
+        List<ProductDataFieldDefinition> dataFieldDefinitions = productDefinition.getDataSpecIdentifiers();
 
-        if (dataFieldDefinitions != null)
+        if ((dataFieldIdentifiers != null) || (dataFieldDefinitions != null))
         {
             DataSpecProperties dataSpecProperties = new DataSpecProperties();
 
@@ -471,6 +568,7 @@ public class OpenMetadataProductsHarvesterConnector extends IntegrationConnector
             dataStructureProperties.setDisplayName("Data Structure for " + productDefinition.getDisplayName());
             dataStructureProperties.setDescription("The data structure lists the fields in the " + productDefinition.getProductName() + " product.");
             dataStructureProperties.setVersionIdentifier(productDefinition.getVersionIdentifier());
+            dataStructureProperties.setNamePatterns(Collections.singletonList(productDefinition.getDataSpecTableName()));
 
             newElementOptions.setParentGUID(dataSpecGUID);
             newElementOptions.setParentRelationshipTypeName(OpenMetadataType.COLLECTION_MEMBERSHIP_RELATIONSHIP.typeName);
@@ -482,19 +580,42 @@ public class OpenMetadataProductsHarvesterConnector extends IntegrationConnector
 
             int fieldPosition = 1;
 
-            for (ProductDataFieldDefinition dataField : dataFieldDefinitions)
+            if (dataFieldIdentifiers != null)
             {
-                String dataFieldGUID = dataFields.get(dataField.getQualifiedName());
+                for (ProductDataFieldDefinition dataField : dataFieldIdentifiers)
+                {
+                    String dataFieldGUID = dataFields.get(dataField.getQualifiedName());
 
-                MemberDataFieldProperties memberDataFieldProperties = new MemberDataFieldProperties();
+                    MemberDataFieldProperties memberDataFieldProperties = new MemberDataFieldProperties();
 
-                memberDataFieldProperties.setPosition(fieldPosition);
-                fieldPosition ++;
+                    memberDataFieldProperties.setCoverageCategory(CoverageCategory.IDENTIFIER);
+                    memberDataFieldProperties.setPosition(fieldPosition);
+                    fieldPosition ++;
 
-                dataStructureClient.linkMemberDataField(dataStructureGUID,
-                                                        dataFieldGUID,
-                                                        dataStructureClient.getMetadataSourceOptions(),
-                                                        memberDataFieldProperties);
+                    dataStructureClient.linkMemberDataField(dataStructureGUID,
+                                                            dataFieldGUID,
+                                                            dataStructureClient.getMetadataSourceOptions(),
+                                                            memberDataFieldProperties);
+                }
+            }
+
+            if (dataFieldDefinitions != null)
+            {
+                for (ProductDataFieldDefinition dataField : dataFieldDefinitions)
+                {
+                    String dataFieldGUID = dataFields.get(dataField.getQualifiedName());
+
+                    MemberDataFieldProperties memberDataFieldProperties = new MemberDataFieldProperties();
+
+                    memberDataFieldProperties.setCoverageCategory(CoverageCategory.CORE_DETAIL);
+                    memberDataFieldProperties.setPosition(fieldPosition);
+                    fieldPosition ++;
+
+                    dataStructureClient.linkMemberDataField(dataStructureGUID,
+                                                            dataFieldGUID,
+                                                            dataStructureClient.getMetadataSourceOptions(),
+                                                            memberDataFieldProperties);
+                }
             }
         }
     }
@@ -726,6 +847,8 @@ public class OpenMetadataProductsHarvesterConnector extends IntegrationConnector
                                                                          PropertyServerException,
                                                                          UserNotAuthorizedException
     {
+        final String methodName = "addProductAsset";
+
         AssetClient assetClient = integrationContext.getAssetClient(OpenMetadataType.REFERENCE_CODE_TABLE.typeName);
 
         ReferenceCodeTableProperties dataSetProperties = new ReferenceCodeTableProperties();
@@ -750,6 +873,12 @@ public class OpenMetadataProductsHarvesterConnector extends IntegrationConnector
                                                    initialClassifications,
                                                    dataSetProperties,
                                                    null);
+
+        auditLog.logMessage(methodName,
+                            ProductManagerAuditCode.CREATED_SUPPORTING_DEFINITION.getMessageDefinition(connectorName,
+                                                                                                       dataSetProperties.getTypeName(),
+                                                                                                       dataSetProperties.getDisplayName(),
+                                                                                                       assetGUID));
 
         String connectorTypeGUID = this.getConnectorTypeGUID(productDefinition.getConnectorProvider());
 
@@ -782,6 +911,11 @@ public class OpenMetadataProductsHarvesterConnector extends IntegrationConnector
                                                                       connectionProperties,
                                                                       null);
 
+            auditLog.logMessage(methodName,
+                                ProductManagerAuditCode.CREATED_SUPPORTING_DEFINITION.getMessageDefinition(connectorName,
+                                                                                                           connectionProperties.getTypeName(),
+                                                                                                           connectionProperties.getDisplayName(),
+                                                                                                           connectionGUID));
             /*
              * Connect the connection to the connectorType
              */
@@ -789,6 +923,14 @@ public class OpenMetadataProductsHarvesterConnector extends IntegrationConnector
                                                          connectorTypeGUID,
                                                          connectionClient.getMetadataSourceOptions(),
                                                          null);
+
+            auditLog.logMessage(methodName,
+                                ProductManagerAuditCode.LINKING_ELEMENTS.getMessageDefinition(connectorName,
+                                                                                              dataSetProperties.getTypeName(),
+                                                                                              assetGUID,
+                                                                                              connectionProperties.getTypeName(),
+                                                                                              connectionGUID,
+                                                                                              OpenMetadataType.CONNECTION_CONNECTOR_TYPE_RELATIONSHIP.typeName));
 
             /*
              * Create an endpoint to carry the URL of the platform needed to connect to the metadata store.
@@ -806,7 +948,22 @@ public class OpenMetadataProductsHarvesterConnector extends IntegrationConnector
 
             EndpointClient endpointClient = integrationContext.getEndpointClient();
 
-            endpointClient.createEndpoint(newElementOptions, null, endpointProperties, null);
+            String endpointGUID = endpointClient.createEndpoint(newElementOptions, null, endpointProperties, null);
+
+            auditLog.logMessage(methodName,
+                                ProductManagerAuditCode.CREATED_SUPPORTING_DEFINITION.getMessageDefinition(connectorName,
+                                                                                                           endpointProperties.getTypeName(),
+                                                                                                           endpointProperties.getDisplayName(),
+                                                                                                           endpointGUID));
+
+            auditLog.logMessage(methodName,
+                                ProductManagerAuditCode.LINKING_ELEMENTS.getMessageDefinition(connectorName,
+                                                                                              dataSetProperties.getTypeName(),
+                                                                                              assetGUID,
+                                                                                              endpointProperties.getTypeName(),
+                                                                                              endpointGUID,
+                                                                                              OpenMetadataType.CONNECT_TO_ENDPOINT_RELATIONSHIP.typeName));
+
         }
 
 
@@ -1036,6 +1193,8 @@ public class OpenMetadataProductsHarvesterConnector extends IntegrationConnector
                                                                                           PropertyServerException,
                                                                                           UserNotAuthorizedException
     {
+        final String methodName = "getProductFolder";
+
         CollectionClient collectionClient = integrationContext.getCollectionClient();
 
         /*
@@ -1049,6 +1208,12 @@ public class OpenMetadataProductsHarvesterConnector extends IntegrationConnector
             {
                 if (collection != null)
                 {
+                    auditLog.logMessage(methodName,
+                                        ProductManagerAuditCode.RETRIEVING_SUPPORTING_DEFINITION.getMessageDefinition(connectorName,
+                                                                                                                      productFolderDefinition.getTypeName(),
+                                                                                                                      productFolderDefinition.getDisplayName(),
+                                                                                                                      collection.getElementHeader().getGUID()));
+
                     return collection.getElementHeader().getGUID();
                 }
             }
@@ -1092,10 +1257,17 @@ public class OpenMetadataProductsHarvesterConnector extends IntegrationConnector
             newElementOptions.setIsOwnAnchor(true);
         }
 
-        return collectionClient.createCollection(newElementOptions,
-                                                 initialClassifications,
-                                                 collectionProperties,
-                                                 null);
+        String collectionGUID = collectionClient.createCollection(newElementOptions,
+                                                                  initialClassifications,
+                                                                  collectionProperties,
+                                                                  null);
+        auditLog.logMessage(methodName,
+                            ProductManagerAuditCode.CREATED_SUPPORTING_DEFINITION.getMessageDefinition(connectorName,
+                                                                                                       productFolderDefinition.getTypeName(),
+                                                                                                       productFolderDefinition.getDisplayName(),
+                                                                                                       collectionGUID));
+
+        return collectionGUID;
     }
 
 
@@ -1140,6 +1312,8 @@ public class OpenMetadataProductsHarvesterConnector extends IntegrationConnector
                                                                                                 PropertyServerException,
                                                                                                 UserNotAuthorizedException
     {
+        final String methodName = "getGlossaryTerm";
+
         GlossaryTermClient glossaryTermClient = integrationContext.getGlossaryTermClient();
 
         /*
@@ -1153,6 +1327,12 @@ public class OpenMetadataProductsHarvesterConnector extends IntegrationConnector
             {
                 if (term != null)
                 {
+                    auditLog.logMessage(methodName,
+                                        ProductManagerAuditCode.RETRIEVING_SUPPORTING_DEFINITION.getMessageDefinition(connectorName,
+                                                                                                                      OpenMetadataType.GLOSSARY_TERM.typeName,
+                                                                                                                      glossaryTermDefinition.getDisplayName(),
+                                                                                                                      term.getElementHeader().getGUID()));
+
                     return term.getElementHeader().getGUID();
                 }
             }
@@ -1187,10 +1367,18 @@ public class OpenMetadataProductsHarvesterConnector extends IntegrationConnector
             newElementOptions.setIsOwnAnchor(true);
         }
 
-        return glossaryTermClient.createGlossaryTerm(newElementOptions,
-                                                 null,
-                                                 glossaryTermProperties,
-                                                 null);
+        String glossaryTermGUID = glossaryTermClient.createGlossaryTerm(newElementOptions,
+                                                                        null,
+                                                                        glossaryTermProperties,
+                                                                        null);
+
+        auditLog.logMessage(methodName,
+                            ProductManagerAuditCode.CREATED_SUPPORTING_DEFINITION.getMessageDefinition(connectorName,
+                                                                                                       OpenMetadataType.GLOSSARY_TERM.typeName,
+                                                                                                       glossaryTermDefinition.getDisplayName(),
+                                                                                                       glossaryTermGUID));
+
+        return glossaryTermGUID;
     }
 
 
@@ -1235,6 +1423,8 @@ public class OpenMetadataProductsHarvesterConnector extends IntegrationConnector
                                                                                               PropertyServerException,
                                                                                               UserNotAuthorizedException
     {
+        final String methodName = "getCommunity";
+
         CommunityClient communityClient = integrationContext.getCommunityClient();
 
         /*
@@ -1248,6 +1438,12 @@ public class OpenMetadataProductsHarvesterConnector extends IntegrationConnector
             {
                 if (existingCommunity != null)
                 {
+                    auditLog.logMessage(methodName,
+                                        ProductManagerAuditCode.RETRIEVING_SUPPORTING_DEFINITION.getMessageDefinition(connectorName,
+                                                                                                                      OpenMetadataType.COMMUNITY.typeName,
+                                                                                                                      productCommunityDefinition.getDisplayName(),
+                                                                                                                      existingCommunity.getElementHeader().getGUID()));
+
                     return existingCommunity.getElementHeader().getGUID();
                 }
             }
@@ -1266,10 +1462,18 @@ public class OpenMetadataProductsHarvesterConnector extends IntegrationConnector
         newElementOptions.setAnchorScopeGUID(this.anchorScopeGUID);
         newElementOptions.setIsOwnAnchor(true);
 
-        return communityClient.createCommunity(newElementOptions,
-                                               null,
-                                               communityProperties,
-                                               null);
+        String communityGUID = communityClient.createCommunity(newElementOptions,
+                                                               null,
+                                                               communityProperties,
+                                                               null);
+
+        auditLog.logMessage(methodName,
+                            ProductManagerAuditCode.CREATED_SUPPORTING_DEFINITION.getMessageDefinition(connectorName,
+                                                                                                       OpenMetadataType.COMMUNITY.typeName,
+                                                                                                       productCommunityDefinition.getDisplayName(),
+                                                                                                       communityGUID));
+
+        return communityGUID;
     }
 
 
@@ -1314,6 +1518,8 @@ public class OpenMetadataProductsHarvesterConnector extends IntegrationConnector
                                                                                               PropertyServerException,
                                                                                               UserNotAuthorizedException
     {
+        final String methodName = "getCommunityNoteLog";
+
         CommunityClient communityClient = integrationContext.getCommunityClient();
         String          communityGUID   = communities.get(productCommunityDefinition.getQualifiedName());
 
@@ -1328,6 +1534,12 @@ public class OpenMetadataProductsHarvesterConnector extends IntegrationConnector
             {
                 if (relatedNoteLog != null)
                 {
+                    auditLog.logMessage(methodName,
+                                        ProductManagerAuditCode.RETRIEVING_SUPPORTING_DEFINITION.getMessageDefinition(connectorName,
+                                                                                                                   OpenMetadataType.NOTE_LOG.typeName,
+                                                                                                                   "Notifications for " + productCommunityDefinition.getDisplayName(),
+                                                                                                                   relatedNoteLog.getRelatedElement().getElementHeader().getGUID()));
+
                     return relatedNoteLog.getRelatedElement().getElementHeader().getGUID();
                 }
             }
@@ -1349,10 +1561,17 @@ public class OpenMetadataProductsHarvesterConnector extends IntegrationConnector
         newElementOptions.setIsOwnAnchor(false);
         newElementOptions.setAnchorGUID(communityGUID);
 
-        return noteLogClient.createNoteLog(communityGUID,
-                                           noteLogClient.getMetadataSourceOptions(),
-                                           null,
-                                           noteLogProperties);
+        String noteLogGUID = noteLogClient.createNoteLog(communityGUID,
+                                                         noteLogClient.getMetadataSourceOptions(),
+                                                         null,
+                                                         noteLogProperties);
+
+        auditLog.logMessage(methodName,
+                            ProductManagerAuditCode.CREATED_SUPPORTING_DEFINITION.getMessageDefinition(connectorName,
+                                                                                                       OpenMetadataType.NOTE_LOG.typeName,
+                                                                                                       noteLogProperties.getDisplayName(),
+                                                                                                       noteLogGUID));
+        return noteLogGUID;
     }
 
 
@@ -1397,6 +1616,8 @@ public class OpenMetadataProductsHarvesterConnector extends IntegrationConnector
                                                                                        PropertyServerException,
                                                                                        UserNotAuthorizedException
     {
+        final String methodName = "getDataField";
+
         DataFieldClient dataFieldClient = integrationContext.getDataFieldClient();
 
         /*
@@ -1410,6 +1631,12 @@ public class OpenMetadataProductsHarvesterConnector extends IntegrationConnector
             {
                 if (dataField != null)
                 {
+                    auditLog.logMessage(methodName,
+                                        ProductManagerAuditCode.RETRIEVING_SUPPORTING_DEFINITION.getMessageDefinition(connectorName,
+                                                                                                                      OpenMetadataType.DATA_FIELD.typeName,
+                                                                                                                      dataFieldDefinition.getDisplayName(),
+                                                                                                                      dataField.getElementHeader().getGUID()));
+
                     return dataField.getElementHeader().getGUID();
                 }
             }
@@ -1448,10 +1675,18 @@ public class OpenMetadataProductsHarvesterConnector extends IntegrationConnector
             initialClassifications.put(OpenMetadataType.OBJECT_IDENTIFIER_CLASSIFICATION.typeName, null);
         }
 
-        return dataFieldClient.createDataField(newElementOptions,
+        String dataFieldGUID = dataFieldClient.createDataField(newElementOptions,
                                                initialClassifications,
                                                dataFieldProperties,
                                                null);
+
+        auditLog.logMessage(methodName,
+                            ProductManagerAuditCode.CREATED_SUPPORTING_DEFINITION.getMessageDefinition(connectorName,
+                                                                                                       OpenMetadataType.DATA_FIELD.typeName,
+                                                                                                       dataFieldDefinition.getDisplayName(),
+                                                                                                       dataFieldGUID));
+
+        return dataFieldGUID;
     }
 
 
@@ -1535,6 +1770,8 @@ public class OpenMetadataProductsHarvesterConnector extends IntegrationConnector
                                                                                                       PropertyServerException,
                                                                                                       UserNotAuthorizedException
     {
+        final String methodName = "getGovernanceDefinition";
+
         GovernanceDefinitionClient governanceDefinitionClient = integrationContext.getGovernanceDefinitionClient();
 
         /*
@@ -1548,6 +1785,11 @@ public class OpenMetadataProductsHarvesterConnector extends IntegrationConnector
             {
                 if (existingGovernanceDefinition != null)
                 {
+                    auditLog.logMessage(methodName,
+                                        ProductManagerAuditCode.RETRIEVING_SUPPORTING_DEFINITION.getMessageDefinition(connectorName,
+                                                                                                                      governanceDefinition.getType(),
+                                                                                                                      governanceDefinition.getDisplayName(),
+                                                                                                                      existingGovernanceDefinition.getElementHeader().getGUID()));
                     return existingGovernanceDefinition.getElementHeader().getGUID();
                 }
             }
@@ -1598,10 +1840,18 @@ public class OpenMetadataProductsHarvesterConnector extends IntegrationConnector
         newElementOptions.setInitialStatus(ElementStatus.ACTIVE);
         newElementOptions.setIsOwnAnchor(true);
 
-        return governanceDefinitionClient.createGovernanceDefinition(newElementOptions,
+        String governanceDefinitionGUID =  governanceDefinitionClient.createGovernanceDefinition(newElementOptions,
                                                                      null,
                                                                      governanceDefinitionProperties,
                                                                      null);
+
+        auditLog.logMessage(methodName,
+                            ProductManagerAuditCode.CREATED_SUPPORTING_DEFINITION.getMessageDefinition(connectorName,
+                                                                                                       governanceDefinition.getType(),
+                                                                                                       governanceDefinition.getDisplayName(),
+                                                                                                       governanceDefinitionGUID));
+
+        return governanceDefinitionGUID;
     }
 
 
@@ -1614,6 +1864,7 @@ public class OpenMetadataProductsHarvesterConnector extends IntegrationConnector
                                                  PropertyServerException,
                                                  UserNotAuthorizedException
     {
+        final String methodName = "getSolutionBlueprint";
 
         String blueprintQualifiedName = ProductSolutionBlueprint.AUTO_PRODUCT_MANAGER.getQualifiedName();
 
@@ -1630,6 +1881,11 @@ public class OpenMetadataProductsHarvesterConnector extends IntegrationConnector
             {
                 if (solutionBlueprint != null)
                 {
+                    auditLog.logMessage(methodName,
+                                        ProductManagerAuditCode.RETRIEVING_SUPPORTING_DEFINITION.getMessageDefinition(connectorName,
+                                                                                                                      OpenMetadataType.SOLUTION_BLUEPRINT.typeName,
+                                                                                                                      ProductSolutionBlueprint.AUTO_PRODUCT_MANAGER.getDisplayName(),
+                                                                                                                      solutionBlueprint.getElementHeader().getGUID()));
                     return solutionBlueprint.getElementHeader().getGUID();
                 }
             }
@@ -1654,7 +1910,12 @@ public class OpenMetadataProductsHarvesterConnector extends IntegrationConnector
                                                                                solutionBlueprintProperties,
                                                                                null);
 
-        newElementOptions.setIsOwnAnchor(false);
+        auditLog.logMessage(methodName,
+                            ProductManagerAuditCode.CREATED_SUPPORTING_DEFINITION.getMessageDefinition(connectorName,
+                                                                                                       OpenMetadataType.SOLUTION_BLUEPRINT.typeName,
+                                                                                                       ProductSolutionBlueprint.AUTO_PRODUCT_MANAGER.getDisplayName(),
+                                                                                                       blueprintGUID));
+
         newElementOptions.setAnchorGUID(blueprintGUID);
         newElementOptions.setParentGUID(blueprintGUID);
         newElementOptions.setParentRelationshipTypeName(OpenMetadataType.SOLUTION_BLUEPRINT_COMPOSITION_RELATIONSHIP.typeName);
@@ -1704,6 +1965,12 @@ public class OpenMetadataProductsHarvesterConnector extends IntegrationConnector
                                                                                 null,
                                                                                 solutionComponentProperties,
                                                                                 null);
+
+                auditLog.logMessage(methodName,
+                                    ProductManagerAuditCode.CREATED_SUPPORTING_DEFINITION.getMessageDefinition(connectorName,
+                                                                                                               OpenMetadataType.SOLUTION_COMPONENT.typeName,
+                                                                                                               solutionComponentDefinition.getDisplayName(),
+                                                                                                               componentGUID));
             }
 
             qualifiedNameToGUIDMap.put(componentQualifiedName, componentGUID);
@@ -1721,9 +1988,17 @@ public class OpenMetadataProductsHarvesterConnector extends IntegrationConnector
             solutionLinkingWireProperties.setDescription(solutionComponentWire.getDescription());
 
             solutionComponentClient.linkSolutionLinkingWire(qualifiedNameToGUIDMap.get(solutionComponentWire.getComponent1().getQualifiedName()),
-                                                            qualifiedNameToGUIDMap.get(solutionComponentWire.getComponent1().getQualifiedName()),
+                                                            qualifiedNameToGUIDMap.get(solutionComponentWire.getComponent2().getQualifiedName()),
                                                             solutionComponentClient.getMetadataSourceOptions(),
                                                             solutionLinkingWireProperties);
+
+            auditLog.logMessage(methodName,
+                                ProductManagerAuditCode.LINKING_ELEMENTS.getMessageDefinition(connectorName,
+                                                                                              OpenMetadataType.SOLUTION_COMPONENT.typeName,
+                                                                                              solutionComponentWire.getComponent1().getQualifiedName(),
+                                                                                              OpenMetadataType.SOLUTION_COMPONENT.typeName,
+                                                                                              solutionComponentWire.getComponent2().getQualifiedName(),
+                                                                                              OpenMetadataType.SOLUTION_LINKING_WIRE_RELATIONSHIP.typeName));
         }
 
         /*
@@ -1740,6 +2015,14 @@ public class OpenMetadataProductsHarvesterConnector extends IntegrationConnector
                                                                qualifiedNameToGUIDMap.get(solutionComponentActor.getSolutionComponent().getQualifiedName()),
                                                                solutionComponentClient.getMetadataSourceOptions(),
                                                                solutionComponentActorProperties);
+
+            auditLog.logMessage(methodName,
+                                ProductManagerAuditCode.LINKING_ELEMENTS.getMessageDefinition(connectorName,
+                                                                                              solutionComponentActor.getSolutionRole().getTypeName(),
+                                                                                              solutionComponentActor.getSolutionRole().getQualifiedName(),
+                                                                                              OpenMetadataType.SOLUTION_COMPONENT.typeName,
+                                                                                              solutionComponentActor.getSolutionComponent().getQualifiedName(),
+                                                                                              OpenMetadataType.SOLUTION_COMPONENT_ACTOR_RELATIONSHIP.typeName));
         }
 
         return blueprintGUID;
@@ -1756,8 +2039,8 @@ public class OpenMetadataProductsHarvesterConnector extends IntegrationConnector
      * been disconnected.
      */
     private Map<String, String> getProductRoles() throws InvalidParameterException,
-                                                        PropertyServerException,
-                                                        UserNotAuthorizedException
+                                                         PropertyServerException,
+                                                         UserNotAuthorizedException
     {
         Map<String, String> roleMap = new HashMap<>();
 
@@ -1784,6 +2067,8 @@ public class OpenMetadataProductsHarvesterConnector extends IntegrationConnector
      */
     private String getProductRole(ProductRoleDefinition productRoleDefinition) throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException
     {
+        final String methodName = "getProductRole";
+
         ActorRoleClient actorRoleClient = integrationContext.getActorRoleClient();
         NewElementOptions newElementOptions = new NewElementOptions(actorRoleClient.getMetadataSourceOptions());
         newElementOptions.setIsOwnAnchor(true);
@@ -1820,6 +2105,20 @@ public class OpenMetadataProductsHarvesterConnector extends IntegrationConnector
                                                        null,
                                                        actorRoleProperties,
                                                        null);
+
+            auditLog.logMessage(methodName,
+                                ProductManagerAuditCode.CREATED_SUPPORTING_DEFINITION.getMessageDefinition(connectorName,
+                                                                                                           productRoleDefinition.getTypeName(),
+                                                                                                           productRoleDefinition.getDisplayName(),
+                                                                                                           roleGUID));
+        }
+        else
+        {
+            auditLog.logMessage(methodName,
+                                ProductManagerAuditCode.RETRIEVING_SUPPORTING_DEFINITION.getMessageDefinition(connectorName,
+                                                                                                           productRoleDefinition.getTypeName(),
+                                                                                                           productRoleDefinition.getDisplayName(),
+                                                                                                           roleGUID));
         }
 
         return roleGUID;
@@ -1859,5 +2158,22 @@ public class OpenMetadataProductsHarvesterConnector extends IntegrationConnector
                                                 methodName,
                                                 error);
         }
+    }
+
+
+    /**
+     * Free up any resources held since the connector is no longer needed.
+     *
+     * @throws ConnectorCheckedException there is a problem within the connector.
+     */
+    public void disconnect() throws ConnectorCheckedException
+    {
+        final String methodName = "disconnect";
+
+        auditLog.logMessage(methodName, ProductManagerAuditCode.CONNECTOR_STOPPING.getMessageDefinition(connectorName,
+                                                                                                        integrationContext.getMetadataAccessServer(),
+                                                                                                        integrationContext.getMetadataAccessServerPlatformURLRoot()));
+
+        super.disconnect();
     }
 }

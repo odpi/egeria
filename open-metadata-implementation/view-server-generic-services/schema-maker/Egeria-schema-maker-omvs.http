@@ -190,7 +190,6 @@ Content-Type: application/json
 # Delete a schema type.
 #
 # @param schemaTypeGUID  unique identifier of the element to delete
-# @param cascadedDelete ca schema types be deleted if data fields are attached?
 # Request body provides  description of the relationship.
 #
 # Returns void or
@@ -216,8 +215,6 @@ Content-Type: application/json
 # @name getSchemaTypesByName
 # Returns the list of schema types with a particular name.
 #
-# @param startFrom paging start point
-# @param pageSize maximum results that can be returned
 # Request body provides string to find in the properties
 #
 # Returns list of matching metadata elements or
@@ -248,11 +245,6 @@ Content-Type: application/json
 # @name findSchemaTypes
 # Retrieve the list of schema type metadata elements that contain the search string.
 #
-# @param startsWith does the value start with the supplied string?
-# @param endsWith does the value end with the supplied string?
-# @param ignoreCase should the search ignore case?
-# @param startFrom paging start point
-# @param pageSize maximum results that can be returned
 # Request body provides string to find in the properties
 #
 # Returns list of matching metadata elements or
@@ -474,7 +466,6 @@ Content-Type: application/json
 # Delete a schema attribute.
 #
 # @param schemaAttributeGUID  unique identifier of the element to delete
-# @param cascadedDelete ca schemaAttributes be deleted if data fields are attached?
 # Request body provides  description of the relationship.
 #
 # Returns void or
@@ -500,8 +491,6 @@ Content-Type: application/json
 # @name getSchemaAttributesByName
 # Returns the list of schema attributes with a particular name.
 #
-# @param startFrom paging start point
-# @param pageSize maximum results that can be returned
 # Request body provides string to find in the properties
 #
 # Returns list of matching metadata elements or
@@ -532,11 +521,6 @@ Content-Type: application/json
 # @name findSchemaAttributes
 # Retrieve the list of schema attribute metadata elements that contain the search string.
 #
-# @param startsWith does the value start with the supplied string?
-# @param endsWith does the value end with the supplied string?
-# @param ignoreCase should the search ignore case?
-# @param startFrom paging start point
-# @param pageSize maximum results that can be returned
 # Request body provides string to find in the properties
 #
 # Returns list of matching metadata elements or

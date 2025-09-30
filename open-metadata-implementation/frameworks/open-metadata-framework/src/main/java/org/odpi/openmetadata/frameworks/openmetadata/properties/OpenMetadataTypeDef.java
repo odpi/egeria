@@ -41,6 +41,7 @@ public abstract class OpenMetadataTypeDef extends OpenMetadataTypeDefSummary
     protected String                             description                  = null;
     protected String                             descriptionGUID              = null;
     protected String                             descriptionWiki              = null;
+    protected String                             beanClassName                = null;
     protected String                             origin                       = null;
     protected String                             createdBy                    = null;
     protected String                             updatedBy                    = null;
@@ -105,20 +106,21 @@ public abstract class OpenMetadataTypeDef extends OpenMetadataTypeDefSummary
 
         if (template != null)
         {
-            this.superType = template.getSuperType();
-            this.description = template.getDescription();
-            this.descriptionGUID = template.getDescriptionGUID();
-            this.descriptionWiki = template.getDescriptionWiki();
-            this.origin = template.getOrigin();
-            this.createdBy = template.getCreatedBy();
-            this.updatedBy = template.getUpdatedBy();
-            this.createTime = template.getCreateTime();
-            this.updateTime = template.getUpdateTime();
-            this.options = template.getOptions();
-            this.externalStandardTypeMappings = template.getExternalStandardMappings();
-            this.validElementStatusList = template.getValidElementStatusList();
-            this.attributeDefinitions = template.getAttributeDefinitions();
-            this.initialStatus = template.getInitialStatus();
+            this.superType                    = template.getSuperType();
+            this.description                  = template.getDescription();
+            this.descriptionGUID              = template.getDescriptionGUID();
+            this.descriptionWiki              = template.getDescriptionWiki();
+            this.beanClassName                = template.getBeanClassName();
+            this.origin                       = template.getOrigin();
+            this.createdBy                    = template.getCreatedBy();
+            this.updatedBy                    = template.getUpdatedBy();
+            this.createTime                   = template.getCreateTime();
+            this.updateTime                   = template.getUpdateTime();
+            this.options                      = template.getOptions();
+            this.externalStandardTypeMappings = template.getExternalStandardTypeMappings();
+            this.validElementStatusList       = template.getValidElementStatusList();
+            this.attributeDefinitions         = template.getAttributeDefinitions();
+            this.initialStatus                = template.getInitialStatus();
         }
     }
 
@@ -231,6 +233,28 @@ public abstract class OpenMetadataTypeDef extends OpenMetadataTypeDefSummary
     public void setDescriptionWiki(String descriptionWiki)
     {
         this.descriptionWiki = descriptionWiki;
+    }
+
+
+    /**
+     * Return the name of the class used in REST API JSON structures.  For example "ReferenceableProperties" for a Referenceable bean.
+     *
+     * @return string
+     */
+    public String getBeanClassName()
+    {
+        return beanClassName;
+    }
+
+
+    /**
+     * Set up the name of the class used in REST API JSON structures.  For example "ReferenceableProperties" for a Referenceable bean.
+     *
+     * @param beanClassName string
+     */
+    public void setBeanClassName(String beanClassName)
+    {
+        this.beanClassName = beanClassName;
     }
 
 
@@ -373,7 +397,7 @@ public abstract class OpenMetadataTypeDef extends OpenMetadataTypeDefSummary
      *
      * @return ExternalStandardMappings list
      */
-    public List<ExternalStandardTypeMapping> getExternalStandardMappings()
+    public List<ExternalStandardTypeMapping> getExternalStandardTypeMappings()
     {
         return externalStandardTypeMappings;
     }
@@ -384,10 +408,12 @@ public abstract class OpenMetadataTypeDef extends OpenMetadataTypeDefSummary
      *
      * @param externalStandardTypeMappings ExternalStandardMappings list
      */
-    public void setExternalStandardMappings(List<ExternalStandardTypeMapping> externalStandardTypeMappings)
+    public void setExternalStandardTypeMappings(List<ExternalStandardTypeMapping> externalStandardTypeMappings)
     {
         this.externalStandardTypeMappings = externalStandardTypeMappings;
     }
+
+
 
 
     /**

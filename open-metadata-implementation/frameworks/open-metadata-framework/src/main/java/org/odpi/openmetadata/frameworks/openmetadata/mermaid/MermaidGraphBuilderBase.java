@@ -775,6 +775,11 @@ public class MermaidGraphBuilderBase
                 return VisualStyle.DIGITAL_PRODUCT;
             }
 
+            if (propertyHelper.isTypeOf(elementControlHeader, OpenMetadataType.DIGITAL_PRODUCT_FAMILY.typeName))
+            {
+                return VisualStyle.DIGITAL_PRODUCT_FAMILY;
+            }
+
             if (propertyHelper.isTypeOf(elementControlHeader, OpenMetadataType.AGREEMENT.typeName))
             {
                 if (propertyHelper.isTypeOf(elementControlHeader, OpenMetadataType.DIGITAL_SUBSCRIPTION.typeName))

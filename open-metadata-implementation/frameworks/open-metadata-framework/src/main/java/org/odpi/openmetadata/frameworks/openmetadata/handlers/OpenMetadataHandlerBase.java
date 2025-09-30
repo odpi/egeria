@@ -1554,12 +1554,23 @@ public class OpenMetadataHandlerBase
 
         OpenMetadataElement openMetadataElement = openMetadataClient.getMetadataElementByGUID(userId, elementGUID, getOptions);
 
-        if ((openMetadataElement != null) && (propertyHelper.isTypeOf(openMetadataElement, metadataElementTypeName)))
+        if (openMetadataElement != null)
         {
-            return convertRootElement(userId,
-                                      openMetadataElement,
-                                      new QueryOptions(getOptions),
-                                      methodName);
+            if (propertyHelper.isTypeOf(openMetadataElement, getOptions.getMetadataElementTypeName()))
+            {
+                return convertRootElement(userId,
+                                          openMetadataElement,
+                                          new QueryOptions(getOptions),
+                                          methodName);
+            }
+
+            throw new InvalidParameterException(OMFErrorCode.WRONG_TYPE_FOR_ELEMENT.getMessageDefinition(elementGUID,
+                                                                                                         openMetadataElement.getType().getTypeName(),
+                                                                                                         getOptions.getMetadataElementTypeName()),
+                                                this.getClass().getName(),
+                                                methodName,
+                                                OpenMetadataProperty.OPEN_METADATA_TYPE_NAME.name);
+
         }
 
         return null;

@@ -889,7 +889,7 @@ public class OpenMetadataTypesArchive2_6
     {
         ClassificationDef classificationDef = archiveHelper.getClassificationDef(OpenMetadataType.INSTANCE_METADATA_CLASSIFICATION,
                                                                                  null,
-                                                                                 this.archiveBuilder.getEntityDef(OpenMetadataType.SCHEMA_ELEMENT.typeName),
+                                                                                 this.archiveBuilder.getEntityDef(OpenMetadataType.REFERENCEABLE.typeName),
                                                                                  true);
 
         /*

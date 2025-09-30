@@ -16,7 +16,7 @@ public enum ProductDataFieldDefinition
      * Globally Unique Identifier
      */
     GUID("Globally Unique Identifier (GUID)",
-         "Guid",
+         "GUID",
          OpenMetadataProperty.GUID.description,
          OpenMetadataProperty.GUID.dataType,
          null,
@@ -100,75 +100,195 @@ public enum ProductDataFieldDefinition
      * Identifier
      */
     IDENTIFIER("Identifier",
-             "Identifier",
-             OpenMetadataProperty.IDENTIFIER.description,
-             OpenMetadataProperty.IDENTIFIER.dataType,
-             null,
-             null,
-             false,
-             true),
-
-    /**
-     * Element Status
-     */
-    ELEMENT_STATUS("Element Status",
-               "Element Status",
-               OpenMetadataProperty.CURRENT_STATUS.description,
-               OpenMetadataProperty.CURRENT_STATUS.dataType,
+               "Identifier",
+               OpenMetadataProperty.IDENTIFIER.description,
+               OpenMetadataProperty.IDENTIFIER.dataType,
                null,
                null,
                false,
                true),
 
     /**
+     * Element Status
+     */
+    ELEMENT_STATUS("Element Status",
+                   "Element Status",
+                   OpenMetadataProperty.CURRENT_STATUS.description,
+                   OpenMetadataProperty.CURRENT_STATUS.dataType,
+                   null,
+                   null,
+                   false,
+                   false),
+
+    /**
      * Sync Time
      */
     SYNC_TIME("Sync Time",
-                   "Sync Time",
-                   "The type when a monitoring product published its insight report.",
-                   DataType.DATE,
-                   null,
-                   null,
-                   true,
-                   true),
+              "Sync Time",
+              "The type when a monitoring product published its insight report.",
+              DataType.DATE,
+              null,
+              null,
+              true,
+              false),
 
 
     /**
      * Subtypes
      */
-    SUBTYPES("Subtypes",
-             "Subtypes",
-             "A list of subtypes for the type",
-             DataType.ARRAY_STRING,
-             null,
-             null,
-             false,
-             true),
+    OPEN_METADATA_SUBTYPES("Open Metadata Subtypes",
+                           "Open Metadata Subtypes",
+                           "A list of subtypes for the open metadata type",
+                           DataType.ARRAY_STRING,
+                           null,
+                           null,
+                           false,
+                           true),
 
     /**
-     * Type Name
+     * Open Metadata Super Types
      */
-    TYPE_NAME("Type Name",
-             "Type Name",
-             "The unique name of an open metadata type.",
-             DataType.STRING,
-             null,
-             null,
-             false,
-             true),
+    OPEN_METADATA_SUPER_TYPES("Open Metadata Super Types",
+                              "Open Metadata Super Types",
+                              "A list of the types that this open metadata type inherits from.",
+                              DataType.ARRAY_STRING,
+                              null,
+                              null,
+                              false,
+                              true),
+
+    /**
+     * Open Metadata Type Name
+     */
+    OPEN_METADATA_TYPE_NAME("Open Metadata Type Name",
+                            "Open Metadata Type",
+                            "The unique name of an open metadata type.",
+                            DataType.STRING,
+                            null,
+                            null,
+                            false,
+                            true),
 
 
     /**
-     * Attribute Name
+     * Open Metadata Type Name
      */
-    ATTRIBUTE_NAME("Attribute Name",
-              "Attribute Name",
-              "The unique name of an open metadata attribute.",
+    OPEN_METADATA_TYPE_GUID("Open Metadata Type GUID",
+                            "Open Metadata Type GUID",
+                            "The unique identifier of an open metadata type.",
+                            DataType.STRING,
+                            null,
+                            null,
+                            false,
+                            true),
+
+    /**
+     * Open Metadata Attribute Name
+     */
+    OPEN_METADATA_ATTRIBUTE_NAME("Open Metadata Attribute Name",
+                                 "Open Metadata Attribute Name",
+                                 "The unique name of an open metadata attribute.",
+                                 DataType.STRING,
+                                 null,
+                                 null,
+                                 false,
+                                 true),
+
+    /**
+     * The url link to documentation.
+     */
+    WIKI_LINK("Wiki URL Link",
+              "Wiki Link",
+              "The url link to documentation.",
               DataType.STRING,
               null,
               null,
               false,
               true),
+
+    /**
+     * The name of the properties bean class to use in REST API calls.
+     */
+    BEAN_CLASS_NAME("Bean Class Name",
+                    "Bean Class Name",
+                    "The name of the properties bean class to use in REST API calls.",
+                    DataType.STRING,
+                    null,
+                    null,
+                    false,
+                    true),
+
+    /**
+     * The name of the properties bean class to use in REST API calls.
+     */
+    LOCATION_CLASSIFICATION_NAME("Location Classification Name",
+                                 "Location Classification Name",
+                                 "The classification assigned to the location that describes the type of location.",
+                                 DataType.STRING,
+                                 null,
+                                 null,
+                                 false,
+                                 true),
+
+    /**
+     * The unique identifier of a location.
+     */
+    LOCATION_GUID("Location GUID",
+                  "Location GUID",
+                  "The unique identifier of a location.",
+                  DataType.STRING,
+                  null,
+                  null,
+                  true,
+                  false),
+
+    /**
+     * The coordinates of a fixed location.
+     */
+    LOCATION_COORDINATES("Location Coordinates",
+                         "Coordinates",
+                         OpenMetadataProperty.COORDINATES.description,
+                         OpenMetadataProperty.COORDINATES.dataType,
+                         null,
+                         null,
+                         false,
+                         true),
+
+    /**
+     * The map projection of a fixed location.
+     */
+    LOCATION_MAP_PROJECTION("Location Map Projection",
+                            "Map Projection",
+                            OpenMetadataProperty.MAP_PROJECTION.description,
+                            OpenMetadataProperty.MAP_PROJECTION.dataType,
+                            null,
+                            null,
+                            false,
+                            true),
+
+    /**
+     * The postal address of a fixed location.
+     */
+    LOCATION_POSTAL_ADDRESS("Location Postal Address",
+                            "Postal Address",
+                            OpenMetadataProperty.POSTAL_ADDRESS.description,
+                            OpenMetadataProperty.POSTAL_ADDRESS.dataType,
+                            null,
+                            null,
+                            false,
+                            true),
+
+    /**
+     * The postal address of a fixed location.
+     */
+    NETWORK_ADDRESS("Network Address",
+                    "Network Address",
+                    OpenMetadataProperty.NETWORK_ADDRESS.description,
+                    OpenMetadataProperty.NETWORK_ADDRESS.dataType,
+                    null,
+                    null,
+                    false,
+                    true),
 
     /**
      * Namespace
@@ -206,6 +326,19 @@ public enum ProductDataFieldDefinition
                       null,
                       false,
                       true),
+
+
+    /**
+     * Is Nullable?
+     */
+    IS_NULLABLE("Is Nullable?",
+                "Is Nullable",
+                OpenMetadataProperty.IS_NULLABLE.description,
+                OpenMetadataProperty.IS_NULLABLE.dataType,
+                null,
+                null,
+                false,
+                true),
 
 
     /**

@@ -161,7 +161,6 @@ public class OpenMetadataTypesArchive3_15
          * Calls for new and changed types go here
          */
         updateGovernanceEngines();
-        update0710DigitalServices();
         update0735SolutionPortsAndWires();
     }
 
@@ -202,47 +201,6 @@ public class OpenMetadataTypesArchive3_15
         return typeDefPatch;
     }
 
-
-
-    /*
-     * -------------------------------------------------------------------------------------------------------
-     */
-
-
-    private void update0710DigitalServices()
-    {
-        this.archiveBuilder.addTypeDefPatch(updateDigitalProductEntity());
-    }
-
-
-    private TypeDefPatch updateDigitalProductEntity()
-    {
-        /*
-         * Create the Patch
-         */
-        TypeDefPatch typeDefPatch = archiveBuilder.getPatchForType(OpenMetadataType.DIGITAL_PRODUCT.typeName);
-
-        typeDefPatch.setUpdatedBy(originatorName);
-        typeDefPatch.setUpdateTime(creationDate);
-
-        /*
-         * Build the attributes
-         */
-        List<TypeDefAttribute> properties = new ArrayList<>();
-
-        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.USER_DEFINED_STATUS));
-        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.PRODUCT_NAME));
-        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.INTRODUCTION_DATE));
-        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.MATURITY));
-        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.SERVICE_LIFE));
-        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.NEXT_VERSION_DATE));
-        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.WITHDRAW_DATE));
-        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.ADDITIONAL_PROPERTIES));
-
-        typeDefPatch.setPropertyDefinitions(properties);
-
-        return typeDefPatch;
-    }
 
 
 

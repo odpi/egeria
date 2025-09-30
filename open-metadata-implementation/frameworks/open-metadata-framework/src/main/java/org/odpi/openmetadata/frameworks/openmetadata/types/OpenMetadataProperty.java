@@ -477,9 +477,9 @@ public enum OpenMetadataProperty
     DATA_PATTERNS("dataPatterns", DataType.ARRAY_STRING, DataType.ARRAY_STRING.getName(), "Regular expression that characterizes the values in the data field.", null, "bea19c2c-7a41-464d-852a-8fbfb821c208"),
 
     /**
-     * A regular expression that characterizes the name of the data field.
+     * A list of name patterns to use when generating schemas.  Use space separated capitalized works so the schema generators can easily convert to valid language keywords.
      */
-    NAME_PATTERNS("namePatterns", DataType.ARRAY_STRING, DataType.ARRAY_STRING.getName(), "Regular expressions that characterizes the name of the data field.", null, "e5cf2938-d1c9-4a09-bf40-76d0431b6c1a"),
+    NAME_PATTERNS("namePatterns", DataType.ARRAY_STRING, DataType.ARRAY_STRING.getName(), "A list of name patterns to use when generating schemas.  Use space separated capitalized works so the schema generators can easily convert to valid language keywords.", "[Customer Id, Customer Identifier]", "e5cf2938-d1c9-4a09-bf40-76d0431b6c1a"),
 
     /**
      * The value of a literal data type.
@@ -1137,7 +1137,7 @@ public enum OpenMetadataProperty
     /**
      * Type of role that the attribute plays as part of the concept bead.
      */
-    COVERAGE_CATEGORY("coverageCategory", DataType.STRING, ConceptModelAttributeCoverageCategory.getOpenTypeName(), "Type of role that the attribute plays as part of the concept bead.", null, "4cac11a2-1187-4a54-b94a-8fa493c0b860"),
+    COVERAGE_CATEGORY("coverageCategory", DataType.STRING, CoverageCategory.getOpenTypeName(), "Used to describe how a collection of data values for an attribute cover the domain of the possible values to the linked attribute.", CoverageCategory.UNIQUE_IDENTIFIER.toString(), "4cac11a2-1187-4a54-b94a-8fa493c0b860"),
 
 
     /**

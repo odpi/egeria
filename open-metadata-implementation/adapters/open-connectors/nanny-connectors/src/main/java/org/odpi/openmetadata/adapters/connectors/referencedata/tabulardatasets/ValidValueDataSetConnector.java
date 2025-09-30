@@ -38,7 +38,7 @@ public class ValidValueDataSetConnector extends ReferenceDataSetConnectorBase im
 
     private final Map<Long, RelatedMetadataElementSummary> records                    = new HashMap<>();
     private String                                         validValueSetQualifiedName = null;
-    protected String               validValueSetGUID = null;
+    protected String                                       validValueSetGUID = null;
 
     /**
      * Default constructor

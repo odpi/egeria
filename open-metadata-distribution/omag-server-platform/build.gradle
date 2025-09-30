@@ -407,15 +407,15 @@ distributions {
                         { include 'Egeria*.http' }
                 from { "$rootProject.projectDir/open-metadata-implementation/view-services/project-manager" }
                         { include 'Egeria*.http' }
+                from { "$rootProject.projectDir/open-metadata-implementation/view-services/reference-data" }
+                        { include 'Egeria*.http' }
+                from { "$rootProject.projectDir/open-metadata-implementation/view-services/runtime-manager" }
+                        { include 'Egeria*.http' }
                 from { "$rootProject.projectDir/open-metadata-implementation/view-services/security-officer" }
                         { include 'Egeria*.http' }
                 from { "$rootProject.projectDir/open-metadata-implementation/view-services/solution-architect" }
                         { include 'Egeria*.http' }
                 from { "$rootProject.projectDir/open-metadata-implementation/view-services/subject-area" }
-                        { include 'Egeria*.http' }
-                from { "$rootProject.projectDir/open-metadata-implementation/view-services/reference-data" }
-                        { include 'Egeria*.http' }
-                from { "$rootProject.projectDir/open-metadata-implementation/view-services/runtime-manager" }
                         { include 'Egeria*.http' }
                 from { "$rootProject.projectDir/open-metadata-implementation/view-services/template-manager" }
                         { include 'Egeria*.http' }
