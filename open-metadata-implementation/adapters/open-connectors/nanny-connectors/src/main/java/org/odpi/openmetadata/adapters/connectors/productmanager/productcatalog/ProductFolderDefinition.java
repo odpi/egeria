@@ -73,7 +73,7 @@ public enum ProductFolderDefinition
     /**
      * Open Metadata Digital Product Catalog
      */
-    PRODUCTS(OpenMetadataType.COLLECTION.typeName,
+    PRODUCTS(OpenMetadataType.DIGITAL_PRODUCT_FAMILY.typeName,
              OpenMetadataType.FOLDER_COLLECTION_CLASSIFICATION.typeName,
              TOP_LEVEL,
              "Open Metadata Digital Products",
@@ -83,7 +83,7 @@ public enum ProductFolderDefinition
     /**
      * Valid Value Sets
      */
-    VALID_VALUE_SETS(OpenMetadataType.COLLECTION.typeName,
+    VALID_VALUE_SETS(OpenMetadataType.DIGITAL_PRODUCT_FAMILY.typeName,
                      OpenMetadataType.FOLDER_COLLECTION_CLASSIFICATION.typeName,
                      PRODUCTS,
                      "Valid Value Sets",
@@ -93,7 +93,7 @@ public enum ProductFolderDefinition
     /**
      * Party, Places and Products
      */
-    PARTY_PLACES_PRODUCTS(OpenMetadataType.COLLECTION.typeName,
+    PARTY_PLACES_PRODUCTS(OpenMetadataType.DIGITAL_PRODUCT_FAMILY.typeName,
                           OpenMetadataType.FOLDER_COLLECTION_CLASSIFICATION.typeName,
                           PRODUCTS,
                           "Party, Places and Products",
@@ -104,7 +104,7 @@ public enum ProductFolderDefinition
     /**
      * Open Metadata Types
      */
-    OPEN_METADATA_TYPES(OpenMetadataType.COLLECTION.typeName,
+    OPEN_METADATA_TYPES(OpenMetadataType.DIGITAL_PRODUCT_FAMILY.typeName,
                         OpenMetadataType.FOLDER_COLLECTION_CLASSIFICATION.typeName,
                         PRODUCTS,
                         "Open Metadata Types",
@@ -116,7 +116,7 @@ public enum ProductFolderDefinition
     /**
      * Organization Observability
      */
-    ORGANIZATION_OBSERVABILITY(OpenMetadataType.COLLECTION.typeName,
+    ORGANIZATION_OBSERVABILITY(OpenMetadataType.DIGITAL_PRODUCT_FAMILY.typeName,
                                OpenMetadataType.FOLDER_COLLECTION_CLASSIFICATION.typeName,
                                PRODUCTS,
                                "Organization Observability",
@@ -127,7 +127,7 @@ public enum ProductFolderDefinition
     /**
      * Governance Observability
      */
-    GOVERNANCE_OBSERVABILITY(OpenMetadataType.COLLECTION.typeName,
+    GOVERNANCE_OBSERVABILITY(OpenMetadataType.DIGITAL_PRODUCT_FAMILY.typeName,
                              OpenMetadataType.FOLDER_COLLECTION_CLASSIFICATION.typeName,
                              PRODUCTS,
                              "Governance Observability",
@@ -138,7 +138,7 @@ public enum ProductFolderDefinition
     /**
      * IT Operations Observability
      */
-    IT_OBSERVABILITY(OpenMetadataType.COLLECTION.typeName,
+    IT_OBSERVABILITY(OpenMetadataType.DIGITAL_PRODUCT_FAMILY.typeName,
                      OpenMetadataType.FOLDER_COLLECTION_CLASSIFICATION.typeName,
                      PRODUCTS,
                      "IT Operations Observability",

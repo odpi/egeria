@@ -50,34 +50,11 @@ public class AnnotationHandler extends OpenMetadataHandlerBase
     /**
      * Create a new handler.
      *
-     * @param localServerName        name of this server (view server)
-     * @param auditLog               logging destination
-     * @param localServiceName       local service name
-     * @param openMetadataClient     access to open metadata
-     * @param annotationTypeName          subtype of annotation to control handler
-     */
-    public AnnotationHandler(String             localServerName,
-                             AuditLog           auditLog,
-                             String             localServiceName,
-                             OpenMetadataClient openMetadataClient,
-                             String             annotationTypeName)
-    {
-        super(localServerName,
-              auditLog,
-              localServiceName,
-              openMetadataClient,
-              annotationTypeName);
-    }
-
-
-    /**
-     * Create a new handler.
-     *
      * @param template        properties to copy
      * @param specificTypeName   subtype to control handler
      */
     public AnnotationHandler(AnnotationHandler template,
-                             String       specificTypeName)
+                             String            specificTypeName)
     {
         super(template, specificTypeName);
     }
@@ -904,7 +881,7 @@ public class AnnotationHandler extends OpenMetadataHandlerBase
                                                                                                   PropertyServerException,
                                                                                                   UserNotAuthorizedException
     {
-        final String methodName = "getAnnotationExtensions";
+        final String methodName = "getPreviousAnnotations";
         final String guidPropertyName = "annotationGUID";
 
         return super.getRelatedRootElements(userId,
@@ -937,31 +914,6 @@ public class AnnotationHandler extends OpenMetadataHandlerBase
         final String methodName = "getAnnotationByGUID";
 
         return super.getRootElementByGUID(userId, annotationGUID, getOptions, methodName);
-    }
-
-
-    /**
-     * Return the properties of a specific governance definition.
-     *
-     * @param userId      userId of user making request
-     * @param name unique name of the required element
-     * @param propertyName name of the property to query (default is qualifiedName)
-     * @param getOptions  multiple options to control the query
-     * @return retrieved properties
-     * @throws InvalidParameterException  one of the parameters is null or invalid.
-     * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
-     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
-     */
-    public OpenMetadataRootElement getAnnotationByUniqueName(String       userId,
-                                                             String       name,
-                                                             String       propertyName,
-                                                             GetOptions   getOptions) throws InvalidParameterException,
-                                                                                             PropertyServerException,
-                                                                                             UserNotAuthorizedException
-    {
-        final String methodName = "getAnnotationByUniqueName";
-
-        return super.getRootElementByUniqueName(userId, name, propertyName, getOptions, methodName);
     }
 
 

@@ -474,15 +474,30 @@ public class CorePackArchiveWriter extends ContentPackBaseArchiveWriter
                                       DeleteMethod.getOpenTypeName(),
                                       new ArrayList<>(Arrays.asList(DeleteMethod.values())));
 
+        addOpenMetadataEnumValidNames(OpenMetadataType.ATTRIBUTE_FOR_SCHEMA_RELATIONSHIP.typeName,
+                                      OpenMetadataProperty.COVERAGE_CATEGORY.name,
+                                      CoverageCategory.getOpenTypeName(),
+                                      new ArrayList<>(Arrays.asList(CoverageCategory.values())));
+
+        addOpenMetadataEnumValidNames(OpenMetadataType.NESTED_SCHEMA_ATTRIBUTE_RELATIONSHIP.typeName,
+                                      OpenMetadataProperty.COVERAGE_CATEGORY.name,
+                                      CoverageCategory.getOpenTypeName(),
+                                      new ArrayList<>(Arrays.asList(CoverageCategory.values())));
+
+        addOpenMetadataEnumValidNames(OpenMetadataType.MEMBER_DATA_FIELD_RELATIONSHIP.typeName,
+                                      OpenMetadataProperty.COVERAGE_CATEGORY.name,
+                                      CoverageCategory.getOpenTypeName(),
+                                      new ArrayList<>(Arrays.asList(CoverageCategory.values())));
+
+        addOpenMetadataEnumValidNames(OpenMetadataType.NESTED_DATA_FIELD_RELATIONSHIP.typeName,
+                                      OpenMetadataProperty.COVERAGE_CATEGORY.name,
+                                      CoverageCategory.getOpenTypeName(),
+                                      new ArrayList<>(Arrays.asList(CoverageCategory.values())));
+
         addOpenMetadataEnumValidNames(OpenMetadataType.EXTERNAL_ID.typeName,
                                       OpenMetadataProperty.KEY_PATTERN.name,
                                       KeyPattern.getOpenTypeName(),
                                       new ArrayList<>(Arrays.asList(KeyPattern.values())));
-
-        addOpenMetadataEnumValidNames(OpenMetadataType.CONCEPT_BEAD_ATTRIBUTE_COVERAGE_CLASSIFICATION.typeName,
-                                      OpenMetadataProperty.COVERAGE_CATEGORY.name,
-                                      ConceptModelAttributeCoverageCategory.getOpenTypeName(),
-                                      new ArrayList<>(Arrays.asList(ConceptModelAttributeCoverageCategory.values())));
 
         addOpenMetadataEnumValidNames(OpenMetadataType.PRIMARY_KEY_CLASSIFICATION.typeName,
                                       OpenMetadataProperty.KEY_PATTERN.name,

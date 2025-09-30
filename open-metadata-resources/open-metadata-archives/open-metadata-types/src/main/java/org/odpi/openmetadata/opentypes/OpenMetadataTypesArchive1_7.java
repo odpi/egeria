@@ -574,6 +574,7 @@ public class OpenMetadataTypesArchive1_7
     private void add0710DigitalServices()
     {
         this.archiveBuilder.addEntityDef(getDigitalProductEntity());
+        this.archiveBuilder.addEntityDef(getDigitalProductFamilyEntity());
         this.archiveBuilder.addEntityDef(getDigitalProductCatalogEntity());
         this.archiveBuilder.addRelationshipDef(getDigitalProductDependencyRelationship());
     }
@@ -606,9 +607,32 @@ public class OpenMetadataTypesArchive1_7
         entityDef.setValidInstanceStatusList(validInstanceStatusList);
         entityDef.setInitialStatus(InstanceStatus.ACTIVE);
 
+        /*
+         * Build the attributes
+         */
+        List<TypeDefAttribute> properties = new ArrayList<>();
+
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.USER_DEFINED_STATUS));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.PRODUCT_NAME));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.INTRODUCTION_DATE));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.MATURITY));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.SERVICE_LIFE));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.NEXT_VERSION_DATE));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.WITHDRAW_DATE));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.ADDITIONAL_PROPERTIES));
+
+        entityDef.setPropertiesDefinition(properties);
+
+
         return entityDef;
     }
 
+
+    private EntityDef getDigitalProductFamilyEntity()
+    {
+        return archiveHelper.getDefaultEntityDef(OpenMetadataType.DIGITAL_PRODUCT_FAMILY,
+                                                 this.archiveBuilder.getEntityDef(OpenMetadataType.DIGITAL_PRODUCT.typeName));
+    }
 
     private EntityDef getDigitalProductCatalogEntity()
     {

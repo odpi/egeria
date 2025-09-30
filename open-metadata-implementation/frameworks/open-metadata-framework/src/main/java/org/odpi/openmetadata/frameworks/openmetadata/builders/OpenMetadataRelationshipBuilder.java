@@ -205,6 +205,14 @@ public class OpenMetadataRelationshipBuilder
                 elementProperties = propertyHelper.addIntProperty(elementProperties,
                                                                   OpenMetadataProperty.MIN_CARDINALITY.name,
                                                                   partOfRelationshipProperties.getMaxCardinality());
+
+                if (partOfRelationshipProperties.getCoverageCategory() != null)
+                {
+                    elementProperties = propertyHelper.addEnumProperty(elementProperties,
+                                                                       OpenMetadataProperty.COVERAGE_CATEGORY.name,
+                                                                       CoverageCategory.getOpenTypeName(),
+                                                                       partOfRelationshipProperties.getCoverageCategory().getName());
+                }
             }
             else if (properties instanceof RoledRelationshipProperties roledRelationshipProperties)
             {

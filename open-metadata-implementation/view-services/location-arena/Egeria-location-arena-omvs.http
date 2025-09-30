@@ -387,7 +387,6 @@ Content-Type: application/json
 # Delete a location.
 #
 # @param locationGUID  unique identifier of the element to delete
-# @param cascadedDelete ca locations be deleted if data fields are attached?
 # Request body provides  description of the relationship.
 #
 # Returns void or
@@ -414,8 +413,6 @@ Content-Type: application/json
 # @name getLocationsByName
 # Returns the list of locations with a particular name.
 #
-# @param startFrom paging start point
-# @param pageSize maximum results that can be returned
 # Request body provides string to find in the properties
 #
 # Returns list of matching metadata elements or
@@ -446,11 +443,6 @@ Content-Type: application/json
 # @name findLocations
 # Retrieve the list of location metadata elements that contain the search string.
 #
-# @param startsWith does the value start with the supplied string?
-# @param endsWith does the value end with the supplied string?
-# @param ignoreCase should the search ignore case?
-# @param startFrom paging start point
-# @param pageSize maximum results that can be returned
 # Request body provides string to find in the properties
 #
 # Returns list of matching metadata elements or

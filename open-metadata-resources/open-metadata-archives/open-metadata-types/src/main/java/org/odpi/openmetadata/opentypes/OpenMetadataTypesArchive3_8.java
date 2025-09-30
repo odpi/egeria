@@ -170,7 +170,6 @@ public class OpenMetadataTypesArchive3_8
         update0057SoftwareServices();
         update0070NetworksAndGateways();
         update0461GovernanceEngines();
-        update0566DesignModelOrganization();
         update0571ConceptModels();
     }
 
@@ -495,59 +494,6 @@ public class OpenMetadataTypesArchive3_8
 
     }
 
-
-    /*
-     * -------------------------------------------------------------------------------------------------------
-     */
-
-    /**
-     * Create a single relationship type to link a design model element to its model.
-     */
-    private void update0566DesignModelOrganization()
-    {
-        this.archiveBuilder.addRelationshipDef(addDesignModelOwnershipRelationship());
-    }
-
-
-    private RelationshipDef addDesignModelOwnershipRelationship()
-    {
-        RelationshipDef relationshipDef = archiveHelper.getBasicRelationshipDef(OpenMetadataType.DESIGN_MODEL_OWNERSHIP_RELATIONSHIP,
-                                                                                null,
-                                                                                ClassificationPropagationRule.NONE);
-
-        RelationshipEndDef relationshipEndDef;
-
-        /*
-         * Set up end 1.
-         */
-        final String                     end1AttributeName            = "owningDesignModel";
-        final String                     end1AttributeDescription     = "Owning model.";
-        final String                     end1AttributeDescriptionGUID = null;
-
-        relationshipEndDef = archiveHelper.getRelationshipEndDef(this.archiveBuilder.getEntityDef(OpenMetadataType.DESIGN_MODEL.typeName),
-                                                                 end1AttributeName,
-                                                                 end1AttributeDescription,
-                                                                 end1AttributeDescriptionGUID,
-                                                                 RelationshipEndCardinality.AT_MOST_ONE);
-        relationshipDef.setEndDef1(relationshipEndDef);
-
-
-        /*
-         * Set up end 2.
-         */
-        final String                     end2AttributeName            = "designModelElements";
-        final String                     end2AttributeDescription     = "List of elements that belong to this model.";
-        final String                     end2AttributeDescriptionGUID = null;
-
-        relationshipEndDef = archiveHelper.getRelationshipEndDef(this.archiveBuilder.getEntityDef(OpenMetadataType.DESIGN_MODEL_ELEMENT.typeName),
-                                                                 end2AttributeName,
-                                                                 end2AttributeDescription,
-                                                                 end2AttributeDescriptionGUID,
-                                                                 RelationshipEndCardinality.ANY_NUMBER);
-        relationshipDef.setEndDef2(relationshipEndDef);
-
-        return relationshipDef;
-    }
 
     /*
      * -------------------------------------------------------------------------------------------------------

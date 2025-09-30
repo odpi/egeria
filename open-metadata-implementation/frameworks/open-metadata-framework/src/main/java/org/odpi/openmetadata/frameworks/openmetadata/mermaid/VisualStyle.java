@@ -109,6 +109,7 @@ public enum VisualStyle
     RECENT_ACCESS(Colour.BLACK.getColourNumber(), Colour.LIME_GREEN.getColourNumber(), Colour.BLACK.getColourNumber(), "rect"),
     WORK_ITEM_LIST(Colour.BLACK.getColourNumber(), Colour.FOREST_GREEN.getColourNumber(), Colour.BLACK.getColourNumber(), "rect"),
 
+    DIGITAL_PRODUCT_FAMILY(Colour.BLACK.getColourNumber(), Colour.LAVENDER.getColourNumber(), Colour.DARK_BLUE.getColourNumber(), "rect"),
     DIGITAL_PRODUCT(Colour.BLACK.getColourNumber(), Colour.LAVENDER.getColourNumber(), Colour.DARK_BLUE.getColourNumber(), "rect"),
 
 

@@ -1354,11 +1354,13 @@ public interface OMRSRepositoryValidator
      *
      * @param matchProperties  the properties to match.
      * @param instanceProperties  the properties from the instance.
+     * @param matchCriteria match criteria
      * @return integer count of the matching properties.
      * @throws InvalidParameterException invalid search criteria
      */
     int countMatchingPropertyValues(InstanceProperties matchProperties,
-                                    InstanceProperties instanceProperties) throws InvalidParameterException;
+                                    InstanceProperties instanceProperties,
+                                    MatchCriteria      matchCriteria) throws InvalidParameterException;
 
 
     /**

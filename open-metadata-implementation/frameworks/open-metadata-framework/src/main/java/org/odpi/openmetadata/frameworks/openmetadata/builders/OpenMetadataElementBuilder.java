@@ -1153,6 +1153,10 @@ public class OpenMetadataElementBuilder
                         elementProperties = propertyHelper.addStringProperty(elementProperties,
                                                                              OpenMetadataProperty.NAMESPACE.name,
                                                                              dataStructureProperties.getNamespace());
+
+                        elementProperties = propertyHelper.addStringArrayProperty(elementProperties,
+                                                                                  OpenMetadataProperty.NAME_PATTERNS.name,
+                                                                                  dataStructureProperties.getNamePatterns());
                     }
                     else if (properties instanceof EndpointProperties endpointProperties)
                     {

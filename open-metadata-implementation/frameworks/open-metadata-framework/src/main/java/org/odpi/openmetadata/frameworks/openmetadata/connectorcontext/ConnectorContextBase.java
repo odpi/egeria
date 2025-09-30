@@ -66,6 +66,7 @@ public class ConnectorContextBase
     protected final OpenMetadataStore           openMetadataStore;
     private final   ActorProfileClient          actorProfileClient;
     private final   ActorRoleClient             actorRoleClient;
+    private final   AnnotationClient            annotationClient;
     private final   AssetClient                 assetClient;
     private final   ClassificationManagerClient classificationManagerClient;
     private final   CollectionClient            collectionClient;
@@ -182,6 +183,17 @@ public class ConnectorContextBase
                                                    openMetadataClient,
                                                    auditLog,
                                                    maxPageSize);
+
+        this.annotationClient = new AnnotationClient(this,
+                                                     localServerName,
+                                                     localServiceName,
+                                                     connectorUserId,
+                                                     connectorGUID,
+                                                     externalSourceGUID,
+                                                     externalSourceName,
+                                                     openMetadataClient,
+                                                     auditLog,
+                                                     maxPageSize);
 
         this.assetClient = new AssetClient(this,
                                            localServerName,
@@ -635,6 +647,29 @@ public class ConnectorContextBase
     public ActorRoleClient getActorRoleClient(String specificTypeName)
     {
         return new ActorRoleClient(actorRoleClient, specificTypeName);
+    }
+
+
+    /**
+     * Return the client for managing annotations for survey reports.
+     *
+     * @return connector context client
+     */
+    public AnnotationClient getAnnotationClient()
+    {
+        return annotationClient;
+    }
+
+
+    /**
+     * Return the client for managing annotations of a specific subtype.
+     *
+     * @param specificTypeName override type name
+     * @return connector context client
+     */
+    public AnnotationClient getAnnotationClient(String specificTypeName)
+    {
+        return new AnnotationClient(annotationClient, specificTypeName);
     }
 
 

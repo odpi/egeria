@@ -7,16 +7,17 @@ import org.odpi.openmetadata.commonservices.ffdc.RESTCallLogger;
 import org.odpi.openmetadata.commonservices.ffdc.RESTCallToken;
 import org.odpi.openmetadata.commonservices.ffdc.RESTExceptionHandler;
 import org.odpi.openmetadata.commonservices.ffdc.rest.*;
-import org.odpi.openmetadata.commonservices.ffdc.rest.MetadataSourceRequestBody;
-import org.odpi.openmetadata.commonservices.generichandlers.*;
-import org.odpi.openmetadata.frameworks.openmetadata.enums.SequencingOrder;
-import org.odpi.openmetadata.frameworks.openmetadata.mermaid.OpenMetadataMermaidGraphBuilder;
+import org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIGenericConverter;
+import org.odpi.openmetadata.commonservices.generichandlers.OpenMetadataAPIGenericHandler;
+import org.odpi.openmetadata.commonservices.generichandlers.ValidValuesHandler;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
+import org.odpi.openmetadata.frameworks.openmetadata.enums.ElementStatus;
+import org.odpi.openmetadata.frameworks.openmetadata.enums.SequencingOrder;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
-import org.odpi.openmetadata.frameworks.openmetadata.enums.ElementStatus;
 import org.odpi.openmetadata.frameworks.openmetadata.mapper.OpenMetadataValidValues;
+import org.odpi.openmetadata.frameworks.openmetadata.mermaid.OpenMetadataMermaidGraphBuilder;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.*;
 import org.odpi.openmetadata.frameworks.openmetadata.search.PropertyHelper;
 import org.odpi.openmetadata.frameworks.openmetadata.search.SearchOptions;
@@ -195,7 +196,7 @@ public class OpenMetadataStoreRESTServices
             auditLog                              = instanceHandler.getAuditLog(userId, serverName, methodName);
             OMRSRepositoryHelper repositoryHelper = instanceHandler.getRepositoryHelper(userId, serverName, methodName);
 
-            response.setTypeDefs(this.getTypeDefs(repositoryHelper.getKnownTypeDefs()));
+            response.setTypeDefs(this.getTypeDefs(repositoryHelper.getKnownTypeDefs(), repositoryHelper));
             response.setAttributeTypeDefs(this.getAttributeTypeDefs(repositoryHelper.getKnownAttributeTypeDefs()));
         }
         catch (Throwable error)
@@ -247,7 +248,7 @@ public class OpenMetadataStoreRESTServices
                                 ((category == OpenMetadataTypeDefCategory.RELATIONSHIP_DEF) && (typeDef.getCategory() == TypeDefCategory.RELATIONSHIP_DEF)) ||
                                 ((category == OpenMetadataTypeDefCategory.CLASSIFICATION_DEF) && (typeDef.getCategory() == TypeDefCategory.CLASSIFICATION_DEF)))
                     {
-                        openMetadataTypeDefList.add(this.getTypeDef(typeDef));
+                        openMetadataTypeDefList.add(this.getOpenMetadataTypeDef(typeDef, repositoryHelper));
                     }
                 }
 
@@ -373,7 +374,7 @@ public class OpenMetadataStoreRESTServices
                                         ((organization == null) || (organization.equals(externalStandardMapping.getStandardOrganization()))) &&
                                         ((identifier == null) || (identifier.equals(externalStandardMapping.getStandardTypeName()))))
                             {
-                                openMetadataTypeDefList.add(this.getTypeDef(typeDef));
+                                openMetadataTypeDefList.add(this.getOpenMetadataTypeDef(typeDef, repositoryHelper));
                             }
                         }
                     }
@@ -441,7 +442,7 @@ public class OpenMetadataStoreRESTServices
                         TypeDef subType = repositoryHelper.getTypeDefByName(instanceHandler.getServiceName(),
                                                                             subTypeName);
 
-                        openMetadataTypeDefList.add(this.getTypeDef(subType));
+                        openMetadataTypeDefList.add(this.getOpenMetadataTypeDef(subType, repositoryHelper));
                     }
                 }
 
@@ -496,7 +497,7 @@ public class OpenMetadataStoreRESTServices
                                                           guidParameterName,
                                                           guid,
                                                           methodName);
-            response.setTypeDef(this.getTypeDef(typeDef));
+            response.setTypeDef(this.getOpenMetadataTypeDef(typeDef, repositoryHelper));
         }
         catch (Throwable error)
         {
@@ -584,7 +585,7 @@ public class OpenMetadataStoreRESTServices
             OMRSRepositoryHelper repositoryHelper = instanceHandler.getRepositoryHelper(userId, serverName, methodName);
 
             TypeDef typeDef = repositoryHelper.getTypeDefByName(instanceHandler.getServiceName(), name);
-            response.setTypeDef(this.getTypeDef(typeDef));
+            response.setTypeDef(this.getOpenMetadataTypeDef(typeDef, repositoryHelper));
         }
         catch (Throwable error)
         {
@@ -4833,6 +4834,7 @@ public class OpenMetadataStoreRESTServices
      * UserNotAuthorizedException the service is not able to create/access the element
      * PropertyServerException    there is a problem accessing the metadata store
      */
+    @SuppressWarnings(value = "unused")
     public VoidResponse setConsistentMetadataValues(String          serverName,
                                                     String          userId,
                                                     String          typeName1,
@@ -4911,10 +4913,14 @@ public class OpenMetadataStoreRESTServices
      * Return an open metadata type equivalent to the OMRS type supplied in the parameter.
      *
      * @param typeDef omrs type
+     * @param repositoryHelper repository helper
      * @return open metadata type
      */
-    private OpenMetadataTypeDef getTypeDef(TypeDef typeDef)
+    private OpenMetadataTypeDef getOpenMetadataTypeDef(TypeDef              typeDef,
+                                                       OMRSRepositoryHelper repositoryHelper)
     {
+        final String methodName = "getOpenMetadataTypeDef";
+
         if (typeDef != null)
         {
             OpenMetadataTypeDef openMetadataTypeDef;
@@ -4962,15 +4968,18 @@ public class OpenMetadataStoreRESTServices
             openMetadataTypeDef.setDescription(typeDef.getDescription());
             openMetadataTypeDef.setDescriptionGUID(typeDef.getDescriptionGUID());
             openMetadataTypeDef.setDescriptionWiki(typeDef.getDescriptionWiki());
+            openMetadataTypeDef.setBeanClassName(typeDef.getName() + "Properties");
             openMetadataTypeDef.setOrigin(typeDef.getOrigin());
             openMetadataTypeDef.setCreatedBy(typeDef.getCreatedBy());
             openMetadataTypeDef.setUpdatedBy(typeDef.getUpdatedBy());
             openMetadataTypeDef.setCreateTime(typeDef.getCreateTime());
             openMetadataTypeDef.setUpdateTime(typeDef.getUpdateTime());
             openMetadataTypeDef.setOptions(typeDef.getOptions());
-            openMetadataTypeDef.setExternalStandardMappings(this.getExternalStandardMappings(typeDef.getExternalStandardMappings()));
+            openMetadataTypeDef.setExternalStandardTypeMappings(this.getExternalStandardMappings(typeDef.getExternalStandardMappings()));
             openMetadataTypeDef.setValidElementStatusList(this.getElementStatuses(typeDef.getValidInstanceStatusList()));
-            openMetadataTypeDef.setAttributeDefinitions(this.getTypeDefAttributes(typeDef.getPropertiesDefinition()));
+            openMetadataTypeDef.setAttributeDefinitions(this.getTypeDefAttributes(repositoryHelper.getAllPropertiesForTypeDef(instanceHandler.getServiceName(),
+                                                                                                                              typeDef,
+                                                                                                                              methodName)));
             openMetadataTypeDef.setInitialStatus(this.getElementStatus(typeDef.getInitialStatus()));
 
             return openMetadataTypeDef;
@@ -4978,6 +4987,9 @@ public class OpenMetadataStoreRESTServices
 
         return null;
     }
+
+
+
 
 
     /**
@@ -5291,16 +5303,18 @@ public class OpenMetadataStoreRESTServices
      * Return a list of open metadata types equivalent to the OMRS types supplied in the parameter.
      *
      * @param typeDefs list of OMRS types
+     * @param repositoryHelper OMRS version of the property helper
      * @return list of open metadata types
      */
-    private List<OpenMetadataTypeDef> getTypeDefs(List<TypeDef> typeDefs)
+    private List<OpenMetadataTypeDef> getTypeDefs(List<TypeDef>        typeDefs,
+                                                  OMRSRepositoryHelper repositoryHelper)
     {
         if (typeDefs != null)
         {
             List<OpenMetadataTypeDef> openMetadataTypeDefs = new ArrayList<>();
             for (TypeDef typeDef : typeDefs)
             {
-                openMetadataTypeDefs.add(this.getTypeDef(typeDef));
+                openMetadataTypeDefs.add(this.getOpenMetadataTypeDef(typeDef, repositoryHelper));
             }
 
             if (! openMetadataTypeDefs.isEmpty())

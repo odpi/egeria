@@ -157,7 +157,15 @@ public enum OMFErrorCode implements ExceptionMessageSet
     MAX_PAGE_SIZE(400, "OPEN-METADATA-400-025",
                   "The number of records to return, {0}, passed on the {1} parameter of the {2} operation, is greater than the allowable maximum of {3}",
                   "The system is unable to process the request with this page size value.",
-                  "Correct the code in the caller to provide a smaller page size ."),
+                  "Correct the code in the caller to provide a smaller page size."),
+
+    /**
+     * OPEN-METADATA-400-026 - The {0} element is of type {1} rather than the expected type of {2}
+     */
+    WRONG_TYPE_FOR_ELEMENT(400, "OPEN-METADATA-400-026",
+                  "The {0} element is of type {1} rather than the expected type of {2}",
+                  "The system has retrieved an element that is not of the same type as expected.  The expected type is either supplied by the caller in the 'metadataElementTypeName' requests body field or the service uses its default value.",
+                  "Correct the code in the caller to provide a suitable type name, or use a different service."),
 
     /**
      * OPEN-METADATA-400-028 - The search string passed on the {0} parameter of the {1} operation is invalid and results in a {2} exception when executed.  The error message is {3}

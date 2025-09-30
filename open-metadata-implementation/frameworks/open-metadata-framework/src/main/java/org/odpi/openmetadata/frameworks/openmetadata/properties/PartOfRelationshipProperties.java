@@ -4,11 +4,11 @@
 package org.odpi.openmetadata.frameworks.openmetadata.properties;
 
 import com.fasterxml.jackson.annotation.*;
+import org.odpi.openmetadata.frameworks.openmetadata.enums.CoverageCategory;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.datadictionaries.MemberDataFieldProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.datadictionaries.NestedDataFieldProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.schema.AttributeForSchemaProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.schema.NestedSchemaAttributeProperties;
-import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 
 import java.util.Objects;
 
@@ -33,9 +33,10 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
         })
 public class PartOfRelationshipProperties extends RelationshipBeanProperties
 {
-    private int position       = 0;
-    private int minCardinality = 0;
-    private int maxCardinality = 0;
+    private int              position         = 0;
+    private int              minCardinality   = 0;
+    private int              maxCardinality   = 0;
+    private CoverageCategory coverageCategory = null;
 
 
     /**
@@ -44,7 +45,6 @@ public class PartOfRelationshipProperties extends RelationshipBeanProperties
     public PartOfRelationshipProperties()
     {
         super();
-        super.setTypeName(OpenMetadataType.MEMBER_DATA_FIELD_RELATIONSHIP.typeName);
     }
 
 
@@ -59,9 +59,10 @@ public class PartOfRelationshipProperties extends RelationshipBeanProperties
 
         if (template != null)
         {
-            position       = template.getPosition();
-            minCardinality = template.getMinCardinality();
-            maxCardinality = template.getMaxCardinality();
+            position         = template.getPosition();
+            minCardinality   = template.getMinCardinality();
+            maxCardinality   = template.getMaxCardinality();
+            coverageCategory = template.getCoverageCategory();
         }
     }
 
@@ -130,6 +131,27 @@ public class PartOfRelationshipProperties extends RelationshipBeanProperties
 
 
     /**
+     * Return the coverage of the attributes in this structure.
+     *
+     * @return enum
+     */
+    public CoverageCategory getCoverageCategory()
+    {
+        return coverageCategory;
+    }
+
+
+    /**
+     * Set up the coverage of the attributes in this structure.
+     *
+     * @param coverageCategory enum
+     */
+    public void setCoverageCategory(CoverageCategory coverageCategory)
+    {
+        this.coverageCategory = coverageCategory;
+    }
+
+    /**
      * Standard toString method.
      *
      * @return print out of variables in a JSON-style
@@ -137,10 +159,11 @@ public class PartOfRelationshipProperties extends RelationshipBeanProperties
     @Override
     public String toString()
     {
-        return "MemberDataFieldProperties{" +
+        return "PartOfRelationshipProperties{" +
                 "position=" + position +
                 ", minCardinality=" + minCardinality +
                 ", maxCardinality=" + maxCardinality +
+                ", coverageCategory=" + coverageCategory +
                 "} " + super.toString();
     }
 
@@ -154,24 +177,12 @@ public class PartOfRelationshipProperties extends RelationshipBeanProperties
     @Override
     public boolean equals(Object objectToCompare)
     {
-        if (this == objectToCompare)
-        {
-            return true;
-        }
-        if (objectToCompare == null || getClass() != objectToCompare.getClass())
-        {
-            return false;
-        }
-        if (!super.equals(objectToCompare))
-        {
-            return false;
-        }
+        if (this == objectToCompare) return true;
+        if (objectToCompare == null || getClass() != objectToCompare.getClass()) return false;
+        if (!super.equals(objectToCompare)) return false;
         PartOfRelationshipProperties that = (PartOfRelationshipProperties) objectToCompare;
-        return  minCardinality == that.minCardinality &&
-                maxCardinality == that.maxCardinality &&
-                position == that.position;
+        return position == that.position && minCardinality == that.minCardinality && maxCardinality == that.maxCardinality && coverageCategory == that.coverageCategory;
     }
-
 
     /**
      * Return a number that represents the contents of this object.
@@ -181,6 +192,6 @@ public class PartOfRelationshipProperties extends RelationshipBeanProperties
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), position, minCardinality, maxCardinality);
+        return Objects.hash(super.hashCode(), position, minCardinality, maxCardinality, coverageCategory);
     }
 }

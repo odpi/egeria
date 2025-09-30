@@ -7262,12 +7262,12 @@ public class OpenMetadataPropertyConverterBase
     /**
      * Extract the isCaseSensitive property from the supplied element properties.
      *
-     * @param elementProperties properties from ValidValueDefinition entity
+     * @param elementProperties properties from  entity
      * @return boolean
      */
     protected boolean removeIsCaseSensitive(ElementProperties  elementProperties)
     {
-        final String methodName = "getStrictRequirement";
+        final String methodName = "removeIsCaseSensitive";
 
         if (elementProperties != null)
         {
@@ -9816,6 +9816,35 @@ public class OpenMetadataPropertyConverterBase
         return null;
     }
 
+    /**
+     * Extract and delete the property from the supplied element properties.
+     *
+     * @param elementProperties properties from entity
+     * @return enum
+     */
+    CoverageCategory removeCoverageCategory(ElementProperties elementProperties)
+    {
+        final String methodName = "removeCoverageCategory";
+
+        if (elementProperties != null)
+        {
+            String retrievedProperty = propertyHelper.removeEnumProperty(localServiceName,
+                                                                         OpenMetadataProperty.COVERAGE_CATEGORY.name,
+                                                                         elementProperties,
+                                                                         methodName);
+
+            for (CoverageCategory coverageCategory : CoverageCategory.values())
+            {
+                if (coverageCategory.getName().equals(retrievedProperty))
+                {
+                    return coverageCategory;
+                }
+            }
+        }
+
+        return null;
+    }
+
 
     /**
      * Extract and delete the property from the supplied element properties.
@@ -10128,6 +10157,7 @@ public class OpenMetadataPropertyConverterBase
                 ((AttributeForSchemaProperties)relationshipBeanProperties).setPosition(this.removePosition(elementProperties));
                 ((AttributeForSchemaProperties)relationshipBeanProperties).setMaxCardinality(this.removeMaxCardinality(elementProperties));
                 ((AttributeForSchemaProperties)relationshipBeanProperties).setMinCardinality(this.removeMinCardinality(elementProperties));
+                ((AttributeForSchemaProperties)relationshipBeanProperties).setCoverageCategory(this.removeCoverageCategory(elementProperties));
             }
             else if (propertyHelper.isTypeOf(relationshipHeader, OpenMetadataType.BUSINESS_CAPABILITY_DEPENDENCY_RELATIONSHIP.typeName))
             {
@@ -10262,6 +10292,7 @@ public class OpenMetadataPropertyConverterBase
             {
                 relationshipBeanProperties = new MemberDataFieldProperties();
 
+                ((NestedDataFieldProperties)relationshipBeanProperties).setCoverageCategory(this.removeCoverageCategory(elementProperties));
                 ((MemberDataFieldProperties)relationshipBeanProperties).setPosition(this.removePosition(elementProperties));
                 ((MemberDataFieldProperties)relationshipBeanProperties).setMaxCardinality(this.removeMaxCardinality(elementProperties));
                 ((MemberDataFieldProperties)relationshipBeanProperties).setMinCardinality(this.removeMinCardinality(elementProperties));
@@ -10277,6 +10308,7 @@ public class OpenMetadataPropertyConverterBase
             {
                 relationshipBeanProperties = new NestedDataFieldProperties();
 
+                ((NestedDataFieldProperties)relationshipBeanProperties).setCoverageCategory(this.removeCoverageCategory(elementProperties));
                 ((NestedDataFieldProperties)relationshipBeanProperties).setPosition(this.removePosition(elementProperties));
                 ((NestedDataFieldProperties)relationshipBeanProperties).setMaxCardinality(this.removeMaxCardinality(elementProperties));
                 ((NestedDataFieldProperties)relationshipBeanProperties).setMinCardinality(this.removeMinCardinality(elementProperties));
@@ -10287,6 +10319,15 @@ public class OpenMetadataPropertyConverterBase
 
                 ((NestedLocationProperties)relationshipBeanProperties).setLabel(this.removeLabel(elementProperties));
                 ((NestedLocationProperties)relationshipBeanProperties).setDescription(this.removeDescription(elementProperties));
+            }
+            else if (propertyHelper.isTypeOf(relationshipHeader, OpenMetadataType.NESTED_SCHEMA_ATTRIBUTE_RELATIONSHIP.typeName))
+            {
+                relationshipBeanProperties = new NestedSchemaAttributeProperties();
+
+                ((NestedSchemaAttributeProperties)relationshipBeanProperties).setCoverageCategory(this.removeCoverageCategory(elementProperties));
+                ((NestedSchemaAttributeProperties)relationshipBeanProperties).setPosition(this.removePosition(elementProperties));
+                ((NestedSchemaAttributeProperties)relationshipBeanProperties).setMaxCardinality(this.removeMaxCardinality(elementProperties));
+                ((NestedSchemaAttributeProperties)relationshipBeanProperties).setMinCardinality(this.removeMinCardinality(elementProperties));
             }
             else if (propertyHelper.isTypeOf(relationshipHeader, OpenMetadataType.NOTIFICATION_SUBSCRIBER_RELATIONSHIP.typeName))
             {
@@ -10866,6 +10907,7 @@ public class OpenMetadataPropertyConverterBase
 
                     ((DataStructureProperties)beanProperties).setUserDefinedStatus(this.removeUserDefinedStatus(elementProperties));
                     ((DataStructureProperties)beanProperties).setNamespace(this.removeNamespace(elementProperties));
+                    ((DataStructureProperties)beanProperties).setNamePatterns(this.removeNamePatterns(elementProperties));
                 }
                 else if (propertyHelper.isTypeOf(openMetadataElement, OpenMetadataType.DATA_FIELD.typeName))
                 {

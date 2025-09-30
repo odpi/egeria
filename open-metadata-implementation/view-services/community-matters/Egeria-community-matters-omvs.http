@@ -219,8 +219,6 @@ Content-Type: application/json
 # @name getCommunitiesByName
 # Returns the list of communities with a particular name.
 #
-# @param startFrom paging start point
-# @param pageSize maximum results that can be returned
 # Request body provides string to find in the properties
 #
 # Returns list of matching metadata elements or
@@ -251,11 +249,6 @@ Content-Type: application/json
 # @name findCommunities
 # Retrieve the list of community metadata elements that contain the search string.
 #
-# @param startsWith does the value start with the supplied string?
-# @param endsWith does the value end with the supplied string?
-# @param ignoreCase should the search ignore case?
-# @param startFrom paging start point
-# @param pageSize maximum results that can be returned
 # Request body provides string to find in the properties
 #
 # Returns list of matching metadata elements or

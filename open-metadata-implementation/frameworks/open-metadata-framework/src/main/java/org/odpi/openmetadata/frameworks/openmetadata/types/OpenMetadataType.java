@@ -4871,6 +4871,15 @@ public enum OpenMetadataType
                          "An abstract, but well-formed representation of a concept, activity, architecture or other design element."),
 
     /**
+     * Identifies the coverage category of an attribute.
+     */
+    ATTRIBUTE_COVERAGE_CLASSIFICATION("f8b60afe-ddef-4b6f-9628-82ebfff34d65",
+                                      "AttributeCoverage",
+                                      OpenMetadataWikiPages.MODEL_0565_DESIGN_MODEL_ELEMENTS,
+                                      "bcb67e57-52e8-42f3-881e-3f755ca02ae7",
+                                      "Identifies the coverage category of an attribute."),
+
+    /**
      * A curated collection of design model elements.
      */
     DESIGN_MODEL("bf17143d-8605-48c2-ba80-64c2ac8f8379",
@@ -4882,57 +4891,11 @@ public enum OpenMetadataType
     /**
      * A collection of related design model elements within a model.
      */
-    DESIGN_MODEL_GROUP("b144ee2a-fa71-4897-b51a-dd5239c26910",
-                       "DesignModelGroup",
-                       OpenMetadataWikiPages.MODEL_0566_DESIGN_MODEL_ORG,
-                       "cf76adbb-3a46-4fb6-a9a6-080b879a63d1",
-                       "A collection of related design model elements within a model."),
-
-    /**
-     * Links a design model element to a group.
-     */
-    DESIGN_MODEL_GROUP_MEMBERSHIP_RELATIONSHIP("2dcfe62b-341c-4c3d-b336-a94a52c20556",
-                                               "DesignModelGroupMembership",
-                                               OpenMetadataWikiPages.MODEL_0566_DESIGN_MODEL_ORG,
-                                               "1dc7aa5a-f708-42fe-8de4-0da5059a9fb8",
-                                               "Links a design model element to a group."),
-
-    /**
-     * Links design model elements to their owning model.
-     */
-    DESIGN_MODEL_OWNERSHIP_RELATIONSHIP("d57043c2-eeab-4167-8d0d-2223af8aee93",
-                                        "DesignModelOwnership",
-                                        OpenMetadataWikiPages.MODEL_0566_DESIGN_MODEL_ORG,
-                                        "977c8b04-36f8-4eea-8550-686580bbb0aa",
-                                        "Links design model elements to their owning model."),
-
-    /**
-     * A selection of design model element needed for a project.
-     */
-    DESIGN_MODEL_SCOPE("788957f7-a203-45bd-994d-0ab018275821",
-                       "DesignModelScope",
-                       OpenMetadataWikiPages.MODEL_0568_DESIGN_MODEL_SCOPING,
-                       "0225762e-cc24-452b-af8c-1b87c5bd5805",
-                       "A selection of design model element needed for a project."),
-
-
-    /**
-     * Links a model to an implementation.
-     */
-    DESIGN_MODEL_ELEMENTS_IN_SCOPE_RELATIONSHIP("4ff6d91b-3836-4ba2-9ca9-87da91081faa",
-                                                "DesignModelElementsInScope",
-                                                OpenMetadataWikiPages.MODEL_0568_DESIGN_MODEL_SCOPING,
-                                                "59d19a45-77a9-4ea7-8c21-9f2684f383b5",
-                                                "Links a model to an implementation."),
-
-    /**
-     * Links a concept model to an implementation.
-     */
-    DESIGN_MODEL_IMPLEMENTATION_RELATIONSHIP("c5cb1362-07f6-486b-b80b-ba7922cacee9",
-                                             "DesignModelImplementation",
-                                             OpenMetadataWikiPages.MODEL_0569_DESIGN_MODEL_IMPL,
-                                             "7d16c709-552b-4843-b17e-02384c99da57",
-                                             "Links a concept model to an implementation."),
+    DESIGN_MODEL_FOLDER("b144ee2a-fa71-4897-b51a-dd5239c26910",
+                        "DesignModelFolder",
+                        OpenMetadataWikiPages.MODEL_0566_DESIGN_MODEL_ORG,
+                        "cf76adbb-3a46-4fb6-a9a6-080b879a63d1",
+                        "A collection of related design model elements within a model."),
 
     /**
      * Identifies the element from a metadata model that this element embodies.
@@ -4952,14 +4915,7 @@ public enum OpenMetadataType
                                  "afb0861f-fe08-4b68-a832-16dbe792a15f",
                                  "Identifies that a design model as a concept model."),
 
-    /**
-     * Identifies the coverage category of a concept bead attribute.
-     */
-    CONCEPT_BEAD_ATTRIBUTE_COVERAGE_CLASSIFICATION("f8b60afe-ddef-4b6f-9628-82ebfff34d65",
-                                                   "ConceptBeadAttributeCoverage",
-                                                   OpenMetadataWikiPages.MODEL_0571_CONCEPT_MODELS,
-                                                   "bcb67e57-52e8-42f3-881e-3f755ca02ae7",
-                                                   "Identifies the coverage category of a concept bead attribute."),
+
 
     /**
      * An abstract, but well-formed representation of a concept.
@@ -5000,7 +4956,7 @@ public enum OpenMetadataType
     /**
      * Links a concept bead to its attributes.
      */
-    CONCEPT_BEAN_ATTRIBUTE_LINK("5bad1df2-664b-407b-8036-2855e2ede92f",
+    CONCEPT_BEAD_ATTRIBUTE_LINK("5bad1df2-664b-407b-8036-2855e2ede92f",
                                 "ConceptBeadAttributeLink",
                                 OpenMetadataWikiPages.MODEL_0571_CONCEPT_MODELS,
                                 "1b6f0ca0-d9e1-4804-8f95-48e525e7f6d4",
@@ -5395,13 +5351,23 @@ public enum OpenMetadataType
 
 
     /**
-     * Person managing a digital product.
+     * A collection of digital products designed to be used together.
+     */
+    DIGITAL_PRODUCT_FAMILY("e6a382aa-c89e-41ac-89a9-fe86db03143a",
+                    "DigitalProductFamily",
+                    OpenMetadataWikiPages.MODEL_0710_DIGITAL_PRODUCT,
+                    "e4f983fe-800d-4d4c-bcd4-0ed5b467d36d",
+                    "A collection of digital products designed to be used together."),
+
+
+    /**
+     * Role responsible for managing a digital product.
      */
     DIGITAL_PRODUCT_MANAGER("6dfba6ce-e925-4281-880d-d04100c5b991",
                             "DigitalProductManager",
                             OpenMetadataWikiPages.MODEL_0710_DIGITAL_PRODUCT,
                             "6057d7a8-4b7f-4d37-95dd-513c131c7381",
-                            "Person managing a digital product."),
+                            "Role responsible for managing a digital product."),
 
 
     /**
