@@ -125,25 +125,35 @@ loadScripts(document, 'script');</script>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Compare the values of the supplied object with those stored in the current object.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>int</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getMaxCardinality()" class="member-name-link">getMaxCardinality</a>()</code></div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../enums/CoverageCategory.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.enums">CoverageCategory</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getCoverageCategory()" class="member-name-link">getCoverageCategory</a>()</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Return the coverage of the attributes in this structure.</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>int</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getMaxCardinality()" class="member-name-link">getMaxCardinality</a>()</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Return the maximum number of instances allowed for this attribute.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>int</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getMinCardinality()" class="member-name-link">getMinCardinality</a>()</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>int</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getMinCardinality()" class="member-name-link">getMinCardinality</a>()</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Return this minimum number of instances allowed for this attribute.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>int</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getPosition()" class="member-name-link">getPosition</a>()</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>int</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getPosition()" class="member-name-link">getPosition</a>()</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Return the position of this data field in the data structure.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>int</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#hashCode()" class="member-name-link">hashCode</a>()</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>int</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#hashCode()" class="member-name-link">hashCode</a>()</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Return a number that represents the contents of this object.</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setCoverageCategory(org.odpi.openmetadata.frameworks.openmetadata.enums.CoverageCategory)" class="member-name-link">setCoverageCategory</a><wbr>(<a href="../enums/CoverageCategory.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.enums">CoverageCategory</a>&nbsp;coverageCategory)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Set up the coverage of the attributes in this structure.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setMaxCardinality(int)" class="member-name-link">setMaxCardinality</a><wbr>(int&nbsp;maxCardinality)</code></div>
@@ -277,6 +287,28 @@ loadScripts(document, 'script');</script>
 <dl class="notes">
 <dt>Parameters:</dt>
 <dd><code>maxCardinality</code> - int (-1 means infinite)</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="getCoverageCategory()">
+<h3>getCoverageCategory</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../enums/CoverageCategory.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.enums">CoverageCategory</a></span>&nbsp;<span class="element-name">getCoverageCategory</span>()</div>
+<div class="block">Return the coverage of the attributes in this structure.</div>
+<dl class="notes">
+<dt>Returns:</dt>
+<dd>enum</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="setCoverageCategory(org.odpi.openmetadata.frameworks.openmetadata.enums.CoverageCategory)">
+<h3>setCoverageCategory</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">setCoverageCategory</span><wbr><span class="parameters">(<a href="../enums/CoverageCategory.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.enums">CoverageCategory</a>&nbsp;coverageCategory)</span></div>
+<div class="block">Set up the coverage of the attributes in this structure.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>coverageCategory</code> - enum</dd>
 </dl>
 </section>
 </li>

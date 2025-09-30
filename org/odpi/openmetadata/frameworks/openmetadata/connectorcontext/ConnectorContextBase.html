@@ -257,6 +257,16 @@ loadScripts(document, 'script');</script>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Retrieve the anchorGUID from the Anchors classification.</div>
 </div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="AnnotationClient.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.connectorcontext">AnnotationClient</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getAnnotationClient()" class="member-name-link">getAnnotationClient</a>()</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Return the client for managing annotations for survey reports.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="AnnotationClient.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.connectorcontext">AnnotationClient</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getAnnotationClient(java.lang.String)" class="member-name-link">getAnnotationClient</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;specificTypeName)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Return the client for managing annotations of a specific subtype.</div>
+</div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="AssetClient.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.connectorcontext">AssetClient</a></code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getAssetClient()" class="member-name-link">getAssetClient</a>()</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
@@ -879,6 +889,30 @@ loadScripts(document, 'script');</script>
 <h3>getActorRoleClient</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="ActorRoleClient.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.connectorcontext">ActorRoleClient</a></span>&nbsp;<span class="element-name">getActorRoleClient</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;specificTypeName)</span></div>
 <div class="block">Return the client for managing roles of a specific subtype.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>specificTypeName</code> - override type name</dd>
+<dt>Returns:</dt>
+<dd>connector context client</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="getAnnotationClient()">
+<h3>getAnnotationClient</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="AnnotationClient.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.connectorcontext">AnnotationClient</a></span>&nbsp;<span class="element-name">getAnnotationClient</span>()</div>
+<div class="block">Return the client for managing annotations for survey reports.</div>
+<dl class="notes">
+<dt>Returns:</dt>
+<dd>connector context client</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="getAnnotationClient(java.lang.String)">
+<h3>getAnnotationClient</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="AnnotationClient.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.connectorcontext">AnnotationClient</a></span>&nbsp;<span class="element-name">getAnnotationClient</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;specificTypeName)</span></div>
+<div class="block">Return the client for managing annotations of a specific subtype.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
 <dd><code>specificTypeName</code> - override type name</dd>

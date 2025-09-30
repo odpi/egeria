@@ -1110,11 +1110,12 @@ loadScripts(document, 'script');</script>
 <div class="block">Create the relationship between a referenceable and an external reference.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#addMemberDataField(java.lang.String,java.lang.String,int,int,int)" class="member-name-link">addMemberDataField</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;dataStructureGUID,
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#addMemberDataField(java.lang.String,java.lang.String,int,int,int,org.odpi.openmetadata.frameworks.openmetadata.enums.CoverageCategory)" class="member-name-link">addMemberDataField</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;dataStructureGUID,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;memberDataFieldGUID,
  int&nbsp;position,
  int&nbsp;minCardinality,
- int&nbsp;maxCardinality)</code></div>
+ int&nbsp;maxCardinality,
+ <a href="../../frameworks/openmetadata/enums/CoverageCategory.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.enums">CoverageCategory</a>&nbsp;coverageCategory)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Add a data field to a data structure.</div>
 </div>
@@ -3196,19 +3197,23 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
-<section class="detail" id="addMemberDataField(java.lang.String,java.lang.String,int,int,int)">
+<section class="detail" id="addMemberDataField(java.lang.String,java.lang.String,int,int,int,org.odpi.openmetadata.frameworks.openmetadata.enums.CoverageCategory)">
 <h3>addMemberDataField</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">addMemberDataField</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;dataStructureGUID,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;memberDataFieldGUID,
  int&nbsp;position,
  int&nbsp;minCardinality,
- int&nbsp;maxCardinality)</span></div>
+ int&nbsp;maxCardinality,
+ <a href="../../frameworks/openmetadata/enums/CoverageCategory.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.enums">CoverageCategory</a>&nbsp;coverageCategory)</span></div>
 <div class="block">Add a data field to a data structure.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
 <dd><code>dataStructureGUID</code> - unique identifier of the data structure</dd>
 <dd><code>memberDataFieldGUID</code> - unique identifier of the member</dd>
 <dd><code>position</code> - position of the data field in the parent</dd>
+<dd><code>minCardinality</code> - min cardinality</dd>
+<dd><code>maxCardinality</code> - max cardinality</dd>
+<dd><code>coverageCategory</code> - is this all or part of the identifier for the data structure</dd>
 </dl>
 </section>
 </li>
