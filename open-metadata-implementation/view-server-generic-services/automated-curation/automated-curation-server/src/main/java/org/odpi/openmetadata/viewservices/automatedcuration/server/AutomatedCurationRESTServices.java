@@ -10,28 +10,21 @@ import org.odpi.openmetadata.commonservices.ffdc.rest.*;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.opengovernance.client.OpenGovernanceClient;
 import org.odpi.openmetadata.frameworks.openmetadata.builders.OpenMetadataRelationshipBuilder;
+import org.odpi.openmetadata.frameworks.openmetadata.client.OpenMetadataClient;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
-import org.odpi.openmetadata.frameworks.openmetadata.client.OpenMetadataClient;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.processes.connectors.CatalogTargetProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.MetadataCorrelationProperties;
-import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
-import org.odpi.openmetadata.frameworkservices.gaf.client.GovernanceConfigurationClient;
 import org.odpi.openmetadata.frameworkservices.gaf.rest.*;
-import org.odpi.openmetadata.frameworkservices.omf.client.EgeriaOpenMetadataStoreClient;
 import org.odpi.openmetadata.frameworkservices.omf.rest.ExternalIdEffectiveTimeQueryRequestBody;
 import org.odpi.openmetadata.frameworkservices.omf.rest.MetadataCorrelationHeadersResponse;
 import org.odpi.openmetadata.frameworkservices.omf.rest.UpdateMetadataCorrelatorsRequestBody;
 import org.odpi.openmetadata.tokencontroller.TokenController;
 import org.odpi.openmetadata.viewservices.automatedcuration.handlers.TechnologyTypeHandler;
-import org.odpi.openmetadata.viewservices.automatedcuration.rest.TechnologyTypeElementListResponse;
 import org.odpi.openmetadata.viewservices.automatedcuration.rest.TechnologyTypeHierarchyResponse;
 import org.odpi.openmetadata.viewservices.automatedcuration.rest.TechnologyTypeReportResponse;
 import org.odpi.openmetadata.viewservices.automatedcuration.rest.TechnologyTypeSummaryListResponse;
 import org.slf4j.LoggerFactory;
-
-import java.util.Date;
 
 
 /**
@@ -65,6 +58,7 @@ public class AutomatedCurationRESTServices extends TokenController
      * Retrieve the list of deployed implementation type metadata elements that contain the search string.
      *
      * @param serverName name of the service to route the request to
+     * @param urlMarker  view service URL marker
      * @param requestBody string to find in the properties
      *
      * @return list of matching metadata elements or
@@ -73,6 +67,7 @@ public class AutomatedCurationRESTServices extends TokenController
      *  PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     public TechnologyTypeSummaryListResponse findTechnologyTypes(String                  serverName,
+                                                                 String                  urlMarker,
                                                                  SearchStringRequestBody requestBody)
     {
         final String methodName = "findTechnologyTypes";
@@ -89,7 +84,7 @@ public class AutomatedCurationRESTServices extends TokenController
             restCallLogger.setUserId(token, userId);
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-            TechnologyTypeHandler handler = instanceHandler.getTechnologyTypeHandler(userId, serverName, methodName);
+            TechnologyTypeHandler handler = instanceHandler.getTechnologyTypeHandler(userId, serverName, urlMarker, methodName);
 
             if (requestBody != null)
             {
@@ -114,6 +109,7 @@ public class AutomatedCurationRESTServices extends TokenController
      * Retrieve the list of deployed implementation type metadata elements linked to a particular open metadata type.
      *
      * @param serverName name of the service to route the request to
+     * @param urlMarker  view service URL marker
      * @param typeName the type name to search for
      * @param requestBody does the value start with the supplied string?
      *
@@ -124,6 +120,7 @@ public class AutomatedCurationRESTServices extends TokenController
      */
 
     public TechnologyTypeSummaryListResponse getTechnologyTypesForOpenMetadataType(String             serverName,
+                                                                                   String             urlMarker,
                                                                                    String             typeName,
                                                                                    ResultsRequestBody requestBody)
     {
@@ -145,7 +142,7 @@ public class AutomatedCurationRESTServices extends TokenController
 
             if (typeName != null)
             {
-                TechnologyTypeHandler handler = instanceHandler.getTechnologyTypeHandler(userId, serverName, methodName);
+                TechnologyTypeHandler handler = instanceHandler.getTechnologyTypeHandler(userId, serverName, urlMarker, methodName);
 
                 if (requestBody != null)
                 {
@@ -179,6 +176,7 @@ public class AutomatedCurationRESTServices extends TokenController
      * Retrieve the requested deployed implementation type metadata element.
      *
      * @param serverName name of the service to route the request to
+     * @param urlMarker  view service URL marker
      * @param requestBody string to find in the properties
      *
      * @return list of matching metadata elements or
@@ -187,6 +185,7 @@ public class AutomatedCurationRESTServices extends TokenController
      *  PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     public TechnologyTypeReportResponse getTechnologyTypeDetail(String            serverName,
+                                                                String            urlMarker,
                                                                 FilterRequestBody requestBody)
     {
         final String methodName = "getTechnologyTypeDetail";
@@ -209,7 +208,7 @@ public class AutomatedCurationRESTServices extends TokenController
             {
                 if (requestBody.getFilter() != null)
                 {
-                    TechnologyTypeHandler    handler = instanceHandler.getTechnologyTypeHandler(userId, serverName, methodName);
+                    TechnologyTypeHandler    handler = instanceHandler.getTechnologyTypeHandler(userId, serverName, urlMarker, methodName);
 
                     response.setElement(handler.getTechnologyTypeDetail(userId,
                                                                         requestBody.getFilter(),
@@ -239,6 +238,7 @@ public class AutomatedCurationRESTServices extends TokenController
      * Retrieve the requested deployed implementation type metadata element and its subtypes.  A mermaid version if the hierarchy is also returned.
      *
      * @param serverName name of the service to route the request to
+     * @param urlMarker  view service URL marker
      * @param requestBody string to find in the properties
      *
      * @return list of matching metadata elements or
@@ -247,6 +247,7 @@ public class AutomatedCurationRESTServices extends TokenController
      *  PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     public TechnologyTypeHierarchyResponse getTechnologyTypeHierarchy(String            serverName,
+                                                                      String            urlMarker,
                                                                       FilterRequestBody requestBody)
     {
         final String methodName = "getTechnologyTypeHierarchy";
@@ -269,7 +270,7 @@ public class AutomatedCurationRESTServices extends TokenController
             {
                 if (requestBody.getFilter() != null)
                 {
-                    TechnologyTypeHandler    handler = instanceHandler.getTechnologyTypeHandler(userId, serverName, methodName);
+                    TechnologyTypeHandler    handler = instanceHandler.getTechnologyTypeHandler(userId, serverName, urlMarker, methodName);
 
                     response.setElement(handler.getTechnologyTypeHierarchy(userId,
                                                                            requestBody.getFilter(),
@@ -301,6 +302,7 @@ public class AutomatedCurationRESTServices extends TokenController
      * Retrieve the requested deployed implementation type metadata element. There are no wildcards allowed in the name.
      *
      * @param serverName name of the service to route the request to
+     * @param urlMarker  view service URL marker
      * @param requestBody string to find in the properties
      *
      * @return list of matching metadata elements or
@@ -308,16 +310,17 @@ public class AutomatedCurationRESTServices extends TokenController
      *  UserNotAuthorizedException the user is not authorized to issue this request
      *  PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public TechnologyTypeElementListResponse getTechnologyTypeElements(String            serverName,
-                                                                       FilterRequestBody requestBody)
+    public OpenMetadataRootElementsResponse getTechnologyTypeElements(String            serverName,
+                                                                      String            urlMarker,
+                                                                      FilterRequestBody requestBody)
     {
         final String methodName = "getTechnologyTypeElements";
         final String parameterName = "requestBody.filter";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
 
-        TechnologyTypeElementListResponse response = new TechnologyTypeElementListResponse();
-        AuditLog                          auditLog = null;
+        OpenMetadataRootElementsResponse response = new OpenMetadataRootElementsResponse();
+        AuditLog                         auditLog = null;
 
         try
         {
@@ -331,7 +334,7 @@ public class AutomatedCurationRESTServices extends TokenController
             {
                 if (requestBody.getFilter() != null)
                 {
-                    TechnologyTypeHandler technologyTypeHandler = instanceHandler.getTechnologyTypeHandler(userId, serverName, methodName);
+                    TechnologyTypeHandler technologyTypeHandler = instanceHandler.getTechnologyTypeHandler(userId, serverName, urlMarker, methodName);
 
                     response.setElements(technologyTypeHandler.getTechnologyTypeElements(userId,
                                                                                          requestBody.getFilter(),
@@ -366,6 +369,7 @@ public class AutomatedCurationRESTServices extends TokenController
      * Create a new element from a template.
      *
      * @param serverName name of the service to route the request to
+     * @param urlMarker  view service URL marker
      * @param requestBody information about the template
      *
      * @return list of matching metadata elements or
@@ -374,6 +378,7 @@ public class AutomatedCurationRESTServices extends TokenController
      *  PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     public GUIDResponse createElementFromTemplate(String              serverName,
+                                                  String              urlMarker,
                                                   TemplateRequestBody requestBody)
     {
         final String methodName = "createElementFromTemplate";
@@ -393,7 +398,7 @@ public class AutomatedCurationRESTServices extends TokenController
 
             if (requestBody != null)
             {
-                EgeriaOpenMetadataStoreClient openHandler = instanceHandler.getOpenMetadataStoreClient(userId, serverName, methodName);
+                OpenMetadataClient openHandler = instanceHandler.getOpenMetadataStoreClient(userId, serverName, urlMarker, methodName);
 
                 response.setGUID(openHandler.createMetadataElementFromTemplate(userId,
                                                                                requestBody.getMetadataElementSubtypeName(),
@@ -418,610 +423,6 @@ public class AutomatedCurationRESTServices extends TokenController
     }
 
 
-    /* =====================================================================================================================
-     * A catalog target links an element (typically an asset, to an integration connector for processing.
-     */
-
-    /**
-     * Add a catalog target to an integration connector.
-     *
-     * @param serverName name of the service to route the request to.
-     * @param integrationConnectorGUID unique identifier of the integration service.
-     * @param metadataElementGUID unique identifier of the metadata element that is a catalog target.
-     * @param requestBody properties for the relationship.
-     *
-     * @return void or
-     * InvalidParameterException one of the parameters is null or invalid or
-     * UserNotAuthorizedException user not authorized to issue this request or
-     * PropertyServerException problem storing the catalog target definition.
-     */
-    public GUIDResponse addCatalogTarget(String                  serverName,
-                                         String                  integrationConnectorGUID,
-                                         String                  metadataElementGUID,
-                                         CatalogTargetProperties requestBody)
-    {
-        final String methodName = "addCatalogTarget";
-
-        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
-
-        GUIDResponse response = new GUIDResponse();
-        AuditLog                    auditLog = null;
-
-        try
-        {
-            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
-
-            restCallLogger.setUserId(token, userId);
-
-            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-
-            if (requestBody != null)
-            {
-                GovernanceConfigurationClient handler = instanceHandler.getGovernanceConfigurationClient(userId, serverName, methodName);
-
-                response.setGUID(handler.addCatalogTarget(userId,
-                                                          integrationConnectorGUID,
-                                                          metadataElementGUID,
-                                                          requestBody));
-            }
-            else
-            {
-                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
-            }
-        }
-        catch (Throwable error)
-        {
-            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
-        }
-
-        restCallLogger.logRESTCallReturn(token, response.toString());
-        return response;
-    }
-
-
-
-    /**
-     * Update a catalog target for an integration connector.
-     *
-     * @param serverName name of the service to route the request to.
-     * @param relationshipGUID unique identifier of the relationship.
-     * @param requestBody properties for the relationship.
-     *
-     * @return void or
-     * InvalidParameterException one of the parameters is null or invalid or
-     * UserNotAuthorizedException user not authorized to issue this request or
-     * PropertyServerException problem storing the catalog target definition.
-     */
-    public VoidResponse updateCatalogTarget(String                  serverName,
-                                            String                  relationshipGUID,
-                                            CatalogTargetProperties requestBody)
-    {
-        final String methodName = "updateCatalogTarget";
-
-        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
-
-        VoidResponse response = new VoidResponse();
-        AuditLog                    auditLog = null;
-
-        try
-        {
-            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
-
-            restCallLogger.setUserId(token, userId);
-
-            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-
-            if (requestBody != null)
-            {
-                GovernanceConfigurationClient handler = instanceHandler.getGovernanceConfigurationClient(userId, serverName, methodName);
-
-                handler.updateCatalogTarget(userId, relationshipGUID, requestBody);
-            }
-            else
-            {
-                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
-            }
-        }
-        catch (Throwable error)
-        {
-            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
-        }
-
-        restCallLogger.logRESTCallReturn(token, response.toString());
-        return response;
-    }
-
-
-    /**
-     * Retrieve a specific catalog target associated with an integration connector.
-     *
-     * @param serverName name of the service to route the request to.
-     * @param relationshipGUID unique identifier of the relationship.
-     *
-     * @return details of the governance service and the asset types it is registered for or
-     * InvalidParameterException one of the parameters is null or invalid or
-     * UserNotAuthorizedException user not authorized to issue this request or
-     * PropertyServerException problem storing the integration connector definition.
-     */
-    public CatalogTargetResponse getCatalogTarget(String serverName,
-                                                  String relationshipGUID)
-    {
-        final String methodName = "getCatalogTarget";
-
-        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
-
-        CatalogTargetResponse response = new CatalogTargetResponse();
-        AuditLog              auditLog = null;
-
-        try
-        {
-            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
-
-            restCallLogger.setUserId(token, userId);
-
-            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-
-            GovernanceConfigurationClient handler = instanceHandler.getGovernanceConfigurationClient(userId, serverName, methodName);
-
-            response.setElement(handler.getCatalogTarget(userId, relationshipGUID));
-        }
-        catch (Throwable error)
-        {
-            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
-        }
-
-        restCallLogger.logRESTCallReturn(token, response.toString());
-        return response;
-    }
-
-
-    /**
-     * Retrieve the details of the metadata elements identified as catalog targets with an integration connector.
-     *
-     * @param serverName name of the service to route the request to.
-     * @param integrationConnectorGUID unique identifier of the integration connector.
-     * @param startFrom paging start point
-     * @param pageSize maximum results that can be returned
-     *
-     * @return list of unique identifiers or
-     * InvalidParameterException one of the parameters is null or invalid or
-     * UserNotAuthorizedException user not authorized to issue this request or
-     * PropertyServerException problem storing the integration connector definition.
-     */
-    public CatalogTargetsResponse getCatalogTargets(String serverName,
-                                                    String integrationConnectorGUID,
-                                                    int    startFrom,
-                                                    int    pageSize)
-    {
-        final String methodName = "getCatalogTargets";
-
-        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
-
-        CatalogTargetsResponse response = new CatalogTargetsResponse();
-        AuditLog               auditLog = null;
-
-        try
-        {
-            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
-
-            restCallLogger.setUserId(token, userId);
-
-            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-
-            GovernanceConfigurationClient handler = instanceHandler.getGovernanceConfigurationClient(userId, serverName, methodName);
-
-            response.setElements(handler.getCatalogTargets(userId, integrationConnectorGUID, startFrom, pageSize));
-        }
-        catch (Throwable error)
-        {
-            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
-        }
-
-        restCallLogger.logRESTCallReturn(token, response.toString());
-        return response;
-    }
-
-
-    /**
-     * Unregister a catalog target from the integration connector.
-     *
-     * @param serverName name of the service to route the request to.
-     * @param relationshipGUID unique identifier of the integration connector.
-     * @param requestBody null request body.
-     *
-     * @return void or
-     * InvalidParameterException one of the parameters is null or invalid or
-     * UserNotAuthorizedException user not authorized to issue this request or
-     * PropertyServerException problem storing the integration connector definition.
-     */
-    @SuppressWarnings(value = "unused")
-    public VoidResponse removeCatalogTarget(String          serverName,
-                                            String          relationshipGUID,
-                                            NullRequestBody requestBody)
-    {
-        final String methodName = "removeCatalogTarget";
-
-        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
-
-        VoidResponse response = new VoidResponse();
-        AuditLog                    auditLog = null;
-
-        try
-        {
-            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
-
-            restCallLogger.setUserId(token, userId);
-
-            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-
-            GovernanceConfigurationClient handler = instanceHandler.getGovernanceConfigurationClient(userId, serverName, methodName);
-
-            handler.removeCatalogTarget(userId, relationshipGUID);
-        }
-        catch (Throwable error)
-        {
-            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
-        }
-
-        restCallLogger.logRESTCallReturn(token, response.toString());
-        return response;
-    }
-
-
-    /* =====================================================================================================================
-     * A governance action type describes a template to call a single engine action.
-     */
-
-    /**
-     * Retrieve the list of governance action type metadata elements that contain the search string.
-     *
-     * @param serverName name of the service to route the request to
-     * @param requestBody string to find in the properties
-     *
-     * @return list of matching metadata elements or
-     *  InvalidParameterException  one of the parameters is invalid
-     *  UserNotAuthorizedException the user is not authorized to issue this request
-     *  PropertyServerException    there is a problem reported in the open metadata server(s)
-     */
-    public GovernanceActionTypesResponse findGovernanceActionTypes(String                  serverName,
-                                                                   SearchStringRequestBody requestBody)
-    {
-        final String methodName = "findGovernanceActionTypes";
-
-        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
-
-        GovernanceActionTypesResponse response = new GovernanceActionTypesResponse();
-        AuditLog                      auditLog = null;
-
-        try
-        {
-            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
-
-            restCallLogger.setUserId(token, userId);
-
-            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-            OpenGovernanceClient handler = instanceHandler.getOpenGovernanceClient(userId, serverName, methodName);
-
-            if (requestBody != null)
-            {
-                response.setElements(handler.findGovernanceActionTypes(userId,
-                                                                       requestBody.getSearchString(),
-                                                                       requestBody));
-            }
-            else
-            {
-                response.setElements(handler.findGovernanceActionTypes(userId,
-                                                                       null,
-                                                                       null));
-            }
-        }
-        catch (Throwable error)
-        {
-            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
-        }
-
-        restCallLogger.logRESTCallReturn(token, response.toString());
-        return response;
-    }
-
-
-    /**
-     * Retrieve the list of governance action type metadata elements with a matching qualified or display name.
-     * There are no wildcards supported on this request.
-     *
-     * @param serverName name of the service to route the request to
-     * @param requestBody name to search for
-     *
-     * @return list of matching metadata elements or
-     *  InvalidParameterException  one of the parameters is invalid
-     *  UserNotAuthorizedException the user is not authorized to issue this request
-     *  PropertyServerException    there is a problem reported in the open metadata server(s)
-     */
-    public GovernanceActionTypesResponse getGovernanceActionTypesByName(String            serverName,
-                                                                        FilterRequestBody requestBody)
-    {
-        final String methodName = "getGovernanceActionTypesByName";
-
-        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
-
-        GovernanceActionTypesResponse response = new GovernanceActionTypesResponse();
-        AuditLog                             auditLog = null;
-
-        try
-        {
-            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
-
-            restCallLogger.setUserId(token, userId);
-
-            if (requestBody != null)
-            {
-                auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-                OpenGovernanceClient handler = instanceHandler.getOpenGovernanceClient(userId, serverName, methodName);
-
-                response.setElements(handler.getGovernanceActionTypesByName(userId,
-                                                                            requestBody.getFilter(),
-                                                                            requestBody));
-            }
-            else
-            {
-                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
-            }
-        }
-        catch (Throwable error)
-        {
-            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
-        }
-
-        restCallLogger.logRESTCallReturn(token, response.toString());
-        return response;
-    }
-
-
-    /**
-     * Retrieve the governance action type metadata element with the supplied unique identifier.
-     *
-     * @param serverName name of the service to route the request to
-     * @param governanceActionTypeGUID unique identifier of the governance action type
-     *
-     * @return requested metadata element or
-     *  InvalidParameterException  one of the parameters is invalid
-     *  UserNotAuthorizedException the user is not authorized to issue this request
-     *  PropertyServerException    there is a problem reported in the open metadata server(s)
-     */
-    public GovernanceActionTypeResponse getGovernanceActionTypeByGUID(String serverName,
-                                                                      String governanceActionTypeGUID)
-    {
-        final String methodName = "getGovernanceActionTypeByGUID";
-
-        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
-
-        GovernanceActionTypeResponse response = new GovernanceActionTypeResponse();
-        AuditLog                            auditLog = null;
-
-        try
-        {
-            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
-
-            restCallLogger.setUserId(token, userId);
-
-            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-            OpenGovernanceClient handler = instanceHandler.getOpenGovernanceClient(userId, serverName, methodName);
-
-            response.setElement(handler.getGovernanceActionTypeByGUID(userId, governanceActionTypeGUID));
-        }
-        catch (Throwable error)
-        {
-            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
-        }
-
-        restCallLogger.logRESTCallReturn(token, response.toString());
-        return response;
-    }
-
-
-
-    /* =====================================================================================================================
-     * A governance action process describes a well-defined series of steps that gets something done.
-     * The steps are defined using GovernanceActionProcessSteps.
-     */
-
-    /**
-     * Retrieve the list of governance action process metadata elements that contain the search string.
-     *
-     * @param serverName name of the service to route the request to
-     * @param requestBody string to find in the properties
-     *
-     * @return list of matching metadata elements or
-     *  InvalidParameterException  one of the parameters is invalid
-     *  UserNotAuthorizedException the user is not authorized to issue this request
-     *  PropertyServerException    there is a problem reported in the open metadata server(s)
-     */
-    public GovernanceActionProcessElementsResponse findGovernanceActionProcesses(String                  serverName,
-                                                                                 SearchStringRequestBody requestBody)
-    {
-        final String methodName = "findGovernanceActionProcesses";
-
-        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
-
-        GovernanceActionProcessElementsResponse response = new GovernanceActionProcessElementsResponse();
-        AuditLog                                auditLog = null;
-
-        try
-        {
-            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
-
-            restCallLogger.setUserId(token, userId);
-
-            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-            OpenGovernanceClient handler = instanceHandler.getOpenGovernanceClient(userId, serverName, methodName);
-
-            if (requestBody != null)
-            {
-                response.setElements(handler.findGovernanceActionProcesses(userId,
-                                                                           requestBody.getSearchString(),
-                                                                           requestBody));
-            }
-            else
-            {
-                response.setElements(handler.findGovernanceActionProcesses(userId,
-                                                                           null,
-                                                                           null));
-            }
-        }
-        catch (Throwable error)
-        {
-            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
-        }
-
-        restCallLogger.logRESTCallReturn(token, response.toString());
-        return response;
-    }
-
-
-    /**
-     * Retrieve the list of governance action process metadata elements with a matching qualified or display name.
-     * There are no wildcards supported on this request.
-     *
-     * @param serverName name of the service to route the request to
-     * @param requestBody name to search for
-     *
-     * @return list of matching metadata elements or
-     *  InvalidParameterException  one of the parameters is invalid
-     *  UserNotAuthorizedException the user is not authorized to issue this request
-     *  PropertyServerException    there is a problem reported in the open metadata server(s)
-     */
-    public GovernanceActionProcessElementsResponse getGovernanceActionProcessesByName(String            serverName,
-                                                                                      FilterRequestBody requestBody)
-    {
-        final String methodName = "getGovernanceActionProcessesByName";
-
-        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
-
-        GovernanceActionProcessElementsResponse response = new GovernanceActionProcessElementsResponse();
-        AuditLog                                auditLog = null;
-
-        try
-        {
-            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
-
-            restCallLogger.setUserId(token, userId);
-
-            if (requestBody != null)
-            {
-                auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-                OpenGovernanceClient handler = instanceHandler.getOpenGovernanceClient(userId, serverName, methodName);
-
-                response.setElements(handler.getGovernanceActionProcessesByName(userId, requestBody.getFilter(), requestBody));
-            }
-            else
-            {
-                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
-            }
-        }
-        catch (Throwable error)
-        {
-            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
-        }
-
-        restCallLogger.logRESTCallReturn(token, response.toString());
-        return response;
-    }
-
-
-    /**
-     * Retrieve the governance action process metadata element with the supplied unique identifier.
-     *
-     * @param serverName name of the service to route the request to
-     * @param processGUID unique identifier of the requested metadata element
-     *
-     * @return requested metadata element or
-     *  InvalidParameterException  one of the parameters is invalid
-     *  UserNotAuthorizedException the user is not authorized to issue this request
-     *  PropertyServerException    there is a problem reported in the open metadata server(s)
-     */
-    public GovernanceActionProcessElementResponse getGovernanceActionProcessByGUID(String serverName,
-                                                                                   String processGUID)
-    {
-        final String methodName = "getGovernanceActionProcessByGUID";
-
-        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
-
-        GovernanceActionProcessElementResponse response = new GovernanceActionProcessElementResponse();
-        AuditLog     auditLog = null;
-
-        try
-        {
-            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
-
-            restCallLogger.setUserId(token, userId);
-
-            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-            OpenGovernanceClient handler = instanceHandler.getOpenGovernanceClient(userId, serverName, methodName);
-
-            response.setElement(handler.getGovernanceActionProcessByGUID(userId, processGUID));
-        }
-        catch (Throwable error)
-        {
-            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
-        }
-
-        restCallLogger.logRESTCallReturn(token, response.toString());
-        return response;
-    }
-
-
-    /**
-     * Retrieve the governance action process metadata element with the supplied unique identifier
-     * along with the flow definition describing its implementation.
-     *
-     * @param serverName name of the service to route the request to
-     * @param processGUID unique identifier of the requested metadata element
-     * @param requestBody effectiveTime
-     *
-     * @return requested metadata element or
-     *  InvalidParameterException  one of the parameters is invalid
-     *  UserNotAuthorizedException the user is not authorized to issue this request
-     *  PropertyServerException    there is a problem reported in the open metadata server(s)
-     */
-    public GovernanceActionProcessGraphResponse getGovernanceActionProcessGraph(String                   serverName,
-                                                                                String                   processGUID,
-                                                                                ResultsRequestBody requestBody)
-    {
-        final String methodName = "getGovernanceActionProcessGraph";
-
-        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
-
-        GovernanceActionProcessGraphResponse response = new GovernanceActionProcessGraphResponse();
-        AuditLog     auditLog = null;
-
-        try
-        {
-            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
-
-            restCallLogger.setUserId(token, userId);
-
-            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-            OpenGovernanceClient handler = instanceHandler.getOpenGovernanceClient(userId, serverName, methodName);
-
-            if (requestBody != null)
-            {
-                response.setElement(handler.getGovernanceActionProcessGraph(userId, processGUID, requestBody.getEffectiveTime()));
-            }
-            else
-            {
-                response.setElement(handler.getGovernanceActionProcessGraph(userId, processGUID, new Date()));
-            }
-        }
-        catch (Throwable error)
-        {
-            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
-        }
-
-        restCallLogger.logRESTCallReturn(token, response.toString());
-        return response;
-    }
-
-
     /*
      * Engine Actions
      */
@@ -1030,6 +431,7 @@ public class AutomatedCurationRESTServices extends TokenController
      * Request the status and properties of an executing engine action request.
      *
      * @param serverName     name of server instance to route request to
+     * @param urlMarker  view service URL marker
      * @param engineActionGUID identifier of the engine action request.
      *
      * @return engine action properties and status or
@@ -1038,6 +440,7 @@ public class AutomatedCurationRESTServices extends TokenController
      *  PropertyServerException there was a problem detected by the metadata store.
      */
     public EngineActionElementResponse getEngineAction(String serverName,
+                                                       String                urlMarker,
                                                        String engineActionGUID)
     {
         final String methodName = "getEngineAction";
@@ -1055,7 +458,7 @@ public class AutomatedCurationRESTServices extends TokenController
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            OpenGovernanceClient handler = instanceHandler.getOpenGovernanceClient(userId, serverName, methodName);
+            OpenGovernanceClient handler = instanceHandler.getOpenGovernanceClient(userId, serverName, urlMarker, methodName);
 
             response.setElement(handler.getEngineAction(userId, engineActionGUID));
         }
@@ -1073,6 +476,7 @@ public class AutomatedCurationRESTServices extends TokenController
      * Request that an engine action is stopped.
      *
      * @param serverName     name of server instance to route request to
+     * @param urlMarker  view service URL marker
      * @param engineActionGUID identifier of the engine action request.
      *
      * @return engine action properties and status or
@@ -1081,6 +485,7 @@ public class AutomatedCurationRESTServices extends TokenController
      *  PropertyServerException there was a problem detected by the metadata store.
      */
     public VoidResponse cancelEngineAction(String serverName,
+                                           String urlMarker,
                                            String engineActionGUID)
     {
         final String methodName = "cancelEngineAction";
@@ -1098,7 +503,7 @@ public class AutomatedCurationRESTServices extends TokenController
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            OpenGovernanceClient handler = instanceHandler.getOpenGovernanceClient(userId, serverName, methodName);
+            OpenGovernanceClient handler = instanceHandler.getOpenGovernanceClient(userId, serverName, urlMarker, methodName);
 
             handler.cancelEngineAction(userId, engineActionGUID);
         }
@@ -1116,6 +521,7 @@ public class AutomatedCurationRESTServices extends TokenController
      * Retrieve the engine actions that are known to the server.
      *
      * @param serverName     name of server instance to route request to
+     * @param urlMarker  view service URL marker
      * @param startFrom starting from element
      * @param pageSize maximum elements to return
      *
@@ -1125,6 +531,7 @@ public class AutomatedCurationRESTServices extends TokenController
      *  PropertyServerException there was a problem detected by the metadata store.
      */
     public EngineActionElementsResponse getEngineActions(String serverName,
+                                                         String urlMarker,
                                                          int    startFrom,
                                                          int    pageSize)
     {
@@ -1143,7 +550,7 @@ public class AutomatedCurationRESTServices extends TokenController
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            OpenGovernanceClient handler = instanceHandler.getOpenGovernanceClient(userId, serverName, methodName);
+            OpenGovernanceClient handler = instanceHandler.getOpenGovernanceClient(userId, serverName, urlMarker, methodName);
 
             response.setElements(handler.getEngineActions(userId,
                                                           startFrom,
@@ -1163,6 +570,7 @@ public class AutomatedCurationRESTServices extends TokenController
      * Retrieve the engine actions that are still in process.
      *
      * @param serverName     name of server instance to route request to
+     * @param urlMarker  view service URL marker
      * @param startFrom starting from element
      * @param pageSize maximum elements to return
      *
@@ -1172,6 +580,7 @@ public class AutomatedCurationRESTServices extends TokenController
      *  PropertyServerException there was a problem detected by the metadata store.
      */
     public EngineActionElementsResponse getActiveEngineActions(String serverName,
+                                                               String urlMarker,
                                                                int    startFrom,
                                                                int    pageSize)
     {
@@ -1190,7 +599,7 @@ public class AutomatedCurationRESTServices extends TokenController
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            OpenGovernanceClient handler = instanceHandler.getOpenGovernanceClient(userId, serverName, methodName);
+            OpenGovernanceClient handler = instanceHandler.getOpenGovernanceClient(userId, serverName, urlMarker, methodName);
 
             response.setElements(handler.getActiveEngineActions(userId, startFrom, pageSize));
         }
@@ -1208,6 +617,7 @@ public class AutomatedCurationRESTServices extends TokenController
      * Retrieve the list of engine action metadata elements that contain the search string.
      *
      * @param serverName name of the service to route the request to
+     * @param urlMarker  view service URL marker
      * @param requestBody string to find in the properties
      *
      * @return list of matching metadata elements or
@@ -1216,6 +626,7 @@ public class AutomatedCurationRESTServices extends TokenController
      *  PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     public EngineActionElementsResponse findEngineActions(String                  serverName,
+                                                          String                urlMarker,
                                                           SearchStringRequestBody requestBody)
     {
         final String methodName = "findEngineActions";
@@ -1232,7 +643,7 @@ public class AutomatedCurationRESTServices extends TokenController
             restCallLogger.setUserId(token, userId);
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-            OpenGovernanceClient handler = instanceHandler.getOpenGovernanceClient(userId, serverName, methodName);
+            OpenGovernanceClient handler = instanceHandler.getOpenGovernanceClient(userId, serverName, urlMarker, methodName);
 
             if (requestBody != null)
             {
@@ -1260,6 +671,7 @@ public class AutomatedCurationRESTServices extends TokenController
      * There are no wildcards supported on this request.
      *
      * @param serverName name of the service to route the request to
+     * @param urlMarker  view service URL marker
      * @param requestBody name to search for
      *
      * @return list of matching metadata elements or
@@ -1268,6 +680,7 @@ public class AutomatedCurationRESTServices extends TokenController
      *  PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     public EngineActionElementsResponse getEngineActionsByName(String            serverName,
+                                                               String                urlMarker,
                                                                FilterRequestBody requestBody)
     {
         final String methodName = "getEngineActionsByName";
@@ -1286,7 +699,7 @@ public class AutomatedCurationRESTServices extends TokenController
             if (requestBody != null)
             {
                 auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-                OpenGovernanceClient handler = instanceHandler.getOpenGovernanceClient(userId, serverName, methodName);
+                OpenGovernanceClient handler = instanceHandler.getOpenGovernanceClient(userId, serverName, urlMarker, methodName);
 
                 response.setElements(handler.getEngineActionsByName(userId, requestBody.getFilter(), requestBody));
             }
@@ -1315,6 +728,7 @@ public class AutomatedCurationRESTServices extends TokenController
      * of the actions taken for auditing.
      *
      * @param serverName     name of server instance to route request to
+     * @param urlMarker  view service URL marker
      * @param governanceEngineName name of the governance engine that should execute the request
      * @param requestBody properties for the governance action and to pass to the governance action service
      *
@@ -1324,6 +738,7 @@ public class AutomatedCurationRESTServices extends TokenController
      *  PropertyServerException there is a problem with the metadata store
      */
     public GUIDResponse initiateEngineAction(String                          serverName,
+                                             String                urlMarker,
                                              String                          governanceEngineName,
                                              InitiateEngineActionRequestBody requestBody)
     {
@@ -1344,7 +759,7 @@ public class AutomatedCurationRESTServices extends TokenController
 
             if (requestBody != null)
             {
-                OpenGovernanceClient handler = instanceHandler.getOpenGovernanceClient(userId, serverName, methodName);
+                OpenGovernanceClient handler = instanceHandler.getOpenGovernanceClient(userId, serverName, urlMarker, methodName);
 
                 response.setGUID(handler.initiateEngineAction(userId,
                                                               requestBody.getQualifiedName(),
@@ -1383,6 +798,7 @@ public class AutomatedCurationRESTServices extends TokenController
      * Using the named governance action type as a template, initiate an engine action.
      *
      * @param serverName     name of server instance to route request to
+     * @param urlMarker  view service URL marker
      * @param requestBody properties to initiate the new instance of the engine action
      *
      * @return unique identifier of the first governance action of the process or
@@ -1391,6 +807,7 @@ public class AutomatedCurationRESTServices extends TokenController
      *  PropertyServerException there is a problem with the metadata store
      */
     public GUIDResponse initiateGovernanceActionType(String                          serverName,
+                                                     String                urlMarker,
                                                      InitiateGovernanceActionTypeRequestBody requestBody)
     {
         final String methodName = "initiateGovernanceActionType";
@@ -1410,7 +827,7 @@ public class AutomatedCurationRESTServices extends TokenController
 
             if (requestBody != null)
             {
-                OpenGovernanceClient handler = instanceHandler.getOpenGovernanceClient(userId, serverName, methodName);
+                OpenGovernanceClient handler = instanceHandler.getOpenGovernanceClient(userId, serverName, urlMarker, methodName);
 
                 response.setGUID(handler.initiateGovernanceActionType(userId,
                                                                       requestBody.getGovernanceActionTypeQualifiedName(),
@@ -1441,6 +858,7 @@ public class AutomatedCurationRESTServices extends TokenController
      * Using the named governance action process as a template, initiate a chain of governance actions.
      *
      * @param serverName     name of server instance to route request to
+     * @param urlMarker  view service URL marker
      * @param requestBody properties to initiate the new instance of the process
      *
      * @return unique identifier of the governance action process instance or
@@ -1449,6 +867,7 @@ public class AutomatedCurationRESTServices extends TokenController
      *  PropertyServerException there is a problem with the metadata store
      */
     public GUIDResponse initiateGovernanceActionProcess(String                             serverName,
+                                                        String                urlMarker,
                                                         InitiateGovernanceActionProcessRequestBody requestBody)
     {
         final String methodName = "initiateGovernanceActionProcess";
@@ -1468,7 +887,7 @@ public class AutomatedCurationRESTServices extends TokenController
 
             if (requestBody != null)
             {
-                OpenGovernanceClient handler = instanceHandler.getOpenGovernanceClient(userId, serverName, methodName);
+                OpenGovernanceClient handler = instanceHandler.getOpenGovernanceClient(userId, serverName, urlMarker, methodName);
 
                 response.setGUID(handler.initiateGovernanceActionProcess(userId,
                                                                          requestBody.getProcessQualifiedName(),
@@ -1503,6 +922,7 @@ public class AutomatedCurationRESTServices extends TokenController
      * Add the description of a specific external identifier.
      *
      * @param serverName name of the service to route the request to.
+     * @param urlMarker  view service URL marker
      * @param openMetadataElementGUID unique identifier (GUID) of the element in the open metadata ecosystem
      * @param openMetadataElementTypeName type name of the element in the open metadata ecosystem (default referenceable)
      * @param forLineage return elements marked with the Memento classification?
@@ -1515,6 +935,7 @@ public class AutomatedCurationRESTServices extends TokenController
      * PropertyServerException    problem accessing the property server
      */
     public VoidResponse addExternalIdentifier(String                               serverName,
+                                              String                urlMarker,
                                               String                               openMetadataElementGUID,
                                               String                               openMetadataElementTypeName,
                                               boolean                              forLineage,
@@ -1538,7 +959,7 @@ public class AutomatedCurationRESTServices extends TokenController
 
             if ((requestBody != null) && (requestBody.getMetadataCorrelationProperties() != null))
             {
-                OpenMetadataClient handler = instanceHandler.getOpenMetadataStoreClient(userId, serverName, methodName);
+                OpenMetadataClient handler = instanceHandler.getOpenMetadataStoreClient(userId, serverName, urlMarker, methodName);
 
                 handler.addExternalIdentifier(userId,
                                               requestBody.getMetadataCorrelationProperties().getExternalScopeGUID(),
@@ -1585,6 +1006,7 @@ public class AutomatedCurationRESTServices extends TokenController
      * Update the description of a specific external identifier.
      *
      * @param serverName name of the service to route the request to.
+     * @param urlMarker  view service URL marker
      * @param openMetadataElementGUID unique identifier (GUID) of the element in the open metadata ecosystem
      * @param openMetadataElementTypeName type name of the element in the open metadata ecosystem (default referenceable)
      * @param forLineage return elements marked with the Memento classification?
@@ -1597,6 +1019,7 @@ public class AutomatedCurationRESTServices extends TokenController
      * PropertyServerException    problem accessing the property server
      */
     public VoidResponse updateExternalIdentifier(String                               serverName,
+                                                 String                urlMarker,
                                                  String                               openMetadataElementGUID,
                                                  String                               openMetadataElementTypeName,
                                                  boolean                              forLineage,
@@ -1620,7 +1043,7 @@ public class AutomatedCurationRESTServices extends TokenController
 
             if ((requestBody != null) && (requestBody.getMetadataCorrelationProperties() != null))
             {
-                OpenMetadataClient handler = instanceHandler.getOpenMetadataStoreClient(userId, serverName, methodName);
+                OpenMetadataClient handler = instanceHandler.getOpenMetadataStoreClient(userId, serverName, urlMarker, methodName);
 
                 handler.updateExternalIdentifier(userId,
                                                  requestBody.getMetadataCorrelationProperties().getExternalScopeGUID(),
@@ -1667,6 +1090,7 @@ public class AutomatedCurationRESTServices extends TokenController
      * That the external identifier matches the open metadata GUID.
      *
      * @param serverName name of the service to route the request to.
+     * @param urlMarker  view service URL marker
      * @param openMetadataElementGUID unique identifier (GUID) of the element in the open metadata ecosystem
      * @param openMetadataElementTypeName type name of the element in the open metadata ecosystem (default referenceable)
      * @param forLineage return elements marked with the Memento classification?
@@ -1679,6 +1103,7 @@ public class AutomatedCurationRESTServices extends TokenController
      * PropertyServerException    problem accessing the property server
      */
     public BooleanResponse validateExternalIdentifier(String                               serverName,
+                                                      String                urlMarker,
                                                       String                               openMetadataElementGUID,
                                                       String                               openMetadataElementTypeName,
                                                       boolean                              forLineage,
@@ -1702,7 +1127,7 @@ public class AutomatedCurationRESTServices extends TokenController
 
             if ((requestBody != null) && (requestBody.getMetadataCorrelationProperties() != null))
             {
-                OpenMetadataClient handler = instanceHandler.getOpenMetadataStoreClient(userId, serverName, methodName);
+                OpenMetadataClient handler = instanceHandler.getOpenMetadataStoreClient(userId, serverName, urlMarker, methodName);
 
                 if ((requestBody.getMetadataCorrelationProperties().getIdentifier() != null) &&
                         (requestBody.getMetadataCorrelationProperties().getExternalScopeGUID() != null) &&
@@ -1756,6 +1181,7 @@ public class AutomatedCurationRESTServices extends TokenController
      * affected.
      *
      * @param serverName name of the service to route the request to.
+     * @param urlMarker  view service URL marker
      * @param openMetadataElementGUID unique identifier (GUID) of the element in the open metadata ecosystem
      * @param openMetadataElementTypeName type name of the element in the open metadata ecosystem (default referenceable)
      * @param forLineage return elements marked with the Memento classification?
@@ -1768,6 +1194,7 @@ public class AutomatedCurationRESTServices extends TokenController
      * PropertyServerException    problem accessing the property server
      */
     public VoidResponse removeExternalIdentifier(String                               serverName,
+                                                 String                urlMarker,
                                                  String                               openMetadataElementGUID,
                                                  String                               openMetadataElementTypeName,
                                                  boolean                              forLineage,
@@ -1791,7 +1218,7 @@ public class AutomatedCurationRESTServices extends TokenController
 
             if ((requestBody != null) && (requestBody.getMetadataCorrelationProperties() != null))
             {
-                OpenMetadataClient handler = instanceHandler.getOpenMetadataStoreClient(userId, serverName, methodName);
+                OpenMetadataClient handler = instanceHandler.getOpenMetadataStoreClient(userId, serverName, urlMarker, methodName);
 
                 handler.removeExternalIdentifier(userId,
                                                  requestBody.getMetadataCorrelationProperties().getExternalScopeGUID(),
@@ -1836,6 +1263,7 @@ public class AutomatedCurationRESTServices extends TokenController
      * The linked open metadata elements are not affected.
      *
      * @param serverName name of the service to route the request to.
+     * @param urlMarker  view service URL marker
      * @param externalScopeGUID unique identifier (GUID) of the scope element in the open metadata ecosystem
      * @param forLineage return elements marked with the Memento classification?
      * @param forDuplicateProcessing do not merge elements marked as duplicates?
@@ -1847,6 +1275,7 @@ public class AutomatedCurationRESTServices extends TokenController
      * PropertyServerException    problem accessing the property server
      */
     public VoidResponse removeExternalScope(String                   serverName,
+                                            String                urlMarker,
                                             String                   externalScopeGUID,
                                             boolean                  forLineage,
                                             boolean                  forDuplicateProcessing,
@@ -1869,7 +1298,7 @@ public class AutomatedCurationRESTServices extends TokenController
 
             if (requestBody != null)
             {
-                OpenMetadataClient handler = instanceHandler.getOpenMetadataStoreClient(userId, serverName, methodName);
+                OpenMetadataClient handler = instanceHandler.getOpenMetadataStoreClient(userId, serverName, urlMarker, methodName);
 
                 handler.removeExternalScope(userId,
                                             externalScopeGUID,
@@ -1910,6 +1339,7 @@ public class AutomatedCurationRESTServices extends TokenController
      * from an audit point of view, and to allow bidirectional updates of metadata using optimistic locking.
      *
      * @param serverName name of the service to route the request to.
+     * @param urlMarker  view service URL marker
      * @param openMetadataElementGUID unique identifier (GUID) of this element in open metadata
      * @param openMetadataElementTypeName type name for the open metadata element
      * @param requestBody details of the external identifier and its scope
@@ -1920,6 +1350,7 @@ public class AutomatedCurationRESTServices extends TokenController
      * PropertyServerException    problem accessing the property server
      */
     public VoidResponse confirmSynchronization(String                        serverName,
+                                               String                urlMarker,
                                                String                        openMetadataElementGUID,
                                                String                        openMetadataElementTypeName,
                                                MetadataCorrelationProperties requestBody)
@@ -1941,7 +1372,7 @@ public class AutomatedCurationRESTServices extends TokenController
 
             if (requestBody != null)
             {
-                OpenMetadataClient handler = instanceHandler.getOpenMetadataStoreClient(userId, serverName, methodName);
+                OpenMetadataClient handler = instanceHandler.getOpenMetadataStoreClient(userId, serverName, urlMarker, methodName);
 
                 handler.confirmSynchronization(userId,
                                                openMetadataElementGUID,
@@ -1982,6 +1413,7 @@ public class AutomatedCurationRESTServices extends TokenController
      * Retrieve the external identifiers for a particular metadata element.
      *
      * @param serverName name of the service to route the request to.
+     * @param urlMarker  view service URL marker
      * @param openMetadataElementGUID unique identifier (GUID) of this element in open metadata
      * @param openMetadataElementTypeName type name for the open metadata element
      * @param startFrom paging start point
@@ -1996,6 +1428,7 @@ public class AutomatedCurationRESTServices extends TokenController
      * PropertyServerException    problem accessing the property server
      */
     public MetadataCorrelationHeadersResponse getExternalIdentifiers(String                        serverName,
+                                                                     String                urlMarker,
                                                                      String                        openMetadataElementGUID,
                                                                      String                        openMetadataElementTypeName,
                                                                      int                           startFrom,
@@ -2021,7 +1454,7 @@ public class AutomatedCurationRESTServices extends TokenController
 
             if (requestBody != null)
             {
-                OpenMetadataClient handler = instanceHandler.getOpenMetadataStoreClient(userId, serverName, methodName);
+                OpenMetadataClient handler = instanceHandler.getOpenMetadataStoreClient(userId, serverName, urlMarker, methodName);
 
                 response.setElementList(handler.getExternalIdentifiers(userId,
                                                                        requestBody.getExternalScopeGUID(),
@@ -2068,6 +1501,7 @@ public class AutomatedCurationRESTServices extends TokenController
      * Typically, the qualified name comes from the integration connector configuration.
      *
      * @param serverName name of the service to route the request to.
+     * @param urlMarker  view service URL marker
      * @param startFrom paging start point
      * @param pageSize maximum results that can be returned
      * @param forLineage return elements marked with the Memento classification?
@@ -2080,6 +1514,7 @@ public class AutomatedCurationRESTServices extends TokenController
      * PropertyServerException    problem accessing the property server
      */
     public ElementHeadersResponse getElementsForExternalIdentifier(String                               serverName,
+                                                                   String                urlMarker,
                                                                    int                                  startFrom,
                                                                    int                                  pageSize,
                                                                    boolean                              forLineage,
@@ -2103,7 +1538,7 @@ public class AutomatedCurationRESTServices extends TokenController
 
             if ((requestBody != null) && (requestBody.getMetadataCorrelationProperties() != null))
             {
-                OpenMetadataClient handler = instanceHandler.getOpenMetadataStoreClient(userId, serverName, methodName);
+                OpenMetadataClient handler = instanceHandler.getOpenMetadataStoreClient(userId, serverName, urlMarker, methodName);
 
                 response.setElementHeaders(handler.getElementsForExternalIdentifier(userId,
                                                                                     requestBody.getMetadataCorrelationProperties().getExternalScopeGUID(),

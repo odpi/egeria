@@ -2886,62 +2886,6 @@ public class StewardshipManagementHandler extends OpenMetadataHandlerBase
     }
 
 
-    /**
-     * Retrieve related elements of the requested type name.
-     *
-     * @param userId calling user
-     * @param elementGUID unique identifier of the starting end
-     * @param startingAtEnd indicates which end to retrieve from (0 is "either end"; 1 is end1; 2 is end 2)
-     * @param relationshipTypeName name of relationship
-     * @param findProperties  open metadata type to search on
-     *
-     * @return list of related elements
-     * @throws InvalidParameterException  one of the parameters is invalid
-     * @throws UserNotAuthorizedException the user is not authorized to issue this request
-     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
-     */
-    public List<RelatedMetadataElementSummary> getRelatedElements(String             userId,
-                                                                  String             elementGUID,
-                                                                  String             relationshipTypeName,
-                                                                  int                startingAtEnd,
-                                                                  FindProperties     findProperties) throws InvalidParameterException,
-                                                                                                            UserNotAuthorizedException,
-                                                                                                            PropertyServerException
-    {
-        final String methodName = "getRelatedElements";
-
-        RelatedMetadataElementList relatedMetadataElements = openMetadataClient.getRelatedMetadataElements(userId,
-                                                                                                           elementGUID,
-                                                                                                           startingAtEnd,
-                                                                                                           relationshipTypeName,
-                                                                                                           findProperties);
-
-        if ((relatedMetadataElements != null) && (relatedMetadataElements.getElementList() != null))
-        {
-            List<RelatedMetadataElementSummary> results = new ArrayList<>();
-
-            for (RelatedMetadataElement relatedMetadataElement : relatedMetadataElements.getElementList())
-            {
-                if (relatedMetadataElement != null)
-                {
-                    if ((findProperties == null) ||
-                            (findProperties.getOpenMetadataTypeName() == null) ||
-                            (findProperties.getOpenMetadataTypeName().equals(relatedMetadataElement.getElement().getType().getTypeName())))
-                    {
-                        results.add(relatedMetadataElementSummaryConverter.getNewBean(RelatedMetadataElementSummary.class,
-                                                                                      relatedMetadataElement,
-                                                                                      methodName));
-                    }
-                }
-            }
-
-            return results;
-        }
-
-        return null;
-    }
-
-
 
     /**
      * Retrieve relationships of the requested relationship type name.

@@ -10,19 +10,15 @@ import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.security.SecurityScheme;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.odpi.openmetadata.commonservices.ffdc.rest.*;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.processes.connectors.CatalogTargetProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.MetadataCorrelationProperties;
 import org.odpi.openmetadata.frameworkservices.gaf.rest.*;
-import org.odpi.openmetadata.frameworkservices.gaf.rest.CatalogTargetResponse;
-import org.odpi.openmetadata.frameworkservices.gaf.rest.CatalogTargetsResponse;
-import org.odpi.openmetadata.frameworkservices.omf.rest.MetadataCorrelationHeadersResponse;
 import org.odpi.openmetadata.frameworkservices.omf.rest.ExternalIdEffectiveTimeQueryRequestBody;
+import org.odpi.openmetadata.frameworkservices.omf.rest.MetadataCorrelationHeadersResponse;
 import org.odpi.openmetadata.frameworkservices.omf.rest.UpdateMetadataCorrelatorsRequestBody;
-import org.odpi.openmetadata.viewservices.automatedcuration.rest.TechnologyTypeElementListResponse;
 import org.odpi.openmetadata.viewservices.automatedcuration.rest.TechnologyTypeHierarchyResponse;
 import org.odpi.openmetadata.viewservices.automatedcuration.rest.TechnologyTypeReportResponse;
-import org.odpi.openmetadata.viewservices.automatedcuration.server.AutomatedCurationRESTServices;
 import org.odpi.openmetadata.viewservices.automatedcuration.rest.TechnologyTypeSummaryListResponse;
+import org.odpi.openmetadata.viewservices.automatedcuration.server.AutomatedCurationRESTServices;
 import org.springframework.web.bind.annotation.*;
 
 
@@ -31,7 +27,7 @@ import org.springframework.web.bind.annotation.*;
 = */
 
 @RestController
-@RequestMapping("/servers/{serverName}/api/open-metadata/automated-curation")
+@RequestMapping("/servers/{serverName}/api/open-metadata/{urlMarker}")
 @SecurityScheme(
         name = "BearerAuthorization",
         type = SecuritySchemeType.HTTP,
@@ -67,6 +63,7 @@ public class AutomatedCurationResource
      * Retrieve the list of deployed implementation type metadata elements that contain the search string.
      *
      * @param serverName name of the service to route the request to
+     * @param urlMarker  view service URL marker
      * @param requestBody string to find in the properties
      *
      * @return list of matching metadata elements or
@@ -83,10 +80,11 @@ public class AutomatedCurationResource
                     url="https://egeria-project.org/concepts/deployed-implementation-type"))
 
     public TechnologyTypeSummaryListResponse findTechnologyTypes(@PathVariable String        serverName,
+                                                                 @PathVariable String             urlMarker,
                                                                  @RequestBody  (required = false)
                                                                                SearchStringRequestBody requestBody)
     {
-        return restAPI.findTechnologyTypes(serverName, requestBody);
+        return restAPI.findTechnologyTypes(serverName, urlMarker, requestBody);
     }
 
 
@@ -94,6 +92,7 @@ public class AutomatedCurationResource
      * Retrieve the list of deployed implementation type metadata elements linked to a particular open metadata type.
      *
      * @param serverName name of the service to route the request to
+     * @param urlMarker  view service URL marker
      * @param typeName does the value start with the supplied string?
      *
      * @return list of matching metadata elements or
@@ -110,11 +109,12 @@ public class AutomatedCurationResource
                     url="https://egeria-project.org/types"))
 
     public TechnologyTypeSummaryListResponse getTechnologyTypesForOpenMetadataType(@PathVariable String serverName,
+                                                                                   @PathVariable String             urlMarker,
                                                                                    @PathVariable String typeName,
                                                                                    @RequestBody(required = false)
                                                                                        ResultsRequestBody requestBody)
     {
-        return restAPI.getTechnologyTypesForOpenMetadataType(serverName, typeName,  requestBody);
+        return restAPI.getTechnologyTypesForOpenMetadataType(serverName, urlMarker, typeName,  requestBody);
     }
 
 
@@ -122,6 +122,7 @@ public class AutomatedCurationResource
      * Retrieve the requested deployed implementation type metadata element. There are no wildcards allowed in the name.
      *
      * @param serverName name of the service to route the request to
+     * @param urlMarker  view service URL marker
      * @param requestBody string to find in the properties
      *
      * @return list of matching metadata elements or
@@ -138,9 +139,10 @@ public class AutomatedCurationResource
                     url="https://egeria-project.org/concepts/deployed-implementation-type"))
 
     public TechnologyTypeReportResponse getTechnologyTypeDetail(@PathVariable String            serverName,
-                                                                @RequestBody  FilterRequestBody requestBody)
+                                                                @PathVariable String             urlMarker,
+                                                                @RequestBody (required = false) FilterRequestBody requestBody)
     {
-        return restAPI.getTechnologyTypeDetail(serverName, requestBody);
+        return restAPI.getTechnologyTypeDetail(serverName, urlMarker, requestBody);
     }
 
 
@@ -148,6 +150,7 @@ public class AutomatedCurationResource
      * Retrieve the requested deployed implementation type metadata element and its subtypes.  A mermaid version if the hierarchy is also returned.
      *
      * @param serverName name of the service to route the request to
+     * @param urlMarker  view service URL marker
      * @param requestBody string to find in the properties
      *
      * @return list of matching metadata elements or
@@ -164,9 +167,11 @@ public class AutomatedCurationResource
                     url="https://egeria-project.org/concepts/deployed-implementation-type"))
 
     public TechnologyTypeHierarchyResponse getTechnologyTypeHierarchy(@PathVariable String            serverName,
-                                                                      @RequestBody  FilterRequestBody requestBody)
+                                                                      @PathVariable String             urlMarker,
+                                                                      @RequestBody (required = false)
+                                                                          FilterRequestBody requestBody)
     {
-        return restAPI.getTechnologyTypeHierarchy(serverName, requestBody);
+        return restAPI.getTechnologyTypeHierarchy(serverName, urlMarker, requestBody);
     }
 
 
@@ -174,6 +179,7 @@ public class AutomatedCurationResource
      * Retrieve the elements for the requested deployed implementation type. There are no wildcards allowed in the name.
      *
      * @param serverName name of the service to route the request to
+     * @param urlMarker  view service URL marker
      * @param requestBody the deployedImplementationType to search for
      *
      * @return list of matching metadata elements or
@@ -189,10 +195,11 @@ public class AutomatedCurationResource
             externalDocs=@ExternalDocumentation(description="Further Information",
                     url="https://egeria-project.org/concepts/deployed-implementation-type"))
 
-    public TechnologyTypeElementListResponse getTechnologyTypeElements(@PathVariable String            serverName,
+    public OpenMetadataRootElementsResponse getTechnologyTypeElements(@PathVariable String            serverName,
+                                                                      @PathVariable String            urlMarker,
                                                                       @RequestBody (required = false) FilterRequestBody requestBody)
     {
-        return restAPI.getTechnologyTypeElements(serverName, requestBody);
+        return restAPI.getTechnologyTypeElements(serverName, urlMarker, requestBody);
     }
 
 
@@ -205,6 +212,7 @@ public class AutomatedCurationResource
      * Create a new element from a template.
      *
      * @param serverName name of the service to route the request to
+     * @param urlMarker  view service URL marker
      * @param requestBody information about the template
      *
      * @return list of matching metadata elements or
@@ -214,368 +222,20 @@ public class AutomatedCurationResource
      */
     @PostMapping(path = "/catalog-templates/new-element")
     @SecurityRequirement(name = "BearerAuthorization")
-
     @Operation(summary="createElementFromTemplate",
             description="Create a new element from a template.",
             externalDocs=@ExternalDocumentation(description="Further Information",
                     url="https://egeria-project.org/features/templated-cataloguing/overview/"))
 
     public GUIDResponse createElementFromTemplate(@PathVariable String              serverName,
+                                                  @PathVariable String             urlMarker,
                                                   @RequestBody  TemplateRequestBody requestBody)
     {
-        return restAPI.createElementFromTemplate(serverName, requestBody);
+        return restAPI.createElementFromTemplate(serverName, urlMarker, requestBody);
     }
 
 
 
-    /* =====================================================================================================================
-     * A catalog target links an element (typically an asset, to an integration connector for processing.
-     */
-
-    /**
-     * Add a catalog target to an integration connector.
-     *
-     * @param serverName name of the service to route the request to.
-     * @param integrationConnectorGUID unique identifier of the integration service.
-     * @param metadataElementGUID unique identifier of the metadata element that is a catalog target.
-     * @param requestBody properties for the relationship.
-     *
-     * @return guid or
-     * InvalidParameterException one of the parameters is null or invalid or
-     * UserNotAuthorizedException user not authorized to issue this request or
-     * PropertyServerException problem storing the catalog target definition.
-     */
-    @PostMapping(path = "/integration-connectors/{integrationConnectorGUID}/catalog-targets/{metadataElementGUID}")
-    @SecurityRequirement(name = "BearerAuthorization")
-
-    @Operation(summary="addCatalogTarget",
-            description="Add a catalog target to an integration connector.",
-            externalDocs=@ExternalDocumentation(description="Further Information",
-                    url="https://egeria-project.org/concepts/integration-connector/"))
-
-    public GUIDResponse addCatalogTarget(@PathVariable String                  serverName,
-                                         @PathVariable String                  integrationConnectorGUID,
-                                         @PathVariable String                  metadataElementGUID,
-                                         @RequestBody  CatalogTargetProperties requestBody)
-    {
-        return restAPI.addCatalogTarget(serverName, integrationConnectorGUID, metadataElementGUID, requestBody);
-    }
-
-
-
-    /**
-     * Update a catalog target for an integration connector.
-     *
-     * @param serverName name of the service to route the request to.
-     * @param relationshipGUID unique identifier of the integration service.* @param requestBody properties for the relationship.
-     *
-     * @return void or
-     * InvalidParameterException one of the parameters is null or invalid or
-     * UserNotAuthorizedException user not authorized to issue this request or
-     * PropertyServerException problem storing the catalog target definition.
-     */
-    @PostMapping(path = "/catalog-targets/{relationshipGUID}/update")
-    @SecurityRequirement(name = "BearerAuthorization")
-
-    @Operation(summary="updateCatalogTarget",
-            description="Update a catalog target for an integration connector.",
-            externalDocs=@ExternalDocumentation(description="Further Information",
-                    url="https://egeria-project.org/concepts/integration-connector/"))
-
-    public VoidResponse updateCatalogTarget(@PathVariable String                  serverName,
-                                            @PathVariable String                  relationshipGUID,
-                                            @RequestBody  CatalogTargetProperties requestBody)
-    {
-        return restAPI.updateCatalogTarget(serverName, relationshipGUID, requestBody);
-    }
-
-
-    /**
-     * Retrieve a specific catalog target associated with an integration connector.
-     *
-     * @param serverName name of the service to route the request to.
-     * @param relationshipGUID unique identifier of the relationship.
-     *
-     * @return details of the governance service and the asset types it is registered for or
-     * InvalidParameterException one of the parameters is null or invalid or
-     * UserNotAuthorizedException user not authorized to issue this request or
-     * PropertyServerException problem storing the integration connector definition.
-     */
-    @GetMapping(path = "/catalog-targets/{relationshipGUID}")
-    @SecurityRequirement(name = "BearerAuthorization")
-
-    @Operation(summary="getCatalogTarget",
-            description="Retrieve a specific catalog target associated with an integration connector.",
-            externalDocs=@ExternalDocumentation(description="Further Information",
-                    url="https://egeria-project.org/concepts/integration-connector/"))
-
-    public CatalogTargetResponse getCatalogTarget(@PathVariable String serverName,
-                                                  @PathVariable String relationshipGUID)
-    {
-        return restAPI.getCatalogTarget(serverName, relationshipGUID);
-    }
-
-
-    /**
-     * Retrieve the details of the metadata elements identified as catalog targets with an integration connector.
-     *
-     * @param serverName name of the service to route the request to.
-     * @param integrationConnectorGUID unique identifier of the integration connector.
-     * @param startFrom paging start point
-     * @param pageSize maximum results that can be returned
-     *
-     * @return list of unique identifiers or
-     * InvalidParameterException one of the parameters is null or invalid or
-     * UserNotAuthorizedException user not authorized to issue this request or
-     * PropertyServerException problem storing the integration connector definition.
-     */
-    @GetMapping(path = "/integration-connectors/{integrationConnectorGUID}/catalog-targets")
-    @SecurityRequirement(name = "BearerAuthorization")
-
-    @Operation(summary="getCatalogTargets",
-            description="Retrieve the details of the metadata elements identified as catalog targets with an integration connector.",
-            externalDocs=@ExternalDocumentation(description="Further Information",
-                    url="https://egeria-project.org/concepts/integration-connector/"))
-
-    public CatalogTargetsResponse getCatalogTargets(@PathVariable String serverName,
-                                                    @PathVariable String integrationConnectorGUID,
-                                                    @RequestParam(required = false, defaultValue = "0") int    startFrom,
-                                                    @RequestParam(required = false, defaultValue = "0") int    pageSize)
-    {
-        return restAPI.getCatalogTargets(serverName, integrationConnectorGUID, startFrom, pageSize);
-    }
-
-
-    /**
-     * Unregister a catalog target from the integration connector.
-     *
-     * @param serverName name of the service to route the request to.
-     * @param relationshipGUID unique identifier of the relationship.
-     * @param requestBody null request body.
-     *
-     * @return void or
-     * InvalidParameterException one of the parameters is null or invalid or
-     * UserNotAuthorizedException user not authorized to issue this request or
-     * PropertyServerException problem storing the integration connector definition.
-     */
-    @PostMapping(path = "/catalog-targets/{relationshipGUID}/remove")
-    @SecurityRequirement(name = "BearerAuthorization")
-
-    @Operation(summary="removeCatalogTarget",
-            description="Unregister a catalog target from the integration connector.",
-            externalDocs=@ExternalDocumentation(description="Further Information",
-                    url="https://egeria-project.org/concepts/integration-connector/"))
-
-    public VoidResponse removeCatalogTarget(@PathVariable String           serverName,
-                                            @PathVariable String           relationshipGUID,
-                                            @RequestBody(required = false)
-                                                          NullRequestBody requestBody)
-    {
-        return restAPI.removeCatalogTarget(serverName, relationshipGUID, requestBody);
-    }
-
-
-    /* =====================================================================================================================
-     * A governance action type describes a template to invoke a governance service in a governance engine.
-     */
-
-
-    /**
-     * Retrieve the list of governance action type metadata elements that contain the search string.
-     *
-     * @param serverName name of the service to route the request to
-     * @param requestBody string to find in the properties
-     *
-     * @return list of matching metadata elements or
-     *  InvalidParameterException  one of the parameters is invalid
-     *  UserNotAuthorizedException the user is not authorized to issue this request
-     *  PropertyServerException    there is a problem reported in the open metadata server(s)
-     */
-    @PostMapping(path = "/governance-action-types/by-search-string")
-    @SecurityRequirement(name = "BearerAuthorization")
-
-    @Operation(summary="findGovernanceActionTypes",
-            description="Retrieve the list of governance action type metadata elements that contain the search string.",
-            externalDocs=@ExternalDocumentation(description="Further Information",
-                    url="https://egeria-project.org/concepts/governance-action-type"))
-
-    public GovernanceActionTypesResponse findGovernanceActionTypes(@PathVariable String                  serverName,
-                                                                   @RequestBody  (required = false)
-                                                                   SearchStringRequestBody       requestBody)
-    {
-        return restAPI.findGovernanceActionTypes(serverName, requestBody);
-    }
-
-
-    /**
-     * Retrieve the list of governance action type metadata elements with a matching qualified or display name.
-     * There are no wildcards supported on this request.
-     *
-     * @param serverName name of the service to route the request to
-     * @param requestBody name to search for
-     *
-     * @return list of matching metadata elements or
-     *  InvalidParameterException  one of the parameters is invalid
-     *  UserNotAuthorizedException the user is not authorized to issue this request
-     *  PropertyServerException    there is a problem reported in the open metadata server(s)
-     */
-    @PostMapping(path = "/governance-action-types/by-name")
-    @SecurityRequirement(name = "BearerAuthorization")
-
-    @Operation(summary="getGovernanceActionTypesByName",
-            description="Retrieve the list of governance action type metadata elements with a matching qualified or display name. There are no wildcards supported on this request.",
-            externalDocs=@ExternalDocumentation(description="Further Information",
-                    url="https://egeria-project.org/concepts/governance-action-type"))
-
-    public GovernanceActionTypesResponse getGovernanceActionTypesByName(@PathVariable String            serverName,
-                                                                        @RequestBody  FilterRequestBody requestBody)
-    {
-        return restAPI.getGovernanceActionTypesByName(serverName, requestBody);
-    }
-
-
-    /**
-     * Retrieve the governance action type metadata element with the supplied unique identifier.
-     *
-     * @param serverName name of the service to route the request to
-     * @param governanceActionTypeGUID unique identifier of the governance action type
-     *
-     * @return requested metadata element or
-     *  InvalidParameterException  one of the parameters is invalid
-     *  UserNotAuthorizedException the user is not authorized to issue this request
-     *  PropertyServerException    there is a problem reported in the open metadata server(s)
-     */
-    @GetMapping(path = "/governance-action-types/{governanceActionTypeGUID}")
-    @SecurityRequirement(name = "BearerAuthorization")
-
-    @Operation(summary="getGovernanceActionTypeByGUID",
-            description="Retrieve the governance action type metadata element with the supplied unique identifier.",
-            externalDocs=@ExternalDocumentation(description="Further Information",
-                    url="https://egeria-project.org/concepts/governance-action-type"))
-
-    public GovernanceActionTypeResponse getGovernanceActionTypeByGUID(@PathVariable String serverName,
-                                                                      @PathVariable String governanceActionTypeGUID)
-    {
-        return restAPI.getGovernanceActionTypeByGUID(serverName, governanceActionTypeGUID);
-    }
-
-
-    /* =====================================================================================================================
-     * A governance action process describes a well-defined series of steps that gets something done.
-     * The steps are defined using GovernanceActionTypes.
-     */
-
-
-    /**
-     * Retrieve the list of governance action process metadata elements that contain the search string.
-     *
-     * @param serverName name of the service to route the request to
-     * @param requestBody string to find in the properties
-     *
-     * @return list of matching metadata elements or
-     *  InvalidParameterException  one of the parameters is invalid
-     *  UserNotAuthorizedException the user is not authorized to issue this request
-     *  PropertyServerException    there is a problem reported in the open metadata server(s)
-     */
-    @PostMapping(path = "/governance-action-processes/by-search-string")
-    @SecurityRequirement(name = "BearerAuthorization")
-
-    @Operation(summary="findGovernanceActionProcesses",
-            description="Retrieve the list of governance action process metadata elements that contain the search string.",
-            externalDocs=@ExternalDocumentation(description="Further Information",
-                    url="https://egeria-project.org/concepts/governance-action-process"))
-
-    public GovernanceActionProcessElementsResponse findGovernanceActionProcesses(@PathVariable String                  serverName,
-                                                                                 @RequestBody  (required = false)
-                                                                                               SearchStringRequestBody       requestBody)
-    {
-        return restAPI.findGovernanceActionProcesses(serverName, requestBody);
-    }
-
-
-
-    /**
-     * Retrieve the list of governance action process metadata elements with a matching qualified or display name.
-     * There are no wildcards supported on this request.
-     *
-     * @param serverName name of the service to route the request to
-     * @param requestBody name to search for
-     *
-     * @return list of matching metadata elements or
-     *  InvalidParameterException  one of the parameters is invalid
-     *  UserNotAuthorizedException the user is not authorized to issue this request
-     *  PropertyServerException    there is a problem reported in the open metadata server(s)
-     */
-    @PostMapping(path = "/governance-action-processes/by-name")
-    @SecurityRequirement(name = "BearerAuthorization")
-
-    @Operation(summary="getGovernanceActionProcessesByName",
-            description="Retrieve the list of governance action process metadata elements with a matching qualified or display name. There are no wildcards supported on this request.",
-            externalDocs=@ExternalDocumentation(description="Further Information",
-                    url="https://egeria-project.org/concepts/governance-action-process"))
-
-    public GovernanceActionProcessElementsResponse getGovernanceActionProcessesByName(@PathVariable String          serverName,
-                                                                                      @RequestBody  FilterRequestBody requestBody)
-    {
-        return restAPI.getGovernanceActionProcessesByName(serverName, requestBody);
-    }
-
-
-    /**
-     * Retrieve the governance action process metadata element with the supplied unique identifier.
-     *
-     * @param serverName name of the service to route the request to
-     * @param processGUID unique identifier of the requested metadata element
-     *
-     * @return requested metadata element or
-     *  InvalidParameterException  one of the parameters is invalid
-     *  UserNotAuthorizedException the user is not authorized to issue this request
-     *  PropertyServerException    there is a problem reported in the open metadata server(s)
-     */
-    @GetMapping(path = "/governance-action-processes/{processGUID}")
-    @SecurityRequirement(name = "BearerAuthorization")
-
-    @Operation(summary="getGovernanceActionProcessByGUID",
-            description="Retrieve the governance action process metadata element with the supplied unique identifier.",
-            externalDocs=@ExternalDocumentation(description="Further Information",
-                    url="https://egeria-project.org/concepts/governance-action-process"))
-
-    public GovernanceActionProcessElementResponse getGovernanceActionProcessByGUID(@PathVariable String serverName,
-                                                                                   @PathVariable String processGUID)
-    {
-        return restAPI.getGovernanceActionProcessByGUID(serverName, processGUID);
-    }
-
-
-    /**
-     * Retrieve the governance action process metadata element with the supplied unique identifier
-     * along with the flow definition describing its implementation.
-     *
-     * @param serverName name of the service to route the request to
-     * @param processGUID unique identifier of the requested metadata element
-     * @param requestBody effective time
-     *
-     * @return requested metadata element or
-     *  InvalidParameterException  one of the parameters is invalid
-     *  UserNotAuthorizedException the user is not authorized to issue this request
-     *  PropertyServerException    there is a problem reported in the open metadata server(s)
-     */
-    @PostMapping(path = "/governance-action-processes/{processGUID}/graph")
-    @SecurityRequirement(name = "BearerAuthorization")
-
-    @Operation(summary="getGovernanceActionProcessGraph",
-            description="Retrieve the governance action process metadata element with the supplied " +
-                    "unique identifier along with the flow definition describing its implementation.",
-            externalDocs=@ExternalDocumentation(description="Further Information",
-                    url="https://egeria-project.org/concepts/governance-action-process"))
-
-    public GovernanceActionProcessGraphResponse getGovernanceActionProcessGraph(@PathVariable String                   serverName,
-                                                                                @PathVariable String                   processGUID,
-                                                                                @RequestBody(required = false)
-                                                                                    ResultsRequestBody requestBody)
-    {
-        return restAPI.getGovernanceActionProcessGraph(serverName, processGUID, requestBody);
-    }
 
     /* =====================================================================================================================
      * Execute governance actions
@@ -587,6 +247,7 @@ public class AutomatedCurationResource
      * of the actions taken for auditing.
      *
      * @param serverName     name of server instance to route request to
+     * @param urlMarker  view service URL marker
      * @param governanceEngineName name of the governance engine that should execute the request
      * @param requestBody properties for the engine action and to pass to the governance service
      *
@@ -604,10 +265,11 @@ public class AutomatedCurationResource
                     url="https://egeria-project.org/concepts/engine-action"))
 
     public GUIDResponse initiateEngineAction(@PathVariable String                          serverName,
+                                             @PathVariable String             urlMarker,
                                              @PathVariable String                          governanceEngineName,
                                              @RequestBody  InitiateEngineActionRequestBody requestBody)
     {
-        return restAPI.initiateEngineAction(serverName, governanceEngineName, requestBody);
+        return restAPI.initiateEngineAction(serverName, urlMarker, governanceEngineName, requestBody);
     }
 
 
@@ -615,6 +277,7 @@ public class AutomatedCurationResource
      * Using the named governance action process as a template, initiate a chain of engine actions.
      *
      * @param serverName     name of server instance to route request to
+     * @param urlMarker  view service URL marker
      * @param requestBody properties to initiate the new instance of the engine action
      *
      * @return unique identifier of the first engine action of the process or
@@ -631,9 +294,10 @@ public class AutomatedCurationResource
                     url="https://egeria-project.org/concepts/governance-action-type"))
 
     public GUIDResponse initiateGovernanceActionType(@PathVariable String                          serverName,
+                                                     @PathVariable String             urlMarker,
                                                      @RequestBody InitiateGovernanceActionTypeRequestBody requestBody)
     {
-        return restAPI.initiateGovernanceActionType(serverName, requestBody);
+        return restAPI.initiateGovernanceActionType(serverName, urlMarker, requestBody);
     }
 
 
@@ -641,6 +305,7 @@ public class AutomatedCurationResource
      * Using the named governance action process as a template, initiate a chain of engine actions.
      *
      * @param serverName     name of server instance to route request to
+     * @param urlMarker  view service URL marker
      * @param requestBody properties to initiate the new instance of the process
      *
      * @return unique identifier of the governance action process instance or
@@ -657,9 +322,10 @@ public class AutomatedCurationResource
                     url="https://egeria-project.org/concepts/governance-action-process"))
 
     public GUIDResponse initiateGovernanceActionProcess(@PathVariable String                             serverName,
+                                                        @PathVariable String             urlMarker,
                                                         @RequestBody InitiateGovernanceActionProcessRequestBody requestBody)
     {
-        return restAPI.initiateGovernanceActionProcess(serverName, requestBody);
+        return restAPI.initiateGovernanceActionProcess(serverName, urlMarker, requestBody);
     }
 
 
@@ -667,6 +333,7 @@ public class AutomatedCurationResource
      * Request the status and properties of an executing engine action request.
      *
      * @param serverName     name of server instance to route request to
+     * @param urlMarker  view service URL marker
      * @param engineActionGUID identifier of the engine action request.
      *
      * @return engine action properties and status or
@@ -683,9 +350,10 @@ public class AutomatedCurationResource
                     url="https://egeria-project.org/concepts/engine-action"))
 
     public EngineActionElementResponse getEngineAction(@PathVariable String serverName,
+                                                       @PathVariable String             urlMarker,
                                                        @PathVariable String engineActionGUID)
     {
-        return restAPI.getEngineAction(serverName, engineActionGUID);
+        return restAPI.getEngineAction(serverName, urlMarker, engineActionGUID);
     }
 
 
@@ -694,6 +362,7 @@ public class AutomatedCurationResource
      * Request that an engine action request is cancelled and any running governance service is stopped.
      *
      * @param serverName     name of server instance to route request to
+     * @param urlMarker  view service URL marker
      * @param engineActionGUID identifier of the engine action request.
      *
      * @return engine action properties and status or
@@ -710,9 +379,10 @@ public class AutomatedCurationResource
                     url="https://egeria-project.org/concepts/engine-action"))
 
     public VoidResponse cancelEngineAction(@PathVariable String serverName,
+                                           @PathVariable String             urlMarker,
                                            @PathVariable String engineActionGUID)
     {
-        return restAPI.cancelEngineAction(serverName, engineActionGUID);
+        return restAPI.cancelEngineAction(serverName, urlMarker, engineActionGUID);
     }
 
 
@@ -720,6 +390,7 @@ public class AutomatedCurationResource
      * Retrieve the engine actions that are known to the server.
      *
      * @param serverName     name of server instance to route request to
+     * @param urlMarker  view service URL marker
      * @param startFrom starting from element
      * @param pageSize maximum elements to return
      *
@@ -737,10 +408,11 @@ public class AutomatedCurationResource
                     url="https://egeria-project.org/concepts/engine-action"))
 
     public EngineActionElementsResponse getEngineActions(@PathVariable String serverName,
+                                                         @PathVariable String             urlMarker,
                                                          @RequestParam(required = false, defaultValue = "0") int    startFrom,
                                                          @RequestParam(required = false, defaultValue = "0") int    pageSize)
     {
-        return restAPI.getEngineActions(serverName, startFrom, pageSize);
+        return restAPI.getEngineActions(serverName, urlMarker, startFrom, pageSize);
     }
 
 
@@ -748,6 +420,7 @@ public class AutomatedCurationResource
      * Retrieve the engine actions that are still in process.
      *
      * @param serverName     name of server instance to route request to
+     * @param urlMarker  view service URL marker
      * @param startFrom starting from element
      * @param pageSize maximum elements to return
      *
@@ -765,10 +438,11 @@ public class AutomatedCurationResource
                     url="https://egeria-project.org/concepts/engine-action"))
 
     public EngineActionElementsResponse getActiveEngineActions(@PathVariable String serverName,
+                                                               @PathVariable String             urlMarker,
                                                                @RequestParam(required = false, defaultValue = "0") int    startFrom,
                                                                @RequestParam(required = false, defaultValue = "0") int    pageSize)
     {
-        return restAPI.getActiveEngineActions(serverName, startFrom, pageSize);
+        return restAPI.getActiveEngineActions(serverName, urlMarker, startFrom, pageSize);
     }
 
 
@@ -776,6 +450,7 @@ public class AutomatedCurationResource
      * Retrieve the list of engine action metadata elements that contain the search string.
      *
      * @param serverName name of the service to route the request to
+     * @param urlMarker  view service URL marker
      * @param requestBody string to find in the properties
      *
      * @return list of matching metadata elements or
@@ -792,10 +467,11 @@ public class AutomatedCurationResource
                     url="https://egeria-project.org/concepts/engine-action"))
 
     public EngineActionElementsResponse findEngineActions(@PathVariable String                  serverName,
+                                                          @PathVariable String             urlMarker,
                                                           @RequestBody  (required = false)
                                                                         SearchStringRequestBody       requestBody)
     {
-        return restAPI.findEngineActions(serverName,  requestBody);
+        return restAPI.findEngineActions(serverName, urlMarker,  requestBody);
     }
 
 
@@ -804,6 +480,7 @@ public class AutomatedCurationResource
      * There are no wildcards supported on this request.
      *
      * @param serverName name of the service to route the request to
+     * @param urlMarker  view service URL marker
      * @param requestBody name to search for
      *
      * @return list of matching metadata elements or
@@ -820,9 +497,10 @@ public class AutomatedCurationResource
                     url="https://egeria-project.org/concepts/engine-action"))
 
     public EngineActionElementsResponse getEngineActionsByName(@PathVariable String            serverName,
+                                                               @PathVariable String             urlMarker,
                                                                @RequestBody  FilterRequestBody requestBody)
     {
-        return restAPI.getEngineActionsByName(serverName, requestBody);
+        return restAPI.getEngineActionsByName(serverName, urlMarker, requestBody);
     }
 
 
@@ -835,6 +513,7 @@ public class AutomatedCurationResource
      * Add the description of a specific external identifier and link it to the associated metadata element.  Note, the external identifier is anchored to the scope.
      *
      * @param serverName name of the service to route the request to.
+     * @param urlMarker  view service URL marker
      * @param openMetadataElementGUID unique identifier (GUID) of the element in the open metadata ecosystem
      * @param openMetadataElementTypeName type name of the element in the open metadata ecosystem (default referenceable)
      * @param requestBody unique identifier of this element in the external asset manager plus additional mapping properties
@@ -853,6 +532,7 @@ public class AutomatedCurationResource
                     url = "https://egeria-project.org/types/0/0017-External-Identifiers/"))
 
     public VoidResponse addExternalIdentifier(@PathVariable String                               serverName,
+                                              @PathVariable String             urlMarker,
                                               @PathVariable String                               openMetadataElementGUID,
                                               @PathVariable String                               openMetadataElementTypeName,
                                               @RequestParam (required = false, defaultValue = "false")
@@ -861,7 +541,7 @@ public class AutomatedCurationResource
                                               boolean                              forDuplicateProcessing,
                                               @RequestBody  UpdateMetadataCorrelatorsRequestBody requestBody)
     {
-        return restAPI.addExternalIdentifier(serverName, openMetadataElementGUID, openMetadataElementTypeName, forLineage, forDuplicateProcessing, requestBody);
+        return restAPI.addExternalIdentifier(serverName, urlMarker, openMetadataElementGUID, openMetadataElementTypeName, forLineage, forDuplicateProcessing, requestBody);
     }
 
 
@@ -869,6 +549,7 @@ public class AutomatedCurationResource
      * Update the description of a specific external identifier.
      *
      * @param serverName name of the service to route the request to.
+     * @param urlMarker  view service URL marker
      * @param openMetadataElementGUID unique identifier (GUID) of the element in the open metadata ecosystem
      * @param openMetadataElementTypeName type name of the element in the open metadata ecosystem (default referenceable)
      * @param requestBody unique identifier of this element in the external asset manager plus additional mapping properties
@@ -887,6 +568,7 @@ public class AutomatedCurationResource
                     url = "https://egeria-project.org/types/0/0017-External-Identifiers/"))
 
     public VoidResponse updateExternalIdentifier(@PathVariable String                               serverName,
+                                                 @PathVariable String             urlMarker,
                                                  @PathVariable String                               openMetadataElementGUID,
                                                  @PathVariable String                               openMetadataElementTypeName,
                                                  @RequestParam (required = false, defaultValue = "false")
@@ -895,7 +577,7 @@ public class AutomatedCurationResource
                                                  boolean                              forDuplicateProcessing,
                                                  @RequestBody  UpdateMetadataCorrelatorsRequestBody requestBody)
     {
-        return restAPI.updateExternalIdentifier(serverName, openMetadataElementGUID, openMetadataElementTypeName, forLineage, forDuplicateProcessing, requestBody);
+        return restAPI.updateExternalIdentifier(serverName, urlMarker, openMetadataElementGUID, openMetadataElementTypeName, forLineage, forDuplicateProcessing, requestBody);
     }
 
 
@@ -903,6 +585,7 @@ public class AutomatedCurationResource
      * Validate that the external identifier is linked to the open metadata GUID.
      *
      * @param serverName name of the service to route the request to.
+     * @param urlMarker  view service URL marker
      * @param openMetadataElementGUID unique identifier (GUID) of the element in the open metadata ecosystem
      * @param openMetadataElementTypeName type name of the element in the open metadata ecosystem (default referenceable)
      * @param requestBody unique identifier of this element in the external asset manager plus additional mapping properties
@@ -921,6 +604,7 @@ public class AutomatedCurationResource
                     url = "https://egeria-project.org/types/0/0017-External-Identifiers/"))
 
     public BooleanResponse validateExternalIdentifier(@PathVariable String                               serverName,
+                                                      @PathVariable String             urlMarker,
                                                       @PathVariable String                               openMetadataElementGUID,
                                                       @PathVariable String                               openMetadataElementTypeName,
                                                       @RequestParam (required = false, defaultValue = "false")
@@ -929,7 +613,7 @@ public class AutomatedCurationResource
                                                       boolean                              forDuplicateProcessing,
                                                       @RequestBody  UpdateMetadataCorrelatorsRequestBody requestBody)
     {
-        return restAPI.validateExternalIdentifier(serverName, openMetadataElementGUID, openMetadataElementTypeName, forLineage, forDuplicateProcessing, requestBody);
+        return restAPI.validateExternalIdentifier(serverName, urlMarker, openMetadataElementGUID, openMetadataElementTypeName, forLineage, forDuplicateProcessing, requestBody);
     }
 
 
@@ -937,6 +621,7 @@ public class AutomatedCurationResource
      * Remove an external identifier from an existing open metadata element.  The open metadata element is not affected.
      *
      * @param serverName name of the service to route the request to.
+     * @param urlMarker  view service URL marker
      * @param openMetadataElementGUID unique identifier (GUID) of the element in the open metadata ecosystem
      * @param openMetadataElementTypeName type name of the element in the open metadata ecosystem (default referenceable)
      * @param forLineage return elements marked with the Memento classification?
@@ -957,6 +642,7 @@ public class AutomatedCurationResource
                     url = "https://egeria-project.org/types/0/0017-External-Identifiers/"))
 
     public VoidResponse removeExternalIdentifier(@PathVariable String                               serverName,
+                                                 @PathVariable String             urlMarker,
                                                  @PathVariable String                               openMetadataElementGUID,
                                                  @PathVariable String                               openMetadataElementTypeName,
                                                  @RequestParam (required = false, defaultValue = "false")
@@ -965,7 +651,7 @@ public class AutomatedCurationResource
                                                  boolean                              forDuplicateProcessing,
                                                  @RequestBody  UpdateMetadataCorrelatorsRequestBody requestBody)
     {
-        return restAPI.removeExternalIdentifier(serverName, openMetadataElementGUID, openMetadataElementTypeName, forLineage, forDuplicateProcessing, requestBody);
+        return restAPI.removeExternalIdentifier(serverName, urlMarker, openMetadataElementGUID, openMetadataElementTypeName, forLineage, forDuplicateProcessing, requestBody);
     }
 
 
@@ -974,6 +660,7 @@ public class AutomatedCurationResource
      * The linked open metadata elements are not affected.
      *
      * @param serverName name of the service to route the request to.
+     * @param urlMarker  view service URL marker
      * @param externalScopeGUID unique identifier (GUID) of the scope element in the open metadata ecosystem
      * @param forLineage return elements marked with the Memento classification?
      * @param forDuplicateProcessing do not merge elements marked as duplicates?
@@ -993,6 +680,7 @@ public class AutomatedCurationResource
                     url = "https://egeria-project.org/types/0/0017-External-Identifiers/"))
 
     public VoidResponse removeExternalScope(@PathVariable String                   serverName,
+                                            @PathVariable String             urlMarker,
                                             @PathVariable String                   externalScopeGUID,
                                             @RequestParam (required = false, defaultValue = "false")
                                             boolean                  forLineage,
@@ -1001,7 +689,7 @@ public class AutomatedCurationResource
                                             @RequestBody  (required = false)
                                             EffectiveTimeRequestBody requestBody)
     {
-        return restAPI.removeExternalScope(serverName, externalScopeGUID, forLineage, forDuplicateProcessing, requestBody);
+        return restAPI.removeExternalScope(serverName, urlMarker, externalScopeGUID, forLineage, forDuplicateProcessing, requestBody);
     }
 
 
@@ -1010,6 +698,7 @@ public class AutomatedCurationResource
      * from an audit point of view, and to allow bidirectional updates of metadata using optimistic locking.
      *
      * @param serverName name of the service to route the request to.
+     * @param urlMarker  view service URL marker
      * @param openMetadataElementGUID unique identifier (GUID) of this element in open metadata
      * @param openMetadataElementTypeName type name for the open metadata element
      * @param requestBody details of the external identifier and its scope
@@ -1028,11 +717,12 @@ public class AutomatedCurationResource
                     url = "https://egeria-project.org/types/0/0017-External-Identifiers/"))
 
     public VoidResponse confirmSynchronization(@PathVariable String                        serverName,
+                                               @PathVariable String             urlMarker,
                                                @PathVariable String                        openMetadataElementGUID,
                                                @PathVariable String                        openMetadataElementTypeName,
                                                @RequestBody MetadataCorrelationProperties requestBody)
     {
-        return restAPI.confirmSynchronization(serverName, openMetadataElementGUID, openMetadataElementTypeName, requestBody);
+        return restAPI.confirmSynchronization(serverName, urlMarker, openMetadataElementGUID, openMetadataElementTypeName, requestBody);
     }
 
 
@@ -1040,6 +730,7 @@ public class AutomatedCurationResource
      * Retrieve the metadata element associated with a particular external identifier.
      *
      * @param serverName name of the service to route the request to.
+     * @param urlMarker  view service URL marker
      * @param startFrom paging start point
      * @param pageSize maximum results that can be returned
      * @param forLineage return elements marked with the Memento classification?
@@ -1060,6 +751,7 @@ public class AutomatedCurationResource
                     url = "https://egeria-project.org/types/0/0017-External-Identifiers/"))
 
     public ElementHeadersResponse getElementsForExternalIdentifier(@PathVariable String            serverName,
+                                                                   @PathVariable String             urlMarker,
                                                                    @RequestParam (required = false, defaultValue = "0")
                                                                    int               startFrom,
                                                                    @RequestParam (required = false, defaultValue = "0")
@@ -1070,7 +762,7 @@ public class AutomatedCurationResource
                                                                    boolean           forDuplicateProcessing,
                                                                    @RequestBody  UpdateMetadataCorrelatorsRequestBody requestBody)
     {
-        return restAPI.getElementsForExternalIdentifier(serverName, startFrom, pageSize, forLineage, forDuplicateProcessing, requestBody);
+        return restAPI.getElementsForExternalIdentifier(serverName, urlMarker, startFrom, pageSize, forLineage, forDuplicateProcessing, requestBody);
     }
 
 
@@ -1078,6 +770,7 @@ public class AutomatedCurationResource
      * Retrieve the external identifiers attached to the supplied element guid.
      *
      * @param serverName name of the server to route the request to
+     * @param urlMarker  view service URL marker
      * @param openMetadataElementGUID unique identifier of the requested metadata element
      * @param openMetadataElementTypeName type name for the open metadata element
      * @param startFrom paging start point
@@ -1100,6 +793,7 @@ public class AutomatedCurationResource
                     url = "https://egeria-project.org/types/0/0017-External-Identifiers/"))
 
     public MetadataCorrelationHeadersResponse getExternalIdentifiers(@PathVariable String                        serverName,
+                                                                     @PathVariable String             urlMarker,
                                                                      @PathVariable String                        openMetadataElementGUID,
                                                                      @PathVariable String                        openMetadataElementTypeName,
                                                                      @RequestParam (required = false, defaultValue = "0")
@@ -1113,6 +807,6 @@ public class AutomatedCurationResource
                                                                      @RequestBody  (required = false)
                                                                          ExternalIdEffectiveTimeQueryRequestBody requestBody)
     {
-        return restAPI.getExternalIdentifiers(serverName, openMetadataElementGUID, openMetadataElementTypeName, startFrom, pageSize, forLineage, forDuplicateProcessing, requestBody);
+        return restAPI.getExternalIdentifiers(serverName, urlMarker, openMetadataElementGUID, openMetadataElementTypeName, startFrom, pageSize, forLineage, forDuplicateProcessing, requestBody);
     }
 }

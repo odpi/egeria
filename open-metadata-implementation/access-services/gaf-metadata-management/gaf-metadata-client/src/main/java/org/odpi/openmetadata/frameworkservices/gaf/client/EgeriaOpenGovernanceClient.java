@@ -7,7 +7,7 @@ import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterExcept
 
 /**
  * EgeriaOpenGovernanceClient provides an interface to the services that build, monitor and trigger governance actions.
- * This is part of the Open Survey Framework (OGF).
+ * This is part of the Open Governance Framework (OGF).
  */
 public class EgeriaOpenGovernanceClient extends OpenGovernanceClientBase
 {

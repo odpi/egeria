@@ -4,13 +4,12 @@ package org.odpi.openmetadata.viewservices.automatedcuration.server;
 
 
 import org.odpi.openmetadata.adminservices.configuration.registration.ViewServiceDescription;
-import org.odpi.openmetadata.frameworks.opengovernance.client.OpenGovernanceClient;
-import org.odpi.openmetadata.frameworks.openmetadata.ffdc.PropertyServerException;
 import org.odpi.openmetadata.commonservices.multitenant.OMVSServiceInstanceHandler;
+import org.odpi.openmetadata.frameworks.opengovernance.client.OpenGovernanceClient;
+import org.odpi.openmetadata.frameworks.openmetadata.client.OpenMetadataClient;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
+import org.odpi.openmetadata.frameworks.openmetadata.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
-import org.odpi.openmetadata.frameworkservices.gaf.client.GovernanceConfigurationClient;
-import org.odpi.openmetadata.frameworkservices.oif.client.OpenIntegrationServiceClient;
 import org.odpi.openmetadata.frameworkservices.omf.client.EgeriaOpenMetadataStoreClient;
 import org.odpi.openmetadata.viewservices.automatedcuration.handlers.TechnologyTypeHandler;
 
@@ -37,6 +36,7 @@ public class AutomatedCurationInstanceHandler extends OMVSServiceInstanceHandler
      * This method returns the object for the tenant to use to work with the Asset Owner API.
      *
      * @param serverName           name of the server that the request is for
+     * @param urlMarker  view service URL marker
      * @param userId               local server userid
      * @param serviceOperationName service operation - usually the top level rest call
      * @return client
@@ -44,17 +44,18 @@ public class AutomatedCurationInstanceHandler extends OMVSServiceInstanceHandler
      * @throws UserNotAuthorizedException User not authorized to call this service
      * @throws PropertyServerException internal error
      */
-    public EgeriaOpenMetadataStoreClient getOpenMetadataStoreClient(String userId,
-                                                                    String serverName,
-                                                                    String serviceOperationName) throws InvalidParameterException,
-                                                                                                  PropertyServerException,
-                                                                                                  UserNotAuthorizedException
+    public OpenMetadataClient getOpenMetadataStoreClient(String userId,
+                                                         String serverName,
+                                                         String urlMarker,
+                                                         String serviceOperationName) throws InvalidParameterException,
+                                                                                             PropertyServerException,
+                                                                                             UserNotAuthorizedException
     {
         AutomatedCurationInstance instance = (AutomatedCurationInstance) getServerServiceInstance(userId, serverName, serviceOperationName);
 
         if (instance != null)
         {
-            return instance.getOpenMetadataStoreClient();
+            return instance.getOpenMetadataStoreClient(urlMarker, serviceOperationName);
         }
 
         return null;
@@ -66,6 +67,7 @@ public class AutomatedCurationInstanceHandler extends OMVSServiceInstanceHandler
      *
      * @param serverName           name of the server that the request is for
      * @param userId               local server userid
+     * @param urlMarker  view service URL marker
      * @param serviceOperationName service operation - usually the top level rest call
      * @return client
      * @throws InvalidParameterException unknown server/service
@@ -74,6 +76,7 @@ public class AutomatedCurationInstanceHandler extends OMVSServiceInstanceHandler
      */
     public TechnologyTypeHandler getTechnologyTypeHandler(String userId,
                                                           String serverName,
+                                                          String urlMarker,
                                                           String serviceOperationName) throws InvalidParameterException,
                                                                                                   PropertyServerException,
                                                                                                   UserNotAuthorizedException
@@ -82,7 +85,7 @@ public class AutomatedCurationInstanceHandler extends OMVSServiceInstanceHandler
 
         if (instance != null)
         {
-            return instance.getTechnologyTypeHandler();
+            return instance.getTechnologyTypeHandler(urlMarker, serviceOperationName);
         }
 
         return null;
@@ -94,6 +97,7 @@ public class AutomatedCurationInstanceHandler extends OMVSServiceInstanceHandler
      *
      * @param serverName           name of the server that the request is for
      * @param userId               local server userid
+     * @param urlMarker  view service URL marker
      * @param serviceOperationName service operation - usually the top level rest call
      * @return client
      * @throws InvalidParameterException unknown server/service
@@ -102,6 +106,7 @@ public class AutomatedCurationInstanceHandler extends OMVSServiceInstanceHandler
      */
     public OpenGovernanceClient getOpenGovernanceClient(String userId,
                                                         String serverName,
+                                                        String urlMarker,
                                                         String serviceOperationName) throws InvalidParameterException,
                                                                                             PropertyServerException,
                                                                                             UserNotAuthorizedException
@@ -110,65 +115,7 @@ public class AutomatedCurationInstanceHandler extends OMVSServiceInstanceHandler
 
         if (instance != null)
         {
-            return instance.getOpenGovernanceClient();
-        }
-
-        return null;
-    }
-
-
-    /**
-     * This method returns the object for the tenant to use to work with the Asset Owner API.
-     *
-     * @param serverName           name of the server that the request is for
-     * @param userId               local server userid
-     * @param serviceOperationName service operation - usually the top level rest call
-     * @return client
-     * @throws InvalidParameterException unknown server/service
-     * @throws UserNotAuthorizedException User not authorized to call this service
-     * @throws PropertyServerException internal error
-     */
-    public OpenIntegrationServiceClient getOpenIntegrationServiceClient(String userId,
-                                                                        String serverName,
-                                                                        String serviceOperationName) throws InvalidParameterException,
-                                                                                                            PropertyServerException,
-                                                                                                            UserNotAuthorizedException
-    {
-        AutomatedCurationInstance instance = (AutomatedCurationInstance) getServerServiceInstance(userId, serverName, serviceOperationName);
-
-        if (instance != null)
-        {
-            return instance.getOpenIntegrationServiceClient();
-        }
-
-        return null;
-    }
-
-
-
-
-    /**
-     * This method returns the object for the tenant to use to work with the Asset Owner API.
-     *
-     * @param serverName           name of the server that the request is for
-     * @param userId               local server userid
-     * @param serviceOperationName service operation - usually the top level rest call
-     * @return client
-     * @throws InvalidParameterException unknown server/service
-     * @throws UserNotAuthorizedException User not authorized to call this service
-     * @throws PropertyServerException internal error
-     */
-    public GovernanceConfigurationClient getGovernanceConfigurationClient(String userId,
-                                                                          String serverName,
-                                                                          String serviceOperationName) throws InvalidParameterException,
-                                                                                                             PropertyServerException,
-                                                                                                             UserNotAuthorizedException
-    {
-        AutomatedCurationInstance instance = (AutomatedCurationInstance) getServerServiceInstance(userId, serverName, serviceOperationName);
-
-        if (instance != null)
-        {
-            return instance.getGovernanceConfigurationClient();
+            return instance.getOpenGovernanceClient(urlMarker, serviceOperationName);
         }
 
         return null;

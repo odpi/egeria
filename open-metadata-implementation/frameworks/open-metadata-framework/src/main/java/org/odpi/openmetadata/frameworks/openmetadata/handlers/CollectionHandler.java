@@ -278,11 +278,11 @@ public class CollectionHandler extends OpenMetadataHandlerBase
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public String createCollectionFromTemplate(String userId,
-                                               TemplateOptions templateOptions,
-                                               String templateGUID,
-                                               ElementProperties replacementProperties,
-                                               Map<String, String> placeholderProperties,
+    public String createCollectionFromTemplate(String                 userId,
+                                               TemplateOptions        templateOptions,
+                                               String                 templateGUID,
+                                               ElementProperties      replacementProperties,
+                                               Map<String, String>    placeholderProperties,
                                                RelationshipProperties parentRelationshipProperties) throws InvalidParameterException,
                                                                                                            UserNotAuthorizedException,
                                                                                                            PropertyServerException
@@ -307,9 +307,9 @@ public class CollectionHandler extends OpenMetadataHandlerBase
      * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    public void updateCollection(String userId,
-                                 String collectionGUID,
-                                 UpdateOptions updateOptions,
+    public void updateCollection(String               userId,
+                                 String               collectionGUID,
+                                 UpdateOptions        updateOptions,
                                  CollectionProperties properties) throws InvalidParameterException,
                                                                          PropertyServerException,
                                                                          UserNotAuthorizedException
@@ -1415,9 +1415,9 @@ public class CollectionHandler extends OpenMetadataHandlerBase
      * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    private String getMembershipRelationshipGUID(String userId,
-                                                 String collectionGUID,
-                                                 String elementGUID,
+    private String getMembershipRelationshipGUID(String       userId,
+                                                 String       collectionGUID,
+                                                 String       elementGUID,
                                                  QueryOptions queryOptions) throws InvalidParameterException,
                                                                                    PropertyServerException,
                                                                                    UserNotAuthorizedException

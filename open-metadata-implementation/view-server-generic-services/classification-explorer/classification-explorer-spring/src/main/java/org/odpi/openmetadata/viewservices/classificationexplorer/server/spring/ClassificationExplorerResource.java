@@ -1103,7 +1103,35 @@ public class ClassificationExplorerResource
                                                                   @RequestBody  (required = false)
                                                                   FindProperties requestBody)
     {
-        return restAPI.getRelationships(serverName, urlMarker, requestBody);
+        return restAPI.getRelationships(serverName, urlMarker, null, requestBody);
+    }
+
+
+    /**
+     * Retrieve relationships of the requested relationship type name.
+     *
+     * @param serverName  name of the server instance to connect to
+     * @param urlMarker  view service URL marker
+     * @param requestBody  open metadata type to search on
+     *
+     * @return list of matching elements or
+     *  InvalidParameterException  one of the parameters is invalid
+     *  UserNotAuthorizedException the user is not authorized to issue this request
+     *  PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    @PostMapping(path = "/relationships/{relationshipTypeName}")
+
+    @Operation(summary="getRelationships",
+            description="Retrieve relationships of the requested relationship type name.",
+            externalDocs=@ExternalDocumentation(description="Open Metadata Types", url="https://egeria-project.org/types/"))
+
+    public MetadataRelationshipSummariesResponse getRelationships(@PathVariable String                    serverName,
+                                                                  @PathVariable String                        urlMarker,
+                                                                  @PathVariable String       relationshipTypeName,
+                                                                  @RequestBody  (required = false)
+                                                                  FindProperties requestBody)
+    {
+        return restAPI.getRelationships(serverName, urlMarker, relationshipTypeName, requestBody);
     }
 
 
@@ -1123,7 +1151,7 @@ public class ClassificationExplorerResource
     @PostMapping(path = "/relationships/with-exact-property-value")
 
     @Operation(summary="getRelationshipsWithPropertyValue",
-            description="Retrieve relationships of the requested relationship type name and with the requested a value found in one of the relationship's properties specified.  The value must match exactly.",
+            description="Retrieve relationships of any relationship type name and with the requested a value found in one of the relationship's properties specified.  The value must match exactly.",
             externalDocs=@ExternalDocumentation(description="Open Metadata Types", url="https://egeria-project.org/types/"))
 
     public MetadataRelationshipSummariesResponse getRelationshipsWithPropertyValue(@PathVariable String                       serverName,
@@ -1131,7 +1159,37 @@ public class ClassificationExplorerResource
                                                                                    @RequestBody  (required = false)
                                                                                    FindPropertyNamesProperties requestBody)
     {
-        return restAPI.getRelationshipsWithPropertyValue(serverName, urlMarker, requestBody);
+        return restAPI.getRelationshipsWithPropertyValue(serverName, urlMarker, null, requestBody);
+    }
+
+
+    /**
+     * Retrieve relationships of the requested relationship type name and with the requested a value found in
+     * one of the relationship's properties specified.  The value must match exactly.
+     *
+     * @param serverName  name of the server instance to connect to
+     * @param urlMarker  view service URL marker
+     * @param relationshipTypeName name of relationship
+     * @param requestBody properties and optional open metadata type to search on
+     *
+     * @return list of matching elements or
+     *  InvalidParameterException  one of the parameters is invalid
+     *  UserNotAuthorizedException the user is not authorized to issue this request
+     *  PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    @PostMapping(path = "/relationships/{relationshipTypeName}/with-exact-property-value")
+
+    @Operation(summary="getRelationshipsWithPropertyValue",
+            description="Retrieve relationships of the requested relationship type name and with the requested a value found in one of the relationship's properties specified.  The value must match exactly.",
+            externalDocs=@ExternalDocumentation(description="Open Metadata Types", url="https://egeria-project.org/types/"))
+
+    public MetadataRelationshipSummariesResponse getRelationshipsWithPropertyValue(@PathVariable String                       serverName,
+                                                                                   @PathVariable String                        urlMarker,
+                                                                                   @PathVariable String                        relationshipTypeName,
+                                                                                   @RequestBody  (required = false)
+                                                                                   FindPropertyNamesProperties requestBody)
+    {
+        return restAPI.getRelationshipsWithPropertyValue(serverName, urlMarker, relationshipTypeName, requestBody);
     }
 
 
@@ -1152,7 +1210,7 @@ public class ClassificationExplorerResource
     @PostMapping(path = "/relationships/with-property-value-search")
 
     @Operation(summary="findRelationshipsWithPropertyValue",
-            description="Retrieve relationships of the requested relationship type name and with the requested a value found in one of the relationship's properties specified.  The value must only be contained in the properties rather than needing to be an exact match.",
+            description="Retrieve relationships of any relationship type name and with the requested a value found in one of the relationship's properties specified.  The value must only be contained in the properties rather than needing to be an exact match.",
             externalDocs=@ExternalDocumentation(description="Open Metadata Types", url="https://egeria-project.org/types/"))
 
     public MetadataRelationshipSummariesResponse findRelationshipsWithPropertyValue(@PathVariable String                       serverName,
@@ -1160,7 +1218,38 @@ public class ClassificationExplorerResource
                                                                                     @RequestBody  (required = false)
                                                                                     FindPropertyNamesProperties requestBody)
     {
-        return restAPI.findRelationshipsWithPropertyValue(serverName, urlMarker, requestBody);
+        return restAPI.findRelationshipsWithPropertyValue(serverName, urlMarker, null, requestBody);
+    }
+
+
+    /**
+     * Retrieve relationships of the requested relationship type name and with the requested a value found in one of
+     * the relationship's properties specified.  The value must only be contained in the properties rather than
+     * needing to be an exact match.
+     *
+     * @param serverName  name of the server instance to connect to
+     * @param urlMarker  view service URL marker
+     * @param relationshipTypeName name of relationship
+     * @param requestBody properties and optional open metadata type to search on
+     *
+     * @return list of matching elements or
+     *  InvalidParameterException  one of the parameters is invalid
+     *  UserNotAuthorizedException the user is not authorized to issue this request
+     *  PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    @PostMapping(path = "/relationships/{relationshipTypeName}/with-property-value-search")
+
+    @Operation(summary="findRelationshipsWithPropertyValue",
+            description="Retrieve relationships of the requested relationship type name and with the requested a value found in one of the relationship's properties specified.  The value must only be contained in the properties rather than needing to be an exact match.",
+            externalDocs=@ExternalDocumentation(description="Open Metadata Types", url="https://egeria-project.org/types/"))
+
+    public MetadataRelationshipSummariesResponse findRelationshipsWithPropertyValue(@PathVariable String                       serverName,
+                                                                                    @PathVariable String                        urlMarker,
+                                                                                    @PathVariable String                        relationshipTypeName,
+                                                                                    @RequestBody  (required = false)
+                                                                                    FindPropertyNamesProperties requestBody)
+    {
+        return restAPI.findRelationshipsWithPropertyValue(serverName, urlMarker, relationshipTypeName, requestBody);
     }
 
 

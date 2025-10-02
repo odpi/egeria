@@ -24,6 +24,8 @@ dependencies {
     implementation project(':open-metadata-implementation:governance-server-services:integration-daemon-services:integration-daemon-services-api')
     implementation project(':open-metadata-implementation:access-services:omf-metadata-management:omf-metadata-api')
     implementation project(':open-metadata-implementation:access-services:omf-metadata-management:omf-metadata-client')
+    implementation project(':open-metadata-implementation:access-services:gaf-metadata-management:gaf-metadata-api')
+    implementation project(':open-metadata-implementation:access-services:gaf-metadata-management:gaf-metadata-client')
     testImplementation 'org.testng:testng'
     compileOnly 'com.fasterxml.jackson.core:jackson-annotations'
 }

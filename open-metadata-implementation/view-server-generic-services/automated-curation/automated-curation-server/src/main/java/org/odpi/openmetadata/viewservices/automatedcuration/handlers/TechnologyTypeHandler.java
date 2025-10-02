@@ -12,6 +12,7 @@ import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedExcep
 import org.odpi.openmetadata.frameworks.openmetadata.handlers.OpenMetadataHandlerBase;
 import org.odpi.openmetadata.frameworks.openmetadata.mapper.OpenMetadataValidValues;
 import org.odpi.openmetadata.frameworks.openmetadata.mermaid.HierarchyMermaidGraphBuilder;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.OpenMetadataRootElement;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.ReferenceableElement;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.RelatedMetadataElementSummary;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.AttachedClassification;
@@ -569,9 +570,9 @@ public class TechnologyTypeHandler extends OpenMetadataHandlerBase
      * @throws UserNotAuthorizedException the user is not authorized to make this request.
      * @throws PropertyServerException the repository is not available or not working properly.
      */
-    public List<ReferenceableElement> getTechnologyTypeElements(String              userId,
-                                                                String              technologyTypeName,
-                                                                QueryOptions        queryOptions) throws InvalidParameterException,
+    public List<OpenMetadataRootElement> getTechnologyTypeElements(String              userId,
+                                                                   String              technologyTypeName,
+                                                                   QueryOptions        queryOptions) throws InvalidParameterException,
                                                                                                          UserNotAuthorizedException,
                                                                                                          PropertyServerException
     {
@@ -581,14 +582,11 @@ public class TechnologyTypeHandler extends OpenMetadataHandlerBase
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateName(technologyTypeName, parameterName, methodName);
 
-        List<String> propertyNames = Collections.singletonList(OpenMetadataProperty.DEPLOYED_IMPLEMENTATION_TYPE.name);
-
-        List<OpenMetadataElement> openMetadataElements = openMetadataClient.findMetadataElements(userId,
-                                                                                          propertyHelper.getSearchPropertiesByName(propertyNames, technologyTypeName, PropertyComparisonOperator.EQ),
-                                                                                          null,
-                                                                                          queryOptions);
-
-        return this.convertReferenceables(openMetadataElements);
+        return super.getRootElementsByName(userId,
+                                           technologyTypeName,
+                                           Collections.singletonList(OpenMetadataProperty.DEPLOYED_IMPLEMENTATION_TYPE.name),
+                                           queryOptions,
+                                           methodName);
     }
 
 
@@ -691,44 +689,6 @@ public class TechnologyTypeHandler extends OpenMetadataHandlerBase
         return null;
     }
 
-
-    /**
-     * Convert open metadata objects from the OpenMetadataClient to local beans.
-     *
-     * @param openMetadataElements retrieved elements
-     *
-     * @return list of validValue elements
-     *
-     * @throws PropertyServerException the repository is not available or not working properly.
-     * */
-    private List<ReferenceableElement> convertReferenceables(List<OpenMetadataElement>  openMetadataElements) throws PropertyServerException
-    {
-        final String methodName = "convertReferenceables";
-
-        ReferenceableConverter<ReferenceableElement> converter = new ReferenceableConverter<>(propertyHelper, localServiceName, localServerName);
-
-        if (openMetadataElements != null)
-        {
-            List<ReferenceableElement> referenceableElements = new ArrayList<>();
-
-            for (OpenMetadataElement openMetadataElement : openMetadataElements)
-            {
-                if (openMetadataElement != null)
-                {
-                    ReferenceableElement referenceableElement = converter.getNewBean(ReferenceableElement.class, openMetadataElement, methodName);
-
-                    if (referenceableElement != null)
-                    {
-                        referenceableElements.add(referenceableElement);
-                    }
-                }
-            }
-
-            return referenceableElements;
-        }
-
-        return null;
-    }
 
 
     /**

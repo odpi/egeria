@@ -3,15 +3,19 @@
 package org.odpi.openmetadata.viewservices.automatedcuration.server;
 
 
+import org.odpi.openmetadata.adminservices.configuration.properties.ViewServiceConfig;
 import org.odpi.openmetadata.adminservices.configuration.registration.ViewServiceDescription;
 import org.odpi.openmetadata.commonservices.multitenant.OMVSServiceInstance;
+import org.odpi.openmetadata.commonservices.multitenant.ViewServiceClientMap;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
+import org.odpi.openmetadata.frameworks.openmetadata.client.OpenMetadataClient;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
+import org.odpi.openmetadata.frameworks.openmetadata.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworkservices.gaf.client.EgeriaOpenGovernanceClient;
-import org.odpi.openmetadata.frameworkservices.gaf.client.GovernanceConfigurationClient;
-import org.odpi.openmetadata.frameworkservices.oif.client.OpenIntegrationServiceClient;
-import org.odpi.openmetadata.frameworkservices.omf.client.EgeriaOpenMetadataStoreClient;
+import org.odpi.openmetadata.frameworkservices.omf.client.handlers.EgeriaOpenMetadataStoreHandler;
 import org.odpi.openmetadata.viewservices.automatedcuration.handlers.TechnologyTypeHandler;
+
+import java.util.List;
 
 /**
  * AutomatedCurationInstance caches references to objects it needs for a specific server.
@@ -23,11 +27,10 @@ public class AutomatedCurationInstance extends OMVSServiceInstance
     private static final ViewServiceDescription myDescription = ViewServiceDescription.AUTOMATED_CURATION;
 
 
-    private final EgeriaOpenMetadataStoreClient openMetadataStoreClient;
-    private final EgeriaOpenGovernanceClient    openGovernanceClient;
-    private final OpenIntegrationServiceClient openIntegrationServiceClient;
-    private final GovernanceConfigurationClient governanceConfigurationClient;
-    private final TechnologyTypeHandler         technologyTypeHandler;
+    private final ViewServiceClientMap<EgeriaOpenMetadataStoreHandler> openMetadataHandlerMap;
+    private final ViewServiceClientMap<TechnologyTypeHandler>          technologyTypeHandlerMap;
+    private final ViewServiceClientMap<EgeriaOpenGovernanceClient>     openGovernanceClientMap;
+
 
     /**
      * Set up the Automated Curation OMVS instance
@@ -39,15 +42,16 @@ public class AutomatedCurationInstance extends OMVSServiceInstance
      * @param maxPageSize maximum page size
      * @param remoteServerName  remote server name
      * @param remoteServerURL remote server URL
-     * @throws InvalidParameterException problem with server name or platform URL
+     * @param activeViewServices list of view services active in this server
      */
-    public AutomatedCurationInstance(String       serverName,
-                                     AuditLog     auditLog,
-                                     String       localServerUserId,
-                                     String       localServerUserPassword,
-                                     int          maxPageSize,
-                                     String       remoteServerName,
-                                     String       remoteServerURL) throws InvalidParameterException
+    public AutomatedCurationInstance(String                  serverName,
+                                     AuditLog                auditLog,
+                                     String                  localServerUserId,
+                                     String                  localServerUserPassword,
+                                     int                     maxPageSize,
+                                     String                  remoteServerName,
+                                     String                  remoteServerURL,
+                                     List<ViewServiceConfig> activeViewServices)
     {
         super(serverName,
               myDescription.getViewServiceFullName(),
@@ -58,22 +62,32 @@ public class AutomatedCurationInstance extends OMVSServiceInstance
               remoteServerName,
               remoteServerURL);
 
-        if (localServerUserPassword == null)
-        {
-            openMetadataStoreClient       = new EgeriaOpenMetadataStoreClient(remoteServerName, remoteServerURL, maxPageSize);
-            openGovernanceClient          = new EgeriaOpenGovernanceClient(remoteServerName, remoteServerURL, maxPageSize);
-            openIntegrationServiceClient  = new OpenIntegrationServiceClient(remoteServerName, remoteServerURL, maxPageSize);
-            governanceConfigurationClient = new GovernanceConfigurationClient(remoteServerName, remoteServerURL, maxPageSize);
-        }
-        else
-        {
-            openMetadataStoreClient       = new EgeriaOpenMetadataStoreClient(remoteServerName, remoteServerURL, localServerUserId, localServerUserPassword, maxPageSize);
-            openGovernanceClient          = new EgeriaOpenGovernanceClient(remoteServerName, remoteServerURL, localServerUserId, localServerUserPassword, maxPageSize);
-            openIntegrationServiceClient  = new OpenIntegrationServiceClient(remoteServerName, remoteServerURL, localServerUserId, localServerUserPassword, maxPageSize);
-            governanceConfigurationClient = new GovernanceConfigurationClient(remoteServerName, remoteServerURL, localServerUserId, localServerUserPassword, maxPageSize);
-        }
+        this.openMetadataHandlerMap = new ViewServiceClientMap<>(EgeriaOpenMetadataStoreHandler.class,
+                                                                 serverName,
+                                                                 localServerUserId,
+                                                                 localServerUserPassword,
+                                                                 auditLog,
+                                                                 activeViewServices,
+                                                                 myDescription.getViewServiceFullName(),
+                                                                 maxPageSize);
 
-        technologyTypeHandler = new TechnologyTypeHandler(serverName, auditLog, serviceName, openMetadataStoreClient);
+        this.technologyTypeHandlerMap = new ViewServiceClientMap<>(TechnologyTypeHandler.class,
+                                                                 serverName,
+                                                                 localServerUserId,
+                                                                 localServerUserPassword,
+                                                                 auditLog,
+                                                                 activeViewServices,
+                                                                 myDescription.getViewServiceFullName(),
+                                                                 maxPageSize);
+
+        this.openGovernanceClientMap = new ViewServiceClientMap<>(EgeriaOpenGovernanceClient.class,
+                                                                   serverName,
+                                                                   localServerUserId,
+                                                                   localServerUserPassword,
+                                                                   auditLog,
+                                                                   activeViewServices,
+                                                                   myDescription.getViewServiceFullName(),
+                                                                   maxPageSize);
     }
 
 
@@ -81,11 +95,15 @@ public class AutomatedCurationInstance extends OMVSServiceInstance
      * Return the open metadata store client.  This client is from the Open Metadata Framework (OMF) and is for accessing and
      * maintaining all types of metadata.
      *
+     * @param urlMarker calling view service
+     * @param methodName calling operation
      * @return client
      */
-    public EgeriaOpenMetadataStoreClient getOpenMetadataStoreClient()
+    public OpenMetadataClient getOpenMetadataStoreClient(String urlMarker,
+                                                         String methodName) throws InvalidParameterException,
+                                                                                   PropertyServerException
     {
-        return openMetadataStoreClient;
+        return openMetadataHandlerMap.getClient(urlMarker, methodName);
     }
 
 
@@ -93,11 +111,17 @@ public class AutomatedCurationInstance extends OMVSServiceInstance
      * Return the technology type handler.  This client is from the Automated Curation OMVS and is for accessing
      * technology types.
      *
+     * @param urlMarker calling view service
+     * @param methodName calling operation
      * @return client
+     * @throws InvalidParameterException bad client initialization
+     * @throws PropertyServerException bad client handler class
      */
-    public TechnologyTypeHandler getTechnologyTypeHandler()
+    public TechnologyTypeHandler getTechnologyTypeHandler(String urlMarker,
+                                                          String methodName) throws InvalidParameterException,
+                                                                                    PropertyServerException
     {
-        return technologyTypeHandler;
+        return technologyTypeHandlerMap.getClient(urlMarker, methodName);
     }
 
 
@@ -105,34 +129,16 @@ public class AutomatedCurationInstance extends OMVSServiceInstance
      * Return the open governance client.  This client is from the Open Governance Framework (GAF) and is for
      * working with automation services.
      *
+     * @param urlMarker calling view service
+     * @param methodName calling operation
+     * @throws InvalidParameterException bad client initialization
+     * @throws PropertyServerException bad client handler class
      * @return client
      */
-    public EgeriaOpenGovernanceClient getOpenGovernanceClient()
+    public EgeriaOpenGovernanceClient getOpenGovernanceClient(String urlMarker,
+                                                              String methodName) throws InvalidParameterException,
+                                                                                        PropertyServerException
     {
-        return openGovernanceClient;
-    }
-
-
-    /**
-     * Return the open integration client.  This client is from the Open Integration Framework (OIF) and is for
-     * working with integration connectors.
-     *
-     * @return client
-     */
-    public OpenIntegrationServiceClient getOpenIntegrationServiceClient()
-    {
-        return openIntegrationServiceClient;
-    }
-
-
-    /**
-     * Return the  governance configuration client.  This client is from the Open Governance Framework (OGF) and is for
-     * working with automation services.
-     *
-     * @return client
-     */
-    public GovernanceConfigurationClient getGovernanceConfigurationClient()
-    {
-        return governanceConfigurationClient;
+        return openGovernanceClientMap.getClient(urlMarker, methodName);
     }
 }
