@@ -3337,7 +3337,7 @@ public class SimpleCatalogArchiveHelper
      * @param conceptBeadLinkGUID unique identifier of the concept bead link entity
      * @param conceptBeadGUID unique identifier of the concept bead
      * @param attributeName name of the attribute for this end
-     * @param conceptModelDecoration what type of relationship end
+     * @param relationshipDecoration what type of relationship end
      * @param position in the attributes for the bead
      * @param minCardinality minimum number of the relationships
      * @param maxCardinality maximum number of the relationships
@@ -3348,7 +3348,7 @@ public class SimpleCatalogArchiveHelper
     public void addConceptBeadRelationshipEnd(String  conceptBeadLinkGUID,
                                               String  conceptBeadGUID,
                                               String  attributeName,
-                                              int     conceptModelDecoration,
+                                              int     relationshipDecoration,
                                               int     position,
                                               int     minCardinality,
                                               int     maxCardinality,
@@ -3360,7 +3360,7 @@ public class SimpleCatalogArchiveHelper
 
         EntityDetail   entityOne                  = archiveBuilder.getEntity(conceptBeadLinkGUID);
         EntityDetail   entityTwo                  = archiveBuilder.getEntity(conceptBeadGUID);
-        EnumElementDef conceptModelDecorationEnum = archiveHelper.getEnumElement(ConceptModelDecoration.getOpenTypeName(), conceptModelDecoration);
+        EnumElementDef conceptModelDecorationEnum = archiveHelper.getEnumElement(RelationshipDecoration.getOpenTypeName(), relationshipDecoration);
 
         EntityProxy end1 = archiveHelper.getEntityProxy(entityOne);
         EntityProxy end2 = archiveHelper.getEntityProxy(entityTwo);
@@ -3369,7 +3369,7 @@ public class SimpleCatalogArchiveHelper
         properties = archiveHelper.addIntPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.POSITION.name, position, methodName);
         properties = archiveHelper.addIntPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.MIN_CARDINALITY.name, minCardinality, methodName);
         properties = archiveHelper.addIntPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.MAX_CARDINALITY.name, maxCardinality, methodName);
-        properties = archiveHelper.addEnumPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.DECORATION.name, ConceptModelDecoration.getOpenTypeGUID(), ConceptModelDecoration.getOpenTypeName(), conceptModelDecorationEnum.getOrdinal(), conceptModelDecorationEnum.getValue(), conceptModelDecorationEnum.getDescription(), methodName);
+        properties = archiveHelper.addEnumPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.DECORATION.name, RelationshipDecoration.getOpenTypeGUID(), RelationshipDecoration.getOpenTypeName(), conceptModelDecorationEnum.getOrdinal(), conceptModelDecorationEnum.getValue(), conceptModelDecorationEnum.getDescription(), methodName);
         properties = archiveHelper.addBooleanPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.UNIQUE_VALUES.name, uniqueValues, methodName);
         properties = archiveHelper.addBooleanPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.ORDERED_VALUES.name, orderedValues, methodName);
         properties = archiveHelper.addBooleanPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.NAVIGABLE.name, navigable, methodName);
@@ -7396,7 +7396,7 @@ public class SimpleCatalogArchiveHelper
         EntityProxy end1 = archiveHelper.getEntityProxy(archiveBuilder.getEntity(informationSupplyChainGUID));
         EntityProxy end2 = archiveHelper.getEntityProxy(archiveBuilder.getEntity(segmentGUID));
 
-        archiveBuilder.addRelationship(archiveHelper.getRelationship(OpenMetadataType.INFORMATION_SUPPLY_CHAIN_COMPOSITION_RELATIONSHIP.typeName,
+        archiveBuilder.addRelationship(archiveHelper.getRelationship(OpenMetadataType.COLLECTION_MEMBERSHIP_RELATIONSHIP.typeName,
                                                                      idToGUIDMap.getGUID(informationSupplyChainGUID + "_to_" + segmentGUID + "_information_supply_chain_composition_relationship"),
                                                                      null,
                                                                      InstanceStatus.ACTIVE,
@@ -7567,12 +7567,12 @@ public class SimpleCatalogArchiveHelper
      *
      * @param solutionBlueprintGUID guid of blueprint
      * @param solutionComponentGUID guid of component
-     * @param role role of the component in the solution
-     * @param description description of the role in the solution
+     * @param membershipType membershipType of the component in the solution
+     * @param description description of the membershipType in the solution
      */
     public void addSolutionBlueprintCompositionRelationship(String solutionBlueprintGUID,
                                                             String solutionComponentGUID,
-                                                            String role,
+                                                            String membershipType,
                                                             String description)
     {
         final String methodName = "addISolutionBlueprintCompositionRelationship";
@@ -7580,10 +7580,10 @@ public class SimpleCatalogArchiveHelper
         EntityProxy end1 = archiveHelper.getEntityProxy(archiveBuilder.getEntity(solutionBlueprintGUID));
         EntityProxy end2 = archiveHelper.getEntityProxy(archiveBuilder.getEntity(solutionComponentGUID));
 
-        InstanceProperties properties = archiveHelper.addStringPropertyToInstance(archiveRootName, null, OpenMetadataProperty.ROLE.name, role, methodName);
+        InstanceProperties properties = archiveHelper.addStringPropertyToInstance(archiveRootName, null, OpenMetadataProperty.MEMBERSHIP_TYPE.name, membershipType, methodName);
         properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.DESCRIPTION.name, description, methodName);
 
-        archiveBuilder.addRelationship(archiveHelper.getRelationship(OpenMetadataType.SOLUTION_BLUEPRINT_COMPOSITION_RELATIONSHIP.typeName,
+        archiveBuilder.addRelationship(archiveHelper.getRelationship(OpenMetadataType.COLLECTION_MEMBERSHIP_RELATIONSHIP.typeName,
                                                                      idToGUIDMap.getGUID(solutionBlueprintGUID + "_to_" + solutionComponentGUID + "_solution_blueprint_composition_relationship"),
                                                                      properties,
                                                                      InstanceStatus.ACTIVE,

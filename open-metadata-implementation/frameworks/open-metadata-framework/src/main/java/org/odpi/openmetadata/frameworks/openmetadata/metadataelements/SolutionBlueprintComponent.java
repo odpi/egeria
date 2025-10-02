@@ -6,7 +6,7 @@ package org.odpi.openmetadata.frameworks.openmetadata.metadataelements;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.solutions.SolutionBlueprintCompositionProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.collections.CollectionMembershipProperties;
 
 import java.util.Objects;
 
@@ -23,9 +23,9 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class SolutionBlueprintComponent implements MetadataElement
 {
-    private ElementHeader                          elementHeader     = null;
-    private SolutionBlueprintCompositionProperties properties        = null;
-    private SolutionComponentElement               solutionComponent = null;
+    private ElementHeader                  elementHeader     = null;
+    private CollectionMembershipProperties properties        = null;
+    private SolutionComponentElement       solutionComponent = null;
 
 
     /**
@@ -82,7 +82,7 @@ public class SolutionBlueprintComponent implements MetadataElement
      *
      * @return properties
      */
-    public SolutionBlueprintCompositionProperties getProperties()
+    public CollectionMembershipProperties getProperties()
     {
         return properties;
     }
@@ -93,7 +93,7 @@ public class SolutionBlueprintComponent implements MetadataElement
      *
      * @param properties property map
      */
-    public void setProperties(SolutionBlueprintCompositionProperties properties)
+    public void setProperties(CollectionMembershipProperties properties)
     {
         this.properties = properties;
     }

@@ -1,31 +1,31 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 /* Copyright Contributors to the ODPi Egeria project. */
-package org.odpi.openmetadata.frameworks.openmetadata.properties.solutions;
+package org.odpi.openmetadata.frameworks.openmetadata.properties.designmodels;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.RoledRelationshipProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.collections.CollectionProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
 /**
- * SolutionBlueprintCompositionProperties represents a SolutionBlueprintComposition relationship.
+ * DesignModel describes a collection of design model elements that make up a model of a design.
  */
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class SolutionBlueprintCompositionProperties extends RoledRelationshipProperties
+public class ConceptModelProperties extends DesignModelProperties
 {
     /**
      * Default constructor
      */
-    public SolutionBlueprintCompositionProperties()
+    public ConceptModelProperties()
     {
         super();
-        super.setTypeName(OpenMetadataType.SOLUTION_BLUEPRINT_COMPOSITION_RELATIONSHIP.typeName);
+        super.setTypeName(OpenMetadataType.CONCEPT_MODEL.typeName);
     }
 
 
@@ -34,21 +34,20 @@ public class SolutionBlueprintCompositionProperties extends RoledRelationshipPro
      *
      * @param template object to copy
      */
-    public SolutionBlueprintCompositionProperties(RoledRelationshipProperties template)
+    public ConceptModelProperties(DesignModelProperties template)
     {
         super(template);
     }
 
 
     /**
-     * Standard toString method.
+     * JSON-style toString
      *
-     * @return print out of variables in a JSON-style
+     * @return return string containing the property names and values
      */
     @Override
     public String toString()
     {
-        return "SolutionBlueprintCompositionProperties{" +
-                "} " + super.toString();
+        return "ConceptModelProperties{} " + super.toString();
     }
 }

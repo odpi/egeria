@@ -73,11 +73,11 @@ public enum ProductManagerAuditCode implements AuditLogMessageSet
                        "No action is required unless there are errors that follow indicating that there were problems shutting down."),
 
     /**
-     * HARVEST-DIGITAL-PRODUCTS-0010 - The {0} integration connector has create a new {1} supporting definition with GUID {2}
+     * HARVEST-DIGITAL-PRODUCTS-0010 - The {0} integration connector has created a new {1} supporting definition with GUID {2}
      */
     CREATED_SUPPORTING_DEFINITION("HARVEST-DIGITAL-PRODUCTS-0010",
                                   OMRSAuditLogRecordSeverity.INFO,
-                                  "The {0} integration connector has create a new {1} supporting definition called {2} with GUID {3}",
+                                  "The {0} integration connector has created a new {1} supporting definition called {2} with GUID {3}",
                                   "The connector is creating the metadata elements that supports the definition of the open metadata product catalog.",
                                   "No action is required.  This message is used to show the progress of the setup."),
 

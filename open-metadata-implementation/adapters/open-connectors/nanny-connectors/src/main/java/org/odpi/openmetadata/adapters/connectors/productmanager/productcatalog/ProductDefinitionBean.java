@@ -41,7 +41,6 @@ public class ProductDefinitionBean implements ProductDefinition
      * @param description description
      * @param category category of product
      * @param license license
-     * @param community optional community
      * @param subscriptionTypes list of subscription types offered
      * @param dataSpecTableName logical name of the tabular data set
      * @param dataSpecIdentifiers list of data fields that form the unique identifier
@@ -84,7 +83,7 @@ public class ProductDefinitionBean implements ProductDefinition
 
 
     /**
-     * Returns the unique name for the subject area entity.
+     * Returns the unique name for the product entity.
      *
      * @return qualified name
      */

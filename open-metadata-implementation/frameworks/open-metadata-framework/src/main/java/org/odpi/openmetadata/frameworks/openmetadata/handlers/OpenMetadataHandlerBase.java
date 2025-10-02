@@ -599,7 +599,7 @@ public class OpenMetadataHandlerBase
                 {
                     if (relatedMetadataElement != null)
                     {
-                        if ((propertyHelper.isTypeOf(relatedMetadataElement, OpenMetadataType.INFORMATION_SUPPLY_CHAIN_COMPOSITION_RELATIONSHIP.typeName)) && relatedMetadataElement.getElementAtEnd1())
+                        if ((propertyHelper.isTypeOf(relatedMetadataElement, OpenMetadataType.COLLECTION_MEMBERSHIP_RELATIONSHIP.typeName)) && relatedMetadataElement.getElementAtEnd1())
                         {
                             fullParentContext.add(relatedMetadataElement);
                         }
@@ -976,16 +976,7 @@ public class OpenMetadataHandlerBase
         {
             addGovernanceDefinitionFamily(userId, rootElement, queryOptions);
 
-            rootElement.setCollectionMembers(this.getElementHierarchies(userId,
-                                                                         rootElement.getElementHeader().getGUID(),
-                                                                         rootElement.getCollectionMembers(),
-                                                                         1,
-                                                                         OpenMetadataType.COLLECTION_MEMBERSHIP_RELATIONSHIP.typeName,
-                                                                         queryOptions,
-                                                                         1));
-
             rootElement.setSubDataClasses(this.getElementHierarchies(userId,
-                                                                      rootElement.getElementHeader().getGUID(),
                                                                       rootElement.getSubDataClasses(),
                                                                       1,
                                                                       OpenMetadataType.DATA_CLASS_HIERARCHY_RELATIONSHIP.typeName,
@@ -993,7 +984,6 @@ public class OpenMetadataHandlerBase
                                                                       1));
 
             rootElement.setPartOfDataClasses(this.getElementHierarchies(userId,
-                                                                         rootElement.getElementHeader().getGUID(),
                                                                          rootElement.getPartOfDataClasses(),
                                                                          1,
                                                                          OpenMetadataType.DATA_CLASS_COMPOSITION_RELATIONSHIP.typeName,
@@ -1001,7 +991,6 @@ public class OpenMetadataHandlerBase
                                                                          1));
 
             rootElement.setNestedDataFields(this.getElementHierarchies(userId,
-                                                                        rootElement.getElementHeader().getGUID(),
                                                                         rootElement.getNestedDataFields(),
                                                                         1,
                                                                         OpenMetadataType.NESTED_DATA_FIELD_RELATIONSHIP.typeName,
@@ -1009,7 +998,6 @@ public class OpenMetadataHandlerBase
                                                                         1));
 
             rootElement.setContainsDataFields(this.getElementHierarchies(userId,
-                                                                          rootElement.getElementHeader().getGUID(),
                                                                           rootElement.getContainsDataFields(),
                                                                           1,
                                                                           OpenMetadataType.MEMBER_DATA_FIELD_RELATIONSHIP.typeName,
@@ -1017,7 +1005,6 @@ public class OpenMetadataHandlerBase
                                                                           1));
 
             rootElement.setNoteLogs(this.getElementHierarchies(userId,
-                                                               rootElement.getElementHeader().getGUID(),
                                                                rootElement.getNoteLogs(),
                                                                1,
                                                                OpenMetadataType.ATTACHED_NOTE_LOG_ENTRY_RELATIONSHIP.typeName,
@@ -1025,7 +1012,6 @@ public class OpenMetadataHandlerBase
                                                                1));
 
             rootElement.setComments(this.getElementHierarchies(userId,
-                                                               rootElement.getElementHeader().getGUID(),
                                                                rootElement.getComments(),
                                                                1,
                                                                OpenMetadataType.ATTACHED_COMMENT_RELATIONSHIP.typeName,
@@ -1033,7 +1019,6 @@ public class OpenMetadataHandlerBase
                                                                1));
 
             rootElement.setManagedProjects(this.getElementHierarchies(userId,
-                                                               rootElement.getElementHeader().getGUID(),
                                                                rootElement.getManagedProjects(),
                                                                1,
                                                                OpenMetadataType.PROJECT_HIERARCHY_RELATIONSHIP.typeName,
@@ -1041,7 +1026,6 @@ public class OpenMetadataHandlerBase
                                                                1));
 
             rootElement.setManagingProjects(this.getElementHierarchies(userId,
-                                                                      rootElement.getElementHeader().getGUID(),
                                                                       rootElement.getManagingProjects(),
                                                                       2,
                                                                       OpenMetadataType.PROJECT_HIERARCHY_RELATIONSHIP.typeName,
@@ -1049,31 +1033,41 @@ public class OpenMetadataHandlerBase
                                                                       1));
 
             rootElement.setDependsOnProjects(this.getElementHierarchies(userId,
-                                                                        rootElement.getElementHeader().getGUID(),
                                                                         rootElement.getDependsOnProjects(),
                                                                         1,
                                                                         OpenMetadataType.PROJECT_DEPENDENCY_RELATIONSHIP.typeName,
                                                                         queryOptions,
                                                                         1));
             rootElement.setDependentProjects(this.getElementHierarchies(userId,
-                                                                        rootElement.getElementHeader().getGUID(),
                                                                         rootElement.getDependentProjects(),
                                                                         2,
                                                                         OpenMetadataType.PROJECT_DEPENDENCY_RELATIONSHIP.typeName,
                                                                         queryOptions,
                                                                         1));
 
-            rootElement.setContainsSolutionComponents(this.getElementHierarchies(userId,
-                                                                                 rootElement.getElementHeader().getGUID(),
-                                                                                 rootElement.getContainsSolutionComponents(),
-                                                                                 1,
-                                                                                 OpenMetadataType.SOLUTION_COMPOSITION_RELATIONSHIP.typeName,
-                                                                                 List.of(OpenMetadataType.SOLUTION_COMPONENT_ACTOR_RELATIONSHIP.typeName,
-                                                                                         OpenMetadataType.SOLUTION_LINKING_WIRE_RELATIONSHIP.typeName,
-                                                                                         OpenMetadataType.SOLUTION_COMPONENT_PORT_RELATIONSHIP.typeName,
-                                                                                         OpenMetadataType.SOLUTION_PORT_DELEGATION_RELATIONSHIP.typeName),
-                                                                                 queryOptions,
-                                                                                 1));
+            if ((propertyHelper.isTypeOf(rootElement.getElementHeader(), OpenMetadataType.SOLUTION_BLUEPRINT.typeName)) ||
+                (propertyHelper.isTypeOf(rootElement.getElementHeader(), OpenMetadataType.INFORMATION_SUPPLY_CHAIN.typeName)))
+            {
+                rootElement.setCollectionMembers(this.getElementHierarchies(userId,
+                                                                            rootElement.getCollectionMembers(),
+                                                                            1,
+                                                                            OpenMetadataType.SOLUTION_COMPOSITION_RELATIONSHIP.typeName,
+                                                                            List.of(OpenMetadataType.SOLUTION_COMPONENT_ACTOR_RELATIONSHIP.typeName,
+                                                                                    OpenMetadataType.SOLUTION_LINKING_WIRE_RELATIONSHIP.typeName,
+                                                                                    OpenMetadataType.SOLUTION_COMPONENT_PORT_RELATIONSHIP.typeName,
+                                                                                    OpenMetadataType.SOLUTION_PORT_DELEGATION_RELATIONSHIP.typeName),
+                                                                            queryOptions,
+                                                                            1));
+            }
+            else
+            {
+                rootElement.setCollectionMembers(this.getElementHierarchies(userId,
+                                                                            rootElement.getCollectionMembers(),
+                                                                            1,
+                                                                            OpenMetadataType.COLLECTION_MEMBERSHIP_RELATIONSHIP.typeName,
+                                                                            queryOptions,
+                                                                            1));
+            }
 
             return addMermaidToRootElement(userId, rootElement, queryOptions);
         }
@@ -1107,7 +1101,7 @@ public class OpenMetadataHandlerBase
 
             rootElement.setMermaidGraph(graphBuilder.getMermaidGraph());
 
-            if (rootElement.getContainsSolutionComponents() != null)
+            if ((propertyHelper.isTypeOf(rootElement.getElementHeader(), OpenMetadataType.SOLUTION_BLUEPRINT.typeName)) && (rootElement.getCollectionMembers() != null))
             {
                 SolutionBlueprintMermaidGraphBuilder solutionBlueprintMermaidGraphBuilder = new SolutionBlueprintMermaidGraphBuilder(rootElement);
 
@@ -1140,7 +1134,6 @@ public class OpenMetadataHandlerBase
         if (rootElement != null)
         {
             List<RelatedMetadataElementSummary> parentElements1 = this.getElementHierarchies(userId,
-                                                                                              rootElement.getElementHeader().getGUID(),
                                                                                               rootElement.getSupportingGovernanceDefinitions(),
                                                                                               0,
                                                                                               OpenMetadataType.GOVERNANCE_RESPONSE_RELATIONSHIP.typeName,
@@ -1148,7 +1141,6 @@ public class OpenMetadataHandlerBase
                                                                                               1);
 
             List<RelatedMetadataElementSummary> parentElements2 = this.getElementHierarchies(userId,
-                                                                                              rootElement.getElementHeader().getGUID(),
                                                                                               rootElement.getSupportingGovernanceDefinitions(),
                                                                                               0,
                                                                                               OpenMetadataType.GOVERNANCE_MECHANISM_RELATIONSHIP.typeName,
@@ -1170,7 +1162,6 @@ public class OpenMetadataHandlerBase
             }
 
             List<RelatedMetadataElementSummary> peerElements1 = this.getElementHierarchies(userId,
-                                                                                            rootElement.getElementHeader().getGUID(),
                                                                                             rootElement.getPeerGovernanceDefinitions(),
                                                                                             0,
                                                                                             OpenMetadataType.GOVERNANCE_DRIVER_LINK_RELATIONSHIP.typeName,
@@ -1178,7 +1169,6 @@ public class OpenMetadataHandlerBase
                                                                                             1);
 
             List<RelatedMetadataElementSummary> peerElements2 = this.getElementHierarchies(userId,
-                                                                                            rootElement.getElementHeader().getGUID(),
                                                                                             rootElement.getPeerGovernanceDefinitions(),
                                                                                             0,
                                                                                             OpenMetadataType.GOVERNANCE_POLICY_LINK_RELATIONSHIP.typeName,
@@ -1186,7 +1176,6 @@ public class OpenMetadataHandlerBase
                                                                                             1);
 
             List<RelatedMetadataElementSummary> peerElements3 = this.getElementHierarchies(userId,
-                                                                                            rootElement.getElementHeader().getGUID(),
                                                                                             rootElement.getPeerGovernanceDefinitions(),
                                                                                             0,
                                                                                             OpenMetadataType.GOVERNANCE_CONTROL_LINK_RELATIONSHIP.typeName,
@@ -1227,7 +1216,6 @@ public class OpenMetadataHandlerBase
      * Return the nested elements to the required depth.
      *
      * @param userId calling user
-     * @param startingElementGUID guid where the query started
      * @param retrievedElements elements to query against
      * @param parentEnd start at end 1 or 2?
      * @param relationshipName name of the relationship to iteratively follow
@@ -1239,7 +1227,6 @@ public class OpenMetadataHandlerBase
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     protected List<RelatedMetadataElementSummary> getElementHierarchies(String                              userId,
-                                                                        String                              startingElementGUID,
                                                                         List<RelatedMetadataElementSummary> retrievedElements,
                                                                         int                                 parentEnd,
                                                                         String                              relationshipName,
@@ -1248,7 +1235,7 @@ public class OpenMetadataHandlerBase
                                                                                                                                  PropertyServerException,
                                                                                                                                  UserNotAuthorizedException
     {
-        return this.getElementHierarchies(userId, startingElementGUID, retrievedElements, parentEnd, relationshipName, null, queryOptions, currentDepth);
+        return this.getElementHierarchies(userId, retrievedElements, parentEnd, relationshipName, null, queryOptions, currentDepth);
     }
 
 
@@ -1256,7 +1243,6 @@ public class OpenMetadataHandlerBase
      * Return the nested elements to the required depth.
      *
      * @param userId calling user
-     * @param startingElementGUID guid where the query started
      * @param retrievedElements elements to query against
      * @param parentEnd start at end 1 or 2?
      * @param relationshipName name of the relationship to iteratively follow
@@ -1269,7 +1255,6 @@ public class OpenMetadataHandlerBase
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     protected List<RelatedMetadataElementSummary> getElementHierarchies(String                              userId,
-                                                                        String                              startingElementGUID,
                                                                         List<RelatedMetadataElementSummary> retrievedElements,
                                                                         int                                 parentEnd,
                                                                         String                              relationshipName,
@@ -1287,7 +1272,7 @@ public class OpenMetadataHandlerBase
             {
                 if (retrievedElement != null)
                 {
-                    List<String> coveredElementsGUIDs = new ArrayList<>(List.of(startingElementGUID));
+                    List<String> coveredRelationshipsGUIDs = new ArrayList<>();
 
                     results.add(getElementHierarchy(userId,
                                                     retrievedElement,
@@ -1296,7 +1281,7 @@ public class OpenMetadataHandlerBase
                                                     sideRelationshipNames,
                                                     queryOptions,
                                                     currentDepth,
-                                                    coveredElementsGUIDs));
+                                                    coveredRelationshipsGUIDs));
                 }
             }
 
@@ -1317,7 +1302,7 @@ public class OpenMetadataHandlerBase
      * @param sideRelationshipNames additional side relationships to capture (maybe null)
      * @param queryOptions callers query options
      * @param currentDepth how far away are we from the original element?
-     * @param coveredElementsGUIDs do not revisit elements already processed
+     * @param coveredRelationshipsGUIDs do not revisit relationships already processed
      * @return the hierarchy under/over this element
      * @throws InvalidParameterException  one of the parameters is invalid.
      * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
@@ -1330,7 +1315,7 @@ public class OpenMetadataHandlerBase
                                                                 List<String>                  sideRelationshipNames,
                                                                 QueryOptions                  queryOptions,
                                                                 int                           currentDepth,
-                                                                List<String>                  coveredElementsGUIDs) throws InvalidParameterException,
+                                                                List<String>                  coveredRelationshipsGUIDs) throws InvalidParameterException,
                                                                                                                            PropertyServerException,
                                                                                                                            UserNotAuthorizedException
     {
@@ -1344,10 +1329,12 @@ public class OpenMetadataHandlerBase
              * If there are no side relationships then we can optimise and only receive the main hierarchical relationship.
              */
             String receiveRelationshipName = null;
+            int    receiveParentEnd = 0;
 
             if (sideRelationshipNames == null)
             {
                 receiveRelationshipName = relationshipName;
+                receiveParentEnd = parentEnd;
             }
 
             List<RelatedMetadataElementSummary> nestedElements = new ArrayList<>();
@@ -1355,32 +1342,49 @@ public class OpenMetadataHandlerBase
 
             RelatedMetadataElementList relatedMetadataElementList = openMetadataClient.getRelatedMetadataElements(userId,
                                                                                                                   retrievedElement.getRelatedElement().getElementHeader().getGUID(),
-                                                                                                                  parentEnd,
+                                                                                                                  receiveParentEnd,
                                                                                                                   receiveRelationshipName,
                                                                                                                   workingQueryOptions);
             if ((relatedMetadataElementList != null) && (relatedMetadataElementList.getElementList() != null))
             {
+                /*
+                 * Remove the relationships that the caller asked to skip.
+                 */
                 List<RelatedMetadataElement> relevantRelationships = this.getRelevantRelationships(relatedMetadataElementList.getElementList(), queryOptions);
 
                 for (RelatedMetadataElement relatedMetadataElement : relevantRelationships)
                 {
                     if (relatedMetadataElement != null)
                     {
+                        /*
+                         * Look for parent/child relationships
+                         */
                         if (propertyHelper.isTypeOf(relatedMetadataElement, relationshipName))
                         {
-                            if (! coveredElementsGUIDs.contains(relatedMetadataElement.getElement().getElementGUID()))
+                            /*
+                             * The relationship is a parent/child relationship type.
+                             * Is this orientated logically down the hierarchy?
+                             */
+                            if (((parentEnd != 2) && (relatedMetadataElement.getElementAtEnd1())) ||
+                                    ((parentEnd != 1) && (! relatedMetadataElement.getElementAtEnd1())))
                             {
-                                RelatedMetadataElementSummary nestedElement = propertyHelper.getRelatedElementSummary(relatedMetadataElement);
+                                /*
+                                 * Check that this relationship has not been covered already.
+                                 */
+                                if (! coveredRelationshipsGUIDs.contains(relatedMetadataElement.getRelationshipGUID()))
+                                {
+                                    RelatedMetadataElementSummary nestedElement = propertyHelper.getRelatedElementSummary(relatedMetadataElement);
 
-                                coveredElementsGUIDs.add(relatedMetadataElement.getElement().getElementGUID());
-                                nestedElements.add(getElementHierarchy(userId,
-                                                                       nestedElement,
-                                                                       parentEnd,
-                                                                       relationshipName,
-                                                                       sideRelationshipNames,
-                                                                       queryOptions,
-                                                                       currentDepth + 1,
-                                                                       coveredElementsGUIDs));
+                                    coveredRelationshipsGUIDs.add(relatedMetadataElement.getElement().getElementGUID());
+                                    nestedElements.add(getElementHierarchy(userId,
+                                                                           nestedElement,
+                                                                           parentEnd,
+                                                                           relationshipName,
+                                                                           sideRelationshipNames,
+                                                                           queryOptions,
+                                                                           currentDepth + 1,
+                                                                           coveredRelationshipsGUIDs));
+                                }
                             }
                         }
                         else if (sideRelationshipNames != null)
@@ -1410,6 +1414,10 @@ public class OpenMetadataHandlerBase
                 {
                     return new RelatedMetadataHierarchySummary(retrievedElement, nestedElements, null);
                 }
+            }
+            else if (! sideLinks.isEmpty())
+            {
+                return new RelatedMetadataHierarchySummary(retrievedElement, null, sideLinks);
             }
         }
 

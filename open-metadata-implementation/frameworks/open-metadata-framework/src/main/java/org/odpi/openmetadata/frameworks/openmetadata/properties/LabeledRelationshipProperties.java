@@ -5,6 +5,7 @@ package org.odpi.openmetadata.frameworks.openmetadata.properties;
 import com.fasterxml.jackson.annotation.*;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.reports.ReportDependencyProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.datadictionaries.DataDescriptionProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.designmodels.ConceptDesignProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.digitalbusiness.BusinessCapabilityDependencyProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.digitalbusiness.DigitalSupportProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.externalreferences.ExternalReferenceLinkProperties;
@@ -20,6 +21,7 @@ import org.odpi.openmetadata.frameworks.openmetadata.properties.locations.Nested
 import org.odpi.openmetadata.frameworks.openmetadata.properties.projects.ProjectDependencyProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.projects.ProjectHierarchyProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.resources.MoreInformationProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.solutions.SolutionDesignProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.solutions.SolutionLinkingWireProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.templates.CatalogTemplateProperties;
 
@@ -42,6 +44,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
                 @JsonSubTypes.Type(value = AdjacentLocationProperties.class, name = "AdjacentLocationProperties"),
                 @JsonSubTypes.Type(value = BusinessCapabilityDependencyProperties.class, name = "BusinessCapabilityDependencyProperties"),
                 @JsonSubTypes.Type(value = CatalogTemplateProperties.class, name = "CatalogTemplateProperties"),
+                @JsonSubTypes.Type(value = ConceptDesignProperties.class, name = "ConceptDesignProperties"),
                 @JsonSubTypes.Type(value = DataDescriptionProperties.class, name = "DataDescriptionProperties"),
                 @JsonSubTypes.Type(value = DigitalSupportProperties.class, name = "DigitalSupportProperties"),
                 @JsonSubTypes.Type(value = ExternalReferenceLinkProperties.class, name = "ExternalReferenceLinkProperties"),
@@ -58,6 +61,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
                 @JsonSubTypes.Type(value = ProjectHierarchyProperties.class, name = "ProjectHierarchyProperties"),
                 @JsonSubTypes.Type(value = ReportDependencyProperties.class, name = "ReportDependencyProperties"),
                 @JsonSubTypes.Type(value = SolutionLinkingWireProperties.class, name = "SolutionLinkingWireProperties"),
+                @JsonSubTypes.Type(value = SolutionDesignProperties.class, name = "SolutionDesignProperties"),
         })
 public class LabeledRelationshipProperties extends RelationshipBeanProperties
 {

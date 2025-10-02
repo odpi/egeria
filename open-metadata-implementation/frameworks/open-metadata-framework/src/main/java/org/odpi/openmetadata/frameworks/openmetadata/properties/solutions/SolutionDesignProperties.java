@@ -5,6 +5,7 @@ package org.odpi.openmetadata.frameworks.openmetadata.properties.solutions;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.LabeledRelationshipProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.RelationshipBeanProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 
@@ -12,12 +13,12 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
 /**
- * SolutionBlueprintCompositionProperties represents a SolutionBlueprintComposition relationship.
+ * SolutionDesignProperties represents a SolutionDesign relationship.
  */
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class SolutionDesignProperties extends RelationshipBeanProperties
+public class SolutionDesignProperties extends LabeledRelationshipProperties
 {
     /**
      * Default constructor
@@ -25,7 +26,7 @@ public class SolutionDesignProperties extends RelationshipBeanProperties
     public SolutionDesignProperties()
     {
         super();
-        super.setTypeName(OpenMetadataType.SOLUTION_BLUEPRINT_COMPOSITION_RELATIONSHIP.typeName);
+        super.setTypeName(OpenMetadataType.SOLUTION_DESIGN_RELATIONSHIP.typeName);
     }
 
 
@@ -34,7 +35,7 @@ public class SolutionDesignProperties extends RelationshipBeanProperties
      *
      * @param template object to copy
      */
-    public SolutionDesignProperties(SolutionDesignProperties template)
+    public SolutionDesignProperties(LabeledRelationshipProperties template)
     {
         super(template);
     }

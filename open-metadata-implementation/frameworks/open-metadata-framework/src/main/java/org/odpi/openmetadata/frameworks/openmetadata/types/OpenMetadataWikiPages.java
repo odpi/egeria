@@ -12,7 +12,7 @@ public class OpenMetadataWikiPages
     /**
      * <a href="https://egeria-project.org/types/0/0010-Base-Model/">...</a>
      */
-    public static final String MODEL_0010_BASIC_MODEL                  = "https://egeria-project.org/types/0/0010-Base-Model/";
+    public static final String MODEL_0010_BASE_MODEL = "https://egeria-project.org/types/0/0010-Base-Model/";
 
     /**
      * <a href="https://egeria-project.org/types/0/0011-Managing-Referenceables/">...</a>
@@ -760,7 +760,7 @@ public class OpenMetadataWikiPages
     /**
      * <a href="https://egeria-project.org/types/7/0715-Digital-Product-Management/">...</a>
      */
-    public static final String MODEL_0715_DIGITAL_PRODUCT_MANAGEMENT = "https://egeria-project.org/types/7/0715-Digital-Product-Management/";
+    public static final String MODEL_0715_DIGITAL_BUSINESS = "https://egeria-project.org/types/7/0715-Digital-Business/";
 
     /**
      * <a href="https://egeria-project.org/types/7/0720-Information-Supply-Chains/">...</a>

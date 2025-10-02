@@ -13,7 +13,6 @@ import org.odpi.openmetadata.frameworks.openmetadata.properties.collections.*;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.datadictionaries.DataDescriptionProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.digitalbusiness.*;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.resources.ResourceListProperties;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.solutions.SolutionBlueprintCompositionProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.search.MakeAnchorOptions;
 import org.odpi.openmetadata.frameworks.openmetadata.search.MetadataSourceOptions;
 import org.odpi.openmetadata.frameworks.openmetadata.search.UpdateOptions;
@@ -800,7 +799,7 @@ public class CollectionManagerRESTServices extends TokenController
                 }
                 else
                 {
-                    restExceptionHandler.handleInvalidPropertiesObject(SolutionBlueprintCompositionProperties.class.getName(), methodName);
+                    restExceptionHandler.handleInvalidPropertiesObject(DigitalProductDependencyProperties.class.getName(), methodName);
                 }
             }
             else
@@ -930,7 +929,7 @@ public class CollectionManagerRESTServices extends TokenController
                 }
                 else
                 {
-                    restExceptionHandler.handleInvalidPropertiesObject(SolutionBlueprintCompositionProperties.class.getName(), methodName);
+                    restExceptionHandler.handleInvalidPropertiesObject(DigitalSubscriberProperties.class.getName(), methodName);
                 }
             }
             else
@@ -1060,7 +1059,7 @@ public class CollectionManagerRESTServices extends TokenController
                 }
                 else
                 {
-                    restExceptionHandler.handleInvalidPropertiesObject(SolutionBlueprintCompositionProperties.class.getName(), methodName);
+                    restExceptionHandler.handleInvalidPropertiesObject(AssignmentScopeProperties.class.getName(), methodName);
                 }
             }
             else
@@ -1191,7 +1190,7 @@ public class CollectionManagerRESTServices extends TokenController
                 }
                 else
                 {
-                    restExceptionHandler.handleInvalidPropertiesObject(SolutionBlueprintCompositionProperties.class.getName(), methodName);
+                    restExceptionHandler.handleInvalidPropertiesObject(AgreementActorProperties.class.getName(), methodName);
                 }
             }
             else
@@ -1316,7 +1315,7 @@ public class CollectionManagerRESTServices extends TokenController
                 }
                 else
                 {
-                    restExceptionHandler.handleInvalidPropertiesObject(SolutionBlueprintCompositionProperties.class.getName(), methodName);
+                    restExceptionHandler.handleInvalidPropertiesObject(AgreementItemProperties.class.getName(), methodName);
                 }
             }
             else
@@ -1443,7 +1442,7 @@ public class CollectionManagerRESTServices extends TokenController
                 }
                 else
                 {
-                    restExceptionHandler.handleInvalidPropertiesObject(SolutionBlueprintCompositionProperties.class.getName(), methodName);
+                    restExceptionHandler.handleInvalidPropertiesObject(ContractLinkProperties.class.getName(), methodName);
                 }
             }
             else

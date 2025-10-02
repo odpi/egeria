@@ -56,7 +56,6 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
         {
                 @JsonSubTypes.Type(value = ActorProperties.class, name = "ActorProperties"),
                 @JsonSubTypes.Type(value = AssetProperties.class, name = "AssetProperties"),
-                @JsonSubTypes.Type(value = BusinessCapabilityProperties.class, name = "BusinessCapabilityProperties"),
                 @JsonSubTypes.Type(value = CollectionProperties.class, name = "CollectionProperties"),
                 @JsonSubTypes.Type(value = CommentProperties.class, name = "CommentProperties"),
                 @JsonSubTypes.Type(value = CommunityProperties.class, name = "CommunityProperties"),
@@ -75,7 +74,6 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
                 @JsonSubTypes.Type(value = ExternalReferenceProperties.class, name = "ExternalReferenceProperties"),
                 @JsonSubTypes.Type(value = GlossaryTermProperties.class, name = "GlossaryTermProperties"),
                 @JsonSubTypes.Type(value = GovernanceDefinitionProperties.class, name = "GovernanceDefinitionProperties"),
-                @JsonSubTypes.Type(value = InformationSupplyChainProperties.class, name = "InformationSupplyChainProperties"),
                 @JsonSubTypes.Type(value = LocationProperties.class, name = "LocationProperties"),
                 @JsonSubTypes.Type(value = NoteProperties.class, name = "NoteProperties"),
                 @JsonSubTypes.Type(value = NoteLogProperties.class, name = "NoteLogProperties"),
@@ -83,7 +81,6 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
                 @JsonSubTypes.Type(value = ProjectProperties.class, name = "ProjectProperties"),
                 @JsonSubTypes.Type(value = SchemaElementProperties.class, name = "SchemaElementProperties"),
                 @JsonSubTypes.Type(value = SoftwareCapabilityProperties.class, name = "SoftwareCapabilityProperties"),
-                @JsonSubTypes.Type(value = SolutionBlueprintProperties.class, name = "SolutionBlueprintProperties"),
                 @JsonSubTypes.Type(value = SolutionComponentProperties.class, name = "SolutionComponentProperties"),
                 @JsonSubTypes.Type(value = ValidValueDefinitionProperties.class, name = "ValidValueDefinitionProperties"),
         })

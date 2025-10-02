@@ -25,7 +25,7 @@ public class InformationSupplyChainCompositionProperties extends RelationshipBea
     public InformationSupplyChainCompositionProperties()
     {
         super();
-        super.setTypeName(OpenMetadataType.INFORMATION_SUPPLY_CHAIN_COMPOSITION_RELATIONSHIP.typeName);
+        super.setTypeName(OpenMetadataType.COLLECTION_MEMBERSHIP_RELATIONSHIP.typeName);
     }
 
 

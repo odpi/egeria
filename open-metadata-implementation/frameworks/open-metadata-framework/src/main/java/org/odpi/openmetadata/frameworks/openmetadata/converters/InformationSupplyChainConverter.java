@@ -15,7 +15,6 @@ import org.odpi.openmetadata.frameworks.openmetadata.search.PropertyHelper;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 
 import java.lang.reflect.InvocationTargetException;
-import java.util.Arrays;
 import java.util.List;
 
 
@@ -168,7 +167,7 @@ public class InformationSupplyChainConverter<B> extends OpenMetadataConverterBas
                      * All segments should have already been removed - but if a mistake has been made, the segments will appear as parents rather than be ignored.
                      * Similarly, there should not be any ImplementedBy relationships.  If there are, they will appear in other related elements.
                      */
-                    bean.setParents(super.getRelatedElements(OpenMetadataType.INFORMATION_SUPPLY_CHAIN_COMPOSITION_RELATIONSHIP.typeName, relationships));
+                    bean.setParents(super.getRelatedElements(OpenMetadataType.COLLECTION_MEMBERSHIP_RELATIONSHIP.typeName, relationships));
                     bean.setLinks(super.getRelatedElements(OpenMetadataType.INFORMATION_SUPPLY_CHAIN_LINK_RELATIONSHIP.typeName, relationships));
                 }
             }

@@ -164,9 +164,7 @@ public class OpenMetadataTypesArchive5_3
         this.update0056ResourceManagers();
         this.update0201Connections();
         this.update0205ConnectionLinkage();
-        this.update0720InformationSupplyChains();
         this.update0730SolutionComponents();
-        this.update0735SolutionPortsAndWires();
         this.update0770LineageMapping();
     }
 
@@ -918,33 +916,8 @@ public class OpenMetadataTypesArchive5_3
      */
     private void update0730SolutionComponents()
     {
-        this.archiveBuilder.addTypeDefPatch(updateSolutionComponent());
         this.archiveBuilder.addEntityDef(getSolutionActorRoleEntity());
         this.archiveBuilder.addRelationshipDef(getSolutionComponentActorRelationship());
-    }
-
-
-    private TypeDefPatch updateSolutionComponent()
-    {
-        /*
-         * Create the Patch
-         */
-        TypeDefPatch typeDefPatch = archiveBuilder.getPatchForType(OpenMetadataType.SOLUTION_COMPONENT.typeName);
-
-        typeDefPatch.setUpdatedBy(originatorName);
-        typeDefPatch.setUpdateTime(creationDate);
-
-        /*
-         * Build the attributes
-         */
-        List<TypeDefAttribute> properties = new ArrayList<>();
-
-        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.SOLUTION_COMPONENT_TYPE));
-        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.PLANNED_DEPLOYED_IMPLEMENTATION_TYPE));
-
-        typeDefPatch.setPropertyDefinitions(properties);
-
-        return typeDefPatch;
     }
 
 
@@ -1003,77 +976,6 @@ public class OpenMetadataTypesArchive5_3
         relationshipDef.setPropertiesDefinition(properties);
 
         return relationshipDef;
-    }
-
-    /*
-     * -------------------------------------------------------------------------------------------------------
-     */
-
-    /**
-     * 0720 Information Supply Chains
-     */
-    private void update0720InformationSupplyChains()
-    {
-        this.archiveBuilder.addTypeDefPatch(updateInformationSupplyChainLink());
-    }
-
-    private TypeDefPatch updateInformationSupplyChainLink()
-    {
-        /*
-         * Create the Patch
-         */
-        TypeDefPatch  typeDefPatch = archiveBuilder.getPatchForType(OpenMetadataType.INFORMATION_SUPPLY_CHAIN_LINK_RELATIONSHIP.typeName);
-
-        typeDefPatch.setUpdatedBy(originatorName);
-        typeDefPatch.setUpdateTime(creationDate);
-
-        /*
-         * Build the attributes
-         */
-        List<TypeDefAttribute> properties = new ArrayList<>();
-
-        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.LABEL));
-        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.DESCRIPTION));
-
-        typeDefPatch.setPropertyDefinitions(properties);
-
-        return typeDefPatch;
-    }
-
-
-    /*
-     * -------------------------------------------------------------------------------------------------------
-     */
-
-    /**
-     * 0735 Solution Ports And Wires
-     */
-    private void update0735SolutionPortsAndWires()
-    {
-        this.archiveBuilder.addTypeDefPatch(updateSolutionLinkingWire());
-    }
-
-    private TypeDefPatch updateSolutionLinkingWire()
-    {
-        /*
-         * Create the Patch
-         */
-        TypeDefPatch  typeDefPatch = archiveBuilder.getPatchForType(OpenMetadataType.SOLUTION_LINKING_WIRE_RELATIONSHIP.typeName);
-
-        typeDefPatch.setUpdatedBy(originatorName);
-        typeDefPatch.setUpdateTime(creationDate);
-
-        /*
-         * Build the attributes
-         */
-        List<TypeDefAttribute> properties = new ArrayList<>();
-
-        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.LABEL));
-        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.DESCRIPTION));
-
-        typeDefPatch.setPropertyDefinitions(properties);
-
-        return typeDefPatch;
     }
 
 

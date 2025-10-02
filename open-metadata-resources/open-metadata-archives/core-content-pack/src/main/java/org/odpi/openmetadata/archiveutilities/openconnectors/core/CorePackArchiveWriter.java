@@ -499,6 +499,11 @@ public class CorePackArchiveWriter extends ContentPackBaseArchiveWriter
                                       KeyPattern.getOpenTypeName(),
                                       new ArrayList<>(Arrays.asList(KeyPattern.values())));
 
+        addOpenMetadataEnumValidNames(OpenMetadataType.BUSINESS_CAPABILITY.typeName,
+                                      OpenMetadataProperty.BUSINESS_CAPABILITY_TYPE.name,
+                                      BusinessCapabilityType.getOpenTypeName(),
+                                      new ArrayList<>(Arrays.asList(BusinessCapabilityType.values())));
+
         addOpenMetadataEnumValidNames(OpenMetadataType.PRIMARY_KEY_CLASSIFICATION.typeName,
                                       OpenMetadataProperty.KEY_PATTERN.name,
                                       KeyPattern.getOpenTypeName(),
@@ -636,6 +641,11 @@ public class CorePackArchiveWriter extends ContentPackBaseArchiveWriter
                                       OpenMetadataProperty.MEDIA_USAGE.name,
                                       MediaUsage.getOpenTypeName(),
                                       new ArrayList<>(Arrays.asList(MediaUsage.values())));
+
+        addOpenMetadataEnumValidNames(OpenMetadataType.CONCEPT_BEAD_RELATIONSHIP_END.typeName,
+                                      OpenMetadataProperty.DECORATION.name,
+                                      RelationshipDecoration.getOpenTypeName(),
+                                      new ArrayList<>(Arrays.asList(RelationshipDecoration.values())));
 
         /*
          * Add valid metadata values for deployedImplementationType.  The GUIDs are saved in a look-up map

@@ -294,6 +294,7 @@ public enum ProductDefinitionEnum implements ProductDefinition
      *
      * @return qualified name
      */
+    @Override
     public String getQualifiedName()
     {
         return "OpenMetadataProductCatalog::DigitalProduct::" + identifier + "::" + displayName;
@@ -305,6 +306,7 @@ public enum ProductDefinitionEnum implements ProductDefinition
      *
      * @return type name
      */
+    @Override
     public String getProductName()
     {
         return productName;
@@ -316,6 +318,7 @@ public enum ProductDefinitionEnum implements ProductDefinition
      *
      * @return type name
      */
+    @Override
     public String getIdentifier()
     {
         return identifier;
@@ -327,6 +330,7 @@ public enum ProductDefinitionEnum implements ProductDefinition
      *
      * @return enum
      */
+    @Override
     public ProductFolderDefinition getParent()
     {
         return parent;
@@ -338,6 +342,7 @@ public enum ProductDefinitionEnum implements ProductDefinition
      *
      * @return string
      */
+    @Override
     public String getDisplayName()
     {
         return displayName;
@@ -349,6 +354,7 @@ public enum ProductDefinitionEnum implements ProductDefinition
      *
      * @return string
      */
+    @Override
     public String getDescription()
     {
         return description;
@@ -360,6 +366,7 @@ public enum ProductDefinitionEnum implements ProductDefinition
      *
      * @return string
      */
+    @Override
     public String getCategory()
     {
         return category;
@@ -371,6 +378,7 @@ public enum ProductDefinitionEnum implements ProductDefinition
      *
      * @return license definition
      */
+    @Override
     public ProductGovernanceDefinition getLicense()
     {
         return license;
@@ -393,6 +401,7 @@ public enum ProductDefinitionEnum implements ProductDefinition
      *
      * @return description of the product manager
      */
+    @Override
     public ProductRoleDefinition getProductManager()
     {
         return productManager;
@@ -404,6 +413,7 @@ public enum ProductDefinitionEnum implements ProductDefinition
      *
      * @return list
      */
+    @Override
     public List<ProductSubscriptionDefinition> getSubscriptionTypes()
     {
         if (subscriptionTypes != null)
@@ -419,6 +429,7 @@ public enum ProductDefinitionEnum implements ProductDefinition
      *
      * @return Capitalized, space separated name
      */
+    @Override
     public String getDataSpecTableName()
     {
         return dataSpecTableName;
@@ -430,6 +441,7 @@ public enum ProductDefinitionEnum implements ProductDefinition
      *
      * @return list
      */
+    @Override
     public List<ProductDataFieldDefinition> getDataSpecIdentifiers()
     {
         if (dataSpecIdentifiers != null)
@@ -446,6 +458,7 @@ public enum ProductDefinitionEnum implements ProductDefinition
      *
      * @return list
      */
+    @Override
     public List<ProductDataFieldDefinition> getDataSpecFields()
     {
         if (dataSpecFields != null)
@@ -462,6 +475,7 @@ public enum ProductDefinitionEnum implements ProductDefinition
      *
      * @return string
      */
+    @Override
     public ConnectorProvider getConnectorProvider()
     {
         return connectorProvider;
@@ -473,6 +487,7 @@ public enum ProductDefinitionEnum implements ProductDefinition
      *
      * @return string
      */
+    @Override
     public String getCatalogTargetName()
     {
         return catalogTargetName;
@@ -484,6 +499,7 @@ public enum ProductDefinitionEnum implements ProductDefinition
      *
      * @return string
      */
+    @Override
     public String getVersionIdentifier()
     {
         return "V1.0";

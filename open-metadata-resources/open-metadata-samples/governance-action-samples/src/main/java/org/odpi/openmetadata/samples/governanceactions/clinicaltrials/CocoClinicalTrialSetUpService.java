@@ -410,7 +410,7 @@ public class CocoClinicalTrialSetUpService extends CocoClinicalTrialBaseService
 
         RelatedMetadataElementList relatedMetadataElementList = governanceContext.getOpenMetadataStore().getRelatedMetadataElements(toplevelInformationSupplyChainGUID,
                                                                                                                                     1,
-                                                                                                                                    OpenMetadataType.INFORMATION_SUPPLY_CHAIN_COMPOSITION_RELATIONSHIP.typeName,
+                                                                                                                                    OpenMetadataType.COLLECTION_MEMBERSHIP_RELATIONSHIP.typeName,
                                                                                                                                     0,
                                                                                                                                     governanceContext.getMaxPageSize());
 

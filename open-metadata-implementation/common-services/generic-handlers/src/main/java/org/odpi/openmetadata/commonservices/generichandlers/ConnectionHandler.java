@@ -709,15 +709,6 @@ public class ConnectionHandler<B> extends ReferenceableHandler<B>
             {
                 InstanceProperties properties = null;
 
-                if (assetSummary != null)
-                {
-                    properties = repositoryHelper.addStringPropertyToInstance(serviceName,
-                                                                              null,
-                                                                              OpenMetadataProperty.ASSET_SUMMARY.name,
-                                                                              assetSummary,
-                                                                              methodName);
-                }
-
                 this.linkElementToElement(userId,
                                           null,
                                           null,

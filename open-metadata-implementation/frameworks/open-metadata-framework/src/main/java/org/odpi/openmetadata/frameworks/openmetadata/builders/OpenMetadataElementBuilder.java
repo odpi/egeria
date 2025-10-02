@@ -29,7 +29,9 @@ import org.odpi.openmetadata.frameworks.openmetadata.properties.connections.Endp
 import org.odpi.openmetadata.frameworks.openmetadata.properties.datadictionaries.DataClassProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.datadictionaries.DataFieldProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.datadictionaries.DataStructureProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.designmodels.DesignModelProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.digitalbusiness.AgreementProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.digitalbusiness.BusinessCapabilityProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.digitalbusiness.DigitalProductProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.digitalbusiness.DigitalSubscriptionProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.externalidentifiers.ExternalIdProperties;
@@ -853,6 +855,20 @@ public class OpenMetadataElementBuilder
                                                                                         digitalSubscriptionProperties.getServiceLevels());
                             }
                         }
+                        else if (properties instanceof BusinessCapabilityProperties businessCapabilityProperties)
+                        {
+                            if (businessCapabilityProperties.getBusinessCapabilityType() != null)
+                            {
+                                elementProperties = propertyHelper.addEnumProperty(elementProperties,
+                                                                                   OpenMetadataProperty.BUSINESS_CAPABILITY_TYPE.name,
+                                                                                   BusinessCapabilityType.getOpenTypeName(),
+                                                                                   businessCapabilityProperties.getBusinessCapabilityType().getName());
+                            }
+
+                            elementProperties = propertyHelper.addStringProperty(elementProperties,
+                                                                                 OpenMetadataProperty.BUSINESS_IMPLEMENTATION_TYPE.name,
+                                                                                 businessCapabilityProperties.getBusinessImplementationType());
+                        }
                         else if (collectionProperties instanceof DigitalProductProperties digitalProductProperties)
                         {
                             elementProperties = propertyHelper.addStringProperty(elementProperties,
@@ -883,6 +899,16 @@ public class OpenMetadataElementBuilder
                                                                                OpenMetadataProperty.WITHDRAW_DATE.name,
                                                                                digitalProductProperties.getWithdrawDate());
                         }
+                        else if (properties instanceof DesignModelProperties designModelProperties)
+                        {
+                            elementProperties = propertyHelper.addStringProperty(elementProperties,
+                                                                                 OpenMetadataProperty.USER_DEFINED_STATUS.name,
+                                                                                 designModelProperties.getUserDefinedStatus());
+
+                            elementProperties = propertyHelper.addStringArrayProperty(elementProperties,
+                                                                                      OpenMetadataProperty.AUTHORS.name,
+                                                                                      designModelProperties.getAuthors());
+                        }
                         else if (properties instanceof GlossaryProperties glossaryProperties)
                         {
                             elementProperties = propertyHelper.addStringProperty(elementProperties,
@@ -892,6 +918,22 @@ public class OpenMetadataElementBuilder
                             elementProperties = propertyHelper.addStringProperty(elementProperties,
                                                                                  OpenMetadataProperty.USAGE.name,
                                                                                  glossaryProperties.getUsage());
+                        }
+                        else if (properties instanceof InformationSupplyChainProperties informationSupplyChainProperties)
+                        {
+                            elementProperties = propertyHelper.addStringProperty(elementProperties,
+                                                                                 OpenMetadataProperty.SCOPE.name,
+                                                                                 informationSupplyChainProperties.getScope());
+
+                            elementProperties = propertyHelper.addStringArrayProperty(elementProperties,
+                                                                                      OpenMetadataProperty.PURPOSES.name,
+                                                                                      informationSupplyChainProperties.getPurposes());
+                            elementProperties = propertyHelper.addStringProperty(elementProperties,
+                                                                                 OpenMetadataProperty.INTEGRATION_STYLE.name,
+                                                                                 informationSupplyChainProperties.getIntegrationStyle());
+                            elementProperties = propertyHelper.addStringMapProperty(elementProperties,
+                                                                                    OpenMetadataProperty.ESTIMATED_VOLUMETRICS.name,
+                                                                                    informationSupplyChainProperties.getEstimatedVolumetrics());
                         }
                     }
                     else if (properties instanceof CommentProperties commentProperties)
@@ -1444,16 +1486,6 @@ public class OpenMetadataElementBuilder
                                                                                  regulationProperties.getRegulationSource());
                         }
                     }
-                    else if (properties instanceof InformationSupplyChainProperties informationSupplyChainProperties)
-                    {
-                        elementProperties = propertyHelper.addStringProperty(elementProperties,
-                                                                             OpenMetadataProperty.SCOPE.name,
-                                                                             informationSupplyChainProperties.getScope());
-
-                        elementProperties = propertyHelper.addStringArrayProperty(elementProperties,
-                                                                                  OpenMetadataProperty.PURPOSES.name,
-                                                                                  informationSupplyChainProperties.getPurposes());
-                    }
                     else if (properties instanceof PortProperties portProperties)
                     {
                         if (portProperties.getPortType() != null)
@@ -1566,12 +1598,6 @@ public class OpenMetadataElementBuilder
                                                                                    schemaAttributeProperties.getSortOrder().getName());
                             }
                         }
-                    }
-                    else if (properties instanceof SolutionBlueprintProperties solutionBlueprintProperties)
-                    {
-                        elementProperties = propertyHelper.addStringProperty(elementProperties,
-                                                                             OpenMetadataProperty.USER_DEFINED_STATUS.name,
-                                                                             solutionBlueprintProperties.getUserDefinedStatus());
                     }
                     else if (properties instanceof SolutionComponentProperties solutionComponentProperties)
                     {
