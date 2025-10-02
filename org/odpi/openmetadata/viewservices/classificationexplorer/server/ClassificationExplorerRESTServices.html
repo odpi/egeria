@@ -139,8 +139,9 @@ loadScripts(document, 'script');</script>
  specified.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../commonservices/ffdc/rest/MetadataRelationshipSummariesResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">MetadataRelationshipSummariesResponse</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#findRelationshipsWithPropertyValue(java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.search.FindPropertyNamesProperties)" class="member-name-link">findRelationshipsWithPropertyValue</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#findRelationshipsWithPropertyValue(java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.search.FindPropertyNamesProperties)" class="member-name-link">findRelationshipsWithPropertyValue</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;urlMarker,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;relationshipTypeName,
  <a href="../../../frameworks/openmetadata/search/FindPropertyNamesProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.search">FindPropertyNamesProperties</a>&nbsp;requestBody)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Retrieve relationships of the requested relationship type name and with the requested a value found in one of
@@ -334,15 +335,17 @@ loadScripts(document, 'script');</script>
  found in one of the classification's properties specified.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../commonservices/ffdc/rest/MetadataRelationshipSummariesResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">MetadataRelationshipSummariesResponse</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getRelationships(java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.search.FindProperties)" class="member-name-link">getRelationships</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getRelationships(java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.search.FindProperties)" class="member-name-link">getRelationships</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;urlMarker,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;relationshipTypeName,
  <a href="../../../frameworks/openmetadata/search/FindProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.search">FindProperties</a>&nbsp;requestBody)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Retrieve relationships of the requested relationship type name.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../commonservices/ffdc/rest/MetadataRelationshipSummariesResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">MetadataRelationshipSummariesResponse</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getRelationshipsWithPropertyValue(java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.search.FindPropertyNamesProperties)" class="member-name-link">getRelationshipsWithPropertyValue</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getRelationshipsWithPropertyValue(java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.search.FindPropertyNamesProperties)" class="member-name-link">getRelationshipsWithPropertyValue</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;urlMarker,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;relationshipTypeName,
  <a href="../../../frameworks/openmetadata/search/FindPropertyNamesProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.search">FindPropertyNamesProperties</a>&nbsp;requestBody)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Retrieve relationships of the requested relationship type name and with the requested a value found in
@@ -1224,16 +1227,18 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
-<section class="detail" id="getRelationships(java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.search.FindProperties)">
+<section class="detail" id="getRelationships(java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.search.FindProperties)">
 <h3>getRelationships</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../../commonservices/ffdc/rest/MetadataRelationshipSummariesResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">MetadataRelationshipSummariesResponse</a></span>&nbsp;<span class="element-name">getRelationships</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;urlMarker,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;relationshipTypeName,
  <a href="../../../frameworks/openmetadata/search/FindProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.search">FindProperties</a>&nbsp;requestBody)</span></div>
 <div class="block">Retrieve relationships of the requested relationship type name.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
 <dd><code>serverName</code> - name of the server instance to connect to</dd>
 <dd><code>urlMarker</code> - view service URL marker</dd>
+<dd><code>relationshipTypeName</code> - name of relationship</dd>
 <dd><code>requestBody</code> - open metadata type to search on</dd>
 <dt>Returns:</dt>
 <dd>list of matching elements or
@@ -1244,16 +1249,18 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
-<section class="detail" id="getRelationshipsWithPropertyValue(java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.search.FindPropertyNamesProperties)">
+<section class="detail" id="getRelationshipsWithPropertyValue(java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.search.FindPropertyNamesProperties)">
 <h3>getRelationshipsWithPropertyValue</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../../commonservices/ffdc/rest/MetadataRelationshipSummariesResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">MetadataRelationshipSummariesResponse</a></span>&nbsp;<span class="element-name">getRelationshipsWithPropertyValue</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;urlMarker,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;relationshipTypeName,
  <a href="../../../frameworks/openmetadata/search/FindPropertyNamesProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.search">FindPropertyNamesProperties</a>&nbsp;requestBody)</span></div>
 <div class="block">Retrieve relationships of the requested relationship type name and with the requested a value found in
  one of the relationship's properties specified.  The value must match exactly.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
 <dd><code>serverName</code> - name of the server instance to connect to</dd>
+<dd><code>relationshipTypeName</code> - name of relationship</dd>
 <dd><code>urlMarker</code> - view service URL marker</dd>
 <dd><code>requestBody</code> - properties and optional open metadata type to search on</dd>
 <dt>Returns:</dt>
@@ -1265,10 +1272,11 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
-<section class="detail" id="findRelationshipsWithPropertyValue(java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.search.FindPropertyNamesProperties)">
+<section class="detail" id="findRelationshipsWithPropertyValue(java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.search.FindPropertyNamesProperties)">
 <h3>findRelationshipsWithPropertyValue</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../../commonservices/ffdc/rest/MetadataRelationshipSummariesResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">MetadataRelationshipSummariesResponse</a></span>&nbsp;<span class="element-name">findRelationshipsWithPropertyValue</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;urlMarker,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;relationshipTypeName,
  <a href="../../../frameworks/openmetadata/search/FindPropertyNamesProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.search">FindPropertyNamesProperties</a>&nbsp;requestBody)</span></div>
 <div class="block">Retrieve relationships of the requested relationship type name and with the requested a value found in one of
  the relationship's properties specified.  The value must only be contained in the properties rather than
@@ -1277,6 +1285,7 @@ loadScripts(document, 'script');</script>
 <dt>Parameters:</dt>
 <dd><code>serverName</code> - name of the server instance to connect to</dd>
 <dd><code>urlMarker</code> - view service URL marker</dd>
+<dd><code>relationshipTypeName</code> - name of relationship</dd>
 <dd><code>requestBody</code> - properties and optional open metadata type to search on</dd>
 <dt>Returns:</dt>
 <dd>list of matching elements or
