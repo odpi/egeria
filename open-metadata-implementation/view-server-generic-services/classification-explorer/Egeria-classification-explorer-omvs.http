@@ -113,7 +113,7 @@ Content-Type: application/json
     "asOfTime" : "{{$isoTimestamp}}",
     "forLineage" : false,
     "forDuplicateProcessing" : false,
-    "openMetadataTypeName" : "GlossaryTerm",
+    "metadataElementTypeName" : "GlossaryTerm",
     "limitResultsByStatus" : [ "ACTIVE", "DRAFT"],
     "sequencingProperty" : "???",
     "sequencingOrder" : "LAST_UPDATE_RECENT",
@@ -137,7 +137,7 @@ Content-Type: application/json
     "asOfTime" : "{{$isoTimestamp}}",
     "forLineage" : false,
     "forDuplicateProcessing" : false,
-    "openMetadataTypeName" : "GlossaryTerm",
+    "metadataElementTypeName" : "GlossaryTerm",
     "limitResultsByStatus" : [ "ACTIVE", "DRAFT"],
     "sequencingProperty" : "???",
     "sequencingOrder" : "LAST_UPDATE_RECENT",
@@ -160,7 +160,7 @@ Content-Type: application/json
     "asOfTime" : "{{$isoTimestamp}}",
     "forLineage" : false,
     "forDuplicateProcessing" : false,
-    "openMetadataTypeName" : "GlossaryTerm",
+    "metadataElementTypeName" : "GlossaryTerm",
     "limitResultsByStatus" : [ "ACTIVE", "DRAFT"],
     "sequencingProperty" : "???",
     "sequencingOrder" : "LAST_UPDATE_RECENT",
@@ -184,7 +184,7 @@ Content-Type: application/json
     "asOfTime" : "{{$isoTimestamp}}",
     "forLineage" : false,
     "forDuplicateProcessing" : false,
-    "openMetadataTypeName" : "GlossaryTerm",
+    "metadataElementTypeName" : "GlossaryTerm",
     "limitResultsByStatus" : [ "ACTIVE", "DRAFT"],
     "sequencingProperty" : "???",
     "sequencingOrder" : "LAST_UPDATE_RECENT",
@@ -208,7 +208,7 @@ Content-Type: application/json
     "asOfTime" : "{{$isoTimestamp}}",
     "forLineage" : false,
     "forDuplicateProcessing" : false,
-    "openMetadataTypeName" : "GlossaryTerm",
+    "metadataElementTypeName" : "GlossaryTerm",
     "limitResultsByStatus" : [ "ACTIVE", "DRAFT"],
     "sequencingProperty" : "???",
     "sequencingOrder" : "LAST_UPDATE_RECENT",
@@ -232,7 +232,7 @@ Content-Type: application/json
     "asOfTime" : "{{$isoTimestamp}}",
     "forLineage" : false,
     "forDuplicateProcessing" : false,
-    "openMetadataTypeName" : "GlossaryTerm",
+    "metadataElementTypeName" : "GlossaryTerm",
     "limitResultsByStatus" : [ "ACTIVE", "DRAFT"],
     "sequencingProperty" : "???",
     "sequencingOrder" : "LAST_UPDATE_RECENT",
@@ -261,7 +261,7 @@ Content-Type: application/json
     "asOfTime" : "{{$isoTimestamp}}",
     "forLineage" : false,
     "forDuplicateProcessing" : false,
-    "openMetadataTypeName" : "GlossaryTerm",
+    "metadataElementTypeName" : "GlossaryTerm",
     "limitResultsByStatus" : [ "ACTIVE", "DRAFT"],
     "sequencingProperty" : "???",
     "sequencingOrder" : "LAST_UPDATE_RECENT",
@@ -284,7 +284,7 @@ Content-Type: application/json
     "asOfTime" : "{{$isoTimestamp}}",
     "forLineage" : false,
     "forDuplicateProcessing" : false,
-    "openMetadataTypeName" : "GlossaryTerm",
+    "metadataElementTypeName" : "GlossaryTerm",
     "limitResultsByStatus" : [ "ACTIVE", "DRAFT"],
     "sequencingProperty" : "???",
     "sequencingOrder" : "LAST_UPDATE_RECENT",
@@ -307,7 +307,7 @@ Content-Type: application/json
     "asOfTime" : "{{$isoTimestamp}}",
     "forLineage" : false,
     "forDuplicateProcessing" : false,
-    "openMetadataTypeName" : "GlossaryTerm",
+    "metadataElementTypeName" : "GlossaryTerm",
     "limitResultsByStatus" : [ "ACTIVE", "DRAFT"],
     "sequencingProperty" : "???",
     "sequencingOrder" : "LAST_UPDATE_RECENT",
@@ -337,7 +337,7 @@ Content-Type: application/json
     "asOfTime" : "{{$isoTimestamp}}",
     "forLineage" : false,
     "forDuplicateProcessing" : false,
-    "openMetadataTypeName" : "GlossaryTerm",
+    "metadataElementTypeName" : "GlossaryTerm",
     "limitResultsByStatus" : [ "ACTIVE", "DRAFT"],
     "sequencingProperty" : "???",
     "sequencingOrder" : "LAST_UPDATE_RECENT",
@@ -368,7 +368,7 @@ Content-Type: application/json
     "asOfTime" : "{{$isoTimestamp}}",
     "forLineage" : false,
     "forDuplicateProcessing" : false,
-    "openMetadataTypeName" : "GlossaryTerm",
+    "metadataElementTypeName" : "GlossaryTerm",
     "limitResultsByStatus" : [ "ACTIVE", "DRAFT"],
     "sequencingProperty" : "???",
     "sequencingOrder" : "LAST_UPDATE_RECENT",
@@ -402,7 +402,7 @@ Content-Type: application/json
     "asOfTime" : "{{$isoTimestamp}}",
     "forLineage" : false,
     "forDuplicateProcessing" : false,
-    "openMetadataTypeName" : "GlossaryTerm",
+    "metadataElementTypeName" : "GlossaryTerm",
     "limitResultsByStatus" : [ "ACTIVE", "DRAFT"],
     "sequencingProperty" : "???",
     "sequencingOrder" : "LAST_UPDATE_RECENT"
@@ -423,7 +423,7 @@ Content-Type: application/json
     "asOfTime" : "{{$isoTimestamp}}",
     "forLineage" : false,
     "forDuplicateProcessing" : false,
-    "openMetadataTypeName" : "GlossaryTerm",
+    "metadataElementTypeName" : "GlossaryTerm",
     "limitResultsByStatus" : [ "ACTIVE", "DRAFT"],
     "sequencingProperty" : "???",
     "sequencingOrder" : "LAST_UPDATE_RECENT"
@@ -445,7 +445,7 @@ Content-Type: application/json
     "asOfTime" : "{{$isoTimestamp}}",
     "forLineage" : false,
     "forDuplicateProcessing" : false,
-    "openMetadataTypeName" : "GlossaryTerm",
+    "metadataElementTypeName" : "GlossaryTerm",
     "limitResultsByStatus" : [ "ACTIVE", "DRAFT"],
     "sequencingProperty" : "???",
     "sequencingOrder" : "LAST_UPDATE_RECENT"
@@ -467,7 +467,7 @@ Content-Type: application/json
     "asOfTime" : "{{$isoTimestamp}}",
     "forLineage" : false,
     "forDuplicateProcessing" : false,
-    "openMetadataTypeName" : "GlossaryTerm",
+    "metadataElementTypeName" : "GlossaryTerm",
     "limitResultsByStatus" : [ "ACTIVE", "DRAFT"],
     "sequencingProperty" : "???",
     "sequencingOrder" : "LAST_UPDATE_RECENT"
@@ -492,7 +492,7 @@ Content-Type: application/json
     "asOfTime" : "{{$isoTimestamp}}",
     "forLineage" : false,
     "forDuplicateProcessing" : false,
-    "openMetadataTypeName" : "GlossaryTerm",
+    "metadataElementTypeName" : "GlossaryTerm",
     "limitResultsByStatus" : [ "ACTIVE", "DRAFT"],
     "sequencingProperty" : "???",
     "sequencingOrder" : "LAST_UPDATE_RECENT"
@@ -513,7 +513,7 @@ Content-Type: application/json
     "asOfTime" : "{{$isoTimestamp}}",
     "forLineage" : false,
     "forDuplicateProcessing" : false,
-    "openMetadataTypeName" : "GlossaryTerm",
+    "metadataElementTypeName" : "GlossaryTerm",
     "limitResultsByStatus" : [ "ACTIVE", "DRAFT"],
     "sequencingProperty" : "???",
     "sequencingOrder" : "LAST_UPDATE_RECENT"
@@ -688,7 +688,7 @@ Content-Type: application/json
 
 {
     "class" : "FindProperties",
-    "openMetadataTypeName" : "CertificationType",
+    "metadataElementTypeName" : "CertificationType",
     "forLineage" : false,
     "forDuplicateProcessing" : false,
     "effectiveTime" : "{{$isoTimestamp}}"
@@ -708,7 +708,7 @@ Content-Type: application/json
 
 {
     "class" : "FindPropertyNamesProperties",
-    "openMetadataTypeName" : "Project",
+    "metadataElementTypeName" : "Project",
     "propertyValue" : "Campaign:Clinical Trials Management",
     "propertyNames" : ["name", "qualifiedName"],
     "forLineage" : false,
@@ -731,7 +731,7 @@ Content-Type: application/json
 
 {
     "class" : "FindPropertyNamesProperties",
-    "openMetadataTypeName" : "CertificationType",
+    "metadataElementTypeName" : "CertificationType",
     "propertyValue" : "Approved Hospital",
     "propertyNames" : ["name", "qualifiedName", "title"],
     "forLineage" : false,
@@ -772,7 +772,7 @@ Content-Type: application/json
 
 {
     "class" : "FindProperties",
-    "openMetadataTypeName" : "Project",
+    "metadataElementTypeName" : "Project",
     "forLineage" : false,
     "forDuplicateProcessing" : false,
     "effectiveTime" : "{{$isoTimestamp}}"
@@ -790,7 +790,7 @@ Content-Type: application/json
 
 {
     "class" : "FindPropertyNamesProperties",
-    "openMetadataTypeName" : "Project",
+    "metadataElementTypeName" : "Project",
     "propertyValue" : "Clinical Trials",
     "propertyNames" : ["name", "qualifiedName"],
     "forLineage" : false,
@@ -810,7 +810,7 @@ Content-Type: application/json
 
 {
     "class" : "FindPropertyNamesProperties",
-    "openMetadataTypeName" : "Project",
+    "metadataElementTypeName" : "Project",
     "propertyValue" : "Clinical Trials",
     "propertyNames" : ["name", "qualifiedName"],
     "forLineage" : false,
@@ -830,7 +830,7 @@ Content-Type: application/json
 
 {
     "class" : "FindProperties",
-    "openMetadataTypeName" : "Project",
+    "metadataElementTypeName" : "Project",
     "forLineage" : false,
     "forDuplicateProcessing" : false,
     "effectiveTime" : "{{$isoTimestamp}}"
@@ -888,7 +888,7 @@ Content-Type: application/json
 
 {
     "class" : "FindProperties",
-    "openMetadataTypeName" : "CertificationType",
+    "metadataElementTypeName" : "CertificationType",
     "forLineage" : false,
     "forDuplicateProcessing" : false,
     "effectiveTime" : "{{$isoTimestamp}}"
@@ -906,7 +906,7 @@ Content-Type: application/json
 
 {
     "class" : "FindPropertyNamesProperties",
-    "openMetadataTypeName" : "Project",
+    "metadataElementTypeName" : "Project",
     "propertyValue" : "Clinical Trials",
     "propertyNames" : ["name", "qualifiedName"],
     "forLineage" : false,
@@ -925,7 +925,7 @@ Content-Type: application/json
 
 {
     "class" : "FindPropertyNamesProperties",
-    "openMetadataTypeName" : "Project",
+    "metadataElementTypeName" : "Project",
     "propertyValue" : "Clinical Trials",
     "propertyNames" : ["name", "qualifiedName"],
     "forLineage" : false,
@@ -935,23 +935,35 @@ Content-Type: application/json
 
 
 ###
-# @name getRelationships
-# Retrieve relationships of the requested relationship type name.
+# @name getRelationships (any type)
+# Retrieve all relationships of the any relationship type name.
 POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/classification-explorer/relationships
 Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
     "class" : "FindProperties",
-    "openMetadataTypeName": "{{relationshipTypeName}}",
     "forLineage" : false,
     "forDuplicateProcessing" : false,
     "effectiveTime" : "{{$isoTimestamp}}"
 }
 
+###
+# @name getRelationships (specific type)
+# Retrieve relationships of the requested relationship type name.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/classification-explorer/relationships/{{relationshipTypeName}}
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+    "class" : "FindProperties",
+    "forLineage" : false,
+    "forDuplicateProcessing" : false,
+    "effectiveTime" : "{{$isoTimestamp}}"
+}
 
 ###
-# @name getRelationshipsWithPropertyValue
+# @name getRelationshipsWithPropertyValue (any type)
 # Retrieve relationships of the requested relationship type name and with the requested a value found in
 # one of the relationship's properties specified.  The value must match exactly.
 POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/classification-explorer/relationships/with-exact-property-value
@@ -960,8 +972,43 @@ Content-Type: application/json
 
 {
     "class" : "FindPropertyNamesProperties",
-    "openMetadataTypeName": "{{relationshipTypeName}}",
     "propertyValue" : "Organization:Hampton Hospital",
+    "propertyNames" : ["name", "qualifiedName"],
+    "forLineage" : false,
+    "forDuplicateProcessing" : false,
+    "effectiveTime" : "{{$isoTimestamp}}"
+}
+
+
+###
+# @name getRelationshipsWithPropertyValue (specific type)
+# Retrieve relationships of the requested relationship type name and with the requested a value found in
+# one of the relationship's properties specified.  The value must match exactly.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/classification-explorer/relationships/{{relationshipTypeName}}/with-exact-property-value
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+    "class" : "FindPropertyNamesProperties",
+    "propertyValue" : "Organization:Hampton Hospital",
+    "propertyNames" : ["name", "qualifiedName"],
+    "forLineage" : false,
+    "forDuplicateProcessing" : false,
+    "effectiveTime" : "{{$isoTimestamp}}"
+}
+
+###
+# @name findRelationshipsWithPropertyValue (any type)
+# Retrieve relationships of any relationship type name and with the requested a value found in one of
+# the relationship's properties specified.  The value must only be contained in the properties rather than
+# needing to be an exact match.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/classification-explorer/relationships/with-property-value-search
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+    "class" : "FindPropertyNamesProperties",
+    "propertyValue" : "Clinical Trials",
     "propertyNames" : ["name", "qualifiedName"],
     "forLineage" : false,
     "forDuplicateProcessing" : false,
@@ -973,13 +1020,12 @@ Content-Type: application/json
 # Retrieve relationships of the requested relationship type name and with the requested a value found in one of
 # the relationship's properties specified.  The value must only be contained in the properties rather than
 # needing to be an exact match.
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/classification-explorer/relationships/with-property-value-search
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/classification-explorer/relationships/{{relationshipTypeName}}/with-property-value-search
 Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
     "class" : "FindPropertyNamesProperties",
-    "openMetadataTypeName" : "{{relationshipTypeName}}",
     "propertyValue" : "Clinical Trials",
     "propertyNames" : ["name", "qualifiedName"],
     "forLineage" : false,

@@ -22,7 +22,7 @@ Content-Type: application/json
 
 ###
 # =====================================================================================================================
-# Work with Schema Elements
+# Work with Assets
 # https://egeria-project.org/concepts/asset
 
 @assetGUID=add guid here
@@ -294,3 +294,124 @@ Content-Type: application/json
   "forLineage" : false,
   "forDuplicateProcessing" : false
 }
+
+
+
+###
+# =====================================================================================================================
+# A catalog target links an element (typically an asset) to an integration connector for processing.
+#
+
+@integrationConnectorGUID=fa1f711c-0b34-4b57-8e6e-16162b132b0c
+@metadataElementGUID=add guid here
+@relationshipGUID=add guid here
+
+###
+# @name addCatalogTarget
+# Add a catalog target to an integration connector.
+# Further Information: https://egeria-project.org/concepts/integration-connector/
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/automated-curation/integration-connectors/{{integrationConnectorGUID}}/catalog-targets/{{metadataElementGUID}}
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "NewRelationshipRequestBody",
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false,
+  "properties": {
+    "class": "CatalogTargetProperties",
+    "catalogTargetName" : "Freddy",
+    "metadataSourceQualifiedName" : "",
+    "templates" : {
+       "templateName1" : "template1GUID",
+       "templateName2" : "template2GUID"
+    },
+    "configurationProperties" : {
+      "propertyName1" : "propertyValue1",
+      "propertyName2" : "propertyValue2"
+    },
+    "effectiveFrom": "{{$isoTimestamp}}",
+    "effectiveTo": "{{$isoTimestamp}}"
+  }
+}
+
+
+###
+# Full catalog target properties
+#{
+#    "class": "CatalogTargetProperties",
+#    "catalogTargetName" : "",
+#    "metadataSourceQualifiedName" : "",
+#    "templates" : {
+#        "templateName1" : "template1GUID",
+#        "templateName2" : "template2GUID"
+#    },
+#    "configurationProperties" : {
+#        "propertyName1" : "propertyValue1",
+#        "propertyName2" : "propertyValue2"
+#    }
+#}
+
+
+###
+# @name updateCatalogTarget
+# Update a catalog target for an integration connector.
+# Further Information: https://egeria-project.org/concepts/integration-connector/
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/automated-curation/catalog-targets/{{relationshipGUID}}/update
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "UpdateRelationshipRequestBody",
+  "properties" : {
+    "class": "CatalogTargetProperties",
+    "catalogTargetName" : "Freddy",
+    "metadataSourceQualifiedName" : "",
+    "templates" : {
+       "templateName1" : "template1GUID",
+       "templateName2" : "template2GUID"
+    },
+    "configurationProperties" : {
+      "propertyName1" : "propertyValue1",
+      "propertyName2" : "propertyValue2"
+    }
+  },
+  "mergeUpdate": true,
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
+}
+
+
+###
+# @name getCatalogTarget
+# Retrieve a specific catalog target associated with an integration connector.
+# Further Information: https://egeria-project.org/concepts/integration-connector/
+GET {{baseURL}}/servers/{{viewServer}}/api/open-metadata/automated-curation/catalog-targets/{{relationshipGUID}}
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+
+###
+# @name getCatalogTargets
+# Retrieve the details of the metadata elements identified as catalog targets with an integration connector.
+# Further Information: https://egeria-project.org/concepts/integration-connector/
+GET {{baseURL}}/servers/{{viewServer}}/api/open-metadata/automated-curation/integration-connectors/{{integrationConnectorGUID}}/catalog-targets?startFrom=0&pageSize=0
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+
+###
+# @name removeCatalogTarget
+# Unregister a catalog target from the integration connector.
+# Further Information: https://egeria-project.org/concepts/integration-connector/
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/automated-curation/catalog-targets/{{relationshipGUID}}/remove
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+

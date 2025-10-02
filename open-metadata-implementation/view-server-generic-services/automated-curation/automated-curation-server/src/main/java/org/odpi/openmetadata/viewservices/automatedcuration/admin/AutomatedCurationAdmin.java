@@ -5,16 +5,19 @@ package org.odpi.openmetadata.viewservices.automatedcuration.admin;
 import org.odpi.openmetadata.adminservices.configuration.properties.ViewServiceConfig;
 import org.odpi.openmetadata.adminservices.configuration.registration.ViewServiceDescription;
 import org.odpi.openmetadata.adminservices.ffdc.exception.OMAGConfigurationErrorException;
+import org.odpi.openmetadata.adminservices.registration.ViewServerGenericServiceAdmin;
 import org.odpi.openmetadata.adminservices.registration.ViewServiceAdmin;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.viewservices.automatedcuration.ffdc.AutomatedCurationAuditCode;
 import org.odpi.openmetadata.viewservices.automatedcuration.server.AutomatedCurationInstance;
 
+import java.util.List;
+
 /**
  * AutomatedCurationAdmin is the class that is called by the View Server to initialize and terminate
  * the Automated Curation OMVS.  The initialization call provides this OMVS with the Audit log and configuration.
  */
-public class AutomatedCurationAdmin extends ViewServiceAdmin
+public class AutomatedCurationAdmin extends ViewServerGenericServiceAdmin
 {
     private AuditLog                  auditLog   = null;
     private AutomatedCurationInstance instance   = null;
@@ -37,6 +40,7 @@ public class AutomatedCurationAdmin extends ViewServiceAdmin
      * @param serverUserName                     user id to use on OMRS calls where there is no end user, or as part of an HTTP authentication mechanism with serverUserPassword.
      * @param serverUserPassword                 password to use as part of an HTTP authentication mechanism.
      * @param maxPageSize                        maximum page size. 0 means unlimited
+     * @param activeViewServices list of view services active in this server
      * @throws OMAGConfigurationErrorException   invalid parameters in the configuration properties.
      */
     @Override
@@ -45,7 +49,8 @@ public class AutomatedCurationAdmin extends ViewServiceAdmin
                            AuditLog                     auditLog,
                            String                       serverUserName,
                            String                       serverUserPassword,
-                           int                          maxPageSize) throws OMAGConfigurationErrorException
+                           int                          maxPageSize,
+                           List<ViewServiceConfig>      activeViewServices) throws OMAGConfigurationErrorException
     {
 
         final String actionDescription = "initialize";
@@ -67,7 +72,8 @@ public class AutomatedCurationAdmin extends ViewServiceAdmin
                                                           serverUserPassword,
                                                           maxPageSize,
                                                           viewServiceConfig.getOMAGServerName(),
-                                                          viewServiceConfig.getOMAGServerPlatformRootURL());
+                                                          viewServiceConfig.getOMAGServerPlatformRootURL(),
+                                                          activeViewServices);
 
             auditLog.logMessage(actionDescription,
                                 AutomatedCurationAuditCode.SERVICE_INITIALIZED.getMessageDefinition(),

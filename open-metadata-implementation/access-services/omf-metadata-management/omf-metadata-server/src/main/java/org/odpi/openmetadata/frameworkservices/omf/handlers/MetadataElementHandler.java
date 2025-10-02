@@ -778,7 +778,7 @@ public class MetadataElementHandler<B> extends ReferenceableHandler<B>
     public List<B> findMetadataElements(String                userId,
                                         String                metadataElementTypeName,
                                         List<String>          metadataElementSubtypeName,
-                                        SearchProperties searchProperties,
+                                        SearchProperties      searchProperties,
                                         List<ElementStatus>   limitResultsByStatus,
                                         SearchClassifications searchClassifications,
                                         Date                  asOfTime,

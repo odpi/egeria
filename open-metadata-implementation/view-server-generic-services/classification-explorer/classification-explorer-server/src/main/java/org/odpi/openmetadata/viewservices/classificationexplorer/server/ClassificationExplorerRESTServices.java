@@ -2373,6 +2373,7 @@ public class ClassificationExplorerRESTServices extends TokenController
      *
      * @param serverName  name of the server instance to connect to
      * @param urlMarker  view service URL marker
+     * @param relationshipTypeName name of relationship
      * @param requestBody  open metadata type to search on
      *
      * @return list of matching elements or
@@ -2382,6 +2383,7 @@ public class ClassificationExplorerRESTServices extends TokenController
      */
     public MetadataRelationshipSummariesResponse getRelationships(String         serverName,
                                                                   String         urlMarker,
+                                                                  String         relationshipTypeName,
                                                                   FindProperties requestBody)
     {
         final String methodName = "getRelationships";
@@ -2400,33 +2402,16 @@ public class ClassificationExplorerRESTServices extends TokenController
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
             StewardshipManagementHandler handler = instanceHandler.getStewardshipManagementHandler(userId, serverName, urlMarker, methodName);
 
-            if (requestBody == null)
+            MetadataRelationshipSummaryList summaryList = handler.getRelationships(userId,
+                                                                                   relationshipTypeName,
+                                                                                   null,
+                                                                                   null,
+                                                                                   requestBody,
+                                                                                   methodName);
+            if (summaryList != null)
             {
-                MetadataRelationshipSummaryList summaryList = handler.getRelationships(userId,
-                                                                                       null,
-                                                                                       null,
-                                                                                       null,
-                                                                                       null,
-                                                                                       methodName);
-                if (summaryList != null)
-                {
-                    response.setRelationships(summaryList.getElementList());
-                    response.setMermaidGraph(summaryList.getMermaidGraph());
-                }
-            }
-            else
-            {
-                MetadataRelationshipSummaryList summaryList = handler.getRelationships(userId,
-                                                                                       requestBody.getOpenMetadataTypeName(),
-                                                                                       null,
-                                                                                       null,
-                                                                                       requestBody,
-                                                                                       methodName);
-                if (summaryList != null)
-                {
-                    response.setRelationships(summaryList.getElementList());
-                    response.setMermaidGraph(summaryList.getMermaidGraph());
-                }
+                response.setRelationships(summaryList.getElementList());
+                response.setMermaidGraph(summaryList.getMermaidGraph());
             }
         }
         catch (Throwable error)
@@ -2444,6 +2429,7 @@ public class ClassificationExplorerRESTServices extends TokenController
      * one of the relationship's properties specified.  The value must match exactly.
      *
      * @param serverName  name of the server instance to connect to
+     * @param relationshipTypeName name of relationship
      * @param urlMarker  view service URL marker
      * @param requestBody properties and optional open metadata type to search on
      *
@@ -2454,6 +2440,7 @@ public class ClassificationExplorerRESTServices extends TokenController
      */
     public MetadataRelationshipSummariesResponse getRelationshipsWithPropertyValue(String                      serverName,
                                                                                    String                      urlMarker,
+                                                                                   String                      relationshipTypeName,
                                                                                    FindPropertyNamesProperties requestBody)
     {
         final String methodName = "getRelationshipsWithPropertyValue";
@@ -2479,7 +2466,7 @@ public class ClassificationExplorerRESTServices extends TokenController
             else
             {
                 MetadataRelationshipSummaryList summaryList = handler.getRelationships(userId,
-                                                                                       requestBody.getOpenMetadataTypeName(),
+                                                                                       relationshipTypeName,
                                                                                        requestBody.getPropertyValue(),
                                                                                        requestBody.getPropertyNames(),
                                                                                        requestBody,
@@ -2509,6 +2496,7 @@ public class ClassificationExplorerRESTServices extends TokenController
      *
      * @param serverName  name of the server instance to connect to
      * @param urlMarker  view service URL marker
+     * @param relationshipTypeName name of relationship
      * @param requestBody properties and optional open metadata type to search on
      *
      * @return list of matching elements or
@@ -2518,6 +2506,7 @@ public class ClassificationExplorerRESTServices extends TokenController
      */
     public MetadataRelationshipSummariesResponse findRelationshipsWithPropertyValue(String                      serverName,
                                                                                     String                      urlMarker,
+                                                                                    String                      relationshipTypeName,
                                                                                     FindPropertyNamesProperties requestBody)
     {
         final String methodName = "findRelationshipsWithPropertyValue";
@@ -2543,7 +2532,7 @@ public class ClassificationExplorerRESTServices extends TokenController
             else
             {
                 MetadataRelationshipSummaryList summaryList = handler.findRelationshipsWithPropertyValue(userId,
-                                                                                                         requestBody.getOpenMetadataTypeName(),
+                                                                                                         relationshipTypeName,
                                                                                                          requestBody.getPropertyValue(),
                                                                                                          requestBody.getPropertyNames(),
                                                                                                          requestBody);
