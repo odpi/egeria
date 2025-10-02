@@ -103,7 +103,7 @@ Content-Type: application/json
 # Return information about the elements classified with the impact classification.
 #
 # https://egeria-project.org/types/4/0422-Governed-Data-Classifications/
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/classification-explorer/elements/by-impact?startFrom=0&pageSize=10
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/classification-explorer/elements/by-impact
 Authorization: Bearer {{token}}
 Content-Type: application/json
 
@@ -127,7 +127,7 @@ Content-Type: application/json
 # Return information about the elements classified with the confidence classification.
 #
 # https://egeria-project.org/types/4/0422-Governed-Data-Classifications/
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/classification-explorer/elements/by-confidence?startFrom=0&pageSize=10
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/classification-explorer/elements/by-confidence
 Authorization: Bearer {{token}}
 Content-Type: application/json
 
@@ -150,7 +150,7 @@ Content-Type: application/json
 # Return information about the elements classified with the criticality classification.
 #
 # https://egeria-project.org/types/4/0422-Governed-Data-Classifications/
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/classification-explorer/elements/by-criticality?startFrom=0&pageSize=10
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/classification-explorer/elements/by-criticality
 Authorization: Bearer {{token}}
 Content-Type: application/json
 
@@ -174,7 +174,7 @@ Content-Type: application/json
 # Return information about the elements classified with the confidentiality classification.
 #
 # https://egeria-project.org/types/4/0422-Governed-Data-Classifications/
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/classification-explorer/elements/by-confidentiality?startFrom=0&pageSize=10
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/classification-explorer/elements/by-confidentiality
 Authorization: Bearer {{token}}
 Content-Type: application/json
 
@@ -198,7 +198,7 @@ Content-Type: application/json
 # Return information about the elements classified with the retention classification.
 #
 # https://egeria-project.org/types/4/0422-Governed-Data-Classifications/
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/classification-explorer/elements/by-retention?startFrom=0&pageSize=10
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/classification-explorer/elements/by-retention
 Authorization: Bearer {{token}}
 Content-Type: application/json
 
@@ -222,7 +222,7 @@ Content-Type: application/json
 # Return information about the elements classified with the security tags classification.
 #
 # https://egeria-project.org/types/4/0422-Governed-Data-Classifications/
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/classification-explorer/elements/by-security-tags?startFrom=0&pageSize=10
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/classification-explorer/elements/by-security-tags
 Authorization: Bearer {{token}}
 Content-Type: application/json
 
@@ -251,7 +251,7 @@ Content-Type: application/json
 # Return information about the elements classified with the ownership classification.
 #
 # https://egeria-project.org/types/4/0445-Governance-Roles/
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/classification-explorer/elements/by-ownership?startFrom=0&pageSize=10
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/classification-explorer/elements/by-ownership
 Authorization: Bearer {{token}}
 Content-Type: application/json
 
@@ -274,7 +274,7 @@ Content-Type: application/json
 # Return information about the elements classified with the subject area classification.
 #
 # https://egeria-project.org/types/4/0425-Subject-Areas/
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/classification-explorer/elements/by-subject-area-membership?startFrom=0&pageSize=10
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/classification-explorer/elements/by-subject-area-membership
 Authorization: Bearer {{token}}
 Content-Type: application/json
 
@@ -297,7 +297,7 @@ Content-Type: application/json
 # Return information about the digital resources from a specific origin.
 #
 # https://egeria-project.org/types/4/0440-Organizational-Controls/
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/classification-explorer/elements/by-digital-resource-origin?startFrom=0&pageSize=10
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/classification-explorer/elements/by-digital-resource-origin
 Authorization: Bearer {{token}}
 Content-Type: application/json
 
@@ -327,7 +327,7 @@ Content-Type: application/json
 # Retrieve the glossary terms linked via a "SemanticAssignment" relationship to the requested element.
 #
 # https://egeria-project.org/types/4/0440-Organizational-Controls/
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/classification-explorer/glossaries/terms/by-semantic-assignment/{{elementGUID}}?startFrom=0&pageSize=10
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/classification-explorer/glossaries/terms/by-semantic-assignment/{{elementGUID}}
 Authorization: Bearer {{token}}
 Content-Type: application/json
 
@@ -358,7 +358,7 @@ Content-Type: application/json
 # Retrieve the elements linked via a "SemanticAssignment" relationship to the requested glossary term.
 #
 # https://egeria-project.org/types/4/0440-Organizational-Controls/
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/classification-explorer/elements/by-semantic-assignment/{{glossaryTermGUID}}?startFrom=0&pageSize=10
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/classification-explorer/elements/by-semantic-assignment/{{glossaryTermGUID}}
 Authorization: Bearer {{token}}
 Content-Type: application/json
 
@@ -392,7 +392,7 @@ Content-Type: application/json
 # Retrieve the governance definitions linked via a "GovernedBy" relationship to the requested element.
 #
 # https://egeria-project.org/types/4/0401-Governance-Definitions/
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/classification-explorer/elements/governed-by/{{governanceDefinitionGUID}}?startFrom=0&pageSize=10
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/classification-explorer/elements/governed-by/{{governanceDefinitionGUID}}
 Authorization: Bearer {{token}}
 Content-Type: application/json
 
@@ -413,7 +413,7 @@ Content-Type: application/json
 # Retrieve the elements linked via a GovernedBy relationship to the requested governance definition.
 #
 # https://egeria-project.org/types/4/0401-Governance-Definitions/
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/classification-explorer/elements/{{elementGUID}}/governed-by?startFrom=0&pageSize=10
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/classification-explorer/elements/{{elementGUID}}/governed-by
 Authorization: Bearer {{token}}
 Content-Type: application/json
 
@@ -435,7 +435,7 @@ Content-Type: application/json
 # Retrieve the elements linked via a SourceFrom relationship to the requested element.  The elements returned were used to create the requested element.  Typically only one element is returned.
 #
 # https://egeria-project.org/types/0/0011-Managing-Referenceables/
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/classification-explorer/elements/{{elementGUID}}/source?startFrom=0&pageSize=10
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/classification-explorer/elements/{{elementGUID}}/source
 Authorization: Bearer {{token}}
 Content-Type: application/json
 
@@ -457,7 +457,7 @@ Content-Type: application/json
 # Retrieve the elements linked via the SourcedFrom relationship to the requested element. The elements returned were created using the requested element as a template.
 #
 # https://egeria-project.org/types/0/0011-Managing-Referenceables/
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/classification-explorer/elements/{{elementGUID}}/sourced-from?startFrom=0&pageSize=10
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/classification-explorer/elements/{{elementGUID}}/sourced-from
 Authorization: Bearer {{token}}
 Content-Type: application/json
 
@@ -482,7 +482,7 @@ Content-Type: application/json
 # Retrieve the scopes linked via the ScopedBy relationship to the requested element.
 #
 # Scopes: https://egeria-project.org/types/1/0120-Assignment-Scopes/
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/classification-explorer/elements/{{elementGUID}}/scoped-by?startFrom=0&pageSize=10
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/classification-explorer/elements/{{elementGUID}}/scoped-by
 Authorization: Bearer {{token}}
 Content-Type: application/json
 
@@ -503,7 +503,7 @@ Content-Type: application/json
 # Retrieve the elements linked via the ScopedBy relationship to the scope.
 #
 # Scopes: https://egeria-project.org/types/1/0120-Assignment-Scopes/
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/classification-explorer/elements/scoped-by/{{scopeGUID}}/?startFrom=0&pageSize=10
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/classification-explorer/elements/scoped-by/{{scopeGUID}}
 Authorization: Bearer {{token}}
 Content-Type: application/json
 
@@ -530,7 +530,7 @@ Content-Type: application/json
 # Retrieve the elements linked via a License relationship to the requested LicenseType.
 #
 # https://https://egeria-project.org/types/4/0481-Licenses/
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/classification-explorer/elements/licenses/{{licenseTypeGUID}}?startFrom=0&pageSize=10
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/classification-explorer/elements/licenses/{{licenseTypeGUID}}
 Authorization: Bearer {{token}}
 Content-Type: application/json
 
@@ -551,7 +551,7 @@ Content-Type: application/json
 # Retrieve the license types linked via a License relationship to the requested element.
 #
 # https://https://egeria-project.org/types/4/0481-Licenses/
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/classification-explorer/elements/{{elementGUID}}/licenses?startFrom=0&pageSize=10
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/classification-explorer/elements/{{elementGUID}}/licenses
 Authorization: Bearer {{token}}
 Content-Type: application/json
 
@@ -577,7 +577,7 @@ Content-Type: application/json
 # Retrieve the elements linked via a Certification relationship to the requested CertificationType.
 #
 # https://https://egeria-project.org/types/4/0481-Licenses/
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/classification-explorer/elements/certifications/{{certificationTypeGUID}}?startFrom=0&pageSize=10
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/classification-explorer/elements/certifications/{{certificationTypeGUID}}
 Authorization: Bearer {{token}}
 Content-Type: application/json
 
@@ -598,7 +598,7 @@ Content-Type: application/json
 # Retrieve the certification types linked via a Certification relationship to the requested element.
 #
 # https://https://egeria-project.org/types/4/0481-Licenses/
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/classification-explorer/elements/{{elementGUID}}/certifications?startFrom=0&pageSize=10
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/classification-explorer/elements/{{elementGUID}}/certifications
 Authorization: Bearer {{token}}
 Content-Type: application/json
 
@@ -624,7 +624,7 @@ Content-Type: application/json
 # Retrieve the metadata element using its unique identifier.
 #
 # https://egeria-project.org/types/
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/classification-explorer/elements/{{elementGUID}}?startFrom=0&pageSize=10
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/classification-explorer/elements/{{elementGUID}}
 Authorization: Bearer {{token}}
 Content-Type: application/json
 
@@ -642,7 +642,7 @@ Content-Type: application/json
 # Retrieve the metadata element using its unique name (typically the qualified name, but it is possible to specify a different property name in the request body as long as it is unique).  If multiple matching instances are found, and exception is thrown.
 #
 # https://egeria-project.org/services/gaf-metadata-management/
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/classification-explorer/elements/by-unique-name?startFrom=0&pageSize=10
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/classification-explorer/elements/by-unique-name
 Authorization: Bearer {{token}}
 Content-Type: application/json
 
@@ -682,7 +682,7 @@ Content-Type: application/json
 #
 # https://egeria-project.org/types/
 
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/classification-explorer/elements/by-type?startFrom=0&pageSize=10
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/classification-explorer/elements/by-type
 Authorization: Bearer {{token}}
 Content-Type: application/json
 
@@ -702,7 +702,7 @@ Content-Type: application/json
 #
 # https://egeria-project.org/types/
 
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/classification-explorer/elements/by-exact-property-value?startFrom=0&pageSize=10
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/classification-explorer/elements/by-exact-property-value
 Authorization: Bearer {{token}}
 Content-Type: application/json
 
@@ -725,7 +725,7 @@ Content-Type: application/json
 #
 # https://egeria-project.org/types/
 
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/classification-explorer/elements/by-property-value-search?startFrom=0&pageSize=10
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/classification-explorer/elements/by-property-value-search
 Authorization: Bearer {{token}}
 Content-Type: application/json
 
@@ -748,7 +748,7 @@ Content-Type: application/json
 # Retrieve elements with the requested classification name. It is also possible to limit the results
 # by specifying a type name for the elements that should be returned. If no type name is specified then
 # any type of element may be returned.
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/classification-explorer/elements/by-classification/{{classificationName}}?startFrom=0&pageSize=10
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/classification-explorer/elements/by-classification/{{classificationName}}
 Authorization: Bearer {{token}}
 Content-Type: application/json
 
@@ -766,7 +766,7 @@ Content-Type: application/json
 # Retrieve elements with the requested classification name. It is also possible to limit the results
 # by specifying a type name for the elements that should be returned. If no type name is specified then
 # any type of element may be returned.
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/classification-explorer/elements/by-classification/{{classificationName}}?startFrom=0&pageSize=10
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/classification-explorer/elements/by-classification/{{classificationName}}
 Authorization: Bearer {{token}}
 Content-Type: application/json
 
@@ -784,7 +784,7 @@ Content-Type: application/json
 # Retrieve elements with the requested classification name and with the requested a value found in one of the
 # classification's properties specified.  The value must match exactly. An open metadata type name may be supplied
 # to restrict the types of elements returned.
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/classification-explorer/elements/by-classification/{{classificationName}}/with-exact-property-value?startFrom=0&pageSize=10
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/classification-explorer/elements/by-classification/{{classificationName}}/with-exact-property-value
 Authorization: Bearer {{token}}
 Content-Type: application/json
 
@@ -804,7 +804,7 @@ Content-Type: application/json
 # one of the classification's properties specified.  The value must only be contained in the
 # properties rather than needing to be an exact match.
 # An open metadata type name may be supplied to restrict the results.
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/classification-explorer/elements/by-classification/{{classificationName}}/with-property-value-search?startFrom=0&pageSize=10
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/classification-explorer/elements/by-classification/{{classificationName}}/with-property-value-search
 Authorization: Bearer {{token}}
 Content-Type: application/json
 
@@ -824,7 +824,7 @@ Content-Type: application/json
 # Retrieve elements linked via the requested relationship type name. It is also possible to limit the results by
 # specifying a type name for the elements that should be returned. If no type name is specified then any type of
 # element may be returned.
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/classification-explorer/elements/{{elementGUID}}/by-relationship?startFrom=0&pageSize=10&startAtEnd=1
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/classification-explorer/elements/{{elementGUID}}/by-relationship?startAtEnd=1
 Authorization: Bearer {{token}}
 Content-Type: application/json
 
@@ -843,7 +843,7 @@ Content-Type: application/json
 # Retrieve elements linked via the requested relationship type name. It is also possible to limit the results by
 # specifying a type name for the elements that should be returned. If no type name is specified then any type of
 # element may be returned.
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/classification-explorer/elements/{{elementGUID}}/by-relationship?startFrom=0&pageSize=10&startAtEnd=1
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/classification-explorer/elements/{{elementGUID}}/by-relationship?startAtEnd=1
 Authorization: Bearer {{token}}
 Content-Type: application/json
 
@@ -865,7 +865,7 @@ Content-Type: application/json
 # Retrieve elements linked via the requested relationship type name. It is also possible to limit the results by
 # specifying a type name for the elements that should be returned. If no type name is specified then any type of
 # element may be returned.
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/classification-explorer/elements/{{elementGUID}}/by-relationship/{{relationshipTypeName}}?startFrom=0&pageSize=10&startAtEnd=1
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/classification-explorer/elements/{{elementGUID}}/by-relationship/{{relationshipTypeName}}?startAtEnd=1
 Authorization: Bearer {{token}}
 Content-Type: application/json
 
@@ -882,7 +882,7 @@ Content-Type: application/json
 # Retrieve elements linked via the requested relationship type name. It is also possible to limit the results by
 # specifying a type name for the elements that should be returned. If no type name is specified then any type of
 # element may be returned.
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/classification-explorer/elements/{{elementGUID}}/by-relationship/{{relationshipTypeName}}?startFrom=0&pageSize=10&startAtEnd=1
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/classification-explorer/elements/{{elementGUID}}/by-relationship/{{relationshipTypeName}}?startAtEnd=1
 Authorization: Bearer {{token}}
 Content-Type: application/json
 
@@ -900,7 +900,7 @@ Content-Type: application/json
 # Retrieve elements linked via the requested relationship type name and with the requested a value found in one of
 # the classification's properties specified.  The value must match exactly. An open metadata type name may be
 # supplied to restrict the types of elements returned.
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/classification-explorer/elements/{{elementGUID}}/by-relationship/{{relationshipTypeName}}/with-exact-property-value?startFrom=0&pageSize=10&startAtEnd=1
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/classification-explorer/elements/{{elementGUID}}/by-relationship/{{relationshipTypeName}}/with-exact-property-value?startAtEnd=1
 Authorization: Bearer {{token}}
 Content-Type: application/json
 
@@ -919,7 +919,7 @@ Content-Type: application/json
 # Retrieve elements linked via the requested relationship type name and with the requested value found in one of the
 # relationship's properties specified.  The value must only be contained in the properties rather than needing to be
 # an exact match.  An open metadata type name may be supplied to restrict the results.
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/classification-explorer/elements/{{elementGUID}}/by-relationship/{{relationshipTypeName}}/with-property-value-search?startFrom=0&pageSize=10&startAtEnd=1
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/classification-explorer/elements/{{elementGUID}}/by-relationship/{{relationshipTypeName}}/with-property-value-search?startAtEnd=1
 Authorization: Bearer {{token}}
 Content-Type: application/json
 
@@ -937,12 +937,13 @@ Content-Type: application/json
 ###
 # @name getRelationships
 # Retrieve relationships of the requested relationship type name.
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/classification-explorer/relationships/{{relationshipTypeName}}?startFrom=0&pageSize=10
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/classification-explorer/relationships
 Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
     "class" : "FindProperties",
+    "openMetadataTypeName": "{{relationshipTypeName}}",
     "forLineage" : false,
     "forDuplicateProcessing" : false,
     "effectiveTime" : "{{$isoTimestamp}}"
@@ -953,12 +954,13 @@ Content-Type: application/json
 # @name getRelationshipsWithPropertyValue
 # Retrieve relationships of the requested relationship type name and with the requested a value found in
 # one of the relationship's properties specified.  The value must match exactly.
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/classification-explorer/relationships/{{relationshipTypeName}}/with-exact-property-value?startFrom=0&pageSize=10
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/classification-explorer/relationships/with-exact-property-value
 Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
     "class" : "FindPropertyNamesProperties",
+    "openMetadataTypeName": "{{relationshipTypeName}}",
     "propertyValue" : "Organization:Hampton Hospital",
     "propertyNames" : ["name", "qualifiedName"],
     "forLineage" : false,
@@ -971,13 +973,13 @@ Content-Type: application/json
 # Retrieve relationships of the requested relationship type name and with the requested a value found in one of
 # the relationship's properties specified.  The value must only be contained in the properties rather than
 # needing to be an exact match.
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/classification-explorer/relationships/{{relationshipTypeName}}/with-property-value-search?startFrom=0&pageSize=10
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/classification-explorer/relationships/with-property-value-search
 Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
     "class" : "FindPropertyNamesProperties",
-    "openMetadataTypeName" : "Project",
+    "openMetadataTypeName" : "{{relationshipTypeName}}",
     "propertyValue" : "Clinical Trials",
     "propertyNames" : ["name", "qualifiedName"],
     "forLineage" : false,

@@ -254,7 +254,7 @@ public class InformationSupplyChainHandler extends OpenMetadataHandlerBase
         propertyHelper.validateGUID(nestedInformationSupplyChainGUID, end2GUIDParameterName, methodName);
 
         openMetadataClient.createRelatedElementsInStore(userId,
-                                                        OpenMetadataType.INFORMATION_SUPPLY_CHAIN_COMPOSITION_RELATIONSHIP.typeName,
+                                                        OpenMetadataType.COLLECTION_MEMBERSHIP_RELATIONSHIP.typeName,
                                                         informationSupplyChainGUID,
                                                         nestedInformationSupplyChainGUID,
                                                         metadataSourceOptions,
@@ -291,7 +291,7 @@ public class InformationSupplyChainHandler extends OpenMetadataHandlerBase
         propertyHelper.validateGUID(nestedInformationSupplyChainGUID, end2GUIDParameterName, methodName);
 
         openMetadataClient.detachRelatedElementsInStore(userId,
-                                                        OpenMetadataType.INFORMATION_SUPPLY_CHAIN_COMPOSITION_RELATIONSHIP.typeName,
+                                                        OpenMetadataType.COLLECTION_MEMBERSHIP_RELATIONSHIP.typeName,
                                                         informationSupplyChainGUID,
                                                         nestedInformationSupplyChainGUID,
                                                         deleteOptions);
@@ -540,7 +540,7 @@ public class InformationSupplyChainHandler extends OpenMetadataHandlerBase
                         {
                             extractedImplementedByElements.add(relatedMetadataElement);
                         }
-                        else if ((propertyHelper.isTypeOf(relatedMetadataElement, OpenMetadataType.INFORMATION_SUPPLY_CHAIN_COMPOSITION_RELATIONSHIP.typeName)) && (! relatedMetadataElement.getElementAtEnd1()))
+                        else if ((propertyHelper.isTypeOf(relatedMetadataElement, OpenMetadataType.COLLECTION_MEMBERSHIP_RELATIONSHIP.typeName)) && (! relatedMetadataElement.getElementAtEnd1()))
                         {
                             extractedSegmentElements.add(relatedMetadataElement);
                         }

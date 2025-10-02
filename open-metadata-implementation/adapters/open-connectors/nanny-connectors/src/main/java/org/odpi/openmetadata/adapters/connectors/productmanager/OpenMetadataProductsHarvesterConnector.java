@@ -529,7 +529,7 @@ public class OpenMetadataProductsHarvesterConnector extends IntegrationConnector
                                                                    UserNotAuthorizedException
     {
         List<ProductDataFieldDefinition> dataFieldIdentifiers = productDefinition.getDataSpecIdentifiers();
-        List<ProductDataFieldDefinition> dataFieldDefinitions = productDefinition.getDataSpecIdentifiers();
+        List<ProductDataFieldDefinition> dataFieldDefinitions = productDefinition.getDataSpecFields();
 
         if ((dataFieldIdentifiers != null) || (dataFieldDefinitions != null))
         {
@@ -707,9 +707,6 @@ public class OpenMetadataProductsHarvesterConnector extends IntegrationConnector
         newElementOptions.setAnchorGUID(productGUID);
         newElementOptions.setAnchorScopeGUID(productGUID);
         newElementOptions.setIsOwnAnchor(false);
-        newElementOptions.setParentGUID(productGUID);
-        newElementOptions.setParentRelationshipTypeName(OpenMetadataType.SCOPED_BY_RELATIONSHIP.typeName);
-        newElementOptions.setParentAtEnd1(false);
 
         String notificationTypeGUID = notificationTypeClient.createGovernanceDefinition(newElementOptions,
                                                                                         null,
@@ -732,15 +729,21 @@ public class OpenMetadataProductsHarvesterConnector extends IntegrationConnector
 
         NotificationSubscriberProperties notificationSubscriberProperties = new NotificationSubscriberProperties();
 
-        notificationSubscriberProperties.setLabel("community notifications");
-        notificationSubscriberProperties.setDescription("A note log collects the notifications from the notification watchdog manager: " + engineActionGUID);
+        if (communityNoteLogGUID != null)
+        {
+            notificationSubscriberProperties.setLabel("community notifications");
+            notificationSubscriberProperties.setDescription("A note log collects the notifications from the notification watchdog manager: " + engineActionGUID);
 
-        notificationTypeClient.linkNotificationSubscriber(notificationTypeGUID, communityNoteLogs.get(productDefinition.getCommunity().getQualifiedName()), notificationTypeClient.getMetadataSourceOptions(), notificationSubscriberProperties);
+            notificationTypeClient.linkNotificationSubscriber(notificationTypeGUID, communityNoteLogGUID, notificationTypeClient.getMetadataSourceOptions(), notificationSubscriberProperties);
+        }
 
-        notificationSubscriberProperties.setLabel("product manager notifications");
-        notificationSubscriberProperties.setDescription("Notifications from the notification watchdog manager: " + engineActionGUID + " are sent to the product manager.");
+        if (productManagerGUID != null)
+        {
+            notificationSubscriberProperties.setLabel("product manager notifications");
+            notificationSubscriberProperties.setDescription("Notifications from the notification watchdog manager: " + engineActionGUID + " are sent to the product manager.");
 
-        notificationTypeClient.linkNotificationSubscriber(notificationTypeGUID, communityNoteLogGUID, notificationTypeClient.getMetadataSourceOptions(), notificationSubscriberProperties);
+            notificationTypeClient.linkNotificationSubscriber(notificationTypeGUID, productManagerGUID, notificationTypeClient.getMetadataSourceOptions(), notificationSubscriberProperties);
+        }
 
         /*
          * The subscription notification watchdog manager is running.  Now build the governance action process that is
@@ -1918,7 +1921,7 @@ public class OpenMetadataProductsHarvesterConnector extends IntegrationConnector
 
         newElementOptions.setAnchorGUID(blueprintGUID);
         newElementOptions.setParentGUID(blueprintGUID);
-        newElementOptions.setParentRelationshipTypeName(OpenMetadataType.SOLUTION_BLUEPRINT_COMPOSITION_RELATIONSHIP.typeName);
+        newElementOptions.setParentRelationshipTypeName(OpenMetadataType.COLLECTION_MEMBERSHIP_RELATIONSHIP.typeName);
         newElementOptions.setParentAtEnd1(true);
 
         SolutionComponentClient solutionComponentClient = integrationContext.getSolutionComponentClient();

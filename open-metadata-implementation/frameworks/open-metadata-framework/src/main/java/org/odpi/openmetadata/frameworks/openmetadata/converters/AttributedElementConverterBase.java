@@ -645,10 +645,6 @@ public class AttributedElementConverterBase<B> extends OpenMetadataConverterBase
             attributedMetadataElement.setSupplyFrom(super.getRelatedElements(OpenMetadataType.INFORMATION_SUPPLY_CHAIN_LINK_RELATIONSHIP.typeName, relatedMetadataElements, true));
             processedRelationshipTypes.add(OpenMetadataType.INFORMATION_SUPPLY_CHAIN_LINK_RELATIONSHIP.typeName);
 
-            attributedMetadataElement.setSegments(super.getRelatedElements(OpenMetadataType.INFORMATION_SUPPLY_CHAIN_COMPOSITION_RELATIONSHIP.typeName, relatedMetadataElements, false));
-            attributedMetadataElement.setInformationSupplyChains(super.getRelatedElements(OpenMetadataType.INFORMATION_SUPPLY_CHAIN_COMPOSITION_RELATIONSHIP.typeName, relatedMetadataElements, true));
-            processedRelationshipTypes.add(OpenMetadataType.INFORMATION_SUPPLY_CHAIN_COMPOSITION_RELATIONSHIP.typeName);
-
             attributedMetadataElement.setNestedSolutionComponents(super.getRelatedElements(OpenMetadataType.SOLUTION_COMPOSITION_RELATIONSHIP.typeName, relatedMetadataElements, false));
             attributedMetadataElement.setUsedInSolutionComponents(super.getRelatedElements(OpenMetadataType.SOLUTION_COMPOSITION_RELATIONSHIP.typeName, relatedMetadataElements, true));
             processedRelationshipTypes.add(OpenMetadataType.SOLUTION_COMPOSITION_RELATIONSHIP.typeName);
@@ -678,9 +674,6 @@ public class AttributedElementConverterBase<B> extends OpenMetadataConverterBase
             attributedMetadataElement.setSolutionDesigns(super.getRelatedElements(OpenMetadataType.SOLUTION_DESIGN_RELATIONSHIP.typeName, relatedMetadataElements, false));
             attributedMetadataElement.setDescribesDesignOf(super.getRelatedElements(OpenMetadataType.SOLUTION_DESIGN_RELATIONSHIP.typeName, relatedMetadataElements, true));
             processedRelationshipTypes.add(OpenMetadataType.SOLUTION_DESIGN_RELATIONSHIP.typeName);
-            attributedMetadataElement.setContainsSolutionComponents(super.getRelatedElements(OpenMetadataType.SOLUTION_BLUEPRINT_COMPOSITION_RELATIONSHIP.typeName, relatedMetadataElements, false));
-            attributedMetadataElement.setUsedInSolutionBlueprints(super.getRelatedElements(OpenMetadataType.SOLUTION_BLUEPRINT_COMPOSITION_RELATIONSHIP.typeName, relatedMetadataElements, true));
-            processedRelationshipTypes.add(OpenMetadataType.SOLUTION_BLUEPRINT_COMPOSITION_RELATIONSHIP.typeName);
 
             attributedMetadataElement.setLineageLinkage(super.getRelatedElements(lineageRelationships, relatedMetadataElements));
             processedRelationshipTypes.addAll(lineageRelationships);

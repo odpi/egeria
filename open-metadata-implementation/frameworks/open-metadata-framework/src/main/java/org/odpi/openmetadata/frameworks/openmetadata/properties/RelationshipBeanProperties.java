@@ -45,6 +45,7 @@ import org.odpi.openmetadata.frameworks.openmetadata.properties.schema.*;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.security.AssociatedSecurityGroupProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.security.ZoneHierarchyProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.solutions.SolutionDesignProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.solutions.SolutionPortSchemaProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.surveyreports.*;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.validvalues.*;
 
@@ -118,7 +119,6 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
                 @JsonSubTypes.Type(value = GovernanceResultsProperties.class, name = "GovernanceResultsProperties"),
                 @JsonSubTypes.Type(value = GraphEdgeLinkProperties.class, name = "GraphEdgeLinkProperties"),
                 @JsonSubTypes.Type(value = ImpactedResourceProperties.class, name = "ImpactedResourceProperties"),
-                @JsonSubTypes.Type(value = ImplementationResourceProperties.class, name = "ImplementationResourceProperties"),
                 @JsonSubTypes.Type(value = ITInfrastructureProfileProperties.class, name = "ITInfrastructureProfileProperties"),
                 @JsonSubTypes.Type(value = ITProfileRoleAppointmentProperties.class, name = "ITProfileRoleAppointmentProperties"),
                 @JsonSubTypes.Type(value = LabeledRelationshipProperties.class, name = "LabeledRelationshipProperties"),
@@ -153,7 +153,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
                 @JsonSubTypes.Type(value = SemanticAssignmentProperties.class, name = "SemanticAssignmentProperties"),
                 @JsonSubTypes.Type(value = SemanticDefinitionProperties.class, name = "SemanticDefinitionProperties"),
                 @JsonSubTypes.Type(value = ServerEndpointProperties.class, name = "ServerEndpointProperties"),
-                @JsonSubTypes.Type(value = SolutionDesignProperties.class, name = "SolutionDesignProperties"),
+                @JsonSubTypes.Type(value = SolutionPortSchemaProperties.class, name = "SolutionPortSchemaProperties"),
                 @JsonSubTypes.Type(value = SpecificationPropertyAssignmentProperties.class, name = "SpecificationPropertyAssignmentProperties"),
                 @JsonSubTypes.Type(value = SubjectAreaHierarchyProperties.class, name = "SubjectAreaHierarchyProperties"),
                 @JsonSubTypes.Type(value = SupplementaryProperties.class, name = "SupplementaryProperties"),

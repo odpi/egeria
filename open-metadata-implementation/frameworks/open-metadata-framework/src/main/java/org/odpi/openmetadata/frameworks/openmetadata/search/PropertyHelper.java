@@ -856,7 +856,14 @@ public class PropertyHelper
 
             if (PropertyComparisonOperator.LIKE.equals(propertyComparisonOperator))
             {
-                propertyValue.setPrimitiveValue(".*" + Pattern.quote(value) + ".*");
+                if ("*".equals(value) || ".*".equals(value))
+                {
+                    propertyValue.setPrimitiveValue(".*");
+                }
+                else
+                {
+                    propertyValue.setPrimitiveValue(".*" + Pattern.quote(value) + ".*");
+                }
             }
             else
             {

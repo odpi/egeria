@@ -59,7 +59,7 @@ public enum ActivityStatus implements OpenMetadataEnum
     /**
      * The work for the activity has successfully completed.
      */
-    COMPLETED       ("3bc841d3-8e51-475c-9283-ee9c8b7e8670", 10, "Actioned", "The work for the activity has successfully completed.", false),
+    COMPLETED       ("3bc841d3-8e51-475c-9283-ee9c8b7e8670", 10, "Completed", "The work for the activity has successfully completed.", false),
 
     /**
      * The activity has not happened because it is not appropriate (for example, created by an automated process as a result of a false positive).
@@ -84,7 +84,7 @@ public enum ActivityStatus implements OpenMetadataEnum
     /**
      * The activity was abandoned because it is no longer relevant.
      */
-    ABANDONED       ("2911bd8f-4993-4968-b12b-1eade7987093",  15, "Cancelled",     "The activity was abandoned because it is no longer relevant.  Some work may have occurred but is what stopped, probabbly in an inclomple state..", false),
+    ABANDONED       ("2911bd8f-4993-4968-b12b-1eade7987093",  15, "Abandoned",     "The activity was abandoned because it is no longer relevant.  Some work may have occurred but is what stopped, probabbly in an inclomple state..", false),
 
     /**
      * Undefined or user-defined status.
@@ -96,7 +96,7 @@ public enum ActivityStatus implements OpenMetadataEnum
 
     private static final String ENUM_DESCRIPTION = "Defines the current execution status of a process.";
     private static final String ENUM_DESCRIPTION_GUID = "eb7bba16-b2a0-4e7d-b249-f0be30a50171";
-    private static final String ENUM_DESCRIPTION_WIKI = OpenMetadataWikiPages.MODEL_0463_ENGINE_ACTIONS;
+    private static final String ENUM_DESCRIPTION_WIKI = OpenMetadataWikiPages.MODEL_0010_BASE_MODEL;
 
 
     private final int     ordinal;

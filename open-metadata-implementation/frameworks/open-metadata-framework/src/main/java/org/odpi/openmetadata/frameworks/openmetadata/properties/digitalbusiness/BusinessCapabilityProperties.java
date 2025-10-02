@@ -6,7 +6,7 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.BusinessCapabilityType;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.ReferenceableProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.collections.CollectionProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 
 import java.util.Objects;
@@ -21,9 +21,8 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class BusinessCapabilityProperties extends ReferenceableProperties
+public class BusinessCapabilityProperties extends CollectionProperties
 {
-    private String                 identifier                 = null;
     private BusinessCapabilityType businessCapabilityType     = null;
     private String                 businessImplementationType = null;
 
@@ -48,34 +47,10 @@ public class BusinessCapabilityProperties extends ReferenceableProperties
 
         if (template != null)
         {
-            this.identifier = template.getIdentifier();
             this.businessCapabilityType = template.getBusinessCapabilityType();
             this.businessImplementationType = template.getBusinessImplementationType();
         }
     }
-
-
-    /**
-     * Return the identifier assigned by the organization to this capability.
-     *
-     * @return String
-     */
-    public String getIdentifier()
-    {
-        return identifier;
-    }
-
-
-    /**
-     * Set up the identifier assigned by the organization to this capability.
-     *
-     * @param identifier String
-     */
-    public void setIdentifier(String identifier)
-    {
-        this.identifier = identifier;
-    }
-
 
     /**
      * Return the type of business capability.
@@ -129,8 +104,7 @@ public class BusinessCapabilityProperties extends ReferenceableProperties
     public String toString()
     {
         return "BusinessCapabilityProperties{" +
-                "identifier='" + identifier + '\'' +
-                ", businessCapabilityType=" + businessCapabilityType +
+                "businessCapabilityType=" + businessCapabilityType +
                 ", businessImplementationType='" + businessImplementationType + '\'' +
                 "} " + super.toString();
     }
@@ -158,8 +132,7 @@ public class BusinessCapabilityProperties extends ReferenceableProperties
             return false;
         }
         return Objects.equals(businessCapabilityType, that.businessCapabilityType) &&
-                Objects.equals(businessImplementationType, that.businessImplementationType) &&
-                Objects.equals(identifier, that.identifier);
+                Objects.equals(businessImplementationType, that.businessImplementationType);
     }
 
 
@@ -171,6 +144,6 @@ public class BusinessCapabilityProperties extends ReferenceableProperties
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), identifier, businessCapabilityType, businessImplementationType);
+        return Objects.hash(super.hashCode(), businessCapabilityType, businessImplementationType);
     }
 }

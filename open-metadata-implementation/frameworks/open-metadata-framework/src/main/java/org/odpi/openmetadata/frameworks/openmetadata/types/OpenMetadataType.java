@@ -20,7 +20,7 @@ public enum OpenMetadataType
      */
     OPEN_METADATA_ROOT("4e7761e8-3969-4627-8f40-bfe3cde85a1d",
                        "OpenMetadataRoot",
-                       OpenMetadataWikiPages.MODEL_0010_BASIC_MODEL,
+                       OpenMetadataWikiPages.MODEL_0010_BASE_MODEL,
                        "9f665566-2144-4c6c-95db-b1d1f86c412f",
                        "Common root for all open metadata entity types."),
 
@@ -29,7 +29,7 @@ public enum OpenMetadataType
      */
     MEMENTO_CLASSIFICATION("ecdcd472-6701-4303-8dec-267bcb54feb9",
                            "Memento",
-                           OpenMetadataWikiPages.MODEL_0010_BASIC_MODEL,
+                           OpenMetadataWikiPages.MODEL_0010_BASE_MODEL,
                            "7332d853-1c43-4518-ab96-44f374b9966d",
                            "An element whose real-world counterpart has been deleted or moved to offline archived."),
 
@@ -38,7 +38,7 @@ public enum OpenMetadataType
      */
     ANCHORS_CLASSIFICATION("aa44f302-2e43-4669-a1e7-edaae414fc6e",
                            "Anchors",
-                           OpenMetadataWikiPages.MODEL_0010_BASIC_MODEL,
+                           OpenMetadataWikiPages.MODEL_0010_BASE_MODEL,
                            "09708101-5b38-4c3c-b1e5-983f9c731e5c",
                            "Identifies the anchor entity for an element that is part of a large composite object such as an asset."),
 
@@ -47,7 +47,7 @@ public enum OpenMetadataType
      */
     REFERENCEABLE("a32316b8-dc8c-48c5-b12b-71c1b2a080bf",
                   "Referenceable",
-                  OpenMetadataWikiPages.MODEL_0010_BASIC_MODEL,
+                  OpenMetadataWikiPages.MODEL_0010_BASE_MODEL,
                   "d9a26761-40ba-441d-9981-cc8f137fe379",
                   "An open metadata entity that has a unique identifier."),
 
@@ -57,7 +57,7 @@ public enum OpenMetadataType
      */
     ASSET("896d14c2-7522-4f6c-8519-757711943fe6",
           "Asset",
-          OpenMetadataWikiPages.MODEL_0010_BASIC_MODEL,
+          OpenMetadataWikiPages.MODEL_0010_BASE_MODEL,
           "11b20cb3-2149-47f9-ad0a-058332a3cb5f",
           "The description of a resource that needs to be catalogued and governed."),
 
@@ -66,7 +66,7 @@ public enum OpenMetadataType
      */
     DATA_ASSET("ca826f9e-7fb1-4005-921a-fee1c4cd221b",
           "DataAsset",
-          OpenMetadataWikiPages.MODEL_0010_BASIC_MODEL,
+          OpenMetadataWikiPages.MODEL_0010_BASE_MODEL,
           "8661a98b-1a2e-4a33-bb71-078f48532385",
           "The description of a collection of data."),
 
@@ -76,7 +76,7 @@ public enum OpenMetadataType
      */
     PROCESS("d8f33bd7-afa9-4a11-a8c7-07dcec83c050",
             "Process",
-            OpenMetadataWikiPages.MODEL_0010_BASIC_MODEL,
+            OpenMetadataWikiPages.MODEL_0010_BASE_MODEL,
             "f1fecd94-215c-4e42-9cd9-a945156af2a8",
             "Well-defined sequence of activities performed by digital resources."),
 
@@ -85,7 +85,7 @@ public enum OpenMetadataType
      */
     INFRASTRUCTURE("c19746ac-b3ec-49ce-af4b-83348fc55e07",
                    "Infrastructure",
-                   OpenMetadataWikiPages.MODEL_0010_BASIC_MODEL,
+                   OpenMetadataWikiPages.MODEL_0010_BASE_MODEL,
                    "002a59fc-9ee8-4e7c-b18f-39e035128127",
                    "Physical infrastructure or software platform."),
 
@@ -94,7 +94,7 @@ public enum OpenMetadataType
      */
     SAMPLE_DATA_RELATIONSHIP("0ee9c0f1-a89b-4806-8276-7c74f07fe190",
                              "SampleData",
-                             OpenMetadataWikiPages.MODEL_0010_BASIC_MODEL,
+                             OpenMetadataWikiPages.MODEL_0010_BASE_MODEL,
                              "bfb3a740-756d-45d7-9f49-8194b52a5cb0",
                              "Links an Asset entity describing a collection of sample data that originates from the resource represented by the Referenceable entity."),
 
@@ -103,7 +103,7 @@ public enum OpenMetadataType
      */
     LATEST_CHANGE_CLASSIFICATION("adce83ac-10f1-4279-8a35-346976e94466",
                                  "LatestChange",
-                                 OpenMetadataWikiPages.MODEL_0010_BASIC_MODEL,
+                                 OpenMetadataWikiPages.MODEL_0010_BASE_MODEL,
                                  "5f6bf15f-0c9d-434b-a84e-588269e70b0b",
                                  "Defines the latest change to an anchor entity and its associated attachments."),
 
@@ -4906,16 +4906,6 @@ public enum OpenMetadataType
                                       "ea796922-2a2c-411f-af5c-b60e9963d320",
                                       "Identifies the element from a metadata model that this element embodies."),
 
-    /**
-     * Identifies that a design model as a concept model.
-     */
-    CONCEPT_MODEL_CLASSIFICATION("7149c2de-5f24-4959-9b24-9d5e67709fac",
-                                 "ConceptModel",
-                                 OpenMetadataWikiPages.MODEL_0571_CONCEPT_MODELS,
-                                 "afb0861f-fe08-4b68-a832-16dbe792a15f",
-                                 "Identifies that a design model as a concept model."),
-
-
 
     /**
      * An abstract, but well-formed representation of a concept.
@@ -4925,6 +4915,15 @@ public enum OpenMetadataType
                           OpenMetadataWikiPages.MODEL_0571_CONCEPT_MODELS,
                           "bab09390-1aaf-47cf-8a5e-19363d4244e0",
                           "An abstract, but well-formed representation of a concept."),
+
+    /**
+     * A collection of concept model elements that describes the concepts for a design or implementation.
+     */
+    CONCEPT_MODEL("7834d6a6-46aa-4537-be1a-b51ba8213f53",
+                 "ConceptModel",
+                 OpenMetadataWikiPages.MODEL_0571_CONCEPT_MODELS,
+                 "c50d1493-03d8-4fbc-a7bc-5a7e556b9d43",
+                 "A collection of concept model elements that describes the concepts for a design or implementation."),
 
     /**
      * An abstract, but well-formed representation of a person, place or object.
@@ -4965,15 +4964,52 @@ public enum OpenMetadataType
     /**
      * A relationship between concept beads.
      */
-    CONCEPT_BEAD_LINK("13defd95-6452-4398-8382-e47f1a271eff",
-                      "ConceptBeadLink",
-                      OpenMetadataWikiPages.MODEL_0571_CONCEPT_MODELS,
-                      "2b6315a9-d40d-43d7-bed9-ca1639cd826f",
-                      "A relationship between concept beads."),
+    CONCEPT_BEAD_RELATIONSHIP("13defd95-6452-4398-8382-e47f1a271eff",
+                              "ConceptBeadRelationship",
+                              OpenMetadataWikiPages.MODEL_0571_CONCEPT_MODELS,
+                              "2b6315a9-d40d-43d7-bed9-ca1639cd826f",
+                              "A relationship between concept beads."),
 
 
     /**
-     * This is a collection that describes the data requirements for a project or initiative..
+     * Creates an inheritance relationship between 2 concept beads.
+     */
+    IS_A_CONCEPT_BEAD_RELATIONSHIP("4455d9f3-f6a8-4999-8160-18d950db6285",
+                                   "IsAConceptBead",
+                                   OpenMetadataWikiPages.MODEL_0571_CONCEPT_MODELS,
+                                   "addd48da-30c7-4454-8cdd-e2aec54658e5",
+                                   "Creates an inheritance relationship between 2 concept beads."),
+
+    /**
+     * Links a concept bead to another concept bean that describes its type - this is where the type is complex, such as Address.
+     */
+    TYPED_BY_CONCEPT_BEAD_RELATIONSHIP("e2443b42-e969-4a83-82df-9aba3513dd4a",
+                                       "TypedByConceptBead",
+                                       OpenMetadataWikiPages.MODEL_0571_CONCEPT_MODELS,
+                                       "cd7596dc-e632-4a4c-b100-1efd112af2aa",
+                                       "Links a concept bead to another concept bean that describes its type - this is where the type is complex, such as Address."),
+
+
+    /**
+     * Links a concept bead to another concept bead that provides attributes that are only valid in certain situations.
+     */
+    CONCEPT_BEAD_EXTENSION_RELATIONSHIP("b41fd13c-7f9b-4f29-a284-e994daf1b013",
+                                        "ConceptBeadExtension",
+                                        OpenMetadataWikiPages.MODEL_0571_CONCEPT_MODELS,
+                                        "20048c0e-6101-49b2-b125-c39c8eed3edc",
+                                        "Links a concept bead to another concept bead that provides attributes that are only valid in certain situations."),
+
+    /**
+     * Links a element to its concept model.
+     */
+    CONCEPT_DESIGN_RELATIONSHIP("75043479-3775-4195-b45a-154ccd308f93",
+                                "ConceptDesign",
+                                OpenMetadataWikiPages.MODEL_0571_CONCEPT_MODELS,
+                                "f8ad95eb-5c6f-4eaf-83d5-ca65831c1b32",
+                                "Links a element to its concept model."),
+
+    /**
+     * This is a collection that describes the data requirements for a project or initiative.
      */
     DATA_SPEC_COLLECTION("781c5319-af83-4195-ada7-a44914f3e63a",
                          "DataSpec",
@@ -5404,7 +5440,7 @@ public enum OpenMetadataType
      */
     DIGITAL_SUPPORT_RELATIONSHIP("9e187e1e-2547-46bd-b0ee-c33ac6df4a1f",
                                  "DigitalSupport",
-                                 OpenMetadataWikiPages.MODEL_0715_DIGITAL_PRODUCT_MANAGEMENT,
+                                 OpenMetadataWikiPages.MODEL_0715_DIGITAL_BUSINESS,
                                  "79f27291-ed2f-4012-a603-3e3aca5bcbe7",
                                  "Relationship identifying the digital services supporting each business capability."),
 
@@ -5414,7 +5450,7 @@ public enum OpenMetadataType
      */
     BUSINESS_CAPABILITY("7cc6bcb2-b573-4719-9412-cf6c3f4bbb15",
                         "BusinessCapability",
-                        OpenMetadataWikiPages.MODEL_0715_DIGITAL_PRODUCT_MANAGEMENT,
+                        OpenMetadataWikiPages.MODEL_0715_DIGITAL_BUSINESS,
                         "102f73be-7baf-4a10-997e-41e6eb42d66b",
                         "Describes a function, capability or skill set."),
 
@@ -5424,7 +5460,7 @@ public enum OpenMetadataType
      */
     BUSINESS_CAPABILITY_DEPENDENCY_RELATIONSHIP("d3959ca9-24ef-4d3f-b524-0cc5956370c4",
                                           "BusinessCapabilityDependency",
-                                          OpenMetadataWikiPages.MODEL_0715_DIGITAL_PRODUCT_MANAGEMENT,
+                                          OpenMetadataWikiPages.MODEL_0715_DIGITAL_BUSINESS,
                                           "2673f14b-30bb-4a53-8ca8-30806bf7a6e9",
                                           "Describes the dependency relationship between business capabilities."),
 
@@ -5437,14 +5473,6 @@ public enum OpenMetadataType
                              "aebbe57c-ebe6-48ff-bfd1-ce76f16f86b2",
                              "A description of a managed flow of information between multiple systems."),
 
-    /**
-     * Relationship identifying the segments belonging to an information supply chain.
-     */
-    INFORMATION_SUPPLY_CHAIN_COMPOSITION_RELATIONSHIP("fcdccfa3-e9f0-4543-8720-1958799fb6dc",
-                                                      "InformationSupplyChainComposition",
-                                                      OpenMetadataWikiPages.MODEL_0720_INFORMATION_SUPPLY_CHAINS,
-                                                      "4eef2329-66cd-48ed-9e07-3c64cee41e8c",
-                                                      "Relationship identifying the segments belonging to an information supply chain."),
 
     /**
      * Relationship identifying the flow between segments in an information supply chain.
@@ -5566,15 +5594,6 @@ public enum OpenMetadataType
                        OpenMetadataWikiPages.MODEL_0740_SOLUTION_BLUEPRINTS,
                        "92042d1e-3717-4343-b111-72a0aaa7f63e",
                        "Collection of solution components that make up a solution for digital services such as digital products.."),
-
-    /**
-     * Link between a solution blueprint and a solution component.
-     */
-    SOLUTION_BLUEPRINT_COMPOSITION_RELATIONSHIP("f1ae975f-f11a-467b-8c7a-b023081e4712",
-                                                "SolutionBlueprintComposition",
-                                                OpenMetadataWikiPages.MODEL_0740_SOLUTION_BLUEPRINTS,
-                                                "fc4c9bea-a93e-47d7-b812-25eae2fc4e65",
-                                                "Link between a solution blueprint and a solution component."),
 
     /**
      * Relationship identifying the solution blueprint for a digital service such as a digital product.

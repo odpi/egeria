@@ -9,7 +9,6 @@ import org.odpi.openmetadata.repositoryservices.archiveutilities.OMRSArchiveBuil
 import org.odpi.openmetadata.repositoryservices.archiveutilities.OMRSArchiveHelper;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.archivestore.properties.OpenMetadataArchive;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.archivestore.properties.OpenMetadataArchiveType;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.ClassificationDef;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.ClassificationPropagationRule;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.EntityDef;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.RelationshipDef;
@@ -170,7 +169,6 @@ public class OpenMetadataTypesArchive3_8
         update0057SoftwareServices();
         update0070NetworksAndGateways();
         update0461GovernanceEngines();
-        update0571ConceptModels();
     }
 
 
@@ -495,27 +493,6 @@ public class OpenMetadataTypesArchive3_8
     }
 
 
-    /*
-     * -------------------------------------------------------------------------------------------------------
-     */
-
-    /**
-     * Add concept model classification
-     */
-    private void update0571ConceptModels()
-    {
-        this.archiveBuilder.addClassificationDef(addConceptModelClassification());
-    }
-
-    private ClassificationDef addConceptModelClassification()
-    {
-        return archiveHelper.getClassificationDef(OpenMetadataType.CONCEPT_MODEL_CLASSIFICATION,
-                                                  null,
-                                                  this.archiveBuilder.getEntityDef(OpenMetadataType.DESIGN_MODEL.typeName),
-                                                  false);
-
-
-    }
 
     /*
      * -------------------------------------------------------------------------------------------------------

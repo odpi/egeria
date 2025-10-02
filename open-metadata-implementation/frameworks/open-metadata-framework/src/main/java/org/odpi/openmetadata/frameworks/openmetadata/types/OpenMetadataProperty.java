@@ -539,7 +539,7 @@ public enum OpenMetadataProperty
     /**
      * Usage and lifecycle for this connection between the concept bead and the link.
      */
-    DECORATION("decoration", DataType.STRING, ConceptModelDecoration.getOpenTypeName(), "Usage and lifecycle for this connection between the concept bead and the link.", ConceptModelDecoration.AGGREGATION.getName(), "3f986ca0-c8f6-41b7-9693-53d4d228de3e"),
+    DECORATION("decoration", DataType.STRING, RelationshipDecoration.getOpenTypeName(), "Usage and lifecycle for this connection between the concept bead and the link.", RelationshipDecoration.AGGREGATION.getName(), "3f986ca0-c8f6-41b7-9693-53d4d228de3e"),
 
     /**
      * List of properties in the data class that should be used in the match processing.
@@ -1921,11 +1921,6 @@ public enum OpenMetadataProperty
      * Additional arguments needed by the virtual connector when using each connection.
      */
     ARGUMENTS("arguments", DataType.MAP_STRING_OBJECT, DataType.MAP_STRING_OBJECT.getName(), "Additional arguments needed by the virtual connector when using each connection.", null, "0ba7abef-1a62-4bf6-a21c-0239c3521d50"),
-
-    /**
-     * Description of the asset that is retrieved through this connection.
-     */
-    ASSET_SUMMARY("assetSummary", DataType.STRING, DataType.STRING.getName(), "Description of the asset that is retrieved through this connection.", null, "2ab4e6eb-9064-4638-8c72-5c9d5eb61383"),
 
     /**
      * Character used between each column.

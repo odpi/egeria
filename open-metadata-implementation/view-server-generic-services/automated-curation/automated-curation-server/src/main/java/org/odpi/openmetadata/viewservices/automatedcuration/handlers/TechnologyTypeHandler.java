@@ -346,9 +346,20 @@ public class TechnologyTypeHandler extends OpenMetadataHandlerBase
                                                                                                 technologyTypeHierarchy.getTechnologyTypeGUID(),
                                                                                                 technologyTypeHierarchy.getDisplayName());
 
-            mermaidGraphBuilder.appendMermaidNode(technologyTypeHierarchy.getTechnologyTypeGUID(),
-                                                  technologyTypeHierarchy.getDisplayName(),
-                                                  technologyTypeHierarchy.getCategory());
+            if (technologyTypeHierarchy.getCategory() != null)
+            {
+                mermaidGraphBuilder.appendMermaidNode(technologyTypeHierarchy.getTechnologyTypeGUID(),
+                                                      technologyTypeHierarchy.getDisplayName(),
+                                                      technologyTypeHierarchy.getCategory());
+            }
+            else
+            {
+                {
+                    mermaidGraphBuilder.appendMermaidNode(technologyTypeHierarchy.getTechnologyTypeGUID(),
+                                                          technologyTypeHierarchy.getDisplayName(),
+                                                          "TechnologyType");
+                }
+            }
 
             this.addTechnologyTypeHierarchyNodesMermaidString(mermaidGraphBuilder,
                                                               technologyTypeHierarchy.getSubTypes());

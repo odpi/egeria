@@ -312,6 +312,7 @@ Content-Type: application/json
 {
   "class" : "FilterRequestBody",
   "filter" : "Add name here",
+  "metadataElementTypeName" : "ValidValueDefinition",
   "startFrom": 0,
   "pageSize": 10,
   "asOfTime" : "{{$isoTimestamp}}",
@@ -342,6 +343,7 @@ Content-Type: application/json
 {
   "class" : "SearchStringRequestBody",
   "searchString" : "Add value here",
+  "metadataElementTypeName" : "ValidValueDefinition",
   "startsWith" : false,
   "endsWith" : false,
   "ignoreCase" : true,
@@ -375,6 +377,7 @@ Content-Type: application/json
 
 {
   "class" : "GetRequestBody",
+  "metadataElementTypeName" : "ValidValueDefinition",
   "asOfTime" : "{{$isoTimestamp}}",
   "effectiveTime" : "{{$isoTimestamp}}",
   "forLineage" : false,

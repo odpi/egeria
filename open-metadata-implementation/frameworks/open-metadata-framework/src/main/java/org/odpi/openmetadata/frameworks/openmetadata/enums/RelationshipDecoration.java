@@ -11,12 +11,12 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
 /**
- * ConceptModelDecoration describes the type of relationship end.
+ * RelationshipDecoration describes the type of relationship end.
  */
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public enum ConceptModelDecoration implements OpenMetadataEnum
+public enum RelationshipDecoration implements OpenMetadataEnum
 {
     /**
      * The business capability has not been classified.
@@ -41,9 +41,9 @@ public enum ConceptModelDecoration implements OpenMetadataEnum
     ;
 
     private static final String ENUM_TYPE_GUID  = "a97d9167-7dd6-4dea-a8cf-c73c57a0f470";
-    private static final String ENUM_TYPE_NAME  = "ConceptModelDecoration";
+    private static final String ENUM_TYPE_NAME  = "RelationshipDecoration";
 
-    private static final String ENUM_DESCRIPTION = "Describes the type of relationship end in a concept model.";
+    private static final String ENUM_DESCRIPTION = "Describes the type of relationship end in a model or schema.";
     private static final String ENUM_DESCRIPTION_GUID = "50671892-e2be-43d6-bcee-d82ece6a8c19";
     private static final String ENUM_DESCRIPTION_WIKI = OpenMetadataWikiPages.MODEL_0571_CONCEPT_MODELS;
 
@@ -64,7 +64,7 @@ public enum ConceptModelDecoration implements OpenMetadataEnum
      * @param description default string description of the enumeration
      * @param isDefault is this the default value for the enum?
      */
-    ConceptModelDecoration(int     ordinal,
+    RelationshipDecoration(int     ordinal,
                            String  descriptionGUID,
                            String  name,
                            String  description,
@@ -186,6 +186,6 @@ public enum ConceptModelDecoration implements OpenMetadataEnum
     @Override
     public String toString()
     {
-        return "BusinessCapabilityType : " + name;
+        return "RelationshipDecoration : " + name;
     }
 }

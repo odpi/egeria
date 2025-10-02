@@ -944,7 +944,6 @@ public class OpenMetadataTypesArchive2_4
         // Comment entity's clashing properties are updated as part of other updates to Comment above
         this.archiveBuilder.addTypeDefPatch(updateLogFileEntity());
         this.archiveBuilder.addTypeDefPatch(updateDatabaseEntity());
-        this.archiveBuilder.addTypeDefPatch(updateBusinessCapabilityEntity());
         this.archiveBuilder.addTypeDefPatch(updatePropertyFacetEntity());
         this.archiveBuilder.addTypeDefPatch(updateCohortMemberEntity());
         this.archiveBuilder.addTypeDefPatch(updatePolicyAdministrationPointClassification());
@@ -1081,32 +1080,6 @@ public class OpenMetadataTypesArchive2_4
         List<TypeDefAttribute> properties = new ArrayList<>();
 
         properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.DATABASE_VERSION));
-
-        typeDefPatch.setPropertyDefinitions(properties);
-        return typeDefPatch;
-    }
-
-
-    /**
-     * Deprecate clashing properties and add new ones to replace them.
-     * @return the type def patch
-     */
-    private TypeDefPatch updateBusinessCapabilityEntity()
-    {
-        /*
-         * Create the Patch
-         */
-        TypeDefPatch  typeDefPatch = archiveBuilder.getPatchForType(OpenMetadataType.BUSINESS_CAPABILITY.typeName);
-
-        typeDefPatch.setUpdatedBy(originatorName);
-        typeDefPatch.setUpdateTime(creationDate);
-
-        /*
-         * Build the attributes
-         */
-        List<TypeDefAttribute> properties = new ArrayList<>();
-
-        properties.add(archiveHelper.getEnumTypeDefAttribute(OpenMetadataProperty.BUSINESS_CAPABILITY_TYPE));
 
         typeDefPatch.setPropertyDefinitions(properties);
         return typeDefPatch;

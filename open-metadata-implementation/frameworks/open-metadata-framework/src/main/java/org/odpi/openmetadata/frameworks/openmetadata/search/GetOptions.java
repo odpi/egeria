@@ -26,7 +26,7 @@ public class GetOptions extends BasicOptions
     private List<String> metadataElementSubtypeNames   = null;
     private List<String> skipRelationships             = null;
     private List<String> includeOnlyRelationships      = null;
-    private int          relationshipsPageSize         = 50;
+    private int          relationshipsPageSize         = 0;
     private List<String> skipClassifiedElements        = null;
     private List<String> includeOnlyClassifiedElements = null;
     private int          graphQueryDepth               = 5;

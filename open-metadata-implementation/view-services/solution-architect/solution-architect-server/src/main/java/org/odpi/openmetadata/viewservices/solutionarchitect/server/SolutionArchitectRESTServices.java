@@ -11,6 +11,7 @@ import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.openmetadata.handlers.InformationSupplyChainHandler;
 import org.odpi.openmetadata.frameworks.openmetadata.handlers.SolutionBlueprintHandler;
 import org.odpi.openmetadata.frameworks.openmetadata.handlers.SolutionComponentHandler;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.collections.CollectionMembershipProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.informationsupplychains.InformationSupplyChainCompositionProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.informationsupplychains.InformationSupplyChainLinkProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.informationsupplychains.InformationSupplyChainProperties;
@@ -892,9 +893,9 @@ public class SolutionArchitectRESTServices extends TokenController
      *  PropertyServerException    there is a problem retrieving information from the property server(s).
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    public VoidResponse linkSolutionComponentToBlueprint(String                                  serverName,
-                                                         String                                  parentSolutionBlueprintGUID,
-                                                         String                                  nestedSolutionComponentGUID,
+    public VoidResponse linkSolutionComponentToBlueprint(String                     serverName,
+                                                         String                     parentSolutionBlueprintGUID,
+                                                         String                     nestedSolutionComponentGUID,
                                                          NewRelationshipRequestBody requestBody)
     {
         final String methodName = "linkSolutionComponentToBlueprint";
@@ -915,7 +916,7 @@ public class SolutionArchitectRESTServices extends TokenController
 
             if (requestBody != null)
             {
-                if (requestBody.getProperties() instanceof SolutionBlueprintCompositionProperties properties)
+                if (requestBody.getProperties() instanceof CollectionMembershipProperties properties)
                 {
                     handler.linkSolutionComponentToBlueprint(userId,
                                                              parentSolutionBlueprintGUID,
@@ -933,7 +934,7 @@ public class SolutionArchitectRESTServices extends TokenController
                 }
                 else
                 {
-                    restExceptionHandler.handleInvalidPropertiesObject(SolutionBlueprintCompositionProperties.class.getName(), methodName);
+                    restExceptionHandler.handleInvalidPropertiesObject(CollectionMembershipProperties.class.getName(), methodName);
                 }
             }
             else

@@ -3,10 +3,9 @@
 package org.odpi.openmetadata.frameworks.openmetadata.properties;
 
 import com.fasterxml.jackson.annotation.*;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.implementations.ImplementationResourceProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.implementations.ImplementedByProperties;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.solutions.SolutionBlueprintCompositionProperties;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.solutions.SolutionComponentActorProperties;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.solutions.SolutionCompositionProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.solutions.*;
 
 import java.util.Objects;
 
@@ -25,9 +24,11 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonSubTypes(
         {
                 @JsonSubTypes.Type(value = ImplementedByProperties.class, name = "ImplementedByProperties"),
-                @JsonSubTypes.Type(value = SolutionBlueprintCompositionProperties.class, name = "SolutionBlueprintCompositionProperties"),
+                @JsonSubTypes.Type(value = ImplementationResourceProperties.class, name = "ImplementationResourceProperties"),
                 @JsonSubTypes.Type(value = SolutionComponentActorProperties.class, name = "SolutionComponentActorProperties"),
+                @JsonSubTypes.Type(value = SolutionComponentPortProperties.class, name = "SolutionComponentPortProperties"),
                 @JsonSubTypes.Type(value = SolutionCompositionProperties.class, name = "SolutionCompositionProperties"),
+                @JsonSubTypes.Type(value = SolutionPortDelegationProperties.class, name = "SolutionPortDelegationProperties"),
         })
 public class RoledRelationshipProperties extends RelationshipBeanProperties
 {

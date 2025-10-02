@@ -603,6 +603,7 @@ public class OpenMetadataTypesArchive4_0
          */
         List<TypeDefAttribute> properties = new ArrayList<>();
 
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.LABEL));
         properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.DESCRIPTION));
 
         relationshipDef.setPropertiesDefinition(properties);

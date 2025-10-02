@@ -183,7 +183,6 @@ public enum ProductFolderDefinition
     }
 
 
-
     /**
      * Returns the unique name for the subject area entity.
      *

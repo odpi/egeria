@@ -798,6 +798,7 @@ public class ValidValueDefinitionHandler extends OpenMetadataHandlerBase
 
         List<String> propertyNames = Arrays.asList(OpenMetadataProperty.QUALIFIED_NAME.name,
                                                    OpenMetadataProperty.IDENTIFIER.name,
+                                                   OpenMetadataProperty.PREFERRED_VALUE.name,
                                                    OpenMetadataProperty.DISPLAY_NAME.name);
 
         return super.getRootElementsByName(userId,

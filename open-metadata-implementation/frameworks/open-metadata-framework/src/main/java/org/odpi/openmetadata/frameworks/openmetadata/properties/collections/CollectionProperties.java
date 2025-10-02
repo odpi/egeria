@@ -9,9 +9,11 @@ import org.odpi.openmetadata.frameworks.openmetadata.properties.datadictionaries
 import org.odpi.openmetadata.frameworks.openmetadata.properties.designmodels.DesignModelFolderProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.designmodels.DesignModelProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.digitalbusiness.AgreementProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.digitalbusiness.BusinessCapabilityProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.digitalbusiness.DigitalProductCatalogProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.digitalbusiness.DigitalProductProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.glossaries.GlossaryProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.informationsupplychains.InformationSupplyChainProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
@@ -29,14 +31,15 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonSubTypes(
         {
                 @JsonSubTypes.Type(value = AgreementProperties.class, name = "AgreementProperties"),
+                @JsonSubTypes.Type(value = BusinessCapabilityProperties.class, name = "BusinessCapabilityProperties"),
                 @JsonSubTypes.Type(value = DataDictionaryProperties.class, name = "DataDictionaryProperties"),
                 @JsonSubTypes.Type(value = DataSpecProperties.class, name = "DataSpecProperties"),
-                @JsonSubTypes.Type(value = DigitalProductProperties.class, name = "DigitalProductProperties"),
-                @JsonSubTypes.Type(value = DigitalProductCatalogProperties.class, name = "DigitalProductCatalogProperties"),
                 @JsonSubTypes.Type(value = DesignModelProperties.class, name = "DesignModelProperties"),
                 @JsonSubTypes.Type(value = DesignModelFolderProperties.class, name = "DesignModelFolderProperties"),
+                @JsonSubTypes.Type(value = DigitalProductProperties.class, name = "DigitalProductProperties"),
                 @JsonSubTypes.Type(value = DigitalProductCatalogProperties.class, name = "DigitalProductCatalogProperties"),
                 @JsonSubTypes.Type(value = GlossaryProperties.class, name = "GlossaryProperties"),
+                @JsonSubTypes.Type(value = InformationSupplyChainProperties.class, name = "InformationSupplyChainProperties"),
                 @JsonSubTypes.Type(value = NamingStandardRuleSetProperties.class, name = "NamingStandardRuleSetProperties"),
         })
 public class CollectionProperties extends ReferenceableProperties
