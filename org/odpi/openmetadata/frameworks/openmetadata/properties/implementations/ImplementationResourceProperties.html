@@ -74,14 +74,16 @@ loadScripts(document, 'script');</script>
 <div class="inheritance" title="Inheritance Tree"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">java.lang.Object</a>
 <div class="inheritance"><a href="../RelationshipProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties">org.odpi.openmetadata.frameworks.openmetadata.properties.RelationshipProperties</a>
 <div class="inheritance"><a href="../RelationshipBeanProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties">org.odpi.openmetadata.frameworks.openmetadata.properties.RelationshipBeanProperties</a>
+<div class="inheritance"><a href="../RoledRelationshipProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties">org.odpi.openmetadata.frameworks.openmetadata.properties.RoledRelationshipProperties</a>
 <div class="inheritance">org.odpi.openmetadata.frameworks.openmetadata.properties.implementations.ImplementationResourceProperties</div>
+</div>
 </div>
 </div>
 </div>
 <section class="class-description" id="class-description">
 <hr>
 <div class="type-signature"><span class="modifiers">public class </span><span class="element-name type-name-label">ImplementationResourceProperties</span>
-<span class="extends-implements">extends <a href="../RelationshipBeanProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties">RelationshipBeanProperties</a></span></div>
+<span class="extends-implements">extends <a href="../RoledRelationshipProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties">RoledRelationshipProperties</a></span></div>
 <div class="block">ImplementationResourceProperties provides a details of how a component is used in an implementation (0737).</div>
 </section>
 <section class="summary">
@@ -145,6 +147,9 @@ loadScripts(document, 'script');</script>
 </div>
 </div>
 <div class="inherited-list">
+<h3 id="methods-inherited-from-class-org.odpi.openmetadata.frameworks.openmetadata.properties.RoledRelationshipProperties">Methods inherited from class&nbsp;org.odpi.openmetadata.frameworks.openmetadata.properties.<a href="../RoledRelationshipProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties">RoledRelationshipProperties</a></h3>
+<code><a href="../RoledRelationshipProperties.html#getRole()">getRole</a>, <a href="../RoledRelationshipProperties.html#setRole(java.lang.String)">setRole</a></code></div>
+<div class="inherited-list">
 <h3 id="methods-inherited-from-class-org.odpi.openmetadata.frameworks.openmetadata.properties.RelationshipBeanProperties">Methods inherited from class&nbsp;org.odpi.openmetadata.frameworks.openmetadata.properties.<a href="../RelationshipBeanProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties">RelationshipBeanProperties</a></h3>
 <code><a href="../RelationshipBeanProperties.html#getExtendedProperties()">getExtendedProperties</a>, <a href="../RelationshipBeanProperties.html#getTypeName()">getTypeName</a>, <a href="../RelationshipBeanProperties.html#setExtendedProperties(java.util.Map)">setExtendedProperties</a>, <a href="../RelationshipBeanProperties.html#setTypeName(java.lang.String)">setTypeName</a></code></div>
 <div class="inherited-list">
@@ -196,6 +201,8 @@ loadScripts(document, 'script');</script>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">getDescription</span>()</div>
 <div class="block">Return the implementation notes.</div>
 <dl class="notes">
+<dt>Overrides:</dt>
+<dd><code><a href="../RoledRelationshipProperties.html#getDescription()">getDescription</a></code>&nbsp;in class&nbsp;<code><a href="../RoledRelationshipProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties">RoledRelationshipProperties</a></code></dd>
 <dt>Returns:</dt>
 <dd>description</dd>
 </dl>
@@ -207,6 +214,8 @@ loadScripts(document, 'script');</script>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">setDescription</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;description)</span></div>
 <div class="block">Set up the implementation notes.</div>
 <dl class="notes">
+<dt>Overrides:</dt>
+<dd><code><a href="../RoledRelationshipProperties.html#setDescription(java.lang.String)">setDescription</a></code>&nbsp;in class&nbsp;<code><a href="../RoledRelationshipProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties">RoledRelationshipProperties</a></code></dd>
 <dt>Parameters:</dt>
 <dd><code>description</code> - description</dd>
 </dl>
@@ -219,7 +228,7 @@ loadScripts(document, 'script');</script>
 <div class="block">JSON-style toString</div>
 <dl class="notes">
 <dt>Overrides:</dt>
-<dd><code><a href="../RelationshipBeanProperties.html#toString()">toString</a></code>&nbsp;in class&nbsp;<code><a href="../RelationshipBeanProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties">RelationshipBeanProperties</a></code></dd>
+<dd><code><a href="../RoledRelationshipProperties.html#toString()">toString</a></code>&nbsp;in class&nbsp;<code><a href="../RoledRelationshipProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties">RoledRelationshipProperties</a></code></dd>
 <dt>Returns:</dt>
 <dd>return string containing the property names and values</dd>
 </dl>
@@ -232,7 +241,7 @@ loadScripts(document, 'script');</script>
 <div class="block">Compare the values of the supplied object with those stored in the current object.</div>
 <dl class="notes">
 <dt>Overrides:</dt>
-<dd><code><a href="../RelationshipBeanProperties.html#equals(java.lang.Object)">equals</a></code>&nbsp;in class&nbsp;<code><a href="../RelationshipBeanProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties">RelationshipBeanProperties</a></code></dd>
+<dd><code><a href="../RoledRelationshipProperties.html#equals(java.lang.Object)">equals</a></code>&nbsp;in class&nbsp;<code><a href="../RoledRelationshipProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties">RoledRelationshipProperties</a></code></dd>
 <dt>Parameters:</dt>
 <dd><code>objectToCompare</code> - supplied object</dd>
 <dt>Returns:</dt>
@@ -247,7 +256,7 @@ loadScripts(document, 'script');</script>
 <div class="block">Return hash code based on properties.</div>
 <dl class="notes">
 <dt>Overrides:</dt>
-<dd><code><a href="../RelationshipBeanProperties.html#hashCode()">hashCode</a></code>&nbsp;in class&nbsp;<code><a href="../RelationshipBeanProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties">RelationshipBeanProperties</a></code></dd>
+<dd><code><a href="../RoledRelationshipProperties.html#hashCode()">hashCode</a></code>&nbsp;in class&nbsp;<code><a href="../RoledRelationshipProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties">RoledRelationshipProperties</a></code></dd>
 <dt>Returns:</dt>
 <dd>int</dd>
 </dl>

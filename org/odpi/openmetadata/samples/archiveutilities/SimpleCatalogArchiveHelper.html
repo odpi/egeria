@@ -472,7 +472,7 @@ loadScripts(document, 'script');</script>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#addConceptBeadRelationshipEnd(java.lang.String,java.lang.String,java.lang.String,int,int,int,int,boolean,boolean,boolean)" class="member-name-link">addConceptBeadRelationshipEnd</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;conceptBeadLinkGUID,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;conceptBeadGUID,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;attributeName,
- int&nbsp;conceptModelDecoration,
+ int&nbsp;relationshipDecoration,
  int&nbsp;position,
  int&nbsp;minCardinality,
  int&nbsp;maxCardinality,
@@ -1480,7 +1480,7 @@ loadScripts(document, 'script');</script>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#addSolutionBlueprintCompositionRelationship(java.lang.String,java.lang.String,java.lang.String,java.lang.String)" class="member-name-link">addSolutionBlueprintCompositionRelationship</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;solutionBlueprintGUID,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;solutionComponentGUID,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;role,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;membershipType,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;description)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Link a solution blueprint to one of its components</div>
@@ -3645,7 +3645,7 @@ loadScripts(document, 'script');</script>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">addConceptBeadRelationshipEnd</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;conceptBeadLinkGUID,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;conceptBeadGUID,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;attributeName,
- int&nbsp;conceptModelDecoration,
+ int&nbsp;relationshipDecoration,
  int&nbsp;position,
  int&nbsp;minCardinality,
  int&nbsp;maxCardinality,
@@ -3658,7 +3658,7 @@ loadScripts(document, 'script');</script>
 <dd><code>conceptBeadLinkGUID</code> - unique identifier of the concept bead link entity</dd>
 <dd><code>conceptBeadGUID</code> - unique identifier of the concept bead</dd>
 <dd><code>attributeName</code> - name of the attribute for this end</dd>
-<dd><code>conceptModelDecoration</code> - what type of relationship end</dd>
+<dd><code>relationshipDecoration</code> - what type of relationship end</dd>
 <dd><code>position</code> - in the attributes for the bead</dd>
 <dd><code>minCardinality</code> - minimum number of the relationships</dd>
 <dd><code>maxCardinality</code> - maximum number of the relationships</dd>
@@ -5766,15 +5766,15 @@ loadScripts(document, 'script');</script>
 <h3>addSolutionBlueprintCompositionRelationship</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">addSolutionBlueprintCompositionRelationship</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;solutionBlueprintGUID,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;solutionComponentGUID,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;role,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;membershipType,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;description)</span></div>
 <div class="block">Link a solution blueprint to one of its components</div>
 <dl class="notes">
 <dt>Parameters:</dt>
 <dd><code>solutionBlueprintGUID</code> - guid of blueprint</dd>
 <dd><code>solutionComponentGUID</code> - guid of component</dd>
-<dd><code>role</code> - role of the component in the solution</dd>
-<dd><code>description</code> - description of the role in the solution</dd>
+<dd><code>membershipType</code> - membershipType of the component in the solution</dd>
+<dd><code>description</code> - description of the membershipType in the solution</dd>
 </dl>
 </section>
 </li>
