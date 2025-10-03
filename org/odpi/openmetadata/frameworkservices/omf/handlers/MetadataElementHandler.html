@@ -316,7 +316,7 @@ loadScripts(document, 'script');</script>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="MetadataElementHandler.html" title="type parameter in MetadataElementHandler">B</a>&gt;</code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#findMetadataElementsWithString(java.lang.String,java.lang.String,java.lang.String,java.util.List,java.util.Date,java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.enums.SequencingOrder,boolean,boolean,java.util.List,java.util.Date,int,int,java.lang.String)" class="member-name-link">findMetadataElementsWithString</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;searchString,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;typeName,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;requestedTypeName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../../../frameworks/openmetadata/enums/ElementStatus.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.enums">ElementStatus</a>&gt;&nbsp;limitResultsByStatus,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a>&nbsp;asOfTime,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;sequencingProperty,
@@ -360,8 +360,9 @@ loadScripts(document, 'script');</script>
 <div class="block">Convert a list of omf ElementStatuses into a list of OMRS InstanceStatuses.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="MetadataElementHandler.html" title="type parameter in MetadataElementHandler">B</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getMetadataElementByGUID(java.lang.String,java.lang.String,boolean,boolean,java.util.List,java.util.Date,java.util.Date,java.lang.String)" class="member-name-link">getMetadataElementByGUID</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getMetadataElementByGUID(java.lang.String,java.lang.String,java.lang.String,boolean,boolean,java.util.List,java.util.Date,java.util.Date,java.lang.String)" class="member-name-link">getMetadataElementByGUID</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;elementGUID,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;requestedTypeName,
  boolean&nbsp;forLineage,
  boolean&nbsp;forDuplicateProcessing,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;&nbsp;serviceSupportedZones,
@@ -372,10 +373,11 @@ loadScripts(document, 'script');</script>
 <div class="block">Retrieve the metadata element using its unique identifier.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="MetadataElementHandler.html" title="type parameter in MetadataElementHandler">B</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getMetadataElementByUniqueName(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.util.List,java.util.Date,org.odpi.openmetadata.frameworks.openmetadata.enums.SequencingOrder,java.lang.String,boolean,boolean,java.util.List,java.util.Date,java.lang.String)" class="member-name-link">getMetadataElementByUniqueName</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getMetadataElementByUniqueName(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.util.List,java.util.Date,org.odpi.openmetadata.frameworks.openmetadata.enums.SequencingOrder,java.lang.String,boolean,boolean,java.util.List,java.util.Date,java.lang.String)" class="member-name-link">getMetadataElementByUniqueName</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;uniqueName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;uniqueNameParameterName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;uniqueNamePropertyName,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;requestedTypeName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../../../frameworks/openmetadata/enums/ElementStatus.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.enums">ElementStatus</a>&gt;&nbsp;limitResultsByStatus,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a>&nbsp;asOfTime,
  <a href="../../../frameworks/openmetadata/enums/SequencingOrder.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.enums">SequencingOrder</a>&nbsp;sequencingOrder,
@@ -395,10 +397,11 @@ loadScripts(document, 'script');</script>
 <div class="block">Convert the entity into a  metadata element.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getMetadataElementGUIDByUniqueName(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.util.List,java.util.Date,org.odpi.openmetadata.frameworks.openmetadata.enums.SequencingOrder,java.lang.String,boolean,boolean,java.util.List,java.util.Date,java.lang.String)" class="member-name-link">getMetadataElementGUIDByUniqueName</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getMetadataElementGUIDByUniqueName(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.util.List,java.util.Date,org.odpi.openmetadata.frameworks.openmetadata.enums.SequencingOrder,java.lang.String,boolean,boolean,java.util.List,java.util.Date,java.lang.String)" class="member-name-link">getMetadataElementGUIDByUniqueName</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;uniqueName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;uniqueNameParameterName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;uniqueNamePropertyName,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;requestedTypeName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../../../frameworks/openmetadata/enums/ElementStatus.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.enums">ElementStatus</a>&gt;&nbsp;limitResultsByStatus,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a>&nbsp;asOfTime,
  <a href="../../../frameworks/openmetadata/enums/SequencingOrder.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.enums">SequencingOrder</a>&nbsp;sequencingOrder,
@@ -432,7 +435,7 @@ loadScripts(document, 'script');</script>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="MetadataElementHandler.html" title="type parameter in MetadataElementHandler">B</a>&gt;</code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getMetadataElementsByType(java.lang.String,java.lang.String,boolean,boolean,java.util.List,java.util.Date,java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.enums.SequencingOrder,java.util.List,java.util.Date,int,int,java.lang.String)" class="member-name-link">getMetadataElementsByType</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;typeName,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;requestedTypeName,
  boolean&nbsp;forLineage,
  boolean&nbsp;forDuplicateProcessing,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../../../frameworks/openmetadata/enums/ElementStatus.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.enums">ElementStatus</a>&gt;&nbsp;limitResultsByStatus,
@@ -448,10 +451,11 @@ loadScripts(document, 'script');</script>
 <div class="block">Retrieve the metadata elements that are of the correct type.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../../../frameworks/openmetadata/properties/RelatedMetadataElement.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties">RelatedMetadataElement</a>&gt;</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getRelatedMetadataElements(java.lang.String,org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail,int,java.lang.String,java.util.List,java.util.Date,java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.enums.SequencingOrder,boolean,boolean,java.util.List,java.util.Date,int,int,java.lang.String)" class="member-name-link">getRelatedMetadataElements</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getRelatedMetadataElements(java.lang.String,org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail,int,java.lang.String,java.lang.String,java.util.List,java.util.Date,java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.enums.SequencingOrder,boolean,boolean,java.util.List,java.util.Date,int,int,java.lang.String)" class="member-name-link">getRelatedMetadataElements</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  <a href="../../../repositoryservices/connectors/stores/metadatacollectionstore/properties/instances/EntityDetail.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances">EntityDetail</a>&nbsp;startingEntity,
  int&nbsp;startingAtEnd,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;relationshipTypeName,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;attachmentEntityTypeName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../../../frameworks/openmetadata/enums/ElementStatus.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.enums">ElementStatus</a>&gt;&nbsp;limitResultsByStatus,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a>&nbsp;asOfTime,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;sequencingProperty,
@@ -670,10 +674,11 @@ loadScripts(document, 'script');</script>
 <h2>Method Details</h2>
 <ul class="member-list">
 <li>
-<section class="detail" id="getMetadataElementByGUID(java.lang.String,java.lang.String,boolean,boolean,java.util.List,java.util.Date,java.util.Date,java.lang.String)">
+<section class="detail" id="getMetadataElementByGUID(java.lang.String,java.lang.String,java.lang.String,boolean,boolean,java.util.List,java.util.Date,java.util.Date,java.lang.String)">
 <h3>getMetadataElementByGUID</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="MetadataElementHandler.html" title="type parameter in MetadataElementHandler">B</a></span>&nbsp;<span class="element-name">getMetadataElementByGUID</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;elementGUID,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;requestedTypeName,
  boolean&nbsp;forLineage,
  boolean&nbsp;forDuplicateProcessing,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;&nbsp;serviceSupportedZones,
@@ -722,12 +727,13 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
-<section class="detail" id="getMetadataElementByUniqueName(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.util.List,java.util.Date,org.odpi.openmetadata.frameworks.openmetadata.enums.SequencingOrder,java.lang.String,boolean,boolean,java.util.List,java.util.Date,java.lang.String)">
+<section class="detail" id="getMetadataElementByUniqueName(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.util.List,java.util.Date,org.odpi.openmetadata.frameworks.openmetadata.enums.SequencingOrder,java.lang.String,boolean,boolean,java.util.List,java.util.Date,java.lang.String)">
 <h3>getMetadataElementByUniqueName</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="MetadataElementHandler.html" title="type parameter in MetadataElementHandler">B</a></span>&nbsp;<span class="element-name">getMetadataElementByUniqueName</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;uniqueName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;uniqueNameParameterName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;uniqueNamePropertyName,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;requestedTypeName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../../../frameworks/openmetadata/enums/ElementStatus.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.enums">ElementStatus</a>&gt;&nbsp;limitResultsByStatus,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a>&nbsp;asOfTime,
  <a href="../../../frameworks/openmetadata/enums/SequencingOrder.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.enums">SequencingOrder</a>&nbsp;sequencingOrder,
@@ -747,6 +753,7 @@ loadScripts(document, 'script');</script>
 <dd><code>uniqueName</code> - unique name for the metadata element</dd>
 <dd><code>uniqueNameParameterName</code> - name of the parameter that passed the unique name (optional)</dd>
 <dd><code>uniqueNamePropertyName</code> - name of the property from the open types to use in the lookup</dd>
+<dd><code>requestedTypeName</code> - typeName from caller</dd>
 <dd><code>limitResultsByStatus</code> - By default, relationships in all statuses (other than DELETE) are returned.  However, it is possible
                              to specify a list of statuses (for example ACTIVE) to restrict the results to.  Null means all status values.</dd>
 <dd><code>asOfTime</code> - Requests a historical query of the entity.  Null means return the present values.</dd>
@@ -768,12 +775,13 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
-<section class="detail" id="getMetadataElementGUIDByUniqueName(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.util.List,java.util.Date,org.odpi.openmetadata.frameworks.openmetadata.enums.SequencingOrder,java.lang.String,boolean,boolean,java.util.List,java.util.Date,java.lang.String)">
+<section class="detail" id="getMetadataElementGUIDByUniqueName(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.util.List,java.util.Date,org.odpi.openmetadata.frameworks.openmetadata.enums.SequencingOrder,java.lang.String,boolean,boolean,java.util.List,java.util.Date,java.lang.String)">
 <h3>getMetadataElementGUIDByUniqueName</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">getMetadataElementGUIDByUniqueName</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;uniqueName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;uniqueNameParameterName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;uniqueNamePropertyName,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;requestedTypeName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../../../frameworks/openmetadata/enums/ElementStatus.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.enums">ElementStatus</a>&gt;&nbsp;limitResultsByStatus,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a>&nbsp;asOfTime,
  <a href="../../../frameworks/openmetadata/enums/SequencingOrder.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.enums">SequencingOrder</a>&nbsp;sequencingOrder,
@@ -793,6 +801,7 @@ loadScripts(document, 'script');</script>
 <dd><code>uniqueName</code> - unique name for the metadata element</dd>
 <dd><code>uniqueNameParameterName</code> - name of the parameter that passed the unique name (optional)</dd>
 <dd><code>uniqueNamePropertyName</code> - name of the property from the open types to use in the lookup</dd>
+<dd><code>requestedTypeName</code> - typeName from caller</dd>
 <dd><code>limitResultsByStatus</code> - By default, relationships in all statuses (other than DELETE) are returned.  However, it is possible
                              to specify a list of statuses (for example ACTIVE) to restrict the results to.  Null means all status values.</dd>
 <dd><code>asOfTime</code> - Requests a historical query of the entity.  Null means return the present values.</dd>
@@ -818,7 +827,7 @@ loadScripts(document, 'script');</script>
 <h3>findMetadataElementsWithString</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="MetadataElementHandler.html" title="type parameter in MetadataElementHandler">B</a>&gt;</span>&nbsp;<span class="element-name">findMetadataElementsWithString</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;searchString,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;typeName,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;requestedTypeName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../../../frameworks/openmetadata/enums/ElementStatus.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.enums">ElementStatus</a>&gt;&nbsp;limitResultsByStatus,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a>&nbsp;asOfTime,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;sequencingProperty,
@@ -838,7 +847,7 @@ loadScripts(document, 'script');</script>
 <dt>Parameters:</dt>
 <dd><code>userId</code> - caller's userId</dd>
 <dd><code>searchString</code> - name to retrieve</dd>
-<dd><code>typeName</code> - optional type name to restrict search to a specific type of element (and their subtypes)</dd>
+<dd><code>requestedTypeName</code> - optional type name to restrict search to a specific type of element (and their subtypes)</dd>
 <dd><code>limitResultsByStatus</code> - By default, relationships in all statuses (other than DELETE) are returned.  However, it is possible
                              to specify a list of statuses (for example ACTIVE) to restrict the results to.  Null means all status values.</dd>
 <dd><code>asOfTime</code> - Requests a historical query of the entity.  Null means return the present values.</dd>
@@ -865,7 +874,7 @@ loadScripts(document, 'script');</script>
 <section class="detail" id="getMetadataElementsByType(java.lang.String,java.lang.String,boolean,boolean,java.util.List,java.util.Date,java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.enums.SequencingOrder,java.util.List,java.util.Date,int,int,java.lang.String)">
 <h3>getMetadataElementsByType</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="MetadataElementHandler.html" title="type parameter in MetadataElementHandler">B</a>&gt;</span>&nbsp;<span class="element-name">getMetadataElementsByType</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;typeName,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;requestedTypeName,
  boolean&nbsp;forLineage,
  boolean&nbsp;forDuplicateProcessing,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../../../frameworks/openmetadata/enums/ElementStatus.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.enums">ElementStatus</a>&gt;&nbsp;limitResultsByStatus,
@@ -884,7 +893,7 @@ loadScripts(document, 'script');</script>
 <dl class="notes">
 <dt>Parameters:</dt>
 <dd><code>userId</code> - caller's userId</dd>
-<dd><code>typeName</code> - specific type of element (and their subtypes) to retrieve</dd>
+<dd><code>requestedTypeName</code> - specific type of element (and their subtypes) to retrieve</dd>
 <dd><code>forLineage</code> - the retrieved element is for lineage processing so include archived elements</dd>
 <dd><code>forDuplicateProcessing</code> - the retrieved element is for duplicate processing so do not combine results from known duplicates.</dd>
 <dd><code>limitResultsByStatus</code> - By default, relationships in all non-DELETED statuses are returned.  However, it is possible
@@ -909,12 +918,13 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
-<section class="detail" id="getRelatedMetadataElements(java.lang.String,org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail,int,java.lang.String,java.util.List,java.util.Date,java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.enums.SequencingOrder,boolean,boolean,java.util.List,java.util.Date,int,int,java.lang.String)">
+<section class="detail" id="getRelatedMetadataElements(java.lang.String,org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail,int,java.lang.String,java.lang.String,java.util.List,java.util.Date,java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.enums.SequencingOrder,boolean,boolean,java.util.List,java.util.Date,int,int,java.lang.String)">
 <h3>getRelatedMetadataElements</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../../../frameworks/openmetadata/properties/RelatedMetadataElement.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties">RelatedMetadataElement</a>&gt;</span>&nbsp;<span class="element-name">getRelatedMetadataElements</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  <a href="../../../repositoryservices/connectors/stores/metadatacollectionstore/properties/instances/EntityDetail.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances">EntityDetail</a>&nbsp;startingEntity,
  int&nbsp;startingAtEnd,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;relationshipTypeName,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;attachmentEntityTypeName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../../../frameworks/openmetadata/enums/ElementStatus.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.enums">ElementStatus</a>&gt;&nbsp;limitResultsByStatus,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a>&nbsp;asOfTime,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;sequencingProperty,
@@ -936,6 +946,7 @@ loadScripts(document, 'script');</script>
 <dd><code>startingEntity</code> - the starting metadata element</dd>
 <dd><code>startingAtEnd</code> - indicates which end to retrieve from (0 is "either end"; 1 is end1; 2 is end 2)</dd>
 <dd><code>relationshipTypeName</code> - type name of relationships to follow (or null for all)</dd>
+<dd><code>attachmentEntityTypeName</code> - requested type name for retrieved entities</dd>
 <dd><code>limitResultsByStatus</code> - By default, relationships in all statuses (other than DELETE) are returned.  However, it is possible
                              to specify a list of statuses (for example ACTIVE) to restrict the results to.  Null means all status values.</dd>
 <dd><code>asOfTime</code> - Requests a historical query of the entity.  Null means return the present values.</dd>

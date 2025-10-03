@@ -1,4 +1,3 @@
-org.odpi.openmetadata.adapters.adminservices.configurationstore.encryptedfile
 org.odpi.openmetadata.adapters.adminservices.configurationstore.file
 org.odpi.openmetadata.adapters.connectors.apacheatlas.controls
 org.odpi.openmetadata.adapters.connectors.apacheatlas.integration
