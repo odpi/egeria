@@ -18,10 +18,6 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-tomcat'
     implementation 'jakarta.servlet:jakarta.servlet-api'
 
-    // An attempt to load  the right level of lucene in all environments
-    runtimeOnly("org.apache.lucene:lucene-core")
-    implementation("org.apache.lucene:lucene-queryparser")
-
     runtimeOnly 'io.micrometer:micrometer-registry-prometheus'
     implementation 'org.springframework:spring-beans'
     implementation 'org.springframework:spring-core'

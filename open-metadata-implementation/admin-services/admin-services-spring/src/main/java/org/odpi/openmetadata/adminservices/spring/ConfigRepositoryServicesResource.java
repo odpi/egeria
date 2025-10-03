@@ -358,32 +358,6 @@ public class ConfigRepositoryServicesResource
 
 
     /**
-     * Set up a graph store as the local repository.  This repository uses JanusGraph.
-     *
-     * @param userId  user that is issuing the request.
-     * @param serverName  local server name.
-     * @param storageProperties  properties used to configure the back end storage for the graph
-     * @return void response or
-     * OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
-     * OMAGConfigurationErrorException the event bus has not been configured or
-     * OMAGInvalidParameterException invalid serverName or localRepositoryMode parameter.
-     */
-    @PostMapping(path = "/local-repository/mode/local-graph-repository")
-
-    @Operation(summary="setGraphLocalRepository",
-               description="Set up a graph store as the local repository.  This native repository uses JanusGraph.",
-               externalDocs=@ExternalDocumentation(description="Further Information",
-                                                   url="https://egeria-project.org/connectors/repository/janus-graph/overview/"))
-
-    public VoidResponse setGraphLocalRepository(@PathVariable                  String              userId,
-                                                @PathVariable                  String              serverName,
-                                                @RequestBody @Nullable         Map<String, Object> storageProperties)
-    {
-        return adminAPI.setGraphLocalRepository(userId, serverName, storageProperties);
-    }
-
-
-    /**
      * Set up a PostgreSQL database schema as the local repository.
      *
      * @param userId  user that is issuing the request.
@@ -397,7 +371,7 @@ public class ConfigRepositoryServicesResource
     @PostMapping(path = "/local-repository/mode/postgres-repository")
 
     @Operation(summary="setPostgresLocalRepository",
-            description="Set up a PostgreSQL Database schema as the local repository.  Each repository is stored in its own database schema.  The storage properties should include databaseURL, databaseSchema, secretsStore and secretsCollectionName",
+            description="Set up a PostgreSQL Database schema as the local repository.  Each repository is stored in its own database schema.  The storage properties should include databaseURL, databaseSchema, secretsStore and secretsCollectionName.",
             externalDocs=@ExternalDocumentation(description="Further Information",
                     url="https://egeria-project.org/connectors/repository/postgres/overview/"))
 
@@ -406,95 +380,6 @@ public class ConfigRepositoryServicesResource
                                                    @RequestBody                   Map<String, Object> storageProperties)
     {
         return adminAPI.setPostgresLocalRepository(userId, serverName, storageProperties);
-    }
-
-
-    /**
-     * Set up an XTDB store as the local repository.  This store uses XTDB to provide a historical metadata repository that operates in memory.
-     * This version of the XTDB repository is designed for testing.
-     *
-     * @param userId  user that is issuing the request.
-     * @param serverName  local server name.
-     * @param requestBody  null request body
-     * @return void response or
-     * OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
-     * OMAGConfigurationErrorException the event bus has not been configured or
-     * OMAGInvalidParameterException invalid serverName or localRepositoryMode parameter.
-     */
-    @PostMapping(path = "/local-repository/mode/xtdb-in-memory-repository")
-
-    @Operation(summary="setXTDBInMemRepository",
-               description="Set up an XTDB store as the local repository. " +
-                                   " This store uses XTDB to provide a historical metadata repository that operates in memory." +
-                                   " This version of the XTDB repository is designed for testing.",
-               externalDocs=@ExternalDocumentation(description="Further Information",
-                                                   url="https://egeria-project.org/connectors/repository/xtdb/"))
-
-    public VoidResponse setXTDBInMemRepository(@PathVariable String              userId,
-                                               @PathVariable String              serverName,
-                                               @RequestBody(required = false)
-                                                            NullRequestBody requestBody)
-    {
-        return adminAPI.setXTDBInMemRepository(userId, serverName, requestBody);
-    }
-
-
-    /**
-     * Set up an XTDB store as the local repository.  This store uses XTDB with RocksDB KV store to provide a high performance historical
-     * metadata repository.
-     *
-     * @param userId  user that is issuing the request.
-     * @param serverName  local server name.
-     * @param requestBody  null request body
-     * @return void response or
-     * OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
-     * OMAGConfigurationErrorException the event bus has not been configured or
-     * OMAGInvalidParameterException invalid serverName or localRepositoryMode parameter.
-     */
-    @PostMapping(path = "/local-repository/mode/xtdb-local-kv-repository")
-
-    @Operation(summary="setXTDBLocalKVRepository",
-               description="Set up an XTDB store as the local repository.  This store uses XTDB with RocksDB KV store to provide a high " +
-                                   "performance historical metadata repository.",
-               externalDocs=@ExternalDocumentation(description="Further Information",
-                                                   url="https://egeria-project.org/connectors/repository/xtdb/"))
-
-    public VoidResponse setXTDBLocalKVRepository(@PathVariable String          userId,
-                                                 @PathVariable String          serverName,
-                                                 @RequestBody (required = false)
-                                                               NullRequestBody requestBody)
-    {
-        return adminAPI.setXTDBLocalKVRepository(userId, serverName, requestBody);
-    }
-
-
-    /**
-     * Set up an XTDB store as the local repository.  This store uses XTDB to provide a high performance historical
-     * metadata repository.  It is scalable with different back ends and can be run in a HA context with multiple versions of the
-     * same server deployed to the same repository.
-     *
-     * @param userId  user that is issuing the request.
-     * @param serverName  local server name.
-     * @param storageProperties  properties used to configure the back end storage for the graph
-     * @return void response or
-     * OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
-     * OMAGConfigurationErrorException the event bus has not been configured or
-     * OMAGInvalidParameterException invalid serverName or localRepositoryMode parameter.
-     */
-    @PostMapping(path = "/local-repository/mode/xtdb-local-repository")
-
-    @Operation(summary="setXTDBLocalRepository",
-               description="Set up an XTDB store as the local repository.  This store uses XTDB to provide a high performance historical" +
-                                   " metadata repository.  It is scalable with different back ends and can be run in a HA context with multiple versions of the" +
-                                   " same server deployed to the same repository.",
-               externalDocs=@ExternalDocumentation(description="Further Information",
-                                                   url="https://egeria-project.org/connectors/repository/xtdb/"))
-
-    public VoidResponse setXTDBLocalRepository(@PathVariable String              userId,
-                                               @PathVariable String              serverName,
-                                               @RequestBody  Map<String, Object> storageProperties)
-    {
-        return adminAPI.setXTDBLocalRepository(userId, serverName, storageProperties);
     }
 
 

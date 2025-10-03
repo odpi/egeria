@@ -38,8 +38,6 @@ allprojects {
     // Only use maven central
     repositories {
         mavenCentral()
-        // used by tink (encrypted filestore connector)
-        google()
     }
 } // end of allProjects
 
