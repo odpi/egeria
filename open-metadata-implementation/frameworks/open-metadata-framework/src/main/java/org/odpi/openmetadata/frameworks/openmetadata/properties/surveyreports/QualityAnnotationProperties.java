@@ -5,6 +5,7 @@ package org.odpi.openmetadata.frameworks.openmetadata.properties.surveyreports;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 
 import java.util.Objects;
 
@@ -33,6 +34,8 @@ public class QualityAnnotationProperties extends DataFieldAnnotationProperties
      */
     public QualityAnnotationProperties()
     {
+        super();
+        super.setTypeName(OpenMetadataType.QUALITY_ANNOTATION.typeName);
     }
 
 

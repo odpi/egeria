@@ -9,7 +9,6 @@ import org.odpi.openmetadata.frameworks.openmetadata.enums.GlossaryTermAssignmen
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
-import org.odpi.openmetadata.frameworks.openmetadata.handlers.AssetHandler;
 import org.odpi.openmetadata.frameworks.openmetadata.handlers.StewardshipManagementHandler;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.MetadataElementSummary;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.RelatedMetadataElementSummaryList;
@@ -800,7 +799,7 @@ public class ClassificationManagerClient extends ConnectorContextClientBase
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     public void setRetentionClassification(String                            elementGUID,
-                                           RetentionClassificationProperties properties,
+                                           RetentionProperties properties,
                                            MetadataSourceOptions             metadataSourceOptions) throws InvalidParameterException,
                                                                                                            UserNotAuthorizedException,
                                                                                                            PropertyServerException

@@ -56,9 +56,9 @@ public class ApacheKafkaPackArchiveWriter extends ContentPackBaseArchiveWriter
          * Integration Connector Types may need to link to deployedImplementationType valid value element.
          * This information is in the connector provider.
          */
-        archiveHelper.addConnectorType(null, new ApacheKafkaAdminProvider());
-        archiveHelper.addConnectorType(null, new KafkaTopicIntegrationProvider());
-        archiveHelper.addConnectorType(null, new SurveyApacheKafkaServerProvider());
+        archiveHelper.addConnectorType(new ApacheKafkaAdminProvider());
+        archiveHelper.addConnectorType(new KafkaTopicIntegrationProvider());
+        archiveHelper.addConnectorType(new SurveyApacheKafkaServerProvider());
 
         /*
          * Add catalog templates

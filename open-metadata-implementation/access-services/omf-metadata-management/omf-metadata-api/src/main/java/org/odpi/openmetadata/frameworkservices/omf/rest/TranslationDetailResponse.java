@@ -6,7 +6,7 @@ package org.odpi.openmetadata.frameworkservices.omf.rest;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.TranslationDetail;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.TranslationDetailProperties;
 
 import java.util.Objects;
 
@@ -22,7 +22,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class TranslationDetailResponse extends OMAGOMFAPIResponse
 {
-    private TranslationDetail element = null;
+    private TranslationDetailProperties element = null;
 
 
     /**
@@ -55,7 +55,7 @@ public class TranslationDetailResponse extends OMAGOMFAPIResponse
      *
      * @return bean
      */
-    public TranslationDetail getElement()
+    public TranslationDetailProperties getElement()
     {
         return element;
     }
@@ -66,7 +66,7 @@ public class TranslationDetailResponse extends OMAGOMFAPIResponse
      *
      * @param element  bean
      */
-    public void setElement(TranslationDetail element)
+    public void setElement(TranslationDetailProperties element)
     {
         this.element = element;
     }

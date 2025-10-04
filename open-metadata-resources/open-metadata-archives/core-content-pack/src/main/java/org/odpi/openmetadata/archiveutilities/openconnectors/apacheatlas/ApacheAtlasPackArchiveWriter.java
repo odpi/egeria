@@ -55,8 +55,8 @@ public class ApacheAtlasPackArchiveWriter extends ContentPackBaseArchiveWriter
          * Integration Connector Types may need to link to deployedImplementationType valid value element.
          * This information is in the connector provider.
          */
-        archiveHelper.addConnectorType(null, new ApacheAtlasRESTProvider());
-        archiveHelper.addConnectorType(null, new ApacheAtlasIntegrationProvider());
+        archiveHelper.addConnectorType(new ApacheAtlasRESTProvider());
+        archiveHelper.addConnectorType(new ApacheAtlasIntegrationProvider());
 
         /*
          * Add catalog templates

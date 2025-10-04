@@ -708,11 +708,6 @@ public enum OpenMetadataProperty
     START_DATE("startDate", DataType.DATE, DataType.DATE.getName(), "Date/time that work started on this element.", null, "e3e374cc-0f9d-45f6-ae74-7d7a438b17bf"),
 
     /**
-     * Date/time that work is expected to be complete for this element.
-     */
-    PLANNED_END_DATE("plannedEndDate", DataType.DATE, DataType.DATE.getName(), "Date/time that work is expected to be complete for this element.", null, "330ae312-1e88-4c7b-810e-4b4a50e540e8"),
-
-    /**
      * An example of the described concept, element or value.
      */
     EXAMPLE("example", DataType.STRING, DataType.STRING.getName(), "An example of the described concept, element or value.", null, "b207bc5c-b5b5-43f1-94f8-41f4e2902ee5"),
@@ -1570,12 +1565,12 @@ public enum OpenMetadataProperty
     /**
      * Instance of the database.
      */
-    INSTANCE ("instance", DataType.STRING, DataType.STRING.getName(), "Instance of the database.", null, "ecd5593a-647f-4767-b465-279e4bd35efc"),
+    INSTANCE ("databaseInstance", DataType.STRING, DataType.STRING.getName(), "Instance of the database.", null, "ecd5593a-647f-4767-b465-279e4bd35efc"),
 
     /**
      * importedFrom
      */
-    IMPORTED_FROM("importedFrom", DataType.STRING, DataType.STRING.getName(), "System that the database was imported from.", null, "6e7b1e16-bcf4-4010-becd-244506f1d3ed"),
+    IMPORTED_FROM("importedFrom", DataType.STRING, DataType.STRING.getName(), "System that the data was imported from.", null, "6e7b1e16-bcf4-4010-becd-244506f1d3ed"),
 
     /**
      * Name of the language used to implement this component.

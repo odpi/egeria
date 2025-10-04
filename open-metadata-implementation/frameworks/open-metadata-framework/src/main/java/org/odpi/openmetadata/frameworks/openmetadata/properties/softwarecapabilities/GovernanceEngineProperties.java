@@ -27,8 +27,9 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
         @JsonSubTypes.Type(value = GovernanceActionEngineProperties.class, name = "GovernanceActionEngineProperties"),
         @JsonSubTypes.Type(value = RepositoryGovernanceEngineProperties.class, name = "RepositoryGovernanceEngineProperties"),
         @JsonSubTypes.Type(value = SurveyActionEngineProperties.class, name = "SurveyActionEngineProperties"),
+        @JsonSubTypes.Type(value = WatchdogActionEngineProperties.class, name = "WatchdogActionEngineProperties"),
 })
-public class GovernanceEngineProperties extends SoftwareCapabilityProperties
+public class GovernanceEngineProperties extends EngineProperties
 {
     /**
      * Default constructor
@@ -36,7 +37,7 @@ public class GovernanceEngineProperties extends SoftwareCapabilityProperties
     public GovernanceEngineProperties()
     {
         super();
-        super.setTypeName(OpenMetadataType.GOVERNANCE_ENGINE.typeName);;
+        super.setTypeName(OpenMetadataType.GOVERNANCE_ENGINE.typeName);
     }
 
 
@@ -45,7 +46,7 @@ public class GovernanceEngineProperties extends SoftwareCapabilityProperties
      *
      * @param template template object to copy.
      */
-    public GovernanceEngineProperties(SoftwareCapabilityProperties template)
+    public GovernanceEngineProperties(EngineProperties template)
     {
         super(template);
     }

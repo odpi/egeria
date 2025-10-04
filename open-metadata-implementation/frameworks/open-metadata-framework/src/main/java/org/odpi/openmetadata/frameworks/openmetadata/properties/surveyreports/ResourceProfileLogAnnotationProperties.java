@@ -3,6 +3,7 @@
 package org.odpi.openmetadata.frameworks.openmetadata.properties.surveyreports;
 
 import com.fasterxml.jackson.annotation.*;
+import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 
 import java.util.List;
 import java.util.Objects;
@@ -26,6 +27,8 @@ public class ResourceProfileLogAnnotationProperties extends DataFieldAnnotationP
      */
     public ResourceProfileLogAnnotationProperties()
     {
+        super();
+        super.setTypeName(OpenMetadataType.RESOURCE_PROFILE_LOG_ANNOTATION.typeName);
     }
 
 

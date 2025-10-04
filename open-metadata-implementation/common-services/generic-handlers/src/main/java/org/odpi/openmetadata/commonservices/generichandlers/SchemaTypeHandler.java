@@ -1678,10 +1678,6 @@ public class SchemaTypeHandler<B> extends SchemaElementHandler<B>
                 {
                     return this.getSchemaType(userId, relationship.getEntityTwoProxy().getGUID(), schemaTypeGUIDParameterName, forLineage, forDuplicateProcessing, effectiveTime, methodName);
                 }
-                else if (repositoryHelper.isTypeOf(serviceName, relationship.getType().getTypeDefName(), OpenMetadataType.SCHEMA_ATTRIBUTE_TYPE_RELATIONSHIP.typeName))
-                {
-                    return this.getSchemaType(userId, relationship.getEntityTwoProxy().getGUID(), schemaTypeGUIDParameterName, forLineage, forDuplicateProcessing, effectiveTime, methodName);
-                }
                 else if (repositoryHelper.isTypeOf(serviceName, relationship.getType().getTypeDefName(), OpenMetadataType.LINKED_EXTERNAL_SCHEMA_TYPE_RELATIONSHIP.typeName))
                 {
                     return this.getSchemaType(userId, relationship.getEntityTwoProxy().getGUID(), schemaTypeGUIDParameterName, forLineage, forDuplicateProcessing, effectiveTime, methodName);

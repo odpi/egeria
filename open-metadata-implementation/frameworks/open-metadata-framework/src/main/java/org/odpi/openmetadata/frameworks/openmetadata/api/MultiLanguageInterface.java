@@ -2,7 +2,7 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.frameworks.openmetadata.api;
 
-import org.odpi.openmetadata.frameworks.openmetadata.properties.TranslationDetail;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.TranslationDetailProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
@@ -27,9 +27,9 @@ public interface MultiLanguageInterface
      */
     void setTranslation(String            userId,
                         String            elementGUID,
-                        TranslationDetail translationDetail) throws InvalidParameterException,
-                                                                    UserNotAuthorizedException,
-                                                                    PropertyServerException;
+                        TranslationDetailProperties translationDetail) throws InvalidParameterException,
+                                                                              UserNotAuthorizedException,
+                                                                              PropertyServerException;
 
 
     /**
@@ -66,10 +66,10 @@ public interface MultiLanguageInterface
      * @throws UserNotAuthorizedException the service is not able to access the element
      * @throws PropertyServerException    there is a problem accessing the metadata store
      */
-    TranslationDetail getTranslation(String userId,
-                                     String elementGUID,
-                                     String language,
-                                     String locale) throws InvalidParameterException,
+    TranslationDetailProperties getTranslation(String userId,
+                                               String elementGUID,
+                                               String language,
+                                               String locale) throws InvalidParameterException,
                                                            UserNotAuthorizedException,
                                                            PropertyServerException;
 
@@ -88,10 +88,10 @@ public interface MultiLanguageInterface
      * @throws UserNotAuthorizedException the service is not able to access the element
      * @throws PropertyServerException    there is a problem accessing the metadata store
      */
-    List<TranslationDetail> getTranslations(String userId,
-                                            String elementGUID,
-                                            int    startFrom,
-                                            int    pageSize) throws InvalidParameterException,
+    List<TranslationDetailProperties> getTranslations(String userId,
+                                                      String elementGUID,
+                                                      int    startFrom,
+                                                      int    pageSize) throws InvalidParameterException,
                                                                     UserNotAuthorizedException,
                                                                     PropertyServerException;
 }

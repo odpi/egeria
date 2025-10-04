@@ -3,6 +3,8 @@
 package org.odpi.openmetadata.frameworks.openmetadata.properties.softwarecapabilities;
 
 
+import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
+
 /**
  * FileSystemProperties describes an application that manages a collection of files.
  */
@@ -14,6 +16,7 @@ public class FileManagerProperties extends ResourceManagerProperties
     public FileManagerProperties()
     {
         super();
+        super.setTypeName(OpenMetadataType.FILE_MANAGER_CLASSIFICATION.typeName);
     }
 
 

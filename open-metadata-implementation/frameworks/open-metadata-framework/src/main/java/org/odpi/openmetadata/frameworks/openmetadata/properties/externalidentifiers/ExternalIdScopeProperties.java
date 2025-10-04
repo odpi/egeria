@@ -8,6 +8,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.PermittedSynchronization;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.RelationshipBeanProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 
 import java.util.Objects;
 
@@ -32,6 +33,7 @@ public class ExternalIdScopeProperties extends RelationshipBeanProperties
     public ExternalIdScopeProperties()
     {
         super();
+        super.setTypeName(OpenMetadataType.EXTERNAL_ID_SCOPE_RELATIONSHIP.typeName);
     }
 
 

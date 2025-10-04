@@ -8,6 +8,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.DeleteMethod;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.RelationshipBeanProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 
 import java.util.Map;
 import java.util.Objects;
@@ -35,6 +36,7 @@ public class SupportedGovernanceServiceProperties extends RelationshipBeanProper
     public SupportedGovernanceServiceProperties()
     {
         super();
+        super.setTypeName(OpenMetadataType.SUPPORTED_GOVERNANCE_SERVICE_RELATIONSHIP.typeName);
     }
 
 

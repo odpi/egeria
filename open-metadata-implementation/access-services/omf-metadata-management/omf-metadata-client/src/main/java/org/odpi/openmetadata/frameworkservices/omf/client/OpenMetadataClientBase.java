@@ -2835,9 +2835,9 @@ public abstract class OpenMetadataClientBase extends OpenMetadataClient
     @Override
     public void setTranslation(String            userId,
                                String            elementGUID,
-                               TranslationDetail translationDetail) throws InvalidParameterException,
-                                                                           UserNotAuthorizedException,
-                                                                           PropertyServerException
+                               TranslationDetailProperties translationDetail) throws InvalidParameterException,
+                                                                                     UserNotAuthorizedException,
+                                                                                     PropertyServerException
     {
         final String methodName = "setTranslation";
         final String elementGUIDParameterName = "elementGUID";
@@ -2912,10 +2912,10 @@ public abstract class OpenMetadataClientBase extends OpenMetadataClient
      * @throws PropertyServerException    there is a problem accessing the metadata store
      */
     @Override
-    public TranslationDetail getTranslation(String userId,
-                                            String elementGUID,
-                                            String language,
-                                            String locale) throws InvalidParameterException,
+    public TranslationDetailProperties getTranslation(String userId,
+                                                      String elementGUID,
+                                                      String language,
+                                                      String locale) throws InvalidParameterException,
                                                                   UserNotAuthorizedException,
                                                                   PropertyServerException
     {
@@ -2955,10 +2955,10 @@ public abstract class OpenMetadataClientBase extends OpenMetadataClient
      * @throws PropertyServerException    there is a problem accessing the metadata store
      */
     @Override
-    public List<TranslationDetail> getTranslations(String userId,
-                                                   String elementGUID,
-                                                   int    startFrom,
-                                                   int    pageSize) throws InvalidParameterException,
+    public List<TranslationDetailProperties> getTranslations(String userId,
+                                                             String elementGUID,
+                                                             int    startFrom,
+                                                             int    pageSize) throws InvalidParameterException,
                                                                            UserNotAuthorizedException,
                                                                            PropertyServerException
     {
@@ -3000,9 +3000,9 @@ public abstract class OpenMetadataClientBase extends OpenMetadataClient
     public void setUpValidMetadataValue(String             userId,
                                         String             typeName,
                                         String             propertyName,
-                                        ValidMetadataValue validMetadataValue) throws InvalidParameterException,
-                                                                                      UserNotAuthorizedException,
-                                                                                      PropertyServerException
+                                        ValidMetadataValueProperties validMetadataValue) throws InvalidParameterException,
+                                                                                                UserNotAuthorizedException,
+                                                                                                PropertyServerException
     {
         final String methodName = "setUpValidMetadataValue";
         final String propertyNameParameterName = "propertyName";
@@ -3043,9 +3043,9 @@ public abstract class OpenMetadataClientBase extends OpenMetadataClient
     public void setUpValidMetadataMapName(String             userId,
                                           String             typeName,
                                           String             propertyName,
-                                          ValidMetadataValue validMetadataValue) throws InvalidParameterException,
-                                                                                        UserNotAuthorizedException,
-                                                                                        PropertyServerException
+                                          ValidMetadataValueProperties validMetadataValue) throws InvalidParameterException,
+                                                                                                  UserNotAuthorizedException,
+                                                                                                  PropertyServerException
     {
         final String methodName = "setUpValidMetadataMapName";
         final String propertyNameParameterName = "propertyName";
@@ -3088,9 +3088,9 @@ public abstract class OpenMetadataClientBase extends OpenMetadataClient
                                            String             typeName,
                                            String             propertyName,
                                            String             mapName,
-                                           ValidMetadataValue validMetadataValue) throws InvalidParameterException,
-                                                                                         UserNotAuthorizedException,
-                                                                                         PropertyServerException
+                                           ValidMetadataValueProperties validMetadataValue) throws InvalidParameterException,
+                                                                                                   UserNotAuthorizedException,
+                                                                                                   PropertyServerException
     {
         final String methodName = "setUpValidMetadataMapValue";
         final String propertyNameParameterName = "propertyName";
@@ -3376,10 +3376,10 @@ public abstract class OpenMetadataClientBase extends OpenMetadataClient
      * @throws PropertyServerException    there is a problem accessing the metadata store
      */
     @Override
-    public ValidMetadataValue getValidMetadataValue(String userId,
-                                                    String typeName,
-                                                    String propertyName,
-                                                    String preferredValue) throws InvalidParameterException,
+    public ValidMetadataValueProperties getValidMetadataValue(String userId,
+                                                              String typeName,
+                                                              String propertyName,
+                                                              String preferredValue) throws InvalidParameterException,
                                                                                   UserNotAuthorizedException,
                                                                                   PropertyServerException
     {
@@ -3417,10 +3417,10 @@ public abstract class OpenMetadataClientBase extends OpenMetadataClient
      * @throws PropertyServerException    there is a problem accessing the metadata store
      */
     @Override
-    public ValidMetadataValue getValidMetadataMapName(String userId,
-                                                      String typeName,
-                                                      String propertyName,
-                                                      String preferredValue) throws InvalidParameterException,
+    public ValidMetadataValueProperties getValidMetadataMapName(String userId,
+                                                                String typeName,
+                                                                String propertyName,
+                                                                String preferredValue) throws InvalidParameterException,
                                                                                     UserNotAuthorizedException,
                                                                                     PropertyServerException
     {
@@ -3459,11 +3459,11 @@ public abstract class OpenMetadataClientBase extends OpenMetadataClient
      * @throws PropertyServerException    there is a problem accessing the metadata store
      */
     @Override
-    public ValidMetadataValue getValidMetadataMapValue(String userId,
-                                                       String typeName,
-                                                       String propertyName,
-                                                       String mapName,
-                                                       String preferredValue) throws InvalidParameterException,
+    public ValidMetadataValueProperties getValidMetadataMapValue(String userId,
+                                                                 String typeName,
+                                                                 String propertyName,
+                                                                 String mapName,
+                                                                 String preferredValue) throws InvalidParameterException,
                                                                                      UserNotAuthorizedException,
                                                                                      PropertyServerException
     {
@@ -3551,13 +3551,13 @@ public abstract class OpenMetadataClientBase extends OpenMetadataClient
      * @throws PropertyServerException    there is a problem accessing the metadata store
      */
     @Override
-    public List<ValidMetadataValue> getConsistentMetadataValues(String userId,
-                                                                String typeName,
-                                                                String propertyName,
-                                                                String mapName,
-                                                                String preferredValue,
-                                                                int    startFrom,
-                                                                int    pageSize) throws InvalidParameterException,
+    public List<ValidMetadataValueProperties> getConsistentMetadataValues(String userId,
+                                                                          String typeName,
+                                                                          String propertyName,
+                                                                          String mapName,
+                                                                          String preferredValue,
+                                                                          int    startFrom,
+                                                                          int    pageSize) throws InvalidParameterException,
                                                                                         UserNotAuthorizedException,
                                                                                         PropertyServerException
     {

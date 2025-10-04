@@ -257,9 +257,9 @@ public class ValidValueDefinitionClient extends ConnectorContextClientBase
     public void linkValidValuesAssignment(String                         elementGUID,
                                           String                         validValueDefinitionGUID,
                                           MetadataSourceOptions          metadataSourceOptions,
-                                          ValidValueAssignmentProperties relationshipProperties) throws InvalidParameterException,
-                                                                                                        PropertyServerException,
-                                                                                                        UserNotAuthorizedException
+                                          ValidValuesAssignmentProperties relationshipProperties) throws InvalidParameterException,
+                                                                                                         PropertyServerException,
+                                                                                                         UserNotAuthorizedException
     {
         validValueDefinitionHandler.linkValidValuesAssignment(connectorUserId, elementGUID, validValueDefinitionGUID, metadataSourceOptions, relationshipProperties);
     }

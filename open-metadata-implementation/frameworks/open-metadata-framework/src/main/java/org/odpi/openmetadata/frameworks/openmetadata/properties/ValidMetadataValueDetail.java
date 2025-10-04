@@ -19,9 +19,9 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class ValidMetadataValueDetail extends ValidMetadataValue
+public class ValidMetadataValueDetail extends ValidMetadataValueProperties
 {
-    private List<ValidMetadataValue> validMapNameValues = null;
+    private List<ValidMetadataValueProperties> validMapNameValues = null;
 
 
     /**
@@ -53,7 +53,7 @@ public class ValidMetadataValueDetail extends ValidMetadataValue
      *
      * @return list of valid metadata values
      */
-    public List<ValidMetadataValue> getValidMapNameValues()
+    public List<ValidMetadataValueProperties> getValidMapNameValues()
     {
         return validMapNameValues;
     }
@@ -64,7 +64,7 @@ public class ValidMetadataValueDetail extends ValidMetadataValue
      *
      * @param validMapNameValues list of valid metadata values
      */
-    public void setValidMapNameValues(List<ValidMetadataValue> validMapNameValues)
+    public void setValidMapNameValues(List<ValidMetadataValueProperties> validMapNameValues)
     {
         this.validMapNameValues = validMapNameValues;
     }

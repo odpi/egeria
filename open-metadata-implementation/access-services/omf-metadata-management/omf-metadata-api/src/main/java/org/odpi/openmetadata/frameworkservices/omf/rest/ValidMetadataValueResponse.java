@@ -6,7 +6,7 @@ package org.odpi.openmetadata.frameworkservices.omf.rest;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.ValidMetadataValue;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.ValidMetadataValueProperties;
 
 import java.util.Objects;
 
@@ -22,7 +22,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class ValidMetadataValueResponse extends OMAGOMFAPIResponse
 {
-    private ValidMetadataValue element = null;
+    private ValidMetadataValueProperties element = null;
 
 
     /**
@@ -55,7 +55,7 @@ public class ValidMetadataValueResponse extends OMAGOMFAPIResponse
      *
      * @return bean
      */
-    public ValidMetadataValue getElement()
+    public ValidMetadataValueProperties getElement()
     {
         return element;
     }
@@ -66,7 +66,7 @@ public class ValidMetadataValueResponse extends OMAGOMFAPIResponse
      *
      * @param element  bean
      */
-    public void setElement(ValidMetadataValue element)
+    public void setElement(ValidMetadataValueProperties element)
     {
         this.element = element;
     }

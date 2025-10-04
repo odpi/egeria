@@ -23,8 +23,8 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class SolutionPortProperties extends ReferenceableProperties
 {
-    private SolutionPortDirection solutionPortDirection = null;
-    private String                userDefinedStatus     = null;
+    private SolutionPortDirection direction         = null;
+    private String                userDefinedStatus = null;
 
 
     /**
@@ -48,7 +48,7 @@ public class SolutionPortProperties extends ReferenceableProperties
 
         if (template != null)
         {
-            this.solutionPortDirection = template.getSolutionPortDirection();
+            this.direction         = template.getDirection();
             this.userDefinedStatus = template.getUserDefinedStatus();
         }
     }
@@ -59,20 +59,20 @@ public class SolutionPortProperties extends ReferenceableProperties
      *
      * @return portType enum
      */
-    public SolutionPortDirection getSolutionPortDirection()
+    public SolutionPortDirection getDirection()
     {
-        return solutionPortDirection;
+        return direction;
     }
 
 
     /**
      * Set up the direction of data flow of the port.
      *
-     * @param solutionPortDirection portType enum
+     * @param direction portType enum
      */
-    public void setSolutionPortDirection(SolutionPortDirection solutionPortDirection)
+    public void setDirection(SolutionPortDirection direction)
     {
-        this.solutionPortDirection = solutionPortDirection;
+        this.direction = direction;
     }
 
 
@@ -107,7 +107,7 @@ public class SolutionPortProperties extends ReferenceableProperties
     public String toString()
     {
         return "SolutionPortProperties{" +
-                "solutionPortDirection=" + solutionPortDirection +
+                "solutionPortDirection=" + direction +
                 ", userDefinedStatus=" + userDefinedStatus +
                 "} " + super.toString();
     }
@@ -128,7 +128,7 @@ public class SolutionPortProperties extends ReferenceableProperties
         if (!super.equals(objectToCompare)) return false;
         SolutionPortProperties that = (SolutionPortProperties) objectToCompare;
         return Objects.equals(userDefinedStatus, that.userDefinedStatus) &&
-                solutionPortDirection == that.solutionPortDirection;
+                direction == that.direction;
     }
 
     /**
@@ -139,6 +139,6 @@ public class SolutionPortProperties extends ReferenceableProperties
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), solutionPortDirection, userDefinedStatus);
+        return Objects.hash(super.hashCode(), direction, userDefinedStatus);
     }
 }

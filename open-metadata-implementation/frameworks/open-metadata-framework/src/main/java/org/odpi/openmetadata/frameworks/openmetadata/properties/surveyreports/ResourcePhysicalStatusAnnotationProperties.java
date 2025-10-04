@@ -5,6 +5,7 @@ package org.odpi.openmetadata.frameworks.openmetadata.properties.surveyreports;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 
 import java.util.Date;
 import java.util.Objects;
@@ -32,6 +33,8 @@ public class ResourcePhysicalStatusAnnotationProperties extends ResourceMeasureA
      */
     public ResourcePhysicalStatusAnnotationProperties()
     {
+        super();
+        super.setTypeName(OpenMetadataType.RESOURCE_PHYSICAL_STATUS_ANNOTATION.typeName);
     }
 
 

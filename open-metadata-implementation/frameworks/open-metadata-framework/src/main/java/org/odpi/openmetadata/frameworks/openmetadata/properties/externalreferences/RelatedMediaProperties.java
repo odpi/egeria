@@ -7,6 +7,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.MediaType;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.MediaUsage;
+import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -39,6 +40,7 @@ public class RelatedMediaProperties extends ExternalReferenceProperties
     public RelatedMediaProperties()
     {
         super();
+        super.setTypeName(OpenMetadataType.RELATED_MEDIA.typeName);
     }
 
 

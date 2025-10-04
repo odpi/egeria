@@ -179,49 +179,9 @@ public class OpenMetadataTypesArchive3_13
 
     private void addArea1Actors()
     {
-        this.archiveBuilder.addEntityDef(getActorEntity());
-
-        this.archiveBuilder.addTypeDefPatch(updateActorProfile());
-        this.archiveBuilder.addTypeDefPatch(updateUserIdentity());
         this.archiveBuilder.addTypeDefPatch(updatePersonRole());
-        this.archiveBuilder.addTypeDefPatch(updateCrowdSourcingContribution());
     }
 
-    private EntityDef getActorEntity()
-    {
-        return archiveHelper.getDefaultEntityDef(OpenMetadataType.ACTOR,
-                                                 this.archiveBuilder.getEntityDef(OpenMetadataType.REFERENCEABLE.typeName));
-    }
-
-
-    private TypeDefPatch updateActorProfile()
-    {
-        /*
-         * Create the Patch
-         */
-        TypeDefPatch typeDefPatch = archiveBuilder.getPatchForType(OpenMetadataType.ACTOR_PROFILE.typeName);
-
-        typeDefPatch.setUpdatedBy(originatorName);
-        typeDefPatch.setUpdateTime(creationDate);
-        typeDefPatch.setSuperType(this.archiveBuilder.getEntityDef(OpenMetadataType.ACTOR.typeName));
-
-        return typeDefPatch;
-    }
-
-
-    private TypeDefPatch updateUserIdentity()
-    {
-        /*
-         * Create the Patch
-         */
-        TypeDefPatch typeDefPatch = archiveBuilder.getPatchForType(OpenMetadataType.USER_IDENTITY.typeName);
-
-        typeDefPatch.setUpdatedBy(originatorName);
-        typeDefPatch.setUpdateTime(creationDate);
-        typeDefPatch.setSuperType(this.archiveBuilder.getEntityDef(OpenMetadataType.ACTOR.typeName));
-
-        return typeDefPatch;
-    }
 
 
     private TypeDefPatch updatePersonRole()
@@ -234,36 +194,6 @@ public class OpenMetadataTypesArchive3_13
         typeDefPatch.setUpdatedBy(originatorName);
         typeDefPatch.setUpdateTime(creationDate);
         typeDefPatch.setSuperType(this.archiveBuilder.getEntityDef(OpenMetadataType.ACTOR.typeName));
-
-        return typeDefPatch;
-    }
-
-
-    private TypeDefPatch updateCrowdSourcingContribution()
-    {
-        /*
-         * Create the Patch
-         */
-        TypeDefPatch  typeDefPatch = archiveBuilder.getPatchForType(OpenMetadataType.CROWD_SOURCING_CONTRIBUTION_RELATIONSHIP.typeName);
-
-        typeDefPatch.setUpdatedBy(originatorName);
-        typeDefPatch.setUpdateTime(creationDate);
-
-        /*
-         * Set up end 2.
-         */
-        final String                     end2AttributeName            = "contributors";
-        final String                     end2AttributeDescription     = "The person/people making the contribution.";
-        final String                     end2AttributeDescriptionGUID = null;
-
-        RelationshipEndDef relationshipEndDef = archiveHelper.getRelationshipEndDef(this.archiveBuilder.getEntityDef(OpenMetadataType.ACTOR.typeName),
-                                                                                    end2AttributeName,
-                                                                                    end2AttributeDescription,
-                                                                                    end2AttributeDescriptionGUID,
-                                                                                    RelationshipEndCardinality.ANY_NUMBER);
-
-
-        typeDefPatch.setEndDef2(relationshipEndDef);
 
         return typeDefPatch;
     }

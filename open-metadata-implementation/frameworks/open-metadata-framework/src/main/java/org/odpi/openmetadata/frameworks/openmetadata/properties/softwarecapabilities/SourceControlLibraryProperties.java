@@ -6,6 +6,7 @@ package org.odpi.openmetadata.frameworks.openmetadata.properties.softwarecapabil
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 
 import java.util.Objects;
 
@@ -31,6 +32,7 @@ public class SourceControlLibraryProperties extends ResourceManagerProperties
     public SourceControlLibraryProperties()
     {
         super();
+        super.setTypeName(OpenMetadataType.SOURCE_CONTROL_LIBRARY_CLASSIFICATION.typeName);
     }
 
 

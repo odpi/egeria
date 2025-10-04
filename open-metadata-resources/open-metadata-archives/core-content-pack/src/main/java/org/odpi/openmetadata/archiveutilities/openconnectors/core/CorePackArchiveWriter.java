@@ -47,29 +47,6 @@ import static org.odpi.openmetadata.frameworks.openmetadata.mapper.OpenMetadataV
  */
 public class CorePackArchiveWriter extends ContentPackBaseArchiveWriter
 {
-    /*
-     * Names for standard definitions
-     */
-    private static final String connectorTypeDirectoryQualifiedName = "OpenMetadataConnectorTypeDirectory_09450b83-20ff-4a8b-a8fb-f9b527bbcba6";
-    private static final String connectorTypeDirectoryDisplayName   = "Open Metadata Connector Type Directory";
-    private static final String connectorTypeDirectoryDescription   = "Open Metadata standard connector categories and connector types.";
-    private static final String fileConnectorCategoryQualifiedName  = "OpenMetadataFileConnectorCategory_09450b83-20ff-4a8b-a8fb-f9b527bbcba6";
-    private static final String fileConnectorCategoryDisplayName    = "Open Metadata File Connector Category";
-    private static final String fileConnectorCategoryDescription    = "Open Metadata connector category for connectors that work with files.";
-    private static final String kafkaConnectorCategoryQualifiedName = "OpenMetadataKafkaConnectorCategory_09450b83-20ff-4a8b-a8fb-f9b527bbcba6";
-    private static final String kafkaConnectorCategoryDisplayName   = "Open Metadata Apache Kafka Connector Category";
-    private static final String kafkaConnectorCategoryDescription   = "Open Metadata connector category for connectors to Apache Kafka.";
-    private static final String kafkaConnectorCategoryTargetSource  = "Apache Software Foundation (ASF)";
-    private static final String kafkaConnectorCategoryTargetName    = "Apache Kafka";
-
-    private static final String relationalConnectorCategoryQualifiedName = "OpenMetadataJDBCConnectorCategory_09450b83-20ff-4a8b-a8fb-f9b527bbcba6";
-    private static final String relationalConnectorCategoryDisplayName   = "Open Metadata JDBC Connector Category";
-    private static final String relationalConnectorCategoryDescription   = "Open Metadata connector category for connectors to relational databases.";
-    private static final String relationalConnectorCategoryTargetSource  = "Java Database Connector (JDBC)";
-    private static final String relationalConnectorCategoryTargetName    = "Relational Database";
-
-
-
     /**
      * Default constructor initializes the archive.
      */
@@ -89,44 +66,6 @@ public class CorePackArchiveWriter extends ContentPackBaseArchiveWriter
     @Override
     public void getArchiveContent()
     {
-        String connectorDirectoryTypeGUID = archiveHelper.addConnectorTypeDirectory(connectorTypeDirectoryQualifiedName,
-                                                                                    connectorTypeDirectoryDisplayName,
-                                                                                    connectorTypeDirectoryDescription,
-                                                                                    null);
-
-        String fileConnectorCategoryGUID = archiveHelper.addConnectorCategory(connectorDirectoryTypeGUID,
-                                                                              fileConnectorCategoryQualifiedName,
-                                                                              fileConnectorCategoryDisplayName,
-                                                                              fileConnectorCategoryDescription,
-                                                                              null,
-                                                                              null,
-                                                                              null,
-                                                                              null,
-                                                                              null,
-                                                                              null);
-
-        String kafkaConnectorCategoryGUID = archiveHelper.addConnectorCategory(connectorDirectoryTypeGUID,
-                                                                               kafkaConnectorCategoryQualifiedName,
-                                                                               kafkaConnectorCategoryDisplayName,
-                                                                               kafkaConnectorCategoryDescription,
-                                                                               kafkaConnectorCategoryTargetSource,
-                                                                               kafkaConnectorCategoryTargetName,
-                                                                               null,
-                                                                               null,
-                                                                               null,
-                                                                               null);
-
-        String relationalConnectorCategoryGUID = archiveHelper.addConnectorCategory(connectorDirectoryTypeGUID,
-                                                                                    relationalConnectorCategoryQualifiedName,
-                                                                                    relationalConnectorCategoryDisplayName,
-                                                                                    relationalConnectorCategoryDescription,
-                                                                                    relationalConnectorCategoryTargetSource,
-                                                                                    relationalConnectorCategoryTargetName,
-                                                                                    null,
-                                                                                    null,
-                                                                                    null,
-                                                                                    null);
-
         addDigitalProductCatalogDefinition(ContentPackDefinition.CORE_CONTENT_PACK);
 
         /*
@@ -864,35 +803,35 @@ public class CorePackArchiveWriter extends ContentPackBaseArchiveWriter
          * Integration Connector Types may need to link to deployedImplementationType valid value element.
          * This information is in the connector provider.
          */
-        archiveHelper.addConnectorType(fileConnectorCategoryGUID, new CSVFileStoreProvider());
-        archiveHelper.addConnectorType(fileConnectorCategoryGUID, new DataFolderProvider());
-        archiveHelper.addConnectorType(fileConnectorCategoryGUID, new BasicFileStoreProvider());
-        archiveHelper.addConnectorType(fileConnectorCategoryGUID, new BasicFolderProvider());
-        archiveHelper.addConnectorType(relationalConnectorCategoryGUID, new JDBCResourceConnectorProvider());
-        archiveHelper.addConnectorType(kafkaConnectorCategoryGUID, new KafkaOpenMetadataTopicProvider());
+        archiveHelper.addConnectorType(new CSVFileStoreProvider());
+        archiveHelper.addConnectorType(new DataFolderProvider());
+        archiveHelper.addConnectorType(new BasicFileStoreProvider());
+        archiveHelper.addConnectorType(new BasicFolderProvider());
+        archiveHelper.addConnectorType(new JDBCResourceConnectorProvider());
+        archiveHelper.addConnectorType(new KafkaOpenMetadataTopicProvider());
 
-        archiveHelper.addConnectorType(null, new EnvVarSecretsStoreProvider());
-        archiveHelper.addConnectorType(null, new YAMLSecretsStoreProvider());
+        archiveHelper.addConnectorType(new EnvVarSecretsStoreProvider());
+        archiveHelper.addConnectorType(new YAMLSecretsStoreProvider());
 
-        archiveHelper.addConnectorType(null, new CSVLineageImporterProvider());
-        archiveHelper.addConnectorType(null, new DataFilesMonitorIntegrationProvider());
-        archiveHelper.addConnectorType(null, new DataFolderMonitorIntegrationProvider());
-        archiveHelper.addConnectorType(null, new JDBCIntegrationConnectorProvider());
-        archiveHelper.addConnectorType(null, new DistributeAuditEventsFromKafkaProvider());
+        archiveHelper.addConnectorType(new CSVLineageImporterProvider());
+        archiveHelper.addConnectorType(new DataFilesMonitorIntegrationProvider());
+        archiveHelper.addConnectorType(new DataFolderMonitorIntegrationProvider());
+        archiveHelper.addConnectorType(new JDBCIntegrationConnectorProvider());
+        archiveHelper.addConnectorType(new DistributeAuditEventsFromKafkaProvider());
 
-        archiveHelper.addConnectorType(null, new APIBasedOpenLineageLogStoreProvider());
-        archiveHelper.addConnectorType(null, new FileBasedOpenLineageLogStoreProvider());
-        archiveHelper.addConnectorType(null, new GovernanceActionOpenLineageIntegrationProvider());
-        archiveHelper.addConnectorType(null, new OpenLineageCataloguerIntegrationProvider());
-        archiveHelper.addConnectorType(null, new OpenLineageEventReceiverIntegrationProvider());
+        archiveHelper.addConnectorType(new APIBasedOpenLineageLogStoreProvider());
+        archiveHelper.addConnectorType(new FileBasedOpenLineageLogStoreProvider());
+        archiveHelper.addConnectorType(new GovernanceActionOpenLineageIntegrationProvider());
+        archiveHelper.addConnectorType(new OpenLineageCataloguerIntegrationProvider());
+        archiveHelper.addConnectorType(new OpenLineageEventReceiverIntegrationProvider());
 
-        archiveHelper.addConnectorType(null, new OMAGServerPlatformCatalogProvider());
-        archiveHelper.addConnectorType(null, new OMAGServerPlatformProvider());
-        archiveHelper.addConnectorType(null, new OMAGServerProvider());
-        archiveHelper.addConnectorType(null, new EngineHostProvider());
-        archiveHelper.addConnectorType(null, new IntegrationDaemonProvider());
-        archiveHelper.addConnectorType(null, new MetadataAccessServerProvider());
-        archiveHelper.addConnectorType(null, new ViewServerProvider());
+        archiveHelper.addConnectorType(new OMAGServerPlatformCatalogProvider());
+        archiveHelper.addConnectorType(new OMAGServerPlatformProvider());
+        archiveHelper.addConnectorType(new OMAGServerProvider());
+        archiveHelper.addConnectorType(new EngineHostProvider());
+        archiveHelper.addConnectorType(new IntegrationDaemonProvider());
+        archiveHelper.addConnectorType(new MetadataAccessServerProvider());
+        archiveHelper.addConnectorType(new ViewServerProvider());
 
         /*
          * Add catalog templates

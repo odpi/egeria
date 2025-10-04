@@ -1539,7 +1539,7 @@ public class StewardshipManagementHandler extends OpenMetadataHandlerBase
      */
     public void setRetentionClassification(String                            userId,
                                            String                            elementGUID,
-                                           RetentionClassificationProperties properties,
+                                           RetentionProperties properties,
                                            MetadataSourceOptions             metadataSourceOptions) throws InvalidParameterException,
                                                                                                            UserNotAuthorizedException,
                                                                                                            PropertyServerException

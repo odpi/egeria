@@ -4,6 +4,7 @@ package org.odpi.openmetadata.frameworks.openmetadata.properties.softwarecapabil
 
 
 import com.fasterxml.jackson.annotation.*;
+import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 
 import java.util.Objects;
 
@@ -30,6 +31,7 @@ public class FileSystemProperties extends ResourceManagerProperties
     public FileSystemProperties()
     {
         super();
+        super.setTypeName(OpenMetadataType.FILE_SYSTEM_CLASSIFICATION.typeName);
     }
 
 

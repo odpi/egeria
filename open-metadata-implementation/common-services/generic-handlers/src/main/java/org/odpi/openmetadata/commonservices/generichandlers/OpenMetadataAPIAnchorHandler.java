@@ -630,30 +630,6 @@ public class OpenMetadataAPIAnchorHandler<B> extends OpenMetadataAPIRootHandler<
         }
 
         /*
-         * Next test to see if the type is connected to an attribute.
-         */
-        relationship = repositoryHandler.getUniqueRelationshipByType(userId,
-                                                                     schemaTypeGUID,
-                                                                     OpenMetadataType.SCHEMA_TYPE.typeName,
-                                                                     false,
-                                                                     OpenMetadataType.SCHEMA_ATTRIBUTE_TYPE_RELATIONSHIP.typeGUID,
-                                                                     OpenMetadataType.SCHEMA_ATTRIBUTE_TYPE_RELATIONSHIP.typeName,
-                                                                     null,
-                                                                     null,
-                                                                     SequencingOrder.CREATION_DATE_RECENT,
-                                                                     null,
-                                                                     forLineage,
-                                                                     forDuplicateProcessing,
-                                                                     effectiveTime,
-                                                                     methodName);
-        if (relationship != null)
-        {
-            EntityProxy proxy = relationship.getEntityOneProxy();
-
-            return getAnchorGUIDForSchemaAttribute(userId, proxy.getGUID(), forLineage, forDuplicateProcessing, effectiveTime, methodName);
-        }
-
-        /*
          * Next test to see if the type is connected to a SchemaTypeChoice.
          */
         relationship = repositoryHandler.getUniqueRelationshipByType(userId,
@@ -1575,7 +1551,7 @@ public class OpenMetadataAPIAnchorHandler<B> extends OpenMetadataAPIRootHandler<
 
     /**
      * Walk the graph to locate the anchor for a Glossary Term.  Glossary Terms are typically their own anchors but
-     * may be connected directly to their anchor via a SupplementaryProperties relationship.
+     * may be connected directly to their anchor via a SupplementaryPropertiesProperties relationship.
      *
      * @param userId calling user
      * @param glossaryTermGUID unique identifier of the Glossary Term (it is assumed that the anchorGUID property of this instance is null)
@@ -1655,7 +1631,7 @@ public class OpenMetadataAPIAnchorHandler<B> extends OpenMetadataAPIRootHandler<
 
     /**
      * Walk the graph to locate the anchor for a Glossary Term.  Glossary Terms are typically their own anchors but
-     * may be connected directly to their anchor via a SupplementaryProperties relationship.
+     * may be connected directly to their anchor via a SupplementaryPropertiesProperties relationship.
      *
      * @param userId calling user
      * @param glossaryTermGUID unique identifier of the Glossary Term (it is assumed that the anchorGUID property of this instance is null)

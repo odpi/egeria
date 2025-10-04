@@ -8,6 +8,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.PermittedSynchronization;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.RelationshipBeanProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 
 import java.util.Date;
 import java.util.Objects;
@@ -38,6 +39,8 @@ public class RegisteredIntegrationConnectorProperties extends RelationshipBeanPr
      */
     public RegisteredIntegrationConnectorProperties()
     {
+        super();
+        super.setTypeName(OpenMetadataType.REGISTERED_INTEGRATION_CONNECTOR_RELATIONSHIP.typeName);
     }
 
 

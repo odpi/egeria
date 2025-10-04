@@ -4079,7 +4079,7 @@ public class HarvestOpenMetadataCatalogTargetProcessor extends CatalogTargetProc
                                                                                                                   methodName));
 
         addDateValueToRow(openMetadataRecord, HarvestOpenMetadataColumn.CREATION_TIME, propertyHelper.getDateProperty(connectorName,
-                                                                                                                      OpenMetadataProperty.START_DATE.name,
+                                                                                                                      OpenMetadataProperty.ACTUAL_START_DATE.name,
                                                                                                                       projectElement.getElementProperties(),
                                                                                                                       methodName));
 
@@ -4103,7 +4103,7 @@ public class HarvestOpenMetadataCatalogTargetProcessor extends CatalogTargetProc
                                                                                                             methodName));
 
         addDateValueToRow(openMetadataRecord, HarvestOpenMetadataColumn.DUE_TIME, propertyHelper.getDateProperty(connectorName,
-                                                                                                                 OpenMetadataProperty.PLANNED_END_DATE.name,
+                                                                                                                 OpenMetadataProperty.PLANNED_COMPLETION_DATE.name,
                                                                                                                  projectElement.getElementProperties(),
                                                                                                                  methodName));
 

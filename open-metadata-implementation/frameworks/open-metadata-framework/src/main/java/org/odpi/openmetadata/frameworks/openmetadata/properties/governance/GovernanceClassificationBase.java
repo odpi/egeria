@@ -23,7 +23,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonSubTypes(
         {
                 @JsonSubTypes.Type(value = GovernanceClassificationProperties.class, name = "GovernanceClassificationProperties"),
-                @JsonSubTypes.Type(value = RetentionClassificationProperties.class, name = "RetentionClassificationProperties"),
+                @JsonSubTypes.Type(value = RetentionProperties.class, name = "RetentionClassificationProperties"),
         })
 public class GovernanceClassificationBase extends ClassificationBeanProperties
 {

@@ -3667,51 +3667,35 @@ public class RelationalDataHandler<DATABASE,
             String parentAttachmentTypeGUID = OpenMetadataType.ATTRIBUTE_FOR_SCHEMA_RELATIONSHIP.typeGUID;
             String parentAttachmentTypeName = OpenMetadataType.ATTRIBUTE_FOR_SCHEMA_RELATIONSHIP.typeName;
 
-            String parentGUID = databaseColumnHandler.getAttachedElementGUID(userId,
-                                                                             databaseTableGUID,
-                                                                             databaseTableGUIDParameterName,
-                                                                             OpenMetadataType.RELATIONAL_TABLE.typeName,
-                                                                             OpenMetadataType.SCHEMA_ATTRIBUTE_TYPE_RELATIONSHIP.typeGUID,
-                                                                             OpenMetadataType.SCHEMA_ATTRIBUTE_TYPE_RELATIONSHIP.typeName,
-                                                                             OpenMetadataType.SCHEMA_TYPE.typeName,
-                                                                             2,
-                                                                             null,
-                                                                             null,
-                                                                             SequencingOrder.CREATION_DATE_RECENT,
-                                                                             null,
-                                                                             forLineage,
-                                                                             forDuplicateProcessing,
-                                                                             effectiveTime,
-                                                                             methodName);
 
-            if (parentGUID == null)
+            String parentGUID = null;
+
+            /*
+             * The table may have its type stored as a classification, or as a linked schema type.  The column is linked to
+             * the attribute in the first case, and the schema type in the second case.
+             */
+            try
             {
-                /*
-                 * The table may have its type stored as a classification, or as a linked schema type.  The column is linked to
-                 * the attribute in the first case, and the schema type in the second case.
-                 */
-                try
-                {
-                    Classification typeClassification = repositoryHelper.getClassificationFromEntity(serviceName,
-                                                                                                     databaseTableEntity,
-                                                                                                     OpenMetadataType.TYPE_EMBEDDED_ATTRIBUTE_CLASSIFICATION.typeName,
-                                                                                                     methodName);
+                Classification typeClassification = repositoryHelper.getClassificationFromEntity(serviceName,
+                                                                                                 databaseTableEntity,
+                                                                                                 OpenMetadataType.TYPE_EMBEDDED_ATTRIBUTE_CLASSIFICATION.typeName,
+                                                                                                 methodName);
 
-                    if (typeClassification != null)
-                    {
-                        parentGUID               = databaseTableGUID;
-                        parentTypeName           = OpenMetadataType.RELATIONAL_TABLE.typeName;
-                        parentAttachmentTypeGUID = OpenMetadataType.NESTED_SCHEMA_ATTRIBUTE_RELATIONSHIP.typeGUID;
-                        parentAttachmentTypeName = OpenMetadataType.NESTED_SCHEMA_ATTRIBUTE_RELATIONSHIP.typeName;
-                    }
-                }
-                catch (ClassificationErrorException classificationNotKnown)
+                if (typeClassification != null)
                 {
-                    /*
-                     * Type classification not supported.
-                     */
+                    parentGUID               = databaseTableGUID;
+                    parentTypeName           = OpenMetadataType.RELATIONAL_TABLE.typeName;
+                    parentAttachmentTypeGUID = OpenMetadataType.NESTED_SCHEMA_ATTRIBUTE_RELATIONSHIP.typeGUID;
+                    parentAttachmentTypeName = OpenMetadataType.NESTED_SCHEMA_ATTRIBUTE_RELATIONSHIP.typeName;
                 }
             }
+            catch (ClassificationErrorException classificationNotKnown)
+            {
+                /*
+                 * Type classification not supported.
+                 */
+            }
+
 
             if (parentGUID == null)
             {
@@ -3986,30 +3970,6 @@ public class RelationalDataHandler<DATABASE,
                 /*
                  * Type classification not supported.
                  */
-            }
-
-            if (parentGUID == null)
-            {
-                parentTypeName = OpenMetadataType.RELATIONAL_TABLE_TYPE.typeName;
-                parentAttachmentTypeGUID = OpenMetadataType.ATTRIBUTE_FOR_SCHEMA_RELATIONSHIP.typeGUID;
-                parentAttachmentTypeName = OpenMetadataType.ATTRIBUTE_FOR_SCHEMA_RELATIONSHIP.typeName;
-
-                parentGUID = databaseColumnHandler.getAttachedElementGUID(userId,
-                                                                          databaseTableGUID,
-                                                                          databaseTableGUIDParameterName,
-                                                                          OpenMetadataType.RELATIONAL_TABLE.typeName,
-                                                                          OpenMetadataType.SCHEMA_ATTRIBUTE_TYPE_RELATIONSHIP.typeGUID,
-                                                                          OpenMetadataType.SCHEMA_ATTRIBUTE_TYPE_RELATIONSHIP.typeName,
-                                                                          OpenMetadataType.SCHEMA_TYPE.typeName,
-                                                                          2,
-                                                                          null,
-                                                                          null,
-                                                                          SequencingOrder.CREATION_DATE_RECENT,
-                                                                          null,
-                                                                          forLineage,
-                                                                          forDuplicateProcessing,
-                                                                          effectiveTime,
-                                                                          methodName);
             }
         }
 

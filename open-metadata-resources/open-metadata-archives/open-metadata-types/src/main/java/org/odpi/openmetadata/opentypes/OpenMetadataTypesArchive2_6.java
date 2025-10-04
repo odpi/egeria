@@ -397,7 +397,7 @@ public class OpenMetadataTypesArchive2_6
     private EntityDef addGovernanceEngineEntity()
     {
         return archiveHelper.getDefaultEntityDef(OpenMetadataType.GOVERNANCE_ENGINE,
-                                                 this.archiveBuilder.getEntityDef(OpenMetadataType.SOFTWARE_CAPABILITY.typeName));
+                                                 this.archiveBuilder.getEntityDef(OpenMetadataType.ENGINE.typeName));
     }
 
     private EntityDef addGovernanceServiceEntity()

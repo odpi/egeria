@@ -1822,8 +1822,8 @@ public class SimpleCatalogArchiveHelper
         properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.IDENTIFIER.name, identifier, methodName);
         properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.DISPLAY_NAME.name, name, methodName);
         properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.DESCRIPTION.name, description, methodName);
-        properties = archiveHelper.addDatePropertyToInstance(archiveRootName, properties, OpenMetadataProperty.START_DATE.name, startDate, methodName);
-        properties = archiveHelper.addDatePropertyToInstance(archiveRootName, properties, OpenMetadataProperty.PLANNED_END_DATE.name, plannedEndDate, methodName);
+        properties = archiveHelper.addDatePropertyToInstance(archiveRootName, properties, OpenMetadataProperty.ACTUAL_START_DATE.name, startDate, methodName);
+        properties = archiveHelper.addDatePropertyToInstance(archiveRootName, properties, OpenMetadataProperty.PLANNED_COMPLETION_DATE.name, plannedEndDate, methodName);
         properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.PROJECT_PHASE.name, projectPhase, methodName);
         properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.PROJECT_HEALTH.name, projectHealth, methodName);
         properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.PROJECT_STATUS.name, projectStatus, methodName);
@@ -4941,30 +4941,26 @@ public class SimpleCatalogArchiveHelper
     /**
      * Create a connector type entity.  It is lined to a connector category if supplied.
      *
-     * @param connectorCategoryGUID unique identifier of connector category - or null is not categorized
      * @param connectorProvider OCF Connector Provider
      *
      * @return id for the connector type
      */
-    public String addConnectorType(String            connectorCategoryGUID,
-                                   ConnectorProvider connectorProvider)
+    public String addConnectorType(ConnectorProvider connectorProvider)
     {
-        return this.addConnectorType(connectorCategoryGUID, connectorProvider.getConnectorType());
+        return this.addConnectorType(connectorProvider.getConnectorType());
     }
 
 
     /**
      * Create a connector type entity.  It is lined to a connector category if supplied.
      *
-     * @param connectorCategoryGUID unique identifier of connector category - or null is not categorized
      * @param connectorProvider OCF Connector Provider
      *
      * @return id for the connector type
      */
-    public String addConnectorType(String                       connectorCategoryGUID,
-                                   IntegrationConnectorProvider connectorProvider)
+    public String addConnectorType(IntegrationConnectorProvider connectorProvider)
     {
-        String connectorTypeGUID = this.addConnectorType(connectorCategoryGUID, connectorProvider.getConnectorType());
+        String connectorTypeGUID = this.addConnectorType(connectorProvider.getConnectorType());
 
         if (connectorProvider.getCatalogTargets() != null)
         {
@@ -4995,20 +4991,17 @@ public class SimpleCatalogArchiveHelper
     /**
      * Create a connector type entity.  It is lined to a connector category if supplied.
      *
-     * @param connectorCategoryGUID unique identifier of connector category - or null is not categorized
      * @param connectorType OCF connector type - comes from the Connector Provider
      *
      * @return id for the connector type
      */
-    public String addConnectorType(String        connectorCategoryGUID,
-                                   ConnectorType connectorType)
+    public String addConnectorType(ConnectorType connectorType)
     {
         idToGUIDMap.setGUID(connectorType.getQualifiedName(), connectorType.getGUID());
 
         try
         {
-            return this.addConnectorType(connectorCategoryGUID,
-                                         connectorType.getGUID(),
+            return this.addConnectorType(connectorType.getGUID(),
                                          connectorType.getQualifiedName(),
                                          connectorType.getDisplayName(),
                                          connectorType.getDescription(),
@@ -5038,7 +5031,6 @@ public class SimpleCatalogArchiveHelper
     /**
      * Create a connector type entity.  It is lined to a connector category if supplied.
      *
-     * @param connectorCategoryGUID unique identifier of connector category - or null is not categorized
      * @param connectorTypeGUID fixed unique identifier for connector type - comes from the Connector Provider
      * @param qualifiedName unique name for the connector type
      * @param displayName display name for the connector type
@@ -5061,8 +5053,7 @@ public class SimpleCatalogArchiveHelper
      *
      * @return id for the connector type
      */
-    public String addConnectorType(String              connectorCategoryGUID,
-                                   String              connectorTypeGUID,
+    public String addConnectorType(String              connectorTypeGUID,
                                    String              qualifiedName,
                                    String              displayName,
                                    String              description,
@@ -5086,8 +5077,7 @@ public class SimpleCatalogArchiveHelper
 
         try
         {
-            return this.addConnectorType(connectorCategoryGUID,
-                                         qualifiedName,
+            return this.addConnectorType(qualifiedName,
                                          displayName,
                                          description,
                                          deployedImplementationType,
@@ -5116,7 +5106,6 @@ public class SimpleCatalogArchiveHelper
     /**
      * Create a connector type entity.
      *
-     * @param connectorCategoryGUID unique identifier of connector category - or null is not categorized
      * @param qualifiedName unique name for the connector type
      * @param displayName display name for the connector type
      * @param description description about the connector type
@@ -5138,8 +5127,7 @@ public class SimpleCatalogArchiveHelper
      *
      * @return id for the connector type
      */
-    protected String addConnectorType(String                          connectorCategoryGUID,
-                                      String                          qualifiedName,
+    protected String addConnectorType(String                          qualifiedName,
                                       String                          displayName,
                                       String                          description,
                                       String                          deployedImplementationType,
@@ -5215,21 +5203,6 @@ public class SimpleCatalogArchiveHelper
 
             archiveBuilder.addEntity(connectorTypeEntity);
 
-            if (connectorCategoryGUID != null)
-            {
-                EntityDetail connectorCategoryEntity = archiveBuilder.getEntity(connectorCategoryGUID);
-
-                EntityProxy end1 = archiveHelper.getEntityProxy(connectorCategoryEntity);
-                EntityProxy end2 = archiveHelper.getEntityProxy(connectorTypeEntity);
-
-                archiveBuilder.addRelationship(archiveHelper.getRelationship(OpenMetadataType.CONNECTOR_IMPLEMENTATION_CHOICE_RELATIONSHIP.typeName,
-                                                                             idToGUIDMap.getGUID(qualifiedName + "_connector_implementation_choice_relationship"),
-                                                                             null,
-                                                                             InstanceStatus.ACTIVE,
-                                                                             end1,
-                                                                             end2));
-            }
-
             DeployedImplementationType definition = DeployedImplementationType.getDefinitionFromDeployedImplementationType(deployedImplementationType);
 
             if ((definition != null) && (archiveBuilder.queryEntity(this.idToGUIDMap.getGUID(definition.getQualifiedName())) != null))
@@ -5244,126 +5217,6 @@ public class SimpleCatalogArchiveHelper
         return connectorTypeEntity.getGUID();
     }
 
-
-    /**
-     * Create a connector category entity.
-     *
-     * @param connectorTypeDirectoryGUID unique identifier of connector type directory that this connector belongs to - or null for an independent connector category
-     * @param qualifiedName unique name for the connector category
-     * @param displayName display name for the connector category
-     * @param description description about the connector category
-     * @param targetTechnologySource organization implementing the target technology
-     * @param targetTechnologyName name of the target technology
-     * @param recognizedSecuredProperties names of supported properties hidden from the client - for connection object.
-     * @param recognizedConfigurationProperties names of supported properties used to configure the connector - for connection object.
-     * @param recognizedAdditionalProperties names of any other properties for connection object.
-     * @param additionalProperties any other properties.
-     *
-     * @return id for the connector type
-     */
-    public    String addConnectorCategory(String               connectorTypeDirectoryGUID,
-                                          String               qualifiedName,
-                                          String               displayName,
-                                          String               description,
-                                          String               targetTechnologySource,
-                                          String               targetTechnologyName,
-                                          Map<String, Boolean> recognizedSecuredProperties,
-                                          Map<String, Boolean> recognizedConfigurationProperties,
-                                          Map<String, Boolean> recognizedAdditionalProperties,
-                                          Map<String, String>  additionalProperties)
-    {
-        final String methodName = "addConnectorCategory";
-
-        InstanceProperties properties = archiveHelper.addStringPropertyToInstance(archiveRootName, null, OpenMetadataProperty.QUALIFIED_NAME.name, qualifiedName, methodName);
-        properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.DISPLAY_NAME.name, displayName, methodName);
-        properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.DESCRIPTION.name, description, methodName);
-        properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.TARGET_TECHNOLOGY_SOURCE.name, targetTechnologySource, methodName);
-        properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.TARGET_TECHNOLOGY_NAME.name, targetTechnologyName, methodName);
-        properties = archiveHelper.addBooleanMapPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.RECOGNIZED_SECURED_PROPERTIES.name, recognizedSecuredProperties, methodName);
-        properties = archiveHelper.addBooleanMapPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.RECOGNIZED_ADDITIONAL_PROPERTIES.name, recognizedAdditionalProperties, methodName);
-        properties = archiveHelper.addBooleanMapPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.RECOGNIZED_CONFIGURATION_PROPERTIES.name, recognizedConfigurationProperties, methodName);
-        properties = archiveHelper.addStringMapPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.ADDITIONAL_PROPERTIES.name, additionalProperties, methodName);
-
-        List<Classification> classifications = new ArrayList<>();
-
-        classifications.add(this.getAnchorClassification(connectorTypeDirectoryGUID,
-                                                         OpenMetadataType.COLLECTION.typeName,
-                                                         OpenMetadataType.COLLECTION.typeName,
-                                                         null,
-                                                         methodName));
-
-        EntityDetail connectorCategoryEntity = archiveHelper.getEntityDetail(OpenMetadataType.CONNECTOR_CATEGORY.typeName,
-                                                                             idToGUIDMap.getGUID(qualifiedName),
-                                                                             properties,
-                                                                             InstanceStatus.ACTIVE,
-                                                                             classifications);
-
-        archiveBuilder.addEntity(connectorCategoryEntity);
-
-        if (connectorTypeDirectoryGUID != null)
-        {
-            EntityDetail connectorTypeDirectoryEntity = archiveBuilder.getEntity(connectorTypeDirectoryGUID);
-
-            EntityProxy end1 = archiveHelper.getEntityProxy(connectorTypeDirectoryEntity);
-            EntityProxy end2 = archiveHelper.getEntityProxy(connectorCategoryEntity);
-
-            archiveBuilder.addRelationship(archiveHelper.getRelationship(OpenMetadataType.COLLECTION_MEMBERSHIP_RELATIONSHIP.typeName,
-                                                                         idToGUIDMap.getGUID(qualifiedName + "_collection_membership_relationship"),
-                                                                         null,
-                                                                         InstanceStatus.ACTIVE,
-                                                                         end1,
-                                                                         end2));
-        }
-
-        return connectorCategoryEntity.getGUID();
-    }
-
-
-    /**
-     * Create a connector category entity.
-     *
-     * @param qualifiedName unique name for the connector type directory
-     * @param displayName display name for the connector type directory
-     * @param description description about the connector type directory
-     * @param additionalProperties any other properties.
-     *
-     * @return id for the connector type
-     */
-    public String addConnectorTypeDirectory(String              qualifiedName,
-                                            String              displayName,
-                                            String              description,
-                                            Map<String, String> additionalProperties)
-    {
-        final String methodName = "addConnectorTypeDirectory";
-
-        InstanceProperties properties = archiveHelper.addStringPropertyToInstance(archiveRootName, null, OpenMetadataProperty.QUALIFIED_NAME.name, qualifiedName, methodName);
-        properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.DISPLAY_NAME.name, displayName, methodName);
-        properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.DESCRIPTION.name, description, methodName);
-        properties = archiveHelper.addStringMapPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.ADDITIONAL_PROPERTIES.name, additionalProperties, methodName);
-
-        String guid = idToGUIDMap.getGUID(qualifiedName);
-
-        List<Classification> classifications = new ArrayList<>();
-
-        Classification classification = archiveHelper.getClassification(OpenMetadataType.CONNECTOR_TYPE_DIRECTORY_CLASSIFICATION.typeName, null, InstanceStatus.ACTIVE);
-
-        classifications.add(classification);
-        classifications.add(getAnchorClassification(guid,
-                                                    OpenMetadataType.COLLECTION.typeName,
-                                                    OpenMetadataType.COLLECTION.typeName,
-                                                    null,
-                                                    methodName));
-
-        EntityDetail connectorTypeDirectoryEntity = archiveHelper.getEntityDetail(OpenMetadataType.COLLECTION.typeName,
-                                                                                  guid,
-                                                                                  properties,
-                                                                                  InstanceStatus.ACTIVE,
-                                                                                  classifications);
-
-        archiveBuilder.addEntity(connectorTypeDirectoryEntity);
-
-        return connectorTypeDirectoryEntity.getGUID();
-    }
 
     /**
      * Create a Template classification to add to an entity as it is created.

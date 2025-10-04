@@ -7,7 +7,7 @@ import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterExcept
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.frameworks.openmetadata.client.OpenMetadataClient;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.TranslationDetail;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.TranslationDetailProperties;
 
 import java.util.List;
 
@@ -61,9 +61,9 @@ public class MultiLanguageClient extends ConnectorContextClientBase
      * @throws PropertyServerException    there is a problem accessing the metadata store
      */
     public  void setTranslation(String            elementGUID,
-                                TranslationDetail translationDetail) throws InvalidParameterException,
-                                                                            UserNotAuthorizedException,
-                                                                            PropertyServerException
+                                TranslationDetailProperties translationDetail) throws InvalidParameterException,
+                                                                                      UserNotAuthorizedException,
+                                                                                      PropertyServerException
     {
         openMetadataClient.setTranslation(connectorUserId, elementGUID, translationDetail);
     }
@@ -103,9 +103,9 @@ public class MultiLanguageClient extends ConnectorContextClientBase
      * @throws UserNotAuthorizedException the service is not able to access the element
      * @throws PropertyServerException    there is a problem accessing the metadata store
      */
-    public TranslationDetail getTranslation(String elementGUID,
-                                            String language,
-                                            String locale) throws InvalidParameterException,
+    public TranslationDetailProperties getTranslation(String elementGUID,
+                                                      String language,
+                                                      String locale) throws InvalidParameterException,
                                                                   UserNotAuthorizedException,
                                                                   PropertyServerException
     {
@@ -126,9 +126,9 @@ public class MultiLanguageClient extends ConnectorContextClientBase
      * @throws UserNotAuthorizedException the service is not able to access the element
      * @throws PropertyServerException    there is a problem accessing the metadata store
      */
-    public List<TranslationDetail> getTranslations(String elementGUID,
-                                                   int    startFrom,
-                                                   int    pageSize) throws InvalidParameterException,
+    public List<TranslationDetailProperties> getTranslations(String elementGUID,
+                                                             int    startFrom,
+                                                             int    pageSize) throws InvalidParameterException,
                                                                            UserNotAuthorizedException,
                                                                            PropertyServerException
     {

@@ -493,8 +493,6 @@ public class OpenMetadataTypesArchive3_1
     private void update0050ApplicationsAndProcesses()
     {
         this.archiveBuilder.addEntityDef(addCatalogEntity());
-        this.archiveBuilder.addEntityDef(addDataManagerEntity());
-        this.archiveBuilder.addTypeDefPatch(updateDatabaseManager());
     }
 
 
@@ -504,25 +502,6 @@ public class OpenMetadataTypesArchive3_1
                                                  this.archiveBuilder.getEntityDef(OpenMetadataType.SOFTWARE_CAPABILITY.typeName));
     }
 
-    private EntityDef addDataManagerEntity()
-    {
-        return archiveHelper.getDefaultEntityDef(OpenMetadataType.DATA_MANAGER,
-                                                 this.archiveBuilder.getEntityDef(OpenMetadataType.SOFTWARE_CAPABILITY.typeName));
-    }
-
-    private TypeDefPatch updateDatabaseManager()
-    {
-        /*
-         * Create the Patch
-         */
-        TypeDefPatch typeDefPatch = archiveBuilder.getPatchForType(OpenMetadataType.DATABASE_MANAGER.typeName);
-
-        typeDefPatch.setUpdatedBy(originatorName);
-        typeDefPatch.setUpdateTime(creationDate);
-        typeDefPatch.setSuperType(this.archiveBuilder.getEntityDef(OpenMetadataType.DATA_MANAGER.typeName));
-
-        return typeDefPatch;
-    }
 
 
     /*
@@ -531,42 +510,7 @@ public class OpenMetadataTypesArchive3_1
 
     private void update0201Connections()
     {
-        this.archiveBuilder.addClassificationDef(addConnectorTypeDirectoryClassification());
-        this.archiveBuilder.addEntityDef(addConnectorCategoryEntity());
         this.archiveBuilder.addTypeDefPatch(updateConnectorTypeEntity());
-        this.archiveBuilder.addRelationshipDef(addConnectorImplementationChoiceRelationship());
-    }
-
-
-    private ClassificationDef addConnectorTypeDirectoryClassification()
-    {
-        return archiveHelper.getClassificationDef(OpenMetadataType.CONNECTOR_TYPE_DIRECTORY_CLASSIFICATION,
-                                                  this.archiveBuilder.getClassificationDef(OpenMetadataType.COLLECTION_ROLE_CLASSIFICATION.typeName),
-                                                  this.archiveBuilder.getEntityDef(OpenMetadataType.COLLECTION.typeName),
-                                                  false);
-    }
-
-
-
-    private EntityDef addConnectorCategoryEntity()
-    {
-        EntityDef entityDef = archiveHelper.getDefaultEntityDef(OpenMetadataType.CONNECTOR_CATEGORY,
-                                                                this.archiveBuilder.getEntityDef(OpenMetadataType.REFERENCEABLE.typeName));
-
-        /*
-         * Build the attributes
-         */
-        List<TypeDefAttribute> properties = new ArrayList<>();
-
-        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.TARGET_TECHNOLOGY_SOURCE));
-        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.TARGET_TECHNOLOGY_NAME));
-        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.RECOGNIZED_ADDITIONAL_PROPERTIES));
-        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.RECOGNIZED_SECURED_PROPERTIES));
-        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.RECOGNIZED_CONFIGURATION_PROPERTIES));
-
-        entityDef.setPropertiesDefinition(properties);
-
-        return entityDef;
     }
 
 
@@ -599,46 +543,6 @@ public class OpenMetadataTypesArchive3_1
         return typeDefPatch;
     }
 
-
-    private RelationshipDef addConnectorImplementationChoiceRelationship()
-    {
-        RelationshipDef relationshipDef = archiveHelper.getBasicRelationshipDef(OpenMetadataType.CONNECTOR_IMPLEMENTATION_CHOICE_RELATIONSHIP,
-                                                                                null,
-                                                                                ClassificationPropagationRule.NONE);
-
-        RelationshipEndDef relationshipEndDef;
-
-        /*
-         * Set up end 1.
-         */
-        final String                     end1AttributeName            = "connectorCategories";
-        final String                     end1AttributeDescription     = "The categories that a connector type belongs to.";
-        final String                     end1AttributeDescriptionGUID = null;
-
-        relationshipEndDef = archiveHelper.getRelationshipEndDef(this.archiveBuilder.getEntityDef(OpenMetadataType.CONNECTOR_CATEGORY.typeName),
-                                                                 end1AttributeName,
-                                                                 end1AttributeDescription,
-                                                                 end1AttributeDescriptionGUID,
-                                                                 RelationshipEndCardinality.ANY_NUMBER);
-        relationshipDef.setEndDef1(relationshipEndDef);
-
-
-        /*
-         * Set up end 2.
-         */
-        final String                     end2AttributeName            = "connectorTypes";
-        final String                     end2AttributeDescription     = "The connector types that support the technology described in the connector category.";
-        final String                     end2AttributeDescriptionGUID = null;
-
-        relationshipEndDef = archiveHelper.getRelationshipEndDef(this.archiveBuilder.getEntityDef(OpenMetadataType.CONNECTOR_TYPE.typeName),
-                                                                 end2AttributeName,
-                                                                 end2AttributeDescription,
-                                                                 end2AttributeDescriptionGUID,
-                                                                 RelationshipEndCardinality.ANY_NUMBER);
-        relationshipDef.setEndDef2(relationshipEndDef);
-
-        return relationshipDef;
-    }
 
 
     /*
@@ -684,7 +588,7 @@ public class OpenMetadataTypesArchive3_1
     private EntityDef getDataProcessingDescriptionEntity()
     {
         return archiveHelper.getDefaultEntityDef(OpenMetadataType.DATA_PROCESSING_DESCRIPTION,
-                                                 this.archiveBuilder.getEntityDef(OpenMetadataType.DATA_PROCESSING_ACTION.typeName));
+                                                 this.archiveBuilder.getEntityDef(OpenMetadataType.REFERENCEABLE.typeName));
     }
 
 

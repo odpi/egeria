@@ -2,7 +2,7 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.frameworks.openmetadata.api;
 
-import org.odpi.openmetadata.frameworks.openmetadata.properties.ValidMetadataValue;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.ValidMetadataValueProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.ValidMetadataValueDetail;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.PropertyServerException;
@@ -38,9 +38,9 @@ public interface ValidMetadataValuesInterface
     void setUpValidMetadataValue(String             userId,
                                  String             typeName,
                                  String             propertyName,
-                                 ValidMetadataValue validMetadataValue) throws InvalidParameterException,
-                                                                               UserNotAuthorizedException,
-                                                                               PropertyServerException;
+                                 ValidMetadataValueProperties validMetadataValue) throws InvalidParameterException,
+                                                                                         UserNotAuthorizedException,
+                                                                                         PropertyServerException;
 
 
     /**
@@ -63,9 +63,9 @@ public interface ValidMetadataValuesInterface
     void setUpValidMetadataMapName(String             userId,
                                    String             typeName,
                                    String             propertyName,
-                                   ValidMetadataValue validMetadataValue) throws InvalidParameterException,
-                                                                                 UserNotAuthorizedException,
-                                                                                 PropertyServerException;
+                                   ValidMetadataValueProperties validMetadataValue) throws InvalidParameterException,
+                                                                                           UserNotAuthorizedException,
+                                                                                           PropertyServerException;
 
 
     /**
@@ -90,9 +90,9 @@ public interface ValidMetadataValuesInterface
                                     String             typeName,
                                     String             propertyName,
                                     String             mapName,
-                                    ValidMetadataValue validMetadataValue) throws InvalidParameterException,
-                                                                                 UserNotAuthorizedException,
-                                                                                 PropertyServerException;
+                                    ValidMetadataValueProperties validMetadataValue) throws InvalidParameterException,
+                                                                                            UserNotAuthorizedException,
+                                                                                            PropertyServerException;
 
 
     /**
@@ -238,10 +238,10 @@ public interface ValidMetadataValuesInterface
      * @throws UserNotAuthorizedException the service is not able to create/access the element
      * @throws PropertyServerException    there is a problem accessing the metadata store
      */
-    ValidMetadataValue getValidMetadataValue(String userId,
-                                             String typeName,
-                                             String propertyName,
-                                             String preferredValue) throws InvalidParameterException,
+    ValidMetadataValueProperties getValidMetadataValue(String userId,
+                                                       String typeName,
+                                                       String propertyName,
+                                                       String preferredValue) throws InvalidParameterException,
                                                                            UserNotAuthorizedException,
                                                                            PropertyServerException;
 
@@ -260,10 +260,10 @@ public interface ValidMetadataValuesInterface
      * @throws UserNotAuthorizedException the service is not able to create/access the element
      * @throws PropertyServerException    there is a problem accessing the metadata store
      */
-    ValidMetadataValue getValidMetadataMapName(String userId,
-                                               String typeName,
-                                               String propertyName,
-                                               String preferredValue) throws InvalidParameterException,
+    ValidMetadataValueProperties getValidMetadataMapName(String userId,
+                                                         String typeName,
+                                                         String propertyName,
+                                                         String preferredValue) throws InvalidParameterException,
                                                                              UserNotAuthorizedException,
                                                                              PropertyServerException;
 
@@ -283,11 +283,11 @@ public interface ValidMetadataValuesInterface
      * @throws UserNotAuthorizedException the service is not able to create/access the element
      * @throws PropertyServerException    there is a problem accessing the metadata store
      */
-    ValidMetadataValue getValidMetadataMapValue(String userId,
-                                                String typeName,
-                                                String propertyName,
-                                                String mapName,
-                                                String preferredValue) throws InvalidParameterException,
+    ValidMetadataValueProperties getValidMetadataMapValue(String userId,
+                                                          String typeName,
+                                                          String propertyName,
+                                                          String mapName,
+                                                          String preferredValue) throws InvalidParameterException,
                                                                               UserNotAuthorizedException,
                                                                               PropertyServerException;
 
@@ -334,13 +334,13 @@ public interface ValidMetadataValuesInterface
      * @throws UserNotAuthorizedException the service is not able to create/access the element
      * @throws PropertyServerException    there is a problem accessing the metadata store
      */
-    List<ValidMetadataValue> getConsistentMetadataValues(String userId,
-                                                         String typeName,
-                                                         String propertyName,
-                                                         String mapName,
-                                                         String preferredValue,
-                                                         int    startFrom,
-                                                         int    pageSize) throws InvalidParameterException,
+    List<ValidMetadataValueProperties> getConsistentMetadataValues(String userId,
+                                                                   String typeName,
+                                                                   String propertyName,
+                                                                   String mapName,
+                                                                   String preferredValue,
+                                                                   int    startFrom,
+                                                                   int    pageSize) throws InvalidParameterException,
                                                                                  UserNotAuthorizedException,
                                                                                  PropertyServerException;
 
