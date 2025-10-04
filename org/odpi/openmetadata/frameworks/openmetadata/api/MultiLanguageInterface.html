@@ -101,7 +101,7 @@ loadScripts(document, 'script');</script>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">
 <div class="block">Remove the translation for a particular language/locale for a metadata element.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="../properties/TranslationDetail.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties">TranslationDetail</a></code></div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="../properties/TranslationDetailProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties">TranslationDetailProperties</a></code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#getTranslation(java.lang.String,java.lang.String,java.lang.String,java.lang.String)" class="member-name-link">getTranslation</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;elementGUID,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;language,
@@ -109,7 +109,7 @@ loadScripts(document, 'script');</script>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">
 <div class="block">Retrieve the translation for the matching language/locale.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../properties/TranslationDetail.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties">TranslationDetail</a>&gt;</code></div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../properties/TranslationDetailProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties">TranslationDetailProperties</a>&gt;</code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#getTranslations(java.lang.String,java.lang.String,int,int)" class="member-name-link">getTranslations</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;elementGUID,
  int&nbsp;startFrom,
@@ -118,9 +118,9 @@ loadScripts(document, 'script');</script>
 <div class="block">Retrieve all translations associated with a metadata element.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code>void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#setTranslation(java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.properties.TranslationDetail)" class="member-name-link">setTranslation</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#setTranslation(java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.properties.TranslationDetailProperties)" class="member-name-link">setTranslation</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;elementGUID,
- <a href="../properties/TranslationDetail.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties">TranslationDetail</a>&nbsp;translationDetail)</code></div>
+ <a href="../properties/TranslationDetailProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties">TranslationDetailProperties</a>&nbsp;translationDetail)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">
 <div class="block">Create or update the translation for a particular language/locale for a metadata element.</div>
 </div>
@@ -139,11 +139,11 @@ loadScripts(document, 'script');</script>
 <h2>Method Details</h2>
 <ul class="member-list">
 <li>
-<section class="detail" id="setTranslation(java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.properties.TranslationDetail)">
+<section class="detail" id="setTranslation(java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.properties.TranslationDetailProperties)">
 <h3>setTranslation</h3>
 <div class="member-signature"><span class="return-type">void</span>&nbsp;<span class="element-name">setTranslation</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;elementGUID,
- <a href="../properties/TranslationDetail.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties">TranslationDetail</a>&nbsp;translationDetail)</span>
+ <a href="../properties/TranslationDetailProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties">TranslationDetailProperties</a>&nbsp;translationDetail)</span>
              throws <span class="exceptions"><a href="../ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">InvalidParameterException</a>,
 <a href="../ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">UserNotAuthorizedException</a>,
 <a href="../ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">PropertyServerException</a></span></div>
@@ -187,11 +187,11 @@ loadScripts(document, 'script');</script>
 <li>
 <section class="detail" id="getTranslation(java.lang.String,java.lang.String,java.lang.String,java.lang.String)">
 <h3>getTranslation</h3>
-<div class="member-signature"><span class="return-type"><a href="../properties/TranslationDetail.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties">TranslationDetail</a></span>&nbsp;<span class="element-name">getTranslation</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
+<div class="member-signature"><span class="return-type"><a href="../properties/TranslationDetailProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties">TranslationDetailProperties</a></span>&nbsp;<span class="element-name">getTranslation</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;elementGUID,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;language,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;locale)</span>
-                          throws <span class="exceptions"><a href="../ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">InvalidParameterException</a>,
+                                    throws <span class="exceptions"><a href="../ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">InvalidParameterException</a>,
 <a href="../ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">UserNotAuthorizedException</a>,
 <a href="../ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">PropertyServerException</a></span></div>
 <div class="block">Retrieve the translation for the matching language/locale.</div>
@@ -213,11 +213,11 @@ loadScripts(document, 'script');</script>
 <li>
 <section class="detail" id="getTranslations(java.lang.String,java.lang.String,int,int)">
 <h3>getTranslations</h3>
-<div class="member-signature"><span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../properties/TranslationDetail.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties">TranslationDetail</a>&gt;</span>&nbsp;<span class="element-name">getTranslations</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
+<div class="member-signature"><span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../properties/TranslationDetailProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties">TranslationDetailProperties</a>&gt;</span>&nbsp;<span class="element-name">getTranslations</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;elementGUID,
  int&nbsp;startFrom,
  int&nbsp;pageSize)</span>
-                                 throws <span class="exceptions"><a href="../ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">InvalidParameterException</a>,
+                                           throws <span class="exceptions"><a href="../ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">InvalidParameterException</a>,
 <a href="../ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">UserNotAuthorizedException</a>,
 <a href="../ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">PropertyServerException</a></span></div>
 <div class="block">Retrieve all translations associated with a metadata element.</div>
