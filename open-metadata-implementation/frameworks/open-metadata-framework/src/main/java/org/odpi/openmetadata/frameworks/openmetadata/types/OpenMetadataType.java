@@ -4088,15 +4088,6 @@ public enum OpenMetadataType
                   EngineActionProperties.class),
 
     /**
-     * Link between an engine action and the governance engine that will execute it.
-     */
-    ENGINE_ACTION_EXECUTOR("e690ab17-6779-46b4-a8f1-6872d88c1bbb",
-                           "EngineActionExecutor",
-                           OpenMetadataWikiPages.MODEL_0463_ENGINE_ACTIONS,
-                           "f86f2040-652e-495e-b27d-ffcc7c75a05e",
-                           "Link between an engine action and the governance engine that will execute it."),
-
-    /**
      * A collection of integration connectors to run together.
      */
     INTEGRATION_GROUP("4d7c43ec-983b-40e4-af78-6fb66c4f5136",
@@ -5225,15 +5216,6 @@ public enum OpenMetadataType
                          OpenMetadataWikiPages.MODEL_0565_DESIGN_MODEL_ELEMENTS,
                          "ba357440-145c-4325-a33c-01e648513c23",
                          "An abstract, but well-formed representation of a concept, activity, architecture or other design element."),
-
-    /**
-     * Identifies the coverage category of an attribute.
-     */
-    ATTRIBUTE_COVERAGE_CLASSIFICATION("f8b60afe-ddef-4b6f-9628-82ebfff34d65",
-                                      "AttributeCoverage",
-                                      OpenMetadataWikiPages.MODEL_0565_DESIGN_MODEL_ELEMENTS,
-                                      "bcb67e57-52e8-42f3-881e-3f755ca02ae7",
-                                      "Identifies the coverage category of an attribute."),
 
     /**
      * A curated collection of design model elements.
