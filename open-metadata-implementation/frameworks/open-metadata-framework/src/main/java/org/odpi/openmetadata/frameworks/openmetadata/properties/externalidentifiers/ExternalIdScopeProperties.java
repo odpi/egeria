@@ -48,7 +48,7 @@ public class ExternalIdScopeProperties extends RelationshipBeanProperties
 
         if (template != null)
         {
-            permittedSynchronization = template.getSynchronizationDirection();
+            permittedSynchronization = template.getPermittedSynchronization();
         }
     }
 
@@ -58,7 +58,7 @@ public class ExternalIdScopeProperties extends RelationshipBeanProperties
      *
      * @return enum
      */
-    public PermittedSynchronization getSynchronizationDirection()
+    public PermittedSynchronization getPermittedSynchronization()
     {
         return permittedSynchronization;
     }
@@ -69,7 +69,7 @@ public class ExternalIdScopeProperties extends RelationshipBeanProperties
      *
      * @param permittedSynchronization enum
      */
-    public void setSynchronizationDirection(PermittedSynchronization permittedSynchronization)
+    public void setPermittedSynchronization(PermittedSynchronization permittedSynchronization)
     {
         this.permittedSynchronization = permittedSynchronization;
     }
@@ -85,7 +85,7 @@ public class ExternalIdScopeProperties extends RelationshipBeanProperties
     {
         return "ExternalIdScopeProperties{" +
                 "permittedSynchronization=" + permittedSynchronization +
-                ", synchronizationDirection=" + getSynchronizationDirection() +
+                ", synchronizationDirection=" + getPermittedSynchronization() +
                 "} " + super.toString();
     }
 

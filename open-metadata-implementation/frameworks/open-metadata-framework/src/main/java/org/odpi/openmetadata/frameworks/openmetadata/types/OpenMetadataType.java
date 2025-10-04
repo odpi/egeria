@@ -1545,27 +1545,6 @@ public enum OpenMetadataType
            PersonProperties.class),
 
     /**
-     * Relationship identifying an actor's contribution record.
-     */
-    CONTRIBUTION_RELATIONSHIP("4a383961-fa82-45b7-9018-d02233c80754",
-                              "Contribution",
-                              OpenMetadataWikiPages.MODEL_0125_CONTRIBUTION,
-                              "47acc23d-a5d3-4ce3-acbd-0bb50433037b",
-                              "Relationship identifying an actor's contribution record.",
-                              ContributionProperties.class),
-
-    /**
-     * A record of the contribution of an actor profile.
-     */
-    CONTRIBUTION_RECORD("6aaa1cea-d55f-4dcc-8c28-63a44132d1d7",
-                        "ContributionRecord",
-                        OpenMetadataWikiPages.MODEL_0125_CONTRIBUTION,
-                        "84ac1aa6-f82c-4723-9c57-2b064d3c8418",
-                        "A record of the contribution of an actor profile.",
-                        ContributionRecordProperties.class),
-
-
-    /**
      * Relationship identifying a person's peer network.
      */
     PEER_RELATIONSHIP("4a316abe-bccd-4d11-ad5a-4bfb4079b80b",
@@ -1737,6 +1716,28 @@ public enum OpenMetadataType
                            "ffe8adb8-58bd-469c-9077-f4c4088ca1d1",
                            "Link between a scope - such as a digital product, infrastructure element or organization - and an element restricted the scope, such as a governance definition.",
                            ScopedByProperties.class),
+
+
+    /**
+     * Relationship identifying an actor's contribution record.
+     */
+    CONTRIBUTION_RELATIONSHIP("4a383961-fa82-45b7-9018-d02233c80754",
+                              "Contribution",
+                              OpenMetadataWikiPages.MODEL_0125_CONTRIBUTION,
+                              "47acc23d-a5d3-4ce3-acbd-0bb50433037b",
+                              "Relationship identifying an actor's contribution record.",
+                              ContributionProperties.class),
+
+    /**
+     * A record of the contribution of an actor profile.
+     */
+    CONTRIBUTION_RECORD("6aaa1cea-d55f-4dcc-8c28-63a44132d1d7",
+                        "ContributionRecord",
+                        OpenMetadataWikiPages.MODEL_0125_CONTRIBUTION,
+                        "84ac1aa6-f82c-4723-9c57-2b064d3c8418",
+                        "A record of the contribution of an actor profile.",
+                        ContributionRecordProperties.class),
+
 
     /**
      * An organized activity, typically to achieve a well-defined goal.
@@ -2285,7 +2286,8 @@ public enum OpenMetadataType
                "PortAlias",
                OpenMetadataWikiPages.MODEL_0217_PORTS,
                "bbb9d111-01f9-4a28-974d-80ac22985fdf",
-               "A port for a composed process whose implementation comes from the port linked via a port delegation relationship."),
+               "A port for a composed process whose implementation comes from the port linked via a port delegation relationship.",
+               PortAliasProperties.class),
 
     /**
      * A port with a concrete implementation.
@@ -2294,7 +2296,8 @@ public enum OpenMetadataType
                         "PortImplementation",
                         OpenMetadataWikiPages.MODEL_0217_PORTS,
                         "1415862a-bcde-42f7-b9ad-44be29ae8c60",
-                        "A port with a concrete implementation."),
+                        "A port with a concrete implementation.",
+                        PortImplementationProperties.class),
 
     /**
      * A link between a process and one of its ports.
@@ -2303,7 +2306,8 @@ public enum OpenMetadataType
                               "ProcessPort",
                               OpenMetadataWikiPages.MODEL_0217_PORTS,
                               "9584078c-8a28-4852-bd9b-699d20385b6f",
-                              "A link between a process and one of its ports."),
+                              "A link between a process and one of its ports.",
+                              ProcessPortProperties.class),
 
     /**
      * A relationship between a parent (composed) process port and a port from a more granular process.  The relationship shows where data passed to the parent process is directed.
@@ -2312,7 +2316,8 @@ public enum OpenMetadataType
                                  "PortDelegation",
                                  OpenMetadataWikiPages.MODEL_0217_PORTS,
                                  "7a820388-49f6-4843-aa68-a2eda5501386",
-                                 "A relationship between a parent (composed) process port and a port from a more granular process.  The relationship shows where data passed to the parent process is directed."),
+                                 "A relationship between a parent (composed) process port and a port from a more granular process.  The relationship shows where data passed to the parent process is directed.",
+                                 PortDelegationProperties.class),
 
     /**
      * A description of a folder (directory) in a file system.
@@ -2331,7 +2336,8 @@ public enum OpenMetadataType
                 "DataFolder",
                 OpenMetadataWikiPages.MODEL_0220_FILE_AND_FOLDERS,
                 "0432df9c-d04d-4a41-8a27-599e0331d167",
-                "A folder (directory) in a file system that contains a collection of data stored in individual files."),
+                "A folder (directory) in a file system that contains a collection of data stored in individual files.",
+                DataFolderProperties.class),
 
     /**
      * A description of a file stored in a file system.
@@ -4036,7 +4042,8 @@ public enum OpenMetadataType
                                                 "GovernanceActionProcessFlow",
                                                 OpenMetadataWikiPages.MODEL_0462_GOVERNANCE_ACTION_PROCESSES,
                                                 "89c8634e-7401-4bb3-87b5-93889278d0d7",
-                                                "A link between a governance action process and its first process step."),
+                                                "A link between a governance action process and its first process step.",
+                                                GovernanceActionProcessFlowProperties.class),
 
     /**
      * Link between two process steps in a governance action process flow.
@@ -4045,7 +4052,8 @@ public enum OpenMetadataType
                                                      "NextGovernanceActionProcessStep",
                                                      OpenMetadataWikiPages.MODEL_0462_GOVERNANCE_ACTION_PROCESSES,
                                                      "ed6a2f15-3c93-4742-943b-3c0ca1fb446a",
-                                                     "Link between two process steps in a governance action process flow."),
+                                                     "Link between two process steps in a governance action process flow.",
+                                                     NextGovernanceActionProcessStepProperties.class),
 
     /**
      * Link between a governance action type, or process step, and the governance engine that will execute it.
@@ -4054,8 +4062,8 @@ public enum OpenMetadataType
                                             "GovernanceActionExecutor",
                                             OpenMetadataWikiPages.MODEL_0462_GOVERNANCE_ACTION_PROCESSES,
                                             "1c514213-bcd0-4c99-9ff7-b3f91c684501",
-                                            "Link between a governance action type, or process step, and the governance engine that will execute it."),
-
+                                            "Link between a governance action type, or process step, and the governance engine that will execute it.",
+                                            GovernanceActionExecutorProperties.class),
 
 
     /**
@@ -4075,7 +4083,8 @@ public enum OpenMetadataType
                                        "GovernanceActionProcessInstance",
                                        OpenMetadataWikiPages.MODEL_0462_GOVERNANCE_ACTION_PROCESSES,
                                        "6fcfbc4c-f08d-4946-a311-e76237fa1263",
-                                       "Represents a single run of a governance action process.  It is linked to the parent governance action process using the GovernedBy relationship."),
+                                       "Represents a single run of a governance action process.  It is linked to the parent governance action process using the GovernedBy relationship.",
+                                       GovernanceActionProcessInstanceProperties.class),
 
     /**
      * An engine action that has been created to support the active governance of the open metadata ecosystem and/or digital landscape.

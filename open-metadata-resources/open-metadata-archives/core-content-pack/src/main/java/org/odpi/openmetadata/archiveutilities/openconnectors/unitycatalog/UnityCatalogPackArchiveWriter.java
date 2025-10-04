@@ -256,8 +256,7 @@ public class UnityCatalogPackArchiveWriter extends ContentPackBaseArchiveWriter
                                                             processGUID,
                                                             ResourceUse.SURVEY_RESOURCE.getResourceUse(),
                                                             description,
-                                                            provisionRequestType.getRequestParameters(),
-                                                            false);
+                                                            provisionRequestType.getRequestParameters());
         }
     }
 

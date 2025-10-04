@@ -624,6 +624,16 @@ public class OpenMetadataTypesArchive1_2
                                                                  RelationshipEndCardinality.ANY_NUMBER);
         relationshipDef.setEndDef2(relationshipEndDef);
 
+        /*
+         * Build the attributes
+         */
+        List<TypeDefAttribute> properties = new ArrayList<>();
+
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.LABEL));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.DESCRIPTION));
+
+        relationshipDef.setPropertiesDefinition(properties);
+
         return relationshipDef;
     }
 
@@ -737,6 +747,16 @@ public class OpenMetadataTypesArchive1_2
                                                                  end2AttributeDescriptionGUID,
                                                                  RelationshipEndCardinality.ANY_NUMBER);
         relationshipDef.setEndDef2(relationshipEndDef);
+
+        /*
+         * Build the attributes
+         */
+        List<TypeDefAttribute> properties = new ArrayList<>();
+
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.LABEL));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.DESCRIPTION));
+
+        relationshipDef.setPropertiesDefinition(properties);
 
         return relationshipDef;
     }
@@ -2998,7 +3018,6 @@ public class OpenMetadataTypesArchive1_2
         properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.DISPLAY_NAME));
         properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.DESCRIPTION));
         properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.ADDITIONAL_PROPERTIES));
-        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.WATCH_RESOURCE));
 
         relationshipDef.setPropertiesDefinition(properties);
 
@@ -6209,16 +6228,16 @@ public class OpenMetadataTypesArchive1_2
 
     private EnumDef getTermAssignmentStatusEnum()
     {
-        EnumDef enumDef = archiveHelper.getEmptyEnumDef(GlossaryTermAssignmentStatus.getOpenTypeGUID(),
-                                                        GlossaryTermAssignmentStatus.getOpenTypeName(),
-                                                        GlossaryTermAssignmentStatus.getOpenTypeDescription(),
-                                                        GlossaryTermAssignmentStatus.getOpenTypeDescriptionGUID(),
-                                                        GlossaryTermAssignmentStatus.getOpenTypeDescriptionWiki());
+        EnumDef enumDef = archiveHelper.getEmptyEnumDef(TermAssignmentStatus.getOpenTypeGUID(),
+                                                        TermAssignmentStatus.getOpenTypeName(),
+                                                        TermAssignmentStatus.getOpenTypeDescription(),
+                                                        TermAssignmentStatus.getOpenTypeDescriptionGUID(),
+                                                        TermAssignmentStatus.getOpenTypeDescriptionWiki());
 
         ArrayList<EnumElementDef> elementDefs = new ArrayList<>();
         EnumElementDef            elementDef;
 
-        for (GlossaryTermAssignmentStatus enumValues : GlossaryTermAssignmentStatus.values())
+        for (TermAssignmentStatus enumValues : TermAssignmentStatus.values())
         {
             elementDef = archiveHelper.getEnumElementDef(enumValues.getOrdinal(),
                                                          enumValues.getName(),
@@ -7944,6 +7963,16 @@ public class OpenMetadataTypesArchive1_2
                                                                  end2AttributeDescriptionGUID,
                                                                  RelationshipEndCardinality.ANY_NUMBER);
         relationshipDef.setEndDef2(relationshipEndDef);
+
+        /*
+         * Build the attributes
+         */
+        List<TypeDefAttribute> properties = new ArrayList<>();
+
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.LABEL));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.DESCRIPTION));
+
+        relationshipDef.setPropertiesDefinition(properties);
 
         return relationshipDef;
     }

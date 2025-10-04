@@ -1129,10 +1129,10 @@ public class GovernanceEngineConfigurationHandler
                                                                                                               relationship.getProperties(),
                                                                                                               methodName));
 
-                        relationshipProperties.setGenerateActivityReports(repositoryHelper.getBooleanProperty(serviceName,
-                                                                                                              OpenMetadataProperty.GENERATE_CONNECTOR_ACTIVITY_REPORT.name,
-                                                                                                              relationship.getProperties(),
-                                                                                                              methodName));
+                        relationshipProperties.setGenerateConnectorActivityReports(repositoryHelper.getBooleanProperty(serviceName,
+                                                                                                                       OpenMetadataProperty.GENERATE_CONNECTOR_ACTIVITY_REPORT.name,
+                                                                                                                       relationship.getProperties(),
+                                                                                                                       methodName));
                         Map<String, SupportedGovernanceServiceProperties> requestTypes = governanceService.getProperties().getRequestTypes();
 
                         if (requestTypes == null)

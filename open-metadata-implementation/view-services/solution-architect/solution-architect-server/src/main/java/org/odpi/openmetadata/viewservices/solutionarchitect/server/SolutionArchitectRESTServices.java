@@ -12,7 +12,6 @@ import org.odpi.openmetadata.frameworks.openmetadata.handlers.InformationSupplyC
 import org.odpi.openmetadata.frameworks.openmetadata.handlers.SolutionBlueprintHandler;
 import org.odpi.openmetadata.frameworks.openmetadata.handlers.SolutionComponentHandler;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.collections.CollectionMembershipProperties;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.informationsupplychains.InformationSupplyChainCompositionProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.informationsupplychains.InformationSupplyChainLinkProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.informationsupplychains.InformationSupplyChainProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.solutions.*;
@@ -395,7 +394,7 @@ public class SolutionArchitectRESTServices extends TokenController
 
             if (requestBody != null)
             {
-                if (requestBody.getProperties() instanceof InformationSupplyChainCompositionProperties properties)
+                if (requestBody.getProperties() instanceof CollectionMembershipProperties properties)
                 {
                     handler.composeInformationSupplyChains(userId,
                                                            informationSupplyChainGUID,
@@ -413,7 +412,7 @@ public class SolutionArchitectRESTServices extends TokenController
                 }
                 else
                 {
-                    restExceptionHandler.handleInvalidPropertiesObject(InformationSupplyChainLinkProperties.class.getName(), methodName);
+                    restExceptionHandler.handleInvalidPropertiesObject(CollectionMembershipProperties.class.getName(), methodName);
                 }
             }
             else

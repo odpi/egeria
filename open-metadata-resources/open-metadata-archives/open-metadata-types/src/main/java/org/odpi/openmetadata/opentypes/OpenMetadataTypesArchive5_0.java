@@ -978,6 +978,16 @@ public class OpenMetadataTypesArchive5_0
                                                                  RelationshipEndCardinality.ANY_NUMBER);
         relationshipDef.setEndDef2(relationshipEndDef);
 
+        /*
+         * Build the attributes
+         */
+        List<TypeDefAttribute> properties = new ArrayList<>();
+
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.LABEL));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.DESCRIPTION));
+
+        relationshipDef.setPropertiesDefinition(properties);
+
         return relationshipDef;
     }
 
@@ -1017,6 +1027,16 @@ public class OpenMetadataTypesArchive5_0
                                                                  end2AttributeDescriptionGUID,
                                                                  RelationshipEndCardinality.ANY_NUMBER);
         relationshipDef.setEndDef2(relationshipEndDef);
+
+        /*
+         * Build the attributes
+         */
+        List<TypeDefAttribute> properties = new ArrayList<>();
+
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.LABEL));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.DESCRIPTION));
+
+        relationshipDef.setPropertiesDefinition(properties);
 
         return relationshipDef;
     }
@@ -1064,6 +1084,7 @@ public class OpenMetadataTypesArchive5_0
         List<TypeDefAttribute> properties = new ArrayList<>();
 
         properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.SEVERITY_LEVEL_IDENTIFIER));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.LABEL));
         properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.DESCRIPTION));
 
         relationshipDef.setPropertiesDefinition(properties);
@@ -1121,6 +1142,7 @@ public class OpenMetadataTypesArchive5_0
          */
         List<TypeDefAttribute> properties = new ArrayList<>();
 
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.LABEL));
         properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.DESCRIPTION));
 
         relationshipDef.setPropertiesDefinition(properties);
@@ -1170,6 +1192,9 @@ public class OpenMetadataTypesArchive5_0
          */
         List<TypeDefAttribute> properties = new ArrayList<>();
 
+
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.LABEL));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.DESCRIPTION));
         properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.STATUS_IDENTIFIER));
         properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.CONFIDENCE));
         properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.STEWARD));

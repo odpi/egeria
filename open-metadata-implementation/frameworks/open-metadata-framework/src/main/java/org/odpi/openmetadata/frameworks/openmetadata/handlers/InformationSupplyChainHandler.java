@@ -12,7 +12,7 @@ import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.Informatio
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.InformationSupplyChainElement;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.InformationSupplyChainSegment;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.*;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.informationsupplychains.InformationSupplyChainCompositionProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.collections.CollectionMembershipProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.informationsupplychains.InformationSupplyChainLinkProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.informationsupplychains.InformationSupplyChainProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.search.*;
@@ -237,13 +237,13 @@ public class InformationSupplyChainHandler extends OpenMetadataHandlerBase
      * @throws PropertyServerException there is a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    public void composeInformationSupplyChains(String                                      userId,
-                                               String                                      informationSupplyChainGUID,
-                                               String                                      nestedInformationSupplyChainGUID,
-                                               MetadataSourceOptions                       metadataSourceOptions,
-                                               InformationSupplyChainCompositionProperties compositionProperties) throws InvalidParameterException,
-                                                                                                                         PropertyServerException,
-                                                                                                                         UserNotAuthorizedException
+    public void composeInformationSupplyChains(String                         userId,
+                                               String                         informationSupplyChainGUID,
+                                               String                         nestedInformationSupplyChainGUID,
+                                               MetadataSourceOptions          metadataSourceOptions,
+                                               CollectionMembershipProperties compositionProperties) throws InvalidParameterException,
+                                                                                                            PropertyServerException,
+                                                                                                            UserNotAuthorizedException
     {
         final String methodName = "composeInformationSupplyChains";
         final String end1GUIDParameterName = "informationSupplyChainGUID";

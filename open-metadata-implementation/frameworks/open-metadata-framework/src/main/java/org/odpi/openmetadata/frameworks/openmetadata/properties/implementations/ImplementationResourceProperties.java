@@ -23,8 +23,6 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class ImplementationResourceProperties extends RoledRelationshipProperties
 {
-    String description = null;
-
     /**
      * Default constructor
      */
@@ -40,36 +38,9 @@ public class ImplementationResourceProperties extends RoledRelationshipPropertie
      *
      * @param template object to copy
      */
-    public ImplementationResourceProperties(ImplementationResourceProperties template)
+    public ImplementationResourceProperties(RoledRelationshipProperties template)
     {
         super(template);
-
-        if (template != null)
-        {
-            this.description = template.getDescription();
-        }
-    }
-
-
-    /**
-     * Return the implementation notes.
-     *
-     * @return description
-     */
-    public String getDescription()
-    {
-        return description;
-    }
-
-
-    /**
-     * Set up the implementation notes.
-     *
-     * @param description description
-     */
-    public void setDescription(String description)
-    {
-        this.description = description;
     }
 
 
@@ -82,45 +53,6 @@ public class ImplementationResourceProperties extends RoledRelationshipPropertie
     public String toString()
     {
         return "ImplementationResourceProperties{" +
-                "description='" + description + '\'' +
                 "} " + super.toString();
-    }
-
-
-    /**
-     * Compare the values of the supplied object with those stored in the current object.
-     *
-     * @param objectToCompare supplied object
-     * @return boolean result of comparison
-     */
-    @Override
-    public boolean equals(Object objectToCompare)
-    {
-        if (this == objectToCompare)
-        {
-            return true;
-        }
-        if (objectToCompare == null || getClass() != objectToCompare.getClass())
-        {
-            return false;
-        }
-        if (! super.equals(objectToCompare))
-        {
-            return false;
-        }
-        ImplementationResourceProperties that = (ImplementationResourceProperties) objectToCompare;
-        return Objects.equals(description, that.description);
-    }
-
-
-    /**
-     * Return hash code based on properties.
-     *
-     * @return int
-     */
-    @Override
-    public int hashCode()
-    {
-        return Objects.hash(super.hashCode(), description);
     }
 }

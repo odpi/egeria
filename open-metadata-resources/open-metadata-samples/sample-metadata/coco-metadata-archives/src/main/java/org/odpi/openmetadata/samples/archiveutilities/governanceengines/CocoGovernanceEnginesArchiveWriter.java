@@ -193,8 +193,7 @@ public class CocoGovernanceEnginesArchiveWriter extends EgeriaBaseArchiveWriter
                                                             governanceActionTypeGUID,
                                                             governanceActionDescription.resourceUse.getResourceUse(),
                                                             governanceActionDescription.governanceServiceDescription,
-                                                            requestParameters,
-                                                            false);
+                                                            requestParameters);
         }
     }
 
