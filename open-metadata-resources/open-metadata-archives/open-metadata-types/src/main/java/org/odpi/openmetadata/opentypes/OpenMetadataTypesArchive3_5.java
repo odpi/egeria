@@ -186,7 +186,6 @@ public class OpenMetadataTypesArchive3_5
         this.archiveBuilder.addClassificationDef(addSourceControlLibraryClassification());
         this.archiveBuilder.addClassificationDef(addChangeManagementLibraryClassification());
         this.archiveBuilder.addClassificationDef(addSoftwareLibraryClassification());
-        this.archiveBuilder.addTypeDefPatch(updateDatabaseManagerClassification());
         this.archiveBuilder.addTypeDefPatch(updateContentCollectionManagerClassification());
         this.archiveBuilder.addTypeDefPatch(updateCloudServiceClassification());
         this.archiveBuilder.addTypeDefPatch(updateServerAssetUseRelationship());
@@ -396,24 +395,6 @@ public class OpenMetadataTypesArchive3_5
 
         List<TypeDefLink> validEntityDefs = new ArrayList<>();
         validEntityDefs.add(new TypeDefLink(archiveBuilder.getTypeDefByName(OpenMetadataType.SOFTWARE_CAPABILITY.typeName)));
-
-        typeDefPatch.setValidEntityDefs(validEntityDefs);
-        return typeDefPatch;
-    }
-
-
-    private TypeDefPatch updateDatabaseManagerClassification()
-    {
-        /*
-         * Create the Patch
-         */
-        TypeDefPatch  typeDefPatch = archiveBuilder.getPatchForType(OpenMetadataType.DATABASE_MANAGER.typeName);
-
-        typeDefPatch.setUpdatedBy(originatorName);
-        typeDefPatch.setUpdateTime(creationDate);
-
-        List<TypeDefLink> validEntityDefs = new ArrayList<>();
-        validEntityDefs.add(new TypeDefLink(archiveBuilder.getTypeDefByName(OpenMetadataType.DATA_MANAGER.typeName)));
 
         typeDefPatch.setValidEntityDefs(validEntityDefs);
         return typeDefPatch;

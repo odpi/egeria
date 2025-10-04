@@ -11,26 +11,36 @@ import org.odpi.openmetadata.frameworks.openmetadata.properties.*;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.actors.*;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.actors.GovernanceRoleProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.*;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.apis.DeployedAPIProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.databases.DatabaseProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.databases.DeployedDatabaseSchemaProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.filesandfolders.CSVFileProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.filesandfolders.DataFileProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.filesandfolders.FileFolderProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.infrastructure.*;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.processes.DeployedSoftwareComponentProperties;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.processes.ProcessProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.processes.*;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.processes.actions.*;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.processes.connectors.CatalogTargetProperties;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.processes.connectors.DeployedConnectorProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.processes.connectors.*;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.referencedata.ReferenceCodeTableProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.reports.*;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.reports.SurveyReportProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.topics.TopicProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.collections.CollectionMembershipProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.collections.CollectionProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.collections.NamingStandardRuleSetProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.communities.CommunityMemberProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.communities.CommunityProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.communities.CrowdSourcingContributionProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.communities.CrowdSourcingContributorProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.connections.ConnectionProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.connections.ConnectorTypeProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.connections.EndpointProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.connections.VirtualConnectionProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.contextevents.ContextEventImpactProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.contextevents.ContextEventProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.datadictionaries.*;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.dataprocessing.DataProcessingActionProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.dataprocessing.DataProcessingDescriptionProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.dataprocessing.DataProcessingPurposeProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.designmodels.ConceptDesignProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.designmodels.ConceptModelProperties;
@@ -44,6 +54,7 @@ import org.odpi.openmetadata.frameworks.openmetadata.properties.glossaries.Gloss
 import org.odpi.openmetadata.frameworks.openmetadata.properties.glossaries.GlossaryTermProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.governance.*;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.governance.governanceactions.GovernanceActionProcessProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.governance.governanceactions.GovernanceActionProcessStepProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.governance.governanceactions.GovernanceActionProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.governance.governanceactions.GovernanceActionTypeProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.implementations.ImplementedByProperties;
@@ -54,11 +65,19 @@ import org.odpi.openmetadata.frameworks.openmetadata.properties.lineage.*;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.locations.AdjacentLocationProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.locations.LocationProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.locations.NestedLocationProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.projects.ProjectManagerProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.projects.ProjectProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.schema.*;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.schema.apis.APIOperationProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.schema.apis.APIParameterListProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.schema.apis.APIParameterProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.schema.apis.APISchemaTypeProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.schema.databases.RelationalColumnProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.schema.databases.RelationalDBSchemaTypeProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.schema.databases.RelationalTableProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.schema.events.EventSchemaAttributeProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.schema.events.EventTypeListProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.schema.events.EventTypeProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.schema.tabular.TabularColumnProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.schema.tabular.TabularFileColumnProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.schema.tabular.TabularSchemaTypeProperties;
@@ -66,6 +85,7 @@ import org.odpi.openmetadata.frameworks.openmetadata.properties.security.Associa
 import org.odpi.openmetadata.frameworks.openmetadata.properties.security.GovernanceZoneProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.security.SecurityAccessControlProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.security.SecurityGroupProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.softwarecapabilities.*;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.solutions.*;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.surveyreports.*;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.templates.CatalogTemplateProperties;
@@ -962,6 +982,50 @@ public class OpenMetadataPropertyConverterBase
         {
             return propertyHelper.removeStringProperty(localServiceName,
                                                        OpenMetadataProperty.MISSION.name,
+                                                       elementProperties,
+                                                       methodName);
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Extract and delete the property from the supplied element properties.
+     *
+     * @param elementProperties properties from element
+     * @return string text or null
+     */
+    protected String removePath(ElementProperties  elementProperties)
+    {
+        final String methodName = "removePath";
+
+        if (elementProperties != null)
+        {
+            return propertyHelper.removeStringProperty(localServiceName,
+                                                       OpenMetadataProperty.PATH.name,
+                                                       elementProperties,
+                                                       methodName);
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Extract and delete the property from the supplied element properties.
+     *
+     * @param elementProperties properties from element
+     * @return string text or null
+     */
+    protected String removeCommand(ElementProperties  elementProperties)
+    {
+        final String methodName = "removeCommand";
+
+        if (elementProperties != null)
+        {
+            return propertyHelper.removeStringProperty(localServiceName,
+                                                       OpenMetadataProperty.COMMAND.name,
                                                        elementProperties,
                                                        methodName);
         }
@@ -3240,6 +3304,50 @@ public class OpenMetadataPropertyConverterBase
 
 
     /**
+     * Extract and delete the property from the supplied element properties.
+     *
+     * @param elementProperties properties from element
+     * @return string or null
+     */
+    protected String removeDelimiterCharacter(ElementProperties  elementProperties)
+    {
+        final String methodName = "removeDelimiterCharacter";
+
+        if (elementProperties != null)
+        {
+            return propertyHelper.removeStringProperty(localServiceName,
+                                                       OpenMetadataProperty.DELIMITER_CHARACTER.name,
+                                                       elementProperties,
+                                                       methodName);
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Extract and delete the property from the supplied element properties.
+     *
+     * @param elementProperties properties from element
+     * @return string or null
+     */
+    protected String removeQuoteCharacter(ElementProperties  elementProperties)
+    {
+        final String methodName = "removeQuoteCharacter";
+
+        if (elementProperties != null)
+        {
+            return propertyHelper.removeStringProperty(localServiceName,
+                                                       OpenMetadataProperty.QUOTE_CHARACTER.name,
+                                                       elementProperties,
+                                                       methodName);
+        }
+
+        return null;
+    }
+
+
+    /**
      * Extract and delete the sourceCreateTime property from the supplied element properties.
      *
      * @param elementProperties properties from element
@@ -3410,9 +3518,9 @@ public class OpenMetadataPropertyConverterBase
      * @param elementProperties properties from element
      * @return string name or null
      */
-    protected String removeDatabaseImportedFrom(ElementProperties  elementProperties)
+    protected String removeImportedFrom(ElementProperties  elementProperties)
     {
-        final String methodName = "removeDatabaseImportedFrom";
+        final String methodName = "removeImportedFrom";
 
         if (elementProperties != null)
         {
@@ -6491,6 +6599,29 @@ public class OpenMetadataPropertyConverterBase
     }
 
 
+    /**
+     * Extract and delete the property from the supplied element properties.
+     *
+     * @param elementProperties properties from element
+     * @return string
+     */
+    protected String removeEventEffect(ElementProperties elementProperties)
+
+    {
+        final String methodName = "removeEventEffect";
+
+        if (elementProperties != null)
+        {
+            return propertyHelper.removeStringProperty(localServiceName,
+                                                       OpenMetadataProperty.EVENT_EFFECT.name,
+                                                       elementProperties,
+                                                       methodName);
+        }
+
+        return null;
+    }
+
+
 
     /**
      * Extract and delete the processStartTime property from the supplied element properties.
@@ -6585,6 +6716,144 @@ public class OpenMetadataPropertyConverterBase
     }
 
 
+    /**
+     * Extract and delete the startDate property from the supplied element properties.
+     *
+     * @param elementProperties properties from element
+     * @return date
+     */
+    protected Date removePlannedStartDate(ElementProperties elementProperties)
+
+    {
+        final String methodName = "removePlannedStartDate";
+
+        if (elementProperties != null)
+        {
+            return propertyHelper.removeDateProperty(localServiceName,
+                                                     OpenMetadataProperty.PLANNED_START_DATE.name,
+                                                     elementProperties,
+                                                     methodName);
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Extract and delete the property from the supplied element properties.
+     *
+     * @param elementProperties properties from element
+     * @return date
+     */
+    protected Date removeActualStartDate(ElementProperties elementProperties)
+
+    {
+        final String methodName = "removeActualStartDate";
+
+        if (elementProperties != null)
+        {
+            return propertyHelper.removeDateProperty(localServiceName,
+                                                     OpenMetadataProperty.ACTUAL_START_DATE.name,
+                                                     elementProperties,
+                                                     methodName);
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Extract and delete the property from the supplied element properties.
+     *
+     * @param elementProperties properties from element
+     * @return date
+     */
+    protected Date removeActualCompletionDate(ElementProperties elementProperties)
+
+    {
+        final String methodName = "removeActualCompletionDate";
+
+        if (elementProperties != null)
+        {
+            return propertyHelper.removeDateProperty(localServiceName,
+                                                     OpenMetadataProperty.ACTUAL_COMPLETION_DATE.name,
+                                                     elementProperties,
+                                                     methodName);
+        }
+
+        return null;
+    }
+
+
+
+    /**
+     * Extract and delete the property from the supplied element properties.
+     *
+     * @param elementProperties properties from element
+     * @return date
+     */
+    protected Date removePlannedCompletionDate(ElementProperties elementProperties)
+
+    {
+        final String methodName = "removePlannedCompletionDate";
+
+        if (elementProperties != null)
+        {
+            return propertyHelper.removeDateProperty(localServiceName,
+                                                     OpenMetadataProperty.PLANNED_COMPLETION_DATE.name,
+                                                     elementProperties,
+                                                     methodName);
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Extract and delete the property from the supplied element properties.
+     *
+     * @param elementProperties properties from element
+     * @return date
+     */
+    protected Date removeReferenceEffectiveFrom(ElementProperties elementProperties)
+
+    {
+        final String methodName = "removeReferenceEffectiveFrom";
+
+        if (elementProperties != null)
+        {
+            return propertyHelper.removeDateProperty(localServiceName,
+                                                     OpenMetadataProperty.REFERENCE_EFFECTIVE_FROM.name,
+                                                     elementProperties,
+                                                     methodName);
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Extract and delete the property from the supplied element properties.
+     *
+     * @param elementProperties properties from element
+     * @return date
+     */
+    protected Date removeReferenceEffectiveTo(ElementProperties elementProperties)
+
+    {
+        final String methodName = "removeReferenceEffectiveTo";
+
+        if (elementProperties != null)
+        {
+            return propertyHelper.removeDateProperty(localServiceName,
+                                                     OpenMetadataProperty.REFERENCE_EFFECTIVE_TO.name,
+                                                     elementProperties,
+                                                     methodName);
+        }
+
+        return null;
+    }
+
 
     /**
      * Extract and delete the property from the supplied element properties.
@@ -6633,48 +6902,71 @@ public class OpenMetadataPropertyConverterBase
 
 
     /**
-     * Extract and delete the plannedEndDate property from the supplied element properties.
+     * Extract and delete the property from the supplied element properties.
      *
      * @param elementProperties properties from element
-     * @return date
+     * @return long
      */
-    protected Date removePlannedEndDate(ElementProperties elementProperties)
+    protected long removePlannedDuration(ElementProperties elementProperties)
 
     {
-        final String methodName = "removePlannedEndDate";
+        final String methodName = "removePlannedDuration";
 
         if (elementProperties != null)
         {
-            return propertyHelper.removeDateProperty(localServiceName,
-                                                     OpenMetadataProperty.PLANNED_END_DATE.name,
+            return propertyHelper.removeLongProperty(localServiceName,
+                                                     OpenMetadataProperty.PLANNED_DURATION.name,
                                                      elementProperties,
                                                      methodName);
         }
 
-        return null;
+        return 0L;
     }
 
 
     /**
-     * Extract and delete the creationTime property from the supplied element properties.
+     * Extract and delete the property from the supplied element properties.
      *
      * @param elementProperties properties from element
-     * @return date
+     * @return long
      */
-    protected Date removeCreationTime(ElementProperties elementProperties)
+    protected long removeActualDuration(ElementProperties elementProperties)
 
     {
-        final String methodName = "removeCreationTime";
+        final String methodName = "removeActualDuration";
 
         if (elementProperties != null)
         {
-            return propertyHelper.removeDateProperty(localServiceName,
-                                                     OpenMetadataProperty.REQUESTED_TIME.name,
+            return propertyHelper.removeLongProperty(localServiceName,
+                                                     OpenMetadataProperty.ACTUAL_DURATION.name,
                                                      elementProperties,
                                                      methodName);
         }
 
-        return null;
+        return 0L;
+    }
+
+
+    /**
+     * Extract and delete the property from the supplied element properties.
+     *
+     * @param elementProperties properties from element
+     * @return long
+     */
+    protected long removeRepeatInterval(ElementProperties elementProperties)
+
+    {
+        final String methodName = "removeRepeatInterval";
+
+        if (elementProperties != null)
+        {
+            return propertyHelper.removeLongProperty(localServiceName,
+                                                     OpenMetadataProperty.REPEAT_INTERVAL.name,
+                                                     elementProperties,
+                                                     methodName);
+        }
+
+        return 0L;
     }
 
 
@@ -9065,6 +9357,34 @@ public class OpenMetadataPropertyConverterBase
         return null;
     }
 
+    /**
+     * Extract and delete the CommentType property from the supplied element properties.
+     *
+     * @param elementProperties properties from entity
+     * @return enum
+     */
+    PortType removePortType(ElementProperties elementProperties)
+    {
+        final String methodName = "removePortType";
+
+        if (elementProperties != null)
+        {
+            String retrievedProperty = propertyHelper.removeEnumProperty(localServiceName,
+                                                                         OpenMetadataProperty.PORT_TYPE.name,
+                                                                         elementProperties,
+                                                                         methodName);
+
+            for (PortType portType : PortType.values())
+            {
+                if (portType.getName().equals(retrievedProperty))
+                {
+                    return portType;
+                }
+            }
+        }
+
+        return null;
+    }
 
 
     /**
@@ -10291,7 +10611,14 @@ public class OpenMetadataPropertyConverterBase
                         }
                         else if (propertyHelper.isTypeOf(openMetadataElement, OpenMetadataType.TEAM.typeName))
                         {
-                            beanProperties = new TeamProperties();
+                            if (propertyHelper.isTypeOf(openMetadataElement, OpenMetadataType.ORGANIZATION.typeName))
+                            {
+                                beanProperties = new OrganizationProperties();
+                            }
+                            else
+                            {
+                                beanProperties = new TeamProperties();
+                            }
 
                             ((TeamProperties) beanProperties).setTeamType(this.removeTeamType(elementProperties));
                         }
@@ -10308,11 +10635,35 @@ public class OpenMetadataPropertyConverterBase
                     {
                         if (propertyHelper.isTypeOf(openMetadataElement, OpenMetadataType.PERSON_ROLE.typeName))
                         {
-                            if (propertyHelper.isTypeOf(openMetadataElement, OpenMetadataType.GOVERNANCE_ROLE.typeName))
+                            if (propertyHelper.isTypeOf(openMetadataElement, OpenMetadataType.COMMUNITY_MEMBER.typeName))
+                            {
+                                beanProperties = new CommunityMemberProperties();
+                            }
+                            else if (propertyHelper.isTypeOf(openMetadataElement, OpenMetadataType.CROWD_SOURCING_CONTRIBUTOR.typeName))
+                            {
+                                beanProperties = new CrowdSourcingContributorProperties();
+                            }
+                            else if (propertyHelper.isTypeOf(openMetadataElement, OpenMetadataType.DIGITAL_PRODUCT_MANAGER.typeName))
+                            {
+                                beanProperties = new DigitalProductManagerProperties();
+                            }
+                            else if (propertyHelper.isTypeOf(openMetadataElement, OpenMetadataType.GOVERNANCE_ROLE.typeName))
                             {
                                 beanProperties = new GovernanceRoleProperties();
 
                                 ((GovernanceRoleProperties) beanProperties).setDomainIdentifier(this.removeDomainIdentifier(elementProperties));
+                            }
+                            else if (propertyHelper.isTypeOf(openMetadataElement, OpenMetadataType.PROJECT_MANAGER.typeName))
+                            {
+                                beanProperties = new ProjectManagerProperties();
+                            }
+                            else if (propertyHelper.isTypeOf(openMetadataElement, OpenMetadataType.TEAM_LEADER.typeName))
+                            {
+                                beanProperties = new TeamLeaderProperties();
+                            }
+                            else if (propertyHelper.isTypeOf(openMetadataElement, OpenMetadataType.TEAM_MEMBER.typeName))
+                            {
+                                beanProperties = new TeamMemberProperties();
                             }
                             else
                             {
@@ -10368,7 +10719,15 @@ public class OpenMetadataPropertyConverterBase
                     {
                         if (propertyHelper.isTypeOf(openMetadataElement, OpenMetadataType.DATA_SET.typeName))
                         {
-                            if (propertyHelper.isTypeOf(openMetadataElement, OpenMetadataType.REPORT.typeName))
+                            if (propertyHelper.isTypeOf(openMetadataElement, OpenMetadataType.DEPLOYED_DATABASE_SCHEMA.typeName))
+                            {
+                                beanProperties = new DeployedDatabaseSchemaProperties();
+                            }
+                            else if (propertyHelper.isTypeOf(openMetadataElement, OpenMetadataType.REFERENCE_CODE_TABLE.typeName))
+                            {
+                                beanProperties = new ReferenceCodeTableProperties();
+                            }
+                            else if (propertyHelper.isTypeOf(openMetadataElement, OpenMetadataType.REPORT.typeName))
                             {
                                 if (propertyHelper.isTypeOf(openMetadataElement, OpenMetadataType.CONNECTOR_ACTIVITY_REPORT.typeName))
                                 {
@@ -10447,7 +10806,35 @@ public class OpenMetadataPropertyConverterBase
                         }
                         else if (propertyHelper.isTypeOf(openMetadataElement, OpenMetadataType.DATA_STORE.typeName))
                         {
-                            beanProperties = new DataStoreProperties();
+                            if (propertyHelper.isTypeOf(openMetadataElement, OpenMetadataType.DATABASE.typeName))
+                            {
+                                beanProperties = new DatabaseProperties();
+
+                                ((DatabaseProperties)beanProperties).setDatabaseInstance(removeDatabaseInstance(elementProperties));
+                                ((DatabaseProperties)beanProperties).setImportedFrom(removeImportedFrom(elementProperties));
+                            }
+                            else if (propertyHelper.isTypeOf(openMetadataElement, OpenMetadataType.DATA_FILE.typeName))
+                            {
+                                if (propertyHelper.isTypeOf(openMetadataElement, OpenMetadataType.CSV_FILE.typeName))
+                                {
+                                    beanProperties = new CSVFileProperties();
+
+                                    ((CSVFileProperties)beanProperties).setDelimiterCharacter(removeDelimiterCharacter(elementProperties));
+                                    ((CSVFileProperties)beanProperties).setQuoteCharacter(removeQuoteCharacter(elementProperties));
+                                }
+                                else
+                                {
+                                    beanProperties = new DataFileProperties();
+                                }
+                            }
+                            else if (propertyHelper.isTypeOf(openMetadataElement, OpenMetadataType.FILE_FOLDER.typeName))
+                            {
+                                beanProperties = new FileFolderProperties();
+                            }
+                            else
+                            {
+                                beanProperties = new DataStoreProperties();
+                            }
 
                             ((DataStoreProperties)beanProperties).setStoreCreateTime(removeStoreCreateTime(elementProperties));
                             ((DataStoreProperties)beanProperties).setStoreUpdateTime(removeStoreUpdateTime(elementProperties));
@@ -10472,7 +10859,18 @@ public class OpenMetadataPropertyConverterBase
                     {
                         if (propertyHelper.isTypeOf(openMetadataElement, OpenMetadataType.ACTION.typeName))
                         {
-                            if (propertyHelper.isTypeOf(openMetadataElement, OpenMetadataType.TO_DO.typeName))
+                            if (propertyHelper.isTypeOf(openMetadataElement, OpenMetadataType.EMBEDDED_PROCESS.typeName))
+                            {
+                                if (propertyHelper.isTypeOf(openMetadataElement, OpenMetadataType.TRANSIENT_EMBEDDED_PROCESS.typeName))
+                                {
+                                    beanProperties = new TransientEmbeddedProcessProperties();
+                                }
+                                else
+                                {
+                                    beanProperties = new EmbeddedProcessProperties();
+                                }
+                            }
+                            else if (propertyHelper.isTypeOf(openMetadataElement, OpenMetadataType.TO_DO.typeName))
                             {
                                 beanProperties = new ToDoProperties();
                             }
@@ -10535,9 +10933,45 @@ public class OpenMetadataPropertyConverterBase
                         }
                         else if (propertyHelper.isTypeOf(openMetadataElement, OpenMetadataType.DEPLOYED_SOFTWARE_COMPONENT.typeName))
                         {
-                            if (propertyHelper.isTypeOf(openMetadataElement, OpenMetadataType.DEPLOYED_CONNECTOR.typeName))
+                            if (propertyHelper.isTypeOf(openMetadataElement, OpenMetadataType.DEPLOYED_API.typeName))
                             {
-                                beanProperties = new DeployedConnectorProperties();
+                                beanProperties = new DeployedAPIProperties();
+                            }
+                            else if (propertyHelper.isTypeOf(openMetadataElement, OpenMetadataType.DEPLOYED_CONNECTOR.typeName))
+                            {
+                                if (propertyHelper.isTypeOf(openMetadataElement, OpenMetadataType.GOVERNANCE_SERVICE.typeName))
+                                {
+                                    if (propertyHelper.isTypeOf(openMetadataElement, OpenMetadataType.GOVERNANCE_ACTION_SERVICE.typeName))
+                                    {
+                                        beanProperties = new GovernanceActionServiceProperties();
+                                    }
+                                    else if (propertyHelper.isTypeOf(openMetadataElement, OpenMetadataType.REPOSITORY_GOVERNANCE_SERVICE.typeName))
+                                    {
+                                        beanProperties = new RepositoryGovernanceServiceProperties();
+                                    }
+                                    else if (propertyHelper.isTypeOf(openMetadataElement, OpenMetadataType.SURVEY_ACTION_SERVICE.typeName))
+                                    {
+                                        beanProperties = new SurveyActionServiceProperties();
+                                    }
+                                    else if (propertyHelper.isTypeOf(openMetadataElement, OpenMetadataType.WATCHDOG_ACTION_SERVICE.typeName))
+                                    {
+                                        beanProperties = new WatchdogActionServiceProperties();
+                                    }
+                                    else
+                                    {
+                                        beanProperties = new GovernanceServiceProperties();
+                                    }
+                                }
+                                else if (propertyHelper.isTypeOf(openMetadataElement, OpenMetadataType.INTEGRATION_CONNECTOR.typeName))
+                                {
+                                    beanProperties = new IntegrationConnectorProperties();
+
+                                    ((IntegrationConnectorProperties) beanProperties).setUsesBlockingCalls(this.removeUsesBlockingCalls(elementProperties));
+                                }
+                                else
+                                {
+                                    beanProperties = new DeployedConnectorProperties();
+                                }
                             }
                             else
                             {
@@ -10766,6 +11200,21 @@ public class OpenMetadataPropertyConverterBase
                     ((ContactDetailsProperties)beanProperties).setContactMethodService(this.removeContactMethodService(elementProperties));
                     ((ContactDetailsProperties)beanProperties).setContactMethodValue(this.removeContactMethodValue(elementProperties));
                 }
+                else if (propertyHelper.isTypeOf(openMetadataElement, OpenMetadataType.CONTEXT_EVENT.typeName))
+                {
+                    beanProperties = new ContextEventProperties();
+
+                    ((ContextEventProperties)beanProperties).setEventEffect(this.removeEventEffect(elementProperties));
+                    ((ContextEventProperties)beanProperties).setPlannedStartDate(this.removePlannedStartDate(elementProperties));
+                    ((ContextEventProperties)beanProperties).setActualStartDate(this.removeActualStartDate(elementProperties));
+                    ((ContextEventProperties)beanProperties).setPlannedDuration(this.removePlannedDuration(elementProperties));
+                    ((ContextEventProperties)beanProperties).setActualDuration(this.removeActualDuration(elementProperties));
+                    ((ContextEventProperties)beanProperties).setRepeatInterval(this.removeRepeatInterval(elementProperties));
+                    ((ContextEventProperties)beanProperties).setPlannedCompletionDate(this.removePlannedCompletionDate(elementProperties));
+                    ((ContextEventProperties)beanProperties).setActualCompletionDate(this.removeActualCompletionDate(elementProperties));
+                    ((ContextEventProperties)beanProperties).setReferenceEffectiveFrom(this.removeReferenceEffectiveFrom(elementProperties));
+                    ((ContextEventProperties)beanProperties).setReferenceEffectiveTo(this.removeReferenceEffectiveTo(elementProperties));
+                }
                 else if (propertyHelper.isTypeOf(openMetadataElement, OpenMetadataType.CONTRIBUTION_RECORD.typeName))
                 {
                     beanProperties = new ContributionRecordProperties();
@@ -10793,6 +11242,14 @@ public class OpenMetadataPropertyConverterBase
                     ((DataClassProperties)beanProperties).setValueRangeTo(this.removeValueRangeTo(elementProperties));
                     ((DataClassProperties)beanProperties).setSampleValues(this.removeSampleValues(elementProperties));
                     ((DataClassProperties)beanProperties).setDataPatterns(this.removeDataPatterns(elementProperties));
+                }
+                else if (propertyHelper.isTypeOf(openMetadataElement, OpenMetadataType.DATA_PROCESSING_ACTION.typeName))
+                {
+                    beanProperties = new DataProcessingActionProperties();
+                }
+                else if (propertyHelper.isTypeOf(openMetadataElement, OpenMetadataType.DATA_PROCESSING_DESCRIPTION.typeName))
+                {
+                    beanProperties = new DataProcessingDescriptionProperties();
                 }
                 else if (propertyHelper.isTypeOf(openMetadataElement, OpenMetadataType.DATA_STRUCTURE.typeName))
                 {
@@ -10903,7 +11360,6 @@ public class OpenMetadataPropertyConverterBase
                     ((GlossaryTermProperties)beanProperties).setExamples(this.removeExamples(elementProperties));
                     ((GlossaryTermProperties)beanProperties).setAbbreviation(this.removeAbbreviation(elementProperties));
                     ((GlossaryTermProperties)beanProperties).setUsage(this.removeUsage(elementProperties));
-
                 }
                 else if (propertyHelper.isTypeOf(openMetadataElement, OpenMetadataType.GOVERNANCE_DEFINITION.typeName))
                 {
@@ -10952,7 +11408,16 @@ public class OpenMetadataPropertyConverterBase
                             }
                             else if (propertyHelper.isTypeOf(openMetadataElement, OpenMetadataType.GOVERNANCE_ACTION_TYPE.typeName))
                             {
-                                beanProperties = new GovernanceActionTypeProperties();
+                                if (propertyHelper.isTypeOf(openMetadataElement, OpenMetadataType.GOVERNANCE_ACTION_PROCESS_STEP.typeName))
+                                {
+                                    beanProperties = new GovernanceActionProcessStepProperties();
+
+                                    ((GovernanceActionProcessStepProperties) beanProperties).setIgnoreMultipleTriggers(this.removeIgnoreMultipleTriggers(elementProperties));
+                                }
+                                else
+                                {
+                                    beanProperties = new GovernanceActionTypeProperties();
+                                }
 
                                 ((GovernanceActionTypeProperties) beanProperties).setWaitTime(this.removeWaitTime(elementProperties));
                             }
@@ -11098,22 +11563,39 @@ public class OpenMetadataPropertyConverterBase
                 {
                     beanProperties = new LocationProperties();
                 }
+                else if (propertyHelper.isTypeOf(openMetadataElement, OpenMetadataType.PORT.typeName))
+                {
+                    beanProperties = new PortProperties();
+
+                    ((PortProperties)beanProperties).setPortType(this.removePortType(elementProperties));
+                }
                 else if (propertyHelper.isTypeOf(openMetadataElement, OpenMetadataType.PROJECT.typeName))
                 {
                     beanProperties = new ProjectProperties();
 
                     ((ProjectProperties)beanProperties).setPriority(this.removeIntPriority(elementProperties));
-                    ((ProjectProperties)beanProperties).setStartDate(this.removeStartDate(elementProperties));
-                    ((ProjectProperties)beanProperties).setPlannedEndDate(this.removePlannedEndDate(elementProperties));
+                    ((ProjectProperties)beanProperties).setPlannedStartDate(this.removePlannedStartDate(elementProperties));
+                    ((ProjectProperties)beanProperties).setActualStartDate(this.removeActualStartDate(elementProperties));
+                    ((ProjectProperties)beanProperties).setPlannedCompletionDate(this.removePlannedCompletionDate(elementProperties));
+                    ((ProjectProperties)beanProperties).setActualCompletionDate(this.removeActualCompletionDate(elementProperties));
                     ((ProjectProperties)beanProperties).setProjectHealth(this.removeProjectHealth(elementProperties));
                     ((ProjectProperties)beanProperties).setProjectStatus(this.removeProjectStatus(elementProperties));
                     ((ProjectProperties)beanProperties).setProjectPhase(this.removeProjectPhase(elementProperties));
+                    ((ProjectProperties)beanProperties).setMission(this.removeMission(elementProperties));
+                    ((ProjectProperties)beanProperties).setPurposes(this.removePurposes(elementProperties));
                 }
                 else if (propertyHelper.isTypeOf(openMetadataElement, OpenMetadataType.SCHEMA_ELEMENT.typeName))
                 {
                     if (propertyHelper.isTypeOf(openMetadataElement, OpenMetadataType.SCHEMA_TYPE.typeName))
                     {
-                        if (propertyHelper.isTypeOf(openMetadataElement, OpenMetadataType.SIMPLE_SCHEMA_TYPE.typeName))
+                        if (propertyHelper.isTypeOf(openMetadataElement, OpenMetadataType.API_OPERATION.typeName))
+                        {
+                            beanProperties = new APIOperationProperties();
+
+                            ((APIOperationProperties) beanProperties).setPath(this.removePath(elementProperties));
+                            ((APIOperationProperties) beanProperties).setCommand(this.removeCommand(elementProperties));
+                        }
+                        else if (propertyHelper.isTypeOf(openMetadataElement, OpenMetadataType.SIMPLE_SCHEMA_TYPE.typeName))
                         {
                             if (propertyHelper.isTypeOf(openMetadataElement, OpenMetadataType.PRIMITIVE_SCHEMA_TYPE.typeName))
                             {
@@ -11140,7 +11622,14 @@ public class OpenMetadataPropertyConverterBase
                         }
                         else if (propertyHelper.isTypeOf(openMetadataElement, OpenMetadataType.SCHEMA_TYPE_CHOICE.typeName))
                         {
-                            beanProperties = new SchemaTypeChoiceProperties();
+                            if (propertyHelper.isTypeOf(openMetadataElement, OpenMetadataType.EVENT_TYPE_LIST.typeName))
+                            {
+                                beanProperties = new EventTypeListProperties();
+                            }
+                            else
+                            {
+                                beanProperties = new SchemaTypeChoiceProperties();
+                            }
                         }
                         else if (propertyHelper.isTypeOf(openMetadataElement, OpenMetadataType.EXTERNAL_SCHEMA_TYPE.typeName))
                         {
@@ -11152,26 +11641,33 @@ public class OpenMetadataPropertyConverterBase
                         }
                         else if (propertyHelper.isTypeOf(openMetadataElement, OpenMetadataType.COMPLEX_SCHEMA_TYPE.typeName))
                         {
-                            if (propertyHelper.isTypeOf(openMetadataElement, OpenMetadataType.STRUCT_SCHEMA_TYPE.typeName))
+                            if (propertyHelper.isTypeOf(openMetadataElement, OpenMetadataType.API_PARAMETER_LIST.typeName))
+                            {
+                                beanProperties = new APIParameterListProperties();
+
+                                ((APIParameterListProperties)beanProperties).setRequired(this.removeRequired(elementProperties));
+                            }
+                            else if (propertyHelper.isTypeOf(openMetadataElement, OpenMetadataType.STRUCT_SCHEMA_TYPE.typeName))
                             {
                                 beanProperties = new StructSchemaTypeProperties();
                             }
                             else if (propertyHelper.isTypeOf(openMetadataElement, OpenMetadataType.ROOT_SCHEMA_TYPE.typeName))
                             {
-                                if (propertyHelper.isTypeOf(openMetadataElement, OpenMetadataType.TABULAR_SCHEMA_TYPE.typeName))
+                                if (propertyHelper.isTypeOf(openMetadataElement, OpenMetadataType.API_SCHEMA_TYPE.typeName))
+                                {
+                                    beanProperties = new APISchemaTypeProperties();
+                                }
+                                else if (propertyHelper.isTypeOf(openMetadataElement, OpenMetadataType.EVENT_TYPE.typeName))
+                                {
+                                    beanProperties = new EventTypeProperties();
+                                }
+                                else if (propertyHelper.isTypeOf(openMetadataElement, OpenMetadataType.TABULAR_SCHEMA_TYPE.typeName))
                                 {
                                     beanProperties = new TabularSchemaTypeProperties();
                                 }
-                                else if (propertyHelper.isTypeOf(openMetadataElement, OpenMetadataType.ROOT_SCHEMA_TYPE.typeName))
+                                else if (propertyHelper.isTypeOf(openMetadataElement, OpenMetadataType.RELATIONAL_DB_SCHEMA_TYPE.typeName))
                                 {
-                                    if (propertyHelper.isTypeOf(openMetadataElement, OpenMetadataType.RELATIONAL_DB_SCHEMA_TYPE.typeName))
-                                    {
-                                        beanProperties = new RelationalDBSchemaTypeProperties();
-                                    }
-                                    else
-                                    {
-                                        beanProperties = new RootSchemaTypeProperties();
-                                    }
+                                    beanProperties = new RelationalDBSchemaTypeProperties();
                                 }
                                 else
                                 {
@@ -11195,7 +11691,15 @@ public class OpenMetadataPropertyConverterBase
                     }
                     else if (propertyHelper.isTypeOf(openMetadataElement, OpenMetadataType.SCHEMA_ATTRIBUTE.typeName))
                     {
-                        if (propertyHelper.isTypeOf(openMetadataElement, OpenMetadataType.TABULAR_COLUMN.typeName))
+                        if (propertyHelper.isTypeOf(openMetadataElement, OpenMetadataType.API_PARAMETER.typeName))
+                        {
+                            beanProperties = new APIParameterProperties();
+                        }
+                        else if (propertyHelper.isTypeOf(openMetadataElement, OpenMetadataType.EVENT_SCHEMA_ATTRIBUTE.typeName))
+                        {
+                            beanProperties = new EventSchemaAttributeProperties();
+                        }
+                        else if (propertyHelper.isTypeOf(openMetadataElement, OpenMetadataType.TABULAR_COLUMN.typeName))
                         {
                             if (propertyHelper.isTypeOf(openMetadataElement, OpenMetadataType.TABULAR_FILE_COLUMN.typeName))
                             {
@@ -11241,6 +11745,98 @@ public class OpenMetadataPropertyConverterBase
 
                     ((SchemaElementProperties)beanProperties).setUserDefinedStatus(this.removeUserDefinedStatus(elementProperties));
                 }
+                else if (propertyHelper.isTypeOf(openMetadataElement, OpenMetadataType.SOFTWARE_CAPABILITY.typeName))
+                {
+                    if (propertyHelper.isTypeOf(openMetadataElement, OpenMetadataType.APPLICATION.typeName))
+                    {
+                        beanProperties = new ApplicationProperties();
+                    }
+                    else if (propertyHelper.isTypeOf(openMetadataElement, OpenMetadataType.API_MANAGER.typeName))
+                    {
+                        beanProperties = new APIManagerProperties();
+                    }
+                    else if (propertyHelper.isTypeOf(openMetadataElement, OpenMetadataType.AUTHORIZATION_MANAGER.typeName))
+                    {
+                        beanProperties = new AuthorizationManagerProperties();
+                    }
+                    else if (propertyHelper.isTypeOf(openMetadataElement, OpenMetadataType.DATA_MANAGER.typeName))
+                    {
+                        if (propertyHelper.isTypeOf(openMetadataElement, OpenMetadataType.DATA_ACCESS_MANAGER.typeName))
+                        {
+                            beanProperties = new DataAccessManagerProperties();
+                        }
+                        else if (propertyHelper.isTypeOf(openMetadataElement, OpenMetadataType.DATABASE_MANAGER.typeName))
+                        {
+                            beanProperties = new DatabaseManagerProperties();
+                        }
+                        else
+                        {
+                            beanProperties = new DataManagerProperties();
+                        }
+                    }
+                    else if (propertyHelper.isTypeOf(openMetadataElement, OpenMetadataType.ENGINE.typeName))
+                    {
+                        if (propertyHelper.isTypeOf(openMetadataElement, OpenMetadataType.GOVERNANCE_ENGINE.typeName))
+                        {
+                            if (propertyHelper.isTypeOf(openMetadataElement, OpenMetadataType.GOVERNANCE_ACTION_ENGINE.typeName))
+                            {
+                                beanProperties = new GovernanceActionEngineProperties();
+                            }
+                            else if (propertyHelper.isTypeOf(openMetadataElement, OpenMetadataType.REPOSITORY_GOVERNANCE_ENGINE.typeName))
+                            {
+                                beanProperties = new RepositoryGovernanceEngineProperties();
+                            }
+                            else if (propertyHelper.isTypeOf(openMetadataElement, OpenMetadataType.SURVEY_ACTION_ENGINE.typeName))
+                            {
+                                beanProperties = new SurveyActionEngineProperties();
+                            }
+                            else if (propertyHelper.isTypeOf(openMetadataElement, OpenMetadataType.WATCHDOG_ACTION_ENGINE.typeName))
+                            {
+                                beanProperties = new WatchdogActionEngineProperties();
+                            }
+                            else
+                            {
+                                beanProperties = new GovernanceEngineProperties();
+                            }
+                        }
+                        else
+                        {
+                            beanProperties = new EngineProperties();
+                        }
+                    }
+                    else if (propertyHelper.isTypeOf(openMetadataElement, OpenMetadataType.EVENT_BROKER.typeName))
+                    {
+                        beanProperties = new EventBrokerProperties();
+                    }
+                    else if (propertyHelper.isTypeOf(openMetadataElement, OpenMetadataType.EVENT_MANAGER.typeName))
+                    {
+                        beanProperties = new EventManagerProperties();
+                    }
+                    else if (propertyHelper.isTypeOf(openMetadataElement, OpenMetadataType.INVENTORY_CATALOG.typeName))
+                    {
+                        beanProperties = new InventoryCatalogProperties();
+                    }
+                    else if (propertyHelper.isTypeOf(openMetadataElement, OpenMetadataType.INTEGRATION_GROUP.typeName))
+                    {
+                        beanProperties = new IntegrationGroupProperties();
+                    }
+                    else if (propertyHelper.isTypeOf(openMetadataElement, OpenMetadataType.NETWORK_GATEWAY.typeName))
+                    {
+                        beanProperties = new NetworkGatewayProperties();
+                    }
+                    else if (propertyHelper.isTypeOf(openMetadataElement, OpenMetadataType.USER_AUTHENTICATION_MANAGER.typeName))
+                    {
+                        beanProperties = new UserAuthenticationManagerProperties();
+                    }
+                    else
+                    {
+                        beanProperties = new SoftwareCapabilityProperties();
+                    }
+
+                    ((SoftwareCapabilityProperties)beanProperties).setPatchLevel(this.removePatchLevel(elementProperties));
+                    ((SoftwareCapabilityProperties)beanProperties).setSource(this.removeSource(elementProperties));
+                    ((SoftwareCapabilityProperties)beanProperties).setDeployedImplementationType(this.removeDeployedImplementationType(elementProperties));
+                }
                 else if (propertyHelper.isTypeOf(openMetadataElement, OpenMetadataType.SOLUTION_COMPONENT.typeName))
                 {
                     beanProperties = new SolutionComponentProperties();
@@ -11254,7 +11850,7 @@ public class OpenMetadataPropertyConverterBase
                     beanProperties = new SolutionPortProperties();
 
                     ((SolutionPortProperties)beanProperties).setUserDefinedStatus(this.removeUserDefinedStatus(elementProperties));
-                    ((SolutionPortProperties)beanProperties).setSolutionPortDirection(this.removeSolutionPortDirection(elementProperties));
+                    ((SolutionPortProperties)beanProperties).setDirection(this.removeSolutionPortDirection(elementProperties));
                 }
                 else if (propertyHelper.isTypeOf(openMetadataElement, OpenMetadataType.VALID_VALUE_DEFINITION.typeName))
                 {
@@ -11264,7 +11860,7 @@ public class OpenMetadataPropertyConverterBase
                     }
                     else if (propertyHelper.isTypeOf(openMetadataElement, OpenMetadataType.VALID_METADATA_VALUE.typeName))
                     {
-                        beanProperties = new ValidMetadataValue();
+                        beanProperties = new ValidMetadataValueProperties();
                     }
                     else
                     {
@@ -11366,11 +11962,11 @@ public class OpenMetadataPropertyConverterBase
                     }
                     else if (propertyHelper.isTypeOf(openMetadataElement, OpenMetadataType.REQUEST_FOR_ACTION_ANNOTATION.typeName))
                     {
-                        beanProperties = new RequestForActionAnnotationProperties();
+                        beanProperties = new RequestForActionProperties();
 
-                        ((RequestForActionAnnotationProperties)beanProperties).setActionSourceName(this.removeActionSourceName(elementProperties));
-                        ((RequestForActionAnnotationProperties)beanProperties).setActionRequested(this.removeActionRequested(elementProperties));
-                        ((RequestForActionAnnotationProperties)beanProperties).setActionProperties(this.removeActionProperties(elementProperties));
+                        ((RequestForActionProperties)beanProperties).setActionSourceName(this.removeActionSourceName(elementProperties));
+                        ((RequestForActionProperties)beanProperties).setActionRequested(this.removeActionRequested(elementProperties));
+                        ((RequestForActionProperties)beanProperties).setActionProperties(this.removeActionProperties(elementProperties));
                     }
                     else if (propertyHelper.isTypeOf(openMetadataElement, OpenMetadataType.SEMANTIC_ANNOTATION.typeName))
                     {
@@ -11424,6 +12020,13 @@ public class OpenMetadataPropertyConverterBase
                 ((AnnotationProperties)beanProperties).setAnalysisStep(this.removeAnalysisStep(elementProperties));
                 ((AnnotationProperties)beanProperties).setJsonProperties(this.removeJsonProperties(elementProperties));
                 ((AnnotationProperties)beanProperties).setAdditionalProperties(this.removeAdditionalProperties(elementProperties));
+            }
+            else if (propertyHelper.isTypeOf(openMetadataElement, OpenMetadataType.INFORMAL_TAG.typeName))
+            {
+                beanProperties = new InformalTagProperties();
+
+                ((InformalTagProperties)beanProperties).setDisplayName(this.removeDisplayName(elementProperties));
+                ((InformalTagProperties)beanProperties).setDescription(this.removeDescription(elementProperties));
             }
             else if (propertyHelper.isTypeOf(openMetadataElement, OpenMetadataType.LIKE.typeName))
             {

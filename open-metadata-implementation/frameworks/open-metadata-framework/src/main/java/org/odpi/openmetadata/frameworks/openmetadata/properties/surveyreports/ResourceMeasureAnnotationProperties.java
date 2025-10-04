@@ -3,6 +3,7 @@
 package org.odpi.openmetadata.frameworks.openmetadata.properties.surveyreports;
 
 import com.fasterxml.jackson.annotation.*;
+import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 
 import java.util.Map;
 import java.util.Objects;
@@ -33,6 +34,8 @@ public class ResourceMeasureAnnotationProperties extends AnnotationProperties
      */
     public ResourceMeasureAnnotationProperties()
     {
+        super();
+        super.setTypeName(OpenMetadataType.RESOURCE_MEASURE_ANNOTATION.typeName);
     }
 
 

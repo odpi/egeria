@@ -227,9 +227,9 @@ public class ConnectionHandler extends OpenMetadataHandlerBase
                                        String                       connectionGUID,
                                        String                       endpointGUID,
                                        MetadataSourceOptions        metadataSourceOptions,
-                                       ConnectionEndpointProperties relationshipProperties) throws InvalidParameterException,
-                                                                                                   PropertyServerException,
-                                                                                                   UserNotAuthorizedException
+                                       ConnectToEndpointProperties relationshipProperties) throws InvalidParameterException,
+                                                                                                  PropertyServerException,
+                                                                                                  UserNotAuthorizedException
     {
         final String methodName            = "linkConnectionEndpoint";
         final String end1GUIDParameterName = "connectionGUID";

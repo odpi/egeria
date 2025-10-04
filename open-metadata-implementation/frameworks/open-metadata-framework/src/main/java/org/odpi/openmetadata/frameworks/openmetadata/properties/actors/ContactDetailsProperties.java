@@ -7,6 +7,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.ContactMethodType;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.ReferenceableProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 
 import java.util.Objects;
 
@@ -31,6 +32,8 @@ public class ContactDetailsProperties extends ReferenceableProperties
      */
     public ContactDetailsProperties()
     {
+        super();
+        super.setTypeName(OpenMetadataType.CONTACT_DETAILS.typeName);
     }
 
 

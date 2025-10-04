@@ -75,8 +75,8 @@ public enum OMFAuditCode implements AuditLogMessageSet
     FILE_SYSTEM_MONITORING_STOPPING("OPEN-METADATA-0005",
                                     AuditLogRecordSeverityLevel.INFO,
                                     "The {0} connector has stopped its file system monitoring and is shutting down",
-                                    "The connector is disconnecting.",
-                                    "No action is required unless there are errors that follow indicating that there were problems shutting down."),
+                                    "The file system monitor connector is disconnecting.",
+                                    "No action is required unless there are errors that follow indicating that there were problems shutting down the connector."),
 
     /**
      * OPEN-METADATA-0006 - The {0} connector has been disconnected - either due to its own actions or a cancel request

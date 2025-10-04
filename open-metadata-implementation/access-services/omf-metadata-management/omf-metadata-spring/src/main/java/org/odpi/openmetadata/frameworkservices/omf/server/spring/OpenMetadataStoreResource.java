@@ -8,8 +8,8 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import org.odpi.openmetadata.commonservices.ffdc.rest.*;
 import org.odpi.openmetadata.commonservices.ffdc.rest.MetadataSourceRequestBody;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.OpenMetadataTypeDefCategory;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.TranslationDetail;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.ValidMetadataValue;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.TranslationDetailProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.ValidMetadataValueProperties;
 import org.odpi.openmetadata.frameworkservices.omf.rest.*;
 import org.odpi.openmetadata.frameworkservices.omf.server.OpenMetadataStoreRESTServices;
 import org.springframework.web.bind.annotation.*;
@@ -1354,7 +1354,7 @@ public class OpenMetadataStoreResource
     public VoidResponse setTranslation(@PathVariable String            serverName,
                                        @PathVariable String            userId,
                                        @PathVariable String            elementGUID,
-                                       @RequestBody  TranslationDetail translationDetail)
+                                       @RequestBody TranslationDetailProperties translationDetail)
     {
         return restAPI.setTranslation(serverName, userId, elementGUID, translationDetail);
     }
@@ -1468,7 +1468,7 @@ public class OpenMetadataStoreResource
                                                 @RequestParam(required = false)
                                                               String             typeName,
                                                 @PathVariable String             propertyName,
-                                                @RequestBody  ValidMetadataValue validMetadataValue)
+                                                @RequestBody ValidMetadataValueProperties validMetadataValue)
     {
         return restAPI.setUpValidMetadataValue(serverName, userId, typeName, propertyName, validMetadataValue);
     }
@@ -1499,7 +1499,7 @@ public class OpenMetadataStoreResource
                                                   @RequestParam(required = false)
                                                                 String             typeName,
                                                   @PathVariable String             propertyName,
-                                                  @RequestBody  ValidMetadataValue validMetadataValue)
+                                                  @RequestBody ValidMetadataValueProperties validMetadataValue)
     {
         return restAPI.setUpValidMetadataMapName(serverName, userId, typeName, propertyName, validMetadataValue);
     }
@@ -1532,7 +1532,7 @@ public class OpenMetadataStoreResource
                                                                  String             typeName,
                                                    @PathVariable String             propertyName,
                                                    @PathVariable String             mapName,
-                                                   @RequestBody  ValidMetadataValue validMetadataValue)
+                                                   @RequestBody ValidMetadataValueProperties validMetadataValue)
     {
         return restAPI.setUpValidMetadataMapValue(serverName, userId, typeName, propertyName, mapName, validMetadataValue);
     }

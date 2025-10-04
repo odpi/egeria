@@ -21,7 +21,6 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
         use = JsonTypeInfo.Id.NAME,
         include = JsonTypeInfo.As.PROPERTY,
         property = "class")
-// todo this mapping is not complete
 @JsonSubTypes({
         @JsonSubTypes.Type(value = APIManagerProperties.class, name = "APIManagerProperties"),
         @JsonSubTypes.Type(value = ApplicationProperties.class, name = "ApplicationProperties"),

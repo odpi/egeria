@@ -5,6 +5,7 @@ package org.odpi.openmetadata.frameworks.openmetadata.properties.surveyreports;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 
 import java.util.Date;
 import java.util.Objects;
@@ -33,6 +34,8 @@ public class FingerprintAnnotationProperties extends DataFieldAnnotationProperti
      */
     public FingerprintAnnotationProperties()
     {
+        super();
+        super.setTypeName(OpenMetadataType.FINGERPRINT_ANNOTATION.typeName);
     }
 
 

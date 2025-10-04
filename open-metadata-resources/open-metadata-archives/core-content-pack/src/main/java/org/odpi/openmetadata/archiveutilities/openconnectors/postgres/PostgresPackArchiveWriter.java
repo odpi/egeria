@@ -54,7 +54,7 @@ public class PostgresPackArchiveWriter extends ContentPackBaseArchiveWriter
          * Integration Connector Types may need to link to deployedImplementationType valid value element.
          * This information is in the connector provider.
          */
-        archiveHelper.addConnectorType(null, new PostgresServerIntegrationProvider());
+        archiveHelper.addConnectorType(new PostgresServerIntegrationProvider());
 
         /*
          * Add catalog templates

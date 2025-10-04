@@ -73,7 +73,7 @@ Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-   "class" : "MetadataSourceRequestBody",
+   "class" : "DeleteClassificationRequestBody",
    "externalSourceGUID": "Add guid here",
    "externalSourceName": "Add qualified name here",
    "forLineage": false,
@@ -124,7 +124,7 @@ Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-   "class" : "MetadataSourceRequestBody",
+   "class" : "DeleteClassificationRequestBody",
    "externalSourceGUID": "Add guid here",
    "externalSourceName": "Add qualified name here",
    "forLineage": false,
@@ -179,7 +179,7 @@ Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-   "class" : "MetadataSourceRequestBody",
+   "class" : "DeleteClassificationRequestBody",
    "externalSourceGUID": "Add guid here",
    "externalSourceName": "Add qualified name here",
    "forLineage": false,
@@ -232,7 +232,7 @@ Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-   "class" : "MetadataSourceRequestBody",
+   "class" : "DeleteClassificationRequestBody",
    "externalSourceGUID": "Add guid here",
    "externalSourceName": "Add qualified name here",
    "forLineage": false,
@@ -289,7 +289,7 @@ Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-   "class" : "MetadataSourceRequestBody",
+   "class" : "DeleteClassificationRequestBody",
    "externalSourceGUID": "Add guid here",
    "externalSourceName": "Add qualified name here",
    "forLineage": false,
@@ -380,7 +380,7 @@ Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-   "class" : "MetadataSourceRequestBody",
+   "class" : "DeleteClassificationRequestBody",
    "externalSourceGUID": "Add guid here",
    "externalSourceName": "Add qualified name here",
    "forLineage": false,
@@ -476,7 +476,7 @@ Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-   "class" : "MetadataSourceRequestBody",
+   "class" : "DeleteClassificationRequestBody",
    "externalSourceGUID": "Add guid here",
    "externalSourceName": "Add qualified name here",
    "forLineage": false,
@@ -528,7 +528,7 @@ Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-   "class" : "MetadataSourceRequestBody",
+   "class" : "DeleteClassificationRequestBody",
    "externalSourceGUID": "Add guid here",
    "externalSourceName": "Add qualified name here",
    "forLineage": false,
@@ -574,7 +574,7 @@ Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-   "class" : "MetadataSourceRequestBody",
+   "class" : "DeleteClassificationRequestBody",
    "externalSourceGUID": "Add guid here",
    "externalSourceName": "Add qualified name here",
    "forLineage": false,
@@ -620,7 +620,7 @@ Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-   "class" : "MetadataSourceRequestBody",
+   "class" : "DeleteClassificationRequestBody",
    "externalSourceGUID": "Add guid here",
    "externalSourceName": "Add qualified name here",
    "forLineage": false,
@@ -666,7 +666,7 @@ Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-   "class" : "MetadataSourceRequestBody",
+   "class" : "DeleteClassificationRequestBody",
    "externalSourceGUID": "Add guid here",
    "externalSourceName": "Add qualified name here",
    "forLineage": false,
@@ -718,7 +718,7 @@ Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-   "class" : "MetadataSourceRequestBody",
+   "class" : "DeleteRelationshipRequestBody",
    "externalSourceGUID": "Add guid here",
    "externalSourceName": "Add qualified name here",
    "forLineage": false,
@@ -766,7 +766,7 @@ Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-   "class" : "MetadataSourceRequestBody",
+   "class" : "DeleteRelationshipRequestBody",
    "externalSourceGUID": "Add guid here",
    "externalSourceName": "Add qualified name here",
    "forLineage": false,
@@ -809,7 +809,7 @@ Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-   "class" : "MetadataSourceRequestBody",
+   "class" : "DeleteRelationshipRequestBody",
    "externalSourceGUID": "Add guid here",
    "externalSourceName": "Add qualified name here",
    "forLineage": false,
@@ -910,7 +910,7 @@ Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-   "class" : "MetadataSourceRequestBody",
+   "class" : "DeleteRelationshipRequestBody",
    "externalSourceGUID": "Add guid here",
    "externalSourceName": "Add qualified name here",
    "forLineage": false,
@@ -1003,7 +1003,7 @@ Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-   "class" : "MetadataSourceRequestBody",
+   "class" : "DeleteRelationshipRequestBody",
    "externalSourceGUID": "Add guid here",
    "externalSourceName": "Add qualified name here",
    "forLineage": false,

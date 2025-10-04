@@ -340,51 +340,51 @@ public class OpenMetadataClassificationBuilder
                 }
 
             }
-            else if (properties instanceof RetentionClassificationProperties retentionClassificationProperties)
+            else if (properties instanceof RetentionProperties retentionProperties)
             {
                 elementProperties = propertyHelper.addIntProperty(elementProperties,
                                                                   OpenMetadataProperty.STATUS_IDENTIFIER.name,
-                                                                  retentionClassificationProperties.getStatus());
+                                                                  retentionProperties.getStatus());
 
                 elementProperties = propertyHelper.addIntProperty(elementProperties,
                                                                   OpenMetadataProperty.CONFIDENCE.name,
-                                                                  retentionClassificationProperties.getStatus());
+                                                                  retentionProperties.getStatus());
 
                 elementProperties = propertyHelper.addStringProperty(elementProperties,
                                                                      OpenMetadataProperty.STEWARD.name,
-                                                                     retentionClassificationProperties.getSteward());
+                                                                     retentionProperties.getSteward());
 
                 elementProperties = propertyHelper.addStringProperty(elementProperties,
                                                                      OpenMetadataProperty.STEWARD_PROPERTY_NAME.name,
-                                                                     retentionClassificationProperties.getStewardPropertyName());
+                                                                     retentionProperties.getStewardPropertyName());
 
                 elementProperties = propertyHelper.addStringProperty(elementProperties,
                                                                      OpenMetadataProperty.STEWARD_TYPE_NAME.name,
-                                                                     retentionClassificationProperties.getStewardTypeName());
+                                                                     retentionProperties.getStewardTypeName());
 
                 elementProperties = propertyHelper.addStringProperty(elementProperties,
                                                                      OpenMetadataProperty.SOURCE.name,
-                                                                     retentionClassificationProperties.getSource());
+                                                                     retentionProperties.getSource());
 
                 elementProperties = propertyHelper.addStringProperty(elementProperties,
                                                                      OpenMetadataProperty.NOTES.name,
-                                                                     retentionClassificationProperties.getNotes());
+                                                                     retentionProperties.getNotes());
 
                 elementProperties = propertyHelper.addIntProperty(elementProperties,
                                                                   OpenMetadataProperty.RETENTION_BASIS_IDENTIFIER.name,
-                                                                  retentionClassificationProperties.getRetentionBasis());
+                                                                  retentionProperties.getRetentionBasis());
 
                 elementProperties = propertyHelper.addStringProperty(elementProperties,
                                                                      OpenMetadataProperty.ASSOCIATED_GUID.name,
-                                                                     retentionClassificationProperties.getAssociatedGUID());
+                                                                     retentionProperties.getAssociatedGUID());
 
                 elementProperties = propertyHelper.addDateProperty(elementProperties,
                                                                    OpenMetadataProperty.ARCHIVE_AFTER.name,
-                                                                   retentionClassificationProperties.getArchiveAfter());
+                                                                   retentionProperties.getArchiveAfter());
 
                 elementProperties = propertyHelper.addDateProperty(elementProperties,
                                                                    OpenMetadataProperty.DELETE_AFTER.name,
-                                                                   retentionClassificationProperties.getDeleteAfter());
+                                                                   retentionProperties.getDeleteAfter());
             }
             else if (properties instanceof ScopingCollectionProperties scopingCollectionProperties)
             {

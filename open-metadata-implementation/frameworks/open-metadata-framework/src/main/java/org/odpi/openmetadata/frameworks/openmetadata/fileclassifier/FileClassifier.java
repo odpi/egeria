@@ -11,7 +11,7 @@ import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedExcep
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 import org.odpi.openmetadata.frameworks.openmetadata.mapper.OpenMetadataValidValues;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.ValidMetadataValue;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.ValidMetadataValueProperties;
 
 import java.io.File;
 import java.io.IOException;
@@ -228,7 +228,7 @@ public class FileClassifier
         /*
          * Is the file name or file extension recognized?
          */
-        ValidMetadataValue validMetadataValue;
+        ValidMetadataValueProperties validMetadataValue;
         try
         {
             validMetadataValue = validMetadataValuesClient.getValidMetadataValue(OpenMetadataType.DATA_FILE.typeName,
@@ -240,7 +240,7 @@ public class FileClassifier
             validMetadataValue = null;
         }
 
-        List<ValidMetadataValue> consistentValues = null;
+        List<ValidMetadataValueProperties> consistentValues = null;
 
         if (validMetadataValue != null)
         {
@@ -287,7 +287,7 @@ public class FileClassifier
          */
         if (consistentValues != null)
         {
-            for (ValidMetadataValue consistentValue : consistentValues)
+            for (ValidMetadataValueProperties consistentValue : consistentValues)
             {
                 if (consistentValue != null)
                 {
@@ -308,7 +308,7 @@ public class FileClassifier
                             }
                         }
 
-                        List<ValidMetadataValue> consistentFileTypeValues =
+                        List<ValidMetadataValueProperties> consistentFileTypeValues =
                                 validMetadataValuesClient.getConsistentMetadataValues(OpenMetadataType.DATA_FILE.typeName,
                                                                               OpenMetadataProperty.FILE_TYPE.name,
                                                                               null,
@@ -318,7 +318,7 @@ public class FileClassifier
 
                         if (consistentFileTypeValues != null)
                         {
-                            for (ValidMetadataValue consistentFileTypeValue : consistentFileTypeValues)
+                            for (ValidMetadataValueProperties consistentFileTypeValue : consistentFileTypeValues)
                             {
                                 if (consistentFileTypeValue != null)
                                 {

@@ -325,9 +325,9 @@ public enum DeployedImplementationType implements DeployedImplementationTypeDefi
      */
     KEYSTORE_FILE("Keystore File",
                  DeployedImplementationType.DATA_FILE,
-                 OpenMetadataType.KEYSTORE_FILE.typeName,
+                 OpenMetadataType.KEY_STORE_FILE.typeName,
                  null,
-                  OpenMetadataType.KEYSTORE_FILE.description,
+                  OpenMetadataType.KEY_STORE_FILE.description,
                  OpenMetadataWikiPages.MODEL_0226_ARCHIVE_FILES),
 
 

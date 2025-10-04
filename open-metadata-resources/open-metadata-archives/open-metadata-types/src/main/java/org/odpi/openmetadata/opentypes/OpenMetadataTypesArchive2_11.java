@@ -160,7 +160,6 @@ public class OpenMetadataTypesArchive2_11
         update0050ApplicationsAndProcesses();
         update04xxGovernanceDefinitions();
         update0530TabularSchema();
-        update0534RelationalSchema();
         update0535EventSchemas();
         update0536APISchemas();
         update0537DisplaySchemas();
@@ -180,6 +179,7 @@ public class OpenMetadataTypesArchive2_11
     {
 
         this.archiveBuilder.addEntityDef(addAPIManagerEntity());
+        this.archiveBuilder.addEntityDef(addRESTAPIManagerEntity());
         this.archiveBuilder.addEntityDef(addEventBrokerEntity());
     }
 
@@ -194,6 +194,19 @@ public class OpenMetadataTypesArchive2_11
     {
         return archiveHelper.getDefaultEntityDef(OpenMetadataType.API_MANAGER,
                                                  this.archiveBuilder.getEntityDef(OpenMetadataType.SOFTWARE_CAPABILITY.typeName));
+
+    }
+
+
+    /**
+     * This new subtype of software server capability for REST API managers.
+     *
+     * @return entity definition
+     */
+    private EntityDef addRESTAPIManagerEntity()
+    {
+        return archiveHelper.getDefaultEntityDef(OpenMetadataType.REST_API_MANAGER,
+                                                 this.archiveBuilder.getEntityDef(OpenMetadataType.API_MANAGER.typeName));
 
     }
 
@@ -315,33 +328,6 @@ public class OpenMetadataTypesArchive2_11
                                                  this.archiveBuilder.getEntityDef(OpenMetadataType.TABULAR_COLUMN.typeName));
 
     }
-
-
-    /*
-     * -------------------------------------------------------------------------------------------------------
-     */
-
-
-    /**
-     * Change superclass of RelationshipTableType to be ComplexSchemaType
-     */
-    private void update0534RelationalSchema()
-    {
-        this.archiveBuilder.addTypeDefPatch(updateRelationalTableTypeEntity());
-    }
-
-
-    private TypeDefPatch updateRelationalTableTypeEntity()
-    {
-        TypeDefPatch typeDefPatch = archiveBuilder.getPatchForType(OpenMetadataType.RELATIONAL_TABLE_TYPE.typeName);
-
-        typeDefPatch.setUpdatedBy(originatorName);
-        typeDefPatch.setUpdateTime(creationDate);
-        typeDefPatch.setSuperType(this.archiveBuilder.getEntityDef(OpenMetadataType.COMPLEX_SCHEMA_TYPE.typeName));
-
-        return typeDefPatch;
-    }
-
 
 
     /*
@@ -478,7 +464,7 @@ public class OpenMetadataTypesArchive2_11
     private EntityDef addDisplayDataSchemaTypeEntity()
     {
         return archiveHelper.getDefaultEntityDef(OpenMetadataType.DISPLAY_DATA_SCHEMA_TYPE,
-                                                 this.archiveBuilder.getEntityDef(OpenMetadataType.COMPLEX_SCHEMA_TYPE.typeName));
+                                                 this.archiveBuilder.getEntityDef(OpenMetadataType.ROOT_SCHEMA_TYPE.typeName));
     }
 
 
@@ -527,7 +513,7 @@ public class OpenMetadataTypesArchive2_11
     private EntityDef addQuerySchemaTypeEntity()
     {
         return archiveHelper.getDefaultEntityDef(OpenMetadataType.QUERY_SCHEMA_TYPE,
-                                                 this.archiveBuilder.getEntityDef(OpenMetadataType.COMPLEX_SCHEMA_TYPE.typeName));
+                                                 this.archiveBuilder.getEntityDef(OpenMetadataType.ROOT_SCHEMA_TYPE.typeName));
     }
 
 

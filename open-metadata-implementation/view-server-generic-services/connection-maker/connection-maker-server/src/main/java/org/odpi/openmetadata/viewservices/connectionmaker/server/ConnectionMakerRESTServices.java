@@ -401,7 +401,7 @@ public class ConnectionMakerRESTServices extends TokenController
 
             if (requestBody != null)
             {
-                if (requestBody.getProperties() instanceof ConnectionEndpointProperties properties)
+                if (requestBody.getProperties() instanceof ConnectToEndpointProperties properties)
                 {
                     handler.linkConnectionEndpoint(userId,
                                                    connectionGUID,
@@ -419,7 +419,7 @@ public class ConnectionMakerRESTServices extends TokenController
                 }
                 else
                 {
-                    restExceptionHandler.handleInvalidPropertiesObject(ConnectionEndpointProperties.class.getName(), methodName);
+                    restExceptionHandler.handleInvalidPropertiesObject(ConnectToEndpointProperties.class.getName(), methodName);
                 }
             }
             else

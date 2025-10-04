@@ -873,44 +873,6 @@ public class SchemaAttributeHandler<SCHEMA_ATTRIBUTE, SCHEMA_TYPE> extends Schem
                 }
             }
         }
-        else
-        {
-            /*
-             * Using the old pattern where a schema type is between the nested schema attributes.
-             */
-            EntityDetail entity = this.getAttachedEntity(userId,
-                                                         schemaAttributeGUID,
-                                                         schemaAttributeGUIDParameterName,
-                                                         OpenMetadataType.SCHEMA_ATTRIBUTE.typeName,
-                                                         OpenMetadataType.SCHEMA_ATTRIBUTE_TYPE_RELATIONSHIP.typeGUID,
-                                                         OpenMetadataType.SCHEMA_ATTRIBUTE_TYPE_RELATIONSHIP.typeName,
-                                                         OpenMetadataType.SCHEMA_ATTRIBUTE.typeName,
-                                                         2,
-                                                         forLineage,
-                                                         forDuplicateProcessing,
-                                                         supportedZones,
-                                                         effectiveTime,
-                                                         methodName);
-
-            if (entity != null)
-            {
-                String schemaTypeGUIDParameterName = "schemaTypeGUID";
-
-                return getSchemaAttributesForComplexSchemaType(userId,
-                                                               entity.getGUID(),
-                                                               schemaTypeGUIDParameterName,
-                                                               schemaAttributeTypeName,
-                                                               null,
-                                                               null,
-                                                               supportedZones,
-                                                               startFrom,
-                                                               pageSize,
-                                                               forLineage,
-                                                               forDuplicateProcessing,
-                                                               effectiveTime,
-                                                               methodName);
-            }
-        }
 
         if (results.isEmpty())
         {
@@ -1085,25 +1047,6 @@ public class SchemaAttributeHandler<SCHEMA_ATTRIBUTE, SCHEMA_TYPE> extends Schem
                  * Type classification not supported.
                  */
             }
-
-
-            if (schemaType == null)
-            {
-                /*
-                 * Look for an explicit private schema type
-                 */
-                schemaType = schemaTypeHandler.getSchemaTypeForParent(userId,
-                                                                      schemaAttributeGUID,
-                                                                      schemaAttributeGUIDParameterName,
-                                                                      OpenMetadataType.SCHEMA_ATTRIBUTE.typeName,
-                                                                      OpenMetadataType.SCHEMA_ATTRIBUTE_TYPE_RELATIONSHIP.typeGUID,
-                                                                      OpenMetadataType.SCHEMA_ATTRIBUTE_TYPE_RELATIONSHIP.typeName,
-                                                                      forLineage,
-                                                                      forDuplicateProcessing,
-                                                                      effectiveTime,
-                                                                      methodName);
-            }
-
 
             List<Relationship> attributeRelationships = this.getSchemaAttributeRelationships(userId,
                                                                                              schemaAttributeEntity,

@@ -6,6 +6,7 @@ package org.odpi.openmetadata.frameworks.openmetadata.properties;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 
 import java.util.Objects;
 
@@ -31,6 +32,8 @@ public class AnchorsProperties extends ClassificationBeanProperties
      */
     public AnchorsProperties()
     {
+        super();
+        super.setTypeName(OpenMetadataType.ANCHORS_CLASSIFICATION.typeName);
     }
 
 

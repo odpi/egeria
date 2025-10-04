@@ -3,6 +3,7 @@
 package org.odpi.openmetadata.frameworks.openmetadata.properties.surveyreports;
 
 import com.fasterxml.jackson.annotation.*;
+import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
@@ -25,7 +26,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
                 @JsonSubTypes.Type(value = ResourceProfileAnnotationProperties.class, name = "DataProfileAnnotation"),
                 @JsonSubTypes.Type(value = ResourceProfileLogAnnotationProperties.class, name = "DataProfileLogAnnotation"),
                 @JsonSubTypes.Type(value = RelationshipAdviceAnnotationProperties.class, name = "RelationshipAdviceAnnotationProperties"),
-                @JsonSubTypes.Type(value = RequestForActionAnnotationProperties.class, name = "RequestForActionAnnotationProperties"),
+                @JsonSubTypes.Type(value = RequestForActionProperties.class, name = "RequestForActionAnnotationProperties"),
                 @JsonSubTypes.Type(value = SemanticAnnotationProperties.class, name = "SemanticAnnotationProperties"),
         })
 public class DataFieldAnnotationProperties extends AnnotationProperties
@@ -35,6 +36,8 @@ public class DataFieldAnnotationProperties extends AnnotationProperties
      */
     public DataFieldAnnotationProperties()
     {
+        super();
+        super.setTypeName(OpenMetadataType.DATA_FIELD_ANNOTATION.typeName);
     }
 
 

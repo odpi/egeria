@@ -603,7 +603,7 @@ public class FolderSurveyService extends SurveyActionServiceConnector
 
             if (! missingReferenceData.isEmpty())
             {
-                RequestForActionAnnotationProperties requestForActionAnnotation = new RequestForActionAnnotationProperties();
+                RequestForActionProperties requestForActionAnnotation = new RequestForActionProperties();
 
                 setUpAnnotation(requestForActionAnnotation, SurveyFolderAnnotationType.MISSING_REF_DATA);
 
@@ -614,7 +614,7 @@ public class FolderSurveyService extends SurveyActionServiceConnector
 
             if (! inaccessibleFiles.isEmpty())
             {
-                RequestForActionAnnotationProperties requestForActionAnnotation = new RequestForActionAnnotationProperties();
+                RequestForActionProperties requestForActionAnnotation = new RequestForActionProperties();
 
                 setUpAnnotation(requestForActionAnnotation, SurveyFolderAnnotationType.INACCESSIBLE_FILES);
                 Annotation annotation = new Annotation(requestForActionAnnotation);

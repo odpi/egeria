@@ -7,7 +7,7 @@ import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterExcept
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.frameworks.openmetadata.client.OpenMetadataClient;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.ValidMetadataValue;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.ValidMetadataValueProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.ValidMetadataValueDetail;
 
 import java.util.List;
@@ -78,9 +78,9 @@ public class ValidMetadataValuesClient  extends ConnectorContextClientBase
      */
     public void setUpValidMetadataValue(String             typeName,
                                         String             propertyName,
-                                        ValidMetadataValue validMetadataValue) throws InvalidParameterException,
-                                                                                      UserNotAuthorizedException,
-                                                                                      PropertyServerException
+                                        ValidMetadataValueProperties validMetadataValue) throws InvalidParameterException,
+                                                                                                UserNotAuthorizedException,
+                                                                                                PropertyServerException
     {
         openMetadataClient.setUpValidMetadataValue(connectorUserId, typeName, propertyName, validMetadataValue);
     }
@@ -103,9 +103,9 @@ public class ValidMetadataValuesClient  extends ConnectorContextClientBase
      */
     public void setUpValidMetadataMapName(String             typeName,
                                           String             propertyName,
-                                          ValidMetadataValue validMetadataValue) throws InvalidParameterException,
-                                                                                        UserNotAuthorizedException,
-                                                                                        PropertyServerException
+                                          ValidMetadataValueProperties validMetadataValue) throws InvalidParameterException,
+                                                                                                  UserNotAuthorizedException,
+                                                                                                  PropertyServerException
     {
         openMetadataClient.setUpValidMetadataMapName(connectorUserId, typeName, propertyName, validMetadataValue);
     }
@@ -130,9 +130,9 @@ public class ValidMetadataValuesClient  extends ConnectorContextClientBase
     public void setUpValidMetadataMapValue(String             typeName,
                                            String             propertyName,
                                            String             mapName,
-                                           ValidMetadataValue validMetadataValue) throws InvalidParameterException,
-                                                                                         UserNotAuthorizedException,
-                                                                                         PropertyServerException
+                                           ValidMetadataValueProperties validMetadataValue) throws InvalidParameterException,
+                                                                                                   UserNotAuthorizedException,
+                                                                                                   PropertyServerException
     {
         openMetadataClient.setUpValidMetadataMapValue(connectorUserId, typeName, propertyName, mapName, validMetadataValue);
     }
@@ -287,9 +287,9 @@ public class ValidMetadataValuesClient  extends ConnectorContextClientBase
      * @throws UserNotAuthorizedException the service is not able to create/access the element
      * @throws PropertyServerException    there is a problem accessing the metadata store
      */
-    public ValidMetadataValue getValidMetadataValue(String typeName,
-                                                    String propertyName,
-                                                    String preferredValue) throws InvalidParameterException,
+    public ValidMetadataValueProperties getValidMetadataValue(String typeName,
+                                                              String propertyName,
+                                                              String preferredValue) throws InvalidParameterException,
                                                                                   UserNotAuthorizedException,
                                                                                   PropertyServerException
     {
@@ -310,9 +310,9 @@ public class ValidMetadataValuesClient  extends ConnectorContextClientBase
      * @throws UserNotAuthorizedException the service is not able to create/access the element
      * @throws PropertyServerException    there is a problem accessing the metadata store
      */
-    public ValidMetadataValue getValidMetadataMapName(String typeName,
-                                                      String propertyName,
-                                                      String preferredValue) throws InvalidParameterException,
+    public ValidMetadataValueProperties getValidMetadataMapName(String typeName,
+                                                                String propertyName,
+                                                                String preferredValue) throws InvalidParameterException,
                                                                                     UserNotAuthorizedException,
                                                                                     PropertyServerException
     {
@@ -334,10 +334,10 @@ public class ValidMetadataValuesClient  extends ConnectorContextClientBase
      * @throws UserNotAuthorizedException the service is not able to create/access the element
      * @throws PropertyServerException    there is a problem accessing the metadata store
      */
-    public ValidMetadataValue getValidMetadataMapValue(String typeName,
-                                                       String propertyName,
-                                                       String mapName,
-                                                       String preferredValue) throws InvalidParameterException,
+    public ValidMetadataValueProperties getValidMetadataMapValue(String typeName,
+                                                                 String propertyName,
+                                                                 String mapName,
+                                                                 String preferredValue) throws InvalidParameterException,
                                                                                      UserNotAuthorizedException,
                                                                                      PropertyServerException
     {
@@ -386,12 +386,12 @@ public class ValidMetadataValuesClient  extends ConnectorContextClientBase
      * @throws UserNotAuthorizedException the service is not able to create/access the element
      * @throws PropertyServerException    there is a problem accessing the metadata store
      */
-    public List<ValidMetadataValue> getConsistentMetadataValues(String typeName,
-                                                                String propertyName,
-                                                                String mapName,
-                                                                String preferredValue,
-                                                                int    startFrom,
-                                                                int    pageSize) throws InvalidParameterException,
+    public List<ValidMetadataValueProperties> getConsistentMetadataValues(String typeName,
+                                                                          String propertyName,
+                                                                          String mapName,
+                                                                          String preferredValue,
+                                                                          int    startFrom,
+                                                                          int    pageSize) throws InvalidParameterException,
                                                                                         UserNotAuthorizedException,
                                                                                         PropertyServerException
     {

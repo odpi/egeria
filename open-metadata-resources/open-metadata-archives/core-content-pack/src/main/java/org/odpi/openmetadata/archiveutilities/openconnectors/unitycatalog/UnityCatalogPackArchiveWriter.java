@@ -70,9 +70,9 @@ public class UnityCatalogPackArchiveWriter extends ContentPackBaseArchiveWriter
          * Integration Connector Types may need to link to deployedImplementationType valid value element.
          * This information is in the connector provider.
          */
-        archiveHelper.addConnectorType(null, new OSSUnityCatalogResourceProvider());
-        archiveHelper.addConnectorType(null, new OSSUnityCatalogServerSyncProvider());
-        archiveHelper.addConnectorType(null, new OSSUnityCatalogInsideCatalogSyncProvider());
+        archiveHelper.addConnectorType(new OSSUnityCatalogResourceProvider());
+        archiveHelper.addConnectorType(new OSSUnityCatalogServerSyncProvider());
+        archiveHelper.addConnectorType(new OSSUnityCatalogInsideCatalogSyncProvider());
 
         /*
          * Add catalog templates

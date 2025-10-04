@@ -136,8 +136,7 @@ public class GovernanceArchiveHelper extends SimpleCatalogArchiveHelper
             IntegrationConnectorProvider connectorProvider = (IntegrationConnectorProvider)potentialConnectorProvider;
             ConnectorType                connectorType     = connectorProvider.getConnectorType();
 
-            String connectorTypeGUID = super.addConnectorType(null,
-                                                              connectorType.getGUID(),
+            String connectorTypeGUID = super.addConnectorType(connectorType.getGUID(),
                                                               connectorType.getQualifiedName(),
                                                               connectorType.getDisplayName(),
                                                               connectorType.getDescription(),
@@ -397,8 +396,7 @@ public class GovernanceArchiveHelper extends SimpleCatalogArchiveHelper
             ConnectorProviderBase serviceProvider = (ConnectorProviderBase)potentialConnectorProvider;
             ConnectorType         connectorType   = serviceProvider.getConnectorType();
 
-            String connectorTypeGUID = super.addConnectorType(null,
-                                                              connectorType.getGUID(),
+            String connectorTypeGUID = super.addConnectorType(connectorType.getGUID(),
                                                               connectorType.getQualifiedName(),
                                                               connectorType.getDisplayName(),
                                                               connectorType.getDescription(),

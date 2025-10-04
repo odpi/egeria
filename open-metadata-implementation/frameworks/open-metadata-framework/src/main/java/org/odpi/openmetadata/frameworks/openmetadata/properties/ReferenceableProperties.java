@@ -35,6 +35,7 @@ import org.odpi.openmetadata.frameworks.openmetadata.properties.softwarecapabili
 import org.odpi.openmetadata.frameworks.openmetadata.properties.solutions.SolutionBlueprintProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.solutions.SolutionComponentProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.validvalues.ValidValueDefinitionProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 
 import java.util.Map;
 import java.util.Objects;
@@ -101,6 +102,7 @@ public class ReferenceableProperties extends OpenMetadataRootProperties
     public ReferenceableProperties()
     {
         super();
+        super.setTypeName(OpenMetadataType.REFERENCEABLE.typeName);
     }
 
 

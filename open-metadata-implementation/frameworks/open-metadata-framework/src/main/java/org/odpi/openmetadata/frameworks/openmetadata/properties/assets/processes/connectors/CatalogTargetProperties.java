@@ -8,6 +8,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.DeleteMethod;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.PermittedSynchronization;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.RelationshipBeanProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 
 import java.util.Map;
 import java.util.Objects;
@@ -38,6 +39,7 @@ public class CatalogTargetProperties extends RelationshipBeanProperties
     public CatalogTargetProperties()
     {
         super();
+        super.setTypeName(OpenMetadataType.CATALOG_TARGET_RELATIONSHIP.typeName);
     }
 
 

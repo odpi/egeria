@@ -20,9 +20,8 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class DatabaseProperties extends DataStoreProperties
 {
-    private String databaseVersion      = null;
-    private String databaseInstance     = null;
-    private String databaseImportedFrom = null;
+    private String databaseInstance = null;
+    private String importedFrom     = null;
 
     /**
      * Default constructor
@@ -45,32 +44,9 @@ public class DatabaseProperties extends DataStoreProperties
 
         if (template != null)
         {
-            databaseVersion = template.getDatabaseVersion();
             databaseInstance = template.getDatabaseInstance();
-            databaseImportedFrom = template.getDatabaseImportedFrom();
+            importedFrom     = template.getImportedFrom();
         }
-    }
-
-
-    /**
-     * Return the version of the database - often this is related to the version of its schemas.
-     *
-     * @return version name
-     */
-    public String getDatabaseVersion()
-    {
-        return databaseVersion;
-    }
-
-
-    /**
-     * Set up the version of the database - often this is related to the version of its schemas.
-     *
-     * @param databaseVersion version name
-     */
-    public void setDatabaseVersion(String databaseVersion)
-    {
-        this.databaseVersion = databaseVersion;
     }
 
 
@@ -101,20 +77,20 @@ public class DatabaseProperties extends DataStoreProperties
      *
      * @return source name
      */
-    public String getDatabaseImportedFrom()
+    public String getImportedFrom()
     {
-        return databaseImportedFrom;
+        return importedFrom;
     }
 
 
     /**
      *  Set up the source (typically connection name) of the database information.
      *
-     * @param databaseImportedFrom source name
+     * @param importedFrom source name
      */
-    public void setDatabaseImportedFrom(String databaseImportedFrom)
+    public void setImportedFrom(String importedFrom)
     {
-        this.databaseImportedFrom = databaseImportedFrom;
+        this.importedFrom = importedFrom;
     }
 
 
@@ -127,9 +103,8 @@ public class DatabaseProperties extends DataStoreProperties
     public String toString()
     {
         return "DatabaseProperties{" +
-                "databaseVersion='" + databaseVersion + '\'' +
-                ", databaseInstance='" + databaseInstance + '\'' +
-                ", databaseImportedFrom='" + databaseImportedFrom + '\'' +
+                "databaseInstance='" + databaseInstance + '\'' +
+                ", databaseImportedFrom='" + importedFrom + '\'' +
                 "} " + super.toString();
     }
 
@@ -143,30 +118,12 @@ public class DatabaseProperties extends DataStoreProperties
     @Override
     public boolean equals(Object objectToCompare)
     {
-        if (this == objectToCompare)
-        {
-            return true;
-        }
-        if (! (objectToCompare instanceof DatabaseProperties that))
-        {
-            return false;
-        }
-        if (! super.equals(objectToCompare))
-        {
-            return false;
-        }
-
-        if (databaseVersion != null ? ! databaseVersion.equals(that.databaseVersion) : that.databaseVersion != null)
-        {
-            return false;
-        }
-        if (databaseInstance != null ? ! databaseInstance.equals(that.databaseInstance) : that.databaseInstance != null)
-        {
-            return false;
-        }
-        return databaseImportedFrom != null ? databaseImportedFrom.equals(that.databaseImportedFrom) : that.databaseImportedFrom == null;
+        if (this == objectToCompare) return true;
+        if (objectToCompare == null || getClass() != objectToCompare.getClass()) return false;
+        if (!super.equals(objectToCompare)) return false;
+        DatabaseProperties that = (DatabaseProperties) objectToCompare;
+        return Objects.equals(databaseInstance, that.databaseInstance) && Objects.equals(importedFrom, that.importedFrom);
     }
-
 
     /**
      * Return hash code based on properties.
@@ -176,6 +133,6 @@ public class DatabaseProperties extends DataStoreProperties
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), databaseVersion, databaseInstance, databaseImportedFrom);
+        return Objects.hash(super.hashCode(), databaseInstance, importedFrom);
     }
 }

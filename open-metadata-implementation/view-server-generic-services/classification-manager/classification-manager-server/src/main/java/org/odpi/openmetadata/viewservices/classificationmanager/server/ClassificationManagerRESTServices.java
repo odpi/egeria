@@ -114,9 +114,9 @@ public class ClassificationManagerRESTServices extends TokenController
      *       PropertyServerException problem accessing property server or
      *       UserNotAuthorizedException security access problem
      */
-    public VoidResponse clearImpactClassification(String                    serverName,
-                                                  String                    elementGUID,
-                                                  MetadataSourceRequestBody requestBody)
+    public VoidResponse clearImpactClassification(String                          serverName,
+                                                  String                          elementGUID,
+                                                  DeleteClassificationRequestBody requestBody)
     {
         final String   methodName = "clearImpactClassification";
 
@@ -221,9 +221,9 @@ public class ClassificationManagerRESTServices extends TokenController
      *       PropertyServerException problem accessing property server or
      *       UserNotAuthorizedException security access problem
      */
-    public VoidResponse clearConfidenceClassification(String                    serverName,
-                                                      String                    elementGUID,
-                                                      MetadataSourceRequestBody requestBody)
+    public VoidResponse clearConfidenceClassification(String                          serverName,
+                                                      String                          elementGUID,
+                                                      DeleteClassificationRequestBody requestBody)
     {
         final String   methodName = "clearConfidenceClassification";
 
@@ -326,9 +326,9 @@ public class ClassificationManagerRESTServices extends TokenController
      *       PropertyServerException problem accessing property server or
      *       UserNotAuthorizedException security access problem
      */
-    public VoidResponse clearCriticalityClassification(String                    serverName,
-                                                       String                    elementGUID,
-                                                       MetadataSourceRequestBody requestBody)
+    public VoidResponse clearCriticalityClassification(String                          serverName,
+                                                       String                          elementGUID,
+                                                       DeleteClassificationRequestBody requestBody)
     {
         final String   methodName = "clearCriticalityClassification";
 
@@ -441,9 +441,9 @@ public class ClassificationManagerRESTServices extends TokenController
      *      PropertyServerException problem accessing property server or
      *      UserNotAuthorizedException security access problem
      */
-    public VoidResponse clearConfidentialityClassification(String                    serverName,
-                                                           String                    elementGUID,
-                                                           MetadataSourceRequestBody requestBody)
+    public VoidResponse clearConfidentialityClassification(String                          serverName,
+                                                           String                          elementGUID,
+                                                           DeleteClassificationRequestBody requestBody)
     {
         final String   methodName = "clearConfidentialityClassification";
 
@@ -510,7 +510,7 @@ public class ClassificationManagerRESTServices extends TokenController
 
             if (requestBody != null)
             {
-                if (requestBody.getProperties() instanceof RetentionClassificationProperties properties)
+                if (requestBody.getProperties() instanceof RetentionProperties properties)
                 {
                     StewardshipManagementHandler handler = instanceHandler.getStewardshipManagementHandler(userId, serverName, methodName);
 
@@ -518,7 +518,7 @@ public class ClassificationManagerRESTServices extends TokenController
                 }
                 else
                 {
-                    restExceptionHandler.handleInvalidPropertiesObject(RetentionClassificationProperties.class.getName(), methodName);
+                    restExceptionHandler.handleInvalidPropertiesObject(RetentionProperties.class.getName(), methodName);
                 }
             }
             else
@@ -549,9 +549,9 @@ public class ClassificationManagerRESTServices extends TokenController
      *       PropertyServerException problem accessing property server or
      *       UserNotAuthorizedException security access problem
      */
-    public VoidResponse clearRetentionClassification(String                    serverName,
-                                                     String                    elementGUID,
-                                                     MetadataSourceRequestBody requestBody)
+    public VoidResponse clearRetentionClassification(String                          serverName,
+                                                     String                          elementGUID,
+                                                     DeleteClassificationRequestBody requestBody)
     {
         final String   methodName = "clearRetentionClassification";
 
@@ -594,8 +594,8 @@ public class ClassificationManagerRESTServices extends TokenController
      * PropertyServerException problem accessing property server or
      * UserNotAuthorizedException security access problem
      */
-    public VoidResponse addGovernanceExpectations(String                    serverName,
-                                                  String                    elementGUID,
+    public VoidResponse addGovernanceExpectations(String                       serverName,
+                                                  String                       elementGUID,
                                                   NewClassificationRequestBody requestBody)
     {
         final String methodName = "addGovernanceExpectations";
@@ -713,9 +713,9 @@ public class ClassificationManagerRESTServices extends TokenController
      * PropertyServerException problem accessing property server or
      * UserNotAuthorizedException security access problem
      */
-    public VoidResponse clearGovernanceExpectations(String                    serverName,
-                                                    String                    elementGUID,
-                                                    MetadataSourceRequestBody requestBody)
+    public VoidResponse clearGovernanceExpectations(String                          serverName,
+                                                    String                          elementGUID,
+                                                    DeleteClassificationRequestBody requestBody)
     {
         final String methodName = "clearGovernanceExpectations";
 
@@ -875,9 +875,9 @@ public class ClassificationManagerRESTServices extends TokenController
      * PropertyServerException problem accessing property server or
      * UserNotAuthorizedException security access problem
      */
-    public VoidResponse clearGovernanceMeasurements(String                    serverName,
-                                                    String                    elementGUID,
-                                                    MetadataSourceRequestBody requestBody)
+    public VoidResponse clearGovernanceMeasurements(String                          serverName,
+                                                    String                          elementGUID,
+                                                    DeleteClassificationRequestBody requestBody)
     {
         final String methodName = "clearGovernanceMeasurements";
 
@@ -919,8 +919,8 @@ public class ClassificationManagerRESTServices extends TokenController
      * PropertyServerException problem accessing property server or
      * UserNotAuthorizedException security access problem
      */
-    public VoidResponse addSecurityTags(String                    serverName,
-                                        String                    elementGUID,
+    public VoidResponse addSecurityTags(String                       serverName,
+                                        String                       elementGUID,
                                         NewClassificationRequestBody requestBody)
     {
         final String methodName = "addSecurityTags";
@@ -978,9 +978,9 @@ public class ClassificationManagerRESTServices extends TokenController
      * PropertyServerException problem accessing property server or
      * UserNotAuthorizedException security access problem
      */
-    public VoidResponse clearSecurityTags(String                    serverName,
-                                          String                    elementGUID,
-                                          MetadataSourceRequestBody requestBody)
+    public VoidResponse clearSecurityTags(String                          serverName,
+                                          String                          elementGUID,
+                                          DeleteClassificationRequestBody requestBody)
     {
         final String methodName             = "clearSecurityTags";
 
@@ -1022,8 +1022,8 @@ public class ClassificationManagerRESTServices extends TokenController
      * PropertyServerException problem accessing property server or
      * UserNotAuthorizedException security access problem
      */
-    public VoidResponse addOwnership(String                    serverName,
-                                     String                    elementGUID,
+    public VoidResponse addOwnership(String                       serverName,
+                                     String                       elementGUID,
                                      NewClassificationRequestBody requestBody)
     {
         final String   methodName = "addOwnership";
@@ -1081,9 +1081,9 @@ public class ClassificationManagerRESTServices extends TokenController
      * PropertyServerException problem accessing property server or
      * UserNotAuthorizedException security access problem
      */
-    public VoidResponse clearOwnership(String                    serverName,
-                                       String                    elementGUID,
-                                       MetadataSourceRequestBody requestBody)
+    public VoidResponse clearOwnership(String                          serverName,
+                                       String                          elementGUID,
+                                       DeleteClassificationRequestBody requestBody)
     {
         final String   methodName = "clearOwnership";
 
@@ -1184,9 +1184,9 @@ public class ClassificationManagerRESTServices extends TokenController
      * PropertyServerException problem accessing property server or
      * UserNotAuthorizedException security access problem
      */
-    public VoidResponse clearOrigin(String                    serverName,
-                                    String                    elementGUID,
-                                    MetadataSourceRequestBody requestBody)
+    public VoidResponse clearOrigin(String                          serverName,
+                                    String                          elementGUID,
+                                    DeleteClassificationRequestBody requestBody)
     {
         final String   methodName = "clearOrigin";
 
@@ -1258,7 +1258,7 @@ public class ClassificationManagerRESTServices extends TokenController
                 }
                 else
                 {
-                    restExceptionHandler.handleInvalidPropertiesObject(OwnershipProperties.class.getName(), methodName);
+                    restExceptionHandler.handleInvalidPropertiesObject(ZoneMembershipProperties.class.getName(), methodName);
                 }
             }
             else
@@ -1288,9 +1288,9 @@ public class ClassificationManagerRESTServices extends TokenController
      * PropertyServerException problem accessing property server or
      * UserNotAuthorizedException security access problem
      */
-    public VoidResponse clearZoneMembership(String                    serverName,
-                                            String                    elementGUID,
-                                            MetadataSourceRequestBody requestBody)
+    public VoidResponse clearZoneMembership(String                          serverName,
+                                            String                          elementGUID,
+                                            DeleteClassificationRequestBody requestBody)
     {
         final String   methodName = "clearZoneMembership";
 
@@ -1411,10 +1411,10 @@ public class ClassificationManagerRESTServices extends TokenController
      * PropertyServerException problem accessing property server or
      * UserNotAuthorizedException security access problem
      */
-    public VoidResponse clearSemanticAssignment(String                   serverName,
-                                                String                   elementGUID,
-                                                String                   glossaryTermGUID,
-                                                DeleteRequestBody requestBody)
+    public VoidResponse clearSemanticAssignment(String                        serverName,
+                                                String                        elementGUID,
+                                                String                        glossaryTermGUID,
+                                                DeleteRelationshipRequestBody requestBody)
     {
         final String methodName = "clearSemanticAssignment";
 
@@ -1534,10 +1534,10 @@ public class ClassificationManagerRESTServices extends TokenController
      * PropertyServerException problem accessing property server or
      * UserNotAuthorizedException security access problem
      */
-    public VoidResponse removeScopeFromElement(String                    serverName,
-                                               String                    elementGUID,
-                                               String                    scopeGUID,
-                                               DeleteRequestBody requestBody)
+    public VoidResponse removeScopeFromElement(String                        serverName,
+                                               String                        elementGUID,
+                                               String                        scopeGUID,
+                                               DeleteRelationshipRequestBody requestBody)
     {
         final String methodName = "removeScopeFromElement";
 
@@ -1622,7 +1622,7 @@ public class ClassificationManagerRESTServices extends TokenController
                 }
                 else
                 {
-                    restExceptionHandler.handleInvalidPropertiesObject(ScopedByProperties.class.getName(), methodName);
+                    restExceptionHandler.handleInvalidPropertiesObject(ResourceListProperties.class.getName(), methodName);
                 }
             }
             else
@@ -1658,10 +1658,10 @@ public class ClassificationManagerRESTServices extends TokenController
      * PropertyServerException problem accessing property server or
      * UserNotAuthorizedException security access problem
      */
-    public VoidResponse removeResourceListFromElement(String            serverName,
-                                                      String            elementGUID,
-                                                      String            resourceGUID,
-                                                      DeleteRequestBody requestBody)
+    public VoidResponse removeResourceListFromElement(String                        serverName,
+                                                      String                        elementGUID,
+                                                      String                        resourceGUID,
+                                                      DeleteRelationshipRequestBody requestBody)
     {
         final String methodName = "removeResourceListFromElement";
 
@@ -1745,7 +1745,7 @@ public class ClassificationManagerRESTServices extends TokenController
                 }
                 else
                 {
-                    restExceptionHandler.handleInvalidPropertiesObject(ScopedByProperties.class.getName(), methodName);
+                    restExceptionHandler.handleInvalidPropertiesObject(MoreInformationProperties.class.getName(), methodName);
                 }
             }
             else
@@ -1781,10 +1781,10 @@ public class ClassificationManagerRESTServices extends TokenController
      * PropertyServerException problem accessing property server or
      * UserNotAuthorizedException security access problem
      */
-    public VoidResponse removeMoreInformationFromElement(String            serverName,
-                                                         String            elementGUID,
-                                                         String            resourceGUID,
-                                                         DeleteRequestBody requestBody)
+    public VoidResponse removeMoreInformationFromElement(String                        serverName,
+                                                         String                        elementGUID,
+                                                         String                        resourceGUID,
+                                                         DeleteRelationshipRequestBody requestBody)
     {
         final String methodName = "removeMoreInformationFromElement";
 

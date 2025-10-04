@@ -249,14 +249,20 @@ public class OpenMetadataTypesArchive2_0
      */
     private void update0224Databases()
     {
+        this.archiveBuilder.addEntityDef(addDataManagerEntity());
         this.archiveBuilder.addEntityDef(addDatabaseManagerEntity());
     }
 
+    private EntityDef addDataManagerEntity()
+    {
+        return archiveHelper.getDefaultEntityDef(OpenMetadataType.DATA_MANAGER,
+                                                 this.archiveBuilder.getEntityDef(OpenMetadataType.SOFTWARE_CAPABILITY.typeName));
+    }
 
     private EntityDef addDatabaseManagerEntity()
     {
         return archiveHelper.getDefaultEntityDef(OpenMetadataType.DATABASE_MANAGER,
-                                                 this.archiveBuilder.getEntityDef(OpenMetadataType.SOFTWARE_CAPABILITY.typeName));
+                                                 this.archiveBuilder.getEntityDef(OpenMetadataType.DATA_MANAGER.typeName));
 
     }
 

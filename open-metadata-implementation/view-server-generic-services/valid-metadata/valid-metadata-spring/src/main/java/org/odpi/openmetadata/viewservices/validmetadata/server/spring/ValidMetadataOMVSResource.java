@@ -9,7 +9,7 @@ import org.odpi.openmetadata.commonservices.ffdc.rest.BooleanResponse;
 import org.odpi.openmetadata.commonservices.ffdc.rest.NullRequestBody;
 import org.odpi.openmetadata.commonservices.ffdc.rest.VoidResponse;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.OpenMetadataTypeDefCategory;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.ValidMetadataValue;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.ValidMetadataValueProperties;
 import org.odpi.openmetadata.frameworkservices.omf.rest.*;
 import org.odpi.openmetadata.viewservices.validmetadata.server.ValidMetadataRESTServices;
 import org.springframework.web.bind.annotation.*;
@@ -65,7 +65,7 @@ public class ValidMetadataOMVSResource
                                                 @RequestParam(required = false)
                                                               String             typeName,
                                                 @PathVariable String             propertyName,
-                                                @RequestBody  ValidMetadataValue requestBody)
+                                                @RequestBody ValidMetadataValueProperties requestBody)
     {
         return restAPI.setUpValidMetadataValue(serverName, typeName, propertyName, requestBody);
     }
@@ -103,7 +103,7 @@ public class ValidMetadataOMVSResource
                                                   @RequestParam(required = false)
                                                                 String             typeName,
                                                   @PathVariable String             propertyName,
-                                                  @RequestBody  ValidMetadataValue requestBody)
+                                                  @RequestBody ValidMetadataValueProperties requestBody)
     {
         return restAPI.setUpValidMetadataMapName(serverName, typeName, propertyName, requestBody);
     }
@@ -143,7 +143,7 @@ public class ValidMetadataOMVSResource
                                                                  String             typeName,
                                                    @PathVariable String             propertyName,
                                                    @PathVariable String             mapName,
-                                                   @RequestBody  ValidMetadataValue validMetadataValue)
+                                                   @RequestBody ValidMetadataValueProperties validMetadataValue)
     {
         return restAPI.setUpValidMetadataMapValue(serverName, typeName, propertyName, mapName, validMetadataValue);
     }

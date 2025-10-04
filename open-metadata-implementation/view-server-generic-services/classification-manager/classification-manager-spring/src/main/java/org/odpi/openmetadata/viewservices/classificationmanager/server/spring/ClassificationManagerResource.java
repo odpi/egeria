@@ -94,7 +94,7 @@ public class ClassificationManagerResource
     public VoidResponse clearImpactClassification(@PathVariable String                    serverName,
                                                   @PathVariable String                    elementGUID,
                                                   @RequestBody  (required = false)
-                                                  MetadataSourceRequestBody requestBody)
+                                                  DeleteClassificationRequestBody requestBody)
     {
         return restAPI.clearImpactClassification(serverName, elementGUID, requestBody);
     }
@@ -153,7 +153,7 @@ public class ClassificationManagerResource
     public VoidResponse clearConfidenceClassification(@PathVariable String                    serverName,
                                                       @PathVariable String                    elementGUID,
                                                       @RequestBody  (required = false)
-                                                      MetadataSourceRequestBody requestBody)
+                                                          DeleteClassificationRequestBody requestBody)
     {
         return restAPI.clearConfidenceClassification(serverName, elementGUID, requestBody);
     }
@@ -211,7 +211,7 @@ public class ClassificationManagerResource
     public VoidResponse clearCriticalityClassification(@PathVariable String                    serverName,
                                                        @PathVariable String                    elementGUID,
                                                        @RequestBody  (required = false)
-                                                       MetadataSourceRequestBody requestBody)
+                                                           DeleteClassificationRequestBody requestBody)
     {
         return restAPI.clearCriticalityClassification(serverName, elementGUID, requestBody);
     }
@@ -271,7 +271,7 @@ public class ClassificationManagerResource
     public VoidResponse clearConfidentialityClassification(@PathVariable String                    serverName,
                                                            @PathVariable String                    elementGUID,
                                                            @RequestBody  (required = false)
-                                                           MetadataSourceRequestBody requestBody)
+                                                               DeleteClassificationRequestBody requestBody)
     {
         return restAPI.clearConfidentialityClassification(serverName, elementGUID, requestBody);
     }
@@ -331,7 +331,7 @@ public class ClassificationManagerResource
     public VoidResponse clearRetentionClassification(@PathVariable String                    serverName,
                                                      @PathVariable String                    elementGUID,
                                                      @RequestBody  (required = false)
-                                                     MetadataSourceRequestBody requestBody)
+                                                         DeleteClassificationRequestBody requestBody)
     {
         return restAPI.clearRetentionClassification(serverName, elementGUID, requestBody);
     }
@@ -415,7 +415,7 @@ public class ClassificationManagerResource
     public VoidResponse clearGovernanceExpectations(@PathVariable String          serverName,
                                                     @PathVariable String          elementGUID,
                                                     @RequestBody(required = false)
-                                                    MetadataSourceRequestBody requestBody)
+                                                        DeleteClassificationRequestBody requestBody)
     {
         return restAPI.clearGovernanceExpectations(serverName, elementGUID, requestBody);
     }
@@ -500,7 +500,7 @@ public class ClassificationManagerResource
     public VoidResponse clearGovernanceMeasurements(@PathVariable String          serverName,
                                                     @PathVariable String          elementGUID,
                                                     @RequestBody(required = false)
-                                                    MetadataSourceRequestBody requestBody)
+                                                        DeleteClassificationRequestBody requestBody)
     {
         return restAPI.clearGovernanceMeasurements(serverName, elementGUID, requestBody);
     }
@@ -556,7 +556,7 @@ public class ClassificationManagerResource
     public VoidResponse clearSecurityTags(@PathVariable String          serverName,
                                           @PathVariable String          elementGUID,
                                           @RequestBody(required = false)
-                                          MetadataSourceRequestBody requestBody)
+                                              DeleteClassificationRequestBody requestBody)
     {
         return restAPI.clearSecurityTags(serverName, elementGUID, requestBody);
     }
@@ -612,7 +612,7 @@ public class ClassificationManagerResource
     public VoidResponse clearOwnership(@PathVariable String                    serverName,
                                        @PathVariable String                    elementGUID,
                                        @RequestBody  (required = false)
-                                       MetadataSourceRequestBody requestBody)
+                                           DeleteClassificationRequestBody requestBody)
     {
         return restAPI.clearOwnership(serverName, elementGUID, requestBody);
     }
@@ -669,7 +669,7 @@ public class ClassificationManagerResource
     public VoidResponse clearDigitalResourceOrigin(@PathVariable String                    serverName,
                                                    @PathVariable String                    elementGUID,
                                                    @RequestBody  (required = false)
-                                                   MetadataSourceRequestBody requestBody)
+                                                       DeleteClassificationRequestBody requestBody)
     {
         return restAPI.clearOrigin(serverName, elementGUID, requestBody);
     }
@@ -726,7 +726,7 @@ public class ClassificationManagerResource
     public VoidResponse clearZoneMembership(@PathVariable String                    serverName,
                                             @PathVariable String                    elementGUID,
                                             @RequestBody  (required = false)
-                                            MetadataSourceRequestBody requestBody)
+                                                DeleteClassificationRequestBody requestBody)
     {
         return restAPI.clearZoneMembership(serverName, elementGUID, requestBody);
     }
@@ -787,7 +787,7 @@ public class ClassificationManagerResource
                                                 @PathVariable String                        elementGUID,
                                                 @PathVariable String                        glossaryTermGUID,
                                                 @RequestBody  (required = false)
-                                                    DeleteRequestBody requestBody)
+                                                    DeleteRelationshipRequestBody requestBody)
     {
         return restAPI.clearSemanticAssignment(serverName, elementGUID, glossaryTermGUID, requestBody);
     }
@@ -847,7 +847,7 @@ public class ClassificationManagerResource
                                                @PathVariable String                        elementGUID,
                                                @PathVariable String                        scopeGUID,
                                                @RequestBody  (required = false)
-                                                   DeleteRequestBody requestBody)
+                                                   DeleteRelationshipRequestBody requestBody)
     {
         return restAPI.removeScopeFromElement(serverName, elementGUID, scopeGUID, requestBody);
     }
@@ -908,7 +908,7 @@ public class ClassificationManagerResource
                                                       @PathVariable String                        elementGUID,
                                                       @PathVariable String resourceGUID,
                                                       @RequestBody  (required = false)
-                                                          DeleteRequestBody requestBody)
+                                                          DeleteRelationshipRequestBody requestBody)
     {
         return restAPI.removeResourceListFromElement(serverName, elementGUID, resourceGUID, requestBody);
     }
@@ -968,7 +968,7 @@ public class ClassificationManagerResource
                                                          @PathVariable String                        elementGUID,
                                                          @PathVariable String resourceGUID,
                                                          @RequestBody  (required = false)
-                                                             DeleteRequestBody requestBody)
+                                                             DeleteRelationshipRequestBody requestBody)
     {
         return restAPI.removeMoreInformationFromElement(serverName, elementGUID, resourceGUID, requestBody);
     }

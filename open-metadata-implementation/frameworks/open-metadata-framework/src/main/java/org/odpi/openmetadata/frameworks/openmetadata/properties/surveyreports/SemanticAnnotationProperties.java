@@ -3,6 +3,7 @@
 package org.odpi.openmetadata.frameworks.openmetadata.properties.surveyreports;
 
 import com.fasterxml.jackson.annotation.*;
+import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 
 import java.util.List;
 import java.util.Objects;
@@ -31,6 +32,8 @@ public class SemanticAnnotationProperties extends DataFieldAnnotationProperties
      */
     public SemanticAnnotationProperties()
     {
+        super();
+        super.setTypeName(OpenMetadataType.SEMANTIC_ANNOTATION.typeName);
     }
 
 

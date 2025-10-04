@@ -39,12 +39,10 @@ import org.odpi.openmetadata.frameworks.openmetadata.properties.feedback.*;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.glossaries.GlossaryTermRelationshipProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.governance.*;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.governance.governanceactions.TargetForGovernanceActionProperties;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.implementations.ImplementationResourceProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.resources.ResourceListProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.schema.*;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.security.AssociatedSecurityGroupProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.security.ZoneHierarchyProperties;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.solutions.SolutionDesignProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.solutions.SolutionPortSchemaProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.surveyreports.*;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.validvalues.*;
@@ -90,7 +88,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
                 @JsonSubTypes.Type(value = CitedDocumentLinkProperties.class, name = "CitedDocumentLinkProperties"),
                 @JsonSubTypes.Type(value = CollectionMembershipProperties.class, name = "CollectionMembershipProperties"),
                 @JsonSubTypes.Type(value = ConnectionConnectorTypeProperties.class, name = "ConnectionConnectorTypeProperties"),
-                @JsonSubTypes.Type(value = ConnectionEndpointProperties.class, name = "ConnectionEndpointProperties"),
+                @JsonSubTypes.Type(value = ConnectToEndpointProperties.class, name = "ConnectToEndpointProperties"),
                 @JsonSubTypes.Type(value = ConsistentValidValuesProperties.class, name = "ConsistentValidValuesProperties"),
                 @JsonSubTypes.Type(value = ContactThroughProperties.class, name = "ContactThroughProperties"),
                 @JsonSubTypes.Type(value = ContractLinkProperties.class, name = "ContractLinkProperties"),
@@ -156,13 +154,13 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
                 @JsonSubTypes.Type(value = SolutionPortSchemaProperties.class, name = "SolutionPortSchemaProperties"),
                 @JsonSubTypes.Type(value = SpecificationPropertyAssignmentProperties.class, name = "SpecificationPropertyAssignmentProperties"),
                 @JsonSubTypes.Type(value = SubjectAreaHierarchyProperties.class, name = "SubjectAreaHierarchyProperties"),
-                @JsonSubTypes.Type(value = SupplementaryProperties.class, name = "SupplementaryProperties"),
+                @JsonSubTypes.Type(value = SupplementaryPropertiesProperties.class, name = "SupplementaryPropertiesProperties"),
                 @JsonSubTypes.Type(value = SupportedGovernanceServiceProperties.class, name = "SupportedGovernanceServiceProperties"),
                 @JsonSubTypes.Type(value = SupportingDefinitionProperties.class, name = "SupportingDefinitionProperties"),
                 @JsonSubTypes.Type(value = TargetForGovernanceActionProperties.class, name = "TargetForGovernanceActionProperties"),
                 @JsonSubTypes.Type(value = TeamStructureProperties.class, name = "TeamStructureProperties"),
                 @JsonSubTypes.Type(value = TeamRoleAppointmentProperties.class, name = "TeamRoleAppointmentProperties"),
-                @JsonSubTypes.Type(value = ValidValueAssignmentProperties.class, name = "ValidValueAssignmentProperties"),
+                @JsonSubTypes.Type(value = ValidValuesAssignmentProperties.class, name = "ValidValuesAssignmentProperties"),
                 @JsonSubTypes.Type(value = ValidValueAssociationProperties.class, name = "ValidValueAssociationProperties"),
                 @JsonSubTypes.Type(value = ValidValueMemberProperties.class, name = "ValidValueMemberProperties"),
                 @JsonSubTypes.Type(value = ValidValuesImplementationProperties.class, name = "ValidValuesImplementationProperties"),

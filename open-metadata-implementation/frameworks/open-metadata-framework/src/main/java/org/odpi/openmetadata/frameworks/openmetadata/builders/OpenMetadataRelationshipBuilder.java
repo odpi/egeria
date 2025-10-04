@@ -981,11 +981,11 @@ public class OpenMetadataRelationshipBuilder
                                                                       OpenMetadataProperty.DELEGATION_ESCALATION.name,
                                                                       teamStructureProperties.getDelegationEscalationAuthority());
             }
-            else if (properties instanceof ValidValueAssignmentProperties validValueAssignmentProperties)
+            else if (properties instanceof ValidValuesAssignmentProperties validValuesAssignmentProperties)
             {
                 elementProperties = propertyHelper.addBooleanProperty(elementProperties,
-                                                                     OpenMetadataProperty.STRICT_REQUIREMENT.name,
-                                                                     validValueAssignmentProperties.getStrictRequirement());
+                                                                      OpenMetadataProperty.STRICT_REQUIREMENT.name,
+                                                                      validValuesAssignmentProperties.getStrictRequirement());
             }
             else if (properties instanceof ValidValuesImplementationProperties validValuesImplementationProperties)
             {

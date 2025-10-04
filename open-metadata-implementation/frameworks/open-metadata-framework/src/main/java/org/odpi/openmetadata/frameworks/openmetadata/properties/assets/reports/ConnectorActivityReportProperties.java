@@ -6,6 +6,7 @@ package org.odpi.openmetadata.frameworks.openmetadata.properties.assets.reports;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 
 import java.util.*;
 
@@ -34,6 +35,7 @@ public class ConnectorActivityReportProperties extends ReportProperties
     public ConnectorActivityReportProperties()
     {
         super();
+        super.setTypeName(OpenMetadataType.CONNECTOR_ACTIVITY_REPORT.typeName);
     }
 
 

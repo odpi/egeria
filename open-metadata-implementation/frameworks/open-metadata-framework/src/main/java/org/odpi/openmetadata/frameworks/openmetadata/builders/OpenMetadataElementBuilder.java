@@ -48,7 +48,6 @@ import org.odpi.openmetadata.frameworks.openmetadata.properties.schema.*;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.security.GovernanceZoneProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.security.SecurityAccessControlProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.security.SecurityGroupProperties;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.solutions.SolutionBlueprintProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.solutions.SolutionComponentProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.solutions.SolutionPortProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.surveyreports.*;
@@ -57,7 +56,6 @@ import org.odpi.openmetadata.frameworks.openmetadata.search.ElementProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.search.NewElementProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.search.PropertyHelper;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
-import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 
 public class OpenMetadataElementBuilder
 {
@@ -201,19 +199,19 @@ public class OpenMetadataElementBuilder
                                                                                     OpenMetadataProperty.RELATIONSHIP_PROPERTIES.name,
                                                                                     relationshipAdviceAnnotationProperties.getRelationshipProperties());
                         }
-                        else if (properties instanceof RequestForActionAnnotationProperties requestForActionAnnotationProperties)
+                        else if (properties instanceof RequestForActionProperties requestForActionProperties)
                         {
                             elementProperties = propertyHelper.addStringProperty(elementProperties,
                                                                                  OpenMetadataProperty.ACTION_SOURCE_NAME.name,
-                                                                                 requestForActionAnnotationProperties.getActionSourceName());
+                                                                                 requestForActionProperties.getActionSourceName());
 
                             elementProperties = propertyHelper.addStringProperty(elementProperties,
                                                                                  OpenMetadataProperty.ACTION_REQUESTED.name,
-                                                                                 requestForActionAnnotationProperties.getActionRequested());
+                                                                                 requestForActionProperties.getActionRequested());
 
                             elementProperties = propertyHelper.addStringMapProperty(elementProperties,
                                                                                     OpenMetadataProperty.ACTION_PROPERTIES.name,
-                                                                                    requestForActionAnnotationProperties.getActionProperties());
+                                                                                    requestForActionProperties.getActionProperties());
                         }
                         else if (properties instanceof ResourceProfileAnnotationProperties resourceProfileAnnotationProperties)
                         {
@@ -1512,12 +1510,19 @@ public class OpenMetadataElementBuilder
                                                                              projectProperties.getProjectStatus());
 
                         elementProperties = propertyHelper.addDateProperty(elementProperties,
-                                                                           OpenMetadataProperty.START_DATE.name,
-                                                                           projectProperties.getStartDate());
+                                                                           OpenMetadataProperty.PLANNED_START_DATE.name,
+                                                                           projectProperties.getPlannedStartDate());
 
                         elementProperties = propertyHelper.addDateProperty(elementProperties,
-                                                                           OpenMetadataProperty.PLANNED_END_DATE.name,
-                                                                           projectProperties.getPlannedEndDate());
+                                                                           OpenMetadataProperty.ACTUAL_START_DATE.name,
+                                                                           projectProperties.getActualStartDate());
+
+                        elementProperties = propertyHelper.addDateProperty(elementProperties,
+                                                                           OpenMetadataProperty.PLANNED_COMPLETION_DATE.name,
+                                                                           projectProperties.getPlannedCompletionDate());
+                        elementProperties = propertyHelper.addDateProperty(elementProperties,
+                                                                           OpenMetadataProperty.ACTUAL_COMPLETION_DATE.name,
+                                                                           projectProperties.getActualCompletionDate());
                     }
                     else if (properties instanceof SchemaElementProperties schemaElementProperties)
                     {
@@ -1619,12 +1624,12 @@ public class OpenMetadataElementBuilder
                                                                              OpenMetadataProperty.USER_DEFINED_STATUS.name,
                                                                              solutionPortProperties.getUserDefinedStatus());
 
-                        if (solutionPortProperties.getSolutionPortDirection() != null)
+                        if (solutionPortProperties.getDirection() != null)
                         {
                             elementProperties = propertyHelper.addEnumProperty(elementProperties,
                                                                                OpenMetadataProperty.DIRECTION.name,
                                                                                SolutionPortDirection.getOpenTypeName(),
-                                                                               solutionPortProperties.getSolutionPortDirection().getName());
+                                                                               solutionPortProperties.getDirection().getName());
                         }
                     }
                     else if (properties instanceof UserIdentityProperties userIdentityProperties)

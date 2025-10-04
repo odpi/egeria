@@ -162,7 +162,6 @@ public class OpenMetadataTypesArchive4_3
         update0017ExternalIdentifiers();
         update0035Hosts();
         update0112People();
-        update0212APIs();
         update0224Databases();
     }
 
@@ -272,30 +271,6 @@ public class OpenMetadataTypesArchive4_3
         return typeDefPatch;
     }
 
-
-    /*
-     * -------------------------------------------------------------------------------------------------------
-     */
-
-    private void update0212APIs()
-    {
-        this.archiveBuilder.addTypeDefPatch(updateDeployedAPI());
-    }
-
-
-    private TypeDefPatch updateDeployedAPI()
-    {
-        /*
-         * Create the Patch
-         */
-        TypeDefPatch typeDefPatch = archiveBuilder.getPatchForType(OpenMetadataType.DEPLOYED_API.typeName);
-
-        typeDefPatch.setUpdatedBy(originatorName);
-        typeDefPatch.setUpdateTime(creationDate);
-        typeDefPatch.setSuperType(this.archiveBuilder.getEntityDef(OpenMetadataType.DEPLOYED_SOFTWARE_COMPONENT.typeName));
-
-        return typeDefPatch;
-    }
 
 
     /*

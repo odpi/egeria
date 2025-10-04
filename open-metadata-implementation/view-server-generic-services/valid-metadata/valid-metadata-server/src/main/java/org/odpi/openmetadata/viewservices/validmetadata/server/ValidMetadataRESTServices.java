@@ -65,7 +65,7 @@ public class ValidMetadataRESTServices extends TokenController
     public VoidResponse setUpValidMetadataValue(String             serverName,
                                                 String             typeName,
                                                 String             propertyName,
-                                                ValidMetadataValue requestBody)
+                                                ValidMetadataValueProperties requestBody)
     {
         final String methodName = "setUpValidMetadataValue";
 
@@ -93,7 +93,7 @@ public class ValidMetadataRESTServices extends TokenController
             }
             else
             {
-                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName, ValidMetadataValue.class.getName());
+                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName, ValidMetadataValueProperties.class.getName());
             }
         }
         catch (Throwable error)
@@ -126,7 +126,7 @@ public class ValidMetadataRESTServices extends TokenController
     public VoidResponse setUpValidMetadataMapName(String             serverName,
                                                   String             typeName,
                                                   String             propertyName,
-                                                  ValidMetadataValue requestBody)
+                                                  ValidMetadataValueProperties requestBody)
     {
         final String methodName = "setUpValidMetadataMapName";
 
@@ -154,7 +154,7 @@ public class ValidMetadataRESTServices extends TokenController
             }
             else
             {
-                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName, ValidMetadataValue.class.getName());
+                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName, ValidMetadataValueProperties.class.getName());
             }
         }
         catch (Throwable error)
@@ -189,7 +189,7 @@ public class ValidMetadataRESTServices extends TokenController
                                                    String             typeName,
                                                    String             propertyName,
                                                    String             mapName,
-                                                   ValidMetadataValue requestBody)
+                                                   ValidMetadataValueProperties requestBody)
     {
         final String methodName = "setUpValidMetadataMapValue";
 
@@ -218,7 +218,7 @@ public class ValidMetadataRESTServices extends TokenController
             }
             else
             {
-                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName, ValidMetadataValue.class.getName());
+                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName, ValidMetadataValueProperties.class.getName());
             }
         }
         catch (Throwable error)
