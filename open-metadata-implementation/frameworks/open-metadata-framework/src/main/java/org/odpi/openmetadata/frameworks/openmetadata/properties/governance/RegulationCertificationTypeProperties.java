@@ -5,6 +5,7 @@ package org.odpi.openmetadata.frameworks.openmetadata.properties.governance;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.LabeledRelationshipProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.RelationshipBeanProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 
@@ -18,7 +19,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class RegulationCertificationTypeProperties extends RelationshipBeanProperties
+public class RegulationCertificationTypeProperties extends LabeledRelationshipProperties
 {
     /**
      * Default Constructor
@@ -35,7 +36,7 @@ public class RegulationCertificationTypeProperties extends RelationshipBeanPrope
      *
      * @param template object to copy
      */
-    public RegulationCertificationTypeProperties(RelationshipBeanProperties template)
+    public RegulationCertificationTypeProperties(LabeledRelationshipProperties template)
     {
         super(template);
     }

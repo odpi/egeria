@@ -22,7 +22,7 @@ import org.odpi.openmetadata.frameworks.openmetadata.properties.resources.Resour
 import org.odpi.openmetadata.frameworks.openmetadata.properties.security.SecurityTagsProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.security.ZoneMembershipProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.search.*;
-import org.odpi.openmetadata.frameworks.openmetadata.enums.GlossaryTermAssignmentStatus;
+import org.odpi.openmetadata.frameworks.openmetadata.enums.TermAssignmentStatus;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.*;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
@@ -561,7 +561,7 @@ public class StewardshipManagementHandler extends OpenMetadataHandlerBase
                                                          String                       elementGUID,
                                                          String                       expression,
                                                          String                       description,
-                                                         GlossaryTermAssignmentStatus status,
+                                                         TermAssignmentStatus status,
                                                          boolean                      returnSpecificConfidence,
                                                          int                          confidence,
                                                          String                       createdBy,
@@ -616,7 +616,7 @@ public class StewardshipManagementHandler extends OpenMetadataHandlerBase
                                                                        int                          startingAtEnd,
                                                                        String                       expression,
                                                                        String                       description,
-                                                                       GlossaryTermAssignmentStatus status,
+                                                                       TermAssignmentStatus status,
                                                                        boolean                      returnSpecificConfidence,
                                                                        int                          confidence,
                                                                        String                       createdBy,
@@ -788,7 +788,7 @@ public class StewardshipManagementHandler extends OpenMetadataHandlerBase
      * @return matched elements
      */
     private List<RelatedMetadataElement> matchElements(List<RelatedMetadataElement> relatedMetadataElements,
-                                                       GlossaryTermAssignmentStatus status)
+                                                       TermAssignmentStatus status)
     {
         if ((relatedMetadataElements == null) || (relatedMetadataElements.isEmpty()) || (status == null))
         {
@@ -849,7 +849,7 @@ public class StewardshipManagementHandler extends OpenMetadataHandlerBase
                                                                   String                       glossaryTermGUID,
                                                                   String                       expression,
                                                                   String                       description,
-                                                                  GlossaryTermAssignmentStatus status,
+                                                                  TermAssignmentStatus status,
                                                                   boolean                      returnSpecificConfidence,
                                                                   int                          confidence,
                                                                   String                       createdBy,

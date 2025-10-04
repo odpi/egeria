@@ -1014,11 +1014,6 @@ public enum OpenMetadataProperty
     RESOURCE_USE("resourceUse", DataType.STRING, DataType.STRING.getName(), "Identifier that describes the type of resource use.", null, "152aafd9-57c4-4341-82bb-945d213a686e"),
 
     /**
-     * Indicator whether the anchor should receive notifications of changes to the resource.
-     */
-    WATCH_RESOURCE("watchResource", DataType.BOOLEAN, DataType.BOOLEAN.getName(), "Indicator whether the anchor should receive notifications of changes to the resource.", null, "d727b3ce-d58b-45d5-8abc-55b1394e030a"),
-
-    /**
      * "Time that the IT Infrastructure was deployed."
      */
     DEPLOYMENT_TIME( "deploymentTime", DataType.DATE, DataType.DATE.getName(), "Time that the IT Infrastructure was deployed.", null, "aa372f7f-8284-4e24-902e-9f01dcc70b3e"),
@@ -1349,7 +1344,7 @@ public enum OpenMetadataProperty
     /**
      * Defines the provenance and confidence of a semantic assignment.
      */
-    TERM_ASSIGNMENT_STATUS("termAssignmentStatus", DataType.STRING, GlossaryTermAssignmentStatus.getOpenTypeName(), GlossaryTermAssignmentStatus.getOpenTypeDescription(), GlossaryTermAssignmentStatus.IMPORTED.getName(), "d842dfdd-f080-4539-9a3c-eacdf0a03d07"),
+    TERM_ASSIGNMENT_STATUS("termAssignmentStatus", DataType.STRING, TermAssignmentStatus.getOpenTypeName(), TermAssignmentStatus.getOpenTypeDescription(), TermAssignmentStatus.IMPORTED.getName(), "d842dfdd-f080-4539-9a3c-eacdf0a03d07"),
 
     /**
      * Defines the provenance and confidence of a data class assignment.

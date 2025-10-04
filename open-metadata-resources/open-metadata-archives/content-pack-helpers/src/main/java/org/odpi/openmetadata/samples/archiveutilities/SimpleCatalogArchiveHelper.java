@@ -868,14 +868,12 @@ public class SimpleCatalogArchiveHelper
      * @param resourceUse description of use
      * @param resourceUseProperties properties
      * @param resourceUseDescription description
-     * @param watchResource should watch?
      */
     public void addResourceListRelationshipByGUID(String              parentGUID,
                                                   String              resourceGUID,
                                                   String              resourceUse,
                                                   String              resourceUseDescription,
-                                                  Map<String, String> resourceUseProperties,
-                                                  boolean             watchResource)
+                                                  Map<String, String> resourceUseProperties)
     {
         final String methodName = "addResourceListRelationshipByGUID";
 
@@ -885,7 +883,6 @@ public class SimpleCatalogArchiveHelper
         InstanceProperties properties = archiveHelper.addStringPropertyToInstance(archiveRootName, null, OpenMetadataProperty.RESOURCE_USE.name, resourceUse, methodName);
         properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.DESCRIPTION.name, resourceUseDescription, methodName);
         properties = archiveHelper.addStringMapPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.ADDITIONAL_PROPERTIES.name, resourceUseProperties, methodName);
-        properties = archiveHelper.addBooleanPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.WATCH_RESOURCE.name, watchResource, methodName);
 
         this.archiveBuilder.addRelationship(this.archiveHelper.getRelationship(OpenMetadataType.RESOURCE_LIST_RELATIONSHIP.typeName,
                                                                                this.idToGUIDMap.getGUID(parentGUID + "_to_" + resourceGUID + "_resource_list_relationship"),

@@ -7,6 +7,7 @@ import org.odpi.openmetadata.frameworks.openmetadata.builders.OpenMetadataClassi
 import org.odpi.openmetadata.frameworks.openmetadata.builders.OpenMetadataElementBuilder;
 import org.odpi.openmetadata.frameworks.openmetadata.builders.OpenMetadataRelationshipBuilder;
 import org.odpi.openmetadata.frameworks.openmetadata.converters.OpenMetadataPropertyConverterBase;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.ElementControlHeader;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.ElementType;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.ClassificationBeanProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.OpenMetadataElement;
@@ -156,6 +157,20 @@ public class OpenMetadataTypeTest
                     else if (beanInstance instanceof RelationshipBeanProperties relationshipBeanProperties)
                     {
                         assertEquals(openMetadataType.typeName, relationshipBeanProperties.getTypeName());
+
+                        if (currentTypeDef != null)
+                        {
+                            ElementProperties relationshipProperties = relationshipBuilder.getElementProperties(relationshipBeanProperties);
+
+                            ElementControlHeader relationshipHeader = new ElementControlHeader();
+
+                            relationshipHeader.setType(getElementType(openMetadataType));
+
+                            RelationshipBeanProperties returnedProperties = propertyConverter.getRelationshipProperties(relationshipHeader,
+                                                                                                                        relationshipProperties);
+
+                            assertEquals(returnedProperties.getClass().getName(), beanInstance.getClass().getName());
+                        }
                     }
                     else if (beanInstance instanceof ClassificationBeanProperties classificationBeanProperties)
                     {

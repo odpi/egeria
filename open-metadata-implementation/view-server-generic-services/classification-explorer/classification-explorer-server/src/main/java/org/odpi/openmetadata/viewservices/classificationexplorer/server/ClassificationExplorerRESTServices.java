@@ -7,7 +7,7 @@ import org.odpi.openmetadata.commonservices.ffdc.RESTCallToken;
 import org.odpi.openmetadata.commonservices.ffdc.RESTExceptionHandler;
 import org.odpi.openmetadata.commonservices.ffdc.rest.*;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
-import org.odpi.openmetadata.frameworks.openmetadata.enums.GlossaryTermAssignmentStatus;
+import org.odpi.openmetadata.frameworks.openmetadata.enums.TermAssignmentStatus;
 import org.odpi.openmetadata.frameworks.openmetadata.handlers.StewardshipManagementHandler;
 import org.odpi.openmetadata.frameworks.openmetadata.mermaid.CertificationMermaidGraphBuilder;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.*;
@@ -607,7 +607,7 @@ public class ClassificationExplorerRESTServices extends TokenController
                                                                                     elementGUID,
                                                                                     null,
                                                                                     null,
-                                                                                    GlossaryTermAssignmentStatus.VALIDATED,
+                                                                                    TermAssignmentStatus.VALIDATED,
                                                                                     false,
                                                                                     0,
                                                                                     null,
@@ -690,7 +690,7 @@ public class ClassificationExplorerRESTServices extends TokenController
                                                                                              glossaryTermGUID,
                                                                                              null,
                                                                                              null,
-                                                                                             GlossaryTermAssignmentStatus.VALIDATED,
+                                                                                             TermAssignmentStatus.VALIDATED,
                                                                                              false,
                                                                                              0,
                                                                                              null,

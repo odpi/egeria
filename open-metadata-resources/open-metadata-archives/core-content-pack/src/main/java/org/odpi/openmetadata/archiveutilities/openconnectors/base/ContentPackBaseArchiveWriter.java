@@ -1440,8 +1440,7 @@ public abstract class ContentPackBaseArchiveWriter extends EgeriaBaseArchiveWrit
                                                             governanceActionTypeGUID,
                                                             governanceActionDescription.resourceUse.getResourceUse(),
                                                             governanceActionDescription.governanceServiceDescription,
-                                                            requestParameters,
-                                                            false);
+                                                            requestParameters);
         }
     }
 
@@ -1602,8 +1601,7 @@ public abstract class ContentPackBaseArchiveWriter extends EgeriaBaseArchiveWrit
                                                             processGUID,
                                                             ResourceUse.SURVEY_RESOURCE.getResourceUse(),
                                                             description,
-                                                            createRequestType.getRequestParameters(),
-                                                            false);
+                                                            createRequestType.getRequestParameters());
         }
     }
 
@@ -1851,8 +1849,7 @@ public abstract class ContentPackBaseArchiveWriter extends EgeriaBaseArchiveWrit
                                                             processGUID,
                                                             ResourceUse.CATALOG_RESOURCE.getResourceUse(),
                                                             description,
-                                                            createRequestType.getRequestParameters(),
-                                                            false);
+                                                            createRequestType.getRequestParameters());
         }
     }
 
@@ -1923,8 +1920,7 @@ public abstract class ContentPackBaseArchiveWriter extends EgeriaBaseArchiveWrit
                                                             processGUID,
                                                             ResourceUse.SURVEY_RESOURCE.getResourceUse(),
                                                             description,
-                                                            deleteRequestType.getRequestParameters(),
-                                                            false);
+                                                            deleteRequestType.getRequestParameters());
         }
     }
 

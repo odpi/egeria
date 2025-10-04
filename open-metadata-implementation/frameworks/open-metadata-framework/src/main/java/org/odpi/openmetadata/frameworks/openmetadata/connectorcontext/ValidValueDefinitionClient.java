@@ -100,7 +100,7 @@ public class ValidValueDefinitionClient extends ConnectorContextClientBase
         newElementOptions.setParentRelationshipTypeName(OpenMetadataType.VALID_VALUE_MEMBER_RELATIONSHIP.typeName);
 
         ValidValueMemberProperties validValueMemberProperties = new ValidValueMemberProperties();
-        validValueMemberProperties.setDefaultValue(isDefaultValue);
+        validValueMemberProperties.setIsDefaultValue(isDefaultValue);
 
         return this.createValidValueDefinition(newElementOptions,
                                                null,

@@ -507,8 +507,8 @@ public class CorePackArchiveWriter extends ContentPackBaseArchiveWriter
 
         addOpenMetadataEnumValidNames(OpenMetadataType.SEMANTIC_ASSIGNMENT_RELATIONSHIP.typeName,
                                       OpenMetadataProperty.TERM_ASSIGNMENT_STATUS.name,
-                                      GlossaryTermAssignmentStatus.getOpenTypeName(),
-                                      new ArrayList<>(Arrays.asList(GlossaryTermAssignmentStatus.values())));
+                                      TermAssignmentStatus.getOpenTypeName(),
+                                      new ArrayList<>(Arrays.asList(TermAssignmentStatus.values())));
 
         addOpenMetadataEnumValidNames(OpenMetadataType.RELATED_TERM_RELATIONSHIP.typeName,
                                       OpenMetadataProperty.TERM_RELATIONSHIP_STATUS.name,

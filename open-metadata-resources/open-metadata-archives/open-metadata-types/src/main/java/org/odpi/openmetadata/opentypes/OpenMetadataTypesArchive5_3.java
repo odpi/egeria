@@ -863,6 +863,16 @@ public class OpenMetadataTypesArchive5_3
                                                                  RelationshipEndCardinality.AT_MOST_ONE);
         relationshipDef.setEndDef2(relationshipEndDef);
 
+        /*
+         * Build the attributes
+         */
+        List<TypeDefAttribute> properties = new ArrayList<>();
+
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.LABEL));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.DESCRIPTION));
+
+        relationshipDef.setPropertiesDefinition(properties);
+
         return relationshipDef;
     }
 

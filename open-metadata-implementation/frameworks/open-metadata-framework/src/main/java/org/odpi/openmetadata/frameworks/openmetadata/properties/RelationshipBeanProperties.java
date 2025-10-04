@@ -11,7 +11,9 @@ import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.filesandf
 import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.filesandfolders.NestedFileProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.infrastructure.CapabilityAssetUseProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.infrastructure.DeployedOnProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.processes.PortDelegationProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.processes.ProcessHierarchyProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.processes.ProcessPortProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.processes.actions.ActionRequesterProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.processes.actions.ActionTargetProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.processes.actions.ActionsProperties;
@@ -24,8 +26,6 @@ import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.reports.R
 import org.odpi.openmetadata.frameworks.openmetadata.properties.collections.CollectionMembershipProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.communities.CrowdSourcingContributionProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.connections.*;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.contextevents.DependentContextEventProperties;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.contextevents.RelatedContextEventProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.datadictionaries.*;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.digitalbusiness.AgreementActorProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.digitalbusiness.AgreementItemProperties;
@@ -38,6 +38,9 @@ import org.odpi.openmetadata.frameworks.openmetadata.properties.externalreferenc
 import org.odpi.openmetadata.frameworks.openmetadata.properties.feedback.*;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.glossaries.GlossaryTermRelationshipProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.governance.*;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.governance.governanceactions.GovernanceActionExecutorProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.governance.governanceactions.GovernanceActionProcessFlowProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.governance.governanceactions.NextGovernanceActionProcessStepProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.governance.governanceactions.TargetForGovernanceActionProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.resources.ResourceListProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.schema.*;
@@ -66,8 +69,6 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonSubTypes(
         {
                 @JsonSubTypes.Type(value = AcceptedAnswerProperties.class, name = "AcceptedAnswerProperties"),
-                @JsonSubTypes.Type(value = ActionRequesterProperties.class, name = "ActionRequesterProperties"),
-                @JsonSubTypes.Type(value = ActionsProperties.class, name = "ActionsProperties"),
                 @JsonSubTypes.Type(value = ActionTargetProperties.class, name = "ActionTargetProperties"),
                 @JsonSubTypes.Type(value = AgreementActorProperties.class, name = "AgreementActorProperties"),
                 @JsonSubTypes.Type(value = AgreementItemProperties.class, name = "AgreementItemProperties"),
@@ -100,8 +101,6 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
                 @JsonSubTypes.Type(value = DataClassHierarchyProperties.class, name = "DataClassHierarchyProperties"),
                 @JsonSubTypes.Type(value = DataClassMatchProperties.class, name = "DataClassMatchProperties"),
                 @JsonSubTypes.Type(value = DataSetContentProperties.class, name = "DataSetContentProperties"),
-                @JsonSubTypes.Type(value = DataStructureDefinitionProperties.class, name = "DataStructureDefinitionProperties"),
-                @JsonSubTypes.Type(value = DependentContextEventProperties.class, name = "DependentContextEventProperties"),
                 @JsonSubTypes.Type(value = DeployedOnProperties.class, name = "DeployedOnProperties"),
                 @JsonSubTypes.Type(value = DerivedSchemaTypeQueryTargetProperties.class, name = "DerivedSchemaTypeQueryTargetProperties"),
                 @JsonSubTypes.Type(value = DigitalSubscriberProperties.class, name = "DigitalSubscriberProperties"),
@@ -114,6 +113,8 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
                 @JsonSubTypes.Type(value = FolderHierarchyProperties.class, name = "FolderHierarchyProperties"),
                 @JsonSubTypes.Type(value = ForeignKeyProperties.class, name = "ForeignKeyProperties"),
                 @JsonSubTypes.Type(value = GlossaryTermRelationshipProperties.class, name = "GlossaryTermRelationshipProperties"),
+                @JsonSubTypes.Type(value = GovernanceActionExecutorProperties.class, name = "GovernanceActionExecutorProperties"),
+                @JsonSubTypes.Type(value = GovernanceActionProcessFlowProperties.class, name = "GovernanceActionProcessFlowProperties"),
                 @JsonSubTypes.Type(value = GovernanceResultsProperties.class, name = "GovernanceResultsProperties"),
                 @JsonSubTypes.Type(value = GraphEdgeLinkProperties.class, name = "GraphEdgeLinkProperties"),
                 @JsonSubTypes.Type(value = ImpactedResourceProperties.class, name = "ImpactedResourceProperties"),
@@ -127,16 +128,17 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
                 @JsonSubTypes.Type(value = MapToElementTypeProperties.class, name = "MapToElementTypeProperties"),
                 @JsonSubTypes.Type(value = MediaReferenceProperties.class, name = "MediaReferenceProperties"),
                 @JsonSubTypes.Type(value = NestedFileProperties.class, name = "NestedFileProperties"),
+                @JsonSubTypes.Type(value = NextGovernanceActionProcessStepProperties.class, name = "NextGovernanceActionProcessStepProperties"),
                 @JsonSubTypes.Type(value = PartOfRelationshipProperties.class, name = "PartOfRelationshipProperties"),
                 @JsonSubTypes.Type(value = PeerProperties.class, name = "PeerProperties"),
+                @JsonSubTypes.Type(value = PortDelegationProperties.class, name = "PortDelegationProperties"),
                 @JsonSubTypes.Type(value = PortSchemaProperties.class, name = "PortSchemaProperties"),
                 @JsonSubTypes.Type(value = PersonRoleAppointmentProperties.class, name = "PersonRoleAppointmentProperties"),
                 @JsonSubTypes.Type(value = ProcessHierarchyProperties.class, name = "ProcessHierarchyProperties"),
+                @JsonSubTypes.Type(value = ProcessPortProperties.class, name = "ProcessPortProperties"),
                 @JsonSubTypes.Type(value = ProfileIdentityProperties.class, name = "ProfileIdentityProperties"),
                 @JsonSubTypes.Type(value = ReferenceValueAssignmentProperties.class, name = "ReferenceValueAssignmentProperties"),
                 @JsonSubTypes.Type(value = RegisteredIntegrationConnectorProperties.class, name = "RegisteredIntegrationConnectorProperties"),
-                @JsonSubTypes.Type(value = RegulationCertificationTypeProperties.class, name = "RegulationCertificationTypeProperties"),
-                @JsonSubTypes.Type(value = RelatedContextEventProperties.class, name = "RelatedContextEventProperties"),
                 @JsonSubTypes.Type(value = ReportedAnnotationProperties.class, name = "ReportedAnnotationProperties"),
                 @JsonSubTypes.Type(value = ReportOriginatorProperties.class, name = "ReportOriginatorProperties"),
                 @JsonSubTypes.Type(value = ReportSubjectProperties.class, name = "ReportSubjectProperties"),

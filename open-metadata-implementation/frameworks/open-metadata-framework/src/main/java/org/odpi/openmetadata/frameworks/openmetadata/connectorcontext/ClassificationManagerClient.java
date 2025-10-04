@@ -5,7 +5,7 @@ package org.odpi.openmetadata.frameworks.openmetadata.connectorcontext;
 
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.openmetadata.client.OpenMetadataClient;
-import org.odpi.openmetadata.frameworks.openmetadata.enums.GlossaryTermAssignmentStatus;
+import org.odpi.openmetadata.frameworks.openmetadata.enums.TermAssignmentStatus;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
@@ -309,7 +309,7 @@ public class ClassificationManagerClient extends ConnectorContextClientBase
     public RelatedMetadataElementSummaryList getMeanings(String                       elementGUID,
                                                          String                       expression,
                                                          String                       description,
-                                                         GlossaryTermAssignmentStatus status,
+                                                         TermAssignmentStatus status,
                                                          boolean                      returnSpecificConfidence,
                                                          int                          confidence,
                                                          String                       createdBy,
@@ -346,7 +346,7 @@ public class ClassificationManagerClient extends ConnectorContextClientBase
     public RelatedMetadataElementSummaryList getSemanticAssignees(String                       glossaryTermGUID,
                                                                   String                       expression,
                                                                   String                       description,
-                                                                  GlossaryTermAssignmentStatus status,
+                                                                  TermAssignmentStatus status,
                                                                   boolean                      returnSpecificConfidence,
                                                                   int                          confidence,
                                                                   String                       createdBy,

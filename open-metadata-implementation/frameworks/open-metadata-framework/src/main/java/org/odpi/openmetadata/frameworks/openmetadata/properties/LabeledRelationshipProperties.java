@@ -3,16 +3,17 @@
 package org.odpi.openmetadata.frameworks.openmetadata.properties;
 
 import com.fasterxml.jackson.annotation.*;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.processes.actions.ActionRequesterProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.processes.actions.ActionsProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.reports.ReportDependencyProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.contextevents.*;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.datadictionaries.DataDescriptionProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.datadictionaries.DataStructureDefinitionProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.designmodels.ConceptDesignProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.digitalbusiness.BusinessCapabilityDependencyProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.digitalbusiness.DigitalSupportProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.externalreferences.ExternalReferenceLinkProperties;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.governance.GovernedByProperties;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.governance.MonitoredResourceProperties;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.governance.NotificationSubscriberProperties;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.governance.PeerDefinitionProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.governance.*;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.informationsupplychains.InformationSupplyChainLinkProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.lineage.*;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.locations.AdjacentLocationProperties;
@@ -41,11 +42,18 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
         property = "class")
 @JsonSubTypes(
         {
+                @JsonSubTypes.Type(value = ActionRequesterProperties.class, name = "ActionRequesterProperties"),
+                @JsonSubTypes.Type(value = ActionsProperties.class, name = "ActionsProperties"),
                 @JsonSubTypes.Type(value = AdjacentLocationProperties.class, name = "AdjacentLocationProperties"),
                 @JsonSubTypes.Type(value = BusinessCapabilityDependencyProperties.class, name = "BusinessCapabilityDependencyProperties"),
                 @JsonSubTypes.Type(value = CatalogTemplateProperties.class, name = "CatalogTemplateProperties"),
                 @JsonSubTypes.Type(value = ConceptDesignProperties.class, name = "ConceptDesignProperties"),
+                @JsonSubTypes.Type(value = ContextEventEvidenceProperties.class, name = "ContextEventEvidenceProperties"),
+                @JsonSubTypes.Type(value = ContextEventForTimelineEffectsProperties.class, name = "ContextEventForTimelineEffectsProperties"),
+                @JsonSubTypes.Type(value = ContextEventImpactProperties.class, name = "ContextEventImpactProperties"),
                 @JsonSubTypes.Type(value = DataDescriptionProperties.class, name = "DataDescriptionProperties"),
+                @JsonSubTypes.Type(value = DataStructureDefinitionProperties.class, name = "DataStructureDefinitionProperties"),
+                @JsonSubTypes.Type(value = DependentContextEventProperties.class, name = "DependentContextEventProperties"),
                 @JsonSubTypes.Type(value = DigitalSupportProperties.class, name = "DigitalSupportProperties"),
                 @JsonSubTypes.Type(value = ExternalReferenceLinkProperties.class, name = "ExternalReferenceLinkProperties"),
                 @JsonSubTypes.Type(value = GovernedByProperties.class, name = "GovernedByProperties"),
@@ -59,6 +67,8 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
                 @JsonSubTypes.Type(value = PeerDefinitionProperties.class, name = "PeerDefinitionProperties"),
                 @JsonSubTypes.Type(value = ProjectDependencyProperties.class, name = "ProjectDependencyProperties"),
                 @JsonSubTypes.Type(value = ProjectHierarchyProperties.class, name = "ProjectHierarchyProperties"),
+                @JsonSubTypes.Type(value = RegulationCertificationTypeProperties.class, name = "RegulationCertificationTypeProperties"),
+                @JsonSubTypes.Type(value = RelatedContextEventProperties.class, name = "RelatedContextEventProperties"),
                 @JsonSubTypes.Type(value = ReportDependencyProperties.class, name = "ReportDependencyProperties"),
                 @JsonSubTypes.Type(value = SolutionLinkingWireProperties.class, name = "SolutionLinkingWireProperties"),
                 @JsonSubTypes.Type(value = SolutionDesignProperties.class, name = "SolutionDesignProperties"),

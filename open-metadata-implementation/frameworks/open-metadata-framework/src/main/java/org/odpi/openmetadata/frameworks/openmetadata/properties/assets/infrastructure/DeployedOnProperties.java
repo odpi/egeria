@@ -38,7 +38,7 @@ public class DeployedOnProperties extends RelationshipBeanProperties
     private String            deployer             = null;
     private String            deployerTypeName     = null;
     private String            deployerPropertyName = null;
-    private OperationalStatus deploymentStatus     = null;
+    private OperationalStatus operationalStatus    = null;
 
 
     /**
@@ -66,7 +66,7 @@ public class DeployedOnProperties extends RelationshipBeanProperties
             deployer = template.getDeployer();
             deployerTypeName = template.getDeployerTypeName();
             deployerPropertyName = template.getDeployerPropertyName();
-            deploymentStatus = template.getDeploymentStatus();
+            operationalStatus    = template.getOperationalStatus();
         }
     }
 
@@ -94,12 +94,12 @@ public class DeployedOnProperties extends RelationshipBeanProperties
             deployerTypeName = properties.get(deployerTypeNameProperty).toString();
             deployerPropertyName = properties.get(deployerPropertyNameProperty).toString();
 
-            deploymentStatus = OperationalStatus.DISABLED;
+            operationalStatus = OperationalStatus.DISABLED;
             int operationalStatus = (Integer)properties.get(deploymentStatusProperty);
 
             if (operationalStatus == 1)
             {
-                deploymentStatus = OperationalStatus.ENABLED;
+                this.operationalStatus = OperationalStatus.ENABLED;
             }
         }
     }
@@ -134,9 +134,9 @@ public class DeployedOnProperties extends RelationshipBeanProperties
             propertyMap.put(deployerPropertyNameProperty, deployerPropertyName);
         }
 
-        if (deploymentStatus != null)
+        if (operationalStatus != null)
         {
-            propertyMap.put(deploymentStatusProperty, deploymentStatus.getOrdinal());
+            propertyMap.put(deploymentStatusProperty, operationalStatus.getOrdinal());
         }
 
         if (! propertyMap.isEmpty())
@@ -242,20 +242,20 @@ public class DeployedOnProperties extends RelationshipBeanProperties
      *
      * @return operational status enum
      */
-    public OperationalStatus getDeploymentStatus()
+    public OperationalStatus getOperationalStatus()
     {
-        return deploymentStatus;
+        return operationalStatus;
     }
 
 
     /**
      * Set up whether the capability is ready to use.
      *
-     * @param deploymentStatus operational status enum
+     * @param operationalStatus operational status enum
      */
-    public void setDeploymentStatus(OperationalStatus deploymentStatus)
+    public void setOperationalStatus(OperationalStatus operationalStatus)
     {
-        this.deploymentStatus = deploymentStatus;
+        this.operationalStatus = operationalStatus;
     }
 
 
@@ -270,7 +270,7 @@ public class DeployedOnProperties extends RelationshipBeanProperties
         return "DeployedOnProperties{" +
                        "deploymentTime=" + deploymentTime +
                        ", deployer='" + deployer + '\'' +
-                       ", deploymentStatus=" + deploymentStatus +
+                       ", deploymentStatus=" + operationalStatus +
                        ", effectiveFrom=" + getEffectiveFrom() +
                        ", effectiveTo=" + getEffectiveTo() +
                        '}';
@@ -303,7 +303,7 @@ public class DeployedOnProperties extends RelationshipBeanProperties
                        Objects.equals(deployer, that.deployer) &&
                        Objects.equals(deployerTypeName, that.deployerTypeName) &&
                        Objects.equals(deployerPropertyName, that.deployerPropertyName) &&
-                       deploymentStatus == that.deploymentStatus;
+                       operationalStatus == that.operationalStatus;
     }
 
 
@@ -315,6 +315,6 @@ public class DeployedOnProperties extends RelationshipBeanProperties
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), deploymentTime, deployer, deployerTypeName, deployerPropertyName, deploymentStatus);
+        return Objects.hash(super.hashCode(), deploymentTime, deployer, deployerTypeName, deployerPropertyName, operationalStatus);
     }
 }
