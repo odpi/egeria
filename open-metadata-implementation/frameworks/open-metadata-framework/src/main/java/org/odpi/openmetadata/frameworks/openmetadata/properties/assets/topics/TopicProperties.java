@@ -6,6 +6,7 @@ package org.odpi.openmetadata.frameworks.openmetadata.properties.assets.topics;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.DataFeedProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.DataSetProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 
@@ -20,7 +21,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class TopicProperties extends DataSetProperties
+public class TopicProperties extends DataFeedProperties
 {
     private String topicType = null;
     private String topicName = null;

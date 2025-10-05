@@ -170,9 +170,7 @@ public class OpenMetadataTypesArchive3_1
         update0040SoftwareServers();
         update0045ServersAndAssets();
         update0050ApplicationsAndProcesses();
-        update0057SoftwareServices();
         update0201Connections();
-        update0223Events();
         add0485DataProcessingPurposes();
     }
 
@@ -468,28 +466,6 @@ public class OpenMetadataTypesArchive3_1
      * -------------------------------------------------------------------------------------------------------
      */
 
-
-    /**
-     * The ApplicationService is designed to represent a business microservice.
-     */
-    private void update0057SoftwareServices()
-    {
-        this.archiveBuilder.addEntityDef(addApplicationServiceEntity());
-    }
-
-
-
-    private EntityDef addApplicationServiceEntity()
-    {
-        return archiveHelper.getDefaultEntityDef(OpenMetadataType.APPLICATION_SERVICE,
-                                                 this.archiveBuilder.getEntityDef(OpenMetadataType.SOFTWARE_SERVICE.typeName));
-    }
-
-
-    /*
-     * -------------------------------------------------------------------------------------------------------
-     */
-
     private void update0050ApplicationsAndProcesses()
     {
         this.archiveBuilder.addEntityDef(addCatalogEntity());
@@ -543,23 +519,6 @@ public class OpenMetadataTypesArchive3_1
         return typeDefPatch;
     }
 
-
-
-    /*
-     * -------------------------------------------------------------------------------------------------------
-     */
-
-    private void update0223Events()
-    {
-        this.archiveBuilder.addEntityDef(addKafkaTopicEntity());
-    }
-
-
-    private EntityDef addKafkaTopicEntity()
-    {
-        return archiveHelper.getDefaultEntityDef(OpenMetadataType.KAFKA_TOPIC,
-                                                 this.archiveBuilder.getEntityDef(OpenMetadataType.TOPIC.typeName));
-    }
 
 
     /*

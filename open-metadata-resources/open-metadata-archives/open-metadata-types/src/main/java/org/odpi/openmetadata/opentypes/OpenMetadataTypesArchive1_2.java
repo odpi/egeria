@@ -1290,6 +1290,8 @@ public class OpenMetadataTypesArchive1_2
         List<TypeDefAttribute> properties = new ArrayList<>();
 
         properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.SOURCE));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.LABEL));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.DESCRIPTION));
 
         relationshipDef.setPropertiesDefinition(properties);
 
@@ -2067,6 +2069,8 @@ public class OpenMetadataTypesArchive1_2
                                                                                 null,
                                                                                 ClassificationPropagationRule.NONE);
 
+        relationshipDef.setMultiLink(true);
+
         RelationshipEndDef relationshipEndDef;
 
         /*
@@ -2097,6 +2101,18 @@ public class OpenMetadataTypesArchive1_2
                                                                  end2AttributeDescriptionGUID,
                                                                  RelationshipEndCardinality.ANY_NUMBER);
         relationshipDef.setEndDef2(relationshipEndDef);
+
+        /*
+         * Build the attributes
+         */
+        List<TypeDefAttribute> properties = new ArrayList<>();
+
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.LABEL));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.DESCRIPTION));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.EXTERNAL_ENDPOINT_ADDRESS));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.INTERNAL_ENDPOINT_ADDRESS));
+
+        relationshipDef.setPropertiesDefinition(properties);
 
         return relationshipDef;
     }
@@ -2140,10 +2156,21 @@ public class OpenMetadataTypesArchive1_2
 
     private ClassificationDef getCloudPlatformClassification()
     {
-        return archiveHelper.getClassificationDef(OpenMetadataType.CLOUD_PLATFORM_CLASSIFICATION,
-                                                  null,
-                                                  this.archiveBuilder.getEntityDef(OpenMetadataType.SOFTWARE_SERVER_PLATFORM.typeName),
-                                                  false);
+        ClassificationDef classificationDef = archiveHelper.getClassificationDef(OpenMetadataType.CLOUD_PLATFORM_CLASSIFICATION,
+                                                                                 null,
+                                                                                 this.archiveBuilder.getEntityDef(OpenMetadataType.SOFTWARE_SERVER_PLATFORM.typeName),
+                                                                                 false);
+
+        /*
+         * Build the attributes
+         */
+        List<TypeDefAttribute> properties = new ArrayList<>();
+
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.DEPLOYED_IMPLEMENTATION_TYPE));
+
+        classificationDef.setPropertiesDefinition(properties);
+
+        return classificationDef;
     }
 
 
@@ -2160,6 +2187,7 @@ public class OpenMetadataTypesArchive1_2
         List<TypeDefAttribute> properties = new ArrayList<>();
 
         properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.TENANT_NAME));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.TENANT_TYPE));
 
         classificationDef.setPropertiesDefinition(properties);
 
@@ -2180,6 +2208,7 @@ public class OpenMetadataTypesArchive1_2
         List<TypeDefAttribute> properties = new ArrayList<>();
 
         properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.OFFERING_NAME));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.SERVICE_TYPE));
 
         classificationDef.setPropertiesDefinition(properties);
 
@@ -4661,20 +4690,12 @@ public class OpenMetadataTypesArchive1_2
      */
     private void add0223EventsAndLogs()
     {
-        this.archiveBuilder.addEntityDef(getSubscriberListEntity());
         this.archiveBuilder.addEntityDef(getDataFeedEntity());
         this.archiveBuilder.addEntityDef(getTopicEntity());
         this.archiveBuilder.addEntityDef(getLogFileEntity());
 
-        this.archiveBuilder.addRelationshipDef(getTopicSubscribersRelationship());
 
         this.archiveBuilder.addClassificationDef(getNotificationManagerClassification());
-    }
-
-    private EntityDef getSubscriberListEntity()
-    {
-        return archiveHelper.getDefaultEntityDef(OpenMetadataType.SUBSCRIBER_LIST,
-                                                 this.archiveBuilder.getEntityDef(OpenMetadataType.COLLECTION.typeName));
     }
 
     private EntityDef getDataFeedEntity()
@@ -4686,7 +4707,7 @@ public class OpenMetadataTypesArchive1_2
     private EntityDef getTopicEntity()
     {
         EntityDef entityDef = archiveHelper.getDefaultEntityDef(OpenMetadataType.TOPIC,
-                                                                this.archiveBuilder.getEntityDef(OpenMetadataType.DATA_SET.typeName));
+                                                                this.archiveBuilder.getEntityDef(OpenMetadataType.DATA_FEED.typeName));
 
         /*
          * Build the attributes
@@ -4704,46 +4725,6 @@ public class OpenMetadataTypesArchive1_2
     {
         return archiveHelper.getDefaultEntityDef(OpenMetadataType.LOG_FILE,
                                                  this.archiveBuilder.getEntityDef(OpenMetadataType.DATA_FILE.typeName));
-    }
-
-    private RelationshipDef getTopicSubscribersRelationship()
-    {
-        RelationshipDef relationshipDef = archiveHelper.getBasicRelationshipDef(OpenMetadataType.TOPIC_SUBSCRIBERS_RELATIONSHIP,
-                                                                                null,
-                                                                                ClassificationPropagationRule.NONE);
-
-        RelationshipEndDef relationshipEndDef;
-
-        /*
-         * Set up end 1.
-         */
-        final String                     end1AttributeName            = "subscribers";
-        final String                     end1AttributeDescription     = "The endpoints subscribed to this topic.";
-        final String                     end1AttributeDescriptionGUID = null;
-
-        relationshipEndDef = archiveHelper.getRelationshipEndDef(this.archiveBuilder.getEntityDef(OpenMetadataType.SUBSCRIBER_LIST.typeName),
-                                                                 end1AttributeName,
-                                                                 end1AttributeDescription,
-                                                                 end1AttributeDescriptionGUID,
-                                                                 RelationshipEndCardinality.ANY_NUMBER);
-        relationshipDef.setEndDef1(relationshipEndDef);
-
-
-        /*
-         * Set up end 2.
-         */
-        final String                     end2AttributeName            = "topics";
-        final String                     end2AttributeDescription     = "The topics used by this subscriber list.";
-        final String                     end2AttributeDescriptionGUID = null;
-
-        relationshipEndDef = archiveHelper.getRelationshipEndDef(this.archiveBuilder.getEntityDef(OpenMetadataType.TOPIC.typeName),
-                                                                 end2AttributeName,
-                                                                 end2AttributeDescription,
-                                                                 end2AttributeDescriptionGUID,
-                                                                 RelationshipEndCardinality.ANY_NUMBER);
-        relationshipDef.setEndDef2(relationshipEndDef);
-
-        return relationshipDef;
     }
 
 
@@ -4823,7 +4804,7 @@ public class OpenMetadataTypesArchive1_2
 
     private void add0225MetadataRepositories()
     {
-        this.archiveBuilder.addEntityDef(getEnterpriseAccessLayerEntity());
+        this.archiveBuilder.addEntityDef(getSoftwareServiceEntity());
         this.archiveBuilder.addEntityDef(getCohortMemberEntity());
         this.archiveBuilder.addEntityDef(getMetadataRepositoryCohortEntity());
         this.archiveBuilder.addEntityDef(getMetadataCollectionEntity());
@@ -4831,29 +4812,16 @@ public class OpenMetadataTypesArchive1_2
         this.archiveBuilder.addEntityDef(getCohortRegistryStoreEntity());
 
         this.archiveBuilder.addRelationshipDef(getMetadataCohortPeerRelationship());
-        this.archiveBuilder.addRelationshipDef(getCohortMemberMetadataCollectionRelationship());
 
         this.archiveBuilder.addClassificationDef(getMetadataServerClassification());
         this.archiveBuilder.addClassificationDef(getRepositoryProxyClassification());
     }
 
 
-    private EntityDef getEnterpriseAccessLayerEntity()
+    private EntityDef getSoftwareServiceEntity()
     {
-        EntityDef entityDef = archiveHelper.getDefaultEntityDef(OpenMetadataType.ENTERPRISE_ACCESS_LAYER,
-                                                                this.archiveBuilder.getEntityDef(OpenMetadataType.SOFTWARE_CAPABILITY.typeName));
-
-        /*
-         * Build the attributes
-         */
-        List<TypeDefAttribute> properties = new ArrayList<>();
-
-        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.TOPIC_ROOT));
-        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.ENTERPRISE_METADATA_COLLECTION_ID));
-
-        entityDef.setPropertiesDefinition(properties);
-
-        return entityDef;
+        return archiveHelper.getDefaultEntityDef(OpenMetadataType.SOFTWARE_SERVICE,
+                                                 this.archiveBuilder.getEntityDef(OpenMetadataType.SOFTWARE_CAPABILITY.typeName));
     }
 
 
@@ -4873,7 +4841,6 @@ public class OpenMetadataTypesArchive1_2
          */
         List<TypeDefAttribute> properties = new ArrayList<>();
 
-        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.DESCRIPTION));
         properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.COHORT_TOPICS));
 
         entityDef.setPropertiesDefinition(properties);
@@ -4958,47 +4925,6 @@ public class OpenMetadataTypesArchive1_2
         properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.REGISTRATION_DATE));
 
         relationshipDef.setPropertiesDefinition(properties);
-
-        return relationshipDef;
-    }
-
-
-    private RelationshipDef getCohortMemberMetadataCollectionRelationship()
-    {
-        RelationshipDef relationshipDef = archiveHelper.getBasicRelationshipDef(OpenMetadataType.COHORT_MEMBER_METADATA_COLLECTION_RELATIONSHIP,
-                                                                                null,
-                                                                                ClassificationPropagationRule.NONE);
-
-        RelationshipEndDef relationshipEndDef;
-
-        /*
-         * Set up end 1.
-         */
-        final String                     end1AttributeName            = "cohortMember";
-        final String                     end1AttributeDescription     = "Cohort registry representing this metadata collection on the metadata highway.";
-        final String                     end1AttributeDescriptionGUID = null;
-
-        relationshipEndDef = archiveHelper.getRelationshipEndDef(this.archiveBuilder.getEntityDef(OpenMetadataType.COHORT_MEMBER.typeName),
-                                                                 end1AttributeName,
-                                                                 end1AttributeDescription,
-                                                                 end1AttributeDescriptionGUID,
-                                                                 RelationshipEndCardinality.AT_MOST_ONE);
-        relationshipDef.setEndDef1(relationshipEndDef);
-
-
-        /*
-         * Set up end 2.
-         */
-        final String                     end2AttributeName            = "localMetadataCollection";
-        final String                     end2AttributeDescription     = "Metadata to exchange with the cohorts.";
-        final String                     end2AttributeDescriptionGUID = null;
-
-        relationshipEndDef = archiveHelper.getRelationshipEndDef(this.archiveBuilder.getEntityDef(OpenMetadataType.METADATA_COLLECTION.typeName),
-                                                                 end2AttributeName,
-                                                                 end2AttributeDescription,
-                                                                 end2AttributeDescriptionGUID,
-                                                                 RelationshipEndCardinality.AT_MOST_ONE);
-        relationshipDef.setEndDef2(relationshipEndDef);
 
         return relationshipDef;
     }
@@ -5631,16 +5557,16 @@ public class OpenMetadataTypesArchive1_2
 
     private EnumDef getTermRelationshipStatusEnum()
     {
-        EnumDef enumDef = archiveHelper.getEmptyEnumDef(GlossaryTermRelationshipStatus.getOpenTypeGUID(),
-                                                        GlossaryTermRelationshipStatus.getOpenTypeName(),
-                                                        GlossaryTermRelationshipStatus.getOpenTypeDescription(),
-                                                        GlossaryTermRelationshipStatus.getOpenTypeDescriptionGUID(),
-                                                        GlossaryTermRelationshipStatus.getOpenTypeDescriptionWiki());
+        EnumDef enumDef = archiveHelper.getEmptyEnumDef(TermRelationshipStatus.getOpenTypeGUID(),
+                                                        TermRelationshipStatus.getOpenTypeName(),
+                                                        TermRelationshipStatus.getOpenTypeDescription(),
+                                                        TermRelationshipStatus.getOpenTypeDescriptionGUID(),
+                                                        TermRelationshipStatus.getOpenTypeDescriptionWiki());
 
         ArrayList<EnumElementDef> elementDefs = new ArrayList<>();
         EnumElementDef            elementDef;
 
-        for (GlossaryTermRelationshipStatus enumValues : GlossaryTermRelationshipStatus.values())
+        for (TermRelationshipStatus enumValues : TermRelationshipStatus.values())
         {
             elementDef = archiveHelper.getEnumElementDef(enumValues.getOrdinal(),
                                                          enumValues.getName(),
@@ -5704,16 +5630,16 @@ public class OpenMetadataTypesArchive1_2
 
     private EnumDef getActivityTypeEnum()
     {
-        EnumDef enumDef = archiveHelper.getEmptyEnumDef(GlossaryTermActivityType.getOpenTypeGUID(),
-                                                        GlossaryTermActivityType.getOpenTypeName(),
-                                                        GlossaryTermActivityType.getOpenTypeDescription(),
-                                                        GlossaryTermActivityType.getOpenTypeDescriptionGUID(),
-                                                        GlossaryTermActivityType.getOpenTypeDescriptionWiki());
+        EnumDef enumDef = archiveHelper.getEmptyEnumDef(ActivityType.getOpenTypeGUID(),
+                                                        ActivityType.getOpenTypeName(),
+                                                        ActivityType.getOpenTypeDescription(),
+                                                        ActivityType.getOpenTypeDescriptionGUID(),
+                                                        ActivityType.getOpenTypeDescriptionWiki());
 
         ArrayList<EnumElementDef> elementDefs = new ArrayList<>();
         EnumElementDef            elementDef;
 
-        for (GlossaryTermActivityType enumValues : GlossaryTermActivityType.values())
+        for (ActivityType enumValues : ActivityType.values())
         {
             elementDef = archiveHelper.getEnumElementDef(enumValues.getOrdinal(),
                                                          enumValues.getName(),

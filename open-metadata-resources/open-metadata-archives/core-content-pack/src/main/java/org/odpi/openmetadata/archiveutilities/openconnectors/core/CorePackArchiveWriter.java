@@ -502,8 +502,8 @@ public class CorePackArchiveWriter extends ContentPackBaseArchiveWriter
 
         addOpenMetadataEnumValidNames(OpenMetadataType.ACTIVITY_DESCRIPTION_CLASSIFICATION.typeName,
                                       OpenMetadataProperty.ACTIVITY_TYPE.name,
-                                      GlossaryTermActivityType.getOpenTypeName(),
-                                      new ArrayList<>(Arrays.asList(GlossaryTermActivityType.values())));
+                                      ActivityType.getOpenTypeName(),
+                                      new ArrayList<>(Arrays.asList(ActivityType.values())));
 
         addOpenMetadataEnumValidNames(OpenMetadataType.SEMANTIC_ASSIGNMENT_RELATIONSHIP.typeName,
                                       OpenMetadataProperty.TERM_ASSIGNMENT_STATUS.name,
@@ -512,13 +512,13 @@ public class CorePackArchiveWriter extends ContentPackBaseArchiveWriter
 
         addOpenMetadataEnumValidNames(OpenMetadataType.RELATED_TERM_RELATIONSHIP.typeName,
                                       OpenMetadataProperty.TERM_RELATIONSHIP_STATUS.name,
-                                      GlossaryTermRelationshipStatus.getOpenTypeName(),
-                                      new ArrayList<>(Arrays.asList(GlossaryTermRelationshipStatus.values())));
+                                      TermRelationshipStatus.getOpenTypeName(),
+                                      new ArrayList<>(Arrays.asList(TermRelationshipStatus.values())));
 
         addOpenMetadataEnumValidNames(OpenMetadataType.USED_IN_CONTEXT_RELATIONSHIP.typeName,
                                       OpenMetadataProperty.TERM_RELATIONSHIP_STATUS.name,
-                                      GlossaryTermRelationshipStatus.getOpenTypeName(),
-                                      new ArrayList<>(Arrays.asList(GlossaryTermRelationshipStatus.values())));
+                                      TermRelationshipStatus.getOpenTypeName(),
+                                      new ArrayList<>(Arrays.asList(TermRelationshipStatus.values())));
 
         addOpenMetadataEnumValidIdentifiers(null,
                                             OpenMetadataProperty.STATUS_IDENTIFIER.name,

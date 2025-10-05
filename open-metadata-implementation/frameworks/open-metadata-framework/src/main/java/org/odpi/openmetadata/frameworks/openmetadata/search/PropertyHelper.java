@@ -1783,7 +1783,6 @@ public class PropertyHelper
     }
 
 
-
     /**
      * Add the supplied map property to an element properties object.  The supplied map is stored as a single
      * property in the instances properties.   If the element properties object
@@ -1814,6 +1813,45 @@ public class PropertyHelper
                 }
 
                 resultingProperties.setProperty(propertyName, getStringMapPropertyValue(mapValues));
+
+                return resultingProperties;
+            }
+        }
+
+        return properties;
+    }
+
+
+    /**
+     * Add the supplied map property to an element properties object.  The supplied map is stored as a single
+     * property in the instances properties.   If the element properties object
+     * supplied is null, a new element properties object is created.
+     *
+     * @param properties properties object to add property to, may be null.
+     * @param propertyName name of property
+     * @param mapValues contents of the map
+     * @return resulting element properties object
+     */
+    public ElementProperties addListStringMapProperty(ElementProperties         properties,
+                                                      String                    propertyName,
+                                                      Map<String, List<String>> mapValues)
+    {
+        if (mapValues != null)
+        {
+            if (! mapValues.isEmpty())
+            {
+                ElementProperties  resultingProperties;
+
+                if (properties == null)
+                {
+                    resultingProperties = new ElementProperties();
+                }
+                else
+                {
+                    resultingProperties = properties;
+                }
+
+                resultingProperties.setProperty(propertyName, getListStringMapPropertyValue(mapValues));
 
                 return resultingProperties;
             }
@@ -2839,6 +2877,35 @@ public class PropertyHelper
 
 
     /**
+     * Return the requested property or 0 if property is not found.
+     * If the property is found, it is removed from the InstanceProperties structure.
+     * If the property is not a long property then a logic exception is thrown.
+     *
+     * @param sourceName  source of call
+     * @param propertyName  name of requested property
+     * @param properties  properties from the instance.
+     * @param methodName  method of caller
+     * @return string property value or null
+     */
+    public float  removeFloatProperty(String            sourceName,
+                                      String            propertyName,
+                                      ElementProperties properties,
+                                      String            methodName)
+    {
+        float  retrievedProperty = 0;
+
+        if (properties != null)
+        {
+            retrievedProperty = this.getFloatProperty(sourceName, propertyName, properties, methodName);
+
+            this.removeProperty(propertyName, properties);
+        }
+
+        return retrievedProperty;
+    }
+
+
+    /**
      * Locates and extracts a string array property and extracts its values.
      * If the property is found, it is removed from the InstanceProperties structure.
      * If the property is not an array property then a logic exception is thrown.
@@ -2901,6 +2968,38 @@ public class PropertyHelper
         return retrievedProperty;
     }
 
+
+
+    /**
+     * Locates and extracts a property from an instance that is of type map and then converts its values into a Java map.
+     * If the property is found, it is removed from the InstanceProperties structure.
+     * If the property is not a map property then a logic exception is thrown.
+     *
+     * @param sourceName source of call
+     * @param propertyName name of requested map property
+     * @param properties values of the property
+     * @param methodName method of caller
+     * @return map property value or null
+     */
+    public Map<String, List<String>> removeListStringMapFromProperty(String             sourceName,
+                                                                     String             propertyName,
+                                                                     ElementProperties  properties,
+                                                                     String             methodName)
+    {
+        Map<String, List<String>>  retrievedProperty = null;
+
+        if (properties != null)
+        {
+            retrievedProperty = this.getListStringMapFromProperty(sourceName, propertyName, properties, methodName);
+
+            if (retrievedProperty != null)
+            {
+                this.removeProperty(propertyName, properties);
+            }
+        }
+
+        return retrievedProperty;
+    }
 
 
     /**
@@ -3370,6 +3469,49 @@ public class PropertyHelper
 
 
     /**
+     * Locates and extracts a property from an instance that is of type map and then converts its values into a Java map.
+     *
+     * @param sourceName source of call
+     * @param propertyName name of requested map property
+     * @param properties all the properties of the instance
+     * @param methodName method of caller
+     * @return map property value or null
+     */
+    public Map<String, List<String>> getListStringMapFromProperty(String            sourceName,
+                                                                  String            propertyName,
+                                                                  ElementProperties properties,
+                                                                  String            methodName)
+    {
+        Map<String, Object>   mapFromProperty = this.getMapFromProperty(sourceName, propertyName, properties, methodName);
+
+        if (mapFromProperty != null)
+        {
+            Map<String, List<String>>  listStringMap = new HashMap<>();
+
+            for (String mapPropertyName : mapFromProperty.keySet())
+            {
+                Object actualPropertyValue = mapFromProperty.get(mapPropertyName);
+
+                if (actualPropertyValue instanceof ArrayTypePropertyValue arrayPropertyValue)
+                {
+                    if (arrayPropertyValue.getArrayCount() > 0)
+                    {
+                        listStringMap.put(mapPropertyName, getPropertiesAsArray(arrayPropertyValue.getArrayValues()));
+                    }
+                }
+            }
+
+            if (! listStringMap.isEmpty())
+            {
+                return listStringMap;
+            }
+        }
+
+        return null;
+    }
+
+
+    /**
      * Retrieve the ordinal value from an enum property.
      *
      * @param sourceName source of call
@@ -3764,7 +3906,54 @@ public class PropertyHelper
             }
         }
 
-        return 0;
+        return 0L;
+    }
+
+
+    /**
+     * Return the requested property or 0 if property is not found.  If the property is not
+     * a long property then a logic exception is thrown.
+     *
+     * @param sourceName source of call
+     * @param propertyName name of requested property
+     * @param properties properties from the instance.
+     * @param methodName method of caller
+     * @return string property value or null
+     */
+    public float getFloatProperty(String             sourceName,
+                                  String             propertyName,
+                                  ElementProperties properties,
+                                  String             methodName)
+    {
+        final String  thisMethodName = "getFloatProperty";
+
+        if (properties != null)
+        {
+            PropertyValue propertyValue = properties.getPropertyValue(propertyName);
+
+            if (propertyValue != null)
+            {
+                try
+                {
+                    if (propertyValue instanceof PrimitiveTypePropertyValue primitiveTypePropertyValue)
+                    {
+                        if (primitiveTypePropertyValue.getPrimitiveTypeCategory() == PrimitiveTypeCategory.OM_PRIMITIVE_TYPE_FLOAT)
+                        {
+                            if (primitiveTypePropertyValue.getPrimitiveValue() != null)
+                            {
+                                return Float.parseFloat(primitiveTypePropertyValue.getPrimitiveValue().toString());
+                            }
+                        }
+                    }
+                }
+                catch (Exception error)
+                {
+                    throwHelperLogicError(sourceName, methodName, thisMethodName);
+                }
+            }
+        }
+
+        return 0F;
     }
 
 

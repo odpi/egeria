@@ -2284,7 +2284,7 @@ public class HarvestOpenMetadataCatalogTargetProcessor extends CatalogTargetProc
     {
         if (classificationProperties instanceof GovernanceClassificationBase governanceClassification)
         {
-            return governanceClassification.getStatus();
+            return governanceClassification.getStatusIdentifier();
         }
         else
         {

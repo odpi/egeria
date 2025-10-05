@@ -154,15 +154,13 @@ public class FixedLocationProperties extends ClassificationBeanProperties
     public String toString()
     {
         return "FixedLocationProperties{" +
-                       "effectiveFrom=" + getEffectiveFrom() +
-                       ", effectiveTo=" + getEffectiveTo() +
-                       ", extendedProperties=" + getExtendedProperties() +
-                       ", coordinates='" + coordinates + '\'' +
-                       ", mapProjection='" + mapProjection + '\'' +
-                       ", postalAddress='" + postalAddress + '\'' +
-                       ", timeZone='" + timeZone + '\'' +
-                       '}';
+                "coordinates='" + coordinates + '\'' +
+                ", mapProjection='" + mapProjection + '\'' +
+                ", postalAddress='" + postalAddress + '\'' +
+                ", timeZone='" + timeZone + '\'' +
+                "} " + super.toString();
     }
+
 
 
     /**

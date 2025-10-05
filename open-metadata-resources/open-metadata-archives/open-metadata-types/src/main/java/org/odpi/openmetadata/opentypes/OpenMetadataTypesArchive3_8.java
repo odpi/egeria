@@ -166,7 +166,6 @@ public class OpenMetadataTypesArchive3_8
         update0011ManagingReferenceables();
         update0015LinkedMediaTypes();
         update0030OperatingPlatforms();
-        update0057SoftwareServices();
         update0070NetworksAndGateways();
         update0461GovernanceEngines();
     }
@@ -280,34 +279,6 @@ public class OpenMetadataTypesArchive3_8
      */
 
     /**
-     * Add new software services
-     */
-    private void update0057SoftwareServices()
-    {
-        this.archiveBuilder.addEntityDef(addMetadataRepositoryServiceEntity());
-        this.archiveBuilder.addEntityDef(addSecurityServiceEntity());
-    }
-
-    private EntityDef addMetadataRepositoryServiceEntity()
-    {
-        return archiveHelper.getDefaultEntityDef(OpenMetadataType.METADATA_REPOSITORY_SERVICE,
-                                                 this.archiveBuilder.getEntityDef(OpenMetadataType.SOFTWARE_SERVICE.typeName));
-    }
-
-
-    private EntityDef addSecurityServiceEntity()
-    {
-        return archiveHelper.getDefaultEntityDef(OpenMetadataType.SECURITY_SERVICE,
-                                                 this.archiveBuilder.getEntityDef(OpenMetadataType.SOFTWARE_SERVICE.typeName));
-    }
-
-
-
-    /*
-     * -------------------------------------------------------------------------------------------------------
-     */
-
-    /**
      * Add software package dependency relationship
      */
     private void update0030OperatingPlatforms()
@@ -367,7 +338,6 @@ public class OpenMetadataTypesArchive3_8
     private void update0070NetworksAndGateways()
     {
         this.archiveBuilder.addRelationshipDef(getVisibleEndpointRelationship());
-        this.archiveBuilder.addTypeDefPatch(updateNetworkGatewayLinkRelationship());
     }
 
     private RelationshipDef getVisibleEndpointRelationship()
@@ -408,33 +378,6 @@ public class OpenMetadataTypesArchive3_8
         relationshipDef.setEndDef2(relationshipEndDef);
 
         return relationshipDef;
-    }
-
-    private TypeDefPatch updateNetworkGatewayLinkRelationship()
-    {
-        /*
-         * Create the Patch
-         */
-        TypeDefPatch  typeDefPatch = archiveBuilder.getPatchForType(OpenMetadataType.NETWORK_GATEWAY_LINK_RELATIONSHIP.typeName);
-
-        typeDefPatch.setUpdatedBy(originatorName);
-        typeDefPatch.setUpdateTime(creationDate);
-        typeDefPatch.setUpdateMultiLink(true);
-        typeDefPatch.setMultiLink(true);
-
-        /*
-         * Build the attributes
-         */
-        List<TypeDefAttribute> properties = new ArrayList<>();
-
-        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.DISPLAY_NAME));
-        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.DESCRIPTION));
-        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.EXTERNAL_ENDPOINT_ADDRESS));
-        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.INTERNAL_ENDPOINT_ADDRESS));
-
-        typeDefPatch.setPropertyDefinitions(properties);
-
-        return typeDefPatch;
     }
 
 

@@ -108,7 +108,7 @@ public class DistributeAuditEventsFromKafkaConnector extends IntegrationConnecto
     {
         if (DistributeAuditEventCatalogTarget.INCOMING_TOPIC.getName().equals(retrievedCatalogTarget.getCatalogTargetName()))
         {
-            if (propertyHelper.isTypeOf(retrievedCatalogTarget.getCatalogTargetElement(), OpenMetadataType.KAFKA_TOPIC.typeName))
+            if (propertyHelper.isTypeOf(retrievedCatalogTarget.getCatalogTargetElement(), OpenMetadataType.TOPIC.typeName))
             {
                 return new KafkaTopicSourceCatalogTargetProcessor(retrievedCatalogTarget,
                                                                   catalogTargetContext,

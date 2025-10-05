@@ -1334,12 +1334,12 @@ public enum OpenMetadataProperty
     /**
      * Different types of activities.
      */
-    ACTIVITY_TYPE("type", DataType.STRING, GlossaryTermActivityType.getOpenTypeName(), GlossaryTermActivityType.getOpenTypeDescription(), GlossaryTermActivityType.PROJECT.getName(), "6949c588-d7ab-441f-be03-a97b1dc2900b"),
+    ACTIVITY_TYPE("type", DataType.STRING, ActivityType.getOpenTypeName(), ActivityType.getOpenTypeDescription(), ActivityType.PROJECT.getName(), "6949c588-d7ab-441f-be03-a97b1dc2900b"),
 
     /**
      * Defines the confidence in the assigned relationship.
      */
-    TERM_RELATIONSHIP_STATUS("status", DataType.STRING, GlossaryTermRelationshipStatus.getOpenTypeName(), GlossaryTermRelationshipStatus.getOpenTypeDescription(), GlossaryTermRelationshipStatus.DRAFT.getName(), "5cc02a53-2428-434a-9b97-883eae896552"),
+    TERM_RELATIONSHIP_STATUS("status", DataType.STRING, TermRelationshipStatus.getOpenTypeName(), TermRelationshipStatus.getOpenTypeDescription(), TermRelationshipStatus.DRAFT.getName(), "5cc02a53-2428-434a-9b97-883eae896552"),
 
     /**
      * Defines the provenance and confidence of a semantic assignment.

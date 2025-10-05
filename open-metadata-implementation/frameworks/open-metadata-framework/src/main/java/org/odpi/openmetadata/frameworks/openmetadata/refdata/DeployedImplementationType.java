@@ -829,9 +829,29 @@ public enum DeployedImplementationType implements DeployedImplementationTypeDefi
     /**
      * An event topic supporting high speed, reliable event exchange.
      */
-    APACHE_KAFKA_TOPIC("Apache Kafka Topic",
+    DATA_FEED("Data Feed",
                        DeployedImplementationType.DATA_ASSET,
-                       OpenMetadataType.KAFKA_TOPIC.typeName,
+                       OpenMetadataType.DATA_FEED.typeName,
+                       null,
+                       "An event based data source",
+                       "https://egeria-project.org/types/2/0210-Data-Stores/"),
+
+    /**
+     * An event topic supporting high speed, reliable event exchange.
+     */
+    TOPIC("Data Feed",
+              DeployedImplementationType.DATA_FEED,
+              OpenMetadataType.TOPIC.typeName,
+              null,
+              "An organized event based data source that supports subscription to a named data feed.",
+              "https://egeria-project.org/types/2/0210-Data-Stores/"),
+
+    /**
+     * An event topic supporting high speed, reliable event exchange.
+     */
+    APACHE_KAFKA_TOPIC("Apache Kafka Topic",
+                       DeployedImplementationType.DATA_FEED,
+                       OpenMetadataType.TOPIC.typeName,
                        null,
                        "An event topic supporting high speed, reliable event exchange.",
                        "https://kafka.apache.org/"),

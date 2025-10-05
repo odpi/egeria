@@ -9,10 +9,7 @@ import org.odpi.openmetadata.frameworks.openmetadata.builders.OpenMetadataRelati
 import org.odpi.openmetadata.frameworks.openmetadata.converters.OpenMetadataPropertyConverterBase;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.ElementControlHeader;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.ElementType;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.ClassificationBeanProperties;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.OpenMetadataElement;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.OpenMetadataRootProperties;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.RelationshipBeanProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.*;
 import org.odpi.openmetadata.frameworks.openmetadata.search.ElementProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.search.PropertyHelper;
 import org.odpi.openmetadata.opentypes.OpenMetadataTypesArchive;
@@ -175,6 +172,20 @@ public class OpenMetadataTypeTest
                     else if (beanInstance instanceof ClassificationBeanProperties classificationBeanProperties)
                     {
                         assertEquals(openMetadataType.typeName, classificationBeanProperties.getTypeName());
+
+                        if (currentTypeDef != null)
+                        {
+                            ElementProperties classificationProperties = classificationBuilder.getElementProperties(classificationBeanProperties);
+
+                            AttachedClassification attachedClassification = new AttachedClassification();
+
+                            attachedClassification.setType(getElementType(openMetadataType));
+                            attachedClassification.setClassificationProperties(classificationProperties);
+
+                            ClassificationBeanProperties returnedProperties = propertyConverter.getClassificationProperties(attachedClassification);
+
+                            assertEquals(returnedProperties.getClass().getName(), beanInstance.getClass().getName());
+                        }
                     }
 
                     /*

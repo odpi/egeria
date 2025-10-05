@@ -7,7 +7,7 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import org.odpi.openmetadata.commonservices.ffdc.rest.FFDCResponseBase;
-import org.odpi.openmetadata.frameworks.openmetadata.enums.GlossaryTermActivityType;
+import org.odpi.openmetadata.frameworks.openmetadata.enums.ActivityType;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -25,7 +25,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class GlossaryTermActivityTypeListResponse extends FFDCResponseBase
 {
-    private List<GlossaryTermActivityType> types = null;
+    private List<ActivityType> types = null;
 
 
     /**
@@ -57,7 +57,7 @@ public class GlossaryTermActivityTypeListResponse extends FFDCResponseBase
      *
      * @return result object
      */
-    public List<GlossaryTermActivityType> getTypes()
+    public List<ActivityType> getTypes()
     {
         if (types == null)
         {
@@ -79,7 +79,7 @@ public class GlossaryTermActivityTypeListResponse extends FFDCResponseBase
      *
      * @param types result object
      */
-    public void setTypes(List<GlossaryTermActivityType> types)
+    public void setTypes(List<ActivityType> types)
     {
         this.types = types;
     }

@@ -104,7 +104,7 @@ public class OpenLineageEventReceiverIntegrationConnector extends IntegrationCon
                                                                        Connector            connectorToTarget) throws ConnectorCheckedException,
                                                                                                                       UserNotAuthorizedException
     {
-        if (propertyHelper.isTypeOf(retrievedCatalogTarget.getCatalogTargetElement(), OpenMetadataType.KAFKA_TOPIC.typeName))
+        if (propertyHelper.isTypeOf(retrievedCatalogTarget.getCatalogTargetElement(), OpenMetadataType.TOPIC.typeName))
         {
             return new OpenLineageEventReceiverCatalogTargetProcessor(retrievedCatalogTarget,
                                                                       catalogTargetContext,
