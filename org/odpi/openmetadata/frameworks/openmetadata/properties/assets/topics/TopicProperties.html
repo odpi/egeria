@@ -77,7 +77,7 @@ loadScripts(document, 'script');</script>
 <div class="inheritance"><a href="../../ReferenceableProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties">org.odpi.openmetadata.frameworks.openmetadata.properties.ReferenceableProperties</a>
 <div class="inheritance"><a href="../AssetProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.assets">org.odpi.openmetadata.frameworks.openmetadata.properties.assets.AssetProperties</a>
 <div class="inheritance"><a href="../DataAssetProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.assets">org.odpi.openmetadata.frameworks.openmetadata.properties.assets.DataAssetProperties</a>
-<div class="inheritance"><a href="../DataSetProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.assets">org.odpi.openmetadata.frameworks.openmetadata.properties.assets.DataSetProperties</a>
+<div class="inheritance"><a href="../DataFeedProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.assets">org.odpi.openmetadata.frameworks.openmetadata.properties.assets.DataFeedProperties</a>
 <div class="inheritance">org.odpi.openmetadata.frameworks.openmetadata.properties.assets.topics.TopicProperties</div>
 </div>
 </div>
@@ -89,7 +89,7 @@ loadScripts(document, 'script');</script>
 <section class="class-description" id="class-description">
 <hr>
 <div class="type-signature"><span class="modifiers">public class </span><span class="element-name type-name-label">TopicProperties</span>
-<span class="extends-implements">extends <a href="../DataSetProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.assets">DataSetProperties</a></span></div>
+<span class="extends-implements">extends <a href="../DataFeedProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.assets">DataFeedProperties</a></span></div>
 <div class="block">TopicProperties is a class for representing a topic for an event broker or streaming service.</div>
 </section>
 <section class="summary">
@@ -162,9 +162,6 @@ loadScripts(document, 'script');</script>
 </div>
 </div>
 </div>
-<div class="inherited-list">
-<h3 id="methods-inherited-from-class-org.odpi.openmetadata.frameworks.openmetadata.properties.assets.DataSetProperties">Methods inherited from class&nbsp;org.odpi.openmetadata.frameworks.openmetadata.properties.assets.<a href="../DataSetProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.assets">DataSetProperties</a></h3>
-<code><a href="../DataSetProperties.html#getFormula()">getFormula</a>, <a href="../DataSetProperties.html#getFormulaType()">getFormulaType</a>, <a href="../DataSetProperties.html#setFormula(java.lang.String)">setFormula</a>, <a href="../DataSetProperties.html#setFormulaType(java.lang.String)">setFormulaType</a></code></div>
 <div class="inherited-list">
 <h3 id="methods-inherited-from-class-org.odpi.openmetadata.frameworks.openmetadata.properties.assets.AssetProperties">Methods inherited from class&nbsp;org.odpi.openmetadata.frameworks.openmetadata.properties.assets.<a href="../AssetProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.assets">AssetProperties</a></h3>
 <code><a href="../AssetProperties.html#getDeployedImplementationType()">getDeployedImplementationType</a>, <a href="../AssetProperties.html#getNamespace()">getNamespace</a>, <a href="../AssetProperties.html#getResourceName()">getResourceName</a>, <a href="../AssetProperties.html#getSource()">getSource</a>, <a href="../AssetProperties.html#getUserDefinedStatus()">getUserDefinedStatus</a>, <a href="../AssetProperties.html#setDeployedImplementationType(java.lang.String)">setDeployedImplementationType</a>, <a href="../AssetProperties.html#setNamespace(java.lang.String)">setNamespace</a>, <a href="../AssetProperties.html#setResourceName(java.lang.String)">setResourceName</a>, <a href="../AssetProperties.html#setSource(java.lang.String)">setSource</a>, <a href="../AssetProperties.html#setUserDefinedStatus(java.lang.String)">setUserDefinedStatus</a></code></div>
@@ -268,7 +265,7 @@ loadScripts(document, 'script');</script>
 <div class="block">Standard toString method.</div>
 <dl class="notes">
 <dt>Overrides:</dt>
-<dd><code><a href="../DataSetProperties.html#toString()">toString</a></code>&nbsp;in class&nbsp;<code><a href="../DataSetProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.assets">DataSetProperties</a></code></dd>
+<dd><code><a href="../DataFeedProperties.html#toString()">toString</a></code>&nbsp;in class&nbsp;<code><a href="../DataFeedProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.assets">DataFeedProperties</a></code></dd>
 <dt>Returns:</dt>
 <dd>print out of variables in a JSON-style</dd>
 </dl>
@@ -281,7 +278,7 @@ loadScripts(document, 'script');</script>
 <div class="block">Compare the values of the supplied object with those stored in the current object.</div>
 <dl class="notes">
 <dt>Overrides:</dt>
-<dd><code><a href="../DataSetProperties.html#equals(java.lang.Object)">equals</a></code>&nbsp;in class&nbsp;<code><a href="../DataSetProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.assets">DataSetProperties</a></code></dd>
+<dd><code><a href="../AssetProperties.html#equals(java.lang.Object)">equals</a></code>&nbsp;in class&nbsp;<code><a href="../AssetProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.assets">AssetProperties</a></code></dd>
 <dt>Parameters:</dt>
 <dd><code>objectToCompare</code> - supplied object</dd>
 <dt>Returns:</dt>
@@ -296,7 +293,7 @@ loadScripts(document, 'script');</script>
 <div class="block">Return hash code based on properties.</div>
 <dl class="notes">
 <dt>Overrides:</dt>
-<dd><code><a href="../DataSetProperties.html#hashCode()">hashCode</a></code>&nbsp;in class&nbsp;<code><a href="../DataSetProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.assets">DataSetProperties</a></code></dd>
+<dd><code><a href="../AssetProperties.html#hashCode()">hashCode</a></code>&nbsp;in class&nbsp;<code><a href="../AssetProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.assets">AssetProperties</a></code></dd>
 <dt>Returns:</dt>
 <dd>int</dd>
 </dl>

@@ -300,10 +300,12 @@ org.odpi.openmetadata.frameworks.openmetadata.metadataelements
 org.odpi.openmetadata.frameworks.openmetadata.properties
 org.odpi.openmetadata.frameworks.openmetadata.properties.actors
 org.odpi.openmetadata.frameworks.openmetadata.properties.assets
+org.odpi.openmetadata.frameworks.openmetadata.properties.assets.analytics
 org.odpi.openmetadata.frameworks.openmetadata.properties.assets.apis
 org.odpi.openmetadata.frameworks.openmetadata.properties.assets.databases
 org.odpi.openmetadata.frameworks.openmetadata.properties.assets.filesandfolders
 org.odpi.openmetadata.frameworks.openmetadata.properties.assets.infrastructure
+org.odpi.openmetadata.frameworks.openmetadata.properties.assets.metadatarepositories
 org.odpi.openmetadata.frameworks.openmetadata.properties.assets.processes
 org.odpi.openmetadata.frameworks.openmetadata.properties.assets.processes.actions
 org.odpi.openmetadata.frameworks.openmetadata.properties.assets.processes.connectors
@@ -328,7 +330,9 @@ org.odpi.openmetadata.frameworks.openmetadata.properties.implementations
 org.odpi.openmetadata.frameworks.openmetadata.properties.informationsupplychains
 org.odpi.openmetadata.frameworks.openmetadata.properties.lineage
 org.odpi.openmetadata.frameworks.openmetadata.properties.locations
+org.odpi.openmetadata.frameworks.openmetadata.properties.operatingplatforms
 org.odpi.openmetadata.frameworks.openmetadata.properties.projects
+org.odpi.openmetadata.frameworks.openmetadata.properties.propertyfacets
 org.odpi.openmetadata.frameworks.openmetadata.properties.resources
 org.odpi.openmetadata.frameworks.openmetadata.properties.schema
 org.odpi.openmetadata.frameworks.openmetadata.properties.schema.apis

@@ -79,6 +79,10 @@ loadScripts(document, 'script');</script>
 </div>
 </div>
 <section class="class-description" id="class-description">
+<dl class="notes">
+<dt>Direct Known Subclasses:</dt>
+<dd><code><a href="AntonymProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.glossaries">AntonymProperties</a></code>, <code><a href="ISARelationshipProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.glossaries">ISARelationshipProperties</a></code>, <code><a href="PreferredTermProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.glossaries">PreferredTermProperties</a></code>, <code><a href="RelatedTermProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.glossaries">RelatedTermProperties</a></code>, <code><a href="ReplacementTermProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.glossaries">ReplacementTermProperties</a></code>, <code><a href="SynonymProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.glossaries">SynonymProperties</a></code>, <code><a href="UsedInContextProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.glossaries">UsedInContextProperties</a></code></dd>
+</dl>
 <hr>
 <div class="type-signature"><span class="modifiers">public class </span><span class="element-name type-name-label">GlossaryTermRelationshipProperties</span>
 <span class="extends-implements">extends <a href="../RelationshipBeanProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties">RelationshipBeanProperties</a></span></div>
@@ -141,7 +145,7 @@ loadScripts(document, 'script');</script>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Returns the id of the source of the knowledge of the relationship.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../enums/GlossaryTermRelationshipStatus.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.enums">GlossaryTermRelationshipStatus</a></code></div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../enums/TermRelationshipStatus.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.enums">TermRelationshipStatus</a></code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getStatus()" class="member-name-link">getStatus</a>()</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Returns whether this relationship should be used.</div>
@@ -177,7 +181,7 @@ loadScripts(document, 'script');</script>
 <div class="block">Set up the id of the source of the knowledge of the relationship.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setStatus(org.odpi.openmetadata.frameworks.openmetadata.enums.GlossaryTermRelationshipStatus)" class="member-name-link">setStatus</a><wbr>(<a href="../../enums/GlossaryTermRelationshipStatus.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.enums">GlossaryTermRelationshipStatus</a>&nbsp;status)</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setStatus(org.odpi.openmetadata.frameworks.openmetadata.enums.TermRelationshipStatus)" class="member-name-link">setStatus</a><wbr>(<a href="../../enums/TermRelationshipStatus.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.enums">TermRelationshipStatus</a>&nbsp;status)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Set up whether this relationship should be used.</div>
 </div>
@@ -309,9 +313,9 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
-<section class="detail" id="setStatus(org.odpi.openmetadata.frameworks.openmetadata.enums.GlossaryTermRelationshipStatus)">
+<section class="detail" id="setStatus(org.odpi.openmetadata.frameworks.openmetadata.enums.TermRelationshipStatus)">
 <h3>setStatus</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">setStatus</span><wbr><span class="parameters">(<a href="../../enums/GlossaryTermRelationshipStatus.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.enums">GlossaryTermRelationshipStatus</a>&nbsp;status)</span></div>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">setStatus</span><wbr><span class="parameters">(<a href="../../enums/TermRelationshipStatus.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.enums">TermRelationshipStatus</a>&nbsp;status)</span></div>
 <div class="block">Set up whether this relationship should be used.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
@@ -322,7 +326,7 @@ loadScripts(document, 'script');</script>
 <li>
 <section class="detail" id="getStatus()">
 <h3>getStatus</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../enums/GlossaryTermRelationshipStatus.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.enums">GlossaryTermRelationshipStatus</a></span>&nbsp;<span class="element-name">getStatus</span>()</div>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../enums/TermRelationshipStatus.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.enums">TermRelationshipStatus</a></span>&nbsp;<span class="element-name">getStatus</span>()</div>
 <div class="block">Returns whether this relationship should be used.</div>
 <dl class="notes">
 <dt>Returns:</dt>
