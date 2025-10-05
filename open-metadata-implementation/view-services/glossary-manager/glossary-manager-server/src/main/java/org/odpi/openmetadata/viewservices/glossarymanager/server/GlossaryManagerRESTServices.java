@@ -9,8 +9,8 @@ import org.odpi.openmetadata.commonservices.ffdc.RESTExceptionHandler;
 import org.odpi.openmetadata.commonservices.ffdc.rest.*;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.ElementStatus;
-import org.odpi.openmetadata.frameworks.openmetadata.enums.GlossaryTermActivityType;
-import org.odpi.openmetadata.frameworks.openmetadata.enums.GlossaryTermRelationshipStatus;
+import org.odpi.openmetadata.frameworks.openmetadata.enums.ActivityType;
+import org.odpi.openmetadata.frameworks.openmetadata.enums.TermRelationshipStatus;
 import org.odpi.openmetadata.frameworks.openmetadata.handlers.CollectionHandler;
 import org.odpi.openmetadata.frameworks.openmetadata.handlers.GlossaryTermHandler;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.glossaries.*;
@@ -349,7 +349,7 @@ public class GlossaryManagerRESTServices extends TokenController
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            response.setStatuses(Arrays.asList(GlossaryTermRelationshipStatus.values()));
+            response.setStatuses(Arrays.asList(TermRelationshipStatus.values()));
         }
         catch (Throwable error)
         {
@@ -385,7 +385,7 @@ public class GlossaryManagerRESTServices extends TokenController
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            response.setTypes(Arrays.asList(GlossaryTermActivityType.values()));
+            response.setTypes(Arrays.asList(ActivityType.values()));
         }
         catch (Throwable error)
         {

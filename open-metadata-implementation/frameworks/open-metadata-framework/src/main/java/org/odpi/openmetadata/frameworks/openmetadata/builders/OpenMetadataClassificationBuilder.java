@@ -3,7 +3,7 @@
 
 package org.odpi.openmetadata.frameworks.openmetadata.builders;
 
-import org.odpi.openmetadata.frameworks.openmetadata.enums.GlossaryTermActivityType;
+import org.odpi.openmetadata.frameworks.openmetadata.enums.ActivityType;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.KeyPattern;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.AnchorsProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.ClassificationBeanProperties;
@@ -16,6 +16,10 @@ import org.odpi.openmetadata.frameworks.openmetadata.properties.collections.Scop
 import org.odpi.openmetadata.frameworks.openmetadata.properties.collections.StagingCollectionProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.glossaries.*;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.governance.*;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.operatingplatforms.CloudPlatformProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.operatingplatforms.CloudProviderProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.operatingplatforms.CloudServiceProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.operatingplatforms.CloudTenantProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.schema.CalculatedValueProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.schema.PrimaryKeyProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.schema.TypeEmbeddedAttributeProperties;
@@ -123,7 +127,7 @@ public class OpenMetadataClassificationBuilder
                 {
                     elementProperties = propertyHelper.addEnumProperty(elementProperties,
                                                                        OpenMetadataProperty.ACTIVITY_TYPE.name,
-                                                                       GlossaryTermActivityType.getOpenTypeName(),
+                                                                       ActivityType.getOpenTypeName(),
                                                                        activityDescriptionProperties.getActivityType().getName());
                 }
             }
@@ -159,6 +163,36 @@ public class OpenMetadataClassificationBuilder
                 elementProperties = propertyHelper.addStringProperty(elementProperties,
                                                                      OpenMetadataProperty.SCOPE.name,
                                                                      canonicalVocabularyProperties.getScope());
+            }
+            else if (properties instanceof CloudPlatformProperties cloudPlatformProperties)
+            {
+                elementProperties = propertyHelper.addStringProperty(elementProperties,
+                                                                     OpenMetadataProperty.DEPLOYED_IMPLEMENTATION_TYPE.name,
+                                                                     cloudPlatformProperties.getDeployedImplementationType());
+            }
+            else if (properties instanceof CloudProviderProperties cloudProviderProperties)
+            {
+                elementProperties = propertyHelper.addStringProperty(elementProperties,
+                                                                     OpenMetadataProperty.PROVIDER_NAME.name,
+                                                                     cloudProviderProperties.getProviderName());
+            }
+            else if (properties instanceof CloudServiceProperties cloudServiceProperties)
+            {
+                elementProperties = propertyHelper.addStringProperty(elementProperties,
+                                                                     OpenMetadataProperty.OFFERING_NAME.name,
+                                                                     cloudServiceProperties.getOfferingName());
+                elementProperties = propertyHelper.addStringProperty(elementProperties,
+                                                                     OpenMetadataProperty.SERVICE_TYPE.name,
+                                                                     cloudServiceProperties.getOfferingName());
+            }
+            else if (properties instanceof CloudTenantProperties cloudTenantProperties)
+            {
+                elementProperties = propertyHelper.addStringProperty(elementProperties,
+                                                                     OpenMetadataProperty.TENANT_NAME.name,
+                                                                     cloudTenantProperties.getTenantName());
+                elementProperties = propertyHelper.addStringProperty(elementProperties,
+                                                                     OpenMetadataProperty.TENANT_TYPE.name,
+                                                                     cloudTenantProperties.getTenantType());
             }
             else if (properties instanceof DigitalResourceOriginProperties digitalResourceOriginProperties)
             {
@@ -237,11 +271,11 @@ public class OpenMetadataClassificationBuilder
             {
                 elementProperties = propertyHelper.addIntProperty(elementProperties,
                                                                   OpenMetadataProperty.STATUS_IDENTIFIER.name,
-                                                                  governanceClassificationProperties.getStatus());
+                                                                  governanceClassificationProperties.getStatusIdentifier());
 
                 elementProperties = propertyHelper.addIntProperty(elementProperties,
                                                                   OpenMetadataProperty.CONFIDENCE.name,
-                                                                  governanceClassificationProperties.getStatus());
+                                                                  governanceClassificationProperties.getStatusIdentifier());
 
                 elementProperties = propertyHelper.addStringProperty(elementProperties,
                                                                      OpenMetadataProperty.STEWARD.name,
@@ -344,11 +378,11 @@ public class OpenMetadataClassificationBuilder
             {
                 elementProperties = propertyHelper.addIntProperty(elementProperties,
                                                                   OpenMetadataProperty.STATUS_IDENTIFIER.name,
-                                                                  retentionProperties.getStatus());
+                                                                  retentionProperties.getStatusIdentifier());
 
                 elementProperties = propertyHelper.addIntProperty(elementProperties,
                                                                   OpenMetadataProperty.CONFIDENCE.name,
-                                                                  retentionProperties.getStatus());
+                                                                  retentionProperties.getStatusIdentifier());
 
                 elementProperties = propertyHelper.addStringProperty(elementProperties,
                                                                      OpenMetadataProperty.STEWARD.name,
@@ -372,7 +406,7 @@ public class OpenMetadataClassificationBuilder
 
                 elementProperties = propertyHelper.addIntProperty(elementProperties,
                                                                   OpenMetadataProperty.RETENTION_BASIS_IDENTIFIER.name,
-                                                                  retentionProperties.getRetentionBasis());
+                                                                  retentionProperties.getBasisIdentifier());
 
                 elementProperties = propertyHelper.addStringProperty(elementProperties,
                                                                      OpenMetadataProperty.ASSOCIATED_GUID.name,

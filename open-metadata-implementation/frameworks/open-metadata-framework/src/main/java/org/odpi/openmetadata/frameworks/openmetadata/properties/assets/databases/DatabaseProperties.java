@@ -5,6 +5,7 @@ package org.odpi.openmetadata.frameworks.openmetadata.properties.assets.database
 
 import com.fasterxml.jackson.annotation.*;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.DataStoreProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.filesandfolders.DataFolderProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 
 import java.util.Objects;
@@ -18,6 +19,13 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
+@JsonTypeInfo(
+        use = JsonTypeInfo.Id.NAME,
+        include = JsonTypeInfo.As.PROPERTY,
+        property = "class")
+@JsonSubTypes({
+        @JsonSubTypes.Type(value = RelationalDatabaseProperties.class, name = "RelationalDatabaseProperties"),
+})
 public class DatabaseProperties extends DataStoreProperties
 {
     private String databaseInstance = null;

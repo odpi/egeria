@@ -19,7 +19,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class EventSetProperties extends ClassificationBeanProperties
+public class EventSetProperties extends CollectionProperties
 {
     /**
      * Default constructor
@@ -36,7 +36,7 @@ public class EventSetProperties extends ClassificationBeanProperties
      *
      * @param template object to copy
      */
-    public EventSetProperties(ClassificationBeanProperties template)
+    public EventSetProperties(CollectionProperties template)
     {
         super(template);
     }

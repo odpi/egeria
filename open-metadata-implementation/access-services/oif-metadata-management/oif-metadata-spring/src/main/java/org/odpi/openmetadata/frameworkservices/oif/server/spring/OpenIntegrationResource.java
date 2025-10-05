@@ -29,7 +29,7 @@ public class OpenIntegrationResource
 
 
     /**
-     * Retrieve the unique identifier of the software server capability representing a metadata source.
+     * Retrieve the unique identifier of the metadata collection representing a metadata source.
      *
      * @param serverName name of the server to route the request to.
      * @param serviceURLMarker      the identifier of the access service (for example asset-owner for the Asset Owner OMAS)
@@ -44,7 +44,7 @@ public class OpenIntegrationResource
     @PostMapping(path = "metadata-sources/by-name")
 
     @Operation(summary="getMetadataSourceGUID",
-            description="Retrieve the unique identifier of the software server capability representing a metadata source.",
+            description="Retrieve the unique identifier of the metadata collection representing a metadata source.",
             externalDocs=@ExternalDocumentation(description="Further Information",
                     url="https://egeria-project.org/concepts/metadata-collection/"))
 
@@ -73,7 +73,7 @@ public class OpenIntegrationResource
     @PostMapping(path = "/metadata-sources/new")
 
     @Operation(summary="createMetadataSource",
-            description="Create a new metadata element to represent a software capability.  This describes the metadata source.",
+            description="Create a new metadata element to represent a metadata collection.  This describes the metadata source.",
             externalDocs=@ExternalDocumentation(description="Further Information",
                     url="https://egeria-project.org/concepts/metadata-collection/"))
 

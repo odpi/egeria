@@ -22,8 +22,8 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class RetentionProperties extends GovernanceClassificationBase
 {
-    private int     retentionBasis = 0;
-    private String  associatedGUID = null;
+    private int    basisIdentifier = 0;
+    private String associatedGUID  = null;
     private Date    archiveAfter   = null;
     private Date    deleteAfter    = null;
 
@@ -49,8 +49,8 @@ public class RetentionProperties extends GovernanceClassificationBase
 
         if (template != null)
         {
-            retentionBasis = template.getRetentionBasis();
-            associatedGUID = template.getAssociatedGUID();
+            basisIdentifier = template.getBasisIdentifier();
+            associatedGUID  = template.getAssociatedGUID();
             archiveAfter   = template.getArchiveAfter();
             deleteAfter    = template.getDeleteAfter();
         }
@@ -62,20 +62,20 @@ public class RetentionProperties extends GovernanceClassificationBase
      *
      * @return int
      */
-    public int getRetentionBasis()
+    public int getBasisIdentifier()
     {
-        return retentionBasis;
+        return basisIdentifier;
     }
 
 
     /**
      * Set up a description of the factor used to set the archiveAfter and deleteAfter dates.
      *
-     * @param retentionBasis int
+     * @param basisIdentifier int
      */
-    public void setRetentionBasis(int retentionBasis)
+    public void setBasisIdentifier(int basisIdentifier)
     {
-        this.retentionBasis = retentionBasis;
+        this.basisIdentifier = basisIdentifier;
     }
 
 
@@ -158,11 +158,11 @@ public class RetentionProperties extends GovernanceClassificationBase
     public String toString()
     {
         return "RetentionClassificationProperties{" +
-                "retentionBasis=" + retentionBasis +
+                "retentionBasis=" + basisIdentifier +
                 ", associatedGUID='" + associatedGUID + '\'' +
                 ", archiveAfter=" + archiveAfter +
                 ", deleteAfter=" + deleteAfter +
-                ", status=" + getStatus() +
+                ", status=" + getStatusIdentifier() +
                 ", confidence=" + getConfidence() +
                 ", steward='" + getSteward() + '\'' +
                 ", source='" + getSource() + '\'' +
@@ -193,7 +193,7 @@ public class RetentionProperties extends GovernanceClassificationBase
             return false;
         }
         RetentionProperties that = (RetentionProperties) objectToCompare;
-        return retentionBasis == that.retentionBasis &&
+        return basisIdentifier == that.basisIdentifier &&
                 Objects.equals(associatedGUID, that.associatedGUID) &&
                 Objects.equals(archiveAfter, that.archiveAfter) &&
                 Objects.equals(deleteAfter, that.deleteAfter);
@@ -208,6 +208,6 @@ public class RetentionProperties extends GovernanceClassificationBase
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), retentionBasis, associatedGUID, archiveAfter, deleteAfter);
+        return Objects.hash(super.hashCode(), basisIdentifier, associatedGUID, archiveAfter, deleteAfter);
     }
 }

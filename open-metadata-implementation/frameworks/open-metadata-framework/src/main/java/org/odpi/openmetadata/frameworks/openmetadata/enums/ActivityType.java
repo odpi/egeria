@@ -14,44 +14,49 @@ import static org.odpi.openmetadata.frameworks.openmetadata.mapper.OpenMetadataV
 import static org.odpi.openmetadata.frameworks.openmetadata.mapper.OpenMetadataValidValues.constructValidValueQualifiedName;
 
 /**
- * A GlossaryTermRelationshipStatus defines the status of a relationship with a glossary term.
+ * A GlossaryTermActivityType defines the type of activity described by a glossary term.
  */
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public enum GlossaryTermRelationshipStatus implements OpenMetadataEnum
+public enum ActivityType implements OpenMetadataEnum
 {
     /**
-     * Draft - The term relationship is in development.
+     * Operation - A small, well-defined processing operation.
      */
-    DRAFT      ("f9fc24e1-6e9c-4a18-a6b2-bf527e3b7666",  0,  "Draft",      "The term relationship is in development.", false),
+    OPERATION  ("bbbc23c1-62b0-412a-a77e-6d41ada10c7c",  0,  "Operation","A small, well defined processing operation.", false),
 
     /**
-     * Active - The term relationship is approved and in use.
+     * Action - A requested or required change.
      */
-    ACTIVE     ("de434072-dd43-4e9f-9859-edcd3c7e1dad",  1,  "Active",     "The term relationship is approved and in use.", false),
+    ACTION     ("7785980d-3d52-438d-9ece-09e28be5d09a",  1,  "Action",   "A requested or required change.", false),
 
     /**
-     * Deprecated - The term relationship should no longer be used.
+     * Task - A piece of work for a person, organization or engine.
      */
-    DEPRECATED ("cd7d701d-ecd5-461b-a741-df943c9db876",  2,  "Deprecated", "The term relationship should no longer be used.", false),
+    TASK       ("c202f631-dc9c-4bd7-ab9d-f6eb6c7d53d0",  2,  "Task",     "A piece of work for a person, organization or engine.", false),
 
     /**
-     * Obsolete - The term relationship must no longer be used.
+     * Process - A sequence of tasks.
      */
-    OBSOLETE   ("fbac0d79-e1c0-4e4f-8291-2e2b82aefa40",  3,  "Obsolete",   "The term relationship must no longer be used.", false),
+    PROCESS    ("15039274-9069-4da1-a026-a15c7ba17b02",  3,  "Process",  "A sequence of tasks.", false),
 
     /**
-     * Other - Another term relationship status.
+     * Project - An organized activity to achieve a specific goal.
      */
-    OTHER      ("f4ff2b0b-fe6c-4969-9633-7405fe685158", 99, "Other",      "Another term relationship status.", false);
+    PROJECT    ("21d0f37e-398d-4418-9eb4-49f2d6ce556f",  4,  "Project",  "An organized activity to achieve a specific goal.", false),
 
-    private static final String ENUM_TYPE_GUID  = "42282652-7d60-435e-ad3e-7cfe5291bcc7";
-    private static final String ENUM_TYPE_NAME  = "TermRelationshipStatus";
+    /**
+     * Other - An organized activity to achieve a specific goal.
+     */
+    OTHER      ("e207c15f-e30e-4585-a483-032f46eb6b16", 99, "Other",    "Another type of activity.", false);
 
-    private static final String ENUM_DESCRIPTION = "Defines the confidence in the assigned relationship.";
-    private static final String ENUM_DESCRIPTION_GUID = "67bba236-b1c8-4ee4-baf3-33ce99a18373";
-    private static final String ENUM_DESCRIPTION_WIKI = OpenMetadataWikiPages.MODEL_0330_TERMS;
+    private static final String ENUM_TYPE_GUID  = "af7e403d-9865-4ebb-8c1a-1fd57b4f4bca";
+    private static final String ENUM_TYPE_NAME  = "ActivityType";
+
+    private static final String ENUM_DESCRIPTION = "Different types of activities.";
+    private static final String ENUM_DESCRIPTION_GUID = "0b24f61f-5f13-4e8a-9b97-4fc3783b23e4";
+    private static final String ENUM_DESCRIPTION_WIKI = OpenMetadataWikiPages.MODEL_0340_DICTIONARY;
 
     private final String descriptionGUID;
 
@@ -70,11 +75,11 @@ public enum GlossaryTermRelationshipStatus implements OpenMetadataEnum
      * @param description default string description of the enumeration
      * @param isDefault is this the default value for the enum?
      */
-    GlossaryTermRelationshipStatus(String  descriptionGUID,
-                                   int     ordinal,
-                                   String  name,
-                                   String  description,
-                                   boolean isDefault)
+    ActivityType(String  descriptionGUID,
+                 int     ordinal,
+                 String  name,
+                 String  description,
+                 boolean isDefault)
     {
         this.ordinal = ordinal;
         this.name            = name;
@@ -192,7 +197,7 @@ public enum GlossaryTermRelationshipStatus implements OpenMetadataEnum
     public String getQualifiedName()
     {
         return constructValidValueQualifiedName(ENUM_TYPE_NAME,
-                                                OpenMetadataProperty.TERM_RELATIONSHIP_STATUS.name,
+                                                OpenMetadataProperty.ACTIVITY_TYPE.name,
                                                 null,
                                                 name);
     }
@@ -206,26 +211,22 @@ public enum GlossaryTermRelationshipStatus implements OpenMetadataEnum
     public String getCategory()
     {
         return constructValidValueNamespace(ENUM_TYPE_NAME,
-                                            OpenMetadataProperty.TERM_RELATIONSHIP_STATUS.name,
+                                            OpenMetadataProperty.ACTIVITY_TYPE.name,
                                             null);
     }
 
-
     /**
-     * Standard toString method.
+     * toString() JSON-style
      *
-     * @return print out of variables in a JSON-style
+     * @return string description
      */
     @Override
     public String toString()
     {
-        return "GlossaryTermRelationshipStatus{" +
+        return "GlossaryTermActivityType{" +
             "ordinal=" + ordinal +
             ", name='" + name + '\'' +
             ", description='" + description + '\'' +
-            ", descriptionGUID='" + descriptionGUID + '\'' +
-            ", isDefault='" + isDefault + '\'' +
             '}';
-
     }
 }

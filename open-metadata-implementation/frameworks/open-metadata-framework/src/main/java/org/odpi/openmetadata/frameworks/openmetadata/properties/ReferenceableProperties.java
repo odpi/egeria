@@ -19,21 +19,19 @@ import org.odpi.openmetadata.frameworks.openmetadata.properties.datadictionaries
 import org.odpi.openmetadata.frameworks.openmetadata.properties.datadictionaries.DataStructureProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.dataprocessing.DataProcessingActionProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.dataprocessing.DataProcessingDescriptionProperties;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.digitalbusiness.BusinessCapabilityProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.externalidentifiers.ExternalIdProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.externalreferences.ExternalReferenceProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.feedback.CommentProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.feedback.NoteLogProperties;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.feedback.NoteProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.glossaries.GlossaryTermProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.governance.GovernanceDefinitionProperties;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.informationsupplychains.InformationSupplyChainProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.locations.LocationProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.projects.ProjectProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.propertyfacets.PropertyFacetProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.schema.SchemaElementProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.softwarecapabilities.SoftwareCapabilityProperties;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.solutions.SolutionBlueprintProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.solutions.SolutionComponentProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.solutions.SolutionPortProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.validvalues.ValidValueDefinitionProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 
@@ -76,13 +74,14 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
                 @JsonSubTypes.Type(value = GlossaryTermProperties.class, name = "GlossaryTermProperties"),
                 @JsonSubTypes.Type(value = GovernanceDefinitionProperties.class, name = "GovernanceDefinitionProperties"),
                 @JsonSubTypes.Type(value = LocationProperties.class, name = "LocationProperties"),
-                @JsonSubTypes.Type(value = NoteProperties.class, name = "NoteProperties"),
                 @JsonSubTypes.Type(value = NoteLogProperties.class, name = "NoteLogProperties"),
                 @JsonSubTypes.Type(value = PortProperties.class, name = "PortProperties"),
                 @JsonSubTypes.Type(value = ProjectProperties.class, name = "ProjectProperties"),
+                @JsonSubTypes.Type(value = PropertyFacetProperties.class, name = "PropertyFacetProperties"),
                 @JsonSubTypes.Type(value = SchemaElementProperties.class, name = "SchemaElementProperties"),
                 @JsonSubTypes.Type(value = SoftwareCapabilityProperties.class, name = "SoftwareCapabilityProperties"),
                 @JsonSubTypes.Type(value = SolutionComponentProperties.class, name = "SolutionComponentProperties"),
+                @JsonSubTypes.Type(value = SolutionPortProperties.class, name = "SolutionPortProperties"),
                 @JsonSubTypes.Type(value = ValidValueDefinitionProperties.class, name = "ValidValueDefinitionProperties"),
         })
 public class ReferenceableProperties extends OpenMetadataRootProperties

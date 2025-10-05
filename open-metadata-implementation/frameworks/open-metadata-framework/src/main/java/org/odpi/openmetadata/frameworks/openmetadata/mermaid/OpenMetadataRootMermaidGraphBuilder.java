@@ -231,14 +231,8 @@ public class OpenMetadataRootMermaidGraphBuilder extends MermaidGraphBuilderBase
 
         super.addRelatedElementSummaries(openMetadataRootElement.getLinkedMediaFiles(), VisualStyle.LINKED_ELEMENT, openMetadataRootElement.getElementHeader().getGUID());
 
-        super.addRelatedElementSummaries(openMetadataRootElement.getTopicSubscribers(), VisualStyle.LINKED_ELEMENT, openMetadataRootElement.getElementHeader().getGUID());
-        super.addRelatedElementSummaries(openMetadataRootElement.getTopicsForSubscribers(), VisualStyle.LINKED_ELEMENT, openMetadataRootElement.getElementHeader().getGUID());
-
         super.addRelatedElementSummaries(openMetadataRootElement.getAssociatedLogs(), VisualStyle.LINKED_ELEMENT, openMetadataRootElement.getElementHeader().getGUID());
         super.addRelatedElementSummaries(openMetadataRootElement.getAssociatedLogSubjects(), VisualStyle.LINKED_ELEMENT, openMetadataRootElement.getElementHeader().getGUID());
-
-        super.addRelatedElementSummary(openMetadataRootElement.getCohortMember(), VisualStyle.LINKED_ELEMENT, openMetadataRootElement.getElementHeader().getGUID());
-        super.addRelatedElementSummary(openMetadataRootElement.getLocalMetadataCollection(), VisualStyle.LINKED_ELEMENT, openMetadataRootElement.getElementHeader().getGUID());
 
         super.addRelatedElementSummary(openMetadataRootElement.getArchiveContents(), VisualStyle.LINKED_ELEMENT, openMetadataRootElement.getElementHeader().getGUID());
         super.addRelatedElementSummaries(openMetadataRootElement.getPackagedInArchiveFiles(), VisualStyle.LINKED_ELEMENT, openMetadataRootElement.getElementHeader().getGUID());

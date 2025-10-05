@@ -3,6 +3,7 @@
 package org.odpi.openmetadata.frameworks.openmetadata.properties.assets.processes;
 
 import com.fasterxml.jackson.annotation.*;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.analytics.AnalyticsModelRunProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.governance.governanceactions.GovernanceActionProcessInstanceProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 
@@ -21,6 +22,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
         property = "class")
 @JsonSubTypes(
         {
+                @JsonSubTypes.Type(value = AnalyticsModelRunProperties.class, name = "AnalyticsModelRunProperties"),
                 @JsonSubTypes.Type(value = GovernanceActionProcessInstanceProperties.class, name = "GovernanceActionProcessInstanceProperties"),
         })
 public class TransientEmbeddedProcessProperties extends EmbeddedProcessProperties

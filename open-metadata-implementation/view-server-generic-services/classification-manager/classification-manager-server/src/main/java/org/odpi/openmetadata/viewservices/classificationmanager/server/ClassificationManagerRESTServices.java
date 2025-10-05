@@ -76,7 +76,7 @@ public class ClassificationManagerRESTServices extends TokenController
 
             if (requestBody != null)
             {
-                if (requestBody.getProperties() instanceof GovernanceClassificationProperties properties)
+                if (requestBody.getProperties() instanceof ImpactProperties properties)
                 {
                     StewardshipManagementHandler handler = instanceHandler.getStewardshipManagementHandler(userId, serverName, methodName);
 
@@ -84,7 +84,7 @@ public class ClassificationManagerRESTServices extends TokenController
                 }
                 else
                 {
-                    restExceptionHandler.handleInvalidPropertiesObject(GovernanceClassificationProperties.class.getName(), methodName);
+                    restExceptionHandler.handleInvalidPropertiesObject(ImpactProperties.class.getName(), methodName);
                 }
             }
             else
@@ -182,7 +182,7 @@ public class ClassificationManagerRESTServices extends TokenController
 
             if (requestBody != null)
             {
-                if (requestBody.getProperties() instanceof GovernanceClassificationProperties properties)
+                if (requestBody.getProperties() instanceof ConfidenceProperties properties)
                 {
                     StewardshipManagementHandler handler = instanceHandler.getStewardshipManagementHandler(userId, serverName, methodName);
 
@@ -190,7 +190,7 @@ public class ClassificationManagerRESTServices extends TokenController
                 }
                 else
                 {
-                    restExceptionHandler.handleInvalidPropertiesObject(GovernanceClassificationProperties.class.getName(), methodName);
+                    restExceptionHandler.handleInvalidPropertiesObject(ConfidenceProperties.class.getName(), methodName);
                 }
             }
             else
@@ -287,7 +287,7 @@ public class ClassificationManagerRESTServices extends TokenController
 
             if (requestBody != null)
             {
-                if (requestBody.getProperties() instanceof GovernanceClassificationProperties properties)
+                if (requestBody.getProperties() instanceof CriticalityProperties properties)
                 {
                     StewardshipManagementHandler handler = instanceHandler.getStewardshipManagementHandler(userId, serverName, methodName);
 
@@ -295,7 +295,7 @@ public class ClassificationManagerRESTServices extends TokenController
                 }
                 else
                 {
-                    restExceptionHandler.handleInvalidPropertiesObject(GovernanceClassificationProperties.class.getName(), methodName);
+                    restExceptionHandler.handleInvalidPropertiesObject(CriticalityProperties.class.getName(), methodName);
                 }
             }
             else
@@ -402,7 +402,7 @@ public class ClassificationManagerRESTServices extends TokenController
 
             if (requestBody != null)
             {
-                if (requestBody.getProperties() instanceof GovernanceClassificationProperties properties)
+                if (requestBody.getProperties() instanceof ConfidentialityProperties properties)
                 {
                     StewardshipManagementHandler handler = instanceHandler.getStewardshipManagementHandler(userId, serverName, methodName);
 
@@ -410,7 +410,7 @@ public class ClassificationManagerRESTServices extends TokenController
                 }
                 else
                 {
-                    restExceptionHandler.handleInvalidPropertiesObject(GovernanceClassificationProperties.class.getName(), methodName);
+                    restExceptionHandler.handleInvalidPropertiesObject(ConfidentialityProperties.class.getName(), methodName);
                 }
             }
             else
