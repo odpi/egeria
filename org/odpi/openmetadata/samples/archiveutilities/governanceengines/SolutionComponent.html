@@ -46,7 +46,7 @@ loadScripts(document, 'script');</script>
 <li>Summary:&nbsp;</li>
 <li><a href="#nested-class-summary">Nested</a>&nbsp;|&nbsp;</li>
 <li><a href="#enum-constant-summary">Enum Constants</a>&nbsp;|&nbsp;</li>
-<li>Field&nbsp;|&nbsp;</li>
+<li><a href="#field-summary">Field</a>&nbsp;|&nbsp;</li>
 <li><a href="#method-summary">Method</a></li>
 </ul>
 <ul class="sub-nav-list">
@@ -79,11 +79,12 @@ loadScripts(document, 'script');</script>
 <section class="class-description" id="class-description">
 <dl class="notes">
 <dt>All Implemented Interfaces:</dt>
-<dd><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/io/Serializable.html" title="class or interface in java.io" class="external-link">Serializable</a></code>, <code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Comparable.html" title="class or interface in java.lang" class="external-link">Comparable</a>&lt;<a href="SolutionComponent.html" title="enum class in org.odpi.openmetadata.samples.archiveutilities.governanceengines">SolutionComponent</a>&gt;</code>, <code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/constant/Constable.html" title="class or interface in java.lang.constant" class="external-link">Constable</a></code></dd>
+<dd><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/io/Serializable.html" title="class or interface in java.io" class="external-link">Serializable</a></code>, <code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Comparable.html" title="class or interface in java.lang" class="external-link">Comparable</a>&lt;<a href="SolutionComponent.html" title="enum class in org.odpi.openmetadata.samples.archiveutilities.governanceengines">SolutionComponent</a>&gt;</code>, <code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/constant/Constable.html" title="class or interface in java.lang.constant" class="external-link">Constable</a></code>, <code><a href="../../../frameworks/openmetadata/definitions/ReferenceableDefinition.html" title="interface in org.odpi.openmetadata.frameworks.openmetadata.definitions">ReferenceableDefinition</a></code>, <code><a href="../../../frameworks/openmetadata/definitions/SolutionComponentDefinition.html" title="interface in org.odpi.openmetadata.frameworks.openmetadata.definitions">SolutionComponentDefinition</a></code></dd>
 </dl>
 <hr>
 <div class="type-signature"><span class="modifiers">public enum </span><span class="element-name type-name-label">SolutionComponent</span>
-<span class="extends-implements">extends <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Enum.html" title="class or interface in java.lang" class="external-link">Enum</a>&lt;<a href="SolutionComponent.html" title="enum class in org.odpi.openmetadata.samples.archiveutilities.governanceengines">SolutionComponent</a>&gt;</span></div>
+<span class="extends-implements">extends <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Enum.html" title="class or interface in java.lang" class="external-link">Enum</a>&lt;<a href="SolutionComponent.html" title="enum class in org.odpi.openmetadata.samples.archiveutilities.governanceengines">SolutionComponent</a>&gt;
+implements <a href="../../../frameworks/openmetadata/definitions/SolutionComponentDefinition.html" title="interface in org.odpi.openmetadata.frameworks.openmetadata.definitions">SolutionComponentDefinition</a></span></div>
 <div class="block">A description of the predefined solution components.</div>
 </section>
 <section class="summary">
@@ -166,6 +167,15 @@ loadScripts(document, 'script');</script>
 </div>
 </section>
 </li>
+<!-- =========== FIELD SUMMARY =========== -->
+<li>
+<section class="field-summary" id="field-summary">
+<h2>Field Summary</h2>
+<div class="inherited-list">
+<h3 id="fields-inherited-from-class-org.odpi.openmetadata.frameworks.openmetadata.definitions.ReferenceableDefinition">Fields inherited from interface&nbsp;org.odpi.openmetadata.frameworks.openmetadata.definitions.<a href="../../../frameworks/openmetadata/definitions/ReferenceableDefinition.html" title="interface in org.odpi.openmetadata.frameworks.openmetadata.definitions">ReferenceableDefinition</a></h3>
+<code><a href="../../../frameworks/openmetadata/definitions/ReferenceableDefinition.html#EGERIA_VERSION_IDENTIFIER">EGERIA_VERSION_IDENTIFIER</a></code></div>
+</section>
+</li>
 <!-- ========== METHOD SUMMARY =========== -->
 <li>
 <section class="method-summary" id="method-summary">
@@ -182,23 +192,25 @@ loadScripts(document, 'script');</script>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Return the type of solution component - for example, is it a process, of file or database.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="SolutionBlueprint.html" title="enum class in org.odpi.openmetadata.samples.archiveutilities.governanceengines">SolutionBlueprint</a>&gt;</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getConsumingBlueprints()" class="member-name-link">getConsumingBlueprints</a>()</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getDescription()" class="member-name-link">getDescription</a>()</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getDescription()" class="member-name-link">getDescription</a>()</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Return the description of the solution blueprint</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getDisplayName()" class="member-name-link">getDisplayName</a>()</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getDisplayName()" class="member-name-link">getDisplayName</a>()</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Return the display name of the solution blueprint.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getGUID()" class="member-name-link">getGUID</a>()</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getGUID()" class="member-name-link">getGUID</a>()</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Return the GUID for the element.</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getIdentifier()" class="member-name-link">getIdentifier</a>()</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Return the version identifier of the solution blueprint.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getImplementationResource()" class="member-name-link">getImplementationResource</a>()</code></div>
@@ -215,34 +227,49 @@ loadScripts(document, 'script');</script>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Return the segments that preceded this segment.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getQualifiedName()" class="member-name-link">getQualifiedName</a>()</code></div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../frameworks/openmetadata/definitions/CollectionDefinition.html" title="interface in org.odpi.openmetadata.frameworks.openmetadata.definitions">CollectionDefinition</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getParentCollection()" class="member-name-link">getParentCollection</a>()</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Return the optional collection that this element is a part of.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getQualifiedName()" class="member-name-link">getQualifiedName</a>()</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Return the unique name of the solution blueprint.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="SolutionComponent.html" title="enum class in org.odpi.openmetadata.samples.archiveutilities.governanceengines">SolutionComponent</a>&gt;</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getSubComponents()" class="member-name-link">getSubComponents</a>()</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../../../frameworks/openmetadata/definitions/SolutionComponentDefinition.html" title="interface in org.odpi.openmetadata.frameworks.openmetadata.definitions">SolutionComponentDefinition</a>&gt;</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getSubComponents()" class="member-name-link">getSubComponents</a>()</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Return the optional list of subcomponents.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getTypeName()" class="member-name-link">getTypeName</a>()</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Return the unique identifier of this element.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getVersionIdentifier()" class="member-name-link">getVersionIdentifier</a>()</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Return the version identifier of the solution blueprint.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#toString()" class="member-name-link">toString</a>()</code></div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>boolean</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#isTemplate()" class="member-name-link">isTemplate</a>()</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Return whether this is a template or not.</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#toString()" class="member-name-link">toString</a>()</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Output of this enum class and main value.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static <a href="SolutionComponent.html" title="enum class in org.odpi.openmetadata.samples.archiveutilities.governanceengines">SolutionComponent</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#valueOf(java.lang.String)" class="member-name-link">valueOf</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;name)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static <a href="SolutionComponent.html" title="enum class in org.odpi.openmetadata.samples.archiveutilities.governanceengines">SolutionComponent</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#valueOf(java.lang.String)" class="member-name-link">valueOf</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;name)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
 <div class="block">Returns the enum constant of this class with the specified name.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static <a href="SolutionComponent.html" title="enum class in org.odpi.openmetadata.samples.archiveutilities.governanceengines">SolutionComponent</a>[]</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#values()" class="member-name-link">values</a>()</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
+<div class="col-first even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static <a href="SolutionComponent.html" title="enum class in org.odpi.openmetadata.samples.archiveutilities.governanceengines">SolutionComponent</a>[]</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#values()" class="member-name-link">values</a>()</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
 <div class="block">Returns an array containing the constants of this enum class, in
 the order they are declared.</div>
 </div>
@@ -485,6 +512,24 @@ not permitted.)</div>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">getGUID</span>()</div>
 <div class="block">Return the GUID for the element.</div>
 <dl class="notes">
+<dt>Specified by:</dt>
+<dd><code><a href="../../../frameworks/openmetadata/definitions/ReferenceableDefinition.html#getGUID()">getGUID</a></code>&nbsp;in interface&nbsp;<code><a href="../../../frameworks/openmetadata/definitions/ReferenceableDefinition.html" title="interface in org.odpi.openmetadata.frameworks.openmetadata.definitions">ReferenceableDefinition</a></code></dd>
+<dt>Returns:</dt>
+<dd>string</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="getTypeName()">
+<h3>getTypeName</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">getTypeName</span>()</div>
+<div class="block">Return the unique identifier of this element.  It is only needed if the elements are to be loaded
+ into an open metadata archive.</div>
+<dl class="notes">
+<dt>Specified by:</dt>
+<dd><code><a href="../../../frameworks/openmetadata/definitions/ReferenceableDefinition.html#getTypeName()">getTypeName</a></code>&nbsp;in interface&nbsp;<code><a href="../../../frameworks/openmetadata/definitions/ReferenceableDefinition.html" title="interface in org.odpi.openmetadata.frameworks.openmetadata.definitions">ReferenceableDefinition</a></code></dd>
+<dt>Specified by:</dt>
+<dd><code><a href="../../../frameworks/openmetadata/definitions/SolutionComponentDefinition.html#getTypeName()">getTypeName</a></code>&nbsp;in interface&nbsp;<code><a href="../../../frameworks/openmetadata/definitions/SolutionComponentDefinition.html" title="interface in org.odpi.openmetadata.frameworks.openmetadata.definitions">SolutionComponentDefinition</a></code></dd>
 <dt>Returns:</dt>
 <dd>string</dd>
 </dl>
@@ -496,6 +541,8 @@ not permitted.)</div>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">getComponentType</span>()</div>
 <div class="block">Return the type of solution component - for example, is it a process, of file or database.</div>
 <dl class="notes">
+<dt>Specified by:</dt>
+<dd><code><a href="../../../frameworks/openmetadata/definitions/SolutionComponentDefinition.html#getComponentType()">getComponentType</a></code>&nbsp;in interface&nbsp;<code><a href="../../../frameworks/openmetadata/definitions/SolutionComponentDefinition.html" title="interface in org.odpi.openmetadata.frameworks.openmetadata.definitions">SolutionComponentDefinition</a></code></dd>
 <dt>Returns:</dt>
 <dd>string</dd>
 </dl>
@@ -507,6 +554,8 @@ not permitted.)</div>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">getImplementationType</span>()</div>
 <div class="block">Return which type of software component is likely to be deployed to implement this solution component.</div>
 <dl class="notes">
+<dt>Specified by:</dt>
+<dd><code><a href="../../../frameworks/openmetadata/definitions/SolutionComponentDefinition.html#getImplementationType()">getImplementationType</a></code>&nbsp;in interface&nbsp;<code><a href="../../../frameworks/openmetadata/definitions/SolutionComponentDefinition.html" title="interface in org.odpi.openmetadata.frameworks.openmetadata.definitions">SolutionComponentDefinition</a></code></dd>
 <dt>Returns:</dt>
 <dd>string</dd>
 </dl>
@@ -518,6 +567,8 @@ not permitted.)</div>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">getDisplayName</span>()</div>
 <div class="block">Return the display name of the solution blueprint.</div>
 <dl class="notes">
+<dt>Specified by:</dt>
+<dd><code><a href="../../../frameworks/openmetadata/definitions/ReferenceableDefinition.html#getDisplayName()">getDisplayName</a></code>&nbsp;in interface&nbsp;<code><a href="../../../frameworks/openmetadata/definitions/ReferenceableDefinition.html" title="interface in org.odpi.openmetadata.frameworks.openmetadata.definitions">ReferenceableDefinition</a></code></dd>
 <dt>Returns:</dt>
 <dd>string</dd>
 </dl>
@@ -529,8 +580,36 @@ not permitted.)</div>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">getDescription</span>()</div>
 <div class="block">Return the description of the solution blueprint</div>
 <dl class="notes">
+<dt>Specified by:</dt>
+<dd><code><a href="../../../frameworks/openmetadata/definitions/ReferenceableDefinition.html#getDescription()">getDescription</a></code>&nbsp;in interface&nbsp;<code><a href="../../../frameworks/openmetadata/definitions/ReferenceableDefinition.html" title="interface in org.odpi.openmetadata.frameworks.openmetadata.definitions">ReferenceableDefinition</a></code></dd>
 <dt>Returns:</dt>
 <dd>string</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="getParentCollection()">
+<h3>getParentCollection</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../../frameworks/openmetadata/definitions/CollectionDefinition.html" title="interface in org.odpi.openmetadata.frameworks.openmetadata.definitions">CollectionDefinition</a></span>&nbsp;<span class="element-name">getParentCollection</span>()</div>
+<div class="block">Return the optional collection that this element is a part of.</div>
+<dl class="notes">
+<dt>Specified by:</dt>
+<dd><code><a href="../../../frameworks/openmetadata/definitions/ReferenceableDefinition.html#getParentCollection()">getParentCollection</a></code>&nbsp;in interface&nbsp;<code><a href="../../../frameworks/openmetadata/definitions/ReferenceableDefinition.html" title="interface in org.odpi.openmetadata.frameworks.openmetadata.definitions">ReferenceableDefinition</a></code></dd>
+<dt>Returns:</dt>
+<dd>collection definition</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="isTemplate()">
+<h3>isTemplate</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">boolean</span>&nbsp;<span class="element-name">isTemplate</span>()</div>
+<div class="block">Return whether this is a template or not.</div>
+<dl class="notes">
+<dt>Specified by:</dt>
+<dd><code><a href="../../../frameworks/openmetadata/definitions/ReferenceableDefinition.html#isTemplate()">isTemplate</a></code>&nbsp;in interface&nbsp;<code><a href="../../../frameworks/openmetadata/definitions/ReferenceableDefinition.html" title="interface in org.odpi.openmetadata.frameworks.openmetadata.definitions">ReferenceableDefinition</a></code></dd>
+<dt>Returns:</dt>
+<dd>boolean</dd>
 </dl>
 </section>
 </li>
@@ -540,23 +619,34 @@ not permitted.)</div>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">getVersionIdentifier</span>()</div>
 <div class="block">Return the version identifier of the solution blueprint.</div>
 <dl class="notes">
+<dt>Specified by:</dt>
+<dd><code><a href="../../../frameworks/openmetadata/definitions/ReferenceableDefinition.html#getVersionIdentifier()">getVersionIdentifier</a></code>&nbsp;in interface&nbsp;<code><a href="../../../frameworks/openmetadata/definitions/ReferenceableDefinition.html" title="interface in org.odpi.openmetadata.frameworks.openmetadata.definitions">ReferenceableDefinition</a></code></dd>
 <dt>Returns:</dt>
 <dd>string</dd>
 </dl>
 </section>
 </li>
 <li>
-<section class="detail" id="getConsumingBlueprints()">
-<h3>getConsumingBlueprints</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="SolutionBlueprint.html" title="enum class in org.odpi.openmetadata.samples.archiveutilities.governanceengines">SolutionBlueprint</a>&gt;</span>&nbsp;<span class="element-name">getConsumingBlueprints</span>()</div>
+<section class="detail" id="getIdentifier()">
+<h3>getIdentifier</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">getIdentifier</span>()</div>
+<div class="block">Return the version identifier of the solution blueprint.</div>
+<dl class="notes">
+<dt>Specified by:</dt>
+<dd><code><a href="../../../frameworks/openmetadata/definitions/ReferenceableDefinition.html#getIdentifier()">getIdentifier</a></code>&nbsp;in interface&nbsp;<code><a href="../../../frameworks/openmetadata/definitions/ReferenceableDefinition.html" title="interface in org.odpi.openmetadata.frameworks.openmetadata.definitions">ReferenceableDefinition</a></code></dd>
+<dt>Returns:</dt>
+<dd>string</dd>
+</dl>
 </section>
 </li>
 <li>
 <section class="detail" id="getSubComponents()">
 <h3>getSubComponents</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="SolutionComponent.html" title="enum class in org.odpi.openmetadata.samples.archiveutilities.governanceengines">SolutionComponent</a>&gt;</span>&nbsp;<span class="element-name">getSubComponents</span>()</div>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../../../frameworks/openmetadata/definitions/SolutionComponentDefinition.html" title="interface in org.odpi.openmetadata.frameworks.openmetadata.definitions">SolutionComponentDefinition</a>&gt;</span>&nbsp;<span class="element-name">getSubComponents</span>()</div>
 <div class="block">Return the optional list of subcomponents.</div>
 <dl class="notes">
+<dt>Specified by:</dt>
+<dd><code><a href="../../../frameworks/openmetadata/definitions/SolutionComponentDefinition.html#getSubComponents()">getSubComponents</a></code>&nbsp;in interface&nbsp;<code><a href="../../../frameworks/openmetadata/definitions/SolutionComponentDefinition.html" title="interface in org.odpi.openmetadata.frameworks.openmetadata.definitions">SolutionComponentDefinition</a></code></dd>
 <dt>Returns:</dt>
 <dd>null or list</dd>
 </dl>
@@ -579,6 +669,8 @@ not permitted.)</div>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">getImplementationResource</span>()</div>
 <div class="block">Return the GUID of the implementation element (or null)</div>
 <dl class="notes">
+<dt>Specified by:</dt>
+<dd><code><a href="../../../frameworks/openmetadata/definitions/SolutionComponentDefinition.html#getImplementationResource()">getImplementationResource</a></code>&nbsp;in interface&nbsp;<code><a href="../../../frameworks/openmetadata/definitions/SolutionComponentDefinition.html" title="interface in org.odpi.openmetadata.frameworks.openmetadata.definitions">SolutionComponentDefinition</a></code></dd>
 <dt>Returns:</dt>
 <dd>guid</dd>
 </dl>
@@ -590,6 +682,8 @@ not permitted.)</div>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">getQualifiedName</span>()</div>
 <div class="block">Return the unique name of the solution blueprint.</div>
 <dl class="notes">
+<dt>Specified by:</dt>
+<dd><code><a href="../../../frameworks/openmetadata/definitions/ReferenceableDefinition.html#getQualifiedName()">getQualifiedName</a></code>&nbsp;in interface&nbsp;<code><a href="../../../frameworks/openmetadata/definitions/ReferenceableDefinition.html" title="interface in org.odpi.openmetadata.frameworks.openmetadata.definitions">ReferenceableDefinition</a></code></dd>
 <dt>Returns:</dt>
 <dd>string</dd>
 </dl>

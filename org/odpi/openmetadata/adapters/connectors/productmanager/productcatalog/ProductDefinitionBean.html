@@ -95,7 +95,9 @@ implements <a href="ProductDefinition.html" title="interface in org.odpi.openmet
 <div class="summary-table two-column-summary">
 <div class="table-header col-first">Constructor</div>
 <div class="table-header col-last">Description</div>
-<div class="col-constructor-name even-row-color"><code><a href="#%3Cinit%3E(java.lang.String,java.lang.String,org.odpi.openmetadata.adapters.connectors.productmanager.productcatalog.ProductFolderDefinition,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.adapters.connectors.productmanager.productcatalog.ProductGovernanceDefinition,org.odpi.openmetadata.adapters.connectors.productmanager.productcatalog.ProductCommunityDefinition,org.odpi.openmetadata.adapters.connectors.productmanager.productcatalog.ProductSubscriptionDefinition%5B%5D,java.lang.String,org.odpi.openmetadata.adapters.connectors.productmanager.productcatalog.ProductDataFieldDefinition%5B%5D,org.odpi.openmetadata.adapters.connectors.productmanager.productcatalog.ProductDataFieldDefinition%5B%5D,org.odpi.openmetadata.frameworks.connectors.ConnectorProvider,java.lang.String)" class="member-name-link">ProductDefinitionBean</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;productName,
+<div class="col-constructor-name even-row-color"><code><a href="#%3Cinit%3E(java.lang.String,org.odpi.openmetadata.adapters.connectors.productmanager.productcatalog.ProductDefinition%5B%5D,java.lang.String,java.lang.String,org.odpi.openmetadata.adapters.connectors.productmanager.productcatalog.ProductFolderDefinition,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.adapters.connectors.productmanager.productcatalog.ProductGovernanceDefinition,org.odpi.openmetadata.adapters.connectors.productmanager.productcatalog.ProductCommunityDefinition,org.odpi.openmetadata.adapters.connectors.productmanager.productcatalog.ProductSubscriptionDefinition%5B%5D,java.lang.String,org.odpi.openmetadata.adapters.connectors.productmanager.productcatalog.ProductDataFieldDefinition%5B%5D,org.odpi.openmetadata.adapters.connectors.productmanager.productcatalog.ProductDataFieldDefinition%5B%5D,org.odpi.openmetadata.frameworks.connectors.ConnectorProvider,java.lang.String)" class="member-name-link">ProductDefinitionBean</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;typeName,
+ <a href="ProductDefinition.html" title="interface in org.odpi.openmetadata.adapters.connectors.productmanager.productcatalog">ProductDefinition</a>[]&nbsp;productGroups,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;productName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;identifier,
  <a href="ProductFolderDefinition.html" title="enum class in org.odpi.openmetadata.adapters.connectors.productmanager.productcatalog">ProductFolderDefinition</a>&nbsp;parent,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;displayName,
@@ -171,40 +173,50 @@ implements <a href="ProductDefinition.html" title="interface in org.odpi.openmet
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Returns a descriptive name of the collection.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getIdentifier()" class="member-name-link">getIdentifier</a>()</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Returns the optional classification.</div>
-</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="ProductGovernanceDefinition.html" title="enum class in org.odpi.openmetadata.adapters.connectors.productmanager.productcatalog">ProductGovernanceDefinition</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getLicense()" class="member-name-link">getLicense</a>()</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Return the license that wil lbe granted to data provided through a subscription mechanism.</div>
-</div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="ProductFolderDefinition.html" title="enum class in org.odpi.openmetadata.adapters.connectors.productmanager.productcatalog">ProductFolderDefinition</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getParent()" class="member-name-link">getParent</a>()</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getFolder()" class="member-name-link">getFolder</a>()</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Return the entry of the parent folder - null for top level.</div>
-</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../solutionblueprint/ProductRoleDefinition.html" title="enum class in org.odpi.openmetadata.adapters.connectors.productmanager.solutionblueprint">ProductRoleDefinition</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getProductManager()" class="member-name-link">getProductManager</a>()</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Return the project manager for the product.</div>
-</div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getProductName()" class="member-name-link">getProductName</a>()</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Returns the unique name for the collection type.</div>
+<div class="block">Return the entry of the parent folder - null for top level and products that are part of groups.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getQualifiedName()" class="member-name-link">getQualifiedName</a>()</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getIdentifier()" class="member-name-link">getIdentifier</a>()</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Returns the optional classification.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="ProductGovernanceDefinition.html" title="enum class in org.odpi.openmetadata.adapters.connectors.productmanager.productcatalog">ProductGovernanceDefinition</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getLicense()" class="member-name-link">getLicense</a>()</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Return the license that wil lbe granted to data provided through a subscription mechanism.</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="ProductDefinition.html" title="interface in org.odpi.openmetadata.adapters.connectors.productmanager.productcatalog">ProductDefinition</a>&gt;</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getProductFamilies()" class="member-name-link">getProductFamilies</a>()</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Return the list of product groups (if any) that this product belongs to.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../solutionblueprint/ProductRoleDefinition.html" title="enum class in org.odpi.openmetadata.adapters.connectors.productmanager.solutionblueprint">ProductRoleDefinition</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getProductManager()" class="member-name-link">getProductManager</a>()</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Return the project manager for the product.</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getProductName()" class="member-name-link">getProductName</a>()</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Returns the unique name for the collection type.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getQualifiedName()" class="member-name-link">getQualifiedName</a>()</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Returns the unique name for the product entity.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="ProductSubscriptionDefinition.html" title="enum class in org.odpi.openmetadata.adapters.connectors.productmanager.productcatalog">ProductSubscriptionDefinition</a>&gt;</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getSubscriptionTypes()" class="member-name-link">getSubscriptionTypes</a>()</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="ProductSubscriptionDefinition.html" title="enum class in org.odpi.openmetadata.adapters.connectors.productmanager.productcatalog">ProductSubscriptionDefinition</a>&gt;</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getSubscriptionTypes()" class="member-name-link">getSubscriptionTypes</a>()</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Return the list of subscription types supported by this product.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getTypeName()" class="member-name-link">getTypeName</a>()</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Returns the unique name for the collection type.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getVersionIdentifier()" class="member-name-link">getVersionIdentifier</a>()</code></div>
@@ -234,9 +246,11 @@ implements <a href="ProductDefinition.html" title="interface in org.odpi.openmet
 <h2>Constructor Details</h2>
 <ul class="member-list">
 <li>
-<section class="detail" id="&lt;init&gt;(java.lang.String,java.lang.String,org.odpi.openmetadata.adapters.connectors.productmanager.productcatalog.ProductFolderDefinition,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.adapters.connectors.productmanager.productcatalog.ProductGovernanceDefinition,org.odpi.openmetadata.adapters.connectors.productmanager.productcatalog.ProductCommunityDefinition,org.odpi.openmetadata.adapters.connectors.productmanager.productcatalog.ProductSubscriptionDefinition[],java.lang.String,org.odpi.openmetadata.adapters.connectors.productmanager.productcatalog.ProductDataFieldDefinition[],org.odpi.openmetadata.adapters.connectors.productmanager.productcatalog.ProductDataFieldDefinition[],org.odpi.openmetadata.frameworks.connectors.ConnectorProvider,java.lang.String)">
+<section class="detail" id="&lt;init&gt;(java.lang.String,org.odpi.openmetadata.adapters.connectors.productmanager.productcatalog.ProductDefinition[],java.lang.String,java.lang.String,org.odpi.openmetadata.adapters.connectors.productmanager.productcatalog.ProductFolderDefinition,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.adapters.connectors.productmanager.productcatalog.ProductGovernanceDefinition,org.odpi.openmetadata.adapters.connectors.productmanager.productcatalog.ProductCommunityDefinition,org.odpi.openmetadata.adapters.connectors.productmanager.productcatalog.ProductSubscriptionDefinition[],java.lang.String,org.odpi.openmetadata.adapters.connectors.productmanager.productcatalog.ProductDataFieldDefinition[],org.odpi.openmetadata.adapters.connectors.productmanager.productcatalog.ProductDataFieldDefinition[],org.odpi.openmetadata.frameworks.connectors.ConnectorProvider,java.lang.String)">
 <h3>ProductDefinitionBean</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="element-name">ProductDefinitionBean</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;productName,
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="element-name">ProductDefinitionBean</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;typeName,
+ <a href="ProductDefinition.html" title="interface in org.odpi.openmetadata.adapters.connectors.productmanager.productcatalog">ProductDefinition</a>[]&nbsp;productGroups,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;productName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;identifier,
  <a href="ProductFolderDefinition.html" title="enum class in org.odpi.openmetadata.adapters.connectors.productmanager.productcatalog">ProductFolderDefinition</a>&nbsp;parent,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;displayName,
@@ -253,6 +267,8 @@ implements <a href="ProductDefinition.html" title="interface in org.odpi.openmet
 <div class="block">Construct a product definition.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
+<dd><code>typeName</code> - name of the type to use - eg DigitalProduct or DigitalProductFamily</dd>
+<dd><code>productGroups</code> - list of groups that this product belongs to (can be null)</dd>
 <dd><code>productName</code> - name of the product</dd>
 <dd><code>identifier</code> - product identifier</dd>
 <dd><code>parent</code> - folder/product group</dd>
@@ -260,6 +276,7 @@ implements <a href="ProductDefinition.html" title="interface in org.odpi.openmet
 <dd><code>description</code> - description</dd>
 <dd><code>category</code> - category of product</dd>
 <dd><code>license</code> - license</dd>
+<dd><code>community</code> - community</dd>
 <dd><code>subscriptionTypes</code> - list of subscription types offered</dd>
 <dd><code>dataSpecTableName</code> - logical name of the tabular data set</dd>
 <dd><code>dataSpecIdentifiers</code> - list of data fields that form the unique identifier</dd>
@@ -291,6 +308,32 @@ implements <a href="ProductDefinition.html" title="interface in org.odpi.openmet
 </section>
 </li>
 <li>
+<section class="detail" id="getTypeName()">
+<h3>getTypeName</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">getTypeName</span>()</div>
+<div class="block">Returns the unique name for the collection type.</div>
+<dl class="notes">
+<dt>Specified by:</dt>
+<dd><code><a href="ProductDefinition.html#getTypeName()">getTypeName</a></code>&nbsp;in interface&nbsp;<code><a href="ProductDefinition.html" title="interface in org.odpi.openmetadata.adapters.connectors.productmanager.productcatalog">ProductDefinition</a></code></dd>
+<dt>Returns:</dt>
+<dd>type name</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="getProductFamilies()">
+<h3>getProductFamilies</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="ProductDefinition.html" title="interface in org.odpi.openmetadata.adapters.connectors.productmanager.productcatalog">ProductDefinition</a>&gt;</span>&nbsp;<span class="element-name">getProductFamilies</span>()</div>
+<div class="block">Return the list of product groups (if any) that this product belongs to.</div>
+<dl class="notes">
+<dt>Specified by:</dt>
+<dd><code><a href="ProductDefinition.html#getProductFamilies()">getProductFamilies</a></code>&nbsp;in interface&nbsp;<code><a href="ProductDefinition.html" title="interface in org.odpi.openmetadata.adapters.connectors.productmanager.productcatalog">ProductDefinition</a></code></dd>
+<dt>Returns:</dt>
+<dd>list</dd>
+</dl>
+</section>
+</li>
+<li>
 <section class="detail" id="getProductName()">
 <h3>getProductName</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">getProductName</span>()</div>
@@ -317,13 +360,13 @@ implements <a href="ProductDefinition.html" title="interface in org.odpi.openmet
 </section>
 </li>
 <li>
-<section class="detail" id="getParent()">
-<h3>getParent</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="ProductFolderDefinition.html" title="enum class in org.odpi.openmetadata.adapters.connectors.productmanager.productcatalog">ProductFolderDefinition</a></span>&nbsp;<span class="element-name">getParent</span>()</div>
-<div class="block">Return the entry of the parent folder - null for top level.</div>
+<section class="detail" id="getFolder()">
+<h3>getFolder</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="ProductFolderDefinition.html" title="enum class in org.odpi.openmetadata.adapters.connectors.productmanager.productcatalog">ProductFolderDefinition</a></span>&nbsp;<span class="element-name">getFolder</span>()</div>
+<div class="block">Return the entry of the parent folder - null for top level and products that are part of groups.</div>
 <dl class="notes">
 <dt>Specified by:</dt>
-<dd><code><a href="ProductDefinition.html#getParent()">getParent</a></code>&nbsp;in interface&nbsp;<code><a href="ProductDefinition.html" title="interface in org.odpi.openmetadata.adapters.connectors.productmanager.productcatalog">ProductDefinition</a></code></dd>
+<dd><code><a href="ProductDefinition.html#getFolder()">getFolder</a></code>&nbsp;in interface&nbsp;<code><a href="ProductDefinition.html" title="interface in org.odpi.openmetadata.adapters.connectors.productmanager.productcatalog">ProductDefinition</a></code></dd>
 <dt>Returns:</dt>
 <dd>enum</dd>
 </dl>

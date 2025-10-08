@@ -46,7 +46,7 @@ loadScripts(document, 'script');</script>
 <li>Summary:&nbsp;</li>
 <li><a href="#nested-class-summary">Nested</a>&nbsp;|&nbsp;</li>
 <li><a href="#enum-constant-summary">Enum Constants</a>&nbsp;|&nbsp;</li>
-<li>Field&nbsp;|&nbsp;</li>
+<li><a href="#field-summary">Field</a>&nbsp;|&nbsp;</li>
 <li><a href="#method-summary">Method</a></li>
 </ul>
 <ul class="sub-nav-list">
@@ -79,11 +79,12 @@ loadScripts(document, 'script');</script>
 <section class="class-description" id="class-description">
 <dl class="notes">
 <dt>All Implemented Interfaces:</dt>
-<dd><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/io/Serializable.html" title="class or interface in java.io" class="external-link">Serializable</a></code>, <code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Comparable.html" title="class or interface in java.lang" class="external-link">Comparable</a>&lt;<a href="SolutionRoleDefinition.html" title="enum class in org.odpi.openmetadata.samples.archiveutilities.governanceengines">SolutionRoleDefinition</a>&gt;</code>, <code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/constant/Constable.html" title="class or interface in java.lang.constant" class="external-link">Constable</a></code></dd>
+<dd><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/io/Serializable.html" title="class or interface in java.io" class="external-link">Serializable</a></code>, <code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Comparable.html" title="class or interface in java.lang" class="external-link">Comparable</a>&lt;<a href="SolutionRoleDefinition.html" title="enum class in org.odpi.openmetadata.samples.archiveutilities.governanceengines">SolutionRoleDefinition</a>&gt;</code>, <code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/constant/Constable.html" title="class or interface in java.lang.constant" class="external-link">Constable</a></code>, <code><a href="../../../frameworks/openmetadata/definitions/ActorDefinition.html" title="interface in org.odpi.openmetadata.frameworks.openmetadata.definitions">ActorDefinition</a></code>, <code><a href="../../../frameworks/openmetadata/definitions/ActorRoleDefinition.html" title="interface in org.odpi.openmetadata.frameworks.openmetadata.definitions">ActorRoleDefinition</a></code>, <code><a href="../../../frameworks/openmetadata/definitions/ReferenceableDefinition.html" title="interface in org.odpi.openmetadata.frameworks.openmetadata.definitions">ReferenceableDefinition</a></code></dd>
 </dl>
 <hr>
 <div class="type-signature"><span class="modifiers">public enum </span><span class="element-name type-name-label">SolutionRoleDefinition</span>
-<span class="extends-implements">extends <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Enum.html" title="class or interface in java.lang" class="external-link">Enum</a>&lt;<a href="SolutionRoleDefinition.html" title="enum class in org.odpi.openmetadata.samples.archiveutilities.governanceengines">SolutionRoleDefinition</a>&gt;</span></div>
+<span class="extends-implements">extends <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Enum.html" title="class or interface in java.lang" class="external-link">Enum</a>&lt;<a href="SolutionRoleDefinition.html" title="enum class in org.odpi.openmetadata.samples.archiveutilities.governanceengines">SolutionRoleDefinition</a>&gt;
+implements <a href="../../../frameworks/openmetadata/definitions/ActorRoleDefinition.html" title="interface in org.odpi.openmetadata.frameworks.openmetadata.definitions">ActorRoleDefinition</a></span></div>
 <div class="block">The SolutionRoleDefinition is used to feed the definition of the solution roles for
  Coco Pharmaceuticals' solution blueprints.</div>
 </section>
@@ -131,6 +132,15 @@ loadScripts(document, 'script');</script>
 </div>
 </section>
 </li>
+<!-- =========== FIELD SUMMARY =========== -->
+<li>
+<section class="field-summary" id="field-summary">
+<h2>Field Summary</h2>
+<div class="inherited-list">
+<h3 id="fields-inherited-from-class-org.odpi.openmetadata.frameworks.openmetadata.definitions.ReferenceableDefinition">Fields inherited from interface&nbsp;org.odpi.openmetadata.frameworks.openmetadata.definitions.<a href="../../../frameworks/openmetadata/definitions/ReferenceableDefinition.html" title="interface in org.odpi.openmetadata.frameworks.openmetadata.definitions">ReferenceableDefinition</a></h3>
+<code><a href="../../../frameworks/openmetadata/definitions/ReferenceableDefinition.html#EGERIA_VERSION_IDENTIFIER">EGERIA_VERSION_IDENTIFIER</a></code></div>
+</section>
+</li>
 <!-- ========== METHOD SUMMARY =========== -->
 <li>
 <section class="method-summary" id="method-summary">
@@ -167,7 +177,7 @@ loadScripts(document, 'script');</script>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Returns the unique name for the role entity.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../frameworks/openmetadata/refdata/ScopeDefinition.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.refdata">ScopeDefinition</a></code></div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getScope()" class="member-name-link">getScope</a>()</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Returns the breadth of responsibility for the role.</div>
@@ -197,6 +207,12 @@ the order they are declared.</div>
 <div class="inherited-list">
 <h3 id="methods-inherited-from-class-java.lang.Object">Methods inherited from class&nbsp;java.lang.<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a></h3>
 <code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#getClass()" title="class or interface in java.lang" class="external-link">getClass</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#notify()" title="class or interface in java.lang" class="external-link">notify</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#notifyAll()" title="class or interface in java.lang" class="external-link">notifyAll</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#wait()" title="class or interface in java.lang" class="external-link">wait</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#wait(long)" title="class or interface in java.lang" class="external-link">wait</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#wait(long,int)" title="class or interface in java.lang" class="external-link">wait</a></code></div>
+<div class="inherited-list">
+<h3 id="methods-inherited-from-class-org.odpi.openmetadata.frameworks.openmetadata.definitions.ActorRoleDefinition">Methods inherited from interface&nbsp;org.odpi.openmetadata.frameworks.openmetadata.definitions.<a href="../../../frameworks/openmetadata/definitions/ActorRoleDefinition.html" title="interface in org.odpi.openmetadata.frameworks.openmetadata.definitions">ActorRoleDefinition</a></h3>
+<code><a href="../../../frameworks/openmetadata/definitions/ActorRoleDefinition.html#getTypeName()">getTypeName</a></code></div>
+<div class="inherited-list">
+<h3 id="methods-inherited-from-class-org.odpi.openmetadata.frameworks.openmetadata.definitions.ReferenceableDefinition">Methods inherited from interface&nbsp;org.odpi.openmetadata.frameworks.openmetadata.definitions.<a href="../../../frameworks/openmetadata/definitions/ReferenceableDefinition.html" title="interface in org.odpi.openmetadata.frameworks.openmetadata.definitions">ReferenceableDefinition</a></h3>
+<code><a href="../../../frameworks/openmetadata/definitions/ReferenceableDefinition.html#getParentCollection()">getParentCollection</a>, <a href="../../../frameworks/openmetadata/definitions/ReferenceableDefinition.html#getVersionIdentifier()">getVersionIdentifier</a>, <a href="../../../frameworks/openmetadata/definitions/ReferenceableDefinition.html#isTemplate()">isTemplate</a></code></div>
 </section>
 </li>
 </ul>
@@ -319,6 +335,8 @@ not permitted.)</div>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">getGUID</span>()</div>
 <div class="block">Return the name of the PersonRole type to use.</div>
 <dl class="notes">
+<dt>Specified by:</dt>
+<dd><code><a href="../../../frameworks/openmetadata/definitions/ReferenceableDefinition.html#getGUID()">getGUID</a></code>&nbsp;in interface&nbsp;<code><a href="../../../frameworks/openmetadata/definitions/ReferenceableDefinition.html" title="interface in org.odpi.openmetadata.frameworks.openmetadata.definitions">ReferenceableDefinition</a></code></dd>
 <dt>Returns:</dt>
 <dd>type name</dd>
 </dl>
@@ -330,6 +348,8 @@ not permitted.)</div>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">getQualifiedName</span>()</div>
 <div class="block">Returns the unique name for the role entity.</div>
 <dl class="notes">
+<dt>Specified by:</dt>
+<dd><code><a href="../../../frameworks/openmetadata/definitions/ReferenceableDefinition.html#getQualifiedName()">getQualifiedName</a></code>&nbsp;in interface&nbsp;<code><a href="../../../frameworks/openmetadata/definitions/ReferenceableDefinition.html" title="interface in org.odpi.openmetadata.frameworks.openmetadata.definitions">ReferenceableDefinition</a></code></dd>
 <dt>Returns:</dt>
 <dd>identifier</dd>
 </dl>
@@ -341,6 +361,8 @@ not permitted.)</div>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">getIdentifier</span>()</div>
 <div class="block">Returns the unique name for the role.</div>
 <dl class="notes">
+<dt>Specified by:</dt>
+<dd><code><a href="../../../frameworks/openmetadata/definitions/ReferenceableDefinition.html#getIdentifier()">getIdentifier</a></code>&nbsp;in interface&nbsp;<code><a href="../../../frameworks/openmetadata/definitions/ReferenceableDefinition.html" title="interface in org.odpi.openmetadata.frameworks.openmetadata.definitions">ReferenceableDefinition</a></code></dd>
 <dt>Returns:</dt>
 <dd>identifier</dd>
 </dl>
@@ -352,6 +374,8 @@ not permitted.)</div>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">getDisplayName</span>()</div>
 <div class="block">Returns a descriptive name of the role.</div>
 <dl class="notes">
+<dt>Specified by:</dt>
+<dd><code><a href="../../../frameworks/openmetadata/definitions/ReferenceableDefinition.html#getDisplayName()">getDisplayName</a></code>&nbsp;in interface&nbsp;<code><a href="../../../frameworks/openmetadata/definitions/ReferenceableDefinition.html" title="interface in org.odpi.openmetadata.frameworks.openmetadata.definitions">ReferenceableDefinition</a></code></dd>
 <dt>Returns:</dt>
 <dd>display name</dd>
 </dl>
@@ -363,6 +387,8 @@ not permitted.)</div>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">getDescription</span>()</div>
 <div class="block">Returns a detailed description of the role.</div>
 <dl class="notes">
+<dt>Specified by:</dt>
+<dd><code><a href="../../../frameworks/openmetadata/definitions/ReferenceableDefinition.html#getDescription()">getDescription</a></code>&nbsp;in interface&nbsp;<code><a href="../../../frameworks/openmetadata/definitions/ReferenceableDefinition.html" title="interface in org.odpi.openmetadata.frameworks.openmetadata.definitions">ReferenceableDefinition</a></code></dd>
 <dt>Returns:</dt>
 <dd>description</dd>
 </dl>
@@ -371,9 +397,11 @@ not permitted.)</div>
 <li>
 <section class="detail" id="getScope()">
 <h3>getScope</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../../frameworks/openmetadata/refdata/ScopeDefinition.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.refdata">ScopeDefinition</a></span>&nbsp;<span class="element-name">getScope</span>()</div>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">getScope</span>()</div>
 <div class="block">Returns the breadth of responsibility for the role.</div>
 <dl class="notes">
+<dt>Specified by:</dt>
+<dd><code><a href="../../../frameworks/openmetadata/definitions/ActorRoleDefinition.html#getScope()">getScope</a></code>&nbsp;in interface&nbsp;<code><a href="../../../frameworks/openmetadata/definitions/ActorRoleDefinition.html" title="interface in org.odpi.openmetadata.frameworks.openmetadata.definitions">ActorRoleDefinition</a></code></dd>
 <dt>Returns:</dt>
 <dd>scope</dd>
 </dl>

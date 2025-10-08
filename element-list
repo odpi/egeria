@@ -266,6 +266,7 @@ org.odpi.openmetadata.frameworks.connectors.ffdc
 org.odpi.openmetadata.frameworks.connectors.mapper
 org.odpi.openmetadata.frameworks.connectors.properties.beans
 org.odpi.openmetadata.frameworks.connectors.properties.users
+org.odpi.openmetadata.frameworks.connectors.tabulardatasets
 org.odpi.openmetadata.frameworks.integration.client
 org.odpi.openmetadata.frameworks.integration.connectors
 org.odpi.openmetadata.frameworks.integration.context
@@ -288,6 +289,7 @@ org.odpi.openmetadata.frameworks.openmetadata.client
 org.odpi.openmetadata.frameworks.openmetadata.connectorcontext
 org.odpi.openmetadata.frameworks.openmetadata.controls
 org.odpi.openmetadata.frameworks.openmetadata.converters
+org.odpi.openmetadata.frameworks.openmetadata.definitions
 org.odpi.openmetadata.frameworks.openmetadata.enums
 org.odpi.openmetadata.frameworks.openmetadata.events
 org.odpi.openmetadata.frameworks.openmetadata.ffdc
@@ -491,7 +493,6 @@ org.odpi.openmetadata.samples.archiveutilities.combo
 org.odpi.openmetadata.samples.archiveutilities.governanceengines
 org.odpi.openmetadata.samples.archiveutilities.governanceprogram
 org.odpi.openmetadata.samples.archiveutilities.organization
-org.odpi.openmetadata.samples.archiveutilities.productcatalog
 org.odpi.openmetadata.samples.archiveutilities.sustainability
 org.odpi.openmetadata.samples.archiveutilities.types
 org.odpi.openmetadata.samples.governanceactions.clinicaltrials

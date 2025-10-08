@@ -85,7 +85,7 @@ loadScripts(document, 'script');</script>
 <div class="type-signature"><span class="modifiers">public enum </span><span class="element-name type-name-label">ProductDefinitionEnum</span>
 <span class="extends-implements">extends <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Enum.html" title="class or interface in java.lang" class="external-link">Enum</a>&lt;<a href="ProductDefinitionEnum.html" title="enum class in org.odpi.openmetadata.adapters.connectors.productmanager.productcatalog">ProductDefinitionEnum</a>&gt;
 implements <a href="ProductDefinition.html" title="interface in org.odpi.openmetadata.adapters.connectors.productmanager.productcatalog">ProductDefinition</a></span></div>
-<div class="block">The ProductDefinition describes the products (or templates for products) found in the open metadata product catalog.</div>
+<div class="block">The ProductDefinition describes the fixed products and product groups found in the open metadata product catalog.</div>
 </section>
 <section class="summary">
 <ul class="summary-list">
@@ -118,25 +118,49 @@ implements <a href="ProductDefinition.html" title="interface in org.odpi.openmet
 <div class="col-last even-row-color">
 <div class="block">List of Digital Products</div>
 </div>
+<div class="col-first odd-row-color"><code><a href="#GOVERNANCE_OBSERVABILITY" class="member-name-link">GOVERNANCE_OBSERVABILITY</a></code></div>
+<div class="col-last odd-row-color">
+<div class="block">Governance Observability</div>
+</div>
+<div class="col-first even-row-color"><code><a href="#IT_OBSERVABILITY" class="member-name-link">IT_OBSERVABILITY</a></code></div>
+<div class="col-last even-row-color">
+<div class="block">IT Operations Observability</div>
+</div>
 <div class="col-first odd-row-color"><code><a href="#LOCATIONS" class="member-name-link">LOCATIONS</a></code></div>
 <div class="col-last odd-row-color">
 <div class="block">List of Locations</div>
+</div>
+<div class="col-first even-row-color"><code><a href="#OPEN_METADATA_TYPES" class="member-name-link">OPEN_METADATA_TYPES</a></code></div>
+<div class="col-last even-row-color">
+<div class="block">Open Metadata Types</div>
+</div>
+<div class="col-first odd-row-color"><code><a href="#ORGANIZATION_OBSERVABILITY" class="member-name-link">ORGANIZATION_OBSERVABILITY</a></code></div>
+<div class="col-last odd-row-color">
+<div class="block">Organization Observability</div>
 </div>
 <div class="col-first even-row-color"><code><a href="#ORGANIZATIONS" class="member-name-link">ORGANIZATIONS</a></code></div>
 <div class="col-last even-row-color">
 <div class="block">Organizations List</div>
 </div>
-<div class="col-first odd-row-color"><code><a href="#PEOPLE" class="member-name-link">PEOPLE</a></code></div>
+<div class="col-first odd-row-color"><code><a href="#PARTY_PLACES_PRODUCTS" class="member-name-link">PARTY_PLACES_PRODUCTS</a></code></div>
 <div class="col-last odd-row-color">
+<div class="block">Party, Places and Products</div>
+</div>
+<div class="col-first even-row-color"><code><a href="#PEOPLE" class="member-name-link">PEOPLE</a></code></div>
+<div class="col-last even-row-color">
 <div class="block">List of People</div>
 </div>
-<div class="col-first even-row-color"><code><a href="#TYPES_LIST" class="member-name-link">TYPES_LIST</a></code></div>
-<div class="col-last even-row-color">
+<div class="col-first odd-row-color"><code><a href="#TYPES_LIST" class="member-name-link">TYPES_LIST</a></code></div>
+<div class="col-last odd-row-color">
 <div class="block">Open Metadata Types List</div>
 </div>
-<div class="col-first odd-row-color"><code><a href="#VALID_VALUE_SET_LIST" class="member-name-link">VALID_VALUE_SET_LIST</a></code></div>
-<div class="col-last odd-row-color">
+<div class="col-first even-row-color"><code><a href="#VALID_VALUE_SET_LIST" class="member-name-link">VALID_VALUE_SET_LIST</a></code></div>
+<div class="col-last even-row-color">
 <div class="block">Valid Value Set List</div>
+</div>
+<div class="col-first odd-row-color"><code><a href="#VALID_VALUE_SETS" class="member-name-link">VALID_VALUE_SETS</a></code></div>
+<div class="col-last odd-row-color">
+<div class="block">Valid Value Sets</div>
 </div>
 </div>
 </section>
@@ -197,40 +221,50 @@ implements <a href="ProductDefinition.html" title="interface in org.odpi.openmet
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Returns a descriptive name of the collection.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getIdentifier()" class="member-name-link">getIdentifier</a>()</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Returns the optional classification.</div>
-</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="ProductGovernanceDefinition.html" title="enum class in org.odpi.openmetadata.adapters.connectors.productmanager.productcatalog">ProductGovernanceDefinition</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getLicense()" class="member-name-link">getLicense</a>()</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Return the license that wil lbe granted to data provided through a subscription mechanism.</div>
-</div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="ProductFolderDefinition.html" title="enum class in org.odpi.openmetadata.adapters.connectors.productmanager.productcatalog">ProductFolderDefinition</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getParent()" class="member-name-link">getParent</a>()</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getFolder()" class="member-name-link">getFolder</a>()</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Return the entry of the parent folder - null for top level.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../solutionblueprint/ProductRoleDefinition.html" title="enum class in org.odpi.openmetadata.adapters.connectors.productmanager.solutionblueprint">ProductRoleDefinition</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getProductManager()" class="member-name-link">getProductManager</a>()</code></div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getIdentifier()" class="member-name-link">getIdentifier</a>()</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Returns the optional classification.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="ProductGovernanceDefinition.html" title="enum class in org.odpi.openmetadata.adapters.connectors.productmanager.productcatalog">ProductGovernanceDefinition</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getLicense()" class="member-name-link">getLicense</a>()</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Return the license that wil lbe granted to data provided through a subscription mechanism.</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="ProductDefinition.html" title="interface in org.odpi.openmetadata.adapters.connectors.productmanager.productcatalog">ProductDefinition</a>&gt;</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getProductFamilies()" class="member-name-link">getProductFamilies</a>()</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Return the list of product groups (if any) that this product belongs to.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../solutionblueprint/ProductRoleDefinition.html" title="enum class in org.odpi.openmetadata.adapters.connectors.productmanager.solutionblueprint">ProductRoleDefinition</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getProductManager()" class="member-name-link">getProductManager</a>()</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Return the project manager for the product.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getProductName()" class="member-name-link">getProductName</a>()</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getProductName()" class="member-name-link">getProductName</a>()</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Returns the unique name for the collection type.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getQualifiedName()" class="member-name-link">getQualifiedName</a>()</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getQualifiedName()" class="member-name-link">getQualifiedName</a>()</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Returns the unique name for the subject area entity.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="ProductSubscriptionDefinition.html" title="enum class in org.odpi.openmetadata.adapters.connectors.productmanager.productcatalog">ProductSubscriptionDefinition</a>&gt;</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getSubscriptionTypes()" class="member-name-link">getSubscriptionTypes</a>()</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="ProductSubscriptionDefinition.html" title="enum class in org.odpi.openmetadata.adapters.connectors.productmanager.productcatalog">ProductSubscriptionDefinition</a>&gt;</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getSubscriptionTypes()" class="member-name-link">getSubscriptionTypes</a>()</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Return the list of subscription types supported by this product.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getTypeName()" class="member-name-link">getTypeName</a>()</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Returns the unique name for the collection type.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getVersionIdentifier()" class="member-name-link">getVersionIdentifier</a>()</code></div>
@@ -274,10 +308,24 @@ the order they are declared.</div>
 <h2>Enum Constant Details</h2>
 <ul class="member-list">
 <li>
+<section class="detail" id="VALID_VALUE_SETS">
+<h3>VALID_VALUE_SETS</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="ProductDefinitionEnum.html" title="enum class in org.odpi.openmetadata.adapters.connectors.productmanager.productcatalog">ProductDefinitionEnum</a></span>&nbsp;<span class="element-name">VALID_VALUE_SETS</span></div>
+<div class="block">Valid Value Sets</div>
+</section>
+</li>
+<li>
 <section class="detail" id="VALID_VALUE_SET_LIST">
 <h3>VALID_VALUE_SET_LIST</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="ProductDefinitionEnum.html" title="enum class in org.odpi.openmetadata.adapters.connectors.productmanager.productcatalog">ProductDefinitionEnum</a></span>&nbsp;<span class="element-name">VALID_VALUE_SET_LIST</span></div>
 <div class="block">Valid Value Set List</div>
+</section>
+</li>
+<li>
+<section class="detail" id="OPEN_METADATA_TYPES">
+<h3>OPEN_METADATA_TYPES</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="ProductDefinitionEnum.html" title="enum class in org.odpi.openmetadata.adapters.connectors.productmanager.productcatalog">ProductDefinitionEnum</a></span>&nbsp;<span class="element-name">OPEN_METADATA_TYPES</span></div>
+<div class="block">Open Metadata Types</div>
 </section>
 </li>
 <li>
@@ -299,6 +347,13 @@ the order they are declared.</div>
 <h3>ATTRIBUTES_FOR_TYPES_LIST</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="ProductDefinitionEnum.html" title="enum class in org.odpi.openmetadata.adapters.connectors.productmanager.productcatalog">ProductDefinitionEnum</a></span>&nbsp;<span class="element-name">ATTRIBUTES_FOR_TYPES_LIST</span></div>
 <div class="block">Open Metadata Types List</div>
+</section>
+</li>
+<li>
+<section class="detail" id="PARTY_PLACES_PRODUCTS">
+<h3>PARTY_PLACES_PRODUCTS</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="ProductDefinitionEnum.html" title="enum class in org.odpi.openmetadata.adapters.connectors.productmanager.productcatalog">ProductDefinitionEnum</a></span>&nbsp;<span class="element-name">PARTY_PLACES_PRODUCTS</span></div>
+<div class="block">Party, Places and Products</div>
 </section>
 </li>
 <li>
@@ -327,6 +382,27 @@ the order they are declared.</div>
 <h3>LOCATIONS</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="ProductDefinitionEnum.html" title="enum class in org.odpi.openmetadata.adapters.connectors.productmanager.productcatalog">ProductDefinitionEnum</a></span>&nbsp;<span class="element-name">LOCATIONS</span></div>
 <div class="block">List of Locations</div>
+</section>
+</li>
+<li>
+<section class="detail" id="ORGANIZATION_OBSERVABILITY">
+<h3>ORGANIZATION_OBSERVABILITY</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="ProductDefinitionEnum.html" title="enum class in org.odpi.openmetadata.adapters.connectors.productmanager.productcatalog">ProductDefinitionEnum</a></span>&nbsp;<span class="element-name">ORGANIZATION_OBSERVABILITY</span></div>
+<div class="block">Organization Observability</div>
+</section>
+</li>
+<li>
+<section class="detail" id="GOVERNANCE_OBSERVABILITY">
+<h3>GOVERNANCE_OBSERVABILITY</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="ProductDefinitionEnum.html" title="enum class in org.odpi.openmetadata.adapters.connectors.productmanager.productcatalog">ProductDefinitionEnum</a></span>&nbsp;<span class="element-name">GOVERNANCE_OBSERVABILITY</span></div>
+<div class="block">Governance Observability</div>
+</section>
+</li>
+<li>
+<section class="detail" id="IT_OBSERVABILITY">
+<h3>IT_OBSERVABILITY</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="ProductDefinitionEnum.html" title="enum class in org.odpi.openmetadata.adapters.connectors.productmanager.productcatalog">ProductDefinitionEnum</a></span>&nbsp;<span class="element-name">IT_OBSERVABILITY</span></div>
+<div class="block">IT Operations Observability</div>
 </section>
 </li>
 </ul>
@@ -382,6 +458,32 @@ not permitted.)</div>
 </section>
 </li>
 <li>
+<section class="detail" id="getTypeName()">
+<h3>getTypeName</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">getTypeName</span>()</div>
+<div class="block">Returns the unique name for the collection type.</div>
+<dl class="notes">
+<dt>Specified by:</dt>
+<dd><code><a href="ProductDefinition.html#getTypeName()">getTypeName</a></code>&nbsp;in interface&nbsp;<code><a href="ProductDefinition.html" title="interface in org.odpi.openmetadata.adapters.connectors.productmanager.productcatalog">ProductDefinition</a></code></dd>
+<dt>Returns:</dt>
+<dd>type name</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="getProductFamilies()">
+<h3>getProductFamilies</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="ProductDefinition.html" title="interface in org.odpi.openmetadata.adapters.connectors.productmanager.productcatalog">ProductDefinition</a>&gt;</span>&nbsp;<span class="element-name">getProductFamilies</span>()</div>
+<div class="block">Return the list of product groups (if any) that this product belongs to.</div>
+<dl class="notes">
+<dt>Specified by:</dt>
+<dd><code><a href="ProductDefinition.html#getProductFamilies()">getProductFamilies</a></code>&nbsp;in interface&nbsp;<code><a href="ProductDefinition.html" title="interface in org.odpi.openmetadata.adapters.connectors.productmanager.productcatalog">ProductDefinition</a></code></dd>
+<dt>Returns:</dt>
+<dd>list</dd>
+</dl>
+</section>
+</li>
+<li>
 <section class="detail" id="getProductName()">
 <h3>getProductName</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">getProductName</span>()</div>
@@ -408,13 +510,13 @@ not permitted.)</div>
 </section>
 </li>
 <li>
-<section class="detail" id="getParent()">
-<h3>getParent</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="ProductFolderDefinition.html" title="enum class in org.odpi.openmetadata.adapters.connectors.productmanager.productcatalog">ProductFolderDefinition</a></span>&nbsp;<span class="element-name">getParent</span>()</div>
+<section class="detail" id="getFolder()">
+<h3>getFolder</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="ProductFolderDefinition.html" title="enum class in org.odpi.openmetadata.adapters.connectors.productmanager.productcatalog">ProductFolderDefinition</a></span>&nbsp;<span class="element-name">getFolder</span>()</div>
 <div class="block">Return the entry of the parent folder - null for top level.</div>
 <dl class="notes">
 <dt>Specified by:</dt>
-<dd><code><a href="ProductDefinition.html#getParent()">getParent</a></code>&nbsp;in interface&nbsp;<code><a href="ProductDefinition.html" title="interface in org.odpi.openmetadata.adapters.connectors.productmanager.productcatalog">ProductDefinition</a></code></dd>
+<dd><code><a href="ProductDefinition.html#getFolder()">getFolder</a></code>&nbsp;in interface&nbsp;<code><a href="ProductDefinition.html" title="interface in org.odpi.openmetadata.adapters.connectors.productmanager.productcatalog">ProductDefinition</a></code></dd>
 <dt>Returns:</dt>
 <dd>enum</dd>
 </dl>

@@ -79,11 +79,12 @@ loadScripts(document, 'script');</script>
 <section class="class-description" id="class-description">
 <dl class="notes">
 <dt>All Implemented Interfaces:</dt>
-<dd><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/io/Serializable.html" title="class or interface in java.io" class="external-link">Serializable</a></code>, <code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Comparable.html" title="class or interface in java.lang" class="external-link">Comparable</a>&lt;<a href="SolutionComponentActor.html" title="enum class in org.odpi.openmetadata.samples.archiveutilities.governanceengines">SolutionComponentActor</a>&gt;</code>, <code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/constant/Constable.html" title="class or interface in java.lang.constant" class="external-link">Constable</a></code></dd>
+<dd><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/io/Serializable.html" title="class or interface in java.io" class="external-link">Serializable</a></code>, <code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Comparable.html" title="class or interface in java.lang" class="external-link">Comparable</a>&lt;<a href="SolutionComponentActor.html" title="enum class in org.odpi.openmetadata.samples.archiveutilities.governanceengines">SolutionComponentActor</a>&gt;</code>, <code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/constant/Constable.html" title="class or interface in java.lang.constant" class="external-link">Constable</a></code>, <code><a href="../../../frameworks/openmetadata/definitions/SolutionComponentActorDefinition.html" title="interface in org.odpi.openmetadata.frameworks.openmetadata.definitions">SolutionComponentActorDefinition</a></code></dd>
 </dl>
 <hr>
 <div class="type-signature"><span class="modifiers">public enum </span><span class="element-name type-name-label">SolutionComponentActor</span>
-<span class="extends-implements">extends <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Enum.html" title="class or interface in java.lang" class="external-link">Enum</a>&lt;<a href="SolutionComponentActor.html" title="enum class in org.odpi.openmetadata.samples.archiveutilities.governanceengines">SolutionComponentActor</a>&gt;</span></div>
+<span class="extends-implements">extends <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Enum.html" title="class or interface in java.lang" class="external-link">Enum</a>&lt;<a href="SolutionComponentActor.html" title="enum class in org.odpi.openmetadata.samples.archiveutilities.governanceengines">SolutionComponentActor</a>&gt;
+implements <a href="../../../frameworks/openmetadata/definitions/SolutionComponentActorDefinition.html" title="interface in org.odpi.openmetadata.frameworks.openmetadata.definitions">SolutionComponentActorDefinition</a></span></div>
 <div class="block">Define the relationship between the solution roles and the solution components</div>
 </section>
 <section class="summary">
@@ -155,16 +156,24 @@ loadScripts(document, 'script');</script>
 <div class="table-header col-last">Description</div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getDescription()" class="member-name-link">getDescription</a>()</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Return the role relationship description.</div>
+</div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getRole()" class="member-name-link">getRole</a>()</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="SolutionComponent.html" title="enum class in org.odpi.openmetadata.samples.archiveutilities.governanceengines">SolutionComponent</a></code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Return the role relationship label.</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../frameworks/openmetadata/definitions/SolutionComponentDefinition.html" title="interface in org.odpi.openmetadata.frameworks.openmetadata.definitions">SolutionComponentDefinition</a></code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getSolutionComponent()" class="member-name-link">getSolutionComponent</a>()</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Return the solution component to link to.</div>
+</div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="SolutionRoleDefinition.html" title="enum class in org.odpi.openmetadata.samples.archiveutilities.governanceengines">SolutionRoleDefinition</a></code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getSolutionRole()" class="member-name-link">getSolutionRole</a>()</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Return the solution role to link to.</div>
+</div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#toString()" class="member-name-link">toString</a>()</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
@@ -346,24 +355,56 @@ not permitted.)</div>
 <section class="detail" id="getSolutionRole()">
 <h3>getSolutionRole</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="SolutionRoleDefinition.html" title="enum class in org.odpi.openmetadata.samples.archiveutilities.governanceengines">SolutionRoleDefinition</a></span>&nbsp;<span class="element-name">getSolutionRole</span>()</div>
+<div class="block"><span class="descfrm-type-label">Description copied from interface:&nbsp;<code><a href="../../../frameworks/openmetadata/definitions/SolutionComponentActorDefinition.html#getSolutionRole()">SolutionComponentActorDefinition</a></code></span></div>
+<div class="block">Return the solution role to link to.</div>
+<dl class="notes">
+<dt>Specified by:</dt>
+<dd><code><a href="../../../frameworks/openmetadata/definitions/SolutionComponentActorDefinition.html#getSolutionRole()">getSolutionRole</a></code>&nbsp;in interface&nbsp;<code><a href="../../../frameworks/openmetadata/definitions/SolutionComponentActorDefinition.html" title="interface in org.odpi.openmetadata.frameworks.openmetadata.definitions">SolutionComponentActorDefinition</a></code></dd>
+<dt>Returns:</dt>
+<dd>role definition</dd>
+</dl>
 </section>
 </li>
 <li>
 <section class="detail" id="getSolutionComponent()">
 <h3>getSolutionComponent</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="SolutionComponent.html" title="enum class in org.odpi.openmetadata.samples.archiveutilities.governanceengines">SolutionComponent</a></span>&nbsp;<span class="element-name">getSolutionComponent</span>()</div>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../../frameworks/openmetadata/definitions/SolutionComponentDefinition.html" title="interface in org.odpi.openmetadata.frameworks.openmetadata.definitions">SolutionComponentDefinition</a></span>&nbsp;<span class="element-name">getSolutionComponent</span>()</div>
+<div class="block"><span class="descfrm-type-label">Description copied from interface:&nbsp;<code><a href="../../../frameworks/openmetadata/definitions/SolutionComponentActorDefinition.html#getSolutionComponent()">SolutionComponentActorDefinition</a></code></span></div>
+<div class="block">Return the solution component to link to.</div>
+<dl class="notes">
+<dt>Specified by:</dt>
+<dd><code><a href="../../../frameworks/openmetadata/definitions/SolutionComponentActorDefinition.html#getSolutionComponent()">getSolutionComponent</a></code>&nbsp;in interface&nbsp;<code><a href="../../../frameworks/openmetadata/definitions/SolutionComponentActorDefinition.html" title="interface in org.odpi.openmetadata.frameworks.openmetadata.definitions">SolutionComponentActorDefinition</a></code></dd>
+<dt>Returns:</dt>
+<dd>component definition</dd>
+</dl>
 </section>
 </li>
 <li>
 <section class="detail" id="getRole()">
 <h3>getRole</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">getRole</span>()</div>
+<div class="block"><span class="descfrm-type-label">Description copied from interface:&nbsp;<code><a href="../../../frameworks/openmetadata/definitions/SolutionComponentActorDefinition.html#getRole()">SolutionComponentActorDefinition</a></code></span></div>
+<div class="block">Return the role relationship label.</div>
+<dl class="notes">
+<dt>Specified by:</dt>
+<dd><code><a href="../../../frameworks/openmetadata/definitions/SolutionComponentActorDefinition.html#getRole()">getRole</a></code>&nbsp;in interface&nbsp;<code><a href="../../../frameworks/openmetadata/definitions/SolutionComponentActorDefinition.html" title="interface in org.odpi.openmetadata.frameworks.openmetadata.definitions">SolutionComponentActorDefinition</a></code></dd>
+<dt>Returns:</dt>
+<dd>string</dd>
+</dl>
 </section>
 </li>
 <li>
 <section class="detail" id="getDescription()">
 <h3>getDescription</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">getDescription</span>()</div>
+<div class="block"><span class="descfrm-type-label">Description copied from interface:&nbsp;<code><a href="../../../frameworks/openmetadata/definitions/SolutionComponentActorDefinition.html#getDescription()">SolutionComponentActorDefinition</a></code></span></div>
+<div class="block">Return the role relationship description.</div>
+<dl class="notes">
+<dt>Specified by:</dt>
+<dd><code><a href="../../../frameworks/openmetadata/definitions/SolutionComponentActorDefinition.html#getDescription()">getDescription</a></code>&nbsp;in interface&nbsp;<code><a href="../../../frameworks/openmetadata/definitions/SolutionComponentActorDefinition.html" title="interface in org.odpi.openmetadata.frameworks.openmetadata.definitions">SolutionComponentActorDefinition</a></code></dd>
+<dt>Returns:</dt>
+<dd>string</dd>
+</dl>
 </section>
 </li>
 <li>

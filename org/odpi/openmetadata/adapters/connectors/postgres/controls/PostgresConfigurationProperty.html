@@ -137,13 +137,21 @@ loadScripts(document, 'script');</script>
 <div class="col-last odd-row-color">
 <div class="block">The number of the port to use to connect to the database server.</div>
 </div>
-<div class="col-first even-row-color"><code><a href="#SCHEMA_NAME" class="member-name-link">SCHEMA_NAME</a></code></div>
+<div class="col-first even-row-color"><code><a href="#SCHEMA_DESCRIPTION" class="member-name-link">SCHEMA_DESCRIPTION</a></code></div>
 <div class="col-last even-row-color">
+<div class="block">The description of the database schema being catalogued.</div>
+</div>
+<div class="col-first odd-row-color"><code><a href="#SCHEMA_NAME" class="member-name-link">SCHEMA_NAME</a></code></div>
+<div class="col-last odd-row-color">
 <div class="block">The name of the database schema being catalogued.</div>
 </div>
-<div class="col-first odd-row-color"><code><a href="#SERVER_NAME" class="member-name-link">SERVER_NAME</a></code></div>
-<div class="col-last odd-row-color">
+<div class="col-first even-row-color"><code><a href="#SERVER_NAME" class="member-name-link">SERVER_NAME</a></code></div>
+<div class="col-last even-row-color">
 <div class="block">The name of the database server being catalogued.</div>
+</div>
+<div class="col-first odd-row-color"><code><a href="#TABLE_DESCRIPTION" class="member-name-link">TABLE_DESCRIPTION</a></code></div>
+<div class="col-last odd-row-color">
+<div class="block">Provides a list of database names that should not be catalogued.</div>
 </div>
 <div class="col-first even-row-color"><code><a href="#TABLE_NAME" class="member-name-link">TABLE_NAME</a></code></div>
 <div class="col-last even-row-color">
@@ -331,10 +339,24 @@ the order they are declared.</div>
 </section>
 </li>
 <li>
+<section class="detail" id="SCHEMA_DESCRIPTION">
+<h3>SCHEMA_DESCRIPTION</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="PostgresConfigurationProperty.html" title="enum class in org.odpi.openmetadata.adapters.connectors.postgres.controls">PostgresConfigurationProperty</a></span>&nbsp;<span class="element-name">SCHEMA_DESCRIPTION</span></div>
+<div class="block">The description of the database schema being catalogued.</div>
+</section>
+</li>
+<li>
 <section class="detail" id="TABLE_NAME">
 <h3>TABLE_NAME</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="PostgresConfigurationProperty.html" title="enum class in org.odpi.openmetadata.adapters.connectors.postgres.controls">PostgresConfigurationProperty</a></span>&nbsp;<span class="element-name">TABLE_NAME</span></div>
 <div class="block">The name of the database table being catalogued.</div>
+</section>
+</li>
+<li>
+<section class="detail" id="TABLE_DESCRIPTION">
+<h3>TABLE_DESCRIPTION</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="PostgresConfigurationProperty.html" title="enum class in org.odpi.openmetadata.adapters.connectors.postgres.controls">PostgresConfigurationProperty</a></span>&nbsp;<span class="element-name">TABLE_DESCRIPTION</span></div>
+<div class="block">Provides a list of database names that should not be catalogued.</div>
 </section>
 </li>
 <li>
