@@ -4,8 +4,8 @@ package org.odpi.openmetadata.adapters.connectors.governanceactions.provisioning
 
 import org.odpi.openmetadata.adapters.connectors.governanceactions.ffdc.GovernanceActionConnectorsAuditCode;
 import org.odpi.openmetadata.frameworks.auditlog.messagesets.AuditLogMessageDefinition;
-import org.odpi.openmetadata.frameworks.connectors.ReadableTabularDataSource;
-import org.odpi.openmetadata.frameworks.connectors.WritableTabularDataSource;
+import org.odpi.openmetadata.frameworks.connectors.tabulardatasets.ReadableTabularDataSource;
+import org.odpi.openmetadata.frameworks.connectors.tabulardatasets.WritableTabularDataSource;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
 import org.odpi.openmetadata.frameworks.opengovernance.GeneralGovernanceActionService;
 import org.odpi.openmetadata.frameworks.opengovernance.properties.ActionTargetElement;
@@ -133,6 +133,9 @@ public class ProvisionTabularDataSetGovernanceActionConnector extends GeneralGov
 
                 long sourceRecordCount = sourceConnector.getRecordCount();
                 long destinationRecordCount = destinationConnector.getRecordCount();
+
+                destinationConnector.setTableName(sourceConnector.getTableName(),
+                                                  sourceConnector.getTableDescription());
 
                 destinationConnector.setColumnDescriptions(sourceConnector.getColumnDescriptions());
 

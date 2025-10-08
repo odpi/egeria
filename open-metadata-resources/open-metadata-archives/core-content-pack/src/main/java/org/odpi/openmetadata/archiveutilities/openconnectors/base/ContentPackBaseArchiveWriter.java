@@ -2,7 +2,7 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.archiveutilities.openconnectors.base;
 
-import org.odpi.openmetadata.adapters.connectors.egeriainfrastructure.control.EgeriaDeployedImplementationType;
+import org.odpi.openmetadata.frameworks.openmetadata.definitions.EgeriaDeployedImplementationType;
 import org.odpi.openmetadata.adapters.connectors.governanceactions.stewardship.ManageAssetGuard;
 import org.odpi.openmetadata.archiveutilities.openconnectors.*;
 import org.odpi.openmetadata.frameworks.connectors.controls.SecretsStoreConfigurationProperty;
@@ -133,7 +133,6 @@ public abstract class ContentPackBaseArchiveWriter extends EgeriaBaseArchiveWrit
         Map<String, Object>  extendedProperties = new HashMap<>();
         List<Classification> classifications    = new ArrayList<>();
 
-        extendedProperties.put(OpenMetadataProperty.DEPLOYED_IMPLEMENTATION_TYPE.name, deployedImplementationType.getDeployedImplementationType());
         extendedProperties.put(OpenMetadataProperty.RESOURCE_NAME.name, PlaceholderProperty.FILE_PATH_NAME.getPlaceholder());
         extendedProperties.put(OpenMetadataProperty.PATH_NAME.name, PlaceholderProperty.FILE_PATH_NAME.getPlaceholder());
         extendedProperties.put(OpenMetadataProperty.FILE_TYPE.name, PlaceholderProperty.FILE_TYPE.getPlaceholder());
@@ -153,6 +152,7 @@ public abstract class ContentPackBaseArchiveWriter extends EgeriaBaseArchiveWrit
         String assetGUID = archiveHelper.addAsset(deployedImplementationType.getAssociatedTypeName(),
                                                   qualifiedName,
                                                   PlaceholderProperty.FILE_NAME.getPlaceholder(),
+                                                  deployedImplementationType.getDeployedImplementationType(),
                                                   PlaceholderProperty.VERSION_IDENTIFIER.getPlaceholder(),
                                                   PlaceholderProperty.DESCRIPTION.getPlaceholder(),
                                                   null,
@@ -234,10 +234,7 @@ public abstract class ContentPackBaseArchiveWriter extends EgeriaBaseArchiveWrit
     {
         final String methodName = "createDataSetCatalogTemplate";
 
-        Map<String, Object>  extendedProperties = new HashMap<>();
         List<Classification> classifications    = new ArrayList<>();
-
-        extendedProperties.put(OpenMetadataProperty.DEPLOYED_IMPLEMENTATION_TYPE.name, deployedImplementationType.getDeployedImplementationType());
 
         classifications.add(archiveHelper.getTemplateClassification(deployedImplementationType.getDeployedImplementationType() + " template",
                                                                     "Create an asset of type " + deployedImplementationType.getAssociatedTypeName() + " with an associated Connection.",
@@ -248,10 +245,11 @@ public abstract class ContentPackBaseArchiveWriter extends EgeriaBaseArchiveWrit
         String assetGUID = archiveHelper.addAsset(deployedImplementationType.getAssociatedTypeName(),
                                                   qualifiedName,
                                                   PlaceholderProperty.DISPLAY_NAME.getPlaceholder(),
+                                                  deployedImplementationType.getDeployedImplementationType(),
                                                   PlaceholderProperty.VERSION_IDENTIFIER.getPlaceholder(),
                                                   PlaceholderProperty.DESCRIPTION.getPlaceholder(),
                                                   null,
-                                                  extendedProperties,
+                                                  null,
                                                   classifications);
 
         assert(assetGUID.equals(templateGUID));
@@ -418,10 +416,7 @@ public abstract class ContentPackBaseArchiveWriter extends EgeriaBaseArchiveWrit
         Map<String, Object>  extendedProperties = new HashMap<>();
         List<Classification> classifications    = new ArrayList<>();
 
-        extendedProperties.put(OpenMetadataProperty.DEPLOYED_IMPLEMENTATION_TYPE.name,
-                               deployedImplementationType.getDeployedImplementationType());
-        extendedProperties.put(OpenMetadataProperty.RESOURCE_NAME.name,
-                               serverName);
+        extendedProperties.put(OpenMetadataProperty.RESOURCE_NAME.name, serverName);
 
         if (deployedImplementationType.getAssociatedClassification() != null)
         {
@@ -438,6 +433,7 @@ public abstract class ContentPackBaseArchiveWriter extends EgeriaBaseArchiveWrit
         String assetGUID = archiveHelper.addAsset(deployedImplementationType.getAssociatedTypeName(),
                                                   qualifiedName,
                                                   serverName,
+                                                  deployedImplementationType.getDeployedImplementationType(),
                                                   serverVersionIdentifier,
                                                   description,
                                                   null,
@@ -696,10 +692,7 @@ public abstract class ContentPackBaseArchiveWriter extends EgeriaBaseArchiveWrit
         Map<String, Object>  extendedProperties = new HashMap<>();
         List<Classification> classifications    = new ArrayList<>();
 
-        extendedProperties.put(OpenMetadataProperty.DEPLOYED_IMPLEMENTATION_TYPE.name,
-                               deployedImplementationType.getDeployedImplementationType());
-        extendedProperties.put(OpenMetadataProperty.RESOURCE_NAME.name,
-                               PlaceholderProperty.HOST_URL.getPlaceholder());
+        extendedProperties.put(OpenMetadataProperty.RESOURCE_NAME.name, PlaceholderProperty.HOST_URL.getPlaceholder());
 
         classifications.add(archiveHelper.getTemplateClassification(deployedImplementationType.getDeployedImplementationType() + " template",
                                                                     "Create a " + deployedImplementationType.getDeployedImplementationType() + " Host with an associated SoftwareCapability.",
@@ -710,6 +703,7 @@ public abstract class ContentPackBaseArchiveWriter extends EgeriaBaseArchiveWrit
         String assetGUID = archiveHelper.addAsset(deployedImplementationType.getAssociatedTypeName(),
                                                   qualifiedName,
                                                   PlaceholderProperty.DISPLAY_NAME.getPlaceholder(),
+                                                  deployedImplementationType.getDeployedImplementationType(),
                                                   PlaceholderProperty.VERSION_IDENTIFIER.getPlaceholder(),
                                                   PlaceholderProperty.DESCRIPTION.getPlaceholder(),
                                                   null,
@@ -916,6 +910,7 @@ public abstract class ContentPackBaseArchiveWriter extends EgeriaBaseArchiveWrit
         String assetGUID = archiveHelper.addAsset(deployedImplementationType.getAssociatedTypeName(),
                                                   qualifiedName,
                                                   assetName,
+                                                  deployedImplementationType.getDeployedImplementationType(),
                                                   versionIdentifier,
                                                   assetDescription,
                                                   null,

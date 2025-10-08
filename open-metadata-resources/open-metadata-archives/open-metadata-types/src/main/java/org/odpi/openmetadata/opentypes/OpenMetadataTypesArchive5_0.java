@@ -538,38 +538,8 @@ public class OpenMetadataTypesArchive5_0
 
     private void update0220DataFiles()
     {
-        this.archiveBuilder.addTypeDefPatch(updateDataFile());
         this.archiveBuilder.addEntityDef(addXMLFileEntity());
         this.archiveBuilder.addEntityDef(addSpreadsheetFileEntity());
-    }
-
-
-    /**
-     * Update DataFile with an explicit property for fileExtension.  Prior to this change the file extension
-     * was stored in the fileType property.  The fileType property is now a logical fileType.
-     *
-     * @return type def patch
-     */
-    private TypeDefPatch updateDataFile()
-    {
-        /*
-         * Create the Patch
-         */
-        TypeDefPatch typeDefPatch = archiveBuilder.getPatchForType(OpenMetadataType.DATA_FILE.typeName);
-
-        typeDefPatch.setUpdatedBy(originatorName);
-        typeDefPatch.setUpdateTime(creationDate);
-
-        /*
-         * Build the attributes
-         */
-        List<TypeDefAttribute> properties = new ArrayList<>();
-
-        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.FILE_EXTENSION));
-
-        typeDefPatch.setPropertyDefinitions(properties);
-
-        return typeDefPatch;
     }
 
 

@@ -1,7 +1,7 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 /* Copyright Contributors to the ODPi Egeria project. */
 
-package org.odpi.openmetadata.frameworks.connectors;
+package org.odpi.openmetadata.frameworks.connectors.tabulardatasets;
 
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
 
@@ -21,12 +21,34 @@ public interface ReadableTabularDataSource
      * @return count
      * @throws ConnectorCheckedException there is a problem accessing the data
      */
-    long     getRecordCount() throws ConnectorCheckedException;
+    long getRecordCount() throws ConnectorCheckedException;
+
+
+    /**
+     * Return the table name for this data source.  This is in canonical word format where each word in the name
+     * should be capitalized, with spaces between the words.
+     * This format allows easy translation between different naming conventions.
+     *
+     * @return string
+     * @throws ConnectorCheckedException there is a problem accessing the data
+     */
+    String getTableName() throws ConnectorCheckedException;
+
+
+    /**
+     * Return the description for this data source.
+     *
+     * @return string
+     * @throws ConnectorCheckedException there is a problem accessing the data
+     */
+    String getTableDescription() throws ConnectorCheckedException;
 
 
     /**
      * Return the list of column descriptions associated with this data source.  The information
-     * should be sufficient to define the schema in a target data store.
+     * should be sufficient to define the schema in a target data store.  The names of the columns should be in
+     * a canonical name format where each word in the name is capitalized with a space between each word.
+     * This allows simple translation between the naming conventions supported by different technologies.
      *
      * @return a list of column descriptions or null if not available.
      * @throws ConnectorCheckedException there is a problem accessing the data

@@ -3,13 +3,12 @@
 
 ![TechPreview](../../../../images/egeria-content-status-tech-preview.png#pagewidth)
 
-# Governance Action Connectors
+# Governance Services
 
 This module contains the implementation of the
-[governance action services](https://egeria-project.org/concepts/governance-action-service/) that run in the
-[Governance Action Open Metadata Engine Service (OMES)](../../../engine-services/governance-action)
-hosted by the
-[Engine Host OMAG Server](https://egeria-project.org/concepts/engine-host).
+[governance services](https://egeria-project.org/concepts/governance-service/) that run in the
+[Open Metadata Engine Services (OMES)](../../../engine-services)
+hosted by the [Engine Host OMAG Server](https://egeria-project.org/concepts/engine-host).
 
 
 

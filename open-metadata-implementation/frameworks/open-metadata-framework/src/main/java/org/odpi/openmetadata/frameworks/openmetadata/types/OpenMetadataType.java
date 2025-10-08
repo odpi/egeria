@@ -511,7 +511,7 @@ public enum OpenMetadataType
                                ResultsSetProperties.class),
 
     /**
-     * Defines that a collection is a set of results from an activity, query, ...
+     * Defines that a collection is a set of external references such as external data/model sources, links to media or cited documents.
      */
     REFERENCE_LIST_CLASSIFICATION("f78e6fd3-0e76-42b4-9404-67dc458708ba",
                                   "ReferenceList",
@@ -5951,7 +5951,7 @@ public enum OpenMetadataType
                        "SolutionBlueprint",
                        OpenMetadataWikiPages.MODEL_0740_SOLUTION_BLUEPRINTS,
                        "92042d1e-3717-4343-b111-72a0aaa7f63e",
-                       "Collection of solution components that make up a solution for digital services such as digital products..",
+                       "Collection of solution components that make up a solution for digital services such as digital products.",
                        SolutionBlueprintProperties.class),
 
     /**

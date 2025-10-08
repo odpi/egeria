@@ -25,6 +25,22 @@ public interface ProductDefinition
      *
      * @return type name
      */
+    String getTypeName();
+
+
+    /**
+     * Return the list of product groups (if any) that this product belongs to.
+     *
+     * @return list
+     */
+    List<ProductDefinition> getProductFamilies();
+
+
+    /**
+     * Returns the unique name for the collection type.
+     *
+     * @return type name
+     */
     String getProductName();
 
 
@@ -37,11 +53,11 @@ public interface ProductDefinition
 
 
     /**
-     * Return the entry of the parent folder - null for top level.
+     * Return the entry of the parent folder - null for top level and products that are part of groups.
      *
      * @return enum
      */
-    ProductFolderDefinition getParent();
+    ProductFolderDefinition getFolder();
 
 
     /**

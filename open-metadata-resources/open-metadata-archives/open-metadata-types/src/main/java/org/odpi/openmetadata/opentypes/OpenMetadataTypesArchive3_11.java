@@ -290,7 +290,6 @@ public class OpenMetadataTypesArchive3_11
     {
         this.archiveBuilder.addTypeDefPatch(updateUserIdentity());
         this.archiveBuilder.addTypeDefPatch(updatePerson());
-        this.archiveBuilder.addTypeDefPatch(updatePersonRole());
         this.archiveBuilder.addTypeDefPatch(updateContactDetails());
     }
 
@@ -339,30 +338,6 @@ public class OpenMetadataTypesArchive3_11
 
         return typeDefPatch;
     }
-
-
-    private TypeDefPatch updatePersonRole()
-    {
-        /*
-         * Create the Patch
-         */
-        TypeDefPatch  typeDefPatch = archiveBuilder.getPatchForType(OpenMetadataType.PERSON_ROLE.typeName);
-
-        typeDefPatch.setUpdatedBy(originatorName);
-        typeDefPatch.setUpdateTime(creationDate);
-
-        /*
-         * Build the attributes
-         */
-        List<TypeDefAttribute> properties = new ArrayList<>();
-
-        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.HEAD_COUNT));
-
-        typeDefPatch.setPropertyDefinitions(properties);
-
-        return typeDefPatch;
-    }
-
 
 
     private TypeDefPatch updateContactDetails()

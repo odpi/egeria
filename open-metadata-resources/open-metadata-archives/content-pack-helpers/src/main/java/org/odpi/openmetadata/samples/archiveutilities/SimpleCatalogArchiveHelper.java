@@ -5,6 +5,7 @@ package org.odpi.openmetadata.samples.archiveutilities;
 import org.odpi.openmetadata.frameworks.connectors.ConnectorProvider;
 import org.odpi.openmetadata.frameworks.connectors.mapper.OpenConnectorsValidValues;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.ConnectorType;
+import org.odpi.openmetadata.frameworks.openmetadata.definitions.*;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.*;
 import org.odpi.openmetadata.frameworks.openmetadata.refdata.AssignmentType;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
@@ -238,6 +239,155 @@ public class SimpleCatalogArchiveHelper
         System.out.println("Used GUIDs map size: " + idToGUIDMap.getUsedSize());
 
         idToGUIDMap.saveUsedGUIDs();
+    }
+
+
+
+    /**
+     * Link solution components together.
+     *
+     * @param solutionComponentWireDefinitions list of definitions
+     */
+    public void addSolutionComponentWires(List<SolutionComponentWireDefinition> solutionComponentWireDefinitions)
+    {
+        for (SolutionComponentWireDefinition solutionComponentWire : solutionComponentWireDefinitions)
+        {
+            this.addSolutionLinkingWireRelationship(solutionComponentWire.getComponent1().getGUID(),
+                                                    solutionComponentWire.getComponent2().getGUID(),
+                                                    solutionComponentWire.getLabel(),
+                                                    solutionComponentWire.getDescription(),
+                                                    solutionComponentWire.getISCQualifiedNames());
+        }
+    }
+
+
+    /**
+     * Create solution blueprints and links to their components.
+     *
+     * @param solutionBlueprintDefinitions list of definitions
+     */
+    public void addSolutionBlueprints(List<SolutionBlueprintDefinition> solutionBlueprintDefinitions)
+    {
+        final String methodName = "addSolutionBlueprints";
+
+        for (SolutionBlueprintDefinition solutionBlueprint : solutionBlueprintDefinitions)
+        {
+            this.setGUID(solutionBlueprint.getQualifiedName(), solutionBlueprint.getGUID());
+
+            String blueprintGUID = this.addSolutionBlueprint(solutionBlueprint.getTypeName(),
+                                                             solutionBlueprint.getQualifiedName(),
+                                                             solutionBlueprint.getDisplayName(),
+                                                             solutionBlueprint.getDescription(),
+                                                             solutionBlueprint.getVersionIdentifier(),
+                                                             null,
+                                                             null);
+
+            assert (blueprintGUID.equals(solutionBlueprint.getGUID()));
+
+            if (solutionBlueprint.isTemplate())
+            {
+                this.addTemplateClassification(blueprintGUID,
+                                               "Standard Solution Blueprint Template",
+                                               null,
+                                               "V1.0",
+                                               null,
+                                               methodName);
+            }
+
+            if (solutionBlueprint.getSolutionComponents() != null)
+            {
+                for (SolutionComponentDefinition solutionComponentDefinition : solutionBlueprint.getSolutionComponents())
+                {
+                    this.addMemberToCollection(solutionBlueprint.getGUID(),
+                                               solutionComponentDefinition.getGUID(),
+                                               null);
+                }
+            }
+        }
+    }
+
+    /**
+     * Create solution roles
+     */
+    public void addSolutionRoles(List<ActorRoleDefinition> actorRoleDefinitions)
+    {
+        for (ActorRoleDefinition solutionRoleDefinition : actorRoleDefinitions)
+        {
+            this.setGUID(solutionRoleDefinition.getQualifiedName(), solutionRoleDefinition.getGUID());
+
+            String solutionRoleGUID = this.addActorRole(solutionRoleDefinition.getTypeName(),
+                                                        solutionRoleDefinition.getQualifiedName(),
+                                                        solutionRoleDefinition.getIdentifier(),
+                                                        solutionRoleDefinition.getDisplayName(),
+                                                        solutionRoleDefinition.getDescription(),
+                                                        solutionRoleDefinition.getScope(),
+                                                        false,
+                                                        0,
+                                                        null,
+                                                        null);
+
+            assert(solutionRoleGUID.equals(solutionRoleDefinition.getGUID()));
+        }
+    }
+
+
+    /**
+     * Create solution components
+     *
+     * @param solutionComponentDefinitions list of solution components
+     */
+    public void addSolutionComponents(List<SolutionComponentDefinition> solutionComponentDefinitions)
+    {
+        for (SolutionComponentDefinition solutionComponent : solutionComponentDefinitions)
+        {
+            this.setGUID(solutionComponent.getQualifiedName(), solutionComponent.getGUID());
+
+            String componentGUID = this.addSolutionComponent(solutionComponent.getTypeName(),
+                                                             solutionComponent.getQualifiedName(),
+                                                             solutionComponent.getDisplayName(),
+                                                             solutionComponent.getDescription(),
+                                                             solutionComponent.getVersionIdentifier(),
+                                                             solutionComponent.getComponentType(),
+                                                             solutionComponent.getImplementationType(),
+                                                             null,
+                                                             null,
+                                                             null,
+                                                             null);
+
+            assert(componentGUID.equals(solutionComponent.getGUID()));
+
+            if (solutionComponent.getSubComponents() != null)
+            {
+                for (SolutionComponentDefinition subComponent : solutionComponent.getSubComponents())
+                {
+                    this.addSolutionCompositionRelationship(componentGUID, subComponent.getGUID());
+                }
+            }
+
+            if (solutionComponent.getImplementationResource() != null)
+            {
+                this.addImplementationResourceRelationship(solutionComponent.getGUID(),
+                                                                    solutionComponent.getImplementationResource(),
+                                                                    "Standard implementation of the main process step");
+            }
+        }
+    }
+
+
+    /**
+     * Link solution components to their actors.
+     *
+     * @param solutionComponentActorDefinitions list of definitions
+     */
+    public void addSolutionComponentActors(List<SolutionComponentActorDefinition> solutionComponentActorDefinitions)
+    {
+        for (SolutionComponentActorDefinition solutionRoleDefinition : solutionComponentActorDefinitions)
+        {
+            this.addSolutionComponentActorRelationship(solutionRoleDefinition.getSolutionRole().getGUID(),
+                                                                solutionRoleDefinition.getSolutionComponent().getGUID(),
+                                                                solutionRoleDefinition.getRole(),
+                                                                solutionRoleDefinition.getDescription());
+        }
     }
 
 
@@ -1337,7 +1487,7 @@ public class SimpleCatalogArchiveHelper
      * @param identifier unique code
      * @param name display name
      * @param description description (eg job description)
-     * @param scope scope of role's responsibilities
+
      * @param setHeadCount should the headcount field be set?
      * @param headCount number of people that may be appointed to the role (default = 1)
      * @param additionalProperties are there any additional properties to add
@@ -1350,7 +1500,6 @@ public class SimpleCatalogArchiveHelper
                                      String              identifier,
                                      String              name,
                                      String              description,
-                                     String              scope,
                                      boolean             setHeadCount,
                                      int                 headCount,
                                      Map<String, String> additionalProperties,
@@ -1370,7 +1519,6 @@ public class SimpleCatalogArchiveHelper
         properties = archiveHelper.addIntPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.DOMAIN_IDENTIFIER.name, domainIdentifier, methodName);
         properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.DISPLAY_NAME.name, name, methodName);
         properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.DESCRIPTION.name, description, methodName);
-        properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.SCOPE.name, scope, methodName);
         if (setHeadCount)
         {
             properties = archiveHelper.addIntPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.HEAD_COUNT.name, headCount, methodName);
@@ -3506,10 +3654,8 @@ public class SimpleCatalogArchiveHelper
                            Map<String, Object>  extendedProperties,
                            List<Classification> classifications)
     {
-        return this.addAsset(typeName, qualifiedName, name, null, description, additionalProperties, extendedProperties, classifications);
+        return this.addAsset(typeName, qualifiedName, name, null,null, description, additionalProperties, extendedProperties, classifications);
     }
-
-
 
 
     /**
@@ -3587,7 +3733,8 @@ public class SimpleCatalogArchiveHelper
      *
      * @param typeName name of asset subtype to use - default is Asset
      * @param qualifiedName unique name for the asset
-     * @param name display name for the asset
+     * @param displayName display name for the asset
+     * @param deployedImplementationType type of technology
      * @param versionIdentifier version for the asset
      * @param description description about the asset
      * @param additionalProperties any other properties
@@ -3598,7 +3745,8 @@ public class SimpleCatalogArchiveHelper
      */
     public String addAsset(String               typeName,
                            String               qualifiedName,
-                           String               name,
+                           String               displayName,
+                           String               deployedImplementationType,
                            String               versionIdentifier,
                            String               description,
                            Map<String, String>  additionalProperties,
@@ -3626,7 +3774,8 @@ public class SimpleCatalogArchiveHelper
         entityClassifications.add(this.getAnchorClassification(guid, assetTypeName, OpenMetadataType.ASSET.typeName, null, methodName));
 
         InstanceProperties properties = archiveHelper.addStringPropertyToInstance(archiveRootName, null, OpenMetadataProperty.QUALIFIED_NAME.name, qualifiedName, methodName);
-        properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.DISPLAY_NAME.name, name, methodName);
+        properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.DISPLAY_NAME.name, displayName, methodName);
+        properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.DEPLOYED_IMPLEMENTATION_TYPE.name, deployedImplementationType, methodName);
         properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.VERSION_IDENTIFIER.name, versionIdentifier, methodName);
         properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.DESCRIPTION.name, description, methodName);
         properties = archiveHelper.addStringMapPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.ADDITIONAL_PROPERTIES.name, additionalProperties, methodName);
@@ -3719,7 +3868,7 @@ public class SimpleCatalogArchiveHelper
 
         if (governanceZones == null)
         {
-            return this.addAsset(typeName, qualifiedName, name, versionIdentifier, description, additionalProperties, extendedProperties, null);
+            return this.addAsset(typeName, qualifiedName, name, null, versionIdentifier, description, additionalProperties, extendedProperties, null);
         }
         else
         {
@@ -7342,7 +7491,6 @@ public class SimpleCatalogArchiveHelper
     /**
      * Add a new solution component.
      *
-     * @param solutionBlueprintGUIDs owning blueprint
      * @param suppliedTypeName type name to use
      * @param qualifiedName qualified name
      * @param name display name
@@ -7356,8 +7504,7 @@ public class SimpleCatalogArchiveHelper
      * @param extendedProperties any additional properties associated with a subtype
      * @return unique identifier of the new profile
      */
-    public  String addSolutionComponent(List<String>        solutionBlueprintGUIDs,
-                                        String              suppliedTypeName,
+    public  String addSolutionComponent(String              suppliedTypeName,
                                         String              qualifiedName,
                                         String              name,
                                         String              description,
@@ -7399,46 +7546,7 @@ public class SimpleCatalogArchiveHelper
 
         archiveBuilder.addEntity(entity);
 
-        if (solutionBlueprintGUIDs != null)
-        {
-            for (String solutionBlueprintGUID : solutionBlueprintGUIDs)
-            {
-                addSolutionBlueprintCompositionRelationship(solutionBlueprintGUID, entity.getGUID(), roleInSolution, roleInSolutionDescription);
-            }
-        }
-
         return entity.getGUID();
-    }
-
-
-
-    /**
-     * Link a solution blueprint to one of its components
-     *
-     * @param solutionBlueprintGUID guid of blueprint
-     * @param solutionComponentGUID guid of component
-     * @param membershipType membershipType of the component in the solution
-     * @param description description of the membershipType in the solution
-     */
-    public void addSolutionBlueprintCompositionRelationship(String solutionBlueprintGUID,
-                                                            String solutionComponentGUID,
-                                                            String membershipType,
-                                                            String description)
-    {
-        final String methodName = "addISolutionBlueprintCompositionRelationship";
-
-        EntityProxy end1 = archiveHelper.getEntityProxy(archiveBuilder.getEntity(solutionBlueprintGUID));
-        EntityProxy end2 = archiveHelper.getEntityProxy(archiveBuilder.getEntity(solutionComponentGUID));
-
-        InstanceProperties properties = archiveHelper.addStringPropertyToInstance(archiveRootName, null, OpenMetadataProperty.MEMBERSHIP_TYPE.name, membershipType, methodName);
-        properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.DESCRIPTION.name, description, methodName);
-
-        archiveBuilder.addRelationship(archiveHelper.getRelationship(OpenMetadataType.COLLECTION_MEMBERSHIP_RELATIONSHIP.typeName,
-                                                                     idToGUIDMap.getGUID(solutionBlueprintGUID + "_to_" + solutionComponentGUID + "_solution_blueprint_composition_relationship"),
-                                                                     properties,
-                                                                     InstanceStatus.ACTIVE,
-                                                                     end1,
-                                                                     end2));
     }
 
 

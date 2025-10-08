@@ -23,12 +23,20 @@ public enum ProductCategoryDefinition
      */
     REFERENCE_DATA ("Reference Data","Common values for code tables."),
 
-
     /**
      * Common values for code tables.
      */
     MASTER_DATA ("Master Data","Core entities that enable linkage across many activities."),
 
+    /**
+     * Regular publishing of summaries, analysis and other insights
+     */
+    INSIGHT_NOTIFICATIONS ("Insight Notifications","Regular publishing of summaries, analysis and other insights."),
+
+    /**
+     * Details of the open metadata types in operation.
+     */
+    OPEN_METADATA_TYPES ("Open Metadata Types","Details of the open metadata types in operation."),
 
     ;
 

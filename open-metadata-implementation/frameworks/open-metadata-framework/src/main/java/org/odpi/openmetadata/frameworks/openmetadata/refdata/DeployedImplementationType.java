@@ -76,6 +76,50 @@ public enum DeployedImplementationType implements DeployedImplementationTypeDefi
              "A logical collection of data, either at rest or in motion, organized into a tabular (columnar) format.",
              "https://egeria-project.org/concepts/asset/"),
 
+
+    /**
+     * A data set containing metadata.
+     */
+    METADATA_COLLECTION("Metadata Collection",
+                        DeployedImplementationType.DATA_SET,
+                        OpenMetadataType.METADATA_COLLECTION.typeName,
+                        null,
+                        OpenMetadataType.METADATA_COLLECTION.description,
+                        OpenMetadataWikiPages.MODEL_0225_METADATA_REPOSITORIES),
+
+    /**
+     * A data store containing cohort membership registration details.
+     */
+    COHORT_REGISTRY_STORE("Cohort Registry Store",
+                        null,
+                        OpenMetadataType.COHORT_REGISTRY_STORE.typeName,
+                        null,
+                        OpenMetadataType.COHORT_REGISTRY_STORE.description,
+                        OpenMetadataWikiPages.MODEL_0225_METADATA_REPOSITORIES),
+
+
+    /**
+     * A data store containing metadata.
+     */
+    METADATA_REPOSITORY("Metadata Repository",
+                        null,
+                        OpenMetadataType.METADATA_REPOSITORY.typeName,
+                        null,
+                        OpenMetadataType.METADATA_REPOSITORY.description,
+                        OpenMetadataWikiPages.MODEL_0225_METADATA_REPOSITORIES),
+
+
+    /**
+     * A metadata repository supporting open metadata types and interfaces.
+     */
+    OPEN_METADATA_REPOSITORY("Open Metadata Repository",
+                        METADATA_REPOSITORY,
+                        OpenMetadataType.METADATA_REPOSITORY.typeName,
+                        null,
+                        "A metadata repository supporting open metadata types and interfaces.",
+                        OpenMetadataWikiPages.MODEL_0225_METADATA_REPOSITORIES),
+
+
     /**
      * A file containing externally accessible data - other fields provide information on the internal format.
      */
@@ -798,7 +842,7 @@ public enum DeployedImplementationType implements DeployedImplementationTypeDefi
     /**
      * Cohort Registry Store - Stores information about the repositories registered in the open metadata repository cohort.
      */
-    COHORT_REGISTRY_STORE("Cohort Registry Store",
+    COHORT_REGISTRY_STORE_CONNECTOR("Cohort Registry Store",
                           DeployedImplementationType.OCF_CONNECTOR,
                           OpenMetadataType.DEPLOYED_CONNECTOR.typeName,
                           null,
@@ -808,7 +852,7 @@ public enum DeployedImplementationType implements DeployedImplementationTypeDefi
     /**
      * Audit Log Destination - Reads and writes records to the Open Metadata Repository Services (OMRS) audit log.
      */
-    AUDIT_LOG_DESTINATION("Audit Log Destination",
+    AUDIT_LOG_DESTINATION_CONNECTOR("Audit Log Destination",
                           DeployedImplementationType.OCF_CONNECTOR,
                           OpenMetadataType.DEPLOYED_CONNECTOR.typeName,
                           null,

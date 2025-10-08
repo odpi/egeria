@@ -3,10 +3,13 @@
 
 package org.odpi.openmetadata.samples.archiveutilities.governanceengines;
 
+import org.odpi.openmetadata.frameworks.openmetadata.definitions.SolutionComponentActorDefinition;
+import org.odpi.openmetadata.frameworks.openmetadata.definitions.SolutionComponentDefinition;
+
 /**
  * Define the relationship between the solution roles and the solution components
  */
-public enum SolutionComponentActor
+public enum SolutionComponentActor implements SolutionComponentActorDefinition
 {
     COORDINATOR_TO_PARTICIPATING_HOSPITAL(SolutionRoleDefinition.PARTICIPATING_HOSPITAL_COORDINATOR,
                                           SolutionComponent.HOSPITAL,
@@ -107,7 +110,7 @@ public enum SolutionComponentActor
         return solutionRole;
     }
 
-    public SolutionComponent getSolutionComponent()
+    public SolutionComponentDefinition getSolutionComponent()
     {
         return solutionComponent;
     }

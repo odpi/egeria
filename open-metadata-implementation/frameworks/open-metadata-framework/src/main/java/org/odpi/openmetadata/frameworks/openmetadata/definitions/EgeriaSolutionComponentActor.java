@@ -1,0 +1,108 @@
+/* SPDX-License-Identifier: Apache-2.0 */
+/* Copyright Contributors to the ODPi Egeria project. */
+
+package org.odpi.openmetadata.frameworks.openmetadata.definitions;
+
+/**
+ * Define the relationship between the solution roles and the solution components
+ */
+public enum EgeriaSolutionComponentActor implements SolutionComponentActorDefinition
+{
+    COMMUNITY_TO_ARCHIVE(EgeriaRoleDefinition.EGERIA_COMMUNITY,
+                         EgeriaSolutionComponent.OPEN_METADATA_ARCHIVE,
+                         "develops",
+                         "Develops the content for predefined open metadata types and instances that enable the Egeria services and solutions."),
+
+    USER_TO_JUPYTER(EgeriaRoleDefinition.PYTHON_PROGRAMMER,
+                     EgeriaSolutionComponent.JUPYTER_NOTEBOOK,
+                     "writes python code for",
+                     "Coders developing new function in an interactive style."),
+
+    USER_TO_MY_EGERIA(EgeriaRoleDefinition.OPEN_METADATA_USER,
+                      EgeriaSolutionComponent.MY_EGERIA,
+                      "interacts with",
+                      "Navigates to the desired function, fills in forms, executes commands and retrieves results."),
+
+    USER_TO_DR_EGERIA(EgeriaRoleDefinition.OPEN_METADATA_USER,
+                      EgeriaSolutionComponent.DR_EGERIA,
+                      "work with markdown",
+                         "Authors markdown documents for new and updates to open metadata plus commands to create reports and perform open governance actions."),
+
+    ;
+
+    final ActorRoleDefinition         solutionRole;
+    final SolutionComponentDefinition productSolutionComponent;
+    final String                      role;
+    final String                      description;
+
+    EgeriaSolutionComponentActor(EgeriaRoleDefinition solutionRole,
+                                 EgeriaSolutionComponent productSolutionComponent,
+                                 String                 role,
+                                 String                 description)
+    {
+        this.solutionRole             = solutionRole;
+        this.productSolutionComponent = productSolutionComponent;
+        this.role                     = role;
+        this.description       = description;
+    }
+
+
+    /**
+     * Return the solution role to link to.
+     *
+     * @return role definition
+     */
+    public ActorRoleDefinition getSolutionRole()
+    {
+        return solutionRole;
+    }
+
+    /**
+     * Return the solution component to link to.
+     *
+     * @return component definition
+     */
+    public SolutionComponentDefinition getSolutionComponent()
+    {
+        return productSolutionComponent;
+    }
+
+
+    /**
+     * Return the role relationship label.
+     *
+     * @return string
+     */
+    public String getRole()
+    {
+        return role;
+    }
+
+
+    /**
+     * Return the role relationship description.
+     *
+     * @return string
+     */
+    public String getDescription()
+    {
+        return description;
+    }
+
+
+    /**
+     * Output of this enum class and main value.
+     *
+     * @return string showing enum value
+     */
+    @Override
+    public String toString()
+    {
+        return "EgeriaSolutionComponentActor{" +
+                "solutionRole=" + solutionRole +
+                ", productSolutionComponent=" + productSolutionComponent +
+                ", role='" + role + '\'' +
+                ", description='" + description + '\'' +
+                "}";
+    }
+}

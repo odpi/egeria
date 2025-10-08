@@ -1,6 +1,6 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 /* Copyright Contributors to the ODPi Egeria project. */
-package org.odpi.openmetadata.adapters.connectors.egeriainfrastructure.control;
+package org.odpi.openmetadata.frameworks.openmetadata.definitions;
 
 import org.odpi.openmetadata.frameworks.openmetadata.refdata.DeployedImplementationType;
 import org.odpi.openmetadata.frameworks.openmetadata.refdata.DeployedImplementationTypeDefinition;
@@ -35,7 +35,6 @@ public enum EgeriaDeployedImplementationType implements DeployedImplementationTy
                         null,
                         "An Open Metadata and Governance (OMAG) runtime for running a single OMAG Server.",
                         "https://egeria-project.org/concepts/omag-server-runtime/"),
-
 
 
     /**

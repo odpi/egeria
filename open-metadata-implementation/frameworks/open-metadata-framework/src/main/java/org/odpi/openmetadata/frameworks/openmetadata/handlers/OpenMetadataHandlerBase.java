@@ -370,6 +370,7 @@ public class OpenMetadataHandlerBase
         List<RelatedMetadataElement> relatedMetadataElements = new ArrayList<>();
 
         QueryOptions workingQueryOptions = new QueryOptions(queryOptions);
+        workingQueryOptions.setMetadataElementTypeName(OpenMetadataType.OPEN_METADATA_ROOT.typeName); // All types of entities
 
         if (queryOptions.getGraphQueryDepth() > 0)
         {
@@ -1324,6 +1325,7 @@ public class OpenMetadataHandlerBase
             QueryOptions workingQueryOptions = new QueryOptions(queryOptions);
             workingQueryOptions.setStartFrom(0);
             workingQueryOptions.setPageSize(queryOptions.getRelationshipsPageSize());
+            workingQueryOptions.setMetadataElementTypeName(OpenMetadataType.OPEN_METADATA_ROOT.typeName); // want all types of elements back
 
             /*
              * If there are no side relationships then we can optimise and only receive the main hierarchical relationship.
@@ -1381,7 +1383,7 @@ public class OpenMetadataHandlerBase
                                                                            parentEnd,
                                                                            relationshipName,
                                                                            sideRelationshipNames,
-                                                                           queryOptions,
+                                                                           workingQueryOptions,
                                                                            currentDepth + 1,
                                                                            coveredRelationshipsGUIDs));
                                 }
