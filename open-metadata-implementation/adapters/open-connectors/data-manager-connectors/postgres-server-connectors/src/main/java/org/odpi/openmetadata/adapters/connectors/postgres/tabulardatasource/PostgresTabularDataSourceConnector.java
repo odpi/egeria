@@ -7,29 +7,37 @@ import org.odpi.openmetadata.adapters.connectors.postgres.controls.PostgresConfi
 import org.odpi.openmetadata.adapters.connectors.postgres.ffdc.PostgresAuditCode;
 import org.odpi.openmetadata.adapters.connectors.postgres.ffdc.PostgresErrorCode;
 import org.odpi.openmetadata.adapters.connectors.resource.jdbc.JDBCResourceConnector;
+import org.odpi.openmetadata.adapters.connectors.resource.jdbc.ddl.postgres.PostgreSQLSchemaDDL;
+import org.odpi.openmetadata.adapters.connectors.resource.jdbc.ddl.postgres.PostgreSQLTable;
 import org.odpi.openmetadata.frameworks.connectors.*;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
+import org.odpi.openmetadata.frameworks.connectors.tabulardatasets.TabularColumnDescription;
+import org.odpi.openmetadata.frameworks.connectors.tabulardatasets.WritableTabularDataSource;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.Collections;
 import java.util.List;
-import java.util.Map;
 
 
 /**
  * PostgresTabularDataSourceConnector works with structured files to retrieve simple tables of data.
  */
-public class PostgresTabularDataSourceConnector extends ConnectorBase implements ReadableTabularDataSource, WritableTabularDataSource
+public class PostgresTabularDataSourceConnector extends ConnectorBase implements WritableTabularDataSource
 {
     /*
      * Variables used for logging and debug.
      */
     private static final Logger log = LoggerFactory.getLogger(PostgresTabularDataSourceConnector.class);
 
-    private String tableName = null;
+    private String tableName = null; // stored in snake case
+    private String tableDescription = null;
+    private String schemaName = "tabular_data";
+    private String schemaDescription = null;
+
     private JDBCResourceConnector jdbcResourceConnector = null;
-    private java.sql.Connection   databaseConnection = null;
+    private java.sql.Connection   databaseConnection    = null;
 
 
     /**
@@ -48,6 +56,14 @@ public class PostgresTabularDataSourceConnector extends ConnectorBase implements
         tableName = super.getStringConfigurationProperty(PostgresConfigurationProperty.TABLE_NAME.getName(),
                                                          connectionBean.getConfigurationProperties(),
                                                          "data");
+
+        schemaName = super.getStringConfigurationProperty(PostgresConfigurationProperty.SCHEMA_NAME.getName(),
+                                                          connectionBean.getConfigurationProperties(),
+                                                          schemaName);
+
+        schemaDescription = super.getStringConfigurationProperty(PostgresConfigurationProperty.SCHEMA_DESCRIPTION.getName(),
+                                                                 connectionBean.getConfigurationProperties(),
+                                                                 schemaDescription);
 
         try
         {
@@ -88,16 +104,16 @@ public class PostgresTabularDataSourceConnector extends ConnectorBase implements
         {
             for (Connector embeddedConnector : embeddedConnectors)
             {
-                if (embeddedConnector instanceof JDBCResourceConnector jdbcResourceConnector)
+                if (embeddedConnector instanceof JDBCResourceConnector jdbcConnector)
                 {
                     try
                     {
-                        if (! jdbcResourceConnector.isActive())
+                        if (! jdbcConnector.isActive())
                         {
-                            jdbcResourceConnector.start();
+                            jdbcConnector.start();
                         }
 
-                        return jdbcResourceConnector;
+                        return jdbcConnector;
                     }
                     catch (Exception exception)
                     {
@@ -163,106 +179,18 @@ public class PostgresTabularDataSourceConnector extends ConnectorBase implements
 
 
     /**
-     * Return the list of column names associated with this data source.
+     * Set up the canonical table name for this data source.  Each word in the name should be capitalized, with spaces
+     * between the words to allow translation between different naming conventions.
      *
-     * @return a list of column descriptions or null if not available.
-     * @throws ConnectorCheckedException there is a problem accessing the data
+     * @param tableName  string
+     * @param tableDescription optional description
      */
     @Override
-    public List<TabularColumnDescription> getColumnDescriptions() throws ConnectorCheckedException
+    public void setTableName(String tableName,
+                             String tableDescription)
     {
-        final String methodName = "getColumnDescriptions";
-
-        try
-        { // todo
-        }
-        catch (Exception exception)
-        {
-            auditLog.logException(methodName,
-                                  PostgresAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(this.getClass().getName(),
-                                                                                              exception.getClass().getName(),
-                                                                                              methodName,
-                                                                                              exception.getMessage()),
-                                  exception);
-
-            throw new ConnectorCheckedException(PostgresErrorCode.UNEXPECTED_EXCEPTION.getMessageDefinition(this.getClass().getName(),
-                                                                                                            exception.getClass().getName(),
-                                                                                                            methodName,
-                                                                                                            exception.getMessage()),
-                                                this.getClass().getName(),
-                                                methodName,
-                                                exception);
-        }
-
-        return null;
-    }
-
-    /**
-     * Locate the named column. A negative number means the column is not present.
-     *
-     * @return column
-     * @throws ConnectorCheckedException problem extracting the column descriptions
-     */
-    @Override
-    public int getColumnNumber(String columnName) throws ConnectorCheckedException
-    {
-        int columnNumber = -1; // means not present
-
-        List<TabularColumnDescription> columnDescriptions = this.getColumnDescriptions();
-        if (columnDescriptions != null)
-        {
-            int columnCount = 0;
-            for (TabularColumnDescription tabularColumnDescription : columnDescriptions)
-            {
-                if ((tabularColumnDescription != null) && (columnName.equals(tabularColumnDescription.columnName())))
-                {
-                    columnNumber = columnCount;
-                    break;
-                }
-
-                columnCount ++;
-            }
-        }
-
-        return columnNumber;
-    }
-
-
-    /**
-     * Return the requested data record.  The first record is record 0.  If the first line of the file is the column
-     * names then record 0 is the line following the column names.
-     *
-     * @param dataRecordNumber long
-     * @return List of strings, each string is the value from the column.
-     * @throws ConnectorCheckedException there is a problem accessing the data
-     */
-    public List<String> readRecord(long dataRecordNumber) throws ConnectorCheckedException
-    {
-        final String  methodName = "readRecord";
-
-        try
-        {
-//todo
-        }
-        catch (Exception exception)
-        {
-            auditLog.logException(methodName,
-                                  PostgresAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(this.getClass().getName(),
-                                                                                              exception.getClass().getName(),
-                                                                                              methodName,
-                                                                                              exception.getMessage()),
-                                  exception);
-
-            throw new ConnectorCheckedException(PostgresErrorCode.UNEXPECTED_EXCEPTION.getMessageDefinition(this.getClass().getName(),
-                                                                                                            exception.getClass().getName(),
-                                                                                                            methodName,
-                                                                                                            exception.getMessage()),
-                                                this.getClass().getName(),
-                                                methodName,
-                                                exception);
-        }
-
-        return null;
+        this.tableName = fromCanonicalToSnakeCase(tableName);
+        this.tableDescription = tableDescription;
     }
 
 
@@ -280,9 +208,18 @@ public class PostgresTabularDataSourceConnector extends ConnectorBase implements
 
         try
         {
+            if (columnDescriptions != null)
+            {
+                PostgreSQLTable postgreSQLTable = new PostgresTabularTable(tableName,
+                                                                           tableDescription,
+                                                                           columnDescriptions);
 
-            List<Map<String, Object>> allData = jdbcResourceConnector.getUnmappedRows(databaseConnection, tableName);
-            // todo
+                PostgreSQLSchemaDDL postgreSQLSchemaDDL = new PostgreSQLSchemaDDL(schemaName,
+                                                                                  schemaDescription,
+                                                                                  Collections.singletonList(postgreSQLTable));
+
+                jdbcResourceConnector.addDatabaseDefinitions(databaseConnection, postgreSQLSchemaDDL.getDDLStatements());
+            }
         }
         catch (Exception exception)
         {
@@ -319,7 +256,7 @@ public class PostgresTabularDataSourceConnector extends ConnectorBase implements
 
         try
         {
-// todo
+            jdbcResourceConnector.issueSQLCommand(databaseConnection, buildSQLInsertIntoStatement(dataValues));
         }
         catch (Exception exception)
         {
@@ -342,6 +279,39 @@ public class PostgresTabularDataSourceConnector extends ConnectorBase implements
 
 
     /**
+     * Convert a list of values into an insert SQL statement.
+     *
+     * @param dataValues values
+     * @return SQL statement as a string
+     */
+    private String buildSQLInsertIntoStatement(List<String> dataValues)
+    {
+        StringBuilder stringBuilder = new StringBuilder("INSERT INTO ");
+        stringBuilder.append(tableName);
+        stringBuilder.append(" VALUES (");
+
+        boolean firstRecord = true;
+        for (String dataValue : dataValues)
+        {
+            if (! firstRecord)
+            {
+                stringBuilder.append(", ");
+            }
+            else
+            {
+                firstRecord = false;
+            }
+
+            stringBuilder.append(dataValue);
+        }
+
+        stringBuilder.append(");");
+
+        return stringBuilder.toString();
+    }
+
+
+    /**
      * Write the requested data record to the end of the data source.
      *
      * @param dataValues Map of column descriptions to strings, each string is the value for the column.
@@ -354,10 +324,7 @@ public class PostgresTabularDataSourceConnector extends ConnectorBase implements
 
         try
         {
-            // todo add column value map
-            jdbcResourceConnector.insertRowIntoTable(databaseConnection,
-                                                     tableName,
-                                                     null);
+            jdbcResourceConnector.issueSQLCommand(databaseConnection, buildSQLInsertIntoStatement(dataValues));
         }
         catch (Exception exception)
         {
@@ -390,7 +357,6 @@ public class PostgresTabularDataSourceConnector extends ConnectorBase implements
     {
         // todo
     }
-
 
 
     /**

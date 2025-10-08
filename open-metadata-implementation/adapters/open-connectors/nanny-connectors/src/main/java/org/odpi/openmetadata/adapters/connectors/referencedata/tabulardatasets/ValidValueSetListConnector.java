@@ -6,15 +6,14 @@ package org.odpi.openmetadata.adapters.connectors.referencedata.tabulardatasets;
 import org.odpi.openmetadata.adapters.connectors.referencedata.tabulardatasets.ffdc.ReferenceDataAuditCode;
 import org.odpi.openmetadata.adapters.connectors.referencedata.tabulardatasets.ffdc.ReferenceDataErrorCode;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLoggingComponent;
-import org.odpi.openmetadata.frameworks.connectors.ReadableTabularDataSource;
-import org.odpi.openmetadata.frameworks.connectors.TabularColumnDescription;
+import org.odpi.openmetadata.frameworks.connectors.tabulardatasets.ReadableTabularDataSource;
+import org.odpi.openmetadata.frameworks.connectors.tabulardatasets.TabularColumnDescription;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.OpenMetadataRootElement;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.OpenMetadataElementStub;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.OpenMetadataRelationship;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.OpenMetadataRelationshipList;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.RelatedMetadataElementList;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.validvalues.ValidValueDefinitionProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.search.QueryOptions;
 import org.odpi.openmetadata.frameworks.openmetadata.search.SearchOptions;
@@ -194,6 +193,34 @@ public class ValidValueSetListConnector extends ReferenceDataSetConnectorBase im
     public long getRecordCount()
     {
         return records.size();
+    }
+
+
+    /**
+     * Return the table name for this data source.  This is in canonical name format where each word in the name
+     * should be capitalized, with spaces between the words.
+     * This format allows easy translation between different naming conventions.
+     *
+     * @return string
+     * @throws ConnectorCheckedException there is a problem accessing the data
+     */
+    @Override
+    public String getTableName() throws ConnectorCheckedException
+    {
+        return "Valid Value Set List";
+    }
+
+
+
+    /**
+     * Return the description for this data source.
+     *
+     * @return string
+     */
+    @Override
+    public String getTableDescription()
+    {
+        return "A list of the valid value data sets stored in open metadata";
     }
 
 

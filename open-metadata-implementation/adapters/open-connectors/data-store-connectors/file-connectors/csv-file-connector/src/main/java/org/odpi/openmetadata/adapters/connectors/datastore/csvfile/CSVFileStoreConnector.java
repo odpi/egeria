@@ -7,9 +7,9 @@ import org.odpi.openmetadata.adapters.connectors.datastore.basicfile.BasicFileSt
 import org.odpi.openmetadata.adapters.connectors.datastore.basicfile.ffdc.exception.FileException;
 import org.odpi.openmetadata.adapters.connectors.datastore.basicfile.ffdc.exception.FileReadException;
 import org.odpi.openmetadata.adapters.connectors.datastore.csvfile.ffdc.CSVFileConnectorErrorCode;
-import org.odpi.openmetadata.frameworks.connectors.ReadableTabularDataSource;
-import org.odpi.openmetadata.frameworks.connectors.TabularColumnDescription;
-import org.odpi.openmetadata.frameworks.connectors.WritableTabularDataSource;
+import org.odpi.openmetadata.frameworks.connectors.tabulardatasets.ReadableTabularDataSource;
+import org.odpi.openmetadata.frameworks.connectors.tabulardatasets.TabularColumnDescription;
+import org.odpi.openmetadata.frameworks.connectors.tabulardatasets.WritableTabularDataSource;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Endpoint;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
@@ -39,6 +39,8 @@ public class CSVFileStoreConnector extends BasicFileStoreConnector implements CS
     private List<String> suppliedColumnNames = null;
     private char         delimiterChar       = ',';
     private char         quoteChar         = '"';
+    private String       tableName          = "Tabular File";
+    private String       tableDescription   = null;
 
     /*
      * Variables used for logging and debug.
@@ -182,6 +184,49 @@ public class CSVFileStoreConnector extends BasicFileStoreConnector implements CS
 
 
     /**
+     * Return the canonical table name for this data source.  Each word in the name should be capitalized, with spaces
+     * between the words to allow translation between different naming conventions.
+     *
+     * @return string
+     * @throws ConnectorCheckedException there is a problem accessing the data
+     */
+    @Override
+    public String getTableName() throws ConnectorCheckedException
+    {
+        return tableName;
+    }
+
+
+    /**
+     * Return the description for this data source.
+     *
+     * @return string
+     * @throws ConnectorCheckedException there is a problem accessing the data
+     */
+    @Override
+    public String getTableDescription() throws ConnectorCheckedException
+    {
+        return tableDescription;
+    }
+
+
+    /**
+     * Set up the canonical table name for this data source.  Each word in the name should be capitalized, with spaces
+     * between the words to allow translation between different naming conventions.
+     *
+     * @param tableName  string
+     * @param tableDescription optional description
+     */
+    @Override
+    public void setTableName(String tableName,
+                             String tableDescription)
+    {
+        this.tableName = tableName;
+        this.tableDescription = tableDescription;
+    }
+
+
+    /**
      * Return the list of column names associated with this data source.
      *
      * @return a list of column descriptions or null if not available.
@@ -246,6 +291,7 @@ public class CSVFileStoreConnector extends BasicFileStoreConnector implements CS
      * @throws FileException problem accessing the file
      * @throws FileReadException unable to find, open or read the file, or the file does not include the requested record.
      */
+    @Override
     public List<String> readRecord(long  dataRecordNumber) throws FileException, FileReadException
     {
         final String  methodName = "readRecord";

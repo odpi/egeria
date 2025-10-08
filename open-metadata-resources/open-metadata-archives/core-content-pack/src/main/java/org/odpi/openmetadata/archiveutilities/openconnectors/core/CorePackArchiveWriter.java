@@ -6,7 +6,7 @@ import org.odpi.openmetadata.adapters.connectors.datastore.basicfile.BasicFileSt
 import org.odpi.openmetadata.adapters.connectors.datastore.basicfile.BasicFolderProvider;
 import org.odpi.openmetadata.adapters.connectors.datastore.csvfile.CSVFileStoreProvider;
 import org.odpi.openmetadata.adapters.connectors.datastore.datafolder.DataFolderProvider;
-import org.odpi.openmetadata.adapters.connectors.egeriainfrastructure.control.EgeriaDeployedImplementationType;
+import org.odpi.openmetadata.frameworks.openmetadata.definitions.*;
 import org.odpi.openmetadata.adapters.connectors.egeriainfrastructure.control.EgeriaSoftwareServerTemplateDefinition;
 import org.odpi.openmetadata.adapters.connectors.egeriainfrastructure.platform.OMAGServerPlatformProvider;
 import org.odpi.openmetadata.adapters.connectors.egeriainfrastructure.platform.catalog.OMAGServerPlatformCatalogProvider;
@@ -960,6 +960,15 @@ public class CorePackArchiveWriter extends ContentPackBaseArchiveWriter
         this.createDailyGovernanceActionProcess();
 
         /*
+         * Add Egeria's common solution definitions
+         */
+        archiveHelper.addSolutionRoles(List.of(EgeriaRoleDefinition.values()));
+        archiveHelper.addSolutionComponents(List.of(EgeriaSolutionComponent.values()));
+        archiveHelper.addSolutionComponentActors(List.of(EgeriaSolutionComponentActor.values()));
+        archiveHelper.addSolutionComponentWires(List.of(EgeriaSolutionComponentWire.values()));
+        archiveHelper.addSolutionBlueprints(List.of(EgeriaSolutionBlueprint.values()));
+
+        /*
          * Saving the GUIDs means tha the guids in the archive are stable between runs of the archive writer.
          */
         archiveHelper.saveGUIDs();
@@ -1097,11 +1106,8 @@ public class CorePackArchiveWriter extends ContentPackBaseArchiveWriter
         String               qualifiedName      = deployedImplementationType.getDeployedImplementationType() + "::" + serverName;
         String               versionIdentifier  = "V1.0";
         String               description        = "Default OMAG Server Platform running on local host and port 9443.";
-        Map<String, Object>  extendedProperties = new HashMap<>();
         List<Classification> classifications    = null;
 
-        extendedProperties.put(OpenMetadataProperty.DEPLOYED_IMPLEMENTATION_TYPE.name,
-                               deployedImplementationType.getDeployedImplementationType());
 
         if (deployedImplementationType.getAssociatedClassification() != null)
         {
@@ -1113,10 +1119,11 @@ public class CorePackArchiveWriter extends ContentPackBaseArchiveWriter
         String assetGUID = archiveHelper.addAsset(deployedImplementationType.getAssociatedTypeName(),
                                                   qualifiedName,
                                                   serverName,
+                                                  deployedImplementationType.getDeployedImplementationType(),
                                                   versionIdentifier,
                                                   description,
                                                   null,
-                                                  extendedProperties,
+                                                  null,
                                                   classifications);
         assert(guid.equals(assetGUID));
 

@@ -91,26 +91,55 @@ public enum SolutionComponentWire
     }
 
 
+    /**
+     * Return the component for end 1
+     *
+     * @return component definition
+     */
     public ProductSolutionComponent getComponent1()
     {
         return component1;
     }
 
+
+    /**
+     * Return the component for end 2
+     *
+     * @return component definition
+     */
     public ProductSolutionComponent getComponent2()
     {
         return component2;
     }
 
+
+    /**
+     * Return the relationship label.
+     *
+     * @return string
+     */
     public String getLabel()
     {
         return label;
     }
 
+
+    /**
+     * Return the relationship description.
+     *
+     * @return string
+     */
     public String getDescription()
     {
         return description;
     }
 
+
+    /**
+     * Return the list of ISC qualified names that the wire belongs to.
+     *
+     * @return list of strings
+     */
     public List<String> getISCQualifiedNames()
     {
         return null;

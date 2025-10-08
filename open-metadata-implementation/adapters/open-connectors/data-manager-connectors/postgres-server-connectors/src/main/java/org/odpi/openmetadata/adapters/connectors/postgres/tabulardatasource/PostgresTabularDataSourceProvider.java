@@ -8,15 +8,12 @@ import org.odpi.openmetadata.adapters.connectors.postgres.controls.PostgresDeplo
 import org.odpi.openmetadata.frameworks.auditlog.AuditLogReportingComponent;
 import org.odpi.openmetadata.frameworks.auditlog.ComponentDevelopmentStatus;
 import org.odpi.openmetadata.frameworks.connectors.ConnectorProviderBase;
-import org.odpi.openmetadata.frameworks.connectors.ReadableTabularDataSource;
-import org.odpi.openmetadata.frameworks.connectors.WritableTabularDataSource;
+import org.odpi.openmetadata.frameworks.connectors.tabulardatasets.ReadableTabularDataSource;
+import org.odpi.openmetadata.frameworks.connectors.tabulardatasets.WritableTabularDataSource;
 import org.odpi.openmetadata.frameworks.connectors.controls.SupportedTechnologyType;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.ConnectorType;
 import org.odpi.openmetadata.frameworks.openmetadata.refdata.DeployedImplementationType;
 import org.odpi.openmetadata.frameworks.openmetadata.refdata.DeployedImplementationTypeDefinition;
-
-import java.util.ArrayList;
-import java.util.List;
 
 
 /**
@@ -65,8 +62,8 @@ public class PostgresTabularDataSourceProvider extends ConnectorProviderBase
         connectorType.setDisplayName(connectorTypeName);
         connectorType.setDescription(connectorTypeDescription);
         connectorType.setConnectorProviderClassName(this.getClass().getName());
-        connectorType.setSupportedAssetTypeName(DeployedImplementationType.CSV_FILE.getAssociatedTypeName());
-        connectorType.setSupportedDeployedImplementationType(DeployedImplementationType.CSV_FILE.getDeployedImplementationType());
+        connectorType.setSupportedAssetTypeName(PostgresDeployedImplementationType.POSTGRESQL_DATABASE_SCHEMA.getAssociatedTypeName());
+        connectorType.setSupportedDeployedImplementationType(PostgresDeployedImplementationType.POSTGRESQL_DATABASE_SCHEMA.getDeployedImplementationType());
         connectorType.setExpectedDataFormat(expectedDataFormat);
         connectorType.setConnectorInterfaces(connectorInterfaces);
 

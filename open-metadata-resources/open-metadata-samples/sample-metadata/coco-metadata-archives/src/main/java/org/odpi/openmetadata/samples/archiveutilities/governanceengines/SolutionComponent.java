@@ -4,7 +4,10 @@
 package org.odpi.openmetadata.samples.archiveutilities.governanceengines;
 
 import org.odpi.openmetadata.archiveutilities.openconnectors.RequestTypeDefinition;
+import org.odpi.openmetadata.frameworks.openmetadata.definitions.CollectionDefinition;
+import org.odpi.openmetadata.frameworks.openmetadata.definitions.SolutionComponentDefinition;
 import org.odpi.openmetadata.frameworks.openmetadata.refdata.SolutionComponentType;
+import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 import org.odpi.openmetadata.samples.governanceactions.clinicaltrials.metadata.ClinicalTrialSolutionComponent;
 
 import java.util.Arrays;
@@ -13,7 +16,7 @@ import java.util.List;
 /**
  * A description of the predefined solution components.
  */
-public enum SolutionComponent
+public enum SolutionComponent implements SolutionComponentDefinition
 {
     HOSPITAL("ee2bb773-e630-4cf9-bdf1-7c2dd64fe4ec",
              SolutionComponentType.THIRD_PARTY_PROCESS.getSolutionComponentType(),
@@ -21,7 +24,6 @@ public enum SolutionComponent
              "Hospital Processes",
              "Processes running in the hospital that negotiate data sharing agreements, recruit patients, train staff and deliver data.",
              "V1.0",
-             new SolutionBlueprint[]{SolutionBlueprint.CLINICAL_TRIAL_MANAGEMENT},
              null,
              new InformationSupplyChain[]{InformationSupplyChain.CLINICAL_TRIAL_TREATMENT_VALIDATION_TEMPLATE, InformationSupplyChain.CLINICAL_TRIAL_SUBJECT_ONBOARDING_TEMPLATE},
              null),
@@ -32,7 +34,6 @@ public enum SolutionComponent
                                  "Hospital Landing Area Folder",
                                  "Destination for incoming files from a particular hospital.",
                                  "V1.0",
-                                 new SolutionBlueprint[]{SolutionBlueprint.CLINICAL_TRIAL_MANAGEMENT},
                                  null,
                                  new InformationSupplyChain[]{InformationSupplyChain.CLINICAL_TRIAL_TREATMENT_VALIDATION_TEMPLATE},
                                  null),
@@ -43,7 +44,6 @@ public enum SolutionComponent
                               "Landing Folder Cataloguer",
                               "Integration connector that is cataloguing files arriving in the hospital landing area folders and invoking the onboarding pipeline.",
                               "V1.0",
-                              new SolutionBlueprint[]{SolutionBlueprint.CLINICAL_TRIAL_MANAGEMENT},
                               null,
                               new InformationSupplyChain[]{
                                       InformationSupplyChain.CLINICAL_TRIAL_TREATMENT_VALIDATION_TEMPLATE},
@@ -57,7 +57,6 @@ public enum SolutionComponent
                            "V1.0",
                            null,
                            null,
-                           null,
                            RequestTypeDefinition.MOVE_FILE.getGovernanceActionTypeGUID()),
 
     CHECK_QUALITY_OF_DATA("2a5763d0-c540-4a59-8268-db7c88342269",
@@ -66,7 +65,6 @@ public enum SolutionComponent
                           "Check Quality of Data",
                           "Validate that the data contains valid values. The quality validation survey will add a certification to the file asset if the data contains valid values.",
                           "V1.0",
-                          null,
                           null,
                           null,
                           CocoRequestTypeDefinition.CHECK_DATA.getGovernanceActionTypeGUID()),
@@ -79,7 +77,6 @@ public enum SolutionComponent
                           "V1.0",
                           null,
                           null,
-                          null,
                           RequestTypeDefinition.EVALUATE_ANNOTATIONS.getGovernanceActionTypeGUID()),
 
     DETERMINE_ORIGIN_OF_DATA("7bcf573b-0ad8-4ca8-82c0-8d8f50fac4cd",
@@ -88,7 +85,6 @@ public enum SolutionComponent
                              "Determine Origin of Data",
                              "Add details of the originating hospital.",
                              "V1.0",
-                             null,
                              null,
                              null,
                              RequestTypeDefinition.SEEK_ORIGIN.getGovernanceActionTypeGUID()),
@@ -101,7 +97,6 @@ public enum SolutionComponent
                          "V1.0",
                          null,
                          null,
-                         null,
                          RequestTypeDefinition.RETENTION_PERIOD.getGovernanceActionTypeGUID()),
 
     PUBLISH_ASSET("22e35eff-fcc8-4baa-804e-8363989cf6f1",
@@ -112,7 +107,6 @@ public enum SolutionComponent
                   "V1.0",
                   null,
                   null,
-                  null,
                   RequestTypeDefinition.ZONE_MEMBER.getGovernanceActionTypeGUID()),
 
     WEEKLY_MEASUREMENTS_ONBOARDING_PIPELINE(ClinicalTrialSolutionComponent.WEEKLY_MEASUREMENTS_ONBOARDING_PIPELINE.getGUID(),
@@ -121,7 +115,6 @@ public enum SolutionComponent
                                             "Weekly Measurements Onboarding Pipeline",
                                             "Move landing area files to data lake, catalog files in data lake with lineage from the landing area and validate/certify that the data contains valid values.  The cataloguing includes lineage, retention, origin, governance zones.  The quality validation survey will add a certification to the file asset if the data contains valid values.",
                                             "V1.0",
-                                            new SolutionBlueprint[]{SolutionBlueprint.CLINICAL_TRIAL_MANAGEMENT},
                                             new SolutionComponent[]{
                                                     MOVE_FILE_TO_DATA_LAKE,
                                                     CHECK_QUALITY_OF_DATA,
@@ -138,7 +131,6 @@ public enum SolutionComponent
                                          "Weekly Measurements Data Lake Folder",
                                          "The directory where the files from the hospitals are assembled for sharing.",
                                          "V1.0",
-                                         new SolutionBlueprint[]{SolutionBlueprint.CLINICAL_TRIAL_MANAGEMENT},
                                          null,
                                          new InformationSupplyChain[]{InformationSupplyChain.CLINICAL_TRIAL_TREATMENT_VALIDATION_TEMPLATE},
                                          null),
@@ -149,7 +141,6 @@ public enum SolutionComponent
                      "Populate Sandbox",
                      "A process that copies certified files from the hospitals into the research team's sandbox for processing.",
                      "V1.0",
-                     new SolutionBlueprint[]{SolutionBlueprint.CLINICAL_TRIAL_MANAGEMENT},
                      null,
                      new InformationSupplyChain[]{InformationSupplyChain.CLINICAL_TRIAL_TREATMENT_VALIDATION_TEMPLATE},
                      null),
@@ -160,7 +151,6 @@ public enum SolutionComponent
                                  "Treatment Validation Sandbox",
                                  "A postgreSQL database schema for assembling data needed to validate the clinical trial.",
                                  "V1.0",
-                                 new SolutionBlueprint[]{SolutionBlueprint.CLINICAL_TRIAL_MANAGEMENT},
                                  null,
                                  new InformationSupplyChain[]{InformationSupplyChain.CLINICAL_TRIAL_TREATMENT_VALIDATION_TEMPLATE},
                                  null),
@@ -171,7 +161,6 @@ public enum SolutionComponent
                          "Analyse Patient Data",
                          "ML Flow based analytics pipeline to run the variety of models over the patient data.",
                          "V1.0",
-                         new SolutionBlueprint[]{SolutionBlueprint.CLINICAL_TRIAL_MANAGEMENT},
                          null,
                          new InformationSupplyChain[]{InformationSupplyChain.CLINICAL_TRIAL_TREATMENT_VALIDATION_TEMPLATE},
                          null),
@@ -182,7 +171,6 @@ public enum SolutionComponent
                                 "Treatment Efficacy Evidence",
                                 "Assembly of the data required by the regulator.",
                                 "V1.0",
-                                new SolutionBlueprint[]{SolutionBlueprint.CLINICAL_TRIAL_MANAGEMENT},
                                 null,
                                 new InformationSupplyChain[]{InformationSupplyChain.CLINICAL_TRIAL_TREATMENT_VALIDATION_TEMPLATE},
                                 null),
@@ -193,7 +181,6 @@ public enum SolutionComponent
                     "Assemble Treatment Assessment Report",
                     "A process of creating a filing report for the regulators detailing the findings from the clinical trial.",
                     "V1.0",
-                    new SolutionBlueprint[]{SolutionBlueprint.CLINICAL_TRIAL_MANAGEMENT},
                     null,
                     new InformationSupplyChain[]{InformationSupplyChain.CLINICAL_TRIAL_TREATMENT_VALIDATION_TEMPLATE},
                     null),
@@ -204,7 +191,6 @@ public enum SolutionComponent
                                    "Treatment Assessment Report Validation and Delivery",
                                    "An expert review, presentation, discussions relating to the results of the clinical trial.",
                                    "V1.0",
-                                   new SolutionBlueprint[]{SolutionBlueprint.CLINICAL_TRIAL_MANAGEMENT},
                                    null,
                                    new InformationSupplyChain[]{InformationSupplyChain.CLINICAL_TRIAL_TREATMENT_VALIDATION_TEMPLATE},
                                    null),
@@ -215,7 +201,6 @@ public enum SolutionComponent
                       "Nominate Hospital",
                       "Add details of a hospital as a candidate for participation in the clinical trials.",
                       "V1.0",
-                      new SolutionBlueprint[]{SolutionBlueprint.CLINICAL_TRIAL_MANAGEMENT},
                       null,
                       null,
                       CocoRequestTypeDefinition.NOMINATE_HOSPITAL.getGovernanceActionTypeGUID()),
@@ -226,7 +211,6 @@ public enum SolutionComponent
                      "Certify Hospital",
                      "Confirm that a hospital has met all of the criteria to participate in the clinical trial.",
                      "V1.0",
-                     new SolutionBlueprint[]{SolutionBlueprint.CLINICAL_TRIAL_MANAGEMENT},
                      null,
                      null,
                      CocoRequestTypeDefinition.CERTIFY_HOSPITAL.getGovernanceActionTypeGUID()),
@@ -237,7 +221,6 @@ public enum SolutionComponent
                      "Onboard Hospital",
                      "Set up the onboarding pipeline for a participating hospital.  This fails if the hospital is not certified.",
                      "V1.0",
-                     new SolutionBlueprint[]{SolutionBlueprint.CLINICAL_TRIAL_MANAGEMENT},
                      null,
                      null,
                      CocoRequestTypeDefinition.ONBOARD_HOSPITAL.getGovernanceActionTypeGUID()),
@@ -248,7 +231,6 @@ public enum SolutionComponent
                      "Set up Data Lake",
                      "Set up the data stores for receiving data from the hospitals - this includes the file system directory and Unity Catalog Volume for incoming patient measurements, along with the data set collection for certified measurement files.",
                      "V1.0",
-                     new SolutionBlueprint[]{SolutionBlueprint.CLINICAL_TRIAL_MANAGEMENT},
                      new SolutionComponent[]{
                                     WEEKLY_MEASUREMENTS_DATA_LAKE_FOLDER
                             },
@@ -261,7 +243,6 @@ public enum SolutionComponent
                           "Set up clinical trial",
                           "Generates the project, and governance action processes needed to drive a clinical trial.",
                           "V2.0",
-                          new SolutionBlueprint[]{SolutionBlueprint.CLINICAL_TRIAL_MANAGEMENT},
                           null,
                           null,
                           CocoRequestTypeDefinition.SET_UP_CLINICAL_TRIAL.getGovernanceActionTypeGUID()),
@@ -272,7 +253,6 @@ public enum SolutionComponent
                        "Sustainability Operational Data Store (ODS)",
                        "A store for both the raw data needed for the sustainability calculations and the results.",
                        "V1.0",
-                       new SolutionBlueprint[]{SolutionBlueprint.SUSTAINABILITY_REPORTING},
                        null,
                        new InformationSupplyChain[]{
                                InformationSupplyChain.SUSTAINABILITY_REPORTING},
@@ -284,7 +264,6 @@ public enum SolutionComponent
                                "Sustainability Calculators",
                                "Algorithms that calculate the impact of Coco Pharmaceuticals' operation and the changes that are making a difference.",
                                "V1.0",
-                               new SolutionBlueprint[]{SolutionBlueprint.SUSTAINABILITY_REPORTING},
                                null,
                                new InformationSupplyChain[]{
                                        InformationSupplyChain.SUSTAINABILITY_REPORTING},
@@ -296,7 +275,6 @@ public enum SolutionComponent
                                "Sustainability Dashboards",
                                "Dashboards that illustrate Coco Pharmaceuticals' sustainability position.",
                                "V1.0",
-                              new SolutionBlueprint[]{SolutionBlueprint.SUSTAINABILITY_REPORTING},
                                null,
                                new InformationSupplyChain[]{
                                        InformationSupplyChain.SUSTAINABILITY_REPORTING},
@@ -308,22 +286,17 @@ public enum SolutionComponent
                           "Employee Expense Tool",
                           "Application for recording and categorizing employee expenses, and authorizing the repayment.",
                           "V1.0",
-                          new SolutionBlueprint[]{
-                                  SolutionBlueprint.SUSTAINABILITY_REPORTING,
-                                  SolutionBlueprint.EMPLOYEE_MANAGEMENT},
                           null,
                           new InformationSupplyChain[]{
                                   InformationSupplyChain.SUSTAINABILITY_REPORTING},
                           null),
+
     HAZMAT_INVENTORY("25fd5be7-692d-4752-9dc7-30068a7d665e",
                      SolutionComponentType.AUTOMATED_PROCESS.getSolutionComponentType(),
                      "COTS Application",
                      "Hazardous Materials (HazMat) Inventory",
                      "Application for recording and tracing hazardous materials.  This includes greenhouse gasses such as CO2 and Hydro-fluorocarbons.",
                      "V1.0",
-                     new SolutionBlueprint[]{
-                             SolutionBlueprint.SUSTAINABILITY_REPORTING,
-                             SolutionBlueprint.HAZARDOUS_MATERIAL_MANAGEMENT},
                      null,
                      new InformationSupplyChain[]{
                              InformationSupplyChain.SUSTAINABILITY_REPORTING},
@@ -335,9 +308,6 @@ public enum SolutionComponent
                       "Accounting ledgers",
                       "Application for recording and tracing the income and spending of Coco Pharmaceuticals.  This can help to identify how much the company is spending on particular materials and activities.",
                       "V1.0",
-                      new SolutionBlueprint[]{
-                              SolutionBlueprint.SUSTAINABILITY_REPORTING,
-                              SolutionBlueprint.PERSONALIZED_MEDICINE_ORDER_FULFILLMENT},
                       null,
                       new InformationSupplyChain[]{
                               InformationSupplyChain.SUSTAINABILITY_REPORTING},
@@ -349,9 +319,6 @@ public enum SolutionComponent
                     "Goods Inventory",
                     "Application for recording and tracing physical materials as they are acquired, stored, distributed and used.",
                     "V1.0",
-                    new SolutionBlueprint[]{
-                            SolutionBlueprint.SUSTAINABILITY_REPORTING,
-                            SolutionBlueprint.INVENTORY_MANAGEMENT},
                     null,
                     new InformationSupplyChain[]{
                             InformationSupplyChain.SUSTAINABILITY_REPORTING},
@@ -367,7 +334,6 @@ public enum SolutionComponent
     private final String                          displayName;
     private final String                          description;
     private final String                          versionIdentifier;
-    private final SolutionBlueprint[]             consumingBlueprints;
     private final SolutionComponent[]             subComponents;
     private final InformationSupplyChain[]        linkedFromSegment;
     private final String                          implementationResource;
@@ -382,7 +348,6 @@ public enum SolutionComponent
      * @param displayName display name of solution component
      * @param description description of solution component
      * @param versionIdentifier version identifier of the solution component
-     * @param consumingBlueprints the blueprint that this belongs to
      * @param subComponents optional subcomponents of the solution
      * @param linkedFromSegment array of segments that are implemented by this component
      * @param implementationResource components useful when creating implementations
@@ -393,7 +358,6 @@ public enum SolutionComponent
                       String                   displayName,
                       String                   description,
                       String                   versionIdentifier,
-                      SolutionBlueprint[]      consumingBlueprints,
                       SolutionComponent[]      subComponents,
                       InformationSupplyChain[] linkedFromSegment,
                       String                   implementationResource)
@@ -404,7 +368,6 @@ public enum SolutionComponent
         this.displayName            = displayName;
         this.description            = description;
         this.versionIdentifier      = versionIdentifier;
-        this.consumingBlueprints    = consumingBlueprints;
         this.subComponents          = subComponents;
         this.linkedFromSegment      = linkedFromSegment;
         this.implementationResource = implementationResource;
@@ -419,6 +382,18 @@ public enum SolutionComponent
     public String getGUID()
     {
         return guid;
+    }
+
+    /**
+     * Return the unique identifier of this element.  It is only needed if the elements are to be loaded
+     * into an open metadata archive.
+     *
+     * @return string
+     */
+    @Override
+    public String getTypeName()
+    {
+        return OpenMetadataType.SOLUTION_COMPONENT.typeName;
     }
 
 
@@ -465,6 +440,28 @@ public enum SolutionComponent
         return description;
     }
 
+    /**
+     * Return the optional collection that this element is a part of.
+     *
+     * @return collection definition
+     */
+    @Override
+    public CollectionDefinition getParentCollection()
+    {
+        return SolutionComponentDefinition.super.getParentCollection();
+    }
+
+    /**
+     * Return whether this is a template or not.
+     *
+     * @return boolean
+     */
+    @Override
+    public boolean isTemplate()
+    {
+        return SolutionComponentDefinition.super.isTemplate();
+    }
+
 
     /**
      * Return the version identifier of the solution blueprint.
@@ -476,15 +473,15 @@ public enum SolutionComponent
         return versionIdentifier;
     }
 
-
-    public List<SolutionBlueprint> getConsumingBlueprints()
+    /**
+     * Return the version identifier of the solution blueprint.
+     *
+     * @return string
+     */
+    @Override
+    public String getIdentifier()
     {
-        if (consumingBlueprints == null)
-        {
-            return null;
-        }
-
-        return Arrays.asList(consumingBlueprints);
+        return null;
     }
 
 
@@ -493,7 +490,8 @@ public enum SolutionComponent
      *
      * @return null or list
      */
-    public List<SolutionComponent> getSubComponents()
+    @Override
+    public List<SolutionComponentDefinition> getSubComponents()
     {
         if (subComponents == null)
         {

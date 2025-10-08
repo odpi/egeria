@@ -39,6 +39,7 @@ import org.odpi.openmetadata.frameworks.openmetadata.properties.actors.ActorRole
 import org.odpi.openmetadata.frameworks.openmetadata.properties.actors.SolutionActorRoleProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.processes.connectors.CatalogTargetProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.referencedata.ReferenceCodeTableProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.collections.CollectionMembershipProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.collections.CollectionProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.communities.CommunityProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.connections.ConnectionProperties;
@@ -280,9 +281,11 @@ public class OpenMetadataProductsHarvesterConnector extends IntegrationConnector
             {
                 if ((validValueSet != null) && (validValueSet.getProperties() instanceof ValidValueDefinitionProperties validValueDefinitionProperties))
                 {
-                    ProductDefinition productDefinition = new ProductDefinitionBean("Valid Value Set: " + validValueDefinitionProperties.getDisplayName(),
+                    ProductDefinition productDefinition = new ProductDefinitionBean(OpenMetadataType.DIGITAL_PRODUCT.typeName,
+                                                                                    new ProductDefinition[]{ ProductDefinitionEnum.VALID_VALUE_SETS },
+                                                                                    "Valid Value Set: " + validValueDefinitionProperties.getDisplayName(),
                                                                                     "OPEN-METADATA-" + OpenMetadataType.VALID_VALUE_DEFINITION.typeName + "-" + validValueDefinitionProperties.getQualifiedName(),
-                                                                                    ProductFolderDefinition.VALID_VALUE_SETS,
+                                                                                    null,
                                                                                     validValueDefinitionProperties.getDisplayName(),
                                                                                     validValueDefinitionProperties.getDescription(),
                                                                                     ProductCategoryDefinition.REFERENCE_DATA.getPreferredValue(),
@@ -362,12 +365,11 @@ public class OpenMetadataProductsHarvesterConnector extends IntegrationConnector
     {
         CollectionClient            collectionClient            = integrationContext.getCollectionClient(OpenMetadataType.DIGITAL_PRODUCT.typeName);
         ClassificationManagerClient classificationManagerClient = integrationContext.getClassificationManagerClient();
-        SolutionBlueprintClient     solutionBlueprintClient     = integrationContext.getSolutionBlueprintClient();
 
         final String methodName = "getProduct";
 
         /*
-         * If the product is already present then return its GUID
+         * If the product is already present then return its GUID.  This works for product s and product families,
          */
         List<OpenMetadataRootElement> existingProducts = collectionClient.getCollectionsByName(productDefinition.getQualifiedName(), null);
 
@@ -394,6 +396,7 @@ public class OpenMetadataProductsHarvesterConnector extends IntegrationConnector
          */
         DigitalProductProperties digitalProductProperties = new DigitalProductProperties();
 
+        digitalProductProperties.setTypeName(productDefinition.getTypeName()); // may be family or product
         digitalProductProperties.setQualifiedName(productDefinition.getQualifiedName());
         digitalProductProperties.setDisplayName(productDefinition.getDisplayName());
         digitalProductProperties.setDescription(productDefinition.getDescription());
@@ -405,10 +408,10 @@ public class OpenMetadataProductsHarvesterConnector extends IntegrationConnector
         newElementOptions.setIsOwnAnchor(true);
         newElementOptions.setAnchorScopeGUID(this.anchorScopeGUID);
 
-        if (productDefinition.getParent() != null)
+        if (productDefinition.getFolder() != null)
         {
             newElementOptions.setParentAtEnd1(true);
-            newElementOptions.setParentGUID(productFolders.get(productDefinition.getParent().getQualifiedName()));
+            newElementOptions.setParentGUID(productFolders.get(productDefinition.getFolder().getQualifiedName()));
             newElementOptions.setParentRelationshipTypeName(OpenMetadataType.COLLECTION_MEMBERSHIP_RELATIONSHIP.typeName);
         }
 
@@ -421,15 +424,6 @@ public class OpenMetadataProductsHarvesterConnector extends IntegrationConnector
                             ProductManagerAuditCode.NEW_OPEN_METADATA_PRODUCT.getMessageDefinition(connectorName,
                                                                                                    productGUID,
                                                                                                    productDefinition.getProductName()));
-        /*
-         * All of the digital products use the same solution design
-         */
-        solutionBlueprintClient.linkSolutionDesign(productGUID,
-                                                   solutionBlueprintGUID,
-                                                   solutionBlueprintClient.getMetadataSourceOptions(),
-                                                   null);
-
-
 
         /*
          * Link the product manager
@@ -463,12 +457,12 @@ public class OpenMetadataProductsHarvesterConnector extends IntegrationConnector
         }
 
         /*
-         * Link the community to the product
+         * Link the community to the product family if defined
          */
         String communityNoteLogGUID = null;
-        if (productDefinition.getCommunity() != null)
+        if ((OpenMetadataType.DIGITAL_PRODUCT_FAMILY.typeName.equals(productDefinition.getTypeName())) && (productDefinition.getCommunity() != null))
         {
-            communityNoteLogGUID = communities.get(productDefinition.getCommunity().getQualifiedName());
+            communityNoteLogGUID = communityNoteLogs.get(productDefinition.getCommunity().getQualifiedName());
 
             classificationManagerClient.addScopeToElement(communityNoteLogGUID,
                                                           productGUID,
@@ -490,23 +484,41 @@ public class OpenMetadataProductsHarvesterConnector extends IntegrationConnector
          * The subscription options show up as governance action processes that are configured with the appropriate
          * information.
          */
-        this.addSubscriptionTypes(productDefinition, productGUID, productAssetGUID, licenseTypeGUID, communityNoteLogGUID, productManagerGUID);
+        this.addSubscriptionTypes(productDefinition, productGUID, productAssetGUID, communityNoteLogGUID, productManagerGUID);
 
         /*
-         * Register the product as a catalog target so it is refreshed.
+         * Register each product as a catalog target, so it is refreshed.
          */
-        ConnectorConfigClient connectorConfigClient = integrationContext.getConnectorConfigClient();
+        if (OpenMetadataType.DIGITAL_PRODUCT.typeName.equals(productDefinition.getTypeName()))
+        {
+            ConnectorConfigClient connectorConfigClient = integrationContext.getConnectorConfigClient();
 
-        CatalogTargetProperties catalogTargetProperties = new CatalogTargetProperties();
+            CatalogTargetProperties catalogTargetProperties = new CatalogTargetProperties();
 
-        catalogTargetProperties.setCatalogTargetName(productDefinition.getCatalogTargetName());
-        catalogTargetProperties.setConnectionName(productDefinition.getProductName());
-        catalogTargetProperties.setPermittedSynchronization(PermittedSynchronization.BOTH_DIRECTIONS);
-        catalogTargetProperties.setDeleteMethod(DeleteMethod.LOOK_FOR_LINEAGE);
+            catalogTargetProperties.setCatalogTargetName(productDefinition.getCatalogTargetName());
+            catalogTargetProperties.setConnectionName(productDefinition.getProductName());
+            catalogTargetProperties.setPermittedSynchronization(PermittedSynchronization.BOTH_DIRECTIONS);
+            catalogTargetProperties.setDeleteMethod(DeleteMethod.LOOK_FOR_LINEAGE);
 
-        connectorConfigClient.addCatalogTarget(integrationContext.getIntegrationConnectorGUID(),
-                                               productAssetGUID,
-                                               catalogTargetProperties);
+            connectorConfigClient.addCatalogTarget(integrationContext.getIntegrationConnectorGUID(),
+                                                   productAssetGUID,
+                                                   catalogTargetProperties);
+        }
+
+        if (productDefinition.getProductFamilies() != null)
+        {
+            for (ProductDefinition productGroup : productDefinition.getProductFamilies())
+            {
+                CollectionMembershipProperties collectionMembershipProperties = new CollectionMembershipProperties();
+
+                collectionMembershipProperties.setMembershipType("includes product");
+
+                collectionClient.addToCollection(products.get(productGroup.getQualifiedName()),
+                                                 productGUID,
+                                                 collectionClient.getMetadataSourceOptions(),
+                                                 collectionMembershipProperties);
+            }
+        }
 
         return productGUID;
     }
@@ -629,7 +641,6 @@ public class OpenMetadataProductsHarvesterConnector extends IntegrationConnector
      * @param productDefinition description of product
      * @param productGUID unique identifier of the product
      * @param productAssetGUID unique identifier for the asset that represents the product
-     * @param licenseTypeGUID unique identifier of the licence that will be granted to the subscriber's asset
      * @param communityNoteLogGUID unique identifier of the community's note log
      * @param productManagerGUID unique identifier for the product manager
      *
@@ -641,7 +652,6 @@ public class OpenMetadataProductsHarvesterConnector extends IntegrationConnector
     private void addSubscriptionTypes(ProductDefinition productDefinition,
                                       String            productGUID,
                                       String            productAssetGUID,
-                                      String            licenseTypeGUID,
                                       String            communityNoteLogGUID,
                                       String            productManagerGUID) throws InvalidParameterException,
                                                                                    PropertyServerException,
@@ -651,27 +661,34 @@ public class OpenMetadataProductsHarvesterConnector extends IntegrationConnector
         {
             for (ProductSubscriptionDefinition productSubscriptionDefinition : productDefinition.getSubscriptionTypes())
             {
-                addSubscriptionType(productDefinition,
-                                    productSubscriptionDefinition,
-                                    productGUID,
-                                    productAssetGUID,
-                                    licenseTypeGUID,
-                                    communityNoteLogGUID,
-                                    productManagerGUID);
+                if (productAssetGUID != null)
+                {
+                    addNotificationType(productSubscriptionDefinition,
+                                        productGUID,
+                                        productDefinition.getProductName(),
+                                        productAssetGUID,
+                                        communityNoteLogGUID,
+                                        productManagerGUID);
+                }
+
+                addSubscriptionGovernanceActionProcess(productDefinition.getProductName(),
+                                                       productGUID,
+                                                       productSubscriptionDefinition,
+                                                       productManagerGUID);
             }
         }
     }
 
 
     /**
-     * Set up a product's subscription types.  Each are governance action processes configured with an appropriate
+     * Set up a digital product's notification type.  Each are governance action processes configured with an appropriate
      * subscription template.  When the governance action process runs, it creates the subscription for the requesting
      * actor.
      *
-     * @param productDefinition description of product
+     * @param productSubscriptionDefinition description of the subscription type that is supported by the product
      * @param productGUID unique identifier of the product
+     * @param productName name of the product
      * @param productAssetGUID unique identifier for the asset that represents the product
-     * @param licenseTypeGUID unique identifier of the licence that will be granted to the subscriber's asset
      * @param communityNoteLogGUID unique identifier of the community's note log
      * @param productManagerGUID unique identifier for the product manager
      *
@@ -680,11 +697,10 @@ public class OpenMetadataProductsHarvesterConnector extends IntegrationConnector
      * @throws UserNotAuthorizedException connector's userId not defined to open metadata, or the connector has
      * been disconnected.
      */
-    private void addSubscriptionType(ProductDefinition             productDefinition,
-                                     ProductSubscriptionDefinition productSubscriptionDefinition,
+    private void addNotificationType(ProductSubscriptionDefinition productSubscriptionDefinition,
                                      String                        productGUID,
+                                     String                        productName,
                                      String                        productAssetGUID,
-                                     String                        licenseTypeGUID,
                                      String                        communityNoteLogGUID,
                                      String                        productManagerGUID) throws InvalidParameterException,
                                                                                               PropertyServerException,
@@ -718,12 +734,12 @@ public class OpenMetadataProductsHarvesterConnector extends IntegrationConnector
          * and subscribers are attached to ensure the notification watchdog sees their attachment events and
          * sends out the welcome messages.
          */
-        String engineActionGUID = this.activateNotificationWatchdog(productDefinition, productSubscriptionDefinition, notificationTypeGUID);
+        String engineActionGUID = this.activateNotificationWatchdog(productGUID, productManagerGUID, productSubscriptionDefinition, notificationTypeGUID);
 
         MonitoredResourceProperties monitoredResourceProperties = new MonitoredResourceProperties();
 
         monitoredResourceProperties.setLabel("product asset");
-        monitoredResourceProperties.setDescription("This is the product asset that represents the data for the " + productDefinition.getProductName() + " product.");
+        monitoredResourceProperties.setDescription("This is the product asset that represents the data for the " + productName + " product.");
 
         notificationTypeClient.linkMonitoredResource(notificationTypeGUID, productAssetGUID, notificationTypeClient.getMetadataSourceOptions(), monitoredResourceProperties);
 
@@ -744,7 +760,31 @@ public class OpenMetadataProductsHarvesterConnector extends IntegrationConnector
 
             notificationTypeClient.linkNotificationSubscriber(notificationTypeGUID, productManagerGUID, notificationTypeClient.getMetadataSourceOptions(), notificationSubscriberProperties);
         }
+    }
 
+
+    /**
+     * Set up a product's subscription types.  Each are governance action processes configured with an appropriate
+     * subscription template.  When the governance action process runs, it creates the subscription for the requesting
+     * actor.
+     *
+     * @param productName name of product
+     * @param productGUID unique identifier of the product
+     * @param productSubscriptionDefinition details of the subscription type
+     * @param productManagerGUID unique identifier for the product manager
+     *
+     * @throws InvalidParameterException invalid parameter passed - probably a bug in this code
+     * @throws PropertyServerException repository is probably down
+     * @throws UserNotAuthorizedException connector's userId not defined to open metadata, or the connector has
+     * been disconnected.
+     */
+    private void addSubscriptionGovernanceActionProcess(String                        productName,
+                                                        String                        productGUID,
+                                                        ProductSubscriptionDefinition productSubscriptionDefinition,
+                                                        String                        productManagerGUID) throws InvalidParameterException,
+                                                                                                                 PropertyServerException,
+                                                                                                                 UserNotAuthorizedException
+    {
         /*
          * The subscription notification watchdog manager is running.  Now build the governance action process that is
          * used to add a new subscription of this type.
@@ -752,10 +792,11 @@ public class OpenMetadataProductsHarvesterConnector extends IntegrationConnector
         Map<String, String> additionalRequestParameters = new HashMap<>();
 
         additionalRequestParameters.put(ManageDigitalSubscriptionRequestParameter.SUBSCRIPTION_NAME.getName(), productSubscriptionDefinition.getDisplayName());
+        additionalRequestParameters.put(ManageDigitalSubscriptionRequestParameter.SUBSCRIPTION_IDENTIFIER.getName(), productSubscriptionDefinition.getIdentifier());
         additionalRequestParameters.put(ManageDigitalSubscriptionRequestParameter.SUBSCRIPTION_DESCRIPTION.getName(), productSubscriptionDefinition.getDescription());
 
-        String governanceActionProcessGUID = integrationContext.createProcessFromGovernanceActionType(OpenMetadataType.GOVERNANCE_ACTION_PROCESS.typeName + "::" + productDefinition.getProductName() + "::" + ResourceUse.CREATE_SUBSCRIPTION.getResourceUse() + "::" + productSubscriptionDefinition.getIdentifier(),
-                                                                                                      "Create " + productSubscriptionDefinition.getDisplayName() + " for " + productDefinition.getProductName(),
+        String governanceActionProcessGUID = integrationContext.createProcessFromGovernanceActionType(OpenMetadataType.GOVERNANCE_ACTION_PROCESS.typeName + "::" + productName + "::" + ResourceUse.CREATE_SUBSCRIPTION.getResourceUse() + "::" + productSubscriptionDefinition.getIdentifier(),
+                                                                                                      "Create " + productSubscriptionDefinition.getDisplayName() + " for " + productName,
                                                                                                       productSubscriptionDefinition.getDescription() + "  Supply the requester (actor entity) as an action target called digitalSubscriptionRequester and the asset where the data is to be sent to as action target named destinationDataSet.",
                                                                                                       GovernanceActionTypeDefinition.CREATE_SUBSCRIPTION.getGovernanceActionTypeGUID(),
                                                                                                       additionalRequestParameters,
@@ -773,20 +814,6 @@ public class OpenMetadataProductsHarvesterConnector extends IntegrationConnector
 
         openMetadataStore.createRelatedElementsInStore(OpenMetadataType.TARGET_FOR_GOVERNANCE_ACTION_RELATIONSHIP.typeName,
                                                        governanceActionProcessGUID,
-                                                       productAssetGUID,
-                                                       null,
-                                                       null,
-                                                       propertyHelper.addStringProperty(null, OpenMetadataProperty.ACTION_TARGET_NAME.name, ManageDigitalSubscriptionActionTarget.DIGITAL_SUBSCRIPTION_SOURCE.getName()));
-
-        openMetadataStore.createRelatedElementsInStore(OpenMetadataType.TARGET_FOR_GOVERNANCE_ACTION_RELATIONSHIP.typeName,
-                                                       governanceActionProcessGUID,
-                                                       notificationTypeGUID,
-                                                       null,
-                                                       null,
-                                                       propertyHelper.addStringProperty(null, OpenMetadataProperty.ACTION_TARGET_NAME.name, ManageDigitalSubscriptionActionTarget.NOTIFICATION_TYPE.getName()));
-
-        openMetadataStore.createRelatedElementsInStore(OpenMetadataType.TARGET_FOR_GOVERNANCE_ACTION_RELATIONSHIP.typeName,
-                                                       governanceActionProcessGUID,
                                                        productManagerGUID,
                                                        null,
                                                        null,
@@ -798,13 +825,6 @@ public class OpenMetadataProductsHarvesterConnector extends IntegrationConnector
                                                        null,
                                                        null,
                                                        propertyHelper.addStringProperty(null, OpenMetadataProperty.ACTION_TARGET_NAME.name, ManageDigitalSubscriptionActionTarget.SERVICE_LEVEL_OBJECTIVE.getName()));
-
-        openMetadataStore.createRelatedElementsInStore(OpenMetadataType.TARGET_FOR_GOVERNANCE_ACTION_RELATIONSHIP.typeName,
-                                                       governanceActionProcessGUID,
-                                                       licenseTypeGUID,
-                                                       null,
-                                                       null,
-                                                       propertyHelper.addStringProperty(null, OpenMetadataProperty.ACTION_TARGET_NAME.name, ManageDigitalSubscriptionActionTarget.LICENSE_TYPE.getName()));
 
         openMetadataStore.createRelatedElementsInStore(OpenMetadataType.TARGET_FOR_GOVERNANCE_ACTION_RELATIONSHIP.typeName,
                                                        governanceActionProcessGUID,
@@ -820,6 +840,22 @@ public class OpenMetadataProductsHarvesterConnector extends IntegrationConnector
                                                        null,
                                                        propertyHelper.addStringProperty(null, OpenMetadataProperty.ACTION_TARGET_NAME.name, ManageDigitalSubscriptionActionTarget.CANCELLING_ACTION_TYPE.getName()));
 
+        /*
+         * Remove the specification properties for the action targets that have already been supplied.  This means
+         * that the remaining specification properties cover the ones that the caller needs to supply.
+         */
+        GovernanceDefinitionClient governanceDefinitionClient = integrationContext.getGovernanceDefinitionClient(OpenMetadataType.GOVERNANCE_ACTION_PROCESS.typeName);
+
+        OpenMetadataRootElement governanceActionProcess = governanceDefinitionClient.getGovernanceDefinitionByGUID(governanceActionProcessGUID, governanceDefinitionClient.getGetOptions());
+
+        if (governanceActionProcess.getSpecificationProperties() != null)
+        {
+            // todo
+        }
+
+        /*
+         * Link the new governance action process to the product.
+         */
         ClassificationManagerClient classificationManagerClient = integrationContext.getClassificationManagerClient();
 
         ResourceListProperties resourceListProperties = new ResourceListProperties();
@@ -1057,7 +1093,8 @@ public class OpenMetadataProductsHarvesterConnector extends IntegrationConnector
     /**
      * Set up the notification watchdog.
      *
-     * @param productDefinition description of product
+     * @param productGUID unique identifier of product
+     * @param productManagerGUID unique identifier of product manager
      * @param productSubscriptionDefinition details of the specific subscription type
      * @param notificationTypeGUID notification type that is to be monitored
      *
@@ -1067,7 +1104,8 @@ public class OpenMetadataProductsHarvesterConnector extends IntegrationConnector
      * @throws UserNotAuthorizedException connector's userId not defined to open metadata, or the connector has
      * been disconnected.
      */
-    private String activateNotificationWatchdog(ProductDefinition             productDefinition,
+    private String activateNotificationWatchdog(String                        productGUID,
+                                                String                        productManagerGUID,
                                                 ProductSubscriptionDefinition productSubscriptionDefinition,
                                                 String                        notificationTypeGUID) throws InvalidParameterException,
                                                                                                            PropertyServerException,
@@ -1089,8 +1127,8 @@ public class OpenMetadataProductsHarvesterConnector extends IntegrationConnector
         {
             return integrationContext.getOpenGovernanceClient().initiateGovernanceActionType(integrationContext.getMyUserId(),
                                                                                              governanceActionTypeProperties.getQualifiedName(),
-                                                                                             Collections.singletonList(integrationContext.getIntegrationConnectorGUID()),
-                                                                                             Collections.singletonList(products.get(productDefinition.getQualifiedName())),
+                                                                                             Arrays.asList(integrationContext.getIntegrationConnectorGUID(), productManagerGUID),
+                                                                                             Collections.singletonList(productGUID),
                                                                                              actionTargets,
                                                                                              null,
                                                                                              null,
@@ -1142,6 +1180,16 @@ public class OpenMetadataProductsHarvesterConnector extends IntegrationConnector
 
         productFolderMap.put(ProductFolderDefinition.TOP_LEVEL.getQualifiedName(), topLevelGUID);
         this.anchorScopeGUID = topLevelGUID;
+
+
+        /*
+         * All of the digital products use the same solution design, so it is attached at the top.
+         */
+        SolutionBlueprintClient solutionBlueprintClient = integrationContext.getSolutionBlueprintClient();
+        solutionBlueprintClient.linkSolutionDesign(topLevelGUID,
+                                                   solutionBlueprintGUID,
+                                                   solutionBlueprintClient.getMetadataSourceOptions(),
+                                                   null);
 
         /*
          * This root collection gathers all of the product catalogs together.  It is defined in the core content pack.

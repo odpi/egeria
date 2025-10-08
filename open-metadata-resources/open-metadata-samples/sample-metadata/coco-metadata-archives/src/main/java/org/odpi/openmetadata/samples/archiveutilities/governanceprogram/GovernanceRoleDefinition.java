@@ -118,7 +118,7 @@ public enum GovernanceRoleDefinition
     /**
      * Return the appointees.
      *
-     * @return list of profiles
+     * @return array of profiles
      */
     public PersonDefinition[] getAppointees()
     {

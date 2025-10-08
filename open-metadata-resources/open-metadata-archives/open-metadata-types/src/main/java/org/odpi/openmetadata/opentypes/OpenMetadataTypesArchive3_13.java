@@ -163,7 +163,6 @@ public class OpenMetadataTypesArchive3_13
         /*
          * Calls for new and changed types go here
          */
-        addArea1Actors();
         add0222DataFilesAndFolders();
         add0430ServiceLevelObjectives();
         update0481Licenses();
@@ -172,31 +171,6 @@ public class OpenMetadataTypesArchive3_13
     }
 
 
-    /*
-     * -------------------------------------------------------------------------------------------------------
-     */
-
-
-    private void addArea1Actors()
-    {
-        this.archiveBuilder.addTypeDefPatch(updatePersonRole());
-    }
-
-
-
-    private TypeDefPatch updatePersonRole()
-    {
-        /*
-         * Create the Patch
-         */
-        TypeDefPatch typeDefPatch = archiveBuilder.getPatchForType(OpenMetadataType.PERSON_ROLE.typeName);
-
-        typeDefPatch.setUpdatedBy(originatorName);
-        typeDefPatch.setUpdateTime(creationDate);
-        typeDefPatch.setSuperType(this.archiveBuilder.getEntityDef(OpenMetadataType.ACTOR.typeName));
-
-        return typeDefPatch;
-    }
 
 
     /*
@@ -207,31 +181,8 @@ public class OpenMetadataTypesArchive3_13
     private void add0222DataFilesAndFolders()
     {
         this.archiveBuilder.addEntityDef(getParquetFileEntity());
-        this.archiveBuilder.addTypeDefPatch(updateDataFileEntity());
     }
 
-
-    private TypeDefPatch updateDataFileEntity()
-    {
-        /*
-         * Create the Patch
-         */
-        TypeDefPatch  typeDefPatch = archiveBuilder.getPatchForType(OpenMetadataType.DATA_FILE.typeName);
-
-        typeDefPatch.setUpdatedBy(originatorName);
-        typeDefPatch.setUpdateTime(creationDate);
-
-        /*
-         * Build the attributes
-         */
-        List<TypeDefAttribute> properties = new ArrayList<>();
-
-        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.FILE_NAME));
-
-        typeDefPatch.setPropertyDefinitions(properties);
-
-        return typeDefPatch;
-    }
 
 
 

@@ -1,7 +1,7 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 /* Copyright Contributors to the ODPi Egeria project. */
 
-package org.odpi.openmetadata.frameworks.connectors;
+package org.odpi.openmetadata.frameworks.connectors.tabulardatasets;
 
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
 
@@ -25,18 +25,22 @@ public interface WritableTabularDataSource
 
 
     /**
-     * Return the list of column descriptions associated with this data source.  The information
-     * should be sufficient to define the schema in a target data store.
+     * Set up the canonical table name for this data source.  Each word in the name should be capitalized, with spaces
+     * between the words to allow translation between different naming conventions.
      *
-     * @return a list of column descriptions or null if not available.
+     * @param tableName  string
+     * @param tableDescription optional description
      * @throws ConnectorCheckedException there is a problem accessing the data
      */
-    List<TabularColumnDescription> getColumnDescriptions() throws ConnectorCheckedException;
+    void setTableName(String tableName,
+                      String tableDescription) throws ConnectorCheckedException;
 
 
     /**
      * Set up the columns associated with this tabular data source.  These may be stored in the data set or kept in
-     * memory for this instance.
+     * memory for this instance.  The names of the columns will be in
+     * a canonical format where each word in the name is capitalized with a space between each word.
+     * This allows simple translation between the naming conventions supported by different technologies.
      *
      * @param columnDescriptions   a list of column descriptions
      * @throws ConnectorCheckedException there is a problem accessing the data
@@ -62,6 +66,7 @@ public interface WritableTabularDataSource
      * @throws ConnectorCheckedException there is a problem accessing the data.
      */
     void appendRecord(List<String>  dataValues) throws ConnectorCheckedException;
+
 
     /**
      * Remove the requested data record.  The first data record is record 0.

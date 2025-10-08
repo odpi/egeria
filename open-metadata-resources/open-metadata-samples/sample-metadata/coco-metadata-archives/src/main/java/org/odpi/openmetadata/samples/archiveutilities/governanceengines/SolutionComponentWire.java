@@ -3,6 +3,9 @@
 
 package org.odpi.openmetadata.samples.archiveutilities.governanceengines;
 
+import org.odpi.openmetadata.frameworks.openmetadata.definitions.SolutionComponentDefinition;
+import org.odpi.openmetadata.frameworks.openmetadata.definitions.SolutionComponentWireDefinition;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -10,7 +13,7 @@ import java.util.List;
  * Define the linkage between solution components defined for Coco Pharmaceuticals.
  * Still experimenting on the usage of the
  */
-public enum SolutionComponentWire
+public enum SolutionComponentWire implements SolutionComponentWireDefinition
 {
     HOSPITAL_TO_LANDING_AREA(SolutionComponent.HOSPITAL,
                              SolutionComponent.HOSPITAL_LANDING_AREA_FOLDER,
@@ -165,12 +168,12 @@ public enum SolutionComponentWire
     }
 
 
-    public SolutionComponent getComponent1()
+    public SolutionComponentDefinition getComponent1()
     {
         return component1;
     }
 
-    public SolutionComponent getComponent2()
+    public SolutionComponentDefinition getComponent2()
     {
         return component2;
     }

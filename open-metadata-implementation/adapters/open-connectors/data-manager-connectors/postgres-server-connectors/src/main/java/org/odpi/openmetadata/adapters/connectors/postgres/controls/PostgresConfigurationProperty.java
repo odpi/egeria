@@ -5,6 +5,7 @@ package org.odpi.openmetadata.adapters.connectors.postgres.controls;
 
 import org.odpi.openmetadata.frameworks.connectors.controls.ConfigurationPropertyType;
 import org.odpi.openmetadata.frameworks.openmetadata.controls.PlaceholderProperty;
+import org.odpi.openmetadata.frameworks.openmetadata.types.DataType;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -78,6 +79,15 @@ public enum PostgresConfigurationProperty
                  true),
 
     /**
+     * The description of the database schema being catalogued.
+     */
+    SCHEMA_DESCRIPTION (PostgresPlaceholderProperty.SCHEMA_DESCRIPTION.getName(),
+                        PostgresPlaceholderProperty.SCHEMA_DESCRIPTION.getDescription(),
+                        PostgresPlaceholderProperty.SCHEMA_DESCRIPTION.getDataType(),
+                        PostgresPlaceholderProperty.SCHEMA_DESCRIPTION.getExample(),
+                        true),
+
+    /**
      * The name of the database table being catalogued.
      */
     TABLE_NAME (PostgresPlaceholderProperty.TABLE_NAME.getName(),
@@ -86,6 +96,15 @@ public enum PostgresConfigurationProperty
                 PostgresPlaceholderProperty.TABLE_NAME.getExample(),
                 true),
 
+
+    /**
+     * Provides a list of database names that should not be catalogued.
+     */
+    TABLE_DESCRIPTION ("tableDescription",
+                       "Provides n optional description used when defining the table schema in the database.",
+                       DataType.STRING.getName(),
+                       "This table is used to store selected open metadata values.",
+                       false),
 
     /**
      * Provides a list of database names that should not be catalogued.
@@ -258,7 +277,10 @@ public enum PostgresConfigurationProperty
     {
         List<String> recognizedConfigurationProperties = new ArrayList<>();
 
+        recognizedConfigurationProperties.add(PostgresConfigurationProperty.SCHEMA_NAME.getName());
+        recognizedConfigurationProperties.add(PostgresConfigurationProperty.SCHEMA_DESCRIPTION.getName());
         recognizedConfigurationProperties.add(PostgresConfigurationProperty.TABLE_NAME.getName());
+        recognizedConfigurationProperties.add(PostgresConfigurationProperty.TABLE_DESCRIPTION.getName());
 
         return recognizedConfigurationProperties;
     }
@@ -273,12 +295,13 @@ public enum PostgresConfigurationProperty
     {
         List<ConfigurationPropertyType> configurationPropertyTypes = new ArrayList<>();
 
+        configurationPropertyTypes.add(PostgresConfigurationProperty.SCHEMA_NAME.getConfigurationPropertyType());
+        configurationPropertyTypes.add(PostgresConfigurationProperty.SCHEMA_DESCRIPTION.getConfigurationPropertyType());
         configurationPropertyTypes.add(PostgresConfigurationProperty.TABLE_NAME.getConfigurationPropertyType());
+        configurationPropertyTypes.add(PostgresConfigurationProperty.TABLE_DESCRIPTION.getConfigurationPropertyType());
 
         return configurationPropertyTypes;
     }
-
-
 
 
     /**

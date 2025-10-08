@@ -42,6 +42,34 @@ public enum SolutionComponentType
 
 
     /**
+     * The storage of data for later retrieval by automated processes.
+     */
+    SOFTWARE_SERVICE("Software Service",
+                     "Provides remote access to digital resources."),
+
+
+    /**
+     * Provides a set of locally callable functions.
+     */
+    SOFTWARE_LIBRARY("Software Library",
+                     "Provides a set of locally callable functions."),
+
+
+    /**
+     * Provides a guided interface for a user to locate function, issue commands and retrieve information.
+     */
+    USER_INTERFACE("User Interface",
+                     "Provides a guided interface for a user to locate function, issue commands and retrieve information."),
+
+
+    /**
+     * Provides a callable function that can be issued from a console/command line.
+     */
+    CONSOLE_COMMAND("Console Command",
+                   "Provides a callable function that can be issued from a console/command line."),
+
+
+    /**
      * A distribution of data to a variety of automated processes.
      */
     DATA_DISTRIBUTION("Data Distribution",
