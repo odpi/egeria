@@ -1497,9 +1497,9 @@ loadScripts(document, 'script');</script>
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serviceURLMarker,
  @PathVariable
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
- @RequestParam
+ @RequestParam(required=false)
  int&nbsp;startFrom,
- @RequestParam
+ @RequestParam(required=false)
  int&nbsp;pageSize)</span></div>
 <div class="block">Retrieve the engine actions that are known to the server.</div>
 <dl class="notes">
@@ -1527,9 +1527,9 @@ loadScripts(document, 'script');</script>
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serviceURLMarker,
  @PathVariable
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
- @RequestParam
+ @RequestParam(required=false)
  int&nbsp;startFrom,
- @RequestParam
+ @RequestParam(required=false)
  int&nbsp;pageSize)</span></div>
 <div class="block">Retrieve the engine actions that are still in process.</div>
 <dl class="notes">
@@ -1557,9 +1557,9 @@ loadScripts(document, 'script');</script>
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serviceURLMarker,
  @PathVariable
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
- @RequestParam
+ @RequestParam(required=false)
  int&nbsp;startFrom,
- @RequestParam
+ @RequestParam(required=false)
  int&nbsp;pageSize,
  @RequestBody
  <a href="../../../../commonservices/ffdc/rest/SearchStringRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">SearchStringRequestBody</a>&nbsp;requestBody)</span></div>
@@ -1591,9 +1591,9 @@ loadScripts(document, 'script');</script>
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serviceURLMarker,
  @PathVariable
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;userId,
- @RequestParam
+ @RequestParam(required=false)
  int&nbsp;startFrom,
- @RequestParam
+ @RequestParam(required=false)
  int&nbsp;pageSize,
  @RequestBody
  <a href="../../../../commonservices/ffdc/rest/NameRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">NameRequestBody</a>&nbsp;requestBody)</span></div>
