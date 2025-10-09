@@ -45,6 +45,7 @@ public class SimpleCatalogArchiveHelper
      * @param archiveBuilder builder where content is cached
      * @param archiveGUID unique identifier for this open metadata archive.
      * @param archiveName name of the open metadata archive metadata collection.
+     * @param archiveDescription description of this archive.
      * @param archiveRootName non-spaced root name of the open metadata GUID map.
      * @param originatorName name of the originator (person or organization) of the archive.
      * @param creationDate data that this archive was created.
@@ -54,6 +55,7 @@ public class SimpleCatalogArchiveHelper
     public SimpleCatalogArchiveHelper(OpenMetadataArchiveBuilder archiveBuilder,
                                       String                     archiveGUID,
                                       String                     archiveName,
+                                      String                     archiveDescription,
                                       String                     archiveRootName,
                                       String                     originatorName,
                                       Date                       creationDate,
@@ -63,6 +65,7 @@ public class SimpleCatalogArchiveHelper
         this(archiveBuilder,
              archiveGUID,
              archiveName,
+             archiveDescription,
              originatorName,
              creationDate,
              versionNumber,
@@ -77,6 +80,7 @@ public class SimpleCatalogArchiveHelper
      * @param archiveBuilder builder where content is cached
      * @param archiveGUID unique identifier for this open metadata archive.
      * @param archiveName name of the open metadata archive metadata collection.
+     * @param archiveDescription description of this archive.
      * @param archiveRootName non-spaced root name of the open metadata GUID map.
      * @param originatorName name of the originator (person or organization) of the archive.
      * @param creationDate data that this archive was created.
@@ -88,6 +92,7 @@ public class SimpleCatalogArchiveHelper
     public SimpleCatalogArchiveHelper(OpenMetadataArchiveBuilder archiveBuilder,
                                       String                     archiveGUID,
                                       String                     archiveName,
+                                      String                     archiveDescription,
                                       String                     archiveRootName,
                                       String                     originatorName,
                                       Date                       creationDate,
@@ -99,6 +104,7 @@ public class SimpleCatalogArchiveHelper
         this(archiveBuilder,
              archiveGUID,
              archiveName,
+             archiveDescription,
              originatorName,
              creationDate,
              versionNumber,
@@ -116,6 +122,7 @@ public class SimpleCatalogArchiveHelper
      * @param archiveBuilder builder where content is cached
      * @param archiveGUID unique identifier for this open metadata archive.
      * @param archiveName name of the open metadata archive metadata collection.
+     * @param archiveDescription description of this archive.
      * @param originatorName name of the originator (person or organization) of the archive.
      * @param creationDate data that this archive was created.
      * @param versionNumber version number of the archive.
@@ -125,13 +132,14 @@ public class SimpleCatalogArchiveHelper
     public SimpleCatalogArchiveHelper(OpenMetadataArchiveBuilder archiveBuilder,
                                       String                     archiveGUID,
                                       String                     archiveName,
+                                      String                     archiveDescription,
                                       String                     originatorName,
                                       Date                       creationDate,
                                       long                       versionNumber,
                                       String                     versionName,
                                       String                     guidMapFileName)
     {
-        this(archiveBuilder, archiveGUID, archiveName, originatorName, creationDate, versionNumber, versionName, InstanceProvenanceType.CONTENT_PACK, null, guidMapFileName);
+        this(archiveBuilder, archiveGUID, archiveName, archiveDescription, originatorName, creationDate, versionNumber, versionName, InstanceProvenanceType.CONTENT_PACK, null, guidMapFileName);
     }
 
 
@@ -142,6 +150,7 @@ public class SimpleCatalogArchiveHelper
      * @param archiveBuilder builder where content is cached
      * @param archiveGUID unique identifier for this open metadata archive.
      * @param archiveName name of the open metadata archive metadata collection.
+     * @param archiveDescription description of this archive.
      * @param originatorName name of the originator (person or organization) of the archive.
      * @param creationDate data that this archive was created.
      * @param versionNumber version number of the archive.
@@ -153,6 +162,7 @@ public class SimpleCatalogArchiveHelper
     public SimpleCatalogArchiveHelper(OpenMetadataArchiveBuilder archiveBuilder,
                                       String                     archiveGUID,
                                       String                     archiveName,
+                                      String                     archiveDescription,
                                       String                     originatorName,
                                       Date                       creationDate,
                                       long                       versionNumber,
@@ -178,6 +188,87 @@ public class SimpleCatalogArchiveHelper
         this.archiveRootName = archiveName;
         this.originatorName = originatorName;
         this.versionName = versionName;
+
+        this.addMetadataCollection(archiveGUID,
+                                   archiveName,
+                                   archiveDescription,
+                                   originatorName,
+                                   creationDate,
+                                   versionNumber,
+                                   versionName,
+                                   instanceProvenanceType,
+                                   license);
+    }
+
+
+    /**
+     * This method adds a MetadataCollection entity to the archive to represent the archive's provenance information.
+     *
+     * @param archiveGUID unique identifier for this open metadata archive.
+     * @param archiveName name of the open metadata archive metadata collection.
+     * @param archiveDescription description of this archive.
+     * @param originatorName name of the originator (person or organization) of the archive.
+     * @param creationDate data that this archive was created.
+     * @param versionNumber version number of the archive.
+     * @param versionName version name for the archive.
+     * @param instanceProvenanceType type of archive.
+     * @param license license for the archive contents.
+     */
+    public void addMetadataCollection(String                     archiveGUID,
+                                      String                     archiveName,
+                                      String                     archiveDescription,
+                                      String                     originatorName,
+                                      Date                       creationDate,
+                                      long                       versionNumber,
+                                      String                     versionName,
+                                      InstanceProvenanceType     instanceProvenanceType,
+                                      String                     license)
+    {
+        final String methodName = "addMetadataCollection";
+
+        String qualifiedName = OpenMetadataType.METADATA_COLLECTION.typeName + "::" + instanceProvenanceType.getName() + "::" + archiveName;
+
+        this.setGUID(qualifiedName, archiveGUID);
+
+        Map<String, String> additionalProperties = new HashMap<>();
+
+        if (creationDate != null)
+        {
+            additionalProperties.put(OpenMetadataProperty.CREATED_TIME.name, creationDate.toString());
+        }
+
+        if (license != null)
+        {
+            additionalProperties.put(OpenMetadataProperty.LICENSE.name, license);
+        }
+
+        if (additionalProperties.isEmpty())
+        {
+            additionalProperties = null;
+        }
+
+        InstanceProperties properties = archiveHelper.addStringPropertyToInstance(archiveRootName, null, OpenMetadataProperty.QUALIFIED_NAME.name, qualifiedName, methodName);
+        properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.IDENTIFIER.name, archiveName + ":" + versionNumber, methodName);
+        properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.DISPLAY_NAME.name, archiveGUID, methodName);
+        properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.VERSION_IDENTIFIER.name, versionName, methodName);
+        properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.MANAGED_METADATA_COLLECTION_ID.name, archiveGUID, methodName);
+        properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.DESCRIPTION.name, archiveDescription, methodName);
+        properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.RESOURCE_NAME.name, archiveName, methodName);
+        properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.SOURCE.name, originatorName, methodName);
+        properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.DEPLOYED_IMPLEMENTATION_TYPE.name, instanceProvenanceType.getName(), methodName);
+        properties = archiveHelper.addStringMapPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.ADDITIONAL_PROPERTIES.name, additionalProperties, methodName);
+
+        List<Classification> classifications = new ArrayList<>();
+
+        classifications.add(getAnchorClassification(archiveGUID, OpenMetadataType.METADATA_COLLECTION.typeName, OpenMetadataType.ASSET.typeName, null, methodName));
+
+        EntityDetail metadataCollectionEntity = archiveHelper.getEntityDetail(OpenMetadataType.METADATA_COLLECTION.typeName,
+                                                                              idToGUIDMap.getGUID(qualifiedName),
+                                                                              properties,
+                                                                              InstanceStatus.ACTIVE,
+                                                                              classifications);
+
+        archiveBuilder.addEntity(metadataCollectionEntity);
     }
 
 

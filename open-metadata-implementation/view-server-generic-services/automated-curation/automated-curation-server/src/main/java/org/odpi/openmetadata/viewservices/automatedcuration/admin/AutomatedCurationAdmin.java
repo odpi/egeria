@@ -6,7 +6,6 @@ import org.odpi.openmetadata.adminservices.configuration.properties.ViewServiceC
 import org.odpi.openmetadata.adminservices.configuration.registration.ViewServiceDescription;
 import org.odpi.openmetadata.adminservices.ffdc.exception.OMAGConfigurationErrorException;
 import org.odpi.openmetadata.adminservices.registration.ViewServerGenericServiceAdmin;
-import org.odpi.openmetadata.adminservices.registration.ViewServiceAdmin;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.viewservices.automatedcuration.ffdc.AutomatedCurationAuditCode;
 import org.odpi.openmetadata.viewservices.automatedcuration.server.AutomatedCurationInstance;

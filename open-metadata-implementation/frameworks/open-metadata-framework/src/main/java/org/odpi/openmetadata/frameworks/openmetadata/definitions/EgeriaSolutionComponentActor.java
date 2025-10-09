@@ -23,10 +23,25 @@ public enum EgeriaSolutionComponentActor implements SolutionComponentActorDefini
                       "interacts with",
                       "Navigates to the desired function, fills in forms, executes commands and retrieves results."),
 
+    USER_TO_HEY_EGERIA(EgeriaRoleDefinition.OPEN_METADATA_USER,
+                      EgeriaSolutionComponent.HEY_EGERIA,
+                      "interacts with",
+                      "Navigates to the desired function, fills in forms, executes commands and retrieves results."),
+
     USER_TO_DR_EGERIA(EgeriaRoleDefinition.OPEN_METADATA_USER,
                       EgeriaSolutionComponent.DR_EGERIA,
                       "work with markdown",
                          "Authors markdown documents for new and updates to open metadata plus commands to create reports and perform open governance actions."),
+
+    USER_TO_LOAD_ARCHIVE(EgeriaRoleDefinition.OPEN_METADATA_USER,
+                      EgeriaSolutionComponent.LOAD_ARCHIVE,
+                      "calls",
+                      "Requests that a specific open metadata archive is loaded."),
+
+    USER_TO_WEB_SERVER(EgeriaRoleDefinition.OPEN_METADATA_USER,
+                         EgeriaSolutionComponent.APACHE_WEB_SERVER,
+                         "accesses content",
+                         "Browses HTML encoded webpages."),
 
     ;
 

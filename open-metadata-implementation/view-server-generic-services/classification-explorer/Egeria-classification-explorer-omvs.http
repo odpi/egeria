@@ -256,7 +256,8 @@ Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-    "class" : "FindNameProperties",
+    "class" : "FilterRequestBody",
+    "filter" : "????",
     "effectiveTime" : "{{$isoTimestamp}}",
     "asOfTime" : "{{$isoTimestamp}}",
     "forLineage" : false,
@@ -264,8 +265,7 @@ Content-Type: application/json
     "metadataElementTypeName" : "GlossaryTerm",
     "limitResultsByStatus" : [ "ACTIVE", "DRAFT"],
     "sequencingProperty" : "???",
-    "sequencingOrder" : "LAST_UPDATE_RECENT",
-    "name" : "????"
+    "sequencingOrder" : "LAST_UPDATE_RECENT"
 }
 
 
@@ -279,7 +279,8 @@ Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-    "class" : "FindNameProperties",
+    "class" : "FilterRequestBody",
+    "filter" : "????",
     "effectiveTime" : "{{$isoTimestamp}}",
     "asOfTime" : "{{$isoTimestamp}}",
     "forLineage" : false,
@@ -287,8 +288,7 @@ Content-Type: application/json
     "metadataElementTypeName" : "GlossaryTerm",
     "limitResultsByStatus" : [ "ACTIVE", "DRAFT"],
     "sequencingProperty" : "???",
-    "sequencingOrder" : "LAST_UPDATE_RECENT",
-    "name" : "????"
+    "sequencingOrder" : "LAST_UPDATE_RECENT"
 }
 
 
@@ -397,7 +397,7 @@ Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-    "class" : "FindProperties",
+    "class" : "ResultsRequestBody",
     "effectiveTime" : "{{$isoTimestamp}}",
     "asOfTime" : "{{$isoTimestamp}}",
     "forLineage" : false,
@@ -418,7 +418,7 @@ Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-    "class" : "FindProperties",
+    "class" : "ResultsRequestBody",
     "effectiveTime" : "{{$isoTimestamp}}",
     "asOfTime" : "{{$isoTimestamp}}",
     "forLineage" : false,
@@ -440,7 +440,7 @@ Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-    "class" : "FindProperties",
+    "class" : "ResultsRequestBody",
     "effectiveTime" : "{{$isoTimestamp}}",
     "asOfTime" : "{{$isoTimestamp}}",
     "forLineage" : false,
@@ -462,7 +462,7 @@ Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-    "class" : "FindProperties",
+    "class" : "ResultsRequestBody",
     "effectiveTime" : "{{$isoTimestamp}}",
     "asOfTime" : "{{$isoTimestamp}}",
     "forLineage" : false,
@@ -487,7 +487,7 @@ Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-    "class" : "FindProperties",
+    "class" : "ResultsRequestBody",
     "effectiveTime" : "{{$isoTimestamp}}",
     "asOfTime" : "{{$isoTimestamp}}",
     "forLineage" : false,
@@ -508,7 +508,7 @@ Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-    "class" : "FindProperties",
+    "class" : "ResultsRequestBody",
     "effectiveTime" : "{{$isoTimestamp}}",
     "asOfTime" : "{{$isoTimestamp}}",
     "forLineage" : false,
@@ -629,7 +629,7 @@ Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-    "class" : "FindRequest",
+    "class" : "GetRequestBody",
     "effectiveTime" : "{{$isoTimestamp}}",
     "asOfTime" : "{{$isoTimestamp}}",
     "forLineage" : false,
@@ -648,12 +648,12 @@ Content-Type: application/json
 
 {
     "class" : "FindPropertyNameProperties",
+    "propertyValue" : "????",
+    "propertyName" : "qualifiedName",
     "effectiveTime" : "{{$isoTimestamp}}",
     "asOfTime" : "{{$isoTimestamp}}",
     "forLineage" : false,
-    "forDuplicateProcessing" : false,
-    "propertyValue" : "????",
-    "propertyName" : "qualifiedName"
+    "forDuplicateProcessing" : false
 }
 
 ###
@@ -666,13 +666,13 @@ Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-    "class" : "UniqueNameProperties",
+    "class" : "FindPropertyNameProperties",
+    "propertyValue" : "???",
+    "propertyName" : "qualifiedName",
     "effectiveTime" : "{{$isoTimestamp}}",
     "asOfTime" : "{{$isoTimestamp}}",
     "forLineage" : false,
-    "forDuplicateProcessing" : false,
-    "propertyValue" : "???",
-    "propertyName" : "qualifiedName"
+    "forDuplicateProcessing" : false
 }
 
 
@@ -687,7 +687,7 @@ Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-    "class" : "FindProperties",
+    "class" : "ResultsRequestBody",
     "metadataElementTypeName" : "CertificationType",
     "forLineage" : false,
     "forDuplicateProcessing" : false,
@@ -753,7 +753,7 @@ Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-    "class" : "FindProperties",
+    "class" : "ResultsRequestBody",
     "forLineage" : false,
     "forDuplicateProcessing" : false,
     "effectiveTime" : "{{$isoTimestamp}}"
@@ -771,7 +771,7 @@ Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-    "class" : "FindProperties",
+    "class" : "ResultsRequestBody",
     "metadataElementTypeName" : "Project",
     "forLineage" : false,
     "forDuplicateProcessing" : false,
@@ -829,7 +829,7 @@ Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-    "class" : "FindProperties",
+    "class" : "ResultsRequestBody",
     "metadataElementTypeName" : "Project",
     "forLineage" : false,
     "forDuplicateProcessing" : false,
@@ -848,7 +848,7 @@ Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-    "class" : "FindProperties",
+    "class" : "ResultsRequestBody",
     "forLineage" : false,
     "forDuplicateProcessing" : false,
     "effectiveTime" : "{{$isoTimestamp}}"
@@ -870,7 +870,7 @@ Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-    "class" : "FindProperties",
+    "class" : "ResultsRequestBody",
     "forLineage" : false,
     "forDuplicateProcessing" : false,
     "effectiveTime" : "{{$isoTimestamp}}"
@@ -887,7 +887,7 @@ Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-    "class" : "FindProperties",
+    "class" : "ResultsRequestBody",
     "metadataElementTypeName" : "CertificationType",
     "forLineage" : false,
     "forDuplicateProcessing" : false,
@@ -942,7 +942,7 @@ Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-    "class" : "FindProperties",
+    "class" : "ResultsRequestBody",
     "forLineage" : false,
     "forDuplicateProcessing" : false,
     "effectiveTime" : "{{$isoTimestamp}}"
@@ -956,7 +956,7 @@ Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-    "class" : "FindProperties",
+    "class" : "ResultsRequestBody",
     "forLineage" : false,
     "forDuplicateProcessing" : false,
     "effectiveTime" : "{{$isoTimestamp}}"

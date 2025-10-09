@@ -403,9 +403,9 @@ public class ClassificationExplorerRESTServices extends TokenController
      *      PropertyServerException problem accessing property server or
      *      UserNotAuthorizedException security access problem
      */
-    public MetadataElementSummariesResponse getOwnersElements(String             serverName,
-                                                              String             urlMarker,
-                                                              FindNameProperties requestBody)
+    public MetadataElementSummariesResponse getOwnersElements(String            serverName,
+                                                              String            urlMarker,
+                                                              FilterRequestBody requestBody)
     {
         final String methodName = "getOwnersElements";
 
@@ -425,7 +425,7 @@ public class ClassificationExplorerRESTServices extends TokenController
 
             if (requestBody != null)
             {
-                response.setElements(handler.getOwnersElements(userId, requestBody.getName(), requestBody));
+                response.setElements(handler.getOwnersElements(userId, requestBody.getFilter(), requestBody));
             }
             else
             {
@@ -454,9 +454,9 @@ public class ClassificationExplorerRESTServices extends TokenController
      *      PropertyServerException problem accessing property server or
      *      UserNotAuthorizedException security access problem
      */
-    public MetadataElementSummariesResponse getMembersOfSubjectArea(String             serverName,
-                                                                    String             urlMarker,
-                                                                    FindNameProperties requestBody)
+    public MetadataElementSummariesResponse getMembersOfSubjectArea(String            serverName,
+                                                                    String            urlMarker,
+                                                                    FilterRequestBody requestBody)
     {
         final String methodName = "getMembersOfSubjectArea";
 
@@ -477,7 +477,7 @@ public class ClassificationExplorerRESTServices extends TokenController
             if (requestBody != null)
             {
                 response.setElements(handler.getMembersOfSubjectArea(userId,
-                                                                     requestBody.getName(),
+                                                                     requestBody.getFilter(),
                                                                      requestBody));
             }
             else
@@ -730,7 +730,7 @@ public class ClassificationExplorerRESTServices extends TokenController
     public RelatedMetadataElementSummariesResponse getGovernedElements(String         serverName,
                                                                        String         urlMarker,
                                                                        String         governanceDefinitionGUID,
-                                                                       FindProperties requestBody)
+                                                                       ResultsRequestBody requestBody)
     {
         final String methodName = "getGovernedElements";
 
@@ -797,7 +797,7 @@ public class ClassificationExplorerRESTServices extends TokenController
     public RelatedMetadataElementSummariesResponse getGovernedByDefinitions(String         serverName,
                                                                             String         urlMarker,
                                                                             String         elementGUID,
-                                                                            FindProperties requestBody)
+                                                                            ResultsRequestBody requestBody)
     {
         final String methodName = "getGovernedByDefinitions";
 
@@ -865,7 +865,7 @@ public class ClassificationExplorerRESTServices extends TokenController
     public RelatedMetadataElementSummariesResponse getSourceElements(String         serverName,
                                                                      String         urlMarker,
                                                                      String         elementGUID,
-                                                                     FindProperties requestBody)
+                                                                     ResultsRequestBody requestBody)
     {
         final String methodName = "getSourceElements";
 
@@ -929,7 +929,7 @@ public class ClassificationExplorerRESTServices extends TokenController
     public RelatedMetadataElementSummariesResponse getElementsSourcedFrom(String         serverName,
                                                                           String         urlMarker,
                                                                           String         elementGUID,
-                                                                          FindProperties requestBody)
+                                                                          ResultsRequestBody requestBody)
     {
         final String methodName = "getElementsSourceFrom";
 
@@ -993,7 +993,7 @@ public class ClassificationExplorerRESTServices extends TokenController
     public RelatedMetadataElementSummariesResponse getScopes(String         serverName,
                                                              String         urlMarker,
                                                              String         elementGUID,
-                                                             FindProperties requestBody)
+                                                             ResultsRequestBody requestBody)
     {
         final String methodName = "getScopes";
 
@@ -1056,7 +1056,7 @@ public class ClassificationExplorerRESTServices extends TokenController
     public RelatedMetadataElementSummariesResponse getScopedElements(String         serverName,
                                                                      String         urlMarker,
                                                                      String         scopeGUID,
-                                                                     FindProperties requestBody)
+                                                                     ResultsRequestBody requestBody)
     {
         final String methodName = "getScopedElements";
 
@@ -1122,7 +1122,7 @@ public class ClassificationExplorerRESTServices extends TokenController
     public RelatedMetadataElementSummariesResponse getResourceList(String         serverName,
                                                                    String         urlMarker,
                                                                    String         elementGUID,
-                                                                   FindProperties requestBody)
+                                                                   ResultsRequestBody requestBody)
     {
         final String methodName = "getResourceList";
 
@@ -1185,7 +1185,7 @@ public class ClassificationExplorerRESTServices extends TokenController
     public RelatedMetadataElementSummariesResponse getSupportedByResource(String         serverName,
                                                                           String         urlMarker,
                                                                           String         resourceGUID,
-                                                                          FindProperties requestBody)
+                                                                          ResultsRequestBody requestBody)
     {
         final String methodName = "getSupportedByResource";
 
@@ -1663,7 +1663,7 @@ public class ClassificationExplorerRESTServices extends TokenController
     public MetadataElementSummaryResponse getMetadataElementByGUID(String      serverName,
                                                                    String      urlMarker,
                                                                    String      elementGUID,
-                                                                   FindRequest requestBody)
+                                                                   GetRequestBody requestBody)
     {
         final String methodName = "getMetadataElementByGUID";
 
@@ -1830,7 +1830,7 @@ public class ClassificationExplorerRESTServices extends TokenController
      */
     public MetadataElementSummariesResponse getElements(String         serverName,
                                                         String         urlMarker,
-                                                        FindProperties requestBody)
+                                                        ResultsRequestBody requestBody)
     {
         final String methodName = "getElements";
 
@@ -1996,7 +1996,7 @@ public class ClassificationExplorerRESTServices extends TokenController
     public MetadataElementSummariesResponse getElementsByClassification(String         serverName,
                                                                         String         urlMarker,
                                                                         String         classificationName,
-                                                                        FindProperties requestBody)
+                                                                        ResultsRequestBody requestBody)
     {
         final String methodName = "getElementsByClassification";
 
@@ -2166,7 +2166,7 @@ public class ClassificationExplorerRESTServices extends TokenController
                                                                       String         elementGUID,
                                                                       String         relationshipTypeName,
                                                                       int            startingAtEnd,
-                                                                      FindProperties requestBody)
+                                                                      ResultsRequestBody requestBody)
     {
         final String methodName = "getRelatedElements";
 
@@ -2381,10 +2381,10 @@ public class ClassificationExplorerRESTServices extends TokenController
      *  UserNotAuthorizedException the user is not authorized to issue this request
      *  PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public MetadataRelationshipSummariesResponse getRelationships(String         serverName,
-                                                                  String         urlMarker,
-                                                                  String         relationshipTypeName,
-                                                                  FindProperties requestBody)
+    public MetadataRelationshipSummariesResponse getRelationships(String             serverName,
+                                                                  String             urlMarker,
+                                                                  String             relationshipTypeName,
+                                                                  ResultsRequestBody requestBody)
     {
         final String methodName = "getRelationships";
 

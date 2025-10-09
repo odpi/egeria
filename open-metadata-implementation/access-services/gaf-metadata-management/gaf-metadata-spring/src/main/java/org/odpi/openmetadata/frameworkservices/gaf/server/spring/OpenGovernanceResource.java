@@ -1081,8 +1081,8 @@ public class OpenGovernanceResource
     public EngineActionElementsResponse getEngineActions(@PathVariable String serverName,
                                                          @PathVariable String serviceURLMarker,
                                                          @PathVariable String userId,
-                                                         @RequestParam int    startFrom,
-                                                         @RequestParam int    pageSize)
+                                                         @RequestParam(required = false) int    startFrom,
+                                                         @RequestParam(required = false) int    pageSize)
     {
         return restAPI.getEngineActions(serverName, serviceURLMarker, userId, startFrom, pageSize);
     }
@@ -1111,8 +1111,8 @@ public class OpenGovernanceResource
     public EngineActionElementsResponse getActiveEngineActions(@PathVariable String serverName,
                                                                @PathVariable String serviceURLMarker,
                                                                @PathVariable String userId,
-                                                               @RequestParam int    startFrom,
-                                                               @RequestParam int    pageSize)
+                                                               @RequestParam(required = false) int    startFrom,
+                                                               @RequestParam(required = false) int    pageSize)
     {
         return restAPI.getActiveEngineActions(serverName, serviceURLMarker, userId, startFrom, pageSize);
     }
@@ -1143,8 +1143,8 @@ public class OpenGovernanceResource
     public EngineActionElementsResponse findEngineActions(@PathVariable String                  serverName,
                                                           @PathVariable String                  serviceURLMarker,
                                                           @PathVariable String                  userId,
-                                                          @RequestParam int                     startFrom,
-                                                          @RequestParam int                     pageSize,
+                                                          @RequestParam(required = false) int                     startFrom,
+                                                          @RequestParam(required = false) int                     pageSize,
                                                           @RequestBody  SearchStringRequestBody requestBody)
     {
         return restAPI.findEngineActions(serverName, serviceURLMarker, userId, startFrom, pageSize, requestBody);
@@ -1176,8 +1176,8 @@ public class OpenGovernanceResource
     public EngineActionElementsResponse getEngineActionsByName(@PathVariable String          serverName,
                                                                @PathVariable String          serviceURLMarker,
                                                                @PathVariable String          userId,
-                                                               @RequestParam int             startFrom,
-                                                               @RequestParam int             pageSize,
+                                                               @RequestParam(required = false) int             startFrom,
+                                                               @RequestParam(required = false) int             pageSize,
                                                                @RequestBody  NameRequestBody requestBody)
     {
         return restAPI.getEngineActionsByName(serverName, serviceURLMarker, userId, startFrom, pageSize, requestBody);
