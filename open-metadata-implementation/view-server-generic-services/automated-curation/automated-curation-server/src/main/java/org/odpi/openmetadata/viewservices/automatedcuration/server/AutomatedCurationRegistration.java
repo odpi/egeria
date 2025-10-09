@@ -2,10 +2,10 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.viewservices.automatedcuration.server;
 
-import org.odpi.openmetadata.adminservices.registration.OMAGViewServiceRegistration;
 import org.odpi.openmetadata.adminservices.configuration.registration.ServiceOperationalStatus;
 import org.odpi.openmetadata.adminservices.configuration.registration.ViewServiceDescription;
 import org.odpi.openmetadata.adminservices.configuration.registration.ViewServiceRegistrationEntry;
+import org.odpi.openmetadata.adminservices.registration.OMAGViewServiceRegistration;
 import org.odpi.openmetadata.viewservices.automatedcuration.admin.AutomatedCurationAdmin;
 
 /**

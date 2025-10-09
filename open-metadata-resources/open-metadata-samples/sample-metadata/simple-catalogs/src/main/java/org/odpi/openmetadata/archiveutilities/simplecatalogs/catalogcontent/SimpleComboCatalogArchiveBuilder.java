@@ -69,6 +69,7 @@ public class SimpleComboCatalogArchiveBuilder
         this.archiveHelper = new SimpleCatalogArchiveHelper(archiveBuilder,
                                                             archiveGUID,
                                                             archiveName,
+                                                            archiveDescription,
                                                             archiveRootName,
                                                             originatorName,
                                                             creationDate,

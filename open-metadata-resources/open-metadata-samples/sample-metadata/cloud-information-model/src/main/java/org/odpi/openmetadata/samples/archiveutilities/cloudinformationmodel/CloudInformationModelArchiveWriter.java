@@ -69,6 +69,7 @@ public class CloudInformationModelArchiveWriter extends OMRSArchiveWriter
         this.archiveHelper = new SimpleCatalogArchiveHelper(archiveBuilder,
                                                             archiveGUID,
                                                             archiveName,
+                                                            archiveDescription,
                                                             originatorName,
                                                             creationDate,
                                                             versionNumber,

@@ -13,7 +13,6 @@ import org.odpi.openmetadata.frameworks.openmetadata.handlers.OpenMetadataHandle
 import org.odpi.openmetadata.frameworks.openmetadata.mapper.OpenMetadataValidValues;
 import org.odpi.openmetadata.frameworks.openmetadata.mermaid.HierarchyMermaidGraphBuilder;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.OpenMetadataRootElement;
-import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.ReferenceableElement;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.RelatedMetadataElementSummary;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.AttachedClassification;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.OpenMetadataElement;
@@ -23,7 +22,6 @@ import org.odpi.openmetadata.frameworks.openmetadata.properties.templates.Templa
 import org.odpi.openmetadata.frameworks.openmetadata.search.*;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
-import org.odpi.openmetadata.viewservices.automatedcuration.converters.ReferenceableConverter;
 import org.odpi.openmetadata.viewservices.automatedcuration.converters.TechnologyTypeSummaryConverter;
 import org.odpi.openmetadata.viewservices.automatedcuration.properties.CatalogTemplate;
 import org.odpi.openmetadata.viewservices.automatedcuration.properties.TechnologyTypeHierarchy;

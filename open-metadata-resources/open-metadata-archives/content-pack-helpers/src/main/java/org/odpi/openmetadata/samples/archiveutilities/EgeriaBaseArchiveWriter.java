@@ -121,6 +121,7 @@ public abstract class EgeriaBaseArchiveWriter extends OMRSArchiveWriter
         this.archiveHelper = new GovernanceArchiveHelper(archiveBuilder,
                                                          archiveGUID,
                                                          archiveName,
+                                                         archiveDescription,
                                                          originatorName,
                                                          creationDate,
                                                          new Date().getTime(),

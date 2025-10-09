@@ -100,6 +100,7 @@ public class SimpleEventCatalogArchiveBuilder
         this.archiveHelper = new SimpleCatalogArchiveHelper(archiveBuilder,
                                                             archiveGUID,
                                                             archiveName,
+                                                            archiveDescription,
                                                             archiveRootName,
                                                             originatorName,
                                                             creationDate,

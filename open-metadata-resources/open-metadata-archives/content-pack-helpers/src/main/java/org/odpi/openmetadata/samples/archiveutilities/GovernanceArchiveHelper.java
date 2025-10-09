@@ -32,61 +32,13 @@ import java.util.*;
 public class GovernanceArchiveHelper extends SimpleCatalogArchiveHelper
 {
     /**
-     * Typical constructor passes parameters used to build the open metadata archive's property header.
-     *
-     * @param archiveBuilder builder where content is cached
-     * @param archiveGUID unique identifier for this open metadata archive.
-     * @param archiveRootName non-spaced root name of the open metadata GUID map.
-     * @param originatorName name of the originator (person or organization) of the archive.
-     * @param creationDate data that this archive was created.
-     * @param versionNumber version number of the archive.
-     * @param versionName version name for the archive.
-     */
-    public GovernanceArchiveHelper(OpenMetadataArchiveBuilder archiveBuilder,
-                                   String                     archiveGUID,
-                                   String                     archiveRootName,
-                                   String                     originatorName,
-                                   Date                       creationDate,
-                                   long                       versionNumber,
-                                   String                     versionName)
-    {
-        super(archiveBuilder, archiveGUID, archiveRootName, archiveRootName, originatorName, creationDate, versionNumber, versionName);
-    }
-
-
-
-    /**
-     * Typical constructor passes parameters used to build the open metadata archive's property header.
-     *
-     * @param archiveBuilder builder where content is cached
-     * @param archiveGUID unique identifier for this open metadata archive.
-     * @param archiveName name of the open metadata archive metadata collection.
-     * @param archiveRootName non-spaced root name of the open metadata GUID map.
-     * @param originatorName name of the originator (person or organization) of the archive.
-     * @param creationDate data that this archive was created.
-     * @param versionNumber version number of the archive.
-     * @param versionName version name for the archive.
-     */
-    public GovernanceArchiveHelper(OpenMetadataArchiveBuilder archiveBuilder,
-                                   String                     archiveGUID,
-                                   String                     archiveName,
-                                   String                     archiveRootName,
-                                   String                     originatorName,
-                                   Date                       creationDate,
-                                   long                       versionNumber,
-                                   String                     versionName)
-    {
-        super(archiveBuilder, archiveGUID, archiveName, archiveRootName, originatorName, creationDate, versionNumber, versionName);
-    }
-
-
-    /**
      * Constructor passes parameters used to build the open metadata archive's property header.
      * This version is used for multiple dependant archives, and they need to share the guid map.
      *
      * @param archiveBuilder builder where content is cached
      * @param archiveGUID unique identifier for this open metadata archive.
      * @param archiveRootName non-spaced root name of the open metadata archive elements.
+     * @param archiveDescription description of this archive.
      * @param originatorName name of the originator (person or organization) of the archive.
      * @param creationDate data that this archive was created.
      * @param versionNumber version number of the archive.
@@ -96,13 +48,14 @@ public class GovernanceArchiveHelper extends SimpleCatalogArchiveHelper
     public GovernanceArchiveHelper(OpenMetadataArchiveBuilder archiveBuilder,
                                    String                     archiveGUID,
                                    String                     archiveRootName,
+                                   String                     archiveDescription,
                                    String                     originatorName,
                                    Date                       creationDate,
                                    long                       versionNumber,
                                    String                     versionName,
                                    String                     guidMapFileName)
     {
-        super(archiveBuilder, archiveGUID, archiveRootName, originatorName, creationDate, versionNumber, versionName, guidMapFileName);
+        super(archiveBuilder, archiveGUID, archiveRootName, archiveDescription, originatorName, creationDate, versionNumber, versionName, guidMapFileName);
     }
 
 

@@ -2892,7 +2892,7 @@ public class StewardshipManagementHandler extends OpenMetadataHandlerBase
      *
      * @param userId calling user
      * @param relationshipTypeName name of relationship
-     * @param findProperties search options
+     * @param queryOptions search options
      *
      * @return list of related elements
      * @throws InvalidParameterException  one of the parameters is invalid
@@ -2901,16 +2901,16 @@ public class StewardshipManagementHandler extends OpenMetadataHandlerBase
      */
     public List<MetadataRelationshipSummary> getRelationships(String         userId,
                                                               String         relationshipTypeName,
-                                                              FindProperties findProperties) throws InvalidParameterException,
-                                                                                                    UserNotAuthorizedException,
-                                                                                                    PropertyServerException
+                                                              QueryOptions   queryOptions) throws InvalidParameterException,
+                                                                                                  UserNotAuthorizedException,
+                                                                                                  PropertyServerException
     {
         final String methodName = "getRelationships";
 
         OpenMetadataRelationshipList openMetadataRelationships = openMetadataClient.findRelationshipsBetweenMetadataElements(userId,
                                                                                                                              relationshipTypeName,
                                                                                                                              null,
-                                                                                                                             findProperties);
+                                                                                                                             queryOptions);
 
         if (openMetadataRelationships != null)
         {
