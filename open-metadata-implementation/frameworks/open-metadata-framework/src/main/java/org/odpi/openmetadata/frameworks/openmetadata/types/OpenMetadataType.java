@@ -36,14 +36,10 @@ import org.odpi.openmetadata.frameworks.openmetadata.properties.datadictionaries
 import org.odpi.openmetadata.frameworks.openmetadata.properties.dataprocessing.DataProcessingActionProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.dataprocessing.DataProcessingDescriptionProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.dataprocessing.DataProcessingPurposeProperties;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.designmodels.ConceptDesignProperties;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.designmodels.ConceptModelProperties;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.designmodels.DesignModelFolderProperties;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.designmodels.DesignModelProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.designmodels.*;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.digitalbusiness.*;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.externalidentifiers.ExternalIdLinkProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.externalidentifiers.ExternalIdProperties;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.externalidentifiers.ExternalIdScopeProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.externalreferences.*;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.feedback.*;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.glossaries.*;
@@ -324,6 +320,16 @@ public enum OpenMetadataType
                        ExternalReferenceProperties.class),
 
     /**
+     * A link to the source code used to build the implementation of the linked element.
+     */
+    EXTERNAL_SOURCE_CODE("2f0c5b22-b66f-44a1-b008-74c71fb45bc0",
+                         "ExternalSourceCode",
+                         OpenMetadataWikiPages.MODEL_0014_EXTERNAL_REFERENCES,
+                         "838ca64b-3839-43c6-8a19-0c4250de528e",
+                         "A link to the source code used to build the implementation of the linked element.",
+                         ExternalSourceCodeProperties.class),
+
+    /**
      * A link to a data set on an external site.
      */
     EXTERNAL_DATA_SOURCE("fc1de197-7e65-4828-9f3e-43dc12b70c6b",
@@ -413,7 +419,7 @@ public enum OpenMetadataType
                                    OpenMetadataWikiPages.MODEL_0017_EXTERNAL_IDENTIFIERS,
                                    "e1e481ce-0536-4637-8658-5224353c7d69",
                                    "Places where an external identifier is recognized.",
-                                   ExternalIdScopeProperties.class),
+                                   null),
 
 
     /**
@@ -482,13 +488,22 @@ public enum OpenMetadataType
     /**
      * This collection is the root collection in a collection hierarchy.
      */
-    ROOT_COLLECTION_CLASSIFICATION("9fdb6d71-fd69-4c40-81f3-5eab1c44d1f4",
-                                   "RootCollection",
-                                   OpenMetadataWikiPages.MODEL_0021_COLLECTIONS,
-                                   "f531c0b8-712c-4327-a8e5-7500727bab1d",
-                                   "This collection is the root collection in a collection hierarchy.",
-                                   RootCollectionProperties.class),
+    ROOT_COLLECTION("128753c9-9518-47ba-9576-e88a8466e895",
+                    "RootCollection",
+                    OpenMetadataWikiPages.MODEL_0021_COLLECTIONS,
+                    "d7ea11e7-fc49-4ab1-9482-f088328e052e",
+                    "This collection is the root collection in a collection hierarchy.",
+                    RootCollectionProperties.class),
 
+    /**
+     * Defines that a collection should be treated like a folder.
+     */
+    COLLECTION_FOLDER("fecc7c33-274a-4413-9f32-d3d9e255c157",
+                      "CollectionFolder",
+                      OpenMetadataWikiPages.MODEL_0021_COLLECTIONS,
+                      "06af0148-0fc4-4bb0-a972-3af64592e080",
+                      "Defines that a collection should be treated like a folder.",
+                      CollectionFolderProperties.class),
 
     /**
      * This collection is the home collection for a referenceable.
@@ -540,14 +555,16 @@ public enum OpenMetadataType
                                    "Defines how the collection is being used."),
 
     /**
-     * Defines that a collection should be treated like a folder.
+     * Defines that a collection should be treated like a folder. TODO DEPRECATED - DO NOT USE
      */
     FOLDER_COLLECTION_CLASSIFICATION("3c0fa687-8a63-4c8e-8bda-ede9c78be6c7",
                                      "Folder",
                                      OpenMetadataWikiPages.MODEL_0021_COLLECTIONS,
                                      "b2fe2ac5-f4d5-4eac-b4cf-c5fd112395eb",
                                      "Defines that a collection should be treated like a folder.",
-                                     FolderProperties.class),
+                                     null),
+
+
 
     /**
      * Defines a list of activities such as ToDos, Tasks etc...
@@ -1177,12 +1194,12 @@ public enum OpenMetadataType
     /**
      * Defines a manager of resources.  Typically, a software capability or an asset.
      */
-    RESOURCE_MANAGER_CLASSIFICATION("bb6568e6-a2d8-4dfe-b9d6-6bd0119aa70e",
-                                    "ResourceManager",
-                                    OpenMetadataWikiPages.MODEL_0056_RESOURCE_MANAGERS,
-                                    "5116814c-5745-4b53-9a44-b68e4a07b045",
-                                    "Defines a manager of resources.  Typically, a software capability or an asset.",
-                                    ResourceManagerProperties.class),
+    RESOURCE_MANAGER("bb6568e6-a2d8-4dfe-b9d6-6bd0119aa70e",
+                     "ResourceManager",
+                     OpenMetadataWikiPages.MODEL_0056_RESOURCE_MANAGERS,
+                     "5116814c-5745-4b53-9a44-b68e4a07b045",
+                     "Defines a manager of resources.  Typically, a software capability or an asset.",
+                     ResourceManagerProperties.class),
 
 
     /**
@@ -1198,52 +1215,52 @@ public enum OpenMetadataType
     /**
      * Defines a software source code library that provides version control.
      */
-    SOURCE_CONTROL_LIBRARY_CLASSIFICATION("0ef3c90d-20d7-4259-8d66-9c8bb109f2ae",
-                                          "SourceControlLibrary",
-                                          OpenMetadataWikiPages.MODEL_0056_RESOURCE_MANAGERS,
-                                          "0caee5fd-b64b-4b38-97c6-38816cc4015c",
-                                          "Defines a software source code library that provides version control.",
-                                          SourceControlLibraryProperties.class),
+    SOURCE_CONTROL_LIBRARY("0ef3c90d-20d7-4259-8d66-9c8bb109f2ae",
+                           "SourceControlLibrary",
+                           OpenMetadataWikiPages.MODEL_0056_RESOURCE_MANAGERS,
+                           "0caee5fd-b64b-4b38-97c6-38816cc4015c",
+                           "Defines a software source code library that provides version control.",
+                           SourceControlLibraryProperties.class),
 
     /**
      * Defines a managed collection of requirements, defects and proposed changes to a project.
      */
-    CHANGE_MANAGEMENT_LIBRARY_CLASSIFICATION("4e236548-b802-4a1d-a329-4abdeaae5323",
-                                             "ChangeManagementLibrary",
-                                             OpenMetadataWikiPages.MODEL_0056_RESOURCE_MANAGERS,
-                                             "cd17363a-7b57-4ca5-9ed3-d07a7ddfa497",
-                                             "Defines a managed collection of requirements, defects and proposed changes to a project.",
-                                             ChangeManagementLibraryProperties.class),
+    CHANGE_MANAGEMENT_LIBRARY("4e236548-b802-4a1d-a329-4abdeaae5323",
+                              "ChangeManagementLibrary",
+                              OpenMetadataWikiPages.MODEL_0056_RESOURCE_MANAGERS,
+                              "cd17363a-7b57-4ca5-9ed3-d07a7ddfa497",
+                              "Defines a managed collection of requirements, defects and proposed changes to a project.",
+                              ChangeManagementLibraryProperties.class),
 
     /**
      * Defines a collection of software modules.  Also known as the definitive software library.
      */
-    SOFTWARE_LIBRARY_CLASSIFICATION("5708fa1a-2b64-4706-8e14-a020e4567db3",
-                                    "SoftwareLibrary",
-                                    OpenMetadataWikiPages.MODEL_0056_RESOURCE_MANAGERS,
-                                    "db77d01b-11ba-44cf-bab3-0a9c5e980843",
-                                    "Defines a collection of software modules.  Also known as the definitive software library.",
-                                    SoftwareLibraryProperties.class),
+    SOFTWARE_LIBRARY("5708fa1a-2b64-4706-8e14-a020e4567db3",
+                     "SoftwareLibrary",
+                     OpenMetadataWikiPages.MODEL_0056_RESOURCE_MANAGERS,
+                     "db77d01b-11ba-44cf-bab3-0a9c5e980843",
+                     "Defines a collection of software modules.  Also known as the definitive software library.",
+                     SoftwareLibraryProperties.class),
 
     /**
      * A capability that supports a store of files organized into a hierarchy of file folders.
      */
-    FILE_SYSTEM_CLASSIFICATION("cab5ba1d-cfd3-4fca-857d-c07711fc4157",
-                               "FileSystem",
-                               OpenMetadataWikiPages.MODEL_0056_RESOURCE_MANAGERS,
-                               "5a2077a7-6ff3-46b0-8799-93082e8a43b3",
-                               "A capability that supports a store of files organized into a hierarchy of file folders.",
-                               FileSystemProperties.class),
+    FILE_SYSTEM("cab5ba1d-cfd3-4fca-857d-c07711fc4157",
+                "FileSystem",
+                OpenMetadataWikiPages.MODEL_0056_RESOURCE_MANAGERS,
+                "5a2077a7-6ff3-46b0-8799-93082e8a43b3",
+                "A capability that supports a store of files organized into a hierarchy of file folders.",
+                FileSystemProperties.class),
 
     /**
      * Identifies a software server capability as a manager of a collection of files and folders.
      */
-    FILE_MANAGER_CLASSIFICATION("eadec807-02f0-4d6f-911c-261eddd0c2f5",
-                                "FileManager",
-                                OpenMetadataWikiPages.MODEL_0056_RESOURCE_MANAGERS,
-                                "f126a519-bbae-4b2a-9e88-0c9ebf4494a9",
-                                "Identifies a software server capability as a manager of a collection of files and folders.",
-                                FileManagerProperties.class),
+    FILE_MANAGER("eadec807-02f0-4d6f-911c-261eddd0c2f5",
+                 "FileManager",
+                 OpenMetadataWikiPages.MODEL_0056_RESOURCE_MANAGERS,
+                 "f126a519-bbae-4b2a-9e88-0c9ebf4494a9",
+                 "Identifies a software server capability as a manager of a collection of files and folders.",
+                 FileManagerProperties.class),
 
     /**
      * A system that stores descriptions of individuals and their roles/interests in an organization.
@@ -4476,14 +4493,14 @@ public enum OpenMetadataType
                                     SchemaTypeOptionProperties.class),
 
     /**
-     * The structure of the data stored in a digital resource described by the attached asset.
+     * The structure of the data stored in a digital resource described by the attached asset/port.
      */
-    ASSET_SCHEMA_TYPE_RELATIONSHIP("815b004d-73c6-4728-9dd9-536f4fe803cd",
-                                   "AssetSchemaType",
-                                   OpenMetadataWikiPages.MODEL_0503_ASSET_SCHEMA,
-                                   "ea278feb-8073-49a3-8acf-006124ef0959",
-                                   "The structure of the data stored in a digital resource described by the attached asset.",
-                                   AssetSchemaTypeProperties.class),
+    SCHEMA_RELATIONSHIP("815b004d-73c6-4728-9dd9-536f4fe803cd",
+                        "Schema",
+                        OpenMetadataWikiPages.MODEL_0503_ASSET_SCHEMA,
+                        "ea278feb-8073-49a3-8acf-006124ef0959",
+                        "The structure of the data stored in a digital resource described by the attached asset or port.",
+                        SchemaProperties.class),
 
     /**
      * A concrete implementation example for a schema element.
@@ -4494,23 +4511,6 @@ public enum OpenMetadataType
                            "1c085070-8d26-4488-b973-f46a4c49498d",
                            "A concrete implementation example for a schema element."),
 
-    /**
-     * Link between an element such as a schema type or data class and an implementation snippet.
-     */
-    ASSOCIATED_SNIPPET_RELATIONSHIP("6f89c320-22aa-4d99-9a97-442e8d214655",
-                                    "AssociatedSnippet",
-                                    OpenMetadataWikiPages.MODEL_0504_SNIPPETS,
-                                    "6e39e1a1-20a2-428c-b823-0c7ee0a9fdd1",
-                                    "Link between an element such as a schema type or data class and an implementation snippet."),
-
-    /**
-     * Link between a schema type and an implementation component.
-     */
-    SCHEMA_TYPE_IMPLEMENTATION_RELATIONSHIP("eed5565d-7ac2-46fe-9a26-4722fad8d993",
-                                            "SchemaTypeImplementation",
-                                            OpenMetadataWikiPages.MODEL_0504_SNIPPETS,
-                                            "29c9224b-9120-4a09-aaf1-a0a9d881f037",
-                                            "Link between a schema type and an implementation component."),
 
     /**
      * A schema type that has a complex structure of nested attributes and types.
@@ -4644,16 +4644,6 @@ public enum OpenMetadataType
                                                   "ecf0f3e5-11ec-4eec-a61f-67ec888384ca",
                                                   "Details of how a derived schema element is calculated.",
                                                   DerivedSchemaTypeQueryTargetProperties.class),
-
-    /**
-     * A link between a Port and a SchemaType
-     */
-    PORT_SCHEMA_RELATIONSHIP("B216fA00-8281-F9CC-9911-Ae6377f2b457",
-                             "PortSchema",
-                             OpenMetadataWikiPages.MODEL_0520_PROCESS_SCHEMAS,
-                             "edb0b0fc-6acb-408a-8a3a-24ce0f6dc6a0",
-                             "A link between a Port and a SchemaType",
-                             PortSchemaProperties.class),
 
     /**
      * The root of a complex schema - normally attaches to an asset or port.
@@ -5184,29 +5174,20 @@ public enum OpenMetadataType
      */
     DESIGN_MODEL_ELEMENT("492e343f-2516-43b8-94b0-5bae0760dda6",
                          "DesignModelElement",
-                         OpenMetadataWikiPages.MODEL_0565_DESIGN_MODEL_ELEMENTS,
+                         OpenMetadataWikiPages.MODEL_0565_DESIGN_MODELS,
                          "ba357440-145c-4325-a33c-01e648513c23",
-                         "An abstract, but well-formed representation of a concept, activity, architecture or other design element."),
+                         "An abstract, but well-formed representation of a concept, activity, architecture or other design element.",
+                         DesignModelElementProperties.class),
 
     /**
      * A curated collection of design model elements.
      */
     DESIGN_MODEL("bf17143d-8605-48c2-ba80-64c2ac8f8379",
                  "DesignModel",
-                 OpenMetadataWikiPages.MODEL_0566_DESIGN_MODEL_ORG,
+                 OpenMetadataWikiPages.MODEL_0565_DESIGN_MODELS,
                  "dc91fec8-3ef1-47f3-acdf-7c6ce51f4351",
                  "A curated collection of design model elements.",
                  DesignModelProperties.class),
-
-    /**
-     * A collection of related design model elements within a model.
-     */
-    DESIGN_MODEL_FOLDER("b144ee2a-fa71-4897-b51a-dd5239c26910",
-                        "DesignModelFolder",
-                        OpenMetadataWikiPages.MODEL_0566_DESIGN_MODEL_ORG,
-                        "cf76adbb-3a46-4fb6-a9a6-080b879a63d1",
-                        "A collection of related design model elements within a model.",
-                        DesignModelFolderProperties.class),
 
     /**
      * Identifies the element from a metadata model that this element embodies.
@@ -5217,7 +5198,6 @@ public enum OpenMetadataType
                                       "ea796922-2a2c-411f-af5c-b60e9963d320",
                                       "Identifies the element from a metadata model that this element embodies."),
 
-
     /**
      * An abstract, but well-formed representation of a concept.
      */
@@ -5225,7 +5205,8 @@ public enum OpenMetadataType
                           "ConceptModelElement",
                           OpenMetadataWikiPages.MODEL_0571_CONCEPT_MODELS,
                           "bab09390-1aaf-47cf-8a5e-19363d4244e0",
-                          "An abstract, but well-formed representation of a concept."),
+                          "An abstract, but well-formed representation of a concept.",
+                          ConceptModelElementProperties.class),
 
     /**
      * A collection of concept model elements that describes the concepts for a design or implementation.
@@ -5244,7 +5225,8 @@ public enum OpenMetadataType
                  "ConceptBead",
                  OpenMetadataWikiPages.MODEL_0571_CONCEPT_MODELS,
                  "f3d8f1e9-22c4-4ca9-b7a7-01a43f5e64f7",
-                 "An abstract, but well-formed representation of a person, place or object."),
+                 "An abstract, but well-formed representation of a person, place or object.",
+                 ConceptBeadProperties.class),
 
     /**
      * An abstract, but well-formed fact about a concept bead.
@@ -5253,25 +5235,28 @@ public enum OpenMetadataType
                            "ConceptBeadAttribute",
                            OpenMetadataWikiPages.MODEL_0571_CONCEPT_MODELS,
                            "298c47b9-f843-4b62-b017-e345b8300ed8",
-                           "An abstract, but well-formed fact about a concept bead."),
+                           "An abstract, but well-formed fact about a concept bead.",
+                           ConceptBeadAttributeProperties.class),
 
     /**
      * Links one end of a concept bead link relationship to a concept bead.
      */
-    CONCEPT_BEAD_RELATIONSHIP_END("1a379e55-a4c0-4289-a1a4-b89d257611d1",
-                                  "ConceptBeadRelationshipEnd",
-                                  OpenMetadataWikiPages.MODEL_0571_CONCEPT_MODELS,
-                                  "29e4ec95-1ab3-4a97-9157-1d7628ec664b",
-                                  "Links one end of a concept bead link relationship to a concept bead."),
+    CONCEPT_BEAD_RELATIONSHIP_END_RELATIONSHIP("1a379e55-a4c0-4289-a1a4-b89d257611d1",
+                                               "ConceptBeadRelationshipEnd",
+                                               OpenMetadataWikiPages.MODEL_0571_CONCEPT_MODELS,
+                                               "29e4ec95-1ab3-4a97-9157-1d7628ec664b",
+                                               "Links one end of a concept bead link relationship to a concept bead.",
+                                               ConceptBeadRelationshipEndProperties.class),
 
     /**
      * Links a concept bead to its attributes.
      */
-    CONCEPT_BEAD_ATTRIBUTE_LINK("5bad1df2-664b-407b-8036-2855e2ede92f",
-                                "ConceptBeadAttributeLink",
-                                OpenMetadataWikiPages.MODEL_0571_CONCEPT_MODELS,
-                                "1b6f0ca0-d9e1-4804-8f95-48e525e7f6d4",
-                                "Links a concept bead to its attributes."),
+    CONCEPT_BEAD_ATTRIBUTE_LINK_RELATIONSHIP("5bad1df2-664b-407b-8036-2855e2ede92f",
+                                             "ConceptBeadAttributeLink",
+                                             OpenMetadataWikiPages.MODEL_0571_CONCEPT_MODELS,
+                                             "1b6f0ca0-d9e1-4804-8f95-48e525e7f6d4",
+                                             "Links a concept bead to its attributes.",
+                                             ConceptBeadAttributeLinkProperties.class),
 
     /**
      * A relationship between concept beads.
@@ -5280,7 +5265,8 @@ public enum OpenMetadataType
                               "ConceptBeadRelationship",
                               OpenMetadataWikiPages.MODEL_0571_CONCEPT_MODELS,
                               "2b6315a9-d40d-43d7-bed9-ca1639cd826f",
-                              "A relationship between concept beads."),
+                              "A relationship between concept beads.",
+                              ConceptBeadRelationshipProperties.class),
 
 
     /**
@@ -5290,7 +5276,8 @@ public enum OpenMetadataType
                                    "IsAConceptBead",
                                    OpenMetadataWikiPages.MODEL_0571_CONCEPT_MODELS,
                                    "addd48da-30c7-4454-8cdd-e2aec54658e5",
-                                   "Creates an inheritance relationship between 2 concept beads."),
+                                   "Creates an inheritance relationship between 2 concept beads.",
+                                   IsAConceptBeadProperties.class),
 
     /**
      * Links a concept bead to another concept bean that describes its type - this is where the type is complex, such as Address.
@@ -5299,7 +5286,8 @@ public enum OpenMetadataType
                                        "TypedByConceptBead",
                                        OpenMetadataWikiPages.MODEL_0571_CONCEPT_MODELS,
                                        "cd7596dc-e632-4a4c-b100-1efd112af2aa",
-                                       "Links a concept bead to another concept bean that describes its type - this is where the type is complex, such as Address."),
+                                       "Links a concept bead to another concept bean that describes its type - this is where the type is complex, such as Address.",
+                                       TypedByConceptBeadProperties.class),
 
 
     /**
@@ -5309,7 +5297,8 @@ public enum OpenMetadataType
                                         "ConceptBeadExtension",
                                         OpenMetadataWikiPages.MODEL_0571_CONCEPT_MODELS,
                                         "20048c0e-6101-49b2-b125-c39c8eed3edc",
-                                        "Links a concept bead to another concept bead that provides attributes that are only valid in certain situations."),
+                                        "Links a concept bead to another concept bead that provides attributes that are only valid in certain situations.",
+                                        ConceptBeadExtensionProperties.class),
 
     /**
      * Links a element to its concept model.
@@ -5912,16 +5901,6 @@ public enum OpenMetadataType
                                           "eb2de5b6-bf82-43cc-a50c-fc6588cd2a46",
                                           "Aligns ports from nested components with the parent's.",
                                           SolutionPortDelegationProperties.class),
-
-    /**
-     * Identifies the structure of data passed through a solution port.
-     */
-    SOLUTION_PORT_SCHEMA_RELATIONSHIP("bf02c703-57a2-4ab7-b6db-f49b57b05985",
-                                      "SolutionPortSchema",
-                                      OpenMetadataWikiPages.MODEL_0735_SOLUTION_PORTS_AND_WIRES,
-                                      "63e2ac1e-394f-47f6-87a6-7ae4ebed0887",
-                                      "Identifies the structure of data passed through a solution port.",
-                                      SolutionPortSchemaProperties.class),
 
     /**
      * Identifies a useful component for creating an implementation of the parent.

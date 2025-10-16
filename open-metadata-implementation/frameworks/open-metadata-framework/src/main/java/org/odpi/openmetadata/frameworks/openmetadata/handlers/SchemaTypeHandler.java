@@ -10,8 +10,9 @@ import org.odpi.openmetadata.frameworks.openmetadata.ffdc.PropertyServerExceptio
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.OpenMetadataRootElement;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.ClassificationProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.RelatedMetadataElement;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.RelationshipProperties;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.schema.AssetSchemaTypeProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.schema.SchemaProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.schema.SchemaTypeProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.search.*;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
@@ -59,6 +60,64 @@ public class SchemaTypeHandler extends OpenMetadataHandlerBase
     {
         super(template, specificTypeName);
     }
+
+
+    /**
+     * Retrieve or create the schema type that is attached to the element (typically an asset or port)
+     * via the Schema relationship.
+     *
+     * @param elementGUID unique identifier for the starting element
+     * @param schemaTypeTypeName type name of the schema type to create, if needed
+     * @return schema type element
+     * @throws InvalidParameterException  one of the parameters is invalid.
+     * @throws PropertyServerException    there is a problem retrieving information from the property server(s),
+     *                                    or there are multiple schemas attached.
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public OpenMetadataRootElement getSchemaTypeForElement(String                userId,
+                                                           String                elementGUID,
+                                                           String                schemaTypeTypeName,
+                                                           MetadataSourceOptions metadataSourceOptions) throws InvalidParameterException,
+                                                                                                               PropertyServerException,
+                                                                                                               UserNotAuthorizedException
+    {
+        final String methodName = "getSchemaTypeForElement";
+
+        RelatedMetadataElement schemaType = openMetadataClient.getRelatedMetadataElement(userId,
+                                                                                         elementGUID,
+                                                                                         1,
+                                                                                         OpenMetadataType.SCHEMA_RELATIONSHIP.typeName,
+                                                                                         new GetOptions(metadataSourceOptions));
+
+        if (schemaType == null)
+        {
+            SchemaTypeProperties schemaTypeProperties = new SchemaTypeProperties();
+
+            schemaTypeProperties.setTypeName(schemaTypeTypeName);
+            schemaTypeProperties.setQualifiedName(schemaTypeTypeName + " for " + elementGUID);
+
+            NewElementOptions newElementOptions = new NewElementOptions(metadataSourceOptions);
+
+            newElementOptions.setIsOwnAnchor(false);
+            newElementOptions.setAnchorGUID(elementGUID);
+            newElementOptions.setParentGUID(elementGUID);
+            newElementOptions.setParentAtEnd1(true);
+            newElementOptions.setParentRelationshipTypeName(OpenMetadataType.SCHEMA_RELATIONSHIP.typeName);
+
+            String schemaTypeGUID = this.createSchemaType(userId,
+                                                          newElementOptions,
+                                                          null,
+                                                          schemaTypeProperties,
+                                                          null);
+
+            return this.getSchemaTypeByGUID(userId, schemaTypeGUID, new GetOptions(metadataSourceOptions));
+        }
+        else
+        {
+            return super.convertRootElement(userId, schemaType, new QueryOptions(metadataSourceOptions), methodName);
+        }
+    }
+
 
     /**
      * Create a new schema type.
@@ -159,10 +218,10 @@ public class SchemaTypeHandler extends OpenMetadataHandlerBase
 
 
     /**
-     * Attach an asset to a Root Schema Type.
+     * Attach an element to a Schema Type that describes its structure.
      *
      * @param userId                 userId of user making request
-     * @param assetGUID       unique identifier of the asset
+     * @param elementGUID       unique identifier of the element (eg asset, port, ...)
      * @param schemaTypeGUID            unique identifier of the IT profile
      * @param metadataSourceOptions  options to control access to open metadata
      * @param relationshipProperties description of the relationship.
@@ -170,25 +229,25 @@ public class SchemaTypeHandler extends OpenMetadataHandlerBase
      * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    public void linkAssetToSchema(String                    userId,
-                                  String                    assetGUID,
-                                  String                    schemaTypeGUID,
-                                  MetadataSourceOptions     metadataSourceOptions,
-                                  AssetSchemaTypeProperties relationshipProperties) throws InvalidParameterException,
-                                                                                           PropertyServerException,
-                                                                                           UserNotAuthorizedException
+    public void linkSchema(String                    userId,
+                           String                    elementGUID,
+                           String                    schemaTypeGUID,
+                           MetadataSourceOptions     metadataSourceOptions,
+                           SchemaProperties relationshipProperties) throws InvalidParameterException,
+                                                                                  PropertyServerException,
+                                                                                  UserNotAuthorizedException
     {
-        final String methodName            = "linkAssetToSchema";
-        final String end1GUIDParameterName = "assetGUID";
+        final String methodName            = "linkSchema";
+        final String end1GUIDParameterName = "elementGUID";
         final String end2GUIDParameterName = "schemaTypeGUID";
 
         propertyHelper.validateUserId(userId, methodName);
-        propertyHelper.validateGUID(assetGUID, end1GUIDParameterName, methodName);
+        propertyHelper.validateGUID(elementGUID, end1GUIDParameterName, methodName);
         propertyHelper.validateGUID(schemaTypeGUID, end2GUIDParameterName, methodName);
 
         openMetadataClient.createRelatedElementsInStore(userId,
-                                                        OpenMetadataType.ASSET_SCHEMA_TYPE_RELATIONSHIP.typeName,
-                                                        assetGUID,
+                                                        OpenMetadataType.SCHEMA_RELATIONSHIP.typeName,
+                                                        elementGUID,
                                                         schemaTypeGUID,
                                                         metadataSourceOptions,
                                                         relationshipBuilder.getNewElementProperties(relationshipProperties));
@@ -196,33 +255,33 @@ public class SchemaTypeHandler extends OpenMetadataHandlerBase
 
 
     /**
-     * Detach an asset from a root schema type.
+     * Detach an element from the schema that describes its structure.
      *
      * @param userId                 userId of user making request.
-     * @param assetGUID              unique identifier of the asset
+     * @param elementGUID       unique identifier of the element (eg asset, port, ...)
      * @param schemaTypeGUID          unique identifier of the IT profile
      * @param deleteOptions  options to control access to open metadata
      * @throws InvalidParameterException  one of the parameters is null or invalid.
      * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    public void detachAssetFromSchema(String        userId,
-                                      String        assetGUID,
-                                      String        schemaTypeGUID,
-                                      DeleteOptions deleteOptions) throws InvalidParameterException,
-                                                                           PropertyServerException,
-                                                                           UserNotAuthorizedException
+    public void detachSchema(String        userId,
+                             String        elementGUID,
+                             String        schemaTypeGUID,
+                             DeleteOptions deleteOptions) throws InvalidParameterException,
+                                                                 PropertyServerException,
+                                                                 UserNotAuthorizedException
     {
-        final String methodName = "detachAssetFromSchema";
-        final String end1GUIDParameterName = "assetGUID";
+        final String methodName = "detachSchema";
+        final String end1GUIDParameterName = "elementGUID";
         final String end2GUIDParameterName = "schemaTypeGUID";
 
         propertyHelper.validateUserId(userId, methodName);
-        propertyHelper.validateGUID(assetGUID, end1GUIDParameterName, methodName);
+        propertyHelper.validateGUID(elementGUID, end1GUIDParameterName, methodName);
         propertyHelper.validateGUID(schemaTypeGUID, end2GUIDParameterName, methodName);
 
         openMetadataClient.detachRelatedElementsInStore(userId,
-                                                        OpenMetadataType.ASSET_SCHEMA_TYPE_RELATIONSHIP.typeName,
+                                                        OpenMetadataType.SCHEMA_RELATIONSHIP.typeName,
                                                         schemaTypeGUID,
                                                         schemaTypeGUID,
                                                         deleteOptions);
@@ -332,7 +391,7 @@ public class SchemaTypeHandler extends OpenMetadataHandlerBase
                                                                                      assetGUID,
                                                                                      guidParameterName,
                                                                                      1,
-                                                                                     OpenMetadataType.ASSET_SCHEMA_TYPE_RELATIONSHIP.typeName,
+                                                                                     OpenMetadataType.SCHEMA_RELATIONSHIP.typeName,
                                                                                      new QueryOptions(getOptions),
                                                                                      methodName);
 

@@ -22,7 +22,7 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/servers/{serverName}/api/open-metadata/runtime-manager")
 
-@Tag(name="API: Runtime Manager OMVS", description="The Runtime Manager OMVS provides APIs for retrieving and updating code values and reference data.",
+@Tag(name="API: Runtime Manager OMVS", description="Egeria's runtime includes APIs for querying, configuring and managing its resources. The Runtime Manager OMVS provides APIs for retrieving configuration and status from servers and platforms.",
         externalDocs=@ExternalDocumentation(description="Further Information",
                 url="https://egeria-project.org/services/omvs/runtime-manager/overview/"))
 

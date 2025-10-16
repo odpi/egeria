@@ -38,6 +38,7 @@ public class AssetLocalLineageGraphMermaidGraphBuilder extends MermaidGraphBuild
         appendNewMermaidNode(assetGraph.getElementHeader().getGUID(),
                              currentDisplayName,
                              assetGraph.getElementHeader().getType().getTypeName(),
+                             assetGraph.getProperties(),
                              VisualStyle.ANCHOR_ELEMENT);
 
         if (assetGraph.getRelationships() != null)

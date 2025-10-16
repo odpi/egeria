@@ -176,6 +176,14 @@ public enum OMFErrorCode implements ExceptionMessageSet
                           "Correct the code in the caller to provide a valid regular expression search string."),
 
     /**
+     * OPEN-METADATA-0007 - The {0} connector can not retrieve the correlation information for {1} open metadata element {2} linked via metadata collection {3} to external element {4}
+     */
+    MISSING_CORRELATION(404, "OPEN-METADATA-0007",
+                        "The {0} connector can not retrieve the correlation information for {1} open metadata element {2} linked via metadata collection {3} to external element {4}",
+                        "The correlation information that should be associated with the open metadata element is missing and the connector is not able to confidently synchronize it with the element from the external system.",
+                        "Review the audit log to determine if there were errors detected when the open metadata entity was created.  The simplest resolution is to add the correlation information to the open metadata entity to allow the synchronization to continue."),
+
+    /**
      * OPEN-METADATA-500-001 - Unexpected {0} exception in service {1} of type {2} detected by method {3}.  The error message was {4}
      */
     UNEXPECTED_EXCEPTION(500, "OPEN-METADATA-500-001",

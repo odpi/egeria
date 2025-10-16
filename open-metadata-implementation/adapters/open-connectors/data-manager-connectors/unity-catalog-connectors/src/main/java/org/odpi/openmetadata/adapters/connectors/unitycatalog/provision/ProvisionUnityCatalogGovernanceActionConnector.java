@@ -358,7 +358,7 @@ public class ProvisionUnityCatalogGovernanceActionConnector extends GeneralGover
 
             if (rootSchemaTypeGUID != null)
             {
-                governanceContext.getOpenMetadataStore().createRelatedElementsInStore(OpenMetadataType.ASSET_SCHEMA_TYPE_RELATIONSHIP.typeName,
+                governanceContext.getOpenMetadataStore().createRelatedElementsInStore(OpenMetadataType.SCHEMA_RELATIONSHIP.typeName,
                                                                                       elementGUID,
                                                                                       rootSchemaTypeGUID,
                                                                                       metadataSourceOptions,

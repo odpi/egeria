@@ -6,8 +6,8 @@ package org.odpi.openmetadata.frameworks.opengovernance.properties;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.ElementStub;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.ElementVersions;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.OpenMetadataRootElement;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.processes.connectors.CatalogTargetProperties;
 
 import java.util.Objects;
@@ -28,7 +28,7 @@ public class CatalogTarget extends CatalogTargetProperties
 {
     private String              relationshipGUID            = null;
     private ElementVersions     relationshipVersions        = null;
-    private ElementStub         catalogTargetElement        = null;
+    private OpenMetadataRootElement catalogTargetElement    = null;
 
 
     /**
@@ -54,6 +54,30 @@ public class CatalogTarget extends CatalogTargetProperties
             relationshipGUID = template.getRelationshipGUID();
             relationshipVersions = template.getRelationshipVersions();
             catalogTargetElement = template.getCatalogTargetElement();
+        }
+    }
+
+
+    /**
+     * Copy/clone constructor
+     *
+     * @param catalogTargetProperties object to copy
+     * @param element object to copy
+     */
+    public CatalogTarget(CatalogTargetProperties catalogTargetProperties,
+                         OpenMetadataRootElement element)
+    {
+        super(catalogTargetProperties);
+
+        if (element != null)
+        {
+            if (element.getRelatedBy() != null)
+            {
+                this.relationshipGUID     = element.getRelatedBy().getRelationshipHeader().getGUID();
+                this.relationshipVersions = element.getRelatedBy().getRelationshipHeader().getVersions();
+            }
+
+            this.catalogTargetElement = element;
         }
     }
 
@@ -107,7 +131,7 @@ public class CatalogTarget extends CatalogTargetProperties
      *
      * @return element stub
      */
-    public ElementStub getCatalogTargetElement()
+    public OpenMetadataRootElement getCatalogTargetElement()
     {
         return catalogTargetElement;
     }
@@ -118,7 +142,7 @@ public class CatalogTarget extends CatalogTargetProperties
      *
      * @param catalogTargetElement element stub
      */
-    public void setCatalogTargetElement(ElementStub catalogTargetElement)
+    public void setCatalogTargetElement(OpenMetadataRootElement catalogTargetElement)
     {
         this.catalogTargetElement = catalogTargetElement;
     }

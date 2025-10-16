@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/servers/{serverName}/api/open-metadata/data-discovery")
 
-@Tag(name="API: Data Discovery OMVS", description="The Data Discovery OMVS provides APIs for locating the data needed for a project.",
+@Tag(name="API: Data Discovery OMVS", description="Survey reports capture the analysis of IT resources and data. Egeria supports many types of surveys, but this API enables external survey and analysis engines (such as data quality analysers) to load their findings into open metadata.",
         externalDocs=@ExternalDocumentation(description="Further Information",
                 url="https://egeria-project.org/services/omvs/data-discovery/overview/"))
 

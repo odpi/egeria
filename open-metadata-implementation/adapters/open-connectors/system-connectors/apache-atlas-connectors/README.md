@@ -4,11 +4,11 @@
 # Apache Atlas Connectors
 
 The Apache Atlas connectors provide a variety of functions to access, survey, catalog and govern Apache Atlas.
-The Jar file *apache-atlas-connectors.jar* is included in the 
+The Jar file *apache-atlas-connectors.jar* is included in the OMAG Server Platform.
 
 ## Apache Atlas REST Connector
 
-Apache Atlas has a REST API that allows external callers to query and create both
+Apache Atlas is a digital resource connector that has a REST API that allows external callers to query and create both
 types and instances.  This connector provides a simple Java API to this REST API.
 It is written without any dependencies on Apache Atlas (or its associated Hadoop components)
 so it happily runs in the same version of Java as the rest of Egeria.

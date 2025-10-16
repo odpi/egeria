@@ -26,7 +26,6 @@ import org.odpi.openmetadata.frameworks.opensurvey.AnnotationStore;
 import org.odpi.openmetadata.frameworks.opensurvey.SurveyActionServiceConnector;
 import org.odpi.openmetadata.frameworks.opensurvey.SurveyAssetStore;
 import org.odpi.openmetadata.frameworks.opensurvey.controls.AnalysisStep;
-import org.odpi.openmetadata.frameworks.openmetadata.enums.AnnotationStatus;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.surveyreports.SchemaAnalysisAnnotationProperties;
 
 import java.io.File;
@@ -444,7 +443,7 @@ public class CSVSurveyService extends SurveyActionServiceConnector
                                                                                    new NewElementProperties(elementProperties));
             if (schemaTypeGUID != null)
             {
-                openMetadataStore.createRelatedElementsInStore(OpenMetadataType.ASSET_SCHEMA_TYPE_RELATIONSHIP.typeName,
+                openMetadataStore.createRelatedElementsInStore(OpenMetadataType.SCHEMA_RELATIONSHIP.typeName,
                                                                assetElement.getElementHeader().getGUID(),
                                                                schemaTypeGUID,
                                                                null,

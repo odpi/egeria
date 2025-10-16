@@ -5,17 +5,19 @@ package org.odpi.openmetadata.frameworks.openmetadata.connectorcontext;
 
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.openmetadata.client.OpenMetadataClient;
-import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
-import org.odpi.openmetadata.frameworks.openmetadata.ffdc.PropertyServerException;
-import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
+import org.odpi.openmetadata.frameworks.openmetadata.ffdc.*;
 import org.odpi.openmetadata.frameworks.openmetadata.handlers.ExternalIdHandler;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.OpenMetadataRootElement;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.RelatedMetadataElementSummary;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.ClassificationProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.RelationshipProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.metadatarepositories.MetadataCollectionProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.externalidentifiers.ExternalIdLinkProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.externalidentifiers.ExternalIdProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.search.*;
+import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -24,7 +26,8 @@ import java.util.Map;
  */
 public class ExternalIdClient extends ConnectorContextClientBase
 {
-    private final ExternalIdHandler externalIdHandler;
+    private final ExternalIdHandler  externalIdHandler;
+    private final OpenMetadataClient openMetadataClient;
 
 
     /**
@@ -54,12 +57,44 @@ public class ExternalIdClient extends ConnectorContextClientBase
     {
         super(parentContext, localServerName, localServiceName, connectorUserId, connectorGUID, externalSourceGUID, externalSourceName, auditLog, maxPageSize);
 
-        this.externalIdHandler = new ExternalIdHandler(localServerName, auditLog, localServiceName, openMetadataClient);
+        this.openMetadataClient = openMetadataClient;
+        this.externalIdHandler  = new ExternalIdHandler(localServerName, auditLog, localServiceName, openMetadataClient);
     }
 
 
     /**
-     * Create a new externalId.
+     * Create a new externalId.  It is linked to its scope as long as externalSourceGUID is not null.
+     *
+     * @param elementGUID element that the external id is for
+     * @param externalIdLinkProperties properties for the relationship
+     * @param externalIdProperties properties for the external Id itself.
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid.
+     * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public void createExternalId(String                   elementGUID,
+                                 ExternalIdLinkProperties externalIdLinkProperties,
+                                 ExternalIdProperties     externalIdProperties) throws InvalidParameterException,
+                                                                                       PropertyServerException,
+                                                                                       UserNotAuthorizedException
+    {
+        NewElementOptions newElementOptions = new NewElementOptions(this.getMetadataSourceOptions());
+
+        newElementOptions.setIsOwnAnchor(false);
+        newElementOptions.setAnchorGUID(elementGUID);
+        newElementOptions.setParentGUID(elementGUID);
+        newElementOptions.setParentAtEnd1(true);
+        newElementOptions.setParentRelationshipTypeName(OpenMetadataType.EXTERNAL_ID_LINK_RELATIONSHIP.typeName);
+
+        this.createExternalId(newElementOptions,
+                              null,
+                              externalIdProperties,
+                              externalIdLinkProperties);
+    }
+
+    /**
+     * Create a new externalId.  It is linked to its scope as long as externalSourceGUID is not null.
      *
      * @param newElementOptions details of the element to create
      * @param initialClassifications map of classification names to classification properties to include in the entity creation request
@@ -72,12 +107,25 @@ public class ExternalIdClient extends ConnectorContextClientBase
      */
     public String createExternalId(NewElementOptions                     newElementOptions,
                                    Map<String, ClassificationProperties> initialClassifications,
-                                   ExternalIdProperties                    properties,
+                                   ExternalIdProperties                  properties,
                                    RelationshipProperties                parentRelationshipProperties) throws InvalidParameterException,
                                                                                                               PropertyServerException,
                                                                                                               UserNotAuthorizedException
     {
         String elementGUID = externalIdHandler.createExternalId(connectorUserId, newElementOptions, initialClassifications, properties, parentRelationshipProperties);
+
+        /*
+         * Link the new external Id to its scope.
+         */
+        if ((elementGUID != null) && (externalSourceGUID != null))
+        {
+            openMetadataClient.createRelatedElementsInStore(connectorUserId,
+                                                            OpenMetadataType.SCOPED_BY_RELATIONSHIP.typeName,
+                                                            elementGUID,
+                                                            externalSourceGUID,
+                                                            this.getMetadataSourceOptions(),
+                                                            null);
+        }
 
         if (parentContext.getIntegrationReportWriter() != null)
         {
@@ -188,6 +236,188 @@ public class ExternalIdClient extends ConnectorContextClientBase
     {
         externalIdHandler.detachExternalIdFromElement(connectorUserId, itAssetGUID, externalIdGUID, deleteOptions);
     }
+
+
+    /**
+     * Sift through the related external identifiers looking for the one that matches the system being synchronized with.
+     * Ideally the external identifiers are catalogued under the external source GUID for this system - in which case
+     * it is a simple look-up.  Otherwise, we need to retrieve the external identifier and validate whether it is
+     * connected to the desired metadata collection.
+     *
+     * @param metadataElement starting element
+     * @param externalSourceGUID unique identifier of the metadata source to locate
+     * @param externalKey unique identifier of the external element
+     *
+     * @return the matching related external identifier
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public RelatedMetadataElementSummary getRelatedExternalId(OpenMetadataRootElement metadataElement,
+                                                              String                  externalSourceGUID,
+                                                              String                  externalKey) throws InvalidParameterException,
+                                                                                                                 PropertyServerException,
+                                                                                                                 UserNotAuthorizedException
+    {
+        final String methodName = "getRelatedExternalId";
+        final String guidParameterName = "externalSourceGUID";
+
+        propertyHelper.validateGUID(externalSourceGUID, guidParameterName, methodName);
+
+        List<RelatedMetadataElementSummary> relatedExternalIdentifiers = metadataElement.getAlsoKnownAs();
+
+        if (relatedExternalIdentifiers != null)
+        {
+            for (RelatedMetadataElementSummary relatedExternalIdentifier : relatedExternalIdentifiers)
+            {
+                if (relatedExternalIdentifier != null)
+                {
+                    if (relatedExternalIdentifier.getRelatedElement().getElementHeader().getOrigin().getHomeMetadataCollectionId().equals(externalSourceGUID))
+                    {
+                        /*
+                         * This element is from the right metadata collection - is it the right element since
+                         * mappings can be many to many.
+                         */
+                        if (externalKey == null)
+                        {
+                            /*
+                             * Mapping is one to one so do not need to check key
+                             */
+                            return relatedExternalIdentifier;
+                        }
+                        else if ((relatedExternalIdentifier.getRelatedElement().getProperties() instanceof ExternalIdProperties externalIdProperties) &&
+                                (externalKey.equals(externalIdProperties.getKey())))
+                        {
+                            return relatedExternalIdentifier;
+                        }
+                    }
+                    else if (relatedExternalIdentifier.getRelatedElement().getElementHeader().getOrigin().getHomeMetadataCollectionId() == null)
+                    {
+                        /*
+                         * The external Id is not registered in the external metadata collection, but is it linked to the external metadata collection
+                         * via the ScopedBy relationship?
+                         */
+                        OpenMetadataRootElement externalId = this.getExternalIdByGUID(relatedExternalIdentifier.getRelatedElement().getElementHeader().getGUID(), this.getGetOptions());
+
+                        if ((externalId != null) &&
+                                (externalId.getProperties() instanceof ExternalIdProperties externalIdProperties) &&
+                                ((externalKey == null) || (externalKey.equals(externalIdProperties.getKey()))))
+                        {
+                            if (externalId.getRelevantToScopes() != null)
+                            {
+                                for (RelatedMetadataElementSummary metadataCollection : externalId.getRelevantToScopes())
+                                {
+                                    if ((metadataCollection != null) && (metadataCollection.getRelatedElement().getProperties() instanceof MetadataCollectionProperties metadataCollectionProperties))
+                                    {
+                                        if (externalSourceGUID.equals(metadataCollectionProperties.getManagedMetadataCollectionId()))
+                                        {
+                                            return relatedExternalIdentifier;
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Confirm that this element has been synchronized at this time.
+     *
+     * @param metadataElement starting element
+     * @param externalSourceGUID unique identifier of the metadata source to locate
+     * @param externalKey unique identifier of the external element
+     *
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public void confirmSynchronization(OpenMetadataRootElement metadataElement,
+                                       String                  externalSourceGUID,
+                                       String                  externalKey) throws InvalidParameterException,
+                                                                                   PropertyServerException,
+                                                                                   UserNotAuthorizedException
+    {
+        final String methodName = "confirmSynchronization";
+
+        RelatedMetadataElementSummary relatedExternalId = this.getRelatedExternalId(metadataElement, externalSourceGUID, externalKey);
+
+        if (relatedExternalId != null)
+        {
+            this.confirmSynchronization(relatedExternalId.getRelationshipHeader().getGUID());
+        }
+        else
+        {
+            auditLog.logMessage(methodName,
+                                OMFAuditCode.MISSING_CORRELATION.getMessageDefinition(parentContext.connectorName,
+                                                                                      metadataElement.getElementHeader().getType().getTypeName(),
+                                                                                      metadataElement.getElementHeader().getGUID(),
+                                                                                      externalSourceGUID,
+                                                                                      externalKey));
+            throw new PropertyServerException(OMFErrorCode.MISSING_CORRELATION.getMessageDefinition(parentContext.connectorName,
+                                                                                                    metadataElement.getElementHeader().getType().getTypeName(),
+                                                                                                    metadataElement.getElementHeader().getGUID(),
+                                                                                                    externalSourceGUID,
+                                                                                                    externalKey),
+                                              this.getClass().getName(),
+                                              methodName);
+        }
+    }
+
+
+    /**
+     * Confirm that the values of a particular metadata element have been synchronized.  This is important
+     * from an audit point of view, and to allow bidirectional updates of metadata using optimistic locking.
+     *
+     * @param externalIdLinkGUID unique identifier of the ExternalIdLink relationship to update
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException user not authorized to issue this request
+     * @throws PropertyServerException    problem accessing the property server
+     */
+    public void confirmSynchronization(String externalIdLinkGUID) throws InvalidParameterException,
+                                                                         UserNotAuthorizedException,
+                                                                         PropertyServerException
+    {
+        ExternalIdLinkProperties relationshipProperties = new ExternalIdLinkProperties();
+        relationshipProperties.setLastSynchronized(new Date());
+
+        externalIdHandler.confirmSynchronization(connectorUserId,
+                                                 externalIdLinkGUID,
+                                                 this.getUpdateOptions(true),
+                                                 relationshipProperties);
+    }
+
+    /**
+     * Confirm that the values of a particular metadata element have been synchronized.  This is important
+     * from an audit point of view, and to allow bidirectional updates of metadata using optimistic locking.
+     *
+     * @param externalScopeGUID unique identifier of software server capability representing the caller
+     * @param externalScopeName unique name of software server capability representing the caller
+     * @param openMetadataElementGUID unique identifier (GUID) of this element in open metadata
+     * @param openMetadataElementTypeName type name for the open metadata element
+     * @param externalIdentifier unique identifier of this element in the external asset manager
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException user not authorized to issue this request
+     * @throws PropertyServerException    problem accessing the property server
+     */
+    public void confirmSynchronization(String externalScopeGUID,
+                                       String externalScopeName,
+                                       String openMetadataElementGUID,
+                                       String openMetadataElementTypeName,
+                                       String externalIdentifier) throws InvalidParameterException,
+                                                                         UserNotAuthorizedException,
+                                                                         PropertyServerException
+    {
+        externalIdHandler.confirmSynchronization(connectorUserId, externalScopeGUID, externalScopeName, openMetadataElementGUID, openMetadataElementTypeName, externalIdentifier);
+    }
+
 
 
     /**

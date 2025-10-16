@@ -67,8 +67,8 @@ public class ConnectorActivityReportClient
      * @throws UserNotAuthorizedException user not authorized to issue this request.
      * @throws PropertyServerException problem with the metadata server.
      */
-    public void publishConnectorActivityReport(String                      userId,
-                                               String                      elementGUID,
+    public void publishConnectorActivityReport(String                            userId,
+                                               String                            elementGUID,
                                                ConnectorActivityReportProperties properties) throws InvalidParameterException,
                                                                                                     UserNotAuthorizedException,
                                                                                                     PropertyServerException

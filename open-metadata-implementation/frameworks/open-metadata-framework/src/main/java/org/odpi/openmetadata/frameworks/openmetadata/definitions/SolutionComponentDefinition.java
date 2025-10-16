@@ -37,6 +37,28 @@ public interface SolutionComponentDefinition extends ReferenceableDefinition
 
 
     /**
+     * Return an optional URL that describes this solution component.
+     *
+     * @return string
+     */
+    default String getURL()
+    {
+        return null;
+    }
+
+
+    /**
+     * Return the optional list of parent components to link it to.
+     *
+     * @return null or list
+     */
+    default List<SolutionComponentDefinition> getParentComponents()
+    {
+        return null;
+    }
+
+
+    /**
      * Return the optional list of subcomponents.
      *
      * @return null or list

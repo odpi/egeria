@@ -31,7 +31,7 @@ public class SourceControlLibraryProperties extends ResourceManagerProperties
     public SourceControlLibraryProperties()
     {
         super();
-        super.setTypeName(OpenMetadataType.SOURCE_CONTROL_LIBRARY_CLASSIFICATION.typeName);
+        super.setTypeName(OpenMetadataType.SOURCE_CONTROL_LIBRARY.typeName);
     }
 
 

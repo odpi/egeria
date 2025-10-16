@@ -642,22 +642,7 @@ public class OpenMetadataWikiPages
     /**
      * <a href="https://egeria-project.org/types/5/0565-Design-Model-Elements/">...</a>
      */
-    public static final String MODEL_0565_DESIGN_MODEL_ELEMENTS        = "https://egeria-project.org/types/5/0565-Design-Model-Elements/";
-
-    /**
-     * <a href="https://egeria-project.org/types/5/0566-Design-Model-Organization/">...</a>
-     */
-    public static final String MODEL_0566_DESIGN_MODEL_ORG             = "https://egeria-project.org/types/5/0566-Design-Model-Organization/";
-
-    /**
-     * <a href="https://egeria-project.org/types/5/0568-Design-Model-Scoping/">...</a>
-     */
-    public static final String MODEL_0568_DESIGN_MODEL_SCOPING         = "https://egeria-project.org/types/5/0568-Design-Model-Scoping/";
-
-    /**
-     * <a href="https://egeria-project.org/types/5/0569-Design-Model-Implementation/">...</a>
-     */
-    public static final String MODEL_0569_DESIGN_MODEL_IMPL            = "https://egeria-project.org/types/5/0569-Design-Model-Implementation/";
+    public static final String MODEL_0565_DESIGN_MODELS = "https://egeria-project.org/types/5/0565-Design-Models/";
 
     /**
      * <a href="https://egeria-project.org/types/5/0570-Metamodels/">...</a>

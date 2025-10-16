@@ -6,8 +6,10 @@ package org.odpi.openmetadata.viewservices.actionauthor.server;
 import org.odpi.openmetadata.adminservices.configuration.registration.ViewServiceDescription;
 import org.odpi.openmetadata.commonservices.multitenant.OMVSServiceInstance;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
+import org.odpi.openmetadata.frameworks.openmetadata.client.OpenMetadataClient;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
-import org.odpi.openmetadata.frameworkservices.gaf.client.EgeriaOpenGovernanceClient;
+import org.odpi.openmetadata.frameworks.openmetadata.handlers.GovernanceDefinitionHandler;
+import org.odpi.openmetadata.frameworkservices.omf.client.handlers.EgeriaOpenMetadataStoreHandler;
 
 /**
  * ActionAuthorInstance caches references to objects it needs for a specific server.
@@ -18,7 +20,7 @@ public class ActionAuthorInstance extends OMVSServiceInstance
 {
     private static final ViewServiceDescription myDescription = ViewServiceDescription.ACTION_AUTHOR;
 
-    private final EgeriaOpenGovernanceClient openGovernanceClient;
+    private final GovernanceDefinitionHandler governanceDefinitionHandler;
 
     /**
      * Set up the Action Author OMVS instance
@@ -49,14 +51,27 @@ public class ActionAuthorInstance extends OMVSServiceInstance
               remoteServerName,
               remoteServerURL);
 
+        OpenMetadataClient openMetadataClient;
         if (localServerUserPassword == null)
         {
-            openGovernanceClient = new EgeriaOpenGovernanceClient(remoteServerName, remoteServerURL, maxPageSize);
+            openMetadataClient = new EgeriaOpenMetadataStoreHandler(remoteServerName,
+                                                                    remoteServerURL,
+                                                                    maxPageSize);
+
         }
         else
         {
-            openGovernanceClient = new EgeriaOpenGovernanceClient(remoteServerName, remoteServerURL, localServerUserId, localServerUserPassword, maxPageSize);
+            openMetadataClient = new EgeriaOpenMetadataStoreHandler(remoteServerName,
+                                                                    remoteServerURL,
+                                                                    localServerUserId,
+                                                                    localServerUserPassword,
+                                                                    maxPageSize);
         }
+
+        governanceDefinitionHandler = new GovernanceDefinitionHandler(serverName,
+                                                                auditLog,
+                                                                myDescription.getViewServiceFullName(),
+                                                                openMetadataClient);
     }
 
 
@@ -66,8 +81,8 @@ public class ActionAuthorInstance extends OMVSServiceInstance
      *
      * @return client
      */
-    public EgeriaOpenGovernanceClient getOpenGovernanceClient()
+    public GovernanceDefinitionHandler getGovernanceDefinitionHandler()
     {
-        return openGovernanceClient;
+        return governanceDefinitionHandler;
     }
 }

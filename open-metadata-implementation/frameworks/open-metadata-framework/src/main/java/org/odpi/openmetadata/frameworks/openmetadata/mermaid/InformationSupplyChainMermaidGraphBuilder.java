@@ -39,6 +39,7 @@ public class InformationSupplyChainMermaidGraphBuilder extends MermaidGraphBuild
         appendNewMermaidNode(informationSupplyChainElement.getElementHeader().getGUID(),
                              super.getNodeDisplayName(informationSupplyChainElement.getElementHeader(), informationSupplyChainElement.getProperties()),
                              informationSupplyChainElement.getElementHeader().getType().getTypeName(),
+                             informationSupplyChainElement.getProperties(),
                              super.getVisualStyleForClassifications(informationSupplyChainElement.getElementHeader(), VisualStyle.PRINCIPLE_INFORMATION_SUPPLY_CHAIN))                  ;
 
         super.addRelatedElementSummaries(informationSupplyChainElement.getParents(), VisualStyle.INFORMATION_SUPPLY_CHAIN_SEG, informationSupplyChainElement.getElementHeader().getGUID(), LineStyle.DOTTED);

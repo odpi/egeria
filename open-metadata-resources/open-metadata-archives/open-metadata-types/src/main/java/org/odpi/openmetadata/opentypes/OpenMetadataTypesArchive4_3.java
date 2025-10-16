@@ -159,49 +159,10 @@ public class OpenMetadataTypesArchive4_3
         /*
          * Add the type updates
          */
-        update0017ExternalIdentifiers();
         update0035Hosts();
         update0112People();
         update0224Databases();
     }
-
-
-    /*
-     * -------------------------------------------------------------------------------------------------------
-     */
-
-    private void update0017ExternalIdentifiers()
-    {
-        this.archiveBuilder.addTypeDefPatch(updateExternalId());
-    }
-
-
-    private TypeDefPatch updateExternalId()
-    {
-        /*
-         * Create the Patch
-         */
-        TypeDefPatch typeDefPatch = archiveBuilder.getPatchForType(OpenMetadataType.EXTERNAL_ID.typeName);
-
-        typeDefPatch.setUpdatedBy(originatorName);
-        typeDefPatch.setUpdateTime(creationDate);
-
-        /*
-         * Build the attributes
-         */
-        List<TypeDefAttribute> properties = new ArrayList<>();
-
-        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.EXT_INSTANCE_CREATED_BY));
-        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.EXT_INSTANCE_CREATION_TIME));
-        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.EXT_INSTANCE_LAST_UPDATED_BY));
-        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.EXT_INSTANCE_LAST_UPDATE_TIME));
-        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.EXT_INSTANCE_VERSION));
-
-        typeDefPatch.setPropertyDefinitions(properties);
-
-        return typeDefPatch;
-    }
-
 
 
     /*

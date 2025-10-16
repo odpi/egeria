@@ -25,7 +25,7 @@ public class FileManagerProperties extends ResourceManagerProperties
     public FileManagerProperties()
     {
         super();
-        super.setTypeName(OpenMetadataType.FILE_MANAGER_CLASSIFICATION.typeName);
+        super.setTypeName(OpenMetadataType.FILE_MANAGER.typeName);
     }
 
 

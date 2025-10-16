@@ -59,6 +59,7 @@ public class SolutionComponentMermaidGraphBuilder extends MermaidGraphBuilderBas
                                 appendNewMermaidNode(parentComponentName,
                                                      parentComponentDisplayName,
                                                      parentComponent.getRelatedElement().getElementHeader().getType().getTypeName(),
+                                                     parentComponent.getRelatedElement().getProperties(),
                                                      getVisualStyleForClassifications(parentComponent.getRelatedElement().getElementHeader(),
                                                                                       super.getVisualStyleForSolutionComponent(parentComponent.getRelatedElement().getElementHeader().getType().getTypeName())));
 

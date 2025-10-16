@@ -20,8 +20,10 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class FileSystemProperties extends ResourceManagerProperties
 {
-    private String              format = null;
-    private String              encryption = null;
+    private String format              = null;
+    private String encryption          = null;
+    private String canonicalMountPoint = null;
+    private String localMountPoint     = null;
 
 
     /**
@@ -30,7 +32,7 @@ public class FileSystemProperties extends ResourceManagerProperties
     public FileSystemProperties()
     {
         super();
-        super.setTypeName(OpenMetadataType.FILE_SYSTEM_CLASSIFICATION.typeName);
+        super.setTypeName(OpenMetadataType.FILE_SYSTEM.typeName);
     }
 
 
@@ -47,6 +49,8 @@ public class FileSystemProperties extends ResourceManagerProperties
         {
             format = template.getFormat();
             encryption = template.getEncryption();
+            canonicalMountPoint = template.getCanonicalMountPoint();
+            localMountPoint = template.getLocalMountPoint();
         }
     }
 
@@ -96,6 +100,52 @@ public class FileSystemProperties extends ResourceManagerProperties
 
 
     /**
+     * Return the root of the path name that has been used in the metadata elements for files in this file system.
+     *
+     * @return string
+     */
+    public String getCanonicalMountPoint()
+    {
+        return canonicalMountPoint;
+    }
+
+
+    /**
+     * Set up the root of the path name that has been used in the metadata elements for files in this file system.
+     *
+     * @param canonicalMountPoint string
+     */
+    public void setCanonicalMountPoint(String canonicalMountPoint)
+    {
+        this.canonicalMountPoint = canonicalMountPoint;
+    }
+
+
+    /**
+     * Return the root of the path name to substitute when accessing files.  Basically remove the top of the
+     * file's path name that matches the canonical mount point and replace it with this value.
+     *
+     * @return string
+     */
+    public String getLocalMountPoint()
+    {
+        return localMountPoint;
+    }
+
+
+    /**
+     * Set up the part of the local file path name that needs to be replaced by the path name in the
+     * canonical mount point.
+     *
+     * @param localMountPoint string
+     */
+    public void setLocalMountPoint(String localMountPoint)
+    {
+        this.localMountPoint = localMountPoint;
+    }
+
+
+    /**
      * JSON-style toString
      *
      * @return return string containing the property names and values
@@ -106,8 +156,11 @@ public class FileSystemProperties extends ResourceManagerProperties
         return "FileSystemProperties{" +
                 "format='" + format + '\'' +
                 ", encryption='" + encryption + '\'' +
+                ", canonicalMountPoint='" + canonicalMountPoint + '\'' +
+                ", localMountPoint='" + localMountPoint + '\'' +
                 "} " + super.toString();
     }
+
 
 
     /**
@@ -132,7 +185,10 @@ public class FileSystemProperties extends ResourceManagerProperties
             return false;
         }
         FileSystemProperties that = (FileSystemProperties) objectToCompare;
-        return Objects.equals(format, that.format) && Objects.equals(encryption, that.encryption);
+        return Objects.equals(format, that.format) &&
+                Objects.equals(encryption, that.encryption) &&
+                Objects.equals(canonicalMountPoint, that.canonicalMountPoint) &&
+                Objects.equals(localMountPoint, that.localMountPoint);
     }
 
 
@@ -144,6 +200,6 @@ public class FileSystemProperties extends ResourceManagerProperties
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), getFormat(), getEncryption());
+        return Objects.hash(super.hashCode(), format, encryption, canonicalMountPoint, localMountPoint);
     }
 }

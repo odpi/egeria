@@ -3,6 +3,7 @@
 package org.odpi.openmetadata.frameworks.openmetadata.properties;
 
 import com.fasterxml.jackson.annotation.*;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.designmodels.ConceptBeadExtensionProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.implementations.ImplementationResourceProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.implementations.ImplementedByProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.solutions.*;
@@ -23,6 +24,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
         property = "class")
 @JsonSubTypes(
         {
+                @JsonSubTypes.Type(value = ConceptBeadExtensionProperties.class, name = "ConceptBeadExtensionProperties"),
                 @JsonSubTypes.Type(value = ImplementedByProperties.class, name = "ImplementedByProperties"),
                 @JsonSubTypes.Type(value = ImplementationResourceProperties.class, name = "ImplementationResourceProperties"),
                 @JsonSubTypes.Type(value = SolutionComponentActorProperties.class, name = "SolutionComponentActorProperties"),

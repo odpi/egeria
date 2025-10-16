@@ -220,13 +220,6 @@ public interface GovernanceContext
     CompletionStatus getCompletionStatus();
 
 
-    /**
-     * Return the client for managing the metadata associated with running connectors, governance engines and governance services.
-     *
-     * @return connector context client
-     */
-    ConnectorConfigClient getConnectorConfigClient();
-
 
     /**
      * Return the client that manages deduplication.

@@ -1175,6 +1175,7 @@ public class ExternalIdentifierHandler<EXTERNAL_ID, OPEN_METADATA_ELEMENT_HEADER
      * @param identifierMappingProperties additional properties used to manage the mapping to the elements in the third party technology
      * @param methodName calling method
      *
+     * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException user not authorized to issue this request
      * @throws PropertyServerException    problem accessing the property server
      */
@@ -1185,7 +1186,7 @@ public class ExternalIdentifierHandler<EXTERNAL_ID, OPEN_METADATA_ELEMENT_HEADER
                                       String              identifierSource,
                                       Map<String, String> identifierMappingProperties,
                                       String              methodName) throws UserNotAuthorizedException,
-                                                                             PropertyServerException
+                                                                             PropertyServerException, InvalidParameterException
     {
         ExternalIdentifierBuilder builder = new ExternalIdentifierBuilder(repositoryHelper, serviceName, serverName);
 

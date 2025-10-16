@@ -434,13 +434,13 @@ public class InformationSupplyChainHandler extends OpenMetadataHandlerBase
                                                                                                                PropertyServerException
     {
         final String methodName = "findInformationSupplyChains";
-        final String searchStringParameterName = "searchString";
 
         propertyHelper.validateUserId(userId, methodName);
-        propertyHelper.validateSearchString(searchString, searchStringParameterName, methodName);
         propertyHelper.validatePaging(searchOptions, openMetadataClient.getMaxPagingSize(), methodName);
 
-        List<OpenMetadataElement> openMetadataElements = openMetadataClient.findMetadataElementsWithString(userId, searchString, super.addDefaultType(searchOptions));
+        List<OpenMetadataElement> openMetadataElements = openMetadataClient.findMetadataElementsWithString(userId,
+                                                                                                           searchString,
+                                                                                                           super.addDefaultType(searchOptions));
 
         return convertInformationSupplyChains(userId,
                                               openMetadataElements,

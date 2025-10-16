@@ -55,7 +55,6 @@ public class ElementHeader extends ElementControlHeader
     private ElementClassification       dataScope                = null;
     private ElementClassification       calculatedValue          = null;
     private ElementClassification       primaryKey               = null;
-    private List<ElementClassification> resourceManagerRoles     = null;
     private List<ElementClassification> serverPurposes           = null;
     private List<ElementClassification> collectionRoles          = null;
     private List<ElementClassification> projectRoles             = null;
@@ -103,7 +102,6 @@ public class ElementHeader extends ElementControlHeader
             this.calculatedValue          = template.getCalculatedValue();
             this.primaryKey               = template.getPrimaryKey();
             this.serverPurposes           = template.getServerPurposes();
-            this.resourceManagerRoles     = template.getResourceManagerRoles();
             this.collectionRoles          = template.getCollectionRoles();
             this.projectRoles             = template.getProjectRoles();
             this.otherClassifications     = template.getOtherClassifications();
@@ -606,28 +604,6 @@ public class ElementHeader extends ElementControlHeader
 
 
     /**
-     * Return the resource manager classifications attached to this element.
-     *
-     * @return list
-     */
-    public List<ElementClassification> getResourceManagerRoles()
-    {
-        return resourceManagerRoles;
-    }
-
-
-    /**
-     * Set up the resource manager classifications attached to this element.
-     *
-     * @param resourceManagerRoles list
-     */
-    public void setResourceManagerRoles(List<ElementClassification> resourceManagerRoles)
-    {
-        this.resourceManagerRoles = resourceManagerRoles;
-    }
-
-
-    /**
      * Return the optional list of category classifications found on a collection entity that indicate how a collection is being used.
      *
      * @return list of classifications
@@ -723,7 +699,6 @@ public class ElementHeader extends ElementControlHeader
                 ", calculatedValue=" + calculatedValue +
                 ", primaryKey=" + primaryKey +
                 ", serverPurposes=" + serverPurposes +
-                ", resourceManagerCategories=" + resourceManagerRoles +
                 ", collectionCategories=" + collectionRoles +
                 ", projectCategories=" + projectRoles +
                 ", otherClassifications=" + otherClassifications +
@@ -765,7 +740,6 @@ public class ElementHeader extends ElementControlHeader
                 Objects.equals(calculatedValue, that.calculatedValue) &&
                 Objects.equals(primaryKey, that.primaryKey) &&
                 Objects.equals(serverPurposes, that.serverPurposes) &&
-                Objects.equals(resourceManagerRoles, that.resourceManagerRoles) &&
                 Objects.equals(collectionRoles, that.collectionRoles) &&
                 Objects.equals(projectRoles, that.projectRoles) &&
                 Objects.equals(otherClassifications, that.otherClassifications);
@@ -784,6 +758,6 @@ public class ElementHeader extends ElementControlHeader
                             confidentiality, confidence, retention, governanceExpectations, governanceMeasurements,
                             executionPoints, duplicateClassifications, ownership, digitalResourceOrigin, memento,
                             template, schemaType, calculatedValue, primaryKey, serverPurposes,
-                            resourceManagerRoles, collectionRoles, projectRoles, otherClassifications);
+                            collectionRoles, projectRoles, otherClassifications);
     }
 }

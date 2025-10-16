@@ -51,8 +51,8 @@ public class OpenMetadataTypesArchive2_0
     private static final String versionName   = "1.0";
 
 
-    private OMRSArchiveBuilder archiveBuilder;
-    private OMRSArchiveHelper  archiveHelper;
+    private final OMRSArchiveBuilder archiveBuilder;
+    private final OMRSArchiveHelper  archiveHelper;
 
     /**
      * Default constructor sets up the archive builder.  This in turn sets up the header for the archive.
@@ -207,16 +207,14 @@ public class OpenMetadataTypesArchive2_0
 
     private void update0220FilesAndFolders()
     {
-        this.archiveBuilder.addClassificationDef(getFileManagerClassification());
+        this.archiveBuilder.addEntityDef(getFileManagerEntity());
     }
 
 
-    private ClassificationDef getFileManagerClassification()
+    private EntityDef getFileManagerEntity()
     {
-        return archiveHelper.getClassificationDef(OpenMetadataType.FILE_MANAGER_CLASSIFICATION,
-                                                  this.archiveBuilder.getClassificationDef(OpenMetadataType.RESOURCE_MANAGER_CLASSIFICATION.typeName),
-                                                  this.archiveBuilder.getEntityDef(OpenMetadataType.SOFTWARE_CAPABILITY.typeName),
-                                                  false);
+        return archiveHelper.getDefaultEntityDef(OpenMetadataType.FILE_MANAGER,
+                                                  this.archiveBuilder.getEntityDef(OpenMetadataType.RESOURCE_MANAGER.typeName));
     }
 
 
@@ -227,16 +225,14 @@ public class OpenMetadataTypesArchive2_0
 
     private void update0221DocumentStores()
     {
-        this.archiveBuilder.addClassificationDef(getContentCollectionManagerClassification());
+        this.archiveBuilder.addEntityDef(getContentCollectionManager());
     }
 
 
-    private ClassificationDef getContentCollectionManagerClassification()
+    private EntityDef getContentCollectionManager()
     {
-        return archiveHelper.getClassificationDef(OpenMetadataType.CONTENT_COLLECTION_MANAGER,
-                                                  this.archiveBuilder.getClassificationDef(OpenMetadataType.RESOURCE_MANAGER_CLASSIFICATION.typeName),
-                                                  this.archiveBuilder.getEntityDef(OpenMetadataType.SOFTWARE_CAPABILITY.typeName),
-                                                  false);
+        return archiveHelper.getDefaultEntityDef(OpenMetadataType.CONTENT_COLLECTION_MANAGER,
+                                                  this.archiveBuilder.getEntityDef(OpenMetadataType.RESOURCE_MANAGER.typeName));
     }
 
 
@@ -270,138 +266,5 @@ public class OpenMetadataTypesArchive2_0
     /*
      * -------------------------------------------------------------------------------------------------------
      */
-
-
-    /*
-     * ========================================================================
-     * Below are place holders for types to be introduced in future releases.
-     * ========================================================================
-     */
-
-
-    /*
-     * -------------------------------------------------------------------------------------------------------
-     */
-
-    /**
-     * 0217 Automated Processes defines a Process is automated (as opposed to manual procedure).
-     */
-    private void add0217AutomatedProcesses()
-    {
-        /* placeholder */
-    }
-
-
-
-    /*
-     * -------------------------------------------------------------------------------------------------------
-     */
-
-    private void add0260Transformations()
-    {
-        /* placeholder */
-    }
-
-
-    /*
-     * -------------------------------------------------------------------------------------------------------
-     */
-
-
-    private void add0265AnalyticsAssets()
-    {
-        /* placeholder */
-    }
-
-
-    /*
-     * -------------------------------------------------------------------------------------------------------
-     */
-
-
-    private void add0270IoTAssets()
-    {
-        /* placeholder */
-    }
-
-
-    /*
-     * -------------------------------------------------------------------------------------------------------
-     */
-
-    private void add0280ModelAssets()
-    {
-        /* placeholder */
-    }
-
-
-    /*
-     * -------------------------------------------------------------------------------------------------------
-     */
-
-    /**
-     * 0435 Governance Rules define details of a governance rule implementation.
-     */
-    private void add0435GovernanceRules()
-    {
-        /* placeholder */
-    }
-
-
-    /*
-     * -------------------------------------------------------------------------------------------------------
-     */
-
-    private void add0447GovernanceProcesses()
-    {
-        /* placeholder */
-    }
-
-
-    /*
-     * -------------------------------------------------------------------------------------------------------
-     */
-
-    private void add0452GovernanceDaemons()
-    {
-        /* placeholder */
-    }
-
-
-    /*
-     * -------------------------------------------------------------------------------------------------------
-     */
-
-    private void add0480RightsManagement()
-    {
-        /* placeholder */
-    }
-
-
-
-    /*
-     * -------------------------------------------------------------------------------------------------------
-     */
-
-    private void add0550LogicSpecificationModel()
-    {
-        /* placeholder */
-    }
-
-    /*
-     * -------------------------------------------------------------------------------------------------------
-     */
-
-    private void add0560MappingModel()
-    {
-        /* placeholder */
-    }
-
-
-    /*
-     * -------------------------------------------------------------------------------------------------------
-     */
-
-
 }
 

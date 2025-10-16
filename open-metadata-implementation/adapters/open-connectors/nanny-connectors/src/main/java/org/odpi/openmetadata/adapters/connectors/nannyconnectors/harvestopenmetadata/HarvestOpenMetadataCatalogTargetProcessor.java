@@ -877,7 +877,7 @@ public class HarvestOpenMetadataCatalogTargetProcessor extends CatalogTargetProc
                     {
                         syncCertification(databaseConnection, elementHeader.getGUID(), relatedMetadataElement);
                     }
-                    else if (OpenMetadataType.ASSET_SCHEMA_TYPE_RELATIONSHIP.typeName.equals(relationshipType))
+                    else if (OpenMetadataType.SCHEMA_RELATIONSHIP.typeName.equals(relationshipType))
                     {
                         processAssetSchemaType(databaseConnection, elementHeader.getGUID(), elementQualifiedName, relatedMetadataElement);
                     }
@@ -4485,7 +4485,7 @@ public class HarvestOpenMetadataCatalogTargetProcessor extends CatalogTargetProc
                                                                                                                    digitalProductProperties,
                                                                                                                    methodName));
         addValueToRow(openMetadataRecord, HarvestOpenMetadataColumn.CURRENT_VERSION, propertyHelper.getStringProperty(connectorName,
-                                                                                                                   OpenMetadataProperty.CURRENT_VERSION.name,
+                                                                                                                   OpenMetadataProperty.VERSION_IDENTIFIER.name,
                                                                                                                    digitalProductProperties,
                                                                                                                    methodName));
         addDateValueToRow(openMetadataRecord, HarvestOpenMetadataColumn.NEXT_VERSION, propertyHelper.getDateProperty(connectorName,

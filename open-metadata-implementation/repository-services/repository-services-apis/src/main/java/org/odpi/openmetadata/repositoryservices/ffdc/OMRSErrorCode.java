@@ -257,7 +257,7 @@ public enum OMRSErrorCode implements ExceptionMessageSet
      * OMRS-REPOSITORY-400-028 - A property called {0} has been proposed for a new metadata instance of category {1} and type {2}; it is not supported for this type in open metadata repository {3}
      */
     BAD_PROPERTY_FOR_TYPE(400, "OMRS-REPOSITORY-400-028",
-            "A property called {0} has been proposed for a new metadata instance of category {1} and type {2}; it is not supported for this type in open metadata repository {3}",
+            "A property called {0} has been proposed for a metadata instance of category {1} and type {2}; it is not supported for this type in open metadata repository {3}",
             "The system is unable to store the metadata instance in the metadata repository because the properties listed do not match the supplied type definition.",
             "Verify that the property name is spelt correctly and the correct type has been used. Correct the call to the metadata repository and retry."),
 

@@ -16,12 +16,15 @@ import org.odpi.openmetadata.frameworks.integration.connectors.CatalogTargetInte
 import org.odpi.openmetadata.frameworks.integration.connectors.IntegrationConnectorBase;
 import org.odpi.openmetadata.frameworks.integration.ffdc.OIFAuditCode;
 import org.odpi.openmetadata.frameworks.integration.properties.RequestedCatalogTarget;
+import org.odpi.openmetadata.frameworks.openmetadata.connectorcontext.AssetClient;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.ElementOriginCategory;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.PermittedSynchronization;
 import org.odpi.openmetadata.frameworks.openmetadata.events.OpenMetadataEventListener;
 import org.odpi.openmetadata.frameworks.openmetadata.events.OpenMetadataOutTopicEvent;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.ElementHeader;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.OpenMetadataRootElement;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.processes.connectors.CatalogTargetProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 
@@ -205,29 +208,32 @@ public class OSSUnityCatalogInsideCatalogSyncConnector extends IntegrationConnec
                                 (propertyHelper.isTypeOf(elementHeader, OpenMetadataType.ASSET.typeName)) ||
                                 (propertyHelper.isTypeOf(elementHeader, OpenMetadataType.SCHEMA_ELEMENT.typeName))))
                 {
+                    AssetClient assetClient = integrationContext.getAssetClient();
+
                     int startFrom = 0;
 
-                    List<CatalogTarget> catalogTargetList = integrationContext.getConnectorConfigClient().getCatalogTargets(integrationContext.getIntegrationConnectorGUID(),
-                                                                                                                            startFrom,
-                                                                                                                            integrationContext.getMaxPageSize());
+                    List<OpenMetadataRootElement> catalogTargetList = assetClient.getCatalogTargets(integrationContext.getIntegrationConnectorGUID(),
+                                                                                                    assetClient.getQueryOptions(startFrom, integrationContext.getMaxPageSize()));
 
                     while (catalogTargetList != null)
                     {
-                        for (CatalogTarget catalogTarget : catalogTargetList)
+                        for (OpenMetadataRootElement catalogTarget : catalogTargetList)
                         {
                             if ((catalogTarget != null) &&
                                     (super.isActive()) &&
-                                    (elementHeader.getOrigin().getHomeMetadataCollectionName().equals(catalogTarget.getMetadataSourceQualifiedName())))
+                                    (catalogTarget.getRelatedBy().getRelationshipProperties() instanceof CatalogTargetProperties catalogTargetProperties) &&
+                                    (elementHeader.getOrigin().getHomeMetadataCollectionName().equals(catalogTargetProperties.getMetadataSourceQualifiedName())))
                             {
                                 Connector catalogTargetConnector = null;
 
-                                if (propertyHelper.isTypeOf(catalogTarget.getCatalogTargetElement(), OpenMetadataType.ASSET.typeName))
+                                if (propertyHelper.isTypeOf(catalogTarget.getElementHeader(), OpenMetadataType.ASSET.typeName))
                                 {
-                                    catalogTargetConnector = integrationContext.getConnectedAssetContext().getConnectorForAsset(catalogTarget.getCatalogTargetElement().getGUID(), auditLog);
+                                    catalogTargetConnector = integrationContext.getConnectedAssetContext().getConnectorForAsset(catalogTarget.getElementHeader().getGUID(), auditLog);
                                 }
 
-                                RequestedCatalogTarget requestedCatalogTarget = new RequestedCatalogTarget(catalogTarget,
-                                                                                                           integrationContext.getCatalogTargetContext(catalogTarget),
+                                CatalogTarget newCatalogTarget = new CatalogTarget(catalogTargetProperties, catalogTarget);
+                                RequestedCatalogTarget requestedCatalogTarget = new RequestedCatalogTarget(newCatalogTarget,
+                                                                                                           integrationContext.getCatalogTargetContext(catalogTargetProperties),
                                                                                                            catalogTargetConnector);
 
                                 auditLog.logMessage(methodName,
@@ -238,9 +244,8 @@ public class OSSUnityCatalogInsideCatalogSyncConnector extends IntegrationConnec
                         }
 
                         startFrom         = startFrom + integrationContext.getMaxPageSize();
-                        catalogTargetList = integrationContext.getConnectorConfigClient().getCatalogTargets(integrationContext.getIntegrationConnectorGUID(),
-                                                                                                            startFrom,
-                                                                                                            integrationContext.getMaxPageSize());
+                        catalogTargetList = assetClient.getCatalogTargets(integrationContext.getIntegrationConnectorGUID(),
+                                                                          assetClient.getQueryOptions(startFrom, integrationContext.getMaxPageSize()));
                     }
                 }
             }
@@ -268,7 +273,7 @@ public class OSSUnityCatalogInsideCatalogSyncConnector extends IntegrationConnec
     {
         final String methodName = "integrateCatalogTarget";
 
-        if (UnityCatalogDeployedImplementationType.OSS_UNITY_CATALOG_SERVER.getAssociatedTypeName().equals(requestedCatalogTarget.getCatalogTargetElement().getType().getTypeName()))
+        if (UnityCatalogDeployedImplementationType.OSS_UNITY_CATALOG_SERVER.getAssociatedTypeName().equals(requestedCatalogTarget.getCatalogTargetElement().getElementHeader().getType().getTypeName()))
         {
             if ((requestedCatalogTarget.getConfigurationProperties() != null) &&
                     (requestedCatalogTarget.getConfigurationProperties().get(UnityCatalogPlaceholderProperty.CATALOG_NAME.getName()) != null))
@@ -279,7 +284,7 @@ public class OSSUnityCatalogInsideCatalogSyncConnector extends IntegrationConnec
                     String catalogQualifiedName = requestedCatalogTarget.getMetadataSourceQualifiedName();
                     String catalogGUID = requestedCatalogTarget.getConfigurationProperties().get(OpenMetadataProperty.GUID.name).toString();
 
-                    Connector connector = integrationContext.getConnectedAssetContext().getConnectorForAsset(requestedCatalogTarget.getCatalogTargetElement().getGUID(), auditLog);
+                    Connector connector = integrationContext.getConnectedAssetContext().getConnectorForAsset(requestedCatalogTarget.getCatalogTargetElement().getElementHeader().getGUID(), auditLog);
 
                     OSSUnityCatalogResourceConnector assetConnector = (OSSUnityCatalogResourceConnector) connector;
 
@@ -297,7 +302,7 @@ public class OSSUnityCatalogInsideCatalogSyncConnector extends IntegrationConnec
 
                     Map<String, String> ucFullNameToEgeriaGUID = new HashMap<>();
 
-                    ucFullNameToEgeriaGUID.put(catalogName, requestedCatalogTarget.getCatalogTargetElement().getGUID());
+                    ucFullNameToEgeriaGUID.put(catalogName, requestedCatalogTarget.getCatalogTargetElement().getElementHeader().getGUID());
 
                     this.refreshCatalog(catalogName,
                                         catalogGUID,
@@ -331,8 +336,8 @@ public class OSSUnityCatalogInsideCatalogSyncConnector extends IntegrationConnec
         }
         else
         {
-            super.throwWrongTypeOfAsset(requestedCatalogTarget.getCatalogTargetElement().getGUID(),
-                                        requestedCatalogTarget.getCatalogTargetElement().getType().getTypeName(),
+            super.throwWrongTypeOfAsset(requestedCatalogTarget.getCatalogTargetElement().getElementHeader().getGUID(),
+                                        requestedCatalogTarget.getCatalogTargetElement().getElementHeader().getType().getTypeName(),
                                         UnityCatalogDeployedImplementationType.OSS_UNITY_CATALOG_SERVER.getAssociatedTypeName(),
                                         connectorName,
                                         methodName);

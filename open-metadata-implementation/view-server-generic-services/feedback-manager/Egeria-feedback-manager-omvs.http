@@ -60,7 +60,7 @@ Content-Type: application/json
   "properties" : {
     "class" : "CommentProperties",
     "qualifiedName" : "Add unique name here",
-    "commentText" : "Add comment text here",
+    "description" : "Add comment text here",
     "commentType" : "STANDARD_COMMENT",
     "additionalProperties" : {
       "propertyName 1" : "property value 1",
@@ -83,7 +83,7 @@ Content-Type: application/json
   "properties" : {
     "class" : "CommentProperties",
     "qualifiedName" : "Add unique name here",
-    "commentText" : "Add comment text here",
+    "description" : "Add comment text here",
     "commentType" : "STANDARD_COMMENT",
     "additionalProperties" : {
       "propertyName 1" : "property value 1",
@@ -109,7 +109,7 @@ Content-Type: application/json
     "class" : "CommentProperties",
     "qualifiedName" : "Add unique name here",
     "text" : "Add comment text here",
-    "commentType" : "GENERAL_COMMENT",
+    "description" : "GENERAL_COMMENT",
     "additionalProperties" : {
       "propertyName 1" : "property value 1",
       "propertyName 2" : "property value 2"
@@ -287,7 +287,6 @@ Content-Type: application/json
 
 {
   "class" : "TagProperties",
-  "isPrivateTag" : false,
   "displayName"         : "Add tag name here",
   "description"  : "Add tag description here"
 }

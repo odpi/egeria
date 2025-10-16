@@ -256,11 +256,20 @@ Content-Type: application/json
 {
   "class" : "SearchStringRequestBody",
   "searchString" : "Add value here",
+  "metadataElementTypeName": "DataFile",
+  "metadataElementSubtypeNames": ["CSVFile", "JSONFile"],
   "startsWith" : false,
   "endsWith" : false,
   "ignoreCase" : true,
   "startFrom" : 0,
   "pageSize": 10,
+  "includeOnlyClassifiedElements": [],
+  "skipClassifiedElements": [],
+  "includeOnlyRelationships": [],
+  "skipRelationships": [],
+  "relationshipsPageSize": 0,
+  "graphQueryDepth": 10,
+  "governanceZoneFilter": [],
   "asOfTime" : "{{$isoTimestamp}}",
   "effectiveTime" : "{{$isoTimestamp}}",
   "forLineage" : false,
@@ -269,6 +278,28 @@ Content-Type: application/json
   "sequencingOrder" : "PROPERTY_ASCENDING",
   "sequencingProperty" : "qualifiedName"
 }
+
+
+###
+# @name find All Metadata Collections
+# Retrieve the list of metadata collections.
+#
+# Request body provides string to find in the properties
+#
+# Returns list of matching metadata elements or
+#  InvalidParameterException  one of the parameters is invalid
+#  UserNotAuthorizedException the user is not authorized to issue this request
+#  PropertyServerException    there is a problem reported in the open metadata server(s)
+#
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/asset-maker/assets/by-search-string
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "SearchStringRequestBody",
+  "metadataElementTypeName" : "MetadataCollection"
+}
+
 
 
 ###

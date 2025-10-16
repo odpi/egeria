@@ -88,6 +88,16 @@ public enum OMFAuditCode implements AuditLogMessageSet
                         "Monitor the shutdown of the connector."),
 
     /**
+     * OPEN-METADATA-0007 - The {0} connector can not retrieve the correlation information for {1} open metadata element {2} linked via metadata collection {3} to external element {4}
+     */
+    MISSING_CORRELATION("OPEN-METADATA-0007",
+                        AuditLogRecordSeverityLevel.ERROR,
+                        "The {0} connector can not retrieve the correlation information for {1} open metadata element {2} linked via metadata collection {3} to external element {4}",
+                        "The correlation information that should be associated with the open metadata element is missing and the connector is not able to confidently synchronize it with the element from the external system.",
+                        "Review the audit log to determine if there were errors detected when the open metadata entity was created.  The simplest resolution is to add the correlation information to the open metadata entity to allow the synchronization to continue."),
+
+
+    /**
      * OPEN-METADATA-0010 - The {0} connector has detected an unsynchronized {1} element ({2}) in metadata collection {3} ({4}) but the permitted synchronization to catalog target {5} is {6}
      */
     IGNORED_EGERIA_ELEMENT("OPEN-METADATA-0010",

@@ -54,7 +54,7 @@ dependencies {
         runtimeOnly project(':open-metadata-implementation:view-server-generic-services:classification-manager:classification-manager-spring')
         runtimeOnly project(':open-metadata-implementation:view-server-generic-services:collection-manager:collection-manager-spring')
         runtimeOnly project(':open-metadata-implementation:view-server-generic-services:connection-maker:connection-maker-spring')
-        runtimeOnly project(':open-metadata-implementation:view-server-generic-services:external-references:external-references-spring')
+        runtimeOnly project(':open-metadata-implementation:view-server-generic-services:external-links:external-links-spring')
         runtimeOnly project(':open-metadata-implementation:view-server-generic-services:feedback-manager:feedback-manager-spring')
         runtimeOnly project(':open-metadata-implementation:view-server-generic-services:governance-officer:governance-officer-spring')
         runtimeOnly project(':open-metadata-implementation:view-server-generic-services:lineage-linker:lineage-linker-spring')
@@ -100,7 +100,6 @@ dependencies {
         runtimeOnly project(':open-metadata-implementation:access-services:omf-metadata-management:omf-metadata-spring')
         runtimeOnly project(':open-metadata-implementation:access-services:ocf-metadata-management:ocf-metadata-spring')
         runtimeOnly project(':open-metadata-implementation:access-services:gaf-metadata-management:gaf-metadata-spring')
-        runtimeOnly project(':open-metadata-implementation:access-services:oif-metadata-management:oif-metadata-spring')
 
         runtimeOnly project(':open-metadata-implementation:governance-server-services:integration-daemon-services:integration-daemon-services-spring')
         runtimeOnly project(':open-metadata-implementation:governance-server-services:engine-host-services:engine-host-services-spring')

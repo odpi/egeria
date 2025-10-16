@@ -17,9 +17,7 @@ import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.infrastru
 import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.processes.PortDelegationProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.processes.ProcessHierarchyProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.processes.ProcessPortProperties;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.processes.actions.ActionRequesterProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.processes.actions.ActionTargetProperties;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.processes.actions.ActionsProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.processes.connectors.CatalogTargetProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.processes.connectors.RegisteredIntegrationConnectorProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.processes.connectors.SupportedGovernanceServiceProperties;
@@ -30,12 +28,14 @@ import org.odpi.openmetadata.frameworks.openmetadata.properties.collections.Coll
 import org.odpi.openmetadata.frameworks.openmetadata.properties.communities.CrowdSourcingContributionProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.connections.*;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.datadictionaries.*;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.designmodels.ConceptBeadRelationshipEndProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.designmodels.IsAConceptBeadProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.designmodels.TypedByConceptBeadProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.digitalbusiness.AgreementActorProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.digitalbusiness.AgreementItemProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.digitalbusiness.ContractLinkProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.digitalbusiness.DigitalSubscriberProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.externalidentifiers.ExternalIdLinkProperties;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.externalidentifiers.ExternalIdScopeProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.externalreferences.CitedDocumentLinkProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.externalreferences.MediaReferenceProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.feedback.*;
@@ -50,9 +50,7 @@ import org.odpi.openmetadata.frameworks.openmetadata.properties.schema.*;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.security.AssociatedSecurityGroupProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.security.ZoneHierarchyProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.softwarecapabilities.MetadataCohortPeerProperties;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.softwarecapabilities.NetworkGatewayLinkProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.softwarecapabilities.VisibleEndpointProperties;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.solutions.SolutionPortSchemaProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.surveyreports.*;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.validvalues.*;
 
@@ -81,7 +79,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
                 @JsonSubTypes.Type(value = AnnotationExtensionProperties.class, name = "AnnotationExtensionProperties"),
                 @JsonSubTypes.Type(value = APIEndpointProperties.class, name = "APIEndpointProperties"),
                 @JsonSubTypes.Type(value = AssetConnectionProperties.class, name = "AssetConnectionProperties"),
-                @JsonSubTypes.Type(value = AssetSchemaTypeProperties.class, name = "AssetSchemaTypeProperties"),
+                @JsonSubTypes.Type(value = SchemaProperties.class, name = "AssetSchemaTypeProperties"),
                 @JsonSubTypes.Type(value = AssignmentScopeProperties.class, name = "AssignmentScopeProperties"),
                 @JsonSubTypes.Type(value = AssociatedAnnotationProperties.class, name = "AssociatedAnnotationProperties"),
                 @JsonSubTypes.Type(value = AssociatedSecurityGroupProperties.class, name = "AssociatedSecurityGroupProperties"),
@@ -94,6 +92,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
                 @JsonSubTypes.Type(value = CertificationProperties.class, name = "CertificationProperties"),
                 @JsonSubTypes.Type(value = CitedDocumentLinkProperties.class, name = "CitedDocumentLinkProperties"),
                 @JsonSubTypes.Type(value = CollectionMembershipProperties.class, name = "CollectionMembershipProperties"),
+                @JsonSubTypes.Type(value = ConceptBeadRelationshipEndProperties.class, name = "ConceptBeadRelationshipEndProperties"),
                 @JsonSubTypes.Type(value = ConnectionConnectorTypeProperties.class, name = "ConnectionConnectorTypeProperties"),
                 @JsonSubTypes.Type(value = ConnectToEndpointProperties.class, name = "ConnectToEndpointProperties"),
                 @JsonSubTypes.Type(value = ConsistentValidValuesProperties.class, name = "ConsistentValidValuesProperties"),
@@ -114,7 +113,6 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
                 @JsonSubTypes.Type(value = DuplicateProperties.class, name = "DuplicateProperties"),
                 @JsonSubTypes.Type(value = EmbeddedConnectionProperties.class, name = "EmbeddedConnectionProperties"),
                 @JsonSubTypes.Type(value = ExternalIdLinkProperties.class, name = "ExternalIdLinkProperties"),
-                @JsonSubTypes.Type(value = ExternalIdScopeProperties.class, name = "ExternalIdScopeProperties"),
                 @JsonSubTypes.Type(value = FeedbackProperties.class, name = "FeedbackProperties"),
                 @JsonSubTypes.Type(value = FolderHierarchyProperties.class, name = "FolderHierarchyProperties"),
                 @JsonSubTypes.Type(value = ForeignKeyProperties.class, name = "ForeignKeyProperties"),
@@ -124,6 +122,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
                 @JsonSubTypes.Type(value = GovernanceResultsProperties.class, name = "GovernanceResultsProperties"),
                 @JsonSubTypes.Type(value = GraphEdgeLinkProperties.class, name = "GraphEdgeLinkProperties"),
                 @JsonSubTypes.Type(value = ImpactedResourceProperties.class, name = "ImpactedResourceProperties"),
+                @JsonSubTypes.Type(value = IsAConceptBeadProperties.class, name = "IsAConceptBeadProperties"),
                 @JsonSubTypes.Type(value = ITInfrastructureProfileProperties.class, name = "ITInfrastructureProfileProperties"),
                 @JsonSubTypes.Type(value = ITProfileRoleAppointmentProperties.class, name = "ITProfileRoleAppointmentProperties"),
                 @JsonSubTypes.Type(value = LabeledRelationshipProperties.class, name = "LabeledRelationshipProperties"),
@@ -140,7 +139,6 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
                 @JsonSubTypes.Type(value = PartOfRelationshipProperties.class, name = "PartOfRelationshipProperties"),
                 @JsonSubTypes.Type(value = PeerProperties.class, name = "PeerProperties"),
                 @JsonSubTypes.Type(value = PortDelegationProperties.class, name = "PortDelegationProperties"),
-                @JsonSubTypes.Type(value = PortSchemaProperties.class, name = "PortSchemaProperties"),
                 @JsonSubTypes.Type(value = PersonRoleAppointmentProperties.class, name = "PersonRoleAppointmentProperties"),
                 @JsonSubTypes.Type(value = ProcessHierarchyProperties.class, name = "ProcessHierarchyProperties"),
                 @JsonSubTypes.Type(value = ProcessPortProperties.class, name = "ProcessPortProperties"),
@@ -162,7 +160,6 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
                 @JsonSubTypes.Type(value = SemanticAssignmentProperties.class, name = "SemanticAssignmentProperties"),
                 @JsonSubTypes.Type(value = SemanticDefinitionProperties.class, name = "SemanticDefinitionProperties"),
                 @JsonSubTypes.Type(value = ServerEndpointProperties.class, name = "ServerEndpointProperties"),
-                @JsonSubTypes.Type(value = SolutionPortSchemaProperties.class, name = "SolutionPortSchemaProperties"),
                 @JsonSubTypes.Type(value = SourcedFromProperties.class, name = "SourcedFromProperties"),
                 @JsonSubTypes.Type(value = SpecificationPropertyAssignmentProperties.class, name = "SpecificationPropertyAssignmentProperties"),
                 @JsonSubTypes.Type(value = SubjectAreaHierarchyProperties.class, name = "SubjectAreaHierarchyProperties"),
@@ -172,6 +169,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
                 @JsonSubTypes.Type(value = TargetForGovernanceActionProperties.class, name = "TargetForGovernanceActionProperties"),
                 @JsonSubTypes.Type(value = TeamStructureProperties.class, name = "TeamStructureProperties"),
                 @JsonSubTypes.Type(value = TeamRoleAppointmentProperties.class, name = "TeamRoleAppointmentProperties"),
+                @JsonSubTypes.Type(value = TypedByConceptBeadProperties.class, name = "TypedByConceptBeadProperties"),
                 @JsonSubTypes.Type(value = ValidValuesAssignmentProperties.class, name = "ValidValuesAssignmentProperties"),
                 @JsonSubTypes.Type(value = ValidValueAssociationProperties.class, name = "ValidValueAssociationProperties"),
                 @JsonSubTypes.Type(value = ValidValueMemberProperties.class, name = "ValidValueMemberProperties"),

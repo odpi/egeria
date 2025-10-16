@@ -970,9 +970,10 @@ public class CocoClinicalTrialHospitalOnboardingService extends CocoClinicalTria
 
         catalogTargetProperties.setConfigurationProperties(configurationProperties);
 
-        governanceContext.getConnectorConfigClient().addCatalogTarget(integrationConnectorGUID,
-                                                                      folderGUID,
-                                                                      catalogTargetProperties);
+        governanceContext.getAssetClient().addCatalogTarget(integrationConnectorGUID,
+                                                            folderGUID,
+                                                            governanceContext.getAssetClient().getMetadataSourceOptions(),
+                                                            catalogTargetProperties);
     }
 
 

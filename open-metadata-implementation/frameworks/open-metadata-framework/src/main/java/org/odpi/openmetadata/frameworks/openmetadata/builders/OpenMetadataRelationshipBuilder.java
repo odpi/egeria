@@ -20,12 +20,13 @@ import org.odpi.openmetadata.frameworks.openmetadata.properties.connections.Embe
 import org.odpi.openmetadata.frameworks.openmetadata.properties.contextevents.ContextEventImpactProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.contextevents.RelatedContextEventProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.datadictionaries.DataClassAssignmentProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.designmodels.ConceptBeadAttributeLinkProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.designmodels.ConceptBeadRelationshipEndProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.digitalbusiness.AgreementActorProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.digitalbusiness.AgreementItemProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.digitalbusiness.ContractLinkProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.digitalbusiness.DigitalSubscriberProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.externalidentifiers.ExternalIdLinkProperties;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.externalidentifiers.ExternalIdScopeProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.externalreferences.CitedDocumentLinkProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.externalreferences.MediaReferenceProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.glossaries.GlossaryTermRelationshipProperties;
@@ -272,6 +273,17 @@ public class OpenMetadataRelationshipBuilder
                                                                        OpenMetadataProperty.COVERAGE_CATEGORY.name,
                                                                        CoverageCategory.getOpenTypeName(),
                                                                        partOfRelationshipProperties.getCoverageCategory().getName());
+                }
+
+                if (properties instanceof ConceptBeadAttributeLinkProperties conceptBeadAttributeLinkProperties)
+                {
+                    elementProperties = propertyHelper.addBooleanProperty(elementProperties,
+                                                                          OpenMetadataProperty.UNIQUE_VALUES.name,
+                                                                          conceptBeadAttributeLinkProperties.getUniqueValues());
+
+                    elementProperties = propertyHelper.addBooleanProperty(elementProperties,
+                                                                          OpenMetadataProperty.ORDERED_VALUES.name,
+                                                                          conceptBeadAttributeLinkProperties.getOrderedValues());
                 }
             }
             else if (properties instanceof RoledRelationshipProperties roledRelationshipProperties)
@@ -526,6 +538,44 @@ public class OpenMetadataRelationshipBuilder
                                                                      OpenMetadataProperty.NOTES.name,
                                                                      collectionMembershipProperties.getNotes());
             }
+            else if (properties instanceof ConceptBeadRelationshipEndProperties conceptBeadRelationshipEndProperties)
+            {
+                elementProperties = propertyHelper.addStringProperty(elementProperties,
+                                                                     OpenMetadataProperty.ATTRIBUTE_NAME.name,
+                                                                     conceptBeadRelationshipEndProperties.getAttributeName());
+
+                if (conceptBeadRelationshipEndProperties.getDecoration() != null)
+                {
+                    elementProperties = propertyHelper.addEnumProperty(elementProperties,
+                                                                       OpenMetadataProperty.DECORATION.name,
+                                                                       RelationshipDecoration.getOpenTypeName(),
+                                                                       conceptBeadRelationshipEndProperties.getDecoration().getName());
+                }
+
+                elementProperties = propertyHelper.addIntProperty(elementProperties,
+                                                                  OpenMetadataProperty.POSITION.name,
+                                                                  conceptBeadRelationshipEndProperties.getPosition());
+
+                elementProperties = propertyHelper.addIntProperty(elementProperties,
+                                                                  OpenMetadataProperty.MAX_CARDINALITY.name,
+                                                                  conceptBeadRelationshipEndProperties.getMaxCardinality());
+
+                elementProperties = propertyHelper.addIntProperty(elementProperties,
+                                                                  OpenMetadataProperty.MIN_CARDINALITY.name,
+                                                                  conceptBeadRelationshipEndProperties.getMaxCardinality());
+
+                elementProperties = propertyHelper.addBooleanProperty(elementProperties,
+                                                                      OpenMetadataProperty.UNIQUE_VALUES.name,
+                                                                      conceptBeadRelationshipEndProperties.getUniqueValues());
+
+                elementProperties = propertyHelper.addBooleanProperty(elementProperties,
+                                                                      OpenMetadataProperty.ORDERED_VALUES.name,
+                                                                      conceptBeadRelationshipEndProperties.getOrderedValues());
+
+                elementProperties = propertyHelper.addBooleanProperty(elementProperties,
+                                                                      OpenMetadataProperty.NAVIGABLE.name,
+                                                                      conceptBeadRelationshipEndProperties.getNavigable());
+            }
             else if (properties instanceof ContractLinkProperties contractLinkProperties)
             {
                 elementProperties = propertyHelper.addStringProperty(elementProperties,
@@ -662,15 +712,13 @@ public class OpenMetadataRelationshipBuilder
                 elementProperties = propertyHelper.addStringMapProperty(elementProperties,
                                                                         OpenMetadataProperty.MAPPING_PROPERTIES.name,
                                                                         externalIdLinkProperties.getMappingProperties());
-            }
-            else if (properties instanceof ExternalIdScopeProperties externalIdScopeProperties)
-            {
-                if (externalIdScopeProperties.getPermittedSynchronization() != null)
+
+                if (externalIdLinkProperties.getPermittedSynchronization() != null)
                 {
                     elementProperties = propertyHelper.addEnumProperty(elementProperties,
                                                                        OpenMetadataProperty.PERMITTED_SYNCHRONIZATION.name,
                                                                        PermittedSynchronization.getOpenTypeName(),
-                                                                       externalIdScopeProperties.getPermittedSynchronization().getName());
+                                                                       externalIdLinkProperties.getPermittedSynchronization().getName());
                 }
             }
             else if (properties instanceof ForeignKeyProperties foreignKeyProperties)

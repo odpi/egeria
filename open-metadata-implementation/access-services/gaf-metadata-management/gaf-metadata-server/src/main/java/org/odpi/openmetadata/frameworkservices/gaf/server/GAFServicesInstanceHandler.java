@@ -6,12 +6,10 @@ import org.odpi.openmetadata.adminservices.configuration.registration.AccessServ
 import org.odpi.openmetadata.commonservices.generichandlers.AssetHandler;
 import org.odpi.openmetadata.commonservices.generichandlers.EngineActionHandler;
 import org.odpi.openmetadata.commonservices.generichandlers.GovernanceActionProcessStepHandler;
-import org.odpi.openmetadata.commonservices.generichandlers.GovernanceActionTypeHandler;
 import org.odpi.openmetadata.commonservices.multitenant.AccessServerServiceInstanceHandler;
 import org.odpi.openmetadata.frameworks.opengovernance.properties.EngineActionElement;
 import org.odpi.openmetadata.frameworks.opengovernance.properties.GovernanceActionProcessElement;
 import org.odpi.openmetadata.frameworks.opengovernance.properties.GovernanceActionProcessStepElement;
-import org.odpi.openmetadata.frameworks.opengovernance.properties.GovernanceActionTypeElement;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
@@ -121,33 +119,6 @@ public class GAFServicesInstanceHandler extends AccessServerServiceInstanceHandl
         return null;
     }
 
-
-    /**
-     * Retrieve the specific handler for the access service.
-     *
-     * @param userId calling user
-     * @param serverName name of the server tied to the request
-     * @param serviceOperationName name of the REST API call (typically the top-level methodName)
-     * @return handler for use by the requested instance
-     * @throws InvalidParameterException no available instance for the requested server
-     * @throws UserNotAuthorizedException user does not have access to the requested server
-     * @throws PropertyServerException the service name is not known - indicating a logic error
-     */
-    GovernanceActionTypeHandler<GovernanceActionTypeElement> getGovernanceActionTypeHandler(String userId,
-                                                                                            String serverName,
-                                                                                            String serviceOperationName) throws InvalidParameterException,
-                                                                                                                                UserNotAuthorizedException,
-                                                                                                                                PropertyServerException
-    {
-        GAFServicesInstance instance = (GAFServicesInstance)super.getServerServiceInstance(userId, serverName, serviceOperationName);
-
-        if (instance != null)
-        {
-            return instance.getGovernanceActionTypeHandler();
-        }
-
-        return null;
-    }
 
 
     /**

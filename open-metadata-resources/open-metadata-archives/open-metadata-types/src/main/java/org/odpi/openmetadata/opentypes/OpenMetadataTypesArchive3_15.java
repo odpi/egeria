@@ -160,100 +160,12 @@ public class OpenMetadataTypesArchive3_15
         /*
          * Calls for new and changed types go here
          */
-        updateGovernanceEngines();
-        update0735SolutionPortsAndWires();
     }
 
 
     /*
      * -------------------------------------------------------------------------------------------------------
      */
-
-
-    /**
-     * Allow a mapping from a governance engine request type to a request type supported by a governance service.
-     */
-    private void updateGovernanceEngines()
-    {
-        this.archiveBuilder.addTypeDefPatch(updateSupportedGovernanceServiceRelationship());
-    }
-
-
-    private TypeDefPatch updateSupportedGovernanceServiceRelationship()
-    {
-        /*
-         * Create the Patch
-         */
-        TypeDefPatch typeDefPatch = archiveBuilder.getPatchForType(OpenMetadataType.SUPPORTED_GOVERNANCE_SERVICE_RELATIONSHIP.typeName);
-
-        typeDefPatch.setUpdatedBy(originatorName);
-        typeDefPatch.setUpdateTime(creationDate);
-
-        /*
-         * Build the attributes
-         */
-        List<TypeDefAttribute> properties = new ArrayList<>();
-
-        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.SERVICE_REQUEST_TYPE));
-
-        typeDefPatch.setPropertyDefinitions(properties);
-
-        return typeDefPatch;
-    }
-
-
-
-
-    /*
-     * -------------------------------------------------------------------------------------------------------
-     */
-
-    private void update0735SolutionPortsAndWires()
-    {
-        this.archiveBuilder.addTypeDefPatch(updateSolutionLinkingWireRelationship());
-    }
-
-    private TypeDefPatch updateSolutionLinkingWireRelationship()
-    {
-        /*
-         * Create the Patch
-         */
-        TypeDefPatch  typeDefPatch = archiveBuilder.getPatchForType(OpenMetadataType.SOLUTION_LINKING_WIRE_RELATIONSHIP.typeName);
-
-        typeDefPatch.setUpdatedBy(originatorName);
-        typeDefPatch.setUpdateTime(creationDate);
-
-        /*
-         * Set up end 1.
-         */
-        final String                     end1AttributeName            = "wiredTo";
-        final String                     end1AttributeDescription     = "Port that the wire connects to.";
-        final String                     end1AttributeDescriptionGUID = null;
-
-        RelationshipEndDef relationshipEndDef = archiveHelper.getRelationshipEndDef(this.archiveBuilder.getEntityDef(OpenMetadataType.REFERENCEABLE.typeName),
-                                                                 end1AttributeName,
-                                                                 end1AttributeDescription,
-                                                                 end1AttributeDescriptionGUID,
-                                                                 RelationshipEndCardinality.ANY_NUMBER);
-        typeDefPatch.setEndDef1(relationshipEndDef);
-
-
-        /*
-         * Set up end 2.
-         */
-        final String                     end2AttributeName            = "wiredTo";
-        final String                     end2AttributeDescription     = "Port that the wire connects to.";
-        final String                     end2AttributeDescriptionGUID = null;
-
-        relationshipEndDef = archiveHelper.getRelationshipEndDef(this.archiveBuilder.getEntityDef(OpenMetadataType.REFERENCEABLE.typeName),
-                                                                 end2AttributeName,
-                                                                 end2AttributeDescription,
-                                                                 end2AttributeDescriptionGUID,
-                                                                 RelationshipEndCardinality.ANY_NUMBER);
-        typeDefPatch.setEndDef2(relationshipEndDef);
-
-        return typeDefPatch;
-    }
 
 
     /*

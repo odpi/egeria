@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/servers/{serverName}/api/open-metadata/subject-area")
 
-@Tag(name="API: Subject Area OMVS", description="The Subject Area OMVS provides APIs for building schemas for new data assets.",
+@Tag(name="API: Subject Area OMVS", description="Valuable expertise about your organization's data and operations is available across your organization.  This expertise will not be there indefinitely as individuals move on to new roles or leave the organization.  Subject areas define the topic areas where the gathering of subject matter expertise is needed to enhance the organization's capability. The Subject Area OMVS provides APIs for defining the subject areas you need focus on and organizing the resulting knowledge.",
         externalDocs=@ExternalDocumentation(description="Further Information",
                 url="https://egeria-project.org/services/omvs/subject-area/overview/"))
 

@@ -281,17 +281,9 @@ public class OpenMetadataTypesArchive2_4
 
     private ClassificationDef addAnchorsClassification()
     {
-        final List<TypeDefLink> linkedToEntities = new ArrayList<>();
-
-        linkedToEntities.add(this.archiveBuilder.getEntityDef(OpenMetadataType.REFERENCEABLE.typeName));
-        linkedToEntities.add(this.archiveBuilder.getEntityDef(OpenMetadataType.ANNOTATION.typeName));
-        linkedToEntities.add(this.archiveBuilder.getEntityDef(OpenMetadataType.ANNOTATION_REVIEW.typeName));
-        linkedToEntities.add(this.archiveBuilder.getEntityDef(OpenMetadataType.LIKE.typeName));
-        linkedToEntities.add(this.archiveBuilder.getEntityDef(OpenMetadataType.RATING.typeName));
-
-        ClassificationDef classificationDef = archiveHelper.getClassificationDef(OpenMetadataType.ANCHORS_CLASSIFICATION,
+       ClassificationDef classificationDef = archiveHelper.getClassificationDef(OpenMetadataType.ANCHORS_CLASSIFICATION,
                                                                                  null,
-                                                                                 linkedToEntities,
+                                                                                 this.archiveBuilder.getEntityDef(OpenMetadataType.OPEN_METADATA_ROOT.typeName),
                                                                                  true);
 
         /*
@@ -300,6 +292,9 @@ public class OpenMetadataTypesArchive2_4
         List<TypeDefAttribute> properties = new ArrayList<>();
 
         properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.ANCHOR_GUID));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.ANCHOR_TYPE_NAME));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.ANCHOR_DOMAIN_NAME));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.ANCHOR_SCOPE_GUID));
 
         classificationDef.setPropertiesDefinition(properties);
 

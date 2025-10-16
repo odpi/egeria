@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/servers/{serverName}/api/open-metadata/classification-manager")
 
 @Tag(name="API: Classification Manager OMVS",
-        description="The Classification Manager OMVS enables the caller to maintain classifications and governance relationships attached to open metadata elements.",
+        description="Attach classifications and governance relationships to open metadata elements to enhance the description of your digital resources and identify which resources need specific types of governance actions performed.",
         externalDocs=@ExternalDocumentation(description="Further Information",
                 url="https://egeria-project.org/services/omvs/classification-manager/overview/"))
 

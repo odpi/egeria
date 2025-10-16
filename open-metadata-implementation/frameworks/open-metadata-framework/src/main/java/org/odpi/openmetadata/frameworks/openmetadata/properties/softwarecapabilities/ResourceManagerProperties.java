@@ -3,7 +3,6 @@
 package org.odpi.openmetadata.frameworks.openmetadata.properties.softwarecapabilities;
 
 import com.fasterxml.jackson.annotation.*;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.ClassificationBeanProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
@@ -35,7 +34,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
         @JsonSubTypes.Type(value = UserProfileManagerProperties.class, name = "UserProfileManagerProperties"),
 
 })
-public class ResourceManagerProperties extends ClassificationBeanProperties
+public class ResourceManagerProperties extends SoftwareCapabilityProperties
 {
     /**
      * Default constructor
@@ -43,7 +42,7 @@ public class ResourceManagerProperties extends ClassificationBeanProperties
     public ResourceManagerProperties()
     {
         super();
-        super.setTypeName(OpenMetadataType.RESOURCE_MANAGER_CLASSIFICATION.typeName);
+        super.setTypeName(OpenMetadataType.RESOURCE_MANAGER.typeName);
     }
 
 

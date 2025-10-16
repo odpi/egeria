@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/servers/{serverName}/api/open-metadata/solution-architect")
 
-@Tag(name="API: Solution Architect OMVS", description="The Solution Architect OMVS is a REST API designed to support user interfaces (UIs) relating to the definition and display of solution blueprints and their supporting solution components along with the relevant information supply chains.",
+@Tag(name="API: Solution Architect OMVS", description="During the planning phase of a project, architects typically use drawing tools to sketch out the new components that are to be developed and how they relate to existing components.  Solution blueprints are the open metadata equivalent of the sketch and they show the solution components and actors involved and how they collaborate.  The advantage of creating a solution blueprint over a sketch diagram is that it is easy to visualize different levels of detail and, as the project rolls out, the implementation of the components can be linked into the blueprint, providing traceability from project intent to actual operation.  In a similar way, information supply chains allow the modelling of key data flows needed by your organization.   These can then be linked to metadata about the systems and pipelines that implement them, providing a means to summarize statistics from lineage about the operation of the data flows.  The Solution Architect OMVS supports the definition and display of solution blueprints and their supporting solution components along with the relevant information supply chains.",
         externalDocs=@ExternalDocumentation(description="Further Information",
                 url="https://egeria-project.org/services/omvs/solution-architect/overview/"))
 
@@ -176,7 +176,7 @@ public class SolutionArchitectResource
                                        @PathVariable
                                        String peerTwoGUID,
                                        @RequestBody (required = false)
-                                                              DeleteRequestBody requestBody)
+                                                              DeleteRelationshipRequestBody requestBody)
     {
         return restAPI.unlinkPeersInInformationSupplyChain(serverName, peerOneGUID, peerTwoGUID, requestBody);
     }
@@ -240,7 +240,7 @@ public class SolutionArchitectResource
                                                           @PathVariable
                                                           String nestedInformationSupplyChainGUID,
                                                           @RequestBody (required = false)
-                                                             DeleteRequestBody requestBody)
+                                                             DeleteRelationshipRequestBody requestBody)
     {
         return restAPI.decomposeInformationSupplyChains(serverName, informationSupplyChainGUID, nestedInformationSupplyChainGUID, requestBody);
     }
@@ -269,7 +269,7 @@ public class SolutionArchitectResource
                                                      @PathVariable
                                                      String                    informationSupplyChainGUID,
                                                      @RequestBody (required = false)
-                                                         DeleteRequestBody requestBody)
+                                                         DeleteElementRequestBody requestBody)
     {
         return restAPI.deleteInformationSupplyChain(serverName, informationSupplyChainGUID, requestBody);
     }
@@ -507,7 +507,7 @@ public class SolutionArchitectResource
                                                              @PathVariable
                                                              String solutionComponentGUID,
                                                              @RequestBody (required = false)
-                                                                 DeleteRequestBody requestBody)
+                                                                 DeleteRelationshipRequestBody requestBody)
     {
         return restAPI.detachSolutionComponentFromBlueprint(serverName, parentSolutionBlueprintGUID, solutionComponentGUID, requestBody);
     }
@@ -573,7 +573,7 @@ public class SolutionArchitectResource
                                              @PathVariable
                                                  String solutionBlueprintGUID,
                                              @RequestBody (required = false)
-                                                 DeleteRequestBody requestBody)
+                                                 DeleteRelationshipRequestBody requestBody)
     {
         return restAPI.detachSolutionDesign(serverName, parentGUID, solutionBlueprintGUID, requestBody);
     }
@@ -602,7 +602,7 @@ public class SolutionArchitectResource
                                                 @PathVariable
                                                 String                    solutionBlueprintGUID,
                                                 @RequestBody (required = false)
-                                                    DeleteRequestBody requestBody)
+                                                    DeleteElementRequestBody requestBody)
     {
         return restAPI.deleteSolutionBlueprint(serverName, solutionBlueprintGUID, requestBody);
     }
@@ -744,7 +744,7 @@ public class SolutionArchitectResource
                                                      @PathVariable
                                                      String solutionComponentGUID,
                                                      @RequestBody (required = false)
-                                                         DeleteRequestBody requestBody)
+                                                         DeleteRelationshipRequestBody requestBody)
     {
         return restAPI.detachSolutionComponentActor(serverName, solutionRoleGUID, solutionComponentGUID, requestBody);
     }
@@ -891,7 +891,7 @@ public class SolutionArchitectResource
                                            @PathVariable
                                            String subcomponentGUID,
                                            @RequestBody (required = false)
-                                               DeleteRequestBody requestBody)
+                                               DeleteRelationshipRequestBody requestBody)
     {
         return restAPI.detachSubcomponent(serverName, parentSolutionComponentGUID, subcomponentGUID, requestBody);
     }
@@ -955,7 +955,7 @@ public class SolutionArchitectResource
                                            @PathVariable
                                            String solutionComponentTwoGUID,
                                            @RequestBody (required = false)
-                                                      DeleteRequestBody requestBody)
+                                                      DeleteRelationshipRequestBody requestBody)
     {
         return restAPI.detachSolutionLinkingWire(serverName, solutionComponentOneGUID, solutionComponentTwoGUID, requestBody);
     }
@@ -984,7 +984,7 @@ public class SolutionArchitectResource
                                                 @PathVariable
                                                 String                    solutionComponentGUID,
                                                @RequestBody (required = false)
-                                                    DeleteRequestBody requestBody)
+                                                    DeleteElementRequestBody requestBody)
     {
         return restAPI.deleteSolutionComponent(serverName, solutionComponentGUID, requestBody);
     }

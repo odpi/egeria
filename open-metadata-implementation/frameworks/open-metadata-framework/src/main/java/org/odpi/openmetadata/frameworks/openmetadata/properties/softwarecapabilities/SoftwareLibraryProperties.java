@@ -31,7 +31,7 @@ public class SoftwareLibraryProperties extends ResourceManagerProperties
     public SoftwareLibraryProperties()
     {
         super();
-        super.setTypeName(OpenMetadataType.SOFTWARE_LIBRARY_CLASSIFICATION.typeName);
+        super.setTypeName(OpenMetadataType.SOFTWARE_LIBRARY.typeName);
     }
 
 

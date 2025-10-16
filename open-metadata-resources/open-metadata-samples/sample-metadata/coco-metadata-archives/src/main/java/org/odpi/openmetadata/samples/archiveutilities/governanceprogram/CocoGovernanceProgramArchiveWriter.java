@@ -98,6 +98,7 @@ public class CocoGovernanceProgramArchiveWriter extends EgeriaBaseArchiveWriter
                                              OpenMetadataValidValues.OPEN_METADATA_ECOSYSTEM_SCOPE,
                                              Integer.toString(domainDefinition.getDomainIdentifier()),
                                              null,
+                                             null,
                                              false,
                                              null);
 

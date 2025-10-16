@@ -1018,7 +1018,7 @@ public abstract class OpenMetadataClient implements OpenMetadataTypesInterface,
      * @param startingAtEnd          indicates which end to retrieve from (0 is "either end"; 1 is end1; 2 is end 2)
      * @param relationshipTypeName   type name of relationships to follow (or null for all)
      * @param getOptions multiple options to control the query
-     * @return list of related elements
+     * @return related element
      *
      * @throws InvalidParameterException  the unique identifier is null or not known; the relationship type is invalid
      * @throws UserNotAuthorizedException the userId is not permitted to perform this operation
