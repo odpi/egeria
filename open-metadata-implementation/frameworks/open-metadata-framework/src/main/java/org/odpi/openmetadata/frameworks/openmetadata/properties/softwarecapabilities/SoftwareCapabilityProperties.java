@@ -33,6 +33,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
         @JsonSubTypes.Type(value = IntegrationGroupProperties.class, name = "IntegrationGroupProperties"),
         @JsonSubTypes.Type(value = InventoryCatalogProperties.class, name = "InventoryCatalogProperties"),
         @JsonSubTypes.Type(value = NetworkGatewayProperties.class, name = "NetworkGatewayProperties"),
+        @JsonSubTypes.Type(value = ResourceManagerProperties.class, name = "ResourceManagerProperties"),
         @JsonSubTypes.Type(value = SoftwareServiceProperties.class, name = "SoftwareServiceProperties"),
         @JsonSubTypes.Type(value = UserAuthenticationManagerProperties.class, name = "UserAuthenticationManagerProperties"),
 

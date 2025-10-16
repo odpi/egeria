@@ -100,7 +100,7 @@ public class CommentHandler extends OpenMetadataHandlerBase
     {
         final String propertiesParameterName   = "properties";
         final String commentQNameParameterName = "properties.qualifiedName";
-        final String commentTextParameterName  = "properties.commentText";
+        final String commentTextParameterName  = "properties.description";
 
         propertyHelper.validateObject(properties, propertiesParameterName, methodName);
         propertyHelper.validateMandatoryName(properties.getQualifiedName(), commentQNameParameterName, methodName);

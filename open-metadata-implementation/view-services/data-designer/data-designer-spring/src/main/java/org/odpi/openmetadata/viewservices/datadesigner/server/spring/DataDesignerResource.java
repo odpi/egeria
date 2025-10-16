@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/servers/{serverName}/api/open-metadata/data-designer")
 
-@Tag(name="API: Data Designer OMVS", description="The Data Designer OMVS provides APIs for building schemas for new data assets.",
+@Tag(name="API: Data Designer OMVS", description="Supports the building of data specifications and data dictionaries to support your teams when communicating data requirements to one another.  The data dictionary defines commonly used data fields, and the data specification defines the specific data requirements for a project. Data specifications are also used to describe the data provided by a digital product.",
         externalDocs=@ExternalDocumentation(description="Further Information",
                 url="https://egeria-project.org/services/omvs/data-designer/overview/"))
 

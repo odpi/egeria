@@ -103,7 +103,7 @@ public enum VisualStyle
 
     COLLECTION(Colour.BLACK.getColourNumber(), Colour.MINT_CREAM.getColourNumber(), Colour.BLACK.getColourNumber(), "rect"),
     ROOT_COLLECTION(Colour.BLACK.getColourNumber(), Colour.SEA_GREEN.getColourNumber(), Colour.BLACK.getColourNumber(), "rect"),
-    FOLDER(Colour.BLACK.getColourNumber(), Colour.DARK_SEA_GREEN.getColourNumber(), Colour.BLACK.getColourNumber(), "rect"),
+    COLLECTION_FOLDER(Colour.BLACK.getColourNumber(), Colour.DARK_SEA_GREEN.getColourNumber(), Colour.BLACK.getColourNumber(), "rect"),
     HOME_COLLECTION(Colour.BLACK.getColourNumber(), Colour.MEDIUM_SEA_GREEN.getColourNumber(), Colour.BLACK.getColourNumber(), "rect"),
     RESULTS_SET(Colour.BLACK.getColourNumber(), Colour.SPRING_GREEN.getColourNumber(), Colour.BLACK.getColourNumber(), "rect"),
     RECENT_ACCESS(Colour.BLACK.getColourNumber(), Colour.LIME_GREEN.getColourNumber(), Colour.BLACK.getColourNumber(), "rect"),

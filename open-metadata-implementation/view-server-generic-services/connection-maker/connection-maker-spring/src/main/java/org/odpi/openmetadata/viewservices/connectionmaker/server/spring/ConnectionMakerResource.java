@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/servers/{serverName}/api/open-metadata/{urlMarker}")
 
-@Tag(name="API: Connection Maker OMVS", description="The Connection Maker OMVS provides APIs for supporting the creation and editing of connections, connectorTypes and endpoints.",
+@Tag(name="API: Connection Maker OMVS", description="Connections describe the network and API information used connect to different sources of data and function.  The connection has three parts to it: the connection which links everything together, the connector type which defined the type of connector to use to connect to the data, and the endpoint which holds the network information. The Connection Maker OMVS supports the creation and editing of connections, connector types and endpoints.",
         externalDocs=@ExternalDocumentation(description="Further Information",
                 url="https://egeria-project.org/services/omvs/connection-maker/overview/"))
 

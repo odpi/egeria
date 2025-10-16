@@ -242,9 +242,9 @@ public class SolutionArchitectRESTServices extends TokenController
      *  PropertyServerException    there is a problem retrieving information from the property server(s).
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    public VoidResponse linkPeersInInformationSupplyChain(String                  serverName,
-                                                          String                  peerOneGUID,
-                                                          String                  peerTwoGUID,
+    public VoidResponse linkPeersInInformationSupplyChain(String                     serverName,
+                                                          String                     peerOneGUID,
+                                                          String                     peerTwoGUID,
                                                           NewRelationshipRequestBody requestBody)
     {
         final String methodName = "linkPeersInInformationSupplyChain";

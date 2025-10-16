@@ -1046,8 +1046,67 @@ public class OpenMetadataHandlerBase
                                                                         queryOptions,
                                                                         1));
 
-            if ((propertyHelper.isTypeOf(rootElement.getElementHeader(), OpenMetadataType.SOLUTION_BLUEPRINT.typeName)) ||
-                (propertyHelper.isTypeOf(rootElement.getElementHeader(), OpenMetadataType.INFORMATION_SUPPLY_CHAIN.typeName)))
+            rootElement.setSchemaAttributes(this.getElementHierarchies(userId,
+                                                                        rootElement.getSchemaAttributes(),
+                                                                        1,
+                                                                        OpenMetadataType.NESTED_SCHEMA_ATTRIBUTE_RELATIONSHIP.typeName,
+                                                                        List.of(OpenMetadataType.EXTERNAL_ID_LINK_RELATIONSHIP.typeName,
+                                                                                OpenMetadataType.ASSOCIATED_ANNOTATION_RELATIONSHIP.typeName),
+                                                                        queryOptions,
+                                                                        1));
+
+            rootElement.setSchemaType(this.getElementHierarchy(userId,
+                                                               rootElement.getSchemaType(),
+                                                               1,
+                                                               OpenMetadataType.SCHEMA_TYPE_OPTION_RELATIONSHIP.typeName,
+                                                               List.of(OpenMetadataType.NESTED_SCHEMA_ATTRIBUTE_RELATIONSHIP.typeName,
+                                                                       OpenMetadataType.ATTACHED_NOTE_LOG_RELATIONSHIP.typeName,
+                                                                       OpenMetadataType.LINKED_EXTERNAL_SCHEMA_TYPE_RELATIONSHIP.typeName,
+                                                                       OpenMetadataType.MAP_FROM_ELEMENT_TYPE_RELATIONSHIP.typeName,
+                                                                       OpenMetadataType.MAP_TO_ELEMENT_TYPE_RELATIONSHIP.typeName,
+                                                                       OpenMetadataType.DERIVED_SCHEMA_TYPE_QUERY_TARGET_RELATIONSHIP.typeName,
+                                                                       OpenMetadataType.GRAPH_EDGE_LINK_RELATIONSHIP.typeName,
+                                                                       OpenMetadataType.FOREIGN_KEY_RELATIONSHIP.typeName,
+                                                                       OpenMetadataType.API_OPERATIONS_RELATIONSHIP.typeName,
+                                                                       OpenMetadataType.API_HEADER_RELATIONSHIP.typeName,
+                                                                       OpenMetadataType.API_REQUEST_RELATIONSHIP.typeName,
+                                                                       OpenMetadataType.API_RESPONSE_RELATIONSHIP.typeName),
+                                                               queryOptions,
+                                                               1,
+                                                               new ArrayList<>()));
+
+            if (propertyHelper.isTypeOf(rootElement.getElementHeader(), OpenMetadataType.ASSET.typeName))
+            {
+                rootElement.setConnections(this.getElementHierarchies(userId,
+                                                                      rootElement.getCollectionMembers(),
+                                                                      1,
+                                                                      OpenMetadataType.EMBEDDED_CONNECTION_RELATIONSHIP.typeName,
+                                                                      List.of(OpenMetadataType.CONNECT_TO_ENDPOINT_RELATIONSHIP.typeName,
+                                                                              OpenMetadataType.CONNECTION_CONNECTOR_TYPE_RELATIONSHIP.typeName),
+                                                                      queryOptions,
+                                                                      1));
+            }
+            else if (propertyHelper.isTypeOf(rootElement.getElementHeader(), OpenMetadataType.PORT.typeName))
+            {
+                rootElement.setPortDelegatingTo(this.getElementHierarchy(userId,
+                                                                         rootElement.getPortDelegatingTo(),
+                                                                         1,
+                                                                         OpenMetadataType.PORT_DELEGATION_RELATIONSHIP.typeName,
+                                                                         null,
+                                                                         queryOptions,
+                                                                         1,
+                                                                         new ArrayList<>()));
+
+                rootElement.setPortDelegatingFrom(this.getElementHierarchies(userId,
+                                                                             rootElement.getPortDelegatingFrom(),
+                                                                             2,
+                                                                             OpenMetadataType.PORT_DELEGATION_RELATIONSHIP.typeName,
+                                                                             null,
+                                                                             queryOptions,
+                                                                             1));
+            }
+            else if ((propertyHelper.isTypeOf(rootElement.getElementHeader(), OpenMetadataType.SOLUTION_BLUEPRINT.typeName)) ||
+                     (propertyHelper.isTypeOf(rootElement.getElementHeader(), OpenMetadataType.INFORMATION_SUPPLY_CHAIN.typeName)))
             {
                 rootElement.setCollectionMembers(this.getElementHierarchies(userId,
                                                                             rootElement.getCollectionMembers(),
@@ -1320,106 +1379,109 @@ public class OpenMetadataHandlerBase
                                                                                                                            PropertyServerException,
                                                                                                                            UserNotAuthorizedException
     {
-        if (queryOptions.getGraphQueryDepth() > currentDepth)
+        if (retrievedElement != null)
         {
-            QueryOptions workingQueryOptions = new QueryOptions(queryOptions);
-            workingQueryOptions.setStartFrom(0);
-            workingQueryOptions.setPageSize(queryOptions.getRelationshipsPageSize());
-            workingQueryOptions.setMetadataElementTypeName(OpenMetadataType.OPEN_METADATA_ROOT.typeName); // want all types of elements back
-
-            /*
-             * If there are no side relationships then we can optimise and only receive the main hierarchical relationship.
-             */
-            String receiveRelationshipName = null;
-            int    receiveParentEnd = 0;
-
-            if (sideRelationshipNames == null)
+            if (queryOptions.getGraphQueryDepth() > currentDepth)
             {
-                receiveRelationshipName = relationshipName;
-                receiveParentEnd = parentEnd;
-            }
+                QueryOptions workingQueryOptions = new QueryOptions(queryOptions);
+                workingQueryOptions.setStartFrom(0);
+                workingQueryOptions.setPageSize(queryOptions.getRelationshipsPageSize());
+                workingQueryOptions.setMetadataElementTypeName(OpenMetadataType.OPEN_METADATA_ROOT.typeName); // want all types of elements back
 
-            List<RelatedMetadataElementSummary> nestedElements = new ArrayList<>();
-            List<RelatedMetadataElementSummary> sideLinks = new ArrayList<>();
-
-            RelatedMetadataElementList relatedMetadataElementList = openMetadataClient.getRelatedMetadataElements(userId,
-                                                                                                                  retrievedElement.getRelatedElement().getElementHeader().getGUID(),
-                                                                                                                  receiveParentEnd,
-                                                                                                                  receiveRelationshipName,
-                                                                                                                  workingQueryOptions);
-            if ((relatedMetadataElementList != null) && (relatedMetadataElementList.getElementList() != null))
-            {
                 /*
-                 * Remove the relationships that the caller asked to skip.
+                 * If there are no side relationships then we can optimise and only receive the main hierarchical relationship.
                  */
-                List<RelatedMetadataElement> relevantRelationships = this.getRelevantRelationships(relatedMetadataElementList.getElementList(), queryOptions);
+                String receiveRelationshipName = null;
+                int    receiveParentEnd = 0;
 
-                for (RelatedMetadataElement relatedMetadataElement : relevantRelationships)
+                if (sideRelationshipNames == null)
                 {
-                    if (relatedMetadataElement != null)
+                    receiveRelationshipName = relationshipName;
+                    receiveParentEnd = parentEnd;
+                }
+
+                List<RelatedMetadataElementSummary> nestedElements = new ArrayList<>();
+                List<RelatedMetadataElementSummary> sideLinks = new ArrayList<>();
+
+                RelatedMetadataElementList relatedMetadataElementList = openMetadataClient.getRelatedMetadataElements(userId,
+                                                                                                                      retrievedElement.getRelatedElement().getElementHeader().getGUID(),
+                                                                                                                      receiveParentEnd,
+                                                                                                                      receiveRelationshipName,
+                                                                                                                      workingQueryOptions);
+                if ((relatedMetadataElementList != null) && (relatedMetadataElementList.getElementList() != null))
+                {
+                    /*
+                     * Remove the relationships that the caller asked to skip.
+                     */
+                    List<RelatedMetadataElement> relevantRelationships = this.getRelevantRelationships(relatedMetadataElementList.getElementList(), queryOptions);
+
+                    for (RelatedMetadataElement relatedMetadataElement : relevantRelationships)
                     {
-                        /*
-                         * Look for parent/child relationships
-                         */
-                        if (propertyHelper.isTypeOf(relatedMetadataElement, relationshipName))
+                        if (relatedMetadataElement != null)
                         {
                             /*
-                             * The relationship is a parent/child relationship type.
-                             * Is this orientated logically down the hierarchy?
+                             * Look for parent/child relationships
                              */
-                            if (((parentEnd != 2) && (relatedMetadataElement.getElementAtEnd1())) ||
-                                    ((parentEnd != 1) && (! relatedMetadataElement.getElementAtEnd1())))
+                            if (propertyHelper.isTypeOf(relatedMetadataElement, relationshipName))
                             {
                                 /*
-                                 * Check that this relationship has not been covered already.
+                                 * The relationship is a parent/child relationship type.
+                                 * Is this orientated logically down the hierarchy?
                                  */
-                                if (! coveredRelationshipsGUIDs.contains(relatedMetadataElement.getRelationshipGUID()))
+                                if (((parentEnd != 2) && (relatedMetadataElement.getElementAtEnd1())) ||
+                                        ((parentEnd != 1) && (! relatedMetadataElement.getElementAtEnd1())))
                                 {
-                                    RelatedMetadataElementSummary nestedElement = propertyHelper.getRelatedElementSummary(relatedMetadataElement);
+                                    /*
+                                     * Check that this relationship has not been covered already.
+                                     */
+                                    if (! coveredRelationshipsGUIDs.contains(relatedMetadataElement.getRelationshipGUID()))
+                                    {
+                                        RelatedMetadataElementSummary nestedElement = propertyHelper.getRelatedElementSummary(relatedMetadataElement);
 
-                                    coveredRelationshipsGUIDs.add(relatedMetadataElement.getElement().getElementGUID());
-                                    nestedElements.add(getElementHierarchy(userId,
-                                                                           nestedElement,
-                                                                           parentEnd,
-                                                                           relationshipName,
-                                                                           sideRelationshipNames,
-                                                                           workingQueryOptions,
-                                                                           currentDepth + 1,
-                                                                           coveredRelationshipsGUIDs));
+                                        coveredRelationshipsGUIDs.add(relatedMetadataElement.getElement().getElementGUID());
+                                        nestedElements.add(getElementHierarchy(userId,
+                                                                               nestedElement,
+                                                                               parentEnd,
+                                                                               relationshipName,
+                                                                               sideRelationshipNames,
+                                                                               workingQueryOptions,
+                                                                               currentDepth + 1,
+                                                                               coveredRelationshipsGUIDs));
+                                    }
                                 }
                             }
-                        }
-                        else if (sideRelationshipNames != null)
-                        {
-                            /*
-                             * Save any relevant side relationships.
-                             */
-                            for (String sideRelationshipName : sideRelationshipNames)
+                            else if (sideRelationshipNames != null)
                             {
-                                if (propertyHelper.isTypeOf(relatedMetadataElement, sideRelationshipName))
+                                /*
+                                 * Save any relevant side relationships.
+                                 */
+                                for (String sideRelationshipName : sideRelationshipNames)
                                 {
-                                    sideLinks.add(propertyHelper.getRelatedElementSummary(relatedMetadataElement));
+                                    if (propertyHelper.isTypeOf(relatedMetadataElement, sideRelationshipName))
+                                    {
+                                        sideLinks.add(propertyHelper.getRelatedElementSummary(relatedMetadataElement));
+                                    }
                                 }
                             }
                         }
                     }
                 }
-            }
 
-            if (! nestedElements.isEmpty())
-            {
-                if (! sideLinks.isEmpty())
+                if (! nestedElements.isEmpty())
                 {
-                    return new RelatedMetadataHierarchySummary(retrievedElement, nestedElements, sideLinks);
+                    if (! sideLinks.isEmpty())
+                    {
+                        return new RelatedMetadataHierarchySummary(retrievedElement, nestedElements, sideLinks);
+                    }
+                    else
+                    {
+                        return new RelatedMetadataHierarchySummary(retrievedElement, nestedElements, null);
+                    }
                 }
-                else
+                else if (! sideLinks.isEmpty())
                 {
-                    return new RelatedMetadataHierarchySummary(retrievedElement, nestedElements, null);
+                    return new RelatedMetadataHierarchySummary(retrievedElement, null, sideLinks);
                 }
-            }
-            else if (! sideLinks.isEmpty())
-            {
-                return new RelatedMetadataHierarchySummary(retrievedElement, null, sideLinks);
             }
         }
 

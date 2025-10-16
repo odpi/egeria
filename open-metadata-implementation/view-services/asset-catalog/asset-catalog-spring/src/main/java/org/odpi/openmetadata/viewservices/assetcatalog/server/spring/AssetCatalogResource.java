@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/servers/{serverName}/api/open-metadata/asset-catalog")
 
 @Tag(name="API: Asset Catalog OMVS",
-     description="Search for assets, retrieve their properties, lineage and related glossary information.",
+     description="Search for digital resources that are catalogued in open metadata, retrieve their properties, schema, lineage, survey analysis and other related information.",
      externalDocs=@ExternalDocumentation(description="Further Information",url="https://egeria-project.org/services/omvs/asset-catalog/overview/"))
 
 public class AssetCatalogResource

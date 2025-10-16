@@ -491,7 +491,7 @@ public class OpenMetadataProductsHarvesterConnector extends IntegrationConnector
          */
         if (OpenMetadataType.DIGITAL_PRODUCT.typeName.equals(productDefinition.getTypeName()))
         {
-            ConnectorConfigClient connectorConfigClient = integrationContext.getConnectorConfigClient();
+            AssetClient assetClient = integrationContext.getAssetClient();
 
             CatalogTargetProperties catalogTargetProperties = new CatalogTargetProperties();
 
@@ -500,9 +500,10 @@ public class OpenMetadataProductsHarvesterConnector extends IntegrationConnector
             catalogTargetProperties.setPermittedSynchronization(PermittedSynchronization.BOTH_DIRECTIONS);
             catalogTargetProperties.setDeleteMethod(DeleteMethod.LOOK_FOR_LINEAGE);
 
-            connectorConfigClient.addCatalogTarget(integrationContext.getIntegrationConnectorGUID(),
-                                                   productAssetGUID,
-                                                   catalogTargetProperties);
+            assetClient.addCatalogTarget(integrationContext.getIntegrationConnectorGUID(),
+                                         productAssetGUID,
+                                         assetClient.getMetadataSourceOptions(),
+                                         catalogTargetProperties);
         }
 
         if (productDefinition.getProductFamilies() != null)

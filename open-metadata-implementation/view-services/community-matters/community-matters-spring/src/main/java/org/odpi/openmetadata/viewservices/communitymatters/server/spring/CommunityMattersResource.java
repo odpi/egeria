@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/servers/{serverName}/api/open-metadata/community-matters")
 
-@Tag(name="API: Community Matters OMVS", description="The Community Matters OMVS provides APIs for managing the definition and members of the communities.",
+@Tag(name="API: Community Matters OMVS", description="Communities bring people together from across the organization around a common theme, activity or skill. They are particularly useful for governance programs and cross-organization initiatives. The Community Matters OMVS provides APIs for managing the definition and members of the communities.",
         externalDocs=@ExternalDocumentation(description="Further Information",
                 url="https://egeria-project.org/services/omvs/community-matters/overview/"))
 
@@ -30,7 +30,6 @@ public class CommunityMattersResource
     public CommunityMattersResource()
     {
     }
-
 
 
     /**

@@ -518,8 +518,8 @@ public enum DeployedImplementationType implements DeployedImplementationTypeDefi
      */
     FILE_SYSTEM("File System",
                 DeployedImplementationType.SOFTWARE_CAPABILITY,
-                OpenMetadataType.DATA_MANAGER.typeName,
-                OpenMetadataType.FILE_SYSTEM_CLASSIFICATION.typeName,
+                OpenMetadataType.FILE_SYSTEM.typeName,
+                null,
                 "A system that manages hierarchically organized files on persistent storage.",
                 OpenMetadataWikiPages.MODEL_0056_RESOURCE_MANAGERS),
 
@@ -528,8 +528,8 @@ public enum DeployedImplementationType implements DeployedImplementationTypeDefi
      */
     UNIX_FILE_SYSTEM("UNIX File System",
                      DeployedImplementationType.SOFTWARE_CAPABILITY,
-                     OpenMetadataType.DATA_MANAGER.typeName,
-                     OpenMetadataType.FILE_SYSTEM_CLASSIFICATION.typeName,
+                     OpenMetadataType.FILE_SYSTEM.typeName,
+                     null,
                      "A Unix capability that manages hierarchically organized files on persistent storage.",
                      OpenMetadataWikiPages.MODEL_0056_RESOURCE_MANAGERS),
 
@@ -559,7 +559,7 @@ public enum DeployedImplementationType implements DeployedImplementationTypeDefi
     ASSET_CATALOG("Asset Metadata Catalog",
                   DeployedImplementationType.SOFTWARE_CAPABILITY,
                   OpenMetadataType.INVENTORY_CATALOG.typeName,
-                  OpenMetadataType.ASSET_MANAGER.typeName,
+                  null,
                   "A catalog of metadata that describes assets such as deployed systems, data sources and processes.",
                   OpenMetadataWikiPages.MODEL_0050_APPS_AND_PROCESSES),
 

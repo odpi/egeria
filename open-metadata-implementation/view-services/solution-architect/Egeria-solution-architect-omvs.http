@@ -221,7 +221,7 @@ Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-  "class" : "MetadataSourceRequestBody",
+  "class" : "DeleteRelationshipRequestBody",
   "externalSourceGUID": "add guid here",
   "externalSourceName": "add qualified name here",
   "effectiveTime" : "{{$isoTimestamp}}",
@@ -261,7 +261,7 @@ Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-  "class" : "MetadataSourceRequestBody",
+  "class" : "DeleteRelationshipRequestBody",
   "externalSourceGUID": "add guid here",
   "externalSourceName": "add qualified name here",
   "effectiveTime" : "{{$isoTimestamp}}",
@@ -279,7 +279,7 @@ Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-  "class" : "MetadataSourceRequestBody",
+  "class" : "DeleteElementRequestBody",
   "externalSourceGUID": "add guid here",
   "externalSourceName": "add qualified name here",
   "effectiveTime" : "{{$isoTimestamp}}",
@@ -614,7 +614,7 @@ Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-  "class" : "MetadataSourceRequestBody",
+  "class" : "DeleteRelationshipRequestBody",
   "externalSourceGUID": "add guid here",
   "externalSourceName": "add qualified name here",
   "effectiveTime" : "{{$isoTimestamp}}",
@@ -631,7 +631,7 @@ Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-  "class" : "MetadataSourceRequestBody",
+  "class" : "DeleteElementRequestBody",
   "externalSourceGUID": "add guid here",
   "externalSourceName": "add qualified name here",
   "effectiveTime" : "{{$isoTimestamp}}",
@@ -810,7 +810,7 @@ Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-  "class" : "MetadataSourceRequestBody",
+  "class" : "DeleteRelationshipRequestBody",
   "externalSourceGUID": "add guid here",
   "externalSourceName": "add qualified name here",
   "effectiveTime" : "{{$isoTimestamp}}",
@@ -827,7 +827,7 @@ Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-  "class" : "MetadataSourceRequestBody",
+  "class" : "DeleteElementRequestBody",
   "externalSourceGUID": "add guid here",
   "externalSourceName": "add qualified name here",
   "effectiveTime" : "{{$isoTimestamp}}",
@@ -1138,7 +1138,7 @@ Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-  "class" : "MetadataSourceRequestBody",
+  "class" : "DeleteRelationshipRequestBody",
   "externalSourceGUID": "add guid here",
   "externalSourceName": "add qualified name here",
   "effectiveTime" : "{{$isoTimestamp}}",
@@ -1183,7 +1183,7 @@ Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-  "class" : "MetadataSourceRequestBody",
+  "class" : "DeleteRelationshipRequestBody",
   "externalSourceGUID": "add guid here",
   "externalSourceName": "add qualified name here",
   "effectiveTime" : "{{$isoTimestamp}}",
@@ -1200,7 +1200,7 @@ Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-  "class" : "MetadataSourceRequestBody",
+  "class" : "DeleteElementRequestBody",
   "externalSourceGUID": "add guid here",
   "externalSourceName": "add qualified name here",
   "effectiveTime" : "{{$isoTimestamp}}",

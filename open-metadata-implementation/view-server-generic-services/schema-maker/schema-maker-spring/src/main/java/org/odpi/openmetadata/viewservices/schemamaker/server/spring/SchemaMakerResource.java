@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/servers/{serverName}/api/open-metadata/{urlMarker}")
 
-@Tag(name="API: Schema Maker OMVS", description="The Schema Maker OMVS provides APIs for supporting the creation and editing of schema types, schema attributes and user identities.",
+@Tag(name="API: Schema Maker OMVS", description="Schemas describe the structure of data. The Schema Maker OMVS provides APIs for the creation and editing of schemas and the elements within them.",
         externalDocs=@ExternalDocumentation(description="Further Information",
                 url="https://egeria-project.org/services/omvs/schema-maker/overview/"))
 

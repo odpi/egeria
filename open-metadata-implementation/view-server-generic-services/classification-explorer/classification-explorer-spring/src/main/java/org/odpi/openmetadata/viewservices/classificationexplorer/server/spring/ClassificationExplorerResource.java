@@ -23,7 +23,7 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/servers/{serverName}/api/open-metadata/{urlMarker}")
 @Tag(name="API: Classification Explorer OMVS",
-        description="Retrieve elements by type, or by classifications/relationships attached to them.",
+        description="Retrieve open metadata elements by type, or by the classifications/relationships attached to them.",
         externalDocs=@ExternalDocumentation(description="Further Information",url="https://egeria-project.org/services/omvs/classification-explorer/overview/"))
 
 public class ClassificationExplorerResource

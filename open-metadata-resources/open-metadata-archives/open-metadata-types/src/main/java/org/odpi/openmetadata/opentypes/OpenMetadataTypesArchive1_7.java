@@ -920,14 +920,13 @@ public class OpenMetadataTypesArchive1_7
     private EntityDef getSolutionComponentEntity()
     {
         EntityDef entityDef = archiveHelper.getDocumentLifecycleEntityDef(OpenMetadataType.SOLUTION_COMPONENT,
-                                                                          this.archiveBuilder.getEntityDef(OpenMetadataType.REFERENCEABLE.typeName));
+                                                                          this.archiveBuilder.getEntityDef(OpenMetadataType.DESIGN_MODEL_ELEMENT.typeName));
 
         /*
          * Build the attributes
          */
         List<TypeDefAttribute> properties = new ArrayList<>();
 
-        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.USER_DEFINED_STATUS));
         properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.SOLUTION_COMPONENT_TYPE));
         properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.PLANNED_DEPLOYED_IMPLEMENTATION_TYPE));
 
@@ -1042,14 +1041,13 @@ public class OpenMetadataTypesArchive1_7
     private EntityDef getSolutionPortEntity()
     {
         EntityDef entityDef = archiveHelper.getDocumentLifecycleEntityDef(OpenMetadataType.SOLUTION_PORT,
-                                                                          this.archiveBuilder.getEntityDef(OpenMetadataType.REFERENCEABLE.typeName));
+                                                                          this.archiveBuilder.getEntityDef(OpenMetadataType.DESIGN_MODEL_ELEMENT.typeName));
 
         /*
          * Build the attributes
          */
         List<TypeDefAttribute> properties = new ArrayList<>();
 
-        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.USER_DEFINED_STATUS));
         properties.add(archiveHelper.getEnumTypeDefAttribute(OpenMetadataProperty.DIRECTION));
 
         entityDef.setPropertiesDefinition(properties);
@@ -1069,11 +1067,11 @@ public class OpenMetadataTypesArchive1_7
         /*
          * Set up end 1.
          */
-        final String                     end1AttributeName            = "connectedPorts";
-        final String                     end1AttributeDescription     = "Port that the wire connects to.";
+        final String                     end1AttributeName            = "wiredTo";
+        final String                     end1AttributeDescription     = "Component that the wire connects to.";
         final String                     end1AttributeDescriptionGUID = null;
 
-        relationshipEndDef = archiveHelper.getRelationshipEndDef(this.archiveBuilder.getEntityDef(OpenMetadataType.SOLUTION_PORT.typeName),
+        relationshipEndDef = archiveHelper.getRelationshipEndDef(this.archiveBuilder.getEntityDef(OpenMetadataType.REFERENCEABLE.typeName),
                                                                  end1AttributeName,
                                                                  end1AttributeDescription,
                                                                  end1AttributeDescriptionGUID,
@@ -1084,11 +1082,11 @@ public class OpenMetadataTypesArchive1_7
         /*
          * Set up end 2.
          */
-        final String                     end2AttributeName            = "connectedPorts";
-        final String                     end2AttributeDescription     = "Port that the wire connects to.";
+        final String                     end2AttributeName            = "wiredTo";
+        final String                     end2AttributeDescription     = "Component that the wire connects to.";
         final String                     end2AttributeDescriptionGUID = null;
 
-        relationshipEndDef = archiveHelper.getRelationshipEndDef(this.archiveBuilder.getEntityDef(OpenMetadataType.SOLUTION_PORT.typeName),
+        relationshipEndDef = archiveHelper.getRelationshipEndDef(this.archiveBuilder.getEntityDef(OpenMetadataType.REFERENCEABLE.typeName),
                                                                  end2AttributeName,
                                                                  end2AttributeDescription,
                                                                  end2AttributeDescriptionGUID,

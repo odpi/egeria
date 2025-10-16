@@ -58,6 +58,7 @@ public class SolutionBlueprintMermaidGraphBuilder extends MermaidGraphBuilderBas
                             appendNewMermaidNode(node.getRelatedElement().getElementHeader().getGUID(),
                                                  getNodeDisplayName(node.getRelatedElement()),
                                                  node.getRelatedElement().getElementHeader().getType().getTypeName(),
+                                                 node.getRelatedElement().getProperties(),
                                                  getVisualStyleForClassifications(node.getRelatedElement().getElementHeader(),
                                                                                   this.getVisualStyleForSolutionComponent(solutionComponentProperties.getSolutionComponentType())));
                         }
@@ -66,6 +67,7 @@ public class SolutionBlueprintMermaidGraphBuilder extends MermaidGraphBuilderBas
                             appendNewMermaidNode(node.getRelatedElement().getElementHeader().getGUID(),
                                                  getNodeDisplayName(node.getRelatedElement()),
                                                  node.getRelatedElement().getElementHeader().getType().getTypeName(),
+                                                 node.getRelatedElement().getProperties(),
                                                  getVisualStyleForClassifications(node.getRelatedElement().getElementHeader(),
                                                                                   this.getVisualStyleForEntity(node.getRelatedElement().getElementHeader(), VisualStyle.GOVERNED_ELEMENT)));
                         }
@@ -129,6 +131,7 @@ public class SolutionBlueprintMermaidGraphBuilder extends MermaidGraphBuilderBas
                                 appendNewMermaidNode(line.getRelatedElement().getElementHeader().getGUID(),
                                                      relatedComponentDisplayName,
                                                      line.getRelatedElement().getElementHeader().getType().getTypeName(),
+                                                     line.getRelatedElement().getProperties(),
                                                      getVisualStyleForClassifications(line.getRelationshipHeader(), VisualStyle.GOVERNANCE_ACTOR));
                                 validNodeGUIDs.add(line.getRelatedElement().getElementHeader().getGUID());
                             }

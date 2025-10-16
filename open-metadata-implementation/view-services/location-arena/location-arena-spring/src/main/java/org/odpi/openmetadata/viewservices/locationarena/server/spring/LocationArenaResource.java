@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/servers/{serverName}/api/open-metadata/location-arena")
 
-@Tag(name="API: Location Arena OMVS", description="The Location Arena OMVS provides APIs for managing context events.",
+@Tag(name="API: Location Arena OMVS", description="Locations can be used to define physical locations using different scales and standards.  They can be linked together to show their relative positions and also linked to descriptions of your organization's people and resources to show their relative positions.  This can be useful in organizing and managing events and supporting sovereignty requirements.",
         externalDocs=@ExternalDocumentation(description="Further Information",
                 url="https://egeria-project.org/services/omvs/location-arena/overview/"))
 

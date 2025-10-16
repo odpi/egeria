@@ -10,6 +10,8 @@ import org.odpi.openmetadata.frameworks.openmetadata.ffdc.PropertyServerExceptio
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.frameworks.openmetadata.handlers.CollectionHandler;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.OpenMetadataRootElement;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.RelatedMetadataElementSummary;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.AnchorsProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.ClassificationProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.RelationshipProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.actors.AssignmentScopeProperties;
@@ -20,6 +22,7 @@ import org.odpi.openmetadata.frameworks.openmetadata.properties.glossaries.Canon
 import org.odpi.openmetadata.frameworks.openmetadata.properties.glossaries.TaxonomyProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.resources.ResourceListProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.search.*;
+import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 
 import java.util.List;
 import java.util.Map;
@@ -789,6 +792,67 @@ public class CollectionClient extends ConnectorContextClientBase
 
 
     /**
+     * Extract the glossary from a term.
+     *
+     * @param glossaryTerm glossary term root element.
+     *
+     * @return glossary root element or null
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public OpenMetadataRootElement getGlossaryForTerm(OpenMetadataRootElement glossaryTerm) throws InvalidParameterException,
+                                                                                                    PropertyServerException,
+                                                                                                    UserNotAuthorizedException
+    {
+        final String methodName = "getGlossaryFromTerm";
+        final String parameterName = "glossaryTerm";
+
+        propertyHelper.validateObject(glossaryTerm, parameterName, methodName);
+
+        /*
+         * Typically the glossary is the anchorScope of a glossary term.
+         */
+        if ((glossaryTerm.getElementHeader().getAnchor() != null) &&
+                (glossaryTerm.getElementHeader().getAnchor().getClassificationProperties() instanceof AnchorsProperties anchorsProperties) &&
+                (anchorsProperties.getAnchorScopeGUID() != null))
+        {
+            return this.getCollectionByGUID(anchorsProperties.getAnchorScopeGUID(), this.getGetOptions());
+        }
+
+        /*
+         * See if the glossary term is a member of a glossary.  Return that glossary if the term is
+         * only a member of one glossary.
+         */
+        if (glossaryTerm.getMemberOfCollections() != null)
+        {
+            RelatedMetadataElementSummary savedGlossary = null;
+            int                           glossaryCount = 0;
+
+            for (RelatedMetadataElementSummary parentCollection : glossaryTerm.getMemberOfCollections())
+            {
+                if ((parentCollection != null) && (propertyHelper.isTypeOf(parentCollection.getRelatedElement().getElementHeader(), OpenMetadataType.GLOSSARY.typeName)))
+                {
+                    if (glossaryCount == 0)
+                    {
+                        savedGlossary = parentCollection;
+                    }
+
+                    glossaryCount++;
+                }
+            }
+
+            if (glossaryCount == 1)
+            {
+                return this.getCollectionByGUID(savedGlossary.getRelatedElement().getElementHeader().getGUID(), this.getGetOptions());
+            }
+        }
+
+        return null;
+    }
+
+
+    /**
      * Return a list of elements that are a member of a collection.
      *
      * @param collectionGUID unique identifier of the collection.
@@ -805,7 +869,6 @@ public class CollectionClient extends ConnectorContextClientBase
     {
         return collectionHandler.getCollectionMembers(connectorUserId, collectionGUID, queryOptions);
     }
-
 
 
 

@@ -43,7 +43,7 @@ public class TabularColumnProperties extends SchemaAttributeProperties
      *
      * @param template template object to copy.
      */
-    public TabularColumnProperties(TabularColumnProperties template)
+    public TabularColumnProperties(SchemaAttributeProperties template)
     {
         super(template);
     }

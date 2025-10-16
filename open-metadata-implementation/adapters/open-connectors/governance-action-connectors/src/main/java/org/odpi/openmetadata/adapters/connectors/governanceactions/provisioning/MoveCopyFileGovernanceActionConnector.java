@@ -1015,7 +1015,7 @@ public class MoveCopyFileGovernanceActionConnector extends GeneralGovernanceActi
         {
             RelatedMetadataElement schemaType = metadataStore.getRelatedMetadataElement(sourceFileGUID,
                                                                                         1,
-                                                                                        OpenMetadataType.ASSET_SCHEMA_TYPE_RELATIONSHIP.typeName,
+                                                                                        OpenMetadataType.SCHEMA_RELATIONSHIP.typeName,
                                                                                         metadataStore.getGetOptions());
 
             if (schemaType != null)
@@ -1086,7 +1086,7 @@ public class MoveCopyFileGovernanceActionConnector extends GeneralGovernanceActi
 
                 RelatedMetadataElement schemaType = metadataStore.getRelatedMetadataElement(assetGUID,
                                                                                             1,
-                                                                                            OpenMetadataType.ASSET_SCHEMA_TYPE_RELATIONSHIP.typeName,
+                                                                                            OpenMetadataType.SCHEMA_RELATIONSHIP.typeName,
                                                                                             metadataStore.getGetOptions());
 
                 if (schemaType != null)

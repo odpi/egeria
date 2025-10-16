@@ -10,7 +10,6 @@ dependencies {
     implementation project(':open-metadata-implementation:frameworks:open-integration-framework')
     implementation project(':open-metadata-implementation:frameworks:open-governance-framework')
     implementation project(':open-metadata-implementation:access-services:gaf-metadata-management:gaf-metadata-api')
-    implementation project(':open-metadata-implementation:access-services:oif-metadata-management:oif-metadata-api')
     implementation project(':open-metadata-implementation:common-services:ffdc-services')
     implementation 'org.springframework:spring-web'
     implementation 'io.swagger.core.v3:swagger-annotations'

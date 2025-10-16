@@ -33,10 +33,11 @@ public class RelationalTableProperties extends SchemaAttributeProperties
      *
      * @param template object to copy
      */
-    public RelationalTableProperties(RelationalTableProperties template)
+    public RelationalTableProperties(SchemaAttributeProperties template)
     {
         super(template);
     }
+
 
     /**
      * Standard toString method.

@@ -68,7 +68,6 @@ dependencies {
 
     implementation project(':open-metadata-implementation:access-services:omf-metadata-management:omf-metadata-client')
     implementation project(':open-metadata-implementation:access-services:ocf-metadata-management:ocf-metadata-client')
-    implementation project(':open-metadata-implementation:access-services:oif-metadata-management:oif-metadata-client')
     implementation project(':open-metadata-implementation:access-services:gaf-metadata-management:gaf-metadata-client')
     implementation project(':open-metadata-conformance-suite:open-metadata-conformance-suite-client')
     implementation project(':open-metadata-resources:open-metadata-samples:admin-services-samples:config-metadata-server-sample')

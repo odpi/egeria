@@ -29,6 +29,7 @@ import org.odpi.openmetadata.frameworks.openmetadata.properties.contextevents.Co
 import org.odpi.openmetadata.frameworks.openmetadata.properties.datadictionaries.DataClassProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.datadictionaries.DataFieldProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.datadictionaries.DataStructureProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.designmodels.DesignModelElementProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.designmodels.DesignModelProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.digitalbusiness.AgreementProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.digitalbusiness.BusinessCapabilityProperties;
@@ -46,6 +47,7 @@ import org.odpi.openmetadata.frameworks.openmetadata.properties.informationsuppl
 import org.odpi.openmetadata.frameworks.openmetadata.properties.projects.ProjectProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.propertyfacets.PropertyFacetProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.schema.*;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.schema.apis.APIParameterProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.security.GovernanceZoneProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.security.SecurityAccessControlProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.security.SecurityGroupProperties;
@@ -768,6 +770,18 @@ public class OpenMetadataElementBuilder
                                         elementProperties = propertyHelper.addStringProperty(elementProperties,
                                                                                              OpenMetadataProperty.CONNECTOR_NAME.name,
                                                                                              connectorActivityReportProperties.getConnectorName());
+                                        elementProperties = propertyHelper.addDateProperty(elementProperties,
+                                                                                           OpenMetadataProperty.CONNECTOR_START_DATE.name,
+                                                                                           connectorActivityReportProperties.getConnectorStartDate());
+                                        elementProperties = propertyHelper.addDateProperty(elementProperties,
+                                                                                           OpenMetadataProperty.REFRESH_START_DATE.name,
+                                                                                           connectorActivityReportProperties.getRefreshStartDate());
+                                        elementProperties = propertyHelper.addDateProperty(elementProperties,
+                                                                                           OpenMetadataProperty.REFRESH_COMPLETION_DATE.name,
+                                                                                           connectorActivityReportProperties.getRefreshCompletionDate());
+                                        elementProperties = propertyHelper.addDateProperty(elementProperties,
+                                                                                           OpenMetadataProperty.CONNECTOR_DISCONNECT_DATE.name,
+                                                                                           connectorActivityReportProperties.getConnectorDisconnectDate());
                                         elementProperties = propertyHelper.addStringArrayProperty(elementProperties,
                                                                                                   OpenMetadataProperty.CREATED_ELEMENTS.name,
                                                                                                   connectorActivityReportProperties.getCreatedElements());
@@ -1513,6 +1527,10 @@ public class OpenMetadataElementBuilder
                         }
                         else if (governanceDefinitionProperties instanceof GovernanceControlProperties governanceControlProperties)
                         {
+                            elementProperties = propertyHelper.addStringProperty(elementProperties,
+                                                                                 OpenMetadataProperty.IMPLEMENTATION_DESCRIPTION.name,
+                                                                                 governanceControlProperties.getImplementationDescription());
+
                             if (governanceControlProperties instanceof SecurityGroupProperties securityGroupProperties)
                             {
                                 elementProperties = propertyHelper.addStringProperty(elementProperties,
@@ -1712,6 +1730,13 @@ public class OpenMetadataElementBuilder
                                                                                    DataItemSortOrder.getOpenTypeName(),
                                                                                    schemaAttributeProperties.getSortOrder().getName());
                             }
+
+                            if (properties instanceof APIParameterProperties apiParameterProperties)
+                            {
+                                elementProperties = propertyHelper.addStringProperty(elementProperties,
+                                                                                     OpenMetadataProperty.PARAMETER_TYPE.name,
+                                                                                     apiParameterProperties.getParameterType());
+                            }
                         }
                     }
                     else if (properties instanceof SoftwareCapabilityProperties softwareCapabilityProperties)
@@ -1728,32 +1753,37 @@ public class OpenMetadataElementBuilder
                                                                              OpenMetadataProperty.DEPLOYED_IMPLEMENTATION_TYPE.name,
                                                                              softwareCapabilityProperties.getProtocolVersion());
                     }
-                    else if (properties instanceof SolutionComponentProperties solutionComponentProperties)
-                    {
-                        elementProperties = propertyHelper.addStringProperty(elementProperties,
-                                                                             OpenMetadataProperty.SOLUTION_COMPONENT_TYPE.name,
-                                                                             solutionComponentProperties.getSolutionComponentType());
-
-                        elementProperties = propertyHelper.addStringProperty(elementProperties,
-                                                                             OpenMetadataProperty.PLANNED_DEPLOYED_IMPLEMENTATION_TYPE.name,
-                                                                             solutionComponentProperties.getPlannedDeployedImplementationType());
-
-                        elementProperties = propertyHelper.addStringProperty(elementProperties,
-                                                                             OpenMetadataProperty.USER_DEFINED_STATUS.name,
-                                                                             solutionComponentProperties.getUserDefinedStatus());
-                    }
-                    else if (properties instanceof SolutionPortProperties solutionPortProperties)
+                    else if (properties instanceof DesignModelElementProperties designModelElementProperties)
                     {
                         elementProperties = propertyHelper.addStringProperty(elementProperties,
                                                                              OpenMetadataProperty.USER_DEFINED_STATUS.name,
-                                                                             solutionPortProperties.getUserDefinedStatus());
+                                                                             designModelElementProperties.getUserDefinedStatus());
+                        elementProperties = propertyHelper.addStringProperty(elementProperties,
+                                                                             OpenMetadataProperty.CANONICAL_NAME.name,
+                                                                             designModelElementProperties.getCanonicalName());
+                        elementProperties = propertyHelper.addStringArrayProperty(elementProperties,
+                                                                                  OpenMetadataProperty.AUTHORS.name,
+                                                                                  designModelElementProperties.getAuthors());
 
-                        if (solutionPortProperties.getDirection() != null)
+                        if (properties instanceof SolutionComponentProperties solutionComponentProperties)
                         {
-                            elementProperties = propertyHelper.addEnumProperty(elementProperties,
-                                                                               OpenMetadataProperty.DIRECTION.name,
-                                                                               SolutionPortDirection.getOpenTypeName(),
-                                                                               solutionPortProperties.getDirection().getName());
+                            elementProperties = propertyHelper.addStringProperty(elementProperties,
+                                                                                 OpenMetadataProperty.SOLUTION_COMPONENT_TYPE.name,
+                                                                                 solutionComponentProperties.getSolutionComponentType());
+
+                            elementProperties = propertyHelper.addStringProperty(elementProperties,
+                                                                                 OpenMetadataProperty.PLANNED_DEPLOYED_IMPLEMENTATION_TYPE.name,
+                                                                                 solutionComponentProperties.getPlannedDeployedImplementationType());
+                        }
+                        else if (properties instanceof SolutionPortProperties solutionPortProperties)
+                        {
+                            if (solutionPortProperties.getDirection() != null)
+                            {
+                                elementProperties = propertyHelper.addEnumProperty(elementProperties,
+                                                                                   OpenMetadataProperty.DIRECTION.name,
+                                                                                   SolutionPortDirection.getOpenTypeName(),
+                                                                                   solutionPortProperties.getDirection().getName());
+                            }
                         }
                     }
                     else if (properties instanceof ValidValueDefinitionProperties validValueDefinitionProperties)
@@ -1777,8 +1807,8 @@ public class OpenMetadataElementBuilder
                                                                              OpenMetadataProperty.PREFERRED_VALUE.name,
                                                                              validValueDefinitionProperties.getPreferredValue());
                         elementProperties = propertyHelper.addBooleanProperty(elementProperties,
-                                                                             OpenMetadataProperty.IS_CASE_SENSITIVE.name,
-                                                                             validValueDefinitionProperties.getIsCaseSensitive());
+                                                                              OpenMetadataProperty.IS_CASE_SENSITIVE.name,
+                                                                              validValueDefinitionProperties.getIsCaseSensitive());
 
                     }
                 }

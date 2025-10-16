@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/servers/{serverName}/api/open-metadata/{urlMarker}")
 
-@Tag(name="API: Actor Manager OMVS", description="The Actor Manager OMVS provides APIs for supporting the creation and editing of actor profiles, actor roles and user identities.",
+@Tag(name="API: Actor Manager OMVS", description="Create and edit information about the people, teams and automated processes running in your organization. These are collectively called actors and their definition includes an actor profile, the roles they perform, and their user identities.",
         externalDocs=@ExternalDocumentation(description="Further Information",
                 url="https://egeria-project.org/services/omvs/actor-manager/overview/"))
 

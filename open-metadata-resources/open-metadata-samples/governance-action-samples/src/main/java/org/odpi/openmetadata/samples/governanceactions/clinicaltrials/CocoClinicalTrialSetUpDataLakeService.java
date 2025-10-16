@@ -686,9 +686,10 @@ public class CocoClinicalTrialSetUpDataLakeService extends CocoClinicalTrialBase
 
             catalogTargetProperties.setCatalogTargetName("dataFolder");
 
-            governanceContext.getConnectorConfigClient().addCatalogTarget(integrationConnectorGUID,
-                                               volumeAssetGUID,
-                                               catalogTargetProperties);
+            governanceContext.getAssetClient().addCatalogTarget(integrationConnectorGUID,
+                                                                volumeAssetGUID,
+                                                                governanceContext.getAssetClient().getMetadataSourceOptions(),
+                                                                catalogTargetProperties);
         }
     }
 

@@ -274,7 +274,7 @@ public abstract class SurveyActionServiceConnector extends ConnectorBase impleme
 
         if (assetElement != null)
         {
-            RelatedMetadataElementSummary rootSchemaType = assetElement.getRootSchemaType();
+            RelatedMetadataElementSummary rootSchemaType = assetElement.getSchemaType();
 
             if (propertyHelper.isTypeOf(rootSchemaType.getRelatedElement().getElementHeader(), schemaTypeName))
             {

@@ -104,7 +104,7 @@ public class OpenLineageEventReceiverIntegrationConnector extends IntegrationCon
                                                                        Connector            connectorToTarget) throws ConnectorCheckedException,
                                                                                                                       UserNotAuthorizedException
     {
-        if (propertyHelper.isTypeOf(retrievedCatalogTarget.getCatalogTargetElement(), OpenMetadataType.TOPIC.typeName))
+        if (propertyHelper.isTypeOf(retrievedCatalogTarget.getCatalogTargetElement().getElementHeader(), OpenMetadataType.TOPIC.typeName))
         {
             return new OpenLineageEventReceiverCatalogTargetProcessor(retrievedCatalogTarget,
                                                                       catalogTargetContext,

@@ -259,6 +259,7 @@ public class CocoSustainabilityArchiveWriter extends EgeriaBaseArchiveWriter
                                              OpenMetadataValidValues.OPEN_METADATA_ECOSYSTEM_SCOPE,
                                              Integer.toString(domainDefinition.getDomainIdentifier()),
                                              null,
+                                             null,
                                              false,
                                              null);
 
@@ -338,6 +339,7 @@ public class CocoSustainabilityArchiveWriter extends EgeriaBaseArchiveWriter
                                                             null,
                                                             glossaryTermDefinition.getAbbreviation(),
                                                             null,
+                                                            glossaryTermDefinition.getUrl(),
                                                             false,
                                                             null,
                                                             null,
@@ -348,31 +350,6 @@ public class CocoSustainabilityArchiveWriter extends EgeriaBaseArchiveWriter
             {
                 archiveHelper.addTermToCategory(categoryLookup.get(glossaryTermDefinition.getCategory().getName()),
                                                 glossaryTermGUID);
-            }
-
-            if (glossaryTermDefinition.getUrl() != null)
-            {
-                archiveHelper.addExternalReference(null,
-                                                   glossaryTermGUID,
-                                                   OpenMetadataType.GLOSSARY_TERM.typeName,
-                                                   OpenMetadataType.GLOSSARY_TERM.typeName,
-                                                   glossaryGUID,
-                                                   OpenMetadataType.EXTERNAL_REFERENCE.typeName + "::" + glossaryTermDefinition.getName(),
-                                                   null,
-                                                   null,
-                                                   null,
-                                                   null,
-                                                   null,
-                                                   null,
-                                                   originatorName,
-                                                   null,
-                                                   glossaryTermDefinition.getUrl(),
-                                                   null,
-                                                   null,
-                                                   null,
-                                                   null,
-                                                   null,
-                                                   null);
             }
         }
     }

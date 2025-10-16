@@ -31,6 +31,7 @@ public class AssetISCGraphMermaidGraphBuilder extends MermaidGraphBuilderBase
         appendNewMermaidNode(assetGraph.getElementHeader().getGUID(),
                              currentDisplayName,
                              assetGraph.getElementHeader().getType().getTypeName(),
+                             assetGraph.getProperties(),
                              VisualStyle.ANCHOR_ELEMENT);
 
         if (assetGraph.getMemberOfCollections() != null)
@@ -42,6 +43,7 @@ public class AssetISCGraphMermaidGraphBuilder extends MermaidGraphBuilderBase
                     appendNewMermaidNode(node.getRelatedElement().getElementHeader().getGUID(),
                                          super.getNodeDisplayName(node.getRelatedElement()),
                                          node.getRelatedElement().getElementHeader().getType().getTypeName(),
+                                         node.getRelatedElement().getProperties(),
                                          VisualStyle.INFORMATION_SUPPLY_CHAIN);
 
                     super.appendMermaidLine(null,

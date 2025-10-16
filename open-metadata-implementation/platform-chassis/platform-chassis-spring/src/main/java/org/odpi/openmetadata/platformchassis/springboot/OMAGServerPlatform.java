@@ -50,25 +50,10 @@ import java.util.*;
         info = @Info(
                 title = "Egeria's Open Metadata and Governance (OMAG) Server Platform",
                 version = "5.4-SNAPSHOT",
-                description = "The OMAG Server Platform provides a runtime process and platform for Open Metadata and Governance (OMAG) Services.\n" +
-                        "\n" +
-                        "The OMAG services are configured and activated in OMAG Servers using the Administration Services.\n" +
-                        "The configuration operations of the admin services create configuration documents, one for each OMAG Server.  " +
-                        "Inside a configuration document is the definition of which OMAG services to activate in the server. " +
-                        "These include the repository services (any type of server), the access services (for metadata access points " +
-                        "and metadata servers), governance services (for governance servers) and view services (for view servers).  " +
-                        "Once a configuration document is defined, the OMAG Server can be started and stopped multiple times by " +
-                        "the admin services server instance operations.  \n" +
-                        "\n" +
-                        "The OMAG Server Platform also supports platform services to query details of the servers running on the platform.\n" +
-                        "\n" +
-                        "The OMAG Server Platform can host multiple OMAG servers at any one time. " +
-                        "Each OMAG server is isolated within the server platform and so the OMAG server platform can be used to support multi-tenant " +
-                        "operation for a cloud service, " +
-                        "or host a variety of different OMAG Servers needed at a particular location.\n" +
-                        "\n" +
-                        "NOTE: many REST APIs are not guaranteed to be backward-compatible from release to release since they have supported Java clients.  " +
-                        "REST APIs may be used for development, testing, evaluation.  Click on the documentation for each module to discover more ...",
+                description = """
+                        The OMAG Server Platform provides a runtime process and platform for Egeria's Open Metadata and Governance (OMAG) REST API Services. These services support the maintenance and querying of open metadata, along with the ability to define and run actions to govern the metadata itself and the connected systems.
+                        
+                        Click on the documentation for each module to discover more ...""",
                 license = @License(name = "Apache-2.0 License", url = "https://www.apache.org/licenses/LICENSE-2.0"),
                 contact = @Contact(url = "https://egeria-project.org", name = "Egeria Project",
                                    email = "egeria-technical-discuss@lists.lfaidata.foundation")

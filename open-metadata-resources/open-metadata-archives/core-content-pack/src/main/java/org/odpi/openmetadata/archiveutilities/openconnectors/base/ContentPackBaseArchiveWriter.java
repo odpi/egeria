@@ -84,26 +84,43 @@ public abstract class ContentPackBaseArchiveWriter extends EgeriaBaseArchiveWrit
             {
                 archiveHelper.setGUID(catalogDefinition.getQualifiedName(), catalogDefinition.getGUID());
 
-                String collectionGUID = archiveHelper.addCollection(OpenMetadataType.COLLECTION.typeName,
-                                                                    catalogDefinition.getGUID(),
-                                                                    OpenMetadataType.COLLECTION.typeName,
-                                                                    OpenMetadataType.COLLECTION.typeName,
-                                                                    null,
-                                                                    OpenMetadataType.ROOT_COLLECTION_CLASSIFICATION.typeName,
-                                                                    catalogDefinition.getQualifiedName(),
-                                                                    catalogDefinition.getName(),
-                                                                    catalogDefinition.getDescription(),
-                                                                    null,
-                                                                    null,
-                                                                    null,
-                                                                    null);
-
                 if (catalogDefinition.getParent() != null)
                 {
+                    String collectionGUID = archiveHelper.addCollection(catalogDefinition.getTypeName(),
+                                                                        catalogDefinition.getParent().getGUID(),
+                                                                        catalogDefinition.getParent().getTypeName(),
+                                                                        OpenMetadataType.COLLECTION.typeName,
+                                                                        catalogDefinition.getAnchorScopeGUID(),
+                                                                        null,
+                                                                        catalogDefinition.getQualifiedName(),
+                                                                        catalogDefinition.getName(),
+                                                                        catalogDefinition.getDescription(),
+                                                                        null,
+                                                                        null,
+                                                                        null,
+                                                                        null);
+
                     archiveHelper.addMemberToCollection(catalogDefinition.getParent().getGUID(),
                                                         collectionGUID,
                                                         null);
                 }
+                else
+                {
+                    archiveHelper.addCollection(catalogDefinition.getTypeName(),
+                                                catalogDefinition.getGUID(),
+                                                catalogDefinition.getTypeName(),
+                                                OpenMetadataType.COLLECTION.typeName,
+                                                catalogDefinition.getAnchorScopeGUID(),
+                                                null,
+                                                catalogDefinition.getQualifiedName(),
+                                                catalogDefinition.getName(),
+                                                catalogDefinition.getDescription(),
+                                                null,
+                                                null,
+                                                null,
+                                                null);
+                }
+
             }
         }
     }
@@ -1080,35 +1097,9 @@ public abstract class ContentPackBaseArchiveWriter extends EgeriaBaseArchiveWrit
                                                                  OpenMetadataValidValues.OPEN_METADATA_ECOSYSTEM_SCOPE,
                                                                  deployedImplementationType,
                                                                  null,
+                                                                 wikiLink,
                                                                  false,
                                                                  additionalProperties);
-
-        if (wikiLink != null)
-        {
-            String externalReferenceGUID = this.archiveHelper.addExternalReference(null,
-                                                                                   validValueGUID,
-                                                                                   OpenMetadataType.VALID_VALUE_DEFINITION.typeName,
-                                                                                   OpenMetadataType.VALID_VALUE_DEFINITION.typeName,
-                                                                                   null,
-                                                                                   qualifiedName + "_wikiLink",
-                                                                                   "More information about deployedImplementationType: " + deployedImplementationType,
-                                                                                   null,
-                                                                                   null,
-                                                                                   null,
-                                                                                   null,
-                                                                                   null,
-                                                                                   originatorName,
-                                                                                   null,
-                                                                                   wikiLink,
-                                                                                   null,
-                                                                                   null,
-                                                                                   null,
-                                                                                   null,
-                                                                                   null,
-                                                                                   null);
-
-            this.archiveHelper.addExternalReferenceLink(validValueGUID, externalReferenceGUID, null, null, null);
-        }
 
         if (isATypeOf != null)
         {

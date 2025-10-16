@@ -1001,7 +1001,7 @@ public class MetadataElementHandler<B> extends ReferenceableHandler<B>
 
 
     /**
-     * Create an OMRS instance property value from a omf property value.
+     * Create an OMRS instance property value from an omf property value.
      *
      * @param typeDef property's type definition
      * @param arrayCount number of elements in the array
@@ -1040,7 +1040,7 @@ public class MetadataElementHandler<B> extends ReferenceableHandler<B>
 
 
     /**
-     * Create an OMRS instance property value from a omf property value.
+     * Create an OMRS instance property value from an omf property value.
      *
      * @param typeDef  property's type definition
      * @param symbolicName enum value
@@ -1089,7 +1089,7 @@ public class MetadataElementHandler<B> extends ReferenceableHandler<B>
 
 
     /**
-     * Create an OMRS instance property value from a omf property value.
+     * Create an OMRS instance property value from an omf property value.
      *
      * @param typeDef property's type definition
      * @param mapValues values in the array
@@ -1124,7 +1124,7 @@ public class MetadataElementHandler<B> extends ReferenceableHandler<B>
 
 
     /**
-     * Create an OMRS instance property value from a omf property value.
+     * Create an OMRS instance property value from an omf property value.
      *
      * @param typeDef property's type definition
      * @param primitiveTypeCategory value type
@@ -1204,7 +1204,7 @@ public class MetadataElementHandler<B> extends ReferenceableHandler<B>
 
 
     /**
-     * Create an OMRS instance property value from a omf property value.
+     * Create an OMRS instance property value from an omf property value.
      *
      * @param typeDef property's type definition
      * @param attributes values in the array
@@ -1371,7 +1371,7 @@ public class MetadataElementHandler<B> extends ReferenceableHandler<B>
 
 
     /**
-     * Convert a omf ElementStatus into an OMRS InstanceStatus.
+     * Convert an omf ElementStatus into an OMRS InstanceStatus.
      *
      * @param elementStatus omf ElementStatus
      * @return OMRS InstanceStatus

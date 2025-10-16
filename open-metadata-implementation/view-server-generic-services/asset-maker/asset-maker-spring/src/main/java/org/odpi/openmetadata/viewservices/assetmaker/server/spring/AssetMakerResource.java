@@ -28,7 +28,7 @@ import org.springframework.web.bind.annotation.*;
         scheme = "bearer",
         in = SecuritySchemeIn.HEADER
 )
-@Tag(name="API: Asset Maker OMVS", description="The Asset Maker OMVS provides APIs for supporting the creation and editing of assets.",
+@Tag(name="API: Asset Maker OMVS", description="Create and maintain descriptions of your digital resources, from your infrastructure and systems through to the APIs, data sets and processes that are in use by your organization.  The description of a digital resource is called an asset - hence the name of this service.  Egeria is able to automatically catalog your existing digital resources.  Asset Maker OMVS can be used to augment the description of the resulting assets, or allow you to proactively create catalog entries for digital resources that are in development, or are about to be deployed.",
         externalDocs=@ExternalDocumentation(description="Further Information",
                 url="https://egeria-project.org/services/omvs/asset-maker/overview/"))
 

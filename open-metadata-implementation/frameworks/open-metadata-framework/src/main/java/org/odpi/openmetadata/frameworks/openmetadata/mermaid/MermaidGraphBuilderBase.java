@@ -15,7 +15,6 @@ import org.odpi.openmetadata.frameworks.openmetadata.properties.externalreferenc
 import org.odpi.openmetadata.frameworks.openmetadata.properties.feedback.LikeProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.feedback.RatingProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.implementations.ImplementedByProperties;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.solutions.SolutionComponentProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.search.PropertyHelper;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
@@ -32,6 +31,7 @@ public class MermaidGraphBuilderBase
     private final   Set<String>              usedLinkNames     = new HashSet<>();
     private final   Set<String>              animatedLinkNames = new HashSet<>();
     protected final Map<String, VisualStyle> nodeColours       = new HashMap<>();
+    protected final Map<String, String>      nodeClicks        = new HashMap<>();
     protected final PropertyHelper           propertyHelper    = new PropertyHelper();
     protected final String                   sourceName        = "MermaidGraphBuilder";
 
@@ -184,14 +184,6 @@ public class MermaidGraphBuilderBase
             {
                 return VisualStyle.DATA_SHARING_AGREEMENT;
             }
-            else if (OpenMetadataType.ROOT_COLLECTION_CLASSIFICATION.typeName.equals(classificationName))
-            {
-                return VisualStyle.ROOT_COLLECTION;
-            }
-            else if (OpenMetadataType.FOLDER_COLLECTION_CLASSIFICATION.typeName.equals(classificationName))
-            {
-                return VisualStyle.FOLDER;
-            }
             else if (OpenMetadataType.HOME_COLLECTION_CLASSIFICATION.typeName.equals(classificationName))
             {
                 return VisualStyle.HOME_COLLECTION;
@@ -241,14 +233,6 @@ public class MermaidGraphBuilderBase
                 return true;
             }
             else if (OpenMetadataType.OBJECT_IDENTIFIER_CLASSIFICATION.typeName.equals(classificationName))
-            {
-                return true;
-            }
-            else if (OpenMetadataType.ROOT_COLLECTION_CLASSIFICATION.typeName.equals(classificationName))
-            {
-                return true;
-            }
-            else if (OpenMetadataType.FOLDER_COLLECTION_CLASSIFICATION.typeName.equals(classificationName))
             {
                 return true;
             }
@@ -450,14 +434,6 @@ public class MermaidGraphBuilderBase
             if (elementHeader.getExecutionPoints() != null)
             {
                 for (ElementClassification classification : elementHeader.getExecutionPoints())
-                {
-                    addClassificationToGraph(elementHeader.getGUID(), classification);
-                }
-            }
-
-            if (elementHeader.getResourceManagerRoles() != null)
-            {
-                for (ElementClassification classification : elementHeader.getResourceManagerRoles())
                 {
                     addClassificationToGraph(elementHeader.getGUID(), classification);
                 }
@@ -802,6 +778,16 @@ public class MermaidGraphBuilderBase
                 return VisualStyle.GLOSSARY;
             }
 
+            if (propertyHelper.isTypeOf(elementControlHeader, OpenMetadataType.ROOT_COLLECTION.typeName))
+            {
+                return VisualStyle.ROOT_COLLECTION;
+            }
+
+            if (propertyHelper.isTypeOf(elementControlHeader, OpenMetadataType.COLLECTION_FOLDER.typeName))
+            {
+                return VisualStyle.COLLECTION_FOLDER;
+            }
+
             return VisualStyle.COLLECTION;
         }
         if (propertyHelper.isTypeOf(elementControlHeader, OpenMetadataType.EXTERNAL_REFERENCE.typeName))
@@ -1094,6 +1080,7 @@ public class MermaidGraphBuilderBase
         this.appendNewMermaidNode(elementSummary.getElementHeader().getGUID(),
                                   this.getNodeDisplayName(elementSummary),
                                   this.getTypeNameForEntity(elementSummary.getElementHeader()),
+                                  elementSummary.getProperties(),
                                   this.getVisualStyleForEntity(elementSummary.getElementHeader(), defaultVisualStyle));
     }
 
@@ -1139,6 +1126,30 @@ public class MermaidGraphBuilderBase
                                         String      currentType,
                                         VisualStyle visualStyle)
     {
+        return appendNewMermaidNode(currentNodeName,
+                                    currentDisplayName,
+                                    currentType,
+                                    new OpenMetadataRootProperties(), visualStyle);
+    }
+
+
+
+    /**
+     * Create a node in the mermaid graph.
+     *
+     * @param currentNodeName unique name/identifier
+     * @param currentDisplayName display name
+     * @param currentType type of element
+     * @param properties properties of the element - may be null
+     * @param visualStyle mermaid defined shape and colour value
+     * @return whether a new node was created or not.
+     */
+    public boolean appendNewMermaidNode(String                     currentNodeName,
+                                        String                     currentDisplayName,
+                                        String                     currentType,
+                                        OpenMetadataRootProperties properties,
+                                        VisualStyle                visualStyle)
+    {
         if (!usedNodeNames.contains(currentNodeName))
         {
             usedNodeNames.add(currentNodeName);
@@ -1168,6 +1179,14 @@ public class MermaidGraphBuilderBase
                 mermaidGraph.append("**");
             }
             mermaidGraph.append("\"}\n");
+
+            if (properties instanceof ReferenceableProperties referenceableProperties)
+            {
+                if (referenceableProperties.getURL() != null)
+                {
+                    nodeClicks.put(this.lookupNodeName(currentNodeName), referenceableProperties.getURL());
+                }
+            }
 
             return true;
         }
@@ -1919,7 +1938,10 @@ public class MermaidGraphBuilderBase
                 if (nodeCount > 5)
                 {
                     String moreNodeId = UUID.randomUUID().toString();
-                    appendNewMermaidNode(moreNodeId, " ... plus " + (relatedMetadataElements.size() - nodeCount) + " Items", relatedMetadataElement.getRelationshipHeader().getType().getTypeName(), VisualStyle.MORE_ELEMENTS);
+                    appendNewMermaidNode(moreNodeId,
+                                         " ... plus " + (relatedMetadataElements.size() - nodeCount) + " Items",
+                                         relatedMetadataElement.getRelationshipHeader().getType().getTypeName(),
+                                         VisualStyle.MORE_ELEMENTS);
                     appendMermaidDottedLine(null, startingEndId, null, moreNodeId);
                     break;
                 }
@@ -2113,6 +2135,7 @@ public class MermaidGraphBuilderBase
                 appendNewMermaidNode(currentNodeName,
                                      currentDisplayName,
                                      solutionComponentElement.getElementHeader().getType().getTypeName(),
+                                     solutionComponentElement.getProperties(),
                                      getVisualStyleForClassifications(solutionComponentElement.getElementHeader(),
                                                                       this.getVisualStyleForSolutionComponent(solutionComponentElement.getProperties().getSolutionComponentType())));
             }
@@ -2141,6 +2164,7 @@ public class MermaidGraphBuilderBase
                         appendNewMermaidNode(line.getLinkedElement().getElementHeader().getGUID(),
                                              relatedComponentDisplayName,
                                              line.getLinkedElement().getElementHeader().getType().getTypeName(),
+                                             line.getLinkedElement().getProperties(),
                                              getVisualStyleForClassifications(line.getElementHeader(),
                                                                               this.getVisualStyleForSolutionComponent(line.getLinkedElement().getElementHeader().getType().getTypeName())));
 
@@ -2207,6 +2231,7 @@ public class MermaidGraphBuilderBase
                         appendNewMermaidNode(line.getRelatedElement().getElementHeader().getGUID(),
                                              actorRoleName,
                                              line.getRelatedElement().getElementHeader().getType().getTypeName(),
+                                             line.getRelatedElement().getProperties(),
                                              getVisualStyleForEntity(line.getRelatedElement().getElementHeader(),
                                                                      VisualStyle.GOVERNANCE_ACTOR));
 
@@ -2243,6 +2268,7 @@ public class MermaidGraphBuilderBase
                             appendNewMermaidNode(line.getRelatedElement().getElementHeader().getGUID(),
                                                  actorRoleName,
                                                  line.getRelatedElement().getElementHeader().getType().getTypeName(),
+                                                 line.getRelatedElement().getProperties(),
                                                  getVisualStyleForEntity(line.getRelatedElement().getElementHeader(),
                                                                          VisualStyle.SOLUTION_BLUEPRINT));
 
@@ -2403,6 +2429,32 @@ public class MermaidGraphBuilderBase
     }
 
 
+
+    /**
+     * Add styling for nodes as requested.  These go at the end of the graph.
+     */
+    protected void addClicks(Map<String, String> nodeClicks)
+    {
+        if (! nodeClicks.isEmpty())
+        {
+            for (String nodeId : nodeClicks.keySet())
+            {
+                String url = nodeClicks.get(nodeId);
+
+                if (url != null)
+                {
+                    mermaidGraph.append("click ");
+                    mermaidGraph.append(nodeId);
+                    mermaidGraph.append(" \"");
+                    mermaidGraph.append(url);
+                    mermaidGraph.append("\" \"Click for more documentation\" _blank\n");
+                }
+            }
+        }
+    }
+
+
+
     /**
      * Add the names of links that should be animated
      */
@@ -2459,6 +2511,7 @@ public class MermaidGraphBuilderBase
         }
 
         addStyles(nodeColours);
+        addClicks(nodeClicks);
         addAnimation();
 
         return mermaidGraph.toString();

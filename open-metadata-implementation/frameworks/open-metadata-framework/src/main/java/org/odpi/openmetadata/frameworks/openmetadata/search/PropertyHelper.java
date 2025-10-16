@@ -12,7 +12,6 @@ import org.odpi.openmetadata.frameworks.openmetadata.properties.AnchorsPropertie
 import org.odpi.openmetadata.frameworks.openmetadata.properties.AttachedClassification;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.OpenMetadataElement;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.RelatedMetadataElement;
-import org.odpi.openmetadata.frameworks.openmetadata.types.DataType;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 
@@ -587,10 +586,6 @@ public class PropertyHelper
                     {
                         elementHeader.setPrimaryKey(this.getElementClassification(attachedClassification));
                     }
-                    else if (this.isTypeOf(attachedClassification, OpenMetadataType.RESOURCE_MANAGER_CLASSIFICATION.typeName))
-                    {
-                        resourceManagersCategories.add(this.getElementClassification(attachedClassification));
-                    }
                     else if (this.isTypeOf(attachedClassification, OpenMetadataType.SERVER_PURPOSE_CLASSIFICATION.typeName))
                     {
                         serverPurposes.add(this.getElementClassification(attachedClassification));
@@ -618,11 +613,6 @@ public class PropertyHelper
             if (! executionPoints.isEmpty())
             {
                 elementHeader.setExecutionPoints(executionPoints);
-            }
-
-            if (! resourceManagersCategories.isEmpty())
-            {
-                elementHeader.setResourceManagerRoles(resourceManagersCategories);
             }
 
             if (! serverPurposes.isEmpty())
@@ -4256,13 +4246,6 @@ public class PropertyHelper
             }
 
             classification = getClassification(elementHeader.getServerPurposes(), classificationName);
-
-            if (classification != null)
-            {
-                return classification;
-            }
-
-            classification = getClassification(elementHeader.getResourceManagerRoles(), classificationName);
 
             if (classification != null)
             {

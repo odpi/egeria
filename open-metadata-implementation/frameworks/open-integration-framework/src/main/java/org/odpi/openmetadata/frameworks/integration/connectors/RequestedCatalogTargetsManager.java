@@ -7,6 +7,9 @@ import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.Connector;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.*;
 import org.odpi.openmetadata.frameworks.opengovernance.properties.CatalogTarget;
+import org.odpi.openmetadata.frameworks.openmetadata.connectorcontext.AssetClient;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.OpenMetadataRootElement;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.processes.connectors.CatalogTargetProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.search.PropertyHelper;
 import org.odpi.openmetadata.frameworks.integration.context.IntegrationContext;
 import org.odpi.openmetadata.frameworks.integration.ffdc.OIFAuditCode;
@@ -105,37 +108,40 @@ public class RequestedCatalogTargetsManager implements CatalogTargetChangeListen
 
         try
         {
+            AssetClient assetClient = integrationContext.getAssetClient();
             int startFrom = 0;
 
-            List<CatalogTarget> catalogTargetList  = integrationContext.getConnectorConfigClient().getCatalogTargets(integrationContext.getIntegrationConnectorGUID(),
-                                                                                                                     startFrom,
-                                                                                                                     integrationContext.getMaxPageSize());
+            List<OpenMetadataRootElement> catalogTargetList  = assetClient.getCatalogTargets(integrationContext.getIntegrationConnectorGUID(),
+                                                                                             assetClient.getQueryOptions(startFrom,
+                                                                                             integrationContext.getMaxPageSize()));
 
             while (catalogTargetList != null)
             {
-                for (CatalogTarget catalogTarget : catalogTargetList)
+                for (OpenMetadataRootElement catalogTarget : catalogTargetList)
                 {
-                    if (catalogTarget != null)
+                    if ((catalogTarget != null) && (catalogTarget.getRelatedBy() != null) && (catalogTarget.getRelatedBy().getRelationshipProperties() instanceof CatalogTargetProperties catalogTargetProperties))
                     {
-                        RequestedCatalogTarget knownCatalogTarget = currentCatalogTargetMap.get(catalogTarget.getRelationshipGUID());
+                        RequestedCatalogTarget knownCatalogTarget = currentCatalogTargetMap.get(catalogTarget.getRelatedBy().getRelationshipHeader().getGUID());
 
                         if (knownCatalogTarget == null)
                         {
+                            CatalogTarget newCatalogTarget = new CatalogTarget(catalogTargetProperties, catalogTarget);
                             /*
                              * This is a new catalog target.
                              */
                             knownCatalogTarget = setUpNewRequestedCatalogTarget(catalogTargetIntegrator,
-                                                                                catalogTarget,
+                                                                                newCatalogTarget,
                                                                                 integrationContext);
 
                             this.newCatalogTarget(knownCatalogTarget);
                         }
-                        else if (! knownCatalogTarget.getRelationshipVersions().equals(catalogTarget.getRelationshipVersions()))
+                        else if (! knownCatalogTarget.getRelationshipVersions().equals(catalogTarget.getRelatedBy().getRelationshipHeader().getVersions()))
                         {
                             RequestedCatalogTarget oldCatalogTarget = knownCatalogTarget;
+                            CatalogTarget newCatalogTarget = new CatalogTarget(catalogTargetProperties, catalogTarget);
 
                             knownCatalogTarget = setUpNewRequestedCatalogTarget(catalogTargetIntegrator,
-                                                                                catalogTarget,
+                                                                                newCatalogTarget,
                                                                                 integrationContext);
 
                             this.updatedCatalogTarget(oldCatalogTarget, knownCatalogTarget);
@@ -144,9 +150,8 @@ public class RequestedCatalogTargetsManager implements CatalogTargetChangeListen
                 }
 
                 startFrom         = startFrom + integrationContext.getMaxPageSize();
-                catalogTargetList = integrationContext.getConnectorConfigClient().getCatalogTargets(integrationContext.getIntegrationConnectorGUID(),
-                                                                                                    startFrom,
-                                                                                                    integrationContext.getMaxPageSize());
+                catalogTargetList = assetClient.getCatalogTargets(integrationContext.getIntegrationConnectorGUID(),
+                                                                  assetClient.getQueryOptions(startFrom, integrationContext.getMaxPageSize()));
             }
 
             return new ArrayList<>(currentCatalogTargetMap.values());
@@ -194,9 +199,9 @@ public class RequestedCatalogTargetsManager implements CatalogTargetChangeListen
     {
         Connector connectorToTarget = null;
 
-        if (propertyHelper.isTypeOf(retrievedCatalogTarget.getCatalogTargetElement(), OpenMetadataType.ASSET.typeName))
+        if (propertyHelper.isTypeOf(retrievedCatalogTarget.getCatalogTargetElement().getElementHeader(), OpenMetadataType.ASSET.typeName))
         {
-            connectorToTarget = integrationContext.getConnectedAssetContext().getConnectorForAsset(retrievedCatalogTarget.getCatalogTargetElement().getGUID(), auditLog);
+            connectorToTarget = integrationContext.getConnectedAssetContext().getConnectorForAsset(retrievedCatalogTarget.getCatalogTargetElement().getElementHeader().getGUID(), auditLog);
         }
 
         RequestedCatalogTarget newRequestedCatalogTarget = catalogTargetIntegrator.getNewRequestedCatalogTargetSkeleton(retrievedCatalogTarget,

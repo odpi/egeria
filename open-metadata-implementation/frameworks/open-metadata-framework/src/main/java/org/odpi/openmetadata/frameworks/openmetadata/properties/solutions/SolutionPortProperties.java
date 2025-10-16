@@ -7,7 +7,7 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.SolutionPortDirection;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.ReferenceableProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.designmodels.DesignModelElementProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 
 import java.util.Objects;
@@ -21,10 +21,9 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class SolutionPortProperties extends ReferenceableProperties
+public class SolutionPortProperties extends DesignModelElementProperties
 {
     private SolutionPortDirection direction         = null;
-    private String                userDefinedStatus = null;
 
 
     /**
@@ -48,8 +47,7 @@ public class SolutionPortProperties extends ReferenceableProperties
 
         if (template != null)
         {
-            this.direction         = template.getDirection();
-            this.userDefinedStatus = template.getUserDefinedStatus();
+            this.direction = template.getDirection();
         }
     }
 
@@ -77,28 +75,6 @@ public class SolutionPortProperties extends ReferenceableProperties
 
 
     /**
-     * Return the status of the element.
-     *
-     * @return string
-     */
-    public String getUserDefinedStatus()
-    {
-        return userDefinedStatus;
-    }
-
-
-    /**
-     * Set up the status of the element.
-     *
-     * @param userDefinedStatus string
-     */
-    public void setUserDefinedStatus(String userDefinedStatus)
-    {
-        this.userDefinedStatus = userDefinedStatus;
-    }
-
-
-    /**
      * Standard toString method.
      *
      * @return print out of variables in a JSON-style
@@ -108,7 +84,6 @@ public class SolutionPortProperties extends ReferenceableProperties
     {
         return "SolutionPortProperties{" +
                 "solutionPortDirection=" + direction +
-                ", userDefinedStatus=" + userDefinedStatus +
                 "} " + super.toString();
     }
 
@@ -127,8 +102,7 @@ public class SolutionPortProperties extends ReferenceableProperties
         if (objectToCompare == null || getClass() != objectToCompare.getClass()) return false;
         if (!super.equals(objectToCompare)) return false;
         SolutionPortProperties that = (SolutionPortProperties) objectToCompare;
-        return Objects.equals(userDefinedStatus, that.userDefinedStatus) &&
-                direction == that.direction;
+        return direction == that.direction;
     }
 
     /**
@@ -139,6 +113,6 @@ public class SolutionPortProperties extends ReferenceableProperties
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), direction, userDefinedStatus);
+        return Objects.hash(super.hashCode(), direction);
     }
 }

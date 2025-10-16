@@ -289,11 +289,6 @@ public enum OpenMetadataProperty
     CLASSIFICATION_NAME("classificationName", DataType.STRING, DataType.STRING.getName(), "The name of the associated classification.", "Ownership", "ef2169c4-c8f3-48b0-9051-cfb2bbb1e5f2"),
 
     /**
-     * Name of the property in the classification where this value is used.
-     */
-    CLASSIFICATION_PROPERTY_NAME("classificationPropertyName", DataType.STRING, DataType.STRING.getName(), "Name of the property in the classification where this value is used.", "owner", "5471ec69-a23d-4d89-b134-b30a8a01f435"),
-
-    /**
      * If an attached entity or relationship to it changed, this is its unique identifier.
      */
     ATTACHMENT_GUID("attachmentGUID", DataType.STRING, DataType.STRING.getName(), "If an attached entity or relationship to it changed, this is its unique identifier.", null, "74d62753-fd42-47c5-a804-29334f394728"),
@@ -317,16 +312,6 @@ public enum OpenMetadataProperty
      * The user identifier for the person/system executing the request.
      */
     USER_ID("userId", DataType.STRING, DataType.STRING.getName(), "The user identifier for the person/system executing the request.", null, "c65a21dc-d1ae-4a8f-ba33-58ec401c1b42"),
-
-    /**
-     * The unique identifier of the engine action that initiated the governance service that created this element.
-     */
-    ENGINE_ACTION_GUID("engineActionGUID", DataType.STRING, DataType.STRING.getName(), "The unique identifier of the engine action that initiated the governance service that created this element.", null, "519cf063-9386-42e5-88dd-c5baab234df6"),
-
-    /**
-     * The unique identifier of the associated asset.
-     */
-    ASSET_GUID("assetGUID", DataType.STRING, DataType.STRING.getName(), "The unique identifier of the associated asset.", null, "fd4b6779-9582-4cc2-885e-72e44445ff04"),
 
     /**
      * Description of the activity.
@@ -562,9 +547,10 @@ public enum OpenMetadataProperty
     MATCH_THRESHOLD("matchThreshold", DataType.INT, DataType.INT.getName(), "Percentage of matching data values that a data resource is expected to achieve to be assigned this data class.", null, "d1257da4-d04f-4ef6-8c73-40083f359044"),
 
     /**
-     * Technical name (no spaces) that can be used in artifact generation.
+     * Each word in the name should be capitalized, with spaces
+     * between the words to allow translation between different naming conventions.
      */
-    TECHNICAL_NAME("technicalName", DataType.STRING, DataType.STRING.getName(), "Technical name (no spaces) that can be used in artifact generation.", null, "fce3a665-be7e-45ec-ab08-6fcbd90f8ea0"),
+    CANONICAL_NAME("canonicalName", DataType.STRING, DataType.STRING.getName(), "Each word in the name should be capitalized, with spaces between the words to allow translation between different naming conventions.", null, "fce3a665-be7e-45ec-ab08-6fcbd90f8ea0"),
 
     /**
      * Initial value for the attribute (overriding the default value of its type.
@@ -1226,11 +1212,6 @@ public enum OpenMetadataProperty
     SERVICE_LIFE("serviceLife", DataType.STRING, DataType.STRING.getName(), "Length of time that the product is expected to be in service.", "2 years", "f61776bc-e78e-4c4a-9b22-275c8eb4c132"),
 
     /**
-     * Which is the current supported version that is recommended for consumers.  Specified as a versionIdentifier from the asset.
-     */
-    CURRENT_VERSION("currentVersion", DataType.STRING, DataType.STRING.getName(), "Which is the current supported version that is recommended for consumers.  Specified as a versionIdentifier from the asset.", "V1.0", "d863a1f5-5770-4a57-a331-01ef59994fba"),
-
-    /**
      * Defines the provenance and confidence that a member belongs in a collection.
      */
     MEMBERSHIP_STATUS("membershipStatus", DataType.STRING, CollectionMemberStatus.getOpenTypeName(), CollectionMemberStatus.getOpenTypeDescription(), CollectionMemberStatus.PROPOSED.getName(), "e304a92d-60d2-4605-8e3f-d338bd33e6d3"),
@@ -1244,11 +1225,6 @@ public enum OpenMetadataProperty
      * Name of the type of membership.
      */
     MEMBERSHIP_TYPE("membershipType", DataType.STRING, DataType.STRING.getName(), "Name of the type of membership.", null, "ebf4af8d-b9f7-45d1-8f87-8cc383df4605"),
-
-    /**
-     * Name of property to use for ordering.
-     */
-    ORDER_BY_PROPERTY_NAME("orderByPropertyName", DataType.STRING, DataType.STRING.getName(), "Name of property to use for ordering.", OpenMetadataProperty.STEWARD.name, "31b6f74e-5759-47e1-8b92-a0ce43bc73db"),
 
     /**
      * Defines the sequential order in which bytes are arranged into larger numerical values when stored in memory or when transmitted over digital links.

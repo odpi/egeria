@@ -287,7 +287,6 @@ public class OpenMetadataTypesArchive4_0
         this.archiveBuilder.addEntityDef(addConnectorActivityReportEntity());
         this.archiveBuilder.addRelationshipDef(addRegisteredIntegrationConnectorRelationship());
         this.archiveBuilder.addRelationshipDef(addCatalogTargetRelationship());
-        this.archiveBuilder.addTypeDefPatch(updateSupportedGovernanceServiceRelationship());
     }
 
 
@@ -398,29 +397,6 @@ public class OpenMetadataTypesArchive4_0
     }
 
 
-    private TypeDefPatch updateSupportedGovernanceServiceRelationship()
-    {
-        /*
-         * Create the Patch
-         */
-        TypeDefPatch typeDefPatch = archiveBuilder.getPatchForType(OpenMetadataType.SUPPORTED_GOVERNANCE_SERVICE_RELATIONSHIP.typeName);
-
-        typeDefPatch.setUpdatedBy(originatorName);
-        typeDefPatch.setUpdateTime(creationDate);
-
-        /*
-         * Build the attributes
-         */
-        List<TypeDefAttribute> properties = new ArrayList<>();
-
-        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.GENERATE_CONNECTOR_ACTIVITY_REPORT));
-
-        typeDefPatch.setPropertyDefinitions(properties);
-
-        return typeDefPatch;
-    }
-
-
     private RelationshipDef addCatalogTargetRelationship()
     {
         RelationshipDef relationshipDef = archiveHelper.getBasicRelationshipDef(OpenMetadataType.CATALOG_TARGET_RELATIONSHIP,
@@ -464,6 +440,12 @@ public class OpenMetadataTypesArchive4_0
         List<TypeDefAttribute> properties = new ArrayList<>();
 
         properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.CATALOG_TARGET_NAME));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.CONNECTION_NAME));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.CONFIGURATION_PROPERTIES));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.TEMPLATES));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.METADATA_SOURCE_QUALIFIED_NAME));
+        properties.add(archiveHelper.getEnumTypeDefAttribute(OpenMetadataProperty.PERMITTED_SYNCHRONIZATION));
+        properties.add(archiveHelper.getEnumTypeDefAttribute(OpenMetadataProperty.DELETE_METHOD));
 
         relationshipDef.setPropertiesDefinition(properties);
 

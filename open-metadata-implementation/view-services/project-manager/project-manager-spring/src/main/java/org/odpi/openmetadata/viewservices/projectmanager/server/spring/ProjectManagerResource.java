@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/servers/{serverName}/api/open-metadata/project-manager")
 
 @Tag(name="API: Project Manager OMVS",
-     description="Maintain and explore the contents of nested projects. These projects can be used to represent digital products, or projects of resources for a particular project or team. They can be used to organize assets and other resources into logical groups.",
+     description="Maintain and explore the contents of nested projects. These projects can be used organize activity aiming to achieve a specific goal.",
      externalDocs=@ExternalDocumentation(description="Further Information",
              url="https://egeria-project.org/services/omvs/project-manager/overview/"))
 

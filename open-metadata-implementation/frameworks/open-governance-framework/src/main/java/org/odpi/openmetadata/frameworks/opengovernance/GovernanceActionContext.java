@@ -64,8 +64,6 @@ public class GovernanceActionContext extends ConnectorContextBase implements Gov
 
     private final MessageFormatter                 messageFormatter = new MessageFormatter();
 
-    private final ConnectorConfigClient            connectorConfigClient;
-
     /**
      * Constructor sets up the key parameters for processing the request to the governance action service.
      *
@@ -159,16 +157,6 @@ public class GovernanceActionContext extends ConnectorContextBase implements Gov
                                                                        auditLog,
                                                                        maxPageSize);
         this.watchdogEventClient       = watchdogEventClient;
-        this.connectorConfigClient     = new ConnectorConfigClient(this,
-                                                               localServerName,
-                                                               localServiceName,
-                                                               connectorUserId,
-                                                               connectorGUID,
-                                                               externalSourceGUID,
-                                                               externalSourceName,
-                                                               governanceConfiguration,
-                                                               auditLog,
-                                                               maxPageSize);
     }
 
 
@@ -243,15 +231,6 @@ public class GovernanceActionContext extends ConnectorContextBase implements Gov
     {
         return actionTargetElements;
     }
-
-
-    /**
-     * Return the client for managing the metadata associated with running connectors, governance engines and governance services.
-     *
-     * @return connector context client
-     */
-    @Override
-    public ConnectorConfigClient getConnectorConfigClient() { return connectorConfigClient; }
 
 
     /**

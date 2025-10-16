@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/servers/{serverName}/api/open-metadata/reference-data")
 
-@Tag(name="API: Reference Data OMVS", description="The Reference Data OMVS provides APIs for retrieving configuration and status from servers and platforms.",
+@Tag(name="API: Reference Data OMVS", description="Reference data is used by systems as valid value lists.  Although the lists of reference data may be similar from system to system, they often vary in small details and use different identifiers.  Reference data management supports the capture, mapping and synchronization of the reference data across your systems, simplifying data pipeline processing and reducing data integration errors.",
         externalDocs=@ExternalDocumentation(description="Further Information",
                 url="https://egeria-project.org/services/omvs/reference-data/overview/"))
 

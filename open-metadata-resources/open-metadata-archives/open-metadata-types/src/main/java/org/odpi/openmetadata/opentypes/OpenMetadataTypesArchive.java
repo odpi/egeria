@@ -174,6 +174,7 @@ public class OpenMetadataTypesArchive
      {
          this.archiveBuilder.addEntityDef(getExternalDataSourceEntity());
          this.archiveBuilder.addEntityDef(getExternalModelSourceEntity());
+         this.archiveBuilder.addEntityDef(getExternalSourceCodeEntity());
          this.archiveBuilder.addEntityDef(getCitedDocumentEntity());
 
          this.archiveBuilder.addRelationshipDef(getCitedDocumentLinkRelationship());
@@ -185,6 +186,13 @@ public class OpenMetadataTypesArchive
     private EntityDef getExternalDataSourceEntity()
     {
         return archiveHelper.getDefaultEntityDef(OpenMetadataType.EXTERNAL_DATA_SOURCE,
+                                                 this.archiveBuilder.getEntityDef(OpenMetadataType.EXTERNAL_REFERENCE.typeName));
+    }
+
+
+    private EntityDef getExternalSourceCodeEntity()
+    {
+        return archiveHelper.getDefaultEntityDef(OpenMetadataType.EXTERNAL_SOURCE_CODE,
                                                  this.archiveBuilder.getEntityDef(OpenMetadataType.EXTERNAL_REFERENCE.typeName));
     }
 

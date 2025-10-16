@@ -14,7 +14,7 @@ public enum ProductFolderDefinition
      * Open Metadata Digital Product Catalog
      */
     TOP_LEVEL(OpenMetadataType.DIGITAL_PRODUCT_CATALOG.typeName,
-              OpenMetadataType.ROOT_COLLECTION_CLASSIFICATION.typeName,
+              null,
               null,
               "Open Metadata Digital Product Catalog",
               "Extracts of open metadata organized into useful data sets.  These digital products support a variety of subscription choices.  Data can be delivered either as a CSV file, or as a PostGreSQL table.  Updates to the subscriber's copy typically occur within 1 hour of receiving the metadata update.",
@@ -24,7 +24,7 @@ public enum ProductFolderDefinition
      * Open Metadata Digital Product Glossary
      */
     GLOSSARY(OpenMetadataType.GLOSSARY.typeName,
-             OpenMetadataType.ROOT_COLLECTION_CLASSIFICATION.typeName,
+             null,
              TOP_LEVEL,
              "Open Metadata Digital Product Glossary",
              "Terminology used in the open metadata digital product catalog.",
@@ -33,8 +33,8 @@ public enum ProductFolderDefinition
     /**
      * Basic terminology relating to digital products.
      */
-    GLOSSARY_BASICS(OpenMetadataType.COLLECTION.typeName,
-                    OpenMetadataType.FOLDER_COLLECTION_CLASSIFICATION.typeName,
+    GLOSSARY_BASICS(OpenMetadataType.COLLECTION_FOLDER.typeName,
+                    null,
                     GLOSSARY,
                     "Digital Product Basics",
                     "Basic terminology relating to digital products in general, and the open metadata digital products in particular.",
@@ -43,8 +43,8 @@ public enum ProductFolderDefinition
     /**
      * Terminology relating to digital subscriptions.
      */
-    GLOSSARY_SUBSCRIPTIONS(OpenMetadataType.COLLECTION.typeName,
-                           OpenMetadataType.FOLDER_COLLECTION_CLASSIFICATION.typeName,
+    GLOSSARY_SUBSCRIPTIONS(OpenMetadataType.COLLECTION_FOLDER.typeName,
+                           null,
                            GLOSSARY,
                            "Digital Subscriptions",
                            "Terminology relating to digital subscriptions.",
@@ -53,8 +53,8 @@ public enum ProductFolderDefinition
     /**
      * Terminology relating to data items found in the digital products.
      */
-    GLOSSARY_DATA_ITEMS(OpenMetadataType.COLLECTION.typeName,
-                        OpenMetadataType.FOLDER_COLLECTION_CLASSIFICATION.typeName,
+    GLOSSARY_DATA_ITEMS(OpenMetadataType.COLLECTION_FOLDER.typeName,
+                        null,
                         GLOSSARY,
                         "Data Item Semantics",
                         "Descriptions of the data found in data items of the digital products.",
@@ -64,7 +64,7 @@ public enum ProductFolderDefinition
      * Open Metadata Digital Product Data Dictionary
      */
     DATA_DICTIONARY(OpenMetadataType.DATA_DICTIONARY_COLLECTION.typeName,
-                    OpenMetadataType.ROOT_COLLECTION_CLASSIFICATION.typeName,
+                    null,
                     TOP_LEVEL,
                     "Open Metadata Digital Product Data Dictionary",
                     "Details of the types of data fields used in the open metadata digital products.",
@@ -74,7 +74,7 @@ public enum ProductFolderDefinition
      * Open Metadata Digital Product Catalog
      */
     PRODUCTS(OpenMetadataType.DIGITAL_PRODUCT_FAMILY.typeName,
-             OpenMetadataType.FOLDER_COLLECTION_CLASSIFICATION.typeName,
+             null,
              TOP_LEVEL,
              "Open Metadata Digital Products",
              "Extracts of open metadata organized into useful data sets.  These digital products support a variety of subscription choices.  Data can be delivered either as a CSV file, or as a PostGreSQL table.  Updates to the subscriber's copy typically occur within 1 hour of receiving the metadata update.",
@@ -124,7 +124,7 @@ public enum ProductFolderDefinition
      */
     public String getQualifiedName()
     {
-        return "OpenMetadataProductCatalog::" + classificationName + "::" + displayName;
+        return "OpenMetadataProductCatalog::" + typeName + "::" + displayName;
     }
 
 

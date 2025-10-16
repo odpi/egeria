@@ -31,7 +31,7 @@ public class ChangeManagementLibraryProperties extends ResourceManagerProperties
     public ChangeManagementLibraryProperties()
     {
         super();
-        super.setTypeName(OpenMetadataType.CHANGE_MANAGEMENT_LIBRARY_CLASSIFICATION.typeName);
+        super.setTypeName(OpenMetadataType.CHANGE_MANAGEMENT_LIBRARY.typeName);
     }
 
 

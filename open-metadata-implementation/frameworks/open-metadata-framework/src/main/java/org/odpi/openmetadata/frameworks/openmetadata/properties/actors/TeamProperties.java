@@ -28,7 +28,6 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 public class TeamProperties extends ActorProfileProperties
 {
     private String teamType    = null;
-    private String identifier  = null;
 
 
     /**
@@ -76,28 +75,6 @@ public class TeamProperties extends ActorProfileProperties
     public void setTeamType(String teamType)
     {
         this.teamType = teamType;
-    }
-
-
-    /**
-     * Return the code that uniquely identifies the team.
-     *
-     * @return string code
-     */
-    public String getIdentifier()
-    {
-        return identifier;
-    }
-
-
-    /**
-     * Set up the code that uniquely identifies the team.
-     *
-     * @param identifier string code
-     */
-    public void setIdentifier(String identifier)
-    {
-        this.identifier = identifier;
     }
 
 

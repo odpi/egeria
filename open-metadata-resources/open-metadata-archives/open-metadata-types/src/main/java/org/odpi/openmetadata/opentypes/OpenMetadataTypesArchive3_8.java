@@ -238,23 +238,7 @@ public class OpenMetadataTypesArchive3_8
      */
     private void update0015LinkedMediaTypes()
     {
-        this.archiveBuilder.addTypeDefPatch(updateExternalReferenceLinkRelationship());
         this.archiveBuilder.addTypeDefPatch(updateMediaReferenceRelationship());
-    }
-
-    private TypeDefPatch updateExternalReferenceLinkRelationship()
-    {
-        /*
-         * Create the Patch
-         */
-        TypeDefPatch  typeDefPatch = archiveBuilder.getPatchForType(OpenMetadataType.EXTERNAL_REFERENCE_LINK_RELATIONSHIP.typeName);
-
-        typeDefPatch.setUpdatedBy(originatorName);
-        typeDefPatch.setUpdateTime(creationDate);
-        typeDefPatch.setUpdateMultiLink(true);
-        typeDefPatch.setMultiLink(true);
-
-        return typeDefPatch;
     }
 
 
@@ -394,23 +378,6 @@ public class OpenMetadataTypesArchive3_8
     {
         this.archiveBuilder.addEntityDef(getRepositoryGovernanceEngineEntity());
         this.archiveBuilder.addEntityDef(getRepositoryGovernanceServiceEntity());
-        this.archiveBuilder.addTypeDefPatch(updateSupportedGovernanceServiceRelationship());
-    }
-
-
-    private TypeDefPatch updateSupportedGovernanceServiceRelationship()
-    {
-        /*
-         * Create the Patch
-         */
-        TypeDefPatch  typeDefPatch = archiveBuilder.getPatchForType(OpenMetadataType.SUPPORTED_GOVERNANCE_SERVICE_RELATIONSHIP.typeName);
-
-        typeDefPatch.setUpdatedBy(originatorName);
-        typeDefPatch.setUpdateTime(creationDate);
-        typeDefPatch.setUpdateMultiLink(true);
-        typeDefPatch.setMultiLink(true);
-
-        return typeDefPatch;
     }
 
 

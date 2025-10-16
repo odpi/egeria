@@ -6,7 +6,6 @@ import com.fasterxml.jackson.annotation.*;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.ReferenceableProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.datadictionaries.DataDictionaryProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.datadictionaries.DataSpecProperties;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.designmodels.DesignModelFolderProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.designmodels.DesignModelProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.digitalbusiness.AgreementProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.digitalbusiness.BusinessCapabilityProperties;
@@ -32,16 +31,17 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
         {
                 @JsonSubTypes.Type(value = AgreementProperties.class, name = "AgreementProperties"),
                 @JsonSubTypes.Type(value = BusinessCapabilityProperties.class, name = "BusinessCapabilityProperties"),
+                @JsonSubTypes.Type(value = CollectionFolderProperties.class, name = "CollectionFolderProperties"),
                 @JsonSubTypes.Type(value = DataDictionaryProperties.class, name = "DataDictionaryProperties"),
                 @JsonSubTypes.Type(value = DataSpecProperties.class, name = "DataSpecProperties"),
                 @JsonSubTypes.Type(value = DesignModelProperties.class, name = "DesignModelProperties"),
-                @JsonSubTypes.Type(value = DesignModelFolderProperties.class, name = "DesignModelFolderProperties"),
                 @JsonSubTypes.Type(value = DigitalProductProperties.class, name = "DigitalProductProperties"),
                 @JsonSubTypes.Type(value = DigitalProductCatalogProperties.class, name = "DigitalProductCatalogProperties"),
                 @JsonSubTypes.Type(value = EventSetProperties.class, name = "EventSetProperties"),
                 @JsonSubTypes.Type(value = GlossaryProperties.class, name = "GlossaryProperties"),
                 @JsonSubTypes.Type(value = InformationSupplyChainProperties.class, name = "InformationSupplyChainProperties"),
                 @JsonSubTypes.Type(value = NamingStandardRuleSetProperties.class, name = "NamingStandardRuleSetProperties"),
+                @JsonSubTypes.Type(value = RootCollectionProperties.class, name = "RootCollectionProperties"),
         })
 public class CollectionProperties extends ReferenceableProperties
 {

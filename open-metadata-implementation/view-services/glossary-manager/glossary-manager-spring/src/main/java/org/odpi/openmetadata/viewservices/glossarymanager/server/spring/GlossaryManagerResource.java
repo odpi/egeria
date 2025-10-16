@@ -26,7 +26,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/servers/{serverName}/api/open-metadata/glossary-manager")
 
 @Tag(name="API: Glossary Manager OMVS",
-     description="The Glossary Manager OMVS enables the caller to create glossary terms and organize them into categories as part of a controlled workflow process.  It supports the editing glossary and multiple states.",
+     description="Create and maintain glossary terms and organize them into glossaries.  This work may be part of a controlled workflow process allowing for review and approval cycles.",
      externalDocs=@ExternalDocumentation(description="Further Information",
                                          url="https://egeria-project.org/services/omvs/glossary-manager/overview/"))
 

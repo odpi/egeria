@@ -157,47 +157,12 @@ public class OpenMetadataTypesArchive5_3
         /*
          * New types for this release
          */
-        this.update0010BaseModel();
         this.update0330GlossaryTerms();
-        this.update0017ExternalIds();
         this.add058xDataDictionaries();
-        this.update0056ResourceManagers();
         this.update0201Connections();
         this.update0205ConnectionLinkage();
         this.update0730SolutionComponents();
         this.update0770LineageMapping();
-    }
-
-
-    /*
-     * -------------------------------------------------------------------------------------------------------
-     */
-
-    private void update0010BaseModel()
-    {
-        this.archiveBuilder.addTypeDefPatch(updateAnchors());
-    }
-
-    private TypeDefPatch updateAnchors()
-    {
-        /*
-         * Create the Patch
-         */
-        TypeDefPatch typeDefPatch = archiveBuilder.getPatchForType(OpenMetadataType.ANCHORS_CLASSIFICATION.typeName);
-
-        typeDefPatch.setUpdatedBy(originatorName);
-        typeDefPatch.setUpdateTime(creationDate);
-
-        /*
-         * Build the attributes
-         */
-        List<TypeDefAttribute> properties = new ArrayList<>();
-
-        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.ANCHOR_SCOPE_GUID));
-
-        typeDefPatch.setPropertyDefinitions(properties);
-
-        return typeDefPatch;
     }
 
 
@@ -234,39 +199,6 @@ public class OpenMetadataTypesArchive5_3
     }
 
 
-    /*
-     * -------------------------------------------------------------------------------------------------------
-     */
-
-    /**
-     * 0118 Actor Roles and related updates
-     */
-    private void update0017ExternalIds()
-    {
-        this.archiveBuilder.addTypeDefPatch(updateExternalId());
-    }
-
-    private TypeDefPatch updateExternalId()
-    {
-        /*
-         * Create the Patch
-         */
-        TypeDefPatch typeDefPatch = archiveBuilder.getPatchForType(OpenMetadataType.EXTERNAL_ID.typeName);
-
-        typeDefPatch.setUpdatedBy(originatorName);
-        typeDefPatch.setUpdateTime(creationDate);
-
-        /*
-         * Build the attributes
-         */
-        List<TypeDefAttribute> properties = new ArrayList<>();
-
-        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.EXT_INSTANCE_TYPE_NAME));
-
-        typeDefPatch.setPropertyDefinitions(properties);
-
-        return typeDefPatch;
-    }
 
     /*
      * -------------------------------------------------------------------------------------------------------
@@ -987,43 +919,6 @@ public class OpenMetadataTypesArchive5_3
 
         return relationshipDef;
     }
-
-
-    /*
-     * -------------------------------------------------------------------------------------------------------
-     */
-
-    /**
-     * 0056 Resource Managers
-     */
-    private void update0056ResourceManagers()
-    {
-        this.archiveBuilder.addTypeDefPatch(updateFileSystemClassification());
-    }
-
-    private TypeDefPatch updateFileSystemClassification()
-    {
-        /*
-         * Create the Patch
-         */
-        TypeDefPatch  typeDefPatch = archiveBuilder.getPatchForType(OpenMetadataType.FILE_SYSTEM_CLASSIFICATION.typeName);
-
-        typeDefPatch.setUpdatedBy(originatorName);
-        typeDefPatch.setUpdateTime(creationDate);
-
-        /*
-         * Build the attributes
-         */
-        List<TypeDefAttribute> properties = new ArrayList<>();
-
-        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.LOCAL_MOUNT_POINT));
-        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.CANONICAL_MOUNT_POINT));
-
-        typeDefPatch.setPropertyDefinitions(properties);
-
-        return typeDefPatch;
-    }
-
 
 
 
