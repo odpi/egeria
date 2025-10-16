@@ -15,7 +15,11 @@
 <script type="text/javascript" src="../../../../../../../../script-dir/jquery-ui.min.js"></script>
 </head>
 <body class="package-declaration-page">
-<script type="text/javascript">var pathtoroot = "../../../../../../../../";
+<script type="text/javascript">var evenRowColor = "even-row-color";
+var oddRowColor = "odd-row-color";
+var tableTab = "table-tab";
+var activeTableTab = "active-table-tab";
+var pathtoroot = "../../../../../../../../";
 loadScripts(document, 'script');</script>
 <noscript>
 <div>JavaScript is disabled on your browser.</div>
@@ -81,13 +85,63 @@ loadScripts(document, 'script');</script>
 </li>
 <li>
 <div id="class-summary">
-<div class="caption"><span>Interfaces</span></div>
+<div class="table-tabs" role="tablist" aria-orientation="horizontal"><button id="class-summary-tab0" role="tab" aria-selected="true" aria-controls="class-summary.tabpanel" tabindex="0" onkeydown="switchTab(event)" onclick="show('class-summary', 'class-summary', 2)" class="active-table-tab">All Classes and Interfaces</button><button id="class-summary-tab1" role="tab" aria-selected="false" aria-controls="class-summary.tabpanel" tabindex="-1" onkeydown="switchTab(event)" onclick="show('class-summary', 'class-summary-tab1', 2)" class="table-tab">Interfaces</button><button id="class-summary-tab2" role="tab" aria-selected="false" aria-controls="class-summary.tabpanel" tabindex="-1" onkeydown="switchTab(event)" onclick="show('class-summary', 'class-summary-tab2', 2)" class="table-tab">Classes</button></div>
+<div id="class-summary.tabpanel" role="tabpanel" aria-labelledby="class-summary-tab0">
 <div class="summary-table two-column-summary">
 <div class="table-header col-first">Class</div>
 <div class="table-header col-last">Description</div>
-<div class="col-first even-row-color class-summary class-summary-tab1"><a href="RegisteredIntegrationModule.html" title="interface in org.odpi.openmetadata.adapters.connectors.apacheatlas.integration.modules">RegisteredIntegrationModule</a></div>
-<div class="col-last even-row-color class-summary class-summary-tab1">
-<div class="block">RegisteredIntegrationModule defines the interface for an integration module that wants to be called to synchronize assets.</div>
+<div class="col-first even-row-color class-summary class-summary-tab2"><a href="ApacheHiveIntegrationModule.html" title="class in org.odpi.openmetadata.adapters.connectors.apacheatlas.integration.modules">ApacheHiveIntegrationModule</a></div>
+<div class="col-last even-row-color class-summary class-summary-tab2">
+<div class="block">ApacheHiveIntegrationModule manages the cataloguing of Apache Hive entities stored in Apache Atlas into the open metadata ecosystem.</div>
+</div>
+<div class="col-first odd-row-color class-summary class-summary-tab2"><a href="ApacheKafkaIntegrationModule.html" title="class in org.odpi.openmetadata.adapters.connectors.apacheatlas.integration.modules">ApacheKafkaIntegrationModule</a></div>
+<div class="col-last odd-row-color class-summary class-summary-tab2">
+<div class="block">ApacheKafkaIntegrationModule maps Apache Kafka resources catalogued in Apache Atlas into the open metadata ecosystem.</div>
+</div>
+<div class="col-first even-row-color class-summary class-summary-tab2"><a href="AtlasGlossaryIntegrationModule.html" title="class in org.odpi.openmetadata.adapters.connectors.apacheatlas.integration.modules">AtlasGlossaryIntegrationModule</a></div>
+<div class="col-last even-row-color class-summary class-summary-tab2">
+<div class="block">AtlasGlossaryIntegrationModule exchanges glossary terms between Apache Atlas and the open metadata ecosystem.</div>
+</div>
+<div class="col-first odd-row-color class-summary class-summary-tab2"><a href="AtlasInformalTagsIntegrationModule.html" title="class in org.odpi.openmetadata.adapters.connectors.apacheatlas.integration.modules">AtlasInformalTagsIntegrationModule</a></div>
+<div class="col-last odd-row-color class-summary class-summary-tab2">
+<div class="block">AtlasInformalTagsIntegrationModule synchronizes InformalTags from the open metadata ecosystem to Apache Atlas.</div>
+</div>
+<div class="col-first even-row-color class-summary class-summary-tab2"><a href="AtlasIntegrationModuleBase.html" title="class in org.odpi.openmetadata.adapters.connectors.apacheatlas.integration.modules">AtlasIntegrationModuleBase</a></div>
+<div class="col-last even-row-color class-summary class-summary-tab2">
+<div class="block">AtlasIntegrationModuleBase defines the interface that classes that support the synchronization of particular types of metadata with Apache Atlas.</div>
+</div>
+<div class="col-first odd-row-color class-summary class-summary-tab2"><a href="AtlasLineageIntegrationModule.html" title="class in org.odpi.openmetadata.adapters.connectors.apacheatlas.integration.modules">AtlasLineageIntegrationModule</a></div>
+<div class="col-last odd-row-color class-summary class-summary-tab2">
+<div class="block">AtlasLineageIntegrationModule synchronizes lineage from Apache Atlas to the open metadata ecosystem.</div>
+</div>
+<div class="col-first even-row-color class-summary class-summary-tab2"><a href="AtlasReferenceClassificationsIntegrationModule.html" title="class in org.odpi.openmetadata.adapters.connectors.apacheatlas.integration.modules">AtlasReferenceClassificationsIntegrationModule</a></div>
+<div class="col-last even-row-color class-summary class-summary-tab2">
+<div class="block">AtlasReferenceClassificationsIntegrationModule synchronizes a valid value set of classification definitions from the open metadata ecosystem
+ to Apache Atlas as classification definitions.</div>
+</div>
+<div class="col-first odd-row-color class-summary class-summary-tab2"><a href="AtlasRegisteredIntegrationModuleBase.html" title="class in org.odpi.openmetadata.adapters.connectors.apacheatlas.integration.modules">AtlasRegisteredIntegrationModuleBase</a></div>
+<div class="col-last odd-row-color class-summary class-summary-tab2">
+<div class="block">AtlasRegisteredIntegrationModuleBase defines the common classes for integration modules that are working with assets from Apache Atlas.</div>
+</div>
+<div class="col-first even-row-color class-summary class-summary-tab2"><a href="AtlasRelatedElementsIntegrationModule.html" title="class in org.odpi.openmetadata.adapters.connectors.apacheatlas.integration.modules">AtlasRelatedElementsIntegrationModule</a></div>
+<div class="col-last even-row-color class-summary class-summary-tab2">
+<div class="block">AtlasRelatedElementsIntegrationModule synchronizes related entities and classifications attached to Apache Atlas originating entities within
+ the open metadata ecosystem.</div>
+</div>
+<div class="col-first odd-row-color class-summary class-summary-tab2"><a href="DatabaseIntegrationModuleBase.html" title="class in org.odpi.openmetadata.adapters.connectors.apacheatlas.integration.modules">DatabaseIntegrationModuleBase</a></div>
+<div class="col-last odd-row-color class-summary class-summary-tab2">
+<div class="block">DatabaseIntegrationModuleBase abstracts the process of synchronizing relational metadata from Apache Atlas, so it is
+ independent of the actual Apache Atlas types.</div>
+</div>
+<div class="col-first even-row-color class-summary class-summary-tab2"><a href="RDBMSIntegrationModule.html" title="class in org.odpi.openmetadata.adapters.connectors.apacheatlas.integration.modules">RDBMSIntegrationModule</a></div>
+<div class="col-last even-row-color class-summary class-summary-tab2">
+<div class="block">RDBMSIntegrationModule manages the cataloguing of RDBMS entities stored in Apache Atlas into the open metadata ecosystem.</div>
+</div>
+<div class="col-first odd-row-color class-summary class-summary-tab1"><a href="RegisteredIntegrationModule.html" title="interface in org.odpi.openmetadata.adapters.connectors.apacheatlas.integration.modules">RegisteredIntegrationModule</a></div>
+<div class="col-last odd-row-color class-summary class-summary-tab1">
+<div class="block">RegisteredIntegrationModule defines the interface for an integration module that wants to be called to synchronize
+ metadata between Egeria's open metadata ecosystem and Apache Atlas.</div>
+</div>
 </div>
 </div>
 </div>

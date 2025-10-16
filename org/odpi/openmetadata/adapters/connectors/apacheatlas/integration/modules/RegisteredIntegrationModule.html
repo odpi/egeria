@@ -72,9 +72,16 @@ loadScripts(document, 'script');</script>
 <h1 title="Interface RegisteredIntegrationModule" class="title">Interface RegisteredIntegrationModule</h1>
 </div>
 <section class="class-description" id="class-description">
+<dl class="notes">
+<dt>All Known Implementing Classes:</dt>
+<dd><code><a href="ApacheHiveIntegrationModule.html" title="class in org.odpi.openmetadata.adapters.connectors.apacheatlas.integration.modules">ApacheHiveIntegrationModule</a></code>, <code><a href="ApacheKafkaIntegrationModule.html" title="class in org.odpi.openmetadata.adapters.connectors.apacheatlas.integration.modules">ApacheKafkaIntegrationModule</a></code>, <code><a href="AtlasGlossaryIntegrationModule.html" title="class in org.odpi.openmetadata.adapters.connectors.apacheatlas.integration.modules">AtlasGlossaryIntegrationModule</a></code>, <code><a href="AtlasRegisteredIntegrationModuleBase.html" title="class in org.odpi.openmetadata.adapters.connectors.apacheatlas.integration.modules">AtlasRegisteredIntegrationModuleBase</a></code>, <code><a href="DatabaseIntegrationModuleBase.html" title="class in org.odpi.openmetadata.adapters.connectors.apacheatlas.integration.modules">DatabaseIntegrationModuleBase</a></code>, <code><a href="RDBMSIntegrationModule.html" title="class in org.odpi.openmetadata.adapters.connectors.apacheatlas.integration.modules">RDBMSIntegrationModule</a></code></dd>
+</dl>
 <hr>
 <div class="type-signature"><span class="modifiers">public interface </span><span class="element-name type-name-label">RegisteredIntegrationModule</span></div>
-<div class="block">RegisteredIntegrationModule defines the interface for an integration module that wants to be called to synchronize assets.</div>
+<div class="block">RegisteredIntegrationModule defines the interface for an integration module that wants to be called to synchronize
+ metadata between Egeria's open metadata ecosystem and Apache Atlas.  The integration work is
+ divided into modules that each focus on a particular type of open metadata.  This is because the
+ mapping between Apache atlas and open metadata is not one-to-one and requires special case code in places.</div>
 </section>
 <section class="summary">
 <ul class="summary-list">

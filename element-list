@@ -75,6 +75,7 @@ org.odpi.openmetadata.adapters.connectors.nannyconnectors.harvestvalidvalues
 org.odpi.openmetadata.adapters.connectors.postgres.catalog
 org.odpi.openmetadata.adapters.connectors.postgres.controls
 org.odpi.openmetadata.adapters.connectors.postgres.ffdc
+org.odpi.openmetadata.adapters.connectors.postgres.solution
 org.odpi.openmetadata.adapters.connectors.postgres.survey
 org.odpi.openmetadata.adapters.connectors.postgres.tabulardatasource
 org.odpi.openmetadata.adapters.connectors.postgres.tabulardatasource.ffdc
@@ -267,7 +268,6 @@ org.odpi.openmetadata.frameworks.connectors.mapper
 org.odpi.openmetadata.frameworks.connectors.properties.beans
 org.odpi.openmetadata.frameworks.connectors.properties.users
 org.odpi.openmetadata.frameworks.connectors.tabulardatasets
-org.odpi.openmetadata.frameworks.integration.client
 org.odpi.openmetadata.frameworks.integration.connectors
 org.odpi.openmetadata.frameworks.integration.context
 org.odpi.openmetadata.frameworks.integration.contextmanager
@@ -374,14 +374,6 @@ org.odpi.openmetadata.frameworkservices.ocf.metadatamanagement.client
 org.odpi.openmetadata.frameworkservices.ocf.metadatamanagement.ffdc
 org.odpi.openmetadata.frameworkservices.ocf.metadatamanagement.server
 org.odpi.openmetadata.frameworkservices.ocf.metadatamanagement.server.spring
-org.odpi.openmetadata.frameworkservices.oif.admin
-org.odpi.openmetadata.frameworkservices.oif.client
-org.odpi.openmetadata.frameworkservices.oif.client.contextmanager
-org.odpi.openmetadata.frameworkservices.oif.client.rest
-org.odpi.openmetadata.frameworkservices.oif.ffdc
-org.odpi.openmetadata.frameworkservices.oif.rest
-org.odpi.openmetadata.frameworkservices.oif.server
-org.odpi.openmetadata.frameworkservices.oif.server.spring
 org.odpi.openmetadata.frameworkservices.omf.admin
 org.odpi.openmetadata.frameworkservices.omf.client
 org.odpi.openmetadata.frameworkservices.omf.client.handlers
@@ -583,10 +575,10 @@ org.odpi.openmetadata.viewservices.digitalbusiness.admin
 org.odpi.openmetadata.viewservices.digitalbusiness.ffdc
 org.odpi.openmetadata.viewservices.digitalbusiness.server
 org.odpi.openmetadata.viewservices.digitalbusiness.server.spring
-org.odpi.openmetadata.viewservices.externalreferences.admin
-org.odpi.openmetadata.viewservices.externalreferences.ffdc
-org.odpi.openmetadata.viewservices.externalreferences.server
-org.odpi.openmetadata.viewservices.externalreferences.server.spring
+org.odpi.openmetadata.viewservices.externallinks.admin
+org.odpi.openmetadata.viewservices.externallinks.ffdc
+org.odpi.openmetadata.viewservices.externallinks.server
+org.odpi.openmetadata.viewservices.externallinks.server.spring
 org.odpi.openmetadata.viewservices.feedbackmanager.admin
 org.odpi.openmetadata.viewservices.feedbackmanager.ffdc
 org.odpi.openmetadata.viewservices.feedbackmanager.server

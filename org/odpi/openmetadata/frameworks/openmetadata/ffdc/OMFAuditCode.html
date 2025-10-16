@@ -143,26 +143,30 @@ implements <a href="../../auditlog/messagesets/AuditLogMessageSet.html" title="i
 <div class="col-last even-row-color">
 <div class="block">OPEN-METADATA-0010 - The {0} connector has detected an unsynchronized {1} element ({2}) in metadata collection {3} ({4}) but the permitted synchronization to catalog target {5} is {6}</div>
 </div>
-<div class="col-first odd-row-color"><code><a href="#UNEXPECTED_CONVERTER_EXCEPTION" class="member-name-link">UNEXPECTED_CONVERTER_EXCEPTION</a></code></div>
+<div class="col-first odd-row-color"><code><a href="#MISSING_CORRELATION" class="member-name-link">MISSING_CORRELATION</a></code></div>
 <div class="col-last odd-row-color">
+<div class="block">OPEN-METADATA-0007 - The {0} connector can not retrieve the correlation information for {1} open metadata element {2} linked via metadata collection {3} to external element {4}</div>
+</div>
+<div class="col-first even-row-color"><code><a href="#UNEXPECTED_CONVERTER_EXCEPTION" class="member-name-link">UNEXPECTED_CONVERTER_EXCEPTION</a></code></div>
+<div class="col-last even-row-color">
 <div class="block">OPEN-METADATA-0025 - The Open Metadata Store has received an unexpected {0} exception while formatting a response during method {1}.</div>
 </div>
-<div class="col-first even-row-color"><code><a href="#UNEXPECTED_EXC_MONITOR_START" class="member-name-link">UNEXPECTED_EXC_MONITOR_START</a></code></div>
-<div class="col-last even-row-color">
+<div class="col-first odd-row-color"><code><a href="#UNEXPECTED_EXC_MONITOR_START" class="member-name-link">UNEXPECTED_EXC_MONITOR_START</a></code></div>
+<div class="col-last odd-row-color">
 <div class="block">OPEN-METADATA-0003 - An unexpected {0} exception was returned to the {1} connector by the Apache Commons
  FileAlterationMonitor while it was starting the monitoring service.</div>
 </div>
-<div class="col-first odd-row-color"><code><a href="#UNEXPECTED_EXC_MONITOR_STOP" class="member-name-link">UNEXPECTED_EXC_MONITOR_STOP</a></code></div>
-<div class="col-last odd-row-color">
+<div class="col-first even-row-color"><code><a href="#UNEXPECTED_EXC_MONITOR_STOP" class="member-name-link">UNEXPECTED_EXC_MONITOR_STOP</a></code></div>
+<div class="col-last even-row-color">
 <div class="block">OPEN-METADATA-0004 - An unexpected {0} exception was returned to the {1} connector by the Apache Commons
  FileAlterationMonitor while it stopping the monitoring service.</div>
 </div>
-<div class="col-first even-row-color"><code><a href="#UNEXPECTED_EXCEPTION" class="member-name-link">UNEXPECTED_EXCEPTION</a></code></div>
-<div class="col-last even-row-color">
+<div class="col-first odd-row-color"><code><a href="#UNEXPECTED_EXCEPTION" class="member-name-link">UNEXPECTED_EXCEPTION</a></code></div>
+<div class="col-last odd-row-color">
 <div class="block">OPEN-METADATA-0013 - The {0} connector received an unexpected exception {1} during method {2}; the error message was: {3}</div>
 </div>
-<div class="col-first odd-row-color"><code><a href="#UNKNOWN_ACTION" class="member-name-link">UNKNOWN_ACTION</a></code></div>
-<div class="col-last odd-row-color">
+<div class="col-first even-row-color"><code><a href="#UNKNOWN_ACTION" class="member-name-link">UNKNOWN_ACTION</a></code></div>
+<div class="col-last even-row-color">
 <div class="block">OPEN-METADATA-0011 - The {0} connector is unsure which action to take for an element.</div>
 </div>
 </div>
@@ -267,6 +271,13 @@ the order they are declared.</div>
 <h3>DISCONNECT_DETECTED</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OMFAuditCode.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">OMFAuditCode</a></span>&nbsp;<span class="element-name">DISCONNECT_DETECTED</span></div>
 <div class="block">OPEN-METADATA-0006 - The {0} connector has been disconnected - either due to its own actions or a cancel request</div>
+</section>
+</li>
+<li>
+<section class="detail" id="MISSING_CORRELATION">
+<h3>MISSING_CORRELATION</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OMFAuditCode.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">OMFAuditCode</a></span>&nbsp;<span class="element-name">MISSING_CORRELATION</span></div>
+<div class="block">OPEN-METADATA-0007 - The {0} connector can not retrieve the correlation information for {1} open metadata element {2} linked via metadata collection {3} to external element {4}</div>
 </section>
 </li>
 <li>

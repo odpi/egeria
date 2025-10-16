@@ -78,7 +78,7 @@ loadScripts(document, 'script');</script>
 </dl>
 <dl class="notes">
 <dt>All Known Implementing Classes:</dt>
-<dd><code><a href="EgeriaSolutionComponent.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.definitions">EgeriaSolutionComponent</a></code>, <code><a href="../../../samples/archiveutilities/governanceengines/SolutionComponent.html" title="enum class in org.odpi.openmetadata.samples.archiveutilities.governanceengines">SolutionComponent</a></code></dd>
+<dd><code><a href="EgeriaSolutionComponent.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.definitions">EgeriaSolutionComponent</a></code>, <code><a href="../../../adapters/connectors/postgres/solution/PostgresSolutionComponent.html" title="enum class in org.odpi.openmetadata.adapters.connectors.postgres.solution">PostgresSolutionComponent</a></code>, <code><a href="../../../samples/archiveutilities/governanceengines/SolutionComponent.html" title="enum class in org.odpi.openmetadata.samples.archiveutilities.governanceengines">SolutionComponent</a></code></dd>
 </dl>
 <hr>
 <div class="type-signature"><span class="modifiers">public interface </span><span class="element-name type-name-label">SolutionComponentDefinition</span><span class="extends-implements">
@@ -122,15 +122,25 @@ extends <a href="ReferenceableDefinition.html" title="interface in org.odpi.open
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">
 <div class="block">Return which type of software component is likely to be deployed to implement this solution component.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="SolutionComponentDefinition.html" title="interface in org.odpi.openmetadata.frameworks.openmetadata.definitions">SolutionComponentDefinition</a>&gt;</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#getSubComponents()" class="member-name-link">getSubComponents</a>()</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab5"><code>default <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="SolutionComponentDefinition.html" title="interface in org.odpi.openmetadata.frameworks.openmetadata.definitions">SolutionComponentDefinition</a>&gt;</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab5"><code><a href="#getParentComponents()" class="member-name-link">getParentComponents</a>()</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab5">
+<div class="block">Return the optional list of parent components to link it to.</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="SolutionComponentDefinition.html" title="interface in org.odpi.openmetadata.frameworks.openmetadata.definitions">SolutionComponentDefinition</a>&gt;</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#getSubComponents()" class="member-name-link">getSubComponents</a>()</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">
 <div class="block">Return the optional list of subcomponents.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab5"><code>default <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab5"><code><a href="#getTypeName()" class="member-name-link">getTypeName</a>()</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab5">
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab5"><code>default <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab5"><code><a href="#getTypeName()" class="member-name-link">getTypeName</a>()</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab5">
 <div class="block">Return the type of this element.</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab5"><code>default <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab5"><code><a href="#getURL()" class="member-name-link">getURL</a>()</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab5">
+<div class="block">Return an optional URL that describes this solution component.</div>
 </div>
 </div>
 </div>
@@ -181,6 +191,28 @@ extends <a href="ReferenceableDefinition.html" title="interface in org.odpi.open
 <dl class="notes">
 <dt>Returns:</dt>
 <dd>string</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="getURL()">
+<h3>getURL</h3>
+<div class="member-signature"><span class="modifiers">default</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">getURL</span>()</div>
+<div class="block">Return an optional URL that describes this solution component.</div>
+<dl class="notes">
+<dt>Returns:</dt>
+<dd>string</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="getParentComponents()">
+<h3>getParentComponents</h3>
+<div class="member-signature"><span class="modifiers">default</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="SolutionComponentDefinition.html" title="interface in org.odpi.openmetadata.frameworks.openmetadata.definitions">SolutionComponentDefinition</a>&gt;</span>&nbsp;<span class="element-name">getParentComponents</span>()</div>
+<div class="block">Return the optional list of parent components to link it to.</div>
+<dl class="notes">
+<dt>Returns:</dt>
+<dd>null or list</dd>
 </dl>
 </section>
 </li>

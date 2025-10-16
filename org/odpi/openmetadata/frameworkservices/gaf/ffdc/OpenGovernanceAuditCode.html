@@ -120,37 +120,41 @@ implements <a href="../../../frameworks/auditlog/messagesets/AuditLogMessageSet.
 <div class="col-last even-row-color">
 <div class="block">OPEN-GOVERNANCE-0020 - Log message for asset {0} from governance service {1}: {2}</div>
 </div>
-<div class="col-first odd-row-color"><code><a href="#SERVICE_INITIALIZED" class="member-name-link">SERVICE_INITIALIZED</a></code></div>
+<div class="col-first odd-row-color"><code><a href="#CONTEXT_INITIALIZING" class="member-name-link">CONTEXT_INITIALIZING</a></code></div>
 <div class="col-last odd-row-color">
+<div class="block">OPEN-GOVERNANCE-0002 - The catalog integrator context manager is being initialized for calls to server {0} on platform {1}</div>
+</div>
+<div class="col-first even-row-color"><code><a href="#SERVICE_INITIALIZED" class="member-name-link">SERVICE_INITIALIZED</a></code></div>
+<div class="col-last even-row-color">
 <div class="block">OPEN-GOVERNANCE-0005 - The Open Metadata Store Services has initialized a new instance for server {0}</div>
 </div>
-<div class="col-first even-row-color"><code><a href="#SERVICE_INITIALIZING" class="member-name-link">SERVICE_INITIALIZING</a></code></div>
-<div class="col-last even-row-color">
+<div class="col-first odd-row-color"><code><a href="#SERVICE_INITIALIZING" class="member-name-link">SERVICE_INITIALIZING</a></code></div>
+<div class="col-last odd-row-color">
 <div class="block">OPEN-GOVERNANCE-0001 - The Open Metadata Store Services are initializing a new server instance</div>
 </div>
-<div class="col-first odd-row-color"><code><a href="#SERVICE_INSTANCE_FAILURE" class="member-name-link">SERVICE_INSTANCE_FAILURE</a></code></div>
-<div class="col-last odd-row-color">
+<div class="col-first even-row-color"><code><a href="#SERVICE_INSTANCE_FAILURE" class="member-name-link">SERVICE_INSTANCE_FAILURE</a></code></div>
+<div class="col-last even-row-color">
 <div class="block">OPEN-GOVERNANCE-0006 - The Open Metadata Store Services are unable to initialize a new instance; error message is {0}</div>
 </div>
-<div class="col-first even-row-color"><code><a href="#SERVICE_SHUTDOWN" class="member-name-link">SERVICE_SHUTDOWN</a></code></div>
-<div class="col-last even-row-color">
+<div class="col-first odd-row-color"><code><a href="#SERVICE_SHUTDOWN" class="member-name-link">SERVICE_SHUTDOWN</a></code></div>
+<div class="col-last odd-row-color">
 <div class="block">OPEN-GOVERNANCE-0012 - The Open Metadata Store Services are shutting down its instance for server {0}</div>
 </div>
-<div class="col-first odd-row-color"><code><a href="#SERVICE_TERMINATING" class="member-name-link">SERVICE_TERMINATING</a></code></div>
-<div class="col-last odd-row-color">
+<div class="col-first even-row-color"><code><a href="#SERVICE_TERMINATING" class="member-name-link">SERVICE_TERMINATING</a></code></div>
+<div class="col-last even-row-color">
 <div class="block">OPEN-GOVERNANCE-0009 - The Open Metadata Store Services are shutting down server instance {0}</div>
 </div>
-<div class="col-first even-row-color"><code><a href="#UNEXPECTED_INITIALIZATION_EXCEPTION" class="member-name-link">UNEXPECTED_INITIALIZATION_EXCEPTION</a></code></div>
-<div class="col-last even-row-color">
+<div class="col-first odd-row-color"><code><a href="#UNEXPECTED_INITIALIZATION_EXCEPTION" class="member-name-link">UNEXPECTED_INITIALIZATION_EXCEPTION</a></code></div>
+<div class="col-last odd-row-color">
 <div class="block">OPEN-GOVERNANCE-0008 - The Open Metadata Store Services detected an unexpected {0} exception during the initialization of its services;
  error message is {1}</div>
 </div>
-<div class="col-first odd-row-color"><code><a href="#WATCHDOG_EVENT_FAILURE" class="member-name-link">WATCHDOG_EVENT_FAILURE</a></code></div>
-<div class="col-last odd-row-color">
+<div class="col-first even-row-color"><code><a href="#WATCHDOG_EVENT_FAILURE" class="member-name-link">WATCHDOG_EVENT_FAILURE</a></code></div>
+<div class="col-last even-row-color">
 <div class="block">OMES-GOVERNANCE-ACTION-0015 - The Open Governance Framework received an {0} exception from the {1} governance action service while it was processing a watchdog event of type {2}; error message is {3}</div>
 </div>
-<div class="col-first even-row-color"><code><a href="#WATCHDOG_LISTENER_EXCEPTION" class="member-name-link">WATCHDOG_LISTENER_EXCEPTION</a></code></div>
-<div class="col-last even-row-color">
+<div class="col-first odd-row-color"><code><a href="#WATCHDOG_LISTENER_EXCEPTION" class="member-name-link">WATCHDOG_LISTENER_EXCEPTION</a></code></div>
+<div class="col-last odd-row-color">
 <div class="block">OPEN-GOVERNANCE-0021 - Failed to publish watchdog event to Watchdog Governance Action Service for governance engine {0}.</div>
 </div>
 </div>
@@ -218,6 +222,13 @@ the order they are declared.</div>
 <h3>SERVICE_INITIALIZING</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OpenGovernanceAuditCode.html" title="enum class in org.odpi.openmetadata.frameworkservices.gaf.ffdc">OpenGovernanceAuditCode</a></span>&nbsp;<span class="element-name">SERVICE_INITIALIZING</span></div>
 <div class="block">OPEN-GOVERNANCE-0001 - The Open Metadata Store Services are initializing a new server instance</div>
+</section>
+</li>
+<li>
+<section class="detail" id="CONTEXT_INITIALIZING">
+<h3>CONTEXT_INITIALIZING</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OpenGovernanceAuditCode.html" title="enum class in org.odpi.openmetadata.frameworkservices.gaf.ffdc">OpenGovernanceAuditCode</a></span>&nbsp;<span class="element-name">CONTEXT_INITIALIZING</span></div>
+<div class="block">OPEN-GOVERNANCE-0002 - The catalog integrator context manager is being initialized for calls to server {0} on platform {1}</div>
 </section>
 </li>
 <li>
