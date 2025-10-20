@@ -167,7 +167,6 @@ public class OpenMetadataTypesArchive4_0
          * Add the type updates
          */
         add0220DataFileCollectionDataSet();
-        add0224TableDataSet();
         add0239DeployedReportType();
         update0462GovernanceActionProcesses();
         create0464DynamicIntegrationGroups();
@@ -175,7 +174,6 @@ public class OpenMetadataTypesArchive4_0
         update0720InformationSupplyChains();
         addFormulaTypeAttribute();
     }
-
 
 
     /*
@@ -194,21 +192,6 @@ public class OpenMetadataTypesArchive4_0
                                                  this.archiveBuilder.getEntityDef(OpenMetadataType.DATA_SET.typeName));
     }
 
-    /*
-     * -------------------------------------------------------------------------------------------------------
-     */
-
-    private void add0224TableDataSet()
-    {
-        this.archiveBuilder.addEntityDef(getTableDataSetEntity());
-
-    }
-
-    private EntityDef getTableDataSetEntity()
-    {
-        return archiveHelper.getDefaultEntityDef(OpenMetadataType.TABLE_DATA_SET,
-                                                 this.archiveBuilder.getEntityDef(OpenMetadataType.DATA_SET.typeName));
-    }
 
     /*
      * -------------------------------------------------------------------------------------------------------

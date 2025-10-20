@@ -320,10 +320,10 @@ public class SolutionArchitectRESTServices extends TokenController
      *  PropertyServerException    there is a problem retrieving information from the property server(s).
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    public VoidResponse unlinkPeersInInformationSupplyChain(String                   serverName,
-                                                            String                   peerOneGUID,
-                                                            String                   peerTwoGUID,
-                                                            DeleteRequestBody requestBody)
+    public VoidResponse unlinkPeersInInformationSupplyChain(String                        serverName,
+                                                            String                        peerOneGUID,
+                                                            String                        peerTwoGUID,
+                                                            DeleteRelationshipRequestBody requestBody)
     {
         final String methodName = "unlinkPeersInInformationSupplyChain";
 
@@ -447,10 +447,10 @@ public class SolutionArchitectRESTServices extends TokenController
      *  PropertyServerException    there is a problem retrieving information from the property server(s).
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    public VoidResponse decomposeInformationSupplyChains(String                   serverName,
-                                                         String                   informationSupplyChainGUID,
-                                                         String                   nestedInformationSupplyChainGUID,
-                                                         DeleteRequestBody requestBody)
+    public VoidResponse decomposeInformationSupplyChains(String                        serverName,
+                                                         String                        informationSupplyChainGUID,
+                                                         String                        nestedInformationSupplyChainGUID,
+                                                         DeleteRelationshipRequestBody requestBody)
     {
         final String methodName = "decomposeInformationSupplyChains";
 
@@ -498,7 +498,7 @@ public class SolutionArchitectRESTServices extends TokenController
      */
     public VoidResponse deleteInformationSupplyChain(String                   serverName,
                                                      String                   informationSupplyChainGUID,
-                                                     DeleteRequestBody requestBody)
+                                                     DeleteElementRequestBody requestBody)
     {
         final String methodName = "deleteInformationSupplyChain";
 
@@ -541,7 +541,7 @@ public class SolutionArchitectRESTServices extends TokenController
      *  UserNotAuthorizedException the user is not authorized to issue this request
      *  PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public InformationSupplyChainsResponse getInformationSupplyChainsByName(String            serverName,
+    public OpenMetadataRootElementsResponse getInformationSupplyChainsByName(String            serverName,
                                                                             boolean           addImplementation,
                                                                             FilterRequestBody requestBody)
     {
@@ -549,8 +549,8 @@ public class SolutionArchitectRESTServices extends TokenController
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
 
-        InformationSupplyChainsResponse response = new InformationSupplyChainsResponse();
-        AuditLog                        auditLog = null;
+        OpenMetadataRootElementsResponse response = new OpenMetadataRootElementsResponse();
+        AuditLog                         auditLog = null;
 
         try
         {
@@ -596,16 +596,16 @@ public class SolutionArchitectRESTServices extends TokenController
      *  UserNotAuthorizedException the user is not authorized to issue this request
      *  PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public InformationSupplyChainsResponse findInformationSupplyChains(String                  serverName,
-                                                                       boolean                 addImplementation,
-                                                                       SearchStringRequestBody requestBody)
+    public OpenMetadataRootElementsResponse findInformationSupplyChains(String                  serverName,
+                                                                        boolean                 addImplementation,
+                                                                        SearchStringRequestBody requestBody)
     {
         final String methodName = "findInformationSupplyChains";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
 
-        InformationSupplyChainsResponse response = new InformationSupplyChainsResponse();
-        AuditLog                        auditLog = null;
+        OpenMetadataRootElementsResponse response = new OpenMetadataRootElementsResponse();
+        AuditLog                         auditLog = null;
 
         try
         {
@@ -655,17 +655,17 @@ public class SolutionArchitectRESTServices extends TokenController
      *  UserNotAuthorizedException the user is not authorized to issue this request
      *  PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public InformationSupplyChainResponse getInformationSupplyChainByGUID(String             serverName,
-                                                                          String             informationSupplyChainGUID,
-                                                                          boolean            addImplementation,
-                                                                          GetRequestBody requestBody)
+    public OpenMetadataRootElementResponse getInformationSupplyChainByGUID(String         serverName,
+                                                                           String         informationSupplyChainGUID,
+                                                                           boolean        addImplementation,
+                                                                           GetRequestBody requestBody)
     {
         final String methodName = "getInformationSupplyChainByGUID";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
 
-        InformationSupplyChainResponse response = new InformationSupplyChainResponse();
-        AuditLog                      auditLog = null;
+        OpenMetadataRootElementResponse response = new OpenMetadataRootElementResponse();
+        AuditLog                        auditLog = null;
 
         try
         {
@@ -968,10 +968,10 @@ public class SolutionArchitectRESTServices extends TokenController
      *  PropertyServerException    there is a problem retrieving information from the property server(s).
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    public VoidResponse detachSolutionComponentFromBlueprint(String                   serverName,
-                                                             String                   parentSolutionBlueprintGUID,
-                                                             String                   nestedSolutionComponentGUID,
-                                                             DeleteRequestBody requestBody)
+    public VoidResponse detachSolutionComponentFromBlueprint(String                        serverName,
+                                                             String                        parentSolutionBlueprintGUID,
+                                                             String                        nestedSolutionComponentGUID,
+                                                             DeleteRelationshipRequestBody requestBody)
     {
         final String methodName = "detachSolutionComponentFromBlueprint";
 
@@ -1094,10 +1094,10 @@ public class SolutionArchitectRESTServices extends TokenController
      *  PropertyServerException    there is a problem retrieving information from the property server(s).
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    public VoidResponse detachSolutionDesign(String                   serverName,
-                                             String                   parentGUID,
-                                             String                   solutionBlueprintGUID,
-                                             DeleteRequestBody requestBody)
+    public VoidResponse detachSolutionDesign(String                        serverName,
+                                             String                        parentGUID,
+                                             String                        solutionBlueprintGUID,
+                                             DeleteRelationshipRequestBody requestBody)
     {
         final String methodName = "detachSolutionDesign";
 
@@ -1145,7 +1145,7 @@ public class SolutionArchitectRESTServices extends TokenController
      */
     public VoidResponse deleteSolutionBlueprint(String                   serverName,
                                                 String                   solutionBlueprintGUID,
-                                                DeleteRequestBody requestBody)
+                                                DeleteElementRequestBody requestBody)
     {
         final String methodName = "deleteSolutionBlueprint";
 
@@ -1418,10 +1418,10 @@ public class SolutionArchitectRESTServices extends TokenController
      *  PropertyServerException    there is a problem retrieving information from the property server(s).
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    public VoidResponse detachSolutionComponentActor(String                   serverName,
-                                                     String                   solutionRoleGUID,
-                                                     String                   solutionComponentGUID,
-                                                     DeleteRequestBody requestBody)
+    public VoidResponse detachSolutionComponentActor(String                        serverName,
+                                                     String                        solutionRoleGUID,
+                                                     String                        solutionComponentGUID,
+                                                     DeleteRelationshipRequestBody requestBody)
     {
         final String methodName = "detachSolutionComponentActor";
 
@@ -1731,10 +1731,10 @@ public class SolutionArchitectRESTServices extends TokenController
      *  PropertyServerException    there is a problem retrieving information from the property server(s).
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    public VoidResponse detachSubcomponent(String                   serverName,
-                                           String                   parentSolutionComponentGUID,
-                                           String                   nestedSolutionComponentGUID,
-                                           DeleteRequestBody requestBody)
+    public VoidResponse detachSubcomponent(String                        serverName,
+                                           String                        parentSolutionComponentGUID,
+                                           String                        nestedSolutionComponentGUID,
+                                           DeleteRelationshipRequestBody requestBody)
     {
         final String methodName = "detachSubcomponent";
 
@@ -1858,10 +1858,10 @@ public class SolutionArchitectRESTServices extends TokenController
      *  PropertyServerException    there is a problem retrieving information from the property server(s).
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    public VoidResponse detachSolutionLinkingWire(String                   serverName,
-                                                  String                   solutionComponentOneGUID,
-                                                  String                   solutionComponentTwoGUID,
-                                                  DeleteRequestBody requestBody)
+    public VoidResponse detachSolutionLinkingWire(String                        serverName,
+                                                  String                        solutionComponentOneGUID,
+                                                  String                        solutionComponentTwoGUID,
+                                                  DeleteRelationshipRequestBody requestBody)
     {
         final String methodName = "detachSolutionLinkingWire";
 
@@ -1909,7 +1909,7 @@ public class SolutionArchitectRESTServices extends TokenController
      */
     public VoidResponse deleteSolutionComponent(String                   serverName,
                                                 String                   solutionComponentGUID,
-                                                DeleteRequestBody requestBody)
+                                                DeleteElementRequestBody requestBody)
     {
         final String methodName = "deleteSolutionComponent";
 

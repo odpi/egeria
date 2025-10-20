@@ -174,7 +174,7 @@ public class DataDesignerResource
                                               @PathVariable
                                               String memberDataFieldGUID,
                                               @RequestBody (required = false)
-                                                  DeleteRequestBody requestBody)
+                                                  DeleteRelationshipRequestBody requestBody)
     {
         return restAPI.detachMemberDataField(serverName, parentDataStructureGUID, memberDataFieldGUID, requestBody);
     }
@@ -203,7 +203,7 @@ public class DataDesignerResource
                                             @PathVariable
                                             String                    dataStructureGUID,
                                             @RequestBody (required = false)
-                                                DeleteRequestBody requestBody)
+                                                DeleteElementRequestBody requestBody)
     {
         return restAPI.deleteDataStructure(serverName, dataStructureGUID, requestBody);
     }
@@ -435,7 +435,7 @@ public class DataDesignerResource
                                                @PathVariable
                                                String nestedDataFieldGUID,
                                                @RequestBody (required = false)
-                                                   DeleteRequestBody requestBody)
+                                                   DeleteRelationshipRequestBody requestBody)
     {
         return restAPI.detachNestedDataFields(serverName, parentDataFieldGUID, nestedDataFieldGUID, requestBody);
     }
@@ -464,7 +464,7 @@ public class DataDesignerResource
                                         @PathVariable
                                         String                    dataFieldGUID,
                                         @RequestBody (required = false)
-                                            DeleteRequestBody requestBody)
+                                            DeleteElementRequestBody requestBody)
     {
         return restAPI.deleteDataField(serverName, dataFieldGUID, requestBody);
     }
@@ -697,7 +697,7 @@ public class DataDesignerResource
                                               @PathVariable
                                               String                    childDataClassGUID,
                                               @RequestBody (required = false)
-                                                  DeleteRequestBody requestBody)
+                                                  DeleteRelationshipRequestBody requestBody)
     {
         return restAPI.detachNestedDataClass(serverName, parentDataClassGUID, childDataClassGUID, requestBody);
     }
@@ -761,7 +761,7 @@ public class DataDesignerResource
                                                    @PathVariable
                                                    String                    childDataClassGUID,
                                                    @RequestBody (required = false)
-                                                       DeleteRequestBody requestBody)
+                                                       DeleteRelationshipRequestBody requestBody)
     {
         return restAPI.detachSpecializedDataClass(serverName, parentDataClassGUID, childDataClassGUID, requestBody);
     }
@@ -790,7 +790,7 @@ public class DataDesignerResource
                                         @PathVariable
                                         String                    dataClassGUID,
                                         @RequestBody (required = false)
-                                            DeleteRequestBody requestBody)
+                                            DeleteElementRequestBody requestBody)
     {
         return restAPI.deleteDataClass(serverName, dataClassGUID, requestBody);
     }
@@ -935,7 +935,7 @@ public class DataDesignerResource
                                                   @PathVariable String                    dataDefinitionGUID,
                                                   @PathVariable String                    dataClassGUID,
                                                   @RequestBody (required = false)
-                                                      DeleteRequestBody requestBody)
+                                                      DeleteRelationshipRequestBody requestBody)
     {
         return restAPI.detachDataClassDefinition(serverName, dataDefinitionGUID, dataClassGUID, requestBody);
     }
@@ -994,7 +994,7 @@ public class DataDesignerResource
                                                  @PathVariable String                    dataDefinitionGUID,
                                                  @PathVariable String                    glossaryTermGUID,
                                                  @RequestBody (required = false)
-                                                     DeleteRequestBody requestBody)
+                                                     DeleteRelationshipRequestBody requestBody)
     {
         return restAPI.detachSemanticDefinition(serverName, dataDefinitionGUID, glossaryTermGUID, requestBody);
     }
@@ -1054,7 +1054,7 @@ public class DataDesignerResource
                                                                @PathVariable String                    certificationTypeGUID,
                                                                @PathVariable String                    dataStructureGUID,
                                                                @RequestBody (required = false)
-                                                                   DeleteRequestBody requestBody)
+                                                                   DeleteRelationshipRequestBody requestBody)
     {
         return restAPI.detachCertificationTypeToDataStructure(serverName, certificationTypeGUID, dataStructureGUID, requestBody);
     }

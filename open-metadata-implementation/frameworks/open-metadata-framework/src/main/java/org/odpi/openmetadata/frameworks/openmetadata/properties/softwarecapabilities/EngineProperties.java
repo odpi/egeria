@@ -20,7 +20,12 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
         property = "class")
 // todo this mapping is not complete
 @JsonSubTypes({
+        @JsonSubTypes.Type(value = AnalyticsEngineProperties.class, name = "AnalyticsEngineProperties"),
+        @JsonSubTypes.Type(value = DataMovementEngineProperties.class, name = "DataMovementEngineProperties"),
+        @JsonSubTypes.Type(value = DataVirtualizationEngineProperties.class, name = "DataVirtualizationEngineProperties"),
         @JsonSubTypes.Type(value = GovernanceEngineProperties.class, name = "GovernanceEngineProperties"),
+        @JsonSubTypes.Type(value = ReportingEngineProperties.class, name = "ReportingEngineProperties"),
+        @JsonSubTypes.Type(value = WorkflowEngineProperties.class, name = "WorkflowEngineProperties"),
 })
 public class EngineProperties extends SoftwareCapabilityProperties
 {

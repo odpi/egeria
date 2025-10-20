@@ -173,6 +173,7 @@ public enum SolutionBlueprint implements SolutionBlueprintDefinition
      *
      * @return string
      */
+    @Override
     public String getGUID()
     {
         return guid;
@@ -184,6 +185,7 @@ public enum SolutionBlueprint implements SolutionBlueprintDefinition
      *
      * @return string
      */
+    @Override
     public String getDisplayName()
     {
         return displayName;
@@ -195,6 +197,7 @@ public enum SolutionBlueprint implements SolutionBlueprintDefinition
      *
      * @return string
      */
+    @Override
     public String getDescription()
     {
         return description;
@@ -217,10 +220,12 @@ public enum SolutionBlueprint implements SolutionBlueprintDefinition
      *
      * @return string
      */
+    @Override
     public String getVersionIdentifier()
     {
         return versionIdentifier;
     }
+
 
     /**
      * Return the version identifier of the solution blueprint.
@@ -239,21 +244,10 @@ public enum SolutionBlueprint implements SolutionBlueprintDefinition
      *
      * @return boolean
      */
+    @Override
     public boolean isTemplate()
     {
         return isTemplate;
-    }
-
-
-    /**
-     * Output of this enum class and main value.
-     *
-     * @return string showing enum value
-     */
-    @Override
-    public String toString()
-    {
-        return "SolutionBlueprint{" + displayName + '}';
     }
 
 
@@ -283,5 +277,29 @@ public enum SolutionBlueprint implements SolutionBlueprintDefinition
         }
 
         return null;
+    }
+
+
+    /**
+     * Output of this enum class and main value.
+     *
+     * @return string showing enum value
+     */
+    @Override
+    public String toString()
+    {
+        return "SolutionBlueprint{" +
+                "guid='" + guid + '\'' +
+                ", displayName='" + displayName + '\'' +
+                ", description='" + description + '\'' +
+                ", versionIdentifier='" + versionIdentifier + '\'' +
+                ", solutionComponents=" + Arrays.toString(solutionComponents) +
+                ", isTemplate=" + isTemplate +
+                ", GUID='" + getGUID() + '\'' +
+                ", parentCollection=" + getParentCollection() +
+                ", identifier='" + getIdentifier() + '\'' +
+                ", template=" + isTemplate() +
+                ", authors=" + authors() +
+                "} " + super.toString();
     }
 }

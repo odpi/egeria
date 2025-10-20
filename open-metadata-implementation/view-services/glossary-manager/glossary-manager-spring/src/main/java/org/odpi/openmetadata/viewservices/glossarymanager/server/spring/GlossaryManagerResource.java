@@ -322,7 +322,7 @@ public class GlossaryManagerResource
     public VoidResponse moveGlossaryTerm(@PathVariable String                   serverName,
                                          @PathVariable String                   glossaryTermGUID,
                                          @PathVariable String                   glossaryGUID,
-                                         @RequestBody DeleteRequestBody requestBody)
+                                         @RequestBody(required = false) DeleteRelationshipRequestBody requestBody)
     {
         return restAPI.moveGlossaryTerm(serverName, glossaryTermGUID, glossaryGUID, requestBody);
     }
@@ -418,7 +418,7 @@ public class GlossaryManagerResource
                                               @PathVariable String                        relationshipTypeName,
                                               @PathVariable String                        glossaryTermTwoGUID,
                                               @RequestBody(required = false)
-                                                  DeleteRequestBody requestBody)
+                                                  DeleteRelationshipRequestBody requestBody)
     {
         return restAPI.clearTermRelationship(serverName, glossaryTermOneGUID, relationshipTypeName, glossaryTermTwoGUID, requestBody);
     }
@@ -624,7 +624,7 @@ public class GlossaryManagerResource
     public VoidResponse deleteGlossaryTerm(@PathVariable String                         serverName,
                                            @PathVariable String                         glossaryTermGUID,
                                            @RequestBody(required = false)
-                                               DeleteRequestBody requestBody)
+                                               DeleteElementRequestBody requestBody)
     {
         return restAPI.deleteGlossaryTerm(serverName, glossaryTermGUID, requestBody);
     }

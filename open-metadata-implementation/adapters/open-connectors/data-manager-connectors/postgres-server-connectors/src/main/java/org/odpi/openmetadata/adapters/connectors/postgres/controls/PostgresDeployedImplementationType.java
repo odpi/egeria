@@ -41,23 +41,30 @@ public enum PostgresDeployedImplementationType implements DeployedImplementation
 
 
     /**
-     * A database table hosted on a PostgreSQL relational database server capable of being called through a JDBC Driver.
+     * A database table hosted on a PostgreSQL relational database server capable of being called as a tabular data set.
      */
-    POSTGRESQL_DATABASE_TABLE("PostgreSQL Relational Database Table",
-                              DeployedImplementationType.DATA_ASSET,
-                              OpenMetadataType.TABLE_DATA_SET.typeName,
-                              null,
-                              "A database table hosted on a PostgreSQL relational database server capable of being called through a JDBC Driver.",
-                              "https://www.postgresql.org/"),
+    POSTGRESQL_TABULAR_DATA_SET("PostgreSQL Tabular Data Set",
+                                DeployedImplementationType.TABULAR_DATA_SET,
+                                OpenMetadataType.TABULAR_DATA_SET.typeName,
+                                null,
+                                "A database table hosted on a PostgreSQL relational database server capable of being called as a tabular data set.",
+                                "https://www.postgresql.org/"),
+
+    POSTGRESQL_TABULAR_DATA_SET_COLLECTION("PostgreSQL Tabular Data Set Collection",
+                                DeployedImplementationType.TABULAR_DATA_SET_COLLECTION,
+                                OpenMetadataType.TABULAR_DATA_SET_COLLECTION.typeName,
+                                null,
+                                "A database schema hosted on a PostgreSQL relational database server capable of being called as a tabular data set collection.",
+                                "https://www.postgresql.org/"),
 
 
     /**
      * A database server running the PostgreSQL software.
      */
     POSTGRESQL_SERVER("PostgreSQL Server",
-                      DeployedImplementationType.SOFTWARE_SERVER,
+                      DeployedImplementationType.DATABASE_SERVER,
                       OpenMetadataType.SOFTWARE_SERVER.typeName,
-                      OpenMetadataType.DATABASE_SERVER_CLASSIFICATION.typeName,
+                      null,
                       "A database server running the PostgreSQL software.",
                       "https://www.postgresql.org/"),
 

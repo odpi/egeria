@@ -64,6 +64,19 @@ public enum PlaceholderProperty
     SCHEMA_NAME ("schemaName", "The name of the schema being catalogued.", DataType.STRING.getName(), "MyServer.schema"),
 
     /**
+     * The name of the database table being catalogued.
+     */
+    TABLE_NAME ("tableName", "The name of the database table being catalogued.", "string", "my_table"),
+
+    /**
+     * Provides an optional description used when defining the table.
+     */
+    TABLE_DESCRIPTION ("tableDescription",
+                       "Provides an optional description used when defining the table.",
+                       DataType.STRING.getName(),
+                       "This table is used to store selected open metadata values."),
+
+    /**
      * The display name is used to identify the element.
      */
     DISPLAY_NAME("displayName",

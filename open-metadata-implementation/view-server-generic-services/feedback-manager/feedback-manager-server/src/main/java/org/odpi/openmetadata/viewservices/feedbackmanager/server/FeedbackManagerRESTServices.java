@@ -117,7 +117,7 @@ public class FeedbackManagerRESTServices extends TokenController
     public VoidResponse removeRatingFromElement(String            serverName,
                                                 String            urlMarker,
                                                 String            guid,
-                                                DeleteRequestBody requestBody)
+                                                DeleteElementRequestBody requestBody)
     {
         final String methodName = "removeRatingFromElement";
 
@@ -274,7 +274,7 @@ public class FeedbackManagerRESTServices extends TokenController
     public VoidResponse removeLikeFromElement(String            serverName,
                                               String            urlMarker,
                                               String            guid,
-                                              DeleteRequestBody requestBody)
+                                              DeleteElementRequestBody requestBody)
     {
         final String methodName = "removeLikeFromElement";
 
@@ -614,7 +614,7 @@ public class FeedbackManagerRESTServices extends TokenController
                                             String            urlMarker,
                                             String            questionCommentGUID,
                                             String            answerCommentGUID,
-                                            DeleteRequestBody requestBody)
+                                            DeleteRelationshipRequestBody requestBody)
     {
         final String methodName = "clearAcceptedAnswer";
 
@@ -663,7 +663,7 @@ public class FeedbackManagerRESTServices extends TokenController
     public VoidResponse removeCommentFromElement(String            serverName,
                                                  String            urlMarker,
                                                  String            commentGUID,
-                                                 DeleteRequestBody requestBody)
+                                                 DeleteElementRequestBody requestBody)
     {
         final String methodName = "removeElementComment";
 
@@ -969,7 +969,7 @@ public class FeedbackManagerRESTServices extends TokenController
     public VoidResponse   deleteTag(String            serverName,
                                     String            urlMarker,
                                     String            tagGUID,
-                                    DeleteRequestBody requestBody)
+                                    DeleteElementRequestBody requestBody)
     {
         final String methodName = "deleteTag";
 
@@ -1276,7 +1276,7 @@ public class FeedbackManagerRESTServices extends TokenController
                                                String            urlMarker,
                                                String            elementGUID,
                                                String            tagGUID,
-                                               DeleteRequestBody requestBody)
+                                               DeleteRelationshipRequestBody requestBody)
     {
         final String   methodName  = "removeTagFromElement";
 
@@ -1544,7 +1544,7 @@ public class FeedbackManagerRESTServices extends TokenController
     public VoidResponse   deleteNoteLog(String            serverName,
                                         String            urlMarker,
                                         String            noteLogGUID,
-                                        DeleteRequestBody requestBody)
+                                        DeleteElementRequestBody requestBody)
     {
         final String methodName = "deleteNoteLog";
 

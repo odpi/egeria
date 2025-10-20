@@ -15,6 +15,7 @@ public interface CollectionDefinition extends ReferenceableDefinition
      *
      * @return string
      */
+    @Override
     default String getTypeName() { return OpenMetadataType.COLLECTION.typeName; }
 
 

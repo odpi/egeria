@@ -36,7 +36,7 @@ public enum PostgresSolutionComponentActor implements SolutionComponentActorDefi
     ;
 
     final ActorRoleDefinition         solutionRole;
-    final SolutionComponentDefinition productSolutionComponent;
+    final SolutionComponentDefinition solutionComponent;
     final String                      role;
     final String                      description;
 
@@ -45,10 +45,10 @@ public enum PostgresSolutionComponentActor implements SolutionComponentActorDefi
                                    String                      role,
                                    String                      description)
     {
-        this.solutionRole             = solutionRole;
-        this.productSolutionComponent = solutionComponent;
-        this.role                     = role;
-        this.description              = description;
+        this.solutionRole      = solutionRole;
+        this.solutionComponent = solutionComponent;
+        this.role              = role;
+        this.description       = description;
     }
 
 
@@ -57,6 +57,7 @@ public enum PostgresSolutionComponentActor implements SolutionComponentActorDefi
      *
      * @return role definition
      */
+    @Override
     public ActorRoleDefinition getSolutionRole()
     {
         return solutionRole;
@@ -67,9 +68,10 @@ public enum PostgresSolutionComponentActor implements SolutionComponentActorDefi
      *
      * @return component definition
      */
+    @Override
     public SolutionComponentDefinition getSolutionComponent()
     {
-        return productSolutionComponent;
+        return solutionComponent;
     }
 
 
@@ -78,6 +80,7 @@ public enum PostgresSolutionComponentActor implements SolutionComponentActorDefi
      *
      * @return string
      */
+    @Override
     public String getRole()
     {
         return role;
@@ -89,6 +92,7 @@ public enum PostgresSolutionComponentActor implements SolutionComponentActorDefi
      *
      * @return string
      */
+    @Override
     public String getDescription()
     {
         return description;
@@ -105,7 +109,7 @@ public enum PostgresSolutionComponentActor implements SolutionComponentActorDefi
     {
         return "PostgresSolutionComponentActor{" +
                 "solutionRole=" + solutionRole +
-                ", productSolutionComponent=" + productSolutionComponent +
+                ", productSolutionComponent=" + solutionComponent +
                 ", role='" + role + '\'' +
                 ", description='" + description + '\'' +
                 "}";

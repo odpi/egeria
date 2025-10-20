@@ -3,18 +3,16 @@
 
 package org.odpi.openmetadata.adapters.connectors.datastore.csvfile;
 
+import org.odpi.openmetadata.adapters.connectors.datastore.csvfile.controls.CSVFileConfigurationProperty;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLogReportingComponent;
 import org.odpi.openmetadata.frameworks.auditlog.ComponentDevelopmentStatus;
 import org.odpi.openmetadata.frameworks.connectors.ConnectorProviderBase;
-import org.odpi.openmetadata.frameworks.connectors.tabulardatasets.ReadableTabularDataSource;
-import org.odpi.openmetadata.frameworks.connectors.tabulardatasets.WritableTabularDataSource;
 import org.odpi.openmetadata.frameworks.connectors.controls.SupportedTechnologyType;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.ConnectorType;
+import org.odpi.openmetadata.frameworks.connectors.tabulardatasets.ReadableTabularDataSource;
+import org.odpi.openmetadata.frameworks.connectors.tabulardatasets.WritableTabularDataSource;
 import org.odpi.openmetadata.frameworks.openmetadata.refdata.DeployedImplementationType;
 import org.odpi.openmetadata.frameworks.openmetadata.refdata.DeployedImplementationTypeDefinition;
-
-import java.util.ArrayList;
-import java.util.List;
 
 
 /**
@@ -37,25 +35,10 @@ public class CSVFileStoreProvider extends ConnectorProviderBase
     private static final String connectorWikiPage = "https://egeria-project.org/connectors/resource/csv-file-resource-connector/";
 
 
-    private static final String  connectorClass = "org.odpi.openmetadata.adapters.connectors.datastore.csvfile.CSVFileStoreConnector";
+    private static final String  connectorClass = CSVFileStoreConnector.class.getName();
 
 
     private static final String  expectedDataFormat = "csv";
-
-    /**
-     * columnNames configuration property
-     */
-    public static final String  columnNamesProperty = "columnNames";
-
-    /**
-     * delimiterCharacter configuration property
-     */
-    public static final String  delimiterCharacterProperty = "delimiterCharacter";
-
-    /**
-     * quote character configuration property
-     */
-    public static final String  quoteCharacterProperty = "quoteCharacter";
 
 
     /**
@@ -69,8 +52,6 @@ public class CSVFileStoreProvider extends ConnectorProviderBase
         super.setConnectorClassName(connectorClass);
 
         connectorInterfaces.add(CSVFileStore.class.getName());
-        connectorInterfaces.add(ReadableTabularDataSource.class.getName());
-        connectorInterfaces.add(WritableTabularDataSource.class.getName());
 
         ConnectorType connectorType = new ConnectorType();
 
@@ -84,12 +65,7 @@ public class CSVFileStoreProvider extends ConnectorProviderBase
         connectorType.setExpectedDataFormat(expectedDataFormat);
         connectorType.setConnectorInterfaces(connectorInterfaces);
 
-        List<String> recognizedConfigurationProperties = new ArrayList<>();
-        recognizedConfigurationProperties.add(columnNamesProperty);
-        recognizedConfigurationProperties.add(delimiterCharacterProperty);
-        recognizedConfigurationProperties.add(quoteCharacterProperty);
-
-        connectorType.setRecognizedConfigurationProperties(recognizedConfigurationProperties);
+        connectorType.setRecognizedConfigurationProperties(CSVFileConfigurationProperty.getCSVFileStoreConfigPropertyNames());
 
         super.connectorTypeBean = connectorType;
 
@@ -106,6 +82,7 @@ public class CSVFileStoreProvider extends ConnectorProviderBase
 
         super.setConnectorComponentDescription(componentDescription);
 
+        super.supportedConfigurationProperties = CSVFileConfigurationProperty.getCSVFileStoreConfigConfigurationPropertyTypes();
         super.supportedTechnologyTypes = SupportedTechnologyType.getSupportedTechnologyTypes(new DeployedImplementationTypeDefinition[]{DeployedImplementationType.CSV_FILE});
     }
 }

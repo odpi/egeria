@@ -379,6 +379,7 @@ public enum SolutionComponent implements SolutionComponentDefinition
      *
      * @return string
      */
+    @Override
     public String getGUID()
     {
         return guid;
@@ -402,6 +403,7 @@ public enum SolutionComponent implements SolutionComponentDefinition
      *
      * @return string
      */
+    @Override
     public String getComponentType()
     {
         return componentType;
@@ -413,6 +415,7 @@ public enum SolutionComponent implements SolutionComponentDefinition
      *
      * @return string
      */
+    @Override
     public String getImplementationType()
     {
         return implementationType;
@@ -424,6 +427,7 @@ public enum SolutionComponent implements SolutionComponentDefinition
      *
      * @return string
      */
+    @Override
     public String getDisplayName()
     {
         return displayName;
@@ -435,6 +439,7 @@ public enum SolutionComponent implements SolutionComponentDefinition
      *
      * @return string
      */
+    @Override
     public String getDescription()
     {
         return description;
@@ -468,6 +473,7 @@ public enum SolutionComponent implements SolutionComponentDefinition
      *
      * @return string
      */
+    @Override
     public String getVersionIdentifier()
     {
         return versionIdentifier;

@@ -78,6 +78,8 @@ import org.odpi.openmetadata.frameworks.openmetadata.properties.surveyreports.*;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.templates.CatalogTemplateProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.templates.TemplateProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.templates.TemplateSubstituteProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.translations.TranslationDetailProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.translations.TranslationLinkProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.validvalues.*;
 
 /**
@@ -554,17 +556,6 @@ public enum OpenMetadataType
                                    "db68722e-39a3-49b3-ba6f-ad00a880c91c",
                                    "Defines how the collection is being used."),
 
-    /**
-     * Defines that a collection should be treated like a folder. TODO DEPRECATED - DO NOT USE
-     */
-    FOLDER_COLLECTION_CLASSIFICATION("3c0fa687-8a63-4c8e-8bda-ede9c78be6c7",
-                                     "Folder",
-                                     OpenMetadataWikiPages.MODEL_0021_COLLECTIONS,
-                                     "b2fe2ac5-f4d5-4eac-b4cf-c5fd112395eb",
-                                     "Defines that a collection should be treated like a folder.",
-                                     null),
-
-
 
     /**
      * Defines a list of activities such as ToDos, Tasks etc...
@@ -604,8 +595,8 @@ public enum OpenMetadataType
                                   "TranslationLink",
                                   OpenMetadataWikiPages.MODEL_0022_TRANSLATIONS,
                                   "8baaef81-c7f8-4537-9ba7-36c629998343",
-                                  "Links an entity to a collection of translated properties."),
-
+                                  "Links an entity to a collection of translated properties.",
+                                  TranslationLinkProperties.class),
 
     /**
      * A physical place, digital location or area.
@@ -800,7 +791,8 @@ public enum OpenMetadataType
                  "HostCluster",
                  OpenMetadataWikiPages.MODEL_0035_HOSTS,
                  "cfa602ae-5109-4ae0-8e8c-d066f8f3fe2d",
-                 "A group of hosts operating together to provide a scalable platform."),
+                 "A group of hosts operating together to provide a scalable platform.",
+                 HostClusterProperties.class),
 
     /**
      * Identifies a host as a member of a host cluster.
@@ -818,7 +810,8 @@ public enum OpenMetadataType
                         "BareMetalComputer",
                         OpenMetadataWikiPages.MODEL_0035_HOSTS,
                         "05e43e67-63c6-4133-af07-a19f5c5b33d6",
-                        "A computer that is hosting software directly on its operating system."),
+                        "A computer that is hosting software directly on its operating system.",
+                        BareMetalComputerProperties.class),
 
     /**
      * A virtual machine that uses a hypervisor to virtualize hardware.
@@ -827,7 +820,8 @@ public enum OpenMetadataType
                     "VirtualMachine",
                     OpenMetadataWikiPages.MODEL_0035_HOSTS,
                     "d8eef565-11b0-4e0c-8700-c80641405b8d",
-                    "A virtual machine that uses a hypervisor to virtualize hardware."),
+                    "A virtual machine that uses a hypervisor to virtualize hardware.",
+                    VirtualMachineProperties.class),
 
 
     /**
@@ -837,35 +831,8 @@ public enum OpenMetadataType
                       "VirtualContainer",
                       OpenMetadataWikiPages.MODEL_0035_HOSTS,
                       "af2ae526-9f7b-4244-9bfc-819b7a902cb6",
-                      "Container-based virtual host that mimics a cut-down operating system."),
-
-
-    /**
-     * A virtual container using the docker platform.
-     */
-    DOCKER_CONTAINER("9882b8aa-eba3-4a30-94c6-43117efd11cc",
-                     "DockerContainer",
-                     OpenMetadataWikiPages.MODEL_0035_HOSTS,
-                     "85e33f77-f595-4e68-8d1f-baf16ecd230b",
-                     "A virtual container using the docker platform."),
-
-    /**
-     * A cluster of nodes for big data workloads.
-     */
-    HADOOP_CLUSTER("abc27cf7-e526-4d1b-9c25-7dd60a7993e4",
-                   "HadoopCluster",
-                   OpenMetadataWikiPages.MODEL_0035_HOSTS,
-                   "2851a6e4-a0a1-471d-8c73-1b666244789d",
-                   "A cluster of nodes for big data workloads."),
-
-    /**
-     * A host cluster managing containerized applications.
-     */
-    KUBERNETES_CLUSTER("101f1c93-7f5d-44e2-9ea4-5cf21726ba5c",
-                       "KubernetesCluster",
-                       OpenMetadataWikiPages.MODEL_0035_HOSTS,
-                       "3c0401e0-846c-4d6a-adb4-cba2d83a0390",
-                       "A host cluster managing containerized applications."),
+                      "Container-based virtual host that mimics a cut-down operating system.",
+                      VirtualContainerProperties.class),
 
     /**
      * A persistent storage volume.
@@ -906,87 +873,6 @@ public enum OpenMetadataType
                     SoftwareServerProperties.class),
 
     /**
-     * Adds more detail about the purpose of a deployed instance of IT infrastructure.
-     */
-    SERVER_PURPOSE_CLASSIFICATION("78f68757-600f-4e8e-843b-00e77cdee37c",
-                                  "ServerPurpose",
-                                  OpenMetadataWikiPages.MODEL_0041_SERVER_PURPOSES,
-                                  "403e188a-39b9-4109-92f9-2c792dc4ffdb",
-                                  "Adds more detail about the purpose of a deployed instance of IT infrastructure."),
-
-    /**
-     * A server that hosts applications.
-     */
-    APPLICATION_SERVER_CLASSIFICATION("19196efb-2706-47bf-8e51-e8ba5b36d033",
-                                      "ApplicationServer",
-                                      OpenMetadataWikiPages.MODEL_0041_SERVER_PURPOSES,
-                                      "d51766f2-40db-4d69-9d67-b0432c3972b0",
-                                      "A server that hosts applications."),
-
-    /**
-     * A server that supports HTTP-based application such as websites and REST services.
-     */
-    WEBSERVER_CLASSIFICATION("d13e1cc5-bb7e-41ec-8233-9647fbf92a19",
-                             "Webserver",
-                             OpenMetadataWikiPages.MODEL_0041_SERVER_PURPOSES,
-                             "c2f8f60c-e18c-4020-aeeb-8d7d0a5635d0",
-                             "A server that supports HTTP-based application such as websites and REST services."),
-
-    /**
-     * Identifies a server as one that manages one or more databases.
-     */
-    DATABASE_SERVER_CLASSIFICATION("6bb58cc9-ed9e-4f75-b2f2-6d308554eb52",
-                                   "DatabaseServer",
-                                   OpenMetadataWikiPages.MODEL_0041_SERVER_PURPOSES,
-                                   "5eb84a5c-2bfc-4c92-8941-084f3cf82ff5",
-                                   "Identifies a server as one that manages one or more databases."),
-
-    /**
-     * Identifies a server that exchanges data between between other servers.
-     */
-    INTEGRATION_SERVER_CLASSIFICATION("c165b760-d9ab-47ac-a2ee-7854ec74605a",
-                                      "IntegrationServer",
-                                      OpenMetadataWikiPages.MODEL_0041_SERVER_PURPOSES,
-                                      "d93a4834-6d68-43a5-926f-8c526f969e43",
-                                      "Identifies a server that exchanges data between between other servers."),
-
-    /**
-     * A server hosting a metadata collection.
-     */
-    METADATA_SERVER_CLASSIFICATION("74a256ad-4022-4518-a446-c65fe082d4d3",
-                                   "MetadataServer",
-                                   OpenMetadataWikiPages.MODEL_0041_SERVER_PURPOSES,
-                                   "0624e263-ca23-40e5-abe5-71cc6698421d",
-                                   "A server hosting a metadata collection."),
-
-    /**
-     * A server acting as an open metadata adapter for a metadata repository.
-     */
-    REPOSITORY_PROXY_CLASSIFICATION("ae81c35e-7078-46f0-9b2c-afc99accf3ec",
-                                    "RepositoryProxy",
-                                    OpenMetadataWikiPages.MODEL_0041_SERVER_PURPOSES,
-                                    "122d5b15-932c-4c27-8a36-e39ed93bd69c",
-                                    "A server acting as an open metadata adapter for a metadata repository."),
-
-    /**
-     * A server dedicated to managing activity relating to governance of data.
-     */
-    GOVERNANCE_DAEMON_CLASSIFICATION("7815f222-529d-4902-8f0b-e37cbc779885",
-                                     "GovernanceDaemon",
-                                     OpenMetadataWikiPages.MODEL_0041_SERVER_PURPOSES,
-                                     "2f106d43-ed20-4ef1-aa0b-e15520006640",
-                                     "A server dedicated to managing activity relating to governance of data."),
-
-    /**
-     * A server dedicated to managing stewardship activity relating to governance of data.
-     */
-    STEWARDSHIP_SERVER_CLASSIFICATION("eaaeaa31-6f8b-4ed5-88fe-422ed3733158",
-                                      "StewardshipServer",
-                                      OpenMetadataWikiPages.MODEL_0041_SERVER_PURPOSES,
-                                      "2f106d43-ed20-4ef1-aa0b-e15520006640",
-                                      "A server dedicated to managing stewardship activity relating to governance of data."),
-
-    /**
      * A software implemented function such as a software service or engine.
      */
     SOFTWARE_CAPABILITY("54055c38-b9ad-4a66-a75b-14dc643d4c69",
@@ -1004,17 +890,8 @@ public enum OpenMetadataType
                                                "SupportedSoftwareCapability",
                                                OpenMetadataWikiPages.MODEL_0042_SOFTWARE_CAPABILITIES,
                                                "47fc8ae9-5f6b-42e8-bb9d-c261cc9371f3",
-                                               "Identifies a software capability that is deployed to an instance of IT infrastructure."),
-
-    /**
-     * Stores processing state information used by various SoftwareCapabilities.
-     */
-    PROCESSING_STATE_CLASSIFICATION("261fb0aa-b884-4ee8-87ea-a60510e9751d",
-                                    "ProcessingState",
-                                    OpenMetadataWikiPages.MODEL_0042_SOFTWARE_CAPABILITIES,
-                                    "262e70d6-08d4-4e09-87ee-5b1955d095d2",
-                                    "Stores processing state information used by various SoftwareCapabilities."),
-
+                                               "Identifies a software capability that is deployed to an instance of IT infrastructure.",
+                                               SupportedSoftwareCapabilityProperties.class),
 
     /**
      * Defines that a server capability is associated with an asset.
@@ -1053,7 +930,8 @@ public enum OpenMetadataType
                      "RESTAPIManager",
                      OpenMetadataWikiPages.MODEL_0050_APPS_AND_PROCESSES,
                      "86f6504a-f7e1-441e-9143-38d67c52ff40",
-                     "A capability that supports REST APIs in a server."),
+                     "A capability that supports REST APIs in a server.",
+                     RESTAPIManagerProperties.class),
 
     /**
      * A capability that supports the authorization of requests.
@@ -1062,7 +940,8 @@ public enum OpenMetadataType
                           "AuthorizationManager",
                           OpenMetadataWikiPages.MODEL_0050_APPS_AND_PROCESSES,
                           "6a33c5e9-39d7-4f0d-a81a-92faeda756d6",
-                          "A capability that supports the authorization of requests."),
+                          "A capability that supports the authorization of requests.",
+                          AuthorizationManagerProperties.class),
 
     /**
      * A capability that supports the identification/authentication of users.
@@ -1148,20 +1027,22 @@ public enum OpenMetadataType
     /**
      * An engine capable of running a mixture of human and automated tasks as part of a workflow process.
      */
-    WORKFLOW_ENGINE_CLASSIFICATION("37a6d212-7c4a-4a82-b4e2-601d4358381c",
-                                   "WorkflowEngine",
-                                   OpenMetadataWikiPages.MODEL_0055_DATA_PROCESSING_ENGINES,
-                                   "c980f0ad-c7f1-492b-96c3-ea85327f56de",
-                                   "An engine capable of running a mixture of human and automated tasks as part of a workflow process."),
+    WORKFLOW_ENGINE("37a6d212-7c4a-4a82-b4e2-601d4358381c",
+                    "WorkflowEngine",
+                    OpenMetadataWikiPages.MODEL_0055_DATA_PROCESSING_ENGINES,
+                    "c980f0ad-c7f1-492b-96c3-ea85327f56de",
+                    "An engine capable of running a mixture of human and automated tasks as part of a workflow process.",
+                    WorkflowEngineProperties.class),
 
     /**
      * An engine capable of creating reports by combining information from multiple data sets.
      */
-    REPORTING_ENGINE_CLASSIFICATION("e07eefaa-16e0-46cf-ad54-bed47fb15812",
-                                    "ReportingEngine",
-                                    OpenMetadataWikiPages.MODEL_0055_DATA_PROCESSING_ENGINES,
-                                    "04051763-2945-47c0-856c-dbe9278d7cb9",
-                                    "An engine capable of creating reports by combining information from multiple data sets."),
+    REPORTING_ENGINE("e07eefaa-16e0-46cf-ad54-bed47fb15812",
+                     "ReportingEngine",
+                     OpenMetadataWikiPages.MODEL_0055_DATA_PROCESSING_ENGINES,
+                     "04051763-2945-47c0-856c-dbe9278d7cb9",
+                     "An engine capable of creating reports by combining information from multiple data sets.",
+                     ReportingEngineProperties.class),
 
     /**
      * An engine capable of running analytics models using data from one or more data sets.
@@ -1201,16 +1082,6 @@ public enum OpenMetadataType
                      "Defines a manager of resources.  Typically, a software capability or an asset.",
                      ResourceManagerProperties.class),
 
-
-    /**
-     * Defines a capability that manages metadata about assets.
-     */
-    ASSET_MANAGER("03170ce7-edf1-4e94-b6ab-2d5cbbf1f13c",
-                  "AssetManager",
-                  OpenMetadataWikiPages.MODEL_0056_RESOURCE_MANAGERS,
-                  "44a1d90a-689e-4dc1-8dbb-cf3107388a1b",
-                  "Defines a capability that manages metadata about assets.",
-                  AssetManagerProperties.class),
 
     /**
      * Defines a software source code library that provides version control.
@@ -2137,6 +2008,27 @@ public enum OpenMetadataType
                                   DataSetContentProperties.class),
 
     /**
+     * Collection of related data, not necessarily stored together.
+     */
+    TABULAR_DATA_SET("3b6a6cda-8721-47ba-afc6-1a2786e04f77",
+             "TabularDataSet",
+             OpenMetadataWikiPages.MODEL_0211_TABULAR_DATA_SETS,
+             "d0417daa-2839-4acd-aaaf-28e6ca49e992",
+             "A collection of data organized as tabular data.",
+             TabularDataSetProperties.class),
+
+
+    /**
+     * Collection of related tabular data sets, not necessarily stored together.
+     */
+    TABULAR_DATA_SET_COLLECTION("8f5614c5-1777-4760-a500-07e60ba29746",
+                                "TabularDataSetCollection",
+                                OpenMetadataWikiPages.MODEL_0211_TABULAR_DATA_SETS,
+                                "67eadc07-e623-43bc-802e-fd465a3e12ac",
+                                "Collection of related tabular data sets, not necessarily stored together.",
+                                TabularDataSetCollectionProperties.class),
+
+    /**
      * A callable interface running at an endpoint.
      */
     DEPLOYED_API("7dbb3e63-138f-49f1-97b4-66313871fc14",
@@ -2596,7 +2488,7 @@ public enum OpenMetadataType
                    OpenMetadataWikiPages.MODEL_0224_DATABASES,
                    "ff9fced9-daaf-4512-97c1-88381ffe05aa",
                    "A tabular data source (typically a database table) that is an asset in its own right.",
-                   TableDataSetProperties.class),
+                   null),
 
     /**
      * A data store containing metadata.
@@ -3684,7 +3576,8 @@ public enum OpenMetadataType
                        "GovernanceOfficer",
                        OpenMetadataWikiPages.MODEL_0445_GOVERNANCE_ROLES,
                        "be460431-d42b-40a8-a4dd-616082c51c88",
-                       "Person responsible for a governance domain."),
+                       "Person responsible for a governance domain.",
+                       GovernanceOfficerProperties.class),
 
     /**
      * A role defining a responsibility to contribute to the operation of a governance activity.  Often represents the views of one or more interested parties.
@@ -3693,7 +3586,8 @@ public enum OpenMetadataType
                               "GovernanceRepresentative",
                               OpenMetadataWikiPages.MODEL_0445_GOVERNANCE_ROLES,
                               "d22a5441-3470-4bf9-9412-12c9a7864955",
-                              "A role defining a responsibility to contribute to the operation of a governance activity.  Often represents the views of one or more interested parties."),
+                              "A role defining a responsibility to contribute to the operation of a governance activity.  Often represents the views of one or more interested parties.",
+                              GovernanceRepresentativeProperties.class),
 
     /**
      * A role defining a responsibility for activity at a particular location.
@@ -3702,7 +3596,8 @@ public enum OpenMetadataType
                    "LocationOwner",
                    OpenMetadataWikiPages.MODEL_0445_GOVERNANCE_ROLES,
                    "4fea5fc9-eb6e-412e-a68f-f3041dda47ad",
-                   "A role defining a responsibility for activity at a particular location."),
+                   "A role defining a responsibility for activity at a particular location.",
+                   LocationOwnerProperties.class),
 
     /**
      * A role defining a responsibility to manage a part of the organization's business.  Often responsible for profit and loss.
@@ -3711,7 +3606,8 @@ public enum OpenMetadataType
                    "BusinessOwner",
                    OpenMetadataWikiPages.MODEL_0445_GOVERNANCE_ROLES,
                    "5707d6ff-2db5-431f-9e21-a92a9a20a62c",
-                   "A role defining a responsibility to manage a part of the organization's business.  Often responsible for profit and loss."),
+                   "A role defining a responsibility to manage a part of the organization's business.  Often responsible for profit and loss.",
+                   BusinessOwnerProperties.class),
 
     /**
      * A role defining a responsibility for an IT solution.
@@ -3720,7 +3616,8 @@ public enum OpenMetadataType
                    "SolutionOwner",
                    OpenMetadataWikiPages.MODEL_0445_GOVERNANCE_ROLES,
                    "eef70090-0ac9-4b9c-8de1-611660ca4387",
-                   "A role defining a responsibility for an IT solution."),
+                   "A role defining a responsibility for an IT solution.",
+                   SolutionOwnerProperties.class),
 
     /**
      * A role defining a responsibility to manage an asset.
@@ -3729,7 +3626,8 @@ public enum OpenMetadataType
                 "AssetOwner",
                 OpenMetadataWikiPages.MODEL_0445_GOVERNANCE_ROLES,
                 "5042920d-859f-4a7c-af3c-008a5ef1e388",
-                "A role defining a responsibility to manage an asset."),
+                "A role defining a responsibility to manage an asset.",
+                AssetOwnerProperties.class),
 
     /**
      * A role defining a responsibility to manage the development and maintenance of a subject area.
@@ -3738,7 +3636,8 @@ public enum OpenMetadataType
                        "SubjectAreaOwner",
                        OpenMetadataWikiPages.MODEL_0445_GOVERNANCE_ROLES,
                        "f8ee2921-90e1-4d12-aa7b-bedb8f2ee545",
-                       "A role defining a responsibility to manage the development and maintenance of a subject area."),
+                       "A role defining a responsibility to manage the development and maintenance of a subject area.",
+                       SubjectAreaOwnerProperties.class),
 
     /**
      * An ownership role for a component - typically part of an asset.
@@ -3747,7 +3646,8 @@ public enum OpenMetadataType
                     "ComponentOwner",
                     OpenMetadataWikiPages.MODEL_0445_GOVERNANCE_ROLES,
                     "d19d94eb-f53d-4eed-a87c-d6b026d96aa6",
-                    "An ownership role for a component - typically part of an asset."),
+                    "An ownership role for a component - typically part of an asset.",
+                    ComponentOwnerProperties.class),
 
     /**
      * An ownership role for a particular type of data value.  This may be stored as data fields in multiple assets and this person typically owns the end to end validation of the values as they move from asset to asset.
@@ -3756,7 +3656,8 @@ public enum OpenMetadataType
                     "DataItemOwner",
                     OpenMetadataWikiPages.MODEL_0445_GOVERNANCE_ROLES,
                     "13a43ee5-acad-4e67-a4d2-4f4d87e1abea",
-                    "An ownership role for a particular type of data value.  This may be stored as data fields in multiple assets and this person typically owns the end to end validation of the values as they move from asset to asset."),
+                    "An ownership role for a particular type of data value.  This may be stored as data fields in multiple assets and this person typically owns the end to end validation of the values as they move from asset to asset.",
+                    DataItemOwnerProperties.class),
 
     /**
      * A definition for how the effectiveness of the governance program is measured.

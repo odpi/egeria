@@ -209,7 +209,7 @@ public class GovernanceOfficerResource
                                               @PathVariable
                                               String                     governanceDefinitionTwoGUID,
                                               @RequestBody (required = false)
-                                                  DeleteRequestBody requestBody)
+                                                  DeleteRelationshipRequestBody requestBody)
     {
         return restAPI.detachPeerDefinitions(serverName, urlMarker, governanceDefinitionOneGUID, governanceDefinitionTwoGUID, relationshipTypeName, requestBody);
     }
@@ -287,7 +287,7 @@ public class GovernanceOfficerResource
                                                    @PathVariable
                                                    String                     governanceDefinitionTwoGUID,
                                                    @RequestBody (required = false)
-                                                       DeleteRequestBody requestBody)
+                                                       DeleteRelationshipRequestBody requestBody)
     {
         return restAPI.detachSupportingDefinition(serverName, urlMarker, governanceDefinitionOneGUID, governanceDefinitionTwoGUID, relationshipTypeName, requestBody);
     }
@@ -353,7 +353,7 @@ public class GovernanceOfficerResource
                                                               @PathVariable String  elementGUID,
                                                               @PathVariable String  definitionGUID,
                                                               @RequestBody  (required = false)
-                                                                  DeleteRequestBody requestBody)
+                                                                  DeleteRelationshipRequestBody requestBody)
     {
         return restAPI.removeGovernanceDefinitionFromElement(serverName, urlMarker, elementGUID, definitionGUID, requestBody);
     }
@@ -419,7 +419,7 @@ public class GovernanceOfficerResource
                                                               @PathVariable String  governanceMetricGUID,
                                                               @PathVariable String  dataSourceGUID,
                                                               @RequestBody  (required = false)
-                                                              DeleteRequestBody requestBody)
+                                                              DeleteRelationshipRequestBody requestBody)
     {
         return restAPI.detachGovernanceResults(serverName, urlMarker, governanceMetricGUID, dataSourceGUID, requestBody);
     }
@@ -501,7 +501,7 @@ public class GovernanceOfficerResource
     public VoidResponse unlicenseElement(@PathVariable String           serverName,
                                          @PathVariable String           urlMarker,
                                          @PathVariable String           licenseGUID,
-                                         @RequestBody DeleteRequestBody requestBody)
+                                         @RequestBody DeleteRelationshipRequestBody requestBody)
     {
         return restAPI.unlicenseElement(serverName, urlMarker, licenseGUID, requestBody);
     }
@@ -584,7 +584,7 @@ public class GovernanceOfficerResource
     public VoidResponse decertifyElement(@PathVariable String           serverName,
                                          @PathVariable String           urlMarker,
                                          @PathVariable String           certificationGUID,
-                                         @RequestBody DeleteRequestBody requestBody)
+                                         @RequestBody DeleteRelationshipRequestBody requestBody)
     {
         return restAPI.decertifyElement(serverName, urlMarker, certificationGUID, requestBody);
     }
@@ -617,7 +617,7 @@ public class GovernanceOfficerResource
                                                    @PathVariable
                                                    String                    governanceDefinitionGUID,
                                                    @RequestBody (required = false)
-                                                       DeleteRequestBody requestBody)
+                                                       DeleteElementRequestBody requestBody)
     {
         return restAPI.deleteGovernanceDefinition(serverName, urlMarker, governanceDefinitionGUID, requestBody);
     }
@@ -825,7 +825,7 @@ public class GovernanceOfficerResource
                                                        @PathVariable
                                                        String                     implementationGUID,
                                                        @RequestBody (required = false)
-                                                           DeleteRequestBody requestBody)
+                                                           DeleteRelationshipRequestBody requestBody)
     {
         return restAPI.detachDesignFromImplementation(serverName, urlMarker, designGUID, implementationGUID, requestBody);
     }
@@ -893,7 +893,7 @@ public class GovernanceOfficerResource
                                                      @PathVariable String             urlMarker,
                                                      @PathVariable String                     designGUID,
                                                      @PathVariable String implementationResourceGUID,
-                                                     @RequestBody (required = false) DeleteRequestBody requestBody)
+                                                     @RequestBody (required = false) DeleteRelationshipRequestBody requestBody)
     {
         return restAPI.detachImplementationResource(serverName, urlMarker, designGUID, implementationResourceGUID, requestBody);
     }

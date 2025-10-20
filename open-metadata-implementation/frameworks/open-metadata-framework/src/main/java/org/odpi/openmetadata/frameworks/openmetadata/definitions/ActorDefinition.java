@@ -15,5 +15,6 @@ public interface ActorDefinition extends ReferenceableDefinition
      *
      * @return string
      */
+    @Override
     default String getTypeName() { return OpenMetadataType.ACTOR.typeName; }
 }

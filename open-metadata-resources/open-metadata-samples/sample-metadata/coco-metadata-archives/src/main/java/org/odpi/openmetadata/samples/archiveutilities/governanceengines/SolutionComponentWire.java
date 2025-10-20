@@ -168,26 +168,59 @@ public enum SolutionComponentWire implements SolutionComponentWireDefinition
     }
 
 
+    /**
+     * Return the component for end 1
+     *
+     * @return component definition
+     */
+    @Override
     public SolutionComponentDefinition getComponent1()
     {
         return component1;
     }
 
+
+    /**
+     * Return the component for end 2
+     *
+     * @return component definition
+     */
+    @Override
     public SolutionComponentDefinition getComponent2()
     {
         return component2;
     }
 
+
+    /**
+     * Return the relationship label.
+     *
+     * @return string
+     */
+    @Override
     public String getLabel()
     {
         return label;
     }
 
+
+    /**
+     * Return the relationship description.
+     *
+     * @return string
+     */
+    @Override
     public String getDescription()
     {
         return description;
     }
 
+
+    /**
+     * Return the list of ISC qualified names that the wire belongs to.
+     *
+     * @return list of strings
+     */
     public List<String> getISCQualifiedNames()
     {
         if (informationSupplyChains == null)
@@ -202,5 +235,23 @@ public enum SolutionComponentWire implements SolutionComponentWireDefinition
             guids.add(informationSupplyChain.getQualifiedName());
         }
         return guids;
+    }
+
+
+    /**
+     * Output of this enum class and main value.
+     *
+     * @return string showing enum value
+     */
+    @Override
+    public String toString()
+    {
+        return "SolutionComponentWire{" +
+                "component1=" + component1 +
+                ", component2=" + component2 +
+                ", label='" + label + '\'' +
+                ", description='" + description + '\'' +
+                ", ISCQualifiedNames=" + getISCQualifiedNames() +
+                "} " + super.toString();
     }
 }

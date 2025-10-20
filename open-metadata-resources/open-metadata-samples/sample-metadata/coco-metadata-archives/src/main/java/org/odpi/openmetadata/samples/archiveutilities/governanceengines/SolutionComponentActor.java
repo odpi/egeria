@@ -3,6 +3,7 @@
 
 package org.odpi.openmetadata.samples.archiveutilities.governanceengines;
 
+import org.odpi.openmetadata.frameworks.openmetadata.definitions.ActorRoleDefinition;
 import org.odpi.openmetadata.frameworks.openmetadata.definitions.SolutionComponentActorDefinition;
 import org.odpi.openmetadata.frameworks.openmetadata.definitions.SolutionComponentDefinition;
 
@@ -105,25 +106,53 @@ public enum SolutionComponentActor implements SolutionComponentActorDefinition
     }
 
 
-    public SolutionRoleDefinition getSolutionRole()
+
+    /**
+     * Return the solution role to link to.
+     *
+     * @return role definition
+     */
+    @Override
+    public ActorRoleDefinition getSolutionRole()
     {
         return solutionRole;
     }
 
+    /**
+     * Return the solution component to link to.
+     *
+     * @return component definition
+     */
+    @Override
     public SolutionComponentDefinition getSolutionComponent()
     {
         return solutionComponent;
     }
 
+
+    /**
+     * Return the role relationship label.
+     *
+     * @return string
+     */
+    @Override
     public String getRole()
     {
         return role;
     }
 
+
+    /**
+     * Return the role relationship description.
+     *
+     * @return string
+     */
+    @Override
     public String getDescription()
     {
         return description;
     }
+
 
 
     /**

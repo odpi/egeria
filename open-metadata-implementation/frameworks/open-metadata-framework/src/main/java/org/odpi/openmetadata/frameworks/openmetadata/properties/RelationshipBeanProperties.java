@@ -50,8 +50,10 @@ import org.odpi.openmetadata.frameworks.openmetadata.properties.schema.*;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.security.AssociatedSecurityGroupProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.security.ZoneHierarchyProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.softwarecapabilities.MetadataCohortPeerProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.softwarecapabilities.SupportedSoftwareCapabilityProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.softwarecapabilities.VisibleEndpointProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.surveyreports.*;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.translations.TranslationLinkProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.validvalues.*;
 
 import java.util.Map;
@@ -165,10 +167,12 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
                 @JsonSubTypes.Type(value = SubjectAreaHierarchyProperties.class, name = "SubjectAreaHierarchyProperties"),
                 @JsonSubTypes.Type(value = SupplementaryPropertiesProperties.class, name = "SupplementaryPropertiesProperties"),
                 @JsonSubTypes.Type(value = SupportedGovernanceServiceProperties.class, name = "SupportedGovernanceServiceProperties"),
+                @JsonSubTypes.Type(value = SupportedSoftwareCapabilityProperties.class, name = "SupportedSoftwareCapabilityProperties"),
                 @JsonSubTypes.Type(value = SupportingDefinitionProperties.class, name = "SupportingDefinitionProperties"),
                 @JsonSubTypes.Type(value = TargetForGovernanceActionProperties.class, name = "TargetForGovernanceActionProperties"),
                 @JsonSubTypes.Type(value = TeamStructureProperties.class, name = "TeamStructureProperties"),
                 @JsonSubTypes.Type(value = TeamRoleAppointmentProperties.class, name = "TeamRoleAppointmentProperties"),
+                @JsonSubTypes.Type(value = TranslationLinkProperties.class, name = "TranslationLinkProperties"),
                 @JsonSubTypes.Type(value = TypedByConceptBeadProperties.class, name = "TypedByConceptBeadProperties"),
                 @JsonSubTypes.Type(value = ValidValuesAssignmentProperties.class, name = "ValidValuesAssignmentProperties"),
                 @JsonSubTypes.Type(value = ValidValueAssociationProperties.class, name = "ValidValueAssociationProperties"),

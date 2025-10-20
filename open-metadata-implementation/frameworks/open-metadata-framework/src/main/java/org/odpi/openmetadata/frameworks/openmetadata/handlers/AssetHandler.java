@@ -1659,7 +1659,7 @@ public class AssetHandler extends OpenMetadataHandlerBase
      * @throws PropertyServerException there is a problem access in the property server
      * @throws UserNotAuthorizedException the user does not have access to the properties
      */
-    public List<AssetSearchMatches> findAssetsInDomain(String        userId,
+    public List<OpenMetadataRootElement> findAssetsInDomain(String        userId,
                                                        String        searchString,
                                                        SearchOptions searchOptions) throws InvalidParameterException,
                                                                                            PropertyServerException,
@@ -1671,14 +1671,14 @@ public class AssetHandler extends OpenMetadataHandlerBase
         propertyHelper.validateUserId(userId, methodName);
         propertyHelper.validateSearchString(searchString, nameParameter, methodName);
 
-        List <AnchorSearchMatches> matches = openMetadataClient.findElementsInAnchorDomain(userId,
+        List<AnchorSearchMatches> matches = openMetadataClient.findElementsInAnchorDomain(userId,
                                                                                            searchString,
                                                                                            OpenMetadataType.ASSET.typeName,
                                                                                            searchOptions);
 
         if (matches != null)
         {
-            List<AssetSearchMatches> assetSearchMatchesList = new ArrayList<>();
+            List<OpenMetadataRootElement> assetSearchMatchesList = new ArrayList<>();
 
             for (AnchorSearchMatches anchorSearchMatches : matches)
             {

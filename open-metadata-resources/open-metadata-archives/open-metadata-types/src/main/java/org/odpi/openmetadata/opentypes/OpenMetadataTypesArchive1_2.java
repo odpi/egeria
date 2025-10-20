@@ -348,7 +348,6 @@ public class OpenMetadataTypesArchive1_2
         this.add0040SoftwareServers();
         this.add0042SoftwareCapabilities();
         this.add0045ServersAndAssets();
-        this.add0050ApplicationsAndProcesses();
         this.add0055DataProcessingEngines();
         this.add0056ResourceManagers();
         this.add0070NetworksAndGateways();
@@ -1922,40 +1921,6 @@ public class OpenMetadataTypesArchive1_2
     }
 
 
-    /*
-     * -------------------------------------------------------------------------------------------------------
-     */
-
-    private void add0050ApplicationsAndProcesses()
-    {
-        this.archiveBuilder.addEntityDef(getApplicationEntity());
-
-        this.archiveBuilder.addClassificationDef(getApplicationServerClassification());
-        this.archiveBuilder.addClassificationDef(getWebserverClassification());
-    }
-
-    private EntityDef getApplicationEntity()
-    {
-        return archiveHelper.getDefaultEntityDef(OpenMetadataType.APPLICATION,
-                                                 this.archiveBuilder.getEntityDef(OpenMetadataType.SOFTWARE_CAPABILITY.typeName));
-    }
-
-    private ClassificationDef getApplicationServerClassification()
-    {
-        return archiveHelper.getClassificationDef(OpenMetadataType.APPLICATION_SERVER_CLASSIFICATION,
-                                                  null,
-                                                  this.archiveBuilder.getEntityDef(OpenMetadataType.SOFTWARE_SERVER.typeName),
-                                                  false);
-    }
-
-    private ClassificationDef getWebserverClassification()
-    {
-        return archiveHelper.getClassificationDef(OpenMetadataType.WEBSERVER_CLASSIFICATION,
-                                                  null,
-                                                  this.archiveBuilder.getEntityDef(OpenMetadataType.SOFTWARE_SERVER.typeName),
-                                                  false);
-    }
-
 
     /*
      * -------------------------------------------------------------------------------------------------------
@@ -1965,11 +1930,11 @@ public class OpenMetadataTypesArchive1_2
     {
         this.archiveBuilder.addEntityDef(getEngineEntity());
 
-        this.archiveBuilder.addClassificationDef(getWorkflowEngineClassification());
-        this.archiveBuilder.addClassificationDef(getReportingEngineClassification());
-        this.archiveBuilder.addClassificationDef(getAnalyticsEngineClassification());
-        this.archiveBuilder.addClassificationDef(getDataMovementEngineClassification());
-        this.archiveBuilder.addClassificationDef(getDataVirtualizationEngineClassification());
+        this.archiveBuilder.addEntityDef(getWorkflowEngineEntity());
+        this.archiveBuilder.addEntityDef(getReportingEngineEntity());
+        this.archiveBuilder.addEntityDef(getAnalyticsEngineEntity());
+        this.archiveBuilder.addEntityDef(getDataMovementEngineEntity());
+        this.archiveBuilder.addEntityDef(getDataVirtualizationEngineEntity());
     }
 
     private EntityDef getEngineEntity()
@@ -1978,44 +1943,34 @@ public class OpenMetadataTypesArchive1_2
                                                  this.archiveBuilder.getEntityDef(OpenMetadataType.SOFTWARE_CAPABILITY.typeName));
     }
 
-    private ClassificationDef getWorkflowEngineClassification()
+    private EntityDef getWorkflowEngineEntity()
     {
-        return archiveHelper.getClassificationDef(OpenMetadataType.WORKFLOW_ENGINE_CLASSIFICATION,
-                                                  null,
-                                                  this.archiveBuilder.getEntityDef(OpenMetadataType.ENGINE.typeName),
-                                                  false);
+        return archiveHelper.getDefaultEntityDef(OpenMetadataType.WORKFLOW_ENGINE,
+                                                 this.archiveBuilder.getEntityDef(OpenMetadataType.ENGINE.typeName));
     }
 
-    private ClassificationDef getReportingEngineClassification()
+    private EntityDef getReportingEngineEntity()
     {
-        return archiveHelper.getClassificationDef(OpenMetadataType.REPORTING_ENGINE_CLASSIFICATION,
-                                                  null,
-                                                  this.archiveBuilder.getEntityDef(OpenMetadataType.ENGINE.typeName),
-                                                  false);
+        return archiveHelper.getDefaultEntityDef(OpenMetadataType.REPORTING_ENGINE,
+                                                 this.archiveBuilder.getEntityDef(OpenMetadataType.ENGINE.typeName));
     }
 
-    private ClassificationDef getAnalyticsEngineClassification()
+    private EntityDef getAnalyticsEngineEntity()
     {
-        return archiveHelper.getClassificationDef(OpenMetadataType.ANALYTICS_ENGINE,
-                                                  null,
-                                                  this.archiveBuilder.getEntityDef(OpenMetadataType.ENGINE.typeName),
-                                                  false);
+        return archiveHelper.getDefaultEntityDef(OpenMetadataType.ANALYTICS_ENGINE,
+                                                 this.archiveBuilder.getEntityDef(OpenMetadataType.ENGINE.typeName));
     }
 
-    private ClassificationDef getDataMovementEngineClassification()
+    private EntityDef getDataMovementEngineEntity()
     {
-        return archiveHelper.getClassificationDef(OpenMetadataType.DATA_MOVEMENT_ENGINE,
-                                                  null,
-                                                  this.archiveBuilder.getEntityDef(OpenMetadataType.ENGINE.typeName),
-                                                  false);
+        return archiveHelper.getDefaultEntityDef(OpenMetadataType.DATA_MOVEMENT_ENGINE,
+                                                 this.archiveBuilder.getEntityDef(OpenMetadataType.ENGINE.typeName));
     }
 
-    private ClassificationDef getDataVirtualizationEngineClassification()
+    private EntityDef getDataVirtualizationEngineEntity()
     {
-        return archiveHelper.getClassificationDef(OpenMetadataType.DATA_VIRTUALIZATION_ENGINE,
-                                                  null,
-                                                  this.archiveBuilder.getEntityDef(OpenMetadataType.ENGINE.typeName),
-                                                  false);
+        return archiveHelper.getDefaultEntityDef(OpenMetadataType.DATA_VIRTUALIZATION_ENGINE,
+                                                 this.archiveBuilder.getEntityDef(OpenMetadataType.ENGINE.typeName));
     }
 
 
@@ -2900,7 +2855,6 @@ public class OpenMetadataTypesArchive1_2
         this.archiveBuilder.addRelationshipDef(getResourceListRelationship());
 
         this.archiveBuilder.addClassificationDef(getCollectionCategoryClassification());
-        this.archiveBuilder.addClassificationDef(getFolderClassification());
         this.archiveBuilder.addClassificationDef(getResultsSetClassification());
     }
 
@@ -3065,13 +3019,6 @@ public class OpenMetadataTypesArchive1_2
                                                   false);
     }
 
-    private ClassificationDef getFolderClassification()
-    {
-        return archiveHelper.getClassificationDef(OpenMetadataType.FOLDER_COLLECTION_CLASSIFICATION,
-                                                  this.archiveBuilder.getClassificationDef(OpenMetadataType.COLLECTION_ROLE_CLASSIFICATION.typeName),
-                                                  this.archiveBuilder.getEntityDef(OpenMetadataType.COLLECTION.typeName),
-                                                  false);
-    }
 
     private ClassificationDef getResultsSetClassification()
     {
@@ -3952,6 +3899,7 @@ public class OpenMetadataTypesArchive1_2
         this.add0201ConnectorsAndConnections();
         this.add0205ConnectionLinkage();
         this.add0210DataStores();
+        this.add0211TabularDataSets();
         this.add0212DeployedAPIs();
         this.add0215SoftwareComponents();
         this.add0220FilesAndFolders();
@@ -4222,6 +4170,29 @@ public class OpenMetadataTypesArchive1_2
         return relationshipDef;
     }
 
+
+    /*
+     * -------------------------------------------------------------------------------------------------------
+     */
+
+    private void add0211TabularDataSets()
+    {
+        this.archiveBuilder.addEntityDef(getTabularDataSetEntity());
+        this.archiveBuilder.addEntityDef(getTabularDataCollectionEntity());
+    }
+
+    private EntityDef getTabularDataSetEntity()
+    {
+        return archiveHelper.getDefaultEntityDef(OpenMetadataType.TABULAR_DATA_SET,
+                                                 this.archiveBuilder.getEntityDef(OpenMetadataType.DATA_SET.typeName));
+    }
+
+
+    private EntityDef getTabularDataCollectionEntity()
+    {
+        return archiveHelper.getDefaultEntityDef(OpenMetadataType.TABULAR_DATA_SET_COLLECTION,
+                                                 this.archiveBuilder.getEntityDef(OpenMetadataType.DATA_SET.typeName));
+    }
 
     /*
      * -------------------------------------------------------------------------------------------------------
@@ -4748,8 +4719,6 @@ public class OpenMetadataTypesArchive1_2
     {
         this.archiveBuilder.addEntityDef(getDeployedDatabaseSchemaEntity());
         this.archiveBuilder.addEntityDef(getDatabaseEntity());
-
-        this.archiveBuilder.addClassificationDef(getDatabaseServerClassification());
     }
 
     private EntityDef getDeployedDatabaseSchemaEntity()
@@ -4778,26 +4747,6 @@ public class OpenMetadataTypesArchive1_2
     }
 
 
-    private ClassificationDef getDatabaseServerClassification()
-    {
-        ClassificationDef classificationDef = archiveHelper.getClassificationDef(OpenMetadataType.DATABASE_SERVER_CLASSIFICATION,
-                                                                                 null,
-                                                                                 this.archiveBuilder.getEntityDef(OpenMetadataType.SOFTWARE_SERVER.typeName),
-                                                                                 false);
-
-        /*
-         * Build the attributes
-         */
-        List<TypeDefAttribute> properties = new ArrayList<>();
-
-        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.SOURCE));
-
-        classificationDef.setPropertiesDefinition(properties);
-
-        return classificationDef;
-    }
-
-
     /*
      * -------------------------------------------------------------------------------------------------------
      */
@@ -4812,9 +4761,6 @@ public class OpenMetadataTypesArchive1_2
         this.archiveBuilder.addEntityDef(getCohortRegistryStoreEntity());
 
         this.archiveBuilder.addRelationshipDef(getMetadataCohortPeerRelationship());
-
-        this.archiveBuilder.addClassificationDef(getMetadataServerClassification());
-        this.archiveBuilder.addClassificationDef(getRepositoryProxyClassification());
     }
 
 
@@ -4930,35 +4876,6 @@ public class OpenMetadataTypesArchive1_2
     }
 
 
-    private ClassificationDef getMetadataServerClassification()
-    {
-        ClassificationDef classificationDef = archiveHelper.getClassificationDef(OpenMetadataType.METADATA_SERVER_CLASSIFICATION,
-                                                                                 null,
-                                                                                 this.archiveBuilder.getEntityDef(OpenMetadataType.SOFTWARE_SERVER.typeName),
-                                                                                 false);
-
-        /*
-         * Build the attributes
-         */
-        List<TypeDefAttribute> properties = new ArrayList<>();
-
-        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.FORMAT));
-
-        classificationDef.setPropertiesDefinition(properties);
-
-        return classificationDef;
-    }
-
-
-    private ClassificationDef getRepositoryProxyClassification()
-    {
-        return archiveHelper.getClassificationDef(OpenMetadataType.REPOSITORY_PROXY_CLASSIFICATION,
-                                                  null,
-                                                  this.archiveBuilder.getEntityDef(OpenMetadataType.SOFTWARE_SERVER.typeName),
-                                                  false);
-    }
-
-
     /*
      * -------------------------------------------------------------------------------------------------------
      */
@@ -4999,14 +4916,14 @@ public class OpenMetadataTypesArchive1_2
     private EntityDef getReferenceCodeTableEntity()
     {
         return archiveHelper.getDefaultEntityDef(OpenMetadataType.REFERENCE_CODE_TABLE,
-                                                 this.archiveBuilder.getEntityDef(OpenMetadataType.DATA_SET.typeName));
+                                                 this.archiveBuilder.getEntityDef(OpenMetadataType.TABULAR_DATA_SET.typeName));
     }
 
 
     private EntityDef getReferenceCodeMappingTableEntity()
     {
         return archiveHelper.getDefaultEntityDef(OpenMetadataType.REFERENCE_CODE_MAPPING_TABLE,
-                                                 this.archiveBuilder.getEntityDef(OpenMetadataType.DATA_SET.typeName));
+                                                 this.archiveBuilder.getEntityDef(OpenMetadataType.TABULAR_DATA_SET.typeName));
     }
 
 
@@ -7571,8 +7488,6 @@ public class OpenMetadataTypesArchive1_2
         this.archiveBuilder.addClassificationDef(getExceptionBacklogClassification());
         this.archiveBuilder.addClassificationDef(getAuditLogClassification());
         this.archiveBuilder.addClassificationDef(getMeteringLogClassification());
-        this.archiveBuilder.addClassificationDef(getStewardshipServerClassification());
-        this.archiveBuilder.addClassificationDef(getGovernanceDaemonClassification());
     }
 
 
@@ -7644,23 +7559,6 @@ public class OpenMetadataTypesArchive1_2
         return classificationDef;
     }
 
-
-    private ClassificationDef getStewardshipServerClassification()
-    {
-        return archiveHelper.getClassificationDef(OpenMetadataType.STEWARDSHIP_SERVER_CLASSIFICATION,
-                                                  null,
-                                                  this.archiveBuilder.getEntityDef(OpenMetadataType.SOFTWARE_SERVER.typeName),
-                                                  false);
-    }
-
-
-    private ClassificationDef getGovernanceDaemonClassification()
-    {
-        return archiveHelper.getClassificationDef(OpenMetadataType.GOVERNANCE_DAEMON_CLASSIFICATION,
-                                                  null,
-                                                  this.archiveBuilder.getEntityDef(OpenMetadataType.SOFTWARE_SERVER.typeName),
-                                                  false);
-    }
 
     /*
      * -------------------------------------------------------------------------------------------------------

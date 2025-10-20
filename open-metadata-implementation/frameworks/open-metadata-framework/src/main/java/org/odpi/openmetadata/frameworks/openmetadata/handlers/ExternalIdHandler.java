@@ -184,34 +184,6 @@ public class ExternalIdHandler extends OpenMetadataHandlerBase
      * from an audit point of view, and to allow bidirectional updates of metadata using optimistic locking.
      *
      * @param userId                 userId of user making request.
-     * @param externalScopeGUID unique identifier of the metadata collection representing the caller
-     * @param externalScopeName unique name of the metadata collection representing the caller
-     * @param openMetadataElementGUID unique identifier (GUID) of this element in open metadata
-     * @param openMetadataElementTypeName type name for the open metadata element
-     * @param externalIdentifier unique identifier of this element in the external asset manager
-     *
-     * @throws InvalidParameterException  one of the parameters is invalid
-     * @throws UserNotAuthorizedException user not authorized to issue this request
-     * @throws PropertyServerException    problem accessing the property server
-     */
-    public void confirmSynchronization(String userId,
-                                       String externalScopeGUID,
-                                       String externalScopeName,
-                                       String openMetadataElementGUID,
-                                       String openMetadataElementTypeName,
-                                       String externalIdentifier) throws InvalidParameterException,
-                                                                         UserNotAuthorizedException,
-                                                                         PropertyServerException
-    {
-        openMetadataClient.confirmSynchronization(userId, externalScopeGUID, externalScopeName, openMetadataElementGUID, openMetadataElementTypeName, externalIdentifier);
-    }
-
-
-    /**
-     * Confirm that the values of a particular metadata element have been synchronized.  This is important
-     * from an audit point of view, and to allow bidirectional updates of metadata using optimistic locking.
-     *
-     * @param userId                 userId of user making request.
      * @param externalIdLinkGUID unique identifier of the ExternalIdLink relationship to update
      *
      * @throws InvalidParameterException  one of the parameters is invalid

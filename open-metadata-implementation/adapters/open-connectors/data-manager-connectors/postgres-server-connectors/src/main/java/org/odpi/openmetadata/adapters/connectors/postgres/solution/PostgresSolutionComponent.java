@@ -120,6 +120,7 @@ public enum PostgresSolutionComponent implements SolutionComponentDefinition
      *
      * @return string
      */
+    @Override
     public String getGUID()
     {
         return guid;
@@ -131,6 +132,7 @@ public enum PostgresSolutionComponent implements SolutionComponentDefinition
      *
      * @return string
      */
+    @Override
     public String getComponentType()
     {
         return componentType;
@@ -142,6 +144,7 @@ public enum PostgresSolutionComponent implements SolutionComponentDefinition
      *
      * @return string
      */
+    @Override
     public String getImplementationType()
     {
         return implementationType;
@@ -153,6 +156,7 @@ public enum PostgresSolutionComponent implements SolutionComponentDefinition
      *
      * @return string
      */
+    @Override
     public String getDisplayName()
     {
         return displayName;
@@ -164,6 +168,7 @@ public enum PostgresSolutionComponent implements SolutionComponentDefinition
      *
      * @return string
      */
+    @Override
     public String getDescription()
     {
         return description;

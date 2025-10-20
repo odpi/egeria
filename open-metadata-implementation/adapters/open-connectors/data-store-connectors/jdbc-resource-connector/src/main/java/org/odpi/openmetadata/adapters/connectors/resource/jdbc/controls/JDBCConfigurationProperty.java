@@ -11,9 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * PostgresConfigurationProperty provides some standard definitions for configuration properties used to
- * pass properties to connectors when they run.  Using standard names for request parameters wherever possible
- * helps to simplify the integration of governance services.
+ * JDBCConfigurationProperty describes the configuration properties supported by the JDBC Resource connector.
  */
 public enum JDBCConfigurationProperty
 {
@@ -190,6 +188,6 @@ public enum JDBCConfigurationProperty
     @Override
     public String toString()
     {
-        return "MoveCopyFileRequestParameter{ name=" + name + "}";
+        return "RequestParameter{ name=" + name + "}";
     }
 }

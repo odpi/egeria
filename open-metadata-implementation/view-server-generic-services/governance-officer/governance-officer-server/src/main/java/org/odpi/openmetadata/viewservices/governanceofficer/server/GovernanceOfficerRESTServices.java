@@ -339,7 +339,7 @@ public class GovernanceOfficerRESTServices extends TokenController
                                               String                   governanceDefinitionOneGUID,
                                               String                   governanceDefinitionTwoGUID,
                                               String                   relationshipTypeName,
-                                              DeleteRequestBody requestBody)
+                                              DeleteRelationshipRequestBody requestBody)
     {
         final String methodName = "detachPeerDefinitions";
 
@@ -478,7 +478,7 @@ public class GovernanceOfficerRESTServices extends TokenController
                                                    String                   governanceDefinitionOneGUID,
                                                    String                   governanceDefinitionTwoGUID,
                                                    String                   relationshipTypeName,
-                                                   DeleteRequestBody requestBody)
+                                                   DeleteRelationshipRequestBody requestBody)
     {
         final String methodName = "detachSupportingDefinition";
 
@@ -608,7 +608,7 @@ public class GovernanceOfficerRESTServices extends TokenController
                                                               String            urlMarker,
                                                               String            elementGUID,
                                                               String            definitionGUID,
-                                                              DeleteRequestBody requestBody)
+                                                              DeleteRelationshipRequestBody requestBody)
     {
         final String methodName = "removeGovernanceDefinitionFromElement";
 
@@ -732,7 +732,7 @@ public class GovernanceOfficerRESTServices extends TokenController
                                                 String            urlMarker,
                                                 String            governanceMetricGUID,
                                                 String            dataSourceGUID,
-                                                DeleteRequestBody requestBody)
+                                                DeleteRelationshipRequestBody requestBody)
     {
         final String methodName = "detachGovernanceResults";
 
@@ -909,7 +909,7 @@ public class GovernanceOfficerRESTServices extends TokenController
     public VoidResponse unlicenseElement(String            serverName,
                                          String            urlMarker,
                                          String            licenseGUID,
-                                         DeleteRequestBody requestBody)
+                                         DeleteRelationshipRequestBody requestBody)
     {
         final String methodName = "unlicenseElement";
 
@@ -1090,7 +1090,7 @@ public class GovernanceOfficerRESTServices extends TokenController
     public VoidResponse decertifyElement(String            serverName,
                                          String            urlMarker,
                                          String            certificationGUID,
-                                         DeleteRequestBody requestBody)
+                                         DeleteRelationshipRequestBody requestBody)
     {
         final String methodName = "decertifyElement";
 
@@ -1135,7 +1135,7 @@ public class GovernanceOfficerRESTServices extends TokenController
     public VoidResponse deleteGovernanceDefinition(String                   serverName,
                                                    String                   urlMarker,
                                                    String                   governanceDefinitionGUID,
-                                                   DeleteRequestBody requestBody)
+                                                   DeleteElementRequestBody requestBody)
     {
         final String methodName = "deleteGovernanceDefinition";
 
@@ -1482,7 +1482,7 @@ public class GovernanceOfficerRESTServices extends TokenController
                                                        String                   urlMarker,
                                                        String                   designGUID,
                                                        String                   implementationGUID,
-                                                       DeleteRequestBody requestBody)
+                                                       DeleteRelationshipRequestBody requestBody)
     {
         final String methodName = "detachDesignFromImplementation";
 
@@ -1610,7 +1610,7 @@ public class GovernanceOfficerRESTServices extends TokenController
                                                      String                   urlMarker,
                                                      String                   designGUID,
                                                      String                   implementationResourceGUID,
-                                                     DeleteRequestBody requestBody)
+                                                     DeleteRelationshipRequestBody requestBody)
     {
         final String methodName = "detachImplementationResource";
 

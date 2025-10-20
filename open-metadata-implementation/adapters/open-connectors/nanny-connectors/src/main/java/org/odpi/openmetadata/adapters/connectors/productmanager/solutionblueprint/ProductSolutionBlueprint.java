@@ -14,7 +14,7 @@ public enum ProductSolutionBlueprint
      */
     OPEN_METADATA_CONTENT_PACK("Open Metadata Archive Solution Blueprint",
                           "Description of the processing used to create the content packs shipped with Egeria.  These content packs contain open metadata that is generally useful to teams starting to use Egeria.  The core content pack and the open metadata types are loaded automatically when the metadata access store starts up.  The other content packs are loaded on demand.",
-                          "V1.0",
+                          "5.4-SNAPSHOT",
                           false),
 
     /**
@@ -22,7 +22,7 @@ public enum ProductSolutionBlueprint
      */
     AUTO_PRODUCT_MANAGER("Open Metadata Digital Product Solution Blueprint",
                                "Description of the processing used to manage the digital products derived from open metadata.",
-                               "V1.0",
+                               "5.4-SNAPSHOT",
                                false),
 
 
@@ -31,7 +31,7 @@ public enum ProductSolutionBlueprint
      */
     EGERIA_WORKSPACES("Egeria Workspaces Solution Blueprint",
                          "Description of the simple open metadata deployment environment used for evaluation and small team deployments.  It includes a configured Egeria runtime plus Apache Kafka, a PostgreSQL server, and an OpenLineage proxy (for receiving open lineage events).  There are optional packages for Marquez, Apache Airflow, Unity Catalog and Apache Superset",
-                         "V1.0",
+                         "5.4-SNAPSHOT",
                          false),
 
 
@@ -40,7 +40,7 @@ public enum ProductSolutionBlueprint
      */
     DEFAULT_RUNTIME("Egeria Default Runtime Solution Blueprint",
                       "Description of the services configured by Egeria's build process to create a simple open metadata deployment environment used for evaluation.",
-                      "V1.0",
+                      "5.4-SNAPSHOT",
                       false),
 
 

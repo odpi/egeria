@@ -5,6 +5,8 @@ package org.odpi.openmetadata.archiveutilities.openconnectors.core;
 import org.odpi.openmetadata.adapters.connectors.datastore.basicfile.BasicFileStoreProvider;
 import org.odpi.openmetadata.adapters.connectors.datastore.basicfile.BasicFolderProvider;
 import org.odpi.openmetadata.adapters.connectors.datastore.csvfile.CSVFileStoreProvider;
+import org.odpi.openmetadata.adapters.connectors.datastore.csvfile.CSVTabularDataSetCollectionProvider;
+import org.odpi.openmetadata.adapters.connectors.datastore.csvfile.CSVTabularDataSetProvider;
 import org.odpi.openmetadata.adapters.connectors.datastore.datafolder.DataFolderProvider;
 import org.odpi.openmetadata.frameworks.openmetadata.definitions.*;
 import org.odpi.openmetadata.adapters.connectors.egeriainfrastructure.control.EgeriaSoftwareServerTemplateDefinition;
@@ -66,6 +68,18 @@ public class CorePackArchiveWriter extends ContentPackBaseArchiveWriter
     @Override
     public void getArchiveContent()
     {
+        /*
+         * Add Egeria's common solution definitions
+         */
+        archiveHelper.addSolutionRoles(List.of(EgeriaRoleDefinition.values()));
+        archiveHelper.addSolutionComponents(List.of(EgeriaSolutionComponent.values()));
+        archiveHelper.addSolutionComponentActors(List.of(EgeriaSolutionComponentActor.values()));
+        archiveHelper.addSolutionComponentWires(List.of(EgeriaSolutionComponentWire.values()));
+        archiveHelper.addSolutionBlueprints(List.of(EgeriaSolutionBlueprint.values()));
+
+        /*
+         * Add the root digital product catalog.
+         */
         addDigitalProductCatalogDefinition(ContentPackDefinition.CORE_CONTENT_PACK);
 
         /*
@@ -813,6 +827,8 @@ public class CorePackArchiveWriter extends ContentPackBaseArchiveWriter
          * This information is in the connector provider.
          */
         archiveHelper.addConnectorType(new CSVFileStoreProvider());
+        archiveHelper.addConnectorType(new CSVTabularDataSetProvider());
+        archiveHelper.addConnectorType(new CSVTabularDataSetCollectionProvider());
         archiveHelper.addConnectorType(new DataFolderProvider());
         archiveHelper.addConnectorType(new BasicFileStoreProvider());
         archiveHelper.addConnectorType(new BasicFolderProvider());
@@ -848,7 +864,7 @@ public class CorePackArchiveWriter extends ContentPackBaseArchiveWriter
         this.addEndpointCatalogTemplates();
         this.addSoftwareServerCatalogTemplates(ContentPackDefinition.CORE_CONTENT_PACK);
         this.addDataAssetCatalogTemplates(ContentPackDefinition.CORE_CONTENT_PACK);
-        this.addDataSetCatalogTemplates(ContentPackDefinition.CORE_CONTENT_PACK);
+        this.addTabularDataSetCatalogTemplates(ContentPackDefinition.CORE_CONTENT_PACK);
 
         for (EgeriaSoftwareServerTemplateDefinition templateDefinition : EgeriaSoftwareServerTemplateDefinition.values())
         {
@@ -968,14 +984,6 @@ public class CorePackArchiveWriter extends ContentPackBaseArchiveWriter
          */
         this.createDailyGovernanceActionProcess();
 
-        /*
-         * Add Egeria's common solution definitions
-         */
-        archiveHelper.addSolutionRoles(List.of(EgeriaRoleDefinition.values()));
-        archiveHelper.addSolutionComponents(List.of(EgeriaSolutionComponent.values()));
-        archiveHelper.addSolutionComponentActors(List.of(EgeriaSolutionComponentActor.values()));
-        archiveHelper.addSolutionComponentWires(List.of(EgeriaSolutionComponentWire.values()));
-        archiveHelper.addSolutionBlueprints(List.of(EgeriaSolutionBlueprint.values()));
 
         /*
          * Saving the GUIDs means tha the guids in the archive are stable between runs of the archive writer.
@@ -1115,7 +1123,7 @@ public class CorePackArchiveWriter extends ContentPackBaseArchiveWriter
         String networkAddress = "https://localhost:9443";
 
         String               qualifiedName      = deployedImplementationType.getDeployedImplementationType() + "::" + serverName;
-        String               versionIdentifier  = "V1.0";
+        String               versionIdentifier  = "5.4-SNAPSHOT";
         String               description        = "Default OMAG Server Platform running on local host and port 9443.";
         List<Classification> classifications    = null;
 

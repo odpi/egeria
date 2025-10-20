@@ -484,8 +484,6 @@ public class PropertyHelper
         {
             List<ElementClassification> executionPoints            = new ArrayList<>();
             List<ElementClassification> duplicateClassifications   = new ArrayList<>();
-            List<ElementClassification> resourceManagersCategories = new ArrayList<>();
-            List<ElementClassification> serverPurposes             = new ArrayList<>();
             List<ElementClassification> collectionRoles            = new ArrayList<>();
             List<ElementClassification> projectCategories          = new ArrayList<>();
             List<ElementClassification> otherClassifications       = new ArrayList<>();
@@ -586,10 +584,6 @@ public class PropertyHelper
                     {
                         elementHeader.setPrimaryKey(this.getElementClassification(attachedClassification));
                     }
-                    else if (this.isTypeOf(attachedClassification, OpenMetadataType.SERVER_PURPOSE_CLASSIFICATION.typeName))
-                    {
-                        serverPurposes.add(this.getElementClassification(attachedClassification));
-                    }
                     else if (this.isTypeOf(attachedClassification, OpenMetadataType.COLLECTION_ROLE_CLASSIFICATION.typeName))
                     {
                         collectionRoles.add(this.getElementClassification(attachedClassification));
@@ -613,11 +607,6 @@ public class PropertyHelper
             if (! executionPoints.isEmpty())
             {
                 elementHeader.setExecutionPoints(executionPoints);
-            }
-
-            if (! serverPurposes.isEmpty())
-            {
-                elementHeader.setServerPurposes(serverPurposes);
             }
 
             if (! collectionRoles.isEmpty())
@@ -4239,13 +4228,6 @@ public class PropertyHelper
             }
 
             classification = getClassification(elementHeader.getCollectionRoles(), classificationName);
-
-            if (classification != null)
-            {
-                return classification;
-            }
-
-            classification = getClassification(elementHeader.getServerPurposes(), classificationName);
 
             if (classification != null)
             {

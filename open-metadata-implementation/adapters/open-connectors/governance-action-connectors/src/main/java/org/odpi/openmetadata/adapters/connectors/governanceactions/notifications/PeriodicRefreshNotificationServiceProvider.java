@@ -21,7 +21,7 @@ public class PeriodicRefreshNotificationServiceProvider extends WatchdogActionSe
     /*
      * Unique identifier of the connector for the audit log.
      */
-    private static final int    connectorComponentId       = 707;
+    private static final int    connectorComponentId       = 710;
     private static final String connectorTypeGUID          = "fcce903b-8e60-4d1e-969c-2802e0195b34";
     private static final String connectorTypeQualifiedName = "Egeria:GovernanceService:Watchdog:PeriodicRefreshNotificationService";
     private static final String connectorTypeDisplayName   = "Open Metadata Watchdog Service";

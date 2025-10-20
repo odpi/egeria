@@ -26,14 +26,14 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
                 @JsonSubTypes.Type(value = AssetLineageGraphNode.class, name = "AssetLineageGraphNode"),
                 @JsonSubTypes.Type(value = AssetSearchMatches.class, name = "AssetSearchMatches"),
                 @JsonSubTypes.Type(value = OpenMetadataRootHierarchy.class, name = "OpenMetadataRootHierarchy"),
-                @JsonSubTypes.Type(value = SolutionBlueprintElement.class, name = "SolutionBlueprintElement"),
                 @JsonSubTypes.Type(value = TemplateElement.class, name = "TemplateElement"),
         })
 public class OpenMetadataRootElement extends AttributedMetadataElement
 {
-    private OpenMetadataRootProperties properties   = null;
-    private String                     mermaidGraph = null;
-    private String                     solutionBlueprintMermaidGraph = null;
+    private OpenMetadataRootProperties properties                       = null;
+    private String                     mermaidGraph                     = null;
+    private String                     solutionBlueprintMermaidGraph    = null;
+    private String                     solutionSubcomponentMermaidGraph = null;
 
     /**
      * Default constructor
@@ -58,6 +58,7 @@ public class OpenMetadataRootElement extends AttributedMetadataElement
             properties   = template.getProperties();
             mermaidGraph = template.getMermaidGraph();
             solutionBlueprintMermaidGraph = template.getSolutionBlueprintMermaidGraph();
+            solutionSubcomponentMermaidGraph = template.getSolutionSubcomponentMermaidGraph();
         }
     }
 
@@ -108,8 +109,6 @@ public class OpenMetadataRootElement extends AttributedMetadataElement
     }
 
 
-
-
     /**
      * Return the graph view of the solution blueprint.  This just contains the top level components linked together.
      *
@@ -133,6 +132,28 @@ public class OpenMetadataRootElement extends AttributedMetadataElement
 
 
     /**
+     * Return the graph of a solution component's subcomponents.
+     *
+     * @return mermaid markdown
+     */
+    public String getSolutionSubcomponentMermaidGraph()
+    {
+        return solutionSubcomponentMermaidGraph;
+    }
+
+
+    /**
+     * Set up the graph of a solution component's subcomponents.
+     *
+     * @param solutionSubcomponentMermaidGraph mermaid markdown
+     */
+    public void setSolutionSubcomponentMermaidGraph(String solutionSubcomponentMermaidGraph)
+    {
+        this.solutionSubcomponentMermaidGraph = solutionSubcomponentMermaidGraph;
+    }
+
+
+    /**
      * JSON-style toString
      *
      * @return return string containing the property names and values
@@ -144,6 +165,7 @@ public class OpenMetadataRootElement extends AttributedMetadataElement
                 "properties=" + properties +
                 ", mermaidGraph='" + mermaidGraph + '\'' +
                 ", solutionBlueprintMermaidGraph='" + solutionBlueprintMermaidGraph + '\'' +
+                ", solutionSubcomponentMermaidGraph='" + solutionSubcomponentMermaidGraph + '\'' +
                 "} " + super.toString();
     }
 
@@ -163,7 +185,8 @@ public class OpenMetadataRootElement extends AttributedMetadataElement
         OpenMetadataRootElement that = (OpenMetadataRootElement) objectToCompare;
         return Objects.equals(properties, that.properties) &&
                 Objects.equals(mermaidGraph, that.mermaidGraph) &&
-                Objects.equals(solutionBlueprintMermaidGraph, that.solutionBlueprintMermaidGraph);
+                Objects.equals(solutionBlueprintMermaidGraph, that.solutionBlueprintMermaidGraph) &&
+                Objects.equals(solutionSubcomponentMermaidGraph, that.solutionSubcomponentMermaidGraph);
     }
 
 
@@ -175,6 +198,6 @@ public class OpenMetadataRootElement extends AttributedMetadataElement
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), properties, mermaidGraph, solutionBlueprintMermaidGraph);
+        return Objects.hash(super.hashCode(), properties, mermaidGraph, solutionBlueprintMermaidGraph, solutionSubcomponentMermaidGraph);
     }
 }

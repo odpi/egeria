@@ -275,9 +275,6 @@ public class OpenMetadataTypesArchive3_1
     {
         this.archiveBuilder.addEntityDef(addBareMetalComputerEntity());
         this.archiveBuilder.addEntityDef(addVirtualMachineEntity());
-        this.archiveBuilder.addEntityDef(addDockerContainerEntity());
-        this.archiveBuilder.addEntityDef(addHadoopClusterEntity());
-        this.archiveBuilder.addEntityDef(addKubernetesClusterEntity());
     }
 
 
@@ -295,26 +292,6 @@ public class OpenMetadataTypesArchive3_1
                                                  this.archiveBuilder.getEntityDef(OpenMetadataType.HOST.typeName));
     }
 
-
-    private EntityDef addDockerContainerEntity()
-    {
-        return archiveHelper.getDefaultEntityDef(OpenMetadataType.DOCKER_CONTAINER,
-                                                 this.archiveBuilder.getEntityDef(OpenMetadataType.VIRTUAL_CONTAINER.typeName));
-    }
-
-
-    private EntityDef addHadoopClusterEntity()
-    {
-        return archiveHelper.getDefaultEntityDef(OpenMetadataType.HADOOP_CLUSTER,
-                                                 this.archiveBuilder.getEntityDef(OpenMetadataType.HOST_CLUSTER.typeName));
-    }
-
-
-    private EntityDef addKubernetesClusterEntity()
-    {
-        return archiveHelper.getDefaultEntityDef(OpenMetadataType.KUBERNETES_CLUSTER,
-                                                 this.archiveBuilder.getEntityDef(OpenMetadataType.HOST_CLUSTER.typeName));
-    }
 
     /*
      * -------------------------------------------------------------------------------------------------------

@@ -68,6 +68,7 @@ public enum PostgresSolutionBlueprint implements SolutionBlueprintDefinition
      *
      * @return string
      */
+    @Override
     public String getGUID() { return guid; }
 
 

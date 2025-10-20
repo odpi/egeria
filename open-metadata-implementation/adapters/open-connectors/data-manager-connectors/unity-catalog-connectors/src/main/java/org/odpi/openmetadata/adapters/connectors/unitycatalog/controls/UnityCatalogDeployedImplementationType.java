@@ -93,9 +93,9 @@ public enum UnityCatalogDeployedImplementationType implements DeployedImplementa
      * An operational metadata catalog that supports controlled access to data managed through a data platform.
      */
     OSS_UNITY_CATALOG_SERVER("Unity Catalog Server",
-                             DeployedImplementationType.SOFTWARE_SERVER,
+                             DeployedImplementationType.METADATA_SERVER,
                              OpenMetadataType.SOFTWARE_SERVER.typeName,
-                             OpenMetadataType.METADATA_SERVER_CLASSIFICATION.typeName,
+                             null,
                              "The OSS Unity Catalog (UC) Server is an operational data platform 'catalog of catalogs' that supports controlled access to data managed through a related data platforms.",
                              "https://github.com/unitycatalog/unitycatalog"),
 
@@ -106,7 +106,7 @@ public enum UnityCatalogDeployedImplementationType implements DeployedImplementa
     DB_UNITY_CATALOG_SERVER("Databricks Unity Catalog Server",
                              OSS_UNITY_CATALOG_SERVER,
                              OpenMetadataType.SOFTWARE_SERVER.typeName,
-                             OpenMetadataType.METADATA_SERVER_CLASSIFICATION.typeName,
+                             null,
                              "The Databricks Unity Catalog (UC) Server is an operational data platform 'catalog of catalogs' that supports controlled access to data managed through a related data platforms.",
                              "https://github.com/unitycatalog/unitycatalog"),
 

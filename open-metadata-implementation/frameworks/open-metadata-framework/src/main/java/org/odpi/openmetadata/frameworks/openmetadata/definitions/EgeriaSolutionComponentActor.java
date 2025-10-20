@@ -46,18 +46,18 @@ public enum EgeriaSolutionComponentActor implements SolutionComponentActorDefini
     ;
 
     final ActorRoleDefinition         solutionRole;
-    final SolutionComponentDefinition productSolutionComponent;
+    final SolutionComponentDefinition solutionComponent;
     final String                      role;
     final String                      description;
 
-    EgeriaSolutionComponentActor(EgeriaRoleDefinition solutionRole,
-                                 EgeriaSolutionComponent productSolutionComponent,
-                                 String                 role,
-                                 String                 description)
+    EgeriaSolutionComponentActor(EgeriaRoleDefinition    solutionRole,
+                                 EgeriaSolutionComponent solutionComponent,
+                                 String                  role,
+                                 String                  description)
     {
-        this.solutionRole             = solutionRole;
-        this.productSolutionComponent = productSolutionComponent;
-        this.role                     = role;
+        this.solutionRole      = solutionRole;
+        this.solutionComponent = solutionComponent;
+        this.role              = role;
         this.description       = description;
     }
 
@@ -67,19 +67,22 @@ public enum EgeriaSolutionComponentActor implements SolutionComponentActorDefini
      *
      * @return role definition
      */
+    @Override
     public ActorRoleDefinition getSolutionRole()
     {
         return solutionRole;
     }
+
 
     /**
      * Return the solution component to link to.
      *
      * @return component definition
      */
+    @Override
     public SolutionComponentDefinition getSolutionComponent()
     {
-        return productSolutionComponent;
+        return solutionComponent;
     }
 
 
@@ -88,6 +91,7 @@ public enum EgeriaSolutionComponentActor implements SolutionComponentActorDefini
      *
      * @return string
      */
+    @Override
     public String getRole()
     {
         return role;
@@ -99,6 +103,7 @@ public enum EgeriaSolutionComponentActor implements SolutionComponentActorDefini
      *
      * @return string
      */
+    @Override
     public String getDescription()
     {
         return description;
@@ -115,7 +120,7 @@ public enum EgeriaSolutionComponentActor implements SolutionComponentActorDefini
     {
         return "EgeriaSolutionComponentActor{" +
                 "solutionRole=" + solutionRole +
-                ", productSolutionComponent=" + productSolutionComponent +
+                ", productSolutionComponent=" + solutionComponent +
                 ", role='" + role + '\'' +
                 ", description='" + description + '\'' +
                 "}";

@@ -8,6 +8,7 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.DataSetProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.TabularDataSetProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
@@ -20,7 +21,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class ReferenceCodeTableProperties extends DataSetProperties
+public class ReferenceCodeTableProperties extends TabularDataSetProperties
 {
     /**
      * Default constructor
@@ -41,6 +42,7 @@ public class ReferenceCodeTableProperties extends DataSetProperties
     {
         super(template);
     }
+
 
     /**
      * Standard toString method.

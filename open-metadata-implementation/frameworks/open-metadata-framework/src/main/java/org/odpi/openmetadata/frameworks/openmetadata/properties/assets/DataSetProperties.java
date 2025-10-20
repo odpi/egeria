@@ -5,13 +5,10 @@ package org.odpi.openmetadata.frameworks.openmetadata.properties.assets;
 
 import com.fasterxml.jackson.annotation.*;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.databases.DeployedDatabaseSchemaProperties;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.databases.TableDataSetProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.filesandfolders.DataFileCollectionProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.filesandfolders.MediaCollectionProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.filesandfolders.SecretsCollectionProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.metadatarepositories.MetadataCollectionProperties;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.referencedata.ReferenceCodeMappingTableProperties;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.referencedata.ReferenceCodeTableProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.reports.FormProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.reports.InformationViewProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.reports.ReportProperties;
@@ -39,11 +36,10 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
                 @JsonSubTypes.Type(value = InformationViewProperties.class, name = "InformationViewProperties"),
                 @JsonSubTypes.Type(value = MediaCollectionProperties.class, name = "MediaCollectionProperties"),
                 @JsonSubTypes.Type(value = MetadataCollectionProperties.class, name = "MetadataCollectionProperties"),
-                @JsonSubTypes.Type(value = ReferenceCodeMappingTableProperties.class, name = "ReferenceCodeMappingProperties"),
-                @JsonSubTypes.Type(value = ReferenceCodeTableProperties.class, name = "ReferenceCodeTableProperties"),
                 @JsonSubTypes.Type(value = ReportProperties.class, name = "ReportProperties"),
                 @JsonSubTypes.Type(value = SecretsCollectionProperties.class, name = "SecretsCollectionProperties"),
-                @JsonSubTypes.Type(value = TableDataSetProperties.class, name = "TableDataSetProperties"),
+                @JsonSubTypes.Type(value = TabularDataSetProperties.class, name = "TabularDataSetProperties"),
+                @JsonSubTypes.Type(value = TabularDataSetCollectionProperties.class, name = "TabularDataSetCollectionProperties"),
         })
 public class DataSetProperties extends DataAssetProperties
 {

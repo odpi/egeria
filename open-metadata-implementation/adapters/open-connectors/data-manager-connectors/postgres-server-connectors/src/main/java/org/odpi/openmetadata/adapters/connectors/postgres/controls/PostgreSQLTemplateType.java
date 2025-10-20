@@ -45,6 +45,24 @@ public enum PostgreSQLTemplateType implements TemplateDefinition
                              PostgresDeployedImplementationType.POSTGRESQL_DATABASE_SCHEMA,
                              PostgresPlaceholderProperty.getPostgresSchemaPlaceholderPropertyTypes(),
                              null),
+
+    POSTGRES_TABULAR_DATA_SET_TEMPLATE(PostgresDeployedImplementationType.POSTGRESQL_TABULAR_DATA_SET.getDeployedImplementationType(),
+                                       "Create a " + PostgresDeployedImplementationType.POSTGRESQL_TABULAR_DATA_SET.getAssociatedTypeName() + " asset.",
+                                       PostgresDeployedImplementationType.POSTGRESQL_TABULAR_DATA_SET.getAssociatedTypeName(),
+                                       false,
+                                       "1e76e109-61a5-42d8-a29b-86cb675fc750",
+                                       PostgresDeployedImplementationType.POSTGRESQL_TABULAR_DATA_SET,
+                                       PostgresPlaceholderProperty.getPostgresTablePlaceholderPropertyTypes(),
+                                       null),
+
+    POSTGRES_TABULAR_DATA_SET_COLLECTION_TEMPLATE(PostgresDeployedImplementationType.POSTGRESQL_TABULAR_DATA_SET_COLLECTION.getDeployedImplementationType(),
+                                       "Create a " + PostgresDeployedImplementationType.POSTGRESQL_TABULAR_DATA_SET_COLLECTION.getAssociatedTypeName() + " asset.",
+                                       PostgresDeployedImplementationType.POSTGRESQL_TABULAR_DATA_SET_COLLECTION.getAssociatedTypeName(),
+                                       false,
+                                       "3f9a0ab3-072c-4cb1-a14f-6e0492e00dd7",
+                                       PostgresDeployedImplementationType.POSTGRESQL_TABULAR_DATA_SET_COLLECTION,
+                                       PostgresPlaceholderProperty.getPostgresSchemaPlaceholderPropertyTypes(),
+                                       null),
     ;
 
 
@@ -160,7 +178,7 @@ public enum PostgreSQLTemplateType implements TemplateDefinition
     @Override
     public String getTemplateVersionIdentifier()
     {
-        return "V1.0";
+        return "5.4-SNAPSHOT";
     }
 
 
