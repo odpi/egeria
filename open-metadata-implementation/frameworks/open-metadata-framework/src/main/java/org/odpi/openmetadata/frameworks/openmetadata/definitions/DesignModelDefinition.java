@@ -17,6 +17,7 @@ public interface DesignModelDefinition extends CollectionDefinition
      *
      * @return string
      */
+    @Override
     default String getTypeName() { return OpenMetadataType.DESIGN_MODEL.typeName; }
 
 

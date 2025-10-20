@@ -6,9 +6,6 @@ package org.odpi.openmetadata.frameworks.openmetadata.mermaid;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.AssetGraph;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.MetadataElementSummary;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.RelatedMetadataNodeSummary;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.LabeledRelationshipProperties;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.lineage.LineageRelationshipProperties;
-import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 
 import java.util.Arrays;

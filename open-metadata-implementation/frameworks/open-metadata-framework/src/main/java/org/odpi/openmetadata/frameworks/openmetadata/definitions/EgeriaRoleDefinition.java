@@ -73,6 +73,7 @@ public enum EgeriaRoleDefinition implements ActorRoleDefinition
      *
      * @return type name
      */
+    @Override
     public String getGUID()
     {
         return guid;
@@ -84,6 +85,7 @@ public enum EgeriaRoleDefinition implements ActorRoleDefinition
      *
      * @return string
      */
+    @Override
     public String getTypeName()
     {
         return typeName;

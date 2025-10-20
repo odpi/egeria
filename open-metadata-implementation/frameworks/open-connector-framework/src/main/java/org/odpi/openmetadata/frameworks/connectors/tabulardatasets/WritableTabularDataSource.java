@@ -25,18 +25,6 @@ public interface WritableTabularDataSource
 
 
     /**
-     * Set up the canonical table name for this data source.  Each word in the name should be capitalized, with spaces
-     * between the words to allow translation between different naming conventions.
-     *
-     * @param tableName  string
-     * @param tableDescription optional description
-     * @throws ConnectorCheckedException there is a problem accessing the data
-     */
-    void setTableName(String tableName,
-                      String tableDescription) throws ConnectorCheckedException;
-
-
-    /**
      * Set up the columns associated with this tabular data source.  These may be stored in the data set or kept in
      * memory for this instance.  The names of the columns will be in
      * a canonical format where each word in the name is capitalized with a space between each word.

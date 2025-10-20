@@ -78,7 +78,7 @@ public class AssetCatalogResource
             externalDocs=@ExternalDocumentation(description="Assets",
                     url="https://egeria-project.org/concepts/asset/"))
 
-    public AssetGraphResponse getAssetGraph(@PathVariable String serverName,
+    public OpenMetadataRootElementResponse getAssetGraph(@PathVariable String serverName,
                                             @PathVariable String assetGUID,
                                             @RequestBody(required = false)
                                             ResultsRequestBody requestBody)
@@ -108,7 +108,7 @@ public class AssetCatalogResource
             externalDocs=@ExternalDocumentation(description="Assets",
                     url="https://egeria-project.org/features/lineage-management/overview/"))
 
-    public AssetLineageGraphResponse getAssetLineageGraph(@PathVariable String serverName,
+    public OpenMetadataRootElementResponse getAssetLineageGraph(@PathVariable String serverName,
                                                           @PathVariable String assetGUID,
                                                           @RequestBody(required = false)
                                                               AssetLineageGraphRequestBody requestBody)
@@ -135,7 +135,7 @@ public class AssetCatalogResource
             externalDocs=@ExternalDocumentation(description="Assets",
                     url="https://egeria-project.org/concepts/asset/"))
 
-    public AssetSearchMatchesListResponse findInAssetDomain(@PathVariable String            serverName,
+    public OpenMetadataRootElementsResponse findInAssetDomain(@PathVariable String            serverName,
                                                              @RequestBody(required = false) SearchStringRequestBody requestBody)
     {
         return restAPI.findInAssetDomain(serverName, requestBody);

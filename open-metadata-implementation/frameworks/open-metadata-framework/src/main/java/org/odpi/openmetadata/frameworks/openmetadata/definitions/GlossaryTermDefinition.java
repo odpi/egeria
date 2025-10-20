@@ -15,6 +15,7 @@ public interface GlossaryTermDefinition extends ReferenceableDefinition
      *
      * @return string
      */
+    @Override
     default String getTypeName() { return OpenMetadataType.GLOSSARY_TERM.typeName; }
 
 

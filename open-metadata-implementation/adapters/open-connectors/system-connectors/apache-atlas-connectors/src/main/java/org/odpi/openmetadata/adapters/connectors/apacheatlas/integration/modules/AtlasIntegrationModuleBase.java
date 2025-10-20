@@ -33,7 +33,6 @@ import org.odpi.openmetadata.frameworks.openmetadata.ffdc.PropertyServerExceptio
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.ElementHeader;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.schema.SchemaAttributeProperties;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.schema.SchemaTypeProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.schema.TypeEmbeddedAttributeProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.search.NewElementOptions;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
@@ -59,7 +58,6 @@ public abstract class AtlasIntegrationModuleBase
     protected final static String openMetadataGlossaryCorrelationLinkTypeName = "OpenMetadataGlossaryCorrelationLink";
     protected final static String openMetadataCorrelationPropertyName = "openMetadataCorrelation";
     protected final static String openMetadataAssociatedElementPropertyName = "associatedElement";
-    protected final static String openMetadataAssociatedGlossaryPropertyName = "associatedMeaning";
     protected final static String egeriaGUIDPropertyName  = "egeriaGUID";
     protected final static String egeriaTypeNamePropertyName  = "egeriaTypeName";
     protected final static String egeriaQualifiedNamePropertyName  = "egeriaQualifiedName";

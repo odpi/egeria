@@ -98,6 +98,7 @@ public enum SolutionRoleDefinition implements ActorRoleDefinition
      *
      * @return type name
      */
+    @Override
     public String getGUID()
     {
         return guid;
@@ -109,6 +110,7 @@ public enum SolutionRoleDefinition implements ActorRoleDefinition
      *
      * @return identifier
      */
+    @Override
     public String getQualifiedName()
     {
         return "SolutionActorRole::" + guid + "::" + identifier;
@@ -120,6 +122,7 @@ public enum SolutionRoleDefinition implements ActorRoleDefinition
      *
      * @return identifier
      */
+    @Override
     public String getIdentifier()
     {
         return identifier;
@@ -131,6 +134,7 @@ public enum SolutionRoleDefinition implements ActorRoleDefinition
      *
      * @return display name
      */
+    @Override
     public String getDisplayName()
     {
         return displayName;
@@ -141,6 +145,7 @@ public enum SolutionRoleDefinition implements ActorRoleDefinition
      *
      * @return description
      */
+    @Override
     public String getDescription()
     {
         return description;
@@ -152,6 +157,7 @@ public enum SolutionRoleDefinition implements ActorRoleDefinition
      *
      * @return scope
      */
+    @Override
     public String getScope()
     {
         return ScopeDefinition.WITHIN_SOLUTION.getPreferredValue();

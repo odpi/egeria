@@ -4,6 +4,9 @@
 package org.odpi.openmetadata.frameworks.openmetadata.properties.actors;
 
 import com.fasterxml.jackson.annotation.*;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.communities.CommunityMemberProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.communities.CrowdSourcingContributorProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.projects.ProjectManagerProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 
 import java.util.Date;
@@ -19,6 +22,21 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME,
+        include = JsonTypeInfo.As.PROPERTY,
+        property = "class")
+@JsonSubTypes(
+        {
+                @JsonSubTypes.Type(value = GovernanceOfficerProperties.class, name = "GovernanceOfficerProperties"),
+                @JsonSubTypes.Type(value = AssetOwnerProperties.class, name = "AssetOwnerProperties"),
+                @JsonSubTypes.Type(value = SubjectAreaOwnerProperties.class, name = "SubjectAreaOwnerProperties"),
+                @JsonSubTypes.Type(value = ComponentOwnerProperties.class, name = "ComponentOwnerProperties"),
+                @JsonSubTypes.Type(value = GovernanceRepresentativeProperties.class, name = "GovernanceRepresentativeProperties"),
+                @JsonSubTypes.Type(value = LocationOwnerProperties.class, name = "LocationOwnerProperties"),
+                @JsonSubTypes.Type(value = BusinessOwnerProperties.class, name = "BusinessOwnerProperties"),
+                @JsonSubTypes.Type(value = SolutionOwnerProperties.class, name = "SolutionOwnerProperties"),
+                @JsonSubTypes.Type(value = DataItemOwnerProperties.class, name = "DataItemOwnerProperties"),
+        })
 public class GovernanceRoleProperties extends PersonRoleProperties
 {
     private int domainIdentifier = 0; /* Zero means not specific to a governance domain */

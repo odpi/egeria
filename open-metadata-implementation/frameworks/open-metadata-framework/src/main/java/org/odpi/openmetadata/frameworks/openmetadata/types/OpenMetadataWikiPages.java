@@ -30,11 +30,6 @@ public class OpenMetadataWikiPages
     public static final String MODEL_0013_ACTIONS              = "https://egeria-project.org/types/0/0013-Actions-For-People/";
 
     /**
-     * <a href="https://egeria-project.org/types/0/0013-Translations/">...</a>
-     */
-    public static final String MODEL_0013_TRANSLATIONS              = "https://egeria-project.org/types/0/0013-Translations/";
-
-    /**
      * <a href="https://egeria-project.org/types/0/0014-External-References/">...</a>
      */
     public static final String MODEL_0014_EXTERNAL_REFERENCES       = "https://egeria-project.org/types/0/0014-External-References/";
@@ -240,6 +235,11 @@ public class OpenMetadataWikiPages
     public static final String MODEL_0210_DATA_STORES                  = "https://egeria-project.org/types/2/0210-Data-Stores/";
 
     /**
+     * <a href="https://egeria-project.org/types/2/0211-Tabular-Data-Sets/">...</a>
+     */
+    public static final String MODEL_0211_TABULAR_DATA_SETS                  = "https://egeria-project.org/types/2/0211-Tabular-Data-Sets/";
+
+    /**
      * <a href="https://egeria-project.org/types/2/0212-Deployed-APIs/">...</a>
      */
     public static final String MODEL_0212_DEPLOYED_APIS                = "https://egeria-project.org/types/2/0212-Deployed-APIs/";
@@ -338,11 +338,6 @@ public class OpenMetadataWikiPages
      * <a href="https://egeria-project.org/types/3/0310-Glossary/">...</a>
      */
     public static final String MODEL_0310_GLOSSARY                     = "https://egeria-project.org/types/3/0310-Glossary/";
-
-    /**
-     * <a href="https://egeria-project.org/types/3/0320-Category-Hierarchy/">...</a>
-     */
-    public static final String MODEL_0320_CATEGORY_HIERARCHY           = "https://egeria-project.org/types/3/0320-Category-Hierarchy/";
 
     /**
      * <a href="https://egeria-project.org/types/3/0330-Terms/">...</a>
@@ -573,11 +568,6 @@ public class OpenMetadataWikiPages
      * <a href="https://egeria-project.org/types/5/0512-Derived-Schema-Elements/">...</a>
      */
     public static final String MODEL_0512_DERIVED_SCHEMA_TYPE          = "https://egeria-project.org/types/5/0512-Derived-Schema-Elements/";
-
-    /**
-     * <a href="https://egeria-project.org/types/5/0520-Process-Schemas/">...</a>
-     */
-    public static final String MODEL_0520_PROCESS_SCHEMAS              = "https://egeria-project.org/types/5/0520-Process-Schemas/";
 
     /**
      * <a href="https://egeria-project.org/types/5/0525-Process-Variables/">...</a>

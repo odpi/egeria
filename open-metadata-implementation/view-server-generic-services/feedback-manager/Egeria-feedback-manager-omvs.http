@@ -108,8 +108,8 @@ Content-Type: application/json
   "properties" : {
     "class" : "CommentProperties",
     "qualifiedName" : "Add unique name here",
-    "text" : "Add comment text here",
-    "description" : "GENERAL_COMMENT",
+    "description" : "Add comment text here",
+    "commentType" : "GENERAL_COMMENT",
     "additionalProperties" : {
       "propertyName 1" : "property value 1",
       "propertyName 2" : "property value 2"

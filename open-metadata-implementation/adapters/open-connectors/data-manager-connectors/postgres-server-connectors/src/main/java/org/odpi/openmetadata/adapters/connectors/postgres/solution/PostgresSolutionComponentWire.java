@@ -84,6 +84,7 @@ public enum PostgresSolutionComponentWire implements SolutionComponentWireDefini
      *
      * @return component definition
      */
+    @Override
     public SolutionComponentDefinition getComponent1()
     {
         return component1;
@@ -95,6 +96,7 @@ public enum PostgresSolutionComponentWire implements SolutionComponentWireDefini
      *
      * @return component definition
      */
+    @Override
     public SolutionComponentDefinition getComponent2()
     {
         return component2;
@@ -106,6 +108,7 @@ public enum PostgresSolutionComponentWire implements SolutionComponentWireDefini
      *
      * @return string
      */
+    @Override
     public String getLabel()
     {
         return label;
@@ -117,6 +120,7 @@ public enum PostgresSolutionComponentWire implements SolutionComponentWireDefini
      *
      * @return string
      */
+    @Override
     public String getDescription()
     {
         return description;
@@ -128,6 +132,7 @@ public enum PostgresSolutionComponentWire implements SolutionComponentWireDefini
      *
      * @return list of strings
      */
+    @Override
     public List<String> getISCQualifiedNames()
     {
         return null;
@@ -142,7 +147,7 @@ public enum PostgresSolutionComponentWire implements SolutionComponentWireDefini
     @Override
     public String toString()
     {
-        return "EgeriaSolutionComponentWire{" +
+        return "SolutionComponentWire{" +
                 "component1=" + component1 +
                 ", component2=" + component2 +
                 ", label='" + label + '\'' +

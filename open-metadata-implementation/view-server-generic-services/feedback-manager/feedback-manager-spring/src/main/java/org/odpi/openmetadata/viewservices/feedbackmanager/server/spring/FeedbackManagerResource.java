@@ -242,7 +242,7 @@ public class FeedbackManagerResource
                                     @PathVariable String                        urlMarker,
                                     @PathVariable                   String          tagGUID,
                                     @RequestBody(required = false)
-                                        DeleteRequestBody requestBody)
+                                        DeleteElementRequestBody requestBody)
     {
         return restAPI.deleteTag(serverName, urlMarker, tagGUID, requestBody);
     }
@@ -443,7 +443,7 @@ public class FeedbackManagerResource
                                                  @PathVariable String                        urlMarker,
                                                  @PathVariable String                         commentGUID,
                                                  @RequestBody(required = false)
-                                                     DeleteRequestBody requestBody)
+                                                     DeleteElementRequestBody requestBody)
     {
         return restAPI.removeCommentFromElement(serverName, urlMarker,  commentGUID, requestBody);
     }
@@ -614,7 +614,7 @@ public class FeedbackManagerResource
                                                 @PathVariable String                        urlMarker,
                                                 @PathVariable                  String          elementGUID,
                                                 @RequestBody(required = false)
-                                                    DeleteRequestBody requestBody)
+                                                    DeleteElementRequestBody requestBody)
     {
         return restAPI.removeLikeFromElement(serverName, urlMarker, elementGUID, requestBody);
     }
@@ -644,7 +644,7 @@ public class FeedbackManagerResource
                                                   @PathVariable String                        urlMarker,
                                                   @PathVariable                  String          elementGUID,
                                                   @RequestBody(required = false)
-                                                      DeleteRequestBody requestBody)
+                                                      DeleteElementRequestBody requestBody)
     {
         return restAPI.removeRatingFromElement(serverName, urlMarker, elementGUID, requestBody);
     }
@@ -676,7 +676,7 @@ public class FeedbackManagerResource
                                              @PathVariable                  String          elementGUID,
                                              @PathVariable                  String          tagGUID,
                                              @RequestBody(required = false)
-                                                 DeleteRequestBody requestBody)
+                                                 DeleteRelationshipRequestBody requestBody)
     {
         return restAPI.removeTagFromElement(serverName, urlMarker, elementGUID, tagGUID, requestBody);
     }
@@ -769,7 +769,7 @@ public class FeedbackManagerResource
                                             @PathVariable String                        questionCommentGUID,
                                             @PathVariable String                        answerCommentGUID,
                                             @RequestBody  (required = false)
-                                                DeleteRequestBody requestBody)
+                                                DeleteRelationshipRequestBody requestBody)
     {
         return restAPI.clearAcceptedAnswer(serverName, urlMarker, questionCommentGUID, answerCommentGUID, requestBody);
     }
@@ -895,7 +895,7 @@ public class FeedbackManagerResource
                                         @PathVariable String                        urlMarker,
                                         @PathVariable String          noteLogGUID,
                                         @RequestBody (required = false)
-                                            DeleteRequestBody requestBody)
+                                            DeleteElementRequestBody requestBody)
     {
         return restAPI.deleteNoteLog(serverName, urlMarker, noteLogGUID, requestBody);
     }

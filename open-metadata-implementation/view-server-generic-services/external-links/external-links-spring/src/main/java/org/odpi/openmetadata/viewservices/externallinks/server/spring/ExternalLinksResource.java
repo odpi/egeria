@@ -8,10 +8,6 @@ import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.odpi.openmetadata.commonservices.ffdc.rest.*;
 import org.odpi.openmetadata.commonservices.ffdc.rest.GetRequestBody;
-import org.odpi.openmetadata.frameworkservices.omf.rest.ExternalIdEffectiveTimeQueryRequestBody;
-import org.odpi.openmetadata.frameworkservices.omf.rest.MetadataCorrelationHeadersResponse;
-import org.odpi.openmetadata.frameworkservices.omf.rest.UpdateMetadataCorrelatorsRequestBody;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.MetadataCorrelationProperties;
 import org.odpi.openmetadata.viewservices.externallinks.server.ExternalLinksRESTServices;
 import org.springframework.web.bind.annotation.*;
 
@@ -189,7 +185,7 @@ public class ExternalLinksResource
                                                 @PathVariable
                                                 String externalReferenceGUID,
                                                 @RequestBody (required = false)
-                                                DeleteRequestBody requestBody)
+                                                DeleteRelationshipRequestBody requestBody)
     {
         return restAPI.detachExternalReference(serverName, urlMarker, elementGUID, externalReferenceGUID, requestBody);
     }
@@ -257,7 +253,7 @@ public class ExternalLinksResource
                                              @PathVariable
                                              String externalReferenceGUID,
                                              @RequestBody (required = false)
-                                             DeleteRequestBody requestBody)
+                                             DeleteRelationshipRequestBody requestBody)
     {
         return restAPI.detachMediaReference(serverName, urlMarker, elementGUID, externalReferenceGUID, requestBody);
     }
@@ -325,7 +321,7 @@ public class ExternalLinksResource
                                                      @PathVariable
                                                      String externalReferenceGUID,
                                                      @RequestBody (required = false)
-                                                     DeleteRequestBody requestBody)
+                                                     DeleteRelationshipRequestBody requestBody)
     {
         return restAPI.detachCitedDocumentReference(serverName, urlMarker, elementGUID, externalReferenceGUID, requestBody);
     }
@@ -356,7 +352,7 @@ public class ExternalLinksResource
                                                 @PathVariable
                                                 String                    externalReferenceGUID,
                                                 @RequestBody (required = false)
-                                                DeleteRequestBody requestBody)
+                                                DeleteElementRequestBody requestBody)
     {
         return restAPI.deleteExternalReference(serverName, urlMarker, externalReferenceGUID, requestBody);
     }
@@ -459,8 +455,7 @@ public class ExternalLinksResource
      *
      * @param serverName name of the service to route the request to.
      * @param urlMarker  view service URL marker
-     * @param openMetadataElementGUID unique identifier (GUID) of the element in the open metadata ecosystem
-     * @param openMetadataElementTypeName type name of the element in the open metadata ecosystem (default referenceable)
+     * @param elementGUID unique identifier (GUID) of the element in the open metadata ecosystem
      * @param requestBody unique identifier of this element in the external asset manager plus additional mapping properties
      *
      * @return void or
@@ -468,35 +463,29 @@ public class ExternalLinksResource
      * UserNotAuthorizedException user not authorized to issue this request
      * PropertyServerException    problem accessing the property server
      */
-    @PostMapping(path = "/metadata-elements/{openMetadataElementTypeName}/{openMetadataElementGUID}/external-identifiers/add")
+    @PostMapping(path = "/elements/{elementGUID}/external-identifiers/add")
     @SecurityRequirement(name = "BearerAuthorization")
 
     @Operation(summary = "addExternalIdentifier",
-            description = "Add the description of a specific external identifier and link it to the associated metadata element.  Note, the external identifier is anchored to the scope (specified in the request body).",
+            description = "Add the description of a specific external identifier and link it to the associated metadata element.",
             externalDocs = @ExternalDocumentation(description = "External Identifiers",
                     url = "https://egeria-project.org/types/0/0017-External-Identifiers/"))
 
     public VoidResponse addExternalIdentifier(@PathVariable String                               serverName,
                                               @PathVariable String             urlMarker,
-                                              @PathVariable String                               openMetadataElementGUID,
-                                              @PathVariable String                               openMetadataElementTypeName,
-                                              @RequestParam (required = false, defaultValue = "false")
-                                              boolean                              forLineage,
-                                              @RequestParam (required = false, defaultValue = "false")
-                                              boolean                              forDuplicateProcessing,
-                                              @RequestBody UpdateMetadataCorrelatorsRequestBody requestBody)
+                                              @PathVariable String        elementGUID,
+                                              @RequestBody NewExternalIdRequestBody requestBody)
     {
-        return restAPI.addExternalIdentifier(serverName, urlMarker, openMetadataElementGUID, openMetadataElementTypeName, forLineage, forDuplicateProcessing, requestBody);
+        return restAPI.addExternalIdentifier(serverName, urlMarker, elementGUID, requestBody);
     }
 
 
     /**
-     * Update the description of a specific external identifier.
+     * Update the properties of a specific external identifier.
      *
      * @param serverName name of the service to route the request to.
      * @param urlMarker  view service URL marker
-     * @param openMetadataElementGUID unique identifier (GUID) of the element in the open metadata ecosystem
-     * @param openMetadataElementTypeName type name of the element in the open metadata ecosystem (default referenceable)
+     * @param externalIdGUID unique identifier (GUID) of the element in the open metadata ecosystem
      * @param requestBody unique identifier of this element in the external asset manager plus additional mapping properties
      *
      * @return void or
@@ -504,61 +493,21 @@ public class ExternalLinksResource
      * UserNotAuthorizedException user not authorized to issue this request
      * PropertyServerException    problem accessing the property server
      */
-    @PostMapping(path = "/metadata-elements/{openMetadataElementTypeName}/{openMetadataElementGUID}/external-identifiers/update")
+    @PostMapping(path = "/external-identifiers/{externalIdGUID}/update")
     @SecurityRequirement(name = "BearerAuthorization")
 
     @Operation(summary = "updateExternalIdentifier",
-            description = "Update the description of a specific external identifier.",
+            description = "Update the properties of a specific external identifier.",
             externalDocs = @ExternalDocumentation(description = "External Identifiers",
                     url = "https://egeria-project.org/types/0/0017-External-Identifiers/"))
 
-    public VoidResponse updateExternalIdentifier(@PathVariable String                               serverName,
-                                                 @PathVariable String             urlMarker,
-                                                 @PathVariable String                               openMetadataElementGUID,
-                                                 @PathVariable String                               openMetadataElementTypeName,
-                                                 @RequestParam (required = false, defaultValue = "false")
-                                                 boolean                              forLineage,
-                                                 @RequestParam (required = false, defaultValue = "false")
-                                                 boolean                              forDuplicateProcessing,
-                                                 @RequestBody  UpdateMetadataCorrelatorsRequestBody requestBody)
+    public VoidResponse updateExternalIdentifier(@PathVariable String                   serverName,
+                                                 @PathVariable String                   urlMarker,
+                                                 @PathVariable String                   externalIdGUID,
+                                                 @RequestBody  (required = false)
+                                                 UpdateElementRequestBody requestBody)
     {
-        return restAPI.updateExternalIdentifier(serverName, urlMarker, openMetadataElementGUID, openMetadataElementTypeName, forLineage, forDuplicateProcessing, requestBody);
-    }
-
-
-    /**
-     * Validate that the external identifier is linked to the open metadata GUID.
-     *
-     * @param serverName name of the service to route the request to.
-     * @param urlMarker  view service URL marker
-     * @param openMetadataElementGUID unique identifier (GUID) of the element in the open metadata ecosystem
-     * @param openMetadataElementTypeName type name of the element in the open metadata ecosystem (default referenceable)
-     * @param requestBody unique identifier of this element in the external asset manager plus additional mapping properties
-     *
-     * @return void or
-     * InvalidParameterException  one of the parameters is invalid
-     * UserNotAuthorizedException user not authorized to issue this request
-     * PropertyServerException    problem accessing the property server
-     */
-    @PostMapping(path = "/metadata-elements/{openMetadataElementTypeName}/{openMetadataElementGUID}/external-identifiers/validate")
-    @SecurityRequirement(name = "BearerAuthorization")
-
-    @Operation(summary = "validateExternalIdentifier",
-            description = "Validate that the external identifier is linked to the open metadata GUID.",
-            externalDocs = @ExternalDocumentation(description = "External Identifiers",
-                    url = "https://egeria-project.org/types/0/0017-External-Identifiers/"))
-
-    public BooleanResponse validateExternalIdentifier(@PathVariable String                               serverName,
-                                                      @PathVariable String             urlMarker,
-                                                      @PathVariable String                               openMetadataElementGUID,
-                                                      @PathVariable String                               openMetadataElementTypeName,
-                                                      @RequestParam (required = false, defaultValue = "false")
-                                                      boolean                              forLineage,
-                                                      @RequestParam (required = false, defaultValue = "false")
-                                                      boolean                              forDuplicateProcessing,
-                                                      @RequestBody  UpdateMetadataCorrelatorsRequestBody requestBody)
-    {
-        return restAPI.validateExternalIdentifier(serverName, urlMarker, openMetadataElementGUID, openMetadataElementTypeName, forLineage, forDuplicateProcessing, requestBody);
+        return restAPI.updateExternalIdentifier(serverName, urlMarker, externalIdGUID, requestBody);
     }
 
 
@@ -567,74 +516,29 @@ public class ExternalLinksResource
      *
      * @param serverName name of the service to route the request to.
      * @param urlMarker  view service URL marker
-     * @param openMetadataElementGUID unique identifier (GUID) of the element in the open metadata ecosystem
-     * @param openMetadataElementTypeName type name of the element in the open metadata ecosystem (default referenceable)
-     * @param forLineage return elements marked with the Memento classification?
-     * @param forDuplicateProcessing do not merge elements marked as duplicates?
-     * @param requestBody unique identifier of this element in the external asset manager plus additional mapping properties
+     * @param externalIdGUID unique identifier (GUID) of the external id
+     * @param requestBody  additional mapping properties
      *
      * @return void or
      * InvalidParameterException  one of the parameters is invalid
      * UserNotAuthorizedException user not authorized to issue this request
      * PropertyServerException    problem accessing the property server
      */
-    @PostMapping(path = "/metadata-elements/{openMetadataElementTypeName}/{openMetadataElementGUID}/external-identifiers/remove")
+    @PostMapping(path = "/external-identifiers/{externalIdGUID}/delete")
     @SecurityRequirement(name = "BearerAuthorization")
 
-    @Operation(summary = "removeExternalIdentifier",
-            description = "Remove an external identifier from an existing open metadata element.  The open metadata element is not affected.",
+    @Operation(summary = "deleteExternalIdentifier",
+            description = "Remove an external identifier from an existing external identifier.",
             externalDocs = @ExternalDocumentation(description = "External Identifiers",
                     url = "https://egeria-project.org/types/0/0017-External-Identifiers/"))
 
-    public VoidResponse removeExternalIdentifier(@PathVariable String                               serverName,
-                                                 @PathVariable String             urlMarker,
-                                                 @PathVariable String                               openMetadataElementGUID,
-                                                 @PathVariable String                               openMetadataElementTypeName,
-                                                 @RequestParam (required = false, defaultValue = "false")
-                                                 boolean                              forLineage,
-                                                 @RequestParam (required = false, defaultValue = "false")
-                                                 boolean                              forDuplicateProcessing,
-                                                 @RequestBody  UpdateMetadataCorrelatorsRequestBody requestBody)
+    public VoidResponse deleteExternalIdentifier(@PathVariable String serverName,
+                                                 @PathVariable String urlMarker,
+                                                 @PathVariable String externalIdGUID,
+                                                 @RequestBody(required = false)
+                                                 DeleteElementRequestBody requestBody)
     {
-        return restAPI.removeExternalIdentifier(serverName, urlMarker, openMetadataElementGUID, openMetadataElementTypeName, forLineage, forDuplicateProcessing, requestBody);
-    }
-
-
-    /**
-     * Remove the scope associated with a collection of external identifiers.  All associated external identifiers are removed too.
-     * The linked open metadata elements are not affected.
-     *
-     * @param serverName name of the service to route the request to.
-     * @param urlMarker  view service URL marker
-     * @param externalScopeGUID unique identifier (GUID) of the scope element in the open metadata ecosystem
-     * @param forLineage return elements marked with the Memento classification?
-     * @param forDuplicateProcessing do not merge elements marked as duplicates?
-     * @param requestBody unique identifier of this element in the external asset manager plus additional mapping properties
-     *
-     * @return void or
-     * InvalidParameterException  one of the parameters is invalid
-     * UserNotAuthorizedException user not authorized to issue this request
-     * PropertyServerException    problem accessing the property server
-     */
-    @PostMapping(path = "/external-scope/{externalScopeGUID}/remove")
-    @SecurityRequirement(name = "BearerAuthorization")
-
-    @Operation(summary = "removeExternalScope",
-            description = "Remove the scope associated with a collection of external identifiers.  All associated external identifiers are removed too.  The linked open metadata elements are not affected.",
-            externalDocs = @ExternalDocumentation(description = "External Identifiers",
-                    url = "https://egeria-project.org/types/0/0017-External-Identifiers/"))
-
-    public VoidResponse removeExternalScope(@PathVariable String                   serverName,
-                                            @PathVariable String             urlMarker,
-                                            @PathVariable String                   externalScopeGUID,
-                                            @RequestParam (required = false, defaultValue = "false")
-                                            boolean                  forLineage,
-                                            @RequestParam (required = false, defaultValue = "false")
-                                            boolean                  forDuplicateProcessing,
-                                            @RequestBody  (required = false)
-                                            EffectiveTimeRequestBody requestBody)
-    {
-        return restAPI.removeExternalScope(serverName, urlMarker, externalScopeGUID, forLineage, forDuplicateProcessing, requestBody);
+        return restAPI.deleteExternalIdentifier(serverName, urlMarker, externalIdGUID, requestBody);
     }
 
 
@@ -644,8 +548,7 @@ public class ExternalLinksResource
      *
      * @param serverName name of the service to route the request to.
      * @param urlMarker  view service URL marker
-     * @param openMetadataElementGUID unique identifier (GUID) of this element in open metadata
-     * @param openMetadataElementTypeName type name for the open metadata element
+     * @param externalIdLinkGUID unique identifier (GUID) of the external Id Link relationship
      * @param requestBody details of the external identifier and its scope
      *
      * @return void or
@@ -653,7 +556,7 @@ public class ExternalLinksResource
      * UserNotAuthorizedException user not authorized to issue this request
      * PropertyServerException    problem accessing the property server
      */
-    @PostMapping(path = "/metadata-elements/{openMetadataElementTypeName}/{openMetadataElementGUID}/synchronized")
+    @PostMapping(path = "/external-identifiers/links/{externalIdLinkGUID}/synchronized")
     @SecurityRequirement(name = "BearerAuthorization")
 
     @Operation(summary = "confirmSynchronization",
@@ -661,97 +564,99 @@ public class ExternalLinksResource
             externalDocs = @ExternalDocumentation(description = "External Identifiers",
                     url = "https://egeria-project.org/types/0/0017-External-Identifiers/"))
 
-    public VoidResponse confirmSynchronization(@PathVariable String                        serverName,
-                                               @PathVariable String             urlMarker,
-                                               @PathVariable String                        openMetadataElementGUID,
-                                               @PathVariable String                        openMetadataElementTypeName,
-                                               @RequestBody MetadataCorrelationProperties requestBody)
+    public VoidResponse confirmSynchronization(@PathVariable String serverName,
+                                               @PathVariable String urlMarker,
+                                               @PathVariable String externalIdLinkGUID,
+                                               @RequestBody (required = false)
+                                               UpdateRelationshipRequestBody requestBody)
     {
-        return restAPI.confirmSynchronization(serverName, urlMarker, openMetadataElementGUID, openMetadataElementTypeName, requestBody);
+        return restAPI.confirmSynchronization(serverName, urlMarker, externalIdLinkGUID, requestBody);
     }
 
 
     /**
-     * Retrieve the metadata element associated with a particular external identifier.
+     * Returns the list of external ids with a particular name.
      *
-     * @param serverName name of the service to route the request to.
+     * @param serverName name of the service to route the request to
      * @param urlMarker  view service URL marker
-     * @param startFrom paging start point
-     * @param pageSize maximum results that can be returned
-     * @param forLineage return elements marked with the Memento classification?
-     * @param forDuplicateProcessing do not merge elements marked as duplicates?
-     * @param requestBody details of the external identifier
+     * @param requestBody string to find in the properties
      *
-     * @return list of linked elements, null if null or
-     * InvalidParameterException  one of the parameters is invalid
-     * UserNotAuthorizedException user not authorized to issue this request
-     * PropertyServerException    problem accessing the property server
+     * @return list of matching metadata elements or
+     *  InvalidParameterException  one of the parameters is invalid
+     *  UserNotAuthorizedException the user is not authorized to issue this request
+     *  PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    @PostMapping(path = "/external-identifiers/open-metadata-elements")
-    @SecurityRequirement(name = "BearerAuthorization")
+    @PostMapping(path = "/external-identifiers/by-name")
+    @Operation(summary="getExternalIdsByName",
+            description="Returns the list of external identifiers with a particular name.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/concepts/external-identifier"))
 
-    @Operation(summary = "getElementsForExternalIdentifier",
-            description = "Retrieve the metadata element associated with a particular external identifier.",
-            externalDocs = @ExternalDocumentation(description = "External Identifiers",
-                    url = "https://egeria-project.org/types/0/0017-External-Identifiers/"))
-
-    public ElementHeadersResponse getElementsForExternalIdentifier(@PathVariable String            serverName,
-                                                                   @PathVariable String             urlMarker,
-                                                                   @RequestParam (required = false, defaultValue = "0")
-                                                                   int               startFrom,
-                                                                   @RequestParam (required = false, defaultValue = "0")
-                                                                   int               pageSize,
-                                                                   @RequestParam (required = false, defaultValue = "false")
-                                                                   boolean           forLineage,
-                                                                   @RequestParam (required = false, defaultValue = "false")
-                                                                   boolean           forDuplicateProcessing,
-                                                                   @RequestBody  UpdateMetadataCorrelatorsRequestBody requestBody)
+    public OpenMetadataRootElementsResponse getExternalIdsByName(@PathVariable
+                                                                 String            serverName,
+                                                                 @PathVariable String             urlMarker,
+                                                                 @RequestBody (required = false)
+                                                                 FilterRequestBody requestBody)
     {
-        return restAPI.getElementsForExternalIdentifier(serverName, urlMarker, startFrom, pageSize, forLineage, forDuplicateProcessing, requestBody);
+        return restAPI.getExternalIdsByName(serverName, urlMarker, requestBody);
     }
 
 
     /**
-     * Retrieve the external identifiers attached to the supplied element guid.
+     * Retrieve the list of external ids metadata elements that contain the search string.
      *
-     * @param serverName name of the server to route the request to
+     * @param serverName name of the service to route the request to
      * @param urlMarker  view service URL marker
-     * @param openMetadataElementGUID unique identifier of the requested metadata element
-     * @param openMetadataElementTypeName type name for the open metadata element
-     * @param startFrom paging start point
-     * @param pageSize maximum results that can be returned
-     * @param forLineage return elements marked with the Memento classification?
-     * @param forDuplicateProcessing do not merge elements marked as duplicates?
-     * @param requestBody correlation properties
+     * @param requestBody string to find in the properties
      *
-     * @return matching metadata element or
-     * InvalidParameterException  one of the parameters is invalid or
-     * UserNotAuthorizedException the user is not authorized to issue this request or
-     * PropertyServerException    there is a problem reported in the open metadata server(s)
+     * @return list of matching metadata elements or
+     *  InvalidParameterException  one of the parameters is invalid
+     *  UserNotAuthorizedException the user is not authorized to issue this request
+     *  PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    @PostMapping(path = "/metadata-elements/{openMetadataElementTypeName}/{openMetadataElementGUID}/external-identifiers")
-    @SecurityRequirement(name = "BearerAuthorization")
+    @PostMapping(path = "/external-identifiers/by-search-string")
+    @Operation(summary="findExternalIds",
+            description="Retrieve the list of external identifiers metadata elements that contain the search string.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/concepts/external-identifier"))
 
-    @Operation(summary = "getExternalIdentifiers",
-            description = "Retrieve the external identifiers attached to the supplied element guid.",
-            externalDocs = @ExternalDocumentation(description = "External Identifiers",
-                    url = "https://egeria-project.org/types/0/0017-External-Identifiers/"))
-
-    public MetadataCorrelationHeadersResponse getExternalIdentifiers(@PathVariable String                        serverName,
-                                                                     @PathVariable String             urlMarker,
-                                                                     @PathVariable String                        openMetadataElementGUID,
-                                                                     @PathVariable String                        openMetadataElementTypeName,
-                                                                     @RequestParam (required = false, defaultValue = "0")
-                                                                     int               startFrom,
-                                                                     @RequestParam (required = false, defaultValue = "0")
-                                                                     int               pageSize,
-                                                                     @RequestParam (required = false, defaultValue = "false")
-                                                                     boolean                       forLineage,
-                                                                     @RequestParam (required = false, defaultValue = "false")
-                                                                     boolean                       forDuplicateProcessing,
-                                                                     @RequestBody  (required = false)
-                                                                     ExternalIdEffectiveTimeQueryRequestBody requestBody)
+    public OpenMetadataRootElementsResponse findExternalIds(@PathVariable
+                                                            String                  serverName,
+                                                            @PathVariable String             urlMarker,
+                                                            @RequestBody (required = false)
+                                                            SearchStringRequestBody requestBody)
     {
-        return restAPI.getExternalIdentifiers(serverName, urlMarker, openMetadataElementGUID, openMetadataElementTypeName, startFrom, pageSize, forLineage, forDuplicateProcessing, requestBody);
+        return restAPI.findExternalIds(serverName, urlMarker,  requestBody);
+    }
+
+
+    /**
+     * Return the properties of a specific external id.
+     *
+     * @param serverName name of the service to route the request to
+     * @param urlMarker  view service URL marker
+     * @param externalIdGUID    unique identifier of the required element
+     * @param requestBody string to find in the properties
+     *
+     * @return list of matching metadata elements or
+     *  InvalidParameterException  one of the parameters is invalid
+     *  UserNotAuthorizedException the user is not authorized to issue this request
+     *  PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    @PostMapping(path = "/external-identifiers/{externalIdGUID}/retrieve")
+    @Operation(summary="getExternalIdByGUID",
+            description="Return the properties of a specific external identifier.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/concepts/external-identifier"))
+
+    public OpenMetadataRootElementResponse getExternalIdByGUID(@PathVariable
+                                                               String             serverName,
+                                                               @PathVariable String             urlMarker,
+                                                               @PathVariable
+                                                               String externalIdGUID,
+                                                               @RequestBody (required = false)
+                                                               GetRequestBody requestBody)
+    {
+        return restAPI.getExternalIdByGUID(serverName, urlMarker, externalIdGUID, requestBody);
     }
 }

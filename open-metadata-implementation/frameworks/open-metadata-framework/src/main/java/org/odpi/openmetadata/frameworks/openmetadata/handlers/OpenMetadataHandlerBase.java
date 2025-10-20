@@ -13,6 +13,7 @@ import org.odpi.openmetadata.frameworks.openmetadata.enums.ElementStatus;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.*;
 import org.odpi.openmetadata.frameworks.openmetadata.mermaid.OpenMetadataRootMermaidGraphBuilder;
 import org.odpi.openmetadata.frameworks.openmetadata.mermaid.SolutionBlueprintMermaidGraphBuilder;
+import org.odpi.openmetadata.frameworks.openmetadata.mermaid.SolutionComponentMermaidGraphBuilder;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.*;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.*;
 import org.odpi.openmetadata.frameworks.openmetadata.search.*;
@@ -494,80 +495,6 @@ public class OpenMetadataHandlerBase
 
 
     /**
-     * Navigate through the ImplementedBy and ImplementationSupplyChainComposition relationships to locate
-     * the Information Supply Chains associated with the originally requested element
-     *
-     * @param userId                calling userId
-     * @param relatedParentElements list of parents for requested element
-     * @param queryOptions          multiple options to control the query
-     * @param methodName            calling method
-     * @return supply chain context
-     * @throws PropertyServerException problem in converter
-     */
-    protected List<InformationSupplyChainContext> getInformationSupplyChainContext(String                       userId,
-                                                                                   List<RelatedMetadataElement> relatedParentElements,
-                                                                                   QueryOptions                 queryOptions,
-                                                                                   String                       methodName) throws PropertyServerException
-    {
-        if (relatedParentElements != null)
-        {
-            List<InformationSupplyChainContext> contexts = new ArrayList<>();
-
-            for (RelatedMetadataElement parentElement : relatedParentElements)
-            {
-                if (parentElement != null)
-                {
-                    if (propertyHelper.isTypeOf(parentElement.getElement(), OpenMetadataType.INFORMATION_SUPPLY_CHAIN.typeName))
-                    {
-                        contexts.add(new InformationSupplyChainContext(null,
-                                                                       Collections.singletonList(propertyHelper.getRelatedElementSummary(parentElement))));
-                    }
-                    else
-                    {
-                        List<RelatedMetadataElement>        fullParentContext       = this.getFullParentContext(userId, parentElement, queryOptions, methodName);
-                        List<RelatedMetadataElementSummary> informationSupplyChains = new ArrayList<>();
-                        List<RelatedMetadataElementSummary> parentComponents        = new ArrayList<>();
-
-                        for (RelatedMetadataElement relatedMetadataElement : fullParentContext)
-                        {
-                            if (relatedMetadataElement != null)
-                            {
-                                RelatedMetadataElementSummary bean = propertyHelper.getRelatedElementSummary(relatedMetadataElement);
-
-                                if (bean != null)
-                                {
-                                    if ((propertyHelper.isTypeOf(relatedMetadataElement.getElement(), OpenMetadataType.INFORMATION_SUPPLY_CHAIN.typeName)) && (relatedMetadataElement.getElementAtEnd1()))
-                                    {
-                                        informationSupplyChains.add(bean);
-                                    }
-                                    else
-                                    {
-                                        parentComponents.add(bean);
-                                    }
-                                }
-                            }
-                        }
-
-                        if (parentComponents.isEmpty())
-                        {
-                            parentComponents = null;
-                        }
-
-                        InformationSupplyChainContext context = new InformationSupplyChainContext(parentComponents,
-                                                                                                  informationSupplyChains);
-                        contexts.add(context);
-                    }
-                }
-            }
-
-            return contexts;
-        }
-
-        return null;
-    }
-
-
-    /**
      * Retrieve the context in which this component is used.
      *
      * @param userId               caller
@@ -640,27 +567,6 @@ public class OpenMetadataHandlerBase
 
         return fullParentContext;
     }
-
-
-    /**
-     * Return the solution port extracted from the open metadata element.
-     *
-     * @param userId              calling user
-     * @param openMetadataElement element extracted from the repository
-     * @param queryOptions        multiple options to control the query
-     * @param methodName          calling method
-     * @return bean or null
-     * @throws PropertyServerException problem with the conversion process
-     */
-    protected SolutionPortElement convertSolutionPort(String                 userId,
-                                                      RelatedMetadataElement openMetadataElement,
-                                                      QueryOptions           queryOptions,
-                                                      String                 methodName) throws PropertyServerException
-    {
-        // todo
-        return null;
-    }
-
 
     /*
      * Mapping functions
@@ -1046,6 +952,20 @@ public class OpenMetadataHandlerBase
                                                                         queryOptions,
                                                                         1));
 
+            rootElement.setImplementedBy(this.getElementHierarchies(userId,
+                                                                    rootElement.getImplementedBy(),
+                                                                    1,
+                                                                    OpenMetadataType.IMPLEMENTED_BY_RELATIONSHIP.typeName,
+                                                                    queryOptions,
+                                                                    1));
+
+            rootElement.setDerivedFrom(this.getElementHierarchies(userId,
+                                                                    rootElement.getDerivedFrom(),
+                                                                    2,
+                                                                    OpenMetadataType.IMPLEMENTED_BY_RELATIONSHIP.typeName,
+                                                                    queryOptions,
+                                                                    1));
+
             rootElement.setSchemaAttributes(this.getElementHierarchies(userId,
                                                                         rootElement.getSchemaAttributes(),
                                                                         1,
@@ -1074,6 +994,22 @@ public class OpenMetadataHandlerBase
                                                                queryOptions,
                                                                1,
                                                                new ArrayList<>()));
+
+            rootElement.setSupplyTo(this.getElementHierarchies(userId,
+                                                               rootElement.getSupplyTo(),
+                                                               1,
+                                                               OpenMetadataType.INFORMATION_SUPPLY_CHAIN_LINK_RELATIONSHIP.typeName,
+                                                               null,
+                                                               queryOptions,
+                                                               1));
+
+            rootElement.setSupplyFrom(this.getElementHierarchies(userId,
+                                                                 rootElement.getSupplyFrom(),
+                                                                 2,
+                                                                 OpenMetadataType.INFORMATION_SUPPLY_CHAIN_LINK_RELATIONSHIP.typeName,
+                                                                 null,
+                                                                 queryOptions,
+                                                                 1));
 
             if (propertyHelper.isTypeOf(rootElement.getElementHeader(), OpenMetadataType.ASSET.typeName))
             {
@@ -1104,6 +1040,17 @@ public class OpenMetadataHandlerBase
                                                                              null,
                                                                              queryOptions,
                                                                              1));
+
+                rootElement.setNestedSolutionComponents(this.getElementHierarchies(userId,
+                                                                                   rootElement.getNestedSolutionComponents(),
+                                                                                   1,
+                                                                                   null,
+                                                                                   List.of(OpenMetadataType.SOLUTION_COMPONENT_ACTOR_RELATIONSHIP.typeName,
+                                                                                           OpenMetadataType.SOLUTION_LINKING_WIRE_RELATIONSHIP.typeName,
+                                                                                           OpenMetadataType.SOLUTION_COMPONENT_PORT_RELATIONSHIP.typeName,
+                                                                                           OpenMetadataType.SOLUTION_PORT_DELEGATION_RELATIONSHIP.typeName),
+                                                                                   queryOptions,
+                                                                                   1));
             }
             else if ((propertyHelper.isTypeOf(rootElement.getElementHeader(), OpenMetadataType.SOLUTION_BLUEPRINT.typeName)) ||
                      (propertyHelper.isTypeOf(rootElement.getElementHeader(), OpenMetadataType.INFORMATION_SUPPLY_CHAIN.typeName)))
@@ -1166,6 +1113,13 @@ public class OpenMetadataHandlerBase
                 SolutionBlueprintMermaidGraphBuilder solutionBlueprintMermaidGraphBuilder = new SolutionBlueprintMermaidGraphBuilder(rootElement);
 
                 rootElement.setSolutionBlueprintMermaidGraph(solutionBlueprintMermaidGraphBuilder.getMermaidGraph());
+            }
+
+            if ((propertyHelper.isTypeOf(rootElement.getElementHeader(), OpenMetadataType.SOLUTION_COMPONENT.typeName)) && (rootElement.getNestedSolutionComponents() != null))
+            {
+                SolutionComponentMermaidGraphBuilder solutionComponentMermaidGraphBuilder = new SolutionComponentMermaidGraphBuilder(rootElement);
+
+                rootElement.setSolutionSubcomponentMermaidGraph(solutionComponentMermaidGraphBuilder.getMermaidGraph());
             }
 
         }
@@ -1422,7 +1376,7 @@ public class OpenMetadataHandlerBase
                             /*
                              * Look for parent/child relationships
                              */
-                            if (propertyHelper.isTypeOf(relatedMetadataElement, relationshipName))
+                            if ((relationshipName != null) && (propertyHelper.isTypeOf(relatedMetadataElement, relationshipName)))
                             {
                                 /*
                                  * The relationship is a parent/child relationship type.

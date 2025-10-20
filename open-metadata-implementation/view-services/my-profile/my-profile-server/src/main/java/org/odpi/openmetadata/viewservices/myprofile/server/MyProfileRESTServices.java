@@ -312,7 +312,7 @@ public class MyProfileRESTServices extends TokenController
      */
     public VoidResponse deleteAction(String            serverName,
                                      String            actionGUID,
-                                     DeleteRequestBody requestBody)
+                                     DeleteElementRequestBody requestBody)
     {
         final String methodName = "deleteAction";
 

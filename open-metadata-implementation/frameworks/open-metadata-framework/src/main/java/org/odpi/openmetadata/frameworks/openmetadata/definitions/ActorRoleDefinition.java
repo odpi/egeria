@@ -15,6 +15,7 @@ public interface ActorRoleDefinition extends ActorDefinition
      *
      * @return string
      */
+    @Override
     default String getTypeName() { return OpenMetadataType.ACTOR_ROLE.typeName; }
 
 

@@ -53,7 +53,7 @@ public enum EgeriaDeployedImplementationType implements DeployedImplementationTy
     ENGINE_HOST("Engine Host",
                 EgeriaDeployedImplementationType.OMAG_SERVER,
                 OpenMetadataType.SOFTWARE_SERVER.typeName,
-                OpenMetadataType.GOVERNANCE_DAEMON_CLASSIFICATION.typeName,
+                null,
                 "A server that runs governance engines.",
                 "https://egeria-project.org/concepts/engine-host/"),
 
@@ -63,7 +63,7 @@ public enum EgeriaDeployedImplementationType implements DeployedImplementationTy
     INTEGRATION_DAEMON("Integration Daemon",
                        EgeriaDeployedImplementationType.OMAG_SERVER,
                        OpenMetadataType.SOFTWARE_SERVER.typeName,
-                       OpenMetadataType.INTEGRATION_SERVER_CLASSIFICATION.typeName,
+                       null,
                        "A server that runs integration connectors that synchronize metadata between different types of technologies.",
                        "https://egeria-project.org/concepts/integration-daemon/"),
 
@@ -73,7 +73,7 @@ public enum EgeriaDeployedImplementationType implements DeployedImplementationTy
     METADATA_ACCESS_SERVER("Metadata Access Server",
                            EgeriaDeployedImplementationType.OMAG_SERVER,
                            OpenMetadataType.SOFTWARE_SERVER.typeName,
-                           OpenMetadataType.METADATA_SERVER_CLASSIFICATION.typeName,
+                           null,
                            "A server that provides access to one or more open metadata repositories.",
                            "https://egeria-project.org/concepts/metadata-access-server/"),
 
@@ -83,7 +83,7 @@ public enum EgeriaDeployedImplementationType implements DeployedImplementationTy
     VIEW_SERVER("View Server",
                 EgeriaDeployedImplementationType.OMAG_SERVER,
                 OpenMetadataType.SOFTWARE_SERVER.typeName,
-                OpenMetadataType.STEWARDSHIP_SERVER_CLASSIFICATION.typeName,
+                null,
                 "A server that provides access to end user open metadata and governance services.",
                 "https://egeria-project.org/concepts/metadata-access-server/"),
 

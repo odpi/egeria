@@ -28,8 +28,6 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonSubTypes(
         {
                 @JsonSubTypes.Type(value = CertificationElement.class, name = "CertificationElement"),
-                @JsonSubTypes.Type(value = InformationSupplyChainComponent.class, name = "InformationSupplyChainComponent"),
-                @JsonSubTypes.Type(value = InformationSupplyChainSegment.class, name = "InformationSupplyChainSegment"),
                 @JsonSubTypes.Type(value = RelatedMetadataHierarchySummary.class, name = "RelatedMetadataHierarchySummary"),
                 @JsonSubTypes.Type(value = RelatedMetadataNodeSummary.class, name = "RelatedMetadataNodeSummary"),
         })

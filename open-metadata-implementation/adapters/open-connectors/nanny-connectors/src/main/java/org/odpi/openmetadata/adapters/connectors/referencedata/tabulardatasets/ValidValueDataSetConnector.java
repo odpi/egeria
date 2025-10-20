@@ -9,6 +9,7 @@ import org.odpi.openmetadata.adapters.connectors.referencedata.tabulardatasets.f
 import org.odpi.openmetadata.frameworks.auditlog.AuditLoggingComponent;
 import org.odpi.openmetadata.frameworks.connectors.tabulardatasets.ReadableTabularDataSource;
 import org.odpi.openmetadata.frameworks.connectors.tabulardatasets.TabularColumnDescription;
+import org.odpi.openmetadata.frameworks.connectors.tabulardatasets.TabularDataCollection;
 import org.odpi.openmetadata.frameworks.connectors.tabulardatasets.WritableTabularDataSource;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
@@ -31,7 +32,8 @@ import java.util.Map;
  */
 public class ValidValueDataSetConnector extends ReferenceDataSetConnectorBase implements AuditLoggingComponent,
                                                                                          ReadableTabularDataSource,
-                                                                                         WritableTabularDataSource
+                                                                                         WritableTabularDataSource,
+                                                                                         TabularDataCollection
 {
     private static final String myConnectorName = "ValidValueDataSetConnector";
     private static final Logger log = LoggerFactory.getLogger(ValidValueDataSetConnector.class);

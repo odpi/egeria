@@ -30,9 +30,9 @@ public enum KafkaDeployedImplementationType implements DeployedImplementationTyp
      * A software server supporting an event broker that enables high speed, reliable topic-based event exchange.
      */
     APACHE_KAFKA_SERVER("Apache Kafka Server",
-                        DeployedImplementationType.SOFTWARE_SERVER,
+                        DeployedImplementationType.INTEGRATION_SERVER,
                         OpenMetadataType.SOFTWARE_SERVER.typeName,
-                        OpenMetadataType.INTEGRATION_SERVER_CLASSIFICATION.typeName,
+                        null,
                         "A software server supporting an event broker that enables high speed, reliable topic-based event exchange.",
                         "https://kafka.apache.org/"),
 

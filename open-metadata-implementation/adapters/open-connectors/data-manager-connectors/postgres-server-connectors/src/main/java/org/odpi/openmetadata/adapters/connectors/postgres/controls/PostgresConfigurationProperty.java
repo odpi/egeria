@@ -72,39 +72,40 @@ public enum PostgresConfigurationProperty
     /**
      * The name of the database schema being catalogued.
      */
-    SCHEMA_NAME (PostgresPlaceholderProperty.SCHEMA_NAME.getName(),
-                 PostgresPlaceholderProperty.SCHEMA_NAME.getDescription(),
-                 PostgresPlaceholderProperty.SCHEMA_NAME.getDataType(),
-                 PostgresPlaceholderProperty.SCHEMA_NAME.getExample(),
+    SCHEMA_NAME (PlaceholderProperty.SCHEMA_NAME.getName(),
+                 PlaceholderProperty.SCHEMA_NAME.getDescription(),
+                 PlaceholderProperty.SCHEMA_NAME.getDataType(),
+                 PlaceholderProperty.SCHEMA_NAME.getExample(),
                  true),
 
     /**
      * The description of the database schema being catalogued.
      */
-    SCHEMA_DESCRIPTION (PostgresPlaceholderProperty.SCHEMA_DESCRIPTION.getName(),
-                        PostgresPlaceholderProperty.SCHEMA_DESCRIPTION.getDescription(),
-                        PostgresPlaceholderProperty.SCHEMA_DESCRIPTION.getDataType(),
-                        PostgresPlaceholderProperty.SCHEMA_DESCRIPTION.getExample(),
-                        true),
+    SCHEMA_DESCRIPTION(PlaceholderProperty.DESCRIPTION.getName(),
+                       PlaceholderProperty.DESCRIPTION.getDescription(),
+                       PlaceholderProperty.DESCRIPTION.getDataType(),
+                       PlaceholderProperty.DESCRIPTION.getExample(),
+                       true),
 
     /**
      * The name of the database table being catalogued.
      */
-    TABLE_NAME (PostgresPlaceholderProperty.TABLE_NAME.getName(),
-                PostgresPlaceholderProperty.TABLE_NAME.getDescription(),
-                PostgresPlaceholderProperty.TABLE_NAME.getDataType(),
-                PostgresPlaceholderProperty.TABLE_NAME.getExample(),
+    TABLE_NAME (PlaceholderProperty.TABLE_NAME.getName(),
+                PlaceholderProperty.TABLE_NAME.getDescription(),
+                PlaceholderProperty.TABLE_NAME.getDataType(),
+                PlaceholderProperty.TABLE_NAME.getExample(),
                 true),
 
 
     /**
-     * Provides a list of database names that should not be catalogued.
+     * The description of the database table being catalogued.
      */
-    TABLE_DESCRIPTION ("tableDescription",
-                       "Provides n optional description used when defining the table schema in the database.",
-                       DataType.STRING.getName(),
-                       "This table is used to store selected open metadata values.",
-                       false),
+    TABLE_DESCRIPTION (PlaceholderProperty.TABLE_DESCRIPTION.getName(),
+                       PlaceholderProperty.TABLE_DESCRIPTION.getDescription(),
+                       PlaceholderProperty.TABLE_DESCRIPTION.getDataType(),
+                       PlaceholderProperty.TABLE_DESCRIPTION.getExample(),
+                       true),
+
 
     /**
      * Provides a list of database names that should not be catalogued.
@@ -273,7 +274,7 @@ public enum PostgresConfigurationProperty
      *
      * @return list of property names
      */
-    public static List<String> getPostgresTabularDataSourceConnectorNames()
+    public static List<String> getPostgresTabularDataSourceConfigPropertyNames()
     {
         List<String> recognizedConfigurationProperties = new ArrayList<>();
 

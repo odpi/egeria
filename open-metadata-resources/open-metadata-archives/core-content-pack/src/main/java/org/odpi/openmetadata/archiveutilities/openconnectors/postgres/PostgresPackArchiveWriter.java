@@ -9,6 +9,8 @@ import org.odpi.openmetadata.adapters.connectors.postgres.solution.PostgresSolut
 import org.odpi.openmetadata.adapters.connectors.postgres.solution.PostgresSolutionComponent;
 import org.odpi.openmetadata.adapters.connectors.postgres.solution.PostgresSolutionComponentActor;
 import org.odpi.openmetadata.adapters.connectors.postgres.solution.PostgresSolutionComponentWire;
+import org.odpi.openmetadata.adapters.connectors.postgres.tabulardatasource.PostgresTabularDataSetCollectionProvider;
+import org.odpi.openmetadata.adapters.connectors.postgres.tabulardatasource.PostgresTabularDataSetProvider;
 import org.odpi.openmetadata.archiveutilities.openconnectors.*;
 import org.odpi.openmetadata.archiveutilities.openconnectors.base.ContentPackBaseArchiveWriter;
 import org.odpi.openmetadata.archiveutilities.openconnectors.core.CorePackArchiveWriter;
@@ -57,16 +59,33 @@ public class PostgresPackArchiveWriter extends ContentPackBaseArchiveWriter
         }
 
         /*
-         * Integration Connector Types may need to link to deployedImplementationType valid value element.
+         * Add Egeria's common solution definitions
+         */
+        archiveHelper.addSolutionComponents(List.of(PostgresSolutionComponent.values()));
+        archiveHelper.addSolutionComponentActors(List.of(PostgresSolutionComponentActor.values()));
+        archiveHelper.addSolutionComponentWires(List.of(PostgresSolutionComponentWire.values()));
+        archiveHelper.addSolutionBlueprints(List.of(PostgresSolutionBlueprint.values()));
+
+
+        /*
+         * Integration Connector Types will link to deployedImplementationType valid value element.
          * This information is in the connector provider.
          */
         archiveHelper.addConnectorType(new PostgresServerIntegrationProvider());
+
+        /*
+         * Set up the connector types for resource connectors introduced by this content pack
+         */
+        archiveHelper.addConnectorType(new PostgresTabularDataSetProvider());
+        archiveHelper.addConnectorType(new PostgresTabularDataSetCollectionProvider());
+
 
         /*
          * Add catalog templates
          */
         this.addSoftwareServerCatalogTemplates(ContentPackDefinition.POSTGRES_CONTENT_PACK);
         this.addDataAssetCatalogTemplates(ContentPackDefinition.POSTGRES_CONTENT_PACK);
+        this.addTabularDataSetCatalogTemplates(ContentPackDefinition.POSTGRES_CONTENT_PACK);
 
         /*
          * Create the default integration group.
@@ -91,7 +110,7 @@ public class PostgresPackArchiveWriter extends ContentPackBaseArchiveWriter
         super.createRequestTypes(ContentPackDefinition.POSTGRES_CONTENT_PACK);
 
         /*
-         * Create a sample process
+         * Create the solution processes
          */
         this.createAndSurveyServerGovernanceActionProcess("PostgreSQLServer",
                                                           PostgresDeployedImplementationType.POSTGRESQL_SERVER.getDeployedImplementationType(),
@@ -148,13 +167,6 @@ public class PostgresPackArchiveWriter extends ContentPackBaseArchiveWriter
                                                           RequestTypeDefinition.DELETE_POSTGRES_SCHEMA,
                                                           PostgresDeployedImplementationType.POSTGRESQL_DATABASE_SCHEMA.getQualifiedName());
 
-        /*
-         * Add Egeria's common solution definitions
-         */
-        archiveHelper.addSolutionComponents(List.of(PostgresSolutionComponent.values()));
-        archiveHelper.addSolutionComponentActors(List.of(PostgresSolutionComponentActor.values()));
-        archiveHelper.addSolutionComponentWires(List.of(PostgresSolutionComponentWire.values()));
-        archiveHelper.addSolutionBlueprints(List.of(PostgresSolutionBlueprint.values()));
 
         /*
          * Saving the GUIDs means tha the guids in the archive are stable between runs of the archive writer.

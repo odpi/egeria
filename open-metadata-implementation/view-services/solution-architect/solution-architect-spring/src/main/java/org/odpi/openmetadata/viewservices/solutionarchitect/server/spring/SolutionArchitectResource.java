@@ -293,7 +293,7 @@ public class SolutionArchitectResource
             externalDocs=@ExternalDocumentation(description="Further Information",
                     url="https://egeria-project.org/concepts/information-supply-chain"))
 
-    public InformationSupplyChainsResponse getInformationSupplyChainsByName(@PathVariable
+    public OpenMetadataRootElementsResponse getInformationSupplyChainsByName(@PathVariable
                                                                             String            serverName,
                                                                             @RequestParam (required = false, defaultValue = "true")
                                                                             boolean           addImplementation,
@@ -322,7 +322,7 @@ public class SolutionArchitectResource
             externalDocs=@ExternalDocumentation(description="Further Information",
                     url="https://egeria-project.org/concepts/information-supply-chain"))
 
-    public InformationSupplyChainsResponse findInformationSupplyChains(@PathVariable
+    public OpenMetadataRootElementsResponse findInformationSupplyChains(@PathVariable
                                                                        String                  serverName,
                                                                        @RequestParam (required = false, defaultValue = "true")
                                                                        boolean                 addImplementation,
@@ -353,7 +353,7 @@ public class SolutionArchitectResource
             externalDocs=@ExternalDocumentation(description="Further Information",
                     url="https://egeria-project.org/concepts/information-supply-chain"))
 
-    public InformationSupplyChainResponse getInformationSupplyChainByGUID(@PathVariable
+    public OpenMetadataRootElementResponse getInformationSupplyChainByGUID(@PathVariable
                                                                           String             serverName,
                                                                           @PathVariable
                                                                           String             informationSupplyChainGUID,

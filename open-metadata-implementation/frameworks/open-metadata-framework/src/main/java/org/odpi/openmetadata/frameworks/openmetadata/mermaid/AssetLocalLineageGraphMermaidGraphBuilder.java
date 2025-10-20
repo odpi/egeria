@@ -5,7 +5,6 @@ package org.odpi.openmetadata.frameworks.openmetadata.mermaid;
 
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.AssetGraph;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.MetadataElementSummary;
-import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.MetadataRelationship;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.RelatedMetadataNodeSummary;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 

@@ -14,7 +14,7 @@ import org.odpi.openmetadata.frameworks.openmetadata.properties.externalidentifi
 import org.odpi.openmetadata.frameworks.openmetadata.properties.externalreferences.ExternalReferenceProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.feedback.LikeProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.feedback.RatingProperties;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.implementations.ImplementedByProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.solutions.SolutionComponentProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.search.PropertyHelper;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
@@ -439,14 +439,6 @@ public class MermaidGraphBuilderBase
                 }
             }
 
-            if (elementHeader.getServerPurposes() != null)
-            {
-                for (ElementClassification classification : elementHeader.getServerPurposes())
-                {
-                    addClassificationToGraph(elementHeader.getGUID(), classification);
-                }
-            }
-
             if (elementHeader.getCollectionRoles() != null)
             {
                 for (ElementClassification classification : elementHeader.getCollectionRoles())
@@ -575,17 +567,6 @@ public class MermaidGraphBuilderBase
         if (elementHeader.getCollectionRoles() != null)
         {
             for (ElementClassification classification : elementHeader.getCollectionRoles())
-            {
-                if (classification != null)
-                {
-                    return elementHeader.getType().getTypeName() + " [" + classification.getClassificationName() + "]";
-                }
-            }
-        }
-
-        if (elementHeader.getServerPurposes() != null)
-        {
-            for (ElementClassification classification : elementHeader.getServerPurposes())
             {
                 if (classification != null)
                 {
@@ -2103,268 +2084,139 @@ public class MermaidGraphBuilderBase
     }
 
 
+    /**
+     * This is used for creating solution blueprint or solution component internal graphs.  It adds
+     * The list of nodes passed in as parameters and then adds the relationships between them, ignoring everything else.
+     *
+     * @param requiredSolutionComponents list of nodes
+     */
+    public void addSolutionComponentListToGraph(List<RelatedMetadataElementSummary> requiredSolutionComponents)
+    {
+        List<String> solutionLinkingWireGUIDs = new ArrayList<>();
+        List<String> validNodeGUIDs           = new ArrayList<>();
+
+        /*
+         * The solution components displayed are the ones directly linked to the blueprint.
+         * Build a list of value guids.  Later processing will hunt around for links to tie them
+         * together.
+         */
+        for (RelatedMetadataElementSummary node : requiredSolutionComponents)
+        {
+            if ((node != null) && (propertyHelper.isTypeOf(node.getRelatedElement().getElementHeader(), OpenMetadataType.SOLUTION_COMPONENT.typeName)))
+            {
+                validNodeGUIDs.add(node.getRelatedElement().getElementHeader().getGUID());
+
+                if (node.getRelatedElement().getProperties() instanceof SolutionComponentProperties solutionComponentProperties)
+                {
+                    appendNewMermaidNode(node.getRelatedElement().getElementHeader().getGUID(),
+                                         getNodeDisplayName(node.getRelatedElement()),
+                                         node.getRelatedElement().getElementHeader().getType().getTypeName(),
+                                         node.getRelatedElement().getProperties(),
+                                         getVisualStyleForClassifications(node.getRelatedElement().getElementHeader(),
+                                                                          this.getVisualStyleForSolutionComponent(solutionComponentProperties.getSolutionComponentType())));
+                }
+                else
+                {
+                    appendNewMermaidNode(node.getRelatedElement().getElementHeader().getGUID(),
+                                         getNodeDisplayName(node.getRelatedElement()),
+                                         node.getRelatedElement().getElementHeader().getType().getTypeName(),
+                                         node.getRelatedElement().getProperties(),
+                                         getVisualStyleForClassifications(node.getRelatedElement().getElementHeader(),
+                                                                          this.getVisualStyleForEntity(node.getRelatedElement().getElementHeader(), VisualStyle.GOVERNED_ELEMENT)));
+                }
+            }
+        }
+
+        for (RelatedMetadataElementSummary node : requiredSolutionComponents)
+        {
+            if ((node != null) && (propertyHelper.isTypeOf(node.getRelatedElement().getElementHeader(), OpenMetadataType.SOLUTION_COMPONENT.typeName)))
+            {
+                /*
+                 * Build out the relationships between the components in the graph.
+                 * Also add the actors.
+                 */
+                this.addSolutionComponentLinksToGraph(node,
+                                                      solutionLinkingWireGUIDs,
+                                                      validNodeGUIDs);
+            }
+        }
+    }
+
 
     /**
-     * Add a solution component to graph.
-     *
-     * @param parentNodeName identifier of the parent node (maybe null)
-     * @param parentLinkLabel add label to parent link - also optional
+     * Link a solution component in the graph.
+
      * @param solutionComponentElement element to process
      * @param solutionLinkingWireGUIDs list of solution wires already defined
-     * @param fullDisplay print all elements
+     * @param validNodeGUIDs list of solution component nodes that ate allowed in the blueprint
      */
-    protected void addSolutionComponentToGraph(String                   parentNodeName,
-                                               String                   parentLinkLabel,
-                                               SolutionComponentElement solutionComponentElement,
-                                               List<String>             solutionLinkingWireGUIDs,
-                                               boolean                  fullDisplay)
+    public void addSolutionComponentLinksToGraph(RelatedMetadataElementSummary solutionComponentElement,
+                                                 List<String>                  solutionLinkingWireGUIDs,
+                                                 List<String>                  validNodeGUIDs)
 
     {
         if (solutionComponentElement != null)
         {
-            String currentNodeName    = solutionComponentElement.getElementHeader().getGUID();
-            String currentDisplayName = solutionComponentElement.getProperties().getDisplayName();
-
-            if (currentDisplayName == null)
+            if (solutionComponentElement instanceof RelatedMetadataHierarchySummary relatedMetadataHierarchySummary)
             {
-                currentDisplayName = solutionComponentElement.getProperties().getQualifiedName();
-            }
-
-            if (solutionComponentElement.getProperties() != null)
-            {
-                appendNewMermaidNode(currentNodeName,
-                                     currentDisplayName,
-                                     solutionComponentElement.getElementHeader().getType().getTypeName(),
-                                     solutionComponentElement.getProperties(),
-                                     getVisualStyleForClassifications(solutionComponentElement.getElementHeader(),
-                                                                      this.getVisualStyleForSolutionComponent(solutionComponentElement.getProperties().getSolutionComponentType())));
-            }
-            else
-            {
-                appendNewMermaidNode(currentNodeName,
-                                     currentDisplayName,
-                                     solutionComponentElement.getElementHeader().getType().getTypeName(),
-                                     getVisualStyleForEntity(solutionComponentElement.getElementHeader(),
-                                                             VisualStyle.DEFAULT_SOLUTION_COMPONENT));
-            }
-
-            if (solutionComponentElement.getWiredToLinks() != null)
-            {
-                for (WiredSolutionComponent line : solutionComponentElement.getWiredToLinks())
+                if (relatedMetadataHierarchySummary.getSideLinks() != null)
                 {
-                    if ((line != null) && (! solutionLinkingWireGUIDs.contains(line.getElementHeader().getGUID())))
+                    for (RelatedMetadataElementSummary line : relatedMetadataHierarchySummary.getSideLinks())
                     {
-                        String relatedComponentDisplayName = getNodeDisplayName(line.getLinkedElement());
-
-                        if (line.getLinkedElement().getProperties() != null)
+                        if ((line != null) &&
+                                (! solutionLinkingWireGUIDs.contains(line.getRelationshipHeader().getGUID())))
                         {
-                            relatedComponentDisplayName = this.getNodeDisplayName(line.getLinkedElement());
-                        }
+                            String relatedComponentDisplayName = getNodeDisplayName(line.getRelatedElement());
 
-                        appendNewMermaidNode(line.getLinkedElement().getElementHeader().getGUID(),
-                                             relatedComponentDisplayName,
-                                             line.getLinkedElement().getElementHeader().getType().getTypeName(),
-                                             line.getLinkedElement().getProperties(),
-                                             getVisualStyleForClassifications(line.getElementHeader(),
-                                                                              this.getVisualStyleForSolutionComponent(line.getLinkedElement().getElementHeader().getType().getTypeName())));
-
-                        List<String> labelList = new ArrayList<>();
-
-                        if ((line.getProperties() != null) && (line.getProperties().getLabel() != null))
-                        {
-                            labelList.add(line.getProperties().getLabel());
-                            labelList.add("[" + this.addSpacesToTypeName(line.getElementHeader().getType().getTypeName()) + "]");
-                        }
-                        else
-                        {
-                            labelList.add(this.addSpacesToTypeName(line.getElementHeader().getType().getTypeName()));
-                        }
-
-                        this.appendMermaidLine(line.getElementHeader().getGUID(),
-                                               line.getLinkedElement().getElementHeader().getGUID(),
-                                               this.getListLabel(labelList),
-                                               solutionComponentElement.getElementHeader().getGUID());
-
-                        solutionLinkingWireGUIDs.add(line.getElementHeader().getGUID());
-                    }
-                }
-            }
-
-            if (solutionComponentElement.getWiredFromLinks() != null)
-            {
-                for (WiredSolutionComponent line : solutionComponentElement.getWiredFromLinks())
-                {
-                    if ((line != null) && (! solutionLinkingWireGUIDs.contains(line.getElementHeader().getGUID())))
-                    {
-                        appendNewMermaidNode(line.getLinkedElement(), VisualStyle.DEFAULT_SOLUTION_COMPONENT);
-
-                        List<String> labelList = new ArrayList<>();
-
-                        if ((line.getProperties() != null) && (line.getProperties().getLabel() != null))
-                        {
-                            labelList.add(line.getProperties().getLabel());
-                            labelList.add("[" + this.addSpacesToTypeName(line.getElementHeader().getType().getTypeName()) + "]");
-                        }
-                        else
-                        {
-                            labelList.add(this.addSpacesToTypeName(line.getElementHeader().getType().getTypeName()));
-                        }
-
-                        this.appendMermaidLine(line.getElementHeader().getGUID(),
-                                               solutionComponentElement.getElementHeader().getGUID(),
-                                               this.getListLabel(labelList),
-                                               line.getLinkedElement().getElementHeader().getGUID());
-
-                        solutionLinkingWireGUIDs.add(line.getElementHeader().getGUID());
-                    }
-                }
-            }
-
-            if (solutionComponentElement.getActors() != null)
-            {
-                for (RelatedMetadataElementSummary line : solutionComponentElement.getActors())
-                {
-                    if (line != null)
-                    {
-                        String actorRoleName = getNodeDisplayName(line.getRelatedElement());
-
-                        appendNewMermaidNode(line.getRelatedElement().getElementHeader().getGUID(),
-                                             actorRoleName,
-                                             line.getRelatedElement().getElementHeader().getType().getTypeName(),
-                                             line.getRelatedElement().getProperties(),
-                                             getVisualStyleForEntity(line.getRelatedElement().getElementHeader(),
-                                                                     VisualStyle.GOVERNANCE_ACTOR));
-
-
-                        String actorRoleDescription = this.getRelationshipLabel(line);
-
-                        if (actorRoleDescription == null)
-                        {
-                            actorRoleDescription = this.addSpacesToTypeName(this.getTypeNameForEntity(line.getRelatedElement().getElementHeader()));
-                        }
-                        else
-                        {
-                            actorRoleDescription = actorRoleDescription + " [" + this.addSpacesToTypeName(this.getTypeNameForEntity(line.getRelatedElement().getElementHeader())) + "]";
-                        }
-
-                        this.appendMermaidLine(line.getRelationshipHeader().getGUID(),
-                                               line.getRelatedElement().getElementHeader().getGUID(),
-                                               this.getListLabel(Collections.singletonList(actorRoleDescription)),
-                                               solutionComponentElement.getElementHeader().getGUID());
-                    }
-                }
-            }
-
-            if (fullDisplay)
-            {
-                if (solutionComponentElement.getBlueprints() != null)
-                {
-                    for (RelatedMetadataElementSummary line : solutionComponentElement.getBlueprints())
-                    {
-                        if (line != null)
-                        {
-                            String actorRoleName = getNodeDisplayName(line.getRelatedElement());
-
-                            appendNewMermaidNode(line.getRelatedElement().getElementHeader().getGUID(),
-                                                 actorRoleName,
-                                                 line.getRelatedElement().getElementHeader().getType().getTypeName(),
-                                                 line.getRelatedElement().getProperties(),
-                                                 getVisualStyleForEntity(line.getRelatedElement().getElementHeader(),
-                                                                         VisualStyle.SOLUTION_BLUEPRINT));
-
-                            String label = null;
-
-                            if (line.getRelationshipProperties() instanceof CollectionMembershipProperties solutionBlueprintCompositionProperties)
+                            /*
+                             * Only actors can be added to the graph at this point.
+                             */
+                            if (propertyHelper.isTypeOf(line.getRelatedElement().getElementHeader(), OpenMetadataType.ACTOR.typeName))
                             {
-                                label = solutionBlueprintCompositionProperties.getMembershipType();
+                                appendNewMermaidNode(line.getRelatedElement().getElementHeader().getGUID(),
+                                                     relatedComponentDisplayName,
+                                                     line.getRelatedElement().getElementHeader().getType().getTypeName(),
+                                                     line.getRelatedElement().getProperties(),
+                                                     getVisualStyleForClassifications(line.getRelationshipHeader(), VisualStyle.GOVERNANCE_ACTOR));
+                                validNodeGUIDs.add(line.getRelatedElement().getElementHeader().getGUID());
                             }
 
-                            if (label == null)
+                            if (validNodeGUIDs.contains(line.getRelatedElement().getElementHeader().getGUID()))
                             {
-                                label = this.addSpacesToTypeName(line.getRelatedElement().getElementHeader().getType().getTypeName());
-                            }
+                                List<String> labelList = new ArrayList<>();
 
-                            this.appendMermaidLine(line.getRelationshipHeader().getGUID(),
-                                                   line.getRelatedElement().getElementHeader().getGUID(),
-                                                   this.getListLabel(Collections.singletonList(label)),
-                                                   solutionComponentElement.getElementHeader().getGUID());
-                        }
-                    }
-                }
+                                String label = this.getRelationshipLabel(line);
 
-                if (solutionComponentElement.getImplementations() != null)
-                {
-                    for (RelatedMetadataElementSummary line : solutionComponentElement.getImplementations())
-                    {
-                        if (line != null)
-                        {
-                            appendNewMermaidNode(line.getRelatedElement(), VisualStyle.INFORMATION_SUPPLY_CHAIN_IMPL);
+                                if (label != null)
+                                {
+                                    labelList.add(label);
+                                    labelList.add("[" + this.addSpacesToTypeName(line.getRelationshipHeader().getType().getTypeName()) + "]");
+                                }
+                                else
+                                {
+                                    labelList.add(this.addSpacesToTypeName(line.getRelationshipHeader().getType().getTypeName()));
+                                }
 
-                            String label = null;
+                                if (line.getRelatedElementAtEnd1())
+                                {
+                                    this.appendMermaidLine(line.getRelationshipHeader().getGUID(),
+                                                           line.getRelatedElement().getElementHeader().getGUID(),
+                                                           this.getListLabel(labelList),
+                                                           solutionComponentElement.getRelatedElement().getElementHeader().getGUID());
+                                }
+                                else
+                                {
+                                    this.appendMermaidLine(line.getRelationshipHeader().getGUID(),
+                                                           solutionComponentElement.getRelatedElement().getElementHeader().getGUID(),
+                                                           this.getListLabel(labelList),
+                                                           line.getRelatedElement().getElementHeader().getGUID());
+                                }
 
-                            if (line.getRelationshipProperties() instanceof ImplementedByProperties implementedByProperties)
-                            {
-                                label = implementedByProperties.getRole();
-                            }
-
-                            if (label == null)
-                            {
-                                label = this.addSpacesToTypeName(line.getRelationshipHeader().getType().getTypeName());
-                            }
-
-                            this.appendMermaidLine(line.getRelationshipHeader().getGUID(),
-                                                   solutionComponentElement.getElementHeader().getGUID(),
-                                                   this.getListLabel(Collections.singletonList(label)),
-                                                   line.getRelatedElement().getElementHeader().getGUID());
-                        }
-                    }
-                }
-
-                if (solutionComponentElement.getOtherElements() != null)
-                {
-                    for (RelatedMetadataElementSummary line : solutionComponentElement.getOtherElements())
-                    {
-                        if (line != null)
-                        {
-                            appendNewMermaidNode(line.getRelatedElement(), VisualStyle.LINKED_ELEMENT);
-
-                            String label = this.getRelationshipLabel(line);
-
-                            if (label == null)
-                            {
-                                label = this.addSpacesToTypeName(line.getRelationshipHeader().getType().getTypeName());
-                            }
-                            else
-                            {
-                                label = label + " [" + this.addSpacesToTypeName(line.getRelationshipHeader().getType().getTypeName()) + "]";
-                            }
-
-
-                            if (line.getRelatedElementAtEnd1())
-                            {
-                                this.appendMermaidLine(line.getRelationshipHeader().getGUID(),
-                                                       line.getRelatedElement().getElementHeader().getGUID(),
-                                                       this.getListLabel(Collections.singletonList(label)),
-                                                       solutionComponentElement.getElementHeader().getGUID());
-                            }
-                            else
-                            {
-                                this.appendMermaidLine(line.getRelationshipHeader().getGUID(),
-                                                       solutionComponentElement.getElementHeader().getGUID(),
-                                                       this.getListLabel(Collections.singletonList(label)),
-                                                       line.getRelatedElement().getElementHeader().getGUID());
+                                solutionLinkingWireGUIDs.add(line.getRelationshipHeader().getGUID());
                             }
                         }
                     }
                 }
-            }
-
-            if (parentNodeName != null)
-            {
-                this.appendMermaidLine(null,
-                                       parentNodeName,
-                                       this.getListLabel(Collections.singletonList(parentLinkLabel)),
-                                       solutionComponentElement.getElementHeader().getGUID());
             }
         }
     }

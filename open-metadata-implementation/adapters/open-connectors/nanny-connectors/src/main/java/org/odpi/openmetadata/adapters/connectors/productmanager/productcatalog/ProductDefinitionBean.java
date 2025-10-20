@@ -335,7 +335,7 @@ public class ProductDefinitionBean implements ProductDefinition
     @Override
     public String getVersionIdentifier()
     {
-        return "V1.0";
+        return "5.4-SNAPSHOT";
     }
 
 

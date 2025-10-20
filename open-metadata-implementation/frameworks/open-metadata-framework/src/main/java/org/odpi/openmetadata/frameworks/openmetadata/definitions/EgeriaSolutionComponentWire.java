@@ -36,7 +36,7 @@ public enum EgeriaSolutionComponentWire implements SolutionComponentWireDefiniti
                       "Unity catalog can be configured to store its metadata catalog in PostgreSQL."),
 
     UC_POSTGRES_DB(EgeriaSolutionComponent.RDBMS_UNITY_CATALOG,
-                         EgeriaSolutionComponent.SUPERSET_POSTGRESQL_DATABASE,
+                         EgeriaSolutionComponent.UC_POSTGRESQL_DATABASE,
                          "stores data",
                          "Unity catalog can be configured to store its metadata catalog in PostgreSQL."),
 
@@ -46,7 +46,7 @@ public enum EgeriaSolutionComponentWire implements SolutionComponentWireDefiniti
                 "Marquez stores its metadata catalog in PostgreSQL."),
 
     MARQUEZ_POSTGRES_DB(EgeriaSolutionComponent.MARQUEZ,
-                   EgeriaSolutionComponent.SUPERSET_POSTGRESQL_DATABASE,
+                   EgeriaSolutionComponent.MARQUEZ_POSTGRESQL_DATABASE,
                    "stores data",
                    "Marquez stores its metadata catalog in PostgreSQL."),
 
@@ -209,6 +209,7 @@ public enum EgeriaSolutionComponentWire implements SolutionComponentWireDefiniti
      *
      * @return component definition
      */
+    @Override
     public SolutionComponentDefinition getComponent1()
     {
         return component1;
@@ -220,6 +221,7 @@ public enum EgeriaSolutionComponentWire implements SolutionComponentWireDefiniti
      *
      * @return component definition
      */
+    @Override
     public SolutionComponentDefinition getComponent2()
     {
         return component2;
@@ -231,6 +233,7 @@ public enum EgeriaSolutionComponentWire implements SolutionComponentWireDefiniti
      *
      * @return string
      */
+    @Override
     public String getLabel()
     {
         return label;
@@ -242,6 +245,7 @@ public enum EgeriaSolutionComponentWire implements SolutionComponentWireDefiniti
      *
      * @return string
      */
+    @Override
     public String getDescription()
     {
         return description;
@@ -253,6 +257,7 @@ public enum EgeriaSolutionComponentWire implements SolutionComponentWireDefiniti
      *
      * @return list of strings
      */
+    @Override
     public List<String> getISCQualifiedNames()
     {
         return null;
@@ -267,7 +272,7 @@ public enum EgeriaSolutionComponentWire implements SolutionComponentWireDefiniti
     @Override
     public String toString()
     {
-        return "EgeriaSolutionComponentWire{" +
+        return "SolutionComponentWire{" +
                 "component1=" + component1 +
                 ", component2=" + component2 +
                 ", label='" + label + '\'' +

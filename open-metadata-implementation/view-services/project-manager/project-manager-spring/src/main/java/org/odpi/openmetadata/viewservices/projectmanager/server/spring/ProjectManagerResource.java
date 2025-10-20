@@ -380,7 +380,7 @@ public class ProjectManagerResource
     public VoidResponse deleteProject(@PathVariable String          serverName,
                                       @PathVariable String          projectGUID,
                                       @RequestBody(required = false)
-                                          DeleteRequestBody requestBody)
+                                          DeleteElementRequestBody requestBody)
     {
         return restAPI.deleteProject(serverName, projectGUID, requestBody);
     }
@@ -438,7 +438,7 @@ public class ProjectManagerResource
                                               @PathVariable String          projectGUID,
                                               @PathVariable String          actorGUID,
                                               @RequestBody(required = false)
-                                                  DeleteRequestBody requestBody)
+                                                  DeleteRelationshipRequestBody requestBody)
     {
         return restAPI.removeFromProjectTeam(serverName, projectGUID, actorGUID, requestBody);
     }
@@ -494,7 +494,7 @@ public class ProjectManagerResource
     public VoidResponse clearProjectHierarchy(@PathVariable String          serverName,
                                               @PathVariable String          projectGUID,
                                               @PathVariable String          managedProjectGUID,
-                                              @RequestBody(required = false) DeleteRequestBody requestBody)
+                                              @RequestBody(required = false) DeleteRelationshipRequestBody requestBody)
     {
         return restAPI.clearProjectHierarchy(serverName, projectGUID, managedProjectGUID, requestBody);
     }
@@ -551,7 +551,7 @@ public class ProjectManagerResource
     public VoidResponse clearProjectDependency(@PathVariable String          serverName,
                                                @PathVariable String          projectGUID,
                                                @PathVariable String          dependsOnProjectGUID,
-                                               @RequestBody(required = false) DeleteRequestBody requestBody)
+                                               @RequestBody(required = false) DeleteRelationshipRequestBody requestBody)
     {
         return restAPI.clearProjectDependency(serverName, projectGUID, dependsOnProjectGUID, requestBody);
     }

@@ -21,7 +21,6 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
         property = "class")
 // todo this mapping is not complete
 @JsonSubTypes({
-        @JsonSubTypes.Type(value = AssetManagerProperties.class, name = "AssetManagerProperties"),
         @JsonSubTypes.Type(value = ChangeManagementLibraryProperties.class, name = "ChangeManagementLibraryProperties"),
         @JsonSubTypes.Type(value = ContentCollectionManagerProperties.class, name = "ContentCollectionManagerProperties"),
         @JsonSubTypes.Type(value = FileManagerProperties.class, name = "FileManagerProperties"),

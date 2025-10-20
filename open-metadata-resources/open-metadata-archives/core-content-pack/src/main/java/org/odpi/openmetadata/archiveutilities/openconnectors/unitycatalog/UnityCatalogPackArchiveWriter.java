@@ -273,7 +273,7 @@ public class UnityCatalogPackArchiveWriter extends ContentPackBaseArchiveWriter
 
         classifications.add(archiveHelper.getTemplateClassification(deployedImplementationType.getDeployedImplementationType() + " template",
                                                                     UnityCatalogTemplateType.OSS_UC_CATALOG_TEMPLATE.getTemplateDescription(),
-                                                                    "V1.0",
+                                                                    "5.4-SNAPSHOT",
                                                                     null, methodName));
 
         archiveHelper.setGUID(qualifiedName, guid);
@@ -327,7 +327,7 @@ public class UnityCatalogPackArchiveWriter extends ContentPackBaseArchiveWriter
 
         classifications.add(archiveHelper.getTemplateClassification(deployedImplementationType.getDeployedImplementationType() + " template",
                                                                     UnityCatalogTemplateType.OSS_UC_SCHEMA_TEMPLATE.getTemplateDescription(),
-                                                                    "V1.0",
+                                                                    "5.4-SNAPSHOT",
                                                                     null,
                                                                     methodName));
 
@@ -383,7 +383,7 @@ public class UnityCatalogPackArchiveWriter extends ContentPackBaseArchiveWriter
 
         classifications.add(archiveHelper.getTemplateClassification(deployedImplementationType.getDeployedImplementationType() + " template",
                                                                     UnityCatalogTemplateType.OSS_UC_VOLUME_TEMPLATE.getTemplateDescription(),
-                                                                    "V1.0",
+                                                                    "5.4-SNAPSHOT",
                                                                     null,
                                                                     methodName));
 
@@ -479,7 +479,7 @@ public class UnityCatalogPackArchiveWriter extends ContentPackBaseArchiveWriter
 
         classifications.add(archiveHelper.getTemplateClassification(deployedImplementationType.getDeployedImplementationType() + " template",
                                                                     UnityCatalogTemplateType.OSS_UC_TABLE_TEMPLATE.getTemplateDescription(),
-                                                                    "V1.0",
+                                                                    "5.4-SNAPSHOT",
                                                                     null,
                                                                     methodName));
 
@@ -561,7 +561,7 @@ public class UnityCatalogPackArchiveWriter extends ContentPackBaseArchiveWriter
 
         classifications.add(archiveHelper.getTemplateClassification(deployedImplementationType.getDeployedImplementationType() + " template",
                                                                     UnityCatalogTemplateType.OSS_UC_FUNCTION_TEMPLATE.getTemplateDescription(),
-                                                                    "V1.0",
+                                                                    "5.4-SNAPSHOT",
                                                                     null,
                                                                     methodName));
 
@@ -611,7 +611,7 @@ public class UnityCatalogPackArchiveWriter extends ContentPackBaseArchiveWriter
 
         classifications.add(archiveHelper.getTemplateClassification(deployedImplementationType.getDeployedImplementationType() + " template",
                                                                     UnityCatalogTemplateType.OSS_UC_REGISTERED_MODEL_TEMPLATE.getTemplateDescription(),
-                                                                    "V1.0",
+                                                                    "5.4-SNAPSHOT",
                                                                     null,
                                                                     methodName));
 
@@ -661,7 +661,7 @@ public class UnityCatalogPackArchiveWriter extends ContentPackBaseArchiveWriter
 
         classifications.add(archiveHelper.getTemplateClassification(deployedImplementationType.getDeployedImplementationType() + " template",
                                                                     UnityCatalogTemplateType.OSS_UC_MODEL_VERSION_TEMPLATE.getTemplateDescription(),
-                                                                    "V1.0",
+                                                                    "5.4-SNAPSHOT",
                                                                     null,
                                                                     methodName));
 

@@ -22,20 +22,25 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
         include = JsonTypeInfo.As.PROPERTY,
         property = "class")
 @JsonSubTypes({
+        @JsonSubTypes.Type(value = AnalyticsEngineProperties.class, name = "AnalyticsEngineProperties"),
         @JsonSubTypes.Type(value = APIManagerProperties.class, name = "APIManagerProperties"),
         @JsonSubTypes.Type(value = ApplicationProperties.class, name = "ApplicationProperties"),
         @JsonSubTypes.Type(value = AuthorizationManagerProperties.class, name = "AuthorizationManagerProperties"),
         @JsonSubTypes.Type(value = CohortMemberProperties.class, name = "CohortMemberProperties"),
         @JsonSubTypes.Type(value = DataManagerProperties.class, name = "DataManagerProperties"),
+        @JsonSubTypes.Type(value = DataMovementEngineProperties.class, name = "DataMovementEngineProperties"),
+        @JsonSubTypes.Type(value = DataVirtualizationEngineProperties.class, name = "DataVirtualizationEngineProperties"),
         @JsonSubTypes.Type(value = EngineProperties.class, name = "EngineProperties"),
         @JsonSubTypes.Type(value = EventBrokerProperties.class, name = "EventBrokerProperties"),
         @JsonSubTypes.Type(value = GovernanceEngineProperties.class, name = "GovernanceEngineProperties"),
         @JsonSubTypes.Type(value = IntegrationGroupProperties.class, name = "IntegrationGroupProperties"),
         @JsonSubTypes.Type(value = InventoryCatalogProperties.class, name = "InventoryCatalogProperties"),
         @JsonSubTypes.Type(value = NetworkGatewayProperties.class, name = "NetworkGatewayProperties"),
+        @JsonSubTypes.Type(value = ReportingEngineProperties.class, name = "ReportingEngineProperties"),
         @JsonSubTypes.Type(value = ResourceManagerProperties.class, name = "ResourceManagerProperties"),
         @JsonSubTypes.Type(value = SoftwareServiceProperties.class, name = "SoftwareServiceProperties"),
         @JsonSubTypes.Type(value = UserAuthenticationManagerProperties.class, name = "UserAuthenticationManagerProperties"),
+        @JsonSubTypes.Type(value = WorkflowEngineProperties.class, name = "WorkflowEngineProperties"),
 
 })
 public class SoftwareCapabilityProperties extends ReferenceableProperties

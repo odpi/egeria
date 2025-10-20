@@ -311,7 +311,7 @@ public enum EgeriaSoftwareServerTemplateDefinition implements TemplateDefinition
     @Override
     public String getTemplateVersionIdentifier()
     {
-        return "V1.0";
+        return "5.4-SNAPSHOT";
     }
 
 

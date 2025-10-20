@@ -313,7 +313,7 @@ public class CollectionManagerResource
                                          @PathVariable String                    parentGUID,
                                          @PathVariable String                    collectionGUID,
                                          @RequestBody(required = false)
-                                             DeleteRequestBody requestBody)
+                                             DeleteRelationshipRequestBody requestBody)
     {
         return restAPI.detachCollection(serverName, urlMarker, parentGUID, collectionGUID, requestBody);
     }
@@ -374,7 +374,7 @@ public class CollectionManagerResource
                                               @PathVariable String                    parentGUID,
                                               @PathVariable String                    collectionGUID,
                                               @RequestBody(required = false)
-                                                  DeleteRequestBody requestBody)
+                                                  DeleteRelationshipRequestBody requestBody)
     {
         return restAPI.detachDataDescription(serverName, urlMarker, parentGUID, collectionGUID, requestBody);
     }
@@ -442,7 +442,7 @@ public class CollectionManagerResource
                                                        @PathVariable
                                                        String consumedDigitalProductGUID,
                                                        @RequestBody (required = false)
-                                                           DeleteRequestBody requestBody)
+                                                           DeleteRelationshipRequestBody requestBody)
     {
         return restAPI.detachDigitalProductDependency(serverName, urlMarker, consumerDigitalProductGUID, consumedDigitalProductGUID, requestBody);
     }
@@ -510,7 +510,7 @@ public class CollectionManagerResource
                                          @PathVariable
                                          String digitalSubscriptionGUID,
                                          @RequestBody (required = false)
-                                             DeleteRequestBody requestBody)
+                                             DeleteRelationshipRequestBody requestBody)
     {
         return restAPI.detachSubscriber(serverName, urlMarker, digitalSubscriberGUID, digitalSubscriptionGUID, requestBody);
     }
@@ -578,7 +578,7 @@ public class CollectionManagerResource
                                              @PathVariable
                                              String digitalProductManagerRoleGUID,
                                              @RequestBody (required = false)
-                                                 DeleteRequestBody requestBody)
+                                                 DeleteRelationshipRequestBody requestBody)
     {
         return restAPI.detachProductManager(serverName, urlMarker, digitalProductGUID, digitalProductManagerRoleGUID, requestBody);
     }
@@ -644,7 +644,7 @@ public class CollectionManagerResource
                                              @PathVariable
                                              String agreementActorRelationshipGUID,
                                              @RequestBody (required = false)
-                                                 DeleteRequestBody requestBody)
+                                                 DeleteRelationshipRequestBody requestBody)
     {
         return restAPI.detachAgreementActor(serverName, urlMarker, agreementActorRelationshipGUID, requestBody);
     }
@@ -712,7 +712,7 @@ public class CollectionManagerResource
                                             @PathVariable
                                             String agreementItemGUID,
                                             @RequestBody (required = false)
-                                                DeleteRequestBody requestBody)
+                                                DeleteRelationshipRequestBody requestBody)
     {
         return restAPI.detachAgreementItem(serverName, urlMarker, agreementGUID, agreementItemGUID, requestBody);
     }
@@ -780,7 +780,7 @@ public class CollectionManagerResource
                                        @PathVariable
                                        String externalReferenceGUID,
                                        @RequestBody (required = false)
-                                           DeleteRequestBody requestBody)
+                                           DeleteRelationshipRequestBody requestBody)
     {
         return restAPI.detachContract(serverName, urlMarker, agreementGUID, externalReferenceGUID, requestBody);
     }
@@ -990,7 +990,7 @@ public class CollectionManagerResource
                                          @PathVariable String             urlMarker,
                                          @PathVariable String          collectionGUID,
                                          @RequestBody(required = false)
-                                             DeleteRequestBody requestBody)
+                                             DeleteRelationshipRequestBody requestBody)
     {
         return restAPI.deleteCollection(serverName, urlMarker, collectionGUID, requestBody);
     }
@@ -1139,7 +1139,7 @@ public class CollectionManagerResource
                                              @PathVariable String                    urlMarker,
                                              @PathVariable String                    collectionGUID,
                                              @PathVariable String                    elementGUID,
-                                             @RequestBody DeleteRequestBody requestBody)
+                                             @RequestBody DeleteRelationshipRequestBody requestBody)
     {
         return restAPI.removeFromCollection(serverName, urlMarker, collectionGUID, elementGUID, requestBody);
     }

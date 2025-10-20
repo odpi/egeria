@@ -181,8 +181,8 @@ public class ExternalIdClient extends ConnectorContextClientBase
      * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    public void updateExternalId(String             externalIdGUID,
-                                 UpdateOptions      updateOptions,
+    public void updateExternalId(String               externalIdGUID,
+                                 UpdateOptions        updateOptions,
                                  ExternalIdProperties properties) throws InvalidParameterException,
                                                                          PropertyServerException,
                                                                          UserNotAuthorizedException
@@ -392,32 +392,6 @@ public class ExternalIdClient extends ConnectorContextClientBase
                                                  this.getUpdateOptions(true),
                                                  relationshipProperties);
     }
-
-    /**
-     * Confirm that the values of a particular metadata element have been synchronized.  This is important
-     * from an audit point of view, and to allow bidirectional updates of metadata using optimistic locking.
-     *
-     * @param externalScopeGUID unique identifier of software server capability representing the caller
-     * @param externalScopeName unique name of software server capability representing the caller
-     * @param openMetadataElementGUID unique identifier (GUID) of this element in open metadata
-     * @param openMetadataElementTypeName type name for the open metadata element
-     * @param externalIdentifier unique identifier of this element in the external asset manager
-     *
-     * @throws InvalidParameterException  one of the parameters is invalid
-     * @throws UserNotAuthorizedException user not authorized to issue this request
-     * @throws PropertyServerException    problem accessing the property server
-     */
-    public void confirmSynchronization(String externalScopeGUID,
-                                       String externalScopeName,
-                                       String openMetadataElementGUID,
-                                       String openMetadataElementTypeName,
-                                       String externalIdentifier) throws InvalidParameterException,
-                                                                         UserNotAuthorizedException,
-                                                                         PropertyServerException
-    {
-        externalIdHandler.confirmSynchronization(connectorUserId, externalScopeGUID, externalScopeName, openMetadataElementGUID, openMetadataElementTypeName, externalIdentifier);
-    }
-
 
 
     /**

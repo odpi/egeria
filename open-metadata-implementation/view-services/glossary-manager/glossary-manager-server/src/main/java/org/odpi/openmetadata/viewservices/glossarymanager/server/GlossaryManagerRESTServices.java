@@ -649,10 +649,10 @@ public class GlossaryManagerRESTServices extends TokenController
      * UserNotAuthorizedException the user is not authorized to issue this request
      * PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public VoidResponse moveGlossaryTerm(String                   serverName,
-                                         String                   glossaryTermGUID,
-                                         String                   glossaryGUID,
-                                         DeleteRequestBody requestBody)
+    public VoidResponse moveGlossaryTerm(String                        serverName,
+                                         String                        glossaryTermGUID,
+                                         String                        glossaryGUID,
+                                         DeleteRelationshipRequestBody requestBody)
     {
         final String methodName = "moveGlossaryTerm";
 
@@ -887,7 +887,7 @@ public class GlossaryManagerRESTServices extends TokenController
                                               String                        glossaryTermOneGUID,
                                               String                        relationshipTypeName,
                                               String                        glossaryTermTwoGUID,
-                                              DeleteRequestBody requestBody)
+                                              DeleteRelationshipRequestBody requestBody)
     {
         final String methodName = "clearTermRelationship";
 
@@ -1379,7 +1379,7 @@ public class GlossaryManagerRESTServices extends TokenController
      */
     public VoidResponse deleteGlossaryTerm(String                   serverName,
                                            String                   glossaryTermGUID,
-                                           DeleteRequestBody requestBody)
+                                           DeleteElementRequestBody requestBody)
     {
         final String methodName = "deleteGlossaryTerm";
 

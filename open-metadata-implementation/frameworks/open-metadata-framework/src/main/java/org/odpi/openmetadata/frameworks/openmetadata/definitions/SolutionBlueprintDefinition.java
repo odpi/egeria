@@ -18,6 +18,7 @@ public interface SolutionBlueprintDefinition extends DesignModelDefinition
      *
      * @return string
      */
+    @Override
     default String getTypeName() { return OpenMetadataType.SOLUTION_BLUEPRINT.typeName; }
 
 

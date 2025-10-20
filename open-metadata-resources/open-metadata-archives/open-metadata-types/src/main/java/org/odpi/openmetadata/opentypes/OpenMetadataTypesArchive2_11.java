@@ -178,9 +178,23 @@ public class OpenMetadataTypesArchive2_11
     private void update0050ApplicationsAndProcesses()
     {
 
+        this.archiveBuilder.addEntityDef(addApplicationEntity());
         this.archiveBuilder.addEntityDef(addAPIManagerEntity());
         this.archiveBuilder.addEntityDef(addRESTAPIManagerEntity());
         this.archiveBuilder.addEntityDef(addEventBrokerEntity());
+    }
+
+
+    /**
+     * This new subtype of software server capability for Applications.
+     *
+     * @return entity definition
+     */
+    private EntityDef addApplicationEntity()
+    {
+        return archiveHelper.getDefaultEntityDef(OpenMetadataType.APPLICATION,
+                                                 this.archiveBuilder.getEntityDef(OpenMetadataType.SOFTWARE_CAPABILITY.typeName));
+
     }
 
 

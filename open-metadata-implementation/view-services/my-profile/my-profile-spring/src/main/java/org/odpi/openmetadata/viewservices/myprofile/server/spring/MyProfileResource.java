@@ -187,7 +187,7 @@ public class MyProfileResource
     public VoidResponse deleteAction(@PathVariable String          serverName,
                                    @PathVariable String          actionGUID,
                                    @RequestBody (required = false)
-                                       DeleteRequestBody requestBody)
+                                       DeleteElementRequestBody requestBody)
     {
         return restAPI.deleteAction(serverName, actionGUID, requestBody);
     }

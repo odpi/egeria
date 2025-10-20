@@ -67,14 +67,24 @@ public enum DeployedImplementationType implements DeployedImplementationTypeDefi
 
 
     /**
-     * A collection of data, either at rest or in motion, organized into a tabular (columnar) format.
+     * A logical collection of data, either at rest or in motion, organized into a tabular (columnar) format.
      */
     TABULAR_DATA_SET("Tabular Data Set",
              DeployedImplementationType.DATA_SET,
-             OpenMetadataType.DATA_SET.typeName,
+             OpenMetadataType.TABULAR_DATA_SET.typeName,
              null,
              "A logical collection of data, either at rest or in motion, organized into a tabular (columnar) format.",
-             "https://egeria-project.org/concepts/asset/"),
+             "https://egeria-project.org/concepts/tabular-data-set/"),
+
+    /**
+     * A collection of tabular data sets.
+     */
+    TABULAR_DATA_SET_COLLECTION("Tabular Data Set Collection",
+                     DeployedImplementationType.DATA_SET,
+                     OpenMetadataType.TABULAR_DATA_SET.typeName,
+                     null,
+                     "A collection of tabular data sets.",
+                     "https://egeria-project.org/concepts/tabular-data-set/"),
 
 
     /**
@@ -407,6 +417,26 @@ public enum DeployedImplementationType implements DeployedImplementationTypeDefi
                 OpenMetadataWikiPages.MODEL_0220_FILE_AND_FOLDERS),
 
     /**
+     * A collection of logically related CSV files each representing a tabular data set.
+     */
+    CSV_TABULAR_DATA_SET_COLLECTION("CSV Tabular Data Set Collection",
+                                    DeployedImplementationType.TABULAR_DATA_SET_COLLECTION,
+                                    OpenMetadataType.TABULAR_DATA_SET_COLLECTION.typeName,
+                                    null,
+                                    "A collection of logically related CSV files each representing a tabular data set.",
+                                    OpenMetadataWikiPages.MODEL_0211_TABULAR_DATA_SETS),
+
+    /**
+     * A collection of logically related CSV files representing a single data source.
+     */
+    CSV_TABULAR_DATA_SET("CSV Tabular Data Set",
+                        DeployedImplementationType.TABULAR_DATA_SET,
+                        OpenMetadataType.TABULAR_DATA_SET.typeName,
+                        null,
+                        "A CSV file accessed as a tabular data set.",
+                        OpenMetadataWikiPages.MODEL_0211_TABULAR_DATA_SETS),
+
+    /**
      * A database hosted on a relational database server capable of being called through a JDBC Driver.
      */
     JDBC_RELATIONAL_DATABASE("JDBC Relational Database",
@@ -426,16 +456,6 @@ public enum DeployedImplementationType implements DeployedImplementationTypeDefi
                              null,
                              "A database schema hosted on a relational database server capable of being called through a JDBC Driver.",
                              "https://en.wikipedia.org/wiki/Java_Database_Connectivity"),
-
-    /**
-     * A database table hosted on a relational database server capable of being called through a JDBC Driver.
-     */
-    JDBC_RELATIONAL_DATABASE_TABLE("JDBC Relational Database Table",
-                                    DeployedImplementationType.DATA_ASSET,
-                                    OpenMetadataType.TABLE_DATA_SET.typeName,
-                                    null,
-                                    "A database table hosted on a relational database server capable of being called through a JDBC Driver.",
-                                    "https://en.wikipedia.org/wiki/Java_Database_Connectivity"),
 
 
     /**
@@ -461,13 +481,68 @@ public enum DeployedImplementationType implements DeployedImplementationTypeDefi
 
 
     /**
+     * A handheld portable device with network, touchscreen and battery power.
+     */
+    SMARTPHONE("Smartphone",
+                    DeployedImplementationType.BARE_METAL_COMPUTER,
+                    OpenMetadataType.BARE_METAL_COMPUTER.typeName,
+                    null,
+                    "A handheld portable device with network, touchscreen and battery power.",
+                    OpenMetadataWikiPages.MODEL_0035_HOSTS),
+
+
+    /**
+     * A smartphone from Apple Inc that runs the iOS operating system.
+     */
+    I_PHONE("Apple iPhone",
+                DeployedImplementationType.SMARTPHONE,
+                OpenMetadataType.BARE_METAL_COMPUTER.typeName,
+                null,
+                "A smartphone from Apple Inc that runs the iOS operating system.",
+                OpenMetadataWikiPages.MODEL_0035_HOSTS),
+
+
+    /**
+     * A smartphone that runs the Android operating system.
+     */
+    ANDROID_PHONE("Android Phone",
+            DeployedImplementationType.SMARTPHONE,
+            OpenMetadataType.BARE_METAL_COMPUTER.typeName,
+            null,
+            "A smartphone that runs the Android operating system.",
+            OpenMetadataWikiPages.MODEL_0035_HOSTS),
+
+
+    /**
+     * A two-handed portable device with network, touchscreen and battery power.
+     */
+    TABLET("Smart Phone",
+                DeployedImplementationType.BARE_METAL_COMPUTER,
+                OpenMetadataType.BARE_METAL_COMPUTER.typeName,
+                null,
+                "A two-handed portable device with network, touchscreen and battery power.",
+                OpenMetadataWikiPages.MODEL_0035_HOSTS),
+
+
+    /**
+     * A tablet from Apple Inc that runs the iOS operating system.
+     */
+    I_PAD("Apple iPad",
+            DeployedImplementationType.TABLET,
+            OpenMetadataType.BARE_METAL_COMPUTER.typeName,
+            null,
+            "A tablet from Apple Inc that runs the iOS operating system.",
+            OpenMetadataWikiPages.MODEL_0035_HOSTS),
+
+
+    /**
      * A professional laptop supplied by Apple that runs the macOS operating system.
      */
     MACBOOK_PRO("Apple MacBook Pro",
                 DeployedImplementationType.LAPTOP_COMPUTER,
                 OpenMetadataType.BARE_METAL_COMPUTER.typeName,
                 null,
-                "A professional laptop supplied by Apple that runs the macOS operating system.",
+                "A professional laptop supplied by Apple Inc that runs the macOS operating system.",
                 OpenMetadataWikiPages.MODEL_0035_HOSTS),
 
 
@@ -483,6 +558,36 @@ public enum DeployedImplementationType implements DeployedImplementationTypeDefi
 
 
     /**
+     * A virtual container using the docker platform.
+     */
+    DOCKER_CONTAINER("Docker Container",
+                     TECHNOLOGY,
+                     OpenMetadataType.VIRTUAL_CONTAINER.typeName,
+                     null,
+                     "A virtual container using the docker platform.",
+                     OpenMetadataWikiPages.MODEL_0035_HOSTS),
+
+    /**
+     * A cluster of nodes for big data workloads.
+     */
+    HADOOP_CLUSTER("Hadoop Cluster",
+                   TECHNOLOGY,
+                   OpenMetadataType.HOST_CLUSTER.typeName,
+                   null,
+                   "A cluster of nodes for big data workloads.",
+                   OpenMetadataWikiPages.MODEL_0035_HOSTS),
+
+    /**
+     * A host cluster managing containerized applications.
+     */
+    KUBERNETES_CLUSTER("Kubernetes Cluster",
+                       TECHNOLOGY,
+                       OpenMetadataType.HOST_CLUSTER.typeName,
+                       null,
+                       "A host cluster managing containerized applications.",
+                       OpenMetadataWikiPages.MODEL_0035_HOSTS),
+
+    /**
      * A callable software server.
      */
     SOFTWARE_SERVER("Software Server",
@@ -491,6 +596,37 @@ public enum DeployedImplementationType implements DeployedImplementationTypeDefi
                     null,
                     "A callable software server.",
                     OpenMetadataWikiPages.MODEL_0040_SOFTWARE_SERVERS),
+
+    /**
+     * A software server that supports databases.
+     */
+    DATABASE_SERVER("Database Server",
+                    DeployedImplementationType.SOFTWARE_SERVER,
+                    OpenMetadataType.SOFTWARE_SERVER.typeName,
+                    null,
+                    "A software server that supports databases.",
+                    OpenMetadataWikiPages.MODEL_0040_SOFTWARE_SERVERS),
+
+    /**
+     * A software server that supports the exchange of data.
+     */
+    INTEGRATION_SERVER("Integration Server",
+                    DeployedImplementationType.SOFTWARE_SERVER,
+                    OpenMetadataType.SOFTWARE_SERVER.typeName,
+                    null,
+                    "A software server that supports the exchange of data.",
+                    OpenMetadataWikiPages.MODEL_0040_SOFTWARE_SERVERS),
+
+
+    /**
+     * A software server that supports the storage of metadata.
+     */
+    METADATA_SERVER("Metadata Server",
+                       DeployedImplementationType.SOFTWARE_SERVER,
+                       OpenMetadataType.SOFTWARE_SERVER.typeName,
+                       null,
+                       "A software server that supports the storage of metadata.",
+                       OpenMetadataWikiPages.MODEL_0040_SOFTWARE_SERVERS),
 
 
     /**
@@ -507,9 +643,9 @@ public enum DeployedImplementationType implements DeployedImplementationTypeDefi
      * A data catalog for data observability.
      */
     MARQUEZ_SERVER("Marquez Server",
-                        DeployedImplementationType.SOFTWARE_SERVER,
+                        DeployedImplementationType.METADATA_SERVER,
                         OpenMetadataType.SOFTWARE_SERVER.typeName,
-                        OpenMetadataType.METADATA_SERVER_CLASSIFICATION.typeName,
+                        null,
                         "A data catalog for data observability.",
                         "https://marquezproject.ai/"),
 

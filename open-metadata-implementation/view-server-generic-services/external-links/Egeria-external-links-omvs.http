@@ -241,7 +241,7 @@ Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-  "class" : "MetadataSourceRequestBody",
+  "class" : "DeleteRelationshipRequestBody",
   "externalSourceGUID": "add guid here",
   "externalSourceName": "add qualified name here",
   "effectiveTime" : "{{$isoTimestamp}}",
@@ -303,7 +303,7 @@ Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-  "class" : "MetadataSourceRequestBody",
+  "class" : "DeleteRelationshipRequestBody",
   "externalSourceGUID": "add guid here",
   "externalSourceName": "add qualified name here",
   "effectiveTime" : "{{$isoTimestamp}}",
@@ -365,7 +365,7 @@ Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-  "class" : "MetadataSourceRequestBody",
+  "class" : "DeleteRelationshipRequestBody",
   "externalSourceGUID": "add guid here",
   "externalSourceName": "add qualified name here",
   "effectiveTime" : "{{$isoTimestamp}}",
@@ -391,7 +391,7 @@ Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-  "class" : "MetadataSourceRequestBody",
+  "class" : "DeleteElementRequestBody",
   "externalSourceGUID": "add guid here",
   "externalSourceName": "add qualified name here",
   "effectiveTime" : "{{$isoTimestamp}}",
@@ -487,12 +487,6 @@ Content-Type: application/json
   "forDuplicateProcessing" : false
 }
 
-###
-# ==================================================================
-# External Ids
-
-
-
 
 ###
 # =====================================================================================================================
@@ -500,8 +494,8 @@ Content-Type: application/json
 # https://egeria-project.org/types/0/0017-External-Identifiers/
 ###
 
-@openMetadataElementTypeName=add type name
-@openMetadataElementGUID=add guid here
+@externalIdGUID=add guid here
+@externalIdLinkGUID=add guid here
 @externalScopeGUID=add guid here
 @externalScopeName=add qualified name here
 @externalScopeTypeName=add type name
@@ -509,29 +503,33 @@ Content-Type: application/json
 ###
 # @name addExternalIdentifier
 # Add the description of a specific external identifier and link it to the associated metadata element.  Note, the external identifier is anchored to the scope (specified in the request body).
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/external-links/metadata-elements/{{openMetadataElementTypeName}}/{{openMetadataElementGUID}}/external-identifiers/add?forLineage=false&forDuplicateProcessing=false
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/external-links/elements/{{elementGUID}}/external-identifiers/add
 Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-  "class" : "UpdateMetadataCorrelatorsRequestBody",
-  "metadataCorrelationProperties": {
-    "class" : "MetadataCorrelationProperties",
-    "externalScopeGUID" : "{{externalScopeGUID}}",
-    "externalScopeName" : "{{externalScopeName}}",
-    "externalScopeTypeName" : "{{externalScopeTypeName}}",
-    "externalIdentifier" : "Add external identifier here",
-    "permittedSynchronization" : "BOTH_DIRECTIONS",
-    "synchronizationDescription": "Add optional description here",
-    "externalIdentifierName": "Add optional name used for the identifier in the third party technology here",
-    "externalIdentifierUsage": "Add how the identifier is used by the third party",
-    "externalIdentifierSource": "Describe how the identifier was discovered",
+  "class" : "NewExternalIdRequestBody",
+  "externalSourceGUID" : "{{externalScopeGUID}}",
+  "externalSourceName" : "{{externalScopeName}}",
+  "properties": {
+    "class" : "ExternalIdProperties",
+    "key" : "Add external identifier here",
     "keyPattern": "LOCAL_KEY",
+    "description": "Add optional description here",
+    "displayName": "Add optional name used for the identifier in the third party technology here",
+    "externalInstanceTypeName": "Describe the type name in the external system",
     "externalInstanceCreatedBy": "Add userId used in third Party",
     "externalInstanceCreationTime": "When was the instance created in the third party",
     "externalInstanceLastUpdatedBy": "Add userId used in third Party",
     "externalInstanceLastUpdateTime": "When was the instance last updated in the third party",
-    "externalInstanceVersion": 1,
+    "externalInstanceVersion": 1
+  },
+  "parentRelationshipProperties": {
+    "class" : "ExternalIdLinkProperties",
+    "permittedSynchronization" : "BOTH_DIRECTIONS",
+    "usage": "Add how the identifier is used by the third party",
+    "source": "Describe how the identifier was discovered",
+    "lastSynchronized": "{{$isoTimestamp}}",
     "mappingProperties": {
       "propertyName1" : "propertyValue1",
       "propertyName2" : "propertyValue2"
@@ -547,33 +545,26 @@ Content-Type: application/json
 # @name updateExternalIdentifier
 # Update the description of a specific external identifier.
 #
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/external-links/metadata-elements/{{openMetadataElementTypeName}}/{{openMetadataElementGUID}}/external-identifiers/update?forLineage=false&forDuplicateProcessing=false
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/external-links/external-identifiers/{{externalIdGUID}}/update
 Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-  "class" : "UpdateMetadataCorrelatorsRequestBody",
-  "metadataCorrelationProperties": {
-    "class" : "MetadataCorrelationProperties",
-    "externalScopeGUID" : "{{externalScopeGUID}}",
-    "externalScopeName" : "{{externalScopeName}}",
-    "externalScopeTypeName" : "{{externalScopeTypeName}}",
-    "externalIdentifier" : "Add external identifier here",
-    "permittedSynchronization" : "BOTH_DIRECTIONS",
-    "synchronizationDescription": "Add optional description here",
-    "externalIdentifierName": "Add optional name used for the identifier in the third party technology here",
-    "externalIdentifierUsage": "Add how the identifier is used by the third party",
-    "externalIdentifierSource": "Describe how the identifier was discovered",
+  "class" : "UpdateElementRequestBody",
+  "externalSourceGUID" : "{{externalScopeGUID}}",
+  "externalSourceName" : "{{externalScopeName}}",
+  "properties": {
+    "class" : "ExternalIdProperties",
+    "key" : "Add external identifier here",
+    "description": "Add optional description here",
+    "displayName": "Add optional name used for the identifier in the third party technology here",
     "keyPattern": "LOCAL_KEY",
+    "externalInstanceTypeName": "Describe the type name in the external system",
     "externalInstanceCreatedBy": "Add userId used in third Party",
     "externalInstanceCreationTime": "When was the instance created in the third party",
     "externalInstanceLastUpdatedBy": "Add userId used in third Party",
     "externalInstanceLastUpdateTime": "When was the instance last updated in the third party",
-    "externalInstanceVersion": 1,
-    "mappingProperties": {
-      "propertyName1" : "propertyValue1",
-      "propertyName2" : "propertyValue2"
-    }
+    "externalInstanceVersion": 1
   },
   "effectiveFrom" : "{{$isoTimestamp}}",
   "effectiveTo" : "{{$isoTimestamp}}",
@@ -581,54 +572,18 @@ Content-Type: application/json
 }
 
 
-###
-# @name validateExternalIdentifier
-# Validate that the external identifier is linked to the open metadata GUID.
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/external-links/metadata-elements/{{openMetadataElementTypeName}}/{{openMetadataElementGUID}}/external-identifiers/validate?forLineage=false&forDuplicateProcessing=false
-Authorization: Bearer {{token}}
-Content-Type: application/json
-
-{
-  "class" : "UpdateMetadataCorrelatorsRequestBody",
-  "metadataCorrelationProperties": {
-    "class" : "MetadataCorrelationProperties",
-    "externalScopeGUID" : "{{externalScopeGUID}}",
-    "externalScopeName" : "{{externalScopeName}}",
-    "externalIdentifier" : "Add external identifier here"
-  },
-  "effectiveTime" : "{{$isoTimestamp}}"
-}
-
 
 ###
-# @name removeExternalIdentifier
+# @name deleteExternalIdentifier
 # Remove an external identifier from an existing open metadata element.  The open metadata element is not affected.
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/external-links/metadata-elements/{{openMetadataElementTypeName}}/{{openMetadataElementGUID}}/external-identifiers/remove?forLineage=false&forDuplicateProcessing=false
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/external-links/external-identifiers/{{externalIdGUID}}/delete
 Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-  "class" : "UpdateMetadataCorrelatorsRequestBody",
-  "metadataCorrelationProperties": {
-    "class" : "MetadataCorrelationProperties",
-    "externalScopeGUID" : "{{externalScopeGUID}}",
-    "externalScopeName" : "{{externalScopeName}}",
-    "externalIdentifier" : "Add external identifier here"
-  },
-  "effectiveTime" : "{{$isoTimestamp}}"
-}
-
-
-###
-# @name removeExternalScope
-# Remove the scope associated with a collection of external identifiers.  All associated external identifiers are removed too.
-# The linked open metadata elements are not affected.
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/external-links/external-scope/{{externalScopeGUID}}/remove?forLineage=false&forDuplicateProcessing=false
-Authorization: Bearer {{token}}
-Content-Type: application/json
-
-{
-  "class" : "EffectiveTimeRequestBody",
+  "class" : "DeleteElementRequestBody",
+  "externalSourceGUID" : "{{externalScopeGUID}}",
+  "externalSourceName" : "{{externalScopeName}}",
   "effectiveTime" : "{{$isoTimestamp}}"
 }
 
@@ -637,48 +592,101 @@ Content-Type: application/json
 # @name confirmSynchronization
 # Confirm that the values of a particular metadata element have been synchronized.  This is important
 # from an audit point of view, and to allow bidirectional updates of metadata using optimistic locking.
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/external-links/metadata-elements/{{openMetadataElementTypeName}}/{{openMetadataElementGUID}}/synchronized
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/external-links/external-identifiers/links/{{externalIdLinkGUID}}/synchronized
 Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-    "class" : "MetadataCorrelationProperties",
-    "externalScopeGUID" : "{{externalScopeGUID}}",
-    "externalScopeName" : "{{externalScopeName}}",
-    "externalIdentifier" : "Add external identifier here"
+    "class" : "UpdateRelationshipRequestBody",
+    "externalSourceGUID" : "{{externalScopeGUID}}",
+    "externalSourceName" : "{{externalScopeName}}"
+}
+
+
+
+###
+# @name getExternalIdentifiersByName
+# Returns the list of external identifiers with a particular name.
+#
+# Request body provides string to find in the properties
+#
+# Returns list of matching metadata elements or
+#  InvalidParameterException  one of the parameters is invalid
+#  UserNotAuthorizedException the user is not authorized to issue this request
+#  PropertyServerException    there is a problem reported in the open metadata server(s)
+#
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/external-links/external-identifiers/by-name
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "FilterRequestBody",
+  "filter" : "Add name here",
+  "startFrom": 0,
+  "pageSize": 10,
+  "asOfTime" : "{{$isoTimestamp}}",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false,
+  "limitResultsByStatus" : ["ACTIVE"],
+  "sequencingOrder" : "PROPERTY_ASCENDING",
+  "sequencingProperty" : "qualifiedName"
 }
 
 
 ###
-# @name getElementsForExternalIdentifier
-# Retrieve the metadata element associated with a particular external identifier.
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/external-links/external-identifiers/open-metadata-elements?startFrom=0&pageSize=100&forLineage=false&forDuplicateProcessing=false
+# @name findExternalIdentifiers
+# Retrieve the list of external identifiers metadata elements that contain the search string.
+#
+# Request body provides string to find in the properties
+#
+# Returns list of matching metadata elements or
+#  InvalidParameterException  one of the parameters is invalid
+#  UserNotAuthorizedException the user is not authorized to issue this request
+#  PropertyServerException    there is a problem reported in the open metadata server(s)
+#
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/external-links/external-identifiers/by-search-string
 Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-  "class" : "UpdateMetadataCorrelatorsRequestBody",
-  "metadataCorrelationProperties": {
-    "class" : "MetadataCorrelationProperties",
-    "externalScopeGUID" : "{{externalScopeGUID}}",
-    "externalScopeName" : "{{externalScopeName}}",
-    "externalIdentifier" : "Add external identifier here"
-  },
-  "effectiveTime" : "{{$isoTimestamp}}"
+  "class" : "SearchStringRequestBody",
+  "searchString": "xxx",
+  "startsWith" : false,
+  "endsWith" : false,
+  "ignoreCase" : true,
+  "startFrom" : 0,
+  "pageSize": 0,
+  "asOfTime" : "{{$isoTimestamp}}",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false,
+  "limitResultsByStatus" : ["ACTIVE"],
+  "sequencingOrder" : "PROPERTY_ASCENDING",
+  "sequencingProperty" : "qualifiedName"
 }
 
 
 ###
-# @name getExternalIdentifiers
-# Retrieve the external identifiers attached to the supplied element guid.
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/external-links/metadata-elements/{{openMetadataElementTypeName}}/{{openMetadataElementGUID}}/external-identifiers?startFrom=0&pageSize=100&forLineage=false&forDuplicateProcessing=false
+# @name getExternalIdentifiersByGUID
+# Return the properties of a specific external identifier.
+#
+# @param externalIdGUID    unique identifier of the required element
+# Request body provides string to find in the properties
+#
+# Returns list of matching metadata elements or
+#  InvalidParameterException  one of the parameters is invalid
+#  UserNotAuthorizedException the user is not authorized to issue this request
+#  PropertyServerException    there is a problem reported in the open metadata server(s)
+#
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/external-links/external-identifiers/{{externalIdGUID}}/retrieve
 Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-  "class" : "EffectiveTimeQueryRequestBody",
-  "externalScopeGUID" : "{{externalScopeGUID}}",
-  "externalScopeName" : "{{externalScopeName}}",
-  "effectiveTime" : "{{$isoTimestamp}}"
+  "class" : "GetRequestBody",
+  "asOfTime" : "{{$isoTimestamp}}",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
 }
-
