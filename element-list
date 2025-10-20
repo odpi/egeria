@@ -21,6 +21,7 @@ org.odpi.openmetadata.adapters.connectors.datastore.basicfile
 org.odpi.openmetadata.adapters.connectors.datastore.basicfile.ffdc
 org.odpi.openmetadata.adapters.connectors.datastore.basicfile.ffdc.exception
 org.odpi.openmetadata.adapters.connectors.datastore.csvfile
+org.odpi.openmetadata.adapters.connectors.datastore.csvfile.controls
 org.odpi.openmetadata.adapters.connectors.datastore.csvfile.ffdc
 org.odpi.openmetadata.adapters.connectors.datastore.datafolder
 org.odpi.openmetadata.adapters.connectors.datastore.datafolder.ffdc
@@ -78,7 +79,6 @@ org.odpi.openmetadata.adapters.connectors.postgres.ffdc
 org.odpi.openmetadata.adapters.connectors.postgres.solution
 org.odpi.openmetadata.adapters.connectors.postgres.survey
 org.odpi.openmetadata.adapters.connectors.postgres.tabulardatasource
-org.odpi.openmetadata.adapters.connectors.postgres.tabulardatasource.ffdc
 org.odpi.openmetadata.adapters.connectors.postgres.utilities
 org.odpi.openmetadata.adapters.connectors.productmanager
 org.odpi.openmetadata.adapters.connectors.productmanager.ffdc
@@ -347,6 +347,7 @@ org.odpi.openmetadata.frameworks.openmetadata.properties.softwarecapabilities
 org.odpi.openmetadata.frameworks.openmetadata.properties.solutions
 org.odpi.openmetadata.frameworks.openmetadata.properties.surveyreports
 org.odpi.openmetadata.frameworks.openmetadata.properties.templates
+org.odpi.openmetadata.frameworks.openmetadata.properties.translations
 org.odpi.openmetadata.frameworks.openmetadata.properties.validvalues
 org.odpi.openmetadata.frameworks.openmetadata.refdata
 org.odpi.openmetadata.frameworks.openmetadata.reports

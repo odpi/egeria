@@ -65,7 +65,9 @@ loadScripts(document, 'script');</script>
 <hr>
 <div class="package-signature">package <span class="element-name">org.odpi.openmetadata.adapters.connectors.datastore.csvfile</span></div>
 <section class="package-description" id="package-description">
-<div class="block">Implementation of the CSV file resource connector for accessing the content of a CSV formatted file.</div>
+<div class="block">Implementation of the CSV file resource connectors for accessing the content of a CSV formatted file.
+ There is a standard resource connector for reading and writing to CSV files plus a tabular data set and
+ tabular data set collection connector.</div>
 </section>
 <section class="summary">
 <ul class="summary-list">
@@ -75,8 +77,12 @@ loadScripts(document, 'script');</script>
 <div class="summary-table two-column-summary">
 <div class="table-header col-first">Package</div>
 <div class="table-header col-last">Description</div>
-<div class="col-first even-row-color"><a href="ffdc/package-summary.html">org.odpi.openmetadata.adapters.connectors.datastore.csvfile.ffdc</a></div>
+<div class="col-first even-row-color"><a href="controls/package-summary.html">org.odpi.openmetadata.adapters.connectors.datastore.csvfile.controls</a></div>
 <div class="col-last even-row-color">
+<div class="block">Details of the variables that control the behaviour of the connectors.</div>
+</div>
+<div class="col-first odd-row-color"><a href="ffdc/package-summary.html">org.odpi.openmetadata.adapters.connectors.datastore.csvfile.ffdc</a></div>
+<div class="col-last odd-row-color">
 <div class="block">Error messages for the CSV file resource connector.</div>
 </div>
 </div>
@@ -101,6 +107,23 @@ loadScripts(document, 'script');</script>
 <div class="col-first even-row-color class-summary class-summary-tab2"><a href="CSVFileStoreProvider.html" title="class in org.odpi.openmetadata.adapters.connectors.datastore.csvfile">CSVFileStoreProvider</a></div>
 <div class="col-last even-row-color class-summary class-summary-tab2">
 <div class="block">CSVFileStoreProvider is the OCF connector provider for the structured file store connector.</div>
+</div>
+<div class="col-first odd-row-color class-summary class-summary-tab2"><a href="CSVTabularDataSetCollectionConnector.html" title="class in org.odpi.openmetadata.adapters.connectors.datastore.csvfile">CSVTabularDataSetCollectionConnector</a></div>
+<div class="col-last odd-row-color class-summary class-summary-tab2">
+<div class="block">CSVTabularDataSetCollectionConnector works with collections of structured CSV files to write/retrieve simple tables of data.</div>
+</div>
+<div class="col-first even-row-color class-summary class-summary-tab2"><a href="CSVTabularDataSetCollectionProvider.html" title="class in org.odpi.openmetadata.adapters.connectors.datastore.csvfile">CSVTabularDataSetCollectionProvider</a></div>
+<div class="col-last even-row-color class-summary class-summary-tab2">
+<div class="block">CSVTabularDataSetCollectionProvider is the OCF connector provider for the Tabular Data Set Collection connector
+ that manages multiple CSV tabular data sets.</div>
+</div>
+<div class="col-first odd-row-color class-summary class-summary-tab2"><a href="CSVTabularDataSetConnector.html" title="class in org.odpi.openmetadata.adapters.connectors.datastore.csvfile">CSVTabularDataSetConnector</a></div>
+<div class="col-last odd-row-color class-summary class-summary-tab2">
+<div class="block">CSVFileStoreConnector works with structured files to retrieve simple tables of data.</div>
+</div>
+<div class="col-first even-row-color class-summary class-summary-tab2"><a href="CSVTabularDataSetProvider.html" title="class in org.odpi.openmetadata.adapters.connectors.datastore.csvfile">CSVTabularDataSetProvider</a></div>
+<div class="col-last even-row-color class-summary class-summary-tab2">
+<div class="block">CSVTabularDataSetProvider is the OCF connector provider for the Tabular Data Set connector that manages data in a CSV File.</div>
 </div>
 </div>
 </div>

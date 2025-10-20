@@ -75,14 +75,9 @@ loadScripts(document, 'script');</script>
 <div class="inheritance">org.odpi.openmetadata.frameworks.openmetadata.metadataelements.MetadataRelationshipSummary</div>
 </div>
 <section class="class-description" id="class-description">
-<dl class="notes">
-<dt>All Implemented Interfaces:</dt>
-<dd><code><a href="MetadataElement.html" title="interface in org.odpi.openmetadata.frameworks.openmetadata.metadataelements">MetadataElement</a></code></dd>
-</dl>
 <hr>
 <div class="type-signature"><span class="modifiers">public class </span><span class="element-name type-name-label">MetadataRelationshipSummary</span>
-<span class="extends-implements">extends <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a>
-implements <a href="MetadataElement.html" title="interface in org.odpi.openmetadata.frameworks.openmetadata.metadataelements">MetadataElement</a></span></div>
+<span class="extends-implements">extends <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a></span></div>
 <div class="block">MetadataRelationship describes a relationship between two metadata elements.
  These relationships are directional (end1->end1) - although it is possible to navigate the relationships
  in either direction.</div>
@@ -124,23 +119,23 @@ implements <a href="MetadataElement.html" title="interface in org.odpi.openmetad
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Compare the values of the supplied object with those stored in the current object.</div>
 </div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="ElementStub.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.metadataelements">ElementStub</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getEnd1()" class="member-name-link">getEnd1</a>()</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Return the summary of the metadata element at end 1 of the relationship.</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="ElementStub.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.metadataelements">ElementStub</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getEnd2()" class="member-name-link">getEnd2</a>()</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Return the summary of the metadata element at end 2 of the relationship.</div>
+</div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="ElementHeader.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.metadataelements">ElementHeader</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getElementHeader()" class="member-name-link">getElementHeader</a>()</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getRelationshipHeader()" class="member-name-link">getRelationshipHeader</a>()</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Return the element header associated with the properties.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="ElementStub.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.metadataelements">ElementStub</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getEnd1()" class="member-name-link">getEnd1</a>()</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Return the summary of the metadata element at end 1 of the relationship.</div>
-</div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="ElementStub.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.metadataelements">ElementStub</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getEnd2()" class="member-name-link">getEnd2</a>()</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Return the summary of the metadata element at end 2 of the relationship.</div>
-</div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../properties/RelationshipBeanProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties">RelationshipBeanProperties</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getProperties()" class="member-name-link">getProperties</a>()</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getRelationshipProperties()" class="member-name-link">getRelationshipProperties</a>()</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Return a collection of the properties for the element.</div>
 </div>
@@ -150,22 +145,22 @@ implements <a href="MetadataElement.html" title="interface in org.odpi.openmetad
 <div class="block">Create a hash code for this element type.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setElementHeader(org.odpi.openmetadata.frameworks.openmetadata.metadataelements.ElementHeader)" class="member-name-link">setElementHeader</a><wbr>(<a href="ElementHeader.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.metadataelements">ElementHeader</a>&nbsp;elementHeader)</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setEnd1(org.odpi.openmetadata.frameworks.openmetadata.metadataelements.ElementStub)" class="member-name-link">setEnd1</a><wbr>(<a href="ElementStub.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.metadataelements">ElementStub</a>&nbsp;end1)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Set up the summary of the metadata element at end 1 of the relationship.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setEnd2(org.odpi.openmetadata.frameworks.openmetadata.metadataelements.ElementStub)" class="member-name-link">setEnd2</a><wbr>(<a href="ElementStub.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.metadataelements">ElementStub</a>&nbsp;end2)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Set up the summary of the metadata element at end 2 of the relationship.</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setRelationshipHeader(org.odpi.openmetadata.frameworks.openmetadata.metadataelements.ElementHeader)" class="member-name-link">setRelationshipHeader</a><wbr>(<a href="ElementHeader.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.metadataelements">ElementHeader</a>&nbsp;relationshipHeader)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Set up the element header associated with the properties.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setEnd1(org.odpi.openmetadata.frameworks.openmetadata.metadataelements.ElementStub)" class="member-name-link">setEnd1</a><wbr>(<a href="ElementStub.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.metadataelements">ElementStub</a>&nbsp;end1)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Set up the summary of the metadata element at end 1 of the relationship.</div>
-</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setEnd2(org.odpi.openmetadata.frameworks.openmetadata.metadataelements.ElementStub)" class="member-name-link">setEnd2</a><wbr>(<a href="ElementStub.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.metadataelements">ElementStub</a>&nbsp;end2)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Set up the summary of the metadata element at end 2 of the relationship.</div>
-</div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setProperties(org.odpi.openmetadata.frameworks.openmetadata.properties.RelationshipBeanProperties)" class="member-name-link">setProperties</a><wbr>(<a href="../properties/RelationshipBeanProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties">RelationshipBeanProperties</a>&nbsp;properties)</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setRelationshipProperties(org.odpi.openmetadata.frameworks.openmetadata.properties.RelationshipBeanProperties)" class="member-name-link">setRelationshipProperties</a><wbr>(<a href="../properties/RelationshipBeanProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties">RelationshipBeanProperties</a>&nbsp;relationshipProperties)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Set up the  properties for the element.</div>
 </div>
@@ -218,47 +213,43 @@ implements <a href="MetadataElement.html" title="interface in org.odpi.openmetad
 <h2>Method Details</h2>
 <ul class="member-list">
 <li>
-<section class="detail" id="getElementHeader()">
-<h3>getElementHeader</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="ElementHeader.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.metadataelements">ElementHeader</a></span>&nbsp;<span class="element-name">getElementHeader</span>()</div>
+<section class="detail" id="getRelationshipHeader()">
+<h3>getRelationshipHeader</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="ElementHeader.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.metadataelements">ElementHeader</a></span>&nbsp;<span class="element-name">getRelationshipHeader</span>()</div>
 <div class="block">Return the element header associated with the properties.</div>
 <dl class="notes">
-<dt>Specified by:</dt>
-<dd><code><a href="MetadataElement.html#getElementHeader()">getElementHeader</a></code>&nbsp;in interface&nbsp;<code><a href="MetadataElement.html" title="interface in org.odpi.openmetadata.frameworks.openmetadata.metadataelements">MetadataElement</a></code></dd>
 <dt>Returns:</dt>
 <dd>element header object</dd>
 </dl>
 </section>
 </li>
 <li>
-<section class="detail" id="setElementHeader(org.odpi.openmetadata.frameworks.openmetadata.metadataelements.ElementHeader)">
-<h3>setElementHeader</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">setElementHeader</span><wbr><span class="parameters">(<a href="ElementHeader.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.metadataelements">ElementHeader</a>&nbsp;elementHeader)</span></div>
+<section class="detail" id="setRelationshipHeader(org.odpi.openmetadata.frameworks.openmetadata.metadataelements.ElementHeader)">
+<h3>setRelationshipHeader</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">setRelationshipHeader</span><wbr><span class="parameters">(<a href="ElementHeader.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.metadataelements">ElementHeader</a>&nbsp;relationshipHeader)</span></div>
 <div class="block">Set up the element header associated with the properties.</div>
 <dl class="notes">
-<dt>Specified by:</dt>
-<dd><code><a href="MetadataElement.html#setElementHeader(org.odpi.openmetadata.frameworks.openmetadata.metadataelements.ElementHeader)">setElementHeader</a></code>&nbsp;in interface&nbsp;<code><a href="MetadataElement.html" title="interface in org.odpi.openmetadata.frameworks.openmetadata.metadataelements">MetadataElement</a></code></dd>
 <dt>Parameters:</dt>
-<dd><code>elementHeader</code> - element header object</dd>
+<dd><code>relationshipHeader</code> - element header object</dd>
 </dl>
 </section>
 </li>
 <li>
-<section class="detail" id="setProperties(org.odpi.openmetadata.frameworks.openmetadata.properties.RelationshipBeanProperties)">
-<h3>setProperties</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">setProperties</span><wbr><span class="parameters">(<a href="../properties/RelationshipBeanProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties">RelationshipBeanProperties</a>&nbsp;properties)</span></div>
+<section class="detail" id="setRelationshipProperties(org.odpi.openmetadata.frameworks.openmetadata.properties.RelationshipBeanProperties)">
+<h3>setRelationshipProperties</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">setRelationshipProperties</span><wbr><span class="parameters">(<a href="../properties/RelationshipBeanProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties">RelationshipBeanProperties</a>&nbsp;relationshipProperties)</span></div>
 <div class="block">Set up the  properties for the element.
  If no stored properties are present then null is returned.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
-<dd><code>properties</code> - properties for the classification</dd>
+<dd><code>relationshipProperties</code> - properties for the classification</dd>
 </dl>
 </section>
 </li>
 <li>
-<section class="detail" id="getProperties()">
-<h3>getProperties</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../properties/RelationshipBeanProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties">RelationshipBeanProperties</a></span>&nbsp;<span class="element-name">getProperties</span>()</div>
+<section class="detail" id="getRelationshipProperties()">
+<h3>getRelationshipProperties</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../properties/RelationshipBeanProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties">RelationshipBeanProperties</a></span>&nbsp;<span class="element-name">getRelationshipProperties</span>()</div>
 <div class="block">Return a collection of the properties for the element.
  If no stored properties are present then null is returned.</div>
 <dl class="notes">

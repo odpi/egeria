@@ -86,8 +86,10 @@ loadScripts(document, 'script');</script>
 <span class="extends-implements">extends <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Enum.html" title="class or interface in java.lang" class="external-link">Enum</a>&lt;<a href="DataAssetTemplateDefinition.html" title="enum class in org.odpi.openmetadata.archiveutilities.openconnectors">DataAssetTemplateDefinition</a>&gt;
 implements <a href="../../frameworks/openmetadata/controls/TemplateDefinition.html" title="interface in org.odpi.openmetadata.frameworks.openmetadata.controls">TemplateDefinition</a></span></div>
 <div class="block">A description of the templates for technology specific data assets.
- The template consists of a SoftwareServer asset linked to a software capability, plus a connection, linked
- to the supplied connector type and an endpoint,</div>
+ The template consists of a DataSet asset, plus a connection, linked
+ to the supplied connector type and an endpoint.  Note: this is the template for both
+ DataStores and DataSets - the DataSetContent relationship is not set up in the template - this is
+ the job of the cataloguers to establish this lineage relationship.</div>
 </section>
 <section class="summary">
 <ul class="summary-list">

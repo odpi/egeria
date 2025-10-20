@@ -74,7 +74,7 @@ loadScripts(document, 'script');</script>
 <section class="class-description" id="class-description">
 <dl class="notes">
 <dt>All Known Implementing Classes:</dt>
-<dd><code><a href="../../../adapters/connectors/datastore/csvfile/CSVFileStoreConnector.html" title="class in org.odpi.openmetadata.adapters.connectors.datastore.csvfile">CSVFileStoreConnector</a></code>, <code><a href="../../../adapters/connectors/postgres/tabulardatasource/PostgresTabularDataSourceConnector.html" title="class in org.odpi.openmetadata.adapters.connectors.postgres.tabulardatasource">PostgresTabularDataSourceConnector</a></code>, <code><a href="../../../adapters/connectors/referencedata/tabulardatasets/ValidValueDataSetConnector.html" title="class in org.odpi.openmetadata.adapters.connectors.referencedata.tabulardatasets">ValidValueDataSetConnector</a></code></dd>
+<dd><code><a href="../../../adapters/connectors/datastore/csvfile/CSVTabularDataSetCollectionConnector.html" title="class in org.odpi.openmetadata.adapters.connectors.datastore.csvfile">CSVTabularDataSetCollectionConnector</a></code>, <code><a href="../../../adapters/connectors/datastore/csvfile/CSVTabularDataSetConnector.html" title="class in org.odpi.openmetadata.adapters.connectors.datastore.csvfile">CSVTabularDataSetConnector</a></code>, <code><a href="../../../adapters/connectors/postgres/tabulardatasource/PostgresTabularDataSetCollectionConnector.html" title="class in org.odpi.openmetadata.adapters.connectors.postgres.tabulardatasource">PostgresTabularDataSetCollectionConnector</a></code>, <code><a href="../../../adapters/connectors/postgres/tabulardatasource/PostgresTabularDataSetConnector.html" title="class in org.odpi.openmetadata.adapters.connectors.postgres.tabulardatasource">PostgresTabularDataSetConnector</a></code>, <code><a href="../../../adapters/connectors/referencedata/tabulardatasets/ValidValueDataSetConnector.html" title="class in org.odpi.openmetadata.adapters.connectors.referencedata.tabulardatasets">ValidValueDataSetConnector</a></code></dd>
 </dl>
 <hr>
 <div class="type-signature"><span class="modifiers">public interface </span><span class="element-name type-name-label">WritableTabularDataSource</span></div>
@@ -117,15 +117,9 @@ loadScripts(document, 'script');</script>
 <div class="block">Set up the columns associated with this tabular data source.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code>void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#setTableName(java.lang.String,java.lang.String)" class="member-name-link">setTableName</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;tableName,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;tableDescription)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">
-<div class="block">Set up the canonical table name for this data source.</div>
-</div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code>void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#writeRecord(long,java.util.List)" class="member-name-link">writeRecord</a><wbr>(long&nbsp;rowNumber,
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#writeRecord(long,java.util.List)" class="member-name-link">writeRecord</a><wbr>(long&nbsp;rowNumber,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;&nbsp;dataValues)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">
 <div class="block">Write the requested data record.</div>
 </div>
 </div>
@@ -151,23 +145,6 @@ loadScripts(document, 'script');</script>
 <dl class="notes">
 <dt>Returns:</dt>
 <dd>count</dd>
-<dt>Throws:</dt>
-<dd><code><a href="../ffdc/ConnectorCheckedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">ConnectorCheckedException</a></code> - there is a problem accessing the data</dd>
-</dl>
-</section>
-</li>
-<li>
-<section class="detail" id="setTableName(java.lang.String,java.lang.String)">
-<h3>setTableName</h3>
-<div class="member-signature"><span class="return-type">void</span>&nbsp;<span class="element-name">setTableName</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;tableName,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;tableDescription)</span>
-           throws <span class="exceptions"><a href="../ffdc/ConnectorCheckedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">ConnectorCheckedException</a></span></div>
-<div class="block">Set up the canonical table name for this data source.  Each word in the name should be capitalized, with spaces
- between the words to allow translation between different naming conventions.</div>
-<dl class="notes">
-<dt>Parameters:</dt>
-<dd><code>tableName</code> - string</dd>
-<dd><code>tableDescription</code> - optional description</dd>
 <dt>Throws:</dt>
 <dd><code><a href="../ffdc/ConnectorCheckedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">ConnectorCheckedException</a></code> - there is a problem accessing the data</dd>
 </dl>

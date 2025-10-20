@@ -151,7 +151,7 @@ loadScripts(document, 'script');</script>
 </div>
 <div class="col-first odd-row-color"><code><a href="#TABLE_DESCRIPTION" class="member-name-link">TABLE_DESCRIPTION</a></code></div>
 <div class="col-last odd-row-color">
-<div class="block">Provides a list of database names that should not be catalogued.</div>
+<div class="block">The description of the database table being catalogued.</div>
 </div>
 <div class="col-first even-row-color"><code><a href="#TABLE_NAME" class="member-name-link">TABLE_NAME</a></code></div>
 <div class="col-last even-row-color">
@@ -238,15 +238,15 @@ loadScripts(document, 'script');</script>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
 <div class="block">Get recognizedConfigurationProperties for the PostgreSQLServer Integration connector.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../../../../frameworks/connectors/controls/ConfigurationPropertyType.html" title="class in org.odpi.openmetadata.frameworks.connectors.controls">ConfigurationPropertyType</a>&gt;</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#getPostgresTabularDataSourceConfigurationPropertyTypes()" class="member-name-link">getPostgresTabularDataSourceConfigurationPropertyTypes</a>()</code></div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#getPostgresTabularDataSourceConfigPropertyNames()" class="member-name-link">getPostgresTabularDataSourceConfigPropertyNames</a>()</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
-<div class="block">Retrieve the defined configuration properties for the PostgreSQL tabular data source connector</div>
-</div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#getPostgresTabularDataSourceConnectorNames()" class="member-name-link">getPostgresTabularDataSourceConnectorNames</a>()</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
 <div class="block">Get recognizedConfigurationProperties for the PostgreSQL tabular data source resource connector.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../../../../frameworks/connectors/controls/ConfigurationPropertyType.html" title="class in org.odpi.openmetadata.frameworks.connectors.controls">ConfigurationPropertyType</a>&gt;</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#getPostgresTabularDataSourceConfigurationPropertyTypes()" class="member-name-link">getPostgresTabularDataSourceConfigurationPropertyTypes</a>()</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
+<div class="block">Retrieve the defined configuration properties for the PostgreSQL tabular data source connector</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>boolean</code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#isPlaceholder()" class="member-name-link">isPlaceholder</a>()</code></div>
@@ -356,7 +356,7 @@ the order they are declared.</div>
 <section class="detail" id="TABLE_DESCRIPTION">
 <h3>TABLE_DESCRIPTION</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="PostgresConfigurationProperty.html" title="enum class in org.odpi.openmetadata.adapters.connectors.postgres.controls">PostgresConfigurationProperty</a></span>&nbsp;<span class="element-name">TABLE_DESCRIPTION</span></div>
-<div class="block">Provides a list of database names that should not be catalogued.</div>
+<div class="block">The description of the database table being catalogued.</div>
 </section>
 </li>
 <li>
@@ -536,9 +536,9 @@ not permitted.)</div>
 </section>
 </li>
 <li>
-<section class="detail" id="getPostgresTabularDataSourceConnectorNames()">
-<h3>getPostgresTabularDataSourceConnectorNames</h3>
-<div class="member-signature"><span class="modifiers">public static</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;</span>&nbsp;<span class="element-name">getPostgresTabularDataSourceConnectorNames</span>()</div>
+<section class="detail" id="getPostgresTabularDataSourceConfigPropertyNames()">
+<h3>getPostgresTabularDataSourceConfigPropertyNames</h3>
+<div class="member-signature"><span class="modifiers">public static</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;</span>&nbsp;<span class="element-name">getPostgresTabularDataSourceConfigPropertyNames</span>()</div>
 <div class="block">Get recognizedConfigurationProperties for the PostgreSQL tabular data source resource connector.</div>
 <dl class="notes">
 <dt>Returns:</dt>

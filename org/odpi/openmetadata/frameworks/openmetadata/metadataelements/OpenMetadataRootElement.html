@@ -83,7 +83,7 @@ loadScripts(document, 'script');</script>
 </dl>
 <dl class="notes">
 <dt>Direct Known Subclasses:</dt>
-<dd><code><a href="AssetGraph.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.metadataelements">AssetGraph</a></code>, <code><a href="AssetLineageGraphNode.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.metadataelements">AssetLineageGraphNode</a></code>, <code><a href="AssetSearchMatches.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.metadataelements">AssetSearchMatches</a></code>, <code><a href="OpenMetadataRootHierarchy.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.metadataelements">OpenMetadataRootHierarchy</a></code>, <code><a href="TemplateElement.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.metadataelements">TemplateElement</a></code></dd>
+<dd><code><a href="AssetGraph.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.metadataelements">AssetGraph</a></code>, <code><a href="AssetLineageGraphNode.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.metadataelements">AssetLineageGraphNode</a></code>, <code><a href="AssetSearchMatches.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.metadataelements">AssetSearchMatches</a></code>, <code><a href="InformationSupplyChainElement.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.metadataelements">InformationSupplyChainElement</a></code>, <code><a href="OpenMetadataRootHierarchy.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.metadataelements">OpenMetadataRootHierarchy</a></code>, <code><a href="TemplateElement.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.metadataelements">TemplateElement</a></code></dd>
 </dl>
 <hr>
 <div class="type-signature"><span class="modifiers">public class </span><span class="element-name type-name-label">OpenMetadataRootElement</span>
@@ -142,25 +142,35 @@ loadScripts(document, 'script');</script>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Return the graph view of the solution blueprint.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>int</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#hashCode()" class="member-name-link">hashCode</a>()</code></div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getSolutionSubcomponentMermaidGraph()" class="member-name-link">getSolutionSubcomponentMermaidGraph</a>()</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Return the graph of a solution component's subcomponents.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>int</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#hashCode()" class="member-name-link">hashCode</a>()</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Return hash code for this object</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setMermaidGraph(java.lang.String)" class="member-name-link">setMermaidGraph</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;mermaidGraph)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setMermaidGraph(java.lang.String)" class="member-name-link">setMermaidGraph</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;mermaidGraph)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Set up the mermaid representation of this data structure.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setProperties(org.odpi.openmetadata.frameworks.openmetadata.properties.OpenMetadataRootProperties)" class="member-name-link">setProperties</a><wbr>(<a href="../properties/OpenMetadataRootProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties">OpenMetadataRootProperties</a>&nbsp;properties)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setProperties(org.odpi.openmetadata.frameworks.openmetadata.properties.OpenMetadataRootProperties)" class="member-name-link">setProperties</a><wbr>(<a href="../properties/OpenMetadataRootProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties">OpenMetadataRootProperties</a>&nbsp;properties)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Set up the properties for the asset.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setSolutionBlueprintMermaidGraph(java.lang.String)" class="member-name-link">setSolutionBlueprintMermaidGraph</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;solutionBlueprintMermaidGraph)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setSolutionBlueprintMermaidGraph(java.lang.String)" class="member-name-link">setSolutionBlueprintMermaidGraph</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;solutionBlueprintMermaidGraph)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Set up the graph view of the solution component.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setSolutionSubcomponentMermaidGraph(java.lang.String)" class="member-name-link">setSolutionSubcomponentMermaidGraph</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;solutionSubcomponentMermaidGraph)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Set up the graph of a solution component's subcomponents.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#toString()" class="member-name-link">toString</a>()</code></div>
@@ -276,6 +286,28 @@ loadScripts(document, 'script');</script>
 <dl class="notes">
 <dt>Parameters:</dt>
 <dd><code>solutionBlueprintMermaidGraph</code> - mermaid markdown</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="getSolutionSubcomponentMermaidGraph()">
+<h3>getSolutionSubcomponentMermaidGraph</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">getSolutionSubcomponentMermaidGraph</span>()</div>
+<div class="block">Return the graph of a solution component's subcomponents.</div>
+<dl class="notes">
+<dt>Returns:</dt>
+<dd>mermaid markdown</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="setSolutionSubcomponentMermaidGraph(java.lang.String)">
+<h3>setSolutionSubcomponentMermaidGraph</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">setSolutionSubcomponentMermaidGraph</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;solutionSubcomponentMermaidGraph)</span></div>
+<div class="block">Set up the graph of a solution component's subcomponents.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>solutionSubcomponentMermaidGraph</code> - mermaid markdown</dd>
 </dl>
 </section>
 </li>

@@ -83,12 +83,12 @@ loadScripts(document, 'script');</script>
 <section class="class-description" id="class-description">
 <dl class="notes">
 <dt>All Implemented Interfaces:</dt>
-<dd><code><a href="../basicfile/BasicFileStore.html" title="interface in org.odpi.openmetadata.adapters.connectors.datastore.basicfile">BasicFileStore</a></code>, <code><a href="CSVFileStore.html" title="interface in org.odpi.openmetadata.adapters.connectors.datastore.csvfile">CSVFileStore</a></code>, <code><a href="../../../../frameworks/connectors/SecureConnectorExtension.html" title="interface in org.odpi.openmetadata.frameworks.connectors">SecureConnectorExtension</a></code>, <code><a href="../../../../frameworks/connectors/tabulardatasets/ReadableTabularDataSource.html" title="interface in org.odpi.openmetadata.frameworks.connectors.tabulardatasets">ReadableTabularDataSource</a></code>, <code><a href="../../../../frameworks/connectors/tabulardatasets/WritableTabularDataSource.html" title="interface in org.odpi.openmetadata.frameworks.connectors.tabulardatasets">WritableTabularDataSource</a></code>, <code><a href="../../../../frameworks/connectors/VirtualConnectorExtension.html" title="interface in org.odpi.openmetadata.frameworks.connectors">VirtualConnectorExtension</a></code></dd>
+<dd><code><a href="../basicfile/BasicFileStore.html" title="interface in org.odpi.openmetadata.adapters.connectors.datastore.basicfile">BasicFileStore</a></code>, <code><a href="CSVFileStore.html" title="interface in org.odpi.openmetadata.adapters.connectors.datastore.csvfile">CSVFileStore</a></code>, <code><a href="../../../../frameworks/connectors/SecureConnectorExtension.html" title="interface in org.odpi.openmetadata.frameworks.connectors">SecureConnectorExtension</a></code>, <code><a href="../../../../frameworks/connectors/VirtualConnectorExtension.html" title="interface in org.odpi.openmetadata.frameworks.connectors">VirtualConnectorExtension</a></code></dd>
 </dl>
 <hr>
 <div class="type-signature"><span class="modifiers">public class </span><span class="element-name type-name-label">CSVFileStoreConnector</span>
 <span class="extends-implements">extends <a href="../basicfile/BasicFileStoreConnector.html" title="class in org.odpi.openmetadata.adapters.connectors.datastore.basicfile">BasicFileStoreConnector</a>
-implements <a href="CSVFileStore.html" title="interface in org.odpi.openmetadata.adapters.connectors.datastore.csvfile">CSVFileStore</a>, <a href="../../../../frameworks/connectors/tabulardatasets/ReadableTabularDataSource.html" title="interface in org.odpi.openmetadata.frameworks.connectors.tabulardatasets">ReadableTabularDataSource</a>, <a href="../../../../frameworks/connectors/tabulardatasets/WritableTabularDataSource.html" title="interface in org.odpi.openmetadata.frameworks.connectors.tabulardatasets">WritableTabularDataSource</a></span></div>
+implements <a href="CSVFileStore.html" title="interface in org.odpi.openmetadata.adapters.connectors.datastore.csvfile">CSVFileStore</a></span></div>
 <div class="block">CSVFileStoreConnector works with structured files to retrieve simple tables of data.</div>
 </section>
 <section class="summary">
@@ -139,86 +139,54 @@ implements <a href="CSVFileStore.html" title="interface in org.odpi.openmetadata
 <div class="table-header col-second">Method</div>
 <div class="table-header col-last">Description</div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#appendRecord(java.util.List)" class="member-name-link">appendRecord</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;&nbsp;dataValues)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Write the requested data record to the end of the data source.</div>
-</div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#deleteRecord(long)" class="member-name-link">deleteRecord</a><wbr>(long&nbsp;rowNumber)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Remove the requested data record.</div>
-</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#disconnect()" class="member-name-link">disconnect</a>()</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Close the file</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../../../../frameworks/connectors/tabulardatasets/TabularColumnDescription.html" title="class in org.odpi.openmetadata.frameworks.connectors.tabulardatasets">TabularColumnDescription</a>&gt;</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getColumnDescriptions()" class="member-name-link">getColumnDescriptions</a>()</code></div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getColumnNames()" class="member-name-link">getColumnNames</a>()</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Return the list of column names associated with this data source.</div>
-</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getColumnNames()" class="member-name-link">getColumnNames</a>()</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Return the list of column names associated with this structured file.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>int</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getColumnNumber(java.lang.String)" class="member-name-link">getColumnNumber</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;columnName)</code></div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>char</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getDelimiterChar()" class="member-name-link">getDelimiterChar</a>()</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Return the defined delimiter character.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>char</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getQuoteChar()" class="member-name-link">getQuoteChar</a>()</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Locate the named column.</div>
+<div class="block">Return the defined quote char.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>long</code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getRecordCount()" class="member-name-link">getRecordCount</a>()</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Return the number of records in the file.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getTableDescription()" class="member-name-link">getTableDescription</a>()</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Return the description for this data source.</div>
-</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getTableName()" class="member-name-link">getTableName</a>()</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Return the canonical table name for this data source.</div>
-</div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#readRecord(long)" class="member-name-link">readRecord</a><wbr>(long&nbsp;dataRecordNumber)</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getSuppliedColumnNames()" class="member-name-link">getSuppliedColumnNames</a>()</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Return any fixed column names defined by the connector</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#readRecord(long)" class="member-name-link">readRecord</a><wbr>(long&nbsp;dataRecordNumber)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Return the requested data record.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setColumnDescriptions(java.util.List)" class="member-name-link">setColumnDescriptions</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../../../../frameworks/connectors/tabulardatasets/TabularColumnDescription.html" title="class in org.odpi.openmetadata.frameworks.connectors.tabulardatasets">TabularColumnDescription</a>&gt;&nbsp;columnDescriptions)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Set up the columns associated with this tabular data source.</div>
-</div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setTableName(java.lang.String,java.lang.String)" class="member-name-link">setTableName</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;tableName,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;tableDescription)</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#start()" class="member-name-link">start</a>()</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Set up the canonical table name for this data source.</div>
-</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#start()" class="member-name-link">start</a>()</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Indicates that the connector is completely configured and can begin processing.</div>
-</div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#writeRecord(long,java.util.List)" class="member-name-link">writeRecord</a><wbr>(long&nbsp;requestedRowNumber,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;&nbsp;dataValues)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Write the requested data record.</div>
 </div>
 </div>
 </div>
 </div>
 <div class="inherited-list">
 <h3 id="methods-inherited-from-class-org.odpi.openmetadata.adapters.connectors.datastore.basicfile.BasicFileStoreConnector">Methods inherited from class&nbsp;org.odpi.openmetadata.adapters.connectors.datastore.basicfile.<a href="../basicfile/BasicFileStoreConnector.html" title="class in org.odpi.openmetadata.adapters.connectors.datastore.basicfile">BasicFileStoreConnector</a></h3>
-<code><a href="../basicfile/BasicFileStoreConnector.html#getCreationDate()">getCreationDate</a>, <a href="../basicfile/BasicFileStoreConnector.html#getFile()">getFile</a>, <a href="../basicfile/BasicFileStoreConnector.html#getFile(java.lang.String)">getFile</a>, <a href="../basicfile/BasicFileStoreConnector.html#getFileLength()">getFileLength</a>, <a href="../basicfile/BasicFileStoreConnector.html#getFileName()">getFileName</a>, <a href="../basicfile/BasicFileStoreConnector.html#getLastAccessDate()">getLastAccessDate</a>, <a href="../basicfile/BasicFileStoreConnector.html#getLastUpdateDate()">getLastUpdateDate</a>, <a href="../basicfile/BasicFileStoreConnector.html#initialize(java.lang.String,org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection)">initialize</a></code></div>
+<code><a href="../basicfile/BasicFileStoreConnector.html#getCreationDate()">getCreationDate</a>, <a href="../basicfile/BasicFileStoreConnector.html#getFile()">getFile</a>, <a href="../basicfile/BasicFileStoreConnector.html#getFile(java.lang.String)">getFile</a>, <a href="../basicfile/BasicFileStoreConnector.html#getFileLength()">getFileLength</a>, <a href="../basicfile/BasicFileStoreConnector.html#getFileName()">getFileName</a>, <a href="../basicfile/BasicFileStoreConnector.html#getLastAccessDate()">getLastAccessDate</a>, <a href="../basicfile/BasicFileStoreConnector.html#getLastUpdateDate()">getLastUpdateDate</a>, <a href="../basicfile/BasicFileStoreConnector.html#setFileStoreName(java.lang.String)">setFileStoreName</a></code></div>
 <div class="inherited-list">
 <h3 id="methods-inherited-from-class-org.odpi.openmetadata.frameworks.connectors.ConnectorBase">Methods inherited from class&nbsp;org.odpi.openmetadata.frameworks.connectors.<a href="../../../../frameworks/connectors/ConnectorBase.html" title="class in org.odpi.openmetadata.frameworks.connectors">ConnectorBase</a></h3>
-<code><a href="../../../../frameworks/connectors/ConnectorBase.html#combineConfigurationProperties(java.util.Map)">combineConfigurationProperties</a>, <a href="../../../../frameworks/connectors/ConnectorBase.html#disconnectConnectors(java.util.List)">disconnectConnectors</a>, <a href="../../../../frameworks/connectors/ConnectorBase.html#equals(java.lang.Object)">equals</a>, <a href="../../../../frameworks/connectors/ConnectorBase.html#fromCanonicalToKebabCase(java.lang.String)">fromCanonicalToKebabCase</a>, <a href="../../../../frameworks/connectors/ConnectorBase.html#fromCanonicalToSnakeCase(java.lang.String)">fromCanonicalToSnakeCase</a>, <a href="../../../../frameworks/connectors/ConnectorBase.html#fromKebabToCanonicalCase(java.lang.String)">fromKebabToCanonicalCase</a>, <a href="../../../../frameworks/connectors/ConnectorBase.html#fromSnakeToCanonicalCase(java.lang.String)">fromSnakeToCanonicalCase</a>, <a href="../../../../frameworks/connectors/ConnectorBase.html#getArrayConfigurationProperty(java.lang.String,java.util.Map)">getArrayConfigurationProperty</a>, <a href="../../../../frameworks/connectors/ConnectorBase.html#getArrayConfigurationProperty(java.lang.String,java.util.Map,java.lang.String)">getArrayConfigurationProperty</a>, <a href="../../../../frameworks/connectors/ConnectorBase.html#getArrayConfigurationProperty(java.lang.String,java.util.Map,java.util.List)">getArrayConfigurationProperty</a>, <a href="../../../../frameworks/connectors/ConnectorBase.html#getBooleanConfigurationProperty(java.lang.String,java.util.Map)">getBooleanConfigurationProperty</a>, <a href="../../../../frameworks/connectors/ConnectorBase.html#getConnection()">getConnection</a>, <a href="../../../../frameworks/connectors/ConnectorBase.html#getConnectorInstanceId()">getConnectorInstanceId</a>, <a href="../../../../frameworks/connectors/ConnectorBase.html#getDateConfigurationProperty(java.lang.String,java.util.Map)">getDateConfigurationProperty</a>, <a href="../../../../frameworks/connectors/ConnectorBase.html#getIntConfigurationProperty(java.lang.String,java.util.Map)">getIntConfigurationProperty</a>, <a href="../../../../frameworks/connectors/ConnectorBase.html#getLongConfigurationProperty(java.lang.String,java.util.Map)">getLongConfigurationProperty</a>, <a href="../../../../frameworks/connectors/ConnectorBase.html#getStringConfigurationProperty(java.lang.String,java.util.Map)">getStringConfigurationProperty</a>, <a href="../../../../frameworks/connectors/ConnectorBase.html#getStringConfigurationProperty(java.lang.String,java.util.Map,java.lang.String)">getStringConfigurationProperty</a>, <a href="../../../../frameworks/connectors/ConnectorBase.html#getSuppliedPlaceholderProperties(java.util.Map)">getSuppliedPlaceholderProperties</a>, <a href="../../../../frameworks/connectors/ConnectorBase.html#hashCode()">hashCode</a>, <a href="../../../../frameworks/connectors/ConnectorBase.html#initializeEmbeddedConnectors(java.util.List)">initializeEmbeddedConnectors</a>, <a href="../../../../frameworks/connectors/ConnectorBase.html#initializeSecretsStoreConnector(java.lang.String,org.odpi.openmetadata.frameworks.connectors.SecretsStoreConnector)">initializeSecretsStoreConnector</a>, <a href="../../../../frameworks/connectors/ConnectorBase.html#isActive()">isActive</a>, <a href="../../../../frameworks/connectors/ConnectorBase.html#logExceptionRecord(java.lang.String,org.odpi.openmetadata.frameworks.auditlog.messagesets.AuditLogMessageDefinition,java.lang.Exception)">logExceptionRecord</a>, <a href="../../../../frameworks/connectors/ConnectorBase.html#logRecord(java.lang.String,org.odpi.openmetadata.frameworks.auditlog.messagesets.AuditLogMessageDefinition)">logRecord</a>, <a href="../../../../frameworks/connectors/ConnectorBase.html#logRecord(java.lang.String,org.odpi.openmetadata.frameworks.auditlog.messagesets.AuditLogMessageDefinition,java.lang.String)">logRecord</a>, <a href="../../../../frameworks/connectors/ConnectorBase.html#throwMissingConfigurationProperty(java.lang.String,java.lang.String,java.lang.String,java.lang.String)">throwMissingConfigurationProperty</a>, <a href="../../../../frameworks/connectors/ConnectorBase.html#throwMissingEndpointAddress(java.lang.String,java.lang.String)">throwMissingEndpointAddress</a>, <a href="../../../../frameworks/connectors/ConnectorBase.html#throwMissingResource(java.lang.String,java.lang.String,java.lang.String,java.lang.String)">throwMissingResource</a>, <a href="../../../../frameworks/connectors/ConnectorBase.html#throwNoAsset(java.lang.String,java.lang.String,java.lang.String)">throwNoAsset</a>, <a href="../../../../frameworks/connectors/ConnectorBase.html#throwWrongTypeOfAsset(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String)">throwWrongTypeOfAsset</a>, <a href="../../../../frameworks/connectors/ConnectorBase.html#throwWrongTypeOfResource(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String)">throwWrongTypeOfResource</a>, <a href="../../../../frameworks/connectors/ConnectorBase.html#throwWrongTypeOfRootSchema(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String)">throwWrongTypeOfRootSchema</a>, <a href="../../../../frameworks/connectors/ConnectorBase.html#toString()">toString</a></code></div>
+<code><a href="../../../../frameworks/connectors/ConnectorBase.html#combineConfigurationProperties(java.util.Map)">combineConfigurationProperties</a>, <a href="../../../../frameworks/connectors/ConnectorBase.html#disconnectConnectors(java.util.List)">disconnectConnectors</a>, <a href="../../../../frameworks/connectors/ConnectorBase.html#equals(java.lang.Object)">equals</a>, <a href="../../../../frameworks/connectors/ConnectorBase.html#fromCanonicalToKebabCase(java.lang.String)">fromCanonicalToKebabCase</a>, <a href="../../../../frameworks/connectors/ConnectorBase.html#fromCanonicalToSnakeCase(java.lang.String)">fromCanonicalToSnakeCase</a>, <a href="../../../../frameworks/connectors/ConnectorBase.html#fromKebabToCanonicalCase(java.lang.String)">fromKebabToCanonicalCase</a>, <a href="../../../../frameworks/connectors/ConnectorBase.html#fromSnakeToCanonicalCase(java.lang.String)">fromSnakeToCanonicalCase</a>, <a href="../../../../frameworks/connectors/ConnectorBase.html#getArrayConfigurationProperty(java.lang.String,java.util.Map)">getArrayConfigurationProperty</a>, <a href="../../../../frameworks/connectors/ConnectorBase.html#getArrayConfigurationProperty(java.lang.String,java.util.Map,java.lang.String)">getArrayConfigurationProperty</a>, <a href="../../../../frameworks/connectors/ConnectorBase.html#getArrayConfigurationProperty(java.lang.String,java.util.Map,java.util.List)">getArrayConfigurationProperty</a>, <a href="../../../../frameworks/connectors/ConnectorBase.html#getBooleanConfigurationProperty(java.lang.String,java.util.Map)">getBooleanConfigurationProperty</a>, <a href="../../../../frameworks/connectors/ConnectorBase.html#getConnection()">getConnection</a>, <a href="../../../../frameworks/connectors/ConnectorBase.html#getConnectorInstanceId()">getConnectorInstanceId</a>, <a href="../../../../frameworks/connectors/ConnectorBase.html#getDateConfigurationProperty(java.lang.String,java.util.Map)">getDateConfigurationProperty</a>, <a href="../../../../frameworks/connectors/ConnectorBase.html#getIntConfigurationProperty(java.lang.String,java.util.Map)">getIntConfigurationProperty</a>, <a href="../../../../frameworks/connectors/ConnectorBase.html#getLongConfigurationProperty(java.lang.String,java.util.Map)">getLongConfigurationProperty</a>, <a href="../../../../frameworks/connectors/ConnectorBase.html#getStringConfigurationProperty(java.lang.String,java.util.Map)">getStringConfigurationProperty</a>, <a href="../../../../frameworks/connectors/ConnectorBase.html#getStringConfigurationProperty(java.lang.String,java.util.Map,java.lang.String)">getStringConfigurationProperty</a>, <a href="../../../../frameworks/connectors/ConnectorBase.html#getSuppliedPlaceholderProperties(java.util.Map)">getSuppliedPlaceholderProperties</a>, <a href="../../../../frameworks/connectors/ConnectorBase.html#hashCode()">hashCode</a>, <a href="../../../../frameworks/connectors/ConnectorBase.html#initialize(java.lang.String,org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection)">initialize</a>, <a href="../../../../frameworks/connectors/ConnectorBase.html#initializeEmbeddedConnectors(java.util.List)">initializeEmbeddedConnectors</a>, <a href="../../../../frameworks/connectors/ConnectorBase.html#initializeSecretsStoreConnector(java.lang.String,org.odpi.openmetadata.frameworks.connectors.SecretsStoreConnector)">initializeSecretsStoreConnector</a>, <a href="../../../../frameworks/connectors/ConnectorBase.html#isActive()">isActive</a>, <a href="../../../../frameworks/connectors/ConnectorBase.html#logExceptionRecord(java.lang.String,org.odpi.openmetadata.frameworks.auditlog.messagesets.AuditLogMessageDefinition,java.lang.Exception)">logExceptionRecord</a>, <a href="../../../../frameworks/connectors/ConnectorBase.html#logRecord(java.lang.String,org.odpi.openmetadata.frameworks.auditlog.messagesets.AuditLogMessageDefinition)">logRecord</a>, <a href="../../../../frameworks/connectors/ConnectorBase.html#logRecord(java.lang.String,org.odpi.openmetadata.frameworks.auditlog.messagesets.AuditLogMessageDefinition,java.lang.String)">logRecord</a>, <a href="../../../../frameworks/connectors/ConnectorBase.html#throwMissingConfigurationProperty(java.lang.String,java.lang.String,java.lang.String,java.lang.String)">throwMissingConfigurationProperty</a>, <a href="../../../../frameworks/connectors/ConnectorBase.html#throwMissingEndpointAddress(java.lang.String,java.lang.String)">throwMissingEndpointAddress</a>, <a href="../../../../frameworks/connectors/ConnectorBase.html#throwMissingResource(java.lang.String,java.lang.String,java.lang.String,java.lang.String)">throwMissingResource</a>, <a href="../../../../frameworks/connectors/ConnectorBase.html#throwNoAsset(java.lang.String,java.lang.String,java.lang.String)">throwNoAsset</a>, <a href="../../../../frameworks/connectors/ConnectorBase.html#throwWrongTypeOfAsset(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String)">throwWrongTypeOfAsset</a>, <a href="../../../../frameworks/connectors/ConnectorBase.html#throwWrongTypeOfResource(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String)">throwWrongTypeOfResource</a>, <a href="../../../../frameworks/connectors/ConnectorBase.html#throwWrongTypeOfRootSchema(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String)">throwWrongTypeOfRootSchema</a>, <a href="../../../../frameworks/connectors/ConnectorBase.html#toString()">toString</a></code></div>
 <div class="inherited-list">
 <h3 id="methods-inherited-from-class-org.odpi.openmetadata.frameworks.connectors.Connector">Methods inherited from class&nbsp;org.odpi.openmetadata.frameworks.connectors.<a href="../../../../frameworks/connectors/Connector.html" title="class in org.odpi.openmetadata.frameworks.connectors">Connector</a></h3>
 <code><a href="../../../../frameworks/connectors/Connector.html#clearStatisticProperty(java.lang.String,java.lang.String)">clearStatisticProperty</a>, <a href="../../../../frameworks/connectors/Connector.html#clearStatisticTimestamp(java.lang.String,java.lang.String)">clearStatisticTimestamp</a>, <a href="../../../../frameworks/connectors/Connector.html#getConnectorStatistics()">getConnectorStatistics</a>, <a href="../../../../frameworks/connectors/Connector.html#getStatisticCounter(java.lang.String,java.lang.String)">getStatisticCounter</a>, <a href="../../../../frameworks/connectors/Connector.html#getStatisticProperty(java.lang.String,java.lang.String)">getStatisticProperty</a>, <a href="../../../../frameworks/connectors/Connector.html#getStatisticTimestamp(java.lang.String,java.lang.String)">getStatisticTimestamp</a>, <a href="../../../../frameworks/connectors/Connector.html#incrementStatisticCounter(java.lang.String,java.lang.String)">incrementStatisticCounter</a>, <a href="../../../../frameworks/connectors/Connector.html#initializeStatisticCounter(java.lang.String,int,java.lang.String)">initializeStatisticCounter</a>, <a href="../../../../frameworks/connectors/Connector.html#refreshStatistics(java.util.Date)">refreshStatistics</a>, <a href="../../../../frameworks/connectors/Connector.html#setStatisticProperty(java.lang.String,java.lang.String,java.lang.String)">setStatisticProperty</a>, <a href="../../../../frameworks/connectors/Connector.html#setStatisticTimestamp(java.lang.String,java.util.Date,java.lang.String)">setStatisticTimestamp</a></code></div>
@@ -262,7 +230,7 @@ implements <a href="CSVFileStore.html" title="interface in org.odpi.openmetadata
 <div class="block">Indicates that the connector is completely configured and can begin processing.</div>
 <dl class="notes">
 <dt>Overrides:</dt>
-<dd><code><a href="../../../../frameworks/connectors/ConnectorBase.html#start()">start</a></code>&nbsp;in class&nbsp;<code><a href="../../../../frameworks/connectors/ConnectorBase.html" title="class in org.odpi.openmetadata.frameworks.connectors">ConnectorBase</a></code></dd>
+<dd><code><a href="../basicfile/BasicFileStoreConnector.html#start()">start</a></code>&nbsp;in class&nbsp;<code><a href="../basicfile/BasicFileStoreConnector.html" title="class in org.odpi.openmetadata.adapters.connectors.datastore.basicfile">BasicFileStoreConnector</a></code></dd>
 <dt>Throws:</dt>
 <dd><code><a href="../../../../frameworks/connectors/ffdc/ConnectorCheckedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">ConnectorCheckedException</a></code> - there is a problem within the connector.</dd>
 <dd><code><a href="../../../../frameworks/openmetadata/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">UserNotAuthorizedException</a></code> - the connector was disconnected before/during start</dd>
@@ -270,20 +238,35 @@ implements <a href="CSVFileStore.html" title="interface in org.odpi.openmetadata
 </section>
 </li>
 <li>
-<section class="detail" id="getColumnNumber(java.lang.String)">
-<h3>getColumnNumber</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">int</span>&nbsp;<span class="element-name">getColumnNumber</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;columnName)</span>
-                    throws <span class="exceptions"><a href="../../../../frameworks/connectors/ffdc/ConnectorCheckedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">ConnectorCheckedException</a></span></div>
-<div class="block">Locate the named column. A negative number means the column is not present.</div>
+<section class="detail" id="getSuppliedColumnNames()">
+<h3>getSuppliedColumnNames</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;</span>&nbsp;<span class="element-name">getSuppliedColumnNames</span>()</div>
+<div class="block">Return any fixed column names defined by the connector</div>
 <dl class="notes">
-<dt>Specified by:</dt>
-<dd><code><a href="../../../../frameworks/connectors/tabulardatasets/ReadableTabularDataSource.html#getColumnNumber(java.lang.String)">getColumnNumber</a></code>&nbsp;in interface&nbsp;<code><a href="../../../../frameworks/connectors/tabulardatasets/ReadableTabularDataSource.html" title="interface in org.odpi.openmetadata.frameworks.connectors.tabulardatasets">ReadableTabularDataSource</a></code></dd>
-<dt>Parameters:</dt>
-<dd><code>columnName</code> - name of the column to return</dd>
 <dt>Returns:</dt>
-<dd>column</dd>
-<dt>Throws:</dt>
-<dd><code><a href="../../../../frameworks/connectors/ffdc/ConnectorCheckedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">ConnectorCheckedException</a></code> - problem extracting the column descriptions</dd>
+<dd>list of configured column names</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="getDelimiterChar()">
+<h3>getDelimiterChar</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">char</span>&nbsp;<span class="element-name">getDelimiterChar</span>()</div>
+<div class="block">Return the defined delimiter character.</div>
+<dl class="notes">
+<dt>Returns:</dt>
+<dd>char</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="getQuoteChar()">
+<h3>getQuoteChar</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">char</span>&nbsp;<span class="element-name">getQuoteChar</span>()</div>
+<div class="block">Return the defined quote char.</div>
+<dl class="notes">
+<dt>Returns:</dt>
+<dd>char</dd>
 </dl>
 </section>
 </li>
@@ -298,80 +281,11 @@ implements <a href="CSVFileStore.html" title="interface in org.odpi.openmetadata
 <dl class="notes">
 <dt>Specified by:</dt>
 <dd><code><a href="CSVFileStore.html#getRecordCount()">getRecordCount</a></code>&nbsp;in interface&nbsp;<code><a href="CSVFileStore.html" title="interface in org.odpi.openmetadata.adapters.connectors.datastore.csvfile">CSVFileStore</a></code></dd>
-<dt>Specified by:</dt>
-<dd><code><a href="../../../../frameworks/connectors/tabulardatasets/ReadableTabularDataSource.html#getRecordCount()">getRecordCount</a></code>&nbsp;in interface&nbsp;<code><a href="../../../../frameworks/connectors/tabulardatasets/ReadableTabularDataSource.html" title="interface in org.odpi.openmetadata.frameworks.connectors.tabulardatasets">ReadableTabularDataSource</a></code></dd>
-<dt>Specified by:</dt>
-<dd><code><a href="../../../../frameworks/connectors/tabulardatasets/WritableTabularDataSource.html#getRecordCount()">getRecordCount</a></code>&nbsp;in interface&nbsp;<code><a href="../../../../frameworks/connectors/tabulardatasets/WritableTabularDataSource.html" title="interface in org.odpi.openmetadata.frameworks.connectors.tabulardatasets">WritableTabularDataSource</a></code></dd>
 <dt>Returns:</dt>
 <dd>count</dd>
 <dt>Throws:</dt>
 <dd><code><a href="../basicfile/ffdc/exception/FileException.html" title="class in org.odpi.openmetadata.adapters.connectors.datastore.basicfile.ffdc.exception">FileException</a></code> - problem accessing the file</dd>
 <dd><code><a href="../basicfile/ffdc/exception/FileReadException.html" title="class in org.odpi.openmetadata.adapters.connectors.datastore.basicfile.ffdc.exception">FileReadException</a></code> - unable to find, open or scan the file.</dd>
-</dl>
-</section>
-</li>
-<li>
-<section class="detail" id="getTableName()">
-<h3>getTableName</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">getTableName</span>()
-                    throws <span class="exceptions"><a href="../../../../frameworks/connectors/ffdc/ConnectorCheckedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">ConnectorCheckedException</a></span></div>
-<div class="block">Return the canonical table name for this data source.  Each word in the name should be capitalized, with spaces
- between the words to allow translation between different naming conventions.</div>
-<dl class="notes">
-<dt>Specified by:</dt>
-<dd><code><a href="../../../../frameworks/connectors/tabulardatasets/ReadableTabularDataSource.html#getTableName()">getTableName</a></code>&nbsp;in interface&nbsp;<code><a href="../../../../frameworks/connectors/tabulardatasets/ReadableTabularDataSource.html" title="interface in org.odpi.openmetadata.frameworks.connectors.tabulardatasets">ReadableTabularDataSource</a></code></dd>
-<dt>Returns:</dt>
-<dd>string</dd>
-<dt>Throws:</dt>
-<dd><code><a href="../../../../frameworks/connectors/ffdc/ConnectorCheckedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">ConnectorCheckedException</a></code> - there is a problem accessing the data</dd>
-</dl>
-</section>
-</li>
-<li>
-<section class="detail" id="getTableDescription()">
-<h3>getTableDescription</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">getTableDescription</span>()
-                           throws <span class="exceptions"><a href="../../../../frameworks/connectors/ffdc/ConnectorCheckedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">ConnectorCheckedException</a></span></div>
-<div class="block">Return the description for this data source.</div>
-<dl class="notes">
-<dt>Specified by:</dt>
-<dd><code><a href="../../../../frameworks/connectors/tabulardatasets/ReadableTabularDataSource.html#getTableDescription()">getTableDescription</a></code>&nbsp;in interface&nbsp;<code><a href="../../../../frameworks/connectors/tabulardatasets/ReadableTabularDataSource.html" title="interface in org.odpi.openmetadata.frameworks.connectors.tabulardatasets">ReadableTabularDataSource</a></code></dd>
-<dt>Returns:</dt>
-<dd>string</dd>
-<dt>Throws:</dt>
-<dd><code><a href="../../../../frameworks/connectors/ffdc/ConnectorCheckedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">ConnectorCheckedException</a></code> - there is a problem accessing the data</dd>
-</dl>
-</section>
-</li>
-<li>
-<section class="detail" id="setTableName(java.lang.String,java.lang.String)">
-<h3>setTableName</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">setTableName</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;tableName,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;tableDescription)</span></div>
-<div class="block">Set up the canonical table name for this data source.  Each word in the name should be capitalized, with spaces
- between the words to allow translation between different naming conventions.</div>
-<dl class="notes">
-<dt>Specified by:</dt>
-<dd><code><a href="../../../../frameworks/connectors/tabulardatasets/WritableTabularDataSource.html#setTableName(java.lang.String,java.lang.String)">setTableName</a></code>&nbsp;in interface&nbsp;<code><a href="../../../../frameworks/connectors/tabulardatasets/WritableTabularDataSource.html" title="interface in org.odpi.openmetadata.frameworks.connectors.tabulardatasets">WritableTabularDataSource</a></code></dd>
-<dt>Parameters:</dt>
-<dd><code>tableName</code> - string</dd>
-<dd><code>tableDescription</code> - optional description</dd>
-</dl>
-</section>
-</li>
-<li>
-<section class="detail" id="getColumnDescriptions()">
-<h3>getColumnDescriptions</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../../../../frameworks/connectors/tabulardatasets/TabularColumnDescription.html" title="class in org.odpi.openmetadata.frameworks.connectors.tabulardatasets">TabularColumnDescription</a>&gt;</span>&nbsp;<span class="element-name">getColumnDescriptions</span>()
-                                                     throws <span class="exceptions"><a href="../../../../frameworks/connectors/ffdc/ConnectorCheckedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">ConnectorCheckedException</a></span></div>
-<div class="block">Return the list of column names associated with this data source.</div>
-<dl class="notes">
-<dt>Specified by:</dt>
-<dd><code><a href="../../../../frameworks/connectors/tabulardatasets/ReadableTabularDataSource.html#getColumnDescriptions()">getColumnDescriptions</a></code>&nbsp;in interface&nbsp;<code><a href="../../../../frameworks/connectors/tabulardatasets/ReadableTabularDataSource.html" title="interface in org.odpi.openmetadata.frameworks.connectors.tabulardatasets">ReadableTabularDataSource</a></code></dd>
-<dt>Returns:</dt>
-<dd>a list of column descriptions or null if not available.</dd>
-<dt>Throws:</dt>
-<dd><code><a href="../../../../frameworks/connectors/ffdc/ConnectorCheckedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">ConnectorCheckedException</a></code> - there is a problem accessing the data</dd>
 </dl>
 </section>
 </li>
@@ -406,8 +320,6 @@ implements <a href="CSVFileStore.html" title="interface in org.odpi.openmetadata
 <dl class="notes">
 <dt>Specified by:</dt>
 <dd><code><a href="CSVFileStore.html#readRecord(long)">readRecord</a></code>&nbsp;in interface&nbsp;<code><a href="CSVFileStore.html" title="interface in org.odpi.openmetadata.adapters.connectors.datastore.csvfile">CSVFileStore</a></code></dd>
-<dt>Specified by:</dt>
-<dd><code><a href="../../../../frameworks/connectors/tabulardatasets/ReadableTabularDataSource.html#readRecord(long)">readRecord</a></code>&nbsp;in interface&nbsp;<code><a href="../../../../frameworks/connectors/tabulardatasets/ReadableTabularDataSource.html" title="interface in org.odpi.openmetadata.frameworks.connectors.tabulardatasets">ReadableTabularDataSource</a></code></dd>
 <dt>Parameters:</dt>
 <dd><code>dataRecordNumber</code> - long</dd>
 <dt>Returns:</dt>
@@ -415,74 +327,6 @@ implements <a href="CSVFileStore.html" title="interface in org.odpi.openmetadata
 <dt>Throws:</dt>
 <dd><code><a href="../basicfile/ffdc/exception/FileException.html" title="class in org.odpi.openmetadata.adapters.connectors.datastore.basicfile.ffdc.exception">FileException</a></code> - problem accessing the file</dd>
 <dd><code><a href="../basicfile/ffdc/exception/FileReadException.html" title="class in org.odpi.openmetadata.adapters.connectors.datastore.basicfile.ffdc.exception">FileReadException</a></code> - unable to find, open or read the file, or the file does not include the requested record.</dd>
-</dl>
-</section>
-</li>
-<li>
-<section class="detail" id="setColumnDescriptions(java.util.List)">
-<h3>setColumnDescriptions</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">setColumnDescriptions</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../../../../frameworks/connectors/tabulardatasets/TabularColumnDescription.html" title="class in org.odpi.openmetadata.frameworks.connectors.tabulardatasets">TabularColumnDescription</a>&gt;&nbsp;columnDescriptions)</span>
-                           throws <span class="exceptions"><a href="../../../../frameworks/connectors/ffdc/ConnectorCheckedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">ConnectorCheckedException</a></span></div>
-<div class="block">Set up the columns associated with this tabular data source.  These are stored in the first record of the file.
- The rest of the file is cleared.</div>
-<dl class="notes">
-<dt>Specified by:</dt>
-<dd><code><a href="../../../../frameworks/connectors/tabulardatasets/WritableTabularDataSource.html#setColumnDescriptions(java.util.List)">setColumnDescriptions</a></code>&nbsp;in interface&nbsp;<code><a href="../../../../frameworks/connectors/tabulardatasets/WritableTabularDataSource.html" title="interface in org.odpi.openmetadata.frameworks.connectors.tabulardatasets">WritableTabularDataSource</a></code></dd>
-<dt>Parameters:</dt>
-<dd><code>columnDescriptions</code> - a list of column descriptions</dd>
-<dt>Throws:</dt>
-<dd><code><a href="../../../../frameworks/connectors/ffdc/ConnectorCheckedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">ConnectorCheckedException</a></code> - there is a problem accessing the data</dd>
-</dl>
-</section>
-</li>
-<li>
-<section class="detail" id="writeRecord(long,java.util.List)">
-<h3>writeRecord</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">writeRecord</span><wbr><span class="parameters">(long&nbsp;requestedRowNumber,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;&nbsp;dataValues)</span>
-                 throws <span class="exceptions"><a href="../../../../frameworks/connectors/ffdc/ConnectorCheckedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">ConnectorCheckedException</a></span></div>
-<div class="block">Write the requested data record.  The first data record is record 0.
- This process reads the entire file, inserts the record in the right place and writes it out again.</div>
-<dl class="notes">
-<dt>Specified by:</dt>
-<dd><code><a href="../../../../frameworks/connectors/tabulardatasets/WritableTabularDataSource.html#writeRecord(long,java.util.List)">writeRecord</a></code>&nbsp;in interface&nbsp;<code><a href="../../../../frameworks/connectors/tabulardatasets/WritableTabularDataSource.html" title="interface in org.odpi.openmetadata.frameworks.connectors.tabulardatasets">WritableTabularDataSource</a></code></dd>
-<dt>Parameters:</dt>
-<dd><code>requestedRowNumber</code> - long</dd>
-<dd><code>dataValues</code> - Map of column descriptions to strings, each string is the value for the column.</dd>
-<dt>Throws:</dt>
-<dd><code><a href="../../../../frameworks/connectors/ffdc/ConnectorCheckedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">ConnectorCheckedException</a></code> - there is a problem accessing the data.</dd>
-</dl>
-</section>
-</li>
-<li>
-<section class="detail" id="appendRecord(java.util.List)">
-<h3>appendRecord</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">appendRecord</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;&nbsp;dataValues)</span>
-                  throws <span class="exceptions"><a href="../../../../frameworks/connectors/ffdc/ConnectorCheckedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">ConnectorCheckedException</a></span></div>
-<div class="block">Write the requested data record to the end of the data source.</div>
-<dl class="notes">
-<dt>Specified by:</dt>
-<dd><code><a href="../../../../frameworks/connectors/tabulardatasets/WritableTabularDataSource.html#appendRecord(java.util.List)">appendRecord</a></code>&nbsp;in interface&nbsp;<code><a href="../../../../frameworks/connectors/tabulardatasets/WritableTabularDataSource.html" title="interface in org.odpi.openmetadata.frameworks.connectors.tabulardatasets">WritableTabularDataSource</a></code></dd>
-<dt>Parameters:</dt>
-<dd><code>dataValues</code> - Map of column descriptions to strings, each string is the value for the column.</dd>
-<dt>Throws:</dt>
-<dd><code><a href="../../../../frameworks/connectors/ffdc/ConnectorCheckedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">ConnectorCheckedException</a></code> - there is a problem accessing the data.</dd>
-</dl>
-</section>
-</li>
-<li>
-<section class="detail" id="deleteRecord(long)">
-<h3>deleteRecord</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">deleteRecord</span><wbr><span class="parameters">(long&nbsp;rowNumber)</span>
-                  throws <span class="exceptions"><a href="../../../../frameworks/connectors/ffdc/ConnectorCheckedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">ConnectorCheckedException</a></span></div>
-<div class="block">Remove the requested data record.  The first data record is record 0.</div>
-<dl class="notes">
-<dt>Specified by:</dt>
-<dd><code><a href="../../../../frameworks/connectors/tabulardatasets/WritableTabularDataSource.html#deleteRecord(long)">deleteRecord</a></code>&nbsp;in interface&nbsp;<code><a href="../../../../frameworks/connectors/tabulardatasets/WritableTabularDataSource.html" title="interface in org.odpi.openmetadata.frameworks.connectors.tabulardatasets">WritableTabularDataSource</a></code></dd>
-<dt>Parameters:</dt>
-<dd><code>rowNumber</code> - long</dd>
-<dt>Throws:</dt>
-<dd><code><a href="../../../../frameworks/connectors/ffdc/ConnectorCheckedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">ConnectorCheckedException</a></code> - there is a problem accessing the data.</dd>
 </dl>
 </section>
 </li>
