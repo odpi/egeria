@@ -862,7 +862,7 @@ public class CorePackArchiveWriter extends ContentPackBaseArchiveWriter
         String networkAddress = "https://localhost:9443";
 
         String               qualifiedName      = deployedImplementationType.getDeployedImplementationType() + "::" + serverName;
-        String               versionIdentifier  = "5.4-SNAPSHOT";
+        String               versionIdentifier  = "6.0-SNAPSHOT";
         String               description        = "Default OMAG Server Platform running on local host and port 9443.";
         List<Classification> classifications    = null;
 

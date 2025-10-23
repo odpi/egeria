@@ -41,7 +41,7 @@ public interface ReferenceableDefinition
     /**
      * Version of Egeria that this element belongs.
      */
-    String EGERIA_VERSION_IDENTIFIER="5.4-SNAPSHOT";
+    String EGERIA_VERSION_IDENTIFIER="6.0-SNAPSHOT";
 
 
     /**
