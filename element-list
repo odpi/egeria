@@ -352,6 +352,7 @@ org.odpi.openmetadata.frameworks.openmetadata.properties.validvalues
 org.odpi.openmetadata.frameworks.openmetadata.refdata
 org.odpi.openmetadata.frameworks.openmetadata.reports
 org.odpi.openmetadata.frameworks.openmetadata.search
+org.odpi.openmetadata.frameworks.openmetadata.specificationproperties
 org.odpi.openmetadata.frameworks.openmetadata.types
 org.odpi.openmetadata.frameworks.opensurvey
 org.odpi.openmetadata.frameworks.opensurvey.controls
