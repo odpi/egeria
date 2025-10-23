@@ -117,7 +117,7 @@ implements <a href="../../auditlog/messagesets/AuditLogMessageSet.html" title="i
 <div class="table-header col-last">Description</div>
 <div class="col-first even-row-color"><code><a href="#CONNECTOR_STOPPING" class="member-name-link">CONNECTOR_STOPPING</a></code></div>
 <div class="col-last even-row-color">
-<div class="block">OPEN-METADATA-0013 - The {0} connector has stopped its monitoring and is shutting down</div>
+<div class="block">OPEN-METADATA-0014 - The {0} connector has stopped its monitoring and is shutting down</div>
 </div>
 <div class="col-first odd-row-color"><code><a href="#DIRECTORY_MONITORING_STARTING" class="member-name-link">DIRECTORY_MONITORING_STARTING</a></code></div>
 <div class="col-last odd-row-color">
@@ -168,6 +168,18 @@ implements <a href="../../auditlog/messagesets/AuditLogMessageSet.html" title="i
 <div class="col-first even-row-color"><code><a href="#UNKNOWN_ACTION" class="member-name-link">UNKNOWN_ACTION</a></code></div>
 <div class="col-last even-row-color">
 <div class="block">OPEN-METADATA-0011 - The {0} connector is unsure which action to take for an element.</div>
+</div>
+<div class="col-first odd-row-color"><code><a href="#VALID_METADATA_DELETE" class="member-name-link">VALID_METADATA_DELETE</a></code></div>
+<div class="col-last odd-row-color">
+<div class="block">OPEN-METADATA-0009 - The valid metadata value {0} for property {1} stored in metadata element {2} has been deleted</div>
+</div>
+<div class="col-first even-row-color"><code><a href="#VALID_METADATA_MISSING" class="member-name-link">VALID_METADATA_MISSING</a></code></div>
+<div class="col-last even-row-color">
+<div class="block">OPEN-METADATA-0015 - The valid metadata value {0} for property {1} is not found</div>
+</div>
+<div class="col-first odd-row-color"><code><a href="#VALID_METADATA_UPDATE" class="member-name-link">VALID_METADATA_UPDATE</a></code></div>
+<div class="col-last odd-row-color">
+<div class="block">OPEN-METADATA-0008 - The valid metadata value {0} for property {1} has been created/updated in metadata element {2}</div>
 </div>
 </div>
 </section>
@@ -281,6 +293,20 @@ the order they are declared.</div>
 </section>
 </li>
 <li>
+<section class="detail" id="VALID_METADATA_UPDATE">
+<h3>VALID_METADATA_UPDATE</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OMFAuditCode.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">OMFAuditCode</a></span>&nbsp;<span class="element-name">VALID_METADATA_UPDATE</span></div>
+<div class="block">OPEN-METADATA-0008 - The valid metadata value {0} for property {1} has been created/updated in metadata element {2}</div>
+</section>
+</li>
+<li>
+<section class="detail" id="VALID_METADATA_DELETE">
+<h3>VALID_METADATA_DELETE</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OMFAuditCode.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">OMFAuditCode</a></span>&nbsp;<span class="element-name">VALID_METADATA_DELETE</span></div>
+<div class="block">OPEN-METADATA-0009 - The valid metadata value {0} for property {1} stored in metadata element {2} has been deleted</div>
+</section>
+</li>
+<li>
 <section class="detail" id="IGNORED_EGERIA_ELEMENT">
 <h3>IGNORED_EGERIA_ELEMENT</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OMFAuditCode.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">OMFAuditCode</a></span>&nbsp;<span class="element-name">IGNORED_EGERIA_ELEMENT</span></div>
@@ -312,7 +338,14 @@ the order they are declared.</div>
 <section class="detail" id="CONNECTOR_STOPPING">
 <h3>CONNECTOR_STOPPING</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OMFAuditCode.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">OMFAuditCode</a></span>&nbsp;<span class="element-name">CONNECTOR_STOPPING</span></div>
-<div class="block">OPEN-METADATA-0013 - The {0} connector has stopped its monitoring and is shutting down</div>
+<div class="block">OPEN-METADATA-0014 - The {0} connector has stopped its monitoring and is shutting down</div>
+</section>
+</li>
+<li>
+<section class="detail" id="VALID_METADATA_MISSING">
+<h3>VALID_METADATA_MISSING</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OMFAuditCode.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">OMFAuditCode</a></span>&nbsp;<span class="element-name">VALID_METADATA_MISSING</span></div>
+<div class="block">OPEN-METADATA-0015 - The valid metadata value {0} for property {1} is not found</div>
 </section>
 </li>
 <li>

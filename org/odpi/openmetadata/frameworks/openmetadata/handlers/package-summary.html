@@ -61,7 +61,12 @@ loadScripts(document, 'script');</script>
 <hr>
 <div class="package-signature">package <span class="element-name">org.odpi.openmetadata.frameworks.openmetadata.handlers</span></div>
 <section class="package-description" id="package-description">
-<div class="block">Provides specialised handlers that use the Open Metadata Store Services client.</div>
+<div class="block">Provides specialised handlers that use the Open Metadata Store Services client.  These handlers provide the
+ common function that serves the view services REST APIs and the client contents of the connectors.
+ Most of the function is located in the base class.  This is possible because the return class is typically an
+ OpenMetadataRoot element that uses polymorphism to support all types of entity property beans
+ (OpenMetadataRootProperties).  This is enabled through common builders (incoming properties) and
+ converters (return values) that work up and down the type/bean inheritance hierarchy.</div>
 </section>
 <section class="summary">
 <ul class="summary-list">
@@ -206,30 +211,38 @@ loadScripts(document, 'script');</script>
 <div class="col-last odd-row-color class-summary class-summary-tab2">
 <div class="block">SchemaTypeHandler provides methods to define schema types</div>
 </div>
-<div class="col-first even-row-color class-summary class-summary-tab2"><a href="SoftwareCapabilityHandler.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.handlers">SoftwareCapabilityHandler</a></div>
+<div class="col-first even-row-color class-summary class-summary-tab2"><a href="SearchKeywordHandler.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.handlers">SearchKeywordHandler</a></div>
 <div class="col-last even-row-color class-summary class-summary-tab2">
+<div class="block">SearchKeywordHandler is the handler for managing search keywords.</div>
+</div>
+<div class="col-first odd-row-color class-summary class-summary-tab2"><a href="SoftwareCapabilityHandler.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.handlers">SoftwareCapabilityHandler</a></div>
+<div class="col-last odd-row-color class-summary class-summary-tab2">
 <div class="block">SoftwareCapabilityHandler provides methods to define all types of softwareCapabilities and their relationships</div>
 </div>
-<div class="col-first odd-row-color class-summary class-summary-tab2"><a href="SolutionBlueprintHandler.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.handlers">SolutionBlueprintHandler</a></div>
-<div class="col-last odd-row-color class-summary class-summary-tab2">
+<div class="col-first even-row-color class-summary class-summary-tab2"><a href="SolutionBlueprintHandler.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.handlers">SolutionBlueprintHandler</a></div>
+<div class="col-last even-row-color class-summary class-summary-tab2">
 <div class="block">SolutionBlueprintHandler provides methods to define solution blueprints</div>
 </div>
-<div class="col-first even-row-color class-summary class-summary-tab2"><a href="SolutionComponentHandler.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.handlers">SolutionComponentHandler</a></div>
-<div class="col-last even-row-color class-summary class-summary-tab2">
+<div class="col-first odd-row-color class-summary class-summary-tab2"><a href="SolutionComponentHandler.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.handlers">SolutionComponentHandler</a></div>
+<div class="col-last odd-row-color class-summary class-summary-tab2">
 <div class="block">SolutionComponentHandler provides methods to define solution components and their supporting objects.</div>
 </div>
-<div class="col-first odd-row-color class-summary class-summary-tab2"><a href="StewardshipManagementHandler.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.handlers">StewardshipManagementHandler</a></div>
-<div class="col-last odd-row-color class-summary class-summary-tab2">
+<div class="col-first even-row-color class-summary class-summary-tab2"><a href="StewardshipManagementHandler.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.handlers">StewardshipManagementHandler</a></div>
+<div class="col-last even-row-color class-summary class-summary-tab2">
 <div class="block">StewardshipExchangeClient is the client for assigning relationships and classifications that help govern both metadata and its associated
  resources.</div>
 </div>
-<div class="col-first even-row-color class-summary class-summary-tab2"><a href="TemplateHandler.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.handlers">TemplateHandler</a></div>
-<div class="col-last even-row-color class-summary class-summary-tab2">
+<div class="col-first odd-row-color class-summary class-summary-tab2"><a href="TemplateHandler.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.handlers">TemplateHandler</a></div>
+<div class="col-last odd-row-color class-summary class-summary-tab2">
 <div class="block">TemplateManager provides specialist methods for managing templates</div>
 </div>
-<div class="col-first odd-row-color class-summary class-summary-tab2"><a href="UserIdentityHandler.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.handlers">UserIdentityHandler</a></div>
-<div class="col-last odd-row-color class-summary class-summary-tab2">
+<div class="col-first even-row-color class-summary class-summary-tab2"><a href="UserIdentityHandler.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.handlers">UserIdentityHandler</a></div>
+<div class="col-last even-row-color class-summary class-summary-tab2">
 <div class="block">UserIdentityHandler describes how to maintain and query  user identities.</div>
+</div>
+<div class="col-first odd-row-color class-summary class-summary-tab2"><a href="ValidMetadataValueHandler.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.handlers">ValidMetadataValueHandler</a></div>
+<div class="col-last odd-row-color class-summary class-summary-tab2">
+<div class="block">ValidMetadataValueHandler provides methods to define valid metadata values.</div>
 </div>
 <div class="col-first even-row-color class-summary class-summary-tab2"><a href="ValidValueDefinitionHandler.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.handlers">ValidValueDefinitionHandler</a></div>
 <div class="col-last even-row-color class-summary class-summary-tab2">

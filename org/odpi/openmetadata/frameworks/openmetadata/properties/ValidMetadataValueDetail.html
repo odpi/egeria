@@ -72,24 +72,16 @@ loadScripts(document, 'script');</script>
 <h1 title="Class ValidMetadataValueDetail" class="title">Class ValidMetadataValueDetail</h1>
 </div>
 <div class="inheritance" title="Inheritance Tree"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">java.lang.Object</a>
-<div class="inheritance"><a href="EntityProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties">org.odpi.openmetadata.frameworks.openmetadata.properties.EntityProperties</a>
-<div class="inheritance"><a href="OpenMetadataRootProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties">org.odpi.openmetadata.frameworks.openmetadata.properties.OpenMetadataRootProperties</a>
-<div class="inheritance"><a href="ReferenceableProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties">org.odpi.openmetadata.frameworks.openmetadata.properties.ReferenceableProperties</a>
-<div class="inheritance"><a href="validvalues/ValidValueDefinitionProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.validvalues">org.odpi.openmetadata.frameworks.openmetadata.properties.validvalues.ValidValueDefinitionProperties</a>
-<div class="inheritance"><a href="ValidMetadataValueProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties">org.odpi.openmetadata.frameworks.openmetadata.properties.ValidMetadataValueProperties</a>
+<div class="inheritance"><a href="ValidMetadataValue.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties">org.odpi.openmetadata.frameworks.openmetadata.properties.ValidMetadataValue</a>
 <div class="inheritance">org.odpi.openmetadata.frameworks.openmetadata.properties.ValidMetadataValueDetail</div>
-</div>
-</div>
-</div>
-</div>
 </div>
 </div>
 <section class="class-description" id="class-description">
 <hr>
 <div class="type-signature"><span class="modifiers">public class </span><span class="element-name type-name-label">ValidMetadataValueDetail</span>
-<span class="extends-implements">extends <a href="ValidMetadataValueProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties">ValidMetadataValueProperties</a></span></div>
-<div class="block">ValidMetadataValueDetail retrieves a single valid value for a property.  If the property is a map property, it represents a single valid map name
- and its map values.</div>
+<span class="extends-implements">extends <a href="ValidMetadataValue.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties">ValidMetadataValue</a></span></div>
+<div class="block">ValidMetadataValueDetail represents a single valid value for a property that has been retrieved.
+ If the property is a map property, it represents a single valid map name and its map values.</div>
 </section>
 <section class="summary">
 <ul class="summary-list">
@@ -105,8 +97,12 @@ loadScripts(document, 'script');</script>
 <div class="col-last even-row-color">
 <div class="block">Constructor</div>
 </div>
-<div class="col-constructor-name odd-row-color"><code><a href="#%3Cinit%3E(org.odpi.openmetadata.frameworks.openmetadata.properties.ValidMetadataValueDetail)" class="member-name-link">ValidMetadataValueDetail</a><wbr>(<a href="ValidMetadataValueDetail.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties">ValidMetadataValueDetail</a>&nbsp;template)</code></div>
+<div class="col-constructor-name odd-row-color"><code><a href="#%3Cinit%3E(org.odpi.openmetadata.frameworks.openmetadata.properties.ValidMetadataValue)" class="member-name-link">ValidMetadataValueDetail</a><wbr>(<a href="ValidMetadataValue.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties">ValidMetadataValue</a>&nbsp;template)</code></div>
 <div class="col-last odd-row-color">
+<div class="block">Copy/clone constructor</div>
+</div>
+<div class="col-constructor-name even-row-color"><code><a href="#%3Cinit%3E(org.odpi.openmetadata.frameworks.openmetadata.properties.ValidMetadataValueDetail)" class="member-name-link">ValidMetadataValueDetail</a><wbr>(<a href="ValidMetadataValueDetail.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties">ValidMetadataValueDetail</a>&nbsp;template)</code></div>
+<div class="col-last even-row-color">
 <div class="block">Copy/clone constructor</div>
 </div>
 </div>
@@ -128,18 +124,48 @@ loadScripts(document, 'script');</script>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Compare the values of the supplied object with those stored in the current object.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="ValidMetadataValueProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties">ValidMetadataValueProperties</a>&gt;</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getValidMapNameValues()" class="member-name-link">getValidMapNameValues</a>()</code></div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getMapName()" class="member-name-link">getMapName</a>()</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Return a map name if the valid value is for the domain of a map.</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getPropertyName()" class="member-name-link">getPropertyName</a>()</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Return the property name that this valid value is linked to.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getTypeName()" class="member-name-link">getTypeName</a>()</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Return a type name that is restricting the use of this valid value.</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="ValidMetadataValue.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties">ValidMetadataValue</a>&gt;</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getValidMapNameValues()" class="member-name-link">getValidMapNameValues</a>()</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Return the related map values.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>int</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#hashCode()" class="member-name-link">hashCode</a>()</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>int</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#hashCode()" class="member-name-link">hashCode</a>()</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Return hash code based on properties.</div>
 </div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setMapName(java.lang.String)" class="member-name-link">setMapName</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;mapName)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Set up a map name if the valid value is for the domain of a map.</div>
+</div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setValidMapNameValues(java.util.List)" class="member-name-link">setValidMapNameValues</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="ValidMetadataValueProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties">ValidMetadataValueProperties</a>&gt;&nbsp;validMapNameValues)</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setPropertyName(java.lang.String)" class="member-name-link">setPropertyName</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;propertyName)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Set up the property name that this valid value is linked to.</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setTypeName(java.lang.String)" class="member-name-link">setTypeName</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;typeName)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Set up a type name that is restricting the use of this valid value.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setValidMapNameValues(java.util.List)" class="member-name-link">setValidMapNameValues</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="ValidMetadataValue.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties">ValidMetadataValue</a>&gt;&nbsp;validMapNameValues)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Set up the related map values.</div>
 </div>
@@ -152,17 +178,8 @@ loadScripts(document, 'script');</script>
 </div>
 </div>
 <div class="inherited-list">
-<h3 id="methods-inherited-from-class-org.odpi.openmetadata.frameworks.openmetadata.properties.validvalues.ValidValueDefinitionProperties">Methods inherited from class&nbsp;org.odpi.openmetadata.frameworks.openmetadata.properties.validvalues.<a href="validvalues/ValidValueDefinitionProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.validvalues">ValidValueDefinitionProperties</a></h3>
-<code><a href="validvalues/ValidValueDefinitionProperties.html#getDataType()">getDataType</a>, <a href="validvalues/ValidValueDefinitionProperties.html#getIsCaseSensitive()">getIsCaseSensitive</a>, <a href="validvalues/ValidValueDefinitionProperties.html#getNamespace()">getNamespace</a>, <a href="validvalues/ValidValueDefinitionProperties.html#getPreferredValue()">getPreferredValue</a>, <a href="validvalues/ValidValueDefinitionProperties.html#getScope()">getScope</a>, <a href="validvalues/ValidValueDefinitionProperties.html#getUsage()">getUsage</a>, <a href="validvalues/ValidValueDefinitionProperties.html#getUserDefinedStatus()">getUserDefinedStatus</a>, <a href="validvalues/ValidValueDefinitionProperties.html#setDataType(java.lang.String)">setDataType</a>, <a href="validvalues/ValidValueDefinitionProperties.html#setIsCaseSensitive(boolean)">setIsCaseSensitive</a>, <a href="validvalues/ValidValueDefinitionProperties.html#setNamespace(java.lang.String)">setNamespace</a>, <a href="validvalues/ValidValueDefinitionProperties.html#setPreferredValue(java.lang.String)">setPreferredValue</a>, <a href="validvalues/ValidValueDefinitionProperties.html#setScope(java.lang.String)">setScope</a>, <a href="validvalues/ValidValueDefinitionProperties.html#setUsage(java.lang.String)">setUsage</a>, <a href="validvalues/ValidValueDefinitionProperties.html#setUserDefinedStatus(java.lang.String)">setUserDefinedStatus</a></code></div>
-<div class="inherited-list">
-<h3 id="methods-inherited-from-class-org.odpi.openmetadata.frameworks.openmetadata.properties.ReferenceableProperties">Methods inherited from class&nbsp;org.odpi.openmetadata.frameworks.openmetadata.properties.<a href="ReferenceableProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties">ReferenceableProperties</a></h3>
-<code><a href="ReferenceableProperties.html#getAdditionalProperties()">getAdditionalProperties</a>, <a href="ReferenceableProperties.html#getCategory()">getCategory</a>, <a href="ReferenceableProperties.html#getDescription()">getDescription</a>, <a href="ReferenceableProperties.html#getDisplayName()">getDisplayName</a>, <a href="ReferenceableProperties.html#getIdentifier()">getIdentifier</a>, <a href="ReferenceableProperties.html#getQualifiedName()">getQualifiedName</a>, <a href="ReferenceableProperties.html#getURL()">getURL</a>, <a href="ReferenceableProperties.html#getVersionIdentifier()">getVersionIdentifier</a>, <a href="ReferenceableProperties.html#setAdditionalProperties(java.util.Map)">setAdditionalProperties</a>, <a href="ReferenceableProperties.html#setCategory(java.lang.String)">setCategory</a>, <a href="ReferenceableProperties.html#setDescription(java.lang.String)">setDescription</a>, <a href="ReferenceableProperties.html#setDisplayName(java.lang.String)">setDisplayName</a>, <a href="ReferenceableProperties.html#setIdentifier(java.lang.String)">setIdentifier</a>, <a href="ReferenceableProperties.html#setQualifiedName(java.lang.String)">setQualifiedName</a>, <a href="ReferenceableProperties.html#setURL(java.lang.String)">setURL</a>, <a href="ReferenceableProperties.html#setVersionIdentifier(java.lang.String)">setVersionIdentifier</a></code></div>
-<div class="inherited-list">
-<h3 id="methods-inherited-from-class-org.odpi.openmetadata.frameworks.openmetadata.properties.OpenMetadataRootProperties">Methods inherited from class&nbsp;org.odpi.openmetadata.frameworks.openmetadata.properties.<a href="OpenMetadataRootProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties">OpenMetadataRootProperties</a></h3>
-<code><a href="OpenMetadataRootProperties.html#getExtendedProperties()">getExtendedProperties</a>, <a href="OpenMetadataRootProperties.html#getTypeName()">getTypeName</a>, <a href="OpenMetadataRootProperties.html#setExtendedProperties(java.util.Map)">setExtendedProperties</a>, <a href="OpenMetadataRootProperties.html#setTypeName(java.lang.String)">setTypeName</a></code></div>
-<div class="inherited-list">
-<h3 id="methods-inherited-from-class-org.odpi.openmetadata.frameworks.openmetadata.properties.EntityProperties">Methods inherited from class&nbsp;org.odpi.openmetadata.frameworks.openmetadata.properties.<a href="EntityProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties">EntityProperties</a></h3>
-<code><a href="EntityProperties.html#getEffectiveFrom()">getEffectiveFrom</a>, <a href="EntityProperties.html#getEffectiveTo()">getEffectiveTo</a>, <a href="EntityProperties.html#setEffectiveFrom(java.util.Date)">setEffectiveFrom</a>, <a href="EntityProperties.html#setEffectiveTo(java.util.Date)">setEffectiveTo</a></code></div>
+<h3 id="methods-inherited-from-class-org.odpi.openmetadata.frameworks.openmetadata.properties.ValidMetadataValue">Methods inherited from class&nbsp;org.odpi.openmetadata.frameworks.openmetadata.properties.<a href="ValidMetadataValue.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties">ValidMetadataValue</a></h3>
+<code><a href="ValidMetadataValue.html#getAdditionalProperties()">getAdditionalProperties</a>, <a href="ValidMetadataValue.html#getCategory()">getCategory</a>, <a href="ValidMetadataValue.html#getDataType()">getDataType</a>, <a href="ValidMetadataValue.html#getDescription()">getDescription</a>, <a href="ValidMetadataValue.html#getDisplayName()">getDisplayName</a>, <a href="ValidMetadataValue.html#getEffectiveFrom()">getEffectiveFrom</a>, <a href="ValidMetadataValue.html#getEffectiveTo()">getEffectiveTo</a>, <a href="ValidMetadataValue.html#getIsCaseSensitive()">getIsCaseSensitive</a>, <a href="ValidMetadataValue.html#getPreferredValue()">getPreferredValue</a>, <a href="ValidMetadataValue.html#setAdditionalProperties(java.util.Map)">setAdditionalProperties</a>, <a href="ValidMetadataValue.html#setCategory(java.lang.String)">setCategory</a>, <a href="ValidMetadataValue.html#setDataType(java.lang.String)">setDataType</a>, <a href="ValidMetadataValue.html#setDescription(java.lang.String)">setDescription</a>, <a href="ValidMetadataValue.html#setDisplayName(java.lang.String)">setDisplayName</a>, <a href="ValidMetadataValue.html#setEffectiveFrom(java.util.Date)">setEffectiveFrom</a>, <a href="ValidMetadataValue.html#setEffectiveTo(java.util.Date)">setEffectiveTo</a>, <a href="ValidMetadataValue.html#setIsCaseSensitive(boolean)">setIsCaseSensitive</a>, <a href="ValidMetadataValue.html#setPreferredValue(java.lang.String)">setPreferredValue</a></code></div>
 <div class="inherited-list">
 <h3 id="methods-inherited-from-class-java.lang.Object">Methods inherited from class&nbsp;java.lang.<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a></h3>
 <code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#clone()" title="class or interface in java.lang" class="external-link">clone</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#finalize()" title="class or interface in java.lang" class="external-link">finalize</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#getClass()" title="class or interface in java.lang" class="external-link">getClass</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#notify()" title="class or interface in java.lang" class="external-link">notify</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#notifyAll()" title="class or interface in java.lang" class="external-link">notifyAll</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#wait()" title="class or interface in java.lang" class="external-link">wait</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#wait(long)" title="class or interface in java.lang" class="external-link">wait</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#wait(long,int)" title="class or interface in java.lang" class="external-link">wait</a></code></div>
@@ -195,6 +212,17 @@ loadScripts(document, 'script');</script>
 </dl>
 </section>
 </li>
+<li>
+<section class="detail" id="&lt;init&gt;(org.odpi.openmetadata.frameworks.openmetadata.properties.ValidMetadataValue)">
+<h3>ValidMetadataValueDetail</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="element-name">ValidMetadataValueDetail</span><wbr><span class="parameters">(<a href="ValidMetadataValue.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties">ValidMetadataValue</a>&nbsp;template)</span></div>
+<div class="block">Copy/clone constructor</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>template</code> - object to copy</dd>
+</dl>
+</section>
+</li>
 </ul>
 </section>
 </li>
@@ -204,9 +232,75 @@ loadScripts(document, 'script');</script>
 <h2>Method Details</h2>
 <ul class="member-list">
 <li>
+<section class="detail" id="getPropertyName()">
+<h3>getPropertyName</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">getPropertyName</span>()</div>
+<div class="block">Return the property name that this valid value is linked to.</div>
+<dl class="notes">
+<dt>Returns:</dt>
+<dd>string</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="setPropertyName(java.lang.String)">
+<h3>setPropertyName</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">setPropertyName</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;propertyName)</span></div>
+<div class="block">Set up the property name that this valid value is linked to.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>propertyName</code> - string</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="getTypeName()">
+<h3>getTypeName</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">getTypeName</span>()</div>
+<div class="block">Return a type name that is restricting the use of this valid value.</div>
+<dl class="notes">
+<dt>Returns:</dt>
+<dd>string</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="setTypeName(java.lang.String)">
+<h3>setTypeName</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">setTypeName</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;typeName)</span></div>
+<div class="block">Set up a type name that is restricting the use of this valid value.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>typeName</code> - string</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="getMapName()">
+<h3>getMapName</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">getMapName</span>()</div>
+<div class="block">Return a map name if the valid value is for the domain of a map.</div>
+<dl class="notes">
+<dt>Returns:</dt>
+<dd>string</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="setMapName(java.lang.String)">
+<h3>setMapName</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">setMapName</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;mapName)</span></div>
+<div class="block">Set up a map name if the valid value is for the domain of a map.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>mapName</code> - string</dd>
+</dl>
+</section>
+</li>
+<li>
 <section class="detail" id="getValidMapNameValues()">
 <h3>getValidMapNameValues</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="ValidMetadataValueProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties">ValidMetadataValueProperties</a>&gt;</span>&nbsp;<span class="element-name">getValidMapNameValues</span>()</div>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="ValidMetadataValue.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties">ValidMetadataValue</a>&gt;</span>&nbsp;<span class="element-name">getValidMapNameValues</span>()</div>
 <div class="block">Return the related map values.</div>
 <dl class="notes">
 <dt>Returns:</dt>
@@ -217,7 +311,7 @@ loadScripts(document, 'script');</script>
 <li>
 <section class="detail" id="setValidMapNameValues(java.util.List)">
 <h3>setValidMapNameValues</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">setValidMapNameValues</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="ValidMetadataValueProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties">ValidMetadataValueProperties</a>&gt;&nbsp;validMapNameValues)</span></div>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">setValidMapNameValues</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="ValidMetadataValue.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties">ValidMetadataValue</a>&gt;&nbsp;validMapNameValues)</span></div>
 <div class="block">Set up the related map values.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
@@ -232,7 +326,7 @@ loadScripts(document, 'script');</script>
 <div class="block">Generate a string containing the properties.</div>
 <dl class="notes">
 <dt>Overrides:</dt>
-<dd><code><a href="ValidMetadataValueProperties.html#toString()">toString</a></code>&nbsp;in class&nbsp;<code><a href="ValidMetadataValueProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties">ValidMetadataValueProperties</a></code></dd>
+<dd><code><a href="ValidMetadataValue.html#toString()">toString</a></code>&nbsp;in class&nbsp;<code><a href="ValidMetadataValue.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties">ValidMetadataValue</a></code></dd>
 <dt>Returns:</dt>
 <dd>string value</dd>
 </dl>
@@ -245,7 +339,7 @@ loadScripts(document, 'script');</script>
 <div class="block">Compare the values of the supplied object with those stored in the current object.</div>
 <dl class="notes">
 <dt>Overrides:</dt>
-<dd><code><a href="validvalues/ValidValueDefinitionProperties.html#equals(java.lang.Object)">equals</a></code>&nbsp;in class&nbsp;<code><a href="validvalues/ValidValueDefinitionProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.validvalues">ValidValueDefinitionProperties</a></code></dd>
+<dd><code><a href="ValidMetadataValue.html#equals(java.lang.Object)">equals</a></code>&nbsp;in class&nbsp;<code><a href="ValidMetadataValue.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties">ValidMetadataValue</a></code></dd>
 <dt>Parameters:</dt>
 <dd><code>objectToCompare</code> - supplied object</dd>
 <dt>Returns:</dt>
@@ -260,7 +354,7 @@ loadScripts(document, 'script');</script>
 <div class="block">Return hash code based on properties.</div>
 <dl class="notes">
 <dt>Overrides:</dt>
-<dd><code><a href="validvalues/ValidValueDefinitionProperties.html#hashCode()">hashCode</a></code>&nbsp;in class&nbsp;<code><a href="validvalues/ValidValueDefinitionProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.validvalues">ValidValueDefinitionProperties</a></code></dd>
+<dd><code><a href="ValidMetadataValue.html#hashCode()">hashCode</a></code>&nbsp;in class&nbsp;<code><a href="ValidMetadataValue.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties">ValidMetadataValue</a></code></dd>
 <dt>Returns:</dt>
 <dd>int</dd>
 </dl>
