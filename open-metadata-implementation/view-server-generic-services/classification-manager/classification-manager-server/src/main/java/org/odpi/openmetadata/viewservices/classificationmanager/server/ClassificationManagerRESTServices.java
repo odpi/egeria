@@ -2024,7 +2024,7 @@ public class ClassificationManagerRESTServices extends TokenController
                                                        String            searchKeywordGUID,
                                                        DeleteElementRequestBody requestBody)
     {
-        final String methodName = "removeElementSearchKeyword";
+        final String methodName = "removeSearchKeywordFromElement";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
 

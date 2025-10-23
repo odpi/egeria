@@ -1,12 +1,11 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 /* Copyright Contributors to the ODPi Egeria project. */
-package org.odpi.openmetadata.frameworks.openmetadata.controls;
+package org.odpi.openmetadata.frameworks.openmetadata.specificationproperties;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
-import java.util.Map;
 import java.util.Objects;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
@@ -19,18 +18,8 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class ReplacementAttributeType
+public class ReplacementAttributeType extends SpecificationProperty
 {
-    /**
-     * Value to use for the name of the replacement attribute.
-     */
-    private String name = null;
-
-    /**
-     * Description of the replacement attribute.
-     */
-    private String description = null;
-
     /**
      * The type name of the value for this attribute.
      */
@@ -47,10 +36,6 @@ public class ReplacementAttributeType
      */
     private boolean required = false;
 
-    /**
-     * A map of additional property name to property value for this governance service.
-     */
-    private Map<String, String> otherPropertyValues = null;
 
     /**
      * Default constructor
@@ -67,59 +52,14 @@ public class ReplacementAttributeType
      */
     public ReplacementAttributeType(ReplacementAttributeType template)
     {
+        super(template);
+
         if (template != null)
         {
-            this.name        = template.getName();
-            this.description = template.getDescription();
             this.dataType    = template.getDataType();
             this.example     = template.getExample();
             this.required    = template.getRequired();
-            this.otherPropertyValues = template.getOtherPropertyValues();
         }
-    }
-
-    /**
-     * Return the string to use as the name of the replacement attribute.
-     *
-     * @return string name
-     */
-    public String getName()
-    {
-        return name;
-    }
-
-
-    /**
-     * Set up the string to use as the name of the replacement attribute.
-     *
-     * @param name string name
-     */
-    public void setName(String name)
-    {
-        this.name = name;
-    }
-
-
-
-    /**
-     * Return the description of the replacement attribute.
-     *
-     * @return string
-     */
-    public String getDescription()
-    {
-        return description;
-    }
-
-
-    /**
-     * Set up the description of the replacement attribute.
-     *
-     * @param description string
-     */
-    public void setDescription(String description)
-    {
-        this.description = description;
     }
 
 
@@ -190,29 +130,6 @@ public class ReplacementAttributeType
 
 
     /**
-     * Return a map of attribute name to attribute value to provide additional information for this service.
-     *
-     * @return map of string to string
-     */
-    public Map<String, String> getOtherPropertyValues()
-    {
-        return otherPropertyValues;
-    }
-
-
-    /**
-     * Set up a map of attribute name to attribute value to provide additional information for this service.
-     *
-     * @param otherPropertyValues map of string to string
-     */
-    public void setOtherPropertyValues(Map<String, String> otherPropertyValues)
-    {
-        this.otherPropertyValues = otherPropertyValues;
-    }
-
-
-
-    /**
      * JSON-style toString
      *
      * @return return string containing the attribute names and values
@@ -221,14 +138,12 @@ public class ReplacementAttributeType
     public String toString()
     {
         return "ReplacementAttributeType{" +
-                "name='" + name + '\'' +
-                ", description='" + description + '\'' +
-                ", dataType='" + dataType + '\'' +
+                "dataType='" + dataType + '\'' +
                 ", example='" + example + '\'' +
                 ", required=" + required +
-                ", otherPropertyValues=" + otherPropertyValues +
-                '}';
+                "} " + super.toString();
     }
+
 
     /**
      * Return comparison result based on the content of the properties.
@@ -239,20 +154,13 @@ public class ReplacementAttributeType
     @Override
     public boolean equals(Object objectToCompare)
     {
-        if (this == objectToCompare)
-        {
-            return true;
-        }
-        if (! (objectToCompare instanceof ReplacementAttributeType that))
-        {
-            return false;
-        }
-        return Objects.equals(dataType, that.dataType) &&
-                Objects.equals(name, that.name) &&
-                Objects.equals(description, that.description) &&
-                Objects.equals(example, that.example) &&
-                (required == that.required) &&
-                Objects.equals(otherPropertyValues, that.otherPropertyValues);
+        if (this == objectToCompare) return true;
+        if (objectToCompare == null || getClass() != objectToCompare.getClass()) return false;
+        if (!super.equals(objectToCompare)) return false;
+        ReplacementAttributeType that = (ReplacementAttributeType) objectToCompare;
+        return required == that.required &&
+                Objects.equals(dataType, that.dataType) &&
+                Objects.equals(example, that.example);
     }
 
 
@@ -264,6 +172,6 @@ public class ReplacementAttributeType
     @Override
     public int hashCode()
     {
-        return Objects.hash(name, description, dataType, required, example, otherPropertyValues);
+        return Objects.hash(super.hashCode(), dataType, example, required);
     }
 }

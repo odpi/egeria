@@ -4,6 +4,7 @@
 package org.odpi.openmetadata.frameworks.openmetadata.controls;
 
 
+import org.odpi.openmetadata.frameworks.openmetadata.specificationproperties.PlaceholderPropertyType;
 import org.odpi.openmetadata.frameworks.openmetadata.types.DataType;
 
 import java.util.ArrayList;

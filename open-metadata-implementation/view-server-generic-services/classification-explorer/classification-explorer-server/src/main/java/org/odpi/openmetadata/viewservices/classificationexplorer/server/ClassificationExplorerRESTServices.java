@@ -2610,7 +2610,7 @@ public class ClassificationExplorerRESTServices extends TokenController
         restCallLogger.logRESTCallReturn(token, response.toString());
         return response;
     }
-    
+
 
     /**
      * Return the requested search keyword.
@@ -2625,9 +2625,9 @@ public class ClassificationExplorerRESTServices extends TokenController
      *  UserNotAuthorizedException the user does not have permission to perform this request.
      */
     public OpenMetadataRootElementResponse getSearchKeywordByGUID(String         serverName,
-                                                            String         urlMarker,
-                                                            String         searchKeywordGUID,
-                                                            GetRequestBody requestBody)
+                                                                  String         urlMarker,
+                                                                  String         searchKeywordGUID,
+                                                                  GetRequestBody requestBody)
     {
         final String methodName = "getSearchKeyword";
 
@@ -2673,8 +2673,8 @@ public class ClassificationExplorerRESTServices extends TokenController
      *  PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     public OpenMetadataRootElementsResponse getSearchKeywordsByKeyword(String                  serverName,
-                                                         String                  urlMarker,
-                                                         FilterRequestBody requestBody)
+                                                                       String                  urlMarker,
+                                                                       FilterRequestBody requestBody)
     {
         final String methodName = "getSearchKeywordsByKeyword";
 
@@ -2712,9 +2712,6 @@ public class ClassificationExplorerRESTServices extends TokenController
         restCallLogger.logRESTCallReturn(token, response.toString());
         return response;
     }
-
-
-
 
 
     /**
@@ -2769,5 +2766,4 @@ public class ClassificationExplorerRESTServices extends TokenController
         restCallLogger.logRESTCallReturn(token, response.toString());
         return response;
     }
-
 }

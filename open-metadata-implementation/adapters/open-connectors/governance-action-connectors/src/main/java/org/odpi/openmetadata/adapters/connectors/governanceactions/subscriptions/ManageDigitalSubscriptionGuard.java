@@ -3,8 +3,8 @@
 
 package org.odpi.openmetadata.adapters.connectors.governanceactions.subscriptions;
 
-import org.odpi.openmetadata.frameworks.opengovernance.controls.GuardType;
-import org.odpi.openmetadata.frameworks.opengovernance.properties.CompletionStatus;
+import org.odpi.openmetadata.frameworks.openmetadata.specificationproperties.GuardType;
+import org.odpi.openmetadata.frameworks.openmetadata.enums.CompletionStatus;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -90,7 +90,7 @@ public enum ManageDigitalSubscriptionGuard
         {
             GuardType guardType = new GuardType();
 
-            guardType.setGuard(guard.getName());
+            guardType.setName(guard.getName());
             guardType.setDescription(guard.getDescription());
             guardType.setCompletionStatus(guard.getCompletionStatus());
 
@@ -110,7 +110,7 @@ public enum ManageDigitalSubscriptionGuard
     {
         GuardType guardType = new GuardType();
 
-        guardType.setGuard(name);
+        guardType.setName(name);
         guardType.setDescription(description);
         guardType.setCompletionStatus(completionStatus);
 

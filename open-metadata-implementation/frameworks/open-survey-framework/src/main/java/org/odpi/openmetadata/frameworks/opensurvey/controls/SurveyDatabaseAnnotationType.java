@@ -3,6 +3,7 @@
 
 package org.odpi.openmetadata.frameworks.opensurvey.controls;
 
+import org.odpi.openmetadata.frameworks.openmetadata.specificationproperties.AnnotationTypeType;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 import org.odpi.openmetadata.frameworks.opensurvey.measurements.*;
@@ -265,7 +266,7 @@ public enum SurveyDatabaseAnnotationType implements AnnotationType
         annotationTypeType.setName(name);
         annotationTypeType.setOpenMetadataTypeName(openMetadataTypeName);
         annotationTypeType.setAnalysisStepName(AnalysisStep.PROFILING_ASSOCIATED_RESOURCES.getName());
-        annotationTypeType.setSummary(summary);
+        annotationTypeType.setDescription(summary);
         annotationTypeType.setExplanation(explanation);
 
         if (metrics != null)

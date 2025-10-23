@@ -948,7 +948,7 @@ Content-Type: application/json
    "forDuplicateProcessing": false,
    "effectiveTime" : "{{$isoTimestamp}}",
    "properties": {
-      "class" : "LicenseProperties",
+      "class" : "CertificationProperties",
       "certificateId" : "",
       "startDate" : "{{$isoTimestamp}}",
       "endDate" : "{{$isoTimestamp}}",
@@ -983,7 +983,7 @@ Content-Type: application/json
    "forDuplicateProcessing": false,
    "effectiveTime" : "{{$isoTimestamp}}",
    "properties": {
-      "class" : "LicenseProperties",
+      "class" : "CertificationProperties",
       "certificateId" : "",
       "startDate" : "{{$isoTimestamp}}",
       "endDate" : "{{$isoTimestamp}}",

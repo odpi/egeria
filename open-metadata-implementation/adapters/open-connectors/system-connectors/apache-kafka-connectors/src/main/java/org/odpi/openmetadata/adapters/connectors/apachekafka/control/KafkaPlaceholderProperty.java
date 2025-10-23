@@ -5,7 +5,7 @@ package org.odpi.openmetadata.adapters.connectors.apachekafka.control;
 
 
 import org.odpi.openmetadata.frameworks.openmetadata.controls.PlaceholderProperty;
-import org.odpi.openmetadata.frameworks.openmetadata.controls.PlaceholderPropertyType;
+import org.odpi.openmetadata.frameworks.openmetadata.specificationproperties.PlaceholderPropertyType;
 
 import java.util.ArrayList;
 import java.util.List;
