@@ -3,7 +3,7 @@
 #schema attributes and user identities.
 
 @baseURL=https://localhost:9443
-@viewServer=view-server
+@viewServer=qs-view-server
 
 ###
 # =====================================================================================================================
@@ -447,19 +447,7 @@ Content-Type: application/json
 
 {
   "class" : "SearchStringRequestBody",
-  "searchString": "xxx",
-  "startsWith" : false,
-  "endsWith" : false,
-  "ignoreCase" : true,
-  "startFrom" : 0,
-  "pageSize": 0,
-  "asOfTime" : "{{$isoTimestamp}}",
-  "effectiveTime" : "{{$isoTimestamp}}",
-  "forLineage" : false,
-  "forDuplicateProcessing" : false,
-  "limitResultsByStatus" : ["ACTIVE"],
-  "sequencingOrder" : "PROPERTY_ASCENDING",
-  "sequencingProperty" : "qualifiedName"
+  "searchString": "xxx"
 }
 
 

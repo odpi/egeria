@@ -3,7 +3,7 @@
 package org.odpi.openmetadata.frameworks.openmetadata.properties.security;
 
 import com.fasterxml.jackson.annotation.*;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.governance.*;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.governance.GovernanceControlProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;

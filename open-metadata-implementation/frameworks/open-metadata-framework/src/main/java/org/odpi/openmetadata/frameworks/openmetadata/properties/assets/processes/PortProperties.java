@@ -6,7 +6,6 @@ package org.odpi.openmetadata.frameworks.openmetadata.properties.assets.processe
 import com.fasterxml.jackson.annotation.*;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.PortType;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.ReferenceableProperties;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.feedback.AcceptedAnswerProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 
 import java.util.Objects;

@@ -5,7 +5,6 @@ package org.odpi.openmetadata.adapters.connectors.productmanager.productcatalog;
 
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
 
-import static org.odpi.openmetadata.frameworks.openmetadata.mapper.OpenMetadataValidValues.constructValidValueNamespace;
 import static org.odpi.openmetadata.frameworks.openmetadata.mapper.OpenMetadataValidValues.constructValidValueQualifiedName;
 
 /**
@@ -62,19 +61,6 @@ public enum ProductDomainDefinition
                                                 OpenMetadataProperty.DOMAIN_IDENTIFIER.name,
                                                 null,
                                                 Integer.toString(domainIdentifier));
-    }
-
-
-    /**
-     * Return the namespace for this valid value.
-     *
-     * @return string
-     */
-    public String getNamespace()
-    {
-        return constructValidValueNamespace(null,
-                                            OpenMetadataProperty.DOMAIN_IDENTIFIER.name,
-                                            null);
     }
 
 

@@ -2,6 +2,7 @@
 /* Copyright Contributors to the ODPi Egeria project */
 package org.odpi.openmetadata.frameworks.openmetadata.ffdc;
 
+import org.odpi.openmetadata.frameworks.auditlog.AuditLogRecordSeverityLevel;
 import org.odpi.openmetadata.frameworks.auditlog.messagesets.ExceptionMessageDefinition;
 import org.odpi.openmetadata.frameworks.auditlog.messagesets.ExceptionMessageSet;
 
@@ -46,7 +47,7 @@ public enum OMFErrorCode implements ExceptionMessageSet
     /**
      * OPEN-METADATA-400-003 - The connector received an unexpected IO exception when reading the file named {0}; the error message was: {1}
      */
-    UNEXPECTED_IO_EXCEPTION(500, "OPEN-METADATA-400-003",
+    UNEXPECTED_IO_EXCEPTION(400, "OPEN-METADATA-400-003",
                             "The listener manager received an unexpected IO exception when reading the file named {0}; the error message was: {1}",
                             "The listener manager attempted to retrieve the canonical file name and an IO exception occurred.  It is therefore unable to monitor the file.",
                             "Use the details from the error message to determine the cause of the error and retry the request once it is resolved."),
@@ -109,6 +110,15 @@ public enum OMFErrorCode implements ExceptionMessageSet
                                 "It is unable to operate without the name of the source file and so it terminates with a FAILED completion status.",
                         "The source file is passed to the governance action service through the request parameters or via the TargetForAction " +
                                 "relationship.  Correct the information passed to the governance service and rerun the request"),
+
+    /**
+     * OPEN-METADATA-400-011 - The valid metadata value {0} for property {1} is not found
+     */
+    VALID_METADATA_MISSING(400, "OPEN-METADATA-400-011",
+                           "The valid metadata value {0} for property {1} is not found",
+                           "The metadata element for this valid metadata value is not stored in the repository.",
+                           "Check the parameter of the call to make sure there name and value have been properly defined."),
+
 
     /**
      * OPEN-METADATA-400-020 - The user identifier (user id) passed on the {0} operation is null

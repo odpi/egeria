@@ -3,11 +3,6 @@
 package org.odpi.openmetadata.frameworks.openmetadata.properties.softwarecapabilities;
 
 import com.fasterxml.jackson.annotation.*;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.processes.DeployedSoftwareComponentProperties;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.processes.connectors.DeployedConnectorProperties;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.processes.connectors.GovernanceActionServiceProperties;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.processes.connectors.RepositoryGovernanceServiceProperties;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.processes.connectors.SurveyActionServiceProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;

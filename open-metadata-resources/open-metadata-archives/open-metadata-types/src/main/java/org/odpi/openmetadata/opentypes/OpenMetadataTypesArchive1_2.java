@@ -1081,7 +1081,13 @@ public class OpenMetadataTypesArchive1_2
          */
         List<TypeDefAttribute> properties = new ArrayList<>();
 
-        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.KEY));
+        TypeDefAttribute property = archiveHelper.getTypeDefAttribute(OpenMetadataProperty.KEY);
+        property.setUnique(true);
+        property.setValuesMaxCount(1);
+        property.setValuesMinCount(1);
+        property.setAttributeCardinality(AttributeCardinality.ONE_ONLY);
+        properties.add(property);
+
         properties.add(archiveHelper.getEnumTypeDefAttribute(OpenMetadataProperty.KEY_PATTERN));
         properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.EXT_INSTANCE_TYPE_NAME));
         properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.EXT_INSTANCE_CREATED_BY));
@@ -3465,8 +3471,26 @@ public class OpenMetadataTypesArchive1_2
 
     private EntityDef getInformalTagEntity()
     {
-        return archiveHelper.getDefaultEntityDef(OpenMetadataType.INFORMAL_TAG,
+        EntityDef entityDef = archiveHelper.getDefaultEntityDef(OpenMetadataType.INFORMAL_TAG,
                                                  this.archiveBuilder.getEntityDef(OpenMetadataType.OPEN_METADATA_ROOT.typeName));
+
+        /*
+         * Build the attributes
+         */
+        List<TypeDefAttribute> properties = new ArrayList<>();
+
+        TypeDefAttribute property = archiveHelper.getTypeDefAttribute(OpenMetadataProperty.DISPLAY_NAME);
+        property.setUnique(true);
+        property.setValuesMaxCount(1);
+        property.setValuesMinCount(1);
+        property.setAttributeCardinality(AttributeCardinality.ONE_ONLY);
+        properties.add(property);
+
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.DESCRIPTION));
+
+        entityDef.setPropertiesDefinition(properties);
+
+        return entityDef;
     }
 
 
@@ -9203,7 +9227,9 @@ public class OpenMetadataTypesArchive1_2
 
         this.archiveBuilder.addEntityDef(getValidValueDefinitionEntity());
         this.archiveBuilder.addEntityDef(getReferenceDataValueEntity());
+        this.archiveBuilder.addEntityDef(getSpecificationPropertyValueEntity());
         this.archiveBuilder.addEntityDef(getValidMetadataValueEntity());
+        this.archiveBuilder.addEntityDef(getTechnologyTypeEntity());
 
         this.archiveBuilder.addRelationshipDef(getValidValuesAssignmentRelationship());
         this.archiveBuilder.addRelationshipDef(getValidValuesMemberRelationship());
@@ -9228,6 +9254,18 @@ public class OpenMetadataTypesArchive1_2
     private EntityDef getValidMetadataValueEntity()
     {
         return archiveHelper.getDefaultEntityDef(OpenMetadataType.VALID_METADATA_VALUE,
+                                                 this.archiveBuilder.getEntityDef(OpenMetadataType.VALID_VALUE_DEFINITION.typeName));
+    }
+
+    private EntityDef getTechnologyTypeEntity()
+    {
+        return archiveHelper.getDefaultEntityDef(OpenMetadataType.TECHNOLOGY_TYPE,
+                                                 this.archiveBuilder.getEntityDef(OpenMetadataType.VALID_METADATA_VALUE.typeName));
+    }
+
+    private EntityDef getSpecificationPropertyValueEntity()
+    {
+        return archiveHelper.getDefaultEntityDef(OpenMetadataType.SPECIFICATION_PROPERTY_VALUE,
                                                  this.archiveBuilder.getEntityDef(OpenMetadataType.VALID_VALUE_DEFINITION.typeName));
     }
 

@@ -35,7 +35,7 @@ public class LineageLinkerRESTServices extends TokenController
     }
 
     /* =======================================
-     * Lineages
+     * Lineage
      */
 
     /**

@@ -15,7 +15,7 @@ import org.odpi.openmetadata.frameworks.openmetadata.properties.digitalbusiness.
 import org.odpi.openmetadata.frameworks.openmetadata.properties.externalreferences.ExternalReferenceLinkProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.governance.*;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.informationsupplychains.InformationSupplyChainLinkProperties;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.lineage.*;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.lineage.LineageRelationshipProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.locations.AdjacentLocationProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.locations.KnownLocationProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.locations.NestedLocationProperties;

@@ -14,7 +14,6 @@ import org.odpi.openmetadata.frameworks.openmetadata.mapper.OpenMetadataValidVal
 import org.odpi.openmetadata.frameworks.openmetadata.mermaid.HierarchyMermaidGraphBuilder;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.OpenMetadataRootElement;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.RelatedMetadataElementSummary;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.AttachedClassification;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.OpenMetadataElement;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.RelatedMetadataElement;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.RelatedMetadataElementList;
@@ -33,7 +32,8 @@ import java.util.Collections;
 import java.util.List;
 
 /**
- * Provides additional support for retrieving technology types
+ * Provides additional support for retrieving technology types.  These are entities of type TechnologyType.
+ * The technology type name is stored in the preferredValue property.
  */
 public class TechnologyTypeHandler extends OpenMetadataHandlerBase
 {
@@ -58,7 +58,7 @@ public class TechnologyTypeHandler extends OpenMetadataHandlerBase
               auditLog,
               localServiceName,
               openMetadataClient,
-              OpenMetadataType.VALID_VALUE_DEFINITION.typeName);
+              OpenMetadataType.TECHNOLOGY_TYPE.typeName);
     }
 
 
@@ -69,10 +69,8 @@ public class TechnologyTypeHandler extends OpenMetadataHandlerBase
      * @param userId calling user
      * @param searchString string value to look for
      * @param searchOptions multiple options to control the query
-
      *
      * @return list of valid value beans
-     *
      * @throws InvalidParameterException one of the parameters is invalid.
      * @throws UserNotAuthorizedException the user is not authorized to make this request.
      * @throws PropertyServerException the repository is not available or not working properly.
@@ -87,7 +85,7 @@ public class TechnologyTypeHandler extends OpenMetadataHandlerBase
 
         SearchOptions workingSearchOptions = new SearchOptions(searchOptions);
 
-        workingSearchOptions.setMetadataElementTypeName(OpenMetadataType.VALID_VALUE_DEFINITION.typeName);
+        workingSearchOptions.setMetadataElementTypeName(OpenMetadataType.TECHNOLOGY_TYPE.typeName);
 
         List<OpenMetadataElement> openMetadataElements = openMetadataClient.findMetadataElementsWithString(userId, searchString, workingSearchOptions);
 
@@ -142,7 +140,7 @@ public class TechnologyTypeHandler extends OpenMetadataHandlerBase
 
         QueryOptions workingQueryOptions = new QueryOptions(queryOptions);
 
-        workingQueryOptions.setMetadataElementTypeName(OpenMetadataType.VALID_VALUE_DEFINITION.typeName);
+        workingQueryOptions.setMetadataElementTypeName(OpenMetadataType.TECHNOLOGY_TYPE.typeName);
 
         List<OpenMetadataElement> openMetadataElements = openMetadataClient.findMetadataElements(userId,
                                                                                           searchProperties,
@@ -180,12 +178,12 @@ public class TechnologyTypeHandler extends OpenMetadataHandlerBase
 
         QueryOptions workingQueryOptions = new QueryOptions(queryOptions);
 
-        workingQueryOptions.setMetadataElementTypeName(OpenMetadataType.VALID_VALUE_DEFINITION.typeName);
+        workingQueryOptions.setMetadataElementTypeName(OpenMetadataType.TECHNOLOGY_TYPE.typeName);
 
-        List<OpenMetadataElement> openMetadataElements = openMetadataClient.findMetadataElements(userId,
-                                                                                          this.getTechnologyTypeConditions(technologyTypeName, PropertyComparisonOperator.EQ),
-                                                                                          null,
-                                                                                          workingQueryOptions);
+        List<OpenMetadataElement> openMetadataElements = openMetadataClient.getMetadataElementsByPropertyValue(userId,
+                                                                                                               OpenMetadataProperty.PREFERRED_VALUE.name,
+                                                                                                               technologyTypeName,
+                                                                                                               queryOptions);
 
         if (openMetadataElements != null)
         {
@@ -197,13 +195,13 @@ public class TechnologyTypeHandler extends OpenMetadataHandlerBase
                 {
                     report = new TechnologyTypeReport(this.convertTechTypeSummary(openMetadataElement));
 
-                    workingQueryOptions.setMetadataElementTypeName(null);
+                    workingQueryOptions.setMetadataElementTypeName(OpenMetadataType.OPEN_METADATA_ROOT.typeName);
 
                     RelatedMetadataElementList relatedMetadataElementList = openMetadataClient.getRelatedMetadataElements(userId,
-                                                                                                                   openMetadataElement.getElementGUID(),
-                                                                                                                   1,
-                                                                                                                   null,
-                                                                                                                   workingQueryOptions);
+                                                                                                                          openMetadataElement.getElementGUID(),
+                                                                                                                          1,
+                                                                                                                          null,
+                                                                                                                          workingQueryOptions);
 
 
                     if ((relatedMetadataElementList != null) && (relatedMetadataElementList.getElementList() != null))
@@ -299,12 +297,12 @@ public class TechnologyTypeHandler extends OpenMetadataHandlerBase
 
         QueryOptions workingQueryOptions = new QueryOptions(queryOptions);
 
-        workingQueryOptions.setMetadataElementTypeName(OpenMetadataType.VALID_VALUE_DEFINITION.typeName);
+        workingQueryOptions.setMetadataElementTypeName(OpenMetadataType.TECHNOLOGY_TYPE.typeName);
 
-        List<OpenMetadataElement> openMetadataElements = openMetadataClient.findMetadataElements(userId,
-                                                                                          this.getTechnologyTypeConditions(technologyTypeName, PropertyComparisonOperator.EQ),
-                                                                                          null,
-                                                                                          workingQueryOptions);
+        List<OpenMetadataElement> openMetadataElements = openMetadataClient.getMetadataElementsByPropertyValue(userId,
+                                                                                                               OpenMetadataProperty.PREFERRED_VALUE.name,
+                                                                                                               technologyTypeName,
+                                                                                                               workingQueryOptions);
 
         if (openMetadataElements != null)
         {
@@ -502,59 +500,6 @@ public class TechnologyTypeHandler extends OpenMetadataHandlerBase
 
 
     /**
-     * Build out a set of search conditions for finding one or more technology types.
-     *
-     * @param propertyValue value to search for
-     * @param operator comparison operator
-     * @return search properties
-     */
-    private SearchProperties getTechnologyTypeConditions(String                     propertyValue,
-                                                         PropertyComparisonOperator operator)
-    {
-        SearchProperties        searchProperties   = new SearchProperties();
-        List<PropertyCondition> propertyConditions = new ArrayList<>();
-
-        if (propertyValue != null)
-        {
-            PropertyCondition          preferredValueCondition = new PropertyCondition();
-            PrimitiveTypePropertyValue preferredValue          = new PrimitiveTypePropertyValue();
-            preferredValueCondition.setProperty(OpenMetadataProperty.PREFERRED_VALUE.name);
-            preferredValueCondition.setOperator(operator);
-            preferredValue.setPrimitiveTypeCategory(PrimitiveTypeCategory.OM_PRIMITIVE_TYPE_STRING);
-            preferredValue.setTypeName(PrimitiveTypeCategory.OM_PRIMITIVE_TYPE_STRING.getName());
-            preferredValue.setPrimitiveValue(propertyValue);
-            preferredValueCondition.setValue(preferredValue);
-            propertyConditions.add(preferredValueCondition);
-        }
-
-        PropertyCondition          scopeCondition  = new PropertyCondition();
-        PrimitiveTypePropertyValue scope           = new PrimitiveTypePropertyValue();
-        scopeCondition.setProperty(OpenMetadataProperty.SCOPE.name);
-        scopeCondition.setOperator(PropertyComparisonOperator.EQ);
-        scope.setPrimitiveTypeCategory(PrimitiveTypeCategory.OM_PRIMITIVE_TYPE_STRING);
-        scope.setTypeName(PrimitiveTypeCategory.OM_PRIMITIVE_TYPE_STRING.getName());
-        scope.setPrimitiveValue(OpenMetadataValidValues.OPEN_METADATA_ECOSYSTEM_SCOPE);
-        scopeCondition.setValue(scope);
-        propertyConditions.add(scopeCondition);
-
-        PropertyCondition          categoryCondition = new PropertyCondition();
-        PrimitiveTypePropertyValue category          = new PrimitiveTypePropertyValue();
-        categoryCondition.setProperty(OpenMetadataProperty.NAMESPACE.name);
-        categoryCondition.setOperator(PropertyComparisonOperator.LIKE);
-        category.setPrimitiveTypeCategory(PrimitiveTypeCategory.OM_PRIMITIVE_TYPE_STRING);
-        category.setTypeName(PrimitiveTypeCategory.OM_PRIMITIVE_TYPE_STRING.getName());
-        category.setPrimitiveValue(".*deployedImplementationType");
-        categoryCondition.setValue(category);
-        propertyConditions.add(categoryCondition);
-
-        searchProperties.setConditions(propertyConditions);
-        searchProperties.setMatchCriteria(MatchCriteria.ALL);
-
-        return searchProperties;
-    }
-
-
-    /**
      * Retrieve detailed information about a specific technology type.  This includes
      * templates, connectors and external references.
      *
@@ -589,35 +534,6 @@ public class TechnologyTypeHandler extends OpenMetadataHandlerBase
 
 
     /**
-     * Build a descriptions of the classification to look for.
-     *
-     * @param getTemplates look for templates?
-     * @return match classifications
-     */
-    private SearchClassifications getMatchClassifications(boolean getTemplates)
-    {
-        SearchClassifications matchClassifications = null;
-
-        if (getTemplates)
-        {
-            /*
-             * Attempt to retrieve only elements that have the template classification.
-             */
-            matchClassifications = new SearchClassifications();
-
-            List<ClassificationCondition> classificationConditions  = new ArrayList<>();
-            ClassificationCondition classificationCondition = new ClassificationCondition();
-            classificationCondition.setName(OpenMetadataType.TEMPLATE_CLASSIFICATION.typeName);
-            classificationConditions.add(classificationCondition);
-            matchClassifications.setConditions(classificationConditions);
-            matchClassifications.setMatchCriteria(MatchCriteria.ALL);
-        }
-
-        return matchClassifications;
-    }
-
-
-    /**
      * Convert open metadata objects from the OpenMetadataClient to local beans.
      *
      * @param openMetadataElements retrieved elements
@@ -640,17 +556,11 @@ public class TechnologyTypeHandler extends OpenMetadataHandlerBase
             {
                 if (openMetadataElement != null)
                 {
-                    String namespace = propertyHelper.getStringProperty(localServiceName, OpenMetadataProperty.NAMESPACE.name, openMetadataElement.getElementProperties(), methodName);
-                    String qualifiedName = propertyHelper.getStringProperty(localServiceName, OpenMetadataProperty.QUALIFIED_NAME.name, openMetadataElement.getElementProperties(), methodName);
+                    TechnologyTypeSummary technologyTypeSummary = converter.getNewBean(TechnologyTypeSummary.class, openMetadataElement, methodName);
 
-                    if ((namespace != null) && (namespace.contains(OpenMetadataProperty.DEPLOYED_IMPLEMENTATION_TYPE.name)) && (qualifiedName != null) && (qualifiedName.contains("(") && (qualifiedName.contains(")"))))
+                    if (technologyTypeSummary != null)
                     {
-                        TechnologyTypeSummary technologyTypeSummary = converter.getNewBean(TechnologyTypeSummary.class, openMetadataElement, methodName);
-
-                        if (technologyTypeSummary != null)
-                        {
-                            technologyTypeSummaries.add(technologyTypeSummary);
-                        }
+                        technologyTypeSummaries.add(technologyTypeSummary);
                     }
                 }
             }
@@ -685,32 +595,5 @@ public class TechnologyTypeHandler extends OpenMetadataHandlerBase
         }
 
         return null;
-    }
-
-
-
-    /**
-     * Determine whether the element is a template.
-     *
-     * @param openMetadataElement element header
-     * @return boolean flag
-     */
-    private boolean isTemplate(OpenMetadataElement openMetadataElement)
-    {
-        if (openMetadataElement.getClassifications() != null)
-        {
-            for (AttachedClassification classification : openMetadataElement.getClassifications())
-            {
-                if (classification != null)
-                {
-                    if (classification.getClassificationName().equals(OpenMetadataType.TEMPLATE_CLASSIFICATION.typeName))
-                    {
-                        return true;
-                    }
-                }
-            }
-        }
-
-        return false;
     }
 }

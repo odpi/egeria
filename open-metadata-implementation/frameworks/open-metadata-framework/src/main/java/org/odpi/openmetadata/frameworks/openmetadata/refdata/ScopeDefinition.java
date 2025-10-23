@@ -6,7 +6,6 @@ package org.odpi.openmetadata.frameworks.openmetadata.refdata;
 import org.odpi.openmetadata.frameworks.openmetadata.controls.PlaceholderProperty;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
 
-import static org.odpi.openmetadata.frameworks.openmetadata.mapper.OpenMetadataValidValues.constructValidValueNamespace;
 import static org.odpi.openmetadata.frameworks.openmetadata.mapper.OpenMetadataValidValues.constructValidValueQualifiedName;
 
 /**
@@ -124,19 +123,6 @@ public enum ScopeDefinition
                                                 OpenMetadataProperty.SCOPE.name,
                                                 null,
                                                 preferredValue);
-    }
-
-
-    /**
-     * Return the namespace for this value.
-     *
-     * @return string
-     */
-    public String getNamespace()
-    {
-        return constructValidValueNamespace(null,
-                                            OpenMetadataProperty.SCOPE.name,
-                                            null);
     }
 
 

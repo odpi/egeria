@@ -6658,35 +6658,6 @@ public class SimpleCatalogArchiveHelper
     /**
      * Add a valid value definition/set.
      *
-     * @param typeName unique name of the valid value - ie a definition or a set
-     * @param qualifiedName unique name of the valid value
-     * @param name display name of the valid value
-     * @param scope short description of the valid value
-     * @param description description of the valid value
-     * @param preferredValue preferredValue of the valid value
-     * @param usage how is the valid value used
-     * @param userDefinedStatus is value active
-     * @param additionalProperties any other properties.
-     *
-     * @return unique identifier of the valid value
-     */
-    public String addValidValue(String              typeName,
-                                String              qualifiedName,
-                                String              name,
-                                String              description,
-                                String              usage,
-                                String              scope,
-                                String              preferredValue,
-                                String              userDefinedStatus,
-                                Map<String, String> additionalProperties)
-    {
-        return this.addValidValue(null, null, null, null,null, null, typeName, qualifiedName, null, name, description, null, usage, null, scope, preferredValue, userDefinedStatus, null, false, additionalProperties);
-    }
-
-
-    /**
-     * Add a valid value definition/set.
-     *
      * @param suppliedValidValueGUID optional unique identifier for the valid value instance
      * @param setGUID unique identifier of parent set
      * @param anchorGUID unique identifier of the anchor (or null)
@@ -6696,6 +6667,7 @@ public class SimpleCatalogArchiveHelper
      * @param typeName unique displayName of the valid value - ie a definition or a set
      * @param qualifiedName unique displayName of the valid value
      * @param category category of valid value
+     * @param identifier identifier for valid value
      * @param displayName display displayName of the valid value
      * @param namespace namespace of the valid value
      * @param scope short description of the valid value
@@ -6719,6 +6691,7 @@ public class SimpleCatalogArchiveHelper
                                 String              typeName,
                                 String              qualifiedName,
                                 String              category,
+                                String              identifier,
                                 String              displayName,
                                 String              description,
                                 String              namespace,
@@ -6748,6 +6721,7 @@ public class SimpleCatalogArchiveHelper
         {
             InstanceProperties properties = archiveHelper.addStringPropertyToInstance(archiveRootName, null, OpenMetadataProperty.QUALIFIED_NAME.name, qualifiedName, methodName);
             properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.CATEGORY.name, category, methodName);
+            properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.IDENTIFIER.name, identifier, methodName);
             properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.DISPLAY_NAME.name, displayName, methodName);
             properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.DESCRIPTION.name, description, methodName);
             properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.NAMESPACE.name, namespace, methodName);

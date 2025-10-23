@@ -1,6 +1,13 @@
 ###
 # Egeria-classification-manager-omvs
 
+# -------------------------------------------------------------------
+# Note: This a generic service which means the URL marker of "classification-manager" can be replaced with the URL marker
+# of any other active view service.
+# The URL marker is derived from the name of the requested service - take the short two-word service name, convert to
+# lower case and add a hyphen between the two words - so Automated Curation's OMVS's URL Marker is automated-curation.
+
+
 @baseURL=https://localhost:9443
 @viewServer=view-server
 
@@ -1010,4 +1017,59 @@ Content-Type: application/json
    "forDuplicateProcessing": false,
    "effectiveTime" : "{{$isoTimestamp}}"
 }
+
+###
+# =====================================================================================================================
+# Search keyword improve the findability of elements
+#
+# Search keyword:  https://egeria-project.org/concepts/search-keyword/
+
+@searchKeywordGUID=add guid here
+
+
+###
+# @name addSearchKeywordToElement
+#  Creates a search keyword and attaches it to an element.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/classification-manager/elements/{{elementGUID}}/search-keywords
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "NewAttachmentRequestBody",
+  "properties" : {
+    "class" : "SearchKeywordProperties",
+    "keyword" : "myKeyword",
+    "description" : "Add search keyword text here"
+  }
+}
+
+
+###
+# @name updateSearchKeyword
+# Update an existing search keyword.
+# The request body property mergeUpdate indicates wither the new properties should be merged with existing properties (true) or completely replace them (false)
+
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/classification-manager/search-keywords/{{searchKeywordGUID}}/update
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "UpdateElementRequestBody",
+  "mergeUpdate": true,
+  "properties" : {
+    "class" : "SearchKeywordProperties",
+    "keyword" : "myKeyword",
+    "description" : "Add search keyword text here"
+  }
+}
+
+
+###
+# @name removeSearchKeywordFromElement
+# Removes a search keyword added to the element by this user.  This deletes the link to the search keyword and the search keyword itself.
+#
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/classification-manager/search-keywords/{{searchKeywordGUID}}/remove
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
 

@@ -1048,3 +1048,71 @@ Content-Type: application/json
     "class" : "EffectiveTimeRequestBody",
     "effectiveTime" : "{{$isoTimestamp}}"
 }
+
+
+###
+# =====================================================================================================================
+# Search keyword improve the findability of elements
+#
+# Search keyword:  https://egeria-project.org/concepts/search-keyword/
+
+@searchKeywordGUID=add guid here
+
+
+
+###
+# @name getSearchKeywordByGUID
+# Return the requested search keyword.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/classification-manager/search-keywords/{{searchKeywordGUID}}/retrieve
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+
+
+###
+# @name getSearchKeywordsByKeyword
+# Return the list of search keywords containing the supplied keyword.
+
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/classification-manager/search-keywords/by-keyword
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "FilterRequestBody",
+  "filter" : "Add value here",
+  "startFrom" : 0,
+  "pageSize": 10,
+  "asOfTime" : "{{$isoTimestamp}}",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false,
+  "limitResultsByStatus" : ["ACTIVE"],
+  "sequencingOrder" : "PROPERTY_ASCENDING",
+  "sequencingProperty" : "qualifiedName"
+}
+
+
+###
+# @name findSearchKeywords
+# Return the list of search keywords containing the supplied string. The search string is located in the request body and is interpreted as a plain string.  The request parameters, startsWith, endsWith and ignoreCase can be used to allow a fuzzy search.  The request body also supports the specification of an effective time to restrict the search to element that are/were effective at a particular time.
+
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/classification-manager/search-keywords/by-search-string
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "SearchStringRequestBody",
+  "searchString" : "Add value here",
+  "startsWith" : false,
+  "endsWith" : false,
+  "ignoreCase" : true,
+  "startFrom" : 0,
+  "pageSize": 10,
+  "asOfTime" : "{{$isoTimestamp}}",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false,
+  "limitResultsByStatus" : ["ACTIVE"],
+  "sequencingOrder" : "PROPERTY_ASCENDING",
+  "sequencingProperty" : "qualifiedName"
+}

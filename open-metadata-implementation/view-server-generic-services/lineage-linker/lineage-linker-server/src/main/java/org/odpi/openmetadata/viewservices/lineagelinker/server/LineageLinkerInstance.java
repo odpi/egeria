@@ -25,7 +25,7 @@ public class LineageLinkerInstance extends OMVSServiceInstance
     private static final ViewServiceDescription myDescription = ViewServiceDescription.LINEAGE_LINKER;
 
     /*
-     * These maps cache clients for specific view services/access services.
+     * These maps cache clients for specific view services.
      */
     private final ViewServiceClientMap<LineageHandler> lineageHandlerMap;
 

@@ -7,7 +7,9 @@ import org.odpi.openmetadata.commonservices.ffdc.RESTCallToken;
 import org.odpi.openmetadata.commonservices.ffdc.RESTExceptionHandler;
 import org.odpi.openmetadata.commonservices.ffdc.rest.*;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
+import org.odpi.openmetadata.frameworks.openmetadata.handlers.SearchKeywordHandler;
 import org.odpi.openmetadata.frameworks.openmetadata.handlers.StewardshipManagementHandler;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.feedback.SearchKeywordProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.governance.*;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.resources.MoreInformationProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.resources.ResourceListProperties;
@@ -47,6 +49,7 @@ public class ClassificationManagerRESTServices extends TokenController
      * levelIdentifier property.
      *
      * @param serverName  name of the server instance to connect to
+     * @param urlMarker  view service URL marker
      * @param elementGUID unique identifier of the metadata element to classify
      * @param requestBody properties for the request
      *
@@ -56,6 +59,7 @@ public class ClassificationManagerRESTServices extends TokenController
      *      UserNotAuthorizedException security access problem
      */
     public VoidResponse setImpactClassification(String                    serverName,
+                                                String                   urlMarker,
                                                 String                    elementGUID,
                                                 NewClassificationRequestBody requestBody)
     {
@@ -78,7 +82,7 @@ public class ClassificationManagerRESTServices extends TokenController
             {
                 if (requestBody.getProperties() instanceof ImpactProperties properties)
                 {
-                    StewardshipManagementHandler handler = instanceHandler.getStewardshipManagementHandler(userId, serverName, methodName);
+                    StewardshipManagementHandler handler = instanceHandler.getStewardshipManagementHandler(userId, serverName, urlMarker, methodName);
 
                     handler.setImpactClassification(userId, elementGUID, properties, requestBody);
                 }
@@ -106,6 +110,7 @@ public class ClassificationManagerRESTServices extends TokenController
      * Remove the impact classification from the element.
      *
      * @param serverName  name of the server instance to connect to
+     * @param urlMarker  view service URL marker
      * @param elementGUID unique identifier of the metadata element to declassify
      * @param requestBody properties for the request
      *
@@ -115,6 +120,7 @@ public class ClassificationManagerRESTServices extends TokenController
      *       UserNotAuthorizedException security access problem
      */
     public VoidResponse clearImpactClassification(String                          serverName,
+                                                  String                   urlMarker,
                                                   String                          elementGUID,
                                                   DeleteClassificationRequestBody requestBody)
     {
@@ -132,7 +138,7 @@ public class ClassificationManagerRESTServices extends TokenController
             restCallLogger.setUserId(token, userId);
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-            StewardshipManagementHandler handler = instanceHandler.getStewardshipManagementHandler(userId, serverName, methodName);
+            StewardshipManagementHandler handler = instanceHandler.getStewardshipManagementHandler(userId, serverName, urlMarker, methodName);
 
             handler.clearImpactClassification(userId, elementGUID, requestBody);
         }
@@ -153,6 +159,7 @@ public class ClassificationManagerRESTServices extends TokenController
      * levelIdentifier property.
      *
      * @param serverName  name of the server instance to connect to
+     * @param urlMarker  view service URL marker
      * @param elementGUID unique identifier of the metadata element to classify
      * @param requestBody properties for the request
      *
@@ -162,6 +169,7 @@ public class ClassificationManagerRESTServices extends TokenController
      *      UserNotAuthorizedException security access problem
      */
     public VoidResponse setConfidenceClassification(String                    serverName,
+                                                    String                   urlMarker,
                                                     String                    elementGUID,
                                                     NewClassificationRequestBody requestBody)
     {
@@ -184,7 +192,7 @@ public class ClassificationManagerRESTServices extends TokenController
             {
                 if (requestBody.getProperties() instanceof ConfidenceProperties properties)
                 {
-                    StewardshipManagementHandler handler = instanceHandler.getStewardshipManagementHandler(userId, serverName, methodName);
+                    StewardshipManagementHandler handler = instanceHandler.getStewardshipManagementHandler(userId, serverName, urlMarker, methodName);
 
                     handler.setConfidenceClassification(userId, elementGUID, properties, requestBody);
                 }
@@ -213,6 +221,7 @@ public class ClassificationManagerRESTServices extends TokenController
      * confidence to assign to the element.
      *
      * @param serverName  name of the server instance to connect to
+     * @param urlMarker  view service URL marker
      * @param elementGUID unique identifier of the metadata element to declassify
      * @param requestBody properties for the request
      *
@@ -222,6 +231,7 @@ public class ClassificationManagerRESTServices extends TokenController
      *       UserNotAuthorizedException security access problem
      */
     public VoidResponse clearConfidenceClassification(String                          serverName,
+                                                      String                   urlMarker,
                                                       String                          elementGUID,
                                                       DeleteClassificationRequestBody requestBody)
     {
@@ -239,7 +249,7 @@ public class ClassificationManagerRESTServices extends TokenController
             restCallLogger.setUserId(token, userId);
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-            StewardshipManagementHandler handler = instanceHandler.getStewardshipManagementHandler(userId, serverName, methodName);
+            StewardshipManagementHandler handler = instanceHandler.getStewardshipManagementHandler(userId, serverName, urlMarker, methodName);
 
             handler.clearConfidenceClassification(userId, elementGUID, requestBody);
         }
@@ -258,6 +268,7 @@ public class ClassificationManagerRESTServices extends TokenController
      * is to the organization.  The level of criticality is expressed by the levelIdentifier property.
      *
      * @param serverName  name of the server instance to connect to
+     * @param urlMarker  view service URL marker
      * @param elementGUID unique identifier of the metadata element to classify
      * @param requestBody properties for the request
      *
@@ -267,6 +278,7 @@ public class ClassificationManagerRESTServices extends TokenController
      *       UserNotAuthorizedException security access problem
      */
     public VoidResponse setCriticalityClassification(String                    serverName,
+                                                     String                   urlMarker,
                                                      String                    elementGUID,
                                                      NewClassificationRequestBody requestBody)
     {
@@ -289,7 +301,7 @@ public class ClassificationManagerRESTServices extends TokenController
             {
                 if (requestBody.getProperties() instanceof CriticalityProperties properties)
                 {
-                    StewardshipManagementHandler handler = instanceHandler.getStewardshipManagementHandler(userId, serverName, methodName);
+                    StewardshipManagementHandler handler = instanceHandler.getStewardshipManagementHandler(userId, serverName, urlMarker, methodName);
 
                     handler.setCriticalityClassification(userId, elementGUID, properties, requestBody);
                 }
@@ -318,6 +330,7 @@ public class ClassificationManagerRESTServices extends TokenController
      * criticality to assign to the element.
      *
      * @param serverName  name of the server instance to connect to
+     * @param urlMarker  view service URL marker
      * @param elementGUID unique identifier of the metadata element to declassify
      * @param requestBody properties for the request
      *
@@ -327,6 +340,7 @@ public class ClassificationManagerRESTServices extends TokenController
      *       UserNotAuthorizedException security access problem
      */
     public VoidResponse clearCriticalityClassification(String                          serverName,
+                                                       String                   urlMarker,
                                                        String                          elementGUID,
                                                        DeleteClassificationRequestBody requestBody)
     {
@@ -347,7 +361,7 @@ public class ClassificationManagerRESTServices extends TokenController
 
             if (requestBody != null)
             {
-                StewardshipManagementHandler handler = instanceHandler.getStewardshipManagementHandler(userId, serverName, methodName);
+                StewardshipManagementHandler handler = instanceHandler.getStewardshipManagementHandler(userId, serverName, urlMarker, methodName);
 
                 handler.clearCriticalityClassification(userId, elementGUID, requestBody);
             }
@@ -373,6 +387,7 @@ public class ClassificationManagerRESTServices extends TokenController
      * The level of confidence is expressed by the levelIdentifier property.
      *
      * @param serverName  name of the server instance to connect to
+     * @param urlMarker  view service URL marker
      * @param elementGUID unique identifier of the metadata element to classify
      * @param requestBody properties for the request
      *
@@ -382,6 +397,7 @@ public class ClassificationManagerRESTServices extends TokenController
      *       UserNotAuthorizedException security access problem
      */
     public VoidResponse setConfidentialityClassification(String                    serverName,
+                                                         String                   urlMarker,
                                                          String                    elementGUID,
                                                          NewClassificationRequestBody requestBody)
     {
@@ -404,7 +420,7 @@ public class ClassificationManagerRESTServices extends TokenController
             {
                 if (requestBody.getProperties() instanceof ConfidentialityProperties properties)
                 {
-                    StewardshipManagementHandler handler = instanceHandler.getStewardshipManagementHandler(userId, serverName, methodName);
+                    StewardshipManagementHandler handler = instanceHandler.getStewardshipManagementHandler(userId, serverName, urlMarker, methodName);
 
                     handler.setConfidentialityClassification(userId, elementGUID, properties, requestBody);
                 }
@@ -433,6 +449,7 @@ public class ClassificationManagerRESTServices extends TokenController
      * confidentiality to assign to the element.
      *
      * @param serverName  name of the server instance to connect to
+     * @param urlMarker  view service URL marker
      * @param elementGUID unique identifier of the metadata element to declassify
      * @param requestBody properties for the request
      *
@@ -442,6 +459,7 @@ public class ClassificationManagerRESTServices extends TokenController
      *      UserNotAuthorizedException security access problem
      */
     public VoidResponse clearConfidentialityClassification(String                          serverName,
+                                                           String                   urlMarker,
                                                            String                          elementGUID,
                                                            DeleteClassificationRequestBody requestBody)
     {
@@ -460,7 +478,7 @@ public class ClassificationManagerRESTServices extends TokenController
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            StewardshipManagementHandler handler = instanceHandler.getStewardshipManagementHandler(userId, serverName, methodName);
+            StewardshipManagementHandler handler = instanceHandler.getStewardshipManagementHandler(userId, serverName, urlMarker, methodName);
 
             handler.clearConfidentialityClassification(userId, elementGUID, requestBody);
         }
@@ -481,6 +499,7 @@ public class ClassificationManagerRESTServices extends TokenController
      * properties respectively.
      *
      * @param serverName  name of the server instance to connect to
+     * @param urlMarker  view service URL marker
      * @param elementGUID unique identifier of the metadata element to classify
      * @param requestBody properties for the request
      *
@@ -490,6 +509,7 @@ public class ClassificationManagerRESTServices extends TokenController
      *       UserNotAuthorizedException security access problem
      */
     public VoidResponse setRetentionClassification(String                    serverName,
+                                                   String                   urlMarker,
                                                    String                    elementGUID,
                                                    NewClassificationRequestBody requestBody)
     {
@@ -512,7 +532,7 @@ public class ClassificationManagerRESTServices extends TokenController
             {
                 if (requestBody.getProperties() instanceof RetentionProperties properties)
                 {
-                    StewardshipManagementHandler handler = instanceHandler.getStewardshipManagementHandler(userId, serverName, methodName);
+                    StewardshipManagementHandler handler = instanceHandler.getStewardshipManagementHandler(userId, serverName, urlMarker, methodName);
 
                     handler.setRetentionClassification(userId, elementGUID, properties, requestBody);
                 }
@@ -541,6 +561,7 @@ public class ClassificationManagerRESTServices extends TokenController
      * track the retention period to assign to the element.
      *
      * @param serverName  name of the server instance to connect to
+     * @param urlMarker  view service URL marker
      * @param elementGUID unique identifier of the metadata element to declassify
      * @param requestBody properties for the request
      *
@@ -550,6 +571,7 @@ public class ClassificationManagerRESTServices extends TokenController
      *       UserNotAuthorizedException security access problem
      */
     public VoidResponse clearRetentionClassification(String                          serverName,
+                                                     String                   urlMarker,
                                                      String                          elementGUID,
                                                      DeleteClassificationRequestBody requestBody)
     {
@@ -568,7 +590,7 @@ public class ClassificationManagerRESTServices extends TokenController
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            StewardshipManagementHandler handler = instanceHandler.getStewardshipManagementHandler(userId, serverName, methodName);
+            StewardshipManagementHandler handler = instanceHandler.getStewardshipManagementHandler(userId, serverName, urlMarker, methodName);
 
             handler.clearRetentionClassification(userId, elementGUID, requestBody);
         }
@@ -586,6 +608,7 @@ public class ClassificationManagerRESTServices extends TokenController
      * Add the governance expectations classification to an element.
      *
      * @param serverName  name of the server instance to connect to
+     * @param urlMarker  view service URL marker
      * @param elementGUID unique identifier of element to attach to
      * @param requestBody list of security labels and properties
      *
@@ -595,6 +618,7 @@ public class ClassificationManagerRESTServices extends TokenController
      * UserNotAuthorizedException security access problem
      */
     public VoidResponse addGovernanceExpectations(String                       serverName,
+                                                  String                   urlMarker,
                                                   String                       elementGUID,
                                                   NewClassificationRequestBody requestBody)
     {
@@ -617,7 +641,7 @@ public class ClassificationManagerRESTServices extends TokenController
             {
                 if (requestBody.getProperties() instanceof GovernanceExpectationsProperties properties)
                 {
-                    StewardshipManagementHandler handler = instanceHandler.getStewardshipManagementHandler(userId, serverName, methodName);
+                    StewardshipManagementHandler handler = instanceHandler.getStewardshipManagementHandler(userId, serverName, urlMarker, methodName);
 
                     handler.addGovernanceExpectations(userId, elementGUID, properties, requestBody);
                 }
@@ -646,6 +670,7 @@ public class ClassificationManagerRESTServices extends TokenController
      * Update the governance expectations classification to an element.
      *
      * @param serverName  name of the server instance to connect to
+     * @param urlMarker  view service URL marker
      * @param elementGUID unique identifier of element to attach to
      * @param requestBody list of security labels and properties
      *
@@ -655,6 +680,7 @@ public class ClassificationManagerRESTServices extends TokenController
      * UserNotAuthorizedException security access problem
      */
     public VoidResponse updateGovernanceExpectations(String                    serverName,
+                                                     String                   urlMarker,
                                                      String                    elementGUID,
                                                      UpdateClassificationRequestBody requestBody)
     {
@@ -677,7 +703,7 @@ public class ClassificationManagerRESTServices extends TokenController
             {
                 if (requestBody.getProperties() instanceof GovernanceExpectationsProperties properties)
                 {
-                    StewardshipManagementHandler handler = instanceHandler.getStewardshipManagementHandler(userId, serverName, methodName);
+                    StewardshipManagementHandler handler = instanceHandler.getStewardshipManagementHandler(userId, serverName, urlMarker, methodName);
 
                     handler.updateGovernanceExpectations(userId, elementGUID, properties, requestBody);
                 }
@@ -705,6 +731,7 @@ public class ClassificationManagerRESTServices extends TokenController
      * Remove the governance expectations classification from an element.
      *
      * @param serverName  name of the server instance to connect to
+     * @param urlMarker  view service URL marker
      * @param elementGUID   unique identifier of element
      * @param requestBody properties for the request
      *
@@ -714,6 +741,7 @@ public class ClassificationManagerRESTServices extends TokenController
      * UserNotAuthorizedException security access problem
      */
     public VoidResponse clearGovernanceExpectations(String                          serverName,
+                                                    String                   urlMarker,
                                                     String                          elementGUID,
                                                     DeleteClassificationRequestBody requestBody)
     {
@@ -731,7 +759,7 @@ public class ClassificationManagerRESTServices extends TokenController
             restCallLogger.setUserId(token, userId);
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-            StewardshipManagementHandler handler = instanceHandler.getStewardshipManagementHandler(userId, serverName, methodName);
+            StewardshipManagementHandler handler = instanceHandler.getStewardshipManagementHandler(userId, serverName, urlMarker, methodName);
 
             handler.clearGovernanceExpectations(userId, elementGUID, requestBody);
         }
@@ -749,6 +777,7 @@ public class ClassificationManagerRESTServices extends TokenController
      * Add the governance measurements for an element.
      *
      * @param serverName  name of the server instance to connect to
+     * @param urlMarker  view service URL marker
      * @param elementGUID unique identifier of element to attach to
      * @param requestBody list of security labels and properties
      *
@@ -758,6 +787,7 @@ public class ClassificationManagerRESTServices extends TokenController
      * UserNotAuthorizedException security access problem
      */
     public VoidResponse addGovernanceMeasurements(String                    serverName,
+                                                  String                   urlMarker,
                                                   String                    elementGUID,
                                                   NewClassificationRequestBody requestBody)
     {
@@ -780,7 +810,7 @@ public class ClassificationManagerRESTServices extends TokenController
             {
                 if (requestBody.getProperties() instanceof GovernanceMeasurementsProperties properties)
                 {
-                    StewardshipManagementHandler handler = instanceHandler.getStewardshipManagementHandler(userId, serverName, methodName);
+                    StewardshipManagementHandler handler = instanceHandler.getStewardshipManagementHandler(userId, serverName, urlMarker, methodName);
 
                     handler.addGovernanceMeasurements(userId, elementGUID, properties, requestBody);
                 }
@@ -808,6 +838,7 @@ public class ClassificationManagerRESTServices extends TokenController
      * Update the governance measurements for an element.
      *
      * @param serverName  name of the server instance to connect to
+     * @param urlMarker  view service URL marker
      * @param elementGUID unique identifier of element to attach to
      * @param requestBody list of security labels and properties
      *
@@ -817,6 +848,7 @@ public class ClassificationManagerRESTServices extends TokenController
      * UserNotAuthorizedException security access problem
      */
     public VoidResponse updateGovernanceMeasurements(String                          serverName,
+                                                     String                   urlMarker,
                                                      String                          elementGUID,
                                                      UpdateClassificationRequestBody requestBody)
     {
@@ -839,7 +871,7 @@ public class ClassificationManagerRESTServices extends TokenController
             {
                 if (requestBody.getProperties() instanceof GovernanceMeasurementsProperties properties)
                 {
-                    StewardshipManagementHandler handler = instanceHandler.getStewardshipManagementHandler(userId, serverName, methodName);
+                    StewardshipManagementHandler handler = instanceHandler.getStewardshipManagementHandler(userId, serverName, urlMarker, methodName);
 
                     handler.updateGovernanceMeasurements(userId, elementGUID, properties, requestBody);
                 }
@@ -867,6 +899,7 @@ public class ClassificationManagerRESTServices extends TokenController
      * Remove the governance measurements classification from an element.
      *
      * @param serverName  name of the server instance to connect to
+     * @param urlMarker  view service URL marker
      * @param elementGUID   unique identifier of element
      * @param requestBody properties for the request
      *
@@ -876,6 +909,7 @@ public class ClassificationManagerRESTServices extends TokenController
      * UserNotAuthorizedException security access problem
      */
     public VoidResponse clearGovernanceMeasurements(String                          serverName,
+                                                    String                   urlMarker,
                                                     String                          elementGUID,
                                                     DeleteClassificationRequestBody requestBody)
     {
@@ -893,7 +927,7 @@ public class ClassificationManagerRESTServices extends TokenController
             restCallLogger.setUserId(token, userId);
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-            StewardshipManagementHandler handler = instanceHandler.getStewardshipManagementHandler(userId, serverName, methodName);
+            StewardshipManagementHandler handler = instanceHandler.getStewardshipManagementHandler(userId, serverName, urlMarker, methodName);
 
             handler.clearGovernanceMeasurements(userId, elementGUID, requestBody);
         }
@@ -911,6 +945,7 @@ public class ClassificationManagerRESTServices extends TokenController
      * Add the security tags for an element.
      *
      * @param serverName  name of the server instance to connect to
+     * @param urlMarker  view service URL marker
      * @param elementGUID unique identifier of element to attach to
      * @param requestBody list of security labels and properties
      *
@@ -920,6 +955,7 @@ public class ClassificationManagerRESTServices extends TokenController
      * UserNotAuthorizedException security access problem
      */
     public VoidResponse addSecurityTags(String                       serverName,
+                                        String                   urlMarker,
                                         String                       elementGUID,
                                         NewClassificationRequestBody requestBody)
     {
@@ -942,7 +978,7 @@ public class ClassificationManagerRESTServices extends TokenController
             {
                 if (requestBody.getProperties() instanceof SecurityTagsProperties properties)
                 {
-                    StewardshipManagementHandler handler = instanceHandler.getStewardshipManagementHandler(userId, serverName, methodName);
+                    StewardshipManagementHandler handler = instanceHandler.getStewardshipManagementHandler(userId, serverName, urlMarker, methodName);
 
                     handler.addSecurityTags(userId, elementGUID, properties, requestBody);
                 }
@@ -970,6 +1006,7 @@ public class ClassificationManagerRESTServices extends TokenController
      * Remove the security tags classification from an element.
      *
      * @param serverName  name of the server instance to connect to
+     * @param urlMarker  view service URL marker
      * @param elementGUID   unique identifier of element
      * @param requestBody properties for the request
      *
@@ -979,6 +1016,7 @@ public class ClassificationManagerRESTServices extends TokenController
      * UserNotAuthorizedException security access problem
      */
     public VoidResponse clearSecurityTags(String                          serverName,
+                                          String                   urlMarker,
                                           String                          elementGUID,
                                           DeleteClassificationRequestBody requestBody)
     {
@@ -996,7 +1034,7 @@ public class ClassificationManagerRESTServices extends TokenController
             restCallLogger.setUserId(token, userId);
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-            StewardshipManagementHandler handler = instanceHandler.getStewardshipManagementHandler(userId, serverName, methodName);
+            StewardshipManagementHandler handler = instanceHandler.getStewardshipManagementHandler(userId, serverName, urlMarker, methodName);
 
             handler.clearSecurityTags(userId, elementGUID, requestBody);
         }
@@ -1014,6 +1052,7 @@ public class ClassificationManagerRESTServices extends TokenController
      * Add the ownership classification for an element.
      *
      * @param serverName  name of the server instance to connect to
+     * @param urlMarker  view service URL marker
      * @param elementGUID element to link it to - its type must inherit from Referenceable.
      * @param requestBody properties for classification request
      *
@@ -1023,6 +1062,7 @@ public class ClassificationManagerRESTServices extends TokenController
      * UserNotAuthorizedException security access problem
      */
     public VoidResponse addOwnership(String                       serverName,
+                                     String                   urlMarker,
                                      String                       elementGUID,
                                      NewClassificationRequestBody requestBody)
     {
@@ -1045,7 +1085,7 @@ public class ClassificationManagerRESTServices extends TokenController
             {
                 if (requestBody.getProperties() instanceof OwnershipProperties properties)
                 {
-                    StewardshipManagementHandler handler = instanceHandler.getStewardshipManagementHandler(userId, serverName, methodName);
+                    StewardshipManagementHandler handler = instanceHandler.getStewardshipManagementHandler(userId, serverName, urlMarker, methodName);
 
                     handler.addOwnership(userId, elementGUID, properties, requestBody);
                 }
@@ -1073,6 +1113,7 @@ public class ClassificationManagerRESTServices extends TokenController
      * Remove the ownership classification from an element.
      *
      * @param serverName  name of the server instance to connect to
+     * @param urlMarker  view service URL marker
      * @param elementGUID element where the classification needs to be cleared from.
      * @param requestBody properties for classification request
      *
@@ -1082,6 +1123,7 @@ public class ClassificationManagerRESTServices extends TokenController
      * UserNotAuthorizedException security access problem
      */
     public VoidResponse clearOwnership(String                          serverName,
+                                       String                   urlMarker,
                                        String                          elementGUID,
                                        DeleteClassificationRequestBody requestBody)
     {
@@ -1099,7 +1141,7 @@ public class ClassificationManagerRESTServices extends TokenController
             restCallLogger.setUserId(token, userId);
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-            StewardshipManagementHandler handler = instanceHandler.getStewardshipManagementHandler(userId, serverName, methodName);
+            StewardshipManagementHandler handler = instanceHandler.getStewardshipManagementHandler(userId, serverName, urlMarker, methodName);
 
             handler.clearOwnership(userId, elementGUID, requestBody);
         }
@@ -1117,6 +1159,7 @@ public class ClassificationManagerRESTServices extends TokenController
      * Add the DigitalResourceOrigin classification for an element.
      *
      * @param serverName  name of the server instance to connect to
+     * @param urlMarker  view service URL marker
      * @param elementGUID element to link it to - its type must inherit from Referenceable.
      * @param requestBody properties for classification request
      *
@@ -1126,6 +1169,7 @@ public class ClassificationManagerRESTServices extends TokenController
      * UserNotAuthorizedException security access problem
      */
     public VoidResponse addOrigin(String                    serverName,
+                                  String                   urlMarker,
                                   String                    elementGUID,
                                   NewClassificationRequestBody requestBody)
     {
@@ -1148,7 +1192,7 @@ public class ClassificationManagerRESTServices extends TokenController
             {
                 if (requestBody.getProperties() instanceof DigitalResourceOriginProperties properties)
                 {
-                    StewardshipManagementHandler handler = instanceHandler.getStewardshipManagementHandler(userId, serverName, methodName);
+                    StewardshipManagementHandler handler = instanceHandler.getStewardshipManagementHandler(userId, serverName, urlMarker, methodName);
 
                     handler.addDigitalResourceOrigin(userId, elementGUID, properties, requestBody);
                 }
@@ -1176,6 +1220,7 @@ public class ClassificationManagerRESTServices extends TokenController
      * Remove the DigitalResourceOrigin classification from an element.
      *
      * @param serverName  name of the server instance to connect to
+     * @param urlMarker  view service URL marker
      * @param elementGUID element where the classification needs to be cleared from.
      * @param requestBody properties for classification request
      *
@@ -1185,6 +1230,7 @@ public class ClassificationManagerRESTServices extends TokenController
      * UserNotAuthorizedException security access problem
      */
     public VoidResponse clearOrigin(String                          serverName,
+                                    String                   urlMarker,
                                     String                          elementGUID,
                                     DeleteClassificationRequestBody requestBody)
     {
@@ -1202,7 +1248,7 @@ public class ClassificationManagerRESTServices extends TokenController
             restCallLogger.setUserId(token, userId);
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-            StewardshipManagementHandler handler = instanceHandler.getStewardshipManagementHandler(userId, serverName, methodName);
+            StewardshipManagementHandler handler = instanceHandler.getStewardshipManagementHandler(userId, serverName, urlMarker, methodName);
 
             handler.clearDigitalResourceOrigin(userId, elementGUID, requestBody);
         }
@@ -1221,6 +1267,7 @@ public class ClassificationManagerRESTServices extends TokenController
      * Add the zone membership classification for an element.
      *
      * @param serverName  name of the server instance to connect to
+     * @param urlMarker  view service URL marker
      * @param elementGUID element to link it to - its type must inherit from Referenceable.
      * @param requestBody properties for classification request
      *
@@ -1230,6 +1277,7 @@ public class ClassificationManagerRESTServices extends TokenController
      * UserNotAuthorizedException security access problem
      */
     public VoidResponse addZoneMembership(String                    serverName,
+                                          String                   urlMarker,
                                           String                    elementGUID,
                                           NewClassificationRequestBody requestBody)
     {
@@ -1252,7 +1300,7 @@ public class ClassificationManagerRESTServices extends TokenController
             {
                 if (requestBody.getProperties() instanceof ZoneMembershipProperties properties)
                 {
-                    StewardshipManagementHandler handler = instanceHandler.getStewardshipManagementHandler(userId, serverName, methodName);
+                    StewardshipManagementHandler handler = instanceHandler.getStewardshipManagementHandler(userId, serverName, urlMarker, methodName);
 
                     handler.addZoneMembership(userId, elementGUID, properties, requestBody);
                 }
@@ -1280,6 +1328,7 @@ public class ClassificationManagerRESTServices extends TokenController
      * Remove the zone membership classification from an element.
      *
      * @param serverName  name of the server instance to connect to
+     * @param urlMarker  view service URL marker
      * @param elementGUID element where the classification needs to be cleared from.
      * @param requestBody properties for classification request
      *
@@ -1289,6 +1338,7 @@ public class ClassificationManagerRESTServices extends TokenController
      * UserNotAuthorizedException security access problem
      */
     public VoidResponse clearZoneMembership(String                          serverName,
+                                            String                   urlMarker,
                                             String                          elementGUID,
                                             DeleteClassificationRequestBody requestBody)
     {
@@ -1306,7 +1356,7 @@ public class ClassificationManagerRESTServices extends TokenController
             restCallLogger.setUserId(token, userId);
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-            StewardshipManagementHandler handler = instanceHandler.getStewardshipManagementHandler(userId, serverName, methodName);
+            StewardshipManagementHandler handler = instanceHandler.getStewardshipManagementHandler(userId, serverName, urlMarker, methodName);
 
             handler.clearZoneMembership(userId, elementGUID, requestBody);
         }
@@ -1325,6 +1375,7 @@ public class ClassificationManagerRESTServices extends TokenController
      * This relationship indicates that the data associated with the element meaning matches the description in the glossary term.
      *
      * @param serverName  name of the server instance to connect to
+     * @param urlMarker  view service URL marker
      * @param elementGUID unique identifier of the element that is being assigned to the glossary term
      * @param glossaryTermGUID unique identifier of the glossary term that provides the meaning
      * @param requestBody properties for relationship request
@@ -1335,6 +1386,7 @@ public class ClassificationManagerRESTServices extends TokenController
      * UserNotAuthorizedException security access problem
      */
     public VoidResponse setupSemanticAssignment(String                  serverName,
+                                                String                   urlMarker,
                                                 String                  elementGUID,
                                                 String                  glossaryTermGUID,
                                                 NewRelationshipRequestBody requestBody)
@@ -1353,7 +1405,7 @@ public class ClassificationManagerRESTServices extends TokenController
             restCallLogger.setUserId(token, userId);
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-            StewardshipManagementHandler handler = instanceHandler.getStewardshipManagementHandler(userId, serverName, methodName);
+            StewardshipManagementHandler handler = instanceHandler.getStewardshipManagementHandler(userId, serverName, urlMarker, methodName);
 
             if (requestBody != null)
             {
@@ -1402,6 +1454,7 @@ public class ClassificationManagerRESTServices extends TokenController
      * Remove a semantic assignment relationship between an element and its glossary term.
      *
      * @param serverName  name of the server instance to connect to
+     * @param urlMarker  view service URL marker
      * @param elementGUID unique identifier of the element that is being assigned to the glossary term
      * @param glossaryTermGUID unique identifier of the glossary term that provides the meaning
      * @param requestBody properties for relationship request
@@ -1412,6 +1465,7 @@ public class ClassificationManagerRESTServices extends TokenController
      * UserNotAuthorizedException security access problem
      */
     public VoidResponse clearSemanticAssignment(String                        serverName,
+                                                String                   urlMarker,
                                                 String                        elementGUID,
                                                 String                        glossaryTermGUID,
                                                 DeleteRelationshipRequestBody requestBody)
@@ -1430,7 +1484,7 @@ public class ClassificationManagerRESTServices extends TokenController
             restCallLogger.setUserId(token, userId);
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-            StewardshipManagementHandler handler = instanceHandler.getStewardshipManagementHandler(userId, serverName, methodName);
+            StewardshipManagementHandler handler = instanceHandler.getStewardshipManagementHandler(userId, serverName, urlMarker, methodName);
 
             handler.clearSemanticAssignment(userId, elementGUID, glossaryTermGUID, requestBody);
         }
@@ -1448,6 +1502,7 @@ public class ClassificationManagerRESTServices extends TokenController
      * Link a scope to an element using the ScopedBy relationship.
      *
      * @param serverName  name of the server instance to connect to
+     * @param urlMarker  view service URL marker
      * @param elementGUID unique identifier of the metadata element to link
      * @param scopeGUID identifier of the scope to link
      * @param requestBody properties for relationship request
@@ -1458,6 +1513,7 @@ public class ClassificationManagerRESTServices extends TokenController
      * UserNotAuthorizedException security access problem
      */
     public VoidResponse addScopeToElement(String                  serverName,
+                                          String                   urlMarker,
                                           String                  elementGUID,
                                           String                  scopeGUID,
                                           NewRelationshipRequestBody requestBody)
@@ -1476,7 +1532,7 @@ public class ClassificationManagerRESTServices extends TokenController
             restCallLogger.setUserId(token, userId);
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-            StewardshipManagementHandler handler = instanceHandler.getStewardshipManagementHandler(userId, serverName, methodName);
+            StewardshipManagementHandler handler = instanceHandler.getStewardshipManagementHandler(userId, serverName, urlMarker, methodName);
 
             if (requestBody != null)
             {
@@ -1525,6 +1581,7 @@ public class ClassificationManagerRESTServices extends TokenController
      * Remove the ScopedBy relationship between a scope and an element.
      *
      * @param serverName  name of the server instance to connect to
+     * @param urlMarker  view service URL marker
      * @param elementGUID unique identifier of the metadata element to update
      * @param scopeGUID identifier of the scope to link
      * @param requestBody properties for relationship request
@@ -1535,6 +1592,7 @@ public class ClassificationManagerRESTServices extends TokenController
      * UserNotAuthorizedException security access problem
      */
     public VoidResponse removeScopeFromElement(String                        serverName,
+                                               String                   urlMarker,
                                                String                        elementGUID,
                                                String                        scopeGUID,
                                                DeleteRelationshipRequestBody requestBody)
@@ -1553,7 +1611,7 @@ public class ClassificationManagerRESTServices extends TokenController
             restCallLogger.setUserId(token, userId);
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-            StewardshipManagementHandler handler = instanceHandler.getStewardshipManagementHandler(userId, serverName, methodName);
+            StewardshipManagementHandler handler = instanceHandler.getStewardshipManagementHandler(userId, serverName, urlMarker, methodName);
 
             handler.removeScopeFromElement(userId, elementGUID, scopeGUID, requestBody);
         }
@@ -1572,6 +1630,7 @@ public class ClassificationManagerRESTServices extends TokenController
      * Link a resource to an element using the ResourceList relationship.
      *
      * @param serverName  name of the server instance to connect to
+     * @param urlMarker  view service URL marker
      * @param elementGUID unique identifier of the metadata element to link
      * @param resourceGUID identifier of the resource to link
      * @param requestBody properties for relationship request
@@ -1582,6 +1641,7 @@ public class ClassificationManagerRESTServices extends TokenController
      * UserNotAuthorizedException security access problem
      */
     public VoidResponse addResourceListToElement(String                  serverName,
+                                                 String                   urlMarker,
                                                  String                  elementGUID,
                                                  String                  resourceGUID,
                                                  NewRelationshipRequestBody requestBody)
@@ -1600,7 +1660,7 @@ public class ClassificationManagerRESTServices extends TokenController
             restCallLogger.setUserId(token, userId);
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-            StewardshipManagementHandler handler = instanceHandler.getStewardshipManagementHandler(userId, serverName, methodName);
+            StewardshipManagementHandler handler = instanceHandler.getStewardshipManagementHandler(userId, serverName, urlMarker, methodName);
 
             if (requestBody != null)
             {
@@ -1649,6 +1709,7 @@ public class ClassificationManagerRESTServices extends TokenController
      * Remove the ResourceList relationship between a resource and an element.
      *
      * @param serverName  name of the server instance to connect to
+     * @param urlMarker  view service URL marker
      * @param elementGUID unique identifier of the metadata element to update
      * @param resourceGUID identifier of the resource to link
      * @param requestBody properties for relationship request
@@ -1659,6 +1720,7 @@ public class ClassificationManagerRESTServices extends TokenController
      * UserNotAuthorizedException security access problem
      */
     public VoidResponse removeResourceListFromElement(String                        serverName,
+                                                      String                   urlMarker,
                                                       String                        elementGUID,
                                                       String                        resourceGUID,
                                                       DeleteRelationshipRequestBody requestBody)
@@ -1677,7 +1739,7 @@ public class ClassificationManagerRESTServices extends TokenController
             restCallLogger.setUserId(token, userId);
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-            StewardshipManagementHandler handler = instanceHandler.getStewardshipManagementHandler(userId, serverName, methodName);
+            StewardshipManagementHandler handler = instanceHandler.getStewardshipManagementHandler(userId, serverName, urlMarker, methodName);
 
             handler.removeResourceListFromElement(userId, elementGUID, resourceGUID, requestBody);
         }
@@ -1695,6 +1757,7 @@ public class ClassificationManagerRESTServices extends TokenController
      * Link a resource to an element using the MoreInformation relationship.
      *
      * @param serverName  name of the server instance to connect to
+     * @param urlMarker  view service URL marker
      * @param elementGUID unique identifier of the metadata element to link
      * @param resourceGUID identifier of the resource to link
      * @param requestBody properties for relationship request
@@ -1705,6 +1768,7 @@ public class ClassificationManagerRESTServices extends TokenController
      * UserNotAuthorizedException security access problem
      */
     public VoidResponse addMoreInformationToElement(String                  serverName,
+                                                    String                   urlMarker,
                                                     String                  elementGUID,
                                                     String                  resourceGUID,
                                                     NewRelationshipRequestBody requestBody)
@@ -1723,7 +1787,7 @@ public class ClassificationManagerRESTServices extends TokenController
             restCallLogger.setUserId(token, userId);
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-            StewardshipManagementHandler handler = instanceHandler.getStewardshipManagementHandler(userId, serverName, methodName);
+            StewardshipManagementHandler handler = instanceHandler.getStewardshipManagementHandler(userId, serverName, urlMarker, methodName);
 
             if (requestBody != null)
             {
@@ -1772,6 +1836,7 @@ public class ClassificationManagerRESTServices extends TokenController
      * Remove the MoreInformation relationship between a resource and an element.
      *
      * @param serverName  name of the server instance to connect to
+     * @param urlMarker  view service URL marker
      * @param elementGUID unique identifier of the metadata element to update
      * @param resourceGUID identifier of the resource to link
      * @param requestBody properties for relationship request
@@ -1782,6 +1847,7 @@ public class ClassificationManagerRESTServices extends TokenController
      * UserNotAuthorizedException security access problem
      */
     public VoidResponse removeMoreInformationFromElement(String                        serverName,
+                                                         String                   urlMarker,
                                                          String                        elementGUID,
                                                          String                        resourceGUID,
                                                          DeleteRelationshipRequestBody requestBody)
@@ -1800,9 +1866,182 @@ public class ClassificationManagerRESTServices extends TokenController
             restCallLogger.setUserId(token, userId);
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-            StewardshipManagementHandler handler = instanceHandler.getStewardshipManagementHandler(userId, serverName, methodName);
+            StewardshipManagementHandler handler = instanceHandler.getStewardshipManagementHandler(userId, serverName, urlMarker, methodName);
 
             handler.removeMoreInformationFromElement(userId, elementGUID, resourceGUID, requestBody);
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+        return response;
+    }
+
+
+
+    /**
+     * Adds a search keyword to the element.
+     *
+     * @param serverName name of the server instances for this request
+     * @param urlMarker  view service URL marker
+     * @param elementGUID  String - unique id for the element.
+     * @param requestBody containing type of search keyword enum and the text of the search keyword.
+     *
+     * @return elementGUID for new search keyword object or
+     * InvalidParameterException - one of the parameters is null or invalid or
+     * PropertyServerException - there is a problem adding the element properties to
+     *                                   the metadata repository or
+     * UserNotAuthorizedException - the requesting user is not authorized to issue this request.
+     */
+    public GUIDResponse addSearchKeywordToElement(String                 serverName,
+                                                  String                 urlMarker,
+                                                  String                 elementGUID,
+                                                  NewAttachmentRequestBody requestBody)
+    {
+        final String methodName = "addSearchKeywordToElement";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
+
+        GUIDResponse  response = new GUIDResponse();
+        AuditLog      auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            SearchKeywordHandler handler = instanceHandler.getSearchKeywordHandler(userId, serverName, urlMarker, methodName);
+
+            if (requestBody != null)
+            {
+                if (requestBody.getProperties() instanceof SearchKeywordProperties searchKeywordProperties)
+                {
+
+                    response.setGUID(handler.addSearchKeywordToElement(userId, elementGUID, requestBody, requestBody.getInitialClassifications(), searchKeywordProperties));
+                }
+                else
+                {
+                    restExceptionHandler.handleInvalidPropertiesObject(SearchKeywordProperties.class.getName(), methodName);
+                }
+            }
+            else
+            {
+                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName, NewAttachmentRequestBody.class.getName());
+            }
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+        return response;
+    }
+
+
+    /**
+     * Update an existing search keyword.
+     *
+     * @param serverName   name of the server instances for this request.
+     * @param urlMarker  view service URL marker
+     * @param searchKeywordGUID  unique identifier for the search keyword to change.
+     * @param requestBody  containing type of search keyword enum and the text of the search keyword.
+     *
+     * @return void or
+     * InvalidParameterException one of the parameters is null or invalid.
+     * PropertyServerException There is a problem updating the element properties in the metadata repository.
+     * UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public VoidResponse   updateSearchKeyword(String                   serverName,
+                                              String                   urlMarker,
+                                              String                   searchKeywordGUID,
+                                              UpdateElementRequestBody requestBody)
+    {
+        final String methodName = "updateSearchKeyword";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
+
+        VoidResponse  response = new VoidResponse();
+        AuditLog      auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            if (requestBody != null)
+            {
+                if (requestBody.getProperties() instanceof SearchKeywordProperties searchKeywordProperties)
+                {
+                    SearchKeywordHandler handler = instanceHandler.getSearchKeywordHandler(userId, serverName, urlMarker, methodName);
+
+                    handler.updateSearchKeyword(userId, searchKeywordGUID, requestBody, searchKeywordProperties);
+                }
+                else
+                {
+                    restExceptionHandler.handleInvalidPropertiesObject(SearchKeywordProperties.class.getName(), methodName);
+                }
+            }
+            else
+            {
+                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName, UpdateElementRequestBody.class.getName());
+            }
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+        return response;
+    }
+
+
+    /**
+     * Removes a search keyword added to the element by this user.
+     *
+     * @param serverName name of the server instances for this request
+     * @param urlMarker  view service URL marker
+     * @param searchKeywordGUID  String - unique id for the search keyword object
+     * @param requestBody optional effective time
+     *
+     * @return void or
+     * InvalidParameterException - one of the parameters is null or invalid or
+     * PropertyServerException - there is a problem updating the element properties in
+     *                                   the metadata repository or
+     * UserNotAuthorizedException - the requesting user is not authorized to issue this request.
+     */
+    public VoidResponse removeSearchKeywordFromElement(String            serverName,
+                                                       String            urlMarker,
+                                                       String            searchKeywordGUID,
+                                                       DeleteElementRequestBody requestBody)
+    {
+        final String methodName = "removeElementSearchKeyword";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
+
+        VoidResponse  response = new VoidResponse();
+        AuditLog      auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            SearchKeywordHandler handler = instanceHandler.getSearchKeywordHandler(userId, serverName, urlMarker, methodName);
+
+            handler.deleteSearchKeyword(userId, searchKeywordGUID, requestBody);
         }
         catch (Throwable error)
         {

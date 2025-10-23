@@ -11,6 +11,7 @@ import org.odpi.openmetadata.frameworks.openmetadata.properties.NewActionTarget;
 import org.odpi.openmetadata.frameworks.openmetadata.controls.PlaceholderPropertyType;
 import org.odpi.openmetadata.frameworks.openmetadata.controls.ReplacementAttributeType;
 import org.odpi.openmetadata.frameworks.openmetadata.refdata.Category;
+import org.odpi.openmetadata.frameworks.openmetadata.types.DataType;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 import org.odpi.openmetadata.frameworks.openmetadata.refdata.DeployedImplementationType;
@@ -539,8 +540,6 @@ public class GovernanceArchiveHelper extends SimpleCatalogArchiveHelper
                     required = "true";
                 }
 
-                additionalProperties.put(OpenMetadataProperty.DESCRIPTION.name, replacementAttributeType.getDescription());
-                additionalProperties.put(OpenMetadataProperty.DATA_TYPE.name, replacementAttributeType.getDataType());
                 additionalProperties.put(OpenMetadataProperty.EXAMPLE.name, replacementAttributeType.getExample());
                 additionalProperties.put(OpenMetadataProperty.REQUIRED.name, required);
 
@@ -550,14 +549,15 @@ public class GovernanceArchiveHelper extends SimpleCatalogArchiveHelper
                                                            anchorTypeName,
                                                            anchorDomainName,
                                                            anchorScopeGUID,
-                                                           OpenMetadataType.VALID_VALUE_DEFINITION.typeName,
-                                                           parentTypeName + "::" + parentGUID + "::PlaceholderProperty::" + replacementAttributeType.getName(),
+                                                           OpenMetadataType.SPECIFICATION_PROPERTY_VALUE.typeName,
+                                                           parentTypeName + "::" + parentGUID + "::ReplacementAttribute::" + replacementAttributeType.getName(),
                                                            Category.SPECIFICATION_PROPERTY.getName(),
+                                                           SpecificationPropertyType.REPLACEMENT_ATTRIBUTE.getPropertyType(),
                                                            replacementAttributeType.getName(),
-                                                           SpecificationPropertyType.REPLACEMENT_ATTRIBUTE.getDescription(),
+                                                           replacementAttributeType.getDescription(),
                                                            SpecificationPropertyType.REPLACEMENT_ATTRIBUTE.getPropertyType(),
                                                            null,
-                                                           null,
+                                                           replacementAttributeType.getDataType(),
                                                            null,
                                                            replacementAttributeType.getName(),
                                                            null,
@@ -613,8 +613,6 @@ public class GovernanceArchiveHelper extends SimpleCatalogArchiveHelper
                     required = "true";
                 }
 
-                additionalProperties.put(OpenMetadataProperty.DESCRIPTION.name, placeholderPropertyType.getDescription());
-                additionalProperties.put(OpenMetadataProperty.DATA_TYPE.name, placeholderPropertyType.getDataType());
                 additionalProperties.put(OpenMetadataProperty.EXAMPLE.name, placeholderPropertyType.getExample());
                 additionalProperties.put(OpenMetadataProperty.REQUIRED.name, required);
 
@@ -624,14 +622,15 @@ public class GovernanceArchiveHelper extends SimpleCatalogArchiveHelper
                                                            anchorTypeName,
                                                            anchorDomainName,
                                                            anchorScopeGUID,
-                                                           OpenMetadataType.VALID_VALUE_DEFINITION.typeName,
+                                                           OpenMetadataType.SPECIFICATION_PROPERTY_VALUE.typeName,
                                                            parentTypeName + "::" + parentGUID + "::PlaceholderProperty::" + placeholderPropertyType.getName(),
                                                            Category.SPECIFICATION_PROPERTY.getName(),
+                                                           SpecificationPropertyType.PLACEHOLDER_PROPERTY.getPropertyType(),
                                                            placeholderPropertyType.getName(),
-                                                           SpecificationPropertyType.PLACEHOLDER_PROPERTY.getDescription(),
+                                                           placeholderPropertyType.getDescription(),
                                                            SpecificationPropertyType.PLACEHOLDER_PROPERTY.getPropertyType(),
                                                            null,
-                                                           null,
+                                                           placeholderPropertyType.getDataType(),
                                                            null,
                                                            placeholderPropertyType.getName(),
                                                            null,
@@ -687,8 +686,6 @@ public class GovernanceArchiveHelper extends SimpleCatalogArchiveHelper
                     required = "true";
                 }
 
-                additionalProperties.put(OpenMetadataProperty.DESCRIPTION.name, templateType.getTemplateDescription());
-                additionalProperties.put(OpenMetadataProperty.OPEN_METADATA_TYPE_NAME.name, templateType.getTypeName());
                 additionalProperties.put(OpenMetadataProperty.REQUIRED.name, required);
 
                 String validValueGUID = this.addValidValue(null,
@@ -697,13 +694,14 @@ public class GovernanceArchiveHelper extends SimpleCatalogArchiveHelper
                                                            anchorTypeName,
                                                            anchorDomainName,
                                                            anchorScopeGUID,
-                                                           OpenMetadataType.VALID_VALUE_DEFINITION.typeName,
+                                                           OpenMetadataType.SPECIFICATION_PROPERTY_VALUE.typeName,
                                                            parentTypeName + "::" + parentGUID + "::SupportedTemplate::" + templateType.getTemplateName(),
                                                            Category.SPECIFICATION_PROPERTY.getName(),
-                                                           templateType.getTemplateName(),
-                                                           SpecificationPropertyType.SUPPORTED_TEMPLATE.getDescription(),
                                                            SpecificationPropertyType.SUPPORTED_TEMPLATE.getPropertyType(),
-                                                           null,
+                                                           templateType.getTemplateName(),
+                                                           templateType.getTemplateDescription(),
+                                                           SpecificationPropertyType.SUPPORTED_TEMPLATE.getPropertyType(),
+                                                           templateType.getTypeName(),
                                                            null,
                                                            null,
                                                            templateType.getTemplateName(),
@@ -752,10 +750,7 @@ public class GovernanceArchiveHelper extends SimpleCatalogArchiveHelper
                     additionalProperties = new HashMap<>();
                 }
 
-                additionalProperties.put(OpenMetadataProperty.DESCRIPTION.name, configurationPropertyType.getDescription());
-                additionalProperties.put(OpenMetadataProperty.DATA_TYPE.name, configurationPropertyType.getDataType());
                 additionalProperties.put(OpenMetadataProperty.EXAMPLE.name, configurationPropertyType.getExample());
-                additionalProperties.put(OpenMetadataProperty.DESCRIPTION.name, configurationPropertyType.getDescription());
 
                 String required = "false";
 
@@ -772,14 +767,15 @@ public class GovernanceArchiveHelper extends SimpleCatalogArchiveHelper
                                                            anchorTypeName,
                                                            anchorDomainName,
                                                            anchorScopeGUID,
-                                                           OpenMetadataType.VALID_VALUE_DEFINITION.typeName,
+                                                           OpenMetadataType.SPECIFICATION_PROPERTY_VALUE.typeName,
                                                            parentTypeName + "::" + parentGUID + "::SupportedConfigurationProperty::" + configurationPropertyType.getName(),
                                                            Category.SPECIFICATION_PROPERTY.getName(),
+                                                           SpecificationPropertyType.SUPPORTED_CONFIGURATION_PROPERTY.getPropertyType(),
                                                            configurationPropertyType.getName(),
-                                                           SpecificationPropertyType.SUPPORTED_CONFIGURATION_PROPERTY.getDescription(),
+                                                           configurationPropertyType.getDescription(),
                                                            SpecificationPropertyType.SUPPORTED_CONFIGURATION_PROPERTY.getPropertyType(),
                                                            null,
-                                                           null,
+                                                           configurationPropertyType.getDataType(),
                                                            null,
                                                            configurationPropertyType.getName(),
                                                            null,
@@ -821,26 +817,18 @@ public class GovernanceArchiveHelper extends SimpleCatalogArchiveHelper
         {
             for (RequestTypeType supportedRequestType : supportedRequestTypes)
             {
-                Map<String, String> additionalProperties = supportedRequestType.getOtherPropertyValues();
-
-                if (additionalProperties == null)
-                {
-                    additionalProperties = new HashMap<>();
-                }
-
-                additionalProperties.put(OpenMetadataProperty.DESCRIPTION.name, supportedRequestType.getDescription());
-
                 String validValueGUID = this.addValidValue(null,
                                                            null,
                                                            anchorGUID,
                                                            anchorTypeName,
                                                            anchorDomainName,
                                                            anchorScopeGUID,
-                                                           OpenMetadataType.VALID_VALUE_DEFINITION.typeName,
+                                                           OpenMetadataType.SPECIFICATION_PROPERTY_VALUE.typeName,
                                                            parentTypeName + "::" + parentGUID + "::SupportedRequestType::" + supportedRequestType.getRequestType(),
                                                            Category.SPECIFICATION_PROPERTY.getName(),
+                                                           SpecificationPropertyType.SUPPORTED_REQUEST_TYPE.getPropertyType(),
                                                            supportedRequestType.getRequestType(),
-                                                           SpecificationPropertyType.SUPPORTED_REQUEST_TYPE.getDescription(),
+                                                           supportedRequestType.getDescription(),
                                                            SpecificationPropertyType.SUPPORTED_REQUEST_TYPE.getPropertyType(),
                                                            null,
                                                            null,
@@ -849,7 +837,7 @@ public class GovernanceArchiveHelper extends SimpleCatalogArchiveHelper
                                                            null,
                                                            null,
                                                            true,
-                                                           additionalProperties);
+                                                           supportedRequestType.getOtherPropertyValues());
 
                 if (validValueGUID != null)
                 {
@@ -899,8 +887,6 @@ public class GovernanceArchiveHelper extends SimpleCatalogArchiveHelper
                     required = "true";
                 }
 
-                additionalProperties.put(OpenMetadataProperty.DESCRIPTION.name, supportedRequestParameter.getDescription());
-                additionalProperties.put(OpenMetadataProperty.DATA_TYPE.name, supportedRequestParameter.getDataType());
                 additionalProperties.put(OpenMetadataProperty.EXAMPLE.name, supportedRequestParameter.getExample());
                 additionalProperties.put(OpenMetadataProperty.REQUIRED.name, required);
 
@@ -910,14 +896,15 @@ public class GovernanceArchiveHelper extends SimpleCatalogArchiveHelper
                                                            anchorTypeName,
                                                            anchorDomainName,
                                                            anchorScopeGUID,
-                                                           OpenMetadataType.VALID_VALUE_DEFINITION.typeName,
+                                                           OpenMetadataType.SPECIFICATION_PROPERTY_VALUE.typeName,
                                                            parentTypeName + "::" + parentGUID + "::SupportedRequestParameter::" + supportedRequestParameter.getName(),
                                                            Category.SPECIFICATION_PROPERTY.getName(),
+                                                           SpecificationPropertyType.SUPPORTED_REQUEST_PARAMETER.getPropertyType(),
                                                            supportedRequestParameter.getName(),
-                                                           SpecificationPropertyType.SUPPORTED_REQUEST_PARAMETER.getDescription(),
+                                                           supportedRequestParameter.getDescription(),
                                                            SpecificationPropertyType.SUPPORTED_REQUEST_PARAMETER.getPropertyType(),
                                                            null,
-                                                           null,
+                                                           supportedRequestParameter.getDataType(),
                                                            null,
                                                            supportedRequestParameter.getName(),
                                                            null,
@@ -984,14 +971,15 @@ public class GovernanceArchiveHelper extends SimpleCatalogArchiveHelper
                                                            anchorTypeName,
                                                            anchorDomainName,
                                                            anchorScopeGUID,
-                                                           OpenMetadataType.VALID_VALUE_DEFINITION.typeName,
+                                                           OpenMetadataType.SPECIFICATION_PROPERTY_VALUE.typeName,
                                                            parentTypeName + "::" + parentGUID + "::SupportedActionTarget::" + supportedActionTarget.getName(),
                                                            Category.SPECIFICATION_PROPERTY.getName(),
+                                                           SpecificationPropertyType.SUPPORTED_ACTION_TARGET.getPropertyType(),
                                                            supportedActionTarget.getName(),
-                                                           SpecificationPropertyType.SUPPORTED_ACTION_TARGET.getDescription(),
+                                                           supportedActionTarget.getDescription(),
                                                            SpecificationPropertyType.SUPPORTED_ACTION_TARGET.getPropertyType(),
                                                            null,
-                                                           null,
+                                                           supportedActionTarget.getTypeName(),
                                                            null,
                                                            supportedActionTarget.getName(),
                                                            null,
@@ -1048,14 +1036,15 @@ public class GovernanceArchiveHelper extends SimpleCatalogArchiveHelper
                                                            anchorTypeName,
                                                            anchorDomainName,
                                                            anchorScopeGUID,
-                                                           OpenMetadataType.VALID_VALUE_DEFINITION.typeName,
+                                                           OpenMetadataType.SPECIFICATION_PROPERTY_VALUE.typeName,
                                                            parentTypeName + "::" + parentGUID + "::SupportedAnalysisStep::" + analysisStepType.getName(),
                                                            Category.SPECIFICATION_PROPERTY.getName(),
+                                                           SpecificationPropertyType.SUPPORTED_ANALYSIS_STEP.getPropertyType(),
                                                            analysisStepType.getName(),
-                                                           SpecificationPropertyType.SUPPORTED_ANALYSIS_STEP.getDescription(),
+                                                           analysisStepType.getDescription(),
                                                            SpecificationPropertyType.SUPPORTED_ANALYSIS_STEP.getPropertyType(),
                                                            null,
-                                                           null,
+                                                           DataType.STRING.getName(),
                                                            null,
                                                            analysisStepType.getName(),
                                                            null,
@@ -1104,8 +1093,6 @@ public class GovernanceArchiveHelper extends SimpleCatalogArchiveHelper
                     additionalProperties = new HashMap<>();
                 }
 
-                additionalProperties.put(OpenMetadataProperty.SUMMARY.name, annotationTypeType.getSummary());
-                additionalProperties.put(OpenMetadataProperty.EXPLANATION.name, annotationTypeType.getExplanation());
                 additionalProperties.put(OpenMetadataProperty.EXPRESSION.name, annotationTypeType.getExpression());
                 additionalProperties.put(OpenMetadataProperty.ANALYSIS_STEP.name, annotationTypeType.getAnalysisStepName());
                 additionalProperties.put(OpenMetadataProperty.OPEN_METADATA_TYPE_NAME.name, annotationTypeType.getOpenMetadataTypeName());
@@ -1116,11 +1103,12 @@ public class GovernanceArchiveHelper extends SimpleCatalogArchiveHelper
                                                            anchorTypeName,
                                                            anchorDomainName,
                                                            anchorScopeGUID,
-                                                           OpenMetadataType.VALID_VALUE_DEFINITION.typeName,
+                                                           OpenMetadataType.SPECIFICATION_PROPERTY_VALUE.typeName,
                                                            parentTypeName + "::" + parentGUID + "::ProducedAnnotationType::" + annotationTypeType.getName(),
                                                            Category.SPECIFICATION_PROPERTY.getName(),
-                                                           annotationTypeType.getOpenMetadataTypeName() + "::" + annotationTypeType.getName(),
-                                                           SpecificationPropertyType.PRODUCED_ANNOTATION_TYPE.getDescription(),
+                                                           SpecificationPropertyType.PRODUCED_ANNOTATION_TYPE.getPropertyType(),
+                                                           annotationTypeType.getSummary(),
+                                                           annotationTypeType.getExplanation(),
                                                            SpecificationPropertyType.PRODUCED_ANNOTATION_TYPE.getPropertyType(),
                                                            null,
                                                            null,
@@ -1190,14 +1178,15 @@ public class GovernanceArchiveHelper extends SimpleCatalogArchiveHelper
                                                            anchorTypeName,
                                                            anchorDomainName,
                                                            anchorScopeGUID,
-                                                           OpenMetadataType.VALID_VALUE_DEFINITION.typeName,
+                                                           OpenMetadataType.SPECIFICATION_PROPERTY_VALUE.typeName,
                                                            parentTypeName + "::" + parentGUID + "::ProducedRequestParameter::" + producedRequestParameter.getName(),
                                                            Category.SPECIFICATION_PROPERTY.getName(),
+                                                           SpecificationPropertyType.PRODUCED_REQUEST_PARAMETER.getPropertyType(),
                                                            producedRequestParameter.getName(),
-                                                           SpecificationPropertyType.PRODUCED_REQUEST_PARAMETER.getDescription(),
+                                                           producedRequestParameter.getDescription(),
                                                            SpecificationPropertyType.PRODUCED_REQUEST_PARAMETER.getPropertyType(),
                                                            null,
-                                                           null,
+                                                           producedRequestParameter.getDataType(),
                                                            null,
                                                            producedRequestParameter.getName(),
                                                            null,
@@ -1253,8 +1242,6 @@ public class GovernanceArchiveHelper extends SimpleCatalogArchiveHelper
                     required = "true";
                 }
 
-                additionalProperties.put(OpenMetadataProperty.DESCRIPTION.name, actionTargetType.getDescription());
-                additionalProperties.put(OpenMetadataProperty.DATA_TYPE.name, actionTargetType.getTypeName());
                 additionalProperties.put(OpenMetadataProperty.DEPLOYED_IMPLEMENTATION_TYPE.name, actionTargetType.getDeployedImplementationType());
                 additionalProperties.put(OpenMetadataProperty.REQUIRED.name, required);
 
@@ -1264,14 +1251,15 @@ public class GovernanceArchiveHelper extends SimpleCatalogArchiveHelper
                                                            anchorTypeName,
                                                            anchorDomainName,
                                                            anchorScopeGUID,
-                                                           OpenMetadataType.VALID_VALUE_DEFINITION.typeName,
+                                                           OpenMetadataType.SPECIFICATION_PROPERTY_VALUE.typeName,
                                                            parentTypeName + "::" + parentGUID + "::ProducedActionTarget::" + actionTargetType.getName(),
                                                            Category.SPECIFICATION_PROPERTY.getName(),
+                                                           SpecificationPropertyType.PRODUCED_ACTION_TARGET.getPropertyType(),
                                                            actionTargetType.getName(),
-                                                           SpecificationPropertyType.PRODUCED_ACTION_TARGET.getDescription(),
+                                                           actionTargetType.getDescription(),
                                                            SpecificationPropertyType.PRODUCED_ACTION_TARGET.getPropertyType(),
                                                            null,
-                                                           null,
+                                                           actionTargetType.getTypeName(),
                                                            null,
                                                            actionTargetType.getName(),
                                                            null,
@@ -1330,14 +1318,15 @@ public class GovernanceArchiveHelper extends SimpleCatalogArchiveHelper
                                                            anchorTypeName,
                                                            anchorDomainName,
                                                            anchorScopeGUID,
-                                                           OpenMetadataType.VALID_VALUE_DEFINITION.typeName,
+                                                           OpenMetadataType.SPECIFICATION_PROPERTY_VALUE.typeName,
                                                            parentTypeName + "::" + parentGUID + "::ProducedGuard::" + guardType.getGuard(),
                                                            Category.SPECIFICATION_PROPERTY.getName(),
+                                                           SpecificationPropertyType.PRODUCED_GUARD.getPropertyType(),
                                                            guardType.getGuard(),
-                                                           SpecificationPropertyType.PRODUCED_GUARD.getDescription(),
+                                                           guardType.getDescription(),
                                                            SpecificationPropertyType.PRODUCED_GUARD.getPropertyType(),
                                                            guardType.getCompletionStatus().getName(),
-                                                           null,
+                                                           DataType.STRING.getName(),
                                                            null,
                                                            guardType.getGuard(),
                                                            null,
@@ -1942,36 +1931,6 @@ public class GovernanceArchiveHelper extends SimpleCatalogArchiveHelper
 
         archiveBuilder.addRelationship(archiveHelper.getRelationship(OpenMetadataType.TARGET_FOR_GOVERNANCE_ACTION_RELATIONSHIP.typeName,
                                                                      idToGUIDMap.getGUID(governanceActionTypeGUID + "_to_" + actionTarget.getActionTargetGUID() + "_target_for_action_type_relationship"),
-                                                                     properties,
-                                                                     InstanceStatus.ACTIVE,
-                                                                     end1,
-                                                                     end2));
-    }
-
-
-
-
-    /**
-     * Create the relationship between a governance action process and a pre-defined action target.
-     *
-     * @param governanceActionProcessGUID unique identifier of the governance action type/process step
-     * @param actionTarget details of the action target
-     */
-    public void addTargetForActionProcess(String          governanceActionProcessGUID,
-                                          NewActionTarget actionTarget)
-    {
-        final String methodName = "addTargetForActionProcess";
-
-        EntityDetail actionTypeEntity = archiveBuilder.getEntity(governanceActionProcessGUID);
-        EntityDetail targetEntity = archiveBuilder.getEntity(actionTarget.getActionTargetGUID());
-
-        EntityProxy end1 = archiveHelper.getEntityProxy(actionTypeEntity);
-        EntityProxy end2 = archiveHelper.getEntityProxy(targetEntity);
-
-        InstanceProperties properties = archiveHelper.addStringPropertyToInstance(archiveRootName, null, OpenMetadataProperty.ACTION_TARGET_NAME.name, actionTarget.getActionTargetName(), methodName);
-
-        archiveBuilder.addRelationship(archiveHelper.getRelationship(OpenMetadataType.TARGET_FOR_GOVERNANCE_ACTION_RELATIONSHIP.typeName,
-                                                                     idToGUIDMap.getGUID(governanceActionProcessGUID + "_to_" + actionTarget.getActionTargetGUID() + "_target_for_action_process_relationship"),
                                                                      properties,
                                                                      InstanceStatus.ACTIVE,
                                                                      end1,

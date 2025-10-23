@@ -4,9 +4,6 @@
 package org.odpi.openmetadata.frameworks.openmetadata.properties.assets.filesandfolders;
 
 import com.fasterxml.jackson.annotation.*;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.analytics.DeployedAnalyticsModelProperties;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.apis.DeployedAPIProperties;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.processes.connectors.DeployedConnectorProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;

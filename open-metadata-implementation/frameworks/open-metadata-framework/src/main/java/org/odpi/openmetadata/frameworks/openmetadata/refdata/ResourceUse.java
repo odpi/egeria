@@ -6,7 +6,6 @@ import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
 
 import java.util.List;
 
-import static org.odpi.openmetadata.frameworks.openmetadata.mapper.OpenMetadataValidValues.constructValidValueNamespace;
 import static org.odpi.openmetadata.frameworks.openmetadata.mapper.OpenMetadataValidValues.constructValidValueQualifiedName;
 
 /**
@@ -267,19 +266,6 @@ public enum ResourceUse
                                                 OpenMetadataProperty.RESOURCE_USE.name,
                                                 null,
                                                 resourceUse);
-    }
-
-
-    /**
-     * Return the namespace for this resourceUse value.
-     *
-     * @return string
-     */
-    public String getNamespace()
-    {
-        return constructValidValueNamespace(null,
-                                            OpenMetadataProperty.RESOURCE_USE.name,
-                                            null);
     }
 
 

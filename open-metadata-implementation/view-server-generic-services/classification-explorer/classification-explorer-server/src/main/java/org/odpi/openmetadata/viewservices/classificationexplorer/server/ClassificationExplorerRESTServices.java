@@ -8,6 +8,7 @@ import org.odpi.openmetadata.commonservices.ffdc.RESTExceptionHandler;
 import org.odpi.openmetadata.commonservices.ffdc.rest.*;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.TermAssignmentStatus;
+import org.odpi.openmetadata.frameworks.openmetadata.handlers.SearchKeywordHandler;
 import org.odpi.openmetadata.frameworks.openmetadata.handlers.StewardshipManagementHandler;
 import org.odpi.openmetadata.frameworks.openmetadata.mermaid.CertificationMermaidGraphBuilder;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.*;
@@ -2609,4 +2610,164 @@ public class ClassificationExplorerRESTServices extends TokenController
         restCallLogger.logRESTCallReturn(token, response.toString());
         return response;
     }
+    
+
+    /**
+     * Return the requested search keyword.
+     *
+     * @param serverName name of the server instances for this request
+     * @param searchKeywordGUID  unique identifier for the search keyword object.
+     * @param urlMarker  view service URL marker
+     * @param requestBody optional effective time
+     * @return search keyword properties or
+     *  InvalidParameterException one of the parameters is null or invalid.
+     *  PropertyServerException there is a problem updating the element properties in the property server.
+     *  UserNotAuthorizedException the user does not have permission to perform this request.
+     */
+    public OpenMetadataRootElementResponse getSearchKeywordByGUID(String         serverName,
+                                                            String         urlMarker,
+                                                            String         searchKeywordGUID,
+                                                            GetRequestBody requestBody)
+    {
+        final String methodName = "getSearchKeyword";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
+
+        OpenMetadataRootElementResponse response = new OpenMetadataRootElementResponse();
+        AuditLog        auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            SearchKeywordHandler handler = instanceHandler.getSearchKeywordHandler(userId, serverName, urlMarker, methodName);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            response.setElement(handler.getSearchKeywordByGUID(userId, searchKeywordGUID, requestBody));
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+        return response;
+    }
+
+
+
+
+    /**
+     * Retrieve the list of search keyword metadata elements that contain the search string.
+     *
+     * @param serverName name of the server to route the request to
+     * @param urlMarker  view service URL marker
+     * @param requestBody string to find in the properties
+     *
+     * @return list of matching metadata elements or
+     *  InvalidParameterException  one of the parameters is invalid
+     *  UserNotAuthorizedException the user is not authorized to issue this request
+     *  PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public OpenMetadataRootElementsResponse getSearchKeywordsByKeyword(String                  serverName,
+                                                         String                  urlMarker,
+                                                         FilterRequestBody requestBody)
+    {
+        final String methodName = "getSearchKeywordsByKeyword";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
+
+        OpenMetadataRootElementsResponse response = new OpenMetadataRootElementsResponse();
+        AuditLog                auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            SearchKeywordHandler handler = instanceHandler.getSearchKeywordHandler(userId, serverName, urlMarker, methodName);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            if (requestBody != null)
+            {
+                response.setElements(handler.getSearchKeywordsByKeyword(userId,
+                                                                        requestBody.getFilter(),
+                                                                        requestBody));
+            }
+            else
+            {
+                restExceptionHandler.handleNoRequestBody(userId, methodName, FilterRequestBody.class.getName());
+            }
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+        return response;
+    }
+
+
+
+
+
+    /**
+     * Retrieve the list of search keyword metadata elements that contain the search string.
+     *
+     * @param serverName name of the server to route the request to
+     * @param urlMarker  view service URL marker
+     * @param requestBody string to find in the properties
+     *
+     * @return list of matching metadata elements or
+     *  InvalidParameterException  one of the parameters is invalid
+     *  UserNotAuthorizedException the user is not authorized to issue this request
+     *  PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public OpenMetadataRootElementsResponse findSearchKeywords(String                  serverName,
+                                                               String                  urlMarker,
+                                                               SearchStringRequestBody requestBody)
+    {
+        final String methodName = "findSearchKeywords";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
+
+        OpenMetadataRootElementsResponse response = new OpenMetadataRootElementsResponse();
+        AuditLog                auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            SearchKeywordHandler handler = instanceHandler.getSearchKeywordHandler(userId, serverName, urlMarker, methodName);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            if (requestBody != null)
+            {
+                response.setElements(handler.findSearchKeywords(userId,
+                                                                requestBody.getSearchString(),
+                                                                requestBody));
+            }
+            else
+            {
+                response.setElements(handler.findSearchKeywords(userId, null, null));
+            }
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+        return response;
+    }
+
 }

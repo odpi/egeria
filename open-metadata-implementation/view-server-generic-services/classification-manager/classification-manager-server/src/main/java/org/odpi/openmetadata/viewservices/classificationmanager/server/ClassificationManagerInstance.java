@@ -2,15 +2,17 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.viewservices.classificationmanager.server;
 
-import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceDescription;
-import org.odpi.openmetadata.adminservices.configuration.registration.CommonServicesDescription;
+import org.odpi.openmetadata.adminservices.configuration.properties.ViewServiceConfig;
 import org.odpi.openmetadata.adminservices.configuration.registration.ViewServiceDescription;
 import org.odpi.openmetadata.commonservices.multitenant.OMVSServiceInstance;
+import org.odpi.openmetadata.commonservices.multitenant.ViewServiceClientMap;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
-import org.odpi.openmetadata.frameworks.openmetadata.client.OpenMetadataClient;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
+import org.odpi.openmetadata.frameworks.openmetadata.ffdc.PropertyServerException;
+import org.odpi.openmetadata.frameworks.openmetadata.handlers.SearchKeywordHandler;
 import org.odpi.openmetadata.frameworks.openmetadata.handlers.StewardshipManagementHandler;
-import org.odpi.openmetadata.frameworkservices.omf.client.handlers.EgeriaOpenMetadataStoreHandler;
+
+import java.util.List;
 
 /**
  * ClassificationManagerInstance caches references to objects it needs for a specific server.
@@ -21,7 +23,8 @@ public class ClassificationManagerInstance extends OMVSServiceInstance
 {
     private static final ViewServiceDescription myDescription = ViewServiceDescription.CLASSIFICATION_MANAGER;
 
-    private final StewardshipManagementHandler stewardshipManagementHandler;
+    private final ViewServiceClientMap<StewardshipManagementHandler> stewardshipManagementMap;
+    private final ViewServiceClientMap<SearchKeywordHandler>         searchKeywordMap;
 
     /**
      * Set up the Classification Manager OMVS instance*
@@ -32,15 +35,16 @@ public class ClassificationManagerInstance extends OMVSServiceInstance
      * @param maxPageSize maximum page size
      * @param remoteServerName  remote server name
      * @param remoteServerURL remote server URL
-     * @throws InvalidParameterException problem with server name or platform URL
+     * @param activeViewServices list of view services active in this server
      */
-    public ClassificationManagerInstance(String       serverName,
-                                         AuditLog     auditLog,
-                                         String       localServerUserId,
-                                         String       localServerUserPassword,
-                                         int          maxPageSize,
-                                         String       remoteServerName,
-                                         String       remoteServerURL) throws InvalidParameterException
+    public ClassificationManagerInstance(String                  serverName,
+                                         AuditLog                auditLog,
+                                         String                  localServerUserId,
+                                         String                  localServerUserPassword,
+                                         int                     maxPageSize,
+                                         String                  remoteServerName,
+                                         String                  remoteServerURL,
+                                         List<ViewServiceConfig> activeViewServices)
     {
         super(serverName,
               myDescription.getViewServiceFullName(),
@@ -52,38 +56,57 @@ public class ClassificationManagerInstance extends OMVSServiceInstance
               remoteServerURL);
 
 
-        OpenMetadataClient openMetadataClient;
-        if (localServerUserPassword == null)
-        {
-            openMetadataClient = new EgeriaOpenMetadataStoreHandler(remoteServerName,
-                                                                    remoteServerURL,
-                                                                    maxPageSize);
+        this.stewardshipManagementMap = new ViewServiceClientMap<>(StewardshipManagementHandler.class,
+                                                                   serverName,
+                                                                   localServerUserId,
+                                                                   localServerUserPassword,
+                                                                   auditLog,
+                                                                   activeViewServices,
+                                                                   myDescription.getViewServiceFullName(),
+                                                                   maxPageSize);
 
-        }
-        else
-        {
-            openMetadataClient = new EgeriaOpenMetadataStoreHandler(remoteServerName,
-                                                                    remoteServerURL,
-                                                                    localServerUserId,
-                                                                    localServerUserPassword,
-                                                                    maxPageSize);
-        }
-
-        stewardshipManagementHandler = new StewardshipManagementHandler(serverName,
-                                                                        auditLog,
-                                                                        myDescription.getViewServiceFullName(),
-                                                                        openMetadataClient);
+        this.searchKeywordMap = new ViewServiceClientMap<>(SearchKeywordHandler.class,
+                                                           serverName,
+                                                           localServerUserId,
+                                                           localServerUserPassword,
+                                                           auditLog,
+                                                           activeViewServices,
+                                                           myDescription.getViewServiceFullName(),
+                                                           maxPageSize);
 
     }
 
 
     /**
-     * Return the stewardship handler.
+     * Return the open metadata handler.
      *
+     * @param urlMarker calling view service
+     * @param methodName calling operation
      * @return client
+     * @throws InvalidParameterException bad client initialization
+     * @throws PropertyServerException bad client handler class
      */
-    public StewardshipManagementHandler getStewardshipManagementHandler()
+    public StewardshipManagementHandler getStewardshipManagementHandler(String urlMarker,
+                                                                        String methodName) throws InvalidParameterException,
+                                                                                                  PropertyServerException
     {
-        return stewardshipManagementHandler;
+        return stewardshipManagementMap.getClient(urlMarker, methodName);
+    }
+
+
+    /**
+     * Return the open metadata handler.
+     *
+     * @param urlMarker calling view service
+     * @param methodName calling operation
+     * @return client
+     * @throws InvalidParameterException bad client initialization
+     * @throws PropertyServerException bad client handler class
+     */
+    public SearchKeywordHandler getSearchKeywordHandler(String urlMarker,
+                                                        String methodName) throws InvalidParameterException,
+                                                                                  PropertyServerException
+    {
+        return searchKeywordMap.getClient(urlMarker, methodName);
     }
 }

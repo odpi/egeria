@@ -1267,7 +1267,6 @@ public abstract class ContentPackBaseArchiveWriter extends EgeriaBaseArchiveWrit
      * @param deployedImplementationType preferred value
      * @param associatedTypeName         specific type name to tie it to (maybe null)
      * @param qualifiedName              qualifiedName for this value
-     * @param namespace                   namespace for this value
      * @param description                description of this value
      * @param wikiLink                   optional URL link to more information
      * @param isATypeOf                  superType
@@ -1276,7 +1275,6 @@ public abstract class ContentPackBaseArchiveWriter extends EgeriaBaseArchiveWrit
     protected String addDeployedImplementationType(String                               deployedImplementationType,
                                                    String                               associatedTypeName,
                                                    String                               qualifiedName,
-                                                   String                               namespace,
                                                    String                               description,
                                                    String                               wikiLink,
                                                    DeployedImplementationTypeDefinition isATypeOf)
@@ -1296,13 +1294,14 @@ public abstract class ContentPackBaseArchiveWriter extends EgeriaBaseArchiveWrit
                                                                  OpenMetadataType.VALID_METADATA_VALUE.typeName,
                                                                  OpenMetadataType.VALID_VALUE_DEFINITION.typeName,
                                                                  null,
-                                                                 OpenMetadataType.VALID_METADATA_VALUE.typeName,
+                                                                 OpenMetadataType.TECHNOLOGY_TYPE.typeName,
                                                                  qualifiedName,
                                                                  Category.VALID_METADATA_VALUES.getName(),
+                                                                 OpenMetadataProperty.DEPLOYED_IMPLEMENTATION_TYPE.name,
                                                                  deployedImplementationType,
                                                                  description,
-                                                                 namespace,
-                                                                 OpenMetadataValidValues.VALID_METADATA_VALUES_USAGE,
+                                                                 null,
+                                                                 null,
                                                                  DataType.STRING.getName(),
                                                                  OpenMetadataValidValues.OPEN_METADATA_ECOSYSTEM_SCOPE,
                                                                  deployedImplementationType,

@@ -5,15 +5,14 @@ package org.odpi.openmetadata.frameworks.openmetadata.properties.assets.infrastr
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import org.odpi.openmetadata.frameworks.openmetadata.enums.OperationalStatus;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.RelationshipBeanProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
-
-import org.odpi.openmetadata.frameworks.openmetadata.enums.OperationalStatus;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.RelationshipBeanProperties;
-import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;

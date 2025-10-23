@@ -8,6 +8,7 @@ import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.DataScope
 import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.apis.ListenerInterfaceProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.apis.PublisherInterfaceProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.apis.RequestResponseInterfaceProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.referencedata.ReferenceDataProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.collections.*;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.glossaries.*;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.governance.*;
@@ -26,9 +27,7 @@ import org.odpi.openmetadata.frameworks.openmetadata.properties.schema.TypeEmbed
 import org.odpi.openmetadata.frameworks.openmetadata.properties.security.SecurityGroupMembershipProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.security.SecurityTagsProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.security.ZoneMembershipProperties;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.softwarecapabilities.ResourceManagerProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.templates.TemplateProperties;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.referencedata.ReferenceDataProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.templates.TemplateSubstituteProperties;
 
 import java.util.Map;

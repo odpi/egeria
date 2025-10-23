@@ -4,6 +4,10 @@ package org.odpi.openmetadata.viewservices.feedbackmanager.server.spring;
 
 import io.swagger.v3.oas.annotations.ExternalDocumentation;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.enums.SecuritySchemeIn;
+import io.swagger.v3.oas.annotations.enums.SecuritySchemeType;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import io.swagger.v3.oas.annotations.security.SecurityScheme;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.odpi.openmetadata.commonservices.ffdc.rest.*;
 import org.odpi.openmetadata.viewservices.feedbackmanager.server.FeedbackManagerRESTServices;
@@ -16,7 +20,13 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/servers/{serverName}/api/open-metadata/{urlMarker}")
-
+@SecurityScheme(
+        name = "BearerAuthorization",
+        type = SecuritySchemeType.HTTP,
+        bearerFormat = "JWT",
+        scheme = "bearer",
+        in = SecuritySchemeIn.HEADER
+)
 @Tag(name="API: Feedback Manager OMVS",
      description="Add comments, reviews, tags and notes to elements of interest.",
      externalDocs=@ExternalDocumentation(description="Further Information",url="https://egeria-project.org/services/omvs/feedback-manager/overview/"))
@@ -51,6 +61,7 @@ public class FeedbackManagerResource
      * UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     @PostMapping(path = "/elements/{elementGUID}/comments/{commentGUID}/replies")
+    @SecurityRequirement(name = "BearerAuthorization")
 
     @Operation(summary="addCommentReply",
                description="Adds a reply to a comment.",
@@ -61,7 +72,7 @@ public class FeedbackManagerResource
                                         @PathVariable String                         urlMarker,
                                         @PathVariable String                         elementGUID,
                                         @PathVariable String                         commentGUID,
-                                        @RequestBody(required = false) NewFeedbackRequestBody requestBody)
+                                        @RequestBody(required = false) NewAttachmentRequestBody requestBody)
     {
         return restAPI.addCommentReply(serverName, urlMarker, elementGUID, commentGUID, requestBody);
     }
@@ -82,6 +93,7 @@ public class FeedbackManagerResource
      * UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     @PostMapping(path = "/elements/{elementGUID}/comments")
+    @SecurityRequirement(name = "BearerAuthorization")
 
     @Operation(summary="addCommentToElement",
                description="Creates a comment and attaches it to an element.",
@@ -91,7 +103,7 @@ public class FeedbackManagerResource
     public GUIDResponse addCommentToElement(@PathVariable String                 serverName,
                                             @PathVariable String                 urlMarker,
                                             @PathVariable String                 elementGUID,
-                                            @RequestBody(required = false)  NewFeedbackRequestBody requestBody)
+                                            @RequestBody(required = false)  NewAttachmentRequestBody requestBody)
     {
         return restAPI.addCommentToElement(serverName, urlMarker, elementGUID, requestBody);
     }
@@ -112,6 +124,7 @@ public class FeedbackManagerResource
      * UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     @PostMapping(path = "/elements/{elementGUID}/likes")
+    @SecurityRequirement(name = "BearerAuthorization")
 
     @Operation(summary="addLikeToElement",
                description="Creates a <i>like</i> object and attaches it to an element.",
@@ -142,6 +155,7 @@ public class FeedbackManagerResource
      * UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     @PostMapping(path = "/elements/{elementGUID}/ratings")
+    @SecurityRequirement(name = "BearerAuthorization")
 
     @Operation(summary="addRatingToElement",
                description="Adds, or updates, a star rating and optional review text to the element.",
@@ -172,6 +186,7 @@ public class FeedbackManagerResource
      * UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     @PostMapping(path = "/elements/{elementGUID}/tags/{tagGUID}")
+    @SecurityRequirement(name = "BearerAuthorization")
 
     @Operation(summary="addTagToElement",
                description="Adds an informal tag (either private of public) to an element.",
@@ -202,6 +217,7 @@ public class FeedbackManagerResource
      * UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     @PostMapping(path = "/tags")
+    @SecurityRequirement(name = "BearerAuthorization")
 
     @Operation(summary="createInformalTag",
                description="Creates a new informal tag and returns the unique identifier for it.",
@@ -232,6 +248,7 @@ public class FeedbackManagerResource
      * UserNotAuthorizedException - the requesting user is not authorized to issue this request.
      */
     @PostMapping(path = "/tags/{tagGUID}/remove")
+    @SecurityRequirement(name = "BearerAuthorization")
 
     @Operation(summary="deleteTag",
                description="Removes an informal tag from the repository.  All the tagging relationships to this informal tag are lost.  A private tag can be deleted by its creator and all the references are lost; a public tag can be deleted by anyone, but only if it is not attached to any referenceable.",
@@ -262,6 +279,7 @@ public class FeedbackManagerResource
      * UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     @PostMapping(path = "/elements/by-tag/{tagGUID}/retrieve")
+    @SecurityRequirement(name = "BearerAuthorization")
 
     @Operation(summary="getElementsByTag",
                description="Return the list of unique identifiers for elements that are linked to a specific tag either directly, or via one of its schema elements.",
@@ -293,6 +311,7 @@ public class FeedbackManagerResource
      * UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     @PostMapping(path = "/tags/{tagGUID}/retrieve")
+    @SecurityRequirement(name = "BearerAuthorization")
 
     @Operation(summary="getTag",
                description="Return the informal tag for the supplied unique identifier (tagGUID).",
@@ -321,6 +340,7 @@ public class FeedbackManagerResource
      * UserNotAuthorizedException - the requesting user is not authorized to issue this request.
      */
     @PostMapping(path = "/tags/by-name")
+    @SecurityRequirement(name = "BearerAuthorization")
 
     @Operation(summary="getTagsByName",
                description="Return the tags exactly matching the supplied name.",
@@ -348,6 +368,7 @@ public class FeedbackManagerResource
      * UserNotAuthorizedException - the requesting user is not authorized to issue this request.
      */
     @PostMapping(path = "/comments/by-search-string")
+    @SecurityRequirement(name = "BearerAuthorization")
 
     @Operation(summary="findComment",
                description="Return the list of comments containing the supplied string. The search string is located in the request body and is interpreted as a plain string.  The request parameters, startsWith, endsWith and ignoreCase can be used to allow a fuzzy search.  The request body also supports the specification of an effective time to restrict the search to element that are/were effective at a particular time.",
@@ -376,6 +397,7 @@ public class FeedbackManagerResource
      * UserNotAuthorizedException - the requesting user is not authorized to issue this request.
      */
     @PostMapping(path = "/tags/by-search-string")
+    @SecurityRequirement(name = "BearerAuthorization")
 
     @Operation(summary="findTags",
                description="Return the list of informal tags containing the supplied string in their name or description. The search string is located in the request body and is interpreted as a plain string.  The request parameters, startsWith, endsWith and ignoreCase can be used to allow a fuzzy search.  The request body also supports the specification of an effective time to restrict the search to element that are/were effective at a particular time.",
@@ -404,6 +426,7 @@ public class FeedbackManagerResource
      * UserNotAuthorizedException - the requesting user is not authorized to issue this request.
      */
     @PostMapping(path = "/tags/private/by-search-string")
+    @SecurityRequirement(name = "BearerAuthorization")
 
     @Operation(summary="findMyTags",
                description="Return the list of the calling user's private tags containing the supplied string in either the name or description.  The search string is a regular expression (RegEx).",
@@ -433,6 +456,7 @@ public class FeedbackManagerResource
      * UserNotAuthorizedException the user does not have permission to perform this request.
      */
     @PostMapping(path = "/comments/{commentGUID}/remove")
+    @SecurityRequirement(name = "BearerAuthorization")
 
     @Operation(summary="removeCommentFromElement",
                description="Removes a comment added to the element by this user.  This deletes the link to the comment, the comment itself and any comment replies attached to it.",
@@ -462,6 +486,7 @@ public class FeedbackManagerResource
      *  UserNotAuthorizedException the user does not have permission to perform this request.
      */
     @PostMapping(path = "/comments/{commentGUID}/retrieve")
+    @SecurityRequirement(name = "BearerAuthorization")
 
     @Operation(summary="getComment",
             description="Return the requested comment.",
@@ -491,8 +516,9 @@ public class FeedbackManagerResource
      *  UserNotAuthorizedException the user does not have permission to perform this request.
      */
     @PostMapping(path = "/elements/{elementGUID}/ratings/retrieve")
+    @SecurityRequirement(name = "BearerAuthorization")
 
-    @Operation(summary="getAttachedComments",
+    @Operation(summary="getAttachedRatings",
             description="Return the ratings attached to an element.",
             externalDocs=@ExternalDocumentation(description="Element Feedback",
                     url="https://egeria-project.org/patterns/metadata-manager/overview/#asset-feedback"))
@@ -519,6 +545,7 @@ public class FeedbackManagerResource
      *  UserNotAuthorizedException the user does not have permission to perform this request.
      */
     @PostMapping(path = "/elements/{elementGUID}/likes/retrieve")
+    @SecurityRequirement(name = "BearerAuthorization")
 
     @Operation(summary="getAttachedLikes",
             description="Return the likes attached to an element.",
@@ -547,6 +574,7 @@ public class FeedbackManagerResource
      *  UserNotAuthorizedException the user does not have permission to perform this request.
      */
     @PostMapping(path = "/elements/{elementGUID}/comments/retrieve")
+    @SecurityRequirement(name = "BearerAuthorization")
 
     @Operation(summary="getAttachedComments",
             description="Return the comments attached to an element.",
@@ -575,6 +603,7 @@ public class FeedbackManagerResource
      *  UserNotAuthorizedException the user does not have permission to perform this request.
      */
     @PostMapping(path = "/elements/{elementGUID}/tags/retrieve")
+    @SecurityRequirement(name = "BearerAuthorization")
 
     @Operation(summary="getAttachedTags",
             description="Return the informal tags attached to an element.",
@@ -604,6 +633,7 @@ public class FeedbackManagerResource
      * UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     @PostMapping(path = "/elements/{elementGUID}/likes/remove")
+    @SecurityRequirement(name = "BearerAuthorization")
 
     @Operation(summary="removeLikeFromElement",
                description="Removes a <i>Like</i> added to the element by this user.",
@@ -634,6 +664,7 @@ public class FeedbackManagerResource
      * UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     @PostMapping(path = "/elements/{elementGUID}/ratings/remove")
+    @SecurityRequirement(name = "BearerAuthorization")
 
     @Operation(summary="removeRatingFromElement",
                description="Removes of a star rating/review that was added to the element by this user.",
@@ -665,6 +696,7 @@ public class FeedbackManagerResource
      * UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     @PostMapping(path = "/elements/{elementGUID}/tags/{tagGUID}/remove")
+    @SecurityRequirement(name = "BearerAuthorization")
 
     @Operation(summary="removeTagFromElement",
                description="Removes a link between a tag and an element that was added by this user.",
@@ -696,6 +728,7 @@ public class FeedbackManagerResource
      * UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     @PostMapping(path = "/comments/{commentGUID}/update")
+    @SecurityRequirement(name = "BearerAuthorization")
 
     @Operation(summary="updateComment",
                description="Update an existing comment.",
@@ -726,6 +759,7 @@ public class FeedbackManagerResource
      * PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     @PostMapping("/comments/questions/{questionCommentGUID}/answers/{answerCommentGUID}")
+    @SecurityRequirement(name = "BearerAuthorization")
 
     @Operation(summary="setupAcceptedAnswer",
             description="Link a comment that contains the best answer to a question posed in another comment.",
@@ -758,6 +792,7 @@ public class FeedbackManagerResource
      * PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     @PostMapping("/comments/questions/{questionCommentGUID}/answers/{answerCommentGUID}/remove")
+    @SecurityRequirement(name = "BearerAuthorization")
 
     @Operation(summary="clearAcceptedAnswer",
             description="Unlink a comment that contains an answer to a question posed in another comment.",
@@ -789,6 +824,7 @@ public class FeedbackManagerResource
      * UserNotAuthorizedException - the requesting user is not authorized to issue this request.
      */
     @PostMapping(path = "/tags/{tagGUID}/update")
+    @SecurityRequirement(name = "BearerAuthorization")
 
     @Operation(summary="updateTagDescription",
                description="Updates the description of an existing tag (either private or public).",
@@ -812,7 +848,7 @@ public class FeedbackManagerResource
 
 
     /**
-     * Creates a new noteLog and returns the unique identifier for it.
+     * Creates a new noteLog for an element and returns the unique identifier for it.
      *
      * @param serverName   name of the server instances for this request
      * @param urlMarker  view service URL marker
@@ -825,18 +861,47 @@ public class FeedbackManagerResource
      * UserNotAuthorizedException - the requesting user is not authorized to issue this request.
      */
     @PostMapping(path = "/elements/{elementGUID}/note-logs")
+    @SecurityRequirement(name = "BearerAuthorization")
 
     @Operation(summary="createNoteLog",
-            description="Creates a new noteLog and returns the unique identifier for it.",
+            description="Creates a new noteLog for an element and returns the unique identifier for it.",
             externalDocs=@ExternalDocumentation(description="Note Logs",
                     url="https://egeria-project.org/concepts/note-log/"))
 
     public GUIDResponse createNoteLog(@PathVariable String            serverName,
                                       @PathVariable String                        urlMarker,
                                       @PathVariable String            elementGUID,
-                                      @RequestBody NewFeedbackRequestBody requestBody)
+                                      @RequestBody NewAttachmentRequestBody requestBody)
     {
         return restAPI.createNoteLog(serverName, urlMarker, elementGUID, requestBody);
+    }
+
+
+    /**
+     * Creates a new freestanding noteLog and returns the unique identifier for it.
+     *
+     * @param serverName   name of the server instances for this request
+     * @param urlMarker  view service URL marker
+     * @param requestBody  contains the name of the tag and (optional) description of the tag
+     *
+     * @return guid for new tag or
+     * InvalidParameterException - one of the parameters is invalid or
+     * PropertyServerException - there is a problem retrieving information from the property server(s) or
+     * UserNotAuthorizedException - the requesting user is not authorized to issue this request.
+     */
+    @PostMapping(path = "/note-logs")
+    @SecurityRequirement(name = "BearerAuthorization")
+
+    @Operation(summary="createNoteLog",
+            description="Creates a new freestanding noteLog and returns the unique identifier for it.",
+            externalDocs=@ExternalDocumentation(description="Note Logs",
+                    url="https://egeria-project.org/concepts/note-log/"))
+
+    public GUIDResponse createNoteLog(@PathVariable String            serverName,
+                                      @PathVariable String                        urlMarker,
+                                      @RequestBody NewElementRequestBody requestBody)
+    {
+        return restAPI.createNoteLog(serverName, urlMarker, requestBody);
     }
 
 
@@ -854,6 +919,7 @@ public class FeedbackManagerResource
      * UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     @PostMapping(path = "/note-logs/{noteLogGUID}")
+    @SecurityRequirement(name = "BearerAuthorization")
 
     @Operation(summary="updateNoteLog",
             description="Update an existing note log.",
@@ -885,6 +951,7 @@ public class FeedbackManagerResource
      */
 
     @PostMapping(path = "/note-logs/{noteLogGUID}/remove")
+    @SecurityRequirement(name = "BearerAuthorization")
 
     @Operation(summary="removeNoteLog",
             description="Removes a note log from the repository.",
@@ -914,6 +981,7 @@ public class FeedbackManagerResource
      *  PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     @PostMapping("/note-logs/by-search-string")
+    @SecurityRequirement(name = "BearerAuthorization")
 
     @Operation(summary="findNoteLogs",
             description="Retrieve the list of note log metadata elements that contain the search string.",
@@ -943,6 +1011,7 @@ public class FeedbackManagerResource
      *  PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     @PostMapping("/note-logs/by-name")
+    @SecurityRequirement(name = "BearerAuthorization")
 
     @Operation(summary="getNoteLogsByName",
             description="Retrieve the list of note log metadata elements with a matching qualified or display name. There are no wildcards supported on this request.",
@@ -971,6 +1040,7 @@ public class FeedbackManagerResource
      *  PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     @PostMapping("/elements/{elementGUID}/note-logs/retrieve")
+    @SecurityRequirement(name = "BearerAuthorization")
 
     @Operation(summary="getNoteLogsForElement",
             description="Retrieve the list of note log metadata elements attached to the element.",
@@ -1000,6 +1070,7 @@ public class FeedbackManagerResource
      *  PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     @PostMapping("/note-logs/{noteLogGUID}/retrieve")
+    @SecurityRequirement(name = "BearerAuthorization")
 
     @Operation(summary="getNoteLogByGUID",
             description="Retrieve the note log metadata element with the supplied unique identifier.",
@@ -1034,6 +1105,7 @@ public class FeedbackManagerResource
      *  PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     @PostMapping("/note-logs/{noteLogGUID}/notes/retrieve")
+    @SecurityRequirement(name = "BearerAuthorization")
 
     @Operation(summary="getNotesForNoteLog",
             description="Retrieve the list of notes associated with a note log.",
@@ -1048,6 +1120,5 @@ public class FeedbackManagerResource
     {
         return restAPI.getNotesForNoteLog(serverName, urlMarker, noteLogGUID, requestBody);
     }
-
 }
 

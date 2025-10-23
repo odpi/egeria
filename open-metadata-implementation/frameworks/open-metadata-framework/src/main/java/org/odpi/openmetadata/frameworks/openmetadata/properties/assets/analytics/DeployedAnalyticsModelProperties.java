@@ -6,8 +6,6 @@ package org.odpi.openmetadata.frameworks.openmetadata.properties.assets.analytic
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.DataStoreProperties;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.databases.DatabaseProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.processes.DeployedSoftwareComponentProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 

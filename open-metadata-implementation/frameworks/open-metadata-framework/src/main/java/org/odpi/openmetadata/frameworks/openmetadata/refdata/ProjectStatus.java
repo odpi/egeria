@@ -4,7 +4,6 @@ package org.odpi.openmetadata.frameworks.openmetadata.refdata;
 
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
 
-import static org.odpi.openmetadata.frameworks.openmetadata.mapper.OpenMetadataValidValues.constructValidValueNamespace;
 import static org.odpi.openmetadata.frameworks.openmetadata.mapper.OpenMetadataValidValues.constructValidValueQualifiedName;
 
 /**
@@ -130,21 +129,6 @@ public enum ProjectStatus
                                                 null,
                                                 name);
     }
-
-
-    /**
-     * Return the namespace for this value.
-     *
-     * @return string
-     */
-    public String getNamespace()
-    {
-        return constructValidValueNamespace(null,
-                                            OpenMetadataProperty.PROJECT_STATUS.name,
-                                            null);
-    }
-
-
 
 
     /**

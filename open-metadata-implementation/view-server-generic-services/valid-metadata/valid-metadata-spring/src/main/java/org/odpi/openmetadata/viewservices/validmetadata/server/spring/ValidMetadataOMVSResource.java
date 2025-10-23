@@ -4,12 +4,14 @@ package org.odpi.openmetadata.viewservices.validmetadata.server.spring;
 
 import io.swagger.v3.oas.annotations.ExternalDocumentation;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.enums.SecuritySchemeIn;
+import io.swagger.v3.oas.annotations.enums.SecuritySchemeType;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import io.swagger.v3.oas.annotations.security.SecurityScheme;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import org.odpi.openmetadata.commonservices.ffdc.rest.BooleanResponse;
-import org.odpi.openmetadata.commonservices.ffdc.rest.NullRequestBody;
-import org.odpi.openmetadata.commonservices.ffdc.rest.VoidResponse;
+import org.odpi.openmetadata.commonservices.ffdc.rest.*;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.OpenMetadataTypeDefCategory;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.ValidMetadataValueProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.ValidMetadataValue;
 import org.odpi.openmetadata.frameworkservices.omf.rest.*;
 import org.odpi.openmetadata.viewservices.validmetadata.server.ValidMetadataRESTServices;
 import org.springframework.web.bind.annotation.*;
@@ -19,8 +21,14 @@ import org.springframework.web.bind.annotation.*;
  * The ValidMetadataOMVSResource provides part of the server-side implementation of the Valid Metadata OMVS.
 = */
 @RestController
-@RequestMapping("/servers/{serverName}/api/open-metadata/valid-metadata")
-
+@RequestMapping("/servers/{serverName}/api/open-metadata/{urlMarker}")
+@SecurityScheme(
+        name = "BearerAuthorization",
+        type = SecuritySchemeType.HTTP,
+        bearerFormat = "JWT",
+        scheme = "bearer",
+        in = SecuritySchemeIn.HEADER
+)
 @Tag(name="API: Valid Metadata OMVS", description="The Valid Metadata OMVS provides APIs for retrieving and updating lists of valid metadata values.",
         externalDocs=@ExternalDocumentation(description="Further Information",
                 url="https://egeria-project.org/services/omvs/valid-metadata/overview/"))
@@ -43,6 +51,7 @@ public class ValidMetadataOMVSResource
      * already set up for this property (with overlapping effective dates) then the valid value is updated.
      *
      * @param serverName     name of server instance to route request to
+     * @param urlMarker  view service URL marker
      * @param typeName type name if this is valid value is specific for a type, or null if this valid value if for the property name for all types
      * @param propertyName name of property that this valid value applies
      * @param requestBody preferred value to use in the open metadata types plus additional descriptive values.
@@ -53,6 +62,7 @@ public class ValidMetadataOMVSResource
      * PropertyServerException    there is a problem accessing the metadata store
      */
     @PostMapping(path = "/setup-value/{propertyName}")
+    @SecurityRequirement(name = "BearerAuthorization")
 
     @Operation(summary="setUpValidMetadataValue",
             description="Create or update the valid value for a particular open metadata property name.  If the typeName is null, this valid value" +
@@ -62,12 +72,13 @@ public class ValidMetadataOMVSResource
                     url="https://egeria-project.org/guides/planning/valid-values/overview/"))
 
     public VoidResponse setUpValidMetadataValue(@PathVariable String             serverName,
+                                                @PathVariable String                        urlMarker,
                                                 @RequestParam(required = false)
                                                               String             typeName,
                                                 @PathVariable String             propertyName,
-                                                @RequestBody ValidMetadataValueProperties requestBody)
+                                                @RequestBody  ValidMetadataValue requestBody)
     {
-        return restAPI.setUpValidMetadataValue(serverName, typeName, propertyName, requestBody);
+        return restAPI.setUpValidMetadataValue(serverName, urlMarker, typeName, propertyName, requestBody);
     }
 
 
@@ -79,6 +90,7 @@ public class ValidMetadataOMVSResource
      * If a valid value is already set up for this property (with overlapping effective dates) then the valid value is updated.
      *
      * @param serverName     name of server instance to route request to
+     * @param urlMarker  view service URL marker
      * @param typeName type name if this is valid value is specific for a type, or null if this valid value if for the property name for all types
      * @param propertyName name of property that this valid value applies
      * @param requestBody preferred value to use in the open metadata types plus additional descriptive values.
@@ -89,6 +101,7 @@ public class ValidMetadataOMVSResource
      * PropertyServerException    there is a problem accessing the metadata store
      */
     @PostMapping(path = "/setup-map-name/{propertyName}")
+    @SecurityRequirement(name = "BearerAuthorization")
 
     @Operation(summary="setUpValidMetadataMapName",
             description="Create or update the valid value for a name that can be stored in a particular open metadata property name." +
@@ -100,12 +113,13 @@ public class ValidMetadataOMVSResource
                     url="https://egeria-project.org/guides/planning/valid-values/overview/"))
 
     public VoidResponse setUpValidMetadataMapName(@PathVariable String             serverName,
+                                                  @PathVariable String                        urlMarker,
                                                   @RequestParam(required = false)
                                                                 String             typeName,
                                                   @PathVariable String             propertyName,
-                                                  @RequestBody ValidMetadataValueProperties requestBody)
+                                                  @RequestBody  ValidMetadataValue requestBody)
     {
-        return restAPI.setUpValidMetadataMapName(serverName, typeName, propertyName, requestBody);
+        return restAPI.setUpValidMetadataMapName(serverName, urlMarker, typeName, propertyName, requestBody);
     }
 
 
@@ -117,6 +131,7 @@ public class ValidMetadataOMVSResource
      * If a valid value is already set up for this property (with overlapping effective dates) then the valid value is updated.
      *
      * @param serverName     name of server instance to route request to
+     * @param urlMarker  view service URL marker
      * @param typeName type name if this is valid value is specific for a type, or null if this valid value if for the property name for all types
      * @param propertyName name of property that this valid value applies
      * @param mapName name in the map that this valid value applies.  If null then the value can be used for any name in the map.
@@ -128,6 +143,7 @@ public class ValidMetadataOMVSResource
      * PropertyServerException    there is a problem accessing the metadata store
      */
     @PostMapping(path = "/setup-map-value/{propertyName}/{mapName}")
+    @SecurityRequirement(name = "BearerAuthorization")
 
     @Operation(summary="setUpValidMetadataMapValue",
             description="Create or update the valid value for a name that can be stored in a particular open metadata property name." +
@@ -139,13 +155,14 @@ public class ValidMetadataOMVSResource
                     url="https://egeria-project.org/guides/planning/valid-values/overview/"))
 
     public VoidResponse setUpValidMetadataMapValue(@PathVariable String             serverName,
+                                                   @PathVariable String                        urlMarker,
                                                    @RequestParam(required = false)
                                                                  String             typeName,
                                                    @PathVariable String             propertyName,
                                                    @PathVariable String             mapName,
-                                                   @RequestBody ValidMetadataValueProperties validMetadataValue)
+                                                   @RequestBody  ValidMetadataValue validMetadataValue)
     {
-        return restAPI.setUpValidMetadataMapValue(serverName, typeName, propertyName, mapName, validMetadataValue);
+        return restAPI.setUpValidMetadataMapValue(serverName, urlMarker, typeName, propertyName, mapName, validMetadataValue);
     }
 
 
@@ -153,6 +170,7 @@ public class ValidMetadataOMVSResource
      * Remove a valid value for a property.
      *
      * @param serverName     name of server instance to route request to
+     * @param urlMarker  view service URL marker
      * @param typeName type name if this is valid value is specific for a type, or null if this valid value if for the property name for all types
      * @param propertyName name of property that this valid value applies
      * @param preferredValue specific valid value to remove
@@ -164,6 +182,7 @@ public class ValidMetadataOMVSResource
      * PropertyServerException    there is a problem accessing the metadata store
      */
     @PostMapping(path = "/clear-value/{propertyName}")
+    @SecurityRequirement(name = "BearerAuthorization")
 
     @Operation(summary="clearValidMetadataValue",
             description="Remove a valid value for a property.",
@@ -171,15 +190,16 @@ public class ValidMetadataOMVSResource
                     url="https://egeria-project.org/guides/planning/valid-values/overview/"))
 
     public VoidResponse clearValidMetadataValue(@PathVariable String          serverName,
+                                                @PathVariable String                        urlMarker,
                                                 @RequestParam(required = false)
                                                               String          typeName,
                                                 @PathVariable String          propertyName,
                                                 @RequestParam(required = false)
                                                               String          preferredValue,
                                                 @RequestBody(required = false)
-                                                              NullRequestBody requestBody)
+                                                              DeleteElementRequestBody requestBody)
     {
-        return restAPI.clearValidMetadataValue(serverName, typeName, propertyName, preferredValue, requestBody);
+        return restAPI.clearValidMetadataValue(serverName, urlMarker, typeName, propertyName, preferredValue, requestBody);
     }
 
 
@@ -187,6 +207,7 @@ public class ValidMetadataOMVSResource
      * Remove a valid map name value for a property.  The match is done on mapName.
      *
      * @param serverName     name of server instance to route request to
+     * @param urlMarker  view service URL marker
      * @param typeName type name if this is valid value is specific for a type, or null if this valid value if for the property name for all types
      * @param propertyName name of property that this valid value applies
      * @param mapName specific valid value to remove
@@ -198,6 +219,7 @@ public class ValidMetadataOMVSResource
      * PropertyServerException    there is a problem accessing the metadata store
      */
     @PostMapping(path = "/clear-map-name/{propertyName}")
+    @SecurityRequirement(name = "BearerAuthorization")
 
     @Operation(summary="clearValidMetadataMapName",
             description="Remove a valid map name value for a property.  The match is done on preferred name.",
@@ -205,15 +227,16 @@ public class ValidMetadataOMVSResource
                     url="https://egeria-project.org/guides/planning/valid-values/overview/"))
 
     public VoidResponse clearValidMetadataMapName(@PathVariable String          serverName,
+                                                  @PathVariable String                        urlMarker,
                                                   @RequestParam(required = false)
                                                                 String          typeName,
                                                   @PathVariable String          propertyName,
                                                   @RequestParam(required = false)
                                                                 String          mapName,
                                                   @RequestBody(required = false)
-                                                                NullRequestBody requestBody)
+                                                                DeleteElementRequestBody requestBody)
     {
-        return restAPI.clearValidMetadataMapName(serverName, typeName, propertyName, mapName, requestBody);
+        return restAPI.clearValidMetadataMapName(serverName, urlMarker, typeName, propertyName, mapName, requestBody);
     }
 
 
@@ -221,6 +244,7 @@ public class ValidMetadataOMVSResource
      * Remove a valid map name value for a property.  The match is done on preferred name.
      *
      * @param serverName     name of server instance to route request to
+     * @param urlMarker  view service URL marker
      * @param typeName type name if this is valid value is specific for a type, or null if this valid value if for the property name for all types
      * @param propertyName name of property that this valid value applies
      * @param mapName name in the map that this valid value applies.  If null then the value can be used for any name in the map.
@@ -233,6 +257,7 @@ public class ValidMetadataOMVSResource
      * PropertyServerException    there is a problem accessing the metadata store
      */
     @PostMapping(path = "/clear-map-value/{propertyName}/{mapName}")
+    @SecurityRequirement(name = "BearerAuthorization")
 
     @Operation(summary="clearValidMetadataMapValue",
             description="Remove a valid map name value for a property.  The match is done on preferred name.",
@@ -240,6 +265,7 @@ public class ValidMetadataOMVSResource
                     url="https://egeria-project.org/guides/planning/valid-values/overview/"))
 
     public VoidResponse clearValidMetadataMapValue(@PathVariable String          serverName,
+                                                   @PathVariable String                        urlMarker,
                                                    @RequestParam(required = false)
                                                    String          typeName,
                                                    @PathVariable String          propertyName,
@@ -247,9 +273,9 @@ public class ValidMetadataOMVSResource
                                                    @RequestParam(required = false)
                                                    String          preferredValue,
                                                    @RequestBody(required = false)
-                                                       NullRequestBody requestBody)
+                                                       DeleteElementRequestBody requestBody)
     {
-        return restAPI.clearValidMetadataMapValue(serverName, typeName, propertyName, mapName, preferredValue, requestBody);
+        return restAPI.clearValidMetadataMapValue(serverName, urlMarker, typeName, propertyName, mapName, preferredValue, requestBody);
     }
 
 
@@ -257,6 +283,7 @@ public class ValidMetadataOMVSResource
      * Validate whether the value found in an open metadata property is valid.
      *
      * @param serverName     name of server instance to route request to
+     * @param urlMarker  view service URL marker
      * @param typeName type name if this is valid value is specific for a type, or null if this valid value if for the property name for all types
      * @param propertyName name of property that this valid value applies
      * @param actualValue value stored in the property - if this is null, true is only returned if null is set up as a valid value.
@@ -267,6 +294,7 @@ public class ValidMetadataOMVSResource
      * PropertyServerException    there is a problem accessing the metadata store
      */
     @GetMapping(path = "/validate-value/{propertyName}")
+    @SecurityRequirement(name = "BearerAuthorization")
 
     @Operation(summary="validateMetadataValue",
             description="Validate whether the value found in an open metadata property is valid.",
@@ -274,12 +302,13 @@ public class ValidMetadataOMVSResource
                     url="https://egeria-project.org/guides/planning/valid-values/overview/"))
 
     public BooleanResponse validateMetadataValue(@PathVariable String serverName,
+                                                 @PathVariable String                        urlMarker,
                                                  @RequestParam(required = false)
                                                                String typeName,
                                                  @PathVariable String propertyName,
                                                  @RequestParam String actualValue)
     {
-        return restAPI.validateMetadataValue(serverName, typeName, propertyName, actualValue);
+        return restAPI.validateMetadataValue(serverName, urlMarker, typeName, propertyName, actualValue);
     }
 
 
@@ -287,6 +316,7 @@ public class ValidMetadataOMVSResource
      * Validate whether the name found in an open metadata map property is valid.
      *
      * @param serverName     name of server instance to route request to
+     * @param urlMarker  view service URL marker
      * @param typeName type name if this is valid value is specific for a type, or null if this valid value if for the property name for all types
      * @param propertyName name of property that this valid value applies
      * @param mapName value stored in the property - if this is null, true is only returned if null is set up as a valid value.
@@ -297,6 +327,7 @@ public class ValidMetadataOMVSResource
      * PropertyServerException    there is a problem accessing the metadata store
      */
     @GetMapping(path = "/validate-map-name/{propertyName}")
+    @SecurityRequirement(name = "BearerAuthorization")
 
     @Operation(summary="validateMetadataMapName",
             description="Validate whether the name found in an open metadata map property is valid.",
@@ -304,12 +335,13 @@ public class ValidMetadataOMVSResource
                     url="https://egeria-project.org/guides/planning/valid-values/overview/"))
 
     public BooleanResponse validateMetadataMapName(@PathVariable String serverName,
+                                                   @PathVariable String                        urlMarker,
                                                    @RequestParam(required = false)
                                                                  String typeName,
                                                    @PathVariable String propertyName,
                                                    @RequestParam String mapName)
     {
-        return restAPI.validateMetadataMapName(serverName, typeName, propertyName, mapName);
+        return restAPI.validateMetadataMapName(serverName, urlMarker, typeName, propertyName, mapName);
     }
 
 
@@ -317,6 +349,7 @@ public class ValidMetadataOMVSResource
      * Validate whether the name found in an open metadata map property is valid.
      *
      * @param serverName     name of server instance to route request to
+     * @param urlMarker  view service URL marker
      * @param typeName type name if this is valid value is specific for a type, or null if this valid value if for the property name for all types
      * @param propertyName name of property that this valid value applies
      * @param mapName name in the map that this valid value applies.  If null then the value can be used for any name in the map.
@@ -328,6 +361,7 @@ public class ValidMetadataOMVSResource
      * PropertyServerException    there is a problem accessing the metadata store
      */
     @GetMapping(path = "/validate-map-value/{propertyName}/{mapName}")
+    @SecurityRequirement(name = "BearerAuthorization")
 
     @Operation(summary="validateMetadataMapValue",
             description="Validate whether the name found in an open metadata map property is valid.",
@@ -335,13 +369,14 @@ public class ValidMetadataOMVSResource
                     url="https://egeria-project.org/guides/planning/valid-values/overview/"))
 
     public BooleanResponse validateMetadataMapValue(@PathVariable String serverName,
+                                                    @PathVariable String                        urlMarker,
                                                     @RequestParam(required = false)
                                                     String typeName,
                                                     @PathVariable String propertyName,
                                                     @PathVariable String mapName,
                                                     @RequestParam String actualValue)
     {
-        return restAPI.validateMetadataMapValue(serverName, typeName, propertyName, mapName, actualValue);
+        return restAPI.validateMetadataMapValue(serverName, urlMarker, typeName, propertyName, mapName, actualValue);
     }
 
 
@@ -349,6 +384,7 @@ public class ValidMetadataOMVSResource
      * Retrieve details of a specific valid value for a property.
      *
      * @param serverName     name of server instance to route request to
+     * @param urlMarker  view service URL marker
      * @param typeName type name if this is valid value is specific for a type, or null if this valid value if for the property name for all types
      * @param propertyName name of property that this valid value applies
      * @param preferredValue valid value to match
@@ -359,6 +395,7 @@ public class ValidMetadataOMVSResource
      * PropertyServerException    there is a problem accessing the metadata store
      */
     @GetMapping(path = "/get-value/{propertyName}")
+    @SecurityRequirement(name = "BearerAuthorization")
 
     @Operation(summary="getValidMetadataValue",
             description="Retrieve details of a specific valid value for a property.",
@@ -366,12 +403,13 @@ public class ValidMetadataOMVSResource
                     url="https://egeria-project.org/guides/planning/valid-values/overview/"))
 
     public ValidMetadataValueResponse getValidMetadataValue(@PathVariable String serverName,
+                                                            @PathVariable String                        urlMarker,
                                                             @RequestParam(required = false)
                                                                           String typeName,
                                                             @PathVariable String propertyName,
                                                             @RequestParam String preferredValue)
     {
-        return restAPI.getValidMetadataValue(serverName, typeName, propertyName, preferredValue);
+        return restAPI.getValidMetadataValue(serverName, urlMarker, typeName, propertyName, preferredValue);
     }
 
 
@@ -379,6 +417,7 @@ public class ValidMetadataOMVSResource
      * Retrieve details of a specific valid name for a map property.
      *
      * @param serverName     name of server instance to route request to
+     * @param urlMarker  view service URL marker
      * @param typeName type name if this is valid value is specific for a type, or null if this valid value if for the property name for all types
      * @param propertyName name of property that this valid value applies
      * @param mapName valid value to match
@@ -389,6 +428,7 @@ public class ValidMetadataOMVSResource
      * PropertyServerException    there is a problem accessing the metadata store
      */
     @GetMapping(path = "/get-map-name/{propertyName}")
+    @SecurityRequirement(name = "BearerAuthorization")
 
     @Operation(summary="getValidMetadataMapName",
             description="Retrieve details of a specific valid name for a map property.",
@@ -396,12 +436,13 @@ public class ValidMetadataOMVSResource
                     url="https://egeria-project.org/guides/planning/valid-values/overview/"))
 
     public ValidMetadataValueResponse getValidMetadataMapName(@PathVariable String serverName,
+                                                              @PathVariable String                        urlMarker,
                                                               @RequestParam(required = false)
                                                                             String typeName,
                                                               @PathVariable String propertyName,
                                                               @RequestParam String mapName)
     {
-        return  restAPI.getValidMetadataMapName(serverName, typeName, propertyName, mapName);
+        return  restAPI.getValidMetadataMapName(serverName, urlMarker, typeName, propertyName, mapName);
     }
 
 
@@ -409,6 +450,7 @@ public class ValidMetadataOMVSResource
      * Retrieve details of a specific valid value for a map name.
      *
      * @param serverName     name of server instance to route request to
+     * @param urlMarker  view service URL marker
      * @param typeName type name if this is valid value is specific for a type, or null if this valid value if for the property name for all types
      * @param propertyName name of property that this valid value applies
      * @param mapName name in the map that this valid value applies.  If null then the value can be used for any name in the map.
@@ -420,6 +462,7 @@ public class ValidMetadataOMVSResource
      * PropertyServerException    there is a problem accessing the metadata store
      */
     @GetMapping(path = "/get-map-value/{propertyName}/{mapName}")
+    @SecurityRequirement(name = "BearerAuthorization")
 
     @Operation(summary="getValidMetadataMapValue",
             description="Retrieve details of a specific valid value for a map name.",
@@ -427,13 +470,14 @@ public class ValidMetadataOMVSResource
                     url="https://egeria-project.org/guides/planning/valid-values/overview/"))
 
     public ValidMetadataValueResponse getValidMetadataMapValue(@PathVariable String serverName,
+                                                               @PathVariable String                        urlMarker,
                                                                @RequestParam(required = false)
                                                                String typeName,
                                                                @PathVariable String propertyName,
                                                                @PathVariable String mapName,
                                                                @RequestParam String preferredValue)
     {
-        return restAPI.getValidMetadataMapValue(serverName, typeName, propertyName, mapName, preferredValue);
+        return restAPI.getValidMetadataMapValue(serverName, urlMarker, typeName, propertyName, mapName, preferredValue);
     }
 
 
@@ -441,6 +485,7 @@ public class ValidMetadataOMVSResource
      * Retrieve all the valid values for the requested property.
      *
      * @param serverName     name of server instance to route request to
+     * @param urlMarker  view service URL marker
      * @param typeName type name if this is valid value is specific for a type, or null if this valid value if for the property name for all types
      * @param propertyName name of property that this valid value applies
      * @param startFrom paging start point
@@ -452,20 +497,22 @@ public class ValidMetadataOMVSResource
      * PropertyServerException    there is a problem accessing the metadata store
      */
     @GetMapping(path = "/get-valid-metadata-values/{propertyName}")
+    @SecurityRequirement(name = "BearerAuthorization")
 
     @Operation(summary="getValidMetadataValues",
             description="Retrieve all the valid values for the requested property.",
             externalDocs=@ExternalDocumentation(description="Valid Metadata Values",
                     url="https://egeria-project.org/guides/planning/valid-values/overview/"))
 
-    public ValidMetadataValueDetailListResponse getValidMetadataValues(@PathVariable String serverName,
-                                                                       @RequestParam(required = false)
-                                                                                     String typeName,
-                                                                       @PathVariable String propertyName,
-                                                                       @RequestParam int    startFrom,
-                                                                       @RequestParam int    pageSize)
+    public ValidMetadataValueListResponse getValidMetadataValues(@PathVariable String serverName,
+                                                                 @PathVariable String                        urlMarker,
+                                                                 @RequestParam(required = false)
+                                                                     String typeName,
+                                                                 @PathVariable String propertyName,
+                                                                 @RequestParam int    startFrom,
+                                                                 @RequestParam int    pageSize)
     {
-        return restAPI.getValidMetadataValues(serverName, typeName, propertyName, startFrom, pageSize);
+        return restAPI.getValidMetadataValues(serverName, urlMarker, typeName, propertyName, startFrom, pageSize);
     }
 
 
@@ -473,6 +520,7 @@ public class ValidMetadataOMVSResource
      * Retrieve all the consistent valid values for the requested property.
      *
      * @param serverName     name of server instance to route request to
+     * @param urlMarker  view service URL marker
      * @param typeName type name if this is valid value is specific for a type, or null if this valid value if for the property name for all types
      * @param propertyName name of property that this valid value applies
      * @param mapName optional name of map key that this valid value applies
@@ -486,6 +534,7 @@ public class ValidMetadataOMVSResource
      * PropertyServerException    there is a problem accessing the metadata store
      */
     @GetMapping(path = "/{propertyName}/consistent-metadata-values")
+    @SecurityRequirement(name = "BearerAuthorization")
 
     @Operation(summary="getConsistentMetadataValues",
             description="Retrieve all the consistent valid values for the requested property.",
@@ -493,6 +542,7 @@ public class ValidMetadataOMVSResource
                     url="https://egeria-project.org/guides/planning/valid-values/overview/"))
 
     public ValidMetadataValueListResponse getConsistentMetadataValues(@PathVariable String serverName,
+                                                                      @PathVariable String                        urlMarker,
                                                                       @RequestParam(required = false)
                                                                       String typeName,
                                                                       @PathVariable String propertyName,
@@ -502,7 +552,7 @@ public class ValidMetadataOMVSResource
                                                                       @RequestParam int    startFrom,
                                                                       @RequestParam int    pageSize)
     {
-        return restAPI.getConsistentMetadataValues(serverName, typeName, propertyName, mapName, preferredValue, startFrom, pageSize);
+        return restAPI.getConsistentMetadataValues(serverName, urlMarker, typeName, propertyName, mapName, preferredValue, startFrom, pageSize);
     }
 
 
@@ -510,6 +560,7 @@ public class ValidMetadataOMVSResource
      * Set up consistent metadata values relationship between the two property values.
      *
      * @param serverName     name of server instance to route request to
+     * @param urlMarker  view service URL marker
      * @param typeName1 type name if this is valid value is specific for a type, or null if this valid value if for the property name for all types
      * @param propertyName1 name of property that this valid value applies
      * @param mapName1 optional name of map key that this valid value applies
@@ -526,6 +577,7 @@ public class ValidMetadataOMVSResource
      * PropertyServerException    there is a problem accessing the metadata store
      */
     @PostMapping(path = "/{propertyName1}/consistent-metadata-values/{propertyName2}")
+    @SecurityRequirement(name = "BearerAuthorization")
 
     @Operation(summary="setConsistentMetadataValues",
             description="Set up consistent metadata values relationship between the two property values.",
@@ -533,6 +585,7 @@ public class ValidMetadataOMVSResource
                     url="https://egeria-project.org/guides/planning/valid-values/overview/"))
 
     public VoidResponse setConsistentMetadataValues(@PathVariable String          serverName,
+                                                    @PathVariable String                        urlMarker,
                                                     @RequestParam(required = false)
                                                                   String          typeName1,
                                                     @PathVariable String          propertyName1,
@@ -549,6 +602,7 @@ public class ValidMetadataOMVSResource
                                                                   NullRequestBody requestBody)
     {
         return restAPI.setConsistentMetadataValues(serverName,
+                                                   urlMarker,
                                                    typeName1,
                                                    propertyName1,
                                                    mapName1,
@@ -568,21 +622,24 @@ public class ValidMetadataOMVSResource
      * and classifications.
      *
      * @param serverName unique identifier for requested server.
+     * @param urlMarker  view service URL marker
      * @return TypeDefGalleryResponse:
      * List of different categories of type definitions or
      * RepositoryErrorException there is a problem communicating with the metadata repository or
      * UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
     @GetMapping(path = "/open-metadata-types")
+    @SecurityRequirement(name = "BearerAuthorization")
 
     @Operation(summary="getAllTypes",
             description="Return the list of types loaded into this server.",
             externalDocs=@ExternalDocumentation(description="Further Information",
                     url="https://egeria-project.org/types/"))
 
-    public TypeDefGalleryResponse getAllTypes(@PathVariable String   serverName)
+    public TypeDefGalleryResponse getAllTypes(@PathVariable String   serverName,
+                                              @PathVariable String   urlMarker)
     {
-        return restAPI.getAllTypes(serverName);
+        return restAPI.getAllTypes(serverName, urlMarker);
     }
 
 
@@ -590,6 +647,7 @@ public class ValidMetadataOMVSResource
      * Returns all the entity type definitions.
      *
      * @param serverName unique identifier for requested server.
+     * @param urlMarker  view service URL marker
      * @return TypeDefListResponse:
      * TypeDefs list or
      * InvalidParameterException the TypeDefCategory is null or
@@ -597,15 +655,17 @@ public class ValidMetadataOMVSResource
      * UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
     @GetMapping(path = "/open-metadata-types/entity-defs")
+    @SecurityRequirement(name = "BearerAuthorization")
 
     @Operation(summary="getEntityDefs",
             description="Returns all the entity type definitions.",
             externalDocs=@ExternalDocumentation(description="Further Information",
                     url="https://egeria-project.org/types/"))
 
-    public TypeDefListResponse getEntityDefs(@PathVariable String serverName)
+    public TypeDefListResponse getEntityDefs(@PathVariable String serverName,
+                                             @PathVariable String   urlMarker)
     {
-        return restAPI.getTypeDefsByCategory(serverName, OpenMetadataTypeDefCategory.ENTITY_DEF);
+        return restAPI.getTypeDefsByCategory(serverName, urlMarker, OpenMetadataTypeDefCategory.ENTITY_DEF);
     }
 
 
@@ -613,6 +673,7 @@ public class ValidMetadataOMVSResource
      * Returns all the relationship type definitions.
      *
      * @param serverName unique identifier for requested server.
+     * @param urlMarker  view service URL marker
      * @return TypeDefListResponse:
      * TypeDefs list or
      * InvalidParameterException the TypeDefCategory is null or
@@ -620,15 +681,17 @@ public class ValidMetadataOMVSResource
      * UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
     @GetMapping(path = "/open-metadata-types/relationship-defs")
+    @SecurityRequirement(name = "BearerAuthorization")
 
     @Operation(summary="getRelationshipDefs",
             description="Returns all the relationship type definitions.",
             externalDocs=@ExternalDocumentation(description="Further Information",
                     url="https://egeria-project.org/types/"))
 
-    public TypeDefListResponse getRelationshipDefs(@PathVariable String serverName)
+    public TypeDefListResponse getRelationshipDefs(@PathVariable String serverName,
+                                                   @PathVariable String   urlMarker)
     {
-        return restAPI.getTypeDefsByCategory(serverName, OpenMetadataTypeDefCategory.RELATIONSHIP_DEF);
+        return restAPI.getTypeDefsByCategory(serverName, urlMarker, OpenMetadataTypeDefCategory.RELATIONSHIP_DEF);
     }
 
 
@@ -636,6 +699,7 @@ public class ValidMetadataOMVSResource
      * Returns all the classification type definitions.
      *
      * @param serverName unique identifier for requested server.
+     * @param urlMarker  view service URL marker
      * @return TypeDefListResponse:
      * TypeDefs list or
      * InvalidParameterException the TypeDefCategory is null or
@@ -643,15 +707,17 @@ public class ValidMetadataOMVSResource
      * UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
     @GetMapping(path = "/open-metadata-types/classification-defs")
+    @SecurityRequirement(name = "BearerAuthorization")
 
     @Operation(summary="getClassificationDefs",
             description="Returns all the classification type definitions.",
             externalDocs=@ExternalDocumentation(description="Further Information",
                     url="https://egeria-project.org/types/"))
 
-    public TypeDefListResponse getClassificationDefs(@PathVariable String serverName)
+    public TypeDefListResponse getClassificationDefs(@PathVariable String serverName,
+                                                     @PathVariable String urlMarker)
     {
-        return restAPI.getTypeDefsByCategory(serverName, OpenMetadataTypeDefCategory.CLASSIFICATION_DEF);
+        return restAPI.getTypeDefsByCategory(serverName, urlMarker, OpenMetadataTypeDefCategory.CLASSIFICATION_DEF);
     }
 
 
@@ -660,6 +726,7 @@ public class ValidMetadataOMVSResource
      * type has no subtypes.
      *
      * @param serverName unique identifier for requested server.
+     * @param urlMarker  view service URL marker
      * @param typeName name of type to retrieve against.
      * @return TypeDefsGalleryResponse:
      * A list of types or
@@ -668,6 +735,7 @@ public class ValidMetadataOMVSResource
      * UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
     @GetMapping(path = "/open-metadata-types/sub-types/{typeName}")
+    @SecurityRequirement(name = "BearerAuthorization")
 
     @Operation(summary="getSubTypes",
             description="Returns all the TypeDefs for a specific subtype.  If a null result is returned it means the type has no subtypes.",
@@ -675,9 +743,10 @@ public class ValidMetadataOMVSResource
                     url="https://egeria-project.org/types/"))
 
     public TypeDefListResponse getSubTypes(@PathVariable String serverName,
+                                           @PathVariable String urlMarker,
                                            @PathVariable String typeName)
     {
-        return restAPI.getSubTypes(serverName, typeName);
+        return restAPI.getSubTypes(serverName, urlMarker, typeName);
     }
 
 
@@ -685,6 +754,7 @@ public class ValidMetadataOMVSResource
      * Returns all the TypeDefs for relationships that can be attached to the requested entity type.
      *
      * @param serverName unique identifier for requested server.
+     * @param urlMarker  view service URL marker
      * @param typeName name of entity type to retrieve against.
      * @return TypeDefsGalleryResponse:
      * A list of types or
@@ -693,6 +763,7 @@ public class ValidMetadataOMVSResource
      * UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
     @GetMapping(path = "/open-metadata-types/{typeName}/attached-relationships")
+    @SecurityRequirement(name = "BearerAuthorization")
 
     @Operation(summary="getValidRelationshipTypes",
             description="Returns all the TypeDefs for relationships that can be attached to the requested entity type.",
@@ -700,9 +771,10 @@ public class ValidMetadataOMVSResource
                     url="https://egeria-project.org/types/"))
 
     public TypeDefListResponse getValidRelationshipTypes(@PathVariable String serverName,
+                                                         @PathVariable String urlMarker,
                                                          @PathVariable String typeName)
     {
-        return restAPI.getValidRelationshipTypes(serverName, typeName);
+        return restAPI.getValidRelationshipTypes(serverName, urlMarker, typeName);
     }
 
 
@@ -710,6 +782,7 @@ public class ValidMetadataOMVSResource
      * Returns all the TypeDefs for classifications that can be attached to the requested entity type.
      *
      * @param serverName unique identifier for requested server.
+     * @param urlMarker  view service URL marker
      * @param typeName name of type to retrieve against.
      * @return TypeDefsGalleryResponse:
      * A list of types or
@@ -718,6 +791,7 @@ public class ValidMetadataOMVSResource
      * UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
     @GetMapping(path = "/open-metadata-types/{typeName}/attached-classifications")
+    @SecurityRequirement(name = "BearerAuthorization")
 
     @Operation(summary="getValidClassificationTypes",
             description="Returns all the TypeDefs for relationships that can be attached to the requested entity type.",
@@ -725,9 +799,10 @@ public class ValidMetadataOMVSResource
                     url="https://egeria-project.org/types/"))
 
     public TypeDefListResponse getValidClassificationTypes(@PathVariable String serverName,
+                                                           @PathVariable String urlMarker,
                                                            @PathVariable String typeName)
     {
-        return restAPI.getValidClassificationTypes(serverName, typeName);
+        return restAPI.getValidClassificationTypes(serverName, urlMarker, typeName);
     }
 
 
@@ -735,6 +810,7 @@ public class ValidMetadataOMVSResource
      * Return the TypeDef identified by the unique name.
      *
      * @param serverName unique identifier for requested server.
+     * @param urlMarker  view service URL marker
      * @param name String name of the TypeDef.
      * @return TypeDefResponse:
      * TypeDef structure describing its category and properties or
@@ -745,6 +821,7 @@ public class ValidMetadataOMVSResource
      * UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
     @GetMapping(path = "/open-metadata-types/name/{name}")
+    @SecurityRequirement(name = "BearerAuthorization")
 
     @Operation(summary="getTypeDefByName",
             description="Return the TypeDef identified by the unique name.",
@@ -752,8 +829,9 @@ public class ValidMetadataOMVSResource
                     url="https://egeria-project.org/types/"))
 
     public TypeDefResponse getTypeDefByName(@PathVariable String    serverName,
+                                            @PathVariable String    urlMarker,
                                             @PathVariable String    name)
     {
-        return restAPI.getTypeDefByName(serverName, name);
+        return restAPI.getTypeDefByName(serverName, urlMarker, name);
     }
 }

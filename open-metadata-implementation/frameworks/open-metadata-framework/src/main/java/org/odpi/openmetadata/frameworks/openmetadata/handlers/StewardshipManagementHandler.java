@@ -39,7 +39,6 @@ public class StewardshipManagementHandler extends OpenMetadataHandlerBase
     final protected MetadataElementSummaryConverter<MetadataElementSummary> metadataElementSummaryConverter;
     final protected RelatedMetadataElementSummaryConverter<RelatedMetadataElementSummary> relatedMetadataElementSummaryConverter;
     final protected MetadataRelationshipSummaryConverter<MetadataRelationshipSummary>     metadataRelationshipSummaryConverter;
-    private final PropertyHelper propertyHelper = new PropertyHelper();
 
     private final OpenMetadataClassificationBuilder classificationBuilder = new OpenMetadataClassificationBuilder();
     private final OpenMetadataRelationshipBuilder   relationshipBuilder   = new OpenMetadataRelationshipBuilder();
@@ -2204,6 +2203,26 @@ public class StewardshipManagementHandler extends OpenMetadataHandlerBase
                                                         deleteOptions);
     }
 
+
+    /**
+     * Add a specification - typically to a template or process. This defines the properties needed to call it.
+     *
+     * @param userId        calling user
+     * @param elementGUID   unique identifier of the element to classify as a template
+     * @param specification values required to use the template
+     * @throws InvalidParameterException  element not known, null userId or guid
+     * @throws PropertyServerException    problem accessing property server
+     * @throws UserNotAuthorizedException security access problem
+     */
+    public void addSpecification(String                                 userId,
+                                 String                                 elementGUID,
+                                 Map<String, List<Map<String, String>>> specification,
+                                 MetadataSourceOptions                  metadataSourceOptions) throws InvalidParameterException,
+                                                                                                      UserNotAuthorizedException,
+                                                                                                      PropertyServerException
+    {
+        // todo
+    }
 
 
     /**

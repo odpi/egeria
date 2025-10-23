@@ -14861,9 +14861,20 @@ public class OpenMetadataPropertyConverterBase
                     {
                         beanProperties = new ReferenceDataValueProperties();
                     }
+                    else if (propertyHelper.isTypeOf(openMetadataElement, OpenMetadataType.SPECIFICATION_PROPERTY_VALUE.typeName))
+                    {
+                        beanProperties = new SpecificationPropertyValueProperties();
+                    }
                     else if (propertyHelper.isTypeOf(openMetadataElement, OpenMetadataType.VALID_METADATA_VALUE.typeName))
                     {
-                        beanProperties = new ValidMetadataValueProperties();
+                        if (propertyHelper.isTypeOf(openMetadataElement, OpenMetadataType.TECHNOLOGY_TYPE.typeName))
+                        {
+                            beanProperties = new TechnologyTypeProperties();
+                        }
+                        else
+                        {
+                            beanProperties = new ValidMetadataValueProperties();
+                        }
                     }
                     else
                     {

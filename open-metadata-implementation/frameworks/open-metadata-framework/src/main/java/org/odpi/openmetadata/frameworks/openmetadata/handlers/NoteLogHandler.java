@@ -12,6 +12,7 @@ import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedExcep
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.*;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.*;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.feedback.*;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.solutions.SolutionBlueprintProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.search.*;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
@@ -68,11 +69,6 @@ public class NoteLogHandler extends OpenMetadataHandlerBase
                                                                                                  UserNotAuthorizedException,
                                                                                                  PropertyServerException
     {
-        final String methodName = "createNoteLog";
-        final String guidParameterName = "elementGUID";
-
-        propertyHelper.validateGUID(elementGUID, guidParameterName, methodName);
-
         NewElementOptions newElementOptions = new NewElementOptions(metadataSourceOptions);
 
         newElementOptions.setInitialStatus(ElementStatus.ACTIVE);
@@ -96,6 +92,38 @@ public class NoteLogHandler extends OpenMetadataHandlerBase
                                                                classificationBuilder.getInitialClassifications(initialClassifications),
                                                                elementBuilder.getNewElementProperties(noteLogProperties),
                                                                null);
+    }
+
+
+    /**
+     * Create a new freestanding note log.
+     *
+     * @param userId                       userId of user making request.
+     * @param newElementOptions details of the element to create
+     * @param initialClassifications map of classification names to classification properties to include in the entity creation request
+     * @param properties                   properties for the new element.
+     * @param parentRelationshipProperties properties to include in parent relationship
+     * @return unique identifier of the newly created element
+     * @throws InvalidParameterException  one of the parameters is invalid.
+     * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public String createNoteLog(String                                userId,
+                                NewElementOptions                     newElementOptions,
+                                Map<String, ClassificationProperties> initialClassifications,
+                                NoteLogProperties                     properties,
+                                RelationshipProperties                parentRelationshipProperties) throws InvalidParameterException,
+                                                                                                                     PropertyServerException,
+                                                                                                                     UserNotAuthorizedException
+    {
+        final String methodName = "createNoteLog";
+
+        return super.createNewElement(userId,
+                                      newElementOptions,
+                                      initialClassifications,
+                                      properties,
+                                      parentRelationshipProperties,
+                                      methodName);
     }
 
 
