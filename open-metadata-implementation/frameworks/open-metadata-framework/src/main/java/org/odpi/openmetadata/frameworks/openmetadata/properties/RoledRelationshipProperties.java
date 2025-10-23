@@ -6,7 +6,10 @@ import com.fasterxml.jackson.annotation.*;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.designmodels.ConceptBeadExtensionProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.implementations.ImplementationResourceProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.implementations.ImplementedByProperties;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.solutions.*;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.solutions.SolutionComponentActorProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.solutions.SolutionComponentPortProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.solutions.SolutionCompositionProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.solutions.SolutionPortDelegationProperties;
 
 import java.util.Objects;
 

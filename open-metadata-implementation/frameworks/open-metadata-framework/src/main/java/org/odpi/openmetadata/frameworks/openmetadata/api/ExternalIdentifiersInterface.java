@@ -136,4 +136,19 @@ public interface ExternalIdentifiersInterface
                                                          Date    effectiveTime) throws InvalidParameterException,
                                                                                        UserNotAuthorizedException,
                                                                                        PropertyServerException;
+
+    /**
+     * Retrieve the specification for this element and a list of nested maps.  This method is used by the REST APIs.
+     *
+     * @param userId calling user
+     * @param elementGUID element to query
+     * @return map of reference data
+     * @throws InvalidParameterException bad parameter
+     * @throws PropertyServerException repository error
+     * @throws UserNotAuthorizedException authorization issue
+     */
+    Map<String, List<Map<String, String>>> getSpecification(String userId,
+                                                            String elementGUID) throws InvalidParameterException,
+                                                                                       PropertyServerException,
+                                                                                       UserNotAuthorizedException;
 }

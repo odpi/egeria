@@ -5,7 +5,6 @@ package org.odpi.openmetadata.frameworks.openmetadata.enums;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import org.odpi.openmetadata.frameworks.openmetadata.enums.OpenMetadataEnum;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataWikiPages;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;

@@ -4,7 +4,6 @@ package org.odpi.openmetadata.frameworks.openmetadata.properties.schema;
 
 
 import com.fasterxml.jackson.annotation.*;
-
 import org.odpi.openmetadata.frameworks.openmetadata.properties.schema.apis.APISchemaTypeProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.schema.databases.RelationalDBSchemaTypeProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.schema.events.EventTypeProperties;

@@ -44,11 +44,6 @@ public enum ContactTypeDefinition
     LINKED_IN               ("LinkedIn",                "LinkedIn Profile", "URL link to person's LinkedIn account."),
 
     /**
-     * Name of person's Twitter account.
-     */
-    TWITTER                 ("Twitter",                 "Twitter Handler", "Name of person's Twitter account."),
-
-    /**
      * URL of a website related to the individual.
      */
     WEBSITE                 ("Website",                "Personal Web Site", "URL of a website related to the individual."),

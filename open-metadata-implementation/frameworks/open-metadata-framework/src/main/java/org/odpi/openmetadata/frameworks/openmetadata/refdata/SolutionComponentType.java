@@ -4,7 +4,6 @@ package org.odpi.openmetadata.frameworks.openmetadata.refdata;
 
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
 
-import static org.odpi.openmetadata.frameworks.openmetadata.mapper.OpenMetadataValidValues.constructValidValueNamespace;
 import static org.odpi.openmetadata.frameworks.openmetadata.mapper.OpenMetadataValidValues.constructValidValueQualifiedName;
 
 /**
@@ -152,19 +151,6 @@ public enum SolutionComponentType
                                                 OpenMetadataProperty.SOLUTION_COMPONENT_TYPE.name,
                                                 null,
                                                 solutionComponentType);
-    }
-
-
-    /**
-     * Return the namespace for this solutionComponentType value.
-     *
-     * @return string
-     */
-    public String getNamespace()
-    {
-        return constructValidValueNamespace(null,
-                                            OpenMetadataProperty.SOLUTION_COMPONENT_TYPE.name,
-                                            null);
     }
 
 

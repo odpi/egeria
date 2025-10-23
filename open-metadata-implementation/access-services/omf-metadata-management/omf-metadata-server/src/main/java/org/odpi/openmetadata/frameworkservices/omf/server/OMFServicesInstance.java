@@ -12,7 +12,7 @@ import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.ElementHea
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.MetadataElementSummary;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.MetadataCorrelationHeader;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.OpenMetadataElement;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.ValidMetadataValueProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.validvalues.ValidMetadataValueProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.ValidMetadataValueDetail;
 import org.odpi.openmetadata.frameworkservices.omf.connectors.outtopic.OMFOutTopicClientProvider;
 import org.odpi.openmetadata.frameworkservices.omf.converters.*;

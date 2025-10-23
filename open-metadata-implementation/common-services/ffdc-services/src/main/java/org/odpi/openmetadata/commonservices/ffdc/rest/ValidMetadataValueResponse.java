@@ -1,12 +1,12 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 /* Copyright Contributors to the ODPi Egeria project. */
 
-package org.odpi.openmetadata.frameworkservices.omf.rest;
+package org.odpi.openmetadata.commonservices.ffdc.rest;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.ValidMetadataValueProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.ValidMetadataValue;
 
 import java.util.Objects;
 
@@ -20,9 +20,9 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class ValidMetadataValueResponse extends OMAGOMFAPIResponse
+public class ValidMetadataValueResponse extends FFDCResponseBase
 {
-    private ValidMetadataValueProperties element = null;
+    private ValidMetadataValue element = null;
 
 
     /**
@@ -55,7 +55,7 @@ public class ValidMetadataValueResponse extends OMAGOMFAPIResponse
      *
      * @return bean
      */
-    public ValidMetadataValueProperties getElement()
+    public ValidMetadataValue getElement()
     {
         return element;
     }
@@ -66,7 +66,7 @@ public class ValidMetadataValueResponse extends OMAGOMFAPIResponse
      *
      * @param element  bean
      */
-    public void setElement(ValidMetadataValueProperties element)
+    public void setElement(ValidMetadataValue element)
     {
         this.element = element;
     }

@@ -124,7 +124,7 @@ public class OpenMetadataTypeTest
                  */
                 String[] classNameParts = openMetadataType.beanClass.getName().split("\\.");
 
-                assertEquals(openMetadataType.typeName + "Properties", classNameParts[classNameParts.length - 1]);
+                assertEquals(openMetadataType.typeName + "Properties", classNameParts[classNameParts.length - 1], "Bad bean class name");
 
                 /*
                  * Check that the type name is set in the bean.
@@ -135,7 +135,7 @@ public class OpenMetadataTypeTest
 
                     if (beanInstance instanceof OpenMetadataRootProperties openMetadataRootProperties)
                     {
-                        assertEquals(openMetadataType.typeName, openMetadataRootProperties.getTypeName());
+                        assertEquals(openMetadataType.typeName, openMetadataRootProperties.getTypeName(), "Bad entity bean type name");
 
                         if (currentTypeDef != null)
                         {
@@ -153,7 +153,7 @@ public class OpenMetadataTypeTest
                     }
                     else if (beanInstance instanceof RelationshipBeanProperties relationshipBeanProperties)
                     {
-                        assertEquals(openMetadataType.typeName, relationshipBeanProperties.getTypeName());
+                        assertEquals(openMetadataType.typeName, relationshipBeanProperties.getTypeName(), "Bad relationship bean type name");
 
                         if (currentTypeDef != null)
                         {
@@ -171,7 +171,7 @@ public class OpenMetadataTypeTest
                     }
                     else if (beanInstance instanceof ClassificationBeanProperties classificationBeanProperties)
                     {
-                        assertEquals(openMetadataType.typeName, classificationBeanProperties.getTypeName());
+                        assertEquals(openMetadataType.typeName, classificationBeanProperties.getTypeName(), "Bad classification bean type name");
 
                         if (currentTypeDef != null)
                         {
@@ -191,7 +191,7 @@ public class OpenMetadataTypeTest
                     /*
                      * Check that the toString has the right class name in it
                      */
-                    assertTrue(beanInstance.toString().contains(openMetadataType.typeName));
+                    assertTrue(beanInstance.toString().contains(openMetadataType.typeName), "Bad toString");
                 }
                 catch (Exception error)
                 {

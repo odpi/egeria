@@ -4,13 +4,8 @@
 package org.odpi.openmetadata.frameworks.openmetadata.properties.actors;
 
 import com.fasterxml.jackson.annotation.*;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.communities.CommunityMemberProperties;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.communities.CrowdSourcingContributorProperties;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.projects.ProjectManagerProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 
-import java.util.Date;
-import java.util.Map;
 import java.util.Objects;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;

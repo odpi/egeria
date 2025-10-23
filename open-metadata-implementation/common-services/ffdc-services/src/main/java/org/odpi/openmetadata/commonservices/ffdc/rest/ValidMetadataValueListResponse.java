@@ -1,7 +1,7 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 /* Copyright Contributors to the ODPi Egeria project. */
 
-package org.odpi.openmetadata.frameworkservices.omf.rest;
+package org.odpi.openmetadata.commonservices.ffdc.rest;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
@@ -21,15 +21,15 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class ValidMetadataValueDetailListResponse extends OMAGOMFAPIResponse
+public class ValidMetadataValueListResponse extends FFDCResponseBase
 {
-   private List<ValidMetadataValueDetail> elementList = null;
+   private List<ValidMetadataValueDetail> elements = null;
 
 
     /**
      * Default constructor
      */
-    public ValidMetadataValueDetailListResponse()
+    public ValidMetadataValueListResponse()
     {
     }
 
@@ -39,13 +39,13 @@ public class ValidMetadataValueDetailListResponse extends OMAGOMFAPIResponse
      *
      * @param template object to copy
      */
-    public ValidMetadataValueDetailListResponse(ValidMetadataValueDetailListResponse template)
+    public ValidMetadataValueListResponse(ValidMetadataValueListResponse template)
     {
         super(template);
 
         if (template != null)
         {
-            elementList = template.getElementList();
+            elements = template.getElements();
         }
     }
 
@@ -55,20 +55,20 @@ public class ValidMetadataValueDetailListResponse extends OMAGOMFAPIResponse
      *
      * @return result object
      */
-    public List<ValidMetadataValueDetail> getElementList()
+    public List<ValidMetadataValueDetail> getElements()
     {
-        return elementList;
+        return elements;
     }
 
 
     /**
      * Set up the metadata element to return.
      *
-     * @param elementList result object
+     * @param elements result object
      */
-    public void setElementList(List<ValidMetadataValueDetail> elementList)
+    public void setElements(List<ValidMetadataValueDetail> elements)
     {
-        this.elementList = elementList;
+        this.elements = elements;
     }
 
 
@@ -80,8 +80,8 @@ public class ValidMetadataValueDetailListResponse extends OMAGOMFAPIResponse
     @Override
     public String toString()
     {
-        return "ValidMetadataValueDetailListResponse{" +
-                "elementList=" + elementList +
+        return "ValidMetadataValueListResponse{" +
+                "elementList=" + elements +
                 "} " + super.toString();
     }
 
@@ -107,8 +107,8 @@ public class ValidMetadataValueDetailListResponse extends OMAGOMFAPIResponse
         {
             return false;
         }
-        ValidMetadataValueDetailListResponse that = (ValidMetadataValueDetailListResponse) objectToCompare;
-        return Objects.equals(elementList, that.elementList);
+        ValidMetadataValueListResponse that = (ValidMetadataValueListResponse) objectToCompare;
+        return Objects.equals(elements, that.elements);
     }
 
 
@@ -120,6 +120,6 @@ public class ValidMetadataValueDetailListResponse extends OMAGOMFAPIResponse
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), elementList);
+        return Objects.hash(super.hashCode(), elements);
     }
 }

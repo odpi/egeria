@@ -9,8 +9,6 @@ import org.odpi.openmetadata.frameworks.openmetadata.enums.MediaType;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.MediaUsage;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Objects;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;

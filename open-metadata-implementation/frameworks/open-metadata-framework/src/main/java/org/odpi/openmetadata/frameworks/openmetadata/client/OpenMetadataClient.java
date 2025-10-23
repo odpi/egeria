@@ -6,7 +6,6 @@ import org.odpi.openmetadata.frameworks.openmetadata.api.*;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
-import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.ElementHeader;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.ElementStatus;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.*;
 import org.odpi.openmetadata.frameworks.openmetadata.search.*;
@@ -24,7 +23,6 @@ public abstract class OpenMetadataClient implements OpenMetadataTypesInterface,
                                                     MetadataElementInterface,
                                                     StewardshipRequestInterface,
                                                     MultiLanguageInterface,
-                                                    ValidMetadataValuesInterface,
                                                     ExternalIdentifiersInterface
 {
     protected final String serverName;               /* Initialized in constructor */
@@ -1812,6 +1810,24 @@ public abstract class OpenMetadataClient implements OpenMetadataTypesInterface,
                                                                          Date    effectiveTime) throws InvalidParameterException,
                                                                                                        UserNotAuthorizedException,
                                                                                                        PropertyServerException;
+
+
+
+    /**
+     * Retrieve the reference data for this element.
+     *
+     * @param userId calling user
+     * @param elementGUID element to query
+     * @return map of reference data
+     * @throws InvalidParameterException bad parameter
+     * @throws PropertyServerException repository error
+     * @throws UserNotAuthorizedException authorization issue
+     */
+    public abstract Map<String, List<Map<String, String>>> getSpecification(String userId,
+                                                                            String elementGUID) throws InvalidParameterException,
+                                                                                                       PropertyServerException,
+                                                                                                       UserNotAuthorizedException;
+
 
     /**
      * Standard toString method.

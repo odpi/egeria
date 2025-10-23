@@ -2481,16 +2481,6 @@ public enum OpenMetadataType
                              DeployedDatabaseSchemaProperties.class),
 
     /**
-     * A tabular data source (typically a database table) that is an asset in its own right.
-     */
-    TABLE_DATA_SET("20c45531-5d2e-4eb6-9a47-035cb1067b82",
-                   "TableDataSet",
-                   OpenMetadataWikiPages.MODEL_0224_DATABASES,
-                   "ff9fced9-daaf-4512-97c1-88381ffe05aa",
-                   "A tabular data source (typically a database table) that is an asset in its own right.",
-                   null),
-
-    /**
      * A data store containing metadata.
      */
     METADATA_REPOSITORY("c40397bd-eab0-4b2e-bffb-e7fa0f93a5a9",
@@ -4968,6 +4958,26 @@ public enum OpenMetadataType
                          "0cce70a2-d9a5-4c4c-8ae8-12844f2d6b8a",
                          "A valid metadata value defined by a valid value definition.",
                          ValidMetadataValueProperties.class),
+
+    /**
+     * A valid metadata value defined by a valid value definition.
+     */
+    TECHNOLOGY_TYPE("43b849bf-771d-429a-8663-fbfce5361025",
+                         "TechnologyType",
+                         OpenMetadataWikiPages.MODEL_0545_REFERENCE_DATA,
+                         "772a900b-cc0a-4da3-ae73-48cc98888a2f",
+                         "A valid metadata value describing a technology type stored in the deployedImplementationType attribute.",
+                         TechnologyTypeProperties.class),
+
+    /**
+     * A valid metadata value defined by a valid value definition.
+     */
+    SPECIFICATION_PROPERTY_VALUE("707222c6-4f26-4b87-b481-5a5ac003ea99",
+                         "SpecificationPropertyValue",
+                         OpenMetadataWikiPages.MODEL_0545_REFERENCE_DATA,
+                         "26670cc5-ad39-40e3-87f4-6f265ccf084a",
+                         "A description of a property that can be supplied to the linked element to control its operation.",
+                         SpecificationPropertyValueProperties.class),
 
     /**
      * An asset that contains trusted values for use as reference data.

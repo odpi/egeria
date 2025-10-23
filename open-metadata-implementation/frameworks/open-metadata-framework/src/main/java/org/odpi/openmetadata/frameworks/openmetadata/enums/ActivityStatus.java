@@ -10,7 +10,6 @@ import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataWikiPages
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
-import static org.odpi.openmetadata.frameworks.openmetadata.mapper.OpenMetadataValidValues.constructValidValueNamespace;
 import static org.odpi.openmetadata.frameworks.openmetadata.mapper.OpenMetadataValidValues.constructValidValueQualifiedName;
 
 /**
@@ -240,19 +239,6 @@ public enum ActivityStatus implements OpenMetadataEnum
                                                 OpenMetadataProperty.ACTIVITY_STATUS.name,
                                                 null,
                                                 name);
-    }
-
-
-    /**
-     * Return the namespace for this value.
-     *
-     * @return string
-     */
-    public String getNamespace()
-    {
-        return constructValidValueNamespace(ENUM_TYPE_NAME,
-                                            OpenMetadataProperty.ACTIVITY_STATUS.name,
-                                            null);
     }
 
 

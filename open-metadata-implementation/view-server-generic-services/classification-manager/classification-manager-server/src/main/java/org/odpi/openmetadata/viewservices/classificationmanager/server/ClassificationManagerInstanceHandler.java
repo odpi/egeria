@@ -8,6 +8,7 @@ import org.odpi.openmetadata.commonservices.multitenant.OMVSServiceInstanceHandl
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
+import org.odpi.openmetadata.frameworks.openmetadata.handlers.SearchKeywordHandler;
 import org.odpi.openmetadata.frameworks.openmetadata.handlers.StewardshipManagementHandler;
 
 
@@ -30,10 +31,11 @@ public class ClassificationManagerInstanceHandler extends OMVSServiceInstanceHan
 
 
     /**
-     * This method returns the object for the tenant to use to work with the asset manager API
+     * This method returns the object for the tenant to use to work with the open metadata API
      *
      * @param serverName           name of the server that the request is for
      * @param userId               local server userid
+     * @param urlMarker  view service URL marker
      * @param serviceOperationName service operation - usually the top level rest call
      * @return client
      * @throws InvalidParameterException unknown server/service
@@ -42,6 +44,7 @@ public class ClassificationManagerInstanceHandler extends OMVSServiceInstanceHan
      */
     public StewardshipManagementHandler getStewardshipManagementHandler(String userId,
                                                                         String serverName,
+                                                                        String urlMarker,
                                                                         String serviceOperationName) throws InvalidParameterException,
                                                                                                             PropertyServerException,
                                                                                                             UserNotAuthorizedException
@@ -50,7 +53,38 @@ public class ClassificationManagerInstanceHandler extends OMVSServiceInstanceHan
 
         if (instance != null)
         {
-            return instance.getStewardshipManagementHandler();
+            return instance.getStewardshipManagementHandler(urlMarker, serviceOperationName);
+        }
+
+        return null;
+    }
+
+
+
+    /**
+     * This method returns the object for the tenant to use to work with the open metadata API
+     *
+     * @param serverName           name of the server that the request is for
+     * @param userId               local server userid
+     * @param urlMarker  view service URL marker
+     * @param serviceOperationName service operation - usually the top level rest call
+     * @return client
+     * @throws InvalidParameterException unknown server/service
+     * @throws UserNotAuthorizedException User not authorized to call this service
+     * @throws PropertyServerException internal error
+     */
+    public SearchKeywordHandler getSearchKeywordHandler(String userId,
+                                                        String serverName,
+                                                        String urlMarker,
+                                                        String serviceOperationName) throws InvalidParameterException,
+                                                                                            PropertyServerException,
+                                                                                            UserNotAuthorizedException
+    {
+        ClassificationManagerInstance instance = (ClassificationManagerInstance) getServerServiceInstance(userId, serverName, serviceOperationName);
+
+        if (instance != null)
+        {
+            return instance.getSearchKeywordHandler(urlMarker, serviceOperationName);
         }
 
         return null;

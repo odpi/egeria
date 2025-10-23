@@ -8,8 +8,8 @@ import org.odpi.openmetadata.commonservices.multitenant.OMVSServiceInstanceHandl
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
+import org.odpi.openmetadata.frameworks.openmetadata.handlers.SearchKeywordHandler;
 import org.odpi.openmetadata.frameworks.openmetadata.handlers.StewardshipManagementHandler;
-import org.odpi.openmetadata.frameworkservices.omf.client.handlers.EgeriaOpenMetadataStoreHandler;
 
 
 /**
@@ -33,7 +33,7 @@ public class ClassificationExplorerInstanceHandler extends OMVSServiceInstanceHa
 
 
     /**
-     * This method returns the object for the tenant to use to work with the asset manager API
+     * This method returns the object for the tenant to use to work with the open metadata API
      *
      * @param serverName           name of the server that the request is for
      * @param userId               local server userid
@@ -64,30 +64,29 @@ public class ClassificationExplorerInstanceHandler extends OMVSServiceInstanceHa
 
 
     /**
-     * This method returns the object for the tenant to use to work with the
-     * Open Survey Framework Services API
+     * This method returns the object for the tenant to use to work with the open metadata API
      *
      * @param serverName           name of the server that the request is for
      * @param userId               local server userid
-     * @param urlMarker             view service URL marker
+     * @param urlMarker  view service URL marker
      * @param serviceOperationName service operation - usually the top level rest call
      * @return client
      * @throws InvalidParameterException unknown server/service
      * @throws UserNotAuthorizedException User not authorized to call this service
      * @throws PropertyServerException internal error
      */
-    public EgeriaOpenMetadataStoreHandler getOpenMetadataHandler(String userId,
-                                                                 String serverName,
-                                                                 String urlMarker,
-                                                                 String serviceOperationName) throws InvalidParameterException,
-                                                                                               PropertyServerException,
-                                                                                               UserNotAuthorizedException
+    public SearchKeywordHandler getSearchKeywordHandler(String userId,
+                                                        String serverName,
+                                                        String urlMarker,
+                                                        String serviceOperationName) throws InvalidParameterException,
+                                                                                            PropertyServerException,
+                                                                                            UserNotAuthorizedException
     {
         ClassificationExplorerInstance instance = (ClassificationExplorerInstance) getServerServiceInstance(userId, serverName, serviceOperationName);
 
         if (instance != null)
         {
-            return instance.getOpenMetadataStoreHandler(urlMarker, serviceOperationName);
+            return instance.getSearchKeywordHandler(urlMarker, serviceOperationName);
         }
 
         return null;

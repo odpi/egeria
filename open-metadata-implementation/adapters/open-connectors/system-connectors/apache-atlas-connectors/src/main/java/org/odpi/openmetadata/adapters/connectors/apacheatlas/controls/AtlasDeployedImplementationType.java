@@ -7,7 +7,6 @@ import org.odpi.openmetadata.frameworks.openmetadata.refdata.DeployedImplementat
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 
-import static org.odpi.openmetadata.frameworks.openmetadata.mapper.OpenMetadataValidValues.constructValidValueNamespace;
 import static org.odpi.openmetadata.frameworks.openmetadata.mapper.OpenMetadataValidValues.constructValidValueQualifiedName;
 
 /**
@@ -145,20 +144,6 @@ public enum AtlasDeployedImplementationType implements DeployedImplementationTyp
                                                 OpenMetadataProperty.DEPLOYED_IMPLEMENTATION_TYPE.name,
                                                 null,
                                                 deployedImplementationType);
-    }
-
-
-    /**
-     * Return the namespace for this deployed implementation type.
-     *
-     * @return string
-     */
-    @Override
-    public String getNamespace()
-    {
-        return constructValidValueNamespace(associatedTypeName,
-                                            OpenMetadataProperty.DEPLOYED_IMPLEMENTATION_TYPE.name,
-                                            null);
     }
 
 

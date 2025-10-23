@@ -60,7 +60,6 @@ public class UnityCatalogPackArchiveWriter extends ContentPackBaseArchiveWriter
             this.addDeployedImplementationType(deployedImplementationType.getDeployedImplementationType(),
                                                deployedImplementationType.getAssociatedTypeName(),
                                                deployedImplementationType.getQualifiedName(),
-                                               deployedImplementationType.getNamespace(),
                                                deployedImplementationType.getDescription(),
                                                deployedImplementationType.getWikiLink(),
                                                deployedImplementationType.getIsATypeOf());

@@ -4,7 +4,10 @@ package org.odpi.openmetadata.viewservices.externallinks.server.spring;
 
 import io.swagger.v3.oas.annotations.ExternalDocumentation;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.enums.SecuritySchemeIn;
+import io.swagger.v3.oas.annotations.enums.SecuritySchemeType;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import io.swagger.v3.oas.annotations.security.SecurityScheme;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.odpi.openmetadata.commonservices.ffdc.rest.*;
 import org.odpi.openmetadata.commonservices.ffdc.rest.GetRequestBody;
@@ -17,7 +20,13 @@ import org.springframework.web.bind.annotation.*;
  = */
 @RestController
 @RequestMapping("/servers/{serverName}/api/open-metadata/{urlMarker}")
-
+@SecurityScheme(
+        name = "BearerAuthorization",
+        type = SecuritySchemeType.HTTP,
+        bearerFormat = "JWT",
+        scheme = "bearer",
+        in = SecuritySchemeIn.HEADER
+)
 @Tag(name="API: External Links OMVS", description="External references identify web pages where the information about useful resources such as downloadable data sources and models, or key documentation are located. External identifiers capture the identifiers for data items residing outside of the open metadata ecosystem whose contents have been synchronised into the open metadata system.  They are linked to their open metadata equivalent elements.  The External Links OMVS provides APIs for supporting the creation and editing of external references, and external identifiers along with queries to locate them.",
         externalDocs=@ExternalDocumentation(description="Further Information",
                 url="https://egeria-project.org/services/omvs/external-links/overview/"))
@@ -47,6 +56,7 @@ public class ExternalLinksResource
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     @PostMapping(path = "/external-references")
+    @SecurityRequirement(name = "BearerAuthorization")
 
     @Operation(summary="createExternalReference",
             description="Create an external reference.",
@@ -76,6 +86,8 @@ public class ExternalLinksResource
      *  PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     @PostMapping(path = "/external-references/from-template")
+    @SecurityRequirement(name = "BearerAuthorization")
+
     @Operation(summary="createExternalReferenceFromTemplate",
             description="Create a new metadata element to represent an external reference using an existing metadata element as a template.  The template defines additional classifications and relationships that should be added to the new element.",
             externalDocs=@ExternalDocumentation(description="Further Information",
@@ -105,6 +117,8 @@ public class ExternalLinksResource
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     @PostMapping(path = "/external-references/{externalReferenceGUID}/update")
+    @SecurityRequirement(name = "BearerAuthorization")
+
     @Operation(summary="updateExternalReference",
             description="Update the properties of an external reference.",
             externalDocs=@ExternalDocumentation(description="Further Information",
@@ -138,6 +152,8 @@ public class ExternalLinksResource
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     @PostMapping(path = "/elements/{elementGUID}/external-references/{externalReferenceGUID}/attach")
+    @SecurityRequirement(name = "BearerAuthorization")
+
     @Operation(summary="linkExternalReference",
             description="Attach an external reference to an element.",
             externalDocs=@ExternalDocumentation(description="Further Information",
@@ -172,6 +188,8 @@ public class ExternalLinksResource
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     @PostMapping(path = "/elements/{elementGUID}/external-references/{externalReferenceGUID}/detach")
+    @SecurityRequirement(name = "BearerAuthorization")
+
     @Operation(summary="detachExternalReference",
             description="Detach an element from an IT profile.",
             externalDocs=@ExternalDocumentation(description="Further Information",
@@ -206,6 +224,8 @@ public class ExternalLinksResource
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     @PostMapping(path = "/elements/{elementGUID}/media-references/{externalReferenceGUID}/attach")
+    @SecurityRequirement(name = "BearerAuthorization")
+
     @Operation(summary="linkMediaReference",
             description="Attach an external media reference to an element.",
             externalDocs=@ExternalDocumentation(description="Further Information",
@@ -240,6 +260,8 @@ public class ExternalLinksResource
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     @PostMapping(path = "/elements/{elementGUID}/media-references/{externalReferenceGUID}/detach")
+    @SecurityRequirement(name = "BearerAuthorization")
+
     @Operation(summary="detachMediaReference",
             description="Detach an external media reference from an element.",
             externalDocs=@ExternalDocumentation(description="Further Information",
@@ -274,6 +296,8 @@ public class ExternalLinksResource
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     @PostMapping(path = "/elements/{elementGUID}/cited-document-references/{externalReferenceGUID}/attach")
+    @SecurityRequirement(name = "BearerAuthorization")
+
     @Operation(summary="linkCitedDocumentReference",
             description="Attach an element to its external document reference.",
             externalDocs=@ExternalDocumentation(description="Further Information",
@@ -308,6 +332,8 @@ public class ExternalLinksResource
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     @PostMapping(path = "/elements/{elementGUID}/cited-document-references/{externalReferenceGUID}/detach")
+    @SecurityRequirement(name = "BearerAuthorization")
+
     @Operation(summary="detachCitedDocumentReference",
             description="Detach an element from its external document reference.",
             externalDocs=@ExternalDocumentation(description="Further Information",
@@ -341,6 +367,8 @@ public class ExternalLinksResource
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     @PostMapping(path = "/external-references/{externalReferenceGUID}/delete")
+    @SecurityRequirement(name = "BearerAuthorization")
+
     @Operation(summary="deleteExternalReference",
             description="Delete an external reference.",
             externalDocs=@ExternalDocumentation(description="Further Information",
@@ -371,6 +399,8 @@ public class ExternalLinksResource
      *  PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     @PostMapping(path = "/external-references/by-name")
+    @SecurityRequirement(name = "BearerAuthorization")
+
     @Operation(summary="getExternalReferencesByName",
             description="Returns the list of external references with a particular name.",
             externalDocs=@ExternalDocumentation(description="Further Information",
@@ -399,6 +429,8 @@ public class ExternalLinksResource
      *  PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     @PostMapping(path = "/external-references/by-search-string")
+    @SecurityRequirement(name = "BearerAuthorization")
+
     @Operation(summary="findExternalReferences",
             description="Retrieve the list of external reference metadata elements that contain the search string.",
             externalDocs=@ExternalDocumentation(description="Further Information",
@@ -428,6 +460,8 @@ public class ExternalLinksResource
      *  PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     @PostMapping(path = "/external-references/{externalReferenceGUID}/retrieve")
+    @SecurityRequirement(name = "BearerAuthorization")
+
     @Operation(summary="getExternalReferenceByGUID",
             description="Return the properties of a specific external reference.",
             externalDocs=@ExternalDocumentation(description="Further Information",
@@ -587,6 +621,8 @@ public class ExternalLinksResource
      *  PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     @PostMapping(path = "/external-identifiers/by-name")
+    @SecurityRequirement(name = "BearerAuthorization")
+
     @Operation(summary="getExternalIdsByName",
             description="Returns the list of external identifiers with a particular name.",
             externalDocs=@ExternalDocumentation(description="Further Information",
@@ -615,6 +651,8 @@ public class ExternalLinksResource
      *  PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     @PostMapping(path = "/external-identifiers/by-search-string")
+    @SecurityRequirement(name = "BearerAuthorization")
+
     @Operation(summary="findExternalIds",
             description="Retrieve the list of external identifiers metadata elements that contain the search string.",
             externalDocs=@ExternalDocumentation(description="Further Information",
@@ -644,6 +682,8 @@ public class ExternalLinksResource
      *  PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     @PostMapping(path = "/external-identifiers/{externalIdGUID}/retrieve")
+    @SecurityRequirement(name = "BearerAuthorization")
+
     @Operation(summary="getExternalIdByGUID",
             description="Return the properties of a specific external identifier.",
             externalDocs=@ExternalDocumentation(description="Further Information",
