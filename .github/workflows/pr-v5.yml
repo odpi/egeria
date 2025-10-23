@@ -5,7 +5,7 @@ name: "Verify PR v5"
 
 on:
   pull_request:
-    branches: [egeria-release-5*]
+    branches: [main, egeria-release-5*]
 
 permissions:
   contents: read
