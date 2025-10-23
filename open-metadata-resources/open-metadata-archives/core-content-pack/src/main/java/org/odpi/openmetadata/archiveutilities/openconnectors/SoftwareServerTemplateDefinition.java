@@ -271,7 +271,7 @@ public enum SoftwareServerTemplateDefinition implements TemplateDefinition
     @Override
     public String getTemplateVersionIdentifier()
     {
-        return "5.4-SNAPSHOT";
+        return "6.0-SNAPSHOT";
     }
 
 

@@ -158,7 +158,7 @@ public abstract class ContentPackBaseArchiveWriter extends EgeriaBaseArchiveWrit
 
         classifications.add(archiveHelper.getTemplateClassification(deployedImplementationType.getDeployedImplementationType() + " template",
                                                                     "Create a data asset of type " + deployedImplementationType.getAssociatedTypeName() + " with an associated Connection.",
-                                                                    "V5.4-SNAPSHOT",
+                                                                    "V6.0-SNAPSHOT",
                                                                     null, methodName));
 
         classifications.add(archiveHelper.getDataAssetEncodingClassification(PlaceholderProperty.FILE_ENCODING.getPlaceholder(),
@@ -666,7 +666,7 @@ public abstract class ContentPackBaseArchiveWriter extends EgeriaBaseArchiveWrit
 
         classifications.add(archiveHelper.getTemplateClassification(deployedImplementationType.getDeployedImplementationType() + " template",
                                                                     "Create a " + deployedImplementationType.getDeployedImplementationType() + " Host with an associated SoftwareCapability.",
-                                                                    "5.4-SNAPSHOT",
+                                                                    "6.0-SNAPSHOT",
                                                                     null, methodName));
 
         archiveHelper.setGUID(qualifiedName, guid);
@@ -756,7 +756,7 @@ public abstract class ContentPackBaseArchiveWriter extends EgeriaBaseArchiveWrit
 
         classifications.add(archiveHelper.getTemplateClassification(deployedImplementationType.getDeployedImplementationType() + " template",
                                                                     "Create a " + deployedImplementationType.getDeployedImplementationType() + " SoftwareCapability.",
-                                                                    "5.4-SNAPSHOT",
+                                                                    "6.0-SNAPSHOT",
                                                                     null, methodName));
 
         if (softwareCapabilityClassification != null)
