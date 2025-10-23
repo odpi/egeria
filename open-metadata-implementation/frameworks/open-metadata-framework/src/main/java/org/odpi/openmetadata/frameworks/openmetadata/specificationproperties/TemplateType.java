@@ -1,24 +1,19 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 /* Copyright Contributors to the ODPi Egeria project. */
 
-package org.odpi.openmetadata.frameworks.connectors.controls;
+package org.odpi.openmetadata.frameworks.openmetadata.specificationproperties;
 
-import java.util.Map;
+import java.util.Objects;
 
 /**
  * TemplateType defines a template supported by this integration connector.
  */
-public class TemplateType
+public class TemplateType extends SpecificationProperty
 {
     /**
      * Symbolic name of the template.
      */
     private String templateName = null;
-
-    /**
-     * Description of the value to provide for this template.
-     */
-    private String templateDescription = null;
 
     /**
      * Open metadata type name of the template.
@@ -30,18 +25,10 @@ public class TemplateType
      */
     private boolean required = true;
 
-
     /**
      * Option guid for a template to use if no template is specified.
      */
     private String defaultTemplateGUID = null;
-
-    /**
-     * A map of property name to property value for values that should match in the catalog template for it to be compatible with this integration
-     * connector.
-     */
-    private Map<String, String> otherPropertyValues = null;
-
 
 
     /**
@@ -49,6 +36,25 @@ public class TemplateType
      */
     public TemplateType()
     {
+    }
+
+
+    /**
+     * Copy/clone constructor
+     *
+     * @param template object to copy
+     */
+    public TemplateType(TemplateType template)
+    {
+        super (template);
+
+        if (template != null)
+        {
+            this.templateName = template.getTemplateName();
+            this.typeName = template.getTypeName();
+            this.required = template.getRequired();
+            this.defaultTemplateGUID = template.getDefaultTemplateGUID();
+        }
     }
 
 
@@ -71,28 +77,6 @@ public class TemplateType
     public void setTemplateName(String templateName)
     {
         this.templateName = templateName;
-    }
-
-
-    /**
-     * Return the description of the template, such as its content.
-     *
-     * @return description
-     */
-    public String getTemplateDescription()
-    {
-        return templateDescription;
-    }
-
-
-    /**
-     * Set up the description of the template, such as its content.
-     *
-     * @param templateDescription description
-     */
-    public void setTemplateDescription(String templateDescription)
-    {
-        this.templateDescription = templateDescription;
     }
 
 
@@ -163,28 +147,6 @@ public class TemplateType
 
 
     /**
-     * Return a map of property name to property value that the catalog template should have to be valid for this integration connector.
-     *
-     * @return map of string to string
-     */
-    public Map<String, String> getOtherPropertyValues()
-    {
-        return otherPropertyValues;
-    }
-
-
-    /**
-     * Set up a map of property name to property value that the catalog template should have to be valid for this integration connector.
-     *
-     * @param otherPropertyValues map of string to string
-     */
-    public void setOtherPropertyValues(Map<String, String> otherPropertyValues)
-    {
-        this.otherPropertyValues = otherPropertyValues;
-    }
-
-
-    /**
      * JSON-style toString
      *
      * @return return string containing the property names and values
@@ -194,11 +156,41 @@ public class TemplateType
     {
         return "TemplateType{" +
                 "templateName='" + templateName + '\'' +
-                ", templateDescription='" + templateDescription + '\'' +
                 ", typeName='" + typeName + '\'' +
                 ", required=" + required +
-                ", defaultTemplateGUID=" + defaultTemplateGUID +
-                ", otherPropertyValues=" + otherPropertyValues +
-                '}';
+                ", defaultTemplateGUID='" + defaultTemplateGUID + '\'' +
+                "} " + super.toString();
+    }
+
+
+    /**
+     * Return comparison result based on the content of the properties.
+     *
+     * @param objectToCompare test object
+     * @return result of comparison
+     */
+    @Override
+    public boolean equals(Object objectToCompare)
+    {
+        if (this == objectToCompare) return true;
+        if (objectToCompare == null || getClass() != objectToCompare.getClass()) return false;
+        if (!super.equals(objectToCompare)) return false;
+        TemplateType that = (TemplateType) objectToCompare;
+        return required == that.required &&
+                Objects.equals(templateName, that.templateName) &&
+                Objects.equals(typeName, that.typeName) &&
+                Objects.equals(defaultTemplateGUID, that.defaultTemplateGUID);
+    }
+
+
+    /**
+     * Return hash code for this object
+     *
+     * @return int hash code
+     */
+    @Override
+    public int hashCode()
+    {
+        return Objects.hash(super.hashCode(), templateName, typeName, required, defaultTemplateGUID);
     }
 }

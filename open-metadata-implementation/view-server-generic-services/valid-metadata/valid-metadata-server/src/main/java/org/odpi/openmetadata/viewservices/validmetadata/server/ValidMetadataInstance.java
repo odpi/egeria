@@ -10,8 +10,8 @@ import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.openmetadata.client.OpenMetadataClient;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.PropertyServerException;
+import org.odpi.openmetadata.frameworks.openmetadata.handlers.SpecificationPropertyHandler;
 import org.odpi.openmetadata.frameworks.openmetadata.handlers.ValidMetadataValueHandler;
-import org.odpi.openmetadata.frameworkservices.omf.client.EgeriaOpenMetadataStoreClient;
 import org.odpi.openmetadata.frameworkservices.omf.client.handlers.EgeriaOpenMetadataStoreHandler;
 
 import java.util.List;
@@ -29,6 +29,7 @@ public class ValidMetadataInstance extends OMVSServiceInstance
      * These maps cache clients for specific view services.
      */
     private final ViewServiceClientMap<ValidMetadataValueHandler>      validMetadataValueHandlerMap;
+    private final ViewServiceClientMap<SpecificationPropertyHandler>   specificationPropertyHandlerMap;
     private final ViewServiceClientMap<EgeriaOpenMetadataStoreHandler> openMetadataHandlerMap;
 
     /**
@@ -70,6 +71,15 @@ public class ValidMetadataInstance extends OMVSServiceInstance
                                                                        myDescription.getViewServiceFullName(),
                                                                        maxPageSize);
 
+        this.specificationPropertyHandlerMap = new ViewServiceClientMap<>(SpecificationPropertyHandler.class,
+                                                                          serverName,
+                                                                          localServerUserId,
+                                                                          localServerUserPassword,
+                                                                          auditLog,
+                                                                          activeViewServices,
+                                                                          myDescription.getViewServiceFullName(),
+                                                                          maxPageSize);
+
         this.openMetadataHandlerMap = new ViewServiceClientMap<>(EgeriaOpenMetadataStoreHandler.class,
                                                                  serverName,
                                                                  localServerUserId,
@@ -96,6 +106,25 @@ public class ValidMetadataInstance extends OMVSServiceInstance
     {
         return validMetadataValueHandlerMap.getClient(urlMarker, methodName);
     }
+
+
+
+    /**
+     * Return the valid metadata value handler.
+     *
+     * @param urlMarker calling view service
+     * @param methodName calling operation
+     * @return client
+     * @throws InvalidParameterException bad client initialization
+     * @throws PropertyServerException bad client handler class
+     */
+    public SpecificationPropertyHandler getSpecificationPropertyHandler(String urlMarker,
+                                                                        String methodName) throws InvalidParameterException,
+                                                                                                  PropertyServerException
+    {
+        return specificationPropertyHandlerMap.getClient(urlMarker, methodName);
+    }
+
 
 
     /**

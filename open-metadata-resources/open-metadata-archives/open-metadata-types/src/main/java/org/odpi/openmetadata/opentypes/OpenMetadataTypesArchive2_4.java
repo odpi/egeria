@@ -368,7 +368,6 @@ public class OpenMetadataTypesArchive2_4
         List<TypeDefAttribute> properties = new ArrayList<>();
 
         TypeDefAttribute property = archiveHelper.getTypeDefAttribute(OpenMetadataProperty.KEYWORD);
-        property.setUnique(true);
         property.setValuesMaxCount(1);
         property.setValuesMinCount(1);
         property.setAttributeCardinality(AttributeCardinality.ONE_ONLY);

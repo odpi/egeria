@@ -4,6 +4,10 @@ package org.odpi.openmetadata.viewservices.assetcatalog.server.spring;
 
 import io.swagger.v3.oas.annotations.ExternalDocumentation;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.enums.SecuritySchemeIn;
+import io.swagger.v3.oas.annotations.enums.SecuritySchemeType;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import io.swagger.v3.oas.annotations.security.SecurityScheme;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.odpi.openmetadata.commonservices.ffdc.rest.*;
 import org.odpi.openmetadata.viewservices.assetcatalog.rest.AssetCatalogSupportedTypes;
@@ -17,7 +21,13 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/servers/{serverName}/api/open-metadata/asset-catalog")
-
+@SecurityScheme(
+        name = "BearerAuthorization",
+        type = SecuritySchemeType.HTTP,
+        bearerFormat = "JWT",
+        scheme = "bearer",
+        in = SecuritySchemeIn.HEADER
+)
 @Tag(name="API: Asset Catalog OMVS",
      description="Search for digital resources that are catalogued in open metadata, retrieve their properties, schema, lineage, survey analysis and other related information.",
      externalDocs=@ExternalDocumentation(description="Further Information",url="https://egeria-project.org/services/omvs/asset-catalog/overview/"))
@@ -46,6 +56,7 @@ public class AssetCatalogResource
      *  UserNotAuthorizedException security access problem
      */
     @GetMapping( path = "/assets/types")
+    @SecurityRequirement(name = "BearerAuthorization")
 
     @Operation(summary="getAssetTypes",
             description="Return the subtypes for asset.",
@@ -72,6 +83,7 @@ public class AssetCatalogResource
      * UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     @PostMapping(path = "/assets/{assetGUID}/as-graph")
+    @SecurityRequirement(name = "BearerAuthorization")
 
     @Operation(summary="getAssetGraph",
             description="Return all the elements that are anchored to an asset plus relationships between these elements and to other elements.",
@@ -101,6 +113,7 @@ public class AssetCatalogResource
      * UserNotAuthorizedException - the requesting user is not authorized to issue this request.
      */
     @PostMapping(path = "/assets/{assetGUID}/as-lineage-graph")
+    @SecurityRequirement(name = "BearerAuthorization")
 
     @Operation(summary="getAssetLineageGraph",
             description="Return all the elements that are linked to an asset using lineage relationships.  The relationships are" +
@@ -129,6 +142,7 @@ public class AssetCatalogResource
      * UserNotAuthorizedException the user does not have access to the properties
      */
     @PostMapping(path = "/assets/in-domain/by-search-string")
+    @SecurityRequirement(name = "BearerAuthorization")
 
     @Operation(summary="findInAssetDomain",
             description="Locate string value in elements that are anchored to assets.  The search string is a regular expression (regEx).",
@@ -155,6 +169,7 @@ public class AssetCatalogResource
      * UserNotAuthorizedException the user does not have access to the properties
      */
     @PostMapping(path = "/assets/by-metadata-collection-id/{metadataCollectionId}")
+    @SecurityRequirement(name = "BearerAuthorization")
 
     @Operation(summary="getAssetsByMetadataCollectionId",
             description="Return a list of assets that come from the requested metadata collection. The filter in the request body is optional. If specified it is a type name to limit the results passed back.",

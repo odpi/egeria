@@ -32,11 +32,6 @@ public abstract class EgeriaBaseArchiveWriter extends OMRSArchiveWriter
     protected static final String guidMapFileName = "EgeriaContentPacksGUIDMap.json";
 
     /*
-     * Common values for naming of elements in the archive.
-     */
-    protected static final String openMetadataValidValueSetPrefix = "OpenMetadata.ValidValueSet.";
-
-    /*
      * Specific values for initializing TypeDefs
      */
     protected static final String versionName   = "5.4-SNAPSHOT";

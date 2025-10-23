@@ -5,7 +5,7 @@ package org.odpi.openmetadata.adapters.repositoryservices.auditlogstore.postgres
 
 
 import org.odpi.openmetadata.adapters.connectors.resource.jdbc.controls.JDBCConfigurationProperty;
-import org.odpi.openmetadata.frameworks.connectors.controls.ConfigurationPropertyType;
+import org.odpi.openmetadata.frameworks.openmetadata.specificationproperties.ConfigurationPropertyType;
 import org.odpi.openmetadata.frameworks.openmetadata.types.DataType;
 
 import java.util.List;

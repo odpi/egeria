@@ -919,11 +919,11 @@ public class ValidMetadataValueHandler extends OpenMetadataHandlerBase
 
                         if ((typeName == null) || (usage == null) || (usage.equals(typeName))) // todo need to do a proper subtype test
                         {
-                            ValidMetadataValue validMetadataValue = this.convertValidValue(relatedMetadataElement.getElement());
+                            ValidMetadataValueDetail validMetadataValue = this.convertValidValue(relatedMetadataElement.getElement());
 
                             if (namespace == null)
                             {
-                                results.add(new ValidMetadataValueDetail(validMetadataValue));
+                                results.add(validMetadataValue);
                             }
                             else
                             {

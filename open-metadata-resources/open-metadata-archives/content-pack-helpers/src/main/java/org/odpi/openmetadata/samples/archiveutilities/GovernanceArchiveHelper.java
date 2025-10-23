@@ -3,24 +3,20 @@
 package org.odpi.openmetadata.samples.archiveutilities;
 
 import org.odpi.openmetadata.frameworks.connectors.ConnectorProviderBase;
-import org.odpi.openmetadata.frameworks.connectors.controls.ConfigurationPropertyType;
+import org.odpi.openmetadata.frameworks.openmetadata.specificationproperties.*;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.ConnectorType;
 import org.odpi.openmetadata.frameworks.opengovernance.GovernanceServiceProviderBase;
-import org.odpi.openmetadata.frameworks.opengovernance.controls.*;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.NewActionTarget;
-import org.odpi.openmetadata.frameworks.openmetadata.controls.PlaceholderPropertyType;
-import org.odpi.openmetadata.frameworks.openmetadata.controls.ReplacementAttributeType;
 import org.odpi.openmetadata.frameworks.openmetadata.refdata.Category;
 import org.odpi.openmetadata.frameworks.openmetadata.types.DataType;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 import org.odpi.openmetadata.frameworks.openmetadata.refdata.DeployedImplementationType;
 import org.odpi.openmetadata.frameworks.openmetadata.refdata.SpecificationPropertyType;
-import org.odpi.openmetadata.frameworks.connectors.controls.TemplateType;
 import org.odpi.openmetadata.frameworks.integration.connectors.IntegrationConnectorProvider;
 import org.odpi.openmetadata.frameworks.opensurvey.SurveyActionServiceProvider;
-import org.odpi.openmetadata.frameworks.opensurvey.controls.AnalysisStepType;
-import org.odpi.openmetadata.frameworks.opensurvey.controls.AnnotationTypeType;
+import org.odpi.openmetadata.frameworks.openmetadata.specificationproperties.AnalysisStepType;
+import org.odpi.openmetadata.frameworks.openmetadata.specificationproperties.AnnotationTypeType;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.archivestore.OpenMetadataArchiveBuilder;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.*;
 
@@ -533,15 +529,8 @@ public class GovernanceArchiveHelper extends SimpleCatalogArchiveHelper
                     additionalProperties = new HashMap<>();
                 }
 
-                String required = "false";
-
-                if (replacementAttributeType.getRequired())
-                {
-                    required = "true";
-                }
-
                 additionalProperties.put(OpenMetadataProperty.EXAMPLE.name, replacementAttributeType.getExample());
-                additionalProperties.put(OpenMetadataProperty.REQUIRED.name, required);
+                additionalProperties.put(OpenMetadataProperty.REQUIRED.name, Boolean.toString(replacementAttributeType.getRequired()));
 
                 String validValueGUID = this.addValidValue(null,
                                                            null,
@@ -556,7 +545,7 @@ public class GovernanceArchiveHelper extends SimpleCatalogArchiveHelper
                                                            replacementAttributeType.getName(),
                                                            replacementAttributeType.getDescription(),
                                                            SpecificationPropertyType.REPLACEMENT_ATTRIBUTE.getPropertyType(),
-                                                           null,
+                                                           SpecificationPropertyType.REPLACEMENT_ATTRIBUTE.getDescription(),
                                                            replacementAttributeType.getDataType(),
                                                            null,
                                                            replacementAttributeType.getName(),
@@ -606,15 +595,8 @@ public class GovernanceArchiveHelper extends SimpleCatalogArchiveHelper
                     additionalProperties = new HashMap<>();
                 }
 
-                String required = "false";
-
-                if (placeholderPropertyType.getRequired())
-                {
-                    required = "true";
-                }
-
                 additionalProperties.put(OpenMetadataProperty.EXAMPLE.name, placeholderPropertyType.getExample());
-                additionalProperties.put(OpenMetadataProperty.REQUIRED.name, required);
+                additionalProperties.put(OpenMetadataProperty.REQUIRED.name, Boolean.toString(placeholderPropertyType.getRequired()));
 
                 String validValueGUID = this.addValidValue(null,
                                                            null,
@@ -629,7 +611,7 @@ public class GovernanceArchiveHelper extends SimpleCatalogArchiveHelper
                                                            placeholderPropertyType.getName(),
                                                            placeholderPropertyType.getDescription(),
                                                            SpecificationPropertyType.PLACEHOLDER_PROPERTY.getPropertyType(),
-                                                           null,
+                                                           SpecificationPropertyType.PLACEHOLDER_PROPERTY.getDescription(),
                                                            placeholderPropertyType.getDataType(),
                                                            null,
                                                            placeholderPropertyType.getName(),
@@ -679,14 +661,7 @@ public class GovernanceArchiveHelper extends SimpleCatalogArchiveHelper
                     additionalProperties = new HashMap<>();
                 }
 
-                String required = "false";
-
-                if (templateType.getRequired())
-                {
-                    required = "true";
-                }
-
-                additionalProperties.put(OpenMetadataProperty.REQUIRED.name, required);
+                additionalProperties.put(OpenMetadataProperty.REQUIRED.name, Boolean.toString(templateType.getRequired()));
 
                 String validValueGUID = this.addValidValue(null,
                                                            null,
@@ -699,10 +674,10 @@ public class GovernanceArchiveHelper extends SimpleCatalogArchiveHelper
                                                            Category.SPECIFICATION_PROPERTY.getName(),
                                                            SpecificationPropertyType.SUPPORTED_TEMPLATE.getPropertyType(),
                                                            templateType.getTemplateName(),
-                                                           templateType.getTemplateDescription(),
+                                                           templateType.getDescription(),
                                                            SpecificationPropertyType.SUPPORTED_TEMPLATE.getPropertyType(),
+                                                           SpecificationPropertyType.SUPPORTED_TEMPLATE.getDescription(),
                                                            templateType.getTypeName(),
-                                                           null,
                                                            null,
                                                            templateType.getTemplateName(),
                                                            null,
@@ -751,15 +726,7 @@ public class GovernanceArchiveHelper extends SimpleCatalogArchiveHelper
                 }
 
                 additionalProperties.put(OpenMetadataProperty.EXAMPLE.name, configurationPropertyType.getExample());
-
-                String required = "false";
-
-                if (configurationPropertyType.getRequired())
-                {
-                    required = "true";
-                }
-
-                additionalProperties.put(OpenMetadataProperty.REQUIRED.name, required);
+                additionalProperties.put(OpenMetadataProperty.REQUIRED.name, Boolean.toString(configurationPropertyType.getRequired()));
 
                 String validValueGUID = this.addValidValue(null,
                                                            null,
@@ -774,7 +741,7 @@ public class GovernanceArchiveHelper extends SimpleCatalogArchiveHelper
                                                            configurationPropertyType.getName(),
                                                            configurationPropertyType.getDescription(),
                                                            SpecificationPropertyType.SUPPORTED_CONFIGURATION_PROPERTY.getPropertyType(),
-                                                           null,
+                                                           SpecificationPropertyType.SUPPORTED_CONFIGURATION_PROPERTY.getDescription(),
                                                            configurationPropertyType.getDataType(),
                                                            null,
                                                            configurationPropertyType.getName(),
@@ -824,16 +791,16 @@ public class GovernanceArchiveHelper extends SimpleCatalogArchiveHelper
                                                            anchorDomainName,
                                                            anchorScopeGUID,
                                                            OpenMetadataType.SPECIFICATION_PROPERTY_VALUE.typeName,
-                                                           parentTypeName + "::" + parentGUID + "::SupportedRequestType::" + supportedRequestType.getRequestType(),
+                                                           parentTypeName + "::" + parentGUID + "::SupportedRequestType::" + supportedRequestType.getName(),
                                                            Category.SPECIFICATION_PROPERTY.getName(),
                                                            SpecificationPropertyType.SUPPORTED_REQUEST_TYPE.getPropertyType(),
-                                                           supportedRequestType.getRequestType(),
+                                                           supportedRequestType.getName(),
                                                            supportedRequestType.getDescription(),
                                                            SpecificationPropertyType.SUPPORTED_REQUEST_TYPE.getPropertyType(),
+                                                           SpecificationPropertyType.SUPPORTED_REQUEST_TYPE.getDescription(),
                                                            null,
                                                            null,
-                                                           null,
-                                                           supportedRequestType.getRequestType(),
+                                                           supportedRequestType.getName(),
                                                            null,
                                                            null,
                                                            true,
@@ -880,15 +847,8 @@ public class GovernanceArchiveHelper extends SimpleCatalogArchiveHelper
                     additionalProperties = new HashMap<>();
                 }
 
-                String required = "false";
-
-                if (supportedRequestParameter.getRequired())
-                {
-                    required = "true";
-                }
-
                 additionalProperties.put(OpenMetadataProperty.EXAMPLE.name, supportedRequestParameter.getExample());
-                additionalProperties.put(OpenMetadataProperty.REQUIRED.name, required);
+                additionalProperties.put(OpenMetadataProperty.REQUIRED.name, Boolean.toString(supportedRequestParameter.getRequired()));
 
                 String validValueGUID = this.addValidValue(null,
                                                            null,
@@ -903,7 +863,7 @@ public class GovernanceArchiveHelper extends SimpleCatalogArchiveHelper
                                                            supportedRequestParameter.getName(),
                                                            supportedRequestParameter.getDescription(),
                                                            SpecificationPropertyType.SUPPORTED_REQUEST_PARAMETER.getPropertyType(),
-                                                           null,
+                                                           SpecificationPropertyType.SUPPORTED_REQUEST_PARAMETER.getDescription(),
                                                            supportedRequestParameter.getDataType(),
                                                            null,
                                                            supportedRequestParameter.getName(),
@@ -953,17 +913,8 @@ public class GovernanceArchiveHelper extends SimpleCatalogArchiveHelper
                     additionalProperties = new HashMap<>();
                 }
 
-                String required = "false";
-
-                if (supportedActionTarget.getRequired())
-                {
-                    required = "true";
-                }
-
-                additionalProperties.put(OpenMetadataProperty.DESCRIPTION.name, supportedActionTarget.getDescription());
-                additionalProperties.put(OpenMetadataProperty.DATA_TYPE.name, supportedActionTarget.getTypeName());
                 additionalProperties.put(OpenMetadataProperty.DEPLOYED_IMPLEMENTATION_TYPE.name, supportedActionTarget.getDeployedImplementationType());
-                additionalProperties.put(OpenMetadataProperty.REQUIRED.name, required);
+                additionalProperties.put(OpenMetadataProperty.REQUIRED.name, Boolean.toString(supportedActionTarget.getRequired()));
 
                 String validValueGUID = this.addValidValue(null,
                                                            null,
@@ -978,7 +929,7 @@ public class GovernanceArchiveHelper extends SimpleCatalogArchiveHelper
                                                            supportedActionTarget.getName(),
                                                            supportedActionTarget.getDescription(),
                                                            SpecificationPropertyType.SUPPORTED_ACTION_TARGET.getPropertyType(),
-                                                           null,
+                                                           SpecificationPropertyType.SUPPORTED_ACTION_TARGET.getDescription(),
                                                            supportedActionTarget.getTypeName(),
                                                            null,
                                                            supportedActionTarget.getName(),
@@ -1028,8 +979,6 @@ public class GovernanceArchiveHelper extends SimpleCatalogArchiveHelper
                     additionalProperties = new HashMap<>();
                 }
 
-                additionalProperties.put(OpenMetadataProperty.DESCRIPTION.name, analysisStepType.getDescription());
-
                 String validValueGUID = this.addValidValue(null,
                                                            null,
                                                            anchorGUID,
@@ -1043,7 +992,7 @@ public class GovernanceArchiveHelper extends SimpleCatalogArchiveHelper
                                                            analysisStepType.getName(),
                                                            analysisStepType.getDescription(),
                                                            SpecificationPropertyType.SUPPORTED_ANALYSIS_STEP.getPropertyType(),
-                                                           null,
+                                                           SpecificationPropertyType.SUPPORTED_ANALYSIS_STEP.getDescription(),
                                                            DataType.STRING.getName(),
                                                            null,
                                                            analysisStepType.getName(),
@@ -1094,6 +1043,7 @@ public class GovernanceArchiveHelper extends SimpleCatalogArchiveHelper
                 }
 
                 additionalProperties.put(OpenMetadataProperty.EXPRESSION.name, annotationTypeType.getExpression());
+                additionalProperties.put(OpenMetadataProperty.EXPLANATION.name, annotationTypeType.getExplanation());
                 additionalProperties.put(OpenMetadataProperty.ANALYSIS_STEP.name, annotationTypeType.getAnalysisStepName());
                 additionalProperties.put(OpenMetadataProperty.OPEN_METADATA_TYPE_NAME.name, annotationTypeType.getOpenMetadataTypeName());
 
@@ -1107,11 +1057,11 @@ public class GovernanceArchiveHelper extends SimpleCatalogArchiveHelper
                                                            parentTypeName + "::" + parentGUID + "::ProducedAnnotationType::" + annotationTypeType.getName(),
                                                            Category.SPECIFICATION_PROPERTY.getName(),
                                                            SpecificationPropertyType.PRODUCED_ANNOTATION_TYPE.getPropertyType(),
-                                                           annotationTypeType.getSummary(),
-                                                           annotationTypeType.getExplanation(),
+                                                           annotationTypeType.getName(),
+                                                           annotationTypeType.getDescription(),
                                                            SpecificationPropertyType.PRODUCED_ANNOTATION_TYPE.getPropertyType(),
-                                                           null,
-                                                           null,
+                                                           SpecificationPropertyType.PRODUCED_ANNOTATION_TYPE.getDescription(),
+                                                           annotationTypeType.getOpenMetadataTypeName(),
                                                            null,
                                                            annotationTypeType.getName(),
                                                            null,
@@ -1167,8 +1117,6 @@ public class GovernanceArchiveHelper extends SimpleCatalogArchiveHelper
                     required = "true";
                 }
 
-                additionalProperties.put(OpenMetadataProperty.DESCRIPTION.name, producedRequestParameter.getDescription());
-                additionalProperties.put(OpenMetadataProperty.DATA_TYPE.name, producedRequestParameter.getDataType());
                 additionalProperties.put(OpenMetadataProperty.EXAMPLE.name, producedRequestParameter.getExample());
                 additionalProperties.put(OpenMetadataProperty.REQUIRED.name, required);
 
@@ -1185,7 +1133,7 @@ public class GovernanceArchiveHelper extends SimpleCatalogArchiveHelper
                                                            producedRequestParameter.getName(),
                                                            producedRequestParameter.getDescription(),
                                                            SpecificationPropertyType.PRODUCED_REQUEST_PARAMETER.getPropertyType(),
-                                                           null,
+                                                           SpecificationPropertyType.PRODUCED_REQUEST_PARAMETER.getDescription(),
                                                            producedRequestParameter.getDataType(),
                                                            null,
                                                            producedRequestParameter.getName(),
@@ -1258,7 +1206,7 @@ public class GovernanceArchiveHelper extends SimpleCatalogArchiveHelper
                                                            actionTargetType.getName(),
                                                            actionTargetType.getDescription(),
                                                            SpecificationPropertyType.PRODUCED_ACTION_TARGET.getPropertyType(),
-                                                           null,
+                                                           SpecificationPropertyType.PRODUCED_ACTION_TARGET.getDescription(),
                                                            actionTargetType.getTypeName(),
                                                            null,
                                                            actionTargetType.getName(),
@@ -1308,7 +1256,6 @@ public class GovernanceArchiveHelper extends SimpleCatalogArchiveHelper
                     additionalProperties = new HashMap<>();
                 }
 
-                additionalProperties.put(OpenMetadataProperty.DESCRIPTION.name, guardType.getDescription());
                 additionalProperties.put("completionStatus", guardType.getCompletionStatus().getName());
                 additionalProperties.put("completionStatusDescription", guardType.getCompletionStatus().getDescription());
 
@@ -1319,16 +1266,16 @@ public class GovernanceArchiveHelper extends SimpleCatalogArchiveHelper
                                                            anchorDomainName,
                                                            anchorScopeGUID,
                                                            OpenMetadataType.SPECIFICATION_PROPERTY_VALUE.typeName,
-                                                           parentTypeName + "::" + parentGUID + "::ProducedGuard::" + guardType.getGuard(),
+                                                           parentTypeName + "::" + parentGUID + "::ProducedGuard::" + guardType.getName(),
                                                            Category.SPECIFICATION_PROPERTY.getName(),
                                                            SpecificationPropertyType.PRODUCED_GUARD.getPropertyType(),
-                                                           guardType.getGuard(),
+                                                           guardType.getName(),
                                                            guardType.getDescription(),
                                                            SpecificationPropertyType.PRODUCED_GUARD.getPropertyType(),
-                                                           guardType.getCompletionStatus().getName(),
+                                                           SpecificationPropertyType.PRODUCED_GUARD.getDescription(),
                                                            DataType.STRING.getName(),
-                                                           null,
-                                                           guardType.getGuard(),
+                                                           guardType.getCompletionStatus().getName(),
+                                                           guardType.getName(),
                                                            null,
                                                            null,
                                                            true,

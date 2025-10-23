@@ -4,6 +4,10 @@ package org.odpi.openmetadata.viewservices.communitymatters.server.spring;
 
 import io.swagger.v3.oas.annotations.ExternalDocumentation;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.enums.SecuritySchemeIn;
+import io.swagger.v3.oas.annotations.enums.SecuritySchemeType;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import io.swagger.v3.oas.annotations.security.SecurityScheme;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.odpi.openmetadata.commonservices.ffdc.rest.*;
 import org.odpi.openmetadata.viewservices.communitymatters.server.CommunityMattersRESTServices;
@@ -15,7 +19,13 @@ import org.springframework.web.bind.annotation.*;
  = */
 @RestController
 @RequestMapping("/servers/{serverName}/api/open-metadata/community-matters")
-
+@SecurityScheme(
+        name = "BearerAuthorization",
+        type = SecuritySchemeType.HTTP,
+        bearerFormat = "JWT",
+        scheme = "bearer",
+        in = SecuritySchemeIn.HEADER
+)
 @Tag(name="API: Community Matters OMVS", description="Communities bring people together from across the organization around a common theme, activity or skill. They are particularly useful for governance programs and cross-organization initiatives. The Community Matters OMVS provides APIs for managing the definition and members of the communities.",
         externalDocs=@ExternalDocumentation(description="Further Information",
                 url="https://egeria-project.org/services/omvs/community-matters/overview/"))
@@ -44,6 +54,7 @@ public class CommunityMattersResource
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     @PostMapping(path = "/communities")
+    @SecurityRequirement(name = "BearerAuthorization")
 
     @Operation(summary="createCommunity",
             description="Create a community.",
@@ -71,6 +82,8 @@ public class CommunityMattersResource
      *  PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     @PostMapping(path = "/communities/from-template")
+    @SecurityRequirement(name = "BearerAuthorization")
+
     @Operation(summary="createCommunityFromTemplate",
             description="Create a new metadata element to represent a community using an existing metadata element as a template.  The template defines additional classifications and relationships that should be added to the new element.",
             externalDocs=@ExternalDocumentation(description="Further Information",
@@ -98,6 +111,8 @@ public class CommunityMattersResource
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     @PostMapping(path = "/communities/{communityGUID}/update")
+    @SecurityRequirement(name = "BearerAuthorization")
+
     @Operation(summary="updateCommunity",
             description="Update the properties of a community.",
             externalDocs=@ExternalDocumentation(description="Further Information",
@@ -127,6 +142,8 @@ public class CommunityMattersResource
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     @PostMapping(path = "/communities/{communityGUID}/delete")
+    @SecurityRequirement(name = "BearerAuthorization")
+
     @Operation(summary="deleteCommunity",
             description="Delete a community.",
             externalDocs=@ExternalDocumentation(description="Further Information",
@@ -155,6 +172,8 @@ public class CommunityMattersResource
      *  PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     @PostMapping(path = "/communities/by-name")
+    @SecurityRequirement(name = "BearerAuthorization")
+
     @Operation(summary="getCommunitiesByName",
             description="Returns the list of communities with a particular name.",
             externalDocs=@ExternalDocumentation(description="Further Information",
@@ -181,6 +200,8 @@ public class CommunityMattersResource
      *  PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     @PostMapping(path = "/communities/by-search-string")
+    @SecurityRequirement(name = "BearerAuthorization")
+
     @Operation(summary="findCommunities",
             description="Retrieve the list of community metadata elements that contain the search string.",
             externalDocs=@ExternalDocumentation(description="Further Information",
@@ -208,6 +229,8 @@ public class CommunityMattersResource
      *  PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     @PostMapping(path = "/communities/{communityGUID}/retrieve")
+    @SecurityRequirement(name = "BearerAuthorization")
+
     @Operation(summary="getCommunityByGUID",
             description="Return the properties of a specific community.",
             externalDocs=@ExternalDocumentation(description="Further Information",

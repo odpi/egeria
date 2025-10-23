@@ -2,6 +2,8 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.frameworks.connectors.controls;
 
+import org.odpi.openmetadata.frameworks.openmetadata.specificationproperties.TemplateType;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -169,7 +171,7 @@ public enum TemplateTypeEnum
 
         templateType.setTemplateName(templateName);
         templateType.setTypeName(typeName);
-        templateType.setTemplateDescription(templateDescription);
+        templateType.setDescription(templateDescription);
         templateType.setRequired(required);
         templateType.setDefaultTemplateGUID(defaultTemplateGUID);
         templateType.setOtherPropertyValues(otherPropertyValues);

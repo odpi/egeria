@@ -4,6 +4,10 @@ package org.odpi.openmetadata.viewservices.datadiscovery.server.spring;
 
 import io.swagger.v3.oas.annotations.ExternalDocumentation;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.enums.SecuritySchemeIn;
+import io.swagger.v3.oas.annotations.enums.SecuritySchemeType;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import io.swagger.v3.oas.annotations.security.SecurityScheme;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.odpi.openmetadata.commonservices.ffdc.rest.*;
 import org.odpi.openmetadata.viewservices.datadiscovery.server.DataDiscoveryRESTServices;
@@ -15,7 +19,13 @@ import org.springframework.web.bind.annotation.*;
  = */
 @RestController
 @RequestMapping("/servers/{serverName}/api/open-metadata/data-discovery")
-
+@SecurityScheme(
+        name = "BearerAuthorization",
+        type = SecuritySchemeType.HTTP,
+        bearerFormat = "JWT",
+        scheme = "bearer",
+        in = SecuritySchemeIn.HEADER
+)
 @Tag(name="API: Data Discovery OMVS", description="Survey reports capture the analysis of IT resources and data. Egeria supports many types of surveys, but this API enables external survey and analysis engines (such as data quality analysers) to load their findings into open metadata.",
         externalDocs=@ExternalDocumentation(description="Further Information",
                 url="https://egeria-project.org/services/omvs/data-discovery/overview/"))
@@ -44,6 +54,7 @@ public class DataDiscoveryResource
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     @PostMapping(path = "/annotations")
+    @SecurityRequirement(name = "BearerAuthorization")
 
     @Operation(summary="createAnnotation",
             description="Create an annotation.",
@@ -71,6 +82,8 @@ public class DataDiscoveryResource
      *  PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     @PostMapping(path = "/annotations/from-template")
+    @SecurityRequirement(name = "BearerAuthorization")
+
     @Operation(summary="createAnnotationFromTemplate",
             description="Create a new metadata element to represent an annotation using an existing metadata element as a template.  The template defines additional classifications and relationships that should be added to the new element.",
             externalDocs=@ExternalDocumentation(description="Further Information",
@@ -98,6 +111,8 @@ public class DataDiscoveryResource
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     @PostMapping(path = "/annotations/{annotationGUID}/update")
+    @SecurityRequirement(name = "BearerAuthorization")
+
     @Operation(summary="updateAnnotation",
             description="Update the properties of an annotation.",
             externalDocs=@ExternalDocumentation(description="Further Information",
@@ -129,6 +144,8 @@ public class DataDiscoveryResource
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     @PostMapping(path = "/survey-reports/{surveyReportGUID}/new-annotations/{newAnnotationGUID}/attach")
+    @SecurityRequirement(name = "BearerAuthorization")
+
     @Operation(summary="attachAnnotationToReport",
             description="Create a relationship that links a new annotation to its survey report.  This relationship is typically " +
                     "established during the createAnnotation as the parent relationship.  It is included for completeness.",
@@ -162,6 +179,8 @@ public class DataDiscoveryResource
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     @PostMapping(path = "/survey-reports/{surveyReportGUID}/new-annotations/{newAnnotationGUID}/detach")
+    @SecurityRequirement(name = "BearerAuthorization")
+
     @Operation(summary="detachAnnotationFromReport",
             description="Detach an annotation from its report (ReportedAnnotation relationship).",
             externalDocs=@ExternalDocumentation(description="Further Information",
@@ -194,6 +213,8 @@ public class DataDiscoveryResource
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     @PostMapping(path = "/elements/{elementGUID}/associated-annotations/{annotationGUID}/attach")
+    @SecurityRequirement(name = "BearerAuthorization")
+
     @Operation(summary="linkAnnotationToDescribedElement",
             description="Attach an annotation to the element that it is describing (via AssociatedAnnotation relationship).",
             externalDocs=@ExternalDocumentation(description="Further Information",
@@ -223,6 +244,8 @@ public class DataDiscoveryResource
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     @PostMapping(path = "/elements/{elementGUID}/associated-annotations/{annotationGUID}/detach")
+    @SecurityRequirement(name = "BearerAuthorization")
+
     @Operation(summary="detachAnnotationFromDescribedElement",
             description="Detach an annotation from the element that it is describing (via AssociatedAnnotation relationship).",
             externalDocs=@ExternalDocumentation(description="Further Information",
@@ -252,6 +275,8 @@ public class DataDiscoveryResource
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     @PostMapping(path = "/annotations/{previousAnnotationGUID}/later-annotations/{newAnnotationGUID}/attach")
+    @SecurityRequirement(name = "BearerAuthorization")
+
     @Operation(summary="linkAnnotationToItsPredecessor",
             description="Attach an annotation to the equivalent annotation from the previous run of the survey.",
             externalDocs=@ExternalDocumentation(description="Further Information",
@@ -281,6 +306,8 @@ public class DataDiscoveryResource
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     @PostMapping(path = "/annotations/{previousAnnotationGUID}/later-annotations/{newAnnotationGUID}/detach")
+    @SecurityRequirement(name = "BearerAuthorization")
+
     @Operation(summary="detachAnnotationFromItsPredecessor",
             description="Detach an annotation from an annotation from the previous run of the survey.",
             externalDocs=@ExternalDocumentation(description="Further Information",
@@ -310,6 +337,8 @@ public class DataDiscoveryResource
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     @PostMapping(path = "/annotations/{annotationGUID}/discovered-schema-type/{schemaTypeGUID}/attach")
+    @SecurityRequirement(name = "BearerAuthorization")
+
     @Operation(summary="linkDiscoveredSchemaType",
             description="Attach a schema analysis annotation to a matching schema type.",
             externalDocs=@ExternalDocumentation(description="Further Information",
@@ -339,6 +368,8 @@ public class DataDiscoveryResource
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     @PostMapping(path = "/annotations/{annotationGUID}/discovered-schema-type/{schemaTypeGUID}/detach")
+    @SecurityRequirement(name = "BearerAuthorization")
+
     @Operation(summary="detachDiscoveredSchemaType",
             description="Detach a schema analysis annotation from a matching schema type.",
             externalDocs=@ExternalDocumentation(description="Further Information",
@@ -368,6 +399,8 @@ public class DataDiscoveryResource
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     @PostMapping(path = "/annotations/{annotationGUID}/resource-profile-data-assets/{assetGUID}/attach")
+    @SecurityRequirement(name = "BearerAuthorization")
+
     @Operation(summary="linkResourceProfileData",
             description="Attach a resource profile log annotation to an asset where the profile data is stored.",
             externalDocs=@ExternalDocumentation(description="Further Information",
@@ -397,6 +430,8 @@ public class DataDiscoveryResource
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     @PostMapping(path = "/annotations/{annotationGUID}/resource-profile-data-assets/{assetGUID}/detach")
+    @SecurityRequirement(name = "BearerAuthorization")
+
     @Operation(summary="detachResourceProfileData",
             description="Detach a resource profile log annotation from an asset where the profile data is stored.",
             externalDocs=@ExternalDocumentation(description="Further Information",
@@ -426,6 +461,8 @@ public class DataDiscoveryResource
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     @PostMapping(path = "/annotations/{annotationGUID}/matched-data-classes/{dataClassGUID}/attach")
+    @SecurityRequirement(name = "BearerAuthorization")
+
     @Operation(summary="linkDataClassMatch",
             description="Attach a data class annotation to a data class.",
             externalDocs=@ExternalDocumentation(description="Further Information",
@@ -455,6 +492,8 @@ public class DataDiscoveryResource
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     @PostMapping(path = "/annotations/{annotationGUID}/matched-data-classes/{dataClassGUID}/detach")
+    @SecurityRequirement(name = "BearerAuthorization")
+
     @Operation(summary="detachDataClassMatch",
             description="Detach a data class annotation from a data class.",
             externalDocs=@ExternalDocumentation(description="Further Information",
@@ -484,6 +523,8 @@ public class DataDiscoveryResource
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     @PostMapping(path = "/annotations/{annotationGUID}/request-for-action-targets/{elementGUID}/attach")
+    @SecurityRequirement(name = "BearerAuthorization")
+
     @Operation(summary="linkRequestForActionTarget",
             description="Attach a request for action annotation to the element that needs attention.",
             externalDocs=@ExternalDocumentation(description="Further Information",
@@ -513,6 +554,8 @@ public class DataDiscoveryResource
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     @PostMapping(path = "/annotations/{annotationGUID}/request-for-action-targets/{elementGUID}/detach")
+    @SecurityRequirement(name = "BearerAuthorization")
+
     @Operation(summary="detachRequestForActionTarget",
             description="Detach a request for action annotation from its intended target element.",
             externalDocs=@ExternalDocumentation(description="Further Information",
@@ -541,6 +584,8 @@ public class DataDiscoveryResource
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     @PostMapping(path = "/annotations/{annotationGUID}/delete")
+    @SecurityRequirement(name = "BearerAuthorization")
+
     @Operation(summary="deleteAnnotation",
             description="Delete an annotation.",
             externalDocs=@ExternalDocumentation(description="Further Information",
@@ -569,6 +614,8 @@ public class DataDiscoveryResource
      *  PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     @PostMapping(path = "/annotations/by-name")
+    @SecurityRequirement(name = "BearerAuthorization")
+
     @Operation(summary="getAnnotationsByName",
             description="Returns the list of annotations with a particular name.",
             externalDocs=@ExternalDocumentation(description="Further Information",
@@ -595,6 +642,8 @@ public class DataDiscoveryResource
      *  PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     @PostMapping(path = "/annotations/by-analysis-step")
+    @SecurityRequirement(name = "BearerAuthorization")
+
     @Operation(summary="getAnnotationsByAnalysisStep",
             description="Returns the list of annotations associated with a particular analysis step.",
             externalDocs=@ExternalDocumentation(description="Further Information",
@@ -621,6 +670,8 @@ public class DataDiscoveryResource
      *  PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     @PostMapping(path = "/annotations/by-annotation-type")
+    @SecurityRequirement(name = "BearerAuthorization")
+
     @Operation(summary="getAnnotationsByAnnotationType",
             description="Returns the list of annotations with a particular annotation type property.",
             externalDocs=@ExternalDocumentation(description="Further Information",
@@ -648,6 +699,8 @@ public class DataDiscoveryResource
      *  PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     @PostMapping(path = "/elements/{elementGUID}/associated-annotations")
+    @SecurityRequirement(name = "BearerAuthorization")
+
     @Operation(summary="getAnnotationsForElement",
             description="Returns the list of annotations that describe the supplied element (AssociatedAnnotation relationship).",
             externalDocs=@ExternalDocumentation(description="Further Information",
@@ -675,6 +728,8 @@ public class DataDiscoveryResource
      *  PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     @PostMapping(path = "/survey-reports/{surveyReportGUID}/new-annotations")
+    @SecurityRequirement(name = "BearerAuthorization")
+
     @Operation(summary="getNewAnnotations",
             description="Returns the annotations created under the supplied survey report.",
             externalDocs=@ExternalDocumentation(description="Further Information",
@@ -704,6 +759,8 @@ public class DataDiscoveryResource
      *  PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     @PostMapping(path = "/annotations/{annotationGUID}/annotation-extensions")
+    @SecurityRequirement(name = "BearerAuthorization")
+
     @Operation(summary="getAnnotationExtensions",
             description="Returns the list of annotations that extend the supplied annotation (AnnotationExtension relationship).",
             externalDocs=@ExternalDocumentation(description="Further Information",
@@ -733,6 +790,8 @@ public class DataDiscoveryResource
      *  PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     @PostMapping(path = "/annotations/{annotationGUID}/previous-annotations")
+    @SecurityRequirement(name = "BearerAuthorization")
+
     @Operation(summary="getPreviousAnnotations",
             description="Returns the list of annotations that are extended by the supplied annotation (AnnotationExtension relationship).",
             externalDocs=@ExternalDocumentation(description="Further Information",
@@ -761,6 +820,8 @@ public class DataDiscoveryResource
      *  PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     @PostMapping(path = "/annotations/by-search-string")
+    @SecurityRequirement(name = "BearerAuthorization")
+
     @Operation(summary="findAnnotations",
             description="Retrieve the list of annotation metadata elements that contain the search string.",
             externalDocs=@ExternalDocumentation(description="Further Information",
@@ -788,6 +849,8 @@ public class DataDiscoveryResource
      *  PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     @PostMapping(path = "/annotations/{annotationGUID}/retrieve")
+    @SecurityRequirement(name = "BearerAuthorization")
+
     @Operation(summary="getAnnotationByGUID",
             description="Return the properties of a specific annotation.",
             externalDocs=@ExternalDocumentation(description="Further Information",
@@ -802,6 +865,4 @@ public class DataDiscoveryResource
     {
         return restAPI.getAnnotationByGUID(serverName, annotationGUID, requestBody);
     }
-
-
 }

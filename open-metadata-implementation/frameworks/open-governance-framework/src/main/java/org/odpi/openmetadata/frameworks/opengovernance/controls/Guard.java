@@ -3,7 +3,8 @@
 
 package org.odpi.openmetadata.frameworks.opengovernance.controls;
 
-import org.odpi.openmetadata.frameworks.opengovernance.properties.CompletionStatus;
+import org.odpi.openmetadata.frameworks.openmetadata.enums.CompletionStatus;
+import org.odpi.openmetadata.frameworks.openmetadata.specificationproperties.GuardType;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -119,7 +120,7 @@ public enum Guard
         {
             GuardType guardType = new GuardType();
 
-            guardType.setGuard(guard.getName());
+            guardType.setName(guard.getName());
             guardType.setDescription(guard.getDescription());
             guardType.setCompletionStatus(guard.getCompletionStatus());
 
@@ -139,7 +140,7 @@ public enum Guard
     {
         GuardType guardType = new GuardType();
 
-        guardType.setGuard(name);
+        guardType.setName(name);
         guardType.setDescription(description);
         guardType.setCompletionStatus(completionStatus);
 

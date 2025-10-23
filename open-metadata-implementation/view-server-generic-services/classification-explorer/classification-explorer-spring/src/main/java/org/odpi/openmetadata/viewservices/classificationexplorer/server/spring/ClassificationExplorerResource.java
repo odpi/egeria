@@ -418,7 +418,7 @@ public class ClassificationExplorerResource
                                                                             @PathVariable String                        urlMarker,
                                                                             @PathVariable String                        elementGUID,
                                                                             @RequestBody(required = false)
-                                                                                ResultsRequestBody requestBody)
+                                                                            ResultsRequestBody requestBody)
     {
         return restAPI.getGovernedByDefinitions(serverName, urlMarker, elementGUID, requestBody);
     }
@@ -449,7 +449,7 @@ public class ClassificationExplorerResource
                                                                      @PathVariable String                        urlMarker,
                                                                      @PathVariable String elementGUID,
                                                                      @RequestBody  (required = false)
-                                                                         ResultsRequestBody requestBody)
+                                                                     ResultsRequestBody requestBody)
     {
         return restAPI.getSourceElements(serverName, urlMarker, elementGUID, requestBody);
     }
@@ -480,7 +480,7 @@ public class ClassificationExplorerResource
                                                                           @PathVariable String                        urlMarker,
                                                                           @PathVariable String                        elementGUID,
                                                                           @RequestBody  (required = false)
-                                                                              ResultsRequestBody requestBody)
+                                                                          ResultsRequestBody requestBody)
     {
         return restAPI.getElementsSourcedFrom(serverName, urlMarker, elementGUID, requestBody);
     }
@@ -510,7 +510,7 @@ public class ClassificationExplorerResource
                                                              @PathVariable String                        urlMarker,
                                                              @PathVariable String                        elementGUID,
                                                              @RequestBody  (required = false)
-                                                                 ResultsRequestBody requestBody)
+                                                             ResultsRequestBody requestBody)
     {
         return restAPI.getScopes(serverName, urlMarker, elementGUID, requestBody);
     }
@@ -540,7 +540,7 @@ public class ClassificationExplorerResource
                                                                      @PathVariable String                        urlMarker,
                                                                      @PathVariable String scopeGUID,
                                                                      @RequestBody  (required = false)
-                                                                         ResultsRequestBody requestBody)
+                                                                     ResultsRequestBody requestBody)
     {
         return restAPI.getScopedElements(serverName, urlMarker, scopeGUID, requestBody);
     }
@@ -570,7 +570,7 @@ public class ClassificationExplorerResource
                                                                    @PathVariable String                        urlMarker,
                                                                    @PathVariable String                        elementGUID,
                                                                    @RequestBody  (required = false)
-                                                                       ResultsRequestBody requestBody)
+                                                                   ResultsRequestBody requestBody)
     {
         return restAPI.getResourceList(serverName, urlMarker, elementGUID, requestBody);
     }
@@ -600,7 +600,7 @@ public class ClassificationExplorerResource
                                                                           @PathVariable String                        urlMarker,
                                                                           @PathVariable String resourceGUID,
                                                                           @RequestBody  (required = false)
-                                                                              ResultsRequestBody requestBody)
+                                                                          ResultsRequestBody requestBody)
     {
         return restAPI.getSupportedByResource(serverName, urlMarker, resourceGUID, requestBody);
     }
@@ -815,7 +815,7 @@ public class ClassificationExplorerResource
     public MetadataElementSummariesResponse getElements(@PathVariable String                    serverName,
                                                         @PathVariable String                        urlMarker,
                                                         @RequestBody  (required = false)
-                                                            ResultsRequestBody requestBody)
+                                                        ResultsRequestBody requestBody)
     {
         return restAPI.getElements(serverName, urlMarker, requestBody);
     }
@@ -907,7 +907,7 @@ public class ClassificationExplorerResource
                                                                         @PathVariable String                        urlMarker,
                                                                         @PathVariable String                    classificationName,
                                                                         @RequestBody  (required = false)
-                                                                            ResultsRequestBody requestBody)
+                                                                        ResultsRequestBody requestBody)
     {
         return restAPI.getElementsByClassification(serverName, urlMarker, classificationName, requestBody);
     }
@@ -1007,11 +1007,11 @@ public class ClassificationExplorerResource
                                                                       @RequestParam (required = false, defaultValue = "0")
                                                                       int     startingAtEnd,
                                                                       @RequestBody  (required = false)
-                                                                          ResultsRequestBody requestBody)
+                                                                      ResultsRequestBody requestBody)
     {
         return restAPI.getRelatedElements(serverName, urlMarker, elementGUID, null, startingAtEnd, requestBody);
     }
-    
+
 
     /**
      * Retrieve related elements of the requested type name.
@@ -1042,11 +1042,11 @@ public class ClassificationExplorerResource
                                                                       @RequestParam (required = false, defaultValue = "0")
                                                                       int     startingAtEnd,
                                                                       @RequestBody  (required = false)
-                                                                          ResultsRequestBody requestBody)
+                                                                      ResultsRequestBody requestBody)
     {
         return restAPI.getRelatedElements(serverName, urlMarker, elementGUID, relationshipTypeName, startingAtEnd, requestBody);
     }
-    
+
 
     /**
      * Retrieve elements linked via the requested relationship type name and with the requested value
@@ -1352,9 +1352,9 @@ public class ClassificationExplorerResource
                     url="https://egeria-project.org/concepts/search-keyword/"))
 
     public OpenMetadataRootElementsResponse findSearchKeywords(@PathVariable String                  serverName,
-                                                         @PathVariable String                        urlMarker,
-                                                         @RequestBody  (required = false)
-                                                         SearchStringRequestBody              requestBody)
+                                                               @PathVariable String                        urlMarker,
+                                                               @RequestBody  (required = false)
+                                                               SearchStringRequestBody              requestBody)
     {
         return restAPI.findSearchKeywords(serverName, urlMarker, requestBody);
     }
@@ -1380,10 +1380,10 @@ public class ClassificationExplorerResource
             externalDocs=@ExternalDocumentation(description="Search Keywords",
                     url="https://egeria-project.org/concepts/search-keyword/"))
 
-    public OpenMetadataRootElementsResponse findSearchKeywords(@PathVariable String                  serverName,
-                                                               @PathVariable String                        urlMarker,
-                                                               @RequestBody  (required = false)
-                                                               FilterRequestBody              requestBody)
+    public OpenMetadataRootElementsResponse getSearchKeywordByKeyword(@PathVariable String                  serverName,
+                                                                      @PathVariable String                        urlMarker,
+                                                                      @RequestBody  (required = false)
+                                                                      FilterRequestBody              requestBody)
     {
         return restAPI.getSearchKeywordsByKeyword(serverName, urlMarker, requestBody);
     }
@@ -1410,10 +1410,10 @@ public class ClassificationExplorerResource
                     url="https://egeria-project.org/concepts/search-keyword/"))
 
     public OpenMetadataRootElementResponse getSearchKeywordByGUID(@PathVariable String                        serverName,
-                                                      @PathVariable String                        urlMarker,
-                                                      @PathVariable String                        searchKeywordGUID,
-                                                      @RequestBody(required = false)
-                                                      GetRequestBody requestBody)
+                                                                  @PathVariable String                        urlMarker,
+                                                                  @PathVariable String                        searchKeywordGUID,
+                                                                  @RequestBody(required = false)
+                                                                  GetRequestBody requestBody)
     {
         return restAPI.getSearchKeywordByGUID(serverName, urlMarker, searchKeywordGUID, requestBody);
     }

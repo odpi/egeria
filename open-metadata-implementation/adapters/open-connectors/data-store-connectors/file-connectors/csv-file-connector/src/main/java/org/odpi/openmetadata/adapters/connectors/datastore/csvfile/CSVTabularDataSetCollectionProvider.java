@@ -15,9 +15,6 @@ import org.odpi.openmetadata.frameworks.connectors.tabulardatasets.WritableTabul
 import org.odpi.openmetadata.frameworks.openmetadata.refdata.DeployedImplementationType;
 import org.odpi.openmetadata.frameworks.openmetadata.refdata.DeployedImplementationTypeDefinition;
 
-import java.util.ArrayList;
-import java.util.List;
-
 
 /**
  * CSVTabularDataSetCollectionProvider is the OCF connector provider for the Tabular Data Set Collection connector

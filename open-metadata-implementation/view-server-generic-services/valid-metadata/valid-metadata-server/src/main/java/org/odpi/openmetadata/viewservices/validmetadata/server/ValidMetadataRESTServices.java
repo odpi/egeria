@@ -12,9 +12,13 @@ import org.odpi.openmetadata.frameworks.openmetadata.client.OpenMetadataClient;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
+import org.odpi.openmetadata.frameworks.openmetadata.handlers.SpecificationPropertyHandler;
 import org.odpi.openmetadata.frameworks.openmetadata.handlers.ValidMetadataValueHandler;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.*;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.validvalues.ValidMetadataValueProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.refdata.SpecificationPropertyType;
+import org.odpi.openmetadata.frameworks.openmetadata.search.MetadataSourceOptions;
+import org.odpi.openmetadata.frameworks.openmetadata.specificationproperties.SpecificationProperty;
 import org.odpi.openmetadata.frameworkservices.omf.rest.*;
 import org.odpi.openmetadata.tokencontroller.TokenController;
 import org.slf4j.LoggerFactory;
@@ -27,7 +31,7 @@ import java.util.Map;
 
 /**
  * The ValidMetadataRESTServices provides the server-side implementation of the Valid Metadata Open Metadata
- * View Service (OMVS).  
+ * View Service (OMVS).
  */
 public class ValidMetadataRESTServices extends TokenController
 {
@@ -1278,6 +1282,369 @@ public class ValidMetadataRESTServices extends TokenController
             OpenMetadataClient client = instanceHandler.getOpenMetadataStoreClient(userId, serverName, urlMarker, methodName);
 
             response.setTypeDef(client.getTypeDefByName(userId, name));
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+        return response;
+    }
+
+
+    /**
+     * Return the list of specification property types.
+     *
+     * @param serverName name of the server instance to connect to
+     * @param urlMarker  view service URL marker
+     * @return list of type names that are subtypes of asset or
+     * throws InvalidParameterException full path or userId is null or
+     * throws PropertyServerException problem accessing property server or
+     * throws UserNotAuthorizedException security access problem.
+     */
+    public StringMapResponse getSpecificationPropertyTypes(String serverName,
+                                                           String urlMarker)
+    {
+        final String   methodName = "getSpecificationPropertyTypes";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
+
+        StringMapResponse response = new StringMapResponse();
+        AuditLog         auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+            SpecificationPropertyHandler handler = instanceHandler.getSpecificationPropertyHandler(userId, serverName, urlMarker, methodName);
+
+            response.setStringMap(handler.getSpecificationPropertyTypes());
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+        return response;
+    }
+
+
+    /**
+     * Adds a specification property to the element.
+     *
+     * @param serverName name of the server instances for this request
+     * @param urlMarker  view service URL marker
+     * @param elementGUID unique identifier of the element to connect it to
+     * @param specificationPropertyType type of specification property (enum)
+     * @param requestBody the property description
+     *
+     * @return elementGUID for new specification property object or
+     * InvalidParameterException - one of the parameters is null or invalid or
+     * PropertyServerException - there is a problem adding the element properties to
+     *                                   the metadata repository or
+     * UserNotAuthorizedException - the requesting user is not authorized to issue this request.
+     */
+    public GUIDResponse setUpSpecificationProperty(String                    serverName,
+                                                   String                    urlMarker,
+                                                   String                    elementGUID,
+                                                   SpecificationPropertyType specificationPropertyType,
+                                                   SpecificationProperty     requestBody)
+    {
+        final String methodName = "setUpSpecificationProperty";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
+
+        GUIDResponse  response = new GUIDResponse();
+        AuditLog      auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            SpecificationPropertyHandler handler = instanceHandler.getSpecificationPropertyHandler(userId, serverName, urlMarker, methodName);
+
+            if (requestBody != null)
+            {
+                response.setGUID(handler.setUpSpecificationProperty(userId, elementGUID, specificationPropertyType, requestBody, new MetadataSourceOptions()));
+            }
+            else
+            {
+                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName, NewAttachmentRequestBody.class.getName());
+            }
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+        return response;
+    }
+
+
+
+    /**
+     * Removes a specification property added to the element by this user.
+     *
+     * @param serverName name of the server instances for this request
+     * @param urlMarker  view service URL marker
+     * @param specificationPropertyGUID  String - unique id for the specification property object
+     * @param requestBody optional effective time
+     *
+     * @return void or
+     * InvalidParameterException - one of the parameters is null or invalid or
+     * PropertyServerException - there is a problem updating the element properties in
+     *                                   the metadata repository or
+     * UserNotAuthorizedException - the requesting user is not authorized to issue this request.
+     */
+    public VoidResponse deleteSpecificationProperty(String                   serverName,
+                                                    String                   urlMarker,
+                                                    String                   specificationPropertyGUID,
+                                                    DeleteElementRequestBody requestBody)
+    {
+        final String methodName = "deleteSpecificationProperty";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
+
+        VoidResponse  response = new VoidResponse();
+        AuditLog      auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            SpecificationPropertyHandler handler = instanceHandler.getSpecificationPropertyHandler(userId, serverName, urlMarker, methodName);
+
+            handler.deleteSpecificationProperty(userId, specificationPropertyGUID, requestBody);
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+        return response;
+    }
+
+
+
+    /**
+     * Return the requested specification property.
+     *
+     * @param serverName name of the server instances for this request
+     * @param specificationPropertyGUID  unique identifier for the specification property object.
+     * @param urlMarker  view service URL marker
+     * @param requestBody optional effective time
+     * @return specification property properties or
+     *  InvalidParameterException one of the parameters is null or invalid.
+     *  PropertyServerException there is a problem updating the element properties in the property server.
+     *  UserNotAuthorizedException the user does not have permission to perform this request.
+     */
+    public OpenMetadataRootElementResponse getSpecificationPropertyByGUID(String         serverName,
+                                                                          String         urlMarker,
+                                                                          String         specificationPropertyGUID,
+                                                                          GetRequestBody requestBody)
+    {
+        final String methodName = "getSpecificationPropertyByGUID";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
+
+        OpenMetadataRootElementResponse response = new OpenMetadataRootElementResponse();
+        AuditLog        auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            SpecificationPropertyHandler handler = instanceHandler.getSpecificationPropertyHandler(userId, serverName, urlMarker, methodName);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            response.setElement(handler.getSpecificationPropertyByGUID(userId, specificationPropertyGUID, requestBody));
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+        return response;
+    }
+
+
+
+
+    /**
+     * Retrieve the list of specification property metadata elements that contain the name.
+     *
+     * @param serverName name of the server to route the request to
+     * @param urlMarker  view service URL marker
+     * @param requestBody string to find in the properties
+     *
+     * @return list of matching metadata elements or
+     *  InvalidParameterException  one of the parameters is invalid
+     *  UserNotAuthorizedException the user is not authorized to issue this request
+     *  PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public OpenMetadataRootElementsResponse getSpecificationPropertiesByName(String            serverName,
+                                                                             String            urlMarker,
+                                                                             FilterRequestBody requestBody)
+    {
+        final String methodName = "getSpecificationPropertiesByName";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
+
+        OpenMetadataRootElementsResponse response = new OpenMetadataRootElementsResponse();
+        AuditLog                auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            SpecificationPropertyHandler handler = instanceHandler.getSpecificationPropertyHandler(userId, serverName, urlMarker, methodName);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            if (requestBody != null)
+            {
+                response.setElements(handler.getSpecificationPropertiesByName(userId,
+                                                                              requestBody.getFilter(),
+                                                                              requestBody));
+            }
+            else
+            {
+                restExceptionHandler.handleNoRequestBody(userId, methodName, FilterRequestBody.class.getName());
+            }
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+        return response;
+    }
+
+
+
+
+    /**
+     * Retrieve the list of specification property metadata elements that contain the specification property type.
+     *
+     * @param serverName name of the server to route the request to
+     * @param urlMarker  view service URL marker
+     * @param specificationPropertyType enum value for specification property type
+     * @param requestBody string to find in the properties
+     *
+     * @return list of matching metadata elements or
+     *  InvalidParameterException  one of the parameters is invalid
+     *  UserNotAuthorizedException the user is not authorized to issue this request
+     *  PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public OpenMetadataRootElementsResponse getSpecificationPropertiesByType(String                  serverName,
+                                                                             String                  urlMarker,
+                                                                             SpecificationPropertyType specificationPropertyType,
+                                                                             ResultsRequestBody requestBody)
+    {
+        final String methodName = "getSpecificationPropertiesByType";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
+
+        OpenMetadataRootElementsResponse response = new OpenMetadataRootElementsResponse();
+        AuditLog                auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            SpecificationPropertyHandler handler = instanceHandler.getSpecificationPropertyHandler(userId, serverName, urlMarker, methodName);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            if (requestBody != null)
+            {
+                response.setElements(handler.getSpecificationPropertiesByType(userId,
+                                                                              specificationPropertyType,
+                                                                              requestBody));
+            }
+            else
+            {
+                restExceptionHandler.handleNoRequestBody(userId, methodName, FilterRequestBody.class.getName());
+            }
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+        return response;
+    }
+
+
+
+    /**
+     * Retrieve the list of specification property metadata elements that contain the search string.
+     *
+     * @param serverName name of the server to route the request to
+     * @param urlMarker  view service URL marker
+     * @param requestBody string to find in the properties
+     *
+     * @return list of matching metadata elements or
+     *  InvalidParameterException  one of the parameters is invalid
+     *  UserNotAuthorizedException the user is not authorized to issue this request
+     *  PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public OpenMetadataRootElementsResponse findSpecificationProperties(String                  serverName,
+                                                                        String                  urlMarker,
+                                                                        SearchStringRequestBody requestBody)
+    {
+        final String methodName = "findSpecificationProperties";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
+
+        OpenMetadataRootElementsResponse response = new OpenMetadataRootElementsResponse();
+        AuditLog                auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            SpecificationPropertyHandler handler = instanceHandler.getSpecificationPropertyHandler(userId, serverName, urlMarker, methodName);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            if (requestBody != null)
+            {
+                response.setElements(handler.findSpecificationProperties(userId,
+                                                                         requestBody.getSearchString(),
+                                                                         requestBody));
+            }
+            else
+            {
+                response.setElements(handler.findSpecificationProperties(userId, null, null));
+            }
         }
         catch (Throwable error)
         {

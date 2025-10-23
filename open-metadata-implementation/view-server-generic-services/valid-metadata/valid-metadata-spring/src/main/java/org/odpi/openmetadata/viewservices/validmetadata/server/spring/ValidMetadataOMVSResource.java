@@ -12,6 +12,8 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import org.odpi.openmetadata.commonservices.ffdc.rest.*;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.OpenMetadataTypeDefCategory;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.ValidMetadataValue;
+import org.odpi.openmetadata.frameworks.openmetadata.refdata.SpecificationPropertyType;
+import org.odpi.openmetadata.frameworks.openmetadata.specificationproperties.SpecificationProperty;
 import org.odpi.openmetadata.frameworkservices.omf.rest.*;
 import org.odpi.openmetadata.viewservices.validmetadata.server.ValidMetadataRESTServices;
 import org.springframework.web.bind.annotation.*;
@@ -19,7 +21,7 @@ import org.springframework.web.bind.annotation.*;
 
 /**
  * The ValidMetadataOMVSResource provides part of the server-side implementation of the Valid Metadata OMVS.
-= */
+ = */
 @RestController
 @RequestMapping("/servers/{serverName}/api/open-metadata/{urlMarker}")
 @SecurityScheme(
@@ -74,7 +76,7 @@ public class ValidMetadataOMVSResource
     public VoidResponse setUpValidMetadataValue(@PathVariable String             serverName,
                                                 @PathVariable String                        urlMarker,
                                                 @RequestParam(required = false)
-                                                              String             typeName,
+                                                String             typeName,
                                                 @PathVariable String             propertyName,
                                                 @RequestBody  ValidMetadataValue requestBody)
     {
@@ -115,7 +117,7 @@ public class ValidMetadataOMVSResource
     public VoidResponse setUpValidMetadataMapName(@PathVariable String             serverName,
                                                   @PathVariable String                        urlMarker,
                                                   @RequestParam(required = false)
-                                                                String             typeName,
+                                                  String             typeName,
                                                   @PathVariable String             propertyName,
                                                   @RequestBody  ValidMetadataValue requestBody)
     {
@@ -157,7 +159,7 @@ public class ValidMetadataOMVSResource
     public VoidResponse setUpValidMetadataMapValue(@PathVariable String             serverName,
                                                    @PathVariable String                        urlMarker,
                                                    @RequestParam(required = false)
-                                                                 String             typeName,
+                                                   String             typeName,
                                                    @PathVariable String             propertyName,
                                                    @PathVariable String             mapName,
                                                    @RequestBody  ValidMetadataValue validMetadataValue)
@@ -192,12 +194,12 @@ public class ValidMetadataOMVSResource
     public VoidResponse clearValidMetadataValue(@PathVariable String          serverName,
                                                 @PathVariable String                        urlMarker,
                                                 @RequestParam(required = false)
-                                                              String          typeName,
+                                                String          typeName,
                                                 @PathVariable String          propertyName,
                                                 @RequestParam(required = false)
-                                                              String          preferredValue,
+                                                String          preferredValue,
                                                 @RequestBody(required = false)
-                                                              DeleteElementRequestBody requestBody)
+                                                DeleteElementRequestBody requestBody)
     {
         return restAPI.clearValidMetadataValue(serverName, urlMarker, typeName, propertyName, preferredValue, requestBody);
     }
@@ -229,12 +231,12 @@ public class ValidMetadataOMVSResource
     public VoidResponse clearValidMetadataMapName(@PathVariable String          serverName,
                                                   @PathVariable String                        urlMarker,
                                                   @RequestParam(required = false)
-                                                                String          typeName,
+                                                  String          typeName,
                                                   @PathVariable String          propertyName,
                                                   @RequestParam(required = false)
-                                                                String          mapName,
+                                                  String          mapName,
                                                   @RequestBody(required = false)
-                                                                DeleteElementRequestBody requestBody)
+                                                  DeleteElementRequestBody requestBody)
     {
         return restAPI.clearValidMetadataMapName(serverName, urlMarker, typeName, propertyName, mapName, requestBody);
     }
@@ -273,7 +275,7 @@ public class ValidMetadataOMVSResource
                                                    @RequestParam(required = false)
                                                    String          preferredValue,
                                                    @RequestBody(required = false)
-                                                       DeleteElementRequestBody requestBody)
+                                                   DeleteElementRequestBody requestBody)
     {
         return restAPI.clearValidMetadataMapValue(serverName, urlMarker, typeName, propertyName, mapName, preferredValue, requestBody);
     }
@@ -304,7 +306,7 @@ public class ValidMetadataOMVSResource
     public BooleanResponse validateMetadataValue(@PathVariable String serverName,
                                                  @PathVariable String                        urlMarker,
                                                  @RequestParam(required = false)
-                                                               String typeName,
+                                                 String typeName,
                                                  @PathVariable String propertyName,
                                                  @RequestParam String actualValue)
     {
@@ -337,7 +339,7 @@ public class ValidMetadataOMVSResource
     public BooleanResponse validateMetadataMapName(@PathVariable String serverName,
                                                    @PathVariable String                        urlMarker,
                                                    @RequestParam(required = false)
-                                                                 String typeName,
+                                                   String typeName,
                                                    @PathVariable String propertyName,
                                                    @RequestParam String mapName)
     {
@@ -405,7 +407,7 @@ public class ValidMetadataOMVSResource
     public ValidMetadataValueResponse getValidMetadataValue(@PathVariable String serverName,
                                                             @PathVariable String                        urlMarker,
                                                             @RequestParam(required = false)
-                                                                          String typeName,
+                                                            String typeName,
                                                             @PathVariable String propertyName,
                                                             @RequestParam String preferredValue)
     {
@@ -438,7 +440,7 @@ public class ValidMetadataOMVSResource
     public ValidMetadataValueResponse getValidMetadataMapName(@PathVariable String serverName,
                                                               @PathVariable String                        urlMarker,
                                                               @RequestParam(required = false)
-                                                                            String typeName,
+                                                              String typeName,
                                                               @PathVariable String propertyName,
                                                               @RequestParam String mapName)
     {
@@ -507,7 +509,7 @@ public class ValidMetadataOMVSResource
     public ValidMetadataValueListResponse getValidMetadataValues(@PathVariable String serverName,
                                                                  @PathVariable String                        urlMarker,
                                                                  @RequestParam(required = false)
-                                                                     String typeName,
+                                                                 String typeName,
                                                                  @PathVariable String propertyName,
                                                                  @RequestParam int    startFrom,
                                                                  @RequestParam int    pageSize)
@@ -587,19 +589,19 @@ public class ValidMetadataOMVSResource
     public VoidResponse setConsistentMetadataValues(@PathVariable String          serverName,
                                                     @PathVariable String                        urlMarker,
                                                     @RequestParam(required = false)
-                                                                  String          typeName1,
+                                                    String          typeName1,
                                                     @PathVariable String          propertyName1,
                                                     @RequestParam(required = false)
-                                                                  String          mapName1,
+                                                    String          mapName1,
                                                     @RequestParam String          preferredValue1,
                                                     @RequestParam(required = false)
-                                                                  String          typeName2,
+                                                    String          typeName2,
                                                     @PathVariable String          propertyName2,
                                                     @RequestParam(required = false)
-                                                                  String          mapName2,
+                                                    String          mapName2,
                                                     @RequestParam String          preferredValue2,
                                                     @RequestBody(required = false)
-                                                                  NullRequestBody requestBody)
+                                                    NullRequestBody requestBody)
     {
         return restAPI.setConsistentMetadataValues(serverName,
                                                    urlMarker,
@@ -833,5 +835,213 @@ public class ValidMetadataOMVSResource
                                             @PathVariable String    name)
     {
         return restAPI.getTypeDefByName(serverName, urlMarker, name);
+    }
+
+
+    /**
+     * Return the list of specification property types.
+     *
+     * @param serverName name of the server instance to connect to
+     * @return list of type names that are subtypes of asset or
+     * throws InvalidParameterException full path or userId is null or
+     * throws PropertyServerException problem accessing property server or
+     * throws UserNotAuthorizedException security access problem.
+     */
+    @GetMapping(path = "/specification-properties/type-names")
+    @SecurityRequirement(name = "BearerAuthorization")
+
+    @Operation(summary="getSpecificationPropertyTypes",
+            description="Return the list of specification property types.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/concepts/specification/"))
+
+    public StringMapResponse getSpecificationPropertyTypes(@PathVariable String serverName,
+                                                           @PathVariable String urlMarker)
+    {
+        return restAPI.getSpecificationPropertyTypes(serverName, urlMarker);
+    }
+
+
+    /**
+     * Creates a specification property and attaches it to an element.
+     *
+     * @param serverName name of the server instances for this request.
+     * @param urlMarker  view service URL marker
+     * @param elementGUID        String - unique id for the element.
+     * @param specificationPropertyType type to create
+     * @param requestBody containing details of the specificationProperty.
+     *
+     * @return elementGUID for new specification property object or
+     * InvalidParameterException one of the parameters is null or invalid or
+     * PropertyServerException There is a problem adding the element properties to
+     *                                   the metadata repository or
+     * UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    @PostMapping(path = "/elements/{elementGUID}/specification-properties")
+    @SecurityRequirement(name = "BearerAuthorization")
+
+    @Operation(summary="setUpSpecificationProperty",
+            description="Creates a specification property and attaches it to an element.",
+            externalDocs=@ExternalDocumentation(description="Search Keyword",
+                    url="https://egeria-project.org/concepts/specification/"))
+
+    public GUIDResponse setUpSpecificationProperty(@PathVariable String                 serverName,
+                                                   @PathVariable String                 urlMarker,
+                                                   @RequestParam (required = false)
+                                                   SpecificationPropertyType specificationPropertyType,
+                                                   @PathVariable String                 elementGUID,
+                                                   @RequestBody(required = false) SpecificationProperty requestBody)
+    {
+        return restAPI.setUpSpecificationProperty(serverName, urlMarker, elementGUID, specificationPropertyType, requestBody);
+    }
+
+
+    /**
+     * Removes a specification property added to the element.  This deletes the link to the specification property and the specification property itself.
+     *
+     * @param serverName name of the server instances for this request
+     * @param urlMarker  view service URL marker
+     * @param specificationPropertyGUID  String - unique id for the specification property object
+     * @param requestBody  containing type of specification property enum and the text of the specificationProperty.
+     *
+     * @return void or
+     * InvalidParameterException one of the parameters is null or invalid.
+     * PropertyServerException There is a problem updating the element properties in the metadata repository.
+     * UserNotAuthorizedException the user does not have permission to perform this request.
+     */
+    @PostMapping(path = "/specification-properties/{specificationPropertyGUID}/delete")
+    @SecurityRequirement(name = "BearerAuthorization")
+
+    @Operation(summary="deleteSpecificationProperty",
+            description="Removes a specification property added to the element.  This deletes the link to the specificationProperty and the specification property itself.",
+            externalDocs=@ExternalDocumentation(description="Search Keywords",
+                    url="https://egeria-project.org/concepts/specification/"))
+
+    public VoidResponse deleteSpecificationProperty(@PathVariable String                         serverName,
+                                                    @PathVariable String                        urlMarker,
+                                                    @PathVariable String                         specificationPropertyGUID,
+                                                    @RequestBody(required = false)
+                                                    DeleteElementRequestBody requestBody)
+    {
+        return restAPI.deleteSpecificationProperty(serverName, urlMarker, specificationPropertyGUID, requestBody);
+    }
+
+
+    /**
+     * Return the list of specification properties containing the supplied string.
+     *
+     * @param serverName name of the server instances for this request.
+     * @param urlMarker  view service URL marker
+     * @param requestBody search string and effective time.
+     *
+     * @return list of specification property objects or
+     * InvalidParameterException - one of the parameters is invalid or
+     * PropertyServerException - there is a problem retrieving information from the property server(s) or
+     * UserNotAuthorizedException - the requesting user is not authorized to issue this request.
+     */
+    @PostMapping(path = "/specification-properties/by-search-string")
+    @SecurityRequirement(name = "BearerAuthorization")
+
+    @Operation(summary="findSpecificationProperty",
+            description="Return the list of specification properties containing the supplied string. The search string is located in the request body and is interpreted as a plain string.  The request parameters, startsWith, endsWith and ignoreCase can be used to allow a fuzzy search.  The request body also supports the specification of an effective time to restrict the search to element that are/were effective at a particular time.",
+            externalDocs=@ExternalDocumentation(description="Search Keywords",
+                    url="https://egeria-project.org/concepts/specification/"))
+
+    public OpenMetadataRootElementsResponse findSpecificationProperties(@PathVariable String                  serverName,
+                                                                        @PathVariable String                        urlMarker,
+                                                                        @RequestBody  (required = false)
+                                                                        SearchStringRequestBody              requestBody)
+    {
+        return restAPI.findSpecificationProperties(serverName, urlMarker, requestBody);
+    }
+
+
+    /**
+     * Return the list of specification properties containing the supplied type.
+     *
+     * @param serverName name of the server instances for this request.
+     * @param urlMarker  view service URL marker
+     * @param specificationPropertyType type to search on
+     * @param requestBody search string and effective time.
+     *
+     * @return list of specification property objects or
+     * InvalidParameterException - one of the parameters is invalid or
+     * PropertyServerException - there is a problem retrieving information from the property server(s) or
+     * UserNotAuthorizedException - the requesting user is not authorized to issue this request.
+     */
+    @PostMapping(path = "/specification-properties/by-type")
+    @SecurityRequirement(name = "BearerAuthorization")
+
+    @Operation(summary="getSpecificationPropertyByType",
+            description="Return the list of specification properties containing the supplied type.",
+            externalDocs=@ExternalDocumentation(description="Search Keywords",
+                    url="https://egeria-project.org/concepts/specification/"))
+
+    public OpenMetadataRootElementsResponse getSpecificationPropertyByType(@PathVariable String                  serverName,
+                                                                           @RequestParam SpecificationPropertyType specificationPropertyType,
+                                                                           @PathVariable String                        urlMarker,
+                                                                           @RequestBody  (required = false)
+                                                                           ResultsRequestBody              requestBody)
+    {
+        return restAPI.getSpecificationPropertiesByType(serverName, urlMarker, specificationPropertyType, requestBody);
+    }
+
+
+    /**
+     * Return the list of specification properties containing the supplied name.
+     *
+     * @param serverName name of the server instances for this request.
+     * @param urlMarker  view service URL marker
+     * @param requestBody search string and effective time.
+     *
+     * @return list of specification property objects or
+     * InvalidParameterException - one of the parameters is invalid or
+     * PropertyServerException - there is a problem retrieving information from the property server(s) or
+     * UserNotAuthorizedException - the requesting user is not authorized to issue this request.
+     */
+    @PostMapping(path = "/specification-properties/by-name")
+    @SecurityRequirement(name = "BearerAuthorization")
+
+    @Operation(summary="getSpecificationPropertyByName",
+            description="Return the list of specification properties containing the supplied name.",
+            externalDocs=@ExternalDocumentation(description="Search Keywords",
+                    url="https://egeria-project.org/concepts/specification/"))
+
+    public OpenMetadataRootElementsResponse getSpecificationPropertyByName(@PathVariable String                  serverName,
+                                                                           @PathVariable String                        urlMarker,
+                                                                           @RequestBody  (required = false)
+                                                                           FilterRequestBody              requestBody)
+    {
+        return restAPI.getSpecificationPropertiesByName(serverName, urlMarker, requestBody);
+    }
+
+
+    /**
+     * Return the requested specificationProperty.
+     *
+     * @param serverName name of the server instances for this request
+     * @param urlMarker  view service URL marker
+     * @param specificationPropertyGUID  unique identifier for the specification property object.
+     * @param requestBody optional effective time
+     * @return specification property properties or
+     *  InvalidParameterException one of the parameters is null or invalid.
+     *  PropertyServerException there is a problem updating the element properties in the property server.
+     *  UserNotAuthorizedException the user does not have permission to perform this request.
+     */
+    @PostMapping(path = "/specification-properties/{specificationPropertyGUID}/retrieve")
+    @SecurityRequirement(name = "BearerAuthorization")
+
+    @Operation(summary="getSpecificationPropertyByGUID",
+            description="Return the requested specification property.",
+            externalDocs=@ExternalDocumentation(description="Search Keywords",
+                    url="https://egeria-project.org/concepts/specification/"))
+
+    public OpenMetadataRootElementResponse getSpecificationPropertyByGUID(@PathVariable String                        serverName,
+                                                                          @PathVariable String                        urlMarker,
+                                                                          @PathVariable String                        specificationPropertyGUID,
+                                                                          @RequestBody(required = false)
+                                                                          GetRequestBody requestBody)
+    {
+        return restAPI.getSpecificationPropertyByGUID(serverName, urlMarker, specificationPropertyGUID, requestBody);
     }
 }

@@ -1160,7 +1160,7 @@ public class ClassificationManagerResource
     @SecurityRequirement(name = "BearerAuthorization")
 
     @Operation(summary="removeSearchKeywordFromElement",
-            description="Removes a search keyword added to the element by this user.  This deletes the link to the searchKeyword and the search keyword itself.",
+            description="Removes a search keyword added to the element.  This deletes the link to the search keyword and the search keyword itself.",
             externalDocs=@ExternalDocumentation(description="Search Keywords",
                     url="https://egeria-project.org/concepts/search-keyword/"))
 

@@ -20,7 +20,6 @@ import org.odpi.openmetadata.frameworks.integration.connectors.CatalogTargetInte
 import org.odpi.openmetadata.frameworks.integration.connectors.IntegrationConnectorBase;
 import org.odpi.openmetadata.frameworks.integration.context.CatalogTargetContext;
 import org.odpi.openmetadata.frameworks.integration.properties.RequestedCatalogTarget;
-import org.odpi.openmetadata.frameworks.opengovernance.connectorcontext.ConnectorConfigClient;
 import org.odpi.openmetadata.frameworks.opengovernance.controls.ActionTarget;
 import org.odpi.openmetadata.frameworks.opengovernance.properties.CatalogTarget;
 import org.odpi.openmetadata.frameworks.opengovernance.properties.GovernanceActionTypeProperties;
@@ -48,6 +47,7 @@ import org.odpi.openmetadata.frameworks.openmetadata.properties.connections.Endp
 import org.odpi.openmetadata.frameworks.openmetadata.properties.datadictionaries.*;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.digitalbusiness.DigitalProductProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.feedback.NoteLogProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.feedback.SearchKeywordProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.glossaries.GlossaryTermProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.governance.*;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.resources.ResourceListProperties;
@@ -55,8 +55,11 @@ import org.odpi.openmetadata.frameworks.openmetadata.properties.solutions.Soluti
 import org.odpi.openmetadata.frameworks.openmetadata.properties.solutions.SolutionComponentActorProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.solutions.SolutionComponentProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.solutions.SolutionLinkingWireProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.validvalues.SpecificationPropertyAssignmentProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.validvalues.SpecificationPropertyValueProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.validvalues.ValidValueDefinitionProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.refdata.ResourceUse;
+import org.odpi.openmetadata.frameworks.openmetadata.refdata.SpecificationPropertyType;
 import org.odpi.openmetadata.frameworks.openmetadata.search.NewElementOptions;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
@@ -805,6 +808,7 @@ public class OpenMetadataProductsHarvesterConnector extends IntegrationConnector
                                                                                                       productGUID);
 
         OpenMetadataStore openMetadataStore = integrationContext.getOpenMetadataStore();
+        List<String> actionTargetNames = new ArrayList<>();
 
         openMetadataStore.createRelatedElementsInStore(OpenMetadataType.TARGET_FOR_GOVERNANCE_ACTION_RELATIONSHIP.typeName,
                                                        governanceActionProcessGUID,
@@ -812,6 +816,7 @@ public class OpenMetadataProductsHarvesterConnector extends IntegrationConnector
                                                        null,
                                                        null,
                                                        propertyHelper.addStringProperty(null, OpenMetadataProperty.ACTION_TARGET_NAME.name, ManageDigitalSubscriptionActionTarget.DIGITAL_SUBSCRIPTION_ITEM.getName()));
+        actionTargetNames.add(ManageDigitalSubscriptionActionTarget.DIGITAL_SUBSCRIPTION_ITEM.getName());
 
         openMetadataStore.createRelatedElementsInStore(OpenMetadataType.TARGET_FOR_GOVERNANCE_ACTION_RELATIONSHIP.typeName,
                                                        governanceActionProcessGUID,
@@ -819,6 +824,7 @@ public class OpenMetadataProductsHarvesterConnector extends IntegrationConnector
                                                        null,
                                                        null,
                                                        propertyHelper.addStringProperty(null, OpenMetadataProperty.ACTION_TARGET_NAME.name, ManageDigitalSubscriptionActionTarget.DIGITAL_PRODUCT_OWNER.getName()));
+        actionTargetNames.add(ManageDigitalSubscriptionActionTarget.DIGITAL_PRODUCT_OWNER.getName());
 
         openMetadataStore.createRelatedElementsInStore(OpenMetadataType.TARGET_FOR_GOVERNANCE_ACTION_RELATIONSHIP.typeName,
                                                        governanceActionProcessGUID,
@@ -826,6 +832,7 @@ public class OpenMetadataProductsHarvesterConnector extends IntegrationConnector
                                                        null,
                                                        null,
                                                        propertyHelper.addStringProperty(null, OpenMetadataProperty.ACTION_TARGET_NAME.name, ManageDigitalSubscriptionActionTarget.SERVICE_LEVEL_OBJECTIVE.getName()));
+        actionTargetNames.add(ManageDigitalSubscriptionActionTarget.SERVICE_LEVEL_OBJECTIVE.getName());
 
         openMetadataStore.createRelatedElementsInStore(OpenMetadataType.TARGET_FOR_GOVERNANCE_ACTION_RELATIONSHIP.typeName,
                                                        governanceActionProcessGUID,
@@ -833,6 +840,7 @@ public class OpenMetadataProductsHarvesterConnector extends IntegrationConnector
                                                        null,
                                                        null,
                                                        propertyHelper.addStringProperty(null, OpenMetadataProperty.ACTION_TARGET_NAME.name, ManageDigitalSubscriptionActionTarget.PROVISIONING_ACTION_TYPE.getName()));
+        actionTargetNames.add(ManageDigitalSubscriptionActionTarget.PROVISIONING_ACTION_TYPE.getName());
 
         openMetadataStore.createRelatedElementsInStore(OpenMetadataType.TARGET_FOR_GOVERNANCE_ACTION_RELATIONSHIP.typeName,
                                                        governanceActionProcessGUID,
@@ -840,6 +848,7 @@ public class OpenMetadataProductsHarvesterConnector extends IntegrationConnector
                                                        null,
                                                        null,
                                                        propertyHelper.addStringProperty(null, OpenMetadataProperty.ACTION_TARGET_NAME.name, ManageDigitalSubscriptionActionTarget.CANCELLING_ACTION_TYPE.getName()));
+        actionTargetNames.add(ManageDigitalSubscriptionActionTarget.CANCELLING_ACTION_TYPE.getName());
 
         /*
          * Remove the specification properties for the action targets that have already been supplied.  This means
@@ -851,7 +860,22 @@ public class OpenMetadataProductsHarvesterConnector extends IntegrationConnector
 
         if (governanceActionProcess.getSpecificationProperties() != null)
         {
-            // todo
+            for (RelatedMetadataElementSummary specificationProperties : governanceActionProcess.getSpecificationProperties())
+            {
+                if ((specificationProperties != null) && (specificationProperties.getRelationshipProperties() instanceof SpecificationPropertyAssignmentProperties specificationPropertyAssignmentProperties))
+                {
+                    if (SpecificationPropertyType.SUPPORTED_ACTION_TARGET.getPropertyType().equals(specificationPropertyAssignmentProperties.getPropertyName()))
+                    {
+                        if (specificationProperties.getRelatedElement().getProperties() instanceof SpecificationPropertyValueProperties specificationPropertyValueProperties)
+                        {
+                            if (actionTargetNames.contains(specificationPropertyValueProperties.getPreferredValue()))
+                            {
+                                openMetadataStore.deleteRelationshipInStore(specificationProperties.getRelationshipHeader().getGUID());
+                            }
+                        }
+                    }
+                }
+            }
         }
 
         /*
@@ -914,6 +938,20 @@ public class OpenMetadataProductsHarvesterConnector extends IntegrationConnector
                                                    dataSetProperties,
                                                    null);
 
+        /*
+         * Add the "productized" keyword on the asset to identify assets that have been elevated to products.
+         */
+        SearchKeywordClient searchKeywordClient = integrationContext.getSearchKeywordClient();
+
+        SearchKeywordProperties searchKeywordProperties = new SearchKeywordProperties();
+        searchKeywordProperties.setKeyword("productized");
+        searchKeywordProperties.setDescription("Asset " + assetGUID + "is a part of product " + productGUID + ".");
+
+        searchKeywordClient.addSearchKeywordToElement(assetGUID, searchKeywordClient.getMetadataSourceOptions(), null, searchKeywordProperties);
+
+        /*
+         * Log new product
+         */
         auditLog.logMessage(methodName,
                             ProductManagerAuditCode.CREATED_SUPPORTING_DEFINITION.getMessageDefinition(connectorName,
                                                                                                        dataSetProperties.getTypeName(),

@@ -2,10 +2,10 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.adapters.connectors.datastore.csvfile.controls;
 
-import org.odpi.openmetadata.frameworks.connectors.controls.TemplateType;
+import org.odpi.openmetadata.frameworks.openmetadata.specificationproperties.TemplateType;
 import org.odpi.openmetadata.frameworks.openmetadata.controls.PlaceholderProperty;
-import org.odpi.openmetadata.frameworks.openmetadata.controls.PlaceholderPropertyType;
-import org.odpi.openmetadata.frameworks.openmetadata.controls.ReplacementAttributeType;
+import org.odpi.openmetadata.frameworks.openmetadata.specificationproperties.PlaceholderPropertyType;
+import org.odpi.openmetadata.frameworks.openmetadata.specificationproperties.ReplacementAttributeType;
 import org.odpi.openmetadata.frameworks.openmetadata.controls.TemplateDefinition;
 import org.odpi.openmetadata.frameworks.openmetadata.refdata.DeployedImplementationType;
 import org.odpi.openmetadata.frameworks.openmetadata.refdata.DeployedImplementationTypeDefinition;
@@ -304,7 +304,7 @@ public enum CSVFileTemplateType implements TemplateDefinition
 
         templateType.setTemplateName(templateName);
         templateType.setTypeName(typeName);
-        templateType.setTemplateDescription(templateDescription);
+        templateType.setDescription(templateDescription);
         templateType.setRequired(required);
         templateType.setDefaultTemplateGUID(defaultTemplateGUID);
         templateType.setOtherPropertyValues(otherPropertyValues);

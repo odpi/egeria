@@ -1,12 +1,11 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 /* Copyright Contributors to the ODPi Egeria project. */
-package org.odpi.openmetadata.frameworks.opengovernance.controls;
+package org.odpi.openmetadata.frameworks.openmetadata.specificationproperties;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
-import java.util.Map;
 import java.util.Objects;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
@@ -19,19 +18,8 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class ActionTargetType
+public class ActionTargetType extends SpecificationProperty
 {
-    /**
-     * Value to use for the name of the action target.
-     */
-    private String name = null;
-
-
-    /**
-     * Description of the action target type.
-     */
-    private String description = null;
-
     /**
      * The open metadata type name of the element that can be an action target.
      */
@@ -50,12 +38,6 @@ public class ActionTargetType
 
 
     /**
-     * A map of additional property name to property value for this governance service.
-     */
-    private Map<String, String> otherPropertyValues = null;
-
-
-    /**
      * Default constructor
      */
     public ActionTargetType()
@@ -70,60 +52,14 @@ public class ActionTargetType
      */
     public ActionTargetType(ActionTargetType template)
     {
+        super(template);
+
         if (template != null)
         {
-            this.name        = template.getName();
-            this.description = template.getDescription();
-            this.typeName = template.getTypeName();
+            this.typeName                   = template.getTypeName();
             this.deployedImplementationType = template.getDeployedImplementationType();
-            this.required = template.getRequired();
-            this.otherPropertyValues = template.getOtherPropertyValues();
+            this.required                   = template.getRequired();
         }
-    }
-
-
-    /**
-     * Return the string to use as the name of the action target.
-     *
-     * @return string name
-     */
-    public String getName()
-    {
-        return name;
-    }
-
-
-    /**
-     * Set up the string to use as the name of the action target.
-     *
-     * @param name string name
-     */
-    public void setName(String name)
-    {
-        this.name = name;
-    }
-
-
-
-    /**
-     * Return the description of the action target.
-     *
-     * @return string
-     */
-    public String getDescription()
-    {
-        return description;
-    }
-
-
-    /**
-     * Set up the description of the action target.
-     *
-     * @param description string
-     */
-    public void setDescription(String description)
-    {
-        this.description = description;
     }
 
 
@@ -194,28 +130,6 @@ public class ActionTargetType
 
 
     /**
-     * Return a map of property name to property value to provide additional information for this governance service.
-     *
-     * @return map of string to string
-     */
-    public Map<String, String> getOtherPropertyValues()
-    {
-        return otherPropertyValues;
-    }
-
-
-    /**
-     * Set up a map of property name to property value to provide additional information for this governance service..
-     *
-     * @param otherPropertyValues map of string to string
-     */
-    public void setOtherPropertyValues(Map<String, String> otherPropertyValues)
-    {
-        this.otherPropertyValues = otherPropertyValues;
-    }
-
-
-    /**
      * JSON-style toString
      *
      * @return return string containing the property names and values
@@ -224,13 +138,10 @@ public class ActionTargetType
     public String toString()
     {
         return "ActionTargetType{" +
-                "name='" + name + '\'' +
-                ", description='" + description + '\'' +
-                ", typeName='" + typeName + '\'' +
+                "typeName='" + typeName + '\'' +
                 ", deployedImplementationType='" + deployedImplementationType + '\'' +
                 ", required=" + required +
-                ", otherPropertyValues=" + otherPropertyValues +
-                '}';
+                "} " + super.toString();
     }
 
 
@@ -243,20 +154,13 @@ public class ActionTargetType
     @Override
     public boolean equals(Object objectToCompare)
     {
-        if (this == objectToCompare)
-        {
-            return true;
-        }
-        if (! (objectToCompare instanceof ActionTargetType that))
-        {
-            return false;
-        }
-        return Objects.equals(typeName, that.typeName) &&
-                Objects.equals(name, that.name) &&
-                Objects.equals(description, that.description) &&
-                Objects.equals(deployedImplementationType, that.deployedImplementationType) &&
-                (required == that.required) &&
-                Objects.equals(otherPropertyValues, that.otherPropertyValues);
+        if (this == objectToCompare) return true;
+        if (objectToCompare == null || getClass() != objectToCompare.getClass()) return false;
+        if (!super.equals(objectToCompare)) return false;
+        ActionTargetType that = (ActionTargetType) objectToCompare;
+        return required == that.required &&
+                Objects.equals(typeName, that.typeName) &&
+                Objects.equals(deployedImplementationType, that.deployedImplementationType);
     }
 
 
@@ -268,6 +172,6 @@ public class ActionTargetType
     @Override
     public int hashCode()
     {
-        return Objects.hash(name, description, typeName, required, deployedImplementationType, otherPropertyValues);
+        return Objects.hash(super.hashCode(), typeName, deployedImplementationType, required);
     }
 }

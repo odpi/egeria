@@ -92,9 +92,11 @@ public class ConnectorContextBase
     private final   RatingClient                ratingClient;
     private final   SchemaAttributeClient       schemaAttributeClient;
     private final   SchemaTypeClient            schemaTypeClient;
+    private final   SearchKeywordClient         searchKeywordClient;
     private final   SoftwareCapabilityClient    softwareCapabilityClient;
     private final   SolutionBlueprintClient     solutionBlueprintClient;
     private final   SolutionComponentClient     solutionComponentClient;
+    private final   SpecificationPropertyClient specificationPropertyClient;
     private final   UserIdentityClient          userIdentityClient;
     private final   ValidMetadataValuesClient   validMetadataValuesClient;
     private final   ValidValueDefinitionClient  validValueDefinitionClient;
@@ -470,6 +472,17 @@ public class ConnectorContextBase
                                                                auditLog,
                                                                maxPageSize);
 
+        this.searchKeywordClient = new SearchKeywordClient(this,
+                                                           localServerName,
+                                                           localServiceName,
+                                                           connectorUserId,
+                                                           connectorGUID,
+                                                           externalSourceGUID,
+                                                           externalSourceName,
+                                                           openMetadataClient,
+                                                           auditLog,
+                                                           maxPageSize);
+
         this.softwareCapabilityClient = new SoftwareCapabilityClient(this,
                                                                      localServerName,
                                                                      localServiceName,
@@ -502,6 +515,17 @@ public class ConnectorContextBase
                                                                    openMetadataClient,
                                                                    auditLog,
                                                                    maxPageSize);
+
+        this.specificationPropertyClient = new SpecificationPropertyClient(this,
+                                                                           localServerName,
+                                                                           localServiceName,
+                                                                           connectorUserId,
+                                                                           connectorGUID,
+                                                                           externalSourceGUID,
+                                                                           externalSourceName,
+                                                                           openMetadataClient,
+                                                                           auditLog,
+                                                                           maxPageSize);
 
         this.userIdentityClient = new UserIdentityClient(this,
                                                          localServerName,
@@ -975,29 +999,6 @@ public class ConnectorContextBase
 
 
     /**
-     * Return the client for managing software capabilities of a specific subtype.
-     *
-     * @param specificTypeName override type name
-     * @return connector context client
-     */
-    public SoftwareCapabilityClient getSoftwareCapabilityClient(String specificTypeName)
-    {
-        return new SoftwareCapabilityClient(softwareCapabilityClient, specificTypeName);
-    }
-
-
-    /**
-     * Return the client for managing software capabilities.
-     *
-     * @return connector context client
-     */
-    public SoftwareCapabilityClient getSoftwareCapabilityClient()
-    {
-        return softwareCapabilityClient;
-    }
-
-
-    /**
      * Return the client for managing schema types of a specific subtype.
      *
      * @param specificTypeName override type name
@@ -1044,6 +1045,40 @@ public class ConnectorContextBase
 
 
     /**
+     * Return the client for managing search keywords.
+     *
+     * @return connector context client
+     */
+    public SearchKeywordClient getSearchKeywordClient()
+    {
+        return searchKeywordClient;
+    }
+
+
+    /**
+     * Return the client for managing software capabilities of a specific subtype.
+     *
+     * @param specificTypeName override type name
+     * @return connector context client
+     */
+    public SoftwareCapabilityClient getSoftwareCapabilityClient(String specificTypeName)
+    {
+        return new SoftwareCapabilityClient(softwareCapabilityClient, specificTypeName);
+    }
+
+
+    /**
+     * Return the client for managing software capabilities.
+     *
+     * @return connector context client
+     */
+    public SoftwareCapabilityClient getSoftwareCapabilityClient()
+    {
+        return softwareCapabilityClient;
+    }
+
+
+    /**
      * Return the client for managing solution blueprints.
      *
      * @return connector context client
@@ -1062,6 +1097,17 @@ public class ConnectorContextBase
     public SolutionComponentClient getSolutionComponentClient()
     {
         return solutionComponentClient;
+    }
+
+
+    /**
+     * Return the client for managing specification properties.
+     *
+     * @return connector context client
+     */
+    public SpecificationPropertyClient getSpecificationPropertyClient()
+    {
+        return specificationPropertyClient;
     }
 
 
@@ -1087,7 +1133,6 @@ public class ConnectorContextBase
     }
 
 
-
     /**
      * Return the client for managing valid value definitions.
      *
@@ -1098,8 +1143,6 @@ public class ConnectorContextBase
     {
         return new ValidValueDefinitionClient(validValueDefinitionClient, specialistTypeName);
     }
-
-
 
 
     /**
