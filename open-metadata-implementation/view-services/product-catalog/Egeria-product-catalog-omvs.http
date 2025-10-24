@@ -19,57 +19,6 @@ Content-Type: application/json
 
 > {% client.global.set("token", response.body); %}
 
-###
-# =====================================================================================================================
-# Load the product catalog
-#
-
-###
-# @name get the GUID for active-metadata-store
-# Retrieve the metadata element using its unique identifier.
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/runtime-manager/metadata-elements/guid-by-unique-name
-Authorization: Bearer {{token}}
-Content-Type: application/json
-
-{
-  "class" : "UniqueNameRequestBody",
-  "name" : "qs-metadata-store",
-  "namePropertyName" : "displayName"
-}
-
-> {% client.global.set("activeMetadataStoreGUID", response.body.guid); %}
-
-###
-# @name Add OpenMetadataProductsContentPack (into active-metadata-store)
-# Add the open metadata archive that starts up the harvester for the open metadata product catalog.
-# https://egeria-project.org/concepts/open-metadata-archives/
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/runtime-manager/omag-servers/{{activeMetadataStoreGUID}}/instance/load/open-metadata-archives/file
-Authorization: Bearer {{token}}
-Content-Type: text/plain
-
-content-packs/OpenMetadataProductsContentPack.omarchive
-
-
-###
-# @name Add CocoComboArchive (into active-metadata-store)
-# Add the open metadata archive that starts up the harvester for the open metadata product catalog.
-# https://egeria-project.org/concepts/open-metadata-archives/
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/runtime-manager/omag-servers/{{activeMetadataStoreGUID}}/instance/load/open-metadata-archives/file
-Authorization: Bearer {{token}}
-Content-Type: text/plain
-
-content-packs/CocoComboArchive.omarchive
-
-
-###
-# @name Add CocoComboArchive (into active-metadata-store)
-# Add the open metadata archive that starts up the harvester for the open metadata product catalog.
-# https://egeria-project.org/concepts/open-metadata-archives/
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/runtime-manager/omag-servers/{{activeMetadataStoreGUID}}/instance/load/open-metadata-archives/file
-Authorization: Bearer {{token}}
-Content-Type: text/plain
-
-content-packs/PostgresContentPack.omarchive
 
 ###
 # =====================================================================================================================
