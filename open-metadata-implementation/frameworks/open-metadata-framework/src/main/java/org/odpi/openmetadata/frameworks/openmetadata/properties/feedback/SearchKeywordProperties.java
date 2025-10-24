@@ -24,7 +24,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class SearchKeywordProperties extends OpenMetadataRootProperties
 {
-    private String keyword     = null;
+    private String displayName = null;
     private String description = null;
 
 
@@ -49,7 +49,7 @@ public class SearchKeywordProperties extends OpenMetadataRootProperties
 
         if (template != null)
         {
-            keyword     = template.getKeyword();
+            displayName = template.getDisplayName();
             description = template.getDescription();
         }
     }
@@ -60,20 +60,20 @@ public class SearchKeywordProperties extends OpenMetadataRootProperties
      *
      * @return String tag name
      */
-    public String getKeyword()
+    public String getDisplayName()
     {
-        return keyword;
+        return displayName;
     }
 
 
     /**
      * Set up the name of the keyword.
      *
-     * @param keyword String tag name
+     * @param displayName String tag name
      */
-    public void setKeyword(String keyword)
+    public void setDisplayName(String displayName)
     {
-        this.keyword = keyword;
+        this.displayName = displayName;
     }
 
 
@@ -107,7 +107,7 @@ public class SearchKeywordProperties extends OpenMetadataRootProperties
     public String toString()
     {
         return "SearchKeywordProperties{" +
-                "keyword='" + keyword + '\'' +
+                "displayName='" + displayName + '\'' +
                 ", description='" + description + '\'' +
                 "} " + super.toString();
     }
@@ -134,7 +134,7 @@ public class SearchKeywordProperties extends OpenMetadataRootProperties
         {
             return false;
         }
-        return Objects.equals(getKeyword(), that.getKeyword()) &&
+        return Objects.equals(getDisplayName(), that.getDisplayName()) &&
                 Objects.equals(getDescription(), that.getDescription());
     }
 
@@ -147,6 +147,6 @@ public class SearchKeywordProperties extends OpenMetadataRootProperties
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), keyword, description);
+        return Objects.hash(super.hashCode(), displayName, description);
     }
 }

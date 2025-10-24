@@ -389,8 +389,8 @@ public class OpenMetadataElementBuilder
                 else if (properties instanceof SearchKeywordProperties searchKeywordProperties)
                 {
                     elementProperties = propertyHelper.addStringProperty(elementProperties,
-                                                                         OpenMetadataProperty.KEYWORD.name,
-                                                                         searchKeywordProperties.getKeyword());
+                                                                         OpenMetadataProperty.DISPLAY_NAME.name,
+                                                                         searchKeywordProperties.getDisplayName());
 
                     elementProperties = propertyHelper.addStringProperty(elementProperties,
                                                                          OpenMetadataProperty.DESCRIPTION.name,

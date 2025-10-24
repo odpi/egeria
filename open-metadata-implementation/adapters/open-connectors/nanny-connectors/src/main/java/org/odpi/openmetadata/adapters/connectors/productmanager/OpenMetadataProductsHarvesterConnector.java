@@ -944,7 +944,7 @@ public class OpenMetadataProductsHarvesterConnector extends IntegrationConnector
         SearchKeywordClient searchKeywordClient = integrationContext.getSearchKeywordClient();
 
         SearchKeywordProperties searchKeywordProperties = new SearchKeywordProperties();
-        searchKeywordProperties.setKeyword("productized");
+        searchKeywordProperties.setDisplayName("productized");
         searchKeywordProperties.setDescription("Asset " + assetGUID + "is a part of product " + productGUID + ".");
 
         searchKeywordClient.addSearchKeywordToElement(assetGUID, searchKeywordClient.getMetadataSourceOptions(), null, searchKeywordProperties);

@@ -2695,9 +2695,9 @@ public class ClassificationExplorerRESTServices extends TokenController
 
             if (requestBody != null)
             {
-                response.setElements(handler.getSearchKeywordsByKeyword(userId,
-                                                                        requestBody.getFilter(),
-                                                                        requestBody));
+                response.setElements(handler.getSearchKeywordsByName(userId,
+                                                                     requestBody.getFilter(),
+                                                                     requestBody));
             }
             else
             {

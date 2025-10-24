@@ -142,7 +142,7 @@ public class SearchKeywordClient extends ConnectorContextClientBase
     /**
      * Retrieve the list of search keyword metadata elements that contain the requested keyword.
      *
-     * @param keyword keyword to find
+     * @param name name to find
      * @param queryOptions multiple options to control the query
      * @return list of matching metadata elements
      *
@@ -150,12 +150,12 @@ public class SearchKeywordClient extends ConnectorContextClientBase
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public List<OpenMetadataRootElement> getSearchKeywordsByKeyword(String        keyword,
-                                                                    QueryOptions queryOptions) throws InvalidParameterException,
-                                                                                                      UserNotAuthorizedException,
-                                                                                                      PropertyServerException
+    public List<OpenMetadataRootElement> getSearchKeywordsByName(String        name,
+                                                                 QueryOptions queryOptions) throws InvalidParameterException,
+                                                                                                   UserNotAuthorizedException,
+                                                                                                   PropertyServerException
     {
-        return searchKeywordHandler.getSearchKeywordsByKeyword(connectorUserId, keyword, queryOptions);
+        return searchKeywordHandler.getSearchKeywordsByName(connectorUserId, name, queryOptions);
     }
 
 
