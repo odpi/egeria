@@ -24,7 +24,7 @@ public class GovernanceActionEngineProperties extends GovernanceEngineProperties
     public GovernanceActionEngineProperties()
     {
         super();
-        super.setTypeName(OpenMetadataType.GOVERNANCE_ACTION_SERVICE.typeName);;
+        super.setTypeName(OpenMetadataType.GOVERNANCE_ACTION_ENGINE.typeName);;
     }
 
 
@@ -44,7 +44,7 @@ public class GovernanceActionEngineProperties extends GovernanceEngineProperties
      *
      * @param template template object to copy.
      */
-    public GovernanceActionEngineProperties(SoftwareCapabilityProperties template)
+    public GovernanceActionEngineProperties(EngineProperties template)
     {
         super(template);
     }

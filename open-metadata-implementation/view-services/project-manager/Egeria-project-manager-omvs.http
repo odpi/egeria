@@ -92,12 +92,22 @@ Content-Type: application/json
 ###
 # @name getProjectsByName
 # Returns the list of projects with a particular name.
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/project-manager/projects/projects/by-name?startFrom=0&pageSize=0
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/project-manager/projects/projects/by-name
 Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-  "filter" : ""
+  "class" : "FilterRequestBody",
+  "filter" : "Add name here",
+  "startFrom": 0,
+  "pageSize": 10,
+  "asOfTime" : "{{$isoTimestamp}}",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false,
+  "limitResultsByStatus" : ["ACTIVE"],
+  "sequencingOrder" : "PROPERTY_ASCENDING",
+  "sequencingProperty" : "qualifiedName"
 }
 
 ###
@@ -309,7 +319,7 @@ Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-  "class" : "DeleteRequestBody"
+  "class" : "DeleteElementRequestBody"
 }
 
 ###
@@ -342,7 +352,7 @@ Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-  "class" : "DeleteRequestBody"
+  "class" : "DeleteRelationshipRequestBody"
 }
 
 

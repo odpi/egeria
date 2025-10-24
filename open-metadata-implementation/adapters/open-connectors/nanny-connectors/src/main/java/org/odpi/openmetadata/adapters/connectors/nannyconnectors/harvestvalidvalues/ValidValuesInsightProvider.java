@@ -18,7 +18,7 @@ public class ValidValuesInsightProvider extends IntegrationConnectorProvider
     /*
      * Unique identifier of the connector for the audit log.
      */
-    private static final int    connectorComponentId   = 705;
+    private static final int    connectorComponentId   = 706;
 
     /*
      * Unique identifier for the connector type.

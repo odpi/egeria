@@ -3,11 +3,14 @@
 
 package org.odpi.openmetadata.adapters.connectors.referencedata.tabulardatasets;
 
+import org.odpi.openmetadata.adapters.connectors.referencedata.tabulardatasets.controls.ReferenceDataConfigurationProperty;
 import org.odpi.openmetadata.adapters.connectors.referencedata.tabulardatasets.ffdc.ReferenceDataAuditCode;
 import org.odpi.openmetadata.adapters.connectors.referencedata.tabulardatasets.ffdc.ReferenceDataErrorCode;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLoggingComponent;
-import org.odpi.openmetadata.frameworks.connectors.TabularColumnDescription;
-import org.odpi.openmetadata.frameworks.connectors.TabularDataSource;
+import org.odpi.openmetadata.frameworks.connectors.tabulardatasets.ReadableTabularDataSource;
+import org.odpi.openmetadata.frameworks.connectors.tabulardatasets.TabularColumnDescription;
+import org.odpi.openmetadata.frameworks.connectors.tabulardatasets.TabularDataCollection;
+import org.odpi.openmetadata.frameworks.connectors.tabulardatasets.WritableTabularDataSource;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.OpenMetadataRootElement;
@@ -28,13 +31,19 @@ import java.util.Map;
  * ValidValueDataSetConnector enables interaction with a valid value set as if it is a tabular data set.
  */
 public class ValidValueDataSetConnector extends ReferenceDataSetConnectorBase implements AuditLoggingComponent,
-                                                                                         TabularDataSource
+                                                                                         ReadableTabularDataSource,
+                                                                                         WritableTabularDataSource,
+                                                                                         TabularDataCollection
 {
     private static final String myConnectorName = "ValidValueDataSetConnector";
     private static final Logger log = LoggerFactory.getLogger(ValidValueDataSetConnector.class);
 
     private final Map<Long, RelatedMetadataElementSummary> records                    = new HashMap<>();
     private String                                         validValueSetQualifiedName = null;
+    private String                                         tableName = null;
+    private String                                         tableDescription = null;
+    protected String                                       validValueSetGUID = null;
+
 
     /**
      * Default constructor
@@ -57,6 +66,16 @@ public class ValidValueDataSetConnector extends ReferenceDataSetConnectorBase im
         super.start();
 
         final String methodName = "start";
+
+        validValueSetGUID = super.getStringConfigurationProperty(ReferenceDataConfigurationProperty.VALID_VALUE_SET_GUID.getName(), connectionBean.getConfigurationProperties());
+
+        if (validValueSetGUID == null)
+        {
+            super.throwMissingConfigurationProperty(connectorName,
+                                                    this.getClass().getName(),
+                                                    ReferenceDataConfigurationProperty.VALID_VALUE_SET_GUID.getName(),
+                                                    methodName);
+        }
 
         refreshValidValueSet(methodName);
     }
@@ -93,6 +112,22 @@ public class ValidValueDataSetConnector extends ReferenceDataSetConnectorBase im
             if (validValueSet.getProperties() instanceof ValidValueDefinitionProperties validValueDefinitionProperties)
             {
                 validValueSetQualifiedName = validValueDefinitionProperties.getQualifiedName();
+                tableDescription = validValueDefinitionProperties.getDescription();
+
+                if (tableName == null)
+                {
+                    tableName = validValueDefinitionProperties.getPreferredValue();
+
+                    if (tableName == null)
+                    {
+                        tableName = validValueDefinitionProperties.getDisplayName();
+                    }
+
+                    if (tableName == null)
+                    {
+                        tableName = validValueDefinitionProperties.getQualifiedName().replaceAll("::", " ").replaceAll("-", " ");
+                    }
+                }
             }
             else
             {
@@ -162,6 +197,49 @@ public class ValidValueDataSetConnector extends ReferenceDataSetConnectorBase im
 
 
     /**
+     * Return the canonical table name for this data source.  Each word in the name should be capitalized, with spaces
+     * between the words to allow translation between different naming conventions.
+     *
+     * @return string
+     * @throws ConnectorCheckedException there is a problem accessing the data
+     */
+    @Override
+    public String getTableName() throws ConnectorCheckedException
+    {
+        return tableName;
+    }
+
+
+
+    /**
+     * Return the description for this data source.
+     *
+     * @return string
+     */
+    @Override
+    public String getTableDescription()
+    {
+        return tableDescription;
+    }
+
+
+    /**
+     * Set up the canonical table name for this data source.  Each word in the name should be capitalized, with spaces
+     * between the words to allow translation between different naming conventions.
+     *
+     * @param tableName  string
+     * @param tableDescription optional description
+     */
+    @Override
+    public void setTableName(String tableName,
+                             String tableDescription)
+    {
+        this.tableName = tableName;
+        this.tableDescription = tableDescription;
+    }
+
+
+    /**
      * Return the list of column descriptions associated with this data source.  The information
      * should be sufficient to define the schema in a target data store.  This list is the default
      * column descriptions.  The caller can override them.
@@ -175,19 +253,20 @@ public class ValidValueDataSetConnector extends ReferenceDataSetConnectorBase im
         {
             columnDescriptions = new ArrayList<>();
 
-            columnDescriptions.add(getTabularColumnDescription(OpenMetadataProperty.GUID, false));
-            columnDescriptions.add(getTabularColumnDescription(OpenMetadataProperty.CREATE_TIME, false));
-            columnDescriptions.add(getTabularColumnDescription(OpenMetadataProperty.UPDATE_TIME, true));
-            columnDescriptions.add(getTabularColumnDescription(OpenMetadataProperty.QUALIFIED_NAME, false));
-            columnDescriptions.add(getTabularColumnDescription(OpenMetadataProperty.DISPLAY_NAME, true));
-            columnDescriptions.add(getTabularColumnDescription(OpenMetadataProperty.DESCRIPTION, true));
-            columnDescriptions.add(getTabularColumnDescription(OpenMetadataProperty.CATEGORY, true));
-            columnDescriptions.add(getTabularColumnDescription(OpenMetadataProperty.PREFERRED_VALUE, true));
-            columnDescriptions.add(getTabularColumnDescription(OpenMetadataProperty.IS_CASE_SENSITIVE, true));
-            columnDescriptions.add(getTabularColumnDescription(OpenMetadataProperty.DATA_TYPE, true));
-            columnDescriptions.add(getTabularColumnDescription(OpenMetadataProperty.SCOPE, true));
-            columnDescriptions.add(getTabularColumnDescription(OpenMetadataProperty.USAGE, true));
-            columnDescriptions.add(getTabularColumnDescription(OpenMetadataProperty.IS_DEFAULT_VALUE, false));
+            columnDescriptions.add(getTabularColumnDescription(OpenMetadataProperty.GUID, false, true));
+            columnDescriptions.add(getTabularColumnDescription(OpenMetadataProperty.CREATE_TIME, false, false));
+            columnDescriptions.add(getTabularColumnDescription(OpenMetadataProperty.UPDATE_TIME, true, false));
+            columnDescriptions.add(getTabularColumnDescription(OpenMetadataProperty.QUALIFIED_NAME, false, false));
+            columnDescriptions.add(getTabularColumnDescription(OpenMetadataProperty.DISPLAY_NAME, true, false));
+            columnDescriptions.add(getTabularColumnDescription(OpenMetadataProperty.DESCRIPTION, true, false));
+            columnDescriptions.add(getTabularColumnDescription(OpenMetadataProperty.CATEGORY, true, false));
+            columnDescriptions.add(getTabularColumnDescription(OpenMetadataProperty.NAMESPACE, true, false));
+            columnDescriptions.add(getTabularColumnDescription(OpenMetadataProperty.PREFERRED_VALUE, true, false));
+            columnDescriptions.add(getTabularColumnDescription(OpenMetadataProperty.IS_CASE_SENSITIVE, true, false));
+            columnDescriptions.add(getTabularColumnDescription(OpenMetadataProperty.DATA_TYPE, false, false));
+            columnDescriptions.add(getTabularColumnDescription(OpenMetadataProperty.SCOPE, true, false));
+            columnDescriptions.add(getTabularColumnDescription(OpenMetadataProperty.USAGE, true, false));
+            columnDescriptions.add(getTabularColumnDescription(OpenMetadataProperty.IS_DEFAULT_VALUE, false, false));
         }
 
         return columnDescriptions;
@@ -246,24 +325,99 @@ public class ValidValueDataSetConnector extends ReferenceDataSetConnectorBase im
                 {
                     recordValues.add(validValue.getRelatedElement().getElementHeader().getGUID());
                 }
+                else if (OpenMetadataProperty.CURRENT_STATUS.name.equals(tabularColumnDescription.columnName()))
+                {
+                    recordValues.add(validValue.getRelatedElement().getElementHeader().getStatus().toString());
+                }
                 else if (OpenMetadataProperty.CREATE_TIME.name.equals(tabularColumnDescription.columnName()))
                 {
-                    recordValues.add(validValue.getRelatedElement().getElementHeader().getVersions().getCreateTime().toString());
+                    long time = validValue.getRelatedElement().getElementHeader().getVersions().getCreateTime().getTime();
+
+                    recordValues.add(Long.toString(time));
                 }
                 else if (OpenMetadataProperty.UPDATE_TIME.name.equals(tabularColumnDescription.columnName()))
                 {
+                    long time;
                     if (validValue.getRelatedElement().getElementHeader().getVersions().getUpdateTime() == null)
                     {
-                        recordValues.add(null);
+                        time = validValue.getRelatedElement().getElementHeader().getVersions().getCreateTime().getTime();
                     }
                     else
                     {
-                        recordValues.add(validValue.getRelatedElement().getElementHeader().getVersions().getUpdateTime().toString());
+                        time = validValue.getRelatedElement().getElementHeader().getVersions().getUpdateTime().getTime();
                     }
+
+                    recordValues.add(Long.toString(time));
                 }
-                else if (validValue.getRelatedElement().getProperties() != null)
+                else if (validValue.getRelatedElement().getProperties() instanceof ValidValueDefinitionProperties validValueDefinitionProperties)
                 {
-                    recordValues.add(validValue.getRelatedElement().getProperties().get(tabularColumnDescription.columnName()));
+                    if (OpenMetadataProperty.QUALIFIED_NAME.name.equals(tabularColumnDescription.columnName()))
+                    {
+                        recordValues.add(validValueDefinitionProperties.getQualifiedName());
+                    }
+                    else if (OpenMetadataProperty.IDENTIFIER.name.equals(tabularColumnDescription.columnName()))
+                    {
+                        recordValues.add(validValueDefinitionProperties.getIdentifier());
+                    }
+                    else if (OpenMetadataProperty.DISPLAY_NAME.name.equals(tabularColumnDescription.columnName()))
+                    {
+                        recordValues.add(validValueDefinitionProperties.getDisplayName());
+                    }
+                    else if (OpenMetadataProperty.CATEGORY.name.equals(tabularColumnDescription.columnName()))
+                    {
+                        recordValues.add(validValueDefinitionProperties.getCategory());
+                    }
+                    else if (OpenMetadataProperty.DESCRIPTION.name.equals(tabularColumnDescription.columnName()))
+                    {
+                        recordValues.add(validValueDefinitionProperties.getCategory());
+                    }
+                    else if (OpenMetadataProperty.VERSION_IDENTIFIER.name.equals(tabularColumnDescription.columnName()))
+                    {
+                        recordValues.add(validValueDefinitionProperties.getVersionIdentifier());
+                    }
+                    else if (OpenMetadataProperty.PREFERRED_VALUE.name.equals(tabularColumnDescription.columnName()))
+                    {
+                        recordValues.add(validValueDefinitionProperties.getPreferredValue());
+                    }
+                    else if (OpenMetadataProperty.NAMESPACE.name.equals(tabularColumnDescription.columnName()))
+                    {
+                        recordValues.add(validValueDefinitionProperties.getNamespace());
+                    }
+                    else if (OpenMetadataProperty.USER_DEFINED_STATUS.name.equals(tabularColumnDescription.columnName()))
+                    {
+                        recordValues.add(validValueDefinitionProperties.getUserDefinedStatus());
+                    }
+                    else if (OpenMetadataProperty.DATA_TYPE.name.equals(tabularColumnDescription.columnName()))
+                    {
+                        recordValues.add(validValueDefinitionProperties.getDataType());
+                    }
+                    else if (OpenMetadataProperty.USAGE.name.equals(tabularColumnDescription.columnName()))
+                    {
+                        recordValues.add(validValueDefinitionProperties.getUsage());
+                    }
+                    else if (OpenMetadataProperty.SCOPE.name.equals(tabularColumnDescription.columnName()))
+                    {
+                        recordValues.add(validValueDefinitionProperties.getScope());
+                    }
+                    else if (OpenMetadataProperty.IS_CASE_SENSITIVE.name.equals(tabularColumnDescription.columnName()))
+                    {
+                        recordValues.add(Boolean.toString(validValueDefinitionProperties.getIsCaseSensitive()));
+                    }
+                    else if (validValueDefinitionProperties.getAdditionalProperties() != null)
+                    {
+                        if (validValueDefinitionProperties.getAdditionalProperties().containsKey(tabularColumnDescription.columnName()))
+                        {
+                            recordValues.add(validValueDefinitionProperties.getAdditionalProperties().get(tabularColumnDescription.columnName()));
+                        }
+                        else
+                        {
+                            recordValues.add(null);
+                        }
+                    }
+                    else
+                    {
+                        recordValues.add(null);
+                    }
                 }
                 else
                 {
@@ -302,9 +456,10 @@ public class ValidValueDataSetConnector extends ReferenceDataSetConnectorBase im
      * @param requestedProperties map of properties
      * @return valid value properties object
      */
-    private ValidValueDefinitionProperties getValidValueProperties(Map<String, String> requestedProperties)
+    private ValidValueDefinitionProperties getValidValueProperties(ValidValueDefinitionProperties existingProperties,
+                                                                   Map<String, String>            requestedProperties)
     {
-        ValidValueDefinitionProperties validValueDefinitionProperties = new ValidValueDefinitionProperties();
+        ValidValueDefinitionProperties validValueDefinitionProperties = new ValidValueDefinitionProperties(existingProperties);
 
         if (requestedProperties != null)
         {
@@ -315,6 +470,10 @@ public class ValidValueDataSetConnector extends ReferenceDataSetConnectorBase im
                     if (propertyName.equals(OpenMetadataProperty.QUALIFIED_NAME.name))
                     {
                         validValueDefinitionProperties.setQualifiedName(requestedProperties.get(propertyName));
+                    }
+                    else if (propertyName.equals(OpenMetadataProperty.IDENTIFIER.name))
+                    {
+                        validValueDefinitionProperties.setIdentifier(requestedProperties.get(propertyName));
                     }
                     else if (propertyName.equals(OpenMetadataProperty.DISPLAY_NAME.name))
                     {
@@ -412,47 +571,43 @@ public class ValidValueDataSetConnector extends ReferenceDataSetConnectorBase im
         }
 
         /*
-         * Exiting records will have at least one property.
+         * Existing records will have at least one property.
          */
-        Map<String, String> existingProperties = existingValidValue.getRelatedElement().getProperties();
-
-        for (int i=0 ; i < dataValues.size() ; i++)
+        if (existingValidValue.getRelatedElement().getProperties() instanceof ValidValueDefinitionProperties existingProperties)
         {
-            existingProperties.put(tabularColumnDescriptions.get(i).columnName(), dataValues.get(i));
-        }
+            /*
+             * Convert the properties to a ValidValuesDefinitionProperties object (unrecognized properties become additionalProperties).
+             */
+            ValidValueDefinitionProperties properties = getValidValueProperties(existingProperties, this.getNewProperties(dataValues, methodName));
 
-        /*
-         * Convert the properties to a ValidValuesDefinitionProperties object (unrecognized properties become additionalProperties).
-         */
-        ValidValueDefinitionProperties properties = getValidValueProperties(existingProperties);
+            /*
+             * Perform a merge update.  Notice that isDefaultValue is not updated (yet) and GUID can not be updated.
+             */
+            UpdateOptions updateOptions = new UpdateOptions();
 
-        /*
-         * Perform a merge update.  Notice that isDefaultValue is not updated (yet) and GUID can not be updated.
-         */
-        UpdateOptions updateOptions = new UpdateOptions();
+            updateOptions.setMergeUpdate(true);
 
-        updateOptions.setMergeUpdate(true);
+            try
+            {
+                connectorContext.getValidValueDefinitionClient().updateValidValueDefinition(existingValidValue.getRelatedElement().getElementHeader().getGUID(),
+                                                                                            updateOptions,
+                                                                                            properties);
+            }
+            catch (Exception error)
+            {
+                super.logRecord(methodName, ReferenceDataAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(connectorName,
+                                                                                                             error.getClass().getName(),
+                                                                                                             methodName,
+                                                                                                             error.getMessage()));
 
-        try
-        {
-            connectorContext.getValidValueDefinitionClient().updateValidValueDefinition(existingValidValue.getRelatedElement().getElementHeader().getGUID(),
-                                                                                        updateOptions,
-                                                                                        properties);
-        }
-        catch (Exception error)
-        {
-            super.logRecord(methodName, ReferenceDataAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(connectorName,
-                                                                                                         error.getClass().getName(),
-                                                                                                         methodName,
-                                                                                                         error.getMessage()));
-
-            throw new ConnectorCheckedException(ReferenceDataErrorCode.UNEXPECTED_EXCEPTION.getMessageDefinition(connectorName,
-                                                                                                                 error.getClass().getName(),
-                                                                                                                 methodName,
-                                                                                                                 error.getMessage()),
-                                                this.getClass().getName(),
-                                                methodName,
-                                                error);
+                throw new ConnectorCheckedException(ReferenceDataErrorCode.UNEXPECTED_EXCEPTION.getMessageDefinition(connectorName,
+                                                                                                                     error.getClass().getName(),
+                                                                                                                     methodName,
+                                                                                                                     error.getMessage()),
+                                                    this.getClass().getName(),
+                                                    methodName,
+                                                    error);
+            }
         }
     }
 
@@ -511,7 +666,7 @@ public class ValidValueDataSetConnector extends ReferenceDataSetConnectorBase im
         /*
          * Convert the properties to a ValidValuesDefinitionProperties object (unrecognized properties become additionalProperties).
          */
-        ValidValueDefinitionProperties properties = getValidValueProperties(newProperties);
+        ValidValueDefinitionProperties properties = getValidValueProperties(null, newProperties);
         boolean isDefaultValue = false;
 
         if (newProperties.containsKey(OpenMetadataProperty.IS_DEFAULT_VALUE.name))
@@ -551,6 +706,53 @@ public class ValidValueDataSetConnector extends ReferenceDataSetConnectorBase im
          * Refresh the valid value records to include the new one.
          */
         refreshValidValueSet(methodName);
+    }
+
+
+    /**
+     *
+     * @param dataValues list of values to store
+     * @param methodName calling method
+     *
+     * @return map of column names to column values
+     * @throws ConnectorCheckedException wrong data values
+     */
+    private Map<String, String> getNewProperties(List<String>                   dataValues,
+                                                 String                         methodName) throws ConnectorCheckedException
+    {
+        /*
+         * Check that the right number of columns have been passed.
+         */
+        List<TabularColumnDescription> tabularColumnDescriptions = this.getColumnDescriptions();
+        if ((dataValues == null) || (dataValues.size() != tabularColumnDescriptions.size()))
+        {
+            int numberOfColumns = 0;
+
+            if (dataValues != null)
+            {
+                numberOfColumns = dataValues.size();
+            }
+
+            throw new ConnectorCheckedException(ReferenceDataErrorCode.NULL_RECORD.getMessageDefinition(connectorName,
+                                                                                                        Integer.toString(numberOfColumns),
+                                                                                                        methodName,
+                                                                                                        Long.toString(records.size()),
+                                                                                                        Integer.toString(tabularColumnDescriptions.size())),
+                                                this.getClass().getName(),
+                                                methodName);
+        }
+
+        /*
+         * Set up the properties for the new valid value
+         */
+        Map<String, String> newProperties = new HashMap<>();
+
+        for (int i=0 ; i < dataValues.size() ; i++)
+        {
+            newProperties.put(tabularColumnDescriptions.get(i).columnName(), dataValues.get(i));
+        }
+
+        return newProperties;
     }
 
 

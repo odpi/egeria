@@ -4,6 +4,10 @@ package org.odpi.openmetadata.viewservices.schemamaker.server.spring;
 
 import io.swagger.v3.oas.annotations.ExternalDocumentation;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.enums.SecuritySchemeIn;
+import io.swagger.v3.oas.annotations.enums.SecuritySchemeType;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import io.swagger.v3.oas.annotations.security.SecurityScheme;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.odpi.openmetadata.commonservices.ffdc.rest.*;
 import org.odpi.openmetadata.commonservices.ffdc.rest.GetRequestBody;
@@ -16,8 +20,14 @@ import org.springframework.web.bind.annotation.*;
  = */
 @RestController
 @RequestMapping("/servers/{serverName}/api/open-metadata/{urlMarker}")
-
-@Tag(name="API: Schema Maker OMVS", description="The Schema Maker OMVS provides APIs for supporting the creation and editing of schema types, schema attributes and user identities.",
+@SecurityScheme(
+        name = "BearerAuthorization",
+        type = SecuritySchemeType.HTTP,
+        bearerFormat = "JWT",
+        scheme = "bearer",
+        in = SecuritySchemeIn.HEADER
+)
+@Tag(name="API: Schema Maker OMVS", description="Schemas describe the structure of data. The Schema Maker OMVS provides APIs for the creation and editing of schemas and the elements within them.",
         externalDocs=@ExternalDocumentation(description="Further Information",
                 url="https://egeria-project.org/services/omvs/schema-maker/overview/"))
 
@@ -46,6 +56,7 @@ public class SchemaMakerResource
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     @PostMapping(path = "/schema-types")
+    @SecurityRequirement(name = "BearerAuthorization")
 
     @Operation(summary="createSchemaType",
             description="Create a schema type.",
@@ -75,6 +86,8 @@ public class SchemaMakerResource
      *  PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     @PostMapping(path = "/schema-types/from-template")
+    @SecurityRequirement(name = "BearerAuthorization")
+
     @Operation(summary="createSchemaTypeFromTemplate",
             description="Create a new metadata element to represent a schema type using an existing metadata element as a template.  The template defines additional classifications and relationships that should be added to the new element.",
             externalDocs=@ExternalDocumentation(description="Further Information",
@@ -104,6 +117,8 @@ public class SchemaMakerResource
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     @PostMapping(path = "/schema-types/{schemaTypeGUID}/update")
+    @SecurityRequirement(name = "BearerAuthorization")
+
     @Operation(summary="updateSchemaType",
             description="Update the properties of a schema type.",
             externalDocs=@ExternalDocumentation(description="Further Information",
@@ -135,6 +150,8 @@ public class SchemaMakerResource
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     @PostMapping(path = "/schema-types/{schemaTypeGUID}/delete")
+    @SecurityRequirement(name = "BearerAuthorization")
+
     @Operation(summary="deleteSchemaType",
             description="Delete a schema type.",
             externalDocs=@ExternalDocumentation(description="Further Information",
@@ -146,7 +163,7 @@ public class SchemaMakerResource
                                          @PathVariable
                                          String                    schemaTypeGUID,
                                          @RequestBody (required = false)
-                                         DeleteRequestBody requestBody)
+                                         DeleteElementRequestBody requestBody)
     {
         return restAPI.deleteSchemaType(serverName, urlMarker, schemaTypeGUID, requestBody);
     }
@@ -165,6 +182,8 @@ public class SchemaMakerResource
      *  PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     @PostMapping(path = "/schema-types/by-name")
+    @SecurityRequirement(name = "BearerAuthorization")
+
     @Operation(summary="getSchemaTypesByName",
             description="Returns the list of schema types with a particular name.",
             externalDocs=@ExternalDocumentation(description="Further Information",
@@ -193,6 +212,8 @@ public class SchemaMakerResource
      *  PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     @PostMapping(path = "/schema-types/by-search-string")
+    @SecurityRequirement(name = "BearerAuthorization")
+
     @Operation(summary="findSchemaTypes",
             description="Retrieve the list of schema type metadata elements that contain the search string.",
             externalDocs=@ExternalDocumentation(description="Further Information",
@@ -222,6 +243,8 @@ public class SchemaMakerResource
      *  PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     @PostMapping(path = "/schema-types/{schemaTypeGUID}/retrieve")
+    @SecurityRequirement(name = "BearerAuthorization")
+
     @Operation(summary="getSchemaTypeByGUID",
             description="Return the properties of a specific schema type.",
             externalDocs=@ExternalDocumentation(description="Further Information",
@@ -251,7 +274,8 @@ public class SchemaMakerResource
      *  PropertyServerException    there is a problem retrieving information from the property server(s).
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    @PostMapping(path = {"/schema-attributes","/solution-roles"})
+    @PostMapping(path = {"/schema-attributes"})
+    @SecurityRequirement(name = "BearerAuthorization")
 
     @Operation(summary="createSchemaAttribute",
             description="Create a schema attribute.",
@@ -280,7 +304,9 @@ public class SchemaMakerResource
      *  UserNotAuthorizedException the user is not authorized to issue this request
      *  PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    @PostMapping(path = {"/schema-attributes/from-template","/solution-roles/from-template"})
+    @PostMapping(path = {"/schema-attributes/from-template"})
+    @SecurityRequirement(name = "BearerAuthorization")
+
     @Operation(summary="createSchemaAttributeFromTemplate",
             description="Create a new metadata element to represent a schema attribute using an existing metadata element as a template.  The template defines additional classifications and relationships that should be added to the new element.",
             externalDocs=@ExternalDocumentation(description="Further Information",
@@ -309,7 +335,9 @@ public class SchemaMakerResource
      *  PropertyServerException    there is a problem retrieving information from the property server(s).
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    @PostMapping(path = {"/schema-attributes/{schemaAttributeGUID}/update","/solution-roles/{schemaAttributeGUID}/update"})
+    @PostMapping(path = {"/schema-attributes/{schemaAttributeGUID}/update"})
+    @SecurityRequirement(name = "BearerAuthorization")
+
     @Operation(summary="updateSchemaAttribute",
             description="Update the properties of a schema attribute.",
             externalDocs=@ExternalDocumentation(description="Further Information",
@@ -341,7 +369,9 @@ public class SchemaMakerResource
      *  PropertyServerException    there is a problem retrieving information from the property server(s).
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    @PostMapping(path = {"/schema-attributes/{schemaAttributeGUID}/delete","/solution-roles/{schemaAttributeGUID}/delete"})
+    @PostMapping(path = {"/schema-attributes/{schemaAttributeGUID}/delete"})
+    @SecurityRequirement(name = "BearerAuthorization")
+
     @Operation(summary="deleteSchemaAttribute",
             description="Delete a schema attribute.",
             externalDocs=@ExternalDocumentation(description="Further Information",
@@ -353,7 +383,7 @@ public class SchemaMakerResource
                                               @PathVariable
                                               String                    schemaAttributeGUID,
                                               @RequestBody (required = false)
-                                              DeleteRequestBody requestBody)
+                                              DeleteElementRequestBody requestBody)
     {
         return restAPI.deleteSchemaAttribute(serverName, urlMarker, schemaAttributeGUID, requestBody);
     }
@@ -371,7 +401,9 @@ public class SchemaMakerResource
      *  UserNotAuthorizedException the user is not authorized to issue this request
      *  PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    @PostMapping(path = {"/schema-attributes/by-name","/solution-roles/by-name"})
+    @PostMapping(path = {"/schema-attributes/by-name"})
+    @SecurityRequirement(name = "BearerAuthorization")
+
     @Operation(summary="getSchemaAttributesByName",
             description="Returns the list of schema attributes with a particular name.",
             externalDocs=@ExternalDocumentation(description="Further Information",
@@ -400,7 +432,9 @@ public class SchemaMakerResource
      *  UserNotAuthorizedException the user is not authorized to issue this request
      *  PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    @PostMapping(path = {"/schema-attributes/by-search-string", "/solution-roles/by-search-string"})
+    @PostMapping(path = {"/schema-attributes/by-search-string"})
+    @SecurityRequirement(name = "BearerAuthorization")
+
     @Operation(summary="findSchemaAttributes",
             description="Retrieve the list of schema attribute metadata elements that contain the search string.",
             externalDocs=@ExternalDocumentation(description="Further Information",
@@ -429,7 +463,9 @@ public class SchemaMakerResource
      *  UserNotAuthorizedException the user is not authorized to issue this request
      *  PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    @PostMapping(path = {"/schema-attributes/{schemaAttributeGUID}/retrieve","/solution-roles/{schemaAttributeGUID}/retrieve"})
+    @PostMapping(path = {"/schema-attributes/{schemaAttributeGUID}/retrieve"})
+    @SecurityRequirement(name = "BearerAuthorization")
+
     @Operation(summary="getSchemaAttributeByGUID",
             description="Return the properties of a specific schema attribute.",
             externalDocs=@ExternalDocumentation(description="Further Information",

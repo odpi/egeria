@@ -10,8 +10,8 @@ import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLoggingComponent;
 import org.odpi.openmetadata.frameworks.auditlog.ComponentDescription;
 import org.odpi.openmetadata.frameworks.connectors.ConnectorBase;
-import org.odpi.openmetadata.frameworks.connectors.ReadableTabularDataSource;
-import org.odpi.openmetadata.frameworks.connectors.TabularColumnDescription;
+import org.odpi.openmetadata.frameworks.connectors.tabulardatasets.ReadableTabularDataSource;
+import org.odpi.openmetadata.frameworks.connectors.tabulardatasets.TabularColumnDescription;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Endpoint;
 import org.odpi.openmetadata.frameworks.openmetadata.client.OpenMetadataClient;
@@ -40,7 +40,6 @@ public abstract class ReferenceDataSetConnectorBase extends ConnectorBase implem
     protected AuditLog auditLog         = null;
     protected final String   connectorName;
     protected ConnectorContextBase connectorContext  = null;
-    protected String               validValueSetGUID = null;
 
     /*
      * This definition can be supplied by the caller.  The subclasses can also provide a default list.
@@ -150,16 +149,6 @@ public abstract class ReferenceDataSetConnectorBase extends ConnectorBase implem
                                                 methodName);
         }
 
-        validValueSetGUID = super.getStringConfigurationProperty(ReferenceDataConfigurationProperty.VALID_VALUE_SET_GUID.getName(), connectionBean.getConfigurationProperties());
-
-        if (validValueSetGUID == null)
-        {
-            super.throwMissingConfigurationProperty(connectorName,
-                                                    this.getClass().getName(),
-                                                    ReferenceDataConfigurationProperty.VALID_VALUE_SET_GUID.getName(),
-                                                    methodName);
-        }
-
         int maxPageSize = super.getIntConfigurationProperty(ReferenceDataConfigurationProperty.MAX_PAGE_SIZE.getName(), connectionBean.getConfigurationProperties());
 
         /*
@@ -235,15 +224,19 @@ public abstract class ReferenceDataSetConnectorBase extends ConnectorBase implem
      * Convert an open metadata property enum into a tabular column description.
      *
      * @param openMetadataProperty property enum
+     * @param isNullable is the field nullable
+     * @param isIdentifier is the filed all or part of the unique identifier for a row/record
      * @return tabular column description
      */
     protected TabularColumnDescription getTabularColumnDescription(OpenMetadataProperty openMetadataProperty,
-                                                                   boolean              isNullable)
+                                                                   boolean              isNullable,
+                                                                   boolean              isIdentifier)
     {
         return new TabularColumnDescription(openMetadataProperty.name,
                                             openMetadataProperty.dataType,
                                             openMetadataProperty.description,
-                                            isNullable);
+                                            isNullable,
+                                            isIdentifier);
     }
 
     /**
@@ -263,6 +256,7 @@ public abstract class ReferenceDataSetConnectorBase extends ConnectorBase implem
     /**
      * Locate the named column. A negative number means the column is not present.
      *
+     * @param columnName name of the column to return
      * @return column
      * @throws ConnectorCheckedException problem extracting the column descriptions
      */

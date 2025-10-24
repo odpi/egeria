@@ -6,7 +6,6 @@ import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataWikiPages;
 
-import static org.odpi.openmetadata.frameworks.openmetadata.mapper.OpenMetadataValidValues.constructValidValueNamespace;
 import static org.odpi.openmetadata.frameworks.openmetadata.mapper.OpenMetadataValidValues.constructValidValueQualifiedName;
 
 /**
@@ -67,14 +66,68 @@ public enum DeployedImplementationType implements DeployedImplementationTypeDefi
 
 
     /**
-     * A collection of data, either at rest or in motion, organized into a tabular (columnar) format.
+     * A logical collection of data, either at rest or in motion, organized into a tabular (columnar) format.
      */
     TABULAR_DATA_SET("Tabular Data Set",
              DeployedImplementationType.DATA_SET,
-             OpenMetadataType.DATA_SET.typeName,
+             OpenMetadataType.TABULAR_DATA_SET.typeName,
              null,
              "A logical collection of data, either at rest or in motion, organized into a tabular (columnar) format.",
-             "https://egeria-project.org/concepts/asset/"),
+             "https://egeria-project.org/concepts/tabular-data-set/"),
+
+    /**
+     * A collection of tabular data sets.
+     */
+    TABULAR_DATA_SET_COLLECTION("Tabular Data Set Collection",
+                     DeployedImplementationType.DATA_SET,
+                     OpenMetadataType.TABULAR_DATA_SET.typeName,
+                     null,
+                     "A collection of tabular data sets.",
+                     "https://egeria-project.org/concepts/tabular-data-set/"),
+
+
+    /**
+     * A data set containing metadata.
+     */
+    METADATA_COLLECTION("Metadata Collection",
+                        DeployedImplementationType.DATA_SET,
+                        OpenMetadataType.METADATA_COLLECTION.typeName,
+                        null,
+                        OpenMetadataType.METADATA_COLLECTION.description,
+                        OpenMetadataWikiPages.MODEL_0225_METADATA_REPOSITORIES),
+
+    /**
+     * A data store containing cohort membership registration details.
+     */
+    COHORT_REGISTRY_STORE("Cohort Registry Store",
+                        null,
+                        OpenMetadataType.COHORT_REGISTRY_STORE.typeName,
+                        null,
+                        OpenMetadataType.COHORT_REGISTRY_STORE.description,
+                        OpenMetadataWikiPages.MODEL_0225_METADATA_REPOSITORIES),
+
+
+    /**
+     * A data store containing metadata.
+     */
+    METADATA_REPOSITORY("Metadata Repository",
+                        null,
+                        OpenMetadataType.METADATA_REPOSITORY.typeName,
+                        null,
+                        OpenMetadataType.METADATA_REPOSITORY.description,
+                        OpenMetadataWikiPages.MODEL_0225_METADATA_REPOSITORIES),
+
+
+    /**
+     * A metadata repository supporting open metadata types and interfaces.
+     */
+    OPEN_METADATA_REPOSITORY("Open Metadata Repository",
+                        METADATA_REPOSITORY,
+                        OpenMetadataType.METADATA_REPOSITORY.typeName,
+                        null,
+                        "A metadata repository supporting open metadata types and interfaces.",
+                        OpenMetadataWikiPages.MODEL_0225_METADATA_REPOSITORIES),
+
 
     /**
      * A file containing externally accessible data - other fields provide information on the internal format.
@@ -325,9 +378,9 @@ public enum DeployedImplementationType implements DeployedImplementationTypeDefi
      */
     KEYSTORE_FILE("Keystore File",
                  DeployedImplementationType.DATA_FILE,
-                 OpenMetadataType.KEYSTORE_FILE.typeName,
+                 OpenMetadataType.KEY_STORE_FILE.typeName,
                  null,
-                  OpenMetadataType.KEYSTORE_FILE.description,
+                  OpenMetadataType.KEY_STORE_FILE.description,
                  OpenMetadataWikiPages.MODEL_0226_ARCHIVE_FILES),
 
 
@@ -363,6 +416,26 @@ public enum DeployedImplementationType implements DeployedImplementationTypeDefi
                 OpenMetadataWikiPages.MODEL_0220_FILE_AND_FOLDERS),
 
     /**
+     * A collection of logically related CSV files each representing a tabular data set.
+     */
+    CSV_TABULAR_DATA_SET_COLLECTION("CSV Tabular Data Set Collection",
+                                    DeployedImplementationType.TABULAR_DATA_SET_COLLECTION,
+                                    OpenMetadataType.TABULAR_DATA_SET_COLLECTION.typeName,
+                                    null,
+                                    "A collection of logically related CSV files each representing a tabular data set.",
+                                    OpenMetadataWikiPages.MODEL_0211_TABULAR_DATA_SETS),
+
+    /**
+     * A collection of logically related CSV files representing a single data source.
+     */
+    CSV_TABULAR_DATA_SET("CSV Tabular Data Set",
+                        DeployedImplementationType.TABULAR_DATA_SET,
+                        OpenMetadataType.TABULAR_DATA_SET.typeName,
+                        null,
+                        "A CSV file accessed as a tabular data set.",
+                        OpenMetadataWikiPages.MODEL_0211_TABULAR_DATA_SETS),
+
+    /**
      * A database hosted on a relational database server capable of being called through a JDBC Driver.
      */
     JDBC_RELATIONAL_DATABASE("JDBC Relational Database",
@@ -382,16 +455,6 @@ public enum DeployedImplementationType implements DeployedImplementationTypeDefi
                              null,
                              "A database schema hosted on a relational database server capable of being called through a JDBC Driver.",
                              "https://en.wikipedia.org/wiki/Java_Database_Connectivity"),
-
-    /**
-     * A database table hosted on a relational database server capable of being called through a JDBC Driver.
-     */
-    JDBC_RELATIONAL_DATABASE_TABLE("JDBC Relational Database Table",
-                                    DeployedImplementationType.DATA_ASSET,
-                                    OpenMetadataType.TABLE_DATA_SET.typeName,
-                                    null,
-                                    "A database table hosted on a relational database server capable of being called through a JDBC Driver.",
-                                    "https://en.wikipedia.org/wiki/Java_Database_Connectivity"),
 
 
     /**
@@ -417,13 +480,68 @@ public enum DeployedImplementationType implements DeployedImplementationTypeDefi
 
 
     /**
+     * A handheld portable device with network, touchscreen and battery power.
+     */
+    SMARTPHONE("Smartphone",
+                    DeployedImplementationType.BARE_METAL_COMPUTER,
+                    OpenMetadataType.BARE_METAL_COMPUTER.typeName,
+                    null,
+                    "A handheld portable device with network, touchscreen and battery power.",
+                    OpenMetadataWikiPages.MODEL_0035_HOSTS),
+
+
+    /**
+     * A smartphone from Apple Inc that runs the iOS operating system.
+     */
+    I_PHONE("Apple iPhone",
+                DeployedImplementationType.SMARTPHONE,
+                OpenMetadataType.BARE_METAL_COMPUTER.typeName,
+                null,
+                "A smartphone from Apple Inc that runs the iOS operating system.",
+                OpenMetadataWikiPages.MODEL_0035_HOSTS),
+
+
+    /**
+     * A smartphone that runs the Android operating system.
+     */
+    ANDROID_PHONE("Android Phone",
+            DeployedImplementationType.SMARTPHONE,
+            OpenMetadataType.BARE_METAL_COMPUTER.typeName,
+            null,
+            "A smartphone that runs the Android operating system.",
+            OpenMetadataWikiPages.MODEL_0035_HOSTS),
+
+
+    /**
+     * A two-handed portable device with network, touchscreen and battery power.
+     */
+    TABLET("Smart Phone",
+                DeployedImplementationType.BARE_METAL_COMPUTER,
+                OpenMetadataType.BARE_METAL_COMPUTER.typeName,
+                null,
+                "A two-handed portable device with network, touchscreen and battery power.",
+                OpenMetadataWikiPages.MODEL_0035_HOSTS),
+
+
+    /**
+     * A tablet from Apple Inc that runs the iOS operating system.
+     */
+    I_PAD("Apple iPad",
+            DeployedImplementationType.TABLET,
+            OpenMetadataType.BARE_METAL_COMPUTER.typeName,
+            null,
+            "A tablet from Apple Inc that runs the iOS operating system.",
+            OpenMetadataWikiPages.MODEL_0035_HOSTS),
+
+
+    /**
      * A professional laptop supplied by Apple that runs the macOS operating system.
      */
     MACBOOK_PRO("Apple MacBook Pro",
                 DeployedImplementationType.LAPTOP_COMPUTER,
                 OpenMetadataType.BARE_METAL_COMPUTER.typeName,
                 null,
-                "A professional laptop supplied by Apple that runs the macOS operating system.",
+                "A professional laptop supplied by Apple Inc that runs the macOS operating system.",
                 OpenMetadataWikiPages.MODEL_0035_HOSTS),
 
 
@@ -439,6 +557,36 @@ public enum DeployedImplementationType implements DeployedImplementationTypeDefi
 
 
     /**
+     * A virtual container using the docker platform.
+     */
+    DOCKER_CONTAINER("Docker Container",
+                     TECHNOLOGY,
+                     OpenMetadataType.VIRTUAL_CONTAINER.typeName,
+                     null,
+                     "A virtual container using the docker platform.",
+                     OpenMetadataWikiPages.MODEL_0035_HOSTS),
+
+    /**
+     * A cluster of nodes for big data workloads.
+     */
+    HADOOP_CLUSTER("Hadoop Cluster",
+                   TECHNOLOGY,
+                   OpenMetadataType.HOST_CLUSTER.typeName,
+                   null,
+                   "A cluster of nodes for big data workloads.",
+                   OpenMetadataWikiPages.MODEL_0035_HOSTS),
+
+    /**
+     * A host cluster managing containerized applications.
+     */
+    KUBERNETES_CLUSTER("Kubernetes Cluster",
+                       TECHNOLOGY,
+                       OpenMetadataType.HOST_CLUSTER.typeName,
+                       null,
+                       "A host cluster managing containerized applications.",
+                       OpenMetadataWikiPages.MODEL_0035_HOSTS),
+
+    /**
      * A callable software server.
      */
     SOFTWARE_SERVER("Software Server",
@@ -447,6 +595,37 @@ public enum DeployedImplementationType implements DeployedImplementationTypeDefi
                     null,
                     "A callable software server.",
                     OpenMetadataWikiPages.MODEL_0040_SOFTWARE_SERVERS),
+
+    /**
+     * A software server that supports databases.
+     */
+    DATABASE_SERVER("Database Server",
+                    DeployedImplementationType.SOFTWARE_SERVER,
+                    OpenMetadataType.SOFTWARE_SERVER.typeName,
+                    null,
+                    "A software server that supports databases.",
+                    OpenMetadataWikiPages.MODEL_0040_SOFTWARE_SERVERS),
+
+    /**
+     * A software server that supports the exchange of data.
+     */
+    INTEGRATION_SERVER("Integration Server",
+                    DeployedImplementationType.SOFTWARE_SERVER,
+                    OpenMetadataType.SOFTWARE_SERVER.typeName,
+                    null,
+                    "A software server that supports the exchange of data.",
+                    OpenMetadataWikiPages.MODEL_0040_SOFTWARE_SERVERS),
+
+
+    /**
+     * A software server that supports the storage of metadata.
+     */
+    METADATA_SERVER("Metadata Server",
+                       DeployedImplementationType.SOFTWARE_SERVER,
+                       OpenMetadataType.SOFTWARE_SERVER.typeName,
+                       null,
+                       "A software server that supports the storage of metadata.",
+                       OpenMetadataWikiPages.MODEL_0040_SOFTWARE_SERVERS),
 
 
     /**
@@ -463,9 +642,9 @@ public enum DeployedImplementationType implements DeployedImplementationTypeDefi
      * A data catalog for data observability.
      */
     MARQUEZ_SERVER("Marquez Server",
-                        DeployedImplementationType.SOFTWARE_SERVER,
+                        DeployedImplementationType.METADATA_SERVER,
                         OpenMetadataType.SOFTWARE_SERVER.typeName,
-                        OpenMetadataType.METADATA_SERVER_CLASSIFICATION.typeName,
+                        null,
                         "A data catalog for data observability.",
                         "https://marquezproject.ai/"),
 
@@ -474,8 +653,8 @@ public enum DeployedImplementationType implements DeployedImplementationTypeDefi
      */
     FILE_SYSTEM("File System",
                 DeployedImplementationType.SOFTWARE_CAPABILITY,
-                OpenMetadataType.DATA_MANAGER.typeName,
-                OpenMetadataType.FILE_SYSTEM_CLASSIFICATION.typeName,
+                OpenMetadataType.FILE_SYSTEM.typeName,
+                null,
                 "A system that manages hierarchically organized files on persistent storage.",
                 OpenMetadataWikiPages.MODEL_0056_RESOURCE_MANAGERS),
 
@@ -484,8 +663,8 @@ public enum DeployedImplementationType implements DeployedImplementationTypeDefi
      */
     UNIX_FILE_SYSTEM("UNIX File System",
                      DeployedImplementationType.SOFTWARE_CAPABILITY,
-                     OpenMetadataType.DATA_MANAGER.typeName,
-                     OpenMetadataType.FILE_SYSTEM_CLASSIFICATION.typeName,
+                     OpenMetadataType.FILE_SYSTEM.typeName,
+                     null,
                      "A Unix capability that manages hierarchically organized files on persistent storage.",
                      OpenMetadataWikiPages.MODEL_0056_RESOURCE_MANAGERS),
 
@@ -515,7 +694,7 @@ public enum DeployedImplementationType implements DeployedImplementationTypeDefi
     ASSET_CATALOG("Asset Metadata Catalog",
                   DeployedImplementationType.SOFTWARE_CAPABILITY,
                   OpenMetadataType.INVENTORY_CATALOG.typeName,
-                  OpenMetadataType.ASSET_MANAGER.typeName,
+                  null,
                   "A catalog of metadata that describes assets such as deployed systems, data sources and processes.",
                   OpenMetadataWikiPages.MODEL_0050_APPS_AND_PROCESSES),
 
@@ -798,7 +977,7 @@ public enum DeployedImplementationType implements DeployedImplementationTypeDefi
     /**
      * Cohort Registry Store - Stores information about the repositories registered in the open metadata repository cohort.
      */
-    COHORT_REGISTRY_STORE("Cohort Registry Store",
+    COHORT_REGISTRY_STORE_CONNECTOR("Cohort Registry Store",
                           DeployedImplementationType.OCF_CONNECTOR,
                           OpenMetadataType.DEPLOYED_CONNECTOR.typeName,
                           null,
@@ -808,7 +987,7 @@ public enum DeployedImplementationType implements DeployedImplementationTypeDefi
     /**
      * Audit Log Destination - Reads and writes records to the Open Metadata Repository Services (OMRS) audit log.
      */
-    AUDIT_LOG_DESTINATION("Audit Log Destination",
+    AUDIT_LOG_DESTINATION_CONNECTOR("Audit Log Destination",
                           DeployedImplementationType.OCF_CONNECTOR,
                           OpenMetadataType.DEPLOYED_CONNECTOR.typeName,
                           null,
@@ -829,9 +1008,29 @@ public enum DeployedImplementationType implements DeployedImplementationTypeDefi
     /**
      * An event topic supporting high speed, reliable event exchange.
      */
-    APACHE_KAFKA_TOPIC("Apache Kafka Topic",
+    DATA_FEED("Data Feed",
                        DeployedImplementationType.DATA_ASSET,
-                       OpenMetadataType.KAFKA_TOPIC.typeName,
+                       OpenMetadataType.DATA_FEED.typeName,
+                       null,
+                       "An event based data source",
+                       "https://egeria-project.org/types/2/0210-Data-Stores/"),
+
+    /**
+     * An event topic supporting high speed, reliable event exchange.
+     */
+    TOPIC("Data Feed",
+              DeployedImplementationType.DATA_FEED,
+              OpenMetadataType.TOPIC.typeName,
+              null,
+              "An organized event based data source that supports subscription to a named data feed.",
+              "https://egeria-project.org/types/2/0210-Data-Stores/"),
+
+    /**
+     * An event topic supporting high speed, reliable event exchange.
+     */
+    APACHE_KAFKA_TOPIC("Apache Kafka Topic",
+                       DeployedImplementationType.DATA_FEED,
+                       OpenMetadataType.TOPIC.typeName,
                        null,
                        "An event topic supporting high speed, reliable event exchange.",
                        "https://kafka.apache.org/"),
@@ -955,20 +1154,6 @@ public enum DeployedImplementationType implements DeployedImplementationTypeDefi
                                                 OpenMetadataProperty.DEPLOYED_IMPLEMENTATION_TYPE.name,
                                                 null,
                                                 deployedImplementationType);
-    }
-
-
-    /**
-     * Return the category for this deployed implementation type.
-     *
-     * @return string
-     */
-    @Override
-    public String getNamespace()
-    {
-        return constructValidValueNamespace(associatedTypeName,
-                                            OpenMetadataProperty.DEPLOYED_IMPLEMENTATION_TYPE.name,
-                                            null);
     }
 
 

@@ -8,7 +8,6 @@ import org.odpi.openmetadata.samples.archiveutilities.combo.CocoComboArchiveWrit
 import org.odpi.openmetadata.samples.archiveutilities.governanceengines.CocoGovernanceEnginesArchiveWriter;
 import org.odpi.openmetadata.samples.archiveutilities.governanceprogram.CocoGovernanceProgramArchiveWriter;
 import org.odpi.openmetadata.samples.archiveutilities.organization.CocoOrganizationArchiveWriter;
-import org.odpi.openmetadata.samples.archiveutilities.productcatalog.CocoProductCatalogArchiveWriter;
 import org.odpi.openmetadata.samples.archiveutilities.sustainability.CocoSustainabilityArchiveWriter;
 import org.odpi.openmetadata.samples.archiveutilities.types.CocoTypesArchiveWriter;
 
@@ -54,8 +53,8 @@ public class CocoArchivesWriter
             CocoGovernanceEnginesArchiveWriter governanceEnginesArchiveWriter = new CocoGovernanceEnginesArchiveWriter();
             governanceEnginesArchiveWriter.writeOpenMetadataArchive(folderName);
 
-            CocoProductCatalogArchiveWriter cocoProductCatalogArchiveWriter = new CocoProductCatalogArchiveWriter();
-            cocoProductCatalogArchiveWriter.writeOpenMetadataArchive(folderName);
+            // todo CocoProductCatalogArchiveWriter cocoProductCatalogArchiveWriter = new CocoProductCatalogArchiveWriter();
+            // todo cocoProductCatalogArchiveWriter.writeOpenMetadataArchive(folderName);
         }
         catch (Exception error)
         {

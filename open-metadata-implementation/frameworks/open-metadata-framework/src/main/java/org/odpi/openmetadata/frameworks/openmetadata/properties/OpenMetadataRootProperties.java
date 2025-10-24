@@ -7,6 +7,7 @@ import org.odpi.openmetadata.frameworks.openmetadata.properties.feedback.Informa
 import org.odpi.openmetadata.frameworks.openmetadata.properties.feedback.LikeProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.feedback.RatingProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.feedback.SearchKeywordProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 
 import java.util.Map;
 import java.util.Objects;
@@ -34,7 +35,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
         })
 public class OpenMetadataRootProperties extends EntityProperties
 {
-    private String               typeName             = null;
+    private String               typeName             = OpenMetadataType.OPEN_METADATA_ROOT.typeName;
     private Map<String, Object>  extendedProperties   = null;
 
     /**

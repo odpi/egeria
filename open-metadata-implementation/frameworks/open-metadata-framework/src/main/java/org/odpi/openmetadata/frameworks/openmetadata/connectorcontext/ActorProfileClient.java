@@ -13,7 +13,6 @@ import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.OpenMetada
 import org.odpi.openmetadata.frameworks.openmetadata.properties.ClassificationProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.RelationshipProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.actors.*;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.locations.KnownLocationProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.search.*;
 
 import java.util.List;
@@ -56,6 +55,21 @@ public class ActorProfileClient extends ConnectorContextClientBase
         super(parentContext, localServerName, localServiceName, connectorUserId, connectorGUID, externalSourceGUID, externalSourceName, auditLog, maxPageSize);
 
         this.actorProfileHandler = new ActorProfileHandler(localServerName, auditLog, localServiceName, openMetadataClient);
+    }
+
+
+    /**
+     * Copy/clone constructor.
+     *
+     * @param template client to copy
+     * @param specificTypeName type name override
+     */
+    public ActorProfileClient(ActorProfileClient template,
+                              String             specificTypeName)
+    {
+        super(template);
+
+        this.actorProfileHandler = new ActorProfileHandler(template.actorProfileHandler, specificTypeName);
     }
 
 

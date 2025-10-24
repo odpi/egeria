@@ -47,6 +47,6 @@ public class TeamMemberProperties extends PersonRoleProperties
     @Override
     public String toString()
     {
-        return "CommunityMemberProperties{} " + super.toString();
+        return "TeamMemberProperties{} " + super.toString();
     }
 }

@@ -6,7 +6,6 @@ import org.odpi.openmetadata.frameworks.openmetadata.api.*;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
-import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.ElementHeader;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.ElementStatus;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.*;
 import org.odpi.openmetadata.frameworks.openmetadata.search.*;
@@ -24,7 +23,6 @@ public abstract class OpenMetadataClient implements OpenMetadataTypesInterface,
                                                     MetadataElementInterface,
                                                     StewardshipRequestInterface,
                                                     MultiLanguageInterface,
-                                                    ValidMetadataValuesInterface,
                                                     ExternalIdentifiersInterface
 {
     protected final String serverName;               /* Initialized in constructor */
@@ -1018,7 +1016,7 @@ public abstract class OpenMetadataClient implements OpenMetadataTypesInterface,
      * @param startingAtEnd          indicates which end to retrieve from (0 is "either end"; 1 is end1; 2 is end 2)
      * @param relationshipTypeName   type name of relationships to follow (or null for all)
      * @param getOptions multiple options to control the query
-     * @return list of related elements
+     * @return related element
      *
      * @throws InvalidParameterException  the unique identifier is null or not known; the relationship type is invalid
      * @throws UserNotAuthorizedException the userId is not permitted to perform this operation
@@ -1592,7 +1590,7 @@ public abstract class OpenMetadataClient implements OpenMetadataTypesInterface,
 
 
     /**
-     * Delete all relationships of a particular type between two metadata elements.
+     * Update all relationships of a particular type between two metadata elements.
      *
      * @param userId caller's userId
      * @param relationshipTypeName name of the type of relationship to create.  This will determine the types of metadata elements that can be
@@ -1726,77 +1724,6 @@ public abstract class OpenMetadataClient implements OpenMetadataTypesInterface,
 
 
     /**
-     * Update the description of a specific external identifier.
-     *
-     * @param userId calling user
-     * @param externalScopeGUID unique identifier of software server capability representing the caller
-     * @param externalScopeName unique name of software server capability representing the caller
-     * @param externalScopeTypeName type name of the software capability describing the manager for the external identifier
-     * @param openMetadataElementGUID unique identifier (GUID) of the element in the open metadata ecosystem
-     * @param openMetadataElementTypeName type name for the open metadata element
-     * @param externalIdentifierProperties optional properties used to define an external identifier
-     * @param effectiveFrom the date when this element is active - null for active now
-     * @param effectiveTo the date when this element becomes inactive - null for active until deleted
-     * @param forLineage return elements marked with the Memento classification?
-     * @param forDuplicateProcessing do not merge elements marked as duplicates?
-     * @param effectiveTime what is the effective time for related queries needed to do the update
-     *
-     * @throws InvalidParameterException  one of the parameters is invalid
-     * @throws UserNotAuthorizedException user not authorized to issue this request
-     * @throws PropertyServerException    problem accessing the property server
-     */
-    @Override
-    public abstract void updateExternalIdentifier(String                       userId,
-                                                  String                       externalScopeGUID,
-                                                  String                       externalScopeName,
-                                                  String                       externalScopeTypeName,
-                                                  String                       openMetadataElementGUID,
-                                                  String                       openMetadataElementTypeName,
-                                                  ExternalIdentifierProperties externalIdentifierProperties,
-                                                  Date                         effectiveFrom,
-                                                  Date                         effectiveTo,
-                                                  boolean                      forLineage,
-                                                  boolean                      forDuplicateProcessing,
-                                                  Date                         effectiveTime) throws InvalidParameterException,
-                                                                                                     UserNotAuthorizedException,
-                                                                                                     PropertyServerException;
-
-
-
-    /**
-     * Remove an external identifier from an existing open metadata element.  The open metadata element is not
-     * affected.
-     *
-     * @param userId calling user
-     * @param externalScopeGUID unique identifier of software server capability representing the caller
-     * @param externalScopeName unique name of software server capability representing the caller
-     * @param openMetadataElementGUID unique identifier (GUID) of the element in the open metadata ecosystem
-     * @param openMetadataElementTypeName type name for the open metadata element
-     * @param externalIdentifier unique identifier of this element in the third party asset manager
-     * @param forLineage return elements marked with the Memento classification?
-     * @param forDuplicateProcessing do not merge elements marked as duplicates?
-     * @param effectiveTime what is the effective time for related queries needed to do the update
-     *
-     * @throws InvalidParameterException  one of the parameters is invalid
-     * @throws UserNotAuthorizedException user not authorized to issue this request
-     * @throws PropertyServerException    problem accessing the property server
-     */
-    @Override
-    public abstract void removeExternalIdentifier(String  userId,
-                                                  String  externalScopeGUID,
-                                                  String  externalScopeName,
-                                                  String  openMetadataElementGUID,
-                                                  String  openMetadataElementTypeName,
-                                                  String  externalIdentifier,
-                                                  boolean forLineage,
-                                                  boolean forDuplicateProcessing,
-                                                  Date    effectiveTime) throws InvalidParameterException,
-                                                                                UserNotAuthorizedException,
-                                                                                PropertyServerException;
-
-
-
-    /**
      * Confirm that the values of a particular metadata element have been synchronized.  This is important
      * from an audit point of view, and to allow bidirectional updates of metadata using optimistic locking.
      *
@@ -1820,73 +1747,6 @@ public abstract class OpenMetadataClient implements OpenMetadataTypesInterface,
                                                 String externalIdentifier) throws InvalidParameterException,
                                                                                   UserNotAuthorizedException,
                                                                                   PropertyServerException;
-
-
-
-    /**
-     * Return the list of headers for open metadata elements that are associated with a particular
-     * external identifier.
-     *
-     * @param userId calling user
-     * @param externalScopeGUID unique identifier of software server capability representing the caller
-     * @param externalScopeName unique name of software server capability representing the caller
-     * @param externalIdentifier unique identifier of this element in the external asset manager
-     * @param startFrom paging start point
-     * @param pageSize maximum results that can be returned
-     * @param forLineage return elements marked with the Memento classification?
-     * @param forDuplicateProcessing do not merge elements marked as duplicates?
-     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
-     *
-     * @return list of element headers
-     *
-     * @throws InvalidParameterException  one of the parameters is invalid
-     * @throws UserNotAuthorizedException user not authorized to issue this request
-     * @throws PropertyServerException    problem accessing the property server
-     */
-    @Override
-    public abstract List<ElementHeader> getElementsForExternalIdentifier(String  userId,
-                                                                         String  externalScopeGUID,
-                                                                         String  externalScopeName,
-                                                                         String  externalIdentifier,
-                                                                         int     startFrom,
-                                                                         int     pageSize,
-                                                                         boolean forLineage,
-                                                                         boolean forDuplicateProcessing,
-                                                                         Date    effectiveTime) throws InvalidParameterException,
-                                                                                                       UserNotAuthorizedException,
-                                                                                                       PropertyServerException;
-
-
-    /**
-     * Check that the supplied external identifier matches the element GUID.
-     *
-     * @param userId calling user
-     * @param externalScopeGUID unique identifier of software server capability representing the caller
-     * @param externalScopeName unique name of software server capability representing the caller
-     * @param openMetadataElementGUID element guid used for the lookup
-     * @param openMetadataElementTypeName type name for the open metadata element
-     * @param elementExternalIdentifier external identifier value
-     * @param forLineage return elements marked with the Memento classification?
-     * @param forDuplicateProcessing do not merge elements marked as duplicates?
-     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
-     *
-     * @return boolean
-     * @throws InvalidParameterException one of the parameters is invalid.
-     * @throws UserNotAuthorizedException the user is not authorized to make this request.
-     * @throws PropertyServerException the repository is not available or not working properly.
-     */
-    @Override
-    public abstract boolean validateExternalIdentifier(String  userId,
-                                                       String  externalScopeGUID,
-                                                       String  externalScopeName,
-                                                       String  openMetadataElementGUID,
-                                                       String  openMetadataElementTypeName,
-                                                       String  elementExternalIdentifier,
-                                                       boolean forLineage,
-                                                       boolean forDuplicateProcessing,
-                                                       Date    effectiveTime) throws InvalidParameterException,
-                                                                                     UserNotAuthorizedException,
-                                                                                     PropertyServerException;
 
 
 
@@ -1950,6 +1810,24 @@ public abstract class OpenMetadataClient implements OpenMetadataTypesInterface,
                                                                          Date    effectiveTime) throws InvalidParameterException,
                                                                                                        UserNotAuthorizedException,
                                                                                                        PropertyServerException;
+
+
+
+    /**
+     * Retrieve the reference data for this element.
+     *
+     * @param userId calling user
+     * @param elementGUID element to query
+     * @return map of reference data
+     * @throws InvalidParameterException bad parameter
+     * @throws PropertyServerException repository error
+     * @throws UserNotAuthorizedException authorization issue
+     */
+    public abstract Map<String, List<Map<String, String>>> getSpecification(String userId,
+                                                                            String elementGUID) throws InvalidParameterException,
+                                                                                                       PropertyServerException,
+                                                                                                       UserNotAuthorizedException;
+
 
     /**
      * Standard toString method.

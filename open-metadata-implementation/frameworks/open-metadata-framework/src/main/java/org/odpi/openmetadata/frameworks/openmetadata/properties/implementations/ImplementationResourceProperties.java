@@ -6,10 +6,8 @@ package org.odpi.openmetadata.frameworks.openmetadata.properties.implementations
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.RelationshipBeanProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.RoledRelationshipProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
-
-import java.util.Objects;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
@@ -20,10 +18,8 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class ImplementationResourceProperties extends RelationshipBeanProperties
+public class ImplementationResourceProperties extends RoledRelationshipProperties
 {
-    String description = null;
-
     /**
      * Default constructor
      */
@@ -39,36 +35,9 @@ public class ImplementationResourceProperties extends RelationshipBeanProperties
      *
      * @param template object to copy
      */
-    public ImplementationResourceProperties(ImplementationResourceProperties template)
+    public ImplementationResourceProperties(RoledRelationshipProperties template)
     {
         super(template);
-
-        if (template != null)
-        {
-            this.description = template.getDescription();
-        }
-    }
-
-
-    /**
-     * Return the implementation notes.
-     *
-     * @return description
-     */
-    public String getDescription()
-    {
-        return description;
-    }
-
-
-    /**
-     * Set up the implementation notes.
-     *
-     * @param description description
-     */
-    public void setDescription(String description)
-    {
-        this.description = description;
     }
 
 
@@ -81,45 +50,6 @@ public class ImplementationResourceProperties extends RelationshipBeanProperties
     public String toString()
     {
         return "ImplementationResourceProperties{" +
-                "description='" + description + '\'' +
                 "} " + super.toString();
-    }
-
-
-    /**
-     * Compare the values of the supplied object with those stored in the current object.
-     *
-     * @param objectToCompare supplied object
-     * @return boolean result of comparison
-     */
-    @Override
-    public boolean equals(Object objectToCompare)
-    {
-        if (this == objectToCompare)
-        {
-            return true;
-        }
-        if (objectToCompare == null || getClass() != objectToCompare.getClass())
-        {
-            return false;
-        }
-        if (! super.equals(objectToCompare))
-        {
-            return false;
-        }
-        ImplementationResourceProperties that = (ImplementationResourceProperties) objectToCompare;
-        return Objects.equals(description, that.description);
-    }
-
-
-    /**
-     * Return hash code based on properties.
-     *
-     * @return int
-     */
-    @Override
-    public int hashCode()
-    {
-        return Objects.hash(super.hashCode(), description);
     }
 }

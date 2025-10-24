@@ -25,8 +25,8 @@ class InMemoryOMRSMetadataStore
     private final OMRSRepositoryHelper repositoryHelper;
     private final String               localMetadataCollectionId;
 
-    private final Map<String, StoredEntity>       entityStore       = new HashMap<>();
-    private final Map<String, StoredRelationship> relationshipStore = new HashMap<>();
+    private volatile Map<String, StoredEntity>       entityStore       = new HashMap<>();
+    private volatile Map<String, StoredRelationship> relationshipStore = new HashMap<>();
 
     private static final Logger log = LoggerFactory.getLogger(InMemoryOMRSMetadataStore.class);
 

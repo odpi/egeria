@@ -22,9 +22,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class ProcessHierarchyProperties extends RelationshipBeanProperties
 {
-    private ProcessContainmentType processContainmentType = null;
-
-
+    private ProcessContainmentType containmentType = null;
 
 
     /**
@@ -48,7 +46,7 @@ public class ProcessHierarchyProperties extends RelationshipBeanProperties
 
         if (template != null)
         {
-            processContainmentType = template.getProcessContainmentType();
+            containmentType = template.getContainmentType();
         }
     }
 
@@ -58,20 +56,20 @@ public class ProcessHierarchyProperties extends RelationshipBeanProperties
      *
      * @return process containment type enum
      */
-    public ProcessContainmentType getProcessContainmentType()
+    public ProcessContainmentType getContainmentType()
     {
-        return processContainmentType;
+        return containmentType;
     }
 
 
     /**
      * Set up the relationship between the parent and child process.
      *
-     * @param processContainmentType process containment type enum
+     * @param containmentType process containment type enum
      */
-    public void setProcessContainmentType(ProcessContainmentType processContainmentType)
+    public void setContainmentType(ProcessContainmentType containmentType)
     {
-        this.processContainmentType = processContainmentType;
+        this.containmentType = containmentType;
     }
 
     /**
@@ -83,11 +81,8 @@ public class ProcessHierarchyProperties extends RelationshipBeanProperties
     public String toString()
     {
         return "ProcessHierarchyProperties{" +
-                       "processContainmentType=" + processContainmentType +
-                       ", effectiveFrom=" + getEffectiveFrom() +
-                       ", effectiveTo=" + getEffectiveTo() +
-                       ", extendedProperties=" + getExtendedProperties() +
-                       '}';
+                "containmentType=" + containmentType +
+                "} " + super.toString();
     }
 
 
@@ -113,7 +108,7 @@ public class ProcessHierarchyProperties extends RelationshipBeanProperties
             return false;
         }
         ProcessHierarchyProperties that = (ProcessHierarchyProperties) objectToCompare;
-        return processContainmentType == that.processContainmentType;
+        return containmentType == that.containmentType;
     }
 
 
@@ -125,6 +120,6 @@ public class ProcessHierarchyProperties extends RelationshipBeanProperties
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), processContainmentType);
+        return Objects.hash(super.hashCode(), containmentType);
     }
 }

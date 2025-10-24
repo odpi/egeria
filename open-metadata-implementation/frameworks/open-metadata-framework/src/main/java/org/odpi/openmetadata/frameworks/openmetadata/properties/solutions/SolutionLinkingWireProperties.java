@@ -5,7 +5,7 @@ package org.odpi.openmetadata.frameworks.openmetadata.properties.solutions;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.RelationshipBeanProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.LabeledRelationshipProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 
 import java.util.List;
@@ -20,10 +20,8 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class SolutionLinkingWireProperties extends RelationshipBeanProperties
+public class SolutionLinkingWireProperties extends LabeledRelationshipProperties
 {
-    private String       label             = null;
-    private String       description       = null;
     private List<String> iscQualifiedNames = null;
 
 
@@ -48,54 +46,8 @@ public class SolutionLinkingWireProperties extends RelationshipBeanProperties
 
         if (template != null)
         {
-            this.label = template.getLabel();
-            this.description       = template.getDescription();
             this.iscQualifiedNames = template.getISCQualifiedNames();
         }
-    }
-
-
-    /**
-     * Return the display label for this relationship.
-     *
-     * @return string
-     */
-    public String getLabel()
-    {
-        return label;
-    }
-
-
-    /**
-     * Set up the display label for this relationship.
-     *
-     * @param label string
-     */
-    public void setLabel(String label)
-    {
-        this.label = label;
-    }
-
-
-    /**
-     * Return the description for this relationship.
-     *
-     * @return string description
-     */
-    public String getDescription()
-    {
-        return description;
-    }
-
-
-    /**
-     * Set up the description for this relationship.
-     *
-     * @param description string
-     */
-    public void setDescription(String description)
-    {
-        this.description = description;
     }
 
 
@@ -131,8 +83,6 @@ public class SolutionLinkingWireProperties extends RelationshipBeanProperties
     {
         return "SolutionLinkingWireProperties{" +
                 "iscQualifiedNames=" + iscQualifiedNames +
-                "label='" + label + '\'' +
-                "description='" + description + '\'' +
                 "} " + super.toString();
     }
 
@@ -158,9 +108,7 @@ public class SolutionLinkingWireProperties extends RelationshipBeanProperties
         {
             return false;
         }
-        return Objects.equals(label, that.label) &&
-                Objects.equals(description, that.description) &&
-                Objects.equals(iscQualifiedNames, that.iscQualifiedNames);
+        return Objects.equals(iscQualifiedNames, that.iscQualifiedNames);
     }
 
 
@@ -172,6 +120,6 @@ public class SolutionLinkingWireProperties extends RelationshipBeanProperties
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), label, description, iscQualifiedNames);
+        return Objects.hash(super.hashCode(), iscQualifiedNames);
     }
 }

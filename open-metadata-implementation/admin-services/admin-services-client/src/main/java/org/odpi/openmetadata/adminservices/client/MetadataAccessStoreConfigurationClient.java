@@ -79,106 +79,8 @@ public class MetadataAccessStoreConfigurationClient extends MetadataAccessServer
     }
 
 
-
     /**
-     * Set up a graph store as the local repository.  This graph store uses JanusGraph.  It is scalable with
-     * different back ends and can be run in a HA context with multiple versions of the same server deployed
-     * to the same repository.
-     *
-     * @param storageProperties  properties used to configure the back end storage for the graph
-     * @throws OMAGNotAuthorizedException the supplied userId is not authorized to issue this command.
-     * @throws OMAGInvalidParameterException invalid parameter.
-     * @throws OMAGConfigurationErrorException unusual state in the admin server.
-     */
-    public void setGraphLocalRepository(Map<String, Object> storageProperties) throws OMAGNotAuthorizedException,
-                                                                                      OMAGConfigurationErrorException,
-                                                                                      OMAGInvalidParameterException
-    {
-        final String methodName  = "setGraphLocalRepository";
-        final String urlTemplate = "/open-metadata/admin-services/users/{0}/servers/{1}/local-repository/mode/local-graph-repository";
-
-        restClient.callVoidPostRESTCall(methodName,
-                                        serverPlatformRootURL + urlTemplate,
-                                        storageProperties,
-                                        adminUserId,
-                                        serverName);
-    }
-
-
-    /**
-     * Set up an XTDB store as the local repository.  This store uses XTDB to provide a historical metadata repository that operates in memory.
-     * This version of the XTDB repository is designed for testing.
-     *
-     * @throws OMAGNotAuthorizedException the supplied userId is not authorized to issue this command.
-     * @throws OMAGInvalidParameterException invalid parameter.
-     * @throws OMAGConfigurationErrorException unusual state in the admin server.
-     */
-    public void setXTDBInMemRepository() throws OMAGNotAuthorizedException,
-                                                OMAGConfigurationErrorException,
-                                                OMAGInvalidParameterException
-    {
-        final String methodName  = "setXTDBInMemRepository";
-        final String urlTemplate = "/open-metadata/admin-services/users/{0}/servers/{1}/local-repository/mode/xtdb-in-memory-repository";
-
-        restClient.callVoidPostRESTCall(methodName,
-                                        serverPlatformRootURL + urlTemplate,
-                                        nullRequestBody,
-                                        adminUserId,
-                                        serverName);
-    }
-
-
-    /**
-     * Set up an XTDB store as the local repository.  This store uses XTDB with RocksDB KV store to provide a high performance historical
-     * metadata repository.
-     *
-     * @throws OMAGNotAuthorizedException the supplied userId is not authorized to issue this command.
-     * @throws OMAGInvalidParameterException invalid parameter.
-     * @throws OMAGConfigurationErrorException unusual state in the admin server.
-     */
-    public void setXTDBLocalKVRepository() throws OMAGNotAuthorizedException,
-                                                  OMAGConfigurationErrorException,
-                                                  OMAGInvalidParameterException
-    {
-        final String methodName  = "setXTDBLocalKVRepository";
-        final String urlTemplate = "/open-metadata/admin-services/users/{0}/servers/{1}/local-repository/mode/xtdb-local-kv-repository";
-
-        restClient.callVoidPostRESTCall(methodName,
-                                        serverPlatformRootURL + urlTemplate,
-                                        nullRequestBody,
-                                        adminUserId,
-                                        serverName);
-    }
-
-
-    /**
-     * Set up an XTDB store as the local repository.  This store uses XTDB to provide a high performance historical
-     * metadata repository.  It is scalable with different back ends and can be run in a HA context with multiple versions of the
-     * same server deployed to the same repository.
-     *
-     * @param storageProperties  properties used to configure the back end storage for the repository.  They are stored in the
-     *                           configuration properties of the local repository's connection.
-     * @throws OMAGNotAuthorizedException the supplied userId is not authorized to issue this command.
-     * @throws OMAGInvalidParameterException invalid parameter.
-     * @throws OMAGConfigurationErrorException unusual state in the admin server.
-     */
-    public void setXTDBLocalRepository(Map<String, Object> storageProperties) throws OMAGNotAuthorizedException,
-                                                                                     OMAGConfigurationErrorException,
-                                                                                     OMAGInvalidParameterException
-    {
-        final String methodName  = "setXTDBLocalRepository";
-        final String urlTemplate = "/open-metadata/admin-services/users/{0}/servers/{1}/local-repository/mode/xtdb-local-repository";
-
-        restClient.callVoidPostRESTCall(methodName,
-                                        serverPlatformRootURL + urlTemplate,
-                                        storageProperties,
-                                        adminUserId,
-                                        serverName);
-    }
-
-
-    /**
-     * Set up an read only local repository.  This repository manages metadata in memory but does not
+     * Set up a read only local repository.  This repository manages metadata in memory but does not
      * support the ability to store new metadata.  This means it can safely be used to host read only content
      * from an open metadata archive within a production cohort.
      *
@@ -187,8 +89,8 @@ public class MetadataAccessStoreConfigurationClient extends MetadataAccessServer
      * @throws OMAGConfigurationErrorException unusual state in the admin server.
      */
     public void setReadOnlyLocalRepository() throws OMAGNotAuthorizedException,
-                                                 OMAGConfigurationErrorException,
-                                                 OMAGInvalidParameterException
+                                                    OMAGConfigurationErrorException,
+                                                    OMAGInvalidParameterException
     {
         final String methodName  = "setReadOnlyLocalRepository";
         final String urlTemplate = "/open-metadata/admin-services/users/{0}/servers/{1}/local-repository/mode/read-only-repository";
@@ -200,6 +102,32 @@ public class MetadataAccessStoreConfigurationClient extends MetadataAccessServer
                                         serverName);
     }
 
+
+
+    /**
+     * Set up a  local repository that stores metadata in PostgreSQL tables.  This repository manages metadata in memory but does not
+     * support the ability to store new metadata.  This means it can safely be used to host read only content
+     * from an open metadata archive within a production cohort.
+     *
+     * @param storageProperties  properties used to configure the back end storage for the repository
+     * Each repository is stored in its own database schema.  The storage properties should include databaseURL, databaseSchema, secretsStore and secretsCollectionName
+     * @throws OMAGNotAuthorizedException the supplied userId is not authorized to issue this command.
+     * @throws OMAGInvalidParameterException invalid parameter.
+     * @throws OMAGConfigurationErrorException unusual state in the admin server.
+     */
+    public void setPostgreSQLLocalRepository(Map<String, Object> storageProperties) throws OMAGNotAuthorizedException,
+                                                                                           OMAGConfigurationErrorException,
+                                                                                           OMAGInvalidParameterException
+    {
+        final String methodName  = "setPostgreSQLLocalRepository";
+        final String urlTemplate = "/open-metadata/admin-services/users/{0}/servers/{1}/local-repository/mode/postgres-repository";
+
+        restClient.callVoidPostRESTCall(methodName,
+                                        serverPlatformRootURL + urlTemplate,
+                                        storageProperties,
+                                        adminUserId,
+                                        serverName);
+    }
 
 
 

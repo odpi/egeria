@@ -7,7 +7,6 @@ import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.client.ConnectedAssetClient;
 import org.odpi.openmetadata.frameworks.opengovernance.client.GovernanceConfiguration;
 import org.odpi.openmetadata.frameworks.opengovernance.client.OpenGovernanceClient;
-import org.odpi.openmetadata.frameworks.integration.client.OpenIntegrationClient;
 import org.odpi.openmetadata.frameworks.integration.openlineage.OpenLineageListenerManager;
 import org.odpi.openmetadata.frameworks.openmetadata.client.OpenMetadataClient;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.DeleteMethod;
@@ -36,7 +35,6 @@ public class CatalogTargetContext extends IntegrationContext
      * @param openMetadataClient client to access open metadata store
      * @param openMetadataEventClient client to access open metadata events
      * @param connectedAssetClient client for working with connectors
-     * @param openIntegrationClient client for calling the metadata server
      * @param governanceConfiguration client for managing catalog targets
      * @param openGovernanceClient client for initiating governance actions
      * @param auditLog logging destination
@@ -56,7 +54,6 @@ public class CatalogTargetContext extends IntegrationContext
                                 OpenMetadataClient         openMetadataClient,
                                 OpenMetadataEventClient    openMetadataEventClient,
                                 ConnectedAssetClient       connectedAssetClient,
-                                OpenIntegrationClient      openIntegrationClient,
                                 OpenLineageListenerManager openLineageListenerManager,
                                 GovernanceConfiguration    governanceConfiguration,
                                 OpenGovernanceClient       openGovernanceClient,
@@ -77,7 +74,6 @@ public class CatalogTargetContext extends IntegrationContext
               openMetadataClient,
               openMetadataEventClient,
               connectedAssetClient,
-              openIntegrationClient,
               openLineageListenerManager,
               governanceConfiguration,
               openGovernanceClient,

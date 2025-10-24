@@ -80,8 +80,8 @@ public enum HarvestOpenMetadataColumn implements PostgreSQLColumn
     REPEAT_INTERVAL              ("repeat_interval", ColumnType.INT, "Repeat interval for a context event", false),
     PLANNED_COMPLETION_DATE      ("planned_completion_date", ColumnType.DATE, "Planned completion date for a context event", false),
     ACTUAL_COMPLETION_DATE       ("actual_completion_date", ColumnType.DATE, "Actual completion date for a context event", false),
-    REFERENCE_EFFECTIVE_FROM     ("reference_effective_from", ColumnType.DATE, "the effectiveFrom to use for elements associated with the context event", false),
-    REFERENCE_EFFECTIVE_TO       ("reference_effective_to", ColumnType.DATE, "the effectiveFrom to use for elements associated with the context event", false),
+    REFERENCE_EFFECTIVE_FROM     ("reference_effective_from", ColumnType.DATE, "The effectiveFrom to use for elements associated with the context event", false),
+    REFERENCE_EFFECTIVE_TO       ("reference_effective_to", ColumnType.DATE, "The effectiveFrom to use for elements associated with the context event", false),
 
 
     DATA_FIELD_GUID              ("data_field_guid", ColumnType.STRING, "Unique identifier of a schema attribute", true),

@@ -6,10 +6,7 @@ package org.odpi.openmetadata.viewservices.subjectarea.server;
 import org.odpi.openmetadata.commonservices.ffdc.RESTCallLogger;
 import org.odpi.openmetadata.commonservices.ffdc.RESTCallToken;
 import org.odpi.openmetadata.commonservices.ffdc.RESTExceptionHandler;
-import org.odpi.openmetadata.commonservices.ffdc.rest.DeleteRequestBody;
-import org.odpi.openmetadata.commonservices.ffdc.rest.NewClassificationRequestBody;
-import org.odpi.openmetadata.commonservices.ffdc.rest.NewRelationshipRequestBody;
-import org.odpi.openmetadata.commonservices.ffdc.rest.VoidResponse;
+import org.odpi.openmetadata.commonservices.ffdc.rest.*;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.openmetadata.handlers.GovernanceDefinitionHandler;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.governance.SubjectAreaHierarchyProperties;
@@ -119,8 +116,8 @@ public class SubjectAreaRESTServices extends TokenController
      * Detach subject area definitions from their hierarchical relationship..
      *
      * @param serverName         name of called server
-     * @param subjectAreaGUID    unique identifier of the parent data structure.
-     * @param dataFieldGUID    unique identifier of the nested data field.
+     * @param subjectAreaGUID    unique identifier of the parent subject area.
+     * @param nestedSubjectAreaGUID    unique identifier of the nested subject area.
      * @param requestBody  description of the relationship.
      *
      * @return void or
@@ -128,10 +125,10 @@ public class SubjectAreaRESTServices extends TokenController
      *  PropertyServerException    there is a problem retrieving information from the property server(s).
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    public VoidResponse detachSubjectAreas(String            serverName,
-                                           String            subjectAreaGUID,
-                                           String            dataFieldGUID,
-                                           DeleteRequestBody requestBody)
+    public VoidResponse detachSubjectAreas(String                        serverName,
+                                           String                        subjectAreaGUID,
+                                           String                        nestedSubjectAreaGUID,
+                                           DeleteRelationshipRequestBody requestBody)
     {
         final String methodName = "detachSubjectAreas";
 
@@ -150,7 +147,7 @@ public class SubjectAreaRESTServices extends TokenController
 
             GovernanceDefinitionHandler handler = instanceHandler.getGovernanceDefinitionHandler(userId, serverName, methodName);
 
-            handler.detachSubjectAreas(userId, subjectAreaGUID, dataFieldGUID, requestBody);
+            handler.detachSubjectAreas(userId, subjectAreaGUID, nestedSubjectAreaGUID, requestBody);
         }
         catch (Throwable error)
         {
@@ -233,9 +230,9 @@ public class SubjectAreaRESTServices extends TokenController
      * PropertyServerException problem accessing property server or
      * UserNotAuthorizedException security access problem
      */
-    public VoidResponse removeElementFromSubjectArea(String                   serverName,
-                                                     String                   elementGUID,
-                                                     DeleteRequestBody requestBody)
+    public VoidResponse removeElementFromSubjectArea(String                          serverName,
+                                                     String                          elementGUID,
+                                                     DeleteClassificationRequestBody requestBody)
     {
         final String   methodName = "removeElementFromSubjectArea";
 

@@ -4,7 +4,7 @@
 package org.odpi.openmetadata.adapters.connectors.governanceactions.watchdog;
 
 
-import org.odpi.openmetadata.frameworks.opengovernance.controls.RequestTypeType;
+import org.odpi.openmetadata.frameworks.openmetadata.specificationproperties.RequestTypeType;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -75,7 +75,7 @@ public enum GenericFolderRequestType
         {
             RequestTypeType requestTypeType = new RequestTypeType();
 
-            requestTypeType.setRequestType(requestTypeValue.requestType);
+            requestTypeType.setName(requestTypeValue.requestType);
             requestTypeType.setDescription(requestTypeValue.description);
 
             requestTypeTypes.add(requestTypeType);
@@ -95,7 +95,7 @@ public enum GenericFolderRequestType
     {
         RequestTypeType requestTypeType = new RequestTypeType();
 
-        requestTypeType.setRequestType(requestType);
+        requestTypeType.setName(requestType);
         requestTypeType.setDescription(description);
 
         return requestTypeType;

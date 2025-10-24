@@ -4,11 +4,7 @@
 package org.odpi.openmetadata.frameworks.openmetadata.mermaid;
 
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.OpenMetadataRootElement;
-import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.RelatedMetadataElementSummary;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.solutions.SolutionBlueprintProperties;
-
-import java.util.ArrayList;
-import java.util.List;
 
 
 /**
@@ -32,22 +28,11 @@ public class SolutionBlueprintMermaidGraphBuilder extends MermaidGraphBuilderBas
             mermaidGraph.append(solutionBlueprintElement.getElementHeader().getGUID());
             mermaidGraph.append("]\n---\nflowchart TD\n%%{init: {\"flowchart\": {\"htmlLabels\": false}} }%%\n\n");
 
-            if (solutionBlueprintElement.getContainsSolutionComponents() != null)
+            if (solutionBlueprintElement.getCollectionMembers() != null)
             {
                 super.startSubgraph("Components and Actors", VisualStyle.SOLUTION_BLUEPRINT_GRAPH);
 
-                List<String> solutionLinkingWireGUIDs = new ArrayList<>();
-
-                for (RelatedMetadataElementSummary node : solutionBlueprintElement.getContainsSolutionComponents())
-                {
-                    if (node != null)
-                    {
-                        super.addSolutionComponentToGraph(null,
-                                                          null,
-                                                          node,
-                                                          solutionLinkingWireGUIDs);
-                    }
-                }
+                super.addSolutionComponentListToGraph(solutionBlueprintElement.getCollectionMembers());
 
                 super.endSubgraph();
             }
@@ -57,4 +42,6 @@ public class SolutionBlueprintMermaidGraphBuilder extends MermaidGraphBuilderBas
             }
         }
     }
+
+
 }

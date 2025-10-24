@@ -7,10 +7,12 @@ import org.odpi.openmetadata.commonservices.ffdc.RESTCallToken;
 import org.odpi.openmetadata.commonservices.ffdc.RESTExceptionHandler;
 import org.odpi.openmetadata.commonservices.ffdc.rest.*;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
-import org.odpi.openmetadata.frameworks.openmetadata.enums.GlossaryTermAssignmentStatus;
+import org.odpi.openmetadata.frameworks.openmetadata.enums.TermAssignmentStatus;
+import org.odpi.openmetadata.frameworks.openmetadata.handlers.SearchKeywordHandler;
 import org.odpi.openmetadata.frameworks.openmetadata.handlers.StewardshipManagementHandler;
 import org.odpi.openmetadata.frameworks.openmetadata.mermaid.CertificationMermaidGraphBuilder;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.*;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.governance.CertificationProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.governance.FindDigitalResourceOriginProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.governance.LevelIdentifierQueryProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.governance.SemanticAssignmentQueryProperties;
@@ -402,9 +404,9 @@ public class ClassificationExplorerRESTServices extends TokenController
      *      PropertyServerException problem accessing property server or
      *      UserNotAuthorizedException security access problem
      */
-    public MetadataElementSummariesResponse getOwnersElements(String             serverName,
-                                                              String             urlMarker,
-                                                              FindNameProperties requestBody)
+    public MetadataElementSummariesResponse getOwnersElements(String            serverName,
+                                                              String            urlMarker,
+                                                              FilterRequestBody requestBody)
     {
         final String methodName = "getOwnersElements";
 
@@ -424,7 +426,7 @@ public class ClassificationExplorerRESTServices extends TokenController
 
             if (requestBody != null)
             {
-                response.setElements(handler.getOwnersElements(userId, requestBody.getName(), requestBody));
+                response.setElements(handler.getOwnersElements(userId, requestBody.getFilter(), requestBody));
             }
             else
             {
@@ -453,9 +455,9 @@ public class ClassificationExplorerRESTServices extends TokenController
      *      PropertyServerException problem accessing property server or
      *      UserNotAuthorizedException security access problem
      */
-    public MetadataElementSummariesResponse getMembersOfSubjectArea(String             serverName,
-                                                                    String             urlMarker,
-                                                                    FindNameProperties requestBody)
+    public MetadataElementSummariesResponse getMembersOfSubjectArea(String            serverName,
+                                                                    String            urlMarker,
+                                                                    FilterRequestBody requestBody)
     {
         final String methodName = "getMembersOfSubjectArea";
 
@@ -476,7 +478,7 @@ public class ClassificationExplorerRESTServices extends TokenController
             if (requestBody != null)
             {
                 response.setElements(handler.getMembersOfSubjectArea(userId,
-                                                                     requestBody.getName(),
+                                                                     requestBody.getFilter(),
                                                                      requestBody));
             }
             else
@@ -606,7 +608,7 @@ public class ClassificationExplorerRESTServices extends TokenController
                                                                                     elementGUID,
                                                                                     null,
                                                                                     null,
-                                                                                    GlossaryTermAssignmentStatus.VALIDATED,
+                                                                                    TermAssignmentStatus.VALIDATED,
                                                                                     false,
                                                                                     0,
                                                                                     null,
@@ -689,7 +691,7 @@ public class ClassificationExplorerRESTServices extends TokenController
                                                                                              glossaryTermGUID,
                                                                                              null,
                                                                                              null,
-                                                                                             GlossaryTermAssignmentStatus.VALIDATED,
+                                                                                             TermAssignmentStatus.VALIDATED,
                                                                                              false,
                                                                                              0,
                                                                                              null,
@@ -729,7 +731,7 @@ public class ClassificationExplorerRESTServices extends TokenController
     public RelatedMetadataElementSummariesResponse getGovernedElements(String         serverName,
                                                                        String         urlMarker,
                                                                        String         governanceDefinitionGUID,
-                                                                       FindProperties requestBody)
+                                                                       ResultsRequestBody requestBody)
     {
         final String methodName = "getGovernedElements";
 
@@ -796,7 +798,7 @@ public class ClassificationExplorerRESTServices extends TokenController
     public RelatedMetadataElementSummariesResponse getGovernedByDefinitions(String         serverName,
                                                                             String         urlMarker,
                                                                             String         elementGUID,
-                                                                            FindProperties requestBody)
+                                                                            ResultsRequestBody requestBody)
     {
         final String methodName = "getGovernedByDefinitions";
 
@@ -864,7 +866,7 @@ public class ClassificationExplorerRESTServices extends TokenController
     public RelatedMetadataElementSummariesResponse getSourceElements(String         serverName,
                                                                      String         urlMarker,
                                                                      String         elementGUID,
-                                                                     FindProperties requestBody)
+                                                                     ResultsRequestBody requestBody)
     {
         final String methodName = "getSourceElements";
 
@@ -928,7 +930,7 @@ public class ClassificationExplorerRESTServices extends TokenController
     public RelatedMetadataElementSummariesResponse getElementsSourcedFrom(String         serverName,
                                                                           String         urlMarker,
                                                                           String         elementGUID,
-                                                                          FindProperties requestBody)
+                                                                          ResultsRequestBody requestBody)
     {
         final String methodName = "getElementsSourceFrom";
 
@@ -992,7 +994,7 @@ public class ClassificationExplorerRESTServices extends TokenController
     public RelatedMetadataElementSummariesResponse getScopes(String         serverName,
                                                              String         urlMarker,
                                                              String         elementGUID,
-                                                             FindProperties requestBody)
+                                                             ResultsRequestBody requestBody)
     {
         final String methodName = "getScopes";
 
@@ -1055,7 +1057,7 @@ public class ClassificationExplorerRESTServices extends TokenController
     public RelatedMetadataElementSummariesResponse getScopedElements(String         serverName,
                                                                      String         urlMarker,
                                                                      String         scopeGUID,
-                                                                     FindProperties requestBody)
+                                                                     ResultsRequestBody requestBody)
     {
         final String methodName = "getScopedElements";
 
@@ -1121,7 +1123,7 @@ public class ClassificationExplorerRESTServices extends TokenController
     public RelatedMetadataElementSummariesResponse getResourceList(String         serverName,
                                                                    String         urlMarker,
                                                                    String         elementGUID,
-                                                                   FindProperties requestBody)
+                                                                   ResultsRequestBody requestBody)
     {
         final String methodName = "getResourceList";
 
@@ -1184,7 +1186,7 @@ public class ClassificationExplorerRESTServices extends TokenController
     public RelatedMetadataElementSummariesResponse getSupportedByResource(String         serverName,
                                                                           String         urlMarker,
                                                                           String         resourceGUID,
-                                                                          FindProperties requestBody)
+                                                                          ResultsRequestBody requestBody)
     {
         final String methodName = "getSupportedByResource";
 
@@ -1453,25 +1455,25 @@ public class ClassificationExplorerRESTServices extends TokenController
                     CertificationElement certificationElement = new CertificationElement(relatedMetadataElementSummary);
 
 
-                    if (relatedMetadataElementSummary.getRelationshipProperties() != null)
+                    if (relatedMetadataElementSummary.getRelationshipProperties() instanceof CertificationProperties certificationProperties)
                     {
                         certificationElement.setCertifiedBy(getActorSummary(userId,
-                                                                            relatedMetadataElementSummary.getRelationshipProperties().get(OpenMetadataProperty.CERTIFIED_BY.name),
-                                                                            relatedMetadataElementSummary.getRelationshipProperties().get(OpenMetadataProperty.CERTIFIED_BY_PROPERTY_NAME.name),
+                                                                            certificationProperties.getCertifiedBy(),
+                                                                            certificationProperties.getCertifiedByPropertyName(),
                                                                             actorMap,
                                                                             handler,
                                                                             queryOptions));
 
                         certificationElement.setCustodian(getActorSummary(userId,
-                                                                          relatedMetadataElementSummary.getRelationshipProperties().get(OpenMetadataProperty.CUSTODIAN.name),
-                                                                          relatedMetadataElementSummary.getRelationshipProperties().get(OpenMetadataProperty.CUSTODIAN_PROPERTY_NAME.name),
+                                                                          certificationProperties.getCustodian(),
+                                                                          certificationProperties.getCustodianPropertyName(),
                                                                           actorMap,
                                                                           handler,
                                                                           queryOptions));
 
                         certificationElement.setRecipient(getActorSummary(userId,
-                                                                          relatedMetadataElementSummary.getRelationshipProperties().get(OpenMetadataProperty.RECIPIENT.name),
-                                                                          relatedMetadataElementSummary.getRelationshipProperties().get(OpenMetadataProperty.RECIPIENT_PROPERTY_NAME.name),
+                                                                          certificationProperties.getRecipient(),
+                                                                          certificationProperties.getRecipientPropertyName(),
                                                                           actorMap,
                                                                           handler,
                                                                           queryOptions));
@@ -1662,7 +1664,7 @@ public class ClassificationExplorerRESTServices extends TokenController
     public MetadataElementSummaryResponse getMetadataElementByGUID(String      serverName,
                                                                    String      urlMarker,
                                                                    String      elementGUID,
-                                                                   FindRequest requestBody)
+                                                                   GetRequestBody requestBody)
     {
         final String methodName = "getMetadataElementByGUID";
 
@@ -1829,7 +1831,7 @@ public class ClassificationExplorerRESTServices extends TokenController
      */
     public MetadataElementSummariesResponse getElements(String         serverName,
                                                         String         urlMarker,
-                                                        FindProperties requestBody)
+                                                        ResultsRequestBody requestBody)
     {
         final String methodName = "getElements";
 
@@ -1995,7 +1997,7 @@ public class ClassificationExplorerRESTServices extends TokenController
     public MetadataElementSummariesResponse getElementsByClassification(String         serverName,
                                                                         String         urlMarker,
                                                                         String         classificationName,
-                                                                        FindProperties requestBody)
+                                                                        ResultsRequestBody requestBody)
     {
         final String methodName = "getElementsByClassification";
 
@@ -2165,7 +2167,7 @@ public class ClassificationExplorerRESTServices extends TokenController
                                                                       String         elementGUID,
                                                                       String         relationshipTypeName,
                                                                       int            startingAtEnd,
-                                                                      FindProperties requestBody)
+                                                                      ResultsRequestBody requestBody)
     {
         final String methodName = "getRelatedElements";
 
@@ -2372,6 +2374,7 @@ public class ClassificationExplorerRESTServices extends TokenController
      *
      * @param serverName  name of the server instance to connect to
      * @param urlMarker  view service URL marker
+     * @param relationshipTypeName name of relationship
      * @param requestBody  open metadata type to search on
      *
      * @return list of matching elements or
@@ -2379,9 +2382,10 @@ public class ClassificationExplorerRESTServices extends TokenController
      *  UserNotAuthorizedException the user is not authorized to issue this request
      *  PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public MetadataRelationshipSummariesResponse getRelationships(String         serverName,
-                                                                  String         urlMarker,
-                                                                  FindProperties requestBody)
+    public MetadataRelationshipSummariesResponse getRelationships(String             serverName,
+                                                                  String             urlMarker,
+                                                                  String             relationshipTypeName,
+                                                                  ResultsRequestBody requestBody)
     {
         final String methodName = "getRelationships";
 
@@ -2399,33 +2403,16 @@ public class ClassificationExplorerRESTServices extends TokenController
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
             StewardshipManagementHandler handler = instanceHandler.getStewardshipManagementHandler(userId, serverName, urlMarker, methodName);
 
-            if (requestBody == null)
+            MetadataRelationshipSummaryList summaryList = handler.getRelationships(userId,
+                                                                                   relationshipTypeName,
+                                                                                   null,
+                                                                                   null,
+                                                                                   requestBody,
+                                                                                   methodName);
+            if (summaryList != null)
             {
-                MetadataRelationshipSummaryList summaryList = handler.getRelationships(userId,
-                                                                                       null,
-                                                                                       null,
-                                                                                       null,
-                                                                                       null,
-                                                                                       methodName);
-                if (summaryList != null)
-                {
-                    response.setRelationships(summaryList.getElementList());
-                    response.setMermaidGraph(summaryList.getMermaidGraph());
-                }
-            }
-            else
-            {
-                MetadataRelationshipSummaryList summaryList = handler.getRelationships(userId,
-                                                                                       requestBody.getOpenMetadataTypeName(),
-                                                                                       null,
-                                                                                       null,
-                                                                                       requestBody,
-                                                                                       methodName);
-                if (summaryList != null)
-                {
-                    response.setRelationships(summaryList.getElementList());
-                    response.setMermaidGraph(summaryList.getMermaidGraph());
-                }
+                response.setRelationships(summaryList.getElementList());
+                response.setMermaidGraph(summaryList.getMermaidGraph());
             }
         }
         catch (Throwable error)
@@ -2443,6 +2430,7 @@ public class ClassificationExplorerRESTServices extends TokenController
      * one of the relationship's properties specified.  The value must match exactly.
      *
      * @param serverName  name of the server instance to connect to
+     * @param relationshipTypeName name of relationship
      * @param urlMarker  view service URL marker
      * @param requestBody properties and optional open metadata type to search on
      *
@@ -2453,6 +2441,7 @@ public class ClassificationExplorerRESTServices extends TokenController
      */
     public MetadataRelationshipSummariesResponse getRelationshipsWithPropertyValue(String                      serverName,
                                                                                    String                      urlMarker,
+                                                                                   String                      relationshipTypeName,
                                                                                    FindPropertyNamesProperties requestBody)
     {
         final String methodName = "getRelationshipsWithPropertyValue";
@@ -2478,7 +2467,7 @@ public class ClassificationExplorerRESTServices extends TokenController
             else
             {
                 MetadataRelationshipSummaryList summaryList = handler.getRelationships(userId,
-                                                                                       requestBody.getOpenMetadataTypeName(),
+                                                                                       relationshipTypeName,
                                                                                        requestBody.getPropertyValue(),
                                                                                        requestBody.getPropertyNames(),
                                                                                        requestBody,
@@ -2508,6 +2497,7 @@ public class ClassificationExplorerRESTServices extends TokenController
      *
      * @param serverName  name of the server instance to connect to
      * @param urlMarker  view service URL marker
+     * @param relationshipTypeName name of relationship
      * @param requestBody properties and optional open metadata type to search on
      *
      * @return list of matching elements or
@@ -2517,6 +2507,7 @@ public class ClassificationExplorerRESTServices extends TokenController
      */
     public MetadataRelationshipSummariesResponse findRelationshipsWithPropertyValue(String                      serverName,
                                                                                     String                      urlMarker,
+                                                                                    String                      relationshipTypeName,
                                                                                     FindPropertyNamesProperties requestBody)
     {
         final String methodName = "findRelationshipsWithPropertyValue";
@@ -2542,7 +2533,7 @@ public class ClassificationExplorerRESTServices extends TokenController
             else
             {
                 MetadataRelationshipSummaryList summaryList = handler.findRelationshipsWithPropertyValue(userId,
-                                                                                                         requestBody.getOpenMetadataTypeName(),
+                                                                                                         relationshipTypeName,
                                                                                                          requestBody.getPropertyValue(),
                                                                                                          requestBody.getPropertyNames(),
                                                                                                          requestBody);
@@ -2609,6 +2600,162 @@ public class ClassificationExplorerRESTServices extends TokenController
             else
             {
                 response.setElement(handler.retrieveInstanceForGUID(userId, guid, requestBody));
+            }
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+        return response;
+    }
+
+
+    /**
+     * Return the requested search keyword.
+     *
+     * @param serverName name of the server instances for this request
+     * @param searchKeywordGUID  unique identifier for the search keyword object.
+     * @param urlMarker  view service URL marker
+     * @param requestBody optional effective time
+     * @return search keyword properties or
+     *  InvalidParameterException one of the parameters is null or invalid.
+     *  PropertyServerException there is a problem updating the element properties in the property server.
+     *  UserNotAuthorizedException the user does not have permission to perform this request.
+     */
+    public OpenMetadataRootElementResponse getSearchKeywordByGUID(String         serverName,
+                                                                  String         urlMarker,
+                                                                  String         searchKeywordGUID,
+                                                                  GetRequestBody requestBody)
+    {
+        final String methodName = "getSearchKeyword";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
+
+        OpenMetadataRootElementResponse response = new OpenMetadataRootElementResponse();
+        AuditLog        auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            SearchKeywordHandler handler = instanceHandler.getSearchKeywordHandler(userId, serverName, urlMarker, methodName);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            response.setElement(handler.getSearchKeywordByGUID(userId, searchKeywordGUID, requestBody));
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+        return response;
+    }
+
+
+
+
+    /**
+     * Retrieve the list of search keyword metadata elements that contain the search string.
+     *
+     * @param serverName name of the server to route the request to
+     * @param urlMarker  view service URL marker
+     * @param requestBody string to find in the properties
+     *
+     * @return list of matching metadata elements or
+     *  InvalidParameterException  one of the parameters is invalid
+     *  UserNotAuthorizedException the user is not authorized to issue this request
+     *  PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public OpenMetadataRootElementsResponse getSearchKeywordsByKeyword(String                  serverName,
+                                                                       String                  urlMarker,
+                                                                       FilterRequestBody requestBody)
+    {
+        final String methodName = "getSearchKeywordsByKeyword";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
+
+        OpenMetadataRootElementsResponse response = new OpenMetadataRootElementsResponse();
+        AuditLog                auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            SearchKeywordHandler handler = instanceHandler.getSearchKeywordHandler(userId, serverName, urlMarker, methodName);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            if (requestBody != null)
+            {
+                response.setElements(handler.getSearchKeywordsByName(userId,
+                                                                     requestBody.getFilter(),
+                                                                     requestBody));
+            }
+            else
+            {
+                restExceptionHandler.handleNoRequestBody(userId, methodName, FilterRequestBody.class.getName());
+            }
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+        return response;
+    }
+
+
+    /**
+     * Retrieve the list of search keyword metadata elements that contain the search string.
+     *
+     * @param serverName name of the server to route the request to
+     * @param urlMarker  view service URL marker
+     * @param requestBody string to find in the properties
+     *
+     * @return list of matching metadata elements or
+     *  InvalidParameterException  one of the parameters is invalid
+     *  UserNotAuthorizedException the user is not authorized to issue this request
+     *  PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public OpenMetadataRootElementsResponse findSearchKeywords(String                  serverName,
+                                                               String                  urlMarker,
+                                                               SearchStringRequestBody requestBody)
+    {
+        final String methodName = "findSearchKeywords";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
+
+        OpenMetadataRootElementsResponse response = new OpenMetadataRootElementsResponse();
+        AuditLog                auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            SearchKeywordHandler handler = instanceHandler.getSearchKeywordHandler(userId, serverName, urlMarker, methodName);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            if (requestBody != null)
+            {
+                response.setElements(handler.findSearchKeywords(userId,
+                                                                requestBody.getSearchString(),
+                                                                requestBody));
+            }
+            else
+            {
+                response.setElements(handler.findSearchKeywords(userId, null, null));
             }
         }
         catch (Throwable error)

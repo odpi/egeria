@@ -21,8 +21,6 @@ import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -90,135 +88,138 @@ public class OpenMetadataProductsHarvesterCatalogTargetProcessor extends Catalog
 
         try
         {
-            /*
-             * Make sure the data source has the latest information.
-             */
-            tabularDataSource.refreshCache();
-
-            /*
-             * Locate the lastUpdate column, no action is taken if the last update column is not present in the
-             * data set.
-             */
-            int lastUpdateColumnNumber = tabularDataSource.getColumnNumber(OpenMetadataProperty.UPDATE_TIME.name);
-
-            if (lastUpdateColumnNumber < 0)
-            {
-                auditLog.logMessage(methodName,
-                                    ProductManagerAuditCode.NO_LAST_UPDATE_DATE.getMessageDefinition(connectorName, getCatalogTargetName()));
-            }
-            else
+            if (tabularDataSource != null)
             {
                 /*
-                 * Extract the last update time for all records in the data set saved the last time the data set was scanned.
+                 * Make sure the data source has the latest information.
                  */
-                Date createTime     = null;
-                Date lastUpdateTime = null;
+                tabularDataSource.refreshCache();
 
-                AssetClient             dataSetClient = integrationContext.getAssetClient(OpenMetadataType.DATA_SET.typeName);
-                OpenMetadataRootElement dataSet       = dataSetClient.getAssetByGUID(getCatalogTargetElement().getGUID(), null);
+                /*
+                 * Locate the lastUpdate column, no action is taken if the last update column is not present in the
+                 * data set.
+                 */
+                int lastUpdateColumnNumber = tabularDataSource.getColumnNumber(OpenMetadataProperty.UPDATE_TIME.name);
 
-                if (dataSet.getElementHeader().getGovernanceMeasurements() != null)
+                if (lastUpdateColumnNumber < 0)
                 {
-                    if (dataSet.getElementHeader().getGovernanceMeasurements().getClassificationProperties() instanceof GovernanceMeasurementsProperties governanceMeasurementsProperties)
+                    auditLog.logMessage(methodName,
+                                        ProductManagerAuditCode.NO_LAST_UPDATE_DATE.getMessageDefinition(connectorName, getCatalogTargetName()));
+                }
+                else
+                {
+                    /*
+                     * Extract the last update time for all records in the data set saved the last time the data set was scanned.
+                     */
+                    Date createTime     = null;
+                    Date lastUpdateTime = null;
+
+                    AssetClient             dataSetClient = integrationContext.getAssetClient(OpenMetadataType.DATA_SET.typeName);
+                    OpenMetadataRootElement dataSet       = dataSetClient.getAssetByGUID(getCatalogTargetElement().getElementHeader().getGUID(), null);
+
+                    if (dataSet.getElementHeader().getGovernanceMeasurements() != null)
                     {
-                        createTime = governanceMeasurementsProperties.getDates().get(OpenMetadataProperty.CREATE_TIME.name);
-
-                        if (governanceMeasurementsProperties.getDates() != null)
+                        if (dataSet.getElementHeader().getGovernanceMeasurements().getClassificationProperties() instanceof GovernanceMeasurementsProperties governanceMeasurementsProperties)
                         {
-                            lastUpdateTime = governanceMeasurementsProperties.getDates().get(OpenMetadataProperty.UPDATE_TIME.name);
+                            createTime = governanceMeasurementsProperties.getDates().get(OpenMetadataProperty.CREATE_TIME.name);
 
-                            if (lastUpdateTime == null)
+                            if (governanceMeasurementsProperties.getDates() != null)
                             {
-                                lastUpdateTime = governanceMeasurementsProperties.getDates().get(OpenMetadataProperty.CREATE_TIME.name);
+                                lastUpdateTime = governanceMeasurementsProperties.getDates().get(OpenMetadataProperty.UPDATE_TIME.name);
+
+                                if (lastUpdateTime == null)
+                                {
+                                    lastUpdateTime = governanceMeasurementsProperties.getDates().get(OpenMetadataProperty.CREATE_TIME.name);
+                                }
                             }
                         }
                     }
-                }
 
-                Date dataSetCreateTime     = dataSet.getElementHeader().getVersions().getCreateTime();
-                Date dataSetLastUpdateTime = getDataSetLastUpdateTime(lastUpdateColumnNumber);
+                    Date dataSetCreateTime     = dataSet.getElementHeader().getVersions().getCreateTime();
+                    Date dataSetLastUpdateTime = getDataSetLastUpdateTime(lastUpdateColumnNumber);
 
-                if ((createTime == null) || (lastUpdateTime == null) ||
-                        ((dataSetLastUpdateTime != null) && (dataSetLastUpdateTime.after(lastUpdateTime))))
-                {
-                    /*
-                     * The data set has changed (or this is the first time it has been monitored).  Details of
-                     * the creation and last update times are saved in the data set's GovernanceMeasurements
-                     * classification.
-                     */
-                    ClassificationManagerClient classificationManagerClient = integrationContext.getClassificationManagerClient(OpenMetadataType.ASSET.typeName);
-
-                    if (dataSet.getElementHeader().getGovernanceMeasurements() == null)
+                    if ((createTime == null) || (lastUpdateTime == null) ||
+                            ((dataSetLastUpdateTime != null) && (dataSetLastUpdateTime.after(lastUpdateTime))))
                     {
                         /*
-                         * First time thorough - no GovernanceMeasurements classification set up.
+                         * The data set has changed (or this is the first time it has been monitored).  Details of
+                         * the creation and last update times are saved in the data set's GovernanceMeasurements
+                         * classification.
                          */
-                        GovernanceMeasurementsProperties governanceMeasurementsProperties = new GovernanceMeasurementsProperties();
-                        Map<String, Date> dates = new HashMap<>();
+                        ClassificationManagerClient classificationManagerClient = integrationContext.getClassificationManagerClient(OpenMetadataType.ASSET.typeName);
 
-                        dates.put(OpenMetadataProperty.CREATE_TIME.name, dataSetCreateTime);
-                        dates.put(OpenMetadataProperty.UPDATE_TIME.name, dataSetLastUpdateTime);
-
-                        governanceMeasurementsProperties.setDataCollectionStartTime(new Date());
-                        governanceMeasurementsProperties.setDates(dates);
-                        classificationManagerClient.addGovernanceMeasurements(dataSet.getElementHeader().getGUID(),
-                                                                              governanceMeasurementsProperties,
-                                                                              integrationContext.getOpenMetadataStore().getMetadataSourceOptions());
-                    }
-                    else
-                    {
-                        /*
-                         * Update the existing governance measurements classification.
-                         */
-                        GovernanceMeasurementsProperties governanceMeasurementsProperties;
-
-                        if (dataSet.getElementHeader().getGovernanceMeasurements().getClassificationProperties() instanceof GovernanceMeasurementsProperties properties)
+                        if (dataSet.getElementHeader().getGovernanceMeasurements() == null)
                         {
                             /*
-                             * The copy/clone constructor is used to preserve any measurements from other processes.
+                             * First time thorough - no GovernanceMeasurements classification set up.
                              */
-                            governanceMeasurementsProperties = new GovernanceMeasurementsProperties(properties);
+                            GovernanceMeasurementsProperties governanceMeasurementsProperties = new GovernanceMeasurementsProperties();
+                            Map<String, Date>                dates                            = new HashMap<>();
 
-                            if (governanceMeasurementsProperties.getDataCollectionStartTime() == null)
-                            {
-                                /*
-                                 * The start time might not be set if the classification was created by another process.
-                                 */
-                                governanceMeasurementsProperties.setDataCollectionStartTime(new Date());
-                            }
+                            dates.put(OpenMetadataProperty.CREATE_TIME.name, dataSetCreateTime);
+                            dates.put(OpenMetadataProperty.UPDATE_TIME.name, dataSetLastUpdateTime);
+
+                            governanceMeasurementsProperties.setDataCollectionStartTime(new Date());
+                            governanceMeasurementsProperties.setDates(dates);
+                            classificationManagerClient.addGovernanceMeasurements(dataSet.getElementHeader().getGUID(),
+                                                                                  governanceMeasurementsProperties,
+                                                                                  integrationContext.getOpenMetadataStore().getMetadataSourceOptions());
                         }
                         else
                         {
                             /*
-                             * This is unexpected - suggests that another process created the classification,
-                             * but without any properties.
+                             * Update the existing governance measurements classification.
                              */
-                            governanceMeasurementsProperties = new GovernanceMeasurementsProperties();
+                            GovernanceMeasurementsProperties governanceMeasurementsProperties;
 
-                            governanceMeasurementsProperties.setDataCollectionStartTime(new Date());
-                        }
+                            if (dataSet.getElementHeader().getGovernanceMeasurements().getClassificationProperties() instanceof GovernanceMeasurementsProperties properties)
+                            {
+                                /*
+                                 * The copy/clone constructor is used to preserve any measurements from other processes.
+                                 */
+                                governanceMeasurementsProperties = new GovernanceMeasurementsProperties(properties);
 
-                        /*
-                         * Preserve any other dates saved by different processes.
-                         */
-                        Map<String, Date> dates = governanceMeasurementsProperties.getDates();
+                                if (governanceMeasurementsProperties.getDataCollectionStartTime() == null)
+                                {
+                                    /*
+                                     * The start time might not be set if the classification was created by another process.
+                                     */
+                                    governanceMeasurementsProperties.setDataCollectionStartTime(new Date());
+                                }
+                            }
+                            else
+                            {
+                                /*
+                                 * This is unexpected - suggests that another process created the classification,
+                                 * but without any properties.
+                                 */
+                                governanceMeasurementsProperties = new GovernanceMeasurementsProperties();
 
-                        if (dates == null)
-                        {
+                                governanceMeasurementsProperties.setDataCollectionStartTime(new Date());
+                            }
+
                             /*
-                             * Nothing else saved.
+                             * Preserve any other dates saved by different processes.
                              */
-                            dates = new HashMap<>();
+                            Map<String, Date> dates = governanceMeasurementsProperties.getDates();
+
+                            if (dates == null)
+                            {
+                                /*
+                                 * Nothing else saved.
+                                 */
+                                dates = new HashMap<>();
+                            }
+
+                            dates.put(OpenMetadataProperty.CREATE_TIME.name, dataSetCreateTime);
+                            dates.put(OpenMetadataProperty.UPDATE_TIME.name, dataSetLastUpdateTime);
+
+                            governanceMeasurementsProperties.setDates(dates);
+
+                            classificationManagerClient.updateGovernanceMeasurements(dataSet.getElementHeader().getGUID(),
+                                                                                     governanceMeasurementsProperties,
+                                                                                     integrationContext.getOpenMetadataStore().getUpdateOptions(true));
                         }
-
-                        dates.put(OpenMetadataProperty.CREATE_TIME.name, dataSetCreateTime);
-                        dates.put(OpenMetadataProperty.UPDATE_TIME.name, dataSetLastUpdateTime);
-
-                        governanceMeasurementsProperties.setDates(dates);
-
-                        classificationManagerClient.updateGovernanceMeasurements(dataSet.getElementHeader().getGUID(),
-                                                                                 governanceMeasurementsProperties,
-                                                                                 integrationContext.getOpenMetadataStore().getUpdateOptions(true));
                     }
                 }
             }
@@ -256,7 +257,6 @@ public class OpenMetadataProductsHarvesterCatalogTargetProcessor extends Catalog
     private Date getDataSetLastUpdateTime(int lastUpdateColumnNumber) throws ConnectorCheckedException,
                                                                              ParseException
     {
-        Date dataSetLastUpdateTime = null;
         long recordCount = tabularDataSource.getRecordCount();
 
         if (recordCount > 0L)
@@ -270,19 +270,12 @@ public class OpenMetadataProductsHarvesterCatalogTargetProcessor extends Catalog
                     String lastUpdateDateAsString = recordValues.get(lastUpdateColumnNumber);
                     if (lastUpdateDateAsString != null)
                     {
-                        SimpleDateFormat formatter            = new SimpleDateFormat(DateTimeFormatter.ISO_LOCAL_DATE_TIME.toString());
-                        Date             recordLastUpdateTime = formatter.parse(lastUpdateDateAsString);
-
-                        if ((dataSetLastUpdateTime == null) ||
-                                ((recordLastUpdateTime != null) && (recordLastUpdateTime.after(dataSetLastUpdateTime))))
-                        {
-                            dataSetLastUpdateTime = recordLastUpdateTime;
-                        }
+                        return new Date(Long.parseLong(lastUpdateDateAsString));
                     }
                 }
             }
         }
 
-        return dataSetLastUpdateTime;
+        return null;
     }
 }

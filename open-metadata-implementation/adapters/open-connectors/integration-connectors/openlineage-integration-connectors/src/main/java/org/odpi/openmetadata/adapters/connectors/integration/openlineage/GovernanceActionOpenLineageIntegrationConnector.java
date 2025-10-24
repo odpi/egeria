@@ -5,8 +5,6 @@ package org.odpi.openmetadata.adapters.connectors.integration.openlineage;
 
 import org.odpi.openmetadata.adapters.connectors.integration.openlineage.ffdc.OpenLineageIntegrationConnectorAuditCode;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
-import org.odpi.openmetadata.frameworks.opengovernance.properties.ActionTargetElement;
-import org.odpi.openmetadata.frameworks.opengovernance.properties.EngineActionElement;
 import org.odpi.openmetadata.frameworks.integration.connectors.IntegrationConnectorBase;
 import org.odpi.openmetadata.frameworks.integration.openlineage.*;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.ActivityStatus;
@@ -15,15 +13,21 @@ import org.odpi.openmetadata.frameworks.openmetadata.events.OpenMetadataEventTyp
 import org.odpi.openmetadata.frameworks.openmetadata.events.OpenMetadataOutTopicEvent;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.ElementHeader;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.OpenMetadataRootElement;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.RelatedMetadataElementSummary;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.processes.actions.ActionTargetProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.processes.actions.EngineActionProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.search.ElementProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 
-
 import java.net.URI;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import java.util.UUID;
 
 
 /**
@@ -126,7 +130,8 @@ public class GovernanceActionOpenLineageIntegrationConnector extends Integration
                         (ActivityStatus.FAILED.getName().equals(currentActionStatus)) ||
                         (ActivityStatus.INVALID.getName().equals(currentActionStatus)))
                     {
-                        EngineActionElement engineAction = integrationContext.getStewardshipAction().getEngineAction(elementHeader.getGUID());
+                        OpenMetadataRootElement engineAction = integrationContext.getAssetClient().getAssetByGUID(elementHeader.getGUID(),
+                                                                                                                  integrationContext.getAssetClient().getGetOptions());
 
                         publishOpenLineageEvent(currentActionStatus, event.getEventTime(), engineAction);
                     }
@@ -181,175 +186,184 @@ public class GovernanceActionOpenLineageIntegrationConnector extends Integration
      * @param engineAction source information
      * @exception ConnectorCheckedException connector has been asked to stop
      */
-    private void publishOpenLineageEvent(String              engineActionStatus,
-                                         Date                eventTime,
-                                         EngineActionElement engineAction) throws ConnectorCheckedException
+    private void publishOpenLineageEvent(String                  engineActionStatus,
+                                         Date                    eventTime,
+                                         OpenMetadataRootElement engineAction) throws ConnectorCheckedException
     {
         OpenLineageRunEvent event = new OpenLineageRunEvent();
 
-        event.setProducer(producer);
-        event.setEventTime(getTimeStamp(eventTime));
-
-        if (ActivityStatus.IN_PROGRESS.getName().equals(engineActionStatus))
+        if (engineAction.getProperties() instanceof EngineActionProperties engineActionProperties)
         {
-            event.setEventType("START");
-        }
-        else if (ActivityStatus.COMPLETED.getName().equals(engineActionStatus))
-        {
-            event.setEventType("COMPLETE");
-        }
-        else if (ActivityStatus.FAILED.getName().equals(engineActionStatus))
-        {
-            event.setEventType("FAIL");
-        }
-        else if (ActivityStatus.INVALID.getName().equals(engineActionStatus))
-        {
-            event.setEventType("ABORT");
-        }
+            event.setProducer(producer);
+            event.setEventTime(getTimeStamp(eventTime));
 
-        OpenLineageJob job = new OpenLineageJob();
-
-        if (engineAction.getProcessStepName() != null)
-        {
-            job.setName(engineAction.getProcessStepName());
-        }
-        else
-        {
-            job.setName(engineAction.getGovernanceEngineName() + "::" + engineAction.getRequestType());
-        }
-
-        job.setNamespace(namespace);
-
-        event.setJob(job);
-
-        OpenLineageRun run = new OpenLineageRun();
-
-        run.setRunId(UUID.fromString(engineAction.getElementHeader().getGUID()));
-
-        String anchorGUID = propertyHelper.getAnchorGUID(engineAction.getElementHeader());
-
-        OpenLineageRunFacets runFacets = new OpenLineageRunFacets();
-
-        if (anchorGUID != null)
-        {
-            OpenLineageParentRunFacet    parentRunFacet    = new OpenLineageParentRunFacet();
-            OpenLineageParentRunFacetJob parentRunFacetJob = new OpenLineageParentRunFacetJob();
-            OpenLineageParentRunFacetRun parentRunFacetRun = new OpenLineageParentRunFacetRun();
-
-            parentRunFacet.set_producer(producer);
-
-            parentRunFacetJob.setName(engineAction.getProcessName());
-            parentRunFacetJob.setNamespace(namespace);
-
-            parentRunFacet.setJob(parentRunFacetJob);
-
-            parentRunFacetRun.setRunId(UUID.fromString(anchorGUID));
-
-            parentRunFacet.setRun(parentRunFacetRun);
-
-            runFacets.setParent(parentRunFacet);
-        }
-
-        OpenLineageNominalTimeRunFacet nominalTimeRunFacet = new OpenLineageNominalTimeRunFacet();
-
-        nominalTimeRunFacet.set_producer(producer);
-
-        if (engineAction.getStartTime() == null)
-        {
-            nominalTimeRunFacet.setNominalStartTime(getTimeStamp(engineAction.getRequestedTime()));
-        }
-        else
-        {
-            nominalTimeRunFacet.setNominalStartTime(getTimeStamp(engineAction.getStartTime()));
-        }
-
-        if (engineAction.getCompletionTime() != null)
-        {
-            nominalTimeRunFacet.setNominalEndTime(getTimeStamp(engineAction.getCompletionTime()));
-        }
-
-        runFacets.setNominalTime(nominalTimeRunFacet);
-
-        run.setFacets(runFacets);
-
-        event.setRun(run);
-
-        List<OpenLineageInputDataSet> inputDataSets = new ArrayList<>();
-
-        if (engineAction.getActionTargetElements() != null)
-        {
-            for (ActionTargetElement actionTarget : engineAction.getActionTargetElements())
+            if (ActivityStatus.IN_PROGRESS.getName().equals(engineActionStatus))
             {
-                if (actionTarget != null)
-                {
-                    OpenLineageInputDataSet inputDataSet = new OpenLineageInputDataSet();
-
-                    inputDataSet.setName(actionTarget.getActionTargetName());
-                    inputDataSet.setNamespace(namespace);
-
-                    inputDataSets.add(inputDataSet);
-                }
+                event.setEventType("START");
             }
-        }
-
-        if (engineAction.getReceivedGuards() != null)
-        {
-            for (String guard : engineAction.getReceivedGuards())
+            else if (ActivityStatus.COMPLETED.getName().equals(engineActionStatus))
             {
-                if (guard != null)
-                {
-                    OpenLineageInputDataSet inputDataSet = new OpenLineageInputDataSet();
-
-                    inputDataSet.setName(guard);
-                    inputDataSet.setNamespace(namespace);
-
-                    inputDataSets.add(inputDataSet);
-                }
+                event.setEventType("COMPLETE");
             }
-        }
-
-        if (engineAction.getRequestParameters() != null)
-        {
-            for (String requestParameter : engineAction.getRequestParameters().values())
+            else if (ActivityStatus.FAILED.getName().equals(engineActionStatus))
             {
-                if (requestParameter != null)
-                {
-                    OpenLineageInputDataSet inputDataSet = new OpenLineageInputDataSet();
-
-                    inputDataSet.setName(requestParameter);
-                    inputDataSet.setNamespace(namespace);
-
-                    inputDataSets.add(inputDataSet);
-                }
+                event.setEventType("FAIL");
             }
-        }
-
-        event.setInputs(inputDataSets);
-
-        if (engineAction.getCompletionTime() != null)
-        {
-            List<OpenLineageOutputDataSet> outputDataSets = new ArrayList<>();
-
-            if (engineAction.getCompletionGuards() != null)
+            else if (ActivityStatus.INVALID.getName().equals(engineActionStatus))
             {
-                for (String guard : engineAction.getCompletionGuards())
+                event.setEventType("ABORT");
+            }
+
+            OpenLineageJob job = new OpenLineageJob();
+
+
+            if (engineActionProperties.getProcessStepName() != null)
+            {
+                job.setName(engineActionProperties.getProcessStepName());
+            }
+            else
+            {
+                job.setName(engineActionProperties.getExecutorEngineName() + "::" + engineActionProperties.getRequestType());
+            }
+
+
+            job.setNamespace(namespace);
+
+            event.setJob(job);
+
+            OpenLineageRun run = new OpenLineageRun();
+
+            run.setRunId(UUID.fromString(engineAction.getElementHeader().getGUID()));
+
+            String anchorGUID = propertyHelper.getAnchorGUID(engineAction.getElementHeader());
+
+            OpenLineageRunFacets runFacets = new OpenLineageRunFacets();
+
+            if (anchorGUID != null)
+            {
+                OpenLineageParentRunFacet    parentRunFacet    = new OpenLineageParentRunFacet();
+                OpenLineageParentRunFacetJob parentRunFacetJob = new OpenLineageParentRunFacetJob();
+                OpenLineageParentRunFacetRun parentRunFacetRun = new OpenLineageParentRunFacetRun();
+
+                parentRunFacet.set_producer(producer);
+
+                parentRunFacetJob.setName(engineActionProperties.getProcessName());
+                parentRunFacetJob.setNamespace(namespace);
+
+                parentRunFacet.setJob(parentRunFacetJob);
+
+                parentRunFacetRun.setRunId(UUID.fromString(anchorGUID));
+
+                parentRunFacet.setRun(parentRunFacetRun);
+
+                runFacets.setParent(parentRunFacet);
+            }
+
+            OpenLineageNominalTimeRunFacet nominalTimeRunFacet = new OpenLineageNominalTimeRunFacet();
+
+            nominalTimeRunFacet.set_producer(producer);
+
+            if (engineActionProperties.getStartTime() == null)
+            {
+                nominalTimeRunFacet.setNominalStartTime(getTimeStamp(engineActionProperties.getRequestedTime()));
+            }
+            else
+            {
+                nominalTimeRunFacet.setNominalStartTime(getTimeStamp(engineActionProperties.getStartTime()));
+            }
+
+            if (engineActionProperties.getCompletionTime() != null)
+            {
+                nominalTimeRunFacet.setNominalEndTime(getTimeStamp(engineActionProperties.getCompletionTime()));
+            }
+
+            runFacets.setNominalTime(nominalTimeRunFacet);
+
+            run.setFacets(runFacets);
+
+            event.setRun(run);
+
+            List<OpenLineageInputDataSet> inputDataSets = new ArrayList<>();
+
+            if (engineAction.getActionTargets() != null)
+            {
+                for (RelatedMetadataElementSummary actionTarget : engineAction.getActionTargets())
                 {
-                    if (guard != null)
+                    if (actionTarget != null)
                     {
-                        OpenLineageOutputDataSet outputDataSet = new OpenLineageOutputDataSet();
+                        OpenLineageInputDataSet inputDataSet = new OpenLineageInputDataSet();
 
-                        outputDataSet.setName(guard);
-                        outputDataSet.setNamespace(namespace);
+                        if (actionTarget.getRelationshipProperties() instanceof ActionTargetProperties actionTargetProperties)
+                        {
+                            inputDataSet.setName(actionTargetProperties.getActionTargetName());
+                        }
 
-                        outputDataSets.add(outputDataSet);
+                        inputDataSet.setNamespace(namespace);
+
+                        inputDataSets.add(inputDataSet);
                     }
                 }
             }
 
-            event.setOutputs(outputDataSets);
-        }
+            if (engineActionProperties.getReceivedGuards() != null)
+            {
+                for (String guard : engineActionProperties.getReceivedGuards())
+                {
+                    if (guard != null)
+                    {
+                        OpenLineageInputDataSet inputDataSet = new OpenLineageInputDataSet();
 
-        integrationContext.publishOpenLineageRunEvent(event);
+                        inputDataSet.setName(guard);
+                        inputDataSet.setNamespace(namespace);
+
+                        inputDataSets.add(inputDataSet);
+                    }
+                }
+            }
+
+            if (engineActionProperties.getRequestParameters() != null)
+            {
+                for (String requestParameter : engineActionProperties.getRequestParameters().values())
+                {
+                    if (requestParameter != null)
+                    {
+                        OpenLineageInputDataSet inputDataSet = new OpenLineageInputDataSet();
+
+                        inputDataSet.setName(requestParameter);
+                        inputDataSet.setNamespace(namespace);
+
+                        inputDataSets.add(inputDataSet);
+                    }
+                }
+            }
+
+            event.setInputs(inputDataSets);
+
+            if (engineActionProperties.getCompletionTime() != null)
+            {
+                List<OpenLineageOutputDataSet> outputDataSets = new ArrayList<>();
+
+                if (engineActionProperties.getCompletionGuards() != null)
+                {
+                    for (String guard : engineActionProperties.getCompletionGuards())
+                    {
+                        if (guard != null)
+                        {
+                            OpenLineageOutputDataSet outputDataSet = new OpenLineageOutputDataSet();
+
+                            outputDataSet.setName(guard);
+                            outputDataSet.setNamespace(namespace);
+
+                            outputDataSets.add(outputDataSet);
+                        }
+                    }
+                }
+
+                event.setOutputs(outputDataSets);
+            }
+
+            integrationContext.publishOpenLineageRunEvent(event);
+        }
     }
 
 

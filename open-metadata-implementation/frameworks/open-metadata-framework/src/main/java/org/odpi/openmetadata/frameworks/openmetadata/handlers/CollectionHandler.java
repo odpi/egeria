@@ -13,6 +13,7 @@ import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.*;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.*;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.actors.AssignmentScopeProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.collections.*;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.datadictionaries.DataDescriptionProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.digitalbusiness.*;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.glossaries.CanonicalVocabularyProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.glossaries.TaxonomyProperties;
@@ -277,11 +278,11 @@ public class CollectionHandler extends OpenMetadataHandlerBase
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public String createCollectionFromTemplate(String userId,
-                                               TemplateOptions templateOptions,
-                                               String templateGUID,
-                                               ElementProperties replacementProperties,
-                                               Map<String, String> placeholderProperties,
+    public String createCollectionFromTemplate(String                 userId,
+                                               TemplateOptions        templateOptions,
+                                               String                 templateGUID,
+                                               ElementProperties      replacementProperties,
+                                               Map<String, String>    placeholderProperties,
                                                RelationshipProperties parentRelationshipProperties) throws InvalidParameterException,
                                                                                                            UserNotAuthorizedException,
                                                                                                            PropertyServerException
@@ -306,9 +307,9 @@ public class CollectionHandler extends OpenMetadataHandlerBase
      * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    public void updateCollection(String userId,
-                                 String collectionGUID,
-                                 UpdateOptions updateOptions,
+    public void updateCollection(String               userId,
+                                 String               collectionGUID,
+                                 UpdateOptions        updateOptions,
                                  CollectionProperties properties) throws InvalidParameterException,
                                                                          PropertyServerException,
                                                                          UserNotAuthorizedException
@@ -393,6 +394,79 @@ public class CollectionHandler extends OpenMetadataHandlerBase
                                                         OpenMetadataType.RESOURCE_LIST_RELATIONSHIP.typeName,
                                                         parentGUID,
                                                         collectionGUID,
+                                                        deleteOptions);
+    }
+
+
+
+    /**
+     * Connect a data describing collection to an element using the DataDescription relationship (0580).
+     *
+     * @param userId            userId of user making request
+     * @param dataDescriptionCollectionGUID    unique identifier of the collection
+     * @param parentGUID        unique identifier of referenceable object that the collection should be attached to
+     * @param makeAnchorOptions options to control access to open metadata
+     * @param properties        description of how the collection will be used.
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public void attachDataDescription(String                    userId,
+                                      String                    parentGUID,
+                                      String                    dataDescriptionCollectionGUID,
+                                      MakeAnchorOptions         makeAnchorOptions,
+                                      DataDescriptionProperties properties) throws InvalidParameterException,
+                                                                                   PropertyServerException,
+                                                                                   UserNotAuthorizedException
+    {
+        final String methodName                  = "attachDataDescription";
+        final String collectionGUIDParameterName = "dataDescriptionCollectionGUID";
+        final String parentGUIDParameterName     = "parentGUID";
+
+        propertyHelper.validateUserId(userId, methodName);
+        propertyHelper.validateGUID(dataDescriptionCollectionGUID, collectionGUIDParameterName, methodName);
+        propertyHelper.validateGUID(parentGUID, parentGUIDParameterName, methodName);
+
+        openMetadataClient.createRelatedElementsInStore(userId,
+                                                        OpenMetadataType.DATA_DESCRIPTION_RELATIONSHIP.typeName,
+                                                        parentGUID,
+                                                        dataDescriptionCollectionGUID,
+                                                        makeAnchorOptions,
+                                                        relationshipBuilder.getNewElementProperties(properties));
+    }
+
+
+    /**
+     * Detach an existing data describing collection from an element.  If the collection is anchored to the element, it is deleted.
+     *
+     * @param userId         userId of user making request.
+     * @param dataDescriptionCollectionGUID unique identifier of the collection.
+     * @param parentGUID     unique identifier of referenceable object that the collection should be attached to.
+     * @param deleteOptions  options to control access to open metadata
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public void detachDataDescription(String        userId,
+                                      String        parentGUID,
+                                      String        dataDescriptionCollectionGUID,
+                                      DeleteOptions deleteOptions) throws InvalidParameterException,
+                                                                          PropertyServerException,
+                                                                          UserNotAuthorizedException
+    {
+        final String methodName = "detachDataDescription";
+
+        final String collectionGUIDParameterName = "dataDescriptionCollectionGUID";
+        final String parentGUIDParameterName     = "parentGUID";
+
+        propertyHelper.validateUserId(userId, methodName);
+        propertyHelper.validateGUID(dataDescriptionCollectionGUID, collectionGUIDParameterName, methodName);
+        propertyHelper.validateGUID(parentGUID, parentGUIDParameterName, methodName);
+
+        openMetadataClient.detachRelatedElementsInStore(userId,
+                                                        OpenMetadataType.DATA_DESCRIPTION_RELATIONSHIP.typeName,
+                                                        parentGUID,
+                                                        dataDescriptionCollectionGUID,
                                                         deleteOptions);
     }
 
@@ -1341,9 +1415,9 @@ public class CollectionHandler extends OpenMetadataHandlerBase
      * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    private String getMembershipRelationshipGUID(String userId,
-                                                 String collectionGUID,
-                                                 String elementGUID,
+    private String getMembershipRelationshipGUID(String       userId,
+                                                 String       collectionGUID,
+                                                 String       elementGUID,
                                                  QueryOptions queryOptions) throws InvalidParameterException,
                                                                                    PropertyServerException,
                                                                                    UserNotAuthorizedException

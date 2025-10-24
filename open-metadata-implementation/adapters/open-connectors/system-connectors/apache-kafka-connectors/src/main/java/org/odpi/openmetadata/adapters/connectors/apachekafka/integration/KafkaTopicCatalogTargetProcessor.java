@@ -17,6 +17,7 @@ import org.odpi.openmetadata.frameworks.openmetadata.connectorcontext.AssetClien
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.OpenMetadataRootElement;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.topics.TopicProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.refdata.DeployedImplementationType;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 
 import java.util.*;
@@ -169,7 +170,8 @@ public class KafkaTopicCatalogTargetProcessor extends CatalogTargetProcessorBase
                         TopicProperties topicProperties = new TopicProperties();
 
                         topicProperties.setQualifiedName(topicName);
-                        topicProperties.setTypeName(OpenMetadataType.KAFKA_TOPIC.typeName);
+                        topicProperties.setTypeName(OpenMetadataType.TOPIC.typeName);
+                        topicProperties.setDeployedImplementationType(DeployedImplementationType.APACHE_KAFKA_TOPIC.getDeployedImplementationType());
 
                         topicGUID = assetClient.createAsset(null, null, topicProperties, null);
 

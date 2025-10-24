@@ -3,7 +3,9 @@
 
 package org.odpi.openmetadata.frameworks.openmetadata.properties.schema.databases;
 
-import com.fasterxml.jackson.annotation.*;
+import com.fasterxml.jackson.annotation.JsonAutoDetect;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.schema.SchemaAttributeProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 
@@ -33,10 +35,11 @@ public class RelationalTableProperties extends SchemaAttributeProperties
      *
      * @param template object to copy
      */
-    public RelationalTableProperties(RelationalTableProperties template)
+    public RelationalTableProperties(SchemaAttributeProperties template)
     {
         super(template);
     }
+
 
     /**
      * Standard toString method.

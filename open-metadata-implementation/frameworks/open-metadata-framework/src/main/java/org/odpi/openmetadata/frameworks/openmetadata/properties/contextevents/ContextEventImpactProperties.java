@@ -7,7 +7,7 @@ package org.odpi.openmetadata.frameworks.openmetadata.properties.contextevents;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.RelationshipBeanProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.LabeledRelationshipProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 
 import java.util.Objects;
@@ -22,10 +22,9 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class ContextEventImpactProperties extends RelationshipBeanProperties
+public class ContextEventImpactProperties extends LabeledRelationshipProperties
 {
     private int    severityLevelIdentifier = 0;
-    private String description             = null;
 
 
     /**
@@ -50,7 +49,6 @@ public class ContextEventImpactProperties extends RelationshipBeanProperties
         if (template != null)
         {
             severityLevelIdentifier = template.getSeverityLevelIdentifier();
-            description             = template.getDescription();
         }
     }
 
@@ -76,29 +74,6 @@ public class ContextEventImpactProperties extends RelationshipBeanProperties
         this.severityLevelIdentifier = severityLevelIdentifier;
     }
 
-
-    /**
-     * Return the description for the relationship.
-     *
-     * @return string
-     */
-    public String getDescription()
-    {
-        return description;
-    }
-
-
-    /**
-     * Set up the description for the relationship.
-     *
-     * @param description string
-     */
-    public void setDescription(String description)
-    {
-        this.description = description;
-    }
-
-
     /**
      * Standard toString method.
      *
@@ -109,7 +84,6 @@ public class ContextEventImpactProperties extends RelationshipBeanProperties
     {
         return "ContextEventImpactProperties{" +
                 "severityLevelIdentifier=" + severityLevelIdentifier +
-                ", description='" + description + '\'' +
                 "} " + super.toString();
     }
 
@@ -127,8 +101,7 @@ public class ContextEventImpactProperties extends RelationshipBeanProperties
         if (objectToCompare == null || getClass() != objectToCompare.getClass()) return false;
         if (!super.equals(objectToCompare)) return false;
         ContextEventImpactProperties that = (ContextEventImpactProperties) objectToCompare;
-        return severityLevelIdentifier == that.severityLevelIdentifier &&
-                Objects.equals(description, that.description);
+        return severityLevelIdentifier == that.severityLevelIdentifier;
     }
 
     /**
@@ -139,6 +112,6 @@ public class ContextEventImpactProperties extends RelationshipBeanProperties
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), severityLevelIdentifier, description);
+        return Objects.hash(super.hashCode(), severityLevelIdentifier);
     }
 }

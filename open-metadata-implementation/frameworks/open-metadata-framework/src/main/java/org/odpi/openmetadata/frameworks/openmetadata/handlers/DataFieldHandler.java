@@ -254,6 +254,8 @@ public class DataFieldHandler extends OpenMetadataHandlerBase
         final String methodName = "getDataFieldsByName";
 
         List<String> propertyNames = Arrays.asList(OpenMetadataProperty.QUALIFIED_NAME.name,
+                                                   OpenMetadataProperty.IDENTIFIER.name,
+                                                   OpenMetadataProperty.NAMESPACE.name,
                                                    OpenMetadataProperty.DISPLAY_NAME.name);
 
         return super.getRootElementsByName(userId, name, propertyNames, queryOptions, methodName);

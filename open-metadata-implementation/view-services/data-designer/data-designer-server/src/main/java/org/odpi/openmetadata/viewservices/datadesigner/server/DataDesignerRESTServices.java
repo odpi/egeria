@@ -323,7 +323,7 @@ public class DataDesignerRESTServices extends TokenController
     public VoidResponse detachMemberDataField(String            serverName,
                                               String            dataStructureGUID,
                                               String            dataFieldGUID,
-                                              DeleteRequestBody requestBody)
+                                              DeleteRelationshipRequestBody requestBody)
     {
         final String methodName = "detachMemberDataField";
 
@@ -368,7 +368,7 @@ public class DataDesignerRESTServices extends TokenController
      */
     public VoidResponse deleteDataStructure(String            serverName,
                                             String            dataStructureGUID,
-                                            DeleteRequestBody requestBody)
+                                            DeleteElementRequestBody requestBody)
     {
         final String methodName = "deleteDataStructure";
 
@@ -834,7 +834,7 @@ public class DataDesignerRESTServices extends TokenController
     public VoidResponse detachNestedDataFields(String                   serverName,
                                                String                   parentDataFieldGUID,
                                                String                   nestedDataFieldGUID,
-                                               DeleteRequestBody requestBody)
+                                               DeleteRelationshipRequestBody requestBody)
     {
         final String methodName = "detachNestedDataClass";
 
@@ -877,9 +877,9 @@ public class DataDesignerRESTServices extends TokenController
      *  PropertyServerException    there is a problem retrieving information from the property server(s).
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    public VoidResponse deleteDataField(String                    serverName,
-                                        String                    dataFieldGUID,
-                                        DeleteRequestBody requestBody)
+    public VoidResponse deleteDataField(String                   serverName,
+                                        String                   dataFieldGUID,
+                                        DeleteElementRequestBody requestBody)
     {
         final String methodName = "deleteDataField";
 
@@ -1341,10 +1341,10 @@ public class DataDesignerRESTServices extends TokenController
      *  PropertyServerException    there is a problem retrieving information from the property server(s).
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    public VoidResponse detachNestedDataClass(String                   serverName,
-                                              String                   parentDataClassGUID,
-                                              String                   childDataClassGUID,
-                                              DeleteRequestBody requestBody)
+    public VoidResponse detachNestedDataClass(String                        serverName,
+                                              String                        parentDataClassGUID,
+                                              String                        childDataClassGUID,
+                                              DeleteRelationshipRequestBody requestBody)
     {
         final String methodName = "detachNestedDataClass";
 
@@ -1464,10 +1464,10 @@ public class DataDesignerRESTServices extends TokenController
      *  PropertyServerException    there is a problem retrieving information from the property server(s).
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    public VoidResponse detachSpecializedDataClass(String                   serverName,
-                                                   String                   parentDataClassGUID,
-                                                   String                   childDataClassGUID,
-                                                   DeleteRequestBody requestBody)
+    public VoidResponse detachSpecializedDataClass(String                        serverName,
+                                                   String                        parentDataClassGUID,
+                                                   String                        childDataClassGUID,
+                                                   DeleteRelationshipRequestBody requestBody)
     {
         final String methodName = "detachSpecializedDataClass";
 
@@ -1512,7 +1512,7 @@ public class DataDesignerRESTServices extends TokenController
      */
     public VoidResponse deleteDataClass(String                   serverName,
                                         String                   dataClassGUID,
-                                        DeleteRequestBody requestBody)
+                                        DeleteElementRequestBody requestBody)
     {
         final String methodName = "deleteDataClass";
 
@@ -1783,10 +1783,10 @@ public class DataDesignerRESTServices extends TokenController
      *  PropertyServerException    there is a problem retrieving information from the property server(s).
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    public VoidResponse detachDataClassDefinition(String                   serverName,
-                                                  String                   dataDefinitionGUID,
-                                                  String                   dataClassGUID,
-                                                  DeleteRequestBody requestBody)
+    public VoidResponse detachDataClassDefinition(String                        serverName,
+                                                  String                        dataDefinitionGUID,
+                                                  String                        dataClassGUID,
+                                                  DeleteRelationshipRequestBody requestBody)
     {
         final String methodName = "detachDataClassDefinition";
 
@@ -1907,10 +1907,10 @@ public class DataDesignerRESTServices extends TokenController
      *  PropertyServerException    there is a problem retrieving information from the property server(s).
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    public VoidResponse detachSemanticDefinition(String                   serverName,
-                                                 String                   dataDefinitionGUID,
-                                                 String                   glossaryTermGUID,
-                                                 DeleteRequestBody requestBody)
+    public VoidResponse detachSemanticDefinition(String                        serverName,
+                                                 String                        dataDefinitionGUID,
+                                                 String                        glossaryTermGUID,
+                                                 DeleteRelationshipRequestBody requestBody)
     {
         final String methodName = "detachSemanticDefinition";
 
@@ -2034,10 +2034,10 @@ public class DataDesignerRESTServices extends TokenController
      *  PropertyServerException    there is a problem retrieving information from the property server(s).
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    public VoidResponse detachCertificationTypeToDataStructure(String                   serverName,
-                                                               String                   certificationTypeGUID,
-                                                               String                   dataStructureGUID,
-                                                               DeleteRequestBody requestBody)
+    public VoidResponse detachCertificationTypeToDataStructure(String                        serverName,
+                                                               String                        certificationTypeGUID,
+                                                               String                        dataStructureGUID,
+                                                               DeleteRelationshipRequestBody requestBody)
     {
         final String methodName = "detachCertificationTypeToDataStructure";
 

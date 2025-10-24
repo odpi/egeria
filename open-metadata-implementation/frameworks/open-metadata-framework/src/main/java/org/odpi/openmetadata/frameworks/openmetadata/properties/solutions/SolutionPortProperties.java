@@ -7,7 +7,7 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.SolutionPortDirection;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.ReferenceableProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.designmodels.DesignModelElementProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 
 import java.util.Objects;
@@ -21,10 +21,9 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class SolutionPortProperties extends ReferenceableProperties
+public class SolutionPortProperties extends DesignModelElementProperties
 {
-    private SolutionPortDirection solutionPortDirection = null;
-    private String                userDefinedStatus     = null;
+    private SolutionPortDirection direction         = null;
 
 
     /**
@@ -48,8 +47,7 @@ public class SolutionPortProperties extends ReferenceableProperties
 
         if (template != null)
         {
-            this.solutionPortDirection = template.getSolutionPortDirection();
-            this.userDefinedStatus = template.getUserDefinedStatus();
+            this.direction = template.getDirection();
         }
     }
 
@@ -59,42 +57,20 @@ public class SolutionPortProperties extends ReferenceableProperties
      *
      * @return portType enum
      */
-    public SolutionPortDirection getSolutionPortDirection()
+    public SolutionPortDirection getDirection()
     {
-        return solutionPortDirection;
+        return direction;
     }
 
 
     /**
      * Set up the direction of data flow of the port.
      *
-     * @param solutionPortDirection portType enum
+     * @param direction portType enum
      */
-    public void setSolutionPortDirection(SolutionPortDirection solutionPortDirection)
+    public void setDirection(SolutionPortDirection direction)
     {
-        this.solutionPortDirection = solutionPortDirection;
-    }
-
-
-    /**
-     * Return the status of the element.
-     *
-     * @return string
-     */
-    public String getUserDefinedStatus()
-    {
-        return userDefinedStatus;
-    }
-
-
-    /**
-     * Set up the status of the element.
-     *
-     * @param userDefinedStatus string
-     */
-    public void setUserDefinedStatus(String userDefinedStatus)
-    {
-        this.userDefinedStatus = userDefinedStatus;
+        this.direction = direction;
     }
 
 
@@ -107,8 +83,7 @@ public class SolutionPortProperties extends ReferenceableProperties
     public String toString()
     {
         return "SolutionPortProperties{" +
-                "solutionPortDirection=" + solutionPortDirection +
-                ", userDefinedStatus=" + userDefinedStatus +
+                "solutionPortDirection=" + direction +
                 "} " + super.toString();
     }
 
@@ -127,8 +102,7 @@ public class SolutionPortProperties extends ReferenceableProperties
         if (objectToCompare == null || getClass() != objectToCompare.getClass()) return false;
         if (!super.equals(objectToCompare)) return false;
         SolutionPortProperties that = (SolutionPortProperties) objectToCompare;
-        return Objects.equals(userDefinedStatus, that.userDefinedStatus) &&
-                solutionPortDirection == that.solutionPortDirection;
+        return direction == that.direction;
     }
 
     /**
@@ -139,6 +113,6 @@ public class SolutionPortProperties extends ReferenceableProperties
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), solutionPortDirection, userDefinedStatus);
+        return Objects.hash(super.hashCode(), direction);
     }
 }

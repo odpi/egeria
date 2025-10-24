@@ -10,7 +10,6 @@ import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataWikiPages
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
-import static org.odpi.openmetadata.frameworks.openmetadata.mapper.OpenMetadataValidValues.constructValidValueNamespace;
 import static org.odpi.openmetadata.frameworks.openmetadata.mapper.OpenMetadataValidValues.constructValidValueQualifiedName;
 
 /**
@@ -207,19 +206,6 @@ public enum DataClassAssignmentStatus implements OpenMetadataEnum
                                                 OpenMetadataProperty.DATA_CLASS_ASSIGNMENT_STATUS.name,
                                                 null,
                                                 name);
-    }
-
-
-    /**
-     * Return the category for this value.
-     *
-     * @return string
-     */
-    public String getCategory()
-    {
-        return constructValidValueNamespace(ENUM_TYPE_NAME,
-                                            OpenMetadataProperty.DATA_CLASS_ASSIGNMENT_STATUS.name,
-                                            null);
     }
 
 

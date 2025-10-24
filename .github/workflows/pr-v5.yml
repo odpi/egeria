@@ -5,7 +5,7 @@ name: "Verify PR v5"
 
 on:
   pull_request:
-    branches: [main, egeria-release-5*]
+    branches: [egeria-release-5*]
 
 permissions:
   contents: read
@@ -16,7 +16,7 @@ jobs:
     name: "Verify PR v5"
     if: startsWith(github.repository,'odpi/')
     steps:
-      - uses: actions/checkout@v4.2.2
+      - uses: actions/checkout@v5.0.0
       - uses: gradle/wrapper-validation-action@v2
       - name: Set up JDK
         uses: actions/setup-java@v4

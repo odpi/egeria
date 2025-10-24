@@ -60,7 +60,7 @@ class OmasCreateTable implements BiFunction<String, RelationalTableProperties, O
         {
             OpenMetadataRootElement dataAsset = dataAssetClient.getAssetByGUID(parentGuid, dataAssetClient.getGetOptions());
 
-            if (dataAsset.getRootSchemaType() == null)
+            if (dataAsset.getSchemaType() == null)
             {
                 // ToDo - check schemaType attached; set up anchor; set up parent
                 NewElementOptions newElementOptions = new NewElementOptions(dataAssetClient.getMetadataSourceOptions());

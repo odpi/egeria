@@ -8,7 +8,10 @@ import org.odpi.openmetadata.frameworks.openmetadata.events.OpenMetadataOutTopic
 import java.util.List;
 
 /**
- * RegisteredIntegrationModule defines the interface for an integration module that wants to be called to synchronize assets.
+ * RegisteredIntegrationModule defines the interface for an integration module that wants to be called to synchronize
+ * metadata between Egeria's open metadata ecosystem and Apache Atlas.  The integration work is
+ * divided into modules that each focus on a particular type of open metadata.  This is because the
+ * mapping between Apache atlas and open metadata is not one-to-one and requires special case code in places.
  */
 public interface RegisteredIntegrationModule
 {
@@ -33,7 +36,7 @@ public interface RegisteredIntegrationModule
      *
      * @return module name
      */
-    public String getModuleName();
+    String getModuleName();
 
 
     /**

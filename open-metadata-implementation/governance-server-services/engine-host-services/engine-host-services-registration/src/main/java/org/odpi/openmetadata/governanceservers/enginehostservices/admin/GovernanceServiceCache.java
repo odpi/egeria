@@ -85,7 +85,7 @@ public class GovernanceServiceCache
             }
 
             this.requestParameters  = supportedGovernanceServiceProperties.getRequestParameters();
-            this.generateIntegrationReport = supportedGovernanceServiceProperties.getGenerateActivityReports();
+            this.generateIntegrationReport = supportedGovernanceServiceProperties.getGenerateConnectorActivityReports();
 
             if (supportedGovernanceServiceProperties.getDeleteMethod() == null)
             {

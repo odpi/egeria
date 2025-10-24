@@ -52,7 +52,7 @@ class OmasGetViews implements Function<String, List<OpenMetadataRootElement>>
         {
             OpenMetadataRootElement dataAsset = dataAssetClient.getAssetByGUID(assetGuid, dataAssetClient.getGetOptions());
 
-            if (dataAsset.getRootSchemaType() == null)
+            if (dataAsset.getSchemaType() == null)
             {
                 return new ArrayList<>();
             }
@@ -60,7 +60,7 @@ class OmasGetViews implements Function<String, List<OpenMetadataRootElement>>
             {
                 // todo limit search to only schema attributes with the CalculatedValue classification
                 return Optional.ofNullable(
-                        databaseViewClient.getAttributesForSchemaType(dataAsset.getRootSchemaType().getRelatedElement().getElementHeader().getGUID(),
+                        databaseViewClient.getAttributesForSchemaType(dataAsset.getSchemaType().getRelatedElement().getElementHeader().getGUID(),
                                                                       databaseViewClient.getQueryOptions())).orElseGet(ArrayList::new);
             }
         }

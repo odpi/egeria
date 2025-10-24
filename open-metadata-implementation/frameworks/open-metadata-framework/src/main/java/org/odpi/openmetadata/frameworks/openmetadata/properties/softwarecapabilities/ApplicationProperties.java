@@ -3,11 +3,20 @@
 package org.odpi.openmetadata.frameworks.openmetadata.properties.softwarecapabilities;
 
 
+import com.fasterxml.jackson.annotation.JsonAutoDetect;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 
+import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
+import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
+
 /**
- * ApplicationProperties describes an collection of processes (application) that implements support for the business.
+ * ApplicationProperties describes a collection of processes (application) that implements support for the business.
  */
+@JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
+@JsonInclude(JsonInclude.Include.NON_NULL)
+@JsonIgnoreProperties(ignoreUnknown=true)
 public class ApplicationProperties extends SoftwareCapabilityProperties
 {
     /**
@@ -22,17 +31,6 @@ public class ApplicationProperties extends SoftwareCapabilityProperties
 
     /**
      * Copy/clone constructor.
-     *
-     * @param template object to copy
-     */
-    public ApplicationProperties(ApplicationProperties template)
-    {
-        super(template);
-    }
-
-
-    /**
-     * Copy/clone constructor from OCF bean.
      *
      * @param template object to copy
      */

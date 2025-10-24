@@ -28,7 +28,7 @@ public class ResourceListProperties extends RelationshipBeanProperties
     String              displayName          = null;
     String              description          = null;
     Map<String, String> additionalProperties = null;
-    boolean             watchResource        = false;
+
 
     /**
      * Default constructor
@@ -55,7 +55,6 @@ public class ResourceListProperties extends RelationshipBeanProperties
             this.displayName          = template.getDisplayName();
             this.description          = template.getDescription();
             this.additionalProperties = template.getAdditionalProperties();
-            this.watchResource        = template.getWatchResource();
         }
     }
 
@@ -149,28 +148,6 @@ public class ResourceListProperties extends RelationshipBeanProperties
 
 
     /**
-     * Return whether changes to the resource result in notifications to the initiative.
-     *
-     * @return flag
-     */
-    public boolean getWatchResource()
-    {
-        return watchResource;
-    }
-
-
-    /**
-     * Set up whether changes to the resource result in notifications to the initiative.
-     *
-     * @param watchResource flag
-     */
-    public void setWatchResource(boolean watchResource)
-    {
-        this.watchResource = watchResource;
-    }
-
-
-    /**
      * JSON-style toString
      *
      * @return return string containing the property names and values
@@ -183,7 +160,6 @@ public class ResourceListProperties extends RelationshipBeanProperties
                 ", displayName='" + displayName + '\'' +
                 ", description='" + description + '\'' +
                 ", additionalProperties=" + additionalProperties +
-                ", watchResource=" + watchResource +
                 "} " + super.toString();
     }
 
@@ -210,8 +186,7 @@ public class ResourceListProperties extends RelationshipBeanProperties
             return false;
         }
         ResourceListProperties that = (ResourceListProperties) objectToCompare;
-        return watchResource == that.watchResource &&
-                Objects.equals(resourceUse, that.resourceUse) &&
+        return Objects.equals(resourceUse, that.resourceUse) &&
                 Objects.equals(displayName, that.displayName) &&
                 Objects.equals(description, that.description) &&
                 Objects.equals(additionalProperties, that.additionalProperties);
@@ -226,6 +201,6 @@ public class ResourceListProperties extends RelationshipBeanProperties
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), resourceUse, displayName, description, additionalProperties, watchResource);
+        return Objects.hash(super.hashCode(), resourceUse, displayName, description, additionalProperties);
     }
 }

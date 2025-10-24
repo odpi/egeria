@@ -425,6 +425,15 @@ public enum AtlasIntegrationAuditCode implements AuditLogMessageSet
                                    "The connector will retry the calls to process related elements on the next refresh.  These related elements are used to augment the metadata attached to the corresponding Apache Atlas entity.",
                                    "Use the information in the exception to determine why it is not possible to process the related elements."),
 
+    /**
+     * APACHE-ATLAS-INTEGRATION-CONNECTOR-0055 - The {0} integration connector can not retrieve the atlas GUID for {1} open metadata entity {2} and metadata collection {3}
+     */
+    MISSING_ATLAS_GUID( "APACHE-ATLAS-INTEGRATION-CONNECTOR-0055",
+                       AuditLogRecordSeverityLevel.INFO,
+                       "The {0} integration connector can not retrieve the atlas GUID for {1} open metadata entity {2} and metadata collection {3}",
+                       "There is no Apache Atlas correlation information for this element.",
+                       "Review the follow on messages.  If there are none, it is just a timing issue.  If there are subsequent error messages then follow their instructions."),
+
     ;
 
 

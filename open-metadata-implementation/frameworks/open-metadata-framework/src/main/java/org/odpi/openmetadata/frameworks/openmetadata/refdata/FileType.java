@@ -402,7 +402,7 @@ public enum FileType
      */
     ENCRYPT_KEYS_FILE("Encryption keys File",
                       null,
-                      OpenMetadataType.KEYSTORE_FILE.typeName,
+                      OpenMetadataType.KEY_STORE_FILE.typeName,
                       DeployedImplementationType.KEYSTORE_FILE,
                       "A file containing encrypted secrets."),
 
@@ -411,7 +411,7 @@ public enum FileType
      */
     PIEF_FILE("Personal Information Exchange File",
               "PKCS#12",
-              OpenMetadataType.KEYSTORE_FILE.typeName,
+              OpenMetadataType.KEY_STORE_FILE.typeName,
               DeployedImplementationType.KEYSTORE_FILE,
               "A file containing a digital certificate that uses PKCS#12 (Public Key Cryptography Standard #12) encryption. It is used as a portable format for transferring personal private keys and other sensitive information."),
 
@@ -420,7 +420,7 @@ public enum FileType
      */
     JKS_FILE("Java Keystore File",
              null,
-             OpenMetadataType.KEYSTORE_FILE.typeName,
+             OpenMetadataType.KEY_STORE_FILE.typeName,
              DeployedImplementationType.KEYSTORE_FILE,
              "A Java-specific key store containing private keys and certificates, but it cannot be used to store secret keys."),
 
@@ -429,7 +429,7 @@ public enum FileType
      */
     JCEKS_FILE("Java Cryptography Extension (JCE) Keystore File",
                null,
-               OpenMetadataType.KEYSTORE_FILE.typeName,
+               OpenMetadataType.KEY_STORE_FILE.typeName,
                DeployedImplementationType.KEYSTORE_FILE,
                "A Java-specific key store containing private keys and certificates, but it should not be used to store secret keys because it is vulnerable to brute-force cyber attacks."),
 

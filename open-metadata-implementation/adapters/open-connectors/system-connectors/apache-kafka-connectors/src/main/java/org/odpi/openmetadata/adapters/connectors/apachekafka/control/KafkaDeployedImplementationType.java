@@ -7,7 +7,6 @@ import org.odpi.openmetadata.frameworks.openmetadata.refdata.DeployedImplementat
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 
-import static org.odpi.openmetadata.frameworks.openmetadata.mapper.OpenMetadataValidValues.constructValidValueNamespace;
 import static org.odpi.openmetadata.frameworks.openmetadata.mapper.OpenMetadataValidValues.constructValidValueQualifiedName;
 
 /**
@@ -30,9 +29,9 @@ public enum KafkaDeployedImplementationType implements DeployedImplementationTyp
      * A software server supporting an event broker that enables high speed, reliable topic-based event exchange.
      */
     APACHE_KAFKA_SERVER("Apache Kafka Server",
-                        DeployedImplementationType.SOFTWARE_SERVER,
+                        DeployedImplementationType.INTEGRATION_SERVER,
                         OpenMetadataType.SOFTWARE_SERVER.typeName,
-                        OpenMetadataType.INTEGRATION_SERVER_CLASSIFICATION.typeName,
+                        null,
                         "A software server supporting an event broker that enables high speed, reliable topic-based event exchange.",
                         "https://kafka.apache.org/"),
 
@@ -155,20 +154,6 @@ public enum KafkaDeployedImplementationType implements DeployedImplementationTyp
                                                 OpenMetadataProperty.DEPLOYED_IMPLEMENTATION_TYPE.name,
                                                 null,
                                                 deployedImplementationType);
-    }
-
-
-    /**
-     * Return the category for this deployed implementation type.
-     *
-     * @return string
-     */
-    @Override
-    public String getNamespace()
-    {
-        return constructValidValueNamespace(associatedTypeName,
-                                            OpenMetadataProperty.DEPLOYED_IMPLEMENTATION_TYPE.name,
-                                            null);
     }
 
 

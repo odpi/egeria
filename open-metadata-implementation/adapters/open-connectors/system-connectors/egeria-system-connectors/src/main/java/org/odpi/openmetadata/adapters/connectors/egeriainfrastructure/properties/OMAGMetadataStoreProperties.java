@@ -20,7 +20,10 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class OMAGMetadataStoreProperties extends OMAGServerProperties
 {
-    private OMAGConnectorProperties repositoryConnector = null;
+    private OMAGConnectorProperties repositoryConnector         = null;
+    private String                  localMetadataCollectionId   = null;
+    private String                  localMetadataCollectionName = null;
+
 
     public OMAGMetadataStoreProperties()
     {
@@ -50,6 +53,50 @@ public class OMAGMetadataStoreProperties extends OMAGServerProperties
 
 
     /**
+     * Return the identifier of the metadata collection stored inside the local repository.
+     *
+     * @return string
+     */
+    public String getLocalMetadataCollectionId()
+    {
+        return localMetadataCollectionId;
+    }
+
+
+    /**
+     * Set up the identifier of the metadata collection stored inside the local repository.
+     *
+     * @param localMetadataCollectionId string
+     */
+    public void setLocalMetadataCollectionId(String localMetadataCollectionId)
+    {
+        this.localMetadataCollectionId = localMetadataCollectionId;
+    }
+
+
+    /**
+     * Return the optional name of the metadata collection stored inside the local repository.
+     *
+     * @return string
+     */
+    public String getLocalMetadataCollectionName()
+    {
+        return localMetadataCollectionName;
+    }
+
+
+    /**
+     * Set up the optional name of the metadata collection stored inside the local repository.
+     *
+     * @param localMetadataCollectionName string
+     */
+    public void setLocalMetadataCollectionName(String localMetadataCollectionName)
+    {
+        this.localMetadataCollectionName = localMetadataCollectionName;
+    }
+
+
+    /**
      * Standard toString method.
      *
      * @return print out of variables in a JSON-style
@@ -59,6 +106,8 @@ public class OMAGMetadataStoreProperties extends OMAGServerProperties
     {
         return "OMAGMetadataStoreProperties{" +
                 "repositoryConnector=" + repositoryConnector +
+                ", localMetadataCollectionId='" + localMetadataCollectionId + '\'' +
+                ", localMetadataCollectionName='" + localMetadataCollectionName + '\'' +
                 "} " + super.toString();
     }
 
@@ -75,7 +124,9 @@ public class OMAGMetadataStoreProperties extends OMAGServerProperties
         if (this == objectToCompare) return true;
         if (objectToCompare == null || getClass() != objectToCompare.getClass()) return false;
         OMAGMetadataStoreProperties that = (OMAGMetadataStoreProperties) objectToCompare;
-        return Objects.equals(repositoryConnector, that.repositoryConnector);
+        return Objects.equals(repositoryConnector, that.repositoryConnector) &&
+                Objects.equals(localMetadataCollectionId, that.localMetadataCollectionId)  &&
+                Objects.equals(localMetadataCollectionName, that.localMetadataCollectionName);
     }
 
     /**
@@ -86,6 +137,6 @@ public class OMAGMetadataStoreProperties extends OMAGServerProperties
     @Override
     public int hashCode()
     {
-        return Objects.hash(repositoryConnector);
+        return Objects.hash(repositoryConnector, localMetadataCollectionId, localMetadataCollectionName);
     }
 }

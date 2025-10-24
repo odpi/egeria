@@ -108,7 +108,7 @@ public class DistributeAuditEventsFromKafkaConnector extends IntegrationConnecto
     {
         if (DistributeAuditEventCatalogTarget.INCOMING_TOPIC.getName().equals(retrievedCatalogTarget.getCatalogTargetName()))
         {
-            if (propertyHelper.isTypeOf(retrievedCatalogTarget.getCatalogTargetElement(), OpenMetadataType.KAFKA_TOPIC.typeName))
+            if (propertyHelper.isTypeOf(retrievedCatalogTarget.getCatalogTargetElement().getElementHeader(), OpenMetadataType.TOPIC.typeName))
             {
                 return new KafkaTopicSourceCatalogTargetProcessor(retrievedCatalogTarget,
                                                                   catalogTargetContext,
@@ -120,7 +120,7 @@ public class DistributeAuditEventsFromKafkaConnector extends IntegrationConnecto
         }
         else if (DistributeAuditEventCatalogTarget.DESTINATION.getName().equals(retrievedCatalogTarget.getCatalogTargetName()))
         {
-            if (propertyHelper.isTypeOf(retrievedCatalogTarget.getCatalogTargetElement(), OpenMetadataType.DATA_ASSET.typeName))
+            if (propertyHelper.isTypeOf(retrievedCatalogTarget.getCatalogTargetElement().getElementHeader(), OpenMetadataType.DATA_ASSET.typeName))
             {
                 return new AuditLogDestinationCatalogTargetProcessor(retrievedCatalogTarget,
                                                                      catalogTargetContext,

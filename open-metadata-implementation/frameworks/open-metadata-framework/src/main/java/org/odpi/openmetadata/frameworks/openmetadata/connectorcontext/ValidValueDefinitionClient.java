@@ -12,8 +12,6 @@ import org.odpi.openmetadata.frameworks.openmetadata.handlers.ValidValueDefiniti
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.OpenMetadataRootElement;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.ClassificationProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.RelationshipProperties;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.actors.*;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.locations.KnownLocationProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.validvalues.*;
 import org.odpi.openmetadata.frameworks.openmetadata.search.*;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
@@ -62,6 +60,21 @@ public class ValidValueDefinitionClient extends ConnectorContextClientBase
 
 
     /**
+     * Copy/clone constructor.
+     *
+     * @param template client to copy
+     * @param specificTypeName type name override
+     */
+    public ValidValueDefinitionClient(ValidValueDefinitionClient template,
+                                      String                specificTypeName)
+    {
+        super(template);
+
+        this.validValueDefinitionHandler = new ValidValueDefinitionHandler(template.validValueDefinitionHandler, specificTypeName);
+    }
+
+
+    /**
      * Create a new valid value definition.
      *
      * @param validValueSetGUID parent element
@@ -87,7 +100,7 @@ public class ValidValueDefinitionClient extends ConnectorContextClientBase
         newElementOptions.setParentRelationshipTypeName(OpenMetadataType.VALID_VALUE_MEMBER_RELATIONSHIP.typeName);
 
         ValidValueMemberProperties validValueMemberProperties = new ValidValueMemberProperties();
-        validValueMemberProperties.setDefaultValue(isDefaultValue);
+        validValueMemberProperties.setIsDefaultValue(isDefaultValue);
 
         return this.createValidValueDefinition(newElementOptions,
                                                null,
@@ -244,9 +257,9 @@ public class ValidValueDefinitionClient extends ConnectorContextClientBase
     public void linkValidValuesAssignment(String                         elementGUID,
                                           String                         validValueDefinitionGUID,
                                           MetadataSourceOptions          metadataSourceOptions,
-                                          ValidValueAssignmentProperties relationshipProperties) throws InvalidParameterException,
-                                                                                                        PropertyServerException,
-                                                                                                        UserNotAuthorizedException
+                                          ValidValuesAssignmentProperties relationshipProperties) throws InvalidParameterException,
+                                                                                                         PropertyServerException,
+                                                                                                         UserNotAuthorizedException
     {
         validValueDefinitionHandler.linkValidValuesAssignment(connectorUserId, elementGUID, validValueDefinitionGUID, metadataSourceOptions, relationshipProperties);
     }

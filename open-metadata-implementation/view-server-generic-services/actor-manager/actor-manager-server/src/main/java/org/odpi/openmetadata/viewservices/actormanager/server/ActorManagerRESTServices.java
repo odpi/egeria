@@ -323,11 +323,11 @@ public class ActorManagerRESTServices extends TokenController
      *  PropertyServerException    there is a problem retrieving information from the property server(s).
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    public VoidResponse detachAssetFromProfile(String            serverName,
-                                               String            urlMarker,
-                                               String            assetGUID,
-                                               String            itProfileGUID,
-                                               DeleteRequestBody requestBody)
+    public VoidResponse detachAssetFromProfile(String                        serverName,
+                                               String                        urlMarker,
+                                               String                        assetGUID,
+                                               String                        itProfileGUID,
+                                               DeleteRelationshipRequestBody requestBody)
     {
         final String methodName = "detachAssetFromProfile";
 
@@ -374,7 +374,7 @@ public class ActorManagerRESTServices extends TokenController
     public VoidResponse deleteActorProfile(String                   serverName,
                                            String                   urlMarker,
                                            String                   actorProfileGUID,
-                                           DeleteRequestBody requestBody)
+                                           DeleteElementRequestBody requestBody)
     {
         final String methodName = "deleteActorProfile";
 
@@ -829,11 +829,11 @@ public class ActorManagerRESTServices extends TokenController
      *  PropertyServerException    there is a problem retrieving information from the property server(s).
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    public VoidResponse detachPersonRoleFromProfile(String                   serverName,
-                                                    String                   urlMarker,
-                                                    String                   personRoleGUID,
-                                                    String                   personProfileGUID,
-                                                    DeleteRequestBody requestBody)
+    public VoidResponse detachPersonRoleFromProfile(String                        serverName,
+                                                    String                        urlMarker,
+                                                    String                        personRoleGUID,
+                                                    String                        personProfileGUID,
+                                                    DeleteRelationshipRequestBody requestBody)
     {
         final String methodName = "detachPersonRoleFromProfile";
 
@@ -951,11 +951,11 @@ public class ActorManagerRESTServices extends TokenController
      *  PropertyServerException    there is a problem retrieving information from the property server(s).
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    public VoidResponse detachTeamRoleFromProfile(String                   serverName,
-                                                  String                   urlMarker,
-                                                  String                   teamRoleGUID,
-                                                  String                   teamProfileGUID,
-                                                  DeleteRequestBody requestBody)
+    public VoidResponse detachTeamRoleFromProfile(String                        serverName,
+                                                  String                        urlMarker,
+                                                  String                        teamRoleGUID,
+                                                  String                        teamProfileGUID,
+                                                  DeleteRelationshipRequestBody requestBody)
     {
         final String methodName = "detachTeamRoleFromProfile";
 
@@ -1082,11 +1082,11 @@ public class ActorManagerRESTServices extends TokenController
      *  PropertyServerException    there is a problem retrieving information from the property server(s).
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    public VoidResponse detachITProfileRoleFromProfile(String                   serverName,
-                                                       String                   urlMarker,
-                                                       String                   itProfileRoleGUID,
-                                                       String                   itProfileGUID,
-                                                       DeleteRequestBody requestBody)
+    public VoidResponse detachITProfileRoleFromProfile(String                        serverName,
+                                                       String                        urlMarker,
+                                                       String                        itProfileRoleGUID,
+                                                       String                        itProfileGUID,
+                                                       DeleteRelationshipRequestBody requestBody)
     {
         final String methodName = "detachITProfileRoleFromProfile";
 
@@ -1133,7 +1133,7 @@ public class ActorManagerRESTServices extends TokenController
     public VoidResponse deleteActorRole(String                   serverName,
                                         String                   urlMarker,
                                         String                   actorRoleGUID,
-                                        DeleteRequestBody requestBody)
+                                        DeleteElementRequestBody requestBody)
     {
         final String methodName = "deleteActorRole";
 
@@ -1591,11 +1591,11 @@ public class ActorManagerRESTServices extends TokenController
      *  PropertyServerException    there is a problem retrieving information from the property server(s).
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    public VoidResponse detachProfileIdentity(String                   serverName,
-                                              String                   urlMarker,
-                                              String                   userIdentityGUID,
-                                              String                   profileGUID,
-                                              DeleteRequestBody requestBody)
+    public VoidResponse detachProfileIdentity(String                        serverName,
+                                              String                        urlMarker,
+                                              String                        userIdentityGUID,
+                                              String                        profileGUID,
+                                              DeleteRelationshipRequestBody requestBody)
     {
         final String methodName = "detachProfileIdentity";
 
@@ -1812,10 +1812,10 @@ public class ActorManagerRESTServices extends TokenController
      *  PropertyServerException    there is a problem retrieving information from the property server(s).
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    public VoidResponse deleteUserIdentity(String                    serverName,
-                                           String                    urlMarker,
-                                           String                    userIdentityGUID,
-                                           DeleteRequestBody requestBody)
+    public VoidResponse deleteUserIdentity(String                   serverName,
+                                           String                   urlMarker,
+                                           String                   userIdentityGUID,
+                                           DeleteElementRequestBody requestBody)
     {
         final String methodName = "deleteUserIdentity";
 
@@ -2092,11 +2092,11 @@ public class ActorManagerRESTServices extends TokenController
      *  PropertyServerException    there is a problem retrieving information from the property server(s).
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    public VoidResponse detachAssignmentScope(String            serverName,
-                                              String            urlMarker,
-                                              String            scopeElementGUID,
-                                              String            actorGUID,
-                                              DeleteRequestBody requestBody)
+    public VoidResponse detachAssignmentScope(String                        serverName,
+                                              String                        urlMarker,
+                                              String                        scopeElementGUID,
+                                              String                        actorGUID,
+                                              DeleteRelationshipRequestBody requestBody)
     {
         final String methodName = "detachAssignmentScope";
 

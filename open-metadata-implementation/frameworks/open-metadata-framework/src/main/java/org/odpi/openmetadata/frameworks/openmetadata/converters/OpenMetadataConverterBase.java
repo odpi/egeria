@@ -124,7 +124,7 @@ public class OpenMetadataConverterBase<B> extends OpenMetadataPropertyConverterB
 
     /**
      * Using the supplied instances, return a new instance of the bean.  It is used for beans such as
-     * an Annotation or To Do bean which combine knowledge from the element and its linked relationships.
+     * an AnnotationProperties or To Do bean which combine knowledge from the element and its linked relationships.
      *
      * @param beanClass name of the class to create
      * @param primaryElement element that is the root of the collection of entities that make up the
@@ -155,7 +155,7 @@ public class OpenMetadataConverterBase<B> extends OpenMetadataPropertyConverterB
 
     /**
      * Using the supplied instances, return a new instance of the bean.  It is used for beans such as
-     * an Annotation or To Do bean which combine knowledge from the element and its linked relationships.
+     * an AnnotationProperties or To Do bean which combine knowledge from the element and its linked relationships.
      *
      * @param beanClass name of the class to create
      * @param primaryElement element that is the root of the collection of entities that make up the
@@ -186,7 +186,7 @@ public class OpenMetadataConverterBase<B> extends OpenMetadataPropertyConverterB
 
     /**
      * Using the supplied instances, return a new instance of the bean.  It is used for beans such as
-     * an Annotation or To Do bean which combine knowledge from the element and its linked relationships.
+     * an AnnotationProperties or To Do bean which combine knowledge from the element and its linked relationships.
      *
      * @param beanClass name of the class to create
      * @param primaryElement element that is the root of the collection of entities that make up the
@@ -212,7 +212,7 @@ public class OpenMetadataConverterBase<B> extends OpenMetadataPropertyConverterB
 
     /**
      * Using the supplied instances, return a new instance of the bean.  It is used for beans such as
-     * an Annotation or To Do bean which combine knowledge from the element and its linked relationships.
+     * an AnnotationProperties or To Do bean which combine knowledge from the element and its linked relationships.
      *
      * @param beanClass name of the class to create
      * @param primaryElement element that is the root of the collection of entities that make up the
@@ -339,29 +339,6 @@ public class OpenMetadataConverterBase<B> extends OpenMetadataPropertyConverterB
                                           this.getClass().getName(),
                                           methodName,
                                           error);
-    }
-
-
-    /**
-     * Throw an exception to indicate that one of the update methods has not been implemented by a handler.
-     *
-     * @param beanClassName class name of bean
-     * @param expectedBeanClass class name that the converter is able to process
-     * @param methodName method that is missing
-     * @throws PropertyServerException there is a problem in the use of the generic handlers because
-     * the converter has been configured with a type of bean that is incompatible with the handler
-     */
-    protected void handleUnexpectedBeanClass(String    beanClassName,
-                                             String    expectedBeanClass,
-                                             String    methodName) throws PropertyServerException
-    {
-        throw new PropertyServerException(OMFErrorCode.UNEXPECTED_BEAN_CLASS.getMessageDefinition(beanClassName,
-                                                                                                  methodName,
-                                                                                                  localServiceName,
-                                                                                                  localServerName,
-                                                                                                  expectedBeanClass),
-                                          this.getClass().getName(),
-                                          methodName);
     }
 
 
@@ -542,55 +519,6 @@ public class OpenMetadataConverterBase<B> extends OpenMetadataPropertyConverterB
     }
 
 
-    /**
-     * Convert a list of relationships
-     * @param beanClass specific class
-     * @param retrievedRelationships values retrieved from the metadata repository
-     * @param methodName calling method
-     * @return list of relationships
-     * @throws PropertyServerException there is a problem in the use of the generic handlers because
-     * the converter has been configured with a type of bean that is incompatible with the handler
-     */
-    public List<RelationshipElement> getRelationshipElements(Class<B>                       beanClass,
-                                                             List<OpenMetadataRelationship> retrievedRelationships,
-                                                             String                         methodName) throws PropertyServerException
-    {
-        if (retrievedRelationships != null)
-        {
-            List<RelationshipElement> relationshipElements = new ArrayList<>();
-
-            for (OpenMetadataRelationship retrievedRelationship : retrievedRelationships)
-            {
-                if (retrievedRelationship != null)
-                {
-                    RelationshipElement relationshipElement = new RelationshipElement();
-
-                    relationshipElement.setRelationshipHeader(this.getMetadataElementHeader(beanClass,
-                                                                                            retrievedRelationship,
-                                                                                            retrievedRelationship.getRelationshipGUID(),
-                                                                                            null,
-                                                                                            methodName));
-                    RelationshipBeanProperties relationshipProperties = new RelationshipBeanProperties();
-
-                    relationshipProperties.setExtendedProperties(this.getRemainingExtendedProperties(retrievedRelationship.getRelationshipProperties()));
-                    relationshipProperties.setEffectiveFrom(retrievedRelationship.getEffectiveFromTime());
-                    relationshipProperties.setEffectiveTo(retrievedRelationship.getEffectiveToTime());
-
-                    relationshipElement.setRelationshipProperties(relationshipProperties);
-
-                    relationshipElement.setEnd1(getElementStub(beanClass, retrievedRelationship.getElementAtEnd1(), methodName));
-                    relationshipElement.setEnd2(getElementStub(beanClass, retrievedRelationship.getElementAtEnd2(), methodName));
-
-                    relationshipElements.add(relationshipElement);
-                }
-            }
-
-            return relationshipElements;
-        }
-
-        return null;
-    }
-
 
     /**
      * Extract the properties from the element.
@@ -612,10 +540,7 @@ public class OpenMetadataConverterBase<B> extends OpenMetadataPropertyConverterB
             ElementHeader          elementHeader  = getMetadataElementHeader(beanClass, element, methodName);
 
             elementSummary.setElementHeader(elementHeader);
-            if (element.getElementProperties() != null)
-            {
-                elementSummary.setProperties(element.getElementProperties().getPropertiesAsStrings());
-            }
+            elementSummary.setProperties(getBeanProperties(element));
 
             return elementSummary;
         }
@@ -632,17 +557,15 @@ public class OpenMetadataConverterBase<B> extends OpenMetadataPropertyConverterB
      * Extract the properties from the element.
      *
      * @param relatedElement from the repository
-     * @param methodName calling method
      * @return filled out element header
      * @throws PropertyServerException there is a problem in the use of the generic handlers because
      * the converter has been configured with a type of bean that is incompatible with the handler
      */
-    public RelatedMetadataElementSummary getRelatedElementSummary(RelatedMetadataElement relatedElement,
-                                                                  String                 methodName) throws PropertyServerException
+    public RelatedMetadataElementSummary getRelatedElementSummary(RelatedMetadataElement relatedElement) throws PropertyServerException
     {
         if ((relatedElement != null) && (relatedElement.getElement() != null))
         {
-            return propertyHelper.getRelatedElementSummary(relatedElement, methodName);
+            return propertyHelper.getRelatedElementSummary(relatedElement);
         }
 
         return null;
@@ -661,8 +584,6 @@ public class OpenMetadataConverterBase<B> extends OpenMetadataPropertyConverterB
     protected List<RelatedMetadataElementSummary> getRelatedElements(String                       requestedRelationshipType,
                                                                      List<RelatedMetadataElement> relatedMetadataElements) throws PropertyServerException
     {
-        final String methodName = "getRelatedElements";
-
         if (relatedMetadataElements != null)
         {
             List<RelatedMetadataElementSummary> matchingElements = new ArrayList<>();
@@ -671,7 +592,7 @@ public class OpenMetadataConverterBase<B> extends OpenMetadataPropertyConverterB
             {
                 if ((relatedMetadataElement != null) && (propertyHelper.isTypeOf(relatedMetadataElement, requestedRelationshipType)))
                 {
-                    matchingElements.add(this.getRelatedElementSummary(relatedMetadataElement, methodName));
+                    matchingElements.add(this.getRelatedElementSummary(relatedMetadataElement));
                 }
             }
 
@@ -698,8 +619,6 @@ public class OpenMetadataConverterBase<B> extends OpenMetadataPropertyConverterB
                                                                      List<RelatedMetadataElement> relatedMetadataElements,
                                                                      boolean                      relatedElementAtEnd1) throws PropertyServerException
     {
-        final String methodName = "getRelatedElements";
-
         if (relatedMetadataElements != null)
         {
             List<RelatedMetadataElementSummary> matchingElements = new ArrayList<>();
@@ -710,7 +629,7 @@ public class OpenMetadataConverterBase<B> extends OpenMetadataPropertyConverterB
                 {
                     if (relatedElementAtEnd1 == relatedMetadataElement.getElementAtEnd1())
                     {
-                        matchingElements.add(this.getRelatedElementSummary(relatedMetadataElement, methodName));
+                        matchingElements.add(this.getRelatedElementSummary(relatedMetadataElement));
                     }
                 }
             }
@@ -738,8 +657,6 @@ public class OpenMetadataConverterBase<B> extends OpenMetadataPropertyConverterB
                                                               List<RelatedMetadataElement> relatedMetadataElements,
                                                               boolean                      relatedElementAtEnd1) throws PropertyServerException
     {
-        final String methodName = "getRelatedElements";
-
         if (relatedMetadataElements != null)
         {
             for (RelatedMetadataElement relatedMetadataElement: relatedMetadataElements)
@@ -748,7 +665,7 @@ public class OpenMetadataConverterBase<B> extends OpenMetadataPropertyConverterB
                 {
                     if (relatedElementAtEnd1 == relatedMetadataElement.getElementAtEnd1())
                     {
-                        return this.getRelatedElementSummary(relatedMetadataElement, methodName);
+                        return this.getRelatedElementSummary(relatedMetadataElement);
                     }
                 }
             }
@@ -771,8 +688,6 @@ public class OpenMetadataConverterBase<B> extends OpenMetadataPropertyConverterB
                                                                      List<RelatedMetadataElement> relatedMetadataElements,
                                                                      boolean                      relatedElementAtEnd1) throws PropertyServerException
     {
-        final String methodName = "getRelatedElements";
-
         if (relatedMetadataElements != null)
         {
             List<RelatedMetadataElementSummary> matchingElements = new ArrayList<>();
@@ -785,7 +700,7 @@ public class OpenMetadataConverterBase<B> extends OpenMetadataPropertyConverterB
                     {
                         if (relatedElementAtEnd1 == relatedMetadataElement.getElementAtEnd1())
                         {
-                            matchingElements.add(this.getRelatedElementSummary(relatedMetadataElement, methodName));
+                            matchingElements.add(this.getRelatedElementSummary(relatedMetadataElement));
                         }
                     }
                 }
@@ -810,8 +725,6 @@ public class OpenMetadataConverterBase<B> extends OpenMetadataPropertyConverterB
     protected List<RelatedMetadataElementSummary> getRelatedElements(List<String>                 requestedRelationshipTypes,
                                                                      List<RelatedMetadataElement> relatedMetadataElements) throws PropertyServerException
     {
-        final String methodName = "getRelatedElements";
-
         if (relatedMetadataElements != null)
         {
             List<RelatedMetadataElementSummary> matchingElements = new ArrayList<>();
@@ -822,12 +735,15 @@ public class OpenMetadataConverterBase<B> extends OpenMetadataPropertyConverterB
                 {
                     if (propertyHelper.isTypeOf(relatedMetadataElement, requestedRelationshipTypes))
                     {
-                        matchingElements.add(this.getRelatedElementSummary(relatedMetadataElement, methodName));
+                        matchingElements.add(this.getRelatedElementSummary(relatedMetadataElement));
                     }
                 }
             }
 
-            return matchingElements;
+            if (! matchingElements.isEmpty())
+            {
+                return matchingElements;
+            }
         }
 
         return null;
@@ -845,8 +761,6 @@ public class OpenMetadataConverterBase<B> extends OpenMetadataPropertyConverterB
     protected List<RelatedMetadataElementSummary> getOtherRelatedElements(List<RelatedMetadataElement> relatedMetadataElements,
                                                                           List<String>                 processedRelationshipTypes) throws PropertyServerException
     {
-        final String methodName = "getOtherRelatedElements";
-
         if (relatedMetadataElements != null)
         {
             List<RelatedMetadataElementSummary> others = new ArrayList<>();
@@ -857,7 +771,7 @@ public class OpenMetadataConverterBase<B> extends OpenMetadataPropertyConverterB
                 {
                     if (! propertyHelper.isTypeOf(relatedMetadataElement, processedRelationshipTypes))
                     {
-                        others.add(this.getRelatedElementSummary(relatedMetadataElement, methodName));
+                        others.add(this.getRelatedElementSummary(relatedMetadataElement));
                     }
                 }
             }
@@ -1017,28 +931,27 @@ public class OpenMetadataConverterBase<B> extends OpenMetadataPropertyConverterB
                                   OpenMetadataRelationship relationship,
                                   String                   methodName) throws PropertyServerException
     {
-        RelatedBy relatedBy = new RelatedBy();
-
-        relatedBy.setRelationshipHeader(this.getMetadataElementHeader(beanClass, relationship, relationship.getRelationshipGUID(), null, methodName));
-
         if (relationship != null)
         {
-            ElementProperties instanceProperties = new ElementProperties(relationship.getRelationshipProperties());
+            RelatedBy relatedBy = new RelatedBy();
 
-            RelationshipBeanProperties relationshipProperties = new RelationshipBeanProperties();
+            relatedBy.setRelationshipHeader(this.getMetadataElementHeader(beanClass, relationship, relationship.getRelationshipGUID(), null, methodName));
+
+            RelationshipBeanProperties relationshipProperties = getRelationshipProperties(relationship, relationship.getRelationshipProperties());
 
             relationshipProperties.setEffectiveFrom(relationship.getEffectiveFromTime());
             relationshipProperties.setEffectiveTo(relationship.getEffectiveToTime());
-            relationshipProperties.setExtendedProperties(this.getRemainingExtendedProperties(instanceProperties));
 
             relatedBy.setRelationshipProperties(relationshipProperties);
+
+            return relatedBy;
         }
         else
         {
             handleMissingMetadataInstance(beanClass.getName(), OpenMetadataRelationship.class.getName(), methodName);
         }
 
-        return relatedBy;
+        return null;
     }
 
 

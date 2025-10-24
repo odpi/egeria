@@ -67,6 +67,7 @@ public enum FacilityTypeDefinition
     ;
 
     public static final String validValueSetName = "FacilityType";
+    public static final String validValueSetPropertyName = "facilityType";
     public static final String validValueSetDescription = "Describes the type of facility at a physical location.";
     public static final String validValueSetUsage = "Used to tag Location entities to show the likely equipment that needs cataloging and managing.";
     public static final String validValueSetScope = "Used for physical types of Locations.";

@@ -11,7 +11,6 @@ import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedExcep
 import org.odpi.openmetadata.frameworks.openmetadata.handlers.GovernanceDefinitionHandler;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.OpenMetadataRootElement;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.ClassificationProperties;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.NewActionTarget;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.RelationshipProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.actors.AssignmentScopeProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.governance.*;
@@ -152,8 +151,8 @@ public class GovernanceDefinitionClient extends ConnectorContextClientBase
      * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    public void updateGovernanceDefinition(String             governanceDefinitionGUID,
-                                           UpdateOptions      updateOptions,
+    public void updateGovernanceDefinition(String                         governanceDefinitionGUID,
+                                           UpdateOptions                  updateOptions,
                                            GovernanceDefinitionProperties properties) throws InvalidParameterException,
                                                                                              PropertyServerException,
                                                                                              UserNotAuthorizedException
@@ -188,9 +187,9 @@ public class GovernanceDefinitionClient extends ConnectorContextClientBase
                                                                                              UserNotAuthorizedException
     {
         governanceDefinitionHandler.linkPeerDefinitions(connectorUserId,
-                                                        relationshipTypeName,
                                                         governanceDefinitionOneGUID,
                                                         governanceDefinitionTwoGUID,
+                                                        relationshipTypeName,
                                                         metadataSourceOptions,
                                                         relationshipProperties);
     }
@@ -215,9 +214,9 @@ public class GovernanceDefinitionClient extends ConnectorContextClientBase
                                                                           UserNotAuthorizedException
     {
         governanceDefinitionHandler.detachPeerDefinitions(connectorUserId,
-                                                          relationshipTypeName,
                                                           governanceDefinitionOneGUID,
                                                           governanceDefinitionTwoGUID,
+                                                          relationshipTypeName,
                                                           deleteOptions);
     }
 
@@ -243,9 +242,9 @@ public class GovernanceDefinitionClient extends ConnectorContextClientBase
                                                                                                          UserNotAuthorizedException
     {
         governanceDefinitionHandler.attachSupportingDefinition(connectorUserId,
-                                                               relationshipTypeName,
                                                                governanceDefinitionOneGUID,
                                                                governanceDefinitionTwoGUID,
+                                                               relationshipTypeName,
                                                                metadataSourceOptions,
                                                                relationshipProperties);
 
@@ -270,9 +269,9 @@ public class GovernanceDefinitionClient extends ConnectorContextClientBase
                                                                                UserNotAuthorizedException
     {
         governanceDefinitionHandler.detachSupportingDefinition(connectorUserId,
-                                                               relationshipTypeName,
                                                                governanceDefinitionOneGUID,
                                                                governanceDefinitionTwoGUID,
+                                                               relationshipTypeName,
                                                                deleteOptions);
     }
 
@@ -368,6 +367,90 @@ public class GovernanceDefinitionClient extends ConnectorContextClientBase
                                                                           UserNotAuthorizedException
     {
         governanceDefinitionHandler.detachAssignmentScope(connectorUserId, actorGUID, scopeElementGUID, deleteOptions);
+    }
+
+
+    /**
+     * Attach monitored resource to a notification type.
+     *
+     * @param notificationTypeGUID            unique identifier of the notification type
+     * @param elementGUID             unique identifier of the element to monitor
+     * @param metadataSourceOptions         options to control access to open metadata
+     * @param relationshipProperties        description of the relationship.
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public void linkMonitoredResource(String                      notificationTypeGUID,
+                                      String                      elementGUID,
+                                      MetadataSourceOptions       metadataSourceOptions,
+                                      MonitoredResourceProperties relationshipProperties) throws InvalidParameterException,
+                                                                                                 PropertyServerException,
+                                                                                                 UserNotAuthorizedException
+    {
+        governanceDefinitionHandler.linkMonitoredResource(connectorUserId, notificationTypeGUID, elementGUID, metadataSourceOptions, relationshipProperties);
+    }
+
+
+    /**
+     * Detach a monitored resource from a notification type.
+     *
+     * @param notificationTypeGUID            unique identifier of the notification type
+     * @param elementGUID             unique identifier of the element to monitor
+     * @param deleteOptions               options to control access to open metadata
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public void detachMonitoredResource(String        notificationTypeGUID,
+                                        String        elementGUID,
+                                        DeleteOptions deleteOptions) throws InvalidParameterException,
+                                                                            PropertyServerException,
+                                                                            UserNotAuthorizedException
+    {
+        governanceDefinitionHandler.detachMonitoredResource(connectorUserId, notificationTypeGUID, elementGUID, deleteOptions);
+    }
+
+
+    /**
+     * Attach subscriber to a notification type.
+     *
+     * @param notificationTypeGUID            unique identifier of the notification type
+     * @param elementGUID             unique identifier of the element to monitor
+     * @param metadataSourceOptions         options to control access to open metadata
+     * @param relationshipProperties        description of the relationship.
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public void linkNotificationSubscriber(String                           notificationTypeGUID,
+                                           String                           elementGUID,
+                                           MetadataSourceOptions            metadataSourceOptions,
+                                           NotificationSubscriberProperties relationshipProperties) throws InvalidParameterException,
+                                                                                                           PropertyServerException,
+                                                                                                           UserNotAuthorizedException
+    {
+        governanceDefinitionHandler.linkNotificationSubscriber(connectorUserId, notificationTypeGUID, elementGUID, metadataSourceOptions, relationshipProperties);
+    }
+
+
+    /**
+     * Detach a subscriber from a notification type.
+     *
+     * @param notificationTypeGUID            unique identifier of the notification type
+     * @param elementGUID             unique identifier of the element to monitor
+     * @param deleteOptions               options to control access to open metadata
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public void detachNotificationSubscriber(String        notificationTypeGUID,
+                                             String        elementGUID,
+                                             DeleteOptions deleteOptions) throws InvalidParameterException,
+                                                                                 PropertyServerException,
+                                                                                 UserNotAuthorizedException
+    {
+        governanceDefinitionHandler.detachNotificationSubscriber(connectorUserId, notificationTypeGUID, elementGUID, deleteOptions);
     }
 
 
