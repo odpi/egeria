@@ -428,7 +428,7 @@ loadScripts(document, 'script');</script>
 <li>
 <section class="detail" id="createSchemaAttribute(java.lang.String,java.lang.String,org.odpi.openmetadata.commonservices.ffdc.rest.NewElementRequestBody)">
 <h3>createSchemaAttribute</h3>
-<div class="member-signature"><span class="annotations">@PostMapping(path={"/schema-attributes","/solution-roles"})
+<div class="member-signature"><span class="annotations">@PostMapping(path="/schema-attributes")
 </span><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../../../commonservices/ffdc/rest/GUIDResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">GUIDResponse</a></span>&nbsp;<span class="element-name">createSchemaAttribute</span><wbr><span class="parameters">(@PathVariable
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
  @PathVariable
@@ -452,7 +452,7 @@ loadScripts(document, 'script');</script>
 <li>
 <section class="detail" id="createSchemaAttributeFromTemplate(java.lang.String,java.lang.String,org.odpi.openmetadata.commonservices.ffdc.rest.TemplateRequestBody)">
 <h3>createSchemaAttributeFromTemplate</h3>
-<div class="member-signature"><span class="annotations">@PostMapping(path={"/schema-attributes/from-template","/solution-roles/from-template"})
+<div class="member-signature"><span class="annotations">@PostMapping(path="/schema-attributes/from-template")
 </span><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../../../commonservices/ffdc/rest/GUIDResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">GUIDResponse</a></span>&nbsp;<span class="element-name">createSchemaAttributeFromTemplate</span><wbr><span class="parameters">(@PathVariable
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
  @PathVariable
@@ -477,7 +477,7 @@ loadScripts(document, 'script');</script>
 <li>
 <section class="detail" id="updateSchemaAttribute(java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.commonservices.ffdc.rest.UpdateElementRequestBody)">
 <h3>updateSchemaAttribute</h3>
-<div class="member-signature"><span class="annotations">@PostMapping(path={"/schema-attributes/{schemaAttributeGUID}/update","/solution-roles/{schemaAttributeGUID}/update"})
+<div class="member-signature"><span class="annotations">@PostMapping(path="/schema-attributes/{schemaAttributeGUID}/update")
 </span><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a></span>&nbsp;<span class="element-name">updateSchemaAttribute</span><wbr><span class="parameters">(@PathVariable
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
  @PathVariable
@@ -504,7 +504,7 @@ loadScripts(document, 'script');</script>
 <li>
 <section class="detail" id="deleteSchemaAttribute(java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.commonservices.ffdc.rest.DeleteElementRequestBody)">
 <h3>deleteSchemaAttribute</h3>
-<div class="member-signature"><span class="annotations">@PostMapping(path={"/schema-attributes/{schemaAttributeGUID}/delete","/solution-roles/{schemaAttributeGUID}/delete"})
+<div class="member-signature"><span class="annotations">@PostMapping(path="/schema-attributes/{schemaAttributeGUID}/delete")
 </span><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a></span>&nbsp;<span class="element-name">deleteSchemaAttribute</span><wbr><span class="parameters">(@PathVariable
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
  @PathVariable
@@ -531,7 +531,7 @@ loadScripts(document, 'script');</script>
 <li>
 <section class="detail" id="getSchemaAttributesByName(java.lang.String,java.lang.String,org.odpi.openmetadata.commonservices.ffdc.rest.FilterRequestBody)">
 <h3>getSchemaAttributesByName</h3>
-<div class="member-signature"><span class="annotations">@PostMapping(path={"/schema-attributes/by-name","/solution-roles/by-name"})
+<div class="member-signature"><span class="annotations">@PostMapping(path="/schema-attributes/by-name")
 </span><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../../../commonservices/ffdc/rest/OpenMetadataRootElementsResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">OpenMetadataRootElementsResponse</a></span>&nbsp;<span class="element-name">getSchemaAttributesByName</span><wbr><span class="parameters">(@PathVariable
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
  @PathVariable
@@ -555,7 +555,7 @@ loadScripts(document, 'script');</script>
 <li>
 <section class="detail" id="findSchemaAttributes(java.lang.String,java.lang.String,org.odpi.openmetadata.commonservices.ffdc.rest.SearchStringRequestBody)">
 <h3>findSchemaAttributes</h3>
-<div class="member-signature"><span class="annotations">@PostMapping(path={"/schema-attributes/by-search-string","/solution-roles/by-search-string"})
+<div class="member-signature"><span class="annotations">@PostMapping(path="/schema-attributes/by-search-string")
 </span><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../../../commonservices/ffdc/rest/OpenMetadataRootElementsResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">OpenMetadataRootElementsResponse</a></span>&nbsp;<span class="element-name">findSchemaAttributes</span><wbr><span class="parameters">(@PathVariable
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
  @PathVariable
@@ -579,7 +579,7 @@ loadScripts(document, 'script');</script>
 <li>
 <section class="detail" id="getSchemaAttributeByGUID(java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.commonservices.ffdc.rest.GetRequestBody)">
 <h3>getSchemaAttributeByGUID</h3>
-<div class="member-signature"><span class="annotations">@PostMapping(path={"/schema-attributes/{schemaAttributeGUID}/retrieve","/solution-roles/{schemaAttributeGUID}/retrieve"})
+<div class="member-signature"><span class="annotations">@PostMapping(path="/schema-attributes/{schemaAttributeGUID}/retrieve")
 </span><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../../../commonservices/ffdc/rest/OpenMetadataRootElementResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">OpenMetadataRootElementResponse</a></span>&nbsp;<span class="element-name">getSchemaAttributeByGUID</span><wbr><span class="parameters">(@PathVariable
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
  @PathVariable
