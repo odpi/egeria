@@ -4,6 +4,10 @@ package org.odpi.openmetadata.viewservices.myprofile.server.spring;
 
 import io.swagger.v3.oas.annotations.ExternalDocumentation;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.enums.SecuritySchemeIn;
+import io.swagger.v3.oas.annotations.enums.SecuritySchemeType;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import io.swagger.v3.oas.annotations.security.SecurityScheme;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.odpi.openmetadata.commonservices.ffdc.rest.*;
 import org.odpi.openmetadata.viewservices.myprofile.server.MyProfileRESTServices;
@@ -15,7 +19,13 @@ import org.springframework.web.bind.annotation.*;
 = */
 @RestController
 @RequestMapping("/servers/{serverName}/api/open-metadata/my-profile")
-
+@SecurityScheme(
+        name = "BearerAuthorization",
+        type = SecuritySchemeType.HTTP,
+        bearerFormat = "JWT",
+        scheme = "bearer",
+        in = SecuritySchemeIn.HEADER
+)
 @Tag(name="API: My Profile OMVS", description="The My Profile OMVS provides APIs for retrieving and updating a user's personal profile, roles and actions.",
         externalDocs=@ExternalDocumentation(description="Further Information",
                 url="https://egeria-project.org/services/omvs/my-profile/overview/"))
@@ -43,6 +53,7 @@ public class MyProfileResource
      * UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     @GetMapping(path = "")
+    @SecurityRequirement(name = "BearerAuthorization")
 
     @Operation(summary="getMyProfile",
             description="Return the personal profile of the logged on user (details of the user is extracted from the bearer token).",
@@ -67,6 +78,7 @@ public class MyProfileResource
      * UserNotAuthorizedException the calling user is not authorized to issue the call
      */
     @PostMapping(path = "/actions")
+    @SecurityRequirement(name = "BearerAuthorization")
 
     @Operation(summary="createAction",
             description="Create a new action and link it to the supplied actor and targets (if applicable).",
@@ -94,6 +106,7 @@ public class MyProfileResource
      * UserNotAuthorizedException the calling user is not authorized to issue the call
      */
     @PostMapping(path = "/actions/{actionGUID}")
+    @SecurityRequirement(name = "BearerAuthorization")
 
     @Operation(summary="updateAction",
             description="Update the properties associated with a action.",
@@ -121,6 +134,7 @@ public class MyProfileResource
      * UserNotAuthorizedException the calling user is not authorized to issue the call
      */
     @PostMapping(path = "/actions/action-targets/{actionTargetGUID}")
+    @SecurityRequirement(name = "BearerAuthorization")
 
     @Operation(summary="updateActionTargetProperties",
             description="Update the properties associated with an Action Target for a action.",
@@ -149,6 +163,7 @@ public class MyProfileResource
      * UserNotAuthorizedException the calling user is not authorized to issue the call
      */
     @PostMapping(path = "/actions/{actionGUID}/reassign/{actorGUID}")
+    @SecurityRequirement(name = "BearerAuthorization")
 
     @Operation(summary="reassignAction",
             description="Assign a action to a new actor.  This will unassign all other actors previously assigned to the action.",
@@ -178,6 +193,7 @@ public class MyProfileResource
      * UserNotAuthorizedException the calling user is not authorized to issue the call
      */
     @PostMapping(path = "/actions/{actionGUID}/delete")
+    @SecurityRequirement(name = "BearerAuthorization")
 
     @Operation(summary="deleteAction",
             description="Delete an existing action.",
@@ -205,6 +221,7 @@ public class MyProfileResource
      * UserNotAuthorizedException the calling user is not authorized to issue the call
      */
     @GetMapping(path = "/actions/{actionGUID}")
+    @SecurityRequirement(name = "BearerAuthorization")
 
     @Operation(summary="getActionByGUID",
             description="Retrieve an action by unique identifier.",
@@ -231,6 +248,7 @@ public class MyProfileResource
      * UserNotAuthorizedException the calling user is not authorized to issue the call
      */
     @PostMapping(path = "/elements/{elementGUID}/action-targets/actions")
+    @SecurityRequirement(name = "BearerAuthorization")
 
     @Operation(summary="getActionsForActionTarget",
             description="Retrieve the actions that are chained off of an action target element.",
@@ -259,6 +277,7 @@ public class MyProfileResource
      * UserNotAuthorizedException the calling user is not authorized to issue the call
      */
     @PostMapping(path = "/elements/{elementGUID}/sponsored/actions")
+    @SecurityRequirement(name = "BearerAuthorization")
 
     @Operation(summary="getActionsForSponsor",
             description="Retrieve the actions that are chained off of a sponsor's element.",
@@ -287,6 +306,7 @@ public class MyProfileResource
      * UserNotAuthorizedException the calling user is not authorized to issue the call
      */
     @PostMapping(path = "/actors/{actorGUID}/assigned/actions")
+    @SecurityRequirement(name = "BearerAuthorization")
 
     @Operation(summary="getAssignedActions",
             description="Retrieve the actions that are assigned to a particular actor.",
@@ -314,6 +334,7 @@ public class MyProfileResource
      * UserNotAuthorizedException the calling user is not authorized to issue the call
      */
     @PostMapping(path = "/actions/find-by-search-string")
+    @SecurityRequirement(name = "BearerAuthorization")
 
     @Operation(summary="findActions",
             description="Retrieve the actions that match the search string and optional status.",
@@ -340,6 +361,7 @@ public class MyProfileResource
      * UserNotAuthorizedException the calling user is not authorized to issue the call
      */
     @PostMapping(path = "/actions/by-category")
+    @SecurityRequirement(name = "BearerAuthorization")
 
     @Operation(summary="getActionsByCategory",
             description="Retrieve the actions that match the supplied category.",
