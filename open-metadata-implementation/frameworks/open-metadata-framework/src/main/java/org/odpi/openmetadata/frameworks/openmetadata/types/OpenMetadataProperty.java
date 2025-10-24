@@ -729,11 +729,6 @@ public enum OpenMetadataProperty
     COMPLETION_MESSAGE("completionMessage", DataType.STRING, DataType.STRING.getName(), "Message to provide additional information on the results of acting on the target by the actor or the reasons for any failures.", null, "f7633bda-9a90-4561-8d5a-356126a855ea"),
 
     /**
-     * Name of the keyword.
-     */
-    KEYWORD("keyword", DataType.STRING, DataType.STRING.getName(), "Name of the keyword.", null, "b15f3d92-c4fb-44f6-a773-986b0c02906b"),
-
-    /**
      * Unique name of the process that initiated this request (if applicable).
      */
     PROCESS_NAME("processName", DataType.STRING, DataType.STRING.getName(), "Unique name of the process that initiated this request (if applicable).", null, "9b3e9119-503e-42b4-b972-95169163539b"),

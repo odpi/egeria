@@ -71,7 +71,7 @@ public class SearchKeywordHandler extends OpenMetadataHandlerBase
         final String searchKeywordQNameParameterName = "properties.keyword";
 
         propertyHelper.validateObject(properties, propertiesParameterName, methodName);
-        propertyHelper.validateMandatoryName(properties.getKeyword(), searchKeywordQNameParameterName, methodName);
+        propertyHelper.validateMandatoryName(properties.getDisplayName(), searchKeywordQNameParameterName, methodName);
 
         NewElementOptions newElementOptions = new NewElementOptions(metadataSourceOptions);
 
@@ -166,32 +166,32 @@ public class SearchKeywordHandler extends OpenMetadataHandlerBase
     /**
      * Return the list of keywords exactly matching the supplied name.
      *
-     * @param userId the name of the calling user.
-     * @param keyword name of keyword.
+     * @param userId the name of the calling user
+     * @param name name to search for
      * @param queryOptions multiple options to control the query
      *
-     * @return keyword list
+     * @return name list
      * @throws InvalidParameterException the userId is null or invalid.
      * @throws PropertyServerException there is a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    public List<OpenMetadataRootElement> getSearchKeywordsByKeyword(String       userId,
-                                                                    String       keyword,
-                                                                    QueryOptions queryOptions) throws InvalidParameterException,
+    public List<OpenMetadataRootElement> getSearchKeywordsByName(String       userId,
+                                                                 String       name,
+                                                                 QueryOptions queryOptions) throws InvalidParameterException,
                                                                                              PropertyServerException,
                                                                                              UserNotAuthorizedException
     {
         final String methodName = "getKeywordsByName";
-        final String nameParameterName = "keyword";
+        final String nameParameterName = "name";
 
         propertyHelper.validateUserId(userId, methodName);
-        propertyHelper.validateMandatoryName(keyword, nameParameterName, methodName);
+        propertyHelper.validateMandatoryName(name, nameParameterName, methodName);
         propertyHelper.validatePaging(queryOptions, openMetadataClient.getMaxPagingSize(), methodName);
 
-        List<String> propertyNames = Collections.singletonList(OpenMetadataProperty.KEYWORD.name);
+        List<String> propertyNames = Collections.singletonList(OpenMetadataProperty.DISPLAY_NAME.name);
 
         return super.getRootElementsByName(userId,
-                                           keyword,
+                                           name,
                                            propertyNames,
                                            queryOptions,
                                            methodName);

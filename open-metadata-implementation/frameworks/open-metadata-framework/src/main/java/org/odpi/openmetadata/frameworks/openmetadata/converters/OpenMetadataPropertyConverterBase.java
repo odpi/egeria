@@ -496,28 +496,6 @@ public class OpenMetadataPropertyConverterBase
 
 
     /**
-     * Extract and delete the keyword property from the supplied element properties.
-     *
-     * @param elementProperties properties from element
-     * @return string text or null
-     */
-    protected String removeKeyword(ElementProperties  elementProperties)
-    {
-        final String methodName = "removeKeyword";
-
-        if (elementProperties != null)
-        {
-            return propertyHelper.removeStringProperty(localServiceName,
-                                                       OpenMetadataProperty.KEYWORD.name,
-                                                       elementProperties,
-                                                       methodName);
-        }
-
-        return null;
-    }
-
-
-    /**
      * Extract and delete the topicType property from the supplied element properties.
      *
      * @param elementProperties properties from element
@@ -13180,7 +13158,7 @@ public class OpenMetadataPropertyConverterBase
             {
                 beanProperties = new SearchKeywordProperties();
 
-                ((SearchKeywordProperties)beanProperties).setKeyword(this.removeKeyword(elementProperties));
+                ((SearchKeywordProperties)beanProperties).setDisplayName(this.removeDisplayName(elementProperties));
                 ((SearchKeywordProperties)beanProperties).setDescription(this.removeDescription(elementProperties));
             }
             else if (propertyHelper.isTypeOf(openMetadataElement, OpenMetadataType.REFERENCEABLE.typeName))

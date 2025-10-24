@@ -1559,7 +1559,7 @@ public class OpenMetadataStoreRESTServices
         propertyList.add(OpenMetadataProperty.CATEGORY.name);
         propertyList.add(OpenMetadataProperty.SUMMARY.name);
         propertyList.add(OpenMetadataProperty.REVIEW.name);
-        propertyList.add(OpenMetadataProperty.KEYWORD.name);
+        propertyList.add(OpenMetadataProperty.KEY.name);
         propertyList.add(OpenMetadataProperty.DESCRIPTION.name);
         propertyList.add(OpenMetadataProperty.NAMESPACE.name);
 

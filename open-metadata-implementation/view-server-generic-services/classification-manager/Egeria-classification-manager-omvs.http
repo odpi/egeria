@@ -1038,7 +1038,7 @@ Content-Type: application/json
   "class" : "NewAttachmentRequestBody",
   "properties" : {
     "class" : "SearchKeywordProperties",
-    "keyword" : "myKeyword",
+    "displayName" : "myKeyword",
     "description" : "Add search keyword text here"
   }
 }
@@ -1058,7 +1058,7 @@ Content-Type: application/json
   "mergeUpdate": true,
   "properties" : {
     "class" : "SearchKeywordProperties",
-    "keyword" : "myKeyword",
+    "displayName" : "myKeyword",
     "description" : "Add search keyword text here"
   }
 }

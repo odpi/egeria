@@ -605,7 +605,7 @@ public class SimpleCatalogArchiveHelper
                     String keywordGUID = idToGUIDMap.queryGUID(OpenMetadataType.SEARCH_KEYWORD.typeName + "::" + keyword);
                     EntityDetail keywordEntity = null;
 
-                    InstanceProperties keywordProperties = archiveHelper.addStringPropertyToInstance(archiveRootName, null, OpenMetadataProperty.KEYWORD.name, keyword, methodName);
+                    InstanceProperties keywordProperties = archiveHelper.addStringPropertyToInstance(archiveRootName, null, OpenMetadataProperty.DISPLAY_NAME.name, keyword, methodName);
 
                     if (keywordGUID != null)
                     {
@@ -772,7 +772,7 @@ public class SimpleCatalogArchiveHelper
                     String keywordGUID = idToGUIDMap.queryGUID(OpenMetadataType.SEARCH_KEYWORD.typeName + "::" + keyword);
                     EntityDetail keywordEntity = null;
 
-                    InstanceProperties keywordProperties = archiveHelper.addStringPropertyToInstance(archiveRootName, null, OpenMetadataProperty.KEYWORD.name, keyword, methodName);
+                    InstanceProperties keywordProperties = archiveHelper.addStringPropertyToInstance(archiveRootName, null, OpenMetadataProperty.DISPLAY_NAME.name, keyword, methodName);
 
                     if (keywordGUID != null)
                     {
@@ -933,7 +933,7 @@ public class SimpleCatalogArchiveHelper
                     String keywordGUID = idToGUIDMap.queryGUID(OpenMetadataType.SEARCH_KEYWORD.typeName + "::" + keyword);
                     EntityDetail keywordEntity = null;
 
-                    InstanceProperties keywordProperties = archiveHelper.addStringPropertyToInstance(archiveRootName, null, OpenMetadataProperty.KEYWORD.name, keyword, methodName);
+                    InstanceProperties keywordProperties = archiveHelper.addStringPropertyToInstance(archiveRootName, null, OpenMetadataProperty.DISPLAY_NAME.name, keyword, methodName);
 
                     if (keywordGUID != null)
                     {
