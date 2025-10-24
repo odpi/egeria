@@ -8,6 +8,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.DeleteMethod;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.RelationshipBeanProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 
 import java.util.Map;
 import java.util.Objects;
@@ -23,11 +24,11 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class SupportedGovernanceServiceProperties extends RelationshipBeanProperties
 {
-    private String              requestType             = null;
-    private String              serviceRequestType      = null;
-    private Map<String, String> requestParameters       = null;
-    private boolean             generateActivityReports = true;
-    private DeleteMethod        deleteMethod            = null;
+    private String              requestType                      = null;
+    private String              serviceRequestType               = null;
+    private Map<String, String> requestParameters                = null;
+    private boolean             generateConnectorActivityReports = true;
+    private DeleteMethod        deleteMethod                     = null;
 
     /**
      * Default constructor
@@ -35,6 +36,7 @@ public class SupportedGovernanceServiceProperties extends RelationshipBeanProper
     public SupportedGovernanceServiceProperties()
     {
         super();
+        super.setTypeName(OpenMetadataType.SUPPORTED_GOVERNANCE_SERVICE_RELATIONSHIP.typeName);
     }
 
 
@@ -50,8 +52,8 @@ public class SupportedGovernanceServiceProperties extends RelationshipBeanProper
             requestType = template.getRequestType();
             serviceRequestType = template.getServiceRequestType();
             requestParameters = template.getRequestParameters();
-            deleteMethod            = template.getDeleteMethod();
-            generateActivityReports = template.getGenerateActivityReports();
+            deleteMethod                     = template.getDeleteMethod();
+            generateConnectorActivityReports = template.getGenerateConnectorActivityReports();
         }
     }
 
@@ -130,20 +132,20 @@ public class SupportedGovernanceServiceProperties extends RelationshipBeanProper
      *
      * @return boolean
      */
-    public boolean getGenerateActivityReports()
+    public boolean getGenerateConnectorActivityReports()
     {
-        return generateActivityReports;
+        return generateConnectorActivityReports;
     }
 
 
     /**
      * Set up whether connector activity reports should be generated when this service is called.
      *
-     * @param generateActivityReports boolean
+     * @param generateConnectorActivityReports boolean
      */
-    public void setGenerateActivityReports(boolean generateActivityReports)
+    public void setGenerateConnectorActivityReports(boolean generateConnectorActivityReports)
     {
-        this.generateActivityReports = generateActivityReports;
+        this.generateConnectorActivityReports = generateConnectorActivityReports;
     }
 
 
@@ -181,7 +183,7 @@ public class SupportedGovernanceServiceProperties extends RelationshipBeanProper
                 "requestType='" + requestType + '\'' +
                 ", serviceRequestType='" + serviceRequestType + '\'' +
                 ", requestParameters=" + requestParameters +
-                ", generateIntegrationReports=" + generateActivityReports +
+                ", generateIntegrationReports=" + generateConnectorActivityReports +
                 ", deleteMethod=" + deleteMethod +
                 '}';
     }
@@ -198,7 +200,7 @@ public class SupportedGovernanceServiceProperties extends RelationshipBeanProper
         if (this == objectToCompare) return true;
         if (objectToCompare == null || getClass() != objectToCompare.getClass()) return false;
         SupportedGovernanceServiceProperties that = (SupportedGovernanceServiceProperties) objectToCompare;
-        return generateActivityReports == that.generateActivityReports &&
+        return generateConnectorActivityReports == that.generateConnectorActivityReports &&
                 Objects.equals(requestType, that.requestType) &&
                 Objects.equals(serviceRequestType, that.serviceRequestType) &&
                 Objects.equals(deleteMethod, that.deleteMethod) &&
@@ -213,6 +215,6 @@ public class SupportedGovernanceServiceProperties extends RelationshipBeanProper
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), requestType, deleteMethod, serviceRequestType, requestParameters, generateActivityReports);
+        return Objects.hash(super.hashCode(), requestType, deleteMethod, serviceRequestType, requestParameters, generateConnectorActivityReports);
     }
 }

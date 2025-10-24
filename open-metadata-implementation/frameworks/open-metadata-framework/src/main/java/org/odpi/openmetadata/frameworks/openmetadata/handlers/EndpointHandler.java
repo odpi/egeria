@@ -261,6 +261,7 @@ public class EndpointHandler extends OpenMetadataHandlerBase
 
         List<String> propertyNames = Arrays.asList(OpenMetadataProperty.QUALIFIED_NAME.name,
                                                    OpenMetadataProperty.USER_ID.name,
+                                                   OpenMetadataProperty.IDENTIFIER.name,
                                                    OpenMetadataProperty.NETWORK_ADDRESS.name,
                                                    OpenMetadataProperty.DISTINGUISHED_NAME.name);
 

@@ -8,6 +8,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.LatestChangeAction;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.LatestChangeTarget;
+import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 
 import java.util.Objects;
 
@@ -37,6 +38,8 @@ public class LatestChangeProperties extends ClassificationBeanProperties
      */
     public LatestChangeProperties()
     {
+        super();
+        super.setTypeName(OpenMetadataType.LATEST_CHANGE_CLASSIFICATION.typeName);
     }
 
 

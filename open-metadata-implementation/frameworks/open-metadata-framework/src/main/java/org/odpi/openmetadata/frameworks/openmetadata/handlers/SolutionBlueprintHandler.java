@@ -5,22 +5,19 @@ package org.odpi.openmetadata.frameworks.openmetadata.handlers;
 
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.openmetadata.client.OpenMetadataClient;
-import org.odpi.openmetadata.frameworks.openmetadata.converters.OpenMetadataConverterBase;
-import org.odpi.openmetadata.frameworks.openmetadata.converters.SolutionBlueprintConverter;
-import org.odpi.openmetadata.frameworks.openmetadata.ffdc.*;
-import org.odpi.openmetadata.frameworks.openmetadata.mermaid.SolutionBlueprintMermaidGraphBuilder;
+import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
+import org.odpi.openmetadata.frameworks.openmetadata.ffdc.PropertyServerException;
+import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.OpenMetadataRootElement;
-import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.SolutionBlueprintComponent;
-import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.SolutionBlueprintElement;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.*;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.solutions.SolutionBlueprintCompositionProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.ClassificationProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.RelationshipProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.collections.CollectionMembershipProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.solutions.SolutionBlueprintProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.solutions.SolutionDesignProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.search.*;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
@@ -157,13 +154,13 @@ public class SolutionBlueprintHandler extends OpenMetadataHandlerBase
      * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    public void linkSolutionComponentToBlueprint(String                                 userId,
-                                                 String                                 parentSolutionBlueprintGUID,
-                                                 String                                 solutionComponentGUID,
-                                                 MetadataSourceOptions                  metadataSourceOptions,
-                                                 SolutionBlueprintCompositionProperties relationshipProperties) throws InvalidParameterException,
-                                                                                                                       PropertyServerException,
-                                                                                                                       UserNotAuthorizedException
+    public void linkSolutionComponentToBlueprint(String                         userId,
+                                                 String                         parentSolutionBlueprintGUID,
+                                                 String                         solutionComponentGUID,
+                                                 MetadataSourceOptions          metadataSourceOptions,
+                                                 CollectionMembershipProperties relationshipProperties) throws InvalidParameterException,
+                                                                                                               PropertyServerException,
+                                                                                                               UserNotAuthorizedException
     {
         final String methodName = "linkSolutionComponentToBlueprint";
         final String end1GUIDParameterName = "parentSolutionBlueprintGUID";
@@ -174,7 +171,7 @@ public class SolutionBlueprintHandler extends OpenMetadataHandlerBase
         propertyHelper.validateGUID(solutionComponentGUID, end2GUIDParameterName, methodName);
 
         openMetadataClient.createRelatedElementsInStore(userId,
-                                                        OpenMetadataType.SOLUTION_BLUEPRINT_COMPOSITION_RELATIONSHIP.typeName,
+                                                        OpenMetadataType.COLLECTION_MEMBERSHIP_RELATIONSHIP.typeName,
                                                         parentSolutionBlueprintGUID,
                                                         solutionComponentGUID,
                                                         metadataSourceOptions,
@@ -210,7 +207,7 @@ public class SolutionBlueprintHandler extends OpenMetadataHandlerBase
         propertyHelper.validateGUID(solutionComponentGUID, end2GUIDParameterName, methodName);
 
         openMetadataClient.detachRelatedElementsInStore(userId,
-                                                        OpenMetadataType.SOLUTION_BLUEPRINT_COMPOSITION_RELATIONSHIP.typeName,
+                                                        OpenMetadataType.COLLECTION_MEMBERSHIP_RELATIONSHIP.typeName,
                                                         solutionBlueprintGUID,
                                                         solutionComponentGUID,
                                                         deleteOptions);
@@ -336,6 +333,7 @@ public class SolutionBlueprintHandler extends OpenMetadataHandlerBase
         final String methodName = "getSolutionBlueprintsByName";
 
         List<String> propertyNames = Arrays.asList(OpenMetadataProperty.QUALIFIED_NAME.name,
+                                                   OpenMetadataProperty.IDENTIFIER.name,
                                                    OpenMetadataProperty.DISPLAY_NAME.name);
 
         return super.getRootElementsByName(userId,

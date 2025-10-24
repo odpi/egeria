@@ -4,13 +4,13 @@
 package org.odpi.openmetadata.samples.archiveutilities;
 
 import org.odpi.openmetadata.frameworks.connectors.controls.SupportedTechnologyType;
-import org.odpi.openmetadata.frameworks.opengovernance.controls.ActionTargetType;
-import org.odpi.openmetadata.frameworks.opengovernance.controls.GuardType;
-import org.odpi.openmetadata.frameworks.opengovernance.controls.RequestParameterType;
-import org.odpi.openmetadata.frameworks.opengovernance.controls.RequestTypeType;
+import org.odpi.openmetadata.frameworks.openmetadata.specificationproperties.ActionTargetType;
+import org.odpi.openmetadata.frameworks.openmetadata.specificationproperties.GuardType;
+import org.odpi.openmetadata.frameworks.openmetadata.specificationproperties.RequestParameterType;
+import org.odpi.openmetadata.frameworks.openmetadata.specificationproperties.RequestTypeType;
 import org.odpi.openmetadata.frameworks.openmetadata.refdata.ResourceUse;
-import org.odpi.openmetadata.frameworks.opensurvey.controls.AnalysisStepType;
-import org.odpi.openmetadata.frameworks.opensurvey.controls.AnnotationTypeType;
+import org.odpi.openmetadata.frameworks.openmetadata.specificationproperties.AnalysisStepType;
+import org.odpi.openmetadata.frameworks.openmetadata.specificationproperties.AnnotationTypeType;
 
 import java.util.List;
 

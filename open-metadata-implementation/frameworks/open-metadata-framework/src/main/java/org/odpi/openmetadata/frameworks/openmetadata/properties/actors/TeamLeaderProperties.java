@@ -24,7 +24,7 @@ public class TeamLeaderProperties extends PersonRoleProperties
     public TeamLeaderProperties()
     {
         super();
-        super.setTypeName(OpenMetadataType.COMMUNITY_MEMBER.typeName);
+        super.setTypeName(OpenMetadataType.TEAM_LEADER.typeName);
     }
 
 

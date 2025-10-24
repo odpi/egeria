@@ -405,6 +405,7 @@ public class ExternalReferenceHandler extends OpenMetadataHandlerBase
 
         List<String> propertyNames = Arrays.asList(OpenMetadataProperty.QUALIFIED_NAME.name,
                                                    OpenMetadataProperty.DISPLAY_NAME.name,
+                                                   OpenMetadataProperty.IDENTIFIER.name,
                                                    OpenMetadataProperty.REFERENCE_TITLE.name);
 
         return super.getRootElementsByName(userId,

@@ -8,13 +8,15 @@ import org.odpi.openmetadata.frameworks.openmetadata.client.OpenMetadataClient;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
-import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.*;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.OpenMetadataRootElement;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.ClassificationProperties;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.NewActionTarget;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.RelationshipProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.actors.AssignmentScopeProperties;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.processes.actions.NotificationProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.governance.*;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.governance.governanceactions.GovernanceActionExecutorProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.governance.governanceactions.GovernanceActionProcessFlowProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.governance.governanceactions.NextGovernanceActionProcessStepProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.governance.governanceactions.TargetForGovernanceActionProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.implementations.ImplementationResourceProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.implementations.ImplementedByProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.security.ZoneHierarchyProperties;
@@ -22,7 +24,9 @@ import org.odpi.openmetadata.frameworks.openmetadata.search.*;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 
-import java.util.*;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Map;
 
 
 /**
@@ -108,7 +112,7 @@ public class GovernanceDefinitionHandler extends OpenMetadataHandlerBase
                                       methodName);
     }
 
-    
+
     /**
      * Create a new metadata element to represent a governance definition using an existing element as a template.
      * The template defines additional classifications and relationships that should be added to the new governance definition.
@@ -173,7 +177,7 @@ public class GovernanceDefinitionHandler extends OpenMetadataHandlerBase
                             properties,
                             methodName);
     }
-    
+
 
     /**
      * Attach two peer governance definitions.
@@ -349,8 +353,8 @@ public class GovernanceDefinitionHandler extends OpenMetadataHandlerBase
                                                                                           PropertyServerException
     {
         openMetadataClient.createRelatedElementsInStore(userId,
-                                                        elementGUID,
                                                         OpenMetadataType.GOVERNED_BY_RELATIONSHIP.typeName,
+                                                        elementGUID,
                                                         definitionGUID,
                                                         metadataSourceOptions,
                                                         relationshipBuilder.getNewElementProperties(properties));
@@ -405,12 +409,12 @@ public class GovernanceDefinitionHandler extends OpenMetadataHandlerBase
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public void linkAssignmentScope(String                   userId,
-                                   String                    scopeElementGUID,
-                                   String                    actorGUID,
-                                   MetadataSourceOptions     metadataSourceOptions,
-                                   AssignmentScopeProperties relationshipProperties) throws InvalidParameterException,
-                                                                                            PropertyServerException,
-                                                                                            UserNotAuthorizedException
+                                    String                    scopeElementGUID,
+                                    String                    actorGUID,
+                                    MetadataSourceOptions     metadataSourceOptions,
+                                    AssignmentScopeProperties relationshipProperties) throws InvalidParameterException,
+                                                                                             PropertyServerException,
+                                                                                             UserNotAuthorizedException
     {
         final String methodName            = "linkAssignmentScope";
         final String end1GUIDParameterName = "scopeElementGUID";
@@ -463,6 +467,149 @@ public class GovernanceDefinitionHandler extends OpenMetadataHandlerBase
                                                         deleteOptions);
     }
 
+
+    /**
+     * Attach monitored resource to a notification type.
+     *
+     * @param userId                        userId of user making request
+     * @param notificationTypeGUID            unique identifier of the notification type
+     * @param elementGUID             unique identifier of the element to monitor
+     * @param metadataSourceOptions         options to control access to open metadata
+     * @param relationshipProperties        description of the relationship.
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public void linkMonitoredResource(String                      userId,
+                                      String                      notificationTypeGUID,
+                                      String                      elementGUID,
+                                      MetadataSourceOptions       metadataSourceOptions,
+                                      MonitoredResourceProperties relationshipProperties) throws InvalidParameterException,
+                                                                                                 PropertyServerException,
+                                                                                                 UserNotAuthorizedException
+    {
+        final String methodName            = "linkMonitoredResource";
+        final String end1GUIDParameterName = "notificationTypeGUID";
+        final String end2GUIDParameterName = "elementGUID";
+
+        propertyHelper.validateUserId(userId, methodName);
+        propertyHelper.validateGUID(notificationTypeGUID, end1GUIDParameterName, methodName);
+        propertyHelper.validateGUID(elementGUID, end2GUIDParameterName, methodName);
+
+        openMetadataClient.createRelatedElementsInStore(userId,
+                                                        OpenMetadataType.MONITORED_RESOURCE_RELATIONSHIP.typeName,
+                                                        notificationTypeGUID,
+                                                        elementGUID,
+                                                        metadataSourceOptions,
+                                                        relationshipBuilder.getNewElementProperties(relationshipProperties));
+    }
+
+
+    /**
+     * Detach a monitored resource from a notification type.
+     *
+     * @param userId                      userId of user making request.
+     * @param notificationTypeGUID            unique identifier of the notification type
+     * @param elementGUID             unique identifier of the element to monitor
+     * @param deleteOptions               options to control access to open metadata
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public void detachMonitoredResource(String        userId,
+                                        String        notificationTypeGUID,
+                                        String        elementGUID,
+                                        DeleteOptions deleteOptions) throws InvalidParameterException,
+                                                                            PropertyServerException,
+                                                                            UserNotAuthorizedException
+    {
+        final String methodName = "detachMonitoredResource";
+
+        final String end1GUIDParameterName = "notificationTypeGUID";
+        final String end2GUIDParameterName = "elementGUID";
+
+        propertyHelper.validateUserId(userId, methodName);
+        propertyHelper.validateGUID(notificationTypeGUID, end1GUIDParameterName, methodName);
+        propertyHelper.validateGUID(elementGUID, end2GUIDParameterName, methodName);
+
+        openMetadataClient.detachRelatedElementsInStore(userId,
+                                                        OpenMetadataType.MONITORED_RESOURCE_RELATIONSHIP.typeName,
+                                                        notificationTypeGUID,
+                                                        elementGUID,
+                                                        deleteOptions);
+    }
+
+
+    /**
+     * Attach subscriber to a notification type.
+     *
+     * @param userId                        userId of user making request
+     * @param notificationTypeGUID            unique identifier of the notification type
+     * @param elementGUID             unique identifier of the element to monitor
+     * @param metadataSourceOptions         options to control access to open metadata
+     * @param relationshipProperties        description of the relationship.
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public void linkNotificationSubscriber(String                           userId,
+                                           String                           notificationTypeGUID,
+                                           String                           elementGUID,
+                                           MetadataSourceOptions            metadataSourceOptions,
+                                           NotificationSubscriberProperties relationshipProperties) throws InvalidParameterException,
+                                                                                                           PropertyServerException,
+                                                                                                           UserNotAuthorizedException
+    {
+        final String methodName            = "linkNotificationSubscriber";
+        final String end1GUIDParameterName = "notificationTypeGUID";
+        final String end2GUIDParameterName = "elementGUID";
+
+        propertyHelper.validateUserId(userId, methodName);
+        propertyHelper.validateGUID(notificationTypeGUID, end1GUIDParameterName, methodName);
+        propertyHelper.validateGUID(elementGUID, end2GUIDParameterName, methodName);
+
+        openMetadataClient.createRelatedElementsInStore(userId,
+                                                        OpenMetadataType.NOTIFICATION_SUBSCRIBER_RELATIONSHIP.typeName,
+                                                        notificationTypeGUID,
+                                                        elementGUID,
+                                                        metadataSourceOptions,
+                                                        relationshipBuilder.getNewElementProperties(relationshipProperties));
+    }
+
+
+    /**
+     * Detach a subscriber from a notification type.
+     *
+     * @param userId                      userId of user making request.
+     * @param notificationTypeGUID            unique identifier of the notification type
+     * @param elementGUID             unique identifier of the element to monitor
+     * @param deleteOptions               options to control access to open metadata
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public void detachNotificationSubscriber(String        userId,
+                                             String        notificationTypeGUID,
+                                             String        elementGUID,
+                                             DeleteOptions deleteOptions) throws InvalidParameterException,
+                                                                                 PropertyServerException,
+                                                                                 UserNotAuthorizedException
+    {
+        final String methodName = "detachNotificationSubscriber";
+
+        final String end1GUIDParameterName = "notificationTypeGUID";
+        final String end2GUIDParameterName = "elementGUID";
+
+        propertyHelper.validateUserId(userId, methodName);
+        propertyHelper.validateGUID(notificationTypeGUID, end1GUIDParameterName, methodName);
+        propertyHelper.validateGUID(elementGUID, end2GUIDParameterName, methodName);
+
+        openMetadataClient.detachRelatedElementsInStore(userId,
+                                                        OpenMetadataType.NOTIFICATION_SUBSCRIBER_RELATIONSHIP.typeName,
+                                                        notificationTypeGUID,
+                                                        elementGUID,
+                                                        deleteOptions);
+    }
 
 
     /**
@@ -647,7 +794,7 @@ public class GovernanceDefinitionHandler extends OpenMetadataHandlerBase
 
 
     /**
-     * Detach subject area definitions from their hierarchical relationship..
+     * Detach subject area definitions from their hierarchical relationship.
      *
      * @param userId                 userId of user making request.
      * @param subjectAreaGUID       unique identifier of the parent actor profile
@@ -732,6 +879,300 @@ public class GovernanceDefinitionHandler extends OpenMetadataHandlerBase
                                                             metadataSourceOptions);
     }
 
+
+    /**
+     * Link a governance action to the element it is to work on (action target).
+     *
+     * @param userId                  userId of user making request
+     * @param governanceActionGUID        unique identifier of the governance action
+     * @param elementGUID             unique identifier of the target
+     * @param metadataSourceOptions  options to control access to open metadata
+     * @param relationshipProperties  description of the relationship.
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public void linkTargetForGovernanceAction(String                              userId,
+                                              String                              governanceActionGUID,
+                                              String                              elementGUID,
+                                              MetadataSourceOptions               metadataSourceOptions,
+                                              TargetForGovernanceActionProperties relationshipProperties) throws InvalidParameterException,
+                                                                                                                 PropertyServerException,
+                                                                                                                 UserNotAuthorizedException
+    {
+        final String methodName = "linkTargetForGovernanceAction";
+        final String end1GUIDParameterName = "governanceActionGUID";
+        final String end2GUIDParameterName = "elementGUID";
+
+        propertyHelper.validateUserId(userId, methodName);
+        propertyHelper.validateGUID(governanceActionGUID, end1GUIDParameterName, methodName);
+        propertyHelper.validateGUID(elementGUID, end2GUIDParameterName, methodName);
+
+        openMetadataClient.createRelatedElementsInStore(userId,
+                                                        OpenMetadataType.TARGET_FOR_GOVERNANCE_ACTION_RELATIONSHIP.typeName,
+                                                        governanceActionGUID,
+                                                        elementGUID,
+                                                        metadataSourceOptions,
+                                                        relationshipBuilder.getNewElementProperties(relationshipProperties));
+    }
+
+
+    /**
+     * Detach a governance action from the element it is to work on (action target).
+     *
+     * @param userId                 userId of user making request.
+     * @param governanceActionGUID        unique identifier of the governance action
+     * @param elementGUID             unique identifier of the target
+     * @param deleteOptions  options to control access to open metadata
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public void detachTargetForGovernanceAction(String        userId,
+                                                String        governanceActionGUID,
+                                                String        elementGUID,
+                                                DeleteOptions deleteOptions) throws InvalidParameterException,
+                                                                                    PropertyServerException,
+                                                                                    UserNotAuthorizedException
+    {
+        final String methodName = "detachTargetForGovernanceAction";
+
+        final String end1GUIDParameterName = "governanceActionGUID";
+        final String end2GUIDParameterName = "elementGUID";
+
+        propertyHelper.validateUserId(userId, methodName);
+        propertyHelper.validateGUID(governanceActionGUID, end1GUIDParameterName, methodName);
+        propertyHelper.validateGUID(elementGUID, end2GUIDParameterName, methodName);
+
+        openMetadataClient.detachRelatedElementsInStore(userId,
+                                                        OpenMetadataType.TARGET_FOR_GOVERNANCE_ACTION_RELATIONSHIP.typeName,
+                                                        governanceActionGUID,
+                                                        elementGUID,
+                                                        deleteOptions);
+    }
+
+
+
+    /**
+     * Link a governance action type to the governance engine that it is to call.
+     *
+     * @param userId                  userId of user making request
+     * @param governanceActionTypeGUID        unique identifier of the governance action type
+     * @param governanceEngineGUID             unique identifier of the governance engine to call
+     * @param metadataSourceOptions  options to control access to open metadata
+     * @param relationshipProperties  description of the relationship.
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public void linkGovernanceActionExecutor(String                             userId,
+                                             String                             governanceActionTypeGUID,
+                                             String                             governanceEngineGUID,
+                                             MetadataSourceOptions              metadataSourceOptions,
+                                             GovernanceActionExecutorProperties relationshipProperties) throws InvalidParameterException,
+                                                                                                               PropertyServerException,
+                                                                                                               UserNotAuthorizedException
+    {
+        final String methodName = "linkGovernanceActionExecutor";
+        final String end1GUIDParameterName = "governanceActionTypeGUID";
+        final String end2GUIDParameterName = "governanceEngineGUID";
+
+        propertyHelper.validateUserId(userId, methodName);
+        propertyHelper.validateGUID(governanceActionTypeGUID, end1GUIDParameterName, methodName);
+        propertyHelper.validateGUID(governanceEngineGUID, end2GUIDParameterName, methodName);
+
+        openMetadataClient.createRelatedElementsInStore(userId,
+                                                        OpenMetadataType.GOVERNANCE_ACTION_EXECUTOR_RELATIONSHIP.typeName,
+                                                        governanceActionTypeGUID,
+                                                        governanceEngineGUID,
+                                                        metadataSourceOptions,
+                                                        relationshipBuilder.getNewElementProperties(relationshipProperties));
+    }
+
+
+    /**
+     * Detach a governance action type from the governance engine that it is to call.
+     *
+     * @param userId                 userId of user making request.
+     * @param governanceActionTypeGUID        unique identifier of the governance action type
+     * @param governanceEngineGUID             unique identifier of the governance engine to call
+     * @param deleteOptions  options to control access to open metadata
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public void detachGovernanceActionExecutor(String        userId,
+                                               String        governanceActionTypeGUID,
+                                               String        governanceEngineGUID,
+                                               DeleteOptions deleteOptions) throws InvalidParameterException,
+                                                                                   PropertyServerException,
+                                                                                   UserNotAuthorizedException
+    {
+        final String methodName = "detachGovernanceActionExecutor";
+
+        final String end1GUIDParameterName = "governanceActionTypeGUID";
+        final String end2GUIDParameterName = "governanceEngineGUID";
+
+        propertyHelper.validateUserId(userId, methodName);
+        propertyHelper.validateGUID(governanceActionTypeGUID, end1GUIDParameterName, methodName);
+        propertyHelper.validateGUID(governanceEngineGUID, end2GUIDParameterName, methodName);
+
+        openMetadataClient.detachRelatedElementsInStore(userId,
+                                                        OpenMetadataType.GOVERNANCE_ACTION_EXECUTOR_RELATIONSHIP.typeName,
+                                                        governanceActionTypeGUID,
+                                                        governanceEngineGUID,
+                                                        deleteOptions);
+    }
+
+
+
+    /**
+     * Link a governance action process to the first step in the process.
+     *
+     * @param userId                  userId of user making request
+     * @param governanceActionProcessGUID        unique identifier of the governance action process
+     * @param firstProcessStepGUID             unique identifier of the first step in the process
+     * @param metadataSourceOptions  options to control access to open metadata
+     * @param relationshipProperties  description of the relationship.
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public void linkGovernanceActionProcessFlow(String                                userId,
+                                                String                                governanceActionProcessGUID,
+                                                String                                firstProcessStepGUID,
+                                                MetadataSourceOptions                 metadataSourceOptions,
+                                                GovernanceActionProcessFlowProperties relationshipProperties) throws InvalidParameterException,
+                                                                                                                     PropertyServerException,
+                                                                                                                     UserNotAuthorizedException
+    {
+        final String methodName = "linkGovernanceActionProcessFlow";
+        final String end1GUIDParameterName = "governanceActionProcessGUID";
+        final String end2GUIDParameterName = "firstProcessStepGUID";
+
+        propertyHelper.validateUserId(userId, methodName);
+        propertyHelper.validateGUID(governanceActionProcessGUID, end1GUIDParameterName, methodName);
+        propertyHelper.validateGUID(firstProcessStepGUID, end2GUIDParameterName, methodName);
+
+        openMetadataClient.createRelatedElementsInStore(userId,
+                                                        OpenMetadataType.GOVERNANCE_ACTION_PROCESS_FLOW_RELATIONSHIP.typeName,
+                                                        governanceActionProcessGUID,
+                                                        firstProcessStepGUID,
+                                                        metadataSourceOptions,
+                                                        relationshipBuilder.getNewElementProperties(relationshipProperties));
+    }
+
+
+    /**
+     * Detach a governance action process from the first step in the process.
+     *
+     * @param userId                 userId of user making request.
+     * @param governanceActionProcessGUID        unique identifier of the governance action process
+     * @param firstProcessStepGUID             unique identifier of the first step in the process
+     * @param deleteOptions  options to control access to open metadata
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public void detachGovernanceActionProcessFlow(String        userId,
+                                                  String        governanceActionProcessGUID,
+                                                  String        firstProcessStepGUID,
+                                                  DeleteOptions deleteOptions) throws InvalidParameterException,
+                                                                                      PropertyServerException,
+                                                                                      UserNotAuthorizedException
+    {
+        final String methodName = "detachGovernanceActionProcessFlow";
+
+        final String end1GUIDParameterName = "governanceActionProcessGUID";
+        final String end2GUIDParameterName = "firstProcessStepGUID";
+
+        propertyHelper.validateUserId(userId, methodName);
+        propertyHelper.validateGUID(governanceActionProcessGUID, end1GUIDParameterName, methodName);
+        propertyHelper.validateGUID(firstProcessStepGUID, end2GUIDParameterName, methodName);
+
+        openMetadataClient.detachRelatedElementsInStore(userId,
+                                                        OpenMetadataType.GOVERNANCE_ACTION_PROCESS_FLOW_RELATIONSHIP.typeName,
+                                                        governanceActionProcessGUID,
+                                                        firstProcessStepGUID,
+                                                        deleteOptions);
+    }
+
+
+    /**
+     * Create a link between a governance action process step and its follow-on process step.
+     *
+     * @param userId calling user
+     * @param processStepGUID unique identifier of the element
+     * @param nextProcessStepGUID unique identifier of the license type
+     * @param properties   additional information, endorsements etc
+     * @param metadataSourceOptions  options to control access to open metadata
+     *
+     * @return guid of license relationship
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public String linkNextProcessStep(String                                    userId,
+                                      String                                    processStepGUID,
+                                      String                                    nextProcessStepGUID,
+                                      MetadataSourceOptions                     metadataSourceOptions,
+                                      NextGovernanceActionProcessStepProperties properties) throws InvalidParameterException,
+                                                                                                   UserNotAuthorizedException,
+                                                                                                   PropertyServerException
+    {
+        return openMetadataClient.createRelatedElementsInStore(userId,
+                                                               OpenMetadataType.NEXT_GOVERNANCE_ACTION_PROCESS_STEP_RELATIONSHIP.typeName,
+                                                               processStepGUID,
+                                                               nextProcessStepGUID,
+                                                               metadataSourceOptions,
+                                                               relationshipBuilder.getNewElementProperties(properties));
+    }
+
+
+    /**
+     * Update the relationship between two governance action process steps.
+     *
+     * @param userId calling user
+     * @param relationshipGUID unique identifier for the relationship
+     * @param updateOptions options for the request
+     * @param properties properties of the relationship
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public void updateNextProcessStep(String                                    userId,
+                                      String                                    relationshipGUID,
+                                      UpdateOptions                             updateOptions,
+                                      NextGovernanceActionProcessStepProperties properties) throws InvalidParameterException,
+                                                                                                   UserNotAuthorizedException,
+                                                                                                   PropertyServerException
+    {
+        openMetadataClient.updateRelationshipInStore(userId,
+                                                     relationshipGUID,
+                                                     updateOptions,
+                                                     relationshipBuilder.getNewElementProperties(properties));
+    }
+
+
+    /**
+     * Remove a relationship between two governance action process steps.
+     *
+     * @param userId calling user
+     * @param relationshipGUID unique identifier of the relationship
+     * @param deleteOptions  options to control access to open metadata
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public void detachNextProcessStep(String        userId,
+                                      String        relationshipGUID,
+                                      DeleteOptions deleteOptions) throws InvalidParameterException,
+                                                                          UserNotAuthorizedException,
+                                                                          PropertyServerException
+    {
+        openMetadataClient.deleteRelationshipInStore(userId, relationshipGUID, deleteOptions);
+    }
 
 
     /**
@@ -980,8 +1421,8 @@ public class GovernanceDefinitionHandler extends OpenMetadataHandlerBase
     public OpenMetadataRootElement getGovernanceDefinitionByGUID(String     userId,
                                                                  String     governanceDefinitionGUID,
                                                                  GetOptions getOptions) throws InvalidParameterException,
-                                                                                                   PropertyServerException,
-                                                                                                   UserNotAuthorizedException
+                                                                                               PropertyServerException,
+                                                                                               UserNotAuthorizedException
     {
         final String methodName = "getGovernanceDefinitionByGUID";
 
@@ -1059,8 +1500,6 @@ public class GovernanceDefinitionHandler extends OpenMetadataHandlerBase
                                                         implementationGUID,
                                                         deleteOptions);
     }
-
-
 
 
     /**

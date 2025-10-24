@@ -45,7 +45,7 @@ public class ValidValueMemberProperties extends RelationshipBeanProperties
 
         if (template != null)
         {
-            this.isDefaultValue = template.getDefaultValue();
+            this.isDefaultValue = template.getIsDefaultValue();
         }
     }
 
@@ -55,7 +55,7 @@ public class ValidValueMemberProperties extends RelationshipBeanProperties
      *
      * @return flag
      */
-    public boolean getDefaultValue()
+    public boolean getIsDefaultValue()
     {
         return isDefaultValue;
     }
@@ -66,7 +66,7 @@ public class ValidValueMemberProperties extends RelationshipBeanProperties
      *
      * @param defaultValue flag
      */
-    public void setDefaultValue(boolean defaultValue)
+    public void setIsDefaultValue(boolean defaultValue)
     {
         this.isDefaultValue = defaultValue;
     }

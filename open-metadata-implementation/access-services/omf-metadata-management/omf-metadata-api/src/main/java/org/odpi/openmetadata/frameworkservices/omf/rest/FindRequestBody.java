@@ -25,8 +25,6 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class FindRequestBody extends ResultsRequestBody
 {
-    private String                metadataElementTypeName     = null;
-    private List<String>          metadataElementSubtypeNames = null;
     private SearchProperties      searchProperties            = null;
     private SearchClassifications matchClassifications        = null;
 
@@ -51,8 +49,6 @@ public class FindRequestBody extends ResultsRequestBody
 
         if (template != null)
         {
-            metadataElementTypeName     = template.getMetadataElementTypeName();
-            metadataElementSubtypeNames = template.getMetadataElementSubtypeNames();
             searchProperties            = template.getSearchProperties();
             matchClassifications        = template.getMatchClassifications();
         }
@@ -124,9 +120,7 @@ public class FindRequestBody extends ResultsRequestBody
     public String toString()
     {
         return "FindRequestBody{" +
-                "metadataElementTypeName='" + metadataElementTypeName + '\'' +
-                ", metadataElementSubtypeNames=" + metadataElementSubtypeNames +
-                ", searchProperties=" + searchProperties +
+                "searchProperties=" + searchProperties +
                 ", matchClassifications=" + matchClassifications +
                 "} " + super.toString();
     }
@@ -145,9 +139,7 @@ public class FindRequestBody extends ResultsRequestBody
         if (objectToCompare == null || getClass() != objectToCompare.getClass()) return false;
         if (!super.equals(objectToCompare)) return false;
         FindRequestBody that = (FindRequestBody) objectToCompare;
-        return Objects.equals(metadataElementTypeName, that.metadataElementTypeName) &&
-                Objects.equals(metadataElementSubtypeNames, that.metadataElementSubtypeNames) &&
-                Objects.equals(searchProperties, that.searchProperties) &&
+        return Objects.equals(searchProperties, that.searchProperties) &&
                 Objects.equals(matchClassifications, that.matchClassifications);
     }
 
@@ -160,7 +152,6 @@ public class FindRequestBody extends ResultsRequestBody
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), metadataElementTypeName,
-                            metadataElementSubtypeNames, searchProperties, matchClassifications);
+        return Objects.hash(super.hashCode(), searchProperties, matchClassifications);
     }
 }

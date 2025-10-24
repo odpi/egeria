@@ -73,6 +73,14 @@ public enum AtlasIntegrationErrorCode implements ExceptionMessageSet
                         "Review the audit log to determine if there were errors detected when the open metadata entity was created.  The simplest resolution is to delete the open metadata entity.  However, if this entity has been enhanced with many attachments and classifications then it is also possible to add the correlation information to the open metadata entity to allow the synchronization to continue."),
 
     /**
+     * APACHE-ATLAS-INTEGRATION-CONNECTOR-404-002 - The {0} integration connector can not retrieve the atlas GUID for {1} open metadata entity {2} and metadata collection {3}
+     */
+    MISSING_ATLAS_GUID(404, "APACHE-ATLAS-INTEGRATION-CONNECTOR-404-002",
+                        "The {0} integration connector can not retrieve the atlas GUID for {1} open metadata entity {2} and metadata collection {3}",
+                        "There is no Apache Atlas correlation information for this element.",
+                        "Review the follow on messages.  If there are none, it is just a timing issue.  If there are subsequent error messages then follow their instructions."),
+
+    /**
      * APACHE-ATLAS-INTEGRATION-CONNECTOR-500-001 - The {0} connector received an unexpected exception {1} during method {2}; the error message was: {3}
      */
     UNEXPECTED_EXCEPTION(500, "APACHE-ATLAS-INTEGRATION-CONNECTOR-500-001",

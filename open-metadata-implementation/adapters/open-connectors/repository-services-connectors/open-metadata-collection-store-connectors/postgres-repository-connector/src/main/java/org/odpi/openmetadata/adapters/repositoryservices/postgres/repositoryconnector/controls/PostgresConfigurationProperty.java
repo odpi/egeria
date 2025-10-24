@@ -4,7 +4,7 @@
 package org.odpi.openmetadata.adapters.repositoryservices.postgres.repositoryconnector.controls;
 
 
-import org.odpi.openmetadata.frameworks.connectors.controls.ConfigurationPropertyType;
+import org.odpi.openmetadata.frameworks.openmetadata.specificationproperties.ConfigurationPropertyType;
 import org.odpi.openmetadata.frameworks.openmetadata.types.DataType;
 
 import java.util.ArrayList;

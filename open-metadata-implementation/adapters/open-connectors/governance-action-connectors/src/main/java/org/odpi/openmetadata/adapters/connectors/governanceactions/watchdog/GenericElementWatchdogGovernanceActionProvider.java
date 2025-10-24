@@ -6,8 +6,6 @@ package org.odpi.openmetadata.adapters.connectors.governanceactions.watchdog;
 
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.ConnectorType;
 import org.odpi.openmetadata.frameworks.opengovernance.GovernanceActionServiceProviderBase;
-import org.odpi.openmetadata.frameworks.opengovernance.controls.ActionTargetType;
-import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 import org.odpi.openmetadata.frameworks.openwatchdog.controls.WatchdogActionTarget;
 import org.odpi.openmetadata.frameworks.openwatchdog.controls.WatchdogRequestParameter;
 

@@ -54,7 +54,7 @@ class OmasGetTables implements Function<String, List<OpenMetadataRootElement>>
         {
             OpenMetadataRootElement dataAsset = dataAssetClient.getAssetByGUID(assetGuid, dataAssetClient.getGetOptions());
 
-            if (dataAsset.getRootSchemaType() == null)
+            if (dataAsset.getSchemaType() == null)
             {
                 return new ArrayList<>();
             }
@@ -62,7 +62,7 @@ class OmasGetTables implements Function<String, List<OpenMetadataRootElement>>
             {
                 // todo limit search to only schema attributes without the CalculatedValue classification
                 return Optional.ofNullable(
-                        databaseTableClient.getAttributesForSchemaType(dataAsset.getRootSchemaType().getRelatedElement().getElementHeader().getGUID(),
+                        databaseTableClient.getAttributesForSchemaType(dataAsset.getSchemaType().getRelatedElement().getElementHeader().getGUID(),
                                                                        databaseTableClient.getQueryOptions())).orElseGet(ArrayList::new);
             }
         }

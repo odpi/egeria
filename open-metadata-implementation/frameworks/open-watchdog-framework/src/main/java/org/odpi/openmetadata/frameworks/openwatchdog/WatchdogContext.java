@@ -19,7 +19,7 @@ import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterExcept
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.frameworks.opengovernance.properties.ActionTargetElement;
-import org.odpi.openmetadata.frameworks.opengovernance.properties.CompletionStatus;
+import org.odpi.openmetadata.frameworks.openmetadata.enums.CompletionStatus;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.OpenMetadataRootElement;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.NewActionTarget;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.processes.actions.NotificationProperties;
@@ -185,6 +185,26 @@ public class WatchdogContext extends ConnectorContextBase implements WatchDogEve
 
 
     /**
+     * Return an integer request parameter the default value is used if the request parameter is not provided.
+     *
+     * @param requestParameterName name of the request parameter
+     * @param defaultValue value to ues if the request parameter is not set
+     * @return int
+     */
+    public int getIntRequestParameter(String requestParameterName, int defaultValue)
+    {
+        int requestParameterValue = defaultValue;
+
+        if ((this.requestParameters != null) && (this.requestParameters.containsKey(requestParameterName)))
+        {
+            requestParameterValue = Integer.parseInt(this.requestParameters.get(requestParameterName));
+        }
+
+        return requestParameterValue;
+    }
+
+
+    /**
      * Register a listener to receive events about changes to metadata elements in the open metadata store.
      * There can be only one registered listener.  If this method is called more than once, the new parameters
      * replace the existing parameters.  This means the watchdog governance action service can change the
@@ -208,7 +228,7 @@ public class WatchdogContext extends ConnectorContextBase implements WatchDogEve
      * @throws InvalidParameterException one or more of the type names are unrecognized
      */
     @Override
-    public void registerListener(WatchdogGovernanceListener listener,
+    public void registerListener(WatchdogGovernanceListener  listener,
                                  List<OpenMetadataEventType> interestingEventTypes,
                                  List<String>                interestingMetadataTypes,
                                  String                      specificInstance) throws InvalidParameterException
@@ -348,7 +368,7 @@ public class WatchdogContext extends ConnectorContextBase implements WatchDogEve
      *
      * @param notificationProperties properties for the notification
      * @param requestParameters properties to pass to the next governance service
-     * @param newActionTargets map of action target names to GUIDs for the resulting governance action service
+     * @param newActionTargets map of action target names to GUIDs for the resulting engine action
      *
      * @throws InvalidParameterException the completion status is null
      * @throws UserNotAuthorizedException the governance action service is not authorized to update the governance action service status
@@ -356,9 +376,10 @@ public class WatchdogContext extends ConnectorContextBase implements WatchDogEve
      */
     public void notifySubscribers(NotificationProperties notificationProperties,
                                   Map<String, String>    requestParameters,
-                                  List<NewActionTarget>  newActionTargets)  throws InvalidParameterException,
-                                                                                  UserNotAuthorizedException,
-                                                                                  PropertyServerException
+                                  List<NewActionTarget>  newActionTargets,
+                                  ActivityStatus         newSubscriberStatus) throws InvalidParameterException,
+                                                                                     UserNotAuthorizedException,
+                                                                                     PropertyServerException
     {
         final String methodName = "notifySubscribers";
 
@@ -366,12 +387,13 @@ public class WatchdogContext extends ConnectorContextBase implements WatchDogEve
 
         if (notificationTypeGUID != null)
         {
-            this.notificationHandler.notifySubscribers(notificationTypeGUID,
+            this.notificationHandler.notifySubscribers(connectorUserId,
                                                        notificationProperties,
                                                        notificationTypeGUID,
                                                        requestParameters,
                                                        connectorGUID,
-                                                       newActionTargets);
+                                                       newActionTargets,
+                                                       newSubscriberStatus);
         }
     }
 

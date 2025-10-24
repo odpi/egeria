@@ -4,8 +4,12 @@ package org.odpi.openmetadata.viewservices.peopleorganizer.server.spring;
 
 import io.swagger.v3.oas.annotations.ExternalDocumentation;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.enums.SecuritySchemeIn;
+import io.swagger.v3.oas.annotations.enums.SecuritySchemeType;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import io.swagger.v3.oas.annotations.security.SecurityScheme;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import org.odpi.openmetadata.commonservices.ffdc.rest.DeleteRequestBody;
+import org.odpi.openmetadata.commonservices.ffdc.rest.DeleteRelationshipRequestBody;
 import org.odpi.openmetadata.commonservices.ffdc.rest.NewRelationshipRequestBody;
 import org.odpi.openmetadata.commonservices.ffdc.rest.VoidResponse;
 import org.odpi.openmetadata.viewservices.peopleorganizer.server.PeopleOrganizerRESTServices;
@@ -17,7 +21,13 @@ import org.springframework.web.bind.annotation.*;
 = */
 @RestController
 @RequestMapping("/servers/{serverName}/api/open-metadata/people-organizer")
-
+@SecurityScheme(
+        name = "BearerAuthorization",
+        type = SecuritySchemeType.HTTP,
+        bearerFormat = "JWT",
+        scheme = "bearer",
+        in = SecuritySchemeIn.HEADER
+)
 @Tag(name="API: People Organizer OMVS", description="The People Organizer OMVS provides APIs to maintain information about an organization.  This includes the definitions of teams, roles and organization structures.",
         externalDocs=@ExternalDocumentation(description="Further Information",
                 url="https://egeria-project.org/services/omvs/people-organizer/overview/"))
@@ -48,6 +58,8 @@ public class PeopleOrganizerResource
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     @PostMapping(path = "/actor-profiles/{personOneGUID}/peer-persons/{personTwoGUID}/attach")
+    @SecurityRequirement(name = "BearerAuthorization")
+
     @Operation(summary="linkPeerPerson",
             description="Attach a person profile to one of its peers.",
             externalDocs=@ExternalDocumentation(description="Further Information",
@@ -80,7 +92,9 @@ public class PeopleOrganizerResource
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     @PostMapping(path = "/actor-profiles/{personOneGUID}/peer-persons/{personTwoGUID}/detach")
-    @Operation(summary="detachSupportingDefinition",
+    @SecurityRequirement(name = "BearerAuthorization")
+
+    @Operation(summary="detachPeerPerson",
             description="Detach a person profile from one of its peers.",
             externalDocs=@ExternalDocumentation(description="Further Information",
                     url="https://egeria-project.org/concepts/personal-profile/"))
@@ -92,7 +106,7 @@ public class PeopleOrganizerResource
                                          @PathVariable
                                          String                     personTwoGUID,
                                          @RequestBody (required = false)
-                                         DeleteRequestBody requestBody)
+                                             DeleteRelationshipRequestBody requestBody)
     {
         return restAPI.detachPeerPerson(serverName, personOneGUID, personTwoGUID, requestBody);
     }
@@ -112,6 +126,8 @@ public class PeopleOrganizerResource
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     @PostMapping(path = "/actor-profiles/{superTeamGUID}/team-structures/{subteamGUID}/attach")
+    @SecurityRequirement(name = "BearerAuthorization")
+
     @Operation(summary="linkTeamStructure",
             description="Attach a super team to a subteam.",
             externalDocs=@ExternalDocumentation(description="Further Information",
@@ -144,6 +160,8 @@ public class PeopleOrganizerResource
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     @PostMapping(path = "/actor-profiles/{superTeamGUID}/team-structures/{subteamGUID}/detach")
+    @SecurityRequirement(name = "BearerAuthorization")
+
     @Operation(summary="detachTeamStructure",
             description="Detach a super team from a subteam.",
             externalDocs=@ExternalDocumentation(description="Further Information",
@@ -156,7 +174,7 @@ public class PeopleOrganizerResource
                                             @PathVariable
                                             String subteamGUID,
                                             @RequestBody (required = false)
-                                            DeleteRequestBody requestBody)
+                                                DeleteRelationshipRequestBody requestBody)
     {
         return restAPI.detachTeamStructure(serverName, superTeamGUID, subteamGUID, requestBody);
     }

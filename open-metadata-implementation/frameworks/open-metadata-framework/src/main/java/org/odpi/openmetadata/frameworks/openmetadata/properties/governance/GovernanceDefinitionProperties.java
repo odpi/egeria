@@ -2,11 +2,7 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.frameworks.openmetadata.properties.governance;
 
-import com.fasterxml.jackson.annotation.JsonAutoDetect;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonSubTypes;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
+import com.fasterxml.jackson.annotation.*;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.ReferenceableProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 
@@ -51,7 +47,6 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 public class GovernanceDefinitionProperties extends ReferenceableProperties
 {
     private String       userDefinedStatus = null;
-    private String       identifier       = null;
     private String       summary          = null;
     private String       scope            = null;
     private String       usage            = null;
@@ -84,7 +79,6 @@ public class GovernanceDefinitionProperties extends ReferenceableProperties
         if (template != null)
         {
             this.userDefinedStatus = template.getUserDefinedStatus();
-            this.identifier        = template.getIdentifier();
             this.summary           = template.getSummary();
             this.scope             = template.getScope();
             this.usage             = template.getUsage();
@@ -116,28 +110,6 @@ public class GovernanceDefinitionProperties extends ReferenceableProperties
     public void setUserDefinedStatus(String userDefinedStatus)
     {
         this.userDefinedStatus = userDefinedStatus;
-    }
-
-
-    /**
-     * Returns the identifier property for the metadata entity.
-     *
-     * @return documentIdentifier
-     */
-    public String getIdentifier()
-    {
-        return identifier;
-    }
-
-
-    /**
-     * Set up the identifier.
-     *
-     * @param identifier String name
-     */
-    public void setIdentifier(String identifier)
-    {
-        this.identifier = identifier;
     }
 
 
@@ -336,7 +308,6 @@ public class GovernanceDefinitionProperties extends ReferenceableProperties
     {
         return "GovernanceDefinitionProperties{" +
                 "userDefinedStatus='" + userDefinedStatus + '\'' +
-                ", identifier='" + identifier + '\'' +
                 ", summary='" + summary + '\'' +
                 ", scope='" + scope + '\'' +
                 ", usage='" + usage + '\'' +
@@ -363,7 +334,6 @@ public class GovernanceDefinitionProperties extends ReferenceableProperties
         if (!super.equals(objectToCompare)) return false;
         GovernanceDefinitionProperties that = (GovernanceDefinitionProperties) objectToCompare;
         return domainIdentifier == that.domainIdentifier &&
-                Objects.equals(identifier, that.identifier) &&
                 Objects.equals(userDefinedStatus, that.userDefinedStatus)&&
                 Objects.equals(summary, that.summary) &&
                 Objects.equals(scope, that.scope) &&
@@ -383,6 +353,6 @@ public class GovernanceDefinitionProperties extends ReferenceableProperties
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), userDefinedStatus, identifier, summary, scope, usage, domainIdentifier, importance, implications, outcomes, results);
+        return Objects.hash(super.hashCode(), userDefinedStatus, summary, scope, usage, domainIdentifier, importance, implications, outcomes, results);
     }
 }

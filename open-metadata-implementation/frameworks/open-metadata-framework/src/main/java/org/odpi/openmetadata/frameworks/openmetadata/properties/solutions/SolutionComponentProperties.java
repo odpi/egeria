@@ -5,7 +5,7 @@ package org.odpi.openmetadata.frameworks.openmetadata.properties.solutions;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.ReferenceableProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.designmodels.DesignModelElementProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 
 import java.util.Objects;
@@ -19,11 +19,10 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class SolutionComponentProperties extends ReferenceableProperties
+public class SolutionComponentProperties extends DesignModelElementProperties
 {
     private String solutionComponentType             = null;
     private String plannedDeployedImplementationType = null;
-    private String userDefinedStatus                 = null;
 
 
     /**
@@ -49,7 +48,6 @@ public class SolutionComponentProperties extends ReferenceableProperties
         {
             this.solutionComponentType             = template.getSolutionComponentType();
             this.plannedDeployedImplementationType = template.getPlannedDeployedImplementationType();
-            this.userDefinedStatus                 = template.getUserDefinedStatus();
         }
     }
 
@@ -98,29 +96,6 @@ public class SolutionComponentProperties extends ReferenceableProperties
     }
 
 
-
-    /**
-     * Return the status of the element.
-     *
-     * @return string
-     */
-    public String getUserDefinedStatus()
-    {
-        return userDefinedStatus;
-    }
-
-
-    /**
-     * Set up the status of the element.
-     *
-     * @param userDefinedStatus string
-     */
-    public void setUserDefinedStatus(String userDefinedStatus)
-    {
-        this.userDefinedStatus = userDefinedStatus;
-    }
-
-
     /**
      * Standard toString method.
      *
@@ -132,7 +107,6 @@ public class SolutionComponentProperties extends ReferenceableProperties
         return "SolutionComponentProperties{" +
                 "solutionComponentType='" + solutionComponentType + '\'' +
                 ", plannedDeployedImplementationType='" + plannedDeployedImplementationType + '\'' +
-                ", userDefinedStatus=" + userDefinedStatus +
                 "} " + super.toString();
     }
 
@@ -159,8 +133,7 @@ public class SolutionComponentProperties extends ReferenceableProperties
             return false;
         }
         return Objects.equals(solutionComponentType, that.solutionComponentType) &&
-                Objects.equals(plannedDeployedImplementationType, that.plannedDeployedImplementationType) &&
-                Objects.equals(userDefinedStatus, that.userDefinedStatus);
+                Objects.equals(plannedDeployedImplementationType, that.plannedDeployedImplementationType);
     }
 
 
@@ -172,6 +145,6 @@ public class SolutionComponentProperties extends ReferenceableProperties
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), solutionComponentType, plannedDeployedImplementationType, userDefinedStatus);
+        return Objects.hash(super.hashCode(), solutionComponentType, plannedDeployedImplementationType);
     }
 }

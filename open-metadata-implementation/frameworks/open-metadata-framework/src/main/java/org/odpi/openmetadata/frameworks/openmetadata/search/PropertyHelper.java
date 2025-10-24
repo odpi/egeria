@@ -484,8 +484,6 @@ public class PropertyHelper
         {
             List<ElementClassification> executionPoints            = new ArrayList<>();
             List<ElementClassification> duplicateClassifications   = new ArrayList<>();
-            List<ElementClassification> resourceManagersCategories = new ArrayList<>();
-            List<ElementClassification> serverPurposes             = new ArrayList<>();
             List<ElementClassification> collectionRoles            = new ArrayList<>();
             List<ElementClassification> projectCategories          = new ArrayList<>();
             List<ElementClassification> otherClassifications       = new ArrayList<>();
@@ -586,14 +584,6 @@ public class PropertyHelper
                     {
                         elementHeader.setPrimaryKey(this.getElementClassification(attachedClassification));
                     }
-                    else if (this.isTypeOf(attachedClassification, OpenMetadataType.RESOURCE_MANAGER_CLASSIFICATION.typeName))
-                    {
-                        resourceManagersCategories.add(this.getElementClassification(attachedClassification));
-                    }
-                    else if (this.isTypeOf(attachedClassification, OpenMetadataType.SERVER_PURPOSE_CLASSIFICATION.typeName))
-                    {
-                        serverPurposes.add(this.getElementClassification(attachedClassification));
-                    }
                     else if (this.isTypeOf(attachedClassification, OpenMetadataType.COLLECTION_ROLE_CLASSIFICATION.typeName))
                     {
                         collectionRoles.add(this.getElementClassification(attachedClassification));
@@ -617,16 +607,6 @@ public class PropertyHelper
             if (! executionPoints.isEmpty())
             {
                 elementHeader.setExecutionPoints(executionPoints);
-            }
-
-            if (! resourceManagersCategories.isEmpty())
-            {
-                elementHeader.setResourceManagerRoles(resourceManagersCategories);
-            }
-
-            if (! serverPurposes.isEmpty())
-            {
-                elementHeader.setServerPurposes(serverPurposes);
             }
 
             if (! collectionRoles.isEmpty())
@@ -677,13 +657,11 @@ public class PropertyHelper
      * Extract the properties from the element.
      *
      * @param relatedElement from the repository
-     * @param methodName calling method
      * @return filled out element header
      * @throws PropertyServerException there is a problem in the use of the generic handlers because
      * the converter has been configured with a type of bean that is incompatible with the handler
      */
-    public RelatedMetadataElementSummary getRelatedElementSummary(RelatedMetadataElement relatedElement,
-                                                                  String                 methodName) throws PropertyServerException
+    public RelatedMetadataElementSummary getRelatedElementSummary(RelatedMetadataElement relatedElement) throws PropertyServerException
     {
         if ((relatedElement != null) && (relatedElement.getElement() != null))
         {
@@ -696,13 +674,13 @@ public class PropertyHelper
             relatedElementSummary.setRelationshipHeader(elementHeader);
             if (relatedElement.getRelationshipProperties() != null)
             {
-                relatedElementSummary.setRelationshipProperties(relatedElement.getRelationshipProperties().getPropertiesAsStrings());
+                relatedElementSummary.setRelationshipProperties(propertyConverter.getRelationshipProperties(relatedElement));
             }
 
             elementSummary.setElementHeader(this.getElementHeader(relatedElement.getElement()));
             if (relatedElement.getElement().getElementProperties() != null)
             {
-                elementSummary.setProperties(relatedElement.getElement().getElementProperties().getPropertiesAsStrings());
+                elementSummary.setProperties(propertyConverter.getBeanProperties(relatedElement.getElement()));
             }
 
             relatedElementSummary.setRelatedElement(elementSummary);
@@ -766,13 +744,13 @@ public class PropertyHelper
             relatedMetadataNodeSummary.setRelationshipHeader(this.getElementHeader(relatedElement, relatedElement.getRelationshipGUID(), null));
             if (relatedElement.getRelationshipProperties() != null)
             {
-                relatedMetadataNodeSummary.setRelationshipProperties(relatedElement.getRelationshipProperties().getPropertiesAsStrings());
+                relatedMetadataNodeSummary.setRelationshipProperties(propertyConverter.getRelationshipProperties(relatedElement));
             }
 
             elementSummary.setElementHeader(this.getElementHeader(relatedElement.getElement()));
             if (relatedElement.getElement().getElementProperties() != null)
             {
-                elementSummary.setProperties(relatedElement.getElement().getElementProperties().getPropertiesAsStrings());
+                elementSummary.setProperties(propertyConverter.getBeanProperties(relatedElement.getElement()));
             }
 
             relatedMetadataNodeSummary.setRelatedElement(elementSummary);
@@ -826,11 +804,7 @@ public class PropertyHelper
             MetadataElementSummary elementSummary = new MetadataElementSummary();
 
             elementSummary.setElementHeader(this.getElementHeader(openMetadataElement));
-
-            if (openMetadataElement.getElementProperties() != null)
-            {
-                elementSummary.setProperties(openMetadataElement.getElementProperties().getPropertiesAsStrings());
-            }
+            elementSummary.setProperties(propertyConverter.getBeanProperties(openMetadataElement));
 
             return elementSummary;
         }
@@ -861,7 +835,14 @@ public class PropertyHelper
 
             if (PropertyComparisonOperator.LIKE.equals(propertyComparisonOperator))
             {
-                propertyValue.setPrimitiveValue(".*" + Pattern.quote(value) + ".*");
+                if ("*".equals(value) || ".*".equals(value))
+                {
+                    propertyValue.setPrimitiveValue(".*");
+                }
+                else
+                {
+                    propertyValue.setPrimitiveValue(".*" + Pattern.quote(value) + ".*");
+                }
             }
             else
             {
@@ -1703,6 +1684,8 @@ public class PropertyHelper
                 {
                     ArrayTypePropertyValue arrayTypePropertyValue = new ArrayTypePropertyValue();
 
+                    String elementType = "object";
+
                     if (! propertyAsList.isEmpty())
                     {
                         int index = 0;
@@ -1711,6 +1694,28 @@ public class PropertyHelper
 
                         for (Object arrayValueObject : propertyAsList)
                         {
+                            if (arrayValueObject instanceof String)
+                            {
+                                elementType = "string";
+                            }
+                            else if (arrayValueObject instanceof Boolean)
+                            {
+                                elementType = "boolean";
+                            }
+                            else if (arrayValueObject instanceof Integer)
+                            {
+                                elementType = "int";
+                            }
+                            else if (arrayValueObject instanceof Long)
+                            {
+                                elementType = "long";
+                            }
+                            else if (arrayValueObject instanceof Date)
+                            {
+                                elementType = "date";
+                            }
+
+
                             arrayPropertyAsMap.put(Integer.toString(index), arrayValueObject);
                             index++;
                         }
@@ -1719,7 +1724,7 @@ public class PropertyHelper
                         arrayTypePropertyValue.setArrayCount(index);
                     }
 
-                    arrayTypePropertyValue.setTypeName("array");
+                    arrayTypePropertyValue.setTypeName("array<" + elementType + ">");
 
                     resultingProperties.setProperty(mapPropertyName, arrayTypePropertyValue);
                     propertyCount++;
@@ -1757,7 +1762,6 @@ public class PropertyHelper
     }
 
 
-
     /**
      * Add the supplied map property to an element properties object.  The supplied map is stored as a single
      * property in the instances properties.   If the element properties object
@@ -1788,6 +1792,45 @@ public class PropertyHelper
                 }
 
                 resultingProperties.setProperty(propertyName, getStringMapPropertyValue(mapValues));
+
+                return resultingProperties;
+            }
+        }
+
+        return properties;
+    }
+
+
+    /**
+     * Add the supplied map property to an element properties object.  The supplied map is stored as a single
+     * property in the instances properties.   If the element properties object
+     * supplied is null, a new element properties object is created.
+     *
+     * @param properties properties object to add property to, may be null.
+     * @param propertyName name of property
+     * @param mapValues contents of the map
+     * @return resulting element properties object
+     */
+    public ElementProperties addListStringMapProperty(ElementProperties         properties,
+                                                      String                    propertyName,
+                                                      Map<String, List<String>> mapValues)
+    {
+        if (mapValues != null)
+        {
+            if (! mapValues.isEmpty())
+            {
+                ElementProperties  resultingProperties;
+
+                if (properties == null)
+                {
+                    resultingProperties = new ElementProperties();
+                }
+                else
+                {
+                    resultingProperties = properties;
+                }
+
+                resultingProperties.setProperty(propertyName, getListStringMapPropertyValue(mapValues));
 
                 return resultingProperties;
             }
@@ -2485,11 +2528,14 @@ public class PropertyHelper
             {
                 Date mapPropertyValue = mapValues.get(mapPropertyName);
 
-                PrimitiveTypePropertyValue primitiveTypePropertyValue = new PrimitiveTypePropertyValue();
-                primitiveTypePropertyValue.setPrimitiveTypeCategory(PrimitiveTypeCategory.OM_PRIMITIVE_TYPE_DATE);
-                primitiveTypePropertyValue.setPrimitiveValue(mapPropertyValue);
-                primitiveTypePropertyValue.setTypeName(PrimitiveTypeCategory.OM_PRIMITIVE_TYPE_DATE.getName());
-                resultingProperties.setProperty(mapPropertyName, primitiveTypePropertyValue);
+                long time = 0L;
+
+                if (mapPropertyValue != null)
+                {
+                    time = mapPropertyValue.getTime();
+                }
+
+                resultingProperties.setProperty(mapPropertyName, getPrimitivePropertyValue(PrimitiveTypeCategory.OM_PRIMITIVE_TYPE_DATE, time));
                 propertyCount++;
             }
 
@@ -2810,6 +2856,35 @@ public class PropertyHelper
 
 
     /**
+     * Return the requested property or 0 if property is not found.
+     * If the property is found, it is removed from the InstanceProperties structure.
+     * If the property is not a long property then a logic exception is thrown.
+     *
+     * @param sourceName  source of call
+     * @param propertyName  name of requested property
+     * @param properties  properties from the instance.
+     * @param methodName  method of caller
+     * @return string property value or null
+     */
+    public float  removeFloatProperty(String            sourceName,
+                                      String            propertyName,
+                                      ElementProperties properties,
+                                      String            methodName)
+    {
+        float  retrievedProperty = 0;
+
+        if (properties != null)
+        {
+            retrievedProperty = this.getFloatProperty(sourceName, propertyName, properties, methodName);
+
+            this.removeProperty(propertyName, properties);
+        }
+
+        return retrievedProperty;
+    }
+
+
+    /**
      * Locates and extracts a string array property and extracts its values.
      * If the property is found, it is removed from the InstanceProperties structure.
      * If the property is not an array property then a logic exception is thrown.
@@ -2872,6 +2947,38 @@ public class PropertyHelper
         return retrievedProperty;
     }
 
+
+
+    /**
+     * Locates and extracts a property from an instance that is of type map and then converts its values into a Java map.
+     * If the property is found, it is removed from the InstanceProperties structure.
+     * If the property is not a map property then a logic exception is thrown.
+     *
+     * @param sourceName source of call
+     * @param propertyName name of requested map property
+     * @param properties values of the property
+     * @param methodName method of caller
+     * @return map property value or null
+     */
+    public Map<String, List<String>> removeListStringMapFromProperty(String             sourceName,
+                                                                     String             propertyName,
+                                                                     ElementProperties  properties,
+                                                                     String             methodName)
+    {
+        Map<String, List<String>>  retrievedProperty = null;
+
+        if (properties != null)
+        {
+            retrievedProperty = this.getListStringMapFromProperty(sourceName, propertyName, properties, methodName);
+
+            if (retrievedProperty != null)
+            {
+                this.removeProperty(propertyName, properties);
+            }
+        }
+
+        return retrievedProperty;
+    }
 
 
     /**
@@ -3160,9 +3267,13 @@ public class PropertyHelper
             {
                 Object actualPropertyValue = mapFromProperty.get(mapPropertyName);
 
-                if (actualPropertyValue != null)
+                if (actualPropertyValue instanceof Date date)
                 {
-                    dateMap.put(mapPropertyName, (Date)actualPropertyValue);
+                    dateMap.put(mapPropertyName, date);
+                }
+                else if (actualPropertyValue instanceof Long time)
+                {
+                    dateMap.put(mapPropertyName, new Date(time));
                 }
             }
 
@@ -3329,6 +3440,49 @@ public class PropertyHelper
                 {
                     throwHelperLogicError(sourceName, methodName, thisMethodName);
                 }
+            }
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Locates and extracts a property from an instance that is of type map and then converts its values into a Java map.
+     *
+     * @param sourceName source of call
+     * @param propertyName name of requested map property
+     * @param properties all the properties of the instance
+     * @param methodName method of caller
+     * @return map property value or null
+     */
+    public Map<String, List<String>> getListStringMapFromProperty(String            sourceName,
+                                                                  String            propertyName,
+                                                                  ElementProperties properties,
+                                                                  String            methodName)
+    {
+        Map<String, Object>   mapFromProperty = this.getMapFromProperty(sourceName, propertyName, properties, methodName);
+
+        if (mapFromProperty != null)
+        {
+            Map<String, List<String>>  listStringMap = new HashMap<>();
+
+            for (String mapPropertyName : mapFromProperty.keySet())
+            {
+                Object actualPropertyValue = mapFromProperty.get(mapPropertyName);
+
+                if (actualPropertyValue instanceof ArrayTypePropertyValue arrayPropertyValue)
+                {
+                    if (arrayPropertyValue.getArrayCount() > 0)
+                    {
+                        listStringMap.put(mapPropertyName, getPropertiesAsArray(arrayPropertyValue.getArrayValues()));
+                    }
+                }
+            }
+
+            if (! listStringMap.isEmpty())
+            {
+                return listStringMap;
             }
         }
 
@@ -3731,7 +3885,54 @@ public class PropertyHelper
             }
         }
 
-        return 0;
+        return 0L;
+    }
+
+
+    /**
+     * Return the requested property or 0 if property is not found.  If the property is not
+     * a long property then a logic exception is thrown.
+     *
+     * @param sourceName source of call
+     * @param propertyName name of requested property
+     * @param properties properties from the instance.
+     * @param methodName method of caller
+     * @return string property value or null
+     */
+    public float getFloatProperty(String             sourceName,
+                                  String             propertyName,
+                                  ElementProperties properties,
+                                  String             methodName)
+    {
+        final String  thisMethodName = "getFloatProperty";
+
+        if (properties != null)
+        {
+            PropertyValue propertyValue = properties.getPropertyValue(propertyName);
+
+            if (propertyValue != null)
+            {
+                try
+                {
+                    if (propertyValue instanceof PrimitiveTypePropertyValue primitiveTypePropertyValue)
+                    {
+                        if (primitiveTypePropertyValue.getPrimitiveTypeCategory() == PrimitiveTypeCategory.OM_PRIMITIVE_TYPE_FLOAT)
+                        {
+                            if (primitiveTypePropertyValue.getPrimitiveValue() != null)
+                            {
+                                return Float.parseFloat(primitiveTypePropertyValue.getPrimitiveValue().toString());
+                            }
+                        }
+                    }
+                }
+                catch (Exception error)
+                {
+                    throwHelperLogicError(sourceName, methodName, thisMethodName);
+                }
+            }
+        }
+
+        return 0F;
     }
 
 
@@ -4027,20 +4228,6 @@ public class PropertyHelper
             }
 
             classification = getClassification(elementHeader.getCollectionRoles(), classificationName);
-
-            if (classification != null)
-            {
-                return classification;
-            }
-
-            classification = getClassification(elementHeader.getServerPurposes(), classificationName);
-
-            if (classification != null)
-            {
-                return classification;
-            }
-
-            classification = getClassification(elementHeader.getResourceManagerRoles(), classificationName);
 
             if (classification != null)
             {

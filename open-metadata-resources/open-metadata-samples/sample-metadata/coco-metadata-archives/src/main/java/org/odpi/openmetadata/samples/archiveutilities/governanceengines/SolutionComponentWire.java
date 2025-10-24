@@ -3,6 +3,9 @@
 
 package org.odpi.openmetadata.samples.archiveutilities.governanceengines;
 
+import org.odpi.openmetadata.frameworks.openmetadata.definitions.SolutionComponentDefinition;
+import org.odpi.openmetadata.frameworks.openmetadata.definitions.SolutionComponentWireDefinition;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -10,7 +13,7 @@ import java.util.List;
  * Define the linkage between solution components defined for Coco Pharmaceuticals.
  * Still experimenting on the usage of the
  */
-public enum SolutionComponentWire
+public enum SolutionComponentWire implements SolutionComponentWireDefinition
 {
     HOSPITAL_TO_LANDING_AREA(SolutionComponent.HOSPITAL,
                              SolutionComponent.HOSPITAL_LANDING_AREA_FOLDER,
@@ -165,26 +168,59 @@ public enum SolutionComponentWire
     }
 
 
-    public SolutionComponent getComponent1()
+    /**
+     * Return the component for end 1
+     *
+     * @return component definition
+     */
+    @Override
+    public SolutionComponentDefinition getComponent1()
     {
         return component1;
     }
 
-    public SolutionComponent getComponent2()
+
+    /**
+     * Return the component for end 2
+     *
+     * @return component definition
+     */
+    @Override
+    public SolutionComponentDefinition getComponent2()
     {
         return component2;
     }
 
+
+    /**
+     * Return the relationship label.
+     *
+     * @return string
+     */
+    @Override
     public String getLabel()
     {
         return label;
     }
 
+
+    /**
+     * Return the relationship description.
+     *
+     * @return string
+     */
+    @Override
     public String getDescription()
     {
         return description;
     }
 
+
+    /**
+     * Return the list of ISC qualified names that the wire belongs to.
+     *
+     * @return list of strings
+     */
     public List<String> getISCQualifiedNames()
     {
         if (informationSupplyChains == null)
@@ -199,5 +235,23 @@ public enum SolutionComponentWire
             guids.add(informationSupplyChain.getQualifiedName());
         }
         return guids;
+    }
+
+
+    /**
+     * Output of this enum class and main value.
+     *
+     * @return string showing enum value
+     */
+    @Override
+    public String toString()
+    {
+        return "SolutionComponentWire{" +
+                "component1=" + component1 +
+                ", component2=" + component2 +
+                ", label='" + label + '\'' +
+                ", description='" + description + '\'' +
+                ", ISCQualifiedNames=" + getISCQualifiedNames() +
+                "} " + super.toString();
     }
 }

@@ -4,6 +4,10 @@ package org.odpi.openmetadata.viewservices.connectionmaker.server.spring;
 
 import io.swagger.v3.oas.annotations.ExternalDocumentation;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.enums.SecuritySchemeIn;
+import io.swagger.v3.oas.annotations.enums.SecuritySchemeType;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import io.swagger.v3.oas.annotations.security.SecurityScheme;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.odpi.openmetadata.commonservices.ffdc.rest.*;
 import org.odpi.openmetadata.commonservices.ffdc.rest.GetRequestBody;
@@ -16,8 +20,14 @@ import org.springframework.web.bind.annotation.*;
  = */
 @RestController
 @RequestMapping("/servers/{serverName}/api/open-metadata/{urlMarker}")
-
-@Tag(name="API: Connection Maker OMVS", description="The Connection Maker OMVS provides APIs for supporting the creation and editing of connections, connectorTypes and endpoints.",
+@SecurityScheme(
+        name = "BearerAuthorization",
+        type = SecuritySchemeType.HTTP,
+        bearerFormat = "JWT",
+        scheme = "bearer",
+        in = SecuritySchemeIn.HEADER
+)
+@Tag(name="API: Connection Maker OMVS", description="Connections describe the network and API information used connect to different sources of data and function.  The connection has three parts to it: the connection which links everything together, the connector type which defined the type of connector to use to connect to the data, and the endpoint which holds the network information. The Connection Maker OMVS supports the creation and editing of connections, connector types and endpoints.",
         externalDocs=@ExternalDocumentation(description="Further Information",
                 url="https://egeria-project.org/services/omvs/connection-maker/overview/"))
 
@@ -46,6 +56,7 @@ public class ConnectionMakerResource
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     @PostMapping(path = "/connections")
+    @SecurityRequirement(name = "BearerAuthorization")
 
     @Operation(summary="createConnection",
             description="Create a connection.",
@@ -75,6 +86,8 @@ public class ConnectionMakerResource
      *  PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     @PostMapping(path = "/connections/from-template")
+    @SecurityRequirement(name = "BearerAuthorization")
+
     @Operation(summary="createConnectionFromTemplate",
             description="Create a new metadata element to represent a connection using an existing metadata element as a template.  The template defines additional classifications and relationships that should be added to the new element.",
             externalDocs=@ExternalDocumentation(description="Further Information",
@@ -104,6 +117,8 @@ public class ConnectionMakerResource
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     @PostMapping(path = "/connections/{connectionGUID}/update")
+    @SecurityRequirement(name = "BearerAuthorization")
+
     @Operation(summary="updateConnection",
             description="Update the properties of a connection.",
             externalDocs=@ExternalDocumentation(description="Further Information",
@@ -136,6 +151,8 @@ public class ConnectionMakerResource
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     @PostMapping(path = "/connections/{connectionGUID}/connector-types/{connectorTypeGUID}/attach")
+    @SecurityRequirement(name = "BearerAuthorization")
+
     @Operation(summary="linkConnectionConnectorType",
             description="Create a ConnectionConnectorType relationship between a connection and a connector type.",
             externalDocs=@ExternalDocumentation(description="Further Information",
@@ -170,6 +187,8 @@ public class ConnectionMakerResource
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     @PostMapping(path = "/connections/{connectionGUID}/connector-types/{connectorTypeGUID}/detach")
+    @SecurityRequirement(name = "BearerAuthorization")
+
     @Operation(summary="detachConnectionConnectorType",
             description="Remove the ConnectionConnectorType relationship between a connection and a connector type.",
             externalDocs=@ExternalDocumentation(description="Further Information",
@@ -183,7 +202,7 @@ public class ConnectionMakerResource
                                                       @PathVariable
                                                       String connectorTypeGUID,
                                                       @RequestBody (required = false)
-                                                          DeleteRequestBody requestBody)
+                                                          DeleteRelationshipRequestBody requestBody)
     {
         return restAPI.detachConnectionConnectorType(serverName, urlMarker, connectionGUID, connectorTypeGUID, requestBody);
     }
@@ -204,6 +223,8 @@ public class ConnectionMakerResource
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     @PostMapping(path = "/connections/{connectionGUID}/endpoints/{endpointGUID}/attach")
+    @SecurityRequirement(name = "BearerAuthorization")
+
     @Operation(summary="linkConnectionEndpoint",
             description="Create a ConnectToEndpoint relationship between a connection and an endpoint.",
             externalDocs=@ExternalDocumentation(description="Further Information",
@@ -238,6 +259,8 @@ public class ConnectionMakerResource
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     @PostMapping(path = "/connections/{connectionGUID}/endpoints/{endpointGUID}/detach")
+    @SecurityRequirement(name = "BearerAuthorization")
+
     @Operation(summary="detachConnectionEndpoint",
             description="Remove the ConnectToEndpoint relationship between a connection and an endpoint.",
             externalDocs=@ExternalDocumentation(description="Further Information",
@@ -251,7 +274,7 @@ public class ConnectionMakerResource
                                                  @PathVariable
                                                  String endpointGUID,
                                                  @RequestBody (required = false)
-                                                     DeleteRequestBody requestBody)
+                                                     DeleteRelationshipRequestBody requestBody)
     {
         return restAPI.detachConnectionEndpoint(serverName, urlMarker, connectionGUID, endpointGUID, requestBody);
     }
@@ -272,6 +295,8 @@ public class ConnectionMakerResource
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     @PostMapping(path = "/connections/{connectionGUID}/embedded-connections/{embeddedConnectionGUID}/attach")
+    @SecurityRequirement(name = "BearerAuthorization")
+
     @Operation(summary="linkEmbeddedConnection",
             description="Create an EmbeddedConnection relationship between a virtual connection and an embedded connection.",
             externalDocs=@ExternalDocumentation(description="Further Information",
@@ -306,6 +331,8 @@ public class ConnectionMakerResource
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     @PostMapping(path = "/connections/{connectionGUID}/embedded-connections/{embeddedConnectionGUID}/detach")
+    @SecurityRequirement(name = "BearerAuthorization")
+
     @Operation(summary="detachEmbeddedConnection",
             description="Remove the ConnectToEndpoint relationship between a connection and an endpoint.",
             externalDocs=@ExternalDocumentation(description="Further Information",
@@ -319,7 +346,7 @@ public class ConnectionMakerResource
                                                  @PathVariable
                                                  String embeddedConnectionGUID,
                                                  @RequestBody (required = false)
-                                                     DeleteRequestBody requestBody)
+                                                     DeleteRelationshipRequestBody requestBody)
     {
         return restAPI.detachEmbeddedConnection(serverName, urlMarker, connectionGUID, embeddedConnectionGUID, requestBody);
     }
@@ -340,6 +367,8 @@ public class ConnectionMakerResource
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     @PostMapping(path = "/assets/{assetGUID}/connections/{connectionGUID}/attach")
+    @SecurityRequirement(name = "BearerAuthorization")
+
     @Operation(summary="linkAssetToConnection",
             description="Attach an asset to a connection.",
             externalDocs=@ExternalDocumentation(description="Further Information",
@@ -374,6 +403,8 @@ public class ConnectionMakerResource
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     @PostMapping(path = "/assets/{assetGUID}/connections/{connectionGUID}/detach")
+    @SecurityRequirement(name = "BearerAuthorization")
+
     @Operation(summary="detachAssetFromConnection",
             description="Detach an asset from a connection.",
             externalDocs=@ExternalDocumentation(description="Further Information",
@@ -387,7 +418,7 @@ public class ConnectionMakerResource
                                                   @PathVariable
                                                   String connectionGUID,
                                                   @RequestBody (required = false)
-                                                      DeleteRequestBody requestBody)
+                                                      DeleteRelationshipRequestBody requestBody)
     {
         return restAPI.detachAssetFromConnection(serverName, urlMarker, assetGUID, connectionGUID, requestBody);
     }
@@ -408,6 +439,8 @@ public class ConnectionMakerResource
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     @PostMapping(path = "/assets/{assetGUID}/endpoints/{endpointGUID}/attach")
+    @SecurityRequirement(name = "BearerAuthorization")
+
     @Operation(summary="linkEndpointToITAsset",
             description="Attach an endpoint to an infrastructure asset.",
             externalDocs=@ExternalDocumentation(description="Further Information",
@@ -442,6 +475,8 @@ public class ConnectionMakerResource
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     @PostMapping(path = "/assets/{assetGUID}/connections/{endpointGUID}/detach")
+    @SecurityRequirement(name = "BearerAuthorization")
+
     @Operation(summary="detachEndpointFromITAsset",
             description="Detach an endpoint from an infrastructure asset.",
             externalDocs=@ExternalDocumentation(description="Further Information",
@@ -455,7 +490,7 @@ public class ConnectionMakerResource
                                                   @PathVariable
                                                   String endpointGUID,
                                                   @RequestBody (required = false)
-                                                      DeleteRequestBody requestBody)
+                                                      DeleteRelationshipRequestBody requestBody)
     {
         return restAPI.detachEndpointFromITAsset(serverName, urlMarker, assetGUID, endpointGUID, requestBody);
     }
@@ -473,6 +508,8 @@ public class ConnectionMakerResource
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     @PostMapping(path = "/connections/{connectionGUID}/delete")
+    @SecurityRequirement(name = "BearerAuthorization")
+
     @Operation(summary="deleteConnection",
             description="Delete a connection.",
             externalDocs=@ExternalDocumentation(description="Further Information",
@@ -484,7 +521,7 @@ public class ConnectionMakerResource
                                          @PathVariable
                                          String                    connectionGUID,
                                          @RequestBody (required = false)
-                                             DeleteRequestBody requestBody)
+                                             DeleteElementRequestBody requestBody)
     {
         return restAPI.deleteConnection(serverName, urlMarker, connectionGUID, requestBody);
     }
@@ -503,6 +540,8 @@ public class ConnectionMakerResource
      *  PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     @PostMapping(path = "/connections/by-name")
+    @SecurityRequirement(name = "BearerAuthorization")
+
     @Operation(summary="getConnectionsByName",
             description="Returns the list of connections with a particular name.",
             externalDocs=@ExternalDocumentation(description="Further Information",
@@ -531,6 +570,8 @@ public class ConnectionMakerResource
      *  PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     @PostMapping(path = "/connections/by-search-string")
+    @SecurityRequirement(name = "BearerAuthorization")
+
     @Operation(summary="findConnections",
             description="Retrieve the list of connection metadata elements that contain the search string.",
             externalDocs=@ExternalDocumentation(description="Further Information",
@@ -560,6 +601,8 @@ public class ConnectionMakerResource
      *  PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     @PostMapping(path = "/connections/{connectionGUID}/retrieve")
+    @SecurityRequirement(name = "BearerAuthorization")
+
     @Operation(summary="getConnectionByGUID",
             description="Return the properties of a specific connection.",
             externalDocs=@ExternalDocumentation(description="Further Information",
@@ -590,6 +633,7 @@ public class ConnectionMakerResource
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     @PostMapping(path = "/connector-types")
+    @SecurityRequirement(name = "BearerAuthorization")
 
     @Operation(summary="createConnectorType",
             description="Create a connectorType.",
@@ -619,6 +663,8 @@ public class ConnectionMakerResource
      *  PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     @PostMapping(path = "/connector-types/from-template")
+    @SecurityRequirement(name = "BearerAuthorization")
+
     @Operation(summary="createConnectorTypeFromTemplate",
             description="Create a new metadata element to represent a connectorType using an existing metadata element as a template.  The template defines additional classifications and relationships that should be added to the new element.",
             externalDocs=@ExternalDocumentation(description="Further Information",
@@ -648,6 +694,8 @@ public class ConnectionMakerResource
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     @PostMapping(path = "/connector-types/{connectorTypeGUID}/update")
+    @SecurityRequirement(name = "BearerAuthorization")
+
     @Operation(summary="updateConnectorType",
             description="Update the properties of a connectorType.",
             externalDocs=@ExternalDocumentation(description="Further Information",
@@ -679,6 +727,8 @@ public class ConnectionMakerResource
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     @PostMapping(path = "/connector-types/{connectorTypeGUID}/delete")
+    @SecurityRequirement(name = "BearerAuthorization")
+
     @Operation(summary="deleteConnectorType",
             description="Delete a connectorType.",
             externalDocs=@ExternalDocumentation(description="Further Information",
@@ -690,7 +740,7 @@ public class ConnectionMakerResource
                                             @PathVariable
                                             String                    connectorTypeGUID,
                                             @RequestBody (required = false)
-                                                DeleteRequestBody requestBody)
+                                                DeleteElementRequestBody requestBody)
     {
         return restAPI.deleteConnectorType(serverName, urlMarker, connectorTypeGUID, requestBody);
     }
@@ -709,8 +759,10 @@ public class ConnectionMakerResource
      *  PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     @PostMapping(path = "/connector-types/by-name")
+    @SecurityRequirement(name = "BearerAuthorization")
+
     @Operation(summary="getConnectorTypesByName",
-            description="Returns the list of connectorTypes with a particular name.",
+            description="Returns the list of connector types with a particular value in either qualifiedName or displayName.",
             externalDocs=@ExternalDocumentation(description="Further Information",
                     url="https://egeria-project.org/concepts/connector-type"))
 
@@ -721,6 +773,38 @@ public class ConnectionMakerResource
                                                                     FilterRequestBody requestBody)
     {
         return restAPI.getConnectorTypesByName(serverName, urlMarker, requestBody);
+    }
+
+
+    /**
+     * Returns the list of connector types with a particular connector provider class name.
+     * Provide the name of the connector provider's class name (including package; but without .class)
+     * in the filter.
+     *
+     * @param serverName name of the service to route the request to
+     * @param urlMarker  view service URL marker
+     * @param requestBody string to find in the properties
+     *
+     * @return list of matching metadata elements or
+     *  InvalidParameterException  one of the parameters is invalid
+     *  UserNotAuthorizedException the user is not authorized to issue this request
+     *  PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    @PostMapping(path = "/connector-types/by-connector-provider-class-name")
+    @SecurityRequirement(name = "BearerAuthorization")
+
+    @Operation(summary="getConnectorTypesByConnectorProvider",
+            description="Returns the list of connectorTypes with a particular connector provider class name. Provide the name of the connector provider's class name (including package; but without .class).",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/concepts/connector-type"))
+
+    public OpenMetadataRootElementsResponse getConnectorTypesByConnectorProvider(@PathVariable
+                                                                    String            serverName,
+                                                                    @PathVariable String             urlMarker,
+                                                                    @RequestBody (required = false)
+                                                                    FilterRequestBody requestBody)
+    {
+        return restAPI.getConnectorTypesByConnectorProvider(serverName, urlMarker, requestBody);
     }
 
 
@@ -737,6 +821,8 @@ public class ConnectionMakerResource
      *  PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     @PostMapping(path = "/connector-types/by-search-string")
+    @SecurityRequirement(name = "BearerAuthorization")
+
     @Operation(summary="findConnectorTypes",
             description="Retrieve the list of connectorType metadata elements that contain the search string.",
             externalDocs=@ExternalDocumentation(description="Further Information",
@@ -766,6 +852,8 @@ public class ConnectionMakerResource
      *  PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     @PostMapping(path = "/connector-types/{connectorTypeGUID}/retrieve")
+    @SecurityRequirement(name = "BearerAuthorization")
+
     @Operation(summary="getConnectorTypeByGUID",
             description="Return the properties of a specific connectorType.",
             externalDocs=@ExternalDocumentation(description="Further Information",
@@ -796,6 +884,7 @@ public class ConnectionMakerResource
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     @PostMapping(path = "/endpoints")
+    @SecurityRequirement(name = "BearerAuthorization")
 
     @Operation(summary="createEndpoint",
             description="Create a endpoint.",
@@ -825,6 +914,8 @@ public class ConnectionMakerResource
      *  PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     @PostMapping(path = "/endpoints/from-template")
+    @SecurityRequirement(name = "BearerAuthorization")
+
     @Operation(summary="createEndpointFromTemplate",
             description="Create a new metadata element to represent a endpoint using an existing metadata element as a template.  The template defines additional classifications and relationships that should be added to the new element.",
             externalDocs=@ExternalDocumentation(description="Further Information",
@@ -854,6 +945,8 @@ public class ConnectionMakerResource
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     @PostMapping(path = "/endpoints/{endpointGUID}/update")
+    @SecurityRequirement(name = "BearerAuthorization")
+
     @Operation(summary="updateEndpoint",
             description="Update the properties of a endpoint.",
             externalDocs=@ExternalDocumentation(description="Further Information",
@@ -885,6 +978,8 @@ public class ConnectionMakerResource
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     @PostMapping(path = "/endpoints/{endpointGUID}/delete")
+    @SecurityRequirement(name = "BearerAuthorization")
+
     @Operation(summary="deleteEndpoint",
             description="Delete a endpoint.",
             externalDocs=@ExternalDocumentation(description="Further Information",
@@ -896,7 +991,7 @@ public class ConnectionMakerResource
                                        @PathVariable
                                        String                    endpointGUID,
                                        @RequestBody (required = false)
-                                           DeleteRequestBody requestBody)
+                                           DeleteElementRequestBody requestBody)
     {
         return restAPI.deleteEndpoint(serverName, urlMarker, endpointGUID, requestBody);
     }
@@ -915,6 +1010,8 @@ public class ConnectionMakerResource
      *  PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     @PostMapping(path = "/endpoints/by-name")
+    @SecurityRequirement(name = "BearerAuthorization")
+
     @Operation(summary="getEndpointsByName",
             description="Returns the list of endpoints with a particular name.",
             externalDocs=@ExternalDocumentation(description="Further Information",
@@ -944,6 +1041,8 @@ public class ConnectionMakerResource
      *  PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     @PostMapping(path = "/endpoints/by-network-address")
+    @SecurityRequirement(name = "BearerAuthorization")
+
     @Operation(summary="getEndpointsByNetworkAddress",
             description="Retrieve the list of endpoint metadata elements with a matching networkAddress." +
                     "  There are no wildcards supported on this request.",
@@ -974,6 +1073,8 @@ public class ConnectionMakerResource
      *  PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     @PostMapping(path = "/assets/{infrastructureGUID}/endpoints/retrieve")
+    @SecurityRequirement(name = "BearerAuthorization")
+
     @Operation(summary="getEndpointsForInfrastructure",
             description="Retrieve the list of endpoint metadata elements that are attached to a specific infrastructure element.",
             externalDocs=@ExternalDocumentation(description="Further Information",
@@ -1002,6 +1103,8 @@ public class ConnectionMakerResource
      *  PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     @PostMapping(path = "/endpoints/by-search-string")
+    @SecurityRequirement(name = "BearerAuthorization")
+
     @Operation(summary="findEndpoints",
             description="Retrieve the list of endpoint metadata elements that contain the search string.",
             externalDocs=@ExternalDocumentation(description="Further Information",
@@ -1031,6 +1134,8 @@ public class ConnectionMakerResource
      *  PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     @PostMapping(path = "/endpoints/{endpointGUID}/retrieve")
+    @SecurityRequirement(name = "BearerAuthorization")
+
     @Operation(summary="getEndpointByGUID",
             description="Return the properties of a specific endpoint.",
             externalDocs=@ExternalDocumentation(description="Further Information",

@@ -180,6 +180,28 @@ public class ExternalIdHandler extends OpenMetadataHandlerBase
 
 
     /**
+     * Confirm that the values of a particular metadata element have been synchronized.  This is important
+     * from an audit point of view, and to allow bidirectional updates of metadata using optimistic locking.
+     *
+     * @param userId                 userId of user making request.
+     * @param externalIdLinkGUID unique identifier of the ExternalIdLink relationship to update
+     *
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException user not authorized to issue this request
+     * @throws PropertyServerException    problem accessing the property server
+     */
+    public void confirmSynchronization(String                   userId,
+                                       String                   externalIdLinkGUID,
+                                       UpdateOptions            updateOptions,
+                                       ExternalIdLinkProperties relationshipProperties) throws InvalidParameterException,
+                                                                                               UserNotAuthorizedException,
+                                                                                               PropertyServerException
+    {
+        openMetadataClient.updateRelationshipInStore(userId, externalIdLinkGUID, updateOptions, relationshipBuilder.getElementProperties(relationshipProperties));
+    }
+
+
+    /**
      * Detach an externalId from an element.
      *
      * @param userId                 userId of user making request.
@@ -261,7 +283,8 @@ public class ExternalIdHandler extends OpenMetadataHandlerBase
 
         List<String> propertyNames = Arrays.asList(OpenMetadataProperty.QUALIFIED_NAME.name,
                                                    OpenMetadataProperty.DISPLAY_NAME.name,
-                                                   OpenMetadataProperty.IDENTIFIER.name);
+                                                   OpenMetadataProperty.IDENTIFIER.name,
+                                                   OpenMetadataProperty.KEY.name);
 
         return super.getRootElementsByName(userId, name, propertyNames, queryOptions, methodName);
     }
@@ -316,7 +339,7 @@ public class ExternalIdHandler extends OpenMetadataHandlerBase
         propertyHelper.validateUserId(userId, methodName);
         propertyHelper.validateMandatoryName(identifier, nameParameterName, methodName);
 
-        List<String> propertyNames = Collections.singletonList(OpenMetadataProperty.IDENTIFIER.name);
+        List<String> propertyNames = Collections.singletonList(OpenMetadataProperty.KEY.name);
 
         return super.getRootElementsByName(userId, identifier, propertyNames, queryOptions, methodName);
     }

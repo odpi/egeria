@@ -11,7 +11,7 @@ import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 public enum ProductRoleDefinition
 {
     PRODUCT_MANAGER("eca8fc08-224b-462f-ba21-00cb73795c69",
-                    OpenMetadataType.SOLUTION_ACTOR_ROLE.typeName,
+                    OpenMetadataType.DIGITAL_PRODUCT_MANAGER.typeName,
                     "OpenMetadataProductManagerRole",
                     "Open Metadata Product Manager",
                     "The product manager role covering the digital products built around open metadata."),
@@ -92,7 +92,7 @@ public enum ProductRoleDefinition
      */
     public String getQualifiedName()
     {
-        return "SolutionActorRole::" + guid + "::" + identifier;
+        return typeName + "::" + guid + "::" + identifier;
     }
 
 

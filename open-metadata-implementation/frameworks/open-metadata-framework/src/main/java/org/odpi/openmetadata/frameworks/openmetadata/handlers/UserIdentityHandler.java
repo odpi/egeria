@@ -373,6 +373,7 @@ public class UserIdentityHandler extends OpenMetadataHandlerBase
         final String methodName = "getUserIdentitiesByName";
 
         List<String> propertyNames = Arrays.asList(OpenMetadataProperty.QUALIFIED_NAME.name,
+                                                   OpenMetadataProperty.IDENTIFIER.name,
                                                    OpenMetadataProperty.USER_ID.name,
                                                    OpenMetadataProperty.DISTINGUISHED_NAME.name);
 

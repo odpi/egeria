@@ -10,10 +10,9 @@ import org.odpi.openmetadata.frameworks.connectors.client.ConnectedAssetClient;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectionCheckedException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
 import org.odpi.openmetadata.frameworks.opengovernance.client.*;
-import org.odpi.openmetadata.frameworks.opengovernance.connectorcontext.ConnectorConfigClient;
 import org.odpi.openmetadata.frameworks.opengovernance.connectorcontext.DuplicateManagementClient;
 import org.odpi.openmetadata.frameworks.opengovernance.properties.ActionTargetElement;
-import org.odpi.openmetadata.frameworks.opengovernance.properties.CompletionStatus;
+import org.odpi.openmetadata.frameworks.openmetadata.enums.CompletionStatus;
 import org.odpi.openmetadata.frameworks.opengovernance.properties.RequestSourceElement;
 import org.odpi.openmetadata.frameworks.openmetadata.client.OpenMetadataClient;
 import org.odpi.openmetadata.frameworks.openmetadata.connectorcontext.ConnectorContextBase;
@@ -63,8 +62,6 @@ public class GovernanceActionContext extends ConnectorContextBase implements Gov
     private final PropertyHelper                   propertyHelper = new PropertyHelper();
 
     private final MessageFormatter                 messageFormatter = new MessageFormatter();
-
-    private final ConnectorConfigClient            connectorConfigClient;
 
     /**
      * Constructor sets up the key parameters for processing the request to the governance action service.
@@ -159,16 +156,6 @@ public class GovernanceActionContext extends ConnectorContextBase implements Gov
                                                                        auditLog,
                                                                        maxPageSize);
         this.watchdogEventClient       = watchdogEventClient;
-        this.connectorConfigClient     = new ConnectorConfigClient(this,
-                                                               localServerName,
-                                                               localServiceName,
-                                                               connectorUserId,
-                                                               connectorGUID,
-                                                               externalSourceGUID,
-                                                               externalSourceName,
-                                                               governanceConfiguration,
-                                                               auditLog,
-                                                               maxPageSize);
     }
 
 
@@ -243,15 +230,6 @@ public class GovernanceActionContext extends ConnectorContextBase implements Gov
     {
         return actionTargetElements;
     }
-
-
-    /**
-     * Return the client for managing the metadata associated with running connectors, governance engines and governance services.
-     *
-     * @return connector context client
-     */
-    @Override
-    public ConnectorConfigClient getConnectorConfigClient() { return connectorConfigClient; }
 
 
     /**

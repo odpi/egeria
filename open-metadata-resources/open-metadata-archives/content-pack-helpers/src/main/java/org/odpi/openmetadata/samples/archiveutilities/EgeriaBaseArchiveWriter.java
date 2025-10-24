@@ -4,6 +4,9 @@ package org.odpi.openmetadata.samples.archiveutilities;
 
 
 import org.odpi.openmetadata.frameworks.openmetadata.mapper.OpenMetadataValidValues;
+import org.odpi.openmetadata.frameworks.openmetadata.refdata.Category;
+import org.odpi.openmetadata.frameworks.openmetadata.types.DataType;
+import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 import org.odpi.openmetadata.opentypes.OpenMetadataTypesArchive;
 import org.odpi.openmetadata.repositoryservices.archiveutilities.OMRSArchiveBuilder;
@@ -13,7 +16,6 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.archivestore.p
 
 import java.util.*;
 
-import static org.odpi.openmetadata.frameworks.openmetadata.mapper.OpenMetadataValidValues.constructValidValueNamespace;
 import static org.odpi.openmetadata.frameworks.openmetadata.mapper.OpenMetadataValidValues.constructValidValueQualifiedName;
 
 
@@ -30,14 +32,9 @@ public abstract class EgeriaBaseArchiveWriter extends OMRSArchiveWriter
     protected static final String guidMapFileName = "EgeriaContentPacksGUIDMap.json";
 
     /*
-     * Common values for naming of elements in the archive.
-     */
-    protected static final String openMetadataValidValueSetPrefix = "OpenMetadata.ValidValueSet.";
-
-    /*
      * Specific values for initializing TypeDefs
      */
-    protected static final String versionName   = "5.4-SNAPSHOT";
+    protected static final String versionName   = "6.0-SNAPSHOT";
 
     private final Map<String, String> parentValidValueQNameToGUIDMap = new HashMap<>();
 
@@ -120,6 +117,7 @@ public abstract class EgeriaBaseArchiveWriter extends OMRSArchiveWriter
         this.archiveHelper = new GovernanceArchiveHelper(archiveBuilder,
                                                          archiveGUID,
                                                          archiveName,
+                                                         archiveDescription,
                                                          originatorName,
                                                          creationDate,
                                                          new Date().getTime(),
@@ -165,7 +163,6 @@ public abstract class EgeriaBaseArchiveWriter extends OMRSArchiveWriter
     public abstract void getArchiveContent();
 
 
-
     /**
      * Find or create the parent set for a valid value.
      *
@@ -187,36 +184,25 @@ public abstract class EgeriaBaseArchiveWriter extends OMRSArchiveWriter
 
         if (parentSetGUID == null)
         {
-            String grandParentSetGUID = null;
             String parentDisplayName = parentQualifiedName.substring(26);
 
-            if (mapName != null)
-            {
-                grandParentSetGUID = getParentSet(null, typeName, propertyName, null);
-            }
-            else if (propertyName != null)
-            {
-                grandParentSetGUID = getParentSet(null, typeName, null, null);
-            }
-            else if (typeName != null)
-            {
-                grandParentSetGUID = getParentSet(null, null, null, null);
-            }
-
             parentSetGUID =  archiveHelper.addValidValue(requestedGUID,
-                                                         grandParentSetGUID,
-                                                         grandParentSetGUID,
-                                                         OpenMetadataType.VALID_VALUE_DEFINITION.typeName,
+                                                         null,
+                                                         null,
+                                                         OpenMetadataType.VALID_METADATA_VALUE.typeName,
                                                          OpenMetadataType.VALID_VALUE_DEFINITION.typeName,
                                                          null,
-                                                         OpenMetadataType.VALID_VALUE_DEFINITION.typeName,
+                                                         OpenMetadataType.VALID_METADATA_VALUE.typeName,
                                                          parentQualifiedName,
+                                                         Category.VALID_METADATA_VALUES.getName(),
+                                                         propertyName,
                                                          parentDisplayName,
                                                          parentDescription,
-                                                         constructValidValueNamespace(typeName, propertyName, mapName),
+                                                         null,
                                                          OpenMetadataValidValues.VALID_METADATA_VALUES_USAGE,
                                                          null,
                                                          OpenMetadataValidValues.OPEN_METADATA_ECOSYSTEM_SCOPE,
+                                                         null,
                                                          null,
                                                          null,
                                                          false,
@@ -229,6 +215,87 @@ public abstract class EgeriaBaseArchiveWriter extends OMRSArchiveWriter
         else
         {
             return parentSetGUID;
+        }
+    }
+
+
+    /**
+     * Add a new valid value to an open metadata valid value set.
+     *
+     * @param displayName human-readable name
+     * @param description description of the value
+     * @param propertyName name of property
+     * @param typeName type name - if values only apply to one type
+     * @param mapName name of property if stored in a map
+     * @param preferredValue preferred value to use
+     */
+    protected void addValidMetadataValue(String displayName,
+                                         String description,
+                                         String propertyName,
+                                         String typeName,
+                                         String mapName,
+                                         String preferredValue)
+    {
+        this.addValidMetadataValue(null, displayName, description, propertyName, DataType.STRING.getName(), typeName, mapName, preferredValue, null);
+    }
+
+
+    /**
+     * Add a new valid value to an open metadata valid value set.
+     *
+     * @param suppliedGUID predefined guid
+     * @param displayName human-readable name
+     * @param description description of the value
+     * @param propertyName name of property
+     * @param dataType type of property
+     * @param typeName type name - if values only apply to one type
+     * @param mapName name of property if stored in a map
+     * @param preferredValue preferred value to use
+     * @param additionalProperties additional properties or null
+     */
+    protected void addValidMetadataValue(String             suppliedGUID,
+                                         String             displayName,
+                                         String             description,
+                                         String             propertyName,
+                                         String             dataType,
+                                         String             typeName,
+                                         String             mapName,
+                                         String             preferredValue,
+                                         Map<String,String> additionalProperties)
+    {
+        String validValueSetGUID = this.getParentSet(null,
+                                                     typeName,
+                                                     propertyName,
+                                                     mapName);
+
+        if (validValueSetGUID != null)
+        {
+            String qualifiedName = constructValidValueQualifiedName(typeName,
+                                                                    propertyName,
+                                                                    mapName,
+                                                                    preferredValue);
+
+            this.archiveHelper.addValidValue(suppliedGUID,
+                                             validValueSetGUID,
+                                             validValueSetGUID,
+                                             OpenMetadataType.VALID_METADATA_VALUE.typeName,
+                                             OpenMetadataType.VALID_VALUE_DEFINITION.typeName,
+                                             null,
+                                             OpenMetadataType.VALID_METADATA_VALUE.typeName,
+                                             qualifiedName,
+                                             Category.VALID_METADATA_VALUES.getName(),
+                                             propertyName,
+                                             displayName,
+                                             description,
+                                             mapName,
+                                             typeName,
+                                             dataType,
+                                             OpenMetadataValidValues.OPEN_METADATA_ECOSYSTEM_SCOPE,
+                                             preferredValue,
+                                             null,
+                                             null,
+                                             false,
+                                             additionalProperties);
         }
     }
 

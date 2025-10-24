@@ -5,7 +5,6 @@ package org.odpi.openmetadata.frameworks.openmetadata.mermaid;
 
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.AssetGraph;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.MetadataElementSummary;
-import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.MetadataRelationship;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.RelatedMetadataNodeSummary;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 
@@ -38,6 +37,7 @@ public class AssetLocalLineageGraphMermaidGraphBuilder extends MermaidGraphBuild
         appendNewMermaidNode(assetGraph.getElementHeader().getGUID(),
                              currentDisplayName,
                              assetGraph.getElementHeader().getType().getTypeName(),
+                             assetGraph.getProperties(),
                              VisualStyle.ANCHOR_ELEMENT);
 
         if (assetGraph.getRelationships() != null)

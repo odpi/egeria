@@ -161,7 +161,6 @@ public class OpenMetadataTypesArchive2_8
          * Calls for new and changed types go here
          */
         update0025Locations();
-        update0440OrganizationControls();
     }
 
 
@@ -215,46 +214,6 @@ public class OpenMetadataTypesArchive2_8
         return typeDefPatch;
     }
 
-
-
-    /*
-     * -------------------------------------------------------------------------------------------------------
-     */
-
-    /**
-     * Replace deployedImplementationType with businessCapabilityType in the BusinessCapability.
-     */
-    private void update0440OrganizationControls()
-    {
-        this.archiveBuilder.addTypeDefPatch(updateBusinessCapabilityEntity());
-    }
-
-
-    /**
-     * Deprecate deployedImplementationType and replace with businessCapabilityType.
-     * @return the type def patch
-     */
-    private TypeDefPatch updateBusinessCapabilityEntity()
-    {
-        /*
-         * Create the Patch
-         */
-        TypeDefPatch typeDefPatch = archiveBuilder.getPatchForType(OpenMetadataType.BUSINESS_CAPABILITY.typeName);
-
-        typeDefPatch.setUpdatedBy(originatorName);
-        typeDefPatch.setUpdateTime(creationDate);
-
-        /*
-         * Build the attributes
-         */
-        List<TypeDefAttribute> properties = new ArrayList<>();
-
-        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.BUSINESS_IMPLEMENTATION_TYPE));
-
-        typeDefPatch.setPropertyDefinitions(properties);
-
-        return typeDefPatch;
-    }
 
 
     /*

@@ -23,15 +23,14 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class DataClassAssignmentProperties extends RelationshipBeanProperties
 {
-    private String                    method              = null;
-    private DataClassAssignmentStatus status              = DataClassAssignmentStatus.PROPOSED;
-    private int                       confidence          = 0;
-    private int                       threshold           = 0;
-    private long                      valueFrequency      = 0L;
-    private String                    steward             = null;
-    private String                    stewardTypeName     = null;
-    private String                    stewardPropertyName = null;
-    private String                    source              = null;
+    private String                    method                    = null;
+    private DataClassAssignmentStatus dataClassAssignmentStatus = DataClassAssignmentStatus.PROPOSED;
+    private int                       confidence                = 0;
+    private int                       threshold                 = 0;
+    private String                    steward                   = null;
+    private String                    stewardTypeName           = null;
+    private String                    stewardPropertyName       = null;
+    private String                    source                    = null;
 
 
     /**
@@ -55,15 +54,14 @@ public class DataClassAssignmentProperties extends RelationshipBeanProperties
 
         if (template != null)
         {
-            method              = template.getMethod();
-            status              = template.getStatus();
-            confidence          = template.getConfidence();
-            threshold           = template.getThreshold();
-            valueFrequency      = template.getValueFrequency();
-            steward             = template.getSteward();
-            stewardTypeName     = template.getStewardTypeName();
-            stewardPropertyName = template.getStewardPropertyName();
-            source              = template.getSource();
+            method                    = template.getMethod();
+            dataClassAssignmentStatus = template.getDataClassAssignmentStatus();
+            confidence                = template.getConfidence();
+            threshold                 = template.getThreshold();
+            steward                   = template.getSteward();
+            stewardTypeName           = template.getStewardTypeName();
+            stewardPropertyName       = template.getStewardPropertyName();
+            source                    = template.getSource();
         }
     }
 
@@ -93,11 +91,11 @@ public class DataClassAssignmentProperties extends RelationshipBeanProperties
     /**
      * Set up whether this relationship should be used.
      *
-     * @param status status enum
+     * @param dataClassAssignmentStatus status enum
      */
-    public void setStatus(DataClassAssignmentStatus status)
+    public void setDataClassAssignmentStatus(DataClassAssignmentStatus dataClassAssignmentStatus)
     {
-        this.status = status;
+        this.dataClassAssignmentStatus = dataClassAssignmentStatus;
     }
 
 
@@ -106,9 +104,9 @@ public class DataClassAssignmentProperties extends RelationshipBeanProperties
      *
      * @return status enum
      */
-    public DataClassAssignmentStatus getStatus()
+    public DataClassAssignmentStatus getDataClassAssignmentStatus()
     {
-        return status;
+        return dataClassAssignmentStatus;
     }
 
 
@@ -159,28 +157,6 @@ public class DataClassAssignmentProperties extends RelationshipBeanProperties
 
 
     /**
-     * Return how often does the data class specification match the data values.
-     *
-     * @return count
-     */
-    public long getValueFrequency()
-    {
-        return valueFrequency;
-    }
-
-
-    /**
-     * Set up how often does the data class specification match the data values.
-     *
-     * @param valueFrequency count
-     */
-    public void setValueFrequency(long valueFrequency)
-    {
-        this.valueFrequency = valueFrequency;
-    }
-
-
-    /**
      * Set up the id of the steward who assigned the relationship (or approved the discovered value).
      *
      * @param steward user id or name of steward
@@ -201,25 +177,49 @@ public class DataClassAssignmentProperties extends RelationshipBeanProperties
         return steward;
     }
 
+    /**
+     * Return the type of the steward Id.
+     *
+     * @return string
+     */
     public String getStewardTypeName()
     {
         return stewardTypeName;
     }
 
+
+    /**
+     * Set up the type of the steward id.
+     *
+     * @param stewardTypeName string
+     */
     public void setStewardTypeName(String stewardTypeName)
     {
         this.stewardTypeName = stewardTypeName;
     }
 
+
+    /**
+     * Return the property name of the steward id.
+     *
+     * @return string
+     */
     public String getStewardPropertyName()
     {
         return stewardPropertyName;
     }
 
+
+    /**
+     * Set up the property name of the steward id.
+     *
+     * @param stewardPropertyName string
+     */
     public void setStewardPropertyName(String stewardPropertyName)
     {
         this.stewardPropertyName = stewardPropertyName;
     }
+
 
     /**
      * Set up the id of the source of the knowledge of the relationship.
@@ -253,10 +253,9 @@ public class DataClassAssignmentProperties extends RelationshipBeanProperties
     {
         return "DataClassAssignmentProperties{" +
                 "method='" + method + '\'' +
-                ", status=" + status +
+                ", status=" + dataClassAssignmentStatus +
                 ", confidence=" + confidence +
                 ", threshold=" + threshold +
-                ", valueFrequency=" + valueFrequency +
                 ", steward='" + steward + '\'' +
                 ", stewardTypeName='" + stewardTypeName + '\'' +
                 ", stewardPropertyName='" + stewardPropertyName + '\'' +
@@ -288,8 +287,7 @@ public class DataClassAssignmentProperties extends RelationshipBeanProperties
         }
         return confidence == that.confidence &&
                 Objects.equals(method, that.method) &&
-                Objects.equals(valueFrequency, that.valueFrequency) &&
-                status == that.status &&
+                dataClassAssignmentStatus == that.dataClassAssignmentStatus &&
                 Objects.equals(threshold, that.threshold) &&
                 Objects.equals(steward, that.steward) &&
                 Objects.equals(stewardTypeName, that.stewardTypeName) &&
@@ -306,6 +304,6 @@ public class DataClassAssignmentProperties extends RelationshipBeanProperties
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), method, status, confidence, threshold, valueFrequency, steward, stewardTypeName, stewardPropertyName, source);
+        return Objects.hash(super.hashCode(), method, dataClassAssignmentStatus, confidence, threshold, steward, stewardTypeName, stewardPropertyName, source);
     }
 }

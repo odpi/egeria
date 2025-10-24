@@ -122,7 +122,7 @@ public abstract class OpenMetadataAPIGenericConverter<B>
 
     /**
      * Using the supplied instances, return a new instance of the bean.  It is used for beans such as
-     * an Annotation or DataField bean which combine knowledge from the entity and its linked relationships.
+     * an AnnotationProperties or DataField bean which combine knowledge from the entity and its linked relationships.
      *
      * @param beanClass name of the class to create
      * @param primaryEntity entity that is the root of the collection of entities that make up the
@@ -148,7 +148,7 @@ public abstract class OpenMetadataAPIGenericConverter<B>
 
     /**
      * Using the supplied instances, return a new instance of the bean.  It is used for beans such as
-     * an Annotation or DataField bean which combine knowledge from the entity and its linked relationships.
+     * an AnnotationProperties or DataField bean which combine knowledge from the entity and its linked relationships.
      *
      * @param beanClass name of the class to create
      * @param primaryEntity entity that is the root of the collection of entities that make up the
@@ -1457,6 +1457,26 @@ public abstract class OpenMetadataAPIGenericConverter<B>
         return null;
     }
 
+    /**
+     * Extract and delete the property from the supplied instance properties.
+     *
+     * @param instanceProperties properties from entity
+     * @return string text or null
+     */
+    protected String removeKey(InstanceProperties  instanceProperties)
+    {
+        final String methodName = "removeIdentifier";
+
+        if (instanceProperties != null)
+        {
+            return repositoryHelper.removeStringProperty(serviceName,
+                                                         OpenMetadataProperty.KEY.name,
+                                                         instanceProperties,
+                                                         methodName);
+        }
+
+        return null;
+    }
 
     /**
      * Extract and delete the externalInstanceTypeName property from the supplied instance properties.
@@ -4259,7 +4279,7 @@ public abstract class OpenMetadataAPIGenericConverter<B>
         if (instanceProperties != null)
         {
             return repositoryHelper.removeStringProperty(serviceName,
-                                                         OpenMetadataProperty.INFORMAL_CATEGORY.name,
+                                                         OpenMetadataProperty.SUBJECT_AREA_NAME.name,
                                                          instanceProperties,
                                                          methodName);
         }
@@ -4281,7 +4301,7 @@ public abstract class OpenMetadataAPIGenericConverter<B>
         if (instanceProperties != null)
         {
             return repositoryHelper.removeStringArrayProperty(serviceName,
-                                                              OpenMetadataProperty.CANDIDATE_GLOSSARY_CATEGORY_GUIDS.name,
+                                                              OpenMetadataProperty.CANDIDATE_GLOSSARY_FOLDER_GUIDS.name,
                                                               instanceProperties,
                                                               methodName);
         }

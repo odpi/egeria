@@ -163,7 +163,6 @@ public class OpenMetadataTypesArchive2_4
         update0011ManagingReferenceables();
         update0012SearchKeywords();
         update0030HostsAndPlatforms();
-        add0057IntegrationCapabilities();
         update0215SoftwareComponents();
         update04xxGovernanceEnums();
         update05xxSchemaAttributes();
@@ -282,17 +281,9 @@ public class OpenMetadataTypesArchive2_4
 
     private ClassificationDef addAnchorsClassification()
     {
-        final List<TypeDefLink> linkedToEntities = new ArrayList<>();
-
-        linkedToEntities.add(this.archiveBuilder.getEntityDef(OpenMetadataType.REFERENCEABLE.typeName));
-        linkedToEntities.add(this.archiveBuilder.getEntityDef(OpenMetadataType.ANNOTATION.typeName));
-        linkedToEntities.add(this.archiveBuilder.getEntityDef(OpenMetadataType.ANNOTATION_REVIEW.typeName));
-        linkedToEntities.add(this.archiveBuilder.getEntityDef(OpenMetadataType.LIKE.typeName));
-        linkedToEntities.add(this.archiveBuilder.getEntityDef(OpenMetadataType.RATING.typeName));
-
-        ClassificationDef classificationDef = archiveHelper.getClassificationDef(OpenMetadataType.ANCHORS_CLASSIFICATION,
+       ClassificationDef classificationDef = archiveHelper.getClassificationDef(OpenMetadataType.ANCHORS_CLASSIFICATION,
                                                                                  null,
-                                                                                 linkedToEntities,
+                                                                                 this.archiveBuilder.getEntityDef(OpenMetadataType.OPEN_METADATA_ROOT.typeName),
                                                                                  true);
 
         /*
@@ -301,6 +292,9 @@ public class OpenMetadataTypesArchive2_4
         List<TypeDefAttribute> properties = new ArrayList<>();
 
         properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.ANCHOR_GUID));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.ANCHOR_TYPE_NAME));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.ANCHOR_DOMAIN_NAME));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.ANCHOR_SCOPE_GUID));
 
         classificationDef.setPropertiesDefinition(properties);
 
@@ -373,7 +367,12 @@ public class OpenMetadataTypesArchive2_4
          */
         List<TypeDefAttribute> properties = new ArrayList<>();
 
-        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.KEYWORD));
+        TypeDefAttribute property = archiveHelper.getTypeDefAttribute(OpenMetadataProperty.KEYWORD);
+        property.setValuesMaxCount(1);
+        property.setValuesMinCount(1);
+        property.setAttributeCardinality(AttributeCardinality.ONE_ONLY);
+        properties.add(property);
+
         properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.DESCRIPTION));
 
         entityDef.setPropertiesDefinition(properties);
@@ -456,54 +455,6 @@ public class OpenMetadataTypesArchive2_4
         return typeDefPatch;
     }
 
-
-    /*
-     * -------------------------------------------------------------------------------------------------------
-     */
-
-
-    /**
-     * 0057 - Integration capabilities describe the different types of integration capabilities.
-     * Initially these are Egeria's integration daemons.
-     */
-    private void add0057IntegrationCapabilities()
-    {
-        this.archiveBuilder.addEntityDef(addSoftwareServiceEntity());
-        this.archiveBuilder.addEntityDef(addMetadataIntegrationServiceEntity());
-        this.archiveBuilder.addEntityDef(addMetadataAccessServiceEntity());
-        this.archiveBuilder.addEntityDef(addEngineHostingServiceEntity());
-        this.archiveBuilder.addEntityDef(addUserViewServiceEntity());
-    }
-
-    private EntityDef addSoftwareServiceEntity()
-    {
-        return archiveHelper.getDefaultEntityDef(OpenMetadataType.SOFTWARE_SERVICE,
-                                                 this.archiveBuilder.getEntityDef(OpenMetadataType.SOFTWARE_CAPABILITY.typeName));
-    }
-
-    private EntityDef addMetadataIntegrationServiceEntity()
-    {
-        return archiveHelper.getDefaultEntityDef(OpenMetadataType.METADATA_INTEGRATION_SERVICE,
-                                                 this.archiveBuilder.getEntityDef(OpenMetadataType.SOFTWARE_SERVICE.typeName));
-    }
-
-    private EntityDef addMetadataAccessServiceEntity()
-    {
-        return archiveHelper.getDefaultEntityDef(OpenMetadataType.METADATA_ACCESS_SERVICE,
-                                                 this.archiveBuilder.getEntityDef(OpenMetadataType.SOFTWARE_SERVICE.typeName));
-    }
-
-    private EntityDef addEngineHostingServiceEntity()
-    {
-        return archiveHelper.getDefaultEntityDef(OpenMetadataType.ENGINE_HOSTING_SERVICES,
-                                                 this.archiveBuilder.getEntityDef(OpenMetadataType.SOFTWARE_SERVICE.typeName));
-    }
-
-    private EntityDef addUserViewServiceEntity()
-    {
-        return archiveHelper.getDefaultEntityDef(OpenMetadataType.USER_VIEW_SERVICE,
-                                                 this.archiveBuilder.getEntityDef(OpenMetadataType.SOFTWARE_SERVICE.typeName));
-    }
 
 
     /*
@@ -938,230 +889,12 @@ public class OpenMetadataTypesArchive2_4
      */
     private void updateClashingControlProperties()
     {
-        this.archiveBuilder.addTypeDefPatch(updateCloudPlatformClassification());
-        this.archiveBuilder.addTypeDefPatch(updateCloudTenantClassification());
-        this.archiveBuilder.addTypeDefPatch(updateCloudServiceClassification());
         // Comment entity's clashing properties are updated as part of other updates to Comment above
-        this.archiveBuilder.addTypeDefPatch(updateLogFileEntity());
-        this.archiveBuilder.addTypeDefPatch(updateDatabaseEntity());
-        this.archiveBuilder.addTypeDefPatch(updateBusinessCapabilityEntity());
-        this.archiveBuilder.addTypeDefPatch(updatePropertyFacetEntity());
-        this.archiveBuilder.addTypeDefPatch(updateCohortMemberEntity());
         this.archiveBuilder.addTypeDefPatch(updatePolicyAdministrationPointClassification());
         this.archiveBuilder.addTypeDefPatch(updatePolicyDecisionPointClassification());
         this.archiveBuilder.addTypeDefPatch(updatePolicyEnforcementPointClassification());
         this.archiveBuilder.addTypeDefPatch(updatePolicyInformationPointClassification());
         this.archiveBuilder.addTypeDefPatch(updatePolicyRetrievalPointClassification());
-    }
-
-
-
-    /**
-     * Deprecate clashing properties and add new ones to replace them.
-     * @return the type def patch
-     */
-    private TypeDefPatch updateCloudPlatformClassification()
-    {
-        /*
-         * Create the Patch
-         */
-        TypeDefPatch  typeDefPatch = archiveBuilder.getPatchForType(OpenMetadataType.CLOUD_PLATFORM_CLASSIFICATION.typeName);
-
-        typeDefPatch.setUpdatedBy(originatorName);
-        typeDefPatch.setUpdateTime(creationDate);
-
-        /*
-         * Build the attributes
-         */
-        List<TypeDefAttribute> properties = new ArrayList<>();
-
-        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.DEPLOYED_IMPLEMENTATION_TYPE));
-
-        typeDefPatch.setPropertyDefinitions(properties);
-        return typeDefPatch;
-    }
-
-
-    /**
-     * Deprecate clashing properties and add new ones to replace them.
-     * @return the type def patch
-     */
-    private TypeDefPatch updateCloudTenantClassification()
-    {
-        /*
-         * Create the Patch
-         */
-        TypeDefPatch  typeDefPatch = archiveBuilder.getPatchForType(OpenMetadataType.CLOUD_TENANT_CLASSIFICATION.typeName);
-
-        typeDefPatch.setUpdatedBy(originatorName);
-        typeDefPatch.setUpdateTime(creationDate);
-
-        /*
-         * Build the attributes
-         */
-        List<TypeDefAttribute> properties = new ArrayList<>();
-
-        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.TENANT_TYPE));
-
-        typeDefPatch.setPropertyDefinitions(properties);
-
-        return typeDefPatch;
-    }
-
-
-    /**
-     * Deprecate clashing properties and add new ones to replace them.
-     * @return the type def patch
-     */
-    private TypeDefPatch updateCloudServiceClassification()
-    {
-        /*
-         * Create the Patch
-         */
-        TypeDefPatch  typeDefPatch = archiveBuilder.getPatchForType(OpenMetadataType.CLOUD_SERVICE_CLASSIFICATION.typeName);
-
-        typeDefPatch.setUpdatedBy(originatorName);
-        typeDefPatch.setUpdateTime(creationDate);
-
-        /*
-         * Build the attributes
-         */
-        List<TypeDefAttribute> properties = new ArrayList<>();
-
-        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.SERVICE_TYPE));
-
-        typeDefPatch.setPropertyDefinitions(properties);
-        return typeDefPatch;
-    }
-
-
-    /**
-     * Deprecate clashing properties and add new ones to replace them.
-     * @return the type def patch
-     */
-    private TypeDefPatch updateLogFileEntity()
-    {
-        /*
-         * Create the Patch
-         */
-        TypeDefPatch  typeDefPatch = archiveBuilder.getPatchForType(OpenMetadataType.LOG_FILE.typeName);
-
-        typeDefPatch.setUpdatedBy(originatorName);
-        typeDefPatch.setUpdateTime(creationDate);
-
-        /*
-         * Build the attributes
-         */
-        List<TypeDefAttribute> properties = new ArrayList<>();
-
-        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.PURPOSE));
-
-        typeDefPatch.setPropertyDefinitions(properties);
-        return typeDefPatch;
-    }
-
-
-    /**
-     * Deprecate clashing properties and add new ones to replace them.
-     * @return the type def patch
-     */
-    private TypeDefPatch updateDatabaseEntity()
-    {
-        /*
-         * Create the Patch
-         */
-        TypeDefPatch  typeDefPatch = archiveBuilder.getPatchForType(OpenMetadataType.DATABASE.typeName);
-
-        typeDefPatch.setUpdatedBy(originatorName);
-        typeDefPatch.setUpdateTime(creationDate);
-
-        /*
-         * Build the attributes
-         */
-        List<TypeDefAttribute> properties = new ArrayList<>();
-
-        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.DATABASE_VERSION));
-
-        typeDefPatch.setPropertyDefinitions(properties);
-        return typeDefPatch;
-    }
-
-
-    /**
-     * Deprecate clashing properties and add new ones to replace them.
-     * @return the type def patch
-     */
-    private TypeDefPatch updateBusinessCapabilityEntity()
-    {
-        /*
-         * Create the Patch
-         */
-        TypeDefPatch  typeDefPatch = archiveBuilder.getPatchForType(OpenMetadataType.BUSINESS_CAPABILITY.typeName);
-
-        typeDefPatch.setUpdatedBy(originatorName);
-        typeDefPatch.setUpdateTime(creationDate);
-
-        /*
-         * Build the attributes
-         */
-        List<TypeDefAttribute> properties = new ArrayList<>();
-
-        properties.add(archiveHelper.getEnumTypeDefAttribute(OpenMetadataProperty.BUSINESS_CAPABILITY_TYPE));
-
-        typeDefPatch.setPropertyDefinitions(properties);
-        return typeDefPatch;
-    }
-
-
-    /**
-     * Deprecate clashing properties and add new ones to replace them.
-     * @return the type def patch
-     */
-    private TypeDefPatch updatePropertyFacetEntity()
-    {
-        /*
-         * Create the Patch
-         */
-        TypeDefPatch  typeDefPatch = archiveBuilder.getPatchForType(OpenMetadataType.PROPERTY_FACET.typeName);
-
-        typeDefPatch.setUpdatedBy(originatorName);
-        typeDefPatch.setUpdateTime(creationDate);
-
-        /*
-         * Build the attributes
-         */
-        List<TypeDefAttribute> properties = new ArrayList<>();
-
-        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.SCHEMA_VERSION));
-
-        typeDefPatch.setPropertyDefinitions(properties);
-        return typeDefPatch;
-    }
-
-
-    /**
-     * Deprecate clashing properties and add new ones to replace them.
-     * @return the type def patch
-     */
-    private TypeDefPatch updateCohortMemberEntity()
-    {
-        /*
-         * Create the Patch
-         */
-        TypeDefPatch  typeDefPatch = archiveBuilder.getPatchForType(OpenMetadataType.COHORT_MEMBER.typeName);
-
-        typeDefPatch.setUpdatedBy(originatorName);
-        typeDefPatch.setUpdateTime(creationDate);
-
-        /*
-         * Build the attributes
-         */
-        List<TypeDefAttribute> properties = new ArrayList<>();
-
-        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.PROTOCOL_VERSION));
-
-        typeDefPatch.setPropertyDefinitions(properties);
-        return typeDefPatch;
     }
 
 

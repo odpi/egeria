@@ -121,7 +121,8 @@ public class DataFieldProperties extends ReferenceableProperties
 
 
     /**
-     * Return a regular expression that characterizes the name used for this type of data field.
+     * Return a list of name patterns to use when generating schemas.  Use space separated capitalized works so the
+     * schema generators can easily convert to valid language keywords.
      *
      * @return string
      */
@@ -132,7 +133,8 @@ public class DataFieldProperties extends ReferenceableProperties
 
 
     /**
-     * Set up  a regular expression that characterizes the name used for this type of data field.
+     * Set up a list of name patterns to use when generating schemas.  Use space separated capitalized works so the
+     * schema generators can easily convert to valid language keywords.
      *
      * @param namePatterns string
      */

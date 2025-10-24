@@ -7,12 +7,12 @@ import org.odpi.openmetadata.adapters.connectors.postgres.ffdc.PostgresAuditCode
 import org.odpi.openmetadata.adapters.connectors.resource.jdbc.JDBCResourceConnector;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.surveyreports.AnnotationProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 import org.odpi.openmetadata.frameworks.opensurvey.AnnotationStore;
 import org.odpi.openmetadata.frameworks.opensurvey.SurveyActionServiceConnector;
 import org.odpi.openmetadata.frameworks.opensurvey.SurveyAssetStore;
 import org.odpi.openmetadata.frameworks.opensurvey.controls.AnalysisStep;
-import org.odpi.openmetadata.frameworks.opensurvey.properties.Annotation;
 
 import javax.sql.DataSource;
 import java.sql.Connection;
@@ -75,10 +75,10 @@ public class PostgresDatabaseSurveyActionService extends SurveyActionServiceConn
 
                 statsExtractor.getSchemaStatistics(databaseName, jdbcConnection);
 
-                List<Annotation> annotations = statsExtractor.getAnnotations();
+                List<AnnotationProperties> annotations = statsExtractor.getAnnotations();
                 if (annotations != null)
                 {
-                    for (Annotation annotation : annotations)
+                    for (AnnotationProperties annotation : annotations)
                     {
                         if (super.isActive())
                         {

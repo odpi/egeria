@@ -29,7 +29,7 @@ plugins {
  */
 allprojects {
     group = 'org.odpi.egeria'
-    version = '5.4-SNAPSHOT'
+    version = '6.0-SNAPSHOT'
 
     // Signing/publish used in parent & child projects
     apply plugin: 'maven-publish'
@@ -38,8 +38,6 @@ allprojects {
     // Only use maven central
     repositories {
         mavenCentral()
-        // used by tink (encrypted filestore connector)
-        google()
     }
 } // end of allProjects
 

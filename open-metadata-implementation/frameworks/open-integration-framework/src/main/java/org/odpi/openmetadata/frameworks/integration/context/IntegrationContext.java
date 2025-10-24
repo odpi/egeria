@@ -10,7 +10,6 @@ import org.odpi.openmetadata.frameworks.opengovernance.client.OpenGovernanceClie
 import org.odpi.openmetadata.frameworks.opengovernance.connectorcontext.ConnectorConfigClient;
 import org.odpi.openmetadata.frameworks.opengovernance.connectorcontext.StewardshipAction;
 import org.odpi.openmetadata.frameworks.opengovernance.properties.CatalogTarget;
-import org.odpi.openmetadata.frameworks.integration.client.OpenIntegrationClient;
 import org.odpi.openmetadata.frameworks.integration.openlineage.OpenLineageEventListener;
 import org.odpi.openmetadata.frameworks.integration.openlineage.OpenLineageListenerManager;
 import org.odpi.openmetadata.frameworks.integration.openlineage.OpenLineageRunEvent;
@@ -23,6 +22,7 @@ import org.odpi.openmetadata.frameworks.openmetadata.events.OpenMetadataEventLis
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.processes.connectors.CatalogTargetProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.search.GetOptions;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
 
@@ -41,14 +41,11 @@ public class IntegrationContext extends ConnectorContextBase
     protected final OpenMetadataEventClient    openMetadataEventClient;
     private final   OpenLineageListenerManager openLineageListenerManager;
 
-    protected final OpenIntegrationClient   openIntegrationClient;
     protected final OpenGovernanceClient    openGovernanceClient;
     protected final ConnectedAssetClient    connectedAssetClient;
     protected final GovernanceConfiguration governanceConfiguration;
     protected final StewardshipAction       stewardshipAction;
     private final   ConnectedAssetContext    connectedAssetContext;
-    private final   ConnectorConfigClient   connectorConfigClient;
-
     private   final Map<String, String> externalSourceCache = new HashMap<>();
 
     protected final PermittedSynchronization permittedSynchronization;
@@ -72,7 +69,6 @@ public class IntegrationContext extends ConnectorContextBase
      * @param openMetadataClient client to access open metadata store
      * @param openMetadataEventClient client to access open metadata events
      * @param connectedAssetClient client for working with connectors
-     * @param openIntegrationClient client for calling the metadata server
      * @param governanceConfiguration client for managing catalog targets
      * @param openGovernanceClient client for initiating governance actions
      * @param auditLog logging destination
@@ -92,7 +88,6 @@ public class IntegrationContext extends ConnectorContextBase
                               OpenMetadataClient           openMetadataClient,
                               OpenMetadataEventClient      openMetadataEventClient,
                               ConnectedAssetClient         connectedAssetClient,
-                              OpenIntegrationClient        openIntegrationClient,
                               OpenLineageListenerManager   openLineageListenerManager,
                               GovernanceConfiguration      governanceConfiguration,
                               OpenGovernanceClient         openGovernanceClient,
@@ -114,7 +109,6 @@ public class IntegrationContext extends ConnectorContextBase
               maxPageSize,
               deleteMethod);
 
-        this.openIntegrationClient      = openIntegrationClient;
         this.openLineageListenerManager = openLineageListenerManager;
         this.governanceConfiguration    = governanceConfiguration;
         this.openGovernanceClient       = openGovernanceClient;
@@ -125,16 +119,6 @@ public class IntegrationContext extends ConnectorContextBase
 
         this.connectedAssetContext      = new ConnectedAssetContext(connectorUserId, connectedAssetClient);
 
-        this.connectorConfigClient      = new ConnectorConfigClient(this,
-                                                                    localServerName,
-                                                                    localServiceName,
-                                                                    connectorUserId,
-                                                                    connectorGUID,
-                                                                    externalSourceGUID,
-                                                                    externalSourceName,
-                                                                    governanceConfiguration,
-                                                                    auditLog,
-                                                                    maxPageSize);
 
         this.stewardshipAction          = new StewardshipAction(this,
                                                                 localServerName,
@@ -159,9 +143,9 @@ public class IntegrationContext extends ConnectorContextBase
      * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    public CatalogTargetContext getCatalogTargetContext(CatalogTarget requestedCatalogTarget) throws InvalidParameterException,
-                                                                                                     PropertyServerException,
-                                                                                                     UserNotAuthorizedException
+    public CatalogTargetContext getCatalogTargetContext(CatalogTargetProperties requestedCatalogTarget) throws InvalidParameterException,
+                                                                                                               PropertyServerException,
+                                                                                                               UserNotAuthorizedException
     {
         return new CatalogTargetContext(localServerName,
                                         localServiceName,
@@ -176,7 +160,6 @@ public class IntegrationContext extends ConnectorContextBase
                                         openMetadataClient,
                                         openMetadataEventClient,
                                         connectedAssetClient,
-                                        openIntegrationClient,
                                         openLineageListenerManager,
                                         governanceConfiguration,
                                         openGovernanceClient,
@@ -344,14 +327,6 @@ public class IntegrationContext extends ConnectorContextBase
 
 
     /**
-     * Return the client for managing the metadata associated with running connectors, governance engines and governance services.
-     *
-     * @return connector context client
-     */
-    public ConnectorConfigClient getConnectorConfigClient() { return connectorConfigClient; }
-
-
-    /**
      * Return the unique identifier of the element that represents this integration connector in open metadata.
      *
      * @return string guid
@@ -449,5 +424,17 @@ public class IntegrationContext extends ConnectorContextBase
     public void setRefreshInProgress(boolean refreshInProgress)
     {
         isRefreshInProgress = refreshInProgress;
+
+        if (connectorActivityReportWriter != null)
+        {
+            if (refreshInProgress)
+            {
+                connectorActivityReportWriter.setRefreshStartDate();
+            }
+            else
+            {
+                connectorActivityReportWriter.setRefreshEndDate();
+            }
+        }
     }
 }

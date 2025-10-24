@@ -6,7 +6,7 @@ package org.odpi.openmetadata.samples.archiveutilities.governanceengines;
 import org.odpi.openmetadata.frameworks.openmetadata.controls.PlaceholderProperty;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
-import org.odpi.openmetadata.samples.archiveutilities.businesssystems.ScopeDefinition;
+import org.odpi.openmetadata.frameworks.openmetadata.refdata.ScopeDefinition;
 import org.odpi.openmetadata.samples.governanceactions.clinicaltrials.CocoClinicalTrialPlaceholderProperty;
 
 import java.util.Arrays;
@@ -115,7 +115,7 @@ public enum InformationSupplyChain
     NEW_EMPLOYEE_ONBOARDING("022009d9-53cb-4469-afeb-16ee81d8f9bc",
                             "New Employee Onboarding",
                             "Adding information about a new employee to all appropriate systems and directories.",
-                            ScopeDefinition.ALL_COCO,
+                            ScopeDefinition.WITHIN_ORGANIZATION,
                             new String[]
                                     {
                                             "Ensure a new employee is productive and engaged in a timely manner."
@@ -129,7 +129,7 @@ public enum InformationSupplyChain
     NEW_DRUG_PRODUCT_INFO_DISTRIBUTION("b0491fd4-6324-4ed8-9a1c-7cbd9892e21b",
                                        "New Drug Product Information Distribution",
                                        "Managing the distribution of information about a new product.",
-                                       ScopeDefinition.ALL_COCO,
+                                       ScopeDefinition.WITHIN_ORGANIZATION,
                                        new String[]
                                                {
                                                        "Ensuring information about a new product is distributed to all of the appropriate system so that it is visible for ordering, manufacturing and invoicing."
@@ -142,7 +142,7 @@ public enum InformationSupplyChain
     PERSONALIZED_TREATMENT_ORDER("adbae740-57a3-41b8-a722-266b895794e6",
                                  "Personalized Treatment Ordering",
                                  "Delivering information about a new personalized medicine order so that it fulfilled and invoiced.",
-                                 ScopeDefinition.ALL_COCO,
+                                 ScopeDefinition.WITHIN_ORGANIZATION,
                                  new String[]
                                          {
                                                  "Ensuring orders are fulfilled effectively."
@@ -156,7 +156,7 @@ public enum InformationSupplyChain
     SUSTAINABILITY_REPORTING("dd15b286-a38d-4f03-8625-aaded8596048",
                              "Sustainability Reporting",
                              "Delivering information to the sustainability reporting tools.",
-                             ScopeDefinition.ALL_COCO,
+                             ScopeDefinition.WITHIN_ORGANIZATION,
                              new String[]
                                      {
                                              "Ensuring sustainability reporting is accurate."
@@ -170,7 +170,7 @@ public enum InformationSupplyChain
     PHYSICAL_INVENTORY_TRACKING("7480a3b1-8d6c-4062-ae59-f3b81e146ed0",
                                 "Physical Inventory Tracking",
                                 "Managing information take tracks physical goods from suppliers, to depot and manufacturing.",
-                                ScopeDefinition.ALL_COCO,
+                                ScopeDefinition.WITHIN_ORGANIZATION,
                                 new String[]
                                         {
                                                 "Ensuring effective management of physical inventory.",
@@ -185,7 +185,7 @@ public enum InformationSupplyChain
     EMPLOYEE_EXPENSE_PAYMENT("79d1d83f-6a37-4c32-bf3f-eb8b4358027c",
                              "Employee Expense Payment",
                              "Managing the collection of expense data, its approval and the subsequent payment authorization flows.",
-                             ScopeDefinition.ALL_COCO,
+                             ScopeDefinition.WITHIN_ORGANIZATION,
                              new String[]
                                      {
                                              "Ensure employees are reimbursed for their expenses in a timely manner."

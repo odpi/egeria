@@ -18,10 +18,6 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-tomcat'
     implementation 'jakarta.servlet:jakarta.servlet-api'
 
-    // An attempt to load  the right level of lucene in all environments
-    runtimeOnly("org.apache.lucene:lucene-core")
-    implementation("org.apache.lucene:lucene-queryparser")
-
     runtimeOnly 'io.micrometer:micrometer-registry-prometheus'
     implementation 'org.springframework:spring-beans'
     implementation 'org.springframework:spring-core'
@@ -53,23 +49,24 @@ dependencies {
     if (!project.hasProperty("adminChassisOnly")) {
         runtimeOnly project(':open-metadata-implementation:view-server-generic-services:actor-manager:actor-manager-spring')
         runtimeOnly project(':open-metadata-implementation:view-server-generic-services:asset-maker:asset-maker-spring')
+        runtimeOnly project(':open-metadata-implementation:view-server-generic-services:automated-curation:automated-curation-spring')
         runtimeOnly project(':open-metadata-implementation:view-server-generic-services:classification-explorer:classification-explorer-spring')
+        runtimeOnly project(':open-metadata-implementation:view-server-generic-services:classification-manager:classification-manager-spring')
         runtimeOnly project(':open-metadata-implementation:view-server-generic-services:collection-manager:collection-manager-spring')
         runtimeOnly project(':open-metadata-implementation:view-server-generic-services:connection-maker:connection-maker-spring')
-        runtimeOnly project(':open-metadata-implementation:view-server-generic-services:external-references:external-references-spring')
+        runtimeOnly project(':open-metadata-implementation:view-server-generic-services:external-links:external-links-spring')
         runtimeOnly project(':open-metadata-implementation:view-server-generic-services:feedback-manager:feedback-manager-spring')
         runtimeOnly project(':open-metadata-implementation:view-server-generic-services:governance-officer:governance-officer-spring')
         runtimeOnly project(':open-metadata-implementation:view-server-generic-services:lineage-linker:lineage-linker-spring')
         runtimeOnly project(':open-metadata-implementation:view-server-generic-services:metadata-expert:metadata-expert-spring')
         runtimeOnly project(':open-metadata-implementation:view-server-generic-services:metadata-explorer:metadata-explorer-spring')
+        runtimeOnly project(':open-metadata-implementation:view-server-generic-services:multi-language:multi-language-spring')
         runtimeOnly project(':open-metadata-implementation:view-server-generic-services:schema-maker:schema-maker-spring')
         runtimeOnly project(':open-metadata-implementation:view-server-generic-services:time-keeper:time-keeper-spring')
         runtimeOnly project(':open-metadata-implementation:view-server-generic-services:valid-metadata:valid-metadata-spring')
 
         runtimeOnly project(':open-metadata-implementation:view-services:action-author:action-author-spring')
         runtimeOnly project(':open-metadata-implementation:view-services:asset-catalog:asset-catalog-spring')
-        runtimeOnly project(':open-metadata-implementation:view-services:automated-curation:automated-curation-spring')
-        runtimeOnly project(':open-metadata-implementation:view-services:classification-manager:classification-manager-spring')
         runtimeOnly project(':open-metadata-implementation:view-services:community-matters:community-matters-spring')
         runtimeOnly project(':open-metadata-implementation:view-services:data-designer:data-designer-spring')
         runtimeOnly project(':open-metadata-implementation:view-services:data-discovery:data-discovery-spring')
@@ -79,7 +76,6 @@ dependencies {
         runtimeOnly project(':open-metadata-implementation:view-services:digital-business:digital-business-spring')
         runtimeOnly project(':open-metadata-implementation:view-services:glossary-manager:glossary-manager-spring')
         runtimeOnly project(':open-metadata-implementation:view-services:location-arena:location-arena-spring')
-        runtimeOnly project(':open-metadata-implementation:view-services:multi-language:multi-language-spring')
         runtimeOnly project(':open-metadata-implementation:view-services:my-profile:my-profile-spring')
         runtimeOnly project(':open-metadata-implementation:view-services:notification-manager:notification-manager-spring')
         runtimeOnly project(':open-metadata-implementation:view-services:people-organizer:people-organizer-spring')
@@ -104,7 +100,6 @@ dependencies {
         runtimeOnly project(':open-metadata-implementation:access-services:omf-metadata-management:omf-metadata-spring')
         runtimeOnly project(':open-metadata-implementation:access-services:ocf-metadata-management:ocf-metadata-spring')
         runtimeOnly project(':open-metadata-implementation:access-services:gaf-metadata-management:gaf-metadata-spring')
-        runtimeOnly project(':open-metadata-implementation:access-services:oif-metadata-management:oif-metadata-spring')
 
         runtimeOnly project(':open-metadata-implementation:governance-server-services:integration-daemon-services:integration-daemon-services-spring')
         runtimeOnly project(':open-metadata-implementation:governance-server-services:engine-host-services:engine-host-services-spring')

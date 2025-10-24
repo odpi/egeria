@@ -246,7 +246,7 @@ Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-  "class" : "DeleteRequestBody",
+  "class" : "DeleteRelationshipRequestBody",
   "cascadedDelete" : false,
   "deleteMethod" : "LOOK_FOR_LINEAGE",
   "externalSourceGUID": "add guid here",
@@ -306,7 +306,7 @@ Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-  "class" : "DeleteRequestBody",
+  "class" : "DeleteRelationshipRequestBody",
   "cascadedDelete" : false,
   "deleteMethod" : "LOOK_FOR_LINEAGE",
   "externalSourceGUID": "add guid here",
@@ -372,7 +372,7 @@ Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-  "class" : "DeleteRequestBody",
+  "class" : "DeleteRelaitonshipRequestBody",
   "cascadedDelete" : false,
   "deleteMethod" : "LOOK_FOR_LINEAGE",
   "externalSourceGUID": "add guid here",
@@ -432,7 +432,7 @@ Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-  "class" : "DeleteRequestBody",
+  "class" : "DeleteRelationshipRequestBody",
   "cascadedDelete" : false,
   "deleteMethod" : "LOOK_FOR_LINEAGE",
   "externalSourceGUID": "add guid here",
@@ -493,7 +493,7 @@ Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-  "class" : "DeleteRequestBody",
+  "class" : "DeleteRelationshipRequestBody",
   "deleteMethod" : "LOOK_FOR_LINEAGE",
   "externalSourceGUID": "add guid here",
   "externalSourceName": "add qualified name here",
@@ -520,7 +520,7 @@ Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-  "class" : "DeleteRequestBody",
+  "class" : "DeleteElementRequestBody",
   "cascadedDelete" : false,
   "deleteMethod" : "LOOK_FOR_LINEAGE",
   "externalSourceGUID": "add guid here",
@@ -535,8 +535,6 @@ Content-Type: application/json
 # @name getConnectionsByName
 # Returns the list of connections with a particular name.
 #
-# @param startFrom paging start point
-# @param pageSize maximum results that can be returned
 # Request body provides string to find in the properties
 #
 # Returns list of matching metadata elements or
@@ -550,14 +548,16 @@ Content-Type: application/json
 
 {
   "class" : "FilterRequestBody",
+  "filter" : "Add name here",
+  "startFrom": 0,
+  "pageSize": 10,
   "asOfTime" : "{{$isoTimestamp}}",
   "effectiveTime" : "{{$isoTimestamp}}",
   "forLineage" : false,
   "forDuplicateProcessing" : false,
   "limitResultsByStatus" : ["ACTIVE"],
   "sequencingOrder" : "PROPERTY_ASCENDING",
-  "sequencingProperty" : "qualifiedName",
-  "filter" : "Add name here"
+  "sequencingProperty" : "qualifiedName"
 }
 
 
@@ -565,11 +565,6 @@ Content-Type: application/json
 # @name findConnections
 # Retrieve the list of connection metadata elements that contain the search string.
 #
-# @param startsWith does the value start with the supplied string?
-# @param endsWith does the value end with the supplied string?
-# @param ignoreCase should the search ignore case?
-# @param startFrom paging start point
-# @param pageSize maximum results that can be returned
 # Request body provides string to find in the properties
 #
 # Returns list of matching metadata elements or
@@ -577,20 +572,25 @@ Content-Type: application/json
 #  UserNotAuthorizedException the user is not authorized to issue this request
 #  PropertyServerException    there is a problem reported in the open metadata server(s)
 #
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/connection-maker/connections/by-search-string?startFrom=0&pageSize=10&startsWith=true&endsWith=false&ignoreCase=false
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/connection-maker/connections/by-search-string
 Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-  "class" : "FilterRequestBody",
+  "class" : "SearchStringRequestBody",
+  "searchString": "xxx",
+  "startsWith" : false,
+  "endsWith" : false,
+  "ignoreCase" : true,
+  "startFrom" : 0,
+  "pageSize": 0,
   "asOfTime" : "{{$isoTimestamp}}",
   "effectiveTime" : "{{$isoTimestamp}}",
   "forLineage" : false,
   "forDuplicateProcessing" : false,
   "limitResultsByStatus" : ["ACTIVE"],
   "sequencingOrder" : "PROPERTY_ASCENDING",
-  "sequencingProperty" : "qualifiedName",
-  "filter" : "Add name here"
+  "sequencingProperty" : "qualifiedName"
 }
 
 
@@ -803,7 +803,7 @@ Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-  "class" : "DeleteRequestBody",
+  "class" : "DeleteElementRequestBody",
   "cascadedDelete" : false,
   "deleteMethod" : "LOOK_FOR_LINEAGE",
   "externalSourceGUID": "add guid here",
@@ -818,8 +818,6 @@ Content-Type: application/json
 # @name getConnectorTypesByName
 # Returns the list of connectorTypes with a particular name.
 #
-# @param startFrom paging start point
-# @param pageSize maximum results that can be returned
 # Request body provides string to find in the properties
 #
 # Returns list of matching metadata elements or
@@ -834,6 +832,8 @@ Content-Type: application/json
 {
   "class" : "FilterRequestBody",
   "filter" : "Add name here",
+  "startFrom": 0,
+  "pageSize": 10,
   "asOfTime" : "{{$isoTimestamp}}",
   "effectiveTime" : "{{$isoTimestamp}}",
   "forLineage" : false,
@@ -848,11 +848,6 @@ Content-Type: application/json
 # @name findConnectorTypes
 # Retrieve the list of connectorType metadata elements that contain the search string.
 #
-# @param startsWith does the value start with the supplied string?
-# @param endsWith does the value end with the supplied string?
-# @param ignoreCase should the search ignore case?
-# @param startFrom paging start point
-# @param pageSize maximum results that can be returned
 # Request body provides string to find in the properties
 #
 # Returns list of matching metadata elements or
@@ -860,13 +855,18 @@ Content-Type: application/json
 #  UserNotAuthorizedException the user is not authorized to issue this request
 #  PropertyServerException    there is a problem reported in the open metadata server(s)
 #
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/connection-maker/connector-types/by-search-string?startFrom=0&pageSize=10&startsWith=true&endsWith=false&ignoreCase=false
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/connection-maker/connector-types/by-search-string
 Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-  "class" : "FilterRequestBody",
-  "filter" : "Add name here",
+  "class" : "SearchStringRequestBody",
+  "searchString": "xxx",
+  "startsWith" : false,
+  "endsWith" : false,
+  "ignoreCase" : true,
+  "startFrom" : 0,
+  "pageSize": 0,
   "asOfTime" : "{{$isoTimestamp}}",
   "effectiveTime" : "{{$isoTimestamp}}",
   "forLineage" : false,
@@ -1086,7 +1086,7 @@ Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-  "class" : "DeleteRequestBody",
+  "class" : "DeleteElementRequestBody",
   "cascadedDelete" : false,
   "deleteMethod" : "LOOK_FOR_LINEAGE",
   "externalSourceGUID": "add guid here",
@@ -1101,8 +1101,6 @@ Content-Type: application/json
 # @name getEndpointsByName
 # Returns the list of endpoints with a particular name.
 #
-# @param startFrom paging start point
-# @param pageSize maximum results that can be returned
 # Request body provides string to find in the properties
 #
 # Returns list of matching metadata elements or
@@ -1117,6 +1115,8 @@ Content-Type: application/json
 {
   "class" : "FilterRequestBody",
   "filter" : "Add name here",
+  "startFrom": 0,
+  "pageSize": 10,
   "asOfTime" : "{{$isoTimestamp}}",
   "effectiveTime" : "{{$isoTimestamp}}",
   "forLineage" : false,
@@ -1131,8 +1131,6 @@ Content-Type: application/json
 # Retrieve the list of endpoint metadata elements with a matching networkAddress.
 # There are no wildcards supported on this request.
 #
-# @param startFrom paging start point
-# @param pageSize maximum results that can be returned
 # Request body provides string to find in the properties
 #
 # Returns list of matching metadata elements or
@@ -1158,12 +1156,10 @@ Content-Type: application/json
 
 
 ###
-# @name getEndpointsByName
+# @name getEndpointsForAsset
 # Retrieve the list of endpoint metadata elements that are attached to a specific infrastructure element.
 #
 # @param assetGUID element to search for
-# @param startFrom paging start point
-# @param pageSize maximum results that can be returned
 # Request body provides string to find in the properties
 #
 # Returns list of matching metadata elements or
@@ -1192,11 +1188,6 @@ Content-Type: application/json
 # @name findEndpoints
 # Retrieve the list of endpoint metadata elements that contain the search string.
 #
-# @param startsWith does the value start with the supplied string?
-# @param endsWith does the value end with the supplied string?
-# @param ignoreCase should the search ignore case?
-# @param startFrom paging start point
-# @param pageSize maximum results that can be returned
 # Request body provides string to find in the properties
 #
 # Returns list of matching metadata elements or
@@ -1204,20 +1195,25 @@ Content-Type: application/json
 #  UserNotAuthorizedException the user is not authorized to issue this request
 #  PropertyServerException    there is a problem reported in the open metadata server(s)
 #
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/connection-maker/endpoints/by-search-string?startFrom=0&pageSize=10&startsWith=true&endsWith=false&ignoreCase=false
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/connection-maker/endpoints/by-search-string
 Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-  "class" : "FilterRequestBody",
+  "class" : "SearchStringRequestBody",
+  "searchString": "xxx",
+  "startsWith" : false,
+  "endsWith" : false,
+  "ignoreCase" : true,
+  "startFrom" : 0,
+  "pageSize": 0,
   "asOfTime" : "{{$isoTimestamp}}",
   "effectiveTime" : "{{$isoTimestamp}}",
   "forLineage" : false,
   "forDuplicateProcessing" : false,
   "limitResultsByStatus" : ["ACTIVE"],
   "sequencingOrder" : "PROPERTY_ASCENDING",
-  "sequencingProperty" : "qualifiedName",
-  "filter" : "Add name here"
+  "sequencingProperty" : "qualifiedName"
 }
 
 

@@ -59,21 +59,43 @@ public enum SolutionComponentActor
     }
 
 
+    /**
+     * Return the solution role to link to.
+     *
+     * @return role definition
+     */
     public ProductRoleDefinition getSolutionRole()
     {
         return solutionRole;
     }
 
+    /**
+     * Return the solution component to link to.
+     *
+     * @return component definition
+     */
     public ProductSolutionComponent getSolutionComponent()
     {
         return productSolutionComponent;
     }
 
+
+    /**
+     * Return the role relationship label.
+     *
+     * @return string
+     */
     public String getRole()
     {
         return role;
     }
 
+
+    /**
+     * Return the role relationship description.
+     *
+     * @return string
+     */
     public String getDescription()
     {
         return description;

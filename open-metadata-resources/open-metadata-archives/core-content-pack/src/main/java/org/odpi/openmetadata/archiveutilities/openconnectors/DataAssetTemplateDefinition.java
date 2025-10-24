@@ -20,8 +20,8 @@ import org.odpi.openmetadata.adapters.connectors.secretsstore.yaml.YAMLSecretsSt
 import org.odpi.openmetadata.adapters.eventbus.topic.kafka.KafkaOpenMetadataTopicProvider;
 import org.odpi.openmetadata.frameworks.connectors.controls.SecretsStorePurpose;
 import org.odpi.openmetadata.frameworks.openmetadata.controls.PlaceholderProperty;
-import org.odpi.openmetadata.frameworks.openmetadata.controls.PlaceholderPropertyType;
-import org.odpi.openmetadata.frameworks.openmetadata.controls.ReplacementAttributeType;
+import org.odpi.openmetadata.frameworks.openmetadata.specificationproperties.PlaceholderPropertyType;
+import org.odpi.openmetadata.frameworks.openmetadata.specificationproperties.ReplacementAttributeType;
 import org.odpi.openmetadata.frameworks.openmetadata.controls.TemplateDefinition;
 import org.odpi.openmetadata.frameworks.openmetadata.refdata.DeployedImplementationType;
 import org.odpi.openmetadata.frameworks.openmetadata.refdata.DeployedImplementationTypeDefinition;
@@ -33,8 +33,10 @@ import java.util.Map;
 
 /**
  * A description of the templates for technology specific data assets.
- * The template consists of a SoftwareServer asset linked to a software capability, plus a connection, linked
- * to the supplied connector type and an endpoint,
+ * The template consists of a DataSet asset, plus a connection, linked
+ * to the supplied connector type and an endpoint.  Note: this is the template for both
+ * DataStores and DataSets - the DataSetContent relationship is not set up in the template - this is
+ * the job of the cataloguers to establish this lineage relationship.
  */
 public enum DataAssetTemplateDefinition implements TemplateDefinition
 {
@@ -62,7 +64,7 @@ public enum DataAssetTemplateDefinition implements TemplateDefinition
     POSTGRES_SCHEMA_TEMPLATE(PostgreSQLTemplateType.POSTGRES_SCHEMA_TEMPLATE.getTemplateGUID(),
                              PostgresDeployedImplementationType.POSTGRESQL_DATABASE_SCHEMA,
                              PostgresPlaceholderProperty.DATABASE_NAME.getPlaceholder() + "." + PostgresPlaceholderProperty.SCHEMA_NAME.getPlaceholder(),
-                             PostgresPlaceholderProperty.SCHEMA_DESCRIPTION.getPlaceholder(),
+                             PlaceholderProperty.DESCRIPTION.getPlaceholder(),
                              PostgresDeployedImplementationType.POSTGRESQL_DATABASE_SCHEMA.getDeployedImplementationType() + "::" + PlaceholderProperty.SERVER_NAME.getPlaceholder() + "::" + PostgresPlaceholderProperty.DATABASE_NAME.getPlaceholder() + "." + PostgresPlaceholderProperty.SCHEMA_NAME.getPlaceholder(),
                              null,
                              null,
@@ -607,7 +609,7 @@ public enum DataAssetTemplateDefinition implements TemplateDefinition
      *
      * @return configuration properties
      */
-    private static Map<String, Object> getPostgresSchemaConfigurationProperties()
+    static Map<String, Object> getPostgresSchemaConfigurationProperties()
     {
         Map<String, Object> configurationProperties = new HashMap<>();
 
@@ -760,6 +762,7 @@ public enum DataAssetTemplateDefinition implements TemplateDefinition
         return deployedImplementationType.getDeployedImplementationType() + " template";
     }
 
+
     /**
      * Return the description to go in the template classification.
      *
@@ -780,7 +783,7 @@ public enum DataAssetTemplateDefinition implements TemplateDefinition
     @Override
     public String getTemplateVersionIdentifier()
     {
-        return "V1.0";
+        return "6.0-SNAPSHOT";
     }
 
 
@@ -817,6 +820,7 @@ public enum DataAssetTemplateDefinition implements TemplateDefinition
     {
         return assetName;
     }
+
 
     /**
      * Return the name for the associated capability.

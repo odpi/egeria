@@ -2,11 +2,7 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.frameworks.openmetadata.properties.digitalbusiness;
 
-import com.fasterxml.jackson.annotation.JsonAutoDetect;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonSubTypes;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
+import com.fasterxml.jackson.annotation.*;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.collections.CollectionProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 
@@ -30,7 +26,6 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
         })
 public class AgreementProperties extends CollectionProperties
 {
-    private String identifier  = null;
     private String userDefinedStatus = null;
 
     /**
@@ -54,7 +49,6 @@ public class AgreementProperties extends CollectionProperties
 
         if (template != null)
         {
-            identifier   = template.getIdentifier();
             userDefinedStatus = template.getUserDefinedStatus();
         }
     }
@@ -82,27 +76,6 @@ public class AgreementProperties extends CollectionProperties
     }
 
 
-    /**
-     * Return the identifier for this agreement used by the business.
-     *
-     * @return string name
-     */
-    public String getIdentifier()
-    {
-        return identifier;
-    }
-
-
-    /**
-     * Set up the identifier for this agreement used by the business.
-     *
-     * @param identifier string name
-     */
-    public void setIdentifier(String identifier)
-    {
-        this.identifier = identifier;
-    }
-
 
     /**
      * Standard toString method.
@@ -113,8 +86,7 @@ public class AgreementProperties extends CollectionProperties
     public String toString()
     {
         return "AgreementProperties{" +
-                "identifier='" + identifier + '\'' +
-                ", userDefinedStatus=" + userDefinedStatus +
+                "userDefinedStatus=" + userDefinedStatus +
                 "} " + super.toString();
     }
 
@@ -140,8 +112,7 @@ public class AgreementProperties extends CollectionProperties
         {
             return false;
         }
-        return  Objects.equals(userDefinedStatus, that.userDefinedStatus) &&
-                Objects.equals(identifier, that.identifier);
+        return  Objects.equals(userDefinedStatus, that.userDefinedStatus);
     }
 
 
@@ -153,6 +124,6 @@ public class AgreementProperties extends CollectionProperties
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), userDefinedStatus, identifier);
+        return Objects.hash(super.hashCode(), userDefinedStatus);
     }
 }

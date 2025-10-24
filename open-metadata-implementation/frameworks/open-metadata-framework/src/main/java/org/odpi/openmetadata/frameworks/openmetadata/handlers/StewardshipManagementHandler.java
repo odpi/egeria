@@ -22,7 +22,7 @@ import org.odpi.openmetadata.frameworks.openmetadata.properties.resources.Resour
 import org.odpi.openmetadata.frameworks.openmetadata.properties.security.SecurityTagsProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.security.ZoneMembershipProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.search.*;
-import org.odpi.openmetadata.frameworks.openmetadata.enums.GlossaryTermAssignmentStatus;
+import org.odpi.openmetadata.frameworks.openmetadata.enums.TermAssignmentStatus;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.*;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
@@ -39,7 +39,6 @@ public class StewardshipManagementHandler extends OpenMetadataHandlerBase
     final protected MetadataElementSummaryConverter<MetadataElementSummary> metadataElementSummaryConverter;
     final protected RelatedMetadataElementSummaryConverter<RelatedMetadataElementSummary> relatedMetadataElementSummaryConverter;
     final protected MetadataRelationshipSummaryConverter<MetadataRelationshipSummary>     metadataRelationshipSummaryConverter;
-    private final PropertyHelper propertyHelper = new PropertyHelper();
 
     private final OpenMetadataClassificationBuilder classificationBuilder = new OpenMetadataClassificationBuilder();
     private final OpenMetadataRelationshipBuilder   relationshipBuilder   = new OpenMetadataRelationshipBuilder();
@@ -561,7 +560,7 @@ public class StewardshipManagementHandler extends OpenMetadataHandlerBase
                                                          String                       elementGUID,
                                                          String                       expression,
                                                          String                       description,
-                                                         GlossaryTermAssignmentStatus status,
+                                                         TermAssignmentStatus status,
                                                          boolean                      returnSpecificConfidence,
                                                          int                          confidence,
                                                          String                       createdBy,
@@ -616,7 +615,7 @@ public class StewardshipManagementHandler extends OpenMetadataHandlerBase
                                                                        int                          startingAtEnd,
                                                                        String                       expression,
                                                                        String                       description,
-                                                                       GlossaryTermAssignmentStatus status,
+                                                                       TermAssignmentStatus status,
                                                                        boolean                      returnSpecificConfidence,
                                                                        int                          confidence,
                                                                        String                       createdBy,
@@ -788,7 +787,7 @@ public class StewardshipManagementHandler extends OpenMetadataHandlerBase
      * @return matched elements
      */
     private List<RelatedMetadataElement> matchElements(List<RelatedMetadataElement> relatedMetadataElements,
-                                                       GlossaryTermAssignmentStatus status)
+                                                       TermAssignmentStatus status)
     {
         if ((relatedMetadataElements == null) || (relatedMetadataElements.isEmpty()) || (status == null))
         {
@@ -849,7 +848,7 @@ public class StewardshipManagementHandler extends OpenMetadataHandlerBase
                                                                   String                       glossaryTermGUID,
                                                                   String                       expression,
                                                                   String                       description,
-                                                                  GlossaryTermAssignmentStatus status,
+                                                                  TermAssignmentStatus status,
                                                                   boolean                      returnSpecificConfidence,
                                                                   int                          confidence,
                                                                   String                       createdBy,
@@ -1539,7 +1538,7 @@ public class StewardshipManagementHandler extends OpenMetadataHandlerBase
      */
     public void setRetentionClassification(String                            userId,
                                            String                            elementGUID,
-                                           RetentionClassificationProperties properties,
+                                           RetentionProperties properties,
                                            MetadataSourceOptions             metadataSourceOptions) throws InvalidParameterException,
                                                                                                            UserNotAuthorizedException,
                                                                                                            PropertyServerException
@@ -1961,8 +1960,8 @@ public class StewardshipManagementHandler extends OpenMetadataHandlerBase
                                                                                                    PropertyServerException
     {
         openMetadataClient.createRelatedElementsInStore(userId,
-                                                        elementGUID,
                                                         OpenMetadataType.SEMANTIC_ASSIGNMENT_RELATIONSHIP.typeName,
+                                                        elementGUID,
                                                         glossaryTermGUID,
                                                         metadataSourceOptions,
                                                         relationshipBuilder.getNewElementProperties(properties));
@@ -2033,8 +2032,8 @@ public class StewardshipManagementHandler extends OpenMetadataHandlerBase
         propertyHelper.validateGUID(scopeGUID, end2GUIDParameterName, methodName);
 
         openMetadataClient.createRelatedElementsInStore(userId,
-                                                        elementGUID,
                                                         OpenMetadataType.SCOPED_BY_RELATIONSHIP.typeName,
+                                                        elementGUID,
                                                         scopeGUID,
                                                         metadataSourceOptions,
                                                         relationshipBuilder.getNewElementProperties(properties));
@@ -2097,8 +2096,8 @@ public class StewardshipManagementHandler extends OpenMetadataHandlerBase
                                                                                    PropertyServerException
     {
         openMetadataClient.createRelatedElementsInStore(userId,
-                                                        elementGUID,
                                                         OpenMetadataType.RESOURCE_LIST_RELATIONSHIP.typeName,
+                                                        elementGUID,
                                                         resourceGUID,
                                                         metadataSourceOptions,
                                                         relationshipBuilder.getNewElementProperties(properties));
@@ -2162,8 +2161,8 @@ public class StewardshipManagementHandler extends OpenMetadataHandlerBase
                                                                                          PropertyServerException
     {
         openMetadataClient.createRelatedElementsInStore(userId,
-                                                        elementGUID,
                                                         OpenMetadataType.MORE_INFORMATION_RELATIONSHIP.typeName,
+                                                        elementGUID,
                                                         moreInformationGUID,
                                                         metadataSourceOptions,
                                                         relationshipBuilder.getNewElementProperties(properties));
@@ -2204,6 +2203,26 @@ public class StewardshipManagementHandler extends OpenMetadataHandlerBase
                                                         deleteOptions);
     }
 
+
+    /**
+     * Add a specification - typically to a template or process. This defines the properties needed to call it.
+     *
+     * @param userId        calling user
+     * @param elementGUID   unique identifier of the element to classify as a template
+     * @param specification values required to use the template
+     * @throws InvalidParameterException  element not known, null userId or guid
+     * @throws PropertyServerException    problem accessing property server
+     * @throws UserNotAuthorizedException security access problem
+     */
+    public void addSpecification(String                                 userId,
+                                 String                                 elementGUID,
+                                 Map<String, List<Map<String, String>>> specification,
+                                 MetadataSourceOptions                  metadataSourceOptions) throws InvalidParameterException,
+                                                                                                      UserNotAuthorizedException,
+                                                                                                      PropertyServerException
+    {
+        // todo
+    }
 
 
     /**
@@ -2886,69 +2905,13 @@ public class StewardshipManagementHandler extends OpenMetadataHandlerBase
     }
 
 
-    /**
-     * Retrieve related elements of the requested type name.
-     *
-     * @param userId calling user
-     * @param elementGUID unique identifier of the starting end
-     * @param startingAtEnd indicates which end to retrieve from (0 is "either end"; 1 is end1; 2 is end 2)
-     * @param relationshipTypeName name of relationship
-     * @param findProperties  open metadata type to search on
-     *
-     * @return list of related elements
-     * @throws InvalidParameterException  one of the parameters is invalid
-     * @throws UserNotAuthorizedException the user is not authorized to issue this request
-     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
-     */
-    public List<RelatedMetadataElementSummary> getRelatedElements(String             userId,
-                                                                  String             elementGUID,
-                                                                  String             relationshipTypeName,
-                                                                  int                startingAtEnd,
-                                                                  FindProperties     findProperties) throws InvalidParameterException,
-                                                                                                            UserNotAuthorizedException,
-                                                                                                            PropertyServerException
-    {
-        final String methodName = "getRelatedElements";
-
-        RelatedMetadataElementList relatedMetadataElements = openMetadataClient.getRelatedMetadataElements(userId,
-                                                                                                           elementGUID,
-                                                                                                           startingAtEnd,
-                                                                                                           relationshipTypeName,
-                                                                                                           findProperties);
-
-        if ((relatedMetadataElements != null) && (relatedMetadataElements.getElementList() != null))
-        {
-            List<RelatedMetadataElementSummary> results = new ArrayList<>();
-
-            for (RelatedMetadataElement relatedMetadataElement : relatedMetadataElements.getElementList())
-            {
-                if (relatedMetadataElement != null)
-                {
-                    if ((findProperties == null) ||
-                            (findProperties.getOpenMetadataTypeName() == null) ||
-                            (findProperties.getOpenMetadataTypeName().equals(relatedMetadataElement.getElement().getType().getTypeName())))
-                    {
-                        results.add(relatedMetadataElementSummaryConverter.getNewBean(RelatedMetadataElementSummary.class,
-                                                                                      relatedMetadataElement,
-                                                                                      methodName));
-                    }
-                }
-            }
-
-            return results;
-        }
-
-        return null;
-    }
-
-
 
     /**
      * Retrieve relationships of the requested relationship type name.
      *
      * @param userId calling user
      * @param relationshipTypeName name of relationship
-     * @param findProperties search options
+     * @param queryOptions search options
      *
      * @return list of related elements
      * @throws InvalidParameterException  one of the parameters is invalid
@@ -2957,16 +2920,16 @@ public class StewardshipManagementHandler extends OpenMetadataHandlerBase
      */
     public List<MetadataRelationshipSummary> getRelationships(String         userId,
                                                               String         relationshipTypeName,
-                                                              FindProperties findProperties) throws InvalidParameterException,
-                                                                                                    UserNotAuthorizedException,
-                                                                                                    PropertyServerException
+                                                              QueryOptions   queryOptions) throws InvalidParameterException,
+                                                                                                  UserNotAuthorizedException,
+                                                                                                  PropertyServerException
     {
         final String methodName = "getRelationships";
 
         OpenMetadataRelationshipList openMetadataRelationships = openMetadataClient.findRelationshipsBetweenMetadataElements(userId,
                                                                                                                              relationshipTypeName,
                                                                                                                              null,
-                                                                                                                             findProperties);
+                                                                                                                             queryOptions);
 
         if (openMetadataRelationships != null)
         {

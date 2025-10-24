@@ -12,7 +12,7 @@ import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.ElementHea
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.MetadataElementSummary;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.MetadataCorrelationHeader;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.OpenMetadataElement;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.ValidMetadataValue;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.validvalues.ValidMetadataValueProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.ValidMetadataValueDetail;
 import org.odpi.openmetadata.frameworkservices.omf.connectors.outtopic.OMFOutTopicClientProvider;
 import org.odpi.openmetadata.frameworkservices.omf.converters.*;
@@ -32,9 +32,9 @@ public class OMFServicesInstance extends AccessServerServiceInstance
 {
     private final static AccessServiceDescription myDescription = AccessServiceDescription.OMF_METADATA_MANAGEMENT;
 
-    private final MetadataElementHandler<OpenMetadataElement>                         metadataElementHandler;
-    private final ValidValuesHandler<ValidMetadataValue>                              validMetadataValuesHandler;
-    private final ValidValuesHandler<ValidMetadataValueDetail>                        validMetadataValuesDetailHandler;
+    private final MetadataElementHandler<OpenMetadataElement>      metadataElementHandler;
+    private final ValidValuesHandler<ValidMetadataValueProperties> validMetadataValuesHandler;
+    private final ValidValuesHandler<ValidMetadataValueDetail>     validMetadataValuesDetailHandler;
     private final ExternalIdentifierHandler<MetadataCorrelationHeader, ElementHeader> externalIdentifierHandler;
     private final ReferenceableHandler<MetadataElementSummary> metadataElementSummaryHandler;
 
@@ -100,7 +100,7 @@ public class OMFServicesInstance extends AccessServerServiceInstance
                                                                        auditLog);
 
             this.validMetadataValuesHandler = new ValidValuesHandler<>(new ValidMetadataValueConverter<>(repositoryHelper, serviceName, serverName),
-                                                                       ValidMetadataValue.class,
+                                                                       ValidMetadataValueProperties.class,
                                                                        serviceName,
                                                                        serverName,
                                                                        invalidParameterHandler,
@@ -179,7 +179,7 @@ public class OMFServicesInstance extends AccessServerServiceInstance
      *
      * @return handler object
      */
-    public ValidValuesHandler<ValidMetadataValue> getValidMetadataValuesHandler()
+    public ValidValuesHandler<ValidMetadataValueProperties> getValidMetadataValuesHandler()
     {
         return validMetadataValuesHandler;
     }

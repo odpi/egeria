@@ -4,7 +4,6 @@ package org.odpi.openmetadata.samples.archiveutilities.governanceprogram;
 
 
 import org.odpi.openmetadata.archiveutilities.openconnectors.core.CorePackArchiveWriter;
-import org.odpi.openmetadata.frameworks.openmetadata.mapper.OpenMetadataValidValues;
 import org.odpi.openmetadata.frameworks.openmetadata.refdata.AssignmentType;
 import org.odpi.openmetadata.frameworks.openmetadata.refdata.ResourceUse;
 import org.odpi.openmetadata.frameworks.openmetadata.types.DataType;
@@ -15,7 +14,9 @@ import org.odpi.openmetadata.samples.archiveutilities.EgeriaBaseArchiveWriter;
 import org.odpi.openmetadata.samples.archiveutilities.organization.CocoOrganizationArchiveWriter;
 import org.odpi.openmetadata.samples.archiveutilities.organization.PersonDefinition;
 
-import java.util.*;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 
 /**
@@ -63,7 +64,6 @@ public class CocoGovernanceProgramArchiveWriter extends EgeriaBaseArchiveWriter
         writeZones();
         writeSubjectAreaDefinitions();
         writeCommunities();
-        writeProjectStatusValidValueSet();
         writeProjects();
         writeRoles();
     }
@@ -73,31 +73,17 @@ public class CocoGovernanceProgramArchiveWriter extends EgeriaBaseArchiveWriter
      */
     private void writeDomains()
     {
-        String governanceDomainSetGUID = this.getParentSet(null,
-                                                           null,
-                                                           OpenMetadataProperty.DOMAIN_IDENTIFIER.name,
-                                                           null);
-
         for (GovernanceDomainDefinition domainDefinition : GovernanceDomainDefinition.values())
         {
-            this.archiveHelper.addValidValue(null,
-                                             governanceDomainSetGUID,
-                                             governanceDomainSetGUID,
-                                             OpenMetadataType.VALID_VALUE_DEFINITION.typeName,
-                                             OpenMetadataType.VALID_VALUE_DEFINITION.typeName,
-                                             null,
-                                             OpenMetadataType.VALID_VALUE_DEFINITION.typeName,
-                                             domainDefinition.getQualifiedName(),
-                                             domainDefinition.getDisplayName(),
-                                             domainDefinition.getDescription(),
-                                             domainDefinition.getCategory(),
-                                             OpenMetadataValidValues.VALID_METADATA_VALUES_USAGE,
-                                             DataType.INT.getName(),
-                                             OpenMetadataValidValues.OPEN_METADATA_ECOSYSTEM_SCOPE,
-                                             Integer.toString(domainDefinition.getDomainIdentifier()),
-                                             null,
-                                             false,
-                                             null);
+            super.addValidMetadataValue(null,
+                                        domainDefinition.getDisplayName(),
+                                        domainDefinition.getDescription(),
+                                        OpenMetadataProperty.DOMAIN_IDENTIFIER.name,
+                                        DataType.INT.getName(),
+                                        null,
+                                        null,
+                                        Integer.toString(domainDefinition.getDomainIdentifier()),
+                                        null);
 
             String communityQName = "Community: " + domainDefinition.getQualifiedName();
 
@@ -122,7 +108,6 @@ public class CocoGovernanceProgramArchiveWriter extends EgeriaBaseArchiveWriter
                                             domainDefinition.getDomainIdentifier(),
                                             "GOV_OFFICER:" + domainDefinition.getDomainIdentifier(),
                                             "Governance Officer for " + domainDefinition.getDisplayName(),
-                                            null,
                                             null,
                                             true,
                                             1,
@@ -361,7 +346,6 @@ public class CocoGovernanceProgramArchiveWriter extends EgeriaBaseArchiveWriter
                                             roleDefinition.getIdentifier(),
                                             roleDefinition.getDisplayName(),
                                             roleDefinition.getDescription(),
-                                            roleDefinition.getScope(),
                                             roleDefinition.isHeadCountSet(),
                                             roleDefinition.getHeadCount(),
                                             null,
@@ -380,46 +364,6 @@ public class CocoGovernanceProgramArchiveWriter extends EgeriaBaseArchiveWriter
         }
     }
 
-
-    /**
-     * Creates ProjectStatus valid value sets to show status for projects.
-     */
-    private void writeProjectStatusValidValueSet()
-    {
-        String validValueSetQName = openMetadataValidValueSetPrefix + ProjectStatusDefinition.validValueSetName;
-        String validValueSetGUID = archiveHelper.addValidValue(OpenMetadataType.VALID_VALUE_DEFINITION.typeName,
-                                                               validValueSetQName,
-                                                               ProjectStatusDefinition.validValueSetName,
-                                                               ProjectStatusDefinition.validValueSetDescription,
-                                                               ProjectStatusDefinition.validValueSetUsage,
-                                                               ProjectStatusDefinition.validValueSetScope,
-                                                               null,
-                                                               null,
-                                                               null);
-
-        if (validValueSetGUID != null)
-        {
-            for (ProjectStatusDefinition projectStatusDefinition : ProjectStatusDefinition.values())
-            {
-                String validValueQName = openMetadataValidValueSetPrefix + ProjectStatusDefinition.validValueSetName + "." + projectStatusDefinition.getPreferredValue();
-
-                String validValueGUID = archiveHelper.addValidValue(OpenMetadataType.VALID_VALUE_DEFINITION.typeName,
-                                                                    validValueQName,
-                                                                    projectStatusDefinition.getDisplayName(),
-                                                                    null,
-                                                                    ProjectStatusDefinition.validValueSetUsage,
-                                                                    ProjectStatusDefinition.validValueSetScope,
-                                                                    projectStatusDefinition.getPreferredValue(),
-                                                                    null,
-                                                                    null);
-
-                if (validValueGUID != null)
-                {
-                    archiveHelper.addValidValueMembershipRelationship(validValueSetQName, validValueQName, false /* not default value */);
-                }
-            }
-        }
-    }
 
 
     /**

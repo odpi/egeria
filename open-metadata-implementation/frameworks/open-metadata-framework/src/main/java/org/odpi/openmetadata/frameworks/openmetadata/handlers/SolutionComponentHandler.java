@@ -408,6 +408,7 @@ public class SolutionComponentHandler extends OpenMetadataHandlerBase
         final String methodName = "getSolutionComponentsByName";
 
         List<String> propertyNames = Arrays.asList(OpenMetadataProperty.QUALIFIED_NAME.name,
+                                                   OpenMetadataProperty.IDENTIFIER.name,
                                                    OpenMetadataProperty.DISPLAY_NAME.name);
 
         return super.getRootElementsByName(userId, name, propertyNames, queryOptions, methodName);
@@ -542,7 +543,7 @@ public class SolutionComponentHandler extends OpenMetadataHandlerBase
     {
         try
         {
-            return propertyHelper.getRelatedElementSummary(relatedMetadataElement, methodName);
+            return propertyHelper.getRelatedElementSummary(relatedMetadataElement);
         }
         catch (PropertyServerException error)
         {
@@ -550,16 +551,16 @@ public class SolutionComponentHandler extends OpenMetadataHandlerBase
             {
                 auditLog.logException(methodName,
                                       OMFAuditCode.UNEXPECTED_CONVERTER_EXCEPTION.getMessageDefinition(error.getClass().getName(),
-                                                                                                               methodName,
+                                                                                                       methodName,
                                                                                                        localServiceName,
-                                                                                                               error.getMessage()),
+                                                                                                       error.getMessage()),
                                       error);
             }
 
             throw new PropertyServerException(OMFErrorCode.UNEXPECTED_CONVERTER_EXCEPTION.getMessageDefinition(error.getClass().getName(),
-                                                                                                                       methodName,
+                                                                                                               methodName,
                                                                                                                localServiceName,
-                                                                                                                       error.getMessage()),
+                                                                                                               error.getMessage()),
                                               error.getClass().getName(),
                                               methodName,
                                               error);

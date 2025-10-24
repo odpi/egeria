@@ -4,12 +4,19 @@
 package org.odpi.openmetadata.samples.archiveutilities.governanceengines;
 
 import org.odpi.openmetadata.frameworks.openmetadata.controls.PlaceholderProperty;
+import org.odpi.openmetadata.frameworks.openmetadata.definitions.CollectionDefinition;
+import org.odpi.openmetadata.frameworks.openmetadata.definitions.SolutionBlueprintDefinition;
+import org.odpi.openmetadata.frameworks.openmetadata.definitions.SolutionComponentDefinition;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 /**
  * A description of the predefined solution blueprints.  Solution blueprints identify the key solution oriented
  * investments.  They may be used to document both the as-is and to-be solutions.
  */
-public enum SolutionBlueprint
+public enum SolutionBlueprint implements SolutionBlueprintDefinition
 {
     /**
      * Basic template
@@ -18,6 +25,7 @@ public enum SolutionBlueprint
                                 PlaceholderProperty.DISPLAY_NAME.getPlaceholder(),
                                 PlaceholderProperty.DESCRIPTION.getPlaceholder(),
                                 PlaceholderProperty.VERSION_IDENTIFIER.getPlaceholder(),
+                                null,
                                 true),
 
     /**
@@ -27,7 +35,26 @@ public enum SolutionBlueprint
                               "Clinical Trial Management Solution Blueprint",
                               "A description of how a clinical trial is managed in Coco Pharmaceuticals.",
                               "V1.2",
+                              new SolutionComponentDefinition[]{
+                                      SolutionComponent.HOSPITAL,
+                                      SolutionComponent.HOSPITAL_LANDING_AREA_FOLDER,
+                                      SolutionComponent.LANDING_FOLDER_CATALOGUER,
+                                      SolutionComponent.WEEKLY_MEASUREMENTS_ONBOARDING_PIPELINE,
+                                      SolutionComponent.WEEKLY_MEASUREMENTS_DATA_LAKE_FOLDER,
+                                      SolutionComponent.POPULATE_SANDBOX,
+                                      SolutionComponent.TREATMENT_VALIDATION_SANDBOX,
+                                      SolutionComponent.ANALYSE_PATIENT_DATA,
+                                      SolutionComponent.TREATMENT_EFFICACY_EVIDENCE,
+                                      SolutionComponent.ASSEMBLE_REPORT,
+                                      SolutionComponent.REPORT_VALIDATION_AND_DELIVERY,
+                                      SolutionComponent.NOMINATE_HOSPITAL,
+                                      SolutionComponent.CERTIFY_HOSPITAL,
+                                      SolutionComponent.ONBOARD_HOSPITAL,
+                                      SolutionComponent.SET_UP_DATA_LAKE,
+                                      SolutionComponent.SET_UP_CLINICAL_TRIAL
+                              },
                               false),
+
 
     /**
      * A description of how data is gathered to support sustainability reporting in Coco Pharmaceuticals.
@@ -36,6 +63,15 @@ public enum SolutionBlueprint
                               "Sustainability Reporting Solution Blueprint",
                               "A description of how data is gathered to support sustainability reporting in Coco Pharmaceuticals.",
                               "V1.0",
+                              new SolutionComponentDefinition[]{
+                                      SolutionComponent.SUSTAINABILITY_ODS,
+                                      SolutionComponent.SUSTAINABILITY_CALCULATORS,
+                                      SolutionComponent.SUSTAINABILITY_DASHBOARDS,
+                                      SolutionComponent.EMPLOYEE_EXPENSE_TOOL,
+                                      SolutionComponent.HAZMAT_INVENTORY,
+                                      SolutionComponent.ACCOUNTING_LEDGER,
+                                      SolutionComponent.GOODS_INVENTORY,
+                              },
                               false),
 
     /**
@@ -45,6 +81,9 @@ public enum SolutionBlueprint
                              "Personalized Medicine Order Fulfillment Solution Blueprint",
                              "A description of how an order for a personalized medicine prescription is fulfilled by Coco Pharmaceuticals.",
                              "V1.0",
+                             new SolutionComponentDefinition[]{
+                                     SolutionComponent.ACCOUNTING_LEDGER
+                             },
                              false),
 
     /**
@@ -54,6 +93,9 @@ public enum SolutionBlueprint
                         "Employee Management Solution Blueprint",
                         "A description of how information about Coco Pharmaceuticals employees is managed.",
                         "V5.2",
+                        new SolutionComponentDefinition[]{
+                                SolutionComponent.EMPLOYEE_EXPENSE_TOOL
+                        },
                         false),
 
     /**
@@ -63,6 +105,7 @@ public enum SolutionBlueprint
                                     "Automated Manufacturing Control",
                                     "A description of how the new industry 4.0 manufacturing control system operates.",
                                     "0.5.9.1",
+                                    null,
                                     false),
 
     /**
@@ -72,12 +115,18 @@ public enum SolutionBlueprint
                          "Inventory Management",
                          "A description of how physical inventory is managed between procurement, the distribution centres, manufacturing and finance.",
                          "1.0",
+                         new SolutionComponentDefinition[]{
+                                 SolutionComponent.GOODS_INVENTORY
+                         },
                          false),
 
     HAZARDOUS_MATERIAL_MANAGEMENT("f1a008b9-bace-4d37-8dd8-d24fb45477e2",
                                   "Hazardous Material Management Solution Blueprint",
                                   "A description of how hazardous material is handled, tracked and any incidents reported/managed.",
                                   "1.0",
+                                  new SolutionComponentDefinition[]{
+                                          SolutionComponent.HAZMAT_INVENTORY
+                                  },
                                   false),
 
     ;
@@ -87,6 +136,8 @@ public enum SolutionBlueprint
     private final String  displayName;
     private final String  description;
     private final String  versionIdentifier;
+    private final SolutionComponentDefinition[] solutionComponents;
+
     private final boolean isTemplate;
 
 
@@ -99,17 +150,19 @@ public enum SolutionBlueprint
      * @param versionIdentifier version identifier of the solution blueprint
      * @param isTemplate is this a template?
      */
-    SolutionBlueprint(String  guid,
-                      String  displayName,
-                      String  description,
-                      String  versionIdentifier,
-                      boolean isTemplate)
+    SolutionBlueprint(String                        guid,
+                      String                        displayName,
+                      String                        description,
+                      String                        versionIdentifier,
+                      SolutionComponentDefinition[] solutionComponents,
+                      boolean                       isTemplate)
     {
-        this.guid              = guid;
-        this.displayName       = displayName;
-        this.description       = description;
-        this.versionIdentifier = versionIdentifier;
-        this.isTemplate        = isTemplate;
+        this.guid               = guid;
+        this.displayName        = displayName;
+        this.description        = description;
+        this.versionIdentifier  = versionIdentifier;
+        this.solutionComponents = solutionComponents;
+        this.isTemplate         = isTemplate;
     }
 
 
@@ -120,6 +173,7 @@ public enum SolutionBlueprint
      *
      * @return string
      */
+    @Override
     public String getGUID()
     {
         return guid;
@@ -131,6 +185,7 @@ public enum SolutionBlueprint
      *
      * @return string
      */
+    @Override
     public String getDisplayName()
     {
         return displayName;
@@ -142,9 +197,21 @@ public enum SolutionBlueprint
      *
      * @return string
      */
+    @Override
     public String getDescription()
     {
         return description;
+    }
+
+    /**
+     * Return the optional collection that this element is a part of.
+     *
+     * @return collection definition
+     */
+    @Override
+    public CollectionDefinition getParentCollection()
+    {
+        return SolutionBlueprintDefinition.super.getParentCollection();
     }
 
 
@@ -153,9 +220,22 @@ public enum SolutionBlueprint
      *
      * @return string
      */
+    @Override
     public String getVersionIdentifier()
     {
         return versionIdentifier;
+    }
+
+
+    /**
+     * Return the version identifier of the solution blueprint.
+     *
+     * @return string
+     */
+    @Override
+    public String getIdentifier()
+    {
+        return null;
     }
 
 
@@ -164,6 +244,7 @@ public enum SolutionBlueprint
      *
      * @return boolean
      */
+    @Override
     public boolean isTemplate()
     {
         return isTemplate;
@@ -171,13 +252,31 @@ public enum SolutionBlueprint
 
 
     /**
-     * Return the unique name of the solution blueprint.
+     * Return the authors of the design model.  It defaults to the Egeria community but can be overridden.
      *
      * @return string
      */
-    public String getQualifiedName()
+    @Override
+    public List<String> authors()
     {
-        return "SolutionBlueprint::" + displayName + "::" + versionIdentifier;
+        return SolutionBlueprintDefinition.super.authors();
+    }
+
+
+    /**
+     * Return the list of components that are members of the solution blueprint.
+     *
+     * @return list of component definitions
+     */
+    @Override
+    public List<SolutionComponentDefinition> getSolutionComponents()
+    {
+        if (solutionComponents != null)
+        {
+            return new ArrayList<>(Arrays.asList(solutionComponents));
+        }
+
+        return null;
     }
 
 
@@ -189,6 +288,18 @@ public enum SolutionBlueprint
     @Override
     public String toString()
     {
-        return "SolutionBlueprint{" + displayName + '}';
+        return "SolutionBlueprint{" +
+                "guid='" + guid + '\'' +
+                ", displayName='" + displayName + '\'' +
+                ", description='" + description + '\'' +
+                ", versionIdentifier='" + versionIdentifier + '\'' +
+                ", solutionComponents=" + Arrays.toString(solutionComponents) +
+                ", isTemplate=" + isTemplate +
+                ", GUID='" + getGUID() + '\'' +
+                ", parentCollection=" + getParentCollection() +
+                ", identifier='" + getIdentifier() + '\'' +
+                ", template=" + isTemplate() +
+                ", authors=" + authors() +
+                "} " + super.toString();
     }
 }

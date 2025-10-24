@@ -9,6 +9,7 @@ import org.odpi.openmetadata.frameworks.openmetadata.properties.ReferenceablePro
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 
 import java.util.Date;
+import java.util.List;
 import java.util.Objects;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
@@ -22,13 +23,16 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class ProjectProperties extends ReferenceableProperties
 {
-    private String identifier     = null;
-    private String projectPhase   = null;
-    private String projectHealth  = null;
-    private String projectStatus  = null;
-    private int    priority       = 0;
-    private Date   startDate      = null;
-    private Date   plannedEndDate = null;
+    private String       mission               = null;
+    private List<String> purposes              = null;
+    private String       projectPhase          = null;
+    private String       projectHealth         = null;
+    private String       projectStatus         = null;
+    private int          priority              = 0;
+    private Date         plannedStartDate      = null;
+    private Date         actualStartDate       = null;
+    private Date         plannedCompletionDate = null;
+    private Date         actualCompletionDate  = null;
 
 
     /**
@@ -52,36 +56,61 @@ public class ProjectProperties extends ReferenceableProperties
 
         if (template != null)
         {
-            this.identifier = template.getIdentifier();
-            this.projectPhase = template.getProjectPhase();
-            this.projectHealth = template.getProjectHealth();
-            this.projectStatus = template.getProjectStatus();
-            this.priority = template.getPriority();
-            this.startDate     = template.getStartDate();
-            this.plannedEndDate = template.getPlannedEndDate();
+            this.mission               = template.getMission();
+            this.purposes              = template.getPurposes();
+            this.projectPhase          = template.getProjectPhase();
+            this.projectHealth         = template.getProjectHealth();
+            this.projectStatus         = template.getProjectStatus();
+            this.priority              = template.getPriority();
+            this.plannedStartDate      = template.getPlannedStartDate();
+            this.actualStartDate       = template.getActualStartDate();
+            this.plannedCompletionDate = template.getPlannedCompletionDate();
+            this.actualCompletionDate  = template.getPlannedCompletionDate();
         }
     }
 
 
     /**
-     * Return the code value or symbol used to identify the project - typically unique.
+     * Return the mission of the project.
      *
-     * @return string identifier
+     * @return string
      */
-    public String getIdentifier()
+    public String getMission()
     {
-        return identifier;
+        return mission;
     }
 
 
     /**
-     * Set up the code value or symbol used to identify the project - typically unique.
+     * Set up the mission of the project.
      *
-     * @param identifier string identifier
+     * @param mission string
      */
-    public void setIdentifier(String identifier)
+    public void setMission(String mission)
     {
-        this.identifier = identifier;
+        this.mission = mission;
+    }
+
+
+    /**
+     * Return the processing purposes permitted on the project.
+     *
+     * @return list
+     */
+    public List<String> getPurposes()
+    {
+        return purposes;
+    }
+
+
+    /**
+     * Set up the processing purposes permitted on the project.
+     *
+     * @param purposes list
+     */
+    public void setPurposes(List<String> purposes)
+    {
+        this.purposes = purposes;
     }
 
 
@@ -172,25 +201,48 @@ public class ProjectProperties extends ReferenceableProperties
         this.priority = priority;
     }
 
+
+    /**
+     * Return the planned start date for the project.
+     *
+     * @return date
+     */
+    public Date getPlannedStartDate()
+    {
+        return plannedStartDate;
+    }
+
+
+    /**
+     * Set up the planned start date for the project.
+     *
+     * @param plannedStartDate date
+     */
+    public void setPlannedStartDate(Date plannedStartDate)
+    {
+        this.plannedStartDate = plannedStartDate;
+    }
+
+
     /**
      * Return the date that the project was created.
      *
      * @return date
      */
-    public Date getStartDate()
+    public Date getActualStartDate()
     {
-        return startDate;
+        return actualStartDate;
     }
 
 
     /**
      * Set up the date that the project was created.
      *
-     * @param startDate date
+     * @param actualStartDate date
      */
-    public void setStartDate(Date startDate)
+    public void setActualStartDate(Date actualStartDate)
     {
-        this.startDate = startDate;
+        this.actualStartDate = actualStartDate;
     }
 
 
@@ -199,21 +251,44 @@ public class ProjectProperties extends ReferenceableProperties
      *
      * @return date
      */
-    public Date getPlannedEndDate()
+    public Date getPlannedCompletionDate()
     {
-        return plannedEndDate;
+        return plannedCompletionDate;
     }
 
 
     /**
      * Set up the date that the project is expected to complete.
      *
-     * @param plannedEndDate date
+     * @param plannedCompletionDate date
      */
-    public void setPlannedEndDate(Date plannedEndDate)
+    public void setPlannedCompletionDate(Date plannedCompletionDate)
     {
-        this.plannedEndDate = plannedEndDate;
+        this.plannedCompletionDate = plannedCompletionDate;
     }
+
+
+    /**
+     * Return the actual date that the project ended.
+     *
+     * @return date
+     */
+    public Date getActualCompletionDate()
+    {
+        return actualCompletionDate;
+    }
+
+
+    /**
+     * Set up the actual date that the project ended.
+     *
+     * @param actualCompletionDate date
+     */
+    public void setActualCompletionDate(Date actualCompletionDate)
+    {
+        this.actualCompletionDate = actualCompletionDate;
+    }
+
 
 
     /**
@@ -225,13 +300,16 @@ public class ProjectProperties extends ReferenceableProperties
     public String toString()
     {
         return "ProjectProperties{" +
-                "identifier='" + identifier + '\'' +
+                "mission='" + mission + '\'' +
+                ", purposes=" + purposes +
                 ", projectPhase='" + projectPhase + '\'' +
                 ", projectHealth='" + projectHealth + '\'' +
                 ", projectStatus='" + projectStatus + '\'' +
                 ", priority=" + priority +
-                ", startDate=" + startDate +
-                ", plannedEndDate=" + plannedEndDate +
+                ", plannedStartDate=" + plannedStartDate +
+                ", actualStartDate=" + actualStartDate +
+                ", plannedCompletionDate=" + plannedCompletionDate +
+                ", actualCompletionDate=" + actualCompletionDate +
                 "} " + super.toString();
     }
 
@@ -249,7 +327,16 @@ public class ProjectProperties extends ReferenceableProperties
         if (objectToCompare == null || getClass() != objectToCompare.getClass()) return false;
         if (!super.equals(objectToCompare)) return false;
         ProjectProperties that = (ProjectProperties) objectToCompare;
-        return priority == that.priority && Objects.equals(identifier, that.identifier) && Objects.equals(projectPhase, that.projectPhase) && Objects.equals(projectHealth, that.projectHealth) && Objects.equals(projectStatus, that.projectStatus) && Objects.equals(startDate, that.startDate) && Objects.equals(plannedEndDate, that.plannedEndDate);
+        return priority == that.priority &&
+                Objects.equals(mission, that.mission) &&
+                Objects.equals(purposes, that.purposes) &&
+                Objects.equals(projectPhase, that.projectPhase) &&
+                Objects.equals(projectHealth, that.projectHealth) &&
+                Objects.equals(projectStatus, that.projectStatus) &&
+                Objects.equals(plannedStartDate, that.plannedStartDate) &&
+                Objects.equals(actualStartDate, that.actualStartDate) &&
+                Objects.equals(plannedCompletionDate, that.plannedCompletionDate) &&
+                Objects.equals(actualCompletionDate, that.actualCompletionDate);
     }
 
     /**
@@ -260,6 +347,7 @@ public class ProjectProperties extends ReferenceableProperties
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), identifier, projectPhase, projectHealth, projectStatus, priority, startDate, plannedEndDate);
+        return Objects.hash(super.hashCode(), mission, purposes,projectPhase, projectHealth, projectStatus, priority,
+                            plannedStartDate, actualStartDate, plannedCompletionDate, actualCompletionDate);
     }
 }

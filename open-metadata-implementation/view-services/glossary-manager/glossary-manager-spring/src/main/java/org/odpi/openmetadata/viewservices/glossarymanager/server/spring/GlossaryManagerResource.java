@@ -4,6 +4,10 @@ package org.odpi.openmetadata.viewservices.glossarymanager.server.spring;
 
 import io.swagger.v3.oas.annotations.ExternalDocumentation;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.enums.SecuritySchemeIn;
+import io.swagger.v3.oas.annotations.enums.SecuritySchemeType;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import io.swagger.v3.oas.annotations.security.SecurityScheme;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.odpi.openmetadata.commonservices.ffdc.rest.*;
 import org.odpi.openmetadata.viewservices.glossarymanager.rest.GlossaryTermActivityTypeListResponse;
@@ -24,9 +28,15 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/servers/{serverName}/api/open-metadata/glossary-manager")
-
+@SecurityScheme(
+        name = "BearerAuthorization",
+        type = SecuritySchemeType.HTTP,
+        bearerFormat = "JWT",
+        scheme = "bearer",
+        in = SecuritySchemeIn.HEADER
+)
 @Tag(name="API: Glossary Manager OMVS",
-     description="The Glossary Manager OMVS enables the caller to create glossary terms and organize them into categories as part of a controlled workflow process.  It supports the editing glossary and multiple states.",
+     description="Create and maintain glossary terms and organize them into glossaries.  This work may be part of a controlled workflow process allowing for review and approval cycles.",
      externalDocs=@ExternalDocumentation(description="Further Information",
                                          url="https://egeria-project.org/services/omvs/glossary-manager/overview/"))
 
@@ -67,6 +77,8 @@ public class GlossaryManagerResource
      * PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     @PostMapping(path = "/glossaries/{glossaryGUID}/is-taxonomy")
+    @SecurityRequirement(name = "BearerAuthorization")
+
     @Operation(summary="setGlossaryAsTaxonomy",
             description="Classify the glossary to indicate that it can be used as a taxonomy." +
                     " This means each term is attached to one, and only one folder and the folders are organized as a hierarchy" +
@@ -97,6 +109,8 @@ public class GlossaryManagerResource
      * PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     @PostMapping(path = "/glossaries/{glossaryGUID}/is-taxonomy/remove")
+    @SecurityRequirement(name = "BearerAuthorization")
+
     @Operation(summary="clearGlossaryAsTaxonomy",
             description="Remove the taxonomy designation from the glossary.",
             externalDocs=@ExternalDocumentation(description="Further Information",
@@ -126,6 +140,8 @@ public class GlossaryManagerResource
      * PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     @PostMapping(path = "/glossaries/{glossaryGUID}/is-canonical-vocabulary")
+    @SecurityRequirement(name = "BearerAuthorization")
+
     @Operation(summary="setGlossaryAsCanonical",
             description="Classify a glossary to declare that it has no two GlossaryTerm definitions with" +
                     " the same name.  This means there is only one definition for each term.  Typically, the terms are also of a similar" +
@@ -155,6 +171,8 @@ public class GlossaryManagerResource
      * PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     @PostMapping(path = "/glossaries/{glossaryGUID}/is-canonical-vocabulary/remove")
+    @SecurityRequirement(name = "BearerAuthorization")
+
     @Operation(summary="clearGlossaryAsCanonical",
             description="Remove the canonical vocabulary designation from the glossary.",
             externalDocs=@ExternalDocumentation(description="Further Information",
@@ -180,6 +198,7 @@ public class GlossaryManagerResource
      * @return list of enum values
      */
     @GetMapping(path = "/glossaries/terms/status-list")
+    @SecurityRequirement(name = "BearerAuthorization")
 
     public GlossaryTermStatusListResponse getGlossaryTermStatuses(@PathVariable String serverName)
     {
@@ -194,6 +213,7 @@ public class GlossaryManagerResource
      * @return list of enum values
      */
     @GetMapping(path = "/glossaries/terms/relationships/status-list")
+    @SecurityRequirement(name = "BearerAuthorization")
 
     public GlossaryTermRelationshipStatusListResponse getGlossaryTermRelationshipStatuses(@PathVariable String serverName)
     {
@@ -208,6 +228,7 @@ public class GlossaryManagerResource
      * @return list of enum values
      */
     @GetMapping(path = "/glossaries/terms/activity-types")
+    @SecurityRequirement(name = "BearerAuthorization")
 
     public GlossaryTermActivityTypeListResponse getGlossaryTermActivityTypes(@PathVariable String serverName)
     {
@@ -227,6 +248,7 @@ public class GlossaryManagerResource
      * PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     @PostMapping(path = "/glossaries/terms")
+    @SecurityRequirement(name = "BearerAuthorization")
 
     public GUIDResponse createGlossaryTerm(@PathVariable String                  serverName,
                                            @RequestBody  NewElementRequestBody requestBody)
@@ -249,6 +271,7 @@ public class GlossaryManagerResource
      * PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     @PostMapping(path = "/glossaries/terms/from-template/{templateGUID}")
+    @SecurityRequirement(name = "BearerAuthorization")
 
     public GUIDResponse createGlossaryTermFromTemplate(@PathVariable String              serverName,
                                                        @PathVariable String              templateGUID,
@@ -271,6 +294,7 @@ public class GlossaryManagerResource
      * PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     @PostMapping(path = "/glossaries/terms/{glossaryTermGUID}/update")
+    @SecurityRequirement(name = "BearerAuthorization")
 
     public VoidResponse updateGlossaryTerm(@PathVariable String                   serverName,
                                            @PathVariable String                   glossaryTermGUID,
@@ -294,6 +318,7 @@ public class GlossaryManagerResource
      * PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     @PostMapping(path = "/glossaries/terms/{glossaryTermGUID}/update/from-template/{templateGUID}")
+    @SecurityRequirement(name = "BearerAuthorization")
 
     public VoidResponse updateGlossaryTermFromTemplate(@PathVariable String                        serverName,
                                                        @PathVariable String                        glossaryTermGUID,
@@ -318,11 +343,12 @@ public class GlossaryManagerResource
      * PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     @PostMapping(path = "/glossaries/terms/{glossaryTermGUID}/move-to/{glossaryGUID}")
+    @SecurityRequirement(name = "BearerAuthorization")
 
     public VoidResponse moveGlossaryTerm(@PathVariable String                   serverName,
                                          @PathVariable String                   glossaryTermGUID,
                                          @PathVariable String                   glossaryGUID,
-                                         @RequestBody DeleteRequestBody requestBody)
+                                         @RequestBody(required = false) DeleteRelationshipRequestBody requestBody)
     {
         return restAPI.moveGlossaryTerm(serverName, glossaryTermGUID, glossaryGUID, requestBody);
     }
@@ -338,6 +364,7 @@ public class GlossaryManagerResource
      * throws UserNotAuthorizedException security access problem.
      */
     @GetMapping(path = "/glossaries/terms/relationships/type-names")
+    @SecurityRequirement(name = "BearerAuthorization")
 
     public NameListResponse getTermRelationshipTypeNames(@PathVariable String serverName)
     {
@@ -360,6 +387,7 @@ public class GlossaryManagerResource
      * PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     @PostMapping(path = "/glossaries/terms/{glossaryTermOneGUID}/relationships/{relationshipTypeName}/terms/{glossaryTermTwoGUID}")
+    @SecurityRequirement(name = "BearerAuthorization")
 
     public VoidResponse setupTermRelationship(@PathVariable String                  serverName,
                                               @PathVariable String                  glossaryTermOneGUID,
@@ -386,6 +414,7 @@ public class GlossaryManagerResource
      * PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     @PostMapping(path = "/glossaries/terms/{glossaryTermOneGUID}/relationships/{relationshipTypeName}/terms/{glossaryTermTwoGUID}/update")
+    @SecurityRequirement(name = "BearerAuthorization")
 
     public VoidResponse updateTermRelationship(@PathVariable String                  serverName,
                                                @PathVariable String                  glossaryTermOneGUID,
@@ -412,13 +441,14 @@ public class GlossaryManagerResource
      * PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     @PostMapping(path = "/glossaries/terms/{glossaryTermOneGUID}/relationships/{relationshipTypeName}/terms/{glossaryTermTwoGUID}/remove")
+    @SecurityRequirement(name = "BearerAuthorization")
 
     public VoidResponse clearTermRelationship(@PathVariable String                        serverName,
                                               @PathVariable String                        glossaryTermOneGUID,
                                               @PathVariable String                        relationshipTypeName,
                                               @PathVariable String                        glossaryTermTwoGUID,
                                               @RequestBody(required = false)
-                                                  DeleteRequestBody requestBody)
+                                                  DeleteRelationshipRequestBody requestBody)
     {
         return restAPI.clearTermRelationship(serverName, glossaryTermOneGUID, relationshipTypeName, glossaryTermTwoGUID, requestBody);
     }
@@ -437,6 +467,7 @@ public class GlossaryManagerResource
      * PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     @PostMapping(path = "/glossaries/terms/{glossaryTermGUID}/is-abstract-concept")
+    @SecurityRequirement(name = "BearerAuthorization")
 
     public VoidResponse setTermAsAbstractConcept(@PathVariable String                       serverName,
                                                  @PathVariable String                       glossaryTermGUID,
@@ -460,6 +491,7 @@ public class GlossaryManagerResource
      * PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     @PostMapping(path = "/glossaries/terms/{glossaryTermGUID}/is-abstract-concept/delete")
+    @SecurityRequirement(name = "BearerAuthorization")
 
     public VoidResponse clearTermAsAbstractConcept(@PathVariable String                    serverName,
                                                    @PathVariable String                    glossaryTermGUID,
@@ -483,6 +515,7 @@ public class GlossaryManagerResource
      * PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     @PostMapping(path = "/glossaries/terms/{glossaryTermGUID}/is-data-value")
+    @SecurityRequirement(name = "BearerAuthorization")
 
     public VoidResponse setTermAsDataValue(@PathVariable String                       serverName,
                                            @PathVariable String                       glossaryTermGUID,
@@ -507,6 +540,7 @@ public class GlossaryManagerResource
      * PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     @PostMapping(path = "/glossaries/terms/{glossaryTermGUID}/is-data-value/remove")
+    @SecurityRequirement(name = "BearerAuthorization")
 
     public VoidResponse clearTermAsDataValue(@PathVariable String                    serverName,
                                              @PathVariable String                    glossaryTermGUID,
@@ -530,6 +564,7 @@ public class GlossaryManagerResource
      * PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     @PostMapping(path = "/glossaries/terms/{glossaryTermGUID}/is-activity")
+    @SecurityRequirement(name = "BearerAuthorization")
 
     public VoidResponse setTermAsActivity(@PathVariable String                    serverName,
                                           @PathVariable String                    glossaryTermGUID,
@@ -552,6 +587,7 @@ public class GlossaryManagerResource
      * PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     @PostMapping(path = "/glossaries/terms/{glossaryTermGUID}/is-activity/remove")
+    @SecurityRequirement(name = "BearerAuthorization")
 
     public VoidResponse clearTermAsActivity(@PathVariable String                    serverName,
                                             @PathVariable String                    glossaryTermGUID,
@@ -575,6 +611,7 @@ public class GlossaryManagerResource
      * PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     @PostMapping(path = "/glossaries/terms/{glossaryTermGUID}/is-context-definition")
+    @SecurityRequirement(name = "BearerAuthorization")
 
     public VoidResponse setTermAsContext(@PathVariable String                    serverName,
                                          @PathVariable String                    glossaryTermGUID,
@@ -597,6 +634,7 @@ public class GlossaryManagerResource
      * PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     @PostMapping(path = "/glossaries/terms/{glossaryTermGUID}/is-context-definition/delete")
+    @SecurityRequirement(name = "BearerAuthorization")
 
     public VoidResponse clearTermAsContext(@PathVariable String                   serverName,
                                            @PathVariable String                   glossaryTermGUID,
@@ -620,11 +658,12 @@ public class GlossaryManagerResource
      * PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     @PostMapping(path = "/glossaries/terms/{glossaryTermGUID}/delete")
+    @SecurityRequirement(name = "BearerAuthorization")
 
     public VoidResponse deleteGlossaryTerm(@PathVariable String                         serverName,
                                            @PathVariable String                         glossaryTermGUID,
                                            @RequestBody(required = false)
-                                               DeleteRequestBody requestBody)
+                                               DeleteElementRequestBody requestBody)
     {
         return restAPI.deleteGlossaryTerm(serverName, glossaryTermGUID, requestBody);
     }
@@ -644,6 +683,7 @@ public class GlossaryManagerResource
      * PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     @PostMapping(path = "/glossaries/terms/by-search-string")
+    @SecurityRequirement(name = "BearerAuthorization")
 
     @Operation(summary="findGlossaryTerms",
             description="Retrieve the list of glossary term metadata elements that contain the search string.  The search string is located in the request body and is interpreted as a plain string.  The request parameters, startsWith, endsWith and ignoreCase can be used to allow a fuzzy search.  The request body also supports the specification of a glossaryGUID to restrict the search to within a single glossary.",
@@ -670,6 +710,7 @@ public class GlossaryManagerResource
      * PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     @PostMapping(path = "/glossaries/terms/by-name")
+    @SecurityRequirement(name = "BearerAuthorization")
 
     public OpenMetadataRootElementsResponse   getGlossaryTermsByName(@PathVariable String             serverName,
                                                                      @RequestBody(required = false)  FilterRequestBody requestBody)
@@ -691,6 +732,7 @@ public class GlossaryManagerResource
      * PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     @PostMapping(path = "/glossaries/terms/{glossaryTermGUID}")
+    @SecurityRequirement(name = "BearerAuthorization")
 
     public OpenMetadataRootElementResponse getGlossaryTermByGUID(@PathVariable String                             serverName,
                                                                  @PathVariable String                             glossaryTermGUID,

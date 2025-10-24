@@ -1,0 +1,874 @@
+# Egeria-automated-curation-view-service
+
+@baseURL=https://localhost:9443
+@viewServer=view-server
+
+###
+# =====================================================================================================================
+# Manage the authentication token.  Run this request to create/refresh the token.
+
+# @name Token (RequestBody)
+POST {{baseURL}}/api/token
+Content-Type: application/json
+
+{
+  "userId" : "peterprofile",
+  "password" : "secret"
+}
+
+> {% client.global.set("token", response.body); %}
+
+###
+# =====================================================================================================================
+# Load interesting connectors
+#
+
+###
+# @name get the GUID for active-metadata-store
+# Retrieve the metadata element using its unique identifier.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/runtime-manager/metadata-elements/guid-by-unique-name
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "UniqueNameRequestBody",
+  "name" : "active-metadata-store",
+  "namePropertyName" : "displayName"
+}
+
+> {% client.global.set("activeMetadataStoreGUID", response.body.guid); %}
+
+###
+# @name addOpenMetadataArchiveFile (into active-metadata-store)
+# Add a new open metadata archive to running OMAG Server's repository.
+# An open metadata archive contains metadata types and instances.  This operation loads an open metadata archive
+# that is stored in the named file.  It can be used with OMAG servers that are of type Open Metadata Store.
+# https://egeria-project.org/concepts/open-metadata-archives/
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/runtime-manager/omag-servers/{{activeMetadataStoreGUID}}/instance/load/open-metadata-archives/file
+Authorization: Bearer {{token}}
+Content-Type: text/plain
+
+content-packs/OpenMetadataProductsContentPack.omarchive
+
+
+
+###
+# @name addOpenMetadataArchiveFile (into active-metadata-store)
+# Add a new open metadata archive to running OMAG Server's repository.
+# An open metadata archive contains metadata types and instances.  This operation loads an open metadata archive
+# that is stored in the named file.  It can be used with OMAG servers that are of type Open Metadata Store.
+# https://egeria-project.org/concepts/open-metadata-archives/
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/runtime-manager/omag-servers/{{activeMetadataStoreGUID}}/instance/load/open-metadata-archives/file
+Authorization: Bearer {{token}}
+Content-Type: text/plain
+
+content-packs/PostgresContentPack.omarchive
+
+
+###
+# @name addOpenMetadataArchiveFile (into active-metadata-store)
+# Add a new open metadata archive to running OMAG Server's repository.
+# An open metadata archive contains metadata types and instances.  This operation loads an open metadata archive
+# that is stored in the named file.  It can be used with OMAG servers that are of type Open Metadata Store.
+# https://egeria-project.org/concepts/open-metadata-archives/
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/runtime-manager/omag-servers/{{activeMetadataStoreGUID}}/instance/load/open-metadata-archives/file
+Authorization: Bearer {{token}}
+Content-Type: text/plain
+
+content-packs/UnityCatalogContentPack.omarchive
+
+###
+# @name addOpenMetadataArchiveFile (into active-metadata-store)
+# Add a new open metadata archive to running OMAG Server's repository.
+# An open metadata archive contains metadata types and instances.  This operation loads an open metadata archive
+# that is stored in the named file.  It can be used with OMAG servers that are of type Open Metadata Store.
+# https://egeria-project.org/concepts/open-metadata-archives/
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/runtime-manager/omag-servers/{{activeMetadataStoreGUID}}/instance/load/open-metadata-archives/file
+Authorization: Bearer {{token}}
+Content-Type: text/plain
+
+content-packs/ApacheAtlasContentPack.omarchive
+
+###
+# @name addOpenMetadataArchiveFile (into active-metadata-store)
+# Add a new open metadata archive to running OMAG Server's repository.
+# An open metadata archive contains metadata types and instances.  This operation loads an open metadata archive
+# that is stored in the named file.  It can be used with OMAG servers that are of type Open Metadata Store.
+# https://egeria-project.org/concepts/open-metadata-archives/
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/runtime-manager/omag-servers/{{activeMetadataStoreGUID}}/instance/load/open-metadata-archives/file
+Authorization: Bearer {{token}}
+Content-Type: text/plain
+
+content-packs/ApacheKafkaContentPack.omarchive
+
+###
+# @name addOpenMetadataArchiveFile (into active-metadata-store)
+# Add a new open metadata archive to running OMAG Server's repository.
+# An open metadata archive contains metadata types and instances.  This operation loads an open metadata archive
+# that is stored in the named file.  It can be used with OMAG servers that are of type Open Metadata Store.
+# https://egeria-project.org/concepts/open-metadata-archives/
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/runtime-manager/omag-servers/{{activeMetadataStoreGUID}}/instance/load/open-metadata-archives/file
+Authorization: Bearer {{token}}
+Content-Type: text/plain
+
+content-packs/APIsContentPack.omarchive
+
+
+###
+# @name addOpenMetadataArchiveFile (into active-metadata-store)
+# Add a new open metadata archive to running OMAG Server's repository.
+# An open metadata archive contains metadata types and instances.  This operation loads an open metadata archive
+# that is stored in the named file.  It can be used with OMAG servers that are of type Open Metadata Store.
+# https://egeria-project.org/concepts/open-metadata-archives/
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/runtime-manager/omag-servers/{{activeMetadataStoreGUID}}/instance/load/open-metadata-archives/file
+Authorization: Bearer {{token}}
+Content-Type: text/plain
+
+content-packs/ObservabilityContentPack.omarchive
+
+###
+# =====================================================================================================================
+# The technology types provide the reference data to guide the curator.  They are extracted from the valid
+# values for deployedImplementationType
+#
+
+###
+# @name getAllTechnologyTypes
+# Retrieve the list of all deployed implementation type metadata elements.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/automated-curation/technology-types/by-search-string
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "SearchStringRequestBody",
+  "startsWith" : false,
+  "endsWith" : false,
+  "ignoreCase" : true,
+  "startFrom" : 0,
+  "pageSize": 0,
+  "asOfTime" : "{{$isoTimestamp}}",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false,
+  "limitResultsByStatus" : ["ACTIVE"],
+  "sequencingOrder" : "PROPERTY_ASCENDING",
+  "sequencingProperty" : "qualifiedName"
+}
+
+###
+@typeName=SoftwareServer
+
+###
+# @name getTechnologyTypesForOpenMetadataType
+# Retrieve the list of deployed implementation type metadata elements linked to a particular open metadata type.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/automated-curation/open-metadata-types/{{typeName}}/technology-types
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+
+###
+# @name findTechnologyTypes
+# Retrieve the list of deployed implementation type metadata elements that contain the search string.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/automated-curation/technology-types/by-search-string
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "SearchStringRequestBody",
+  "searchString": "File",
+  "startsWith" : false,
+  "endsWith" : false,
+  "ignoreCase" : true,
+  "startFrom" : 0,
+  "pageSize": 0,
+  "asOfTime" : "{{$isoTimestamp}}",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false,
+  "limitResultsByStatus" : ["ACTIVE"],
+  "sequencingOrder" : "PROPERTY_ASCENDING",
+  "sequencingProperty" : "qualifiedName"
+}
+
+
+###
+# @name findTechnologyTypes (PostgreSQL related technologies)
+# Retrieve the list of deployed implementation type metadata elements that contain the search string.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/automated-curation/technology-types/by-search-string?startFrom=0&pageSize=0&startsWith=false&endsWith=false&ignoreCase=true
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "searchString" : "PostgreSQL"
+}
+
+
+###
+# @name getTechnologyTypeDetail
+# Retrieve the requested deployed implementation type metadata element. There are no wildcards allowed in the name.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/automated-curation/technology-types/by-name
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "FilterRequestBody",
+  "filter" : "Add name here",
+  "startFrom": 0,
+  "pageSize": 10,
+  "asOfTime" : "{{$isoTimestamp}}",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false,
+  "limitResultsByStatus" : ["ACTIVE"],
+  "sequencingOrder" : "PROPERTY_ASCENDING",
+  "sequencingProperty" : "qualifiedName"
+}
+
+
+###
+# @name getTechnologyTypeDetail (PostgreSQL Server)
+# Retrieve the requested deployed implementation type metadata element. There are no wildcards allowed in the name.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/automated-curation/technology-types/by-name
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "filter" : "PostgreSQL Relational Database"
+}
+
+###
+# @name getTechnologyTypeDetail (folders)
+# Retrieve the requested deployed implementation type metadata element. There are no wildcards allowed in the name.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/automated-curation/technology-types/by-name
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "filter" : "File System Directory"
+}
+
+
+###
+# @name getTechnologyTypeDetail (OMAG Server Platform)
+# Retrieve the requested deployed implementation type metadata element. There are no wildcards allowed in the name.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/automated-curation/technology-types/by-name
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "filter" : "OMAG Server Platform"
+}
+
+
+###
+# @name getTechnologyTypeDetail (Metadata Access Server)
+# Retrieve the requested deployed implementation type metadata element. There are no wildcards allowed in the name.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/automated-curation/technology-types/by-name
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "filter" : "Metadata Access Server"
+}
+
+
+
+###
+# @name getTechnologyTypeDetail (Engine Host)
+# Retrieve the requested deployed implementation type metadata element. There are no wildcards allowed in the name.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/automated-curation/technology-types/by-name
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "filter" : "Engine Host"
+}
+
+
+
+
+###
+# @name getTechnologyTypeDetail (Integration Daemon)
+# Retrieve the requested deployed implementation type metadata element. There are no wildcards allowed in the name.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/automated-curation/technology-types/by-name
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "filter" : "Integration Daemon"
+}
+
+
+###
+# @name getTechnologyTypeDetail (View server)
+# Retrieve the requested deployed implementation type metadata element. There are no wildcards allowed in the name.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/automated-curation/technology-types/by-name
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "filter" : "View Server"
+}
+
+
+###
+# @name getTechnologyTypeHierarchy
+# Retrieve the requested deployed implementation type metadata element and its subtypes.  A mermaid version if the hierarchy is also returned.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/automated-curation/technology-types/hierarchy
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "FilterRequestBody",
+  "filter" : "Root Technology Type",
+  "startFrom": 0,
+  "pageSize": 10,
+  "asOfTime" : "{{$isoTimestamp}}",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false,
+  "limitResultsByStatus" : ["ACTIVE"],
+  "sequencingOrder" : "PROPERTY_ASCENDING",
+  "sequencingProperty" : "qualifiedName"
+}
+
+
+###
+# @name getTechnologyTypeHierarchy
+# Retrieve the requested deployed implementation type metadata element and its subtypes.  A mermaid version if the hierarchy is also returned.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/automated-curation/technology-types/hierarchy
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "filter" : "Software Server"
+}
+
+
+###
+# @name getTechnologyTypeHierarchy
+# Retrieve the requested deployed implementation type metadata element and its subtypes.  A mermaid version if the hierarchy is also returned.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/automated-curation/technology-types/hierarchy
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "filter" : "File"
+}
+
+
+###
+# @name getTechnologyTypeElements
+# Retrieve the elements for the requested deployed implementation type. There are no wildcards allowed in the name.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/automated-curation/technology-types/elements
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "FilterRequestBody",
+  "filter" : "Add name here",
+  "startFrom": 0,
+  "pageSize": 10,
+  "asOfTime" : "{{$isoTimestamp}}",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false,
+  "limitResultsByStatus" : ["ACTIVE"],
+  "sequencingOrder" : "PROPERTY_ASCENDING",
+  "sequencingProperty" : "qualifiedName"
+}
+
+
+###
+# @name getTechnologyTypeElements (CSV Data File)
+# Retrieve the elements for the requested deployed implementation type. There are no wildcards allowed in the name.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/automated-curation/technology-types/elements
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "filter" : "CSV Data File",
+  "pageSize": 10
+}
+
+
+
+
+###
+# @name getTechnologyTypeElements (OMAG Server Platform)
+# Retrieve the elements for the requested deployed implementation type. There are no wildcards allowed in the name.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/automated-curation/technology-types/elements
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "filter" : "OMAG Server Platform"
+}
+
+
+
+
+###
+# @name getTechnologyTypeTemplates
+# Retrieve the elements for the requested deployed implementation type. There are no wildcards allowed in the name.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/automated-curation/technology-types/elements
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "filter" : "File System Directory",
+  "skipClassifiedElements": ["Template"]
+}
+
+
+
+
+###
+# @name getTechnologyTypeTemplates (CSV Data File)
+# Retrieve the elements for the requested deployed implementation type. There are no wildcards allowed in the name.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/automated-curation/technology-types/elements
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "filter" : "CSV Data File"
+}
+
+
+
+
+###
+# =====================================================================================================================
+# Catalog templates make it easy to create new complex object such as assets.
+#
+
+
+###
+# @name createElementFromTemplate
+# Create a new element from a template.
+# Further Information: https://egeria-project.org/features/templated-cataloguing/overview/
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/automated-curation/catalog-templates/new-element
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "templateGUID" : "add guid here",
+  "isOwnAnchor" : true,
+  "allowRetrieve" : false,
+  "placeholderPropertyValues" : {
+       "placeholderPropertyName1" : "placeholderPropertyValue1",
+       "placeholderPropertyName2" : "placeholderPropertyValue2"
+   }
+}
+
+
+
+###
+# @name getElementFromTemplate
+# Retrieve existing element/create a new element from a template.
+# Further Information: https://egeria-project.org/features/templated-cataloguing/overview/
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/automated-curation/catalog-templates/new-element
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "templateGUID" : "add guid here",
+  "isOwnAnchor" : true,
+  "allowRetrieve" : true,
+  "placeholderPropertyValues" : {
+    "placeholderPropertyName1" : "placeholderPropertyValue1",
+    "placeholderPropertyName2" : "placeholderPropertyValue2"
+  }
+}
+
+
+###
+# Full body
+# {
+#   "typeName" : "",
+#   "initialStatus" : "",
+#   "initialClassifications" : {},
+#   "anchorGUID" : "",
+#   "isOwnAnchor" : "",
+#   "effectiveFrom" : "",
+#   "effectiveTo" : "",
+#   "templateGUID" : "",
+#   "templateProperties" : {},
+#   "placeholderPropertyValues" : {
+#     "placeholderPropertyName1" : "placeholderPropertyValue1",
+#     "placeholderPropertyName2" : "placeholderPropertyValue2"
+#   },
+#   "parentGUID" : "",
+#   "parentRelationshipTypeName" : "",
+#   "parentRelationshipProperties" : "",
+#   "parentAtEnd1" : "",
+#   "effectiveTime" : ""
+# }
+
+###
+# @name createElementFromTemplate (folder)
+# Create a new element from a template.
+# Further Information: https://egeria-project.org/features/templated-cataloguing/overview/
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/automated-curation/catalog-templates/new-element
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "templateGUID" : "fbdd8efd-1b69-474c-bb6d-0a304b394146",
+  "isOwnAnchor" : true,
+  "placeholderPropertyValues" : {
+    "fileSystemName" : "Add file system name",
+    "directoryPathName" : "Add full path name here, eg a/b/c/myFolder",
+    "directoryName" : "Add directory name without enclosing directory names, eg myFolder",
+    "description" : "Add description",
+    "versionIdentifier" : "Add version identifier eg V1.0"
+  }
+}
+
+
+###
+# @name createElementFromTemplate - Marquez endpoint
+# Create a new element from a template.
+# Further Information: https://egeria-project.org/features/templated-cataloguing/overview/
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/automated-curation/catalog-templates/new-element
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "templateGUID" : "9ea4bff4-d193-492f-bcad-6e68c07c6f9e",
+  "isOwnAnchor" : true,
+  "placeholderPropertyValues" : {
+    "description" : "Link to Marquez",
+    "portNumber" : "5050",
+    "serverName" : "Marquez",
+    "hostURL" : "http://egeria.pdr-associates.com",
+    "apiOperation" : "/api/v1/lineage"
+  }
+}
+
+
+###
+# @name createElementFromTemplate (Apache Kafka Server)
+# Create a new element from a template.
+# Further Information: https://egeria-project.org/features/templated-cataloguing/overview/
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/automated-curation/catalog-templates/new-element
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "templateGUID" : "5e1ff810-5418-43f7-b7c4-e6e062f9aff7",
+  "isOwnAnchor" : true,
+  "placeholderPropertyValues" : {
+    "serverName" : "localKafka2",
+    "hostIdentifier" : "localhost",
+    "portNumber" : "9092"
+  }
+}
+
+###
+# @name createElementFromTemplate (Apache Kafka Topic)
+# Create a new element from a template.
+# Further Information: https://egeria-project.org/features/templated-cataloguing/overview/
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/automated-curation/catalog-templates/new-element
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "templateGUID" : "ea8f81c9-c59c-47de-9525-7cc59d1251e5",
+  "isOwnAnchor" : true,
+  "placeholderPropertyValues" : {
+    "serverName": "localKafka",
+    "hostIdentifier": "localhost",
+    "portNumber": "9092",
+    "description": "Open Lineage Events for Backend Proxy",
+    "topicDescription": "Open Lineage Events for Backend Proxy",
+    "fullTopicName": "openlineage.events",
+    "shortTopicName": "openlineage.events",
+    "eventDirection": "inOut"
+  }
+}
+
+###
+# @name createElementFromTemplate (PostgreSQL Server)
+# Create a new element from a template.
+# Further Information: https://egeria-project.org/features/templated-cataloguing/overview/
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/automated-curation/catalog-templates/new-element
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "templateGUID" : "542134e6-b9ce-4dce-8aef-22e8daf34fdb",
+  "isOwnAnchor" : true,
+  "placeholderPropertyValues" : {
+    "serverName" : "DemoPostgreSQL1",
+    "hostIdentifier" : "coco.com",
+    "portNumber" : "5432",
+    "databaseUserId" : "surveyor",
+    "databasePassword" : "secret"
+  }
+}
+
+###
+# @name createElementFromTemplate (PostgreSQL Relational Database)
+# Create a new element from a template.
+# Further Information: https://egeria-project.org/features/templated-cataloguing/overview/
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/automated-curation/catalog-templates/new-element
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "templateGUID" : "3d398b3f-7ae6-4713-952a-409f3dea8520",
+  "isOwnAnchor" : true,
+  "placeholderPropertyValues" : {
+    "hostIdentifier" : "egeria.pdr-associates.com",
+    "portNumber" : "5432",
+    "serverName" : "DemoPostgreSQL2",
+    "databaseName" : "my_database",
+    "databaseUserId" : "surveyor",
+    "databasePassword" : "secret"
+  }
+}
+
+
+
+###
+# @name createElementFromTemplate (OMAG Server Platform)
+# Create a new element from a template.
+# Further Information: https://egeria-project.org/features/templated-cataloguing/overview/
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/automated-curation/catalog-templates/new-element
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "templateGUID" : "9b06c4dc-ddc8-47ae-b56b-28775d3a96f0",
+  "isOwnAnchor" : true,
+  "placeholderPropertyValues" : {
+    "platformUserId" : "garygeeke",
+    "platformHostURL" : "https://localhost",
+    "platformPortNumber" : "9446",
+    "platformName" : "Nanny Platform"
+  }
+}
+
+
+
+###
+# =====================================================================================================================
+# Activating governance actions.
+
+###
+
+@governanceEngineName=AssetSurvey
+
+###
+# @name initiateEngineAction
+# Create an engine action in the metadata store that will trigger the governance service
+# associated with the supplied request type.  The engine action remains to act as a record
+# of the actions taken for auditing.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/automated-curation/governance-engines/{{governanceEngineName}}/engine-actions/initiate
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+    "class" : "InitiateEngineActionRequestBody",
+    "qualifiedName" : "EngineAction: .....",
+    "domainIdentifier" : 0,
+    "displayName" : "",
+    "description" : "",
+    "requestSourceGUIDs": [ "" ],
+    "actionTargets": [
+      {
+          "class" : "NewActionTarget",
+          "actionTargetName" : "",
+          "actionTargetGUID" : ""
+      } ],
+    "receivedGuards": [ "" ],
+    "startDate" : "",
+    "requestType": "",
+    "requestParameters": {
+        "parameterName1" : "parameterValue1",
+        "parameterName2" : "parameterValue2"
+    },
+    "processName": "",
+    "requestSourceName": "",
+    "originatorServiceName": "",
+    "originatorEngineName": ""
+}
+
+
+###
+# @name initiateGovernanceActionType
+# Using the named governance action type as a template, initiate a single engine action.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/automated-curation/governance-action-types/initiate
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+    "class" : "InitiateGovernanceActionTypeRequestBody",
+    "governanceActionTypeQualifiedName": "put qualified name here",
+    "actionTargets": [
+      {
+          "class" : "NewActionTarget",
+          "actionTargetName": "target name goes here",
+          "actionTargetGUID": "target guid goes here"
+      } ]
+}
+
+###
+# @name initiateGovernanceActionType (folder)
+# Using the named governance action type as a template, initiate a single engine action.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/automated-curation/governance-action-types/initiate
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "InitiateGovernanceActionTypeRequestBody",
+  "governanceActionTypeQualifiedName": "AssetSurvey:survey-folder",
+  "actionTargets": [
+    {
+      "class" : "NewActionTarget",
+      "actionTargetName": "folderToSurvey",
+      "actionTargetGUID": "add folder guid here"
+    } ]
+}
+
+###
+# @name initiateGovernanceActionType (Kafka Server)
+# Using the named governance action type as a template, initiate a single engine action.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/automated-curation/governance-action-types/initiate
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "InitiateGovernanceActionTypeRequestBody",
+  "governanceActionTypeQualifiedName": "AssetSurvey:survey-kafka-server",
+  "actionTargets": [
+    {
+      "class" : "NewActionTarget",
+      "actionTargetName": "serverToSurvey",
+      "actionTargetGUID": "c38bbb0a-ba01-41d3-acfa-075c56a5b405"
+    } ]
+}
+
+###
+# @name initiateGovernanceActionType (PostgreSQL Server)
+# Using the named governance action type as a template, initiate a single engine action.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/automated-curation/governance-action-types/initiate
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "InitiateGovernanceActionTypeRequestBody",
+  "governanceActionTypeQualifiedName": "AssetSurvey:survey-postgres-server",
+  "actionTargets": [
+    {
+      "class" : "NewActionTarget",
+      "actionTargetName": "serverToSurvey",
+      "actionTargetGUID": "c0c71ae5-c115-438f-ac25-8ac297881768"
+    } ]
+}
+
+###
+# @name initiateGovernanceActionType (PostgreSQL Relational Database)
+# Using the named governance action type as a template, initiate a single engine action.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/automated-curation/governance-action-types/initiate
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "InitiateGovernanceActionTypeRequestBody",
+  "governanceActionTypeQualifiedName": "AssetSurvey:survey-postgres-database",
+  "actionTargets": [
+    {
+      "class" : "NewActionTarget",
+      "actionTargetName": "postgresDatabase",
+      "actionTargetGUID": "781f06d2-9fd5-4add-b3ca-28ade52bdf91"
+    } ]
+}
+
+###
+# Full request body for initiateGovernanceActionType
+#{
+#    "class" : "InitiateGovernanceActionTypeRequestBody",
+#    "governanceActionTypeQualifiedName": "AssetSurvey:survey-folder",
+#    "requestParameters": {
+#        "parameterName1" : "parameterValue1",
+#        "parameterName2" : "parameterValue2"
+#    },
+#    "requestSourceGUIDs": [ "" ],
+#    "actionTargets": [
+#      {
+#          "class" : "NewActionTarget",
+#          "actionTargetName": "folderToSurvey",
+#          "actionTargetGUID": "ec35133e-bff9-4a2f-9ff1-18fda8c81396"
+#      } ],
+#    "startDate": "",
+#    "originatorServiceName": "",
+#    "originatorEngineName": ""
+#}
+
+###
+# @name initiateGovernanceActionProcess
+# Using the named governance action process as a template, initiate a chain of engine actions.
+
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/automated-curation/governance-action-processes/initiate
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "processQualifiedName": "Egeria:DailyGovernanceActionProcess"
+}
+
+###
+# @name initiateGovernanceActionProcess (Create Subscription)
+# Using the named governance action process as a template, initiate a chain of engine actions.
+
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/automated-curation/governance-action-processes/initiate
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "processQualifiedName": "GovernanceActionProcess::Valid Value Sets List::Create Subscription::EVALUATION-SUBSCRIPTION"
+}
+
+###
+# Full request body for initiate governance action process
+# {
+#   "class" : "InitiateGovernanceActionProcessRequestBody",
+#   "processQualifiedName": "",
+#   "requestParameters": {
+#       "parameterName1" : "parameterValue1",
+#       "parameterName2" : "parameterValue2"
+#   },
+#   "requestSourceGUIDs": [ "" ],
+#   "actionTargets": [
+#     {
+#       "class" : "NewActionTarget",
+#       "actionTargetName" : "",
+#       "actionTargetGUID" : ""
+#     } ],
+#   "startDate": "",
+#   "originatorServiceName": "",
+#   "originatorEngineName": ""
+# }
+#
+###
+# ================================================
+# Engine actions are Assets and standard queries are available through
+# Asset Maker OMVS.  These are the special requests provided by Automated Curation OMVS
+
+@engineActionGUID=add guid here
+
+###
+# @name cancelEngineAction
+# Request that an engine action request is cancelled and any running governance service is stopped.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/automated-curation/engine-actions/{{engineActionGUID}}/cancel
+Authorization: Bearer {{token}}
+
+
+###
+# @name getActiveEngineActions
+# Retrieve the engine actions that are still in process.
+GET {{baseURL}}/servers/{{viewServer}}/api/open-metadata/automated-curation/engine-actions/active?startFrom=0&pageSize=0
+Authorization: Bearer {{token}}
+

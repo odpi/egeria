@@ -29,7 +29,7 @@ Content-Type: application/json
 ###
 # @name getPlatformsByName
 # Returns the list of platforms with a particular name. The name is specified in the filter.
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/runtime-manager/platforms/by-name?startFrom=0&pageSize=10
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/runtime-manager/platforms/by-name
 Authorization: Bearer {{token}}
 Content-Type: application/json
 
@@ -43,7 +43,7 @@ Content-Type: application/json
 # Returns the list of platforms with a particular deployed implementation type.  The value is specified in the filter.
 # If it is null, or no request body is supplied, all platforms are returned.
 
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/runtime-manager/platforms/by-deployed-implementation-type?startFrom=0&pageSize=10
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/runtime-manager/platforms/by-deployed-implementation-type
 Authorization: Bearer {{token}}
 Content-Type: application/json
 

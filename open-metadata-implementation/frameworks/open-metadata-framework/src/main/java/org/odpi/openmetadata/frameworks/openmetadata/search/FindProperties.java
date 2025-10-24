@@ -25,7 +25,6 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonSubTypes(
         {
                 @JsonSubTypes.Type(value = LevelIdentifierQueryProperties.class, name = "LevelIdentifierQueryProperties"),
-                @JsonSubTypes.Type(value = FindNameProperties.class, name = "FindNameProperties"),
                 @JsonSubTypes.Type(value = FindDigitalResourceOriginProperties.class, name = "FindDigitalResourceOriginProperties"),
                 @JsonSubTypes.Type(value = FindPropertyNamesProperties.class, name = "FindPropertyNamesProperties"),
                 @JsonSubTypes.Type(value = SecurityTagQueryProperties.class, name = "SecurityTagQueryProperties"),
@@ -33,8 +32,6 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
         })
 public class FindProperties extends QueryOptions
 {
-    private String openMetadataTypeName = null;
-
     /**
      * Default constructor
      */
@@ -49,36 +46,9 @@ public class FindProperties extends QueryOptions
      *
      * @param template element to copy
      */
-    public FindProperties(FindProperties template)
+    public FindProperties(QueryOptions template)
     {
         super (template);
-
-        if (template != null)
-        {
-            openMetadataTypeName = template.getOpenMetadataTypeName();
-        }
-    }
-
-
-    /**
-     * Return the open metadata type name to filter by.
-     *
-     * @return string name
-     */
-    public String getOpenMetadataTypeName()
-    {
-        return openMetadataTypeName;
-    }
-
-
-    /**
-     * Set up the open metadata type name to filer by.
-     *
-     * @param openMetadataTypeName string name
-     */
-    public void setOpenMetadataTypeName(String openMetadataTypeName)
-    {
-        this.openMetadataTypeName = openMetadataTypeName;
     }
 
 
@@ -91,36 +61,6 @@ public class FindProperties extends QueryOptions
     public String toString()
     {
         return "FindProperties{" +
-                "openMetadataTypeName='" + openMetadataTypeName + '\'' +
                 "} " + super.toString();
-    }
-
-
-    /**
-     * Return comparison result based on the content of the properties.
-     *
-     * @param objectToCompare test object
-     * @return result of comparison
-     */
-    @Override
-    public boolean equals(Object objectToCompare)
-    {
-        if (this == objectToCompare) return true;
-        if (objectToCompare == null || getClass() != objectToCompare.getClass()) return false;
-        if (!super.equals(objectToCompare)) return false;
-        FindProperties that = (FindProperties) objectToCompare;
-        return Objects.equals(openMetadataTypeName, that.openMetadataTypeName);
-    }
-
-
-    /**
-     * Return hash code for this object
-     *
-     * @return int hash code
-     */
-    @Override
-    public int hashCode()
-    {
-        return Objects.hash(super.hashCode(), openMetadataTypeName);
     }
 }

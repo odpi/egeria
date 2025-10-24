@@ -9,10 +9,14 @@ import org.odpi.openmetadata.frameworks.connectors.Connector;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
 import org.odpi.openmetadata.frameworks.opengovernance.controls.ActionTarget;
 import org.odpi.openmetadata.frameworks.opengovernance.properties.ActionTargetElement;
-import org.odpi.openmetadata.frameworks.opengovernance.properties.CompletionStatus;
+import org.odpi.openmetadata.frameworks.openmetadata.enums.CompletionStatus;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.OpenMetadataRootElement;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.RelatedMetadataElementSummary;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.schema.AttributeForSchemaProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.schema.SchemaAttributeProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.surveyreports.QualityAnnotationProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.surveyreports.RequestForActionProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.search.ElementProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
@@ -21,8 +25,6 @@ import org.odpi.openmetadata.frameworks.opensurvey.SurveyActionServiceConnector;
 import org.odpi.openmetadata.frameworks.opensurvey.SurveyAssetStore;
 import org.odpi.openmetadata.frameworks.opensurvey.controls.AnalysisStep;
 import org.odpi.openmetadata.frameworks.opensurvey.controls.SurveyActionGuard;
-import org.odpi.openmetadata.frameworks.opensurvey.properties.QualityAnnotation;
-import org.odpi.openmetadata.frameworks.opensurvey.properties.RequestForActionAnnotation;
 import org.odpi.openmetadata.samples.governanceactions.ffdc.GovernanceActionSamplesAuditCode;
 
 import java.util.*;
@@ -144,12 +146,12 @@ public class CocoClinicalTrialCertifyWeeklyMeasurementsService extends SurveyAct
                 long                    recordCount    = assetConnector.getRecordCount();
 
 
-                QualityAnnotation columnCountAnnotation = new QualityAnnotation();
-                QualityAnnotation columnNamesAnnotation = new QualityAnnotation();
-                QualityAnnotation patientIdAnnotation   = new QualityAnnotation();
-                QualityAnnotation dateAnnotation        = new QualityAnnotation();
-                QualityAnnotation angleLeftAnnotation   = new QualityAnnotation();
-                QualityAnnotation angleRightAnnotation  = new QualityAnnotation();
+                QualityAnnotationProperties columnCountAnnotation = new QualityAnnotationProperties();
+                QualityAnnotationProperties columnNamesAnnotation = new QualityAnnotationProperties();
+                QualityAnnotationProperties patientIdAnnotation   = new QualityAnnotationProperties();
+                QualityAnnotationProperties dateAnnotation        = new QualityAnnotationProperties();
+                QualityAnnotationProperties angleLeftAnnotation   = new QualityAnnotationProperties();
+                QualityAnnotationProperties angleRightAnnotation  = new QualityAnnotationProperties();
 
                 super.setUpAnnotation(columnCountAnnotation, CocoClinicalTrialsAnnotationType.SCHEMA_VALIDATION);
                 super.setUpAnnotation(columnNamesAnnotation, CocoClinicalTrialsAnnotationType.SCHEMA_VALIDATION);
@@ -192,15 +194,16 @@ public class CocoClinicalTrialCertifyWeeklyMeasurementsService extends SurveyAct
                 {
                     for (RelatedMetadataElementSummary schemaAttribute: schemaAttributes)
                     {
-                        if (schemaAttribute.getRelatedElement().getProperties() != null)
+                        if (schemaAttribute.getRelatedElement().getProperties() instanceof SchemaAttributeProperties schemaAttributeProperties)
                         {
-                            String displayName = schemaAttribute.getRelatedElement().getProperties().get(OpenMetadataProperty.DISPLAY_NAME.name);
+                            String displayName = schemaAttributeProperties.getDisplayName();
 
                             if (displayName != null)
                             {
-                                if ((schemaAttribute.getRelationshipProperties() != null) && (schemaAttribute.getRelationshipProperties().get(OpenMetadataProperty.POSITION.name) != null))
+                                if ((schemaAttribute.getRelationshipProperties() != null) &&
+                                        (schemaAttribute.getRelationshipProperties() instanceof AttributeForSchemaProperties attributeForSchemaProperties))
                                 {
-                                    int position = Integer.parseInt(schemaAttribute.getRelationshipProperties().get(OpenMetadataProperty.POSITION.name));
+                                    int position = attributeForSchemaProperties.getPosition();
 
                                     expectedColumns.put(displayName, schemaAttribute.getRelatedElement().getElementHeader().getGUID());
                                     expectedColumnNames.put(position, displayName);
@@ -405,15 +408,13 @@ public class CocoClinicalTrialCertifyWeeklyMeasurementsService extends SurveyAct
                 }
                 else
                 {
-                    RequestForActionAnnotation requestForActionAnnotation = new RequestForActionAnnotation();
+                    RequestForActionProperties requestForActionAnnotation = new RequestForActionProperties();
 
                     super.setUpAnnotation(requestForActionAnnotation, CocoClinicalTrialsAnnotationType.FAILED_TO_PASS_QUALITY_GATE);
 
-                    List<String> requestForActionTargetGUIDs = new ArrayList<>();
-                    requestForActionTargetGUIDs.add(stewardGUID);
-                    requestForActionAnnotation.setActionTargetGUIDs(requestForActionTargetGUIDs);
-
                     String annotationGUID = annotationStore.addAnnotation(requestForActionAnnotation, null);
+
+                    annotationStore.linkRequestForActionTarget(annotationGUID, stewardGUID, null);
 
                     /*
                      * Set up Associated Annotations as appropriate
