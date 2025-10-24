@@ -359,6 +359,7 @@ public class OpenMetadataTypesArchive3_2
         properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.COUNTS));
         properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.VALUES));
         properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.FLAGS));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.DATES));
 
         classificationDef.setPropertiesDefinition(properties);
 
@@ -400,9 +401,12 @@ public class OpenMetadataTypesArchive3_2
         properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.PROCESS));
         properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.NOTES));
         properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.SOURCE));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.DATA_COLLECTION_START_TIME));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.DATA_COLLECTION_END_TIME));
         properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.COUNTS));
         properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.VALUES));
         properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.FLAGS));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.DATES));
 
         classificationDef.setPropertiesDefinition(properties);
 

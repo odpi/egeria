@@ -4,8 +4,8 @@ package org.odpi.openmetadata.samples.archiveutilities.sustainability;
 
 
 import org.odpi.openmetadata.archiveutilities.openconnectors.core.CorePackArchiveWriter;
-import org.odpi.openmetadata.frameworks.openmetadata.mapper.OpenMetadataValidValues;
 import org.odpi.openmetadata.frameworks.openmetadata.refdata.AssignmentType;
+import org.odpi.openmetadata.frameworks.openmetadata.refdata.Category;
 import org.odpi.openmetadata.frameworks.openmetadata.refdata.ResourceUse;
 import org.odpi.openmetadata.frameworks.openmetadata.types.DataType;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
@@ -14,7 +14,8 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.archivestore.p
 import org.odpi.openmetadata.samples.archiveutilities.EgeriaBaseArchiveWriter;
 import org.odpi.openmetadata.samples.archiveutilities.governanceprogram.CocoGovernanceProgramArchiveWriter;
 import org.odpi.openmetadata.samples.archiveutilities.organization.CocoOrganizationArchiveWriter;
-import org.odpi.openmetadata.samples.archiveutilities.organization.ScopeDefinition;
+import org.odpi.openmetadata.frameworks.openmetadata.refdata.ScopeDefinition;
+import org.odpi.openmetadata.samples.archiveutilities.organization.PersonDefinition;
 
 import java.util.Date;
 import java.util.HashMap;
@@ -68,6 +69,7 @@ public class CocoSustainabilityArchiveWriter extends EgeriaBaseArchiveWriter
         writeGovernanceDefinitions();
         writeRoles();
         writeFacility();
+        writeProjects();
     }
 
 
@@ -78,14 +80,26 @@ public class CocoSustainabilityArchiveWriter extends EgeriaBaseArchiveWriter
     {
         String validValueSetQName = OpenMetadataType.VALID_VALUE_DEFINITION.typeName + "::" + FacilityTypeDefinition.validValueSetName;
 
-        String validValueSetGUID = archiveHelper.addValidValue(OpenMetadataType.VALID_VALUE_DEFINITION.typeName,
+        String validValueSetGUID = archiveHelper.addValidValue(null,
+                                                               null,
+                                                               null,
+                                                               OpenMetadataType.REFERENCE_DATA_VALUE.typeName,
+                                                               OpenMetadataType.VALID_VALUE_DEFINITION.typeName,
+                                                               null,
+                                                               OpenMetadataType.REFERENCE_DATA_VALUE.typeName,
                                                                validValueSetQName,
+                                                               Category.SUSTAINABILITY.getName(),
+                                                               FacilityTypeDefinition.validValueSetPropertyName,
                                                                FacilityTypeDefinition.validValueSetName,
                                                                FacilityTypeDefinition.validValueSetDescription,
+                                                               null,
                                                                FacilityTypeDefinition.validValueSetUsage,
+                                                               null,
                                                                FacilityTypeDefinition.validValueSetScope,
                                                                null,
                                                                null,
+                                                               null,
+                                                               false,
                                                                null);
 
         if (validValueSetGUID != null)
@@ -94,20 +108,27 @@ public class CocoSustainabilityArchiveWriter extends EgeriaBaseArchiveWriter
 
             for (FacilityTypeDefinition facilityTypeDefinition : FacilityTypeDefinition.values())
             {
-                String validValueGUID = archiveHelper.addValidValue(OpenMetadataType.VALID_VALUE_DEFINITION.typeName,
-                                                                    facilityTypeDefinition.getQualifiedName(),
-                                                                    facilityTypeDefinition.getDisplayName(),
-                                                                    facilityTypeDefinition.getDescription(),
-                                                                    FacilityTypeDefinition.validValueSetUsage,
-                                                                    FacilityTypeDefinition.validValueSetScope,
-                                                                    facilityTypeDefinition.getPreferredValue(),
-                                                                    null,
-                                                                    null);
-
-                if (validValueGUID != null)
-                {
-                    archiveHelper.addValidValueMembershipRelationship(validValueSetQName, facilityTypeDefinition.getQualifiedName(), false /* not default value */);
-                }
+                archiveHelper.addValidValue(null,
+                                            validValueSetGUID,
+                                            validValueSetGUID,
+                                            OpenMetadataType.VALID_VALUE_DEFINITION.typeName,
+                                            OpenMetadataType.VALID_VALUE_DEFINITION.typeName,
+                                            null,
+                                            OpenMetadataType.VALID_VALUE_DEFINITION.typeName,
+                                            facilityTypeDefinition.getQualifiedName(),
+                                            Category.SUSTAINABILITY.getName(),
+                                            FacilityTypeDefinition.validValueSetPropertyName,
+                                            facilityTypeDefinition.getDisplayName(),
+                                            facilityTypeDefinition.getDescription(),
+                                            null,
+                                            FacilityTypeDefinition.validValueSetUsage,
+                                            DataType.STRING.getName(),
+                                            FacilityTypeDefinition.validValueSetScope,
+                                            facilityTypeDefinition.getPreferredValue(),
+                                            null,
+                                            null,
+                                            false,
+                                            null);
             }
         }
     }
@@ -118,8 +139,6 @@ public class CocoSustainabilityArchiveWriter extends EgeriaBaseArchiveWriter
      */
     private void writeSubjectAreaDefinitions()
     {
-        Map<String, String> subjectAreaMap = new HashMap<>();
-
         for (SustainabilitySubjectAreaDefinition subjectAreaDefinition : SustainabilitySubjectAreaDefinition.values())
         {
             String subjectAreaGUID = archiveHelper.addSubjectAreaDefinition(subjectAreaDefinition.getQualifiedName(),
@@ -131,9 +150,6 @@ public class CocoSustainabilityArchiveWriter extends EgeriaBaseArchiveWriter
                                                                             subjectAreaDefinition.getDomain(),
                                                                             null,
                                                                             null);
-
-
-            subjectAreaMap.put(subjectAreaDefinition.getSubjectAreaName(), subjectAreaGUID);
 
             if (subjectAreaDefinition.getParent() != null)
             {
@@ -183,7 +199,7 @@ public class CocoSustainabilityArchiveWriter extends EgeriaBaseArchiveWriter
      */
     private void writeRoles()
     {
-        String communityQName = "Community:: " + SustainabilityDomainDefinition.SUSTAINABILITY_REPORTING.getQualifiedName();
+        String communityQName = "Community::" + SustainabilityDomainDefinition.SUSTAINABILITY_REPORTING.getQualifiedName();
 
         for (SustainabilityRoleDefinition roleDefinition : SustainabilityRoleDefinition.values())
         {
@@ -193,7 +209,6 @@ public class CocoSustainabilityArchiveWriter extends EgeriaBaseArchiveWriter
                                             roleDefinition.getIdentifier(),
                                             roleDefinition.getDisplayName(),
                                             roleDefinition.getDescription(),
-                                            roleDefinition.getScope().getPreferredValue(),
                                             roleDefinition.isHeadCountSet(),
                                             roleDefinition.getHeadCount(),
                                             null,
@@ -233,33 +248,19 @@ public class CocoSustainabilityArchiveWriter extends EgeriaBaseArchiveWriter
      */
     private void writeDomains()
     {
-        String governanceDomainSetGUID = this.getParentSet(null,
-                                                           null,
-                                                           OpenMetadataProperty.DOMAIN_IDENTIFIER.name,
-                                                           null);
-
         for (SustainabilityDomainDefinition domainDefinition : SustainabilityDomainDefinition.values())
         {
-            this.archiveHelper.addValidValue(null,
-                                             governanceDomainSetGUID,
-                                             governanceDomainSetGUID,
-                                             OpenMetadataType.VALID_VALUE_DEFINITION.typeName,
-                                             OpenMetadataType.VALID_VALUE_DEFINITION.typeName,
-                                             null,
-                                             OpenMetadataType.VALID_VALUE_DEFINITION.typeName,
-                                             domainDefinition.getQualifiedName(),
-                                             domainDefinition.getDisplayName(),
-                                             domainDefinition.getDescription(),
-                                             domainDefinition.getCategory(),
-                                             OpenMetadataValidValues.VALID_METADATA_VALUES_USAGE,
-                                             DataType.INT.getName(),
-                                             OpenMetadataValidValues.OPEN_METADATA_ECOSYSTEM_SCOPE,
-                                             Integer.toString(domainDefinition.getDomainIdentifier()),
-                                             null,
-                                             false,
-                                             null);
+            super.addValidMetadataValue(null,
+                                        domainDefinition.getDisplayName(),
+                                        domainDefinition.getDescription(),
+                                        OpenMetadataProperty.DOMAIN_IDENTIFIER.name,
+                                        DataType.INT.getName(),
+                                        null,
+                                        null,
+                                        Integer.toString(domainDefinition.getDomainIdentifier()),
+                                        null);
 
-            String communityQName = "Community:: " + domainDefinition.getQualifiedName();
+            String communityQName = "Community::" + domainDefinition.getQualifiedName();
 
             archiveHelper.addCommunity(null,
                                        communityQName,
@@ -276,13 +277,12 @@ public class CocoSustainabilityArchiveWriter extends EgeriaBaseArchiveWriter
                                                       null);
 
 
-            String governanceOfficerQName = OpenMetadataType.GOVERNANCE_OFFICER.typeName + ":: " + domainDefinition.getQualifiedName();
+            String governanceOfficerQName = OpenMetadataType.GOVERNANCE_OFFICER.typeName + ": " + domainDefinition.getQualifiedName();
             archiveHelper.addGovernanceRole(OpenMetadataType.GOVERNANCE_OFFICER.typeName,
                                             governanceOfficerQName,
                                             domainDefinition.getDomainIdentifier(),
-                                            "GOV_OFFICER::" + domainDefinition.getDomainIdentifier(),
+                                            "GOV_OFFICER:" + domainDefinition.getDomainIdentifier(),
                                             "Governance Officer for " + domainDefinition.getDisplayName(),
-                                            null,
                                             null,
                                             true,
                                             1,
@@ -308,7 +308,7 @@ public class CocoSustainabilityArchiveWriter extends EgeriaBaseArchiveWriter
                                                         "English",
                                                         "For all Coco Pharmaceutical employees wishing to understand more about sustainability and the organization's efforts to improve its operations.",
                                                         null,
-                                                        ScopeDefinition.ALL_COCO.getPreferredValue());
+                                                        ScopeDefinition.WITHIN_ORGANIZATION.getPreferredValue());
 
         archiveHelper.addSubjectAreaClassification(glossaryGUID, sustainabilitySubjectArea);
 
@@ -336,6 +336,7 @@ public class CocoSustainabilityArchiveWriter extends EgeriaBaseArchiveWriter
                                                             null,
                                                             glossaryTermDefinition.getAbbreviation(),
                                                             null,
+                                                            glossaryTermDefinition.getUrl(),
                                                             false,
                                                             null,
                                                             null,
@@ -346,31 +347,6 @@ public class CocoSustainabilityArchiveWriter extends EgeriaBaseArchiveWriter
             {
                 archiveHelper.addTermToCategory(categoryLookup.get(glossaryTermDefinition.getCategory().getName()),
                                                 glossaryTermGUID);
-            }
-
-            if (glossaryTermDefinition.getUrl() != null)
-            {
-                archiveHelper.addExternalReference(null,
-                                                   glossaryTermGUID,
-                                                   OpenMetadataType.GLOSSARY_TERM.typeName,
-                                                   OpenMetadataType.GLOSSARY_TERM.typeName,
-                                                   glossaryGUID,
-                                                   OpenMetadataType.EXTERNAL_REFERENCE.typeName + "::" + glossaryTermDefinition.getName(),
-                                                   null,
-                                                   null,
-                                                   null,
-                                                   null,
-                                                   null,
-                                                   null,
-                                                   originatorName,
-                                                   null,
-                                                   glossaryTermDefinition.getUrl(),
-                                                   null,
-                                                   null,
-                                                   null,
-                                                   null,
-                                                   null,
-                                                   null);
             }
         }
     }
@@ -397,7 +373,7 @@ public class CocoSustainabilityArchiveWriter extends EgeriaBaseArchiveWriter
                                                               facilityDefinition.getAssociatedWorkLocation().getTimeZone(),
                                                               null);
 
-                String validValueGUID = archiveHelper.getGUID(openMetadataValidValueSetPrefix + facilityDefinition.getAssociatedWorkLocation().getQualifiedName());
+                String validValueGUID = archiveHelper.getGUID(facilityDefinition.getAssociatedWorkLocation().getQualifiedName());
 
                 archiveHelper.addMoreInformationLink(validValueGUID, locationGUID);
             }
@@ -446,6 +422,85 @@ public class CocoSustainabilityArchiveWriter extends EgeriaBaseArchiveWriter
                                                                        false,
                                                                        0);
                 }
+            }
+        }
+    }
+
+
+    /**
+     * Creates Project Hierarchy and dependencies.
+     */
+    private void writeProjects()
+    {
+        for (SustainabilityProjectDefinition projectDefinition : SustainabilityProjectDefinition.values())
+        {
+            archiveHelper.addProject(null,
+                                     projectDefinition.getQualifiedName(),
+                                     projectDefinition.getIdentifier(),
+                                     projectDefinition.getDisplayName(),
+                                     projectDefinition.getDescription(),
+                                     new Date(),
+                                     null,
+                                     null,
+                                     null,
+                                     projectDefinition.getProjectStatus().getName(),
+                                     projectDefinition.isCampaign(),
+                                     projectDefinition.isTask(),
+                                     projectDefinition.getProjectTypeClassification(),
+                                     null,
+                                     null,
+                                     null);
+
+            String projectManagerQName = projectDefinition.getQualifiedName() + ":ProjectManager";
+
+            archiveHelper.addActorRole(OpenMetadataType.PROJECT_MANAGER.typeName,
+                                       projectManagerQName,
+                                       projectDefinition.getIdentifier() + ":ProjectManager",
+                                       projectDefinition.getDisplayName() + " project manager",
+                                       null,
+                                       null,
+                                       true,
+                                       1,
+                                       null,
+                                       null);
+
+            archiveHelper.addProjectManagementRelationship(projectDefinition.getQualifiedName(),
+                                                           projectManagerQName);
+
+            if (projectDefinition.getControllingProject() != null)
+            {
+                archiveHelper.addProjectHierarchyRelationship(projectDefinition.getControllingProject().getQualifiedName(),
+                                                              projectDefinition.getQualifiedName());
+            }
+
+            if (projectDefinition.getDependentOn() != null)
+            {
+                for (SustainabilityProjectDefinition dependentOnProject : projectDefinition.getDependentOn())
+                {
+                    archiveHelper.addProjectDependencyRelationship(dependentOnProject.getQualifiedName(),
+                                                                   projectDefinition.getQualifiedName(),
+                                                                   null);
+                }
+            }
+
+            if (projectDefinition.getLeader() != null)
+            {
+                archiveHelper.addPersonRoleAppointmentRelationship(projectDefinition.getLeader().getQualifiedName(),
+                                                                   projectManagerQName,
+                                                                   false,
+                                                                   0);
+
+            }
+
+            if (projectDefinition.getMembers() != null)
+            {
+                for (PersonDefinition member : projectDefinition.getMembers())
+                {
+                    archiveHelper.addProjectTeamRelationship(projectDefinition.getQualifiedName(),
+                                                             member.getQualifiedName(),
+                                                             AssignmentType.CONTRIBUTOR.getName());
+                }
+
             }
         }
     }

@@ -3,9 +3,7 @@
 
 package org.odpi.openmetadata.adapters.connectors.egeriainfrastructure.control;
 
-import org.odpi.openmetadata.frameworks.connectors.controls.ConfigurationPropertyType;
-import org.odpi.openmetadata.frameworks.connectors.controls.SecretsStoreConfigurationProperty;
-import org.odpi.openmetadata.frameworks.openmetadata.controls.PlaceholderProperty;
+import org.odpi.openmetadata.frameworks.openmetadata.specificationproperties.ConfigurationPropertyType;
 
 import java.util.ArrayList;
 import java.util.List;

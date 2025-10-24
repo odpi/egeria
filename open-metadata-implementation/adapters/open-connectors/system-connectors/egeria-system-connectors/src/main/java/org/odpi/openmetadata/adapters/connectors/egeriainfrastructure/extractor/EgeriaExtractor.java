@@ -681,8 +681,6 @@ public class EgeriaExtractor
     }
 
 
-
-
     /**
      * Add a new open metadata archive to running repository.
      *
@@ -832,6 +830,8 @@ public class EgeriaExtractor
                 {
                     metadataStoreProperties.setRepositoryConnector(this.getConnectorProperties("Local Repository",
                                                                                                savedConfiguration.getRepositoryServicesConfig().getLocalRepositoryConfig().getLocalRepositoryLocalConnection()));
+
+                    metadataStoreProperties.setLocalMetadataCollectionId(savedConfiguration.getRepositoryServicesConfig().getLocalRepositoryConfig().getMetadataCollectionId());
                 }
 
                 serverProperties = metadataStoreProperties;

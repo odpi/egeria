@@ -36,6 +36,11 @@ public enum ContentPackDefinition
                       "APIsContentPack",
                       "Reference data, templates, connectors and governance services for working with REST APIs via the swagger interface.",
                       "APIsContentPack.omarchive"),
+
+    PRODUCTS_CONTENT_PACK("e8e06304-2eb9-4ebe-bb8c-1ae44635244b",
+                      "OpenMetadataProductsContentPack",
+                      "Open metadata collections packaged into dynamic digital products.",
+                      "OpenMetadataProductsContentPack.omarchive"),
     ;
 
     private final String archiveGUID;

@@ -100,7 +100,7 @@ public class ForeignKeyTransfer implements Consumer<JdbcForeignKey>
 
         if (database.getProperties() instanceof DatabaseProperties databaseProperties)
         {
-            properties.setSource(databaseProperties.getDatabaseImportedFrom());
+            properties.setSource(databaseProperties.getImportedFrom());
         }
 
         return properties;

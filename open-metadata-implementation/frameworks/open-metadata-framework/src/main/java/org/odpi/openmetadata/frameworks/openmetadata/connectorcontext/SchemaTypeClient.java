@@ -10,14 +10,12 @@ import org.odpi.openmetadata.frameworks.openmetadata.ffdc.PropertyServerExceptio
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.frameworks.openmetadata.handlers.SchemaTypeHandler;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.OpenMetadataRootElement;
-import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.OpenMetadataRootElement;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.ClassificationProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.RelationshipProperties;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.schema.AssetSchemaTypeProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.schema.SchemaProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.schema.SchemaTypeProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.search.*;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -67,7 +65,7 @@ public class SchemaTypeClient extends ConnectorContextClientBase
      * @param specificTypeName type name override
      */
     public SchemaTypeClient(SchemaTypeClient template,
-                            String      specificTypeName)
+                            String           specificTypeName)
     {
         super(template);
 
@@ -76,7 +74,28 @@ public class SchemaTypeClient extends ConnectorContextClientBase
 
 
     /**
-     * Create a new schemaType.
+     * Retrieve or create the schema type that is attached to the element (typically an asset or port)
+     * via the Schema relationship.
+     *
+     * @param elementGUID unique identifier for the starting element
+     * @param schemaTypeTypeName type name of the schema type to create, if needed
+     * @return schema type element
+     * @throws InvalidParameterException  one of the parameters is invalid.
+     * @throws PropertyServerException    there is a problem retrieving information from the property server(s),
+     *                                    or there are multiple schemas attached.
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public OpenMetadataRootElement getSchemaTypeForElement(String elementGUID,
+                                                           String schemaTypeTypeName) throws InvalidParameterException,
+                                                                                             PropertyServerException,
+                                                                                             UserNotAuthorizedException
+    {
+        return schemaTypeHandler.getSchemaTypeForElement(connectorUserId, elementGUID,schemaTypeTypeName, this.getMetadataSourceOptions());
+    }
+
+
+    /**
+     * Create a new schema type.
      *
      * @param newElementOptions details of the element to create
      * @param initialClassifications map of classification names to classification properties to include in the entity creation request
@@ -89,7 +108,7 @@ public class SchemaTypeClient extends ConnectorContextClientBase
      */
     public String createSchemaType(NewElementOptions                     newElementOptions,
                                    Map<String, ClassificationProperties> initialClassifications,
-                                   SchemaTypeProperties                       properties,
+                                   SchemaTypeProperties                  properties,
                                    RelationshipProperties                parentRelationshipProperties) throws InvalidParameterException,
                                                                                                               PropertyServerException,
                                                                                                               UserNotAuthorizedException
@@ -168,7 +187,7 @@ public class SchemaTypeClient extends ConnectorContextClientBase
     /**
      * Attach an asset to a Root Schema Type.
      *
-     * @param assetGUID       unique identifier of the asset
+     * @param elementGUID       unique identifier of the element (eg asset, port, ...)
      * @param schemaTypeGUID            unique identifier of the IT profile
      * @param metadataSourceOptions  options to control access to open metadata
      * @param relationshipProperties description of the relationship.
@@ -176,19 +195,19 @@ public class SchemaTypeClient extends ConnectorContextClientBase
      * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    public void linkAssetToSchema(String                    assetGUID,
-                                  String                    schemaTypeGUID,
-                                  MetadataSourceOptions     metadataSourceOptions,
-                                  AssetSchemaTypeProperties relationshipProperties) throws InvalidParameterException,
-                                                                                           PropertyServerException,
-                                                                                           UserNotAuthorizedException
+    public void linkSchema(String                    elementGUID,
+                           String                    schemaTypeGUID,
+                           MetadataSourceOptions     metadataSourceOptions,
+                           SchemaProperties relationshipProperties) throws InvalidParameterException,
+                                                                           PropertyServerException,
+                                                                           UserNotAuthorizedException
     {
-        schemaTypeHandler.linkAssetToSchema(connectorUserId, assetGUID, schemaTypeGUID, metadataSourceOptions, relationshipProperties);
+        schemaTypeHandler.linkSchema(connectorUserId, elementGUID, schemaTypeGUID, metadataSourceOptions, relationshipProperties);
     }
 
 
     /**
-     * Detach an asset from a root schema type.
+     * Detach an element from the schema type that describes its structure.
      *
      * @param assetGUID              unique identifier of the asset
      * @param schemaTypeGUID          unique identifier of the IT profile
@@ -197,13 +216,13 @@ public class SchemaTypeClient extends ConnectorContextClientBase
      * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    public void detachAssetFromSchema(String        assetGUID,
-                                      String        schemaTypeGUID,
-                                      DeleteOptions deleteOptions) throws InvalidParameterException,
-                                                                          PropertyServerException,
-                                                                          UserNotAuthorizedException
+    public void detachSchema(String        assetGUID,
+                             String        schemaTypeGUID,
+                             DeleteOptions deleteOptions) throws InvalidParameterException,
+                                                                 PropertyServerException,
+                                                                 UserNotAuthorizedException
     {
-        schemaTypeHandler.detachAssetFromSchema(connectorUserId, assetGUID, schemaTypeGUID, deleteOptions);
+        schemaTypeHandler.detachSchema(connectorUserId, assetGUID, schemaTypeGUID, deleteOptions);
     }
 
 
@@ -278,9 +297,9 @@ public class SchemaTypeClient extends ConnectorContextClientBase
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public OpenMetadataRootElement getSchemaTypeForAsset(String     assetGUID,
-                                                   GetOptions getOptions) throws InvalidParameterException,
-                                                                                 PropertyServerException,
-                                                                                 UserNotAuthorizedException
+                                                         GetOptions getOptions) throws InvalidParameterException,
+                                                                                       PropertyServerException,
+                                                                                       UserNotAuthorizedException
     {
         return schemaTypeHandler.getSchemaTypeForAsset(connectorUserId, assetGUID, getOptions);
     }
@@ -299,7 +318,7 @@ public class SchemaTypeClient extends ConnectorContextClientBase
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     public List<OpenMetadataRootElement> findSchemaTypes(String        searchString,
-                                                   SearchOptions searchOptions) throws InvalidParameterException,
+                                                         SearchOptions searchOptions) throws InvalidParameterException,
                                                                                              UserNotAuthorizedException,
                                                                                              PropertyServerException
     {

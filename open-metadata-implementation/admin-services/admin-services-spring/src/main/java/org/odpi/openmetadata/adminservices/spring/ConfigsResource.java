@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/open-metadata/admin-services/users/{userId}/configurations")
 
-@Tag(name="Administration Services - Server Configuration", description="The server configurations administration services support the configuration" +
+@Tag(name="Server Configuration", description="The server configurations administration services support the configuration" +
         " of the open metadata and governance services within an OMAG Server. A configuration determines which of the Open Metadata and " +
         "Governance (OMAG) services are active.",
         externalDocs=@ExternalDocumentation(description="Further information",

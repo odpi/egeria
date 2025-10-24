@@ -31,11 +31,11 @@ public class FeedbackManagerInstanceHandler extends OMVSServiceInstanceHandler
 
     /**
      * This method returns the object for the tenant to use to work with the
-     * asset manager API
+     * open metadata API
      *
      * @param serverName           name of the server that the request is for
      * @param userId               local server userid
-     * @param urlMarker optional view service URL marker (overrides accessServiceURLMarker)
+     * @param urlMarker  view service URL marker
      * @param serviceOperationName service operation - usually the top level rest call
      * @return client
      * @throws InvalidParameterException unknown server/service
@@ -62,11 +62,11 @@ public class FeedbackManagerInstanceHandler extends OMVSServiceInstanceHandler
 
     /**
      * This method returns the object for the tenant to use to work with the
-     * asset manager API
+     * open metadata API
      *
      * @param serverName           name of the server that the request is for
      * @param userId               local server userid
-     * @param urlMarker optional view service URL marker (overrides accessServiceURLMarker)
+     * @param urlMarker  view service URL marker
      * @param serviceOperationName service operation - usually the top level rest call
      * @return client
      * @throws InvalidParameterException unknown server/service
@@ -94,11 +94,11 @@ public class FeedbackManagerInstanceHandler extends OMVSServiceInstanceHandler
 
     /**
      * This method returns the object for the tenant to use to work with the
-     * asset manager API
+     * open metadata API
      *
      * @param serverName           name of the server that the request is for
      * @param userId               local server userid
-     * @param urlMarker optional view service URL marker (overrides accessServiceURLMarker)
+     * @param urlMarker  view service URL marker
      * @param serviceOperationName service operation - usually the top level rest call
      * @return client
      * @throws InvalidParameterException unknown server/service
@@ -125,11 +125,11 @@ public class FeedbackManagerInstanceHandler extends OMVSServiceInstanceHandler
 
     /**
      * This method returns the object for the tenant to use to work with the
-     * asset manager API
+     * open metadata API
      *
      * @param serverName           name of the server that the request is for
      * @param userId               local server userid
-     * @param urlMarker optional view service URL marker (overrides accessServiceURLMarker)
+     * @param urlMarker  view service URL marker
      * @param serviceOperationName service operation - usually the top level rest call
      * @return client
      * @throws InvalidParameterException unknown server/service
@@ -156,11 +156,11 @@ public class FeedbackManagerInstanceHandler extends OMVSServiceInstanceHandler
 
     /**
      * This method returns the object for the tenant to use to work with the
-     * asset manager API
+     * open metadata API
      *
      * @param serverName           name of the server that the request is for
      * @param userId               local server userid
-     * @param urlMarker optional view service URL marker (overrides accessServiceURLMarker)
+     * @param urlMarker  view service URL marker
      * @param serviceOperationName service operation - usually the top level rest call
      * @return client
      * @throws InvalidParameterException unknown server/service

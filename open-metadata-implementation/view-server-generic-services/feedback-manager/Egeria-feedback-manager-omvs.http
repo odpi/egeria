@@ -56,11 +56,11 @@ Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-  "class" : "NewFeedbackRequestBody",
+  "class" : "NewAttachmentRequestBody",
   "properties" : {
     "class" : "CommentProperties",
     "qualifiedName" : "Add unique name here",
-    "commentText" : "Add comment text here",
+    "description" : "Add comment text here",
     "commentType" : "STANDARD_COMMENT",
     "additionalProperties" : {
       "propertyName 1" : "property value 1",
@@ -79,11 +79,11 @@ Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-  "class" : "NewFeedbackRequestBody",
+  "class" : "NewAttachmentRequestBody",
   "properties" : {
     "class" : "CommentProperties",
     "qualifiedName" : "Add unique name here",
-    "commentText" : "Add comment text here",
+    "description" : "Add comment text here",
     "commentType" : "STANDARD_COMMENT",
     "additionalProperties" : {
       "propertyName 1" : "property value 1",
@@ -108,7 +108,7 @@ Content-Type: application/json
   "properties" : {
     "class" : "CommentProperties",
     "qualifiedName" : "Add unique name here",
-    "text" : "Add comment text here",
+    "description" : "Add comment text here",
     "commentType" : "GENERAL_COMMENT",
     "additionalProperties" : {
       "propertyName 1" : "property value 1",
@@ -140,7 +140,7 @@ Content-Type: application/json
 # @name removeCommentFromElement
 # Removes a comment added to the element by this user.  This deletes the link to the comment, the comment itself and any comment replies attached to it.
 #
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/feedback-manager/elements/{{elementGUID}}/comments/{{commentGUID}}/remove
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/feedback-manager/comments/{{commentGUID}}/remove
 Authorization: Bearer {{token}}
 Content-Type: application/json
 
@@ -200,7 +200,7 @@ Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-  "class" : "NewFeedbackRequestBody",
+  "class" : "NewAttachmentRequestBody",
   "properties" : {
     "class" : "LikeProperties",
     "emoji" : "Add characters here as text"
@@ -286,10 +286,34 @@ Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-  "class" : "TagProperties",
-  "isPrivateTag" : false,
-  "displayName"         : "Add tag name here",
-  "description"  : "Add tag description here"
+  "class" : "NewElementRequestBody",
+  "anchorGUID" : "add guid here",
+  "isOwnAnchor": false,
+  "parentGUID": "add guid here",
+  "parentRelationshipTypeName": "add type name here",
+  "parentRelationshipProperties": {
+    "class": "RelationshipElementProperties",
+    "propertyValueMap" : {
+      "description" : {
+        "class": "PrimitiveTypePropertyValue",
+        "typeName": "string",
+        "primitiveValue" : "New description"
+      }
+    }
+  },
+  "parentAtEnd1": false,
+  "properties": {
+    "class" : "InformalTagProperties",
+    "displayName": "add short name here",
+    "description": "add description here",
+    "effectiveFrom": "{{$isoTimestamp}}",
+    "effectiveTo": "{{$isoTimestamp}}"
+  },
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
 }
 
 
@@ -302,8 +326,20 @@ Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-  "class" : "InformalTagUpdateRequestBody",
-  "description" : "Add new description here"
+  "class" : "UpdateElementRequestBody",
+  "properties": {
+    "class" : "InformalTagProperties",
+    "displayName": "add short name here",
+    "description": "add description here",
+    "effectiveFrom": "{{$isoTimestamp}}",
+    "effectiveTo": "{{$isoTimestamp}}"
+  },
+  "mergeUpdate": true,
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
 }
 
 
@@ -447,14 +483,14 @@ Content-Type: application/json
 
 ###
 # @name createNoteLog
-# Creates a new noteLog and returns the unique identifier for it.
+# Creates a new noteLog that is attached and anchored to an element, and returns the unique identifier for it.
 
 POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/feedback-manager/elements/{{elementGUID}}/note-logs
 Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-    "class" : "NewFeedbackRequestBody",
+    "class" : "NewAttachmentRequestBody",
     "initialClassifications": {
       "ZoneMembership" : {
         "class" : "ZoneMembershipProperties",
@@ -471,6 +507,51 @@ Content-Type: application/json
         "propertyName 2": "property value 2"
       }
     }
+}
+
+
+###
+# @name createNoteLog
+# Creates a new freestandimg noteLog , and returns the unique identifier for it.
+
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/feedback-manager/note-logs
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "NewElementRequestBody",
+  "anchorGUID" : "add guid here",
+  "isOwnAnchor": false,
+  "parentGUID": "add guid here",
+  "parentRelationshipTypeName": "add type name here",
+  "parentRelationshipProperties": {
+    "class": "RelationshipElementProperties",
+    "propertyValueMap" : {
+      "description" : {
+        "class": "PrimitiveTypePropertyValue",
+        "typeName": "string",
+        "primitiveValue" : "New description"
+      }
+    }
+  },
+  "parentAtEnd1": false,
+  "properties": {
+    "class": "NoteLogProperties",
+    "qualifiedName": "Add unique name here",
+    "displayName": "Add name here",
+    "description": "Add description here",
+    "additionalProperties": {
+      "propertyName 1": "property value 1",
+      "propertyName 2": "property value 2"
+    },
+    "effectiveFrom": "{{$isoTimestamp}}",
+    "effectiveTo": "{{$isoTimestamp}}"
+  },
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
 }
 
 
@@ -510,7 +591,7 @@ Content-Type: application/json
 ###
 # @name findNoteLogs
 # Retrieve the list of note log metadata elements that contain the search string.  The search string is located in the request body and is interpreted as a plain string.  The request parameters, startsWith, endsWith and ignoreCase can be used to allow a fuzzy search.  The request body also supports the specification of an effective time to restrict the search to element that are/were effective at a particular time.
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/feedback-manager/note-logs/by-search-string?startsWith=false&endsWith=false&ignoreCase=true&startFrom=0&pageSize=10
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/feedback-manager/note-logs/by-search-string
 Authorization: Bearer {{token}}
 Content-Type: application/json
 

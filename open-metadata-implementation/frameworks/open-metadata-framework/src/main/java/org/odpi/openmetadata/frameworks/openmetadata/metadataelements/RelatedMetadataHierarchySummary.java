@@ -15,6 +15,8 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 
 /**
  * RelatedMetadataHierarchySummary is for passing back a hierarchy of RelatedMetadataElementSummary elements.
+ * For situations where the elements in the hierarch are also laterally linked, additional relationships are saved
+ * as side links.
  */
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -22,6 +24,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 public class RelatedMetadataHierarchySummary extends RelatedMetadataElementSummary
 {
     private List<RelatedMetadataElementSummary> nestedElements = null;
+    private List<RelatedMetadataElementSummary> sideLinks = null;
 
 
     /**
@@ -36,13 +39,16 @@ public class RelatedMetadataHierarchySummary extends RelatedMetadataElementSumma
      *
      * @param template object to copy
      * @param nestedElements nested elements
+     * @param sideLinks nested elements
      */
     public RelatedMetadataHierarchySummary(RelatedMetadataElementSummary       template,
-                                           List<RelatedMetadataElementSummary> nestedElements)
+                                           List<RelatedMetadataElementSummary> nestedElements,
+                                           List<RelatedMetadataElementSummary> sideLinks)
     {
         super(template);
 
         this.nestedElements = nestedElements;
+        this.sideLinks      = sideLinks;
     }
 
 
@@ -58,6 +64,7 @@ public class RelatedMetadataHierarchySummary extends RelatedMetadataElementSumma
         if (template != null)
         {
             nestedElements = template.getNestedElements();
+            sideLinks = template.getSideLinks();
         }
     }
 
@@ -94,6 +101,29 @@ public class RelatedMetadataHierarchySummary extends RelatedMetadataElementSumma
         this.nestedElements = nestedElements;
     }
 
+
+    /**
+     * Return the relationships that are used to create a graph.  These relationships are not followed iteratively.
+     *
+     * @return list of related elements
+     */
+    public List<RelatedMetadataElementSummary> getSideLinks()
+    {
+        return sideLinks;
+    }
+
+
+    /**
+     * Set up the relationships that are used to create a graph.  These relationships are not followed iteratively.
+     *
+     * @param sideLinks list of related elements
+     */
+    public void setSideLinks(List<RelatedMetadataElementSummary> sideLinks)
+    {
+        this.sideLinks = sideLinks;
+    }
+
+
     /**
      * JSON-style toString
      *
@@ -104,6 +134,7 @@ public class RelatedMetadataHierarchySummary extends RelatedMetadataElementSumma
     {
         return "RelatedMetadataHierarchySummary{" +
                 "nestedElements=" + nestedElements +
+                ", sideLinks=" + sideLinks +
                 "} " + super.toString();
     }
 
@@ -121,8 +152,10 @@ public class RelatedMetadataHierarchySummary extends RelatedMetadataElementSumma
         if (objectToCompare == null || getClass() != objectToCompare.getClass()) return false;
         if (!super.equals(objectToCompare)) return false;
         RelatedMetadataHierarchySummary that = (RelatedMetadataHierarchySummary) objectToCompare;
-        return Objects.equals(nestedElements, that.nestedElements);
+        return Objects.equals(nestedElements, that.nestedElements) &&
+                Objects.equals(sideLinks, that.sideLinks);
     }
+
 
     /**
      * Return hash code for this object
@@ -132,6 +165,6 @@ public class RelatedMetadataHierarchySummary extends RelatedMetadataElementSumma
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), nestedElements);
+        return Objects.hash(super.hashCode(), nestedElements, sideLinks);
     }
 }

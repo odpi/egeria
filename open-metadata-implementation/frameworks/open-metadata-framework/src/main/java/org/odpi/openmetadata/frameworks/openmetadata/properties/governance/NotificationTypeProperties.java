@@ -6,8 +6,7 @@ package org.odpi.openmetadata.frameworks.openmetadata.properties.governance;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import org.odpi.openmetadata.frameworks.openmetadata.enums.PermittedSynchronization;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.RelationshipBeanProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 
 import java.util.Date;
 import java.util.Objects;
@@ -21,7 +20,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class NotificationTypeProperties extends TechnicalControlProperties
+public class NotificationTypeProperties extends GovernanceControlProperties
 {
     private Date startDate             = null;
     private long refreshTimeInterval   = 0L;
@@ -34,6 +33,8 @@ public class NotificationTypeProperties extends TechnicalControlProperties
      */
     public NotificationTypeProperties()
     {
+        super();
+        super.setTypeName(OpenMetadataType.NOTIFICATION_TYPE.typeName);
     }
 
 

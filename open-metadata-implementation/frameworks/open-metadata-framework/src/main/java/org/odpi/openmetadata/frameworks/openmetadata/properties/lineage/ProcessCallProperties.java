@@ -23,6 +23,7 @@ public class ProcessCallProperties extends LineageRelationshipProperties
 {
     private String formula          = null;
     private String formulaType      = null;
+    private String lineNumber       = null;
 
 
     /**
@@ -46,8 +47,9 @@ public class ProcessCallProperties extends LineageRelationshipProperties
 
         if (template != null)
         {
-            formula          = template.getFormula();
-            formulaType      = template.getFormulaType();
+            formula     = template.getFormula();
+            formulaType = template.getFormulaType();
+            lineNumber  = template.getLineNumber();
         }
     }
 
@@ -97,6 +99,28 @@ public class ProcessCallProperties extends LineageRelationshipProperties
 
 
     /**
+     * Return the line number where the process call was made.
+     *
+     * @return string
+     */
+    public String getLineNumber()
+    {
+        return lineNumber;
+    }
+
+
+    /**
+     * Set up the line number where the process call was made.
+     *
+     * @param lineNumber string
+     */
+    public void setLineNumber(String lineNumber)
+    {
+        this.lineNumber = lineNumber;
+    }
+
+
+    /**
      * Standard toString method.
      *
      * @return print out of variables in a JSON-style
@@ -107,6 +131,7 @@ public class ProcessCallProperties extends LineageRelationshipProperties
         return "ProcessCallProperties{" +
                 "formula='" + formula + '\'' +
                 ", formulaType='" + formulaType + '\'' +
+                ", lineNumber='" + lineNumber + '\'' +
                 "} " + super.toString();
     }
 
@@ -124,7 +149,9 @@ public class ProcessCallProperties extends LineageRelationshipProperties
         if (objectToCompare == null || getClass() != objectToCompare.getClass()) return false;
         if (!super.equals(objectToCompare)) return false;
         ProcessCallProperties that = (ProcessCallProperties) objectToCompare;
-        return Objects.equals(formula, that.formula) && Objects.equals(formulaType, that.formulaType);
+        return Objects.equals(formula, that.formula) &&
+                Objects.equals(formulaType, that.formulaType) &&
+                Objects.equals(lineNumber, that.lineNumber);
     }
 
 
@@ -136,6 +163,6 @@ public class ProcessCallProperties extends LineageRelationshipProperties
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), formula, formulaType);
+        return Objects.hash(super.hashCode(), formula, formulaType, lineNumber);
     }
 }

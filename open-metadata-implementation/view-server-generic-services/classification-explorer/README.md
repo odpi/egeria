@@ -1,7 +1,7 @@
 <!-- SPDX-License-Identifier: CC-BY-4.0 -->
 <!-- Copyright Contributors to the Egeria project. -->
 
-![Technical Preview](../../../images/egeria-content-status-tech-preview.png)
+![Stable](../../../images/egeria-content-status-released.png#pagewidth)
 
 # Classification Explorer OMVS
 

@@ -6,6 +6,7 @@ package org.odpi.openmetadata.frameworks.openwatchdog.handlers;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.opengovernance.client.OpenGovernanceClient;
 import org.odpi.openmetadata.frameworks.openmetadata.client.OpenMetadataClient;
+import org.odpi.openmetadata.frameworks.openmetadata.enums.ActivityStatus;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
@@ -14,6 +15,7 @@ import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.OpenMetada
 import org.odpi.openmetadata.frameworks.openmetadata.properties.NewActionTarget;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.OpenMetadataElement;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.processes.actions.NotificationProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.governance.NotificationSubscriberProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.search.*;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
@@ -83,6 +85,97 @@ public class NotificationHandler extends GovernanceDefinitionHandler
 
     /**
      * Create a notification/action for each of the subscribers.
+     *
+     * @param userId caller's userId
+     * @param properties properties of the action
+     * @param notificationTypeGUID unique identifier of the cause for the action to be raised
+     * @param requestParameters properties to pass to the next governance service
+     * @param actionRequesterGUID unique identifier of the source of the action
+     * @param actionTargets the list of elements that should be acted upon
+     * @param newSubscriberStatus set the subscriber relationship to this value after a successful notification; null means leave it alone
+     *
+     * @throws InvalidParameterException the completion status is null
+     * @throws UserNotAuthorizedException the governance action service is not authorized to update the governance action service status
+     * @throws PropertyServerException there is a problem connecting to the metadata store
+     */
+    public void notifySubscribers(String                 userId,
+                                  NotificationProperties properties,
+                                  String                 notificationTypeGUID,
+                                  Map<String, String>    requestParameters,
+                                  String                 actionRequesterGUID,
+                                  List<NewActionTarget>  actionTargets,
+                                  ActivityStatus         newSubscriberStatus) throws InvalidParameterException,
+                                                                                     UserNotAuthorizedException,
+                                                                                     PropertyServerException
+    {
+        final String methodName = "notifySubscribers";
+        final String propertiesParameterName = "properties";
+
+        propertyHelper.validateObject(properties, propertiesParameterName, methodName);
+
+        List<OpenMetadataRootElement> subscribers = this.getNotificationSubscribers(userId,
+                                                                                    notificationTypeGUID,
+                                                                                    new QueryOptions());
+
+        if (subscribers != null)
+        {
+            for (OpenMetadataRootElement subscriber : subscribers)
+            {
+                if (subscriber != null)
+                {
+                    /*
+                     * Subscribers are called if the status is IN_PROGRESS.  This is the default
+                     * value.
+                     */
+                    ActivityStatus activityStatus = ActivityStatus.IN_PROGRESS;
+
+                    if ((subscriber.getRelatedBy() != null) &&
+                            (subscriber.getRelatedBy().getRelationshipProperties() instanceof NotificationSubscriberProperties notificationSubscriberProperties))
+                    {
+                        if (notificationSubscriberProperties.getActivityStatus() != null)
+                        {
+                            activityStatus = notificationSubscriberProperties.getActivityStatus();
+                        }
+                    }
+
+                    if (activityStatus == ActivityStatus.IN_PROGRESS)
+                    {
+                        notifySubscriber(userId,
+                                         subscriber.getElementHeader().getGUID(),
+                                         properties,
+                                         notificationTypeGUID,
+                                         requestParameters,
+                                         actionRequesterGUID,
+                                         actionTargets);
+                    }
+
+                    if (newSubscriberStatus != null)
+                    {
+                        UpdateOptions updateOptions = new UpdateOptions();
+
+                        updateOptions.setMergeUpdate(true);
+
+                        ElementProperties elementProperties = propertyHelper.addEnumProperty(null,
+                                                                                             OpenMetadataProperty.ACTIVITY_STATUS.name,
+                                                                                             ActivityStatus.getOpenTypeName(),
+                                                                                             newSubscriberStatus.getName());
+                        openMetadataClient.updateRelatedElementsInStore(userId,
+                                                                        OpenMetadataType.NOTIFICATION_SUBSCRIBER_RELATIONSHIP.typeName,
+                                                                        notificationTypeGUID,
+                                                                        subscriber.getElementHeader().getGUID(),
+                                                                        updateOptions,
+                                                                        elementProperties);
+                    }
+                }
+            }
+        }
+    }
+
+
+    /**
+     * Create a notification/action for the supplied subscriber.  The notification is sent irrespective of
+     * the status of the NotificationSubscriber relationship.  The caller has either performed the status check,
+     * or it is greeting/goodbye message to an individual subscriber.
      *
      * @param userId caller's userId
      * @param subscriberGUID  unique identifier of the subscriber
@@ -178,57 +271,6 @@ public class NotificationHandler extends GovernanceDefinitionHandler
         }
 
         return null;
-    }
-
-
-    /**
-     * Create a notification/action for each of the subscribers.
-     *
-     * @param userId caller's userId
-     * @param properties properties of the action
-     * @param notificationTypeGUID unique identifier of the cause for the action to be raised
-     * @param requestParameters properties to pass to the next governance service
-     * @param actionRequesterGUID unique identifier of the source of the action
-     * @param actionTargets the list of elements that should be acted upon
-     *
-     * @throws InvalidParameterException the completion status is null
-     * @throws UserNotAuthorizedException the governance action service is not authorized to update the governance action service status
-     * @throws PropertyServerException there is a problem connecting to the metadata store
-     */
-    public void notifySubscribers(String                 userId,
-                                  NotificationProperties properties,
-                                  String                 notificationTypeGUID,
-                                  Map<String, String>    requestParameters,
-                                  String                 actionRequesterGUID,
-                                  List<NewActionTarget>  actionTargets) throws InvalidParameterException,
-                                                                               UserNotAuthorizedException,
-                                                                               PropertyServerException
-    {
-        final String methodName = "createAction";
-        final String propertiesParameterName = "properties";
-
-        propertyHelper.validateObject(properties, propertiesParameterName, methodName);
-
-        List<OpenMetadataRootElement> subscribers = this.getNotificationSubscribers(userId,
-                                                                                    notificationTypeGUID,
-                                                                                    new QueryOptions());
-
-        if (subscribers != null)
-        {
-            for (OpenMetadataRootElement subscriber : subscribers)
-            {
-                if (subscriber != null)
-                {
-                    notifySubscriber(userId,
-                                     subscriber.getElementHeader().getGUID(),
-                                     properties,
-                                     notificationTypeGUID,
-                                     requestParameters,
-                                     actionRequesterGUID,
-                                     actionTargets);
-                }
-            }
-        }
     }
 
 

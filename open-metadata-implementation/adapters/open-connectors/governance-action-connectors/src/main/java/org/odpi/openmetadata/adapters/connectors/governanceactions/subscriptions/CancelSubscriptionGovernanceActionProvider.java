@@ -31,8 +31,9 @@ public class CancelSubscriptionGovernanceActionProvider extends GovernanceAction
     {
         super();
 
-        super.supportedRequestParameters = ManageDigitalSubscriptionRequestParameter.getRequestParameterTypes();
+        super.supportedRequestParameters = null;
         super.producedGuards = ManageDigitalSubscriptionGuard.getGuardTypes();
+        super.supportedActionTargetTypes = ManageDigitalSubscriptionActionTarget.getCancelSubscriptionActionTargetTypes();
         super.producedActionTargetTypes = null;
 
         super.setConnectorClassName(connectorClassName);

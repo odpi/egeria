@@ -3,8 +3,8 @@
 
 package org.odpi.openmetadata.frameworks.opensurvey.controls;
 
-import org.odpi.openmetadata.frameworks.opengovernance.controls.GuardType;
-import org.odpi.openmetadata.frameworks.opengovernance.properties.CompletionStatus;
+import org.odpi.openmetadata.frameworks.openmetadata.specificationproperties.GuardType;
+import org.odpi.openmetadata.frameworks.openmetadata.enums.CompletionStatus;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -100,7 +100,7 @@ public enum SurveyActionGuard
 
     /**
      * Return details of the guards used on a survey that is validating the structure and content of data.
-     * Each check produces a Qualify Annotation.  If all checks pass, the certification is added to the asset.
+     * Each check produces a Qualify AnnotationProperties.  If all checks pass, the certification is added to the asset.
      * If any checks fail, a request for action is created for the asset, linking the failing quality annotations.
      *
      * @return guard types
@@ -128,7 +128,7 @@ public enum SurveyActionGuard
     {
         GuardType guardType = new GuardType();
 
-        guardType.setGuard(name);
+        guardType.setName(name);
         guardType.setDescription(description);
         guardType.setCompletionStatus(completionStatus);
 

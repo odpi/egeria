@@ -8,10 +8,8 @@ import org.odpi.openmetadata.frameworks.openmetadata.enums.ElementStatus;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
-import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.ElementHeader;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.*;
 import org.odpi.openmetadata.frameworks.openmetadata.search.*;
-import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 
 import java.util.Date;
 import java.util.List;
@@ -1895,146 +1893,6 @@ public class OpenMetadataStore extends ConnectorContextClientBase
 
 
     /**
-     * Add a new external identifier to an existing open metadata element.
-     *
-     * @param externalScopeGUID unique identifier of software server capability representing the caller
-     * @param externalScopeName unique name of software server capability representing the caller
-     * @param externalScopeTypeName type name of the software capability describing the manager for the external identifier
-     * @param openMetadataElementGUID unique identifier (GUID) of the element in the open metadata ecosystem
-     * @param openMetadataElementTypeName type name for the open metadata element
-     * @param externalIdentifierProperties optional properties used to define an external identifier
-     * @param effectiveFrom the date when this element is active - null for active now
-     * @param effectiveTo the date when this element becomes inactive - null for active until deleted
-     *
-     * @throws InvalidParameterException  one of the parameters is invalid
-     * @throws UserNotAuthorizedException user not authorized to issue this request
-     * @throws PropertyServerException    problem accessing the property server
-     */
-    public void addExternalIdentifier(String                       externalScopeGUID,
-                                      String                       externalScopeName,
-                                      String                       externalScopeTypeName,
-                                      String                       openMetadataElementGUID,
-                                      String                       openMetadataElementTypeName,
-                                      ExternalIdentifierProperties externalIdentifierProperties,
-                                      Date                         effectiveFrom,
-                                      Date                         effectiveTo) throws InvalidParameterException,
-                                                                                       UserNotAuthorizedException,
-                                                                                       PropertyServerException
-    {
-        openMetadataClient.addExternalIdentifier(connectorUserId, externalScopeGUID, externalScopeName, externalScopeTypeName, openMetadataElementGUID, openMetadataElementTypeName, externalIdentifierProperties, effectiveFrom, effectiveTo, forLineage, forDuplicateProcessing, getEffectiveTime());
-    }
-
-
-    /**
-     * Update the description of a specific external identifier.
-     *
-     * @param externalScopeGUID unique identifier of software server capability representing the caller
-     * @param externalScopeName unique name of software server capability representing the caller
-     * @param openMetadataElementGUID unique identifier (GUID) of the element in the open metadata ecosystem
-     * @param openMetadataElementTypeName type name for the open metadata element
-     * @param externalIdentifierProperties optional properties used to define an external identifier
-     *
-     * @throws InvalidParameterException  one of the parameters is invalid
-     * @throws UserNotAuthorizedException user not authorized to issue this request
-     * @throws PropertyServerException    problem accessing the property server
-     */
-    public void updateExternalIdentifier(String                       externalScopeGUID,
-                                         String                       externalScopeName,
-                                         String                       openMetadataElementGUID,
-                                         String                       openMetadataElementTypeName,
-                                         ExternalIdentifierProperties externalIdentifierProperties) throws InvalidParameterException,
-                                                                                                           UserNotAuthorizedException,
-                                                                                                           PropertyServerException
-    {
-        openMetadataClient.updateExternalIdentifier(connectorUserId, externalScopeGUID, externalScopeName, OpenMetadataType.INVENTORY_CATALOG.typeName, openMetadataElementGUID, openMetadataElementTypeName, externalIdentifierProperties, null, null, forLineage, forDuplicateProcessing, getEffectiveTime());
-    }
-
-
-    /**
-     * Update the description of a specific external identifier.
-     *
-     * @param externalScopeGUID unique identifier of software server capability representing the caller
-     * @param externalScopeName unique name of software server capability representing the caller
-     * @param externalScopeTypeName type name of the software capability describing the manager for the external identifier
-     * @param openMetadataElementGUID unique identifier (GUID) of the element in the open metadata ecosystem
-     * @param openMetadataElementTypeName type name for the open metadata element
-     * @param externalIdentifierProperties optional properties used to define an external identifier
-     *
-     * @throws InvalidParameterException  one of the parameters is invalid
-     * @throws UserNotAuthorizedException user not authorized to issue this request
-     * @throws PropertyServerException    problem accessing the property server
-     */
-    public void updateExternalIdentifier(String                       externalScopeGUID,
-                                         String                       externalScopeName,
-                                         String                       externalScopeTypeName,
-                                         String                       openMetadataElementGUID,
-                                         String                       openMetadataElementTypeName,
-                                         ExternalIdentifierProperties externalIdentifierProperties) throws InvalidParameterException,
-                                                                                                           UserNotAuthorizedException,
-                                                                                                           PropertyServerException
-    {
-        openMetadataClient.updateExternalIdentifier(connectorUserId, externalScopeGUID, externalScopeName, externalScopeTypeName, openMetadataElementGUID, openMetadataElementTypeName, externalIdentifierProperties, null, null, forLineage, forDuplicateProcessing, getEffectiveTime());
-    }
-
-
-    /**
-     * Update the description of a specific external identifier.
-     *
-     * @param externalScopeGUID unique identifier of software server capability representing the caller
-     * @param externalScopeName unique name of software server capability representing the caller
-     * @param externalScopeTypeName type name of the software capability describing the manager for the external identifier
-     * @param openMetadataElementGUID unique identifier (GUID) of the element in the open metadata ecosystem
-     * @param openMetadataElementTypeName type name for the open metadata element
-     * @param externalIdentifierProperties optional properties used to define an external identifier
-     * @param effectiveFrom the date when this element is active - null for active now
-     * @param effectiveTo the date when this element becomes inactive - null for active until deleted
-     *
-     * @throws InvalidParameterException  one of the parameters is invalid
-     * @throws UserNotAuthorizedException user not authorized to issue this request
-     * @throws PropertyServerException    problem accessing the property server
-     */
-    public void updateExternalIdentifier(String                       externalScopeGUID,
-                                         String                       externalScopeName,
-                                         String                       externalScopeTypeName,
-                                         String                       openMetadataElementGUID,
-                                         String                       openMetadataElementTypeName,
-                                         ExternalIdentifierProperties externalIdentifierProperties,
-                                         Date                         effectiveFrom,
-                                         Date                         effectiveTo) throws InvalidParameterException,
-                                                                                          UserNotAuthorizedException,
-                                                                                          PropertyServerException
-    {
-        openMetadataClient.updateExternalIdentifier(connectorUserId, externalScopeGUID, externalScopeName, externalScopeTypeName, openMetadataElementGUID, openMetadataElementTypeName, externalIdentifierProperties, effectiveFrom, effectiveTo, forLineage, forDuplicateProcessing, getEffectiveTime());
-    }
-
-
-    /**
-     * Remove an external identifier from an existing open metadata element.  The open metadata element is not
-     * affected.
-     *
-     * @param externalScopeGUID unique identifier of software server capability representing the caller
-     * @param externalScopeName unique name of software server capability representing the caller
-     * @param openMetadataElementGUID unique identifier (GUID) of the element in the open metadata ecosystem
-     * @param openMetadataElementTypeName type name for the open metadata element
-     * @param externalIdentifier unique identifier of this element in the third party asset manager
-     *
-     * @throws InvalidParameterException  one of the parameters is invalid
-     * @throws UserNotAuthorizedException user not authorized to issue this request
-     * @throws PropertyServerException    problem accessing the property server
-     */
-    public void removeExternalIdentifier(String                   externalScopeGUID,
-                                         String                   externalScopeName,
-                                         String                   openMetadataElementGUID,
-                                         String                   openMetadataElementTypeName,
-                                         String                   externalIdentifier) throws InvalidParameterException,
-                                                                                             UserNotAuthorizedException,
-                                                                                             PropertyServerException
-    {
-        openMetadataClient.removeExternalIdentifier(connectorUserId, externalScopeGUID, externalScopeName, openMetadataElementGUID, openMetadataElementTypeName, externalIdentifier, forLineage, forDuplicateProcessing, getEffectiveTime());
-    }
-
-
-    /**
      * Confirm that the values of a particular metadata element have been synchronized.  This is important
      * from an audit point of view, and to allow bidirectional updates of metadata using optimistic locking.
      *
@@ -2059,58 +1917,6 @@ public class OpenMetadataStore extends ConnectorContextClientBase
         openMetadataClient.confirmSynchronization(connectorUserId, externalScopeGUID, externalScopeName, openMetadataElementGUID, openMetadataElementTypeName, externalIdentifier);
     }
 
-
-    /**
-     * Return the list of headers for open metadata elements that are associated with a particular
-     * external identifier.
-     *
-     * @param externalScopeGUID unique identifier of software server capability representing the caller
-     * @param externalScopeName unique name of software server capability representing the caller
-     * @param externalIdentifier unique identifier of this element in the external asset manager
-     * @param startFrom paging start point
-     * @param pageSize maximum results that can be returned
-     *
-     * @return list of element headers
-     *
-     * @throws InvalidParameterException  one of the parameters is invalid
-     * @throws UserNotAuthorizedException user not authorized to issue this request
-     * @throws PropertyServerException    problem accessing the property server
-     */
-    public List<ElementHeader> getElementsForExternalIdentifier(String externalScopeGUID,
-                                                                String externalScopeName,
-                                                                String externalIdentifier,
-                                                                int    startFrom,
-                                                                int    pageSize) throws InvalidParameterException,
-                                                                                        UserNotAuthorizedException,
-                                                                                        PropertyServerException
-    {
-        return openMetadataClient.getElementsForExternalIdentifier(connectorUserId, externalScopeGUID, externalScopeName, externalIdentifier, startFrom, pageSize, forLineage, forDuplicateProcessing, getEffectiveTime());
-    }
-
-
-    /**
-     * Check that the supplied external identifier matches the element GUID.
-     *
-     * @param externalScopeGUID unique identifier of software server capability representing the caller
-     * @param externalScopeName unique name of software server capability representing the caller
-     * @param openMetadataElementGUID element guid used for the lookup
-     * @param openMetadataElementTypeName type name for the open metadata element
-     * @param elementExternalIdentifier external identifier value
-     *
-     * @throws InvalidParameterException one of the parameters is invalid.
-     * @throws UserNotAuthorizedException the user is not authorized to make this request.
-     * @throws PropertyServerException the repository is not available or not working properly.
-     */
-    public void validateExternalIdentifier(String  externalScopeGUID,
-                                           String  externalScopeName,
-                                           String  openMetadataElementGUID,
-                                           String  openMetadataElementTypeName,
-                                           String  elementExternalIdentifier) throws InvalidParameterException,
-                                                                                     UserNotAuthorizedException,
-                                                                                     PropertyServerException
-    {
-        openMetadataClient.validateExternalIdentifier(connectorUserId, externalScopeGUID, externalScopeName, openMetadataElementGUID, openMetadataElementTypeName, elementExternalIdentifier, forLineage, forDuplicateProcessing, getEffectiveTime());
-    }
 
 
     /**

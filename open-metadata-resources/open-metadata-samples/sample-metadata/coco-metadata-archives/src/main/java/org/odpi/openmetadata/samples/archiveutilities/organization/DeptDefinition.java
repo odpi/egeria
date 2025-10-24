@@ -4,6 +4,7 @@ package org.odpi.openmetadata.samples.archiveutilities.organization;
 
 import java.util.Arrays;
 import java.util.List;
+import org.odpi.openmetadata.frameworks.openmetadata.refdata.ScopeDefinition;
 
 /**
  * The DeptDefinition is used to feed the definition of the organization's departments for Coco Pharmaceuticals scenarios.
@@ -19,7 +20,7 @@ public enum DeptDefinition
           0,
           null,
           BusinessAreaDefinition.GOVERNANCE,
-          ScopeDefinition.ALL_COCO),
+          ScopeDefinition.WITHIN_ORGANIZATION),
 
     FOUNDERS("9999",
              "Founders Team",
@@ -30,7 +31,7 @@ public enum DeptDefinition
              0,
              null,
              BusinessAreaDefinition.GOVERNANCE,
-             ScopeDefinition.ALL_COCO),
+             ScopeDefinition.WITHIN_ORGANIZATION),
 
     AMSTERDAM ("9998",
                "Amsterdam Site",
@@ -52,7 +53,7 @@ public enum DeptDefinition
               3,
               WorkLocationDefinition.AMSTERDAM_SITE,
               BusinessAreaDefinition.HR,
-              ScopeDefinition.ALL_COCO),
+              ScopeDefinition.WITHIN_ORGANIZATION),
 
     SEC_GLOBAL("0001",
               "Security",
@@ -63,7 +64,7 @@ public enum DeptDefinition
               2,
               WorkLocationDefinition.AMSTERDAM_SITE,
               BusinessAreaDefinition.GOVERNANCE,
-              ScopeDefinition.ALL_COCO),
+              ScopeDefinition.WITHIN_ORGANIZATION),
 
     SALES_EU("0002",
              "Sales",
@@ -107,7 +108,7 @@ public enum DeptDefinition
                  0,
                  WorkLocationDefinition.AMSTERDAM_SITE,
                  BusinessAreaDefinition.IT,
-                 ScopeDefinition.ALL_COCO),
+                 ScopeDefinition.WITHIN_ORGANIZATION),
 
     SE_GLOBAL("3082",
               "Software Development and Testing Team",
@@ -118,7 +119,7 @@ public enum DeptDefinition
               1,
               WorkLocationDefinition.AMSTERDAM_SITE,
               null,
-              ScopeDefinition.ALL_COCO),
+              ScopeDefinition.WITHIN_ORGANIZATION),
 
     IT_OPS_GLOBAL("3067",
                   "IT Operations Team",
@@ -129,7 +130,7 @@ public enum DeptDefinition
                   2,
                   WorkLocationDefinition.AMSTERDAM_SITE,
                   null,
-                  ScopeDefinition.ALL_COCO),
+                  ScopeDefinition.WITHIN_ORGANIZATION),
 
     AMSTERDAM_DEPOT("0005",
                   "Amsterdam Depot",
@@ -184,7 +185,7 @@ public enum DeptDefinition
         2,
         WorkLocationDefinition.LONDON_SITE,
         BusinessAreaDefinition.GOVERNANCE,
-        ScopeDefinition.ALL_COCO),
+        ScopeDefinition.WITHIN_ORGANIZATION),
 
     FINANCE("6788",
             "Finance Team",
@@ -195,7 +196,7 @@ public enum DeptDefinition
             1,
             WorkLocationDefinition.LONDON_SITE,
             BusinessAreaDefinition.FINANCE,
-            ScopeDefinition.ALL_COCO),
+            ScopeDefinition.WITHIN_ORGANIZATION),
 
     ACCOUNTS("6877",
              "Accounts Team",
@@ -206,7 +207,7 @@ public enum DeptDefinition
              4,
              WorkLocationDefinition.LONDON_SITE,
              null,
-             ScopeDefinition.ALL_COCO),
+             ScopeDefinition.WITHIN_ORGANIZATION),
 
     SALES_UK("0007",
              "Sales",

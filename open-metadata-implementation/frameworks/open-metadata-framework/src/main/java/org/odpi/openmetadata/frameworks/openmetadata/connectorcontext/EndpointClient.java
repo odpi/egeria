@@ -10,14 +10,12 @@ import org.odpi.openmetadata.frameworks.openmetadata.ffdc.PropertyServerExceptio
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.frameworks.openmetadata.handlers.EndpointHandler;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.OpenMetadataRootElement;
-import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.OpenMetadataRootElement;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.ClassificationProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.RelationshipProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.connections.EndpointProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.connections.ServerEndpointProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.search.*;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -91,7 +89,7 @@ public class EndpointClient extends ConnectorContextClientBase
 
 
     /**
-     * Create a new metadata element to represent a endpoint using an existing element as a template.
+     * Create a new metadata element to represent an endpoint using an existing element as a template.
      * The template defines additional classifications and relationships that should be added to the new endpoint.
      *
      * @param templateOptions details of the element to create
@@ -126,7 +124,7 @@ public class EndpointClient extends ConnectorContextClientBase
 
 
     /**
-     * Update the properties of a endpoint.
+     * Update the properties of an endpoint.
      *
      * @param endpointGUID       unique identifier of the endpoint (returned from create)
      * @param updateOptions provides a structure for the additional options when updating an element.
@@ -194,7 +192,7 @@ public class EndpointClient extends ConnectorContextClientBase
 
 
     /**
-     * Delete a endpoint.
+     * Delete an endpoint.
      *
      * @param endpointGUID       unique identifier of the element
      * @throws InvalidParameterException  one of the parameters is null or invalid.

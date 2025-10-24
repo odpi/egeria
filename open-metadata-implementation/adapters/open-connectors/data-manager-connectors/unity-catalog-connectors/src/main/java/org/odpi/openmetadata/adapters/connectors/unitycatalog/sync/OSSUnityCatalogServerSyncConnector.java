@@ -13,9 +13,11 @@ import org.odpi.openmetadata.frameworks.connectors.Connector;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
 import org.odpi.openmetadata.frameworks.opengovernance.properties.CatalogTarget;
 import org.odpi.openmetadata.frameworks.integration.connectors.IntegrationConnectorBase;
+import org.odpi.openmetadata.frameworks.openmetadata.connectorcontext.AssetClient;
 import org.odpi.openmetadata.frameworks.openmetadata.events.OpenMetadataEventListener;
 import org.odpi.openmetadata.frameworks.openmetadata.events.OpenMetadataOutTopicEvent;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.OpenMetadataRootElement;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.RelatedMetadataElement;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.RelatedMetadataElementList;
 import org.odpi.openmetadata.frameworks.integration.connectors.CatalogTargetIntegrator;
@@ -23,6 +25,7 @@ import org.odpi.openmetadata.frameworks.integration.ffdc.OIFAuditCode;
 import org.odpi.openmetadata.frameworks.integration.properties.RequestedCatalogTarget;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.PermittedSynchronization;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.ElementHeader;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.processes.connectors.CatalogTargetProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 
 import java.util.*;
@@ -208,9 +211,9 @@ public class    OSSUnityCatalogServerSyncConnector extends IntegrationConnectorB
     {
         final String methodName = "integrateCatalogTarget";
 
-        if (UnityCatalogDeployedImplementationType.OSS_UNITY_CATALOG_SERVER.getAssociatedTypeName().equals(requestedCatalogTarget.getCatalogTargetElement().getType().getTypeName()))
+        if (UnityCatalogDeployedImplementationType.OSS_UNITY_CATALOG_SERVER.getAssociatedTypeName().equals(requestedCatalogTarget.getCatalogTargetElement().getElementHeader().getType().getTypeName()))
         {
-            String ucServerGUID = requestedCatalogTarget.getCatalogTargetElement().getGUID();
+            String ucServerGUID = requestedCatalogTarget.getCatalogTargetElement().getElementHeader().getGUID();
             try
             {
                 Connector connector = integrationContext.getConnectedAssetContext().getConnectorForAsset(ucServerGUID, auditLog);
@@ -248,8 +251,8 @@ public class    OSSUnityCatalogServerSyncConnector extends IntegrationConnectorB
         }
         else
         {
-            super.throwWrongTypeOfAsset(requestedCatalogTarget.getCatalogTargetElement().getGUID(),
-                                        requestedCatalogTarget.getCatalogTargetElement().getType().getTypeName(),
+            super.throwWrongTypeOfAsset(requestedCatalogTarget.getCatalogTargetElement().getElementHeader().getGUID(),
+                                        requestedCatalogTarget.getCatalogTargetElement().getElementHeader().getType().getTypeName(),
                                         UnityCatalogDeployedImplementationType.OSS_UNITY_CATALOG_SERVER.getAssociatedTypeName(),
                                         connectorName,
                                         methodName);
@@ -385,34 +388,37 @@ public class    OSSUnityCatalogServerSyncConnector extends IntegrationConnectorB
                     (! lastUpdateUser.equals(integrationContext.getMyUserId())) &&
                     (propertyHelper.isTypeOf(elementHeader, OpenMetadataType.DATA_ACCESS_MANAGER.typeName)))
                 {
+                    AssetClient assetClient = integrationContext.getAssetClient();
+
                     /*
                      * This is a new catalog object.  Is it connected to one of the server that are catalog targets?
                      */
                     int startFrom = 0;
 
-                    List<CatalogTarget> catalogTargetList = integrationContext.getConnectorConfigClient().getCatalogTargets(integrationContext.getIntegrationConnectorGUID(),
-                                                                                                                            startFrom,
-                                                                                                                            integrationContext.getMaxPageSize());
+                    List<OpenMetadataRootElement> catalogTargetList = assetClient.getCatalogTargets(integrationContext.getIntegrationConnectorGUID(),
+                                                                                                    assetClient.getQueryOptions(startFrom, integrationContext.getMaxPageSize()));
 
                     while (catalogTargetList != null)
                     {
-                        for (CatalogTarget catalogTarget : catalogTargetList)
+                        for (OpenMetadataRootElement catalogTarget : catalogTargetList)
                         {
                             if ((catalogTarget != null) && (super.isActive()) &&
-                                    (isCatalogForTargetServer(elementHeader.getGUID(),
-                                                              catalogTarget.getCatalogTargetElement().getGUID())))
+                                    (catalogTarget.getRelatedBy() != null) &&
+                                    (catalogTarget.getRelatedBy().getRelationshipProperties() instanceof CatalogTargetProperties catalogTargetProperties) &&
+                                    (isCatalogForTargetServer(elementHeader.getGUID(), catalogTarget.getElementHeader().getGUID())))
                             {
                                 Connector catalogTargetConnector = null;
 
-                                catalogTarget.setConfigurationProperties(super.combineConfigurationProperties(catalogTarget.getConfigurationProperties()));
+                                catalogTargetProperties.setConfigurationProperties(super.combineConfigurationProperties(catalogTargetProperties.getConfigurationProperties()));
 
-                                if (propertyHelper.isTypeOf(catalogTarget.getCatalogTargetElement(), OpenMetadataType.ASSET.typeName))
+                                if (propertyHelper.isTypeOf(catalogTarget.getElementHeader(), OpenMetadataType.ASSET.typeName))
                                 {
-                                    catalogTargetConnector = integrationContext.getConnectedAssetContext().getConnectorForAsset(catalogTarget.getCatalogTargetElement().getGUID(), auditLog);
+                                    catalogTargetConnector = integrationContext.getConnectedAssetContext().getConnectorForAsset(catalogTarget.getElementHeader().getGUID(), auditLog);
                                 }
 
-                                RequestedCatalogTarget requestedCatalogTarget = new RequestedCatalogTarget(catalogTarget,
-                                                                                                           integrationContext.getCatalogTargetContext(catalogTarget),
+                                CatalogTarget newCatalogTarget = new CatalogTarget(catalogTargetProperties, catalogTarget);
+                                RequestedCatalogTarget requestedCatalogTarget = new RequestedCatalogTarget(newCatalogTarget,
+                                                                                                           integrationContext.getCatalogTargetContext(newCatalogTarget),
                                                                                                            catalogTargetConnector);
 
                                 auditLog.logMessage(methodName,
@@ -423,9 +429,8 @@ public class    OSSUnityCatalogServerSyncConnector extends IntegrationConnectorB
                         }
 
                         startFrom         = startFrom + integrationContext.getMaxPageSize();
-                        catalogTargetList = integrationContext.getConnectorConfigClient().getCatalogTargets(integrationContext.getIntegrationConnectorGUID(),
-                                                                                                            startFrom,
-                                                                                                            integrationContext.getMaxPageSize());
+                        catalogTargetList = assetClient.getCatalogTargets(integrationContext.getIntegrationConnectorGUID(),
+                                                                          assetClient.getQueryOptions(startFrom, integrationContext.getMaxPageSize()));
                     }
                 }
             }

@@ -5,7 +5,6 @@ package org.odpi.openmetadata.frameworks.openmetadata.properties.assets.filesand
 
 import com.fasterxml.jackson.annotation.*;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.DataStoreProperties;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.databases.DatabaseProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 
 import java.util.Objects;
@@ -24,7 +23,21 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
         include = JsonTypeInfo.As.PROPERTY,
         property = "class")
 @JsonSubTypes({
+        @JsonSubTypes.Type(value = ArchiveFileProperties.class, name = "ArchiveFileProperties"),
+        @JsonSubTypes.Type(value = AvroFileProperties.class, name = "AvroFileProperties"),
+        @JsonSubTypes.Type(value = BuildInstructionFileProperties.class, name = "BuildInstructionFileProperties"),
         @JsonSubTypes.Type(value = CSVFileProperties.class, name = "CSVFileProperties"),
+        @JsonSubTypes.Type(value = ExecutableFileProperties.class, name = "ExecutableFileProperties"),
+        @JsonSubTypes.Type(value = JSONFileProperties.class, name = "JSONFileProperties"),
+        @JsonSubTypes.Type(value = KeyStoreFileProperties.class, name = "KeyStoreFileProperties"),
+        @JsonSubTypes.Type(value = LogFileProperties.class, name = "LogFileProperties"),
+        @JsonSubTypes.Type(value = MediaFileProperties.class, name = "MediaFileProperties"),
+        @JsonSubTypes.Type(value = ParquetFileProperties.class, name = "ParquetFileProperties"),
+        @JsonSubTypes.Type(value = PropertiesFileProperties.class, name = "PropertiesFileProperties"),
+        @JsonSubTypes.Type(value = ScriptFileProperties.class, name = "ScriptFileProperties"),
+        @JsonSubTypes.Type(value = SourceCodeFileProperties.class, name = "SourceCodeFileProperties"),
+        @JsonSubTypes.Type(value = SpreadsheetFileProperties.class, name = "SpreadsheetFileProperties"),
+        @JsonSubTypes.Type(value = XMLFileProperties.class, name = "XMLFileProperties"),
 })
 public class DataFileProperties extends DataStoreProperties
 {

@@ -10,13 +10,11 @@ for [OMAG Servers](https://egeria-project.org/concepts/omag-server/).
 The definition of the connector interface for these connectors is
 defined in the [admin-services-api](../../../admin-services/admin-services-api) module.
 
-These are the configuration document store connectors implemented by Egeria.
+This is the configuration document store connectors implemented by Egeria.
 
 * **[configuration-file-store-connector](configuration-file-store-connector)** supports managing the
 open metadata configuration document as a clear text JSON file.
 
-* **[configuration-encrypted-file-store-connector](configuration-encrypted-file-store-connector)** supports managing
-the open metadata configuration document as an encrypted JSON file.
 
 A configuration store connector is needed by a
 [OMAG Server Platform](https://egeria-project.org/concepts/omag-server-platform).

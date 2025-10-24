@@ -114,58 +114,27 @@ public class CocoBusinessSystemsArchiveWriter extends EgeriaBaseArchiveWriter
                                                        extendedProperties);
             assert(serverGUID.equals(systemDefinition.getSystemGUID()));
 
-
-            if (systemDefinition.getSystemType().getServerPurpose() != null)
-            {
-                archiveHelper.addServerPurposeClassification(serverGUID,
-                                                             systemDefinition.getSystemType().getServerPurpose(),
-                                                             null);
-            }
-
             if (systemDefinition.getSystemType().getSoftwareServerCapabilities() != null)
             {
                 for (String softwareCapabilityTypeName : systemDefinition.getSystemType().getSoftwareServerCapabilities())
                 {
                     String softwareCapabilityQName = softwareCapabilityTypeName + " for " + systemDefinition.getQualifiedName();
 
-                    if (softwareCapabilityTypeName.endsWith(OpenMetadataType.ENGINE.typeName))
-                    {
-                        Classification engineClassification = archiveHelper.getEngineClassification(softwareCapabilityTypeName);
-
-                        archiveHelper.addSoftwareCapability(OpenMetadataType.ENGINE.typeName,
-                                                            softwareCapabilityQName,
-                                                            softwareCapabilityQName,
-                                                            null,
-                                                            null,
-                                                            null,
-                                                            null,
-                                                            null,
-                                                            null,
-                                                            null,
-                                                            engineClassification,
-                                                            serverGUID,
-                                                            OpenMetadataType.SOFTWARE_SERVER.typeName,
-                                                            OpenMetadataType.ASSET.typeName,
-                                                            null);
-                    }
-                    else
-                    {
-                        archiveHelper.addSoftwareCapability(softwareCapabilityTypeName,
-                                                            softwareCapabilityQName,
-                                                            softwareCapabilityQName,
-                                                            null,
-                                                            null,
-                                                            null,
-                                                            null,
-                                                            null,
-                                                            null,
-                                                            null,
-                                                            (Classification)null,
-                                                            serverGUID,
-                                                            OpenMetadataType.SOFTWARE_SERVER.typeName,
-                                                            OpenMetadataType.ASSET.typeName,
-                                                            null);
-                    }
+                    archiveHelper.addSoftwareCapability(softwareCapabilityTypeName,
+                                                        softwareCapabilityQName,
+                                                        softwareCapabilityQName,
+                                                        null,
+                                                        null,
+                                                        null,
+                                                        null,
+                                                        null,
+                                                        null,
+                                                        null,
+                                                        (Classification)null,
+                                                        serverGUID,
+                                                        OpenMetadataType.SOFTWARE_SERVER.typeName,
+                                                        OpenMetadataType.ASSET.typeName,
+                                                        null);
 
                     archiveHelper.addSupportedSoftwareCapabilityRelationship(softwareCapabilityQName,
                                                                              systemDefinition.getQualifiedName(),

@@ -8,7 +8,7 @@ package org.odpi.openmetadata.platformservices.server;
  */
 public class OMAGServerPlatformOriginServices
 {
-    final String   implementationOrigin = "Egeria OMAG Server Platform (version 5.4-SNAPSHOT)";
+    final String   implementationOrigin = "Egeria OMAG Server Platform (version 6.0-SNAPSHOT)";
 
     /**
      * Return the origin of this server platform implementation.

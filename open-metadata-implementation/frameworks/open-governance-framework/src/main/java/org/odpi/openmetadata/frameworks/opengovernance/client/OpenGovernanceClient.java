@@ -10,7 +10,6 @@ import org.odpi.openmetadata.frameworks.openmetadata.search.PropertyHelper;
  * Metadata Access Server OMAG Server.
  */
 public abstract class OpenGovernanceClient  implements ActionControlInterface,
-                                                       GovernanceActionTypeInterface,
                                                        GovernanceActionProcessInterface,
                                                        DuplicateManagementInterface
 {

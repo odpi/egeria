@@ -6,6 +6,7 @@ package org.odpi.openmetadata.frameworks.openmetadata.properties.governance.gove
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 
 import java.util.Objects;
 
@@ -28,6 +29,7 @@ public class GovernanceActionProcessStepProperties extends GovernanceActionTypeP
     public GovernanceActionProcessStepProperties()
     {
         super();
+        super.setTypeName(OpenMetadataType.GOVERNANCE_ACTION_PROCESS_STEP.typeName);
     }
 
 

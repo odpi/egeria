@@ -8,6 +8,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.ReferenceableProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 
+import java.util.List;
 import java.util.Objects;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
@@ -21,8 +22,9 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class DataStructureProperties extends ReferenceableProperties
 {
-    private String namespace = null;
-    private String userDefinedStatus = null;
+    private String       namespace         = null;
+    private List<String> namePatterns      = null;
+    private String       userDefinedStatus = null;
 
 
 
@@ -48,6 +50,7 @@ public class DataStructureProperties extends ReferenceableProperties
         if (template != null)
         {
             namespace         = template.getNamespace();
+            namePatterns      = template.getNamePatterns();
             userDefinedStatus = template.getUserDefinedStatus();
         }
     }
@@ -72,6 +75,30 @@ public class DataStructureProperties extends ReferenceableProperties
     public void setNamespace(String namespace)
     {
         this.namespace = namespace;
+    }
+
+
+    /**
+     * Return a list of name patterns to use when generating schemas.  Use space separated capitalized works so the
+     * schema generators can easily convert to valid language keywords.
+     *
+     * @return string
+     */
+    public List<String> getNamePatterns()
+    {
+        return namePatterns;
+    }
+
+
+    /**
+     * Set up a list of name patterns to use when generating schemas.  Use space separated capitalized works so the
+     * schema generators can easily convert to valid language keywords.
+     *
+     * @param namePatterns string
+     */
+    public void setNamePatterns(List<String> namePatterns)
+    {
+        this.namePatterns = namePatterns;
     }
 
 
@@ -107,6 +134,7 @@ public class DataStructureProperties extends ReferenceableProperties
     {
         return "DataStructureProperties{" +
                 "namespace='" + namespace + '\'' +
+                ", namePatterns=" + namePatterns +
                 ", userDefinedStatus='" + userDefinedStatus + '\'' +
                 "} " + super.toString();
     }
@@ -126,7 +154,8 @@ public class DataStructureProperties extends ReferenceableProperties
         if (!super.equals(objectToCompare)) return false;
         DataStructureProperties that = (DataStructureProperties) objectToCompare;
         return Objects.equals(userDefinedStatus, that.userDefinedStatus) &&
-                Objects.equals(namespace, that.namespace);
+                Objects.equals(namespace, that.namespace) &&
+                Objects.equals(namePatterns, that.namePatterns);
     }
 
     /**
@@ -137,6 +166,6 @@ public class DataStructureProperties extends ReferenceableProperties
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), namespace, userDefinedStatus);
+        return Objects.hash(super.hashCode(), namespace, namePatterns, userDefinedStatus);
     }
 }

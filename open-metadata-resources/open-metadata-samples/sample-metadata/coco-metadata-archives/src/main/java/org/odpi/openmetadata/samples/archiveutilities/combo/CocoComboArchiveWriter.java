@@ -11,7 +11,6 @@ import org.odpi.openmetadata.samples.archiveutilities.clinicaltrialtemplates.Coc
 import org.odpi.openmetadata.samples.archiveutilities.governanceengines.CocoGovernanceEnginesArchiveWriter;
 import org.odpi.openmetadata.samples.archiveutilities.governanceprogram.CocoGovernanceProgramArchiveWriter;
 import org.odpi.openmetadata.samples.archiveutilities.organization.CocoOrganizationArchiveWriter;
-import org.odpi.openmetadata.samples.archiveutilities.productcatalog.CocoProductCatalogArchiveWriter;
 import org.odpi.openmetadata.samples.archiveutilities.sustainability.CocoSustainabilityArchiveWriter;
 
 import java.util.Date;
@@ -116,10 +115,10 @@ public class CocoComboArchiveWriter extends EgeriaBaseArchiveWriter
 
         archiveHelper.saveGUIDs();
 
-        CocoProductCatalogArchiveWriter cocoProductCatalogArchiveWriter = new CocoProductCatalogArchiveWriter();
+        // todo CocoProductCatalogArchiveWriter cocoProductCatalogArchiveWriter = new CocoProductCatalogArchiveWriter();
 
-        cocoProductCatalogArchiveWriter.setArchiveBuilder(archiveBuilder,archiveHelper);
-        cocoProductCatalogArchiveWriter.getArchiveContent();
+        // todo cocoProductCatalogArchiveWriter.setArchiveBuilder(archiveBuilder,archiveHelper);
+        // todo cocoProductCatalogArchiveWriter.getArchiveContent();
 
         archiveHelper.saveGUIDs();
 

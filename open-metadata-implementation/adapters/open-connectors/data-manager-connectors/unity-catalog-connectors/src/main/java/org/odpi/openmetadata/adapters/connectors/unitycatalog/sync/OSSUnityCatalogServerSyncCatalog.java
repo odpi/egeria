@@ -10,12 +10,13 @@ import org.odpi.openmetadata.adapters.connectors.unitycatalog.properties.Catalog
 import org.odpi.openmetadata.adapters.connectors.unitycatalog.resource.OSSUnityCatalogResourceConnector;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.integration.context.IntegrationContext;
+import org.odpi.openmetadata.frameworks.openmetadata.connectorcontext.AssetClient;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.ElementStatus;
 import org.odpi.openmetadata.frameworks.openmetadata.controls.PlaceholderProperty;
-import org.odpi.openmetadata.frameworks.opengovernance.properties.CatalogTarget;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.OpenMetadataRootElement;
 import org.odpi.openmetadata.frameworks.openmetadata.search.*;
 import org.odpi.openmetadata.frameworks.integration.iterator.*;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.processes.connectors.CatalogTargetProperties;
@@ -179,31 +180,31 @@ public class OSSUnityCatalogServerSyncCatalog extends OSSUnityCatalogInsideCatal
                     }
                     else if (friendshipConnectorGUID != null)
                     {
+                        AssetClient assetClient = context.getAssetClient();
+
                         /*
                          * Check that there is no catalog target set up for this catalog since it should not be catalogued.
                          */
                         int startingFrom = 0;
-                        List<CatalogTarget> catalogTargets = context.getConnectorConfigClient().getCatalogTargets(friendshipConnectorGUID,
-                                                                                       startingFrom,
-                                                                                       context.getMaxPageSize());
+                        List<OpenMetadataRootElement> catalogTargets = assetClient.getCatalogTargets(friendshipConnectorGUID,
+                                                                                                     assetClient.getQueryOptions(startingFrom, context.getMaxPageSize()));
                         while (catalogTargets != null)
                         {
-                            for (CatalogTarget catalogTarget : catalogTargets)
+                            for (OpenMetadataRootElement catalogTarget : catalogTargets)
                             {
-                                if (catalogTarget != null)
+                                if ((catalogTarget != null) && (catalogTarget.getRelatedBy().getRelationshipProperties() instanceof CatalogTargetProperties catalogTargetProperties))
                                 {
-                                    if (name.equals(catalogTarget.getCatalogTargetName()))
+                                    if (name.equals(catalogTargetProperties.getCatalogTargetName()))
                                     {
-                                        context.getConnectorConfigClient().removeCatalogTarget(catalogTarget.getRelationshipGUID());
+                                        assetClient.removeCatalogTarget(catalogTarget.getRelatedBy().getRelationshipHeader().getGUID(), assetClient.getDeleteOptions(false));
                                     }
                                 }
                             }
 
                             startingFrom = startingFrom + context.getMaxPageSize();
 
-                            catalogTargets = context.getConnectorConfigClient().getCatalogTargets(friendshipConnectorGUID,
-                                                                       startingFrom,
-                                                                       context.getMaxPageSize());
+                            catalogTargets = assetClient.getCatalogTargets(friendshipConnectorGUID,
+                                                                           assetClient.getQueryOptions(startingFrom, context.getMaxPageSize()));
                         }
                     }
                 }
@@ -605,7 +606,10 @@ public class OSSUnityCatalogServerSyncCatalog extends OSSUnityCatalogInsideCatal
 
                 catalogTargetProperties.setConfigurationProperties(targetConfigurationProperties);
 
-                String relationshipGUID = context.getConnectorConfigClient().addCatalogTarget(friendshipConnectorGUID, ucServerGUID, catalogTargetProperties);
+                String relationshipGUID = context.getAssetClient().addCatalogTarget(friendshipConnectorGUID,
+                                                                                    ucServerGUID,
+                                                                                    context.getAssetClient().getMetadataSourceOptions(),
+                                                                                    catalogTargetProperties);
 
                 auditLog.logMessage(methodName,
                                     UCAuditCode.NEW_CATALOG_TARGET.getMessageDefinition(connectorName,

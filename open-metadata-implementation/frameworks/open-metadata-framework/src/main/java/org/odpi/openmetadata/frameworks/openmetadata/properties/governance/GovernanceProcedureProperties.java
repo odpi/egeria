@@ -3,11 +3,6 @@
 package org.odpi.openmetadata.frameworks.openmetadata.properties.governance;
 
 import com.fasterxml.jackson.annotation.*;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.ReferenceableProperties;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.feedback.InformalTagProperties;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.feedback.LikeProperties;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.feedback.RatingProperties;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.feedback.SearchKeywordProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
@@ -27,7 +22,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
         {
                 @JsonSubTypes.Type(value = MethodologyProperties.class, name = "MethodologyProperties"),
         })
-public class GovernanceProcedureProperties extends OrganizationalControlProperties
+public class GovernanceProcedureProperties extends GovernanceControlProperties
 {
     /**
      * Default Constructor

@@ -6,7 +6,7 @@ package org.odpi.openmetadata.frameworks.opengovernance.properties;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import org.odpi.openmetadata.frameworks.opengovernance.controls.GuardType;
+import org.odpi.openmetadata.frameworks.openmetadata.specificationproperties.GuardType;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.ActivityStatus;
 
 import java.util.*;
@@ -149,7 +149,7 @@ public class GovernanceActionProcessStepExecution extends GovernanceActionProces
                     {
                         GuardType guardType = new GuardType();
 
-                        guardType.setGuard(receivedGuard);
+                        guardType.setName(receivedGuard);
 
                         guardTypes.add(guardType);
                     }

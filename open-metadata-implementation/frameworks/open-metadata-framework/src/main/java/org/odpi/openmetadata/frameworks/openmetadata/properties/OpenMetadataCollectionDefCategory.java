@@ -115,7 +115,7 @@ public enum OpenMetadataCollectionDefCategory
     public String toString()
     {
         return "OpenMetadataCollectionDefCategory{" +
-                "code=" + code +
+                "ordinal=" + code +
                 ", name='" + name + '\'' +
                 ", argumentCount=" + argumentCount +
                 ", javaClassName='" + javaClassName + '\'' +

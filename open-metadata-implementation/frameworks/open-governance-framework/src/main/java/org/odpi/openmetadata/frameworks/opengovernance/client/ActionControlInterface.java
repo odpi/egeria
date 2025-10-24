@@ -164,25 +164,6 @@ public interface ActionControlInterface
 
 
     /**
-     * Retrieve the engine actions that are known to the server.
-     *
-     * @param userId userId of caller
-     * @param startFrom starting from element
-     * @param pageSize maximum elements to return
-     * @return list of engine action elements
-     *
-     * @throws InvalidParameterException one of the parameters is null or invalid.
-     * @throws UserNotAuthorizedException user not authorized to issue this request.
-     * @throws PropertyServerException there was a problem detected by the metadata store.
-     */
-    List<EngineActionElement> getEngineActions(String userId,
-                                               int    startFrom,
-                                               int    pageSize) throws InvalidParameterException,
-                                                                       UserNotAuthorizedException,
-                                                                       PropertyServerException;
-
-
-    /**
      * Retrieve the engine actions that are still in process.
      *
      * @param userId userId of caller

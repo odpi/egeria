@@ -3,9 +3,10 @@
 
 package org.odpi.openmetadata.frameworks.openmetadata.metadataelements;
 
-import com.fasterxml.jackson.annotation.JsonAutoDetect;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.*;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.OpenMetadataRootProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.RelationshipBeanProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.glossaries.AbstractConceptProperties;
 
 import java.util.Date;
 import java.util.Map;
@@ -21,14 +22,23 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME,
+        include = JsonTypeInfo.As.PROPERTY,
+        property = "class")
+@JsonSubTypes(
+        {
+                @JsonSubTypes.Type(value = CertificationElement.class, name = "CertificationElement"),
+                @JsonSubTypes.Type(value = RelatedMetadataHierarchySummary.class, name = "RelatedMetadataHierarchySummary"),
+                @JsonSubTypes.Type(value = RelatedMetadataNodeSummary.class, name = "RelatedMetadataNodeSummary"),
+        })
 public class RelatedMetadataElementSummary
 {
-    private ElementHeader          relationshipHeader     = null;
-    private Map<String, String>    relationshipProperties = null;
-    private Date                   effectiveFromTime      = null;
-    private Date                   effectiveToTime        = null;
-    private MetadataElementSummary relatedElement         = null;
-    private boolean                relatedElementAtEnd1   = false;
+    private ElementHeader              relationshipHeader     = null;
+    private RelationshipBeanProperties relationshipProperties = null;
+    private Date                       effectiveFromTime      = null;
+    private Date                       effectiveToTime        = null;
+    private MetadataElementSummary     relatedElement         = null;
+    private boolean                    relatedElementAtEnd1   = false;
 
 
     /**
@@ -127,7 +137,7 @@ public class RelatedMetadataElementSummary
      *
      * @return relationship properties
      */
-    public Map<String, String> getRelationshipProperties()
+    public RelationshipBeanProperties getRelationshipProperties()
     {
         return relationshipProperties;
     }
@@ -138,7 +148,7 @@ public class RelatedMetadataElementSummary
      *
      * @param relationshipProperties relationship properties
      */
-    public void setRelationshipProperties(Map<String, String> relationshipProperties)
+    public void setRelationshipProperties(RelationshipBeanProperties relationshipProperties)
     {
         this.relationshipProperties = relationshipProperties;
     }

@@ -219,7 +219,7 @@ public class WatchdogActionEngineHandler extends GovernanceEngineHandler
         /*
          * First pick out all the assets ...
          */
-        List<ActionTargetElement> assetTargetElements = new ArrayList<>();
+        List<ActionTargetElement> notificationTargetElements = new ArrayList<>();
 
         for (ActionTargetElement actionTargetElement : actionTargetElements)
         {
@@ -227,21 +227,21 @@ public class WatchdogActionEngineHandler extends GovernanceEngineHandler
             {
                 if (propertyHelper.isTypeOf(actionTargetElement.getTargetElement(), OpenMetadataType.NOTIFICATION_TYPE.typeName))
                 {
-                    assetTargetElements.add(actionTargetElement);
+                    notificationTargetElements.add(actionTargetElement);
                 }
             }
         }
 
-        if (assetTargetElements.size() == 1)
+        if (notificationTargetElements.size() == 1)
         {
-            NotificationTypeGUID = assetTargetElements.get(0).getTargetElement().getElementGUID();
+            NotificationTypeGUID = notificationTargetElements.get(0).getTargetElement().getElementGUID();
         }
         else
         {
             /*
              * Since there are multiple assets, only pick out the ones with an action target name of "newAsset".
              */
-            for (ActionTargetElement actionTargetElement : assetTargetElements)
+            for (ActionTargetElement actionTargetElement : notificationTargetElements)
             {
                 // todo check the action target is not in progress
                 if (ActionTarget.NOTIFICATION_TYPE.getName().equals(actionTargetElement.getActionTargetName()))

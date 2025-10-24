@@ -2,7 +2,7 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.samples.archiveutilities.governanceprogram;
 
-import org.odpi.openmetadata.samples.archiveutilities.organization.ScopeDefinition;
+import org.odpi.openmetadata.frameworks.openmetadata.refdata.ScopeDefinition;
 
 
 /**
@@ -19,7 +19,7 @@ public enum CertificationTypeDefinition
                             "The clinical trial is approved by the board of directors and the regulators",
                             "This certification gives permission for resources to be deployed as part of the linked clinical trial project.",
                             "The clinical trial must be conducted as agreed with the approved level and types of participants and the identified data and analysis.",
-                            ScopeDefinition.ALL_COCO,
+                            ScopeDefinition.WITHIN_ORGANIZATION,
                             false,
                             null,
                             null),

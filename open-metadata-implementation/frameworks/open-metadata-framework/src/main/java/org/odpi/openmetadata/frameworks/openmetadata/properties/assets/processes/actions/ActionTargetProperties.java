@@ -7,6 +7,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.ActivityStatus;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.RelationshipBeanProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 
 import java.util.Date;
 import java.util.Objects;
@@ -23,7 +24,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 public class ActionTargetProperties extends RelationshipBeanProperties
 {
     private String         actionTargetName  = null;
-    private ActivityStatus status            = null;
+    private ActivityStatus activityStatus    = null;
     private Date           startTime         = null;
     private Date           completionTime    = null;
     private String         completionMessage = null;
@@ -33,6 +34,8 @@ public class ActionTargetProperties extends RelationshipBeanProperties
      */
     public ActionTargetProperties()
     {
+        super();
+        super.setTypeName(OpenMetadataType.ACTION_TARGET_RELATIONSHIP.typeName);
     }
 
 
@@ -44,10 +47,12 @@ public class ActionTargetProperties extends RelationshipBeanProperties
      */
     public ActionTargetProperties(ActionTargetProperties template)
     {
+        super(template);
+
         if (template != null)
         {
             actionTargetName  = template.getActionTargetName();
-            status            = template.getStatus();
+            activityStatus    = template.getActivityStatus();
             startTime         = template.getStartTime();
             completionTime    = template.getCompletionTime();
             completionMessage = template.getCompletionMessage();
@@ -85,9 +90,9 @@ public class ActionTargetProperties extends RelationshipBeanProperties
      *
      * @return status enum
      */
-    public ActivityStatus getStatus()
+    public ActivityStatus getActivityStatus()
     {
-        return status;
+        return activityStatus;
     }
 
 
@@ -96,11 +101,11 @@ public class ActionTargetProperties extends RelationshipBeanProperties
      * the action.  However, if the actor has to process many target elements, then these values can
      * be used to show progress.
      *
-     * @param status enum
+     * @param activityStatus enum
      */
-    public void setStatus(ActivityStatus status)
+    public void setActivityStatus(ActivityStatus activityStatus)
     {
-        this.status = status;
+        this.activityStatus = activityStatus;
     }
 
 
@@ -189,7 +194,7 @@ public class ActionTargetProperties extends RelationshipBeanProperties
     {
         return "ActionTargetProperties{" +
                 "actionTargetName='" + actionTargetName + '\'' +
-                ", status=" + status +
+                ", status=" + activityStatus +
                 ", startTime=" + startTime +
                 ", completionTime=" + completionTime +
                 ", completionMessage='" + completionMessage + '\'' +
@@ -210,7 +215,11 @@ public class ActionTargetProperties extends RelationshipBeanProperties
         if (objectToCompare == null || getClass() != objectToCompare.getClass()) return false;
         if (!super.equals(objectToCompare)) return false;
         ActionTargetProperties that = (ActionTargetProperties) objectToCompare;
-        return Objects.equals(actionTargetName, that.actionTargetName) && status == that.status && Objects.equals(startTime, that.startTime) && Objects.equals(completionTime, that.completionTime) && Objects.equals(completionMessage, that.completionMessage);
+        return Objects.equals(actionTargetName, that.actionTargetName) &&
+                activityStatus == that.activityStatus &&
+                Objects.equals(startTime, that.startTime) &&
+                Objects.equals(completionTime, that.completionTime) &&
+                Objects.equals(completionMessage, that.completionMessage);
     }
 
     /**
@@ -221,6 +230,6 @@ public class ActionTargetProperties extends RelationshipBeanProperties
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), actionTargetName, status, startTime, completionTime, completionMessage);
+        return Objects.hash(super.hashCode(), actionTargetName, activityStatus, startTime, completionTime, completionMessage);
     }
 }

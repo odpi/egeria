@@ -66,7 +66,7 @@ public class GovernanceActionOpenLineageIntegrationProvider extends IntegrationC
         connectorType.setConnectorProviderClassName(this.getClass().getName());
         connectorType.setSupportedAssetTypeName(supportedAssetTypeName);
         connectorType.setRecognizedConfigurationProperties(OpenLineagePublishConfigurationProperty.getRecognizedConfigurationProperties());
-        connectorType.setSupportedDeployedImplementationType(DeployedImplementationType.LINEAGE_INTEGRATION_CONNECTOR.getDeployedImplementationType());
+        connectorType.setSupportedDeployedImplementationType(DeployedImplementationType.INTEGRATION_CONNECTOR.getDeployedImplementationType());
 
         super.connectorTypeBean = connectorType;
 

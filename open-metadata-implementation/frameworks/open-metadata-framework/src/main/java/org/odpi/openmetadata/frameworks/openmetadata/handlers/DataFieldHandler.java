@@ -139,7 +139,7 @@ public class DataFieldHandler extends OpenMetadataHandlerBase
 
 
     /**
-     * Connect two data field as parent and child.
+     * Connect two data fields as parent and child.
      *
      * @param userId                 userId of user making request
      * @param parentDataFieldGUID    unique identifier of the parent data field
@@ -254,6 +254,8 @@ public class DataFieldHandler extends OpenMetadataHandlerBase
         final String methodName = "getDataFieldsByName";
 
         List<String> propertyNames = Arrays.asList(OpenMetadataProperty.QUALIFIED_NAME.name,
+                                                   OpenMetadataProperty.IDENTIFIER.name,
+                                                   OpenMetadataProperty.NAMESPACE.name,
                                                    OpenMetadataProperty.DISPLAY_NAME.name);
 
         return super.getRootElementsByName(userId, name, propertyNames, queryOptions, methodName);

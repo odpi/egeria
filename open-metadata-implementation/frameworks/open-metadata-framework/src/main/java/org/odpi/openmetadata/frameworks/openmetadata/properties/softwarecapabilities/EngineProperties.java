@@ -20,18 +20,12 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
         property = "class")
 // todo this mapping is not complete
 @JsonSubTypes({
-        @JsonSubTypes.Type(value = AssetManagerProperties.class, name = "AssetManagerProperties"),
-        @JsonSubTypes.Type(value = ChangeManagementLibraryProperties.class, name = "ChangeManagementLibraryProperties"),
-        @JsonSubTypes.Type(value = ContentCollectionManagerProperties.class, name = "ContentCollectionManagerProperties"),
-        @JsonSubTypes.Type(value = FileSystemProperties.class, name = "FileSystemProperties"),
-        @JsonSubTypes.Type(value = FileManagerProperties.class, name = "FileManagerProperties"),
-        @JsonSubTypes.Type(value = NotificationManagerProperties.class, name = "NotificationManagerProperties"),
-        @JsonSubTypes.Type(value = MasterDataManagerProperties.class, name = "MasterDataManagerProperties"),
-        @JsonSubTypes.Type(value = SourceControlLibraryProperties.class, name = "SourceControlLibraryProperties"),
-        @JsonSubTypes.Type(value = SoftwareLibraryProperties.class, name = "SoftwareLibraryProperties"),
-        @JsonSubTypes.Type(value = UserAccessDirectoryProperties.class, name = "UserAccessDirectoryProperties"),
-        @JsonSubTypes.Type(value = UserProfileManagerProperties.class, name = "UserProfileManagerProperties"),
-
+        @JsonSubTypes.Type(value = AnalyticsEngineProperties.class, name = "AnalyticsEngineProperties"),
+        @JsonSubTypes.Type(value = DataMovementEngineProperties.class, name = "DataMovementEngineProperties"),
+        @JsonSubTypes.Type(value = DataVirtualizationEngineProperties.class, name = "DataVirtualizationEngineProperties"),
+        @JsonSubTypes.Type(value = GovernanceEngineProperties.class, name = "GovernanceEngineProperties"),
+        @JsonSubTypes.Type(value = ReportingEngineProperties.class, name = "ReportingEngineProperties"),
+        @JsonSubTypes.Type(value = WorkflowEngineProperties.class, name = "WorkflowEngineProperties"),
 })
 public class EngineProperties extends SoftwareCapabilityProperties
 {
@@ -50,7 +44,7 @@ public class EngineProperties extends SoftwareCapabilityProperties
      *
      * @param template object to copy
      */
-    public EngineProperties(EngineProperties template)
+    public EngineProperties(SoftwareCapabilityProperties template)
     {
         super(template);
     }

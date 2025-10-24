@@ -5,6 +5,8 @@ package org.odpi.openmetadata.frameworks.openmetadata.properties;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import org.odpi.openmetadata.frameworks.openmetadata.refdata.Category;
+import org.odpi.openmetadata.frameworks.openmetadata.types.DataType;
 
 import java.util.Date;
 import java.util.Map;
@@ -22,13 +24,12 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class ValidMetadataValue
 {
-    private String  category       = null;
+    private String  category       = Category.VALID_METADATA_VALUES.getName();
     private String  displayName    = null;
     private String  description    = null;
     private String  preferredValue = null;
-    private String  dataType          = null;
-    private String  userDefinedStatus = null;
-    private boolean isCaseSensitive   = false;
+    private String  dataType       = DataType.STRING.getName();
+    private boolean isCaseSensitive = false;
 
     private Map<String, String> additionalProperties = null;
 
@@ -56,9 +57,8 @@ public class ValidMetadataValue
             displayName = template.getDisplayName();
             description = template.getDescription();
             preferredValue = template.getPreferredValue();
-            dataType          = template.getDataType();
-            userDefinedStatus = template.getUserDefinedStatus();
-            isCaseSensitive   = template.getIsCaseSensitive();
+            dataType = template.getDataType();
+            isCaseSensitive = template.getIsCaseSensitive();
             additionalProperties = template.getAdditionalProperties();
             effectiveFrom = template.getEffectiveFrom();
             effectiveTo = template.getEffectiveTo();
@@ -179,28 +179,6 @@ public class ValidMetadataValue
 
 
     /**
-     * Is the valid value deprecated?
-     *
-     * @return string
-     */
-    public String getUserDefinedStatus()
-    {
-        return userDefinedStatus;
-    }
-
-
-    /**
-     * Set whether the valid value is deprecated or not. Used when the element status is OTHER
-     *
-     * @param userDefinedStatus string
-     */
-    public void setUserDefinedStatus(String userDefinedStatus)
-    {
-        this.userDefinedStatus = userDefinedStatus;
-    }
-
-
-    /**
      * Return whether this valid value is case-sensitive, or will match irrespective of case.
      *
      * @return boolean flag
@@ -302,7 +280,6 @@ public class ValidMetadataValue
                        ", description='" + description + '\'' +
                        ", preferredValue='" + preferredValue + '\'' +
                        ", dataType='" + dataType + '\'' +
-                       ", userDefinedStatus=" + userDefinedStatus +
                        ", isCaseSensitive=" + isCaseSensitive +
                        ", additionalProperties=" + additionalProperties +
                        ", effectiveFrom=" + effectiveFrom +
@@ -328,8 +305,7 @@ public class ValidMetadataValue
         {
             return false;
         }
-        return userDefinedStatus == that.userDefinedStatus &&
-                       isCaseSensitive == that.isCaseSensitive &&
+        return isCaseSensitive == that.isCaseSensitive &&
                        Objects.equals(category, that.category) &&
                        Objects.equals(displayName, that.displayName) &&
                        Objects.equals(description, that.description) &&
@@ -349,6 +325,6 @@ public class ValidMetadataValue
     @Override
     public int hashCode()
     {
-        return Objects.hash(category, displayName, description, preferredValue, dataType, userDefinedStatus, isCaseSensitive, additionalProperties, effectiveFrom, effectiveTo);
+        return Objects.hash(category, displayName, description, preferredValue, dataType, isCaseSensitive, additionalProperties, effectiveFrom, effectiveTo);
     }
 }

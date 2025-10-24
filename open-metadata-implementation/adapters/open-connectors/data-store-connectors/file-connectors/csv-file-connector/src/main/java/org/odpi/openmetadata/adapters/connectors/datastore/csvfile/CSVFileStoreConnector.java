@@ -6,18 +6,14 @@ package org.odpi.openmetadata.adapters.connectors.datastore.csvfile;
 import org.odpi.openmetadata.adapters.connectors.datastore.basicfile.BasicFileStoreConnector;
 import org.odpi.openmetadata.adapters.connectors.datastore.basicfile.ffdc.exception.FileException;
 import org.odpi.openmetadata.adapters.connectors.datastore.basicfile.ffdc.exception.FileReadException;
+import org.odpi.openmetadata.adapters.connectors.datastore.csvfile.controls.CSVFileConfigurationProperty;
 import org.odpi.openmetadata.adapters.connectors.datastore.csvfile.ffdc.CSVFileConnectorErrorCode;
-import org.odpi.openmetadata.frameworks.connectors.TabularColumnDescription;
-import org.odpi.openmetadata.frameworks.connectors.TabularDataSource;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
-import org.odpi.openmetadata.frameworks.connectors.properties.beans.Endpoint;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
-import org.odpi.openmetadata.frameworks.openmetadata.types.DataType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.File;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -28,14 +24,15 @@ import java.util.Scanner;
 /**
  * CSVFileStoreConnector works with structured files to retrieve simple tables of data.
  */
-public class CSVFileStoreConnector extends BasicFileStoreConnector implements CSVFileStore, TabularDataSource
+public class CSVFileStoreConnector extends BasicFileStoreConnector implements CSVFileStore
 {
     /*
      * Variables used in reading the file.
      */
-    private List<String> suppliedColumnNames = null;
-    private char         delimiterChar       = ',';
-    private char         quoteChar         = '"';
+    private List<String>   suppliedColumnNames = null;
+    private char           delimiterChar       = ',';
+    private char           quoteChar         = '"';
+
 
     /*
      * Variables used for logging and debug.
@@ -54,16 +51,13 @@ public class CSVFileStoreConnector extends BasicFileStoreConnector implements CS
     {
         super.start();
 
-        final String methodName = "start";
-
         Map<String, Object> configurationProperties = connectionBean.getConfigurationProperties();
-        Endpoint            endpoint                = connectionBean.getEndpoint();
 
         if (configurationProperties != null)
         {
-            Object  columnNamesProperty   = configurationProperties.get(CSVFileStoreProvider.columnNamesProperty);
-            Object  delimiterCharProperty = configurationProperties.get(CSVFileStoreProvider.delimiterCharacterProperty);
-            Object  quoteCharProperty     = configurationProperties.get(CSVFileStoreProvider.quoteCharacterProperty);
+            Object  columnNamesProperty   = configurationProperties.get(CSVFileConfigurationProperty.COLUMN_NAMES.getName());
+            Object  delimiterCharProperty = configurationProperties.get(CSVFileConfigurationProperty.DELIMITER_CHARACTER.getName());
+            Object  quoteCharProperty     = configurationProperties.get(CSVFileConfigurationProperty.QUOTE_CHARACTER.getName());
 
             if (columnNamesProperty != null)
             {
@@ -90,16 +84,38 @@ public class CSVFileStoreConnector extends BasicFileStoreConnector implements CS
                 quoteChar = (char)quoteCharProperty;
             }
         }
+    }
 
-        if (endpoint != null)
-        {
-            super.fileStoreName = endpoint.getAddress();
-        }
-        else
-        {
-            log.error("Null endpoint");
-            super.throwMissingEndpointAddress(this.getClass().getName(), methodName);
-        }
+
+    /**
+     * Return any fixed column names defined by the connector
+     * @return list of configured column names
+     */
+    public List<String> getSuppliedColumnNames()
+    {
+        return suppliedColumnNames;
+    }
+
+
+    /**
+     * Return the defined delimiter character.
+     *
+     * @return char
+     */
+    public char getDelimiterChar()
+    {
+        return delimiterChar;
+    }
+
+
+    /**
+     * Return the defined quote char.
+     *
+     * @return char
+     */
+    public char getQuoteChar()
+    {
+        return quoteChar;
     }
 
 
@@ -148,35 +164,6 @@ public class CSVFileStoreConnector extends BasicFileStoreConnector implements CS
 
 
     /**
-     * Return the list of column names associated with this data source.
-     *
-     * @return a list of column descriptions or null if not available.
-     * @throws ConnectorCheckedException there is a problem accessing the data
-     */
-    @Override
-    public List<TabularColumnDescription> getColumnDescriptions() throws ConnectorCheckedException
-    {
-        List<String> columnNames = this.getColumnNames();
-
-        if (columnNames != null)
-        {
-            List<TabularColumnDescription> columnDescriptions = new ArrayList<>();
-
-            for (String columnName : columnNames)
-            {
-                TabularColumnDescription columnDescription = new TabularColumnDescription(columnName, DataType.STRING, null);
-
-                columnDescriptions.add(columnDescription);
-            }
-
-            return columnDescriptions;
-        }
-
-        return null;
-    }
-
-
-    /**
      * Return the list of column names associated with this structured file.
      * This may be embedded in the first line of the file or encoded in the
      * connection object used to create a connector instance.
@@ -212,6 +199,7 @@ public class CSVFileStoreConnector extends BasicFileStoreConnector implements CS
      * @throws FileException problem accessing the file
      * @throws FileReadException unable to find, open or read the file, or the file does not include the requested record.
      */
+    @Override
     public List<String> readRecord(long  dataRecordNumber) throws FileException, FileReadException
     {
         final String  methodName = "readRecord";
@@ -224,167 +212,6 @@ public class CSVFileStoreConnector extends BasicFileStoreConnector implements CS
         {
             return readRow(dataRecordNumber, methodName);
         }
-    }
-
-
-    /**
-     * Set up the columns associated with this tabular data source.  These are stored in the first record of the file.
-     * The rest of the file is cleared.
-     *
-     * @param columnDescriptions a list of column descriptions
-     * @throws ConnectorCheckedException there is a problem accessing the data
-     */
-    @Override
-    public void setColumnDescriptions(List<TabularColumnDescription> columnDescriptions) throws ConnectorCheckedException
-    {
-        final String methodName = "setColumnDescriptions";
-
-        if (suppliedColumnNames != null)
-        {
-            /*
-             * Column Names are fixed because they are defined in the configuration properties
-             */
-            throw new FileException(CSVFileConnectorErrorCode.FIXED_COLUMN_NAMES.getMessageDefinition(),
-                                    this.getClass().getName(),
-                                    methodName,
-                                    fileStoreName);
-        }
-        else
-        {
-            /*
-             * The column names are stored in the first line of the CSV file
-             */
-            List<String> columnNames = new ArrayList<>();
-
-            for (TabularColumnDescription columnDescription : columnDescriptions)
-            {
-                columnNames.add(columnDescription.columnName());
-            }
-
-            writeRecord(0, columnNames);
-        }
-    }
-
-
-    /**
-     * Write the requested data record.  The first data record is record 0.
-     * This process reads the entire file, inserts the record in the right place and writes it out again.
-     *
-     * @param requestedRowNumber  long
-     * @param dataValues Map of column descriptions to strings, each string is the value for the column.
-     * @throws ConnectorCheckedException there is a problem accessing the data.
-     */
-    @Override
-    public void writeRecord(long requestedRowNumber, List<String> dataValues) throws ConnectorCheckedException
-    {
-        final String methodName = "writeRecord";
-
-        File fileStore = getFile(methodName);
-
-        StringBuilder stringBuilder = new StringBuilder();
-
-        try (Scanner scanner = new Scanner(fileStore))
-        {
-            long rowCount = 0L;
-
-            while (scanner.hasNext())
-            {
-                String readRow = scanner.nextLine();
-
-                if (requestedRowNumber == rowCount)
-                {
-                    readRow = this.assembleRowData(dataValues).toString();
-                }
-
-                stringBuilder.append(readRow);
-                rowCount ++;
-            }
-
-            if (rowCount < requestedRowNumber)
-            {
-                stringBuilder.append(this.assembleRowData(dataValues));
-            }
-
-            try (FileWriter writer = new FileWriter(fileStoreName, false))
-            {
-                writer.append(stringBuilder);
-            }
-            catch (IOException error)
-            {
-                throw new FileReadException(CSVFileConnectorErrorCode.UNEXPECTED_IO_EXCEPTION.getMessageDefinition(fileStoreName,
-                                                                                                                   error.getMessage()),
-                                            this.getClass().getName(),
-                                            methodName,
-                                            error,
-                                            fileStoreName);
-            }
-        }
-        catch (IOException  error)
-        {
-            throw new FileReadException(CSVFileConnectorErrorCode.UNEXPECTED_IO_EXCEPTION.getMessageDefinition(fileStoreName,
-                                                                                                               error.getMessage()),
-                                        this.getClass().getName(),
-                                        methodName,
-                                        error,
-                                        fileStoreName);
-        }
-    }
-
-    /**
-     * Write the requested data record to the end of the data source.
-     *
-     * @param dataValues Map of column descriptions to strings, each string is the value for the column.
-     * @throws ConnectorCheckedException there is a problem accessing the data.
-     */
-    @Override
-    public void appendRecord(List<String> dataValues) throws ConnectorCheckedException
-    {
-        final String methodName = "appendRecord";
-
-        try (FileWriter writer = new FileWriter(fileStoreName, true))
-        {
-            writer.append(this.assembleRowData(dataValues));
-        }
-        catch (IOException error)
-        {
-            throw new FileReadException(CSVFileConnectorErrorCode.UNEXPECTED_IO_EXCEPTION.getMessageDefinition(fileStoreName,
-                                                                                                               error.getMessage()),
-                                        this.getClass().getName(),
-                                        methodName,
-                                        error,
-                                        fileStoreName);
-        }
-    }
-
-
-    /**
-     * Assemble the data values into a legal CSV row.
-     *
-     * @param dataValues list of data values in the correct order
-     * @return populated string buffer
-     * todo handle quotes
-     */
-    private StringBuilder assembleRowData(List<String> dataValues)
-    {
-        StringBuilder stringBuilder = new StringBuilder();
-        boolean       firstRecord   = true;
-
-        for (String dataValue : dataValues)
-        {
-            if (firstRecord)
-            {
-                firstRecord = false;
-            }
-            else
-            {
-                stringBuilder.append(delimiterChar);
-            }
-            stringBuilder.append(dataValue);
-        }
-
-        stringBuilder.append("\n");
-
-        return stringBuilder;
     }
 
 

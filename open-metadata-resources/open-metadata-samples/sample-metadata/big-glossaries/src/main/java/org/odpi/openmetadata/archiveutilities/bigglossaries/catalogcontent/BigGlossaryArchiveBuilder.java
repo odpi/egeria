@@ -18,7 +18,7 @@ import java.util.List;
 
 
 /**
- * BigGlossaryArchiveBuilder provides API metadata.
+ * BigGlossaryArchiveBuilder provides large glossary archives for testing.
  */
 public class BigGlossaryArchiveBuilder
 {
@@ -81,6 +81,7 @@ public class BigGlossaryArchiveBuilder
         this.archiveHelper = new SimpleCatalogArchiveHelper(archiveBuilder,
                                                             archiveGUID,
                                                             archiveName,
+                                                            archiveDescription,
                                                             archiveNamePrefix,
                                                             originatorName,
                                                             creationDate,

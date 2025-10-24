@@ -8,6 +8,7 @@ import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.engineservices.governanceaction.ffdc.GovernanceActionAuditCode;
 import org.odpi.openmetadata.frameworks.auditlog.messagesets.AuditLogMessageDefinition;
 import org.odpi.openmetadata.frameworks.connectors.Connector;
+import org.odpi.openmetadata.frameworks.connectors.client.ConnectedAssetClient;
 import org.odpi.openmetadata.frameworks.openmetadata.client.OpenMetadataClient;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.DeleteMethod;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
@@ -15,7 +16,7 @@ import org.odpi.openmetadata.frameworks.opengovernance.*;
 import org.odpi.openmetadata.frameworks.opengovernance.client.GovernanceConfiguration;
 import org.odpi.openmetadata.frameworks.opengovernance.controls.Guard;
 import org.odpi.openmetadata.frameworks.opengovernance.properties.ActionTargetElement;
-import org.odpi.openmetadata.frameworks.opengovernance.properties.CompletionStatus;
+import org.odpi.openmetadata.frameworks.openmetadata.enums.CompletionStatus;
 import org.odpi.openmetadata.frameworks.opengovernance.properties.GovernanceEngineProperties;
 import org.odpi.openmetadata.frameworks.opengovernance.properties.RequestSourceElement;
 import org.odpi.openmetadata.frameworkservices.gaf.client.GovernanceContextClient;
@@ -55,6 +56,7 @@ public class GovernanceActionServiceHandler extends GovernanceServiceHandler
      * @param governanceActionServiceName unique name of this governance action service - used for message logging
      * @param governanceActionServiceConnector connector that does the work
      * @param openMetadataClient access to the open metadata store
+     * @param connectedAssetClient access to the connector broker
      * @param governanceContextClient client for services supporting the completion of a governance action service
      * @param governanceConfiguration client for services that configure the governance servers
      * @param startDate date/time that the governance service should start executing
@@ -79,6 +81,7 @@ public class GovernanceActionServiceHandler extends GovernanceServiceHandler
                                    String                     governanceActionServiceName,
                                    Connector                  governanceActionServiceConnector,
                                    OpenMetadataClient         openMetadataClient,
+                                   ConnectedAssetClient       connectedAssetClient,
                                    GovernanceContextClient    governanceContextClient,
                                    GovernanceConfiguration    governanceConfiguration,
                                    Date                       startDate,
@@ -130,6 +133,7 @@ public class GovernanceActionServiceHandler extends GovernanceServiceHandler
                                                                               governanceContextClient,
                                                                               governanceContextClient,
                                                                               governanceContextClient,
+                                                                              connectedAssetClient,
                                                                               governanceContextClient,
                                                                               governanceContextClient);
 

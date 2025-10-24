@@ -4,6 +4,10 @@ package org.odpi.openmetadata.viewservices.runtimemanager.server.spring;
 
 import io.swagger.v3.oas.annotations.ExternalDocumentation;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.enums.SecuritySchemeIn;
+import io.swagger.v3.oas.annotations.enums.SecuritySchemeType;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import io.swagger.v3.oas.annotations.security.SecurityScheme;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.odpi.openmetadata.commonservices.ffdc.rest.*;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
@@ -21,8 +25,14 @@ import org.springframework.web.bind.annotation.*;
 = */
 @RestController
 @RequestMapping("/servers/{serverName}/api/open-metadata/runtime-manager")
-
-@Tag(name="API: Runtime Manager OMVS", description="The Runtime Manager OMVS provides APIs for retrieving and updating code values and reference data.",
+@SecurityScheme(
+        name = "BearerAuthorization",
+        type = SecuritySchemeType.HTTP,
+        bearerFormat = "JWT",
+        scheme = "bearer",
+        in = SecuritySchemeIn.HEADER
+)
+@Tag(name="API: Runtime Manager OMVS", description="Egeria's runtime includes APIs for querying, configuring and managing its resources. The Runtime Manager OMVS provides APIs for retrieving configuration and status from servers and platforms.",
         externalDocs=@ExternalDocumentation(description="Further Information",
                 url="https://egeria-project.org/services/omvs/runtime-manager/overview/"))
 
@@ -49,6 +59,7 @@ public class RuntimeManagerResource
      * UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     @PostMapping("/platforms/by-name")
+    @SecurityRequirement(name = "BearerAuthorization")
 
     @Operation(summary = "getPlatformsByName",
             description = "Returns the list of platforms with a particular name.  The name is specified in the filter.",
@@ -75,6 +86,7 @@ public class RuntimeManagerResource
      * UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     @PostMapping("/platforms/by-deployed-implementation-type")
+    @SecurityRequirement(name = "BearerAuthorization")
 
     @Operation(summary = "getPlatformsByDeployedImplementationType",
             description = "Returns the list of platforms with a particular deployed implementation type.  The value is specified in the filter.  If it is null, or no request body is supplied, all platforms are returned.",
@@ -102,6 +114,7 @@ public class RuntimeManagerResource
      * UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     @PostMapping("/platforms/{platformGUID}")
+    @SecurityRequirement(name = "BearerAuthorization")
 
     @Operation(summary = "getPlatformByGUID",
             description = "Returns details about the platform's catalog entry (asset).",
@@ -128,6 +141,7 @@ public class RuntimeManagerResource
      * UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     @GetMapping("/platforms/{platformGUID}/report")
+    @SecurityRequirement(name = "BearerAuthorization")
 
     @Operation(summary = "getPlatformReport",
             description = "Returns details about the running OMAG Server Platform.",
@@ -152,6 +166,7 @@ public class RuntimeManagerResource
      * UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     @PostMapping("/software-servers/by-name")
+    @SecurityRequirement(name = "BearerAuthorization")
 
     @Operation(summary = "getServersByName",
             description = "Returns the list of servers with a particular name.  The name is specified in the filter.",
@@ -178,6 +193,7 @@ public class RuntimeManagerResource
      * UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     @PostMapping("/software-servers/by-deployed-implementation-type")
+    @SecurityRequirement(name = "BearerAuthorization")
 
     @Operation(summary = "getServersByDeployedImplementationType",
             description = "Returns the list of servers with a particular deployed implementation type.   The value is specified in the filter.  If it is null, or no request body is supplied, all servers are returned.",
@@ -205,6 +221,7 @@ public class RuntimeManagerResource
      * UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     @PostMapping("/software-servers/{serverGUID}")
+    @SecurityRequirement(name = "BearerAuthorization")
 
     @Operation(summary = "getServerByGUID",
             description = "Returns details about the server's catalog entry (asset).",
@@ -231,6 +248,7 @@ public class RuntimeManagerResource
      * UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     @GetMapping("/omag-servers/{serverGUID}/instance/report")
+    @SecurityRequirement(name = "BearerAuthorization")
 
     @Operation(summary = "getOMAGServerReport",
             description = "Returns details about the running OMAG Server.",
@@ -260,6 +278,7 @@ public class RuntimeManagerResource
      * OMAGConfigurationErrorException there is a problem using the supplied configuration.
      */
     @PostMapping(path = "/omag-servers/{serverGUID}/instance")
+    @SecurityRequirement(name = "BearerAuthorization")
 
     @Operation(summary="activateWithStoredConfig",
             description="Activate the named OMAG server using the appropriate configuration document found in the configuration store.",
@@ -283,6 +302,7 @@ public class RuntimeManagerResource
      * OMAGInvalidParameterException the serverName is invalid.
      */
     @DeleteMapping(path = "/omag-servers/{serverGUID}/instance")
+    @SecurityRequirement(name = "BearerAuthorization")
 
     @Operation(summary="shutdownServer",
             description="Temporarily shutdown the named OMAG server.  This server can be restarted as a later time.")
@@ -305,6 +325,7 @@ public class RuntimeManagerResource
      * OMAGInvalidParameterException the serverName is invalid.
      */
     @DeleteMapping(path = "/omag-servers/{serverGUID}")
+    @SecurityRequirement(name = "BearerAuthorization")
 
     @Operation(summary="shutdownAndUnregisterServer",
             description="Shutdown the named OMAG server.  The server will also be removed " +
@@ -335,6 +356,7 @@ public class RuntimeManagerResource
      */
     @PostMapping(path = { "/omag-servers/{serverGUID}/instance/load/open-metadata-archives/file",
             "/metadata-access-stores/{serverGUID}/instance/load/open-metadata-archives/file"})
+    @SecurityRequirement(name = "BearerAuthorization")
 
     @Operation(summary="addOpenMetadataArchiveFile",
             description="An open metadata archive contains metadata types and instances.  This operation loads an open metadata " +
@@ -363,6 +385,7 @@ public class RuntimeManagerResource
      */
     @PostMapping(path = {"/omag-servers/{serverGUID}/instance/load/open-metadata-archives/archive-content",
                          "/metadata-access-stores/{serverGUID}/instance/load/open-metadata-archives/archive-content"})
+    @SecurityRequirement(name = "BearerAuthorization")
 
     @Operation(summary="addOpenMetadataArchiveContent",
             description="An open metadata archive contains metadata types and instances.  This operation loads the supplied open metadata " +
@@ -400,6 +423,7 @@ public class RuntimeManagerResource
      *  GovernanceEngineException there was a problem detected by the governance engine.
      */
     @GetMapping(path = "/engine-hosts/{serverGUID}/governance-engines/{governanceEngineName}/refresh-config")
+    @SecurityRequirement(name = "BearerAuthorization")
 
     @Operation(summary="refreshConfig",
             description="Request that the governance engine refresh its configuration by calling the metadata server. " +
@@ -433,6 +457,7 @@ public class RuntimeManagerResource
      *  GovernanceEngineException there was a problem detected by the governance engine.
      */
     @GetMapping(path = "/engine-hosts/{serverGUID}/governance-engines/refresh-config")
+    @SecurityRequirement(name = "BearerAuthorization")
 
     @Operation(summary="refreshConfig",
             description="Request that all governance engines refresh their configuration by calling the metadata server. " +
@@ -468,6 +493,7 @@ public class RuntimeManagerResource
      *  PropertyServerException there was a problem detected by the integration service.
      */
     @GetMapping(path = "/integration-daemons/{serverGUID}/integration-connectors/{connectorName}/configuration-properties")
+    @SecurityRequirement(name = "BearerAuthorization")
 
     @Operation(summary="getConfigurationProperties",
             description="Retrieve the configuration properties of the named integration connector running in the integration daemon.",
@@ -496,6 +522,7 @@ public class RuntimeManagerResource
      *  PropertyServerException there was a problem detected by the integration service.
      */
     @PostMapping(path = "/integration-daemons/{serverGUID}/integration-connectors/configuration-properties")
+    @SecurityRequirement(name = "BearerAuthorization")
 
     @Operation(summary="updateConfigurationProperties",
             description="Update the configuration properties of the integration connectors, or specific integration connector if a connector name is supplied.  This update is in memory and will not persist over a server restart.",
@@ -525,6 +552,7 @@ public class RuntimeManagerResource
      *  PropertyServerException there was a problem detected by the integration service.
      */
     @PostMapping(path = "/integration-daemons/{serverGUID}/integration-connectors/{connectorName}/endpoint-network-address")
+    @SecurityRequirement(name = "BearerAuthorization")
 
     @Operation(summary="updateEndpointNetworkAddress",
             description="Update the endpoint network address for a specific integration connector.  This update is in memory and will not persist over a server restart.",
@@ -555,6 +583,7 @@ public class RuntimeManagerResource
      *  PropertyServerException there was a problem detected by the integration service.
      */
     @PostMapping(path = "/integration-daemons/{serverGUID}/integration-connectors/{connectorName}/connection")
+    @SecurityRequirement(name = "BearerAuthorization")
 
     @Operation(summary="updateConnectorConnection",
             description="Update the connection for a specific integration connector.  This update is in memory and will not persist over a server restart.",
@@ -584,6 +613,7 @@ public class RuntimeManagerResource
      *  PropertyServerException there was a problem detected by the integration daemon.
      */
     @PostMapping(path = "/integration-daemons/{serverGUID}/integration-connectors/refresh")
+    @SecurityRequirement(name = "BearerAuthorization")
 
     @Operation(summary="refreshConnectors",
             description="Issue a refresh() request on all connectors running in the integration daemon, or a specific connector if the connector name is specified.",
@@ -612,6 +642,7 @@ public class RuntimeManagerResource
      *  PropertyServerException there was a problem detected by the integration daemon.
      */
     @PostMapping(path = "/integration-daemons/{serverGUID}/integration-connectors/restart")
+    @SecurityRequirement(name = "BearerAuthorization")
 
     @Operation(summary="restartConnectors",
             description="Restart all connectors running in the integration daemon, or restart a specific connector if the connector name is specified.",
@@ -643,6 +674,7 @@ public class RuntimeManagerResource
      *  IntegrationGroupException there was a problem detected by the integration group.
      */
     @GetMapping(path = "/integration-daemons/{serverGUID}/integration-groups/{integrationGroupName}/refresh-config")
+    @SecurityRequirement(name = "BearerAuthorization")
 
     @Operation(summary="refreshIntegrationGroupConfig",
             description="Request that the integration group refresh its configuration by calling the metadata access server. " +
@@ -670,6 +702,7 @@ public class RuntimeManagerResource
      * @param event open lineage event to publish.
      */
     @PostMapping(path = "/integration-daemons/{serverGUID}/open-lineage-events/publish")
+    @SecurityRequirement(name = "BearerAuthorization")
 
     @Operation(summary="publishOpenLineageEvent",
             description="Send an Open Lineage event to the integration daemon.  It will pass it on to the integration connectors that have" +
@@ -703,6 +736,7 @@ public class RuntimeManagerResource
      * @return boolean to indicate that the request has been issued.  If false it is likely that the cohort name is not known
      */
     @GetMapping(path = "/cohort-members/{serverGUID}/cohorts/{cohortName}/connect")
+    @SecurityRequirement(name = "BearerAuthorization")
 
     @Operation(summary = "connectToCohort",
             description = "A new server needs to register the metadataCollectionId for its metadata repository with the other servers in the" +
@@ -720,8 +754,6 @@ public class RuntimeManagerResource
     }
 
 
-
-
     /**
      * A new server needs to register the metadataCollectionId for its metadata repository with the other servers in the
      * open metadata repository.  It only needs to do this once and uses a timestamp to record that the registration
@@ -735,6 +767,7 @@ public class RuntimeManagerResource
      * @param requestBody null request body
      */
     @PostMapping(path = "/cohort-members/{serverGUID}/cohorts/{cohortName}/connect")
+    @SecurityRequirement(name = "BearerAuthorization")
 
     @Operation(summary="connectToCohort",
             description="A new server needs to register the metadataCollectionId for its metadata repository with the other servers in the" +
@@ -763,6 +796,7 @@ public class RuntimeManagerResource
      * @return boolean to indicate that the request has been issued.  If false it is likely that the cohort name is not known
      */
     @GetMapping(path = "/cohort-members/{serverGUID}/cohorts/{cohortName}/disconnect")
+    @SecurityRequirement(name = "BearerAuthorization")
 
     @Operation(summary="disconnectFromCohort",
             description="Disconnect communications from a specific cohort.",
@@ -777,7 +811,6 @@ public class RuntimeManagerResource
     }
 
 
-
     /**
      * Disconnect communications from a specific cohort.
      *
@@ -788,6 +821,7 @@ public class RuntimeManagerResource
      * @return boolean to indicate that the request has been issued.  If false it is likely that the cohort name is not known
      */
     @PostMapping(path = "/cohort-members/{serverGUID}/cohorts/{cohortName}/disconnect")
+    @SecurityRequirement(name = "BearerAuthorization")
 
     @Operation(summary="disconnectFromCohort",
             description="Disconnect communications from a specific cohort.",
@@ -813,6 +847,7 @@ public class RuntimeManagerResource
      * @return boolean to indicate that the request has been issued.  If false it is likely that the cohort name is not known
      */
     @GetMapping(path = "/cohort-members/{serverGUID}/cohorts/{cohortName}/unregister")
+    @SecurityRequirement(name = "BearerAuthorization")
 
     @Operation(summary="unregisterFromCohort",
             description="Unregister from a specific cohort and disconnect from cohort communications.",
@@ -837,6 +872,7 @@ public class RuntimeManagerResource
      * @return boolean to indicate that the request has been issued.  If false it is likely that the cohort name is not known
      */
     @PostMapping(path = "/cohort-members/{serverGUID}/cohorts/{cohortName}/unregister")
+    @SecurityRequirement(name = "BearerAuthorization")
 
     @Operation(summary="unregisterFromCohort",
             description="Unregister from a specific cohort and disconnect from cohort communications.",

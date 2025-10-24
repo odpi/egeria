@@ -179,30 +179,6 @@ public class OMRSConfigurationFactory
      *
      * @param localServerName name of local server
      * @param localServerURL  URL root of local server used for REST calls
-     * @param storageProperties  properties used to configure Egeria Graph DB
-     *
-     * @return LocalRepositoryConfig object
-     */
-    public LocalRepositoryConfig getLocalGraphLocalRepositoryConfig(String              localServerName,
-                                                                    String              localServerURL,
-                                                                    Map<String, Object> storageProperties)
-    {
-        LocalRepositoryConfig localRepositoryConfig = this.getDefaultLocalRepositoryConfig(localServerName,
-                                                                                           localServerURL);
-
-        localRepositoryConfig.setLocalRepositoryMode(LocalRepositoryMode.OPEN_METADATA_NATIVE);
-        localRepositoryConfig.
-                setLocalRepositoryLocalConnection(connectorConfigurationFactory.getLocalGraphRepositoryLocalConnection(storageProperties));
-
-        return localRepositoryConfig;
-    }
-
-
-    /**
-     * Return the configuration for a local repository that is using the built-in graph repository.
-     *
-     * @param localServerName name of local server
-     * @param localServerURL  URL root of local server used for REST calls
      * @param storageProperties  properties used to configure postgres
      *
      * @return LocalRepositoryConfig object
@@ -218,74 +194,6 @@ public class OMRSConfigurationFactory
         localRepositoryConfig.
                 setLocalRepositoryLocalConnection(connectorConfigurationFactory.getPostgresRepositoryLocalConnection(localServerName,
                                                                                                                      storageProperties));
-
-        return localRepositoryConfig;
-    }
-
-
-    /**
-     * Return the configuration for a local repository that is using the built-in XTDB in-memory repository.
-     *
-     * @param localServerName name of local server
-     * @param localServerURL  URL root of local server used for REST calls
-     *
-     * @return LocalRepositoryConfig object
-     */
-    public LocalRepositoryConfig getXTDBInMemLocalRepository(String localServerName,
-                                                             String localServerURL)
-    {
-        LocalRepositoryConfig localRepositoryConfig = this.getDefaultLocalRepositoryConfig(localServerName, localServerURL);
-
-        localRepositoryConfig.setLocalRepositoryMode(LocalRepositoryMode.OPEN_METADATA_NATIVE);
-        localRepositoryConfig.
-                setLocalRepositoryLocalConnection(connectorConfigurationFactory.getXTDBInMemLocalRepositoryLocalConnection());
-
-        return localRepositoryConfig;
-    }
-
-
-    /**
-     * Return the configuration for a local repository that is using the built-in XTDB KV (RocksDB) repository.
-     *
-     * @param localServerName name of local server
-     * @param localServerURL  URL root of local server used for REST calls
-     *
-     * @return LocalRepositoryConfig object
-     */
-    public LocalRepositoryConfig getXTDBKVLocalRepository(String localServerName,
-                                                          String localServerURL)
-    {
-        LocalRepositoryConfig localRepositoryConfig = this.getDefaultLocalRepositoryConfig(localServerName, localServerURL);
-
-        localRepositoryConfig.setLocalRepositoryMode(LocalRepositoryMode.OPEN_METADATA_NATIVE);
-        localRepositoryConfig.
-                setLocalRepositoryLocalConnection(connectorConfigurationFactory.getXTDBKVLocalRepositoryLocalConnection(localServerName));
-
-        return localRepositoryConfig;
-    }
-
-
-
-
-    /**
-     * Return the configuration for a local repository that is using the built-in XTDB repository.  Details of
-     * the storage backend to use are supplied in the storageProperties.
-     *
-     * @param localServerName name of local server
-     * @param localServerURL  URL root of local server used for REST calls
-     * @param storageProperties  properties used to configure Egeria XTDB DB
-     *
-     * @return LocalRepositoryConfig object
-     */
-    public LocalRepositoryConfig XTDBLocalRepository(String              localServerName,
-                                                     String              localServerURL,
-                                                     Map<String, Object> storageProperties)
-    {
-        LocalRepositoryConfig localRepositoryConfig = this.getDefaultLocalRepositoryConfig(localServerName, localServerURL);
-
-        localRepositoryConfig.setLocalRepositoryMode(LocalRepositoryMode.OPEN_METADATA_NATIVE);
-        localRepositoryConfig.
-                setLocalRepositoryLocalConnection(connectorConfigurationFactory.getXTDBLocalRepositoryLocalConnection(storageProperties));
 
         return localRepositoryConfig;
     }

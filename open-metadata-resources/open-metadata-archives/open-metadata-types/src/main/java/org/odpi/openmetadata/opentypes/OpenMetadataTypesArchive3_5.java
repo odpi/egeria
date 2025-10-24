@@ -9,14 +9,7 @@ import org.odpi.openmetadata.repositoryservices.archiveutilities.OMRSArchiveBuil
 import org.odpi.openmetadata.repositoryservices.archiveutilities.OMRSArchiveHelper;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.archivestore.properties.OpenMetadataArchive;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.archivestore.properties.OpenMetadataArchiveType;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.ClassificationDef;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.ClassificationPropagationRule;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.RelationshipDef;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.RelationshipEndCardinality;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.RelationshipEndDef;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDefAttribute;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDefLink;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDefPatch;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.*;
 import org.odpi.openmetadata.repositoryservices.ffdc.OMRSErrorCode;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.OMRSLogicErrorException;
 
@@ -164,7 +157,6 @@ public class OpenMetadataTypesArchive3_5
         /*
          * Calls for new and changed types go here
          */
-        update0041ServerPurpose();
         update00420045SoftwareCapabilities();
         extend0112Person();
     }
@@ -180,14 +172,9 @@ public class OpenMetadataTypesArchive3_5
     private void update00420045SoftwareCapabilities()
     {
         this.archiveBuilder.addRelationshipDef(getSupportedSoftwareCapabilityRelationship());
-        this.archiveBuilder.addTypeDefPatch(updateFileSystemClassification());
-        this.archiveBuilder.addTypeDefPatch(updateFileManagerClassification());
-        this.archiveBuilder.addTypeDefPatch(updateNotificationManagerClassification());
-        this.archiveBuilder.addClassificationDef(addSourceControlLibraryClassification());
-        this.archiveBuilder.addClassificationDef(addChangeManagementLibraryClassification());
-        this.archiveBuilder.addClassificationDef(addSoftwareLibraryClassification());
-        this.archiveBuilder.addTypeDefPatch(updateDatabaseManagerClassification());
-        this.archiveBuilder.addTypeDefPatch(updateContentCollectionManagerClassification());
+        this.archiveBuilder.addEntityDef(addSourceControlLibrary());
+        this.archiveBuilder.addEntityDef(addChangeManagementLibrary());
+        this.archiveBuilder.addEntityDef(addSoftwareLibrary());
         this.archiveBuilder.addTypeDefPatch(updateCloudServiceClassification());
         this.archiveBuilder.addTypeDefPatch(updateServerAssetUseRelationship());
     }
@@ -248,87 +235,10 @@ public class OpenMetadataTypesArchive3_5
     }
 
 
-
-
-    private TypeDefPatch updateFileSystemClassification()
+    private EntityDef addSourceControlLibrary()
     {
-        /*
-         * Create the Patch
-         */
-        TypeDefPatch  typeDefPatch = archiveBuilder.getPatchForType(OpenMetadataType.FILE_SYSTEM_CLASSIFICATION.typeName);
-
-        typeDefPatch.setUpdatedBy(originatorName);
-        typeDefPatch.setUpdateTime(creationDate);
-
-        List<TypeDefLink> validEntityDefs = new ArrayList<>();
-        validEntityDefs.add(new TypeDefLink(archiveBuilder.getTypeDefByName(OpenMetadataType.REFERENCEABLE.typeName)));
-
-        typeDefPatch.setValidEntityDefs(validEntityDefs);
-
-        return typeDefPatch;
-    }
-
-
-    private TypeDefPatch updateFileManagerClassification()
-    {
-        /*
-         * Create the Patch
-         */
-        TypeDefPatch  typeDefPatch = archiveBuilder.getPatchForType(OpenMetadataType.FILE_MANAGER_CLASSIFICATION.typeName);
-
-        typeDefPatch.setUpdatedBy(originatorName);
-        typeDefPatch.setUpdateTime(creationDate);
-
-        List<TypeDefLink> validEntityDefs = new ArrayList<>();
-        validEntityDefs.add(new TypeDefLink(archiveBuilder.getTypeDefByName(OpenMetadataType.REFERENCEABLE.typeName)));
-
-        typeDefPatch.setValidEntityDefs(validEntityDefs);
-        return typeDefPatch;
-    }
-
-
-    private TypeDefPatch updateNotificationManagerClassification()
-    {
-        /*
-         * Create the Patch
-         */
-        TypeDefPatch  typeDefPatch = archiveBuilder.getPatchForType(OpenMetadataType.NOTIFICATION_MANAGER.typeName);
-
-        typeDefPatch.setUpdatedBy(originatorName);
-        typeDefPatch.setUpdateTime(creationDate);
-
-        List<TypeDefLink> validEntityDefs = new ArrayList<>();
-        validEntityDefs.add(new TypeDefLink(archiveBuilder.getTypeDefByName(OpenMetadataType.REFERENCEABLE.typeName)));
-
-        typeDefPatch.setValidEntityDefs(validEntityDefs);
-        return typeDefPatch;
-    }
-
-
-    private TypeDefPatch updateContentCollectionManagerClassification()
-    {
-        /*
-         * Create the Patch
-         */
-        TypeDefPatch  typeDefPatch = archiveBuilder.getPatchForType(OpenMetadataType.CONTENT_COLLECTION_MANAGER.typeName);
-
-        typeDefPatch.setUpdatedBy(originatorName);
-        typeDefPatch.setUpdateTime(creationDate);
-
-        List<TypeDefLink> validEntityDefs = new ArrayList<>();
-        validEntityDefs.add(new TypeDefLink(archiveBuilder.getTypeDefByName(OpenMetadataType.REFERENCEABLE.typeName)));
-
-        typeDefPatch.setValidEntityDefs(validEntityDefs);
-        return typeDefPatch;
-    }
-
-
-    private ClassificationDef addSourceControlLibraryClassification()
-    {
-        ClassificationDef classificationDef = archiveHelper.getClassificationDef(OpenMetadataType.SOURCE_CONTROL_LIBRARY_CLASSIFICATION,
-                                                                                 this.archiveBuilder.getClassificationDef(OpenMetadataType.RESOURCE_MANAGER_CLASSIFICATION.typeName),
-                                                                                 this.archiveBuilder.getEntityDef(OpenMetadataType.REFERENCEABLE.typeName),
-                                                                                 true);
+        EntityDef classificationDef = archiveHelper.getDefaultEntityDef(OpenMetadataType.SOURCE_CONTROL_LIBRARY,
+                                                                        this.archiveBuilder.getEntityDef(OpenMetadataType.RESOURCE_MANAGER.typeName));
 
         /*
          * Build the attributes
@@ -343,12 +253,10 @@ public class OpenMetadataTypesArchive3_5
     }
 
 
-    private ClassificationDef addChangeManagementLibraryClassification()
+    private EntityDef addChangeManagementLibrary()
     {
-        ClassificationDef classificationDef = archiveHelper.getClassificationDef(OpenMetadataType.CHANGE_MANAGEMENT_LIBRARY_CLASSIFICATION,
-                                                                                 this.archiveBuilder.getClassificationDef(OpenMetadataType.RESOURCE_MANAGER_CLASSIFICATION.typeName),
-                                                                                 this.archiveBuilder.getEntityDef(OpenMetadataType.REFERENCEABLE.typeName),
-                                                                                 true);
+        EntityDef classificationDef = archiveHelper.getDefaultEntityDef(OpenMetadataType.CHANGE_MANAGEMENT_LIBRARY,
+                                                                        this.archiveBuilder.getEntityDef(OpenMetadataType.RESOURCE_MANAGER.typeName));
 
         /*
          * Build the attributes
@@ -364,12 +272,10 @@ public class OpenMetadataTypesArchive3_5
 
 
 
-    private ClassificationDef addSoftwareLibraryClassification()
+    private EntityDef addSoftwareLibrary()
     {
-        ClassificationDef classificationDef = archiveHelper.getClassificationDef(OpenMetadataType.SOFTWARE_LIBRARY_CLASSIFICATION,
-                                                                                 this.archiveBuilder.getClassificationDef(OpenMetadataType.RESOURCE_MANAGER_CLASSIFICATION.typeName),
-                                                                                 this.archiveBuilder.getEntityDef(OpenMetadataType.REFERENCEABLE.typeName),
-                                                                                 true);
+        EntityDef entityDef = archiveHelper.getDefaultEntityDef(OpenMetadataType.SOFTWARE_LIBRARY,
+                                                                this.archiveBuilder.getEntityDef(OpenMetadataType.RESOURCE_MANAGER.typeName));
 
         /*
          * Build the attributes
@@ -378,9 +284,9 @@ public class OpenMetadataTypesArchive3_5
 
         properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.LIBRARY_TYPE));
 
-        classificationDef.setPropertiesDefinition(properties);
+        entityDef.setPropertiesDefinition(properties);
 
-        return classificationDef;
+        return entityDef;
     }
 
 
@@ -396,24 +302,6 @@ public class OpenMetadataTypesArchive3_5
 
         List<TypeDefLink> validEntityDefs = new ArrayList<>();
         validEntityDefs.add(new TypeDefLink(archiveBuilder.getTypeDefByName(OpenMetadataType.SOFTWARE_CAPABILITY.typeName)));
-
-        typeDefPatch.setValidEntityDefs(validEntityDefs);
-        return typeDefPatch;
-    }
-
-
-    private TypeDefPatch updateDatabaseManagerClassification()
-    {
-        /*
-         * Create the Patch
-         */
-        TypeDefPatch  typeDefPatch = archiveBuilder.getPatchForType(OpenMetadataType.DATABASE_MANAGER.typeName);
-
-        typeDefPatch.setUpdatedBy(originatorName);
-        typeDefPatch.setUpdateTime(creationDate);
-
-        List<TypeDefLink> validEntityDefs = new ArrayList<>();
-        validEntityDefs.add(new TypeDefLink(archiveBuilder.getTypeDefByName(OpenMetadataType.DATA_MANAGER.typeName)));
 
         typeDefPatch.setValidEntityDefs(validEntityDefs);
         return typeDefPatch;
@@ -464,192 +352,6 @@ public class OpenMetadataTypesArchive3_5
         return typeDefPatch;
     }
 
-
-    /*
-     * -------------------------------------------------------------------------------------------------------
-     */
-
-    /**
-     * Allow IT Infrastructure to be classified with its purpose in the IT Landscape
-     */
-    private void update0041ServerPurpose()
-    {
-        this.archiveBuilder.addClassificationDef(addServerPurposeClassification());
-        this.archiveBuilder.addTypeDefPatch(updateApplicationServerClassification());
-        this.archiveBuilder.addTypeDefPatch(updateWebserverClassification());
-        this.archiveBuilder.addTypeDefPatch(updateDatabaseServerClassification());
-        this.archiveBuilder.addTypeDefPatch(updateMetadataServerClassification());
-        this.archiveBuilder.addTypeDefPatch(updateRepositoryProxyClassification());
-        this.archiveBuilder.addTypeDefPatch(updateGovernanceDaemonClassification());
-        this.archiveBuilder.addTypeDefPatch(updateStewardshipServerClassification());
-        this.archiveBuilder.addClassificationDef(addIntegrationServerClassification());
-    }
-
-
-    private ClassificationDef addServerPurposeClassification()
-    {
-        final List<TypeDefLink> linkedToEntities = new ArrayList<>();
-
-        linkedToEntities.add(this.archiveBuilder.getEntityDef(OpenMetadataType.IT_INFRASTRUCTURE.typeName));
-
-        return archiveHelper.getClassificationDef(OpenMetadataType.SERVER_PURPOSE_CLASSIFICATION,
-                                                  null,
-                                                  linkedToEntities,
-                                                  false);
-    }
-
-
-    private TypeDefPatch updateApplicationServerClassification()
-    {
-        /*
-         * Create the Patch
-         */
-        TypeDefPatch  typeDefPatch = archiveBuilder.getPatchForType(OpenMetadataType.APPLICATION_SERVER_CLASSIFICATION.typeName);
-
-        typeDefPatch.setUpdatedBy(originatorName);
-        typeDefPatch.setUpdateTime(creationDate);
-
-        typeDefPatch.setSuperType(archiveBuilder.getTypeDefByName(OpenMetadataType.SERVER_PURPOSE_CLASSIFICATION.typeName));
-
-        List<TypeDefLink> validEntityDefs = new ArrayList<>();
-        validEntityDefs.add(new TypeDefLink(archiveBuilder.getTypeDefByName(OpenMetadataType.IT_INFRASTRUCTURE.typeName)));
-
-        typeDefPatch.setValidEntityDefs(validEntityDefs);
-
-        return typeDefPatch;
-    }
-
-
-    private TypeDefPatch updateWebserverClassification()
-    {
-        /*
-         * Create the Patch
-         */
-        TypeDefPatch  typeDefPatch = archiveBuilder.getPatchForType(OpenMetadataType.WEBSERVER_CLASSIFICATION.typeName);
-
-        typeDefPatch.setUpdatedBy(originatorName);
-        typeDefPatch.setUpdateTime(creationDate);
-
-        typeDefPatch.setSuperType(archiveBuilder.getTypeDefByName(OpenMetadataType.SERVER_PURPOSE_CLASSIFICATION.typeName));
-
-        List<TypeDefLink> validEntityDefs = new ArrayList<>();
-        validEntityDefs.add(new TypeDefLink(archiveBuilder.getTypeDefByName(OpenMetadataType.IT_INFRASTRUCTURE.typeName)));
-
-        typeDefPatch.setValidEntityDefs(validEntityDefs);
-
-        return typeDefPatch;
-    }
-
-
-    private TypeDefPatch updateDatabaseServerClassification()
-    {
-        /*
-         * Create the Patch
-         */
-        TypeDefPatch  typeDefPatch = archiveBuilder.getPatchForType(OpenMetadataType.DATABASE_SERVER_CLASSIFICATION.typeName);
-
-        typeDefPatch.setUpdatedBy(originatorName);
-        typeDefPatch.setUpdateTime(creationDate);
-
-        typeDefPatch.setSuperType(archiveBuilder.getTypeDefByName(OpenMetadataType.SERVER_PURPOSE_CLASSIFICATION.typeName));
-
-        List<TypeDefLink> validEntityDefs = new ArrayList<>();
-        validEntityDefs.add(new TypeDefLink(archiveBuilder.getTypeDefByName(OpenMetadataType.IT_INFRASTRUCTURE.typeName)));
-
-        typeDefPatch.setValidEntityDefs(validEntityDefs);
-        return typeDefPatch;
-    }
-
-
-    private TypeDefPatch updateMetadataServerClassification()
-    {
-        /*
-         * Create the Patch
-         */
-        TypeDefPatch  typeDefPatch = archiveBuilder.getPatchForType(OpenMetadataType.METADATA_SERVER_CLASSIFICATION.typeName);
-
-        typeDefPatch.setUpdatedBy(originatorName);
-        typeDefPatch.setUpdateTime(creationDate);
-
-        typeDefPatch.setSuperType(archiveBuilder.getTypeDefByName(OpenMetadataType.SERVER_PURPOSE_CLASSIFICATION.typeName));
-
-        List<TypeDefLink> validEntityDefs = new ArrayList<>();
-        validEntityDefs.add(new TypeDefLink(archiveBuilder.getTypeDefByName(OpenMetadataType.IT_INFRASTRUCTURE.typeName)));
-
-        typeDefPatch.setValidEntityDefs(validEntityDefs);
-        return typeDefPatch;
-    }
-
-
-    private TypeDefPatch updateRepositoryProxyClassification()
-    {
-        /*
-         * Create the Patch
-         */
-        TypeDefPatch  typeDefPatch = archiveBuilder.getPatchForType(OpenMetadataType.REPOSITORY_PROXY_CLASSIFICATION.typeName);
-
-        typeDefPatch.setUpdatedBy(originatorName);
-        typeDefPatch.setUpdateTime(creationDate);
-
-        typeDefPatch.setSuperType(archiveBuilder.getTypeDefByName(OpenMetadataType.SERVER_PURPOSE_CLASSIFICATION.typeName));
-
-        List<TypeDefLink> validEntityDefs = new ArrayList<>();
-        validEntityDefs.add(new TypeDefLink(archiveBuilder.getTypeDefByName(OpenMetadataType.IT_INFRASTRUCTURE.typeName)));
-
-        typeDefPatch.setValidEntityDefs(validEntityDefs);
-        return typeDefPatch;
-    }
-
-
-    private TypeDefPatch updateGovernanceDaemonClassification()
-    {
-        /*
-         * Create the Patch
-         */
-        TypeDefPatch  typeDefPatch = archiveBuilder.getPatchForType(OpenMetadataType.GOVERNANCE_DAEMON_CLASSIFICATION.typeName);
-
-        typeDefPatch.setUpdatedBy(originatorName);
-        typeDefPatch.setUpdateTime(creationDate);
-
-        typeDefPatch.setSuperType(archiveBuilder.getTypeDefByName(OpenMetadataType.SERVER_PURPOSE_CLASSIFICATION.typeName));
-
-        List<TypeDefLink> validEntityDefs = new ArrayList<>();
-        validEntityDefs.add(new TypeDefLink(archiveBuilder.getTypeDefByName(OpenMetadataType.IT_INFRASTRUCTURE.typeName)));
-
-        typeDefPatch.setValidEntityDefs(validEntityDefs);
-
-        return typeDefPatch;
-    }
-
-
-    private TypeDefPatch updateStewardshipServerClassification()
-    {
-        /*
-         * Create the Patch
-         */
-        TypeDefPatch  typeDefPatch = archiveBuilder.getPatchForType(OpenMetadataType.STEWARDSHIP_SERVER_CLASSIFICATION.typeName);
-
-        typeDefPatch.setUpdatedBy(originatorName);
-        typeDefPatch.setUpdateTime(creationDate);
-
-        typeDefPatch.setSuperType(archiveBuilder.getTypeDefByName(OpenMetadataType.SERVER_PURPOSE_CLASSIFICATION.typeName));
-
-        List<TypeDefLink> validEntityDefs = new ArrayList<>();
-        validEntityDefs.add(new TypeDefLink(archiveBuilder.getTypeDefByName(OpenMetadataType.IT_INFRASTRUCTURE.typeName)));
-
-        typeDefPatch.setValidEntityDefs(validEntityDefs);
-
-        return typeDefPatch;
-    }
-
-
-    private ClassificationDef addIntegrationServerClassification()
-    {
-        return archiveHelper.getClassificationDef(OpenMetadataType.INTEGRATION_SERVER_CLASSIFICATION,
-                                                  archiveBuilder.getClassificationDef(OpenMetadataType.SERVER_PURPOSE_CLASSIFICATION.typeName),
-                                                  this.archiveBuilder.getEntityDef(OpenMetadataType.IT_INFRASTRUCTURE.typeName),
-                                                  false);
-    }
 
 
     /*

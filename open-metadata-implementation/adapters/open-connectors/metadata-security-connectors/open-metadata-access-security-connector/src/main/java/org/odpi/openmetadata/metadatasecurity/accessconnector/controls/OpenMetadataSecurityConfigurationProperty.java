@@ -3,7 +3,7 @@
 
 package org.odpi.openmetadata.metadatasecurity.accessconnector.controls;
 
-import org.odpi.openmetadata.frameworks.connectors.controls.ConfigurationPropertyType;
+import org.odpi.openmetadata.frameworks.openmetadata.specificationproperties.ConfigurationPropertyType;
 
 import java.util.ArrayList;
 import java.util.List;

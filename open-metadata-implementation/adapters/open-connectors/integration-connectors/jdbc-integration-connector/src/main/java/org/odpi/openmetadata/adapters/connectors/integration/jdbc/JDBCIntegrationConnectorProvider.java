@@ -78,7 +78,7 @@ public class JDBCIntegrationConnectorProvider extends IntegrationConnectorProvid
         connectorType.setConnectorProviderClassName(this.getClass().getName());
         connectorType.setRecognizedConfigurationProperties(JDBCConfigurationProperty.getRecognizedConfigurationProperties());
         connectorType.setSupportedAssetTypeName(supportedAssetTypeName);
-        connectorType.setSupportedDeployedImplementationType(DeployedImplementationType.DATABASE_INTEGRATION_CONNECTOR.getDeployedImplementationType());
+        connectorType.setSupportedDeployedImplementationType(DeployedImplementationType.INTEGRATION_CONNECTOR.getDeployedImplementationType());
 
         super.connectorTypeBean = connectorType;
 
@@ -98,6 +98,6 @@ public class JDBCIntegrationConnectorProvider extends IntegrationConnectorProvid
         super.supportedConfigurationProperties = JDBCConfigurationProperty.getConfigurationPropertyTypes();
         super.catalogTargets = JDBCDatabaseCatalogTarget.getCatalogTargetTypes();
 
-        super.supportedTechnologyTypes = SupportedTechnologyType.getSupportedTechnologyTypes(new DeployedImplementationTypeDefinition[]{DeployedImplementationType.JDBC_RELATIONAL_DATABASE, DeployedImplementationType.JDBC_RELATIONAL_DATABASE_SCHEMA, DeployedImplementationType.JDBC_RELATIONAL_DATABASE_TABLE});
+        super.supportedTechnologyTypes = SupportedTechnologyType.getSupportedTechnologyTypes(new DeployedImplementationTypeDefinition[]{DeployedImplementationType.JDBC_RELATIONAL_DATABASE, DeployedImplementationType.JDBC_RELATIONAL_DATABASE_SCHEMA});
     }
 }

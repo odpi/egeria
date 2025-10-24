@@ -109,6 +109,7 @@ public class SimpleAPICatalogArchiveBuilder
         this.archiveHelper = new SimpleCatalogArchiveHelper(archiveBuilder,
                                                             archiveGUID,
                                                             archiveName,
+                                                            archiveDescription,
                                                             archiveRootName,
                                                             originatorName,
                                                             creationDate,

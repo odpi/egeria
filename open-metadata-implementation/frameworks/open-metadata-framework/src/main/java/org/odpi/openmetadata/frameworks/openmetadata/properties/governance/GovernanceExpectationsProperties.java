@@ -8,6 +8,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.ClassificationBeanProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 
+import java.util.Date;
 import java.util.Map;
 import java.util.Objects;
 
@@ -25,6 +26,7 @@ public class GovernanceExpectationsProperties extends ClassificationBeanProperti
     private Map<String, Integer> counts = null;
     private Map<String, String>  values = null;
     private Map<String, Boolean> flags  = null;
+    private Map<String, Date>    dates  = null;
 
 
 
@@ -51,7 +53,8 @@ public class GovernanceExpectationsProperties extends ClassificationBeanProperti
         {
             counts = template.getCounts();
             values = template.getValues();
-            flags = template.getFlags();
+            flags  = template.getFlags();
+            dates  = template.getDates();
         }
     }
 
@@ -121,6 +124,27 @@ public class GovernanceExpectationsProperties extends ClassificationBeanProperti
         this.flags = flags;
     }
 
+    /**
+     * Return the set of name-value dates.
+     *
+     * @return name-value dates
+     */
+    public Map<String, Date> getDates()
+    {
+        return dates;
+    }
+
+
+    /**
+     * Set up the set of name-value dates.
+     *
+     * @param dates name-value dates
+     */
+    public void setDates(Map<String, Date> dates)
+    {
+        this.dates = dates;
+    }
+
 
     /**
      * JSON-style toString
@@ -134,6 +158,7 @@ public class GovernanceExpectationsProperties extends ClassificationBeanProperti
                 "counts=" + counts +
                 ", values=" + values +
                 ", flags=" + flags +
+                ", dates=" + dates +
                 "} " + super.toString();
     }
 
@@ -161,7 +186,8 @@ public class GovernanceExpectationsProperties extends ClassificationBeanProperti
         }
         return Objects.equals(counts, that.counts) &&
                        Objects.equals(values, that.values) &&
-                       Objects.equals(flags, that.flags);
+                       Objects.equals(flags, that.flags) &&
+                       Objects.equals(dates, that.dates);
     }
 
 
@@ -173,6 +199,6 @@ public class GovernanceExpectationsProperties extends ClassificationBeanProperti
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), counts, values, flags);
+        return Objects.hash(super.hashCode(), counts, values, flags, dates);
     }
 }

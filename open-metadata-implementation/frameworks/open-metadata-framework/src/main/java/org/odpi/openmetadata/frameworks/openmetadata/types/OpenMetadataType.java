@@ -3,6 +3,85 @@
 package org.odpi.openmetadata.frameworks.openmetadata.types;
 
 
+import org.odpi.openmetadata.frameworks.openmetadata.properties.*;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.actors.*;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.actors.GovernanceRoleProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.*;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.analytics.AnalyticsModelRunProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.analytics.DeployedAnalyticsModelProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.apis.*;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.databases.*;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.filesandfolders.*;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.infrastructure.*;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.metadatarepositories.CohortRegistryStoreProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.metadatarepositories.MetadataCollectionProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.metadatarepositories.MetadataRepositoryProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.processes.*;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.processes.actions.*;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.processes.connectors.*;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.referencedata.ReferenceCodeMappingTableProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.referencedata.ReferenceCodeTableProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.referencedata.ReferenceDataProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.reports.*;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.topics.AssociatedLogProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.topics.TopicProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.collections.*;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.communities.CommunityMemberProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.communities.CommunityProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.communities.CrowdSourcingContributionProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.communities.CrowdSourcingContributorProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.connections.*;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.contextevents.*;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.datadictionaries.*;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.dataprocessing.DataProcessingActionProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.dataprocessing.DataProcessingDescriptionProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.dataprocessing.DataProcessingPurposeProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.designmodels.*;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.digitalbusiness.*;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.externalidentifiers.ExternalIdLinkProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.externalidentifiers.ExternalIdProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.externalreferences.*;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.feedback.*;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.glossaries.*;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.governance.*;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.governance.governanceactions.*;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.implementations.ImplementationResourceProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.implementations.ImplementedByProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.informationsupplychains.InformationSupplyChainLinkProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.informationsupplychains.InformationSupplyChainProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.lineage.*;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.locations.*;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.operatingplatforms.*;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.projects.*;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.propertyfacets.PropertyFacetProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.propertyfacets.ReferenceableFacetProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.resources.MoreInformationProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.resources.ResourceListProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.schema.*;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.schema.apis.APIOperationProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.schema.apis.APIParameterListProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.schema.apis.APIParameterProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.schema.apis.APISchemaTypeProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.schema.databases.RelationalColumnProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.schema.databases.RelationalDBSchemaTypeProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.schema.databases.RelationalTableProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.schema.events.EventSchemaAttributeProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.schema.events.EventTypeListProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.schema.events.EventTypeProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.schema.tabular.TabularColumnProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.schema.tabular.TabularFileColumnProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.schema.tabular.TabularSchemaTypeProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.security.*;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.softwarecapabilities.*;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.solutions.*;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.surveyreports.*;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.templates.CatalogTemplateProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.templates.TemplateProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.templates.TemplateSubstituteProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.translations.TranslationDetailProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.translations.TranslationLinkProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.validvalues.*;
+
 /**
  * OpenMetadataType provides property name mapping for the open metadata types.
  * It includes identifiers for all the types.
@@ -20,36 +99,40 @@ public enum OpenMetadataType
      */
     OPEN_METADATA_ROOT("4e7761e8-3969-4627-8f40-bfe3cde85a1d",
                        "OpenMetadataRoot",
-                       OpenMetadataWikiPages.MODEL_0010_BASIC_MODEL,
+                       OpenMetadataWikiPages.MODEL_0010_BASE_MODEL,
                        "9f665566-2144-4c6c-95db-b1d1f86c412f",
-                       "Common root for all open metadata entity types."),
+                       "Common root for all open metadata entity types.",
+                       OpenMetadataRootProperties.class),
 
     /**
      * An element whose real-world counterpart has been deleted or moved to offline archived.
      */
     MEMENTO_CLASSIFICATION("ecdcd472-6701-4303-8dec-267bcb54feb9",
                            "Memento",
-                           OpenMetadataWikiPages.MODEL_0010_BASIC_MODEL,
+                           OpenMetadataWikiPages.MODEL_0010_BASE_MODEL,
                            "7332d853-1c43-4518-ab96-44f374b9966d",
-                           "An element whose real-world counterpart has been deleted or moved to offline archived."),
+                           "An element whose real-world counterpart has been deleted or moved to offline archived.",
+                           MementoProperties.class),
 
     /**
      * Identifies the anchor entity for an element that is part of a large composite object such as an asset.
      */
     ANCHORS_CLASSIFICATION("aa44f302-2e43-4669-a1e7-edaae414fc6e",
                            "Anchors",
-                           OpenMetadataWikiPages.MODEL_0010_BASIC_MODEL,
+                           OpenMetadataWikiPages.MODEL_0010_BASE_MODEL,
                            "09708101-5b38-4c3c-b1e5-983f9c731e5c",
-                           "Identifies the anchor entity for an element that is part of a large composite object such as an asset."),
+                           "Identifies the anchor entity for an element that is part of a large composite object such as an asset.",
+                           AnchorsProperties.class),
 
     /**
      * An open metadata entity that has a unique identifier.
      */
     REFERENCEABLE("a32316b8-dc8c-48c5-b12b-71c1b2a080bf",
                   "Referenceable",
-                  OpenMetadataWikiPages.MODEL_0010_BASIC_MODEL,
+                  OpenMetadataWikiPages.MODEL_0010_BASE_MODEL,
                   "d9a26761-40ba-441d-9981-cc8f137fe379",
-                  "An open metadata entity that has a unique identifier."),
+                  "An open metadata entity that has a unique identifier.",
+                  ReferenceableProperties.class),
 
 
     /**
@@ -57,18 +140,20 @@ public enum OpenMetadataType
      */
     ASSET("896d14c2-7522-4f6c-8519-757711943fe6",
           "Asset",
-          OpenMetadataWikiPages.MODEL_0010_BASIC_MODEL,
+          OpenMetadataWikiPages.MODEL_0010_BASE_MODEL,
           "11b20cb3-2149-47f9-ad0a-058332a3cb5f",
-          "The description of a resource that needs to be catalogued and governed."),
+          "The description of a resource that needs to be catalogued and governed.",
+          AssetProperties.class),
 
     /**
      * The description of a collection of data.
      */
     DATA_ASSET("ca826f9e-7fb1-4005-921a-fee1c4cd221b",
-          "DataAsset",
-          OpenMetadataWikiPages.MODEL_0010_BASIC_MODEL,
-          "8661a98b-1a2e-4a33-bb71-078f48532385",
-          "The description of a collection of data."),
+               "DataAsset",
+               OpenMetadataWikiPages.MODEL_0010_BASE_MODEL,
+               "8661a98b-1a2e-4a33-bb71-078f48532385",
+               "The description of a collection of data.",
+               DataAssetProperties.class),
 
 
     /**
@@ -76,36 +161,40 @@ public enum OpenMetadataType
      */
     PROCESS("d8f33bd7-afa9-4a11-a8c7-07dcec83c050",
             "Process",
-            OpenMetadataWikiPages.MODEL_0010_BASIC_MODEL,
+            OpenMetadataWikiPages.MODEL_0010_BASE_MODEL,
             "f1fecd94-215c-4e42-9cd9-a945156af2a8",
-            "Well-defined sequence of activities performed by digital resources."),
+            "Well-defined sequence of activities performed by digital resources.",
+            ProcessProperties.class),
 
     /**
      * Physical infrastructure or software platform.
      */
     INFRASTRUCTURE("c19746ac-b3ec-49ce-af4b-83348fc55e07",
                    "Infrastructure",
-                   OpenMetadataWikiPages.MODEL_0010_BASIC_MODEL,
+                   OpenMetadataWikiPages.MODEL_0010_BASE_MODEL,
                    "002a59fc-9ee8-4e7c-b18f-39e035128127",
-                   "Physical infrastructure or software platform."),
+                   "Physical infrastructure or software platform.",
+                   InfrastructureProperties.class),
 
     /**
      * Links an Asset entity describing a collection of sample data that originates from the resource represented by the Referenceable entity.
      */
     SAMPLE_DATA_RELATIONSHIP("0ee9c0f1-a89b-4806-8276-7c74f07fe190",
                              "SampleData",
-                             OpenMetadataWikiPages.MODEL_0010_BASIC_MODEL,
+                             OpenMetadataWikiPages.MODEL_0010_BASE_MODEL,
                              "bfb3a740-756d-45d7-9f49-8194b52a5cb0",
-                             "Links an Asset entity describing a collection of sample data that originates from the resource represented by the Referenceable entity."),
+                             "Links an Asset entity describing a collection of sample data that originates from the resource represented by the Referenceable entity.",
+                             SampleDataProperties.class),
 
     /**
      * Defines the latest change to an anchor entity and its associated attachments.
      */
     LATEST_CHANGE_CLASSIFICATION("adce83ac-10f1-4279-8a35-346976e94466",
                                  "LatestChange",
-                                 OpenMetadataWikiPages.MODEL_0010_BASIC_MODEL,
+                                 OpenMetadataWikiPages.MODEL_0010_BASE_MODEL,
                                  "5f6bf15f-0c9d-434b-a84e-588269e70b0b",
-                                 "Defines the latest change to an anchor entity and its associated attachments."),
+                                 "Defines the latest change to an anchor entity and its associated attachments.",
+                                 LatestChangeProperties.class),
 
 
     /**
@@ -115,7 +204,8 @@ public enum OpenMetadataType
                             "Template",
                             OpenMetadataWikiPages.MODEL_0011_MANAGING_REFERENCEABLES,
                             "8982fa20-41a8-4ad2-a72a-519bba6e3f82",
-                            "Marks the referenceable as a template for creating new objects."),
+                            "Marks the referenceable as a template for creating new objects.",
+                            TemplateProperties.class),
 
     /**
      * Provides the template for creating a metadata representation of the linked from valid value.
@@ -124,7 +214,8 @@ public enum OpenMetadataType
                                   "CatalogTemplate",
                                   OpenMetadataWikiPages.MODEL_0011_MANAGING_REFERENCEABLES,
                                   "fc9af2cd-851b-46a7-9198-b9f95ad64811",
-                                  "Provides the template for creating a metadata representation of the linked from valid value."),
+                                  "Provides the template for creating a metadata representation of the linked from valid value.",
+                                  CatalogTemplateProperties.class),
 
     /**
      * An element that has been introduced in a template to provide an end to a relationship that is part of the template but should not be visible outside the template use.
@@ -133,7 +224,8 @@ public enum OpenMetadataType
                                        "TemplateSubstitute",
                                        OpenMetadataWikiPages.MODEL_0011_MANAGING_REFERENCEABLES,
                                        "29d921c0-d0fa-4047-97c0-81d6f9e87573",
-                                       "An element that has been introduced in a template to provide an end to a relationship that is part of the template but should not be visible outside the template use."),
+                                       "An element that has been introduced in a template to provide an end to a relationship that is part of the template but should not be visible outside the template use.",
+                                       TemplateSubstituteProperties.class),
 
     /**
      * Defines source of the information for a referenceable that was created by copying from a template.
@@ -142,7 +234,8 @@ public enum OpenMetadataType
                               "SourcedFrom",
                               OpenMetadataWikiPages.MODEL_0011_MANAGING_REFERENCEABLES,
                               "e5794f9e-adf0-461d-bee2-7ba807dc1511",
-                              "Defines source of the information for a referenceable that was created by copying from a template."),
+                              "Defines source of the information for a referenceable that was created by copying from a template.",
+                              SourcedFromProperties.class),
 
     /**
      * A shareable keyword to help locating relevant assets.
@@ -151,7 +244,8 @@ public enum OpenMetadataType
                    "SearchKeyword",
                    OpenMetadataWikiPages.MODEL_0012_SEARCH_KEYWORDS,
                    "26707bea-f65c-43bc-9576-5991d9bafc24",
-                   "A shareable keyword to help locating relevant assets."),
+                   "A shareable keyword to help locating relevant assets.",
+                   SearchKeywordProperties.class),
 
     /**
      * Provides a link to a keyword that helps to identify specific elements in a search.
@@ -160,7 +254,8 @@ public enum OpenMetadataType
                                      "SearchKeywordLink",
                                      OpenMetadataWikiPages.MODEL_0012_SEARCH_KEYWORDS,
                                      "17f7fc3d-3b4d-4216-9546-256af94c9c99",
-                                     "Provides a link to a keyword that helps to identify specific elements in a search."),
+                                     "Provides a link to a keyword that helps to identify specific elements in a search.",
+                                     SearchKeywordLinkProperties.class),
 
 
     /**
@@ -170,7 +265,8 @@ public enum OpenMetadataType
            "Action",
            OpenMetadataWikiPages.MODEL_0013_ACTIONS,
            "d1df6cb0-80af-473f-aacf-f29972fd4c34",
-           "An action that has been identified to support the development, improvement, or remedy of an object or situation."),
+           "An action that has been identified to support the development, improvement, or remedy of an object or situation.",
+           ActionProperties.class),
 
 
     /**
@@ -180,7 +276,8 @@ public enum OpenMetadataType
                                   "ActionRequester",
                                   OpenMetadataWikiPages.MODEL_0013_ACTIONS,
                                   "4b7c5d49-cef0-495e-8710-23c293828575",
-                                  "The source of the action, such as a person, meeting or a governance action."),
+                                  "The source of the action, such as a person, meeting or a governance action.",
+                                  ActionRequesterProperties.class),
 
     /**
      * Identifies the cause that requires the action to be completed.
@@ -189,7 +286,8 @@ public enum OpenMetadataType
                          "Actions",
                          OpenMetadataWikiPages.MODEL_0013_ACTIONS,
                          "91071319-9737-423b-8e26-6e133e082045",
-                         "Identifies the cause that requires the action to be completed."),
+                         "Identifies the cause that requires the action to be completed.",
+                         ActionsProperties.class),
 
 
     /**
@@ -199,7 +297,8 @@ public enum OpenMetadataType
                                "ActionTarget",
                                OpenMetadataWikiPages.MODEL_0013_ACTIONS,
                                "e087a192-707d-41fb-97c6-84861383e4b5",
-                               "Associates an action with one or more elements to work on."),
+                               "Associates an action with one or more elements to work on.",
+                               ActionTargetProperties.class),
 
 
     /**
@@ -209,7 +308,8 @@ public enum OpenMetadataType
                                          "ExternalReferenceLink",
                                          OpenMetadataWikiPages.MODEL_0014_EXTERNAL_REFERENCES,
                                          "906ea4d6-1825-40c8-b5cb-07ecca6b848e",
-                                         "Link to external information."),
+                                         "Link to external information.",
+                                         ExternalReferenceLinkProperties.class),
 
     /**
      * A link to an external reference source such as a web page, article or book.
@@ -218,26 +318,39 @@ public enum OpenMetadataType
                        "ExternalReference",
                        OpenMetadataWikiPages.MODEL_0014_EXTERNAL_REFERENCES,
                        "cd59edf8-ef6d-4436-bfc5-e93403238df4",
-                       "A link to an external reference source such as a web page, article or book."),
+                       "A link to an external reference source such as a web page, article or book.",
+                       ExternalReferenceProperties.class),
+
+    /**
+     * A link to the source code used to build the implementation of the linked element.
+     */
+    EXTERNAL_SOURCE_CODE("2f0c5b22-b66f-44a1-b008-74c71fb45bc0",
+                         "ExternalSourceCode",
+                         OpenMetadataWikiPages.MODEL_0014_EXTERNAL_REFERENCES,
+                         "838ca64b-3839-43c6-8a19-0c4250de528e",
+                         "A link to the source code used to build the implementation of the linked element.",
+                         ExternalSourceCodeProperties.class),
 
     /**
      * A link to a data set on an external site.
      */
     EXTERNAL_DATA_SOURCE("fc1de197-7e65-4828-9f3e-43dc12b70c6b",
-                       "ExternalDataSource",
-                       OpenMetadataWikiPages.MODEL_0014_EXTERNAL_REFERENCES,
-                       "4aa0042e-5391-414d-952c-fe1ee0e29ccf",
-                       "A link to a data set on an external site."),
+                         "ExternalDataSource",
+                         OpenMetadataWikiPages.MODEL_0014_EXTERNAL_REFERENCES,
+                         "4aa0042e-5391-414d-952c-fe1ee0e29ccf",
+                         "A link to a data set on an external site.",
+                         ExternalDataSourceProperties.class),
 
 
     /**
      * A link to a model on an external site.
      */
     EXTERNAL_MODEL_SOURCE("43cc04b8-9afd-4ddc-b868-e0f0e141ffa6",
-                         "ExternalModelSource",
-                         OpenMetadataWikiPages.MODEL_0014_EXTERNAL_REFERENCES,
-                         "ffa65091-ebc3-4722-b1bb-f038bff0def6",
-                         "A link to a data set on an external site."),
+                          "ExternalModelSource",
+                          OpenMetadataWikiPages.MODEL_0014_EXTERNAL_REFERENCES,
+                          "ffa65091-ebc3-4722-b1bb-f038bff0def6",
+                          "A link to a data set on an external site.",
+                          ExternalModelSourceProperties.class),
 
 
     /**
@@ -247,7 +360,8 @@ public enum OpenMetadataType
                   "RelatedMedia",
                   OpenMetadataWikiPages.MODEL_0015_LINKED_MEDIA_TYPES,
                   "4b4f379f-0d69-46ae-b5cd-0b6c08dffb21",
-                  "Images, video or sound media."),
+                  "Images, video or sound media.",
+                  RelatedMediaProperties.class),
 
     /**
      * Link to related media such as images, videos and audio.
@@ -256,26 +370,28 @@ public enum OpenMetadataType
                                  "MediaReference",
                                  OpenMetadataWikiPages.MODEL_0015_LINKED_MEDIA_TYPES,
                                  "3e7b1513-f7df-4de2-ba32-0b1cc82e2946",
-                                 "Link to related media such as images, videos and audio."),
-
+                                 "Link to related media such as images, videos and audio.",
+                                 MediaReferenceProperties.class),
 
     /**
      * Images, video or sound media.
      */
     CITED_DOCUMENT("a52fb0d9-35aa-4483-9ccd-3c0795b07a8e",
-                  "CitedDocument",
-                  OpenMetadataWikiPages.MODEL_0016_CITED_DOCUMENTS,
-                  "895d9504-3354-4639-9852-acf3aa2e42a6",
-                  "Images, video or sound media."),
+                   "CitedDocument",
+                   OpenMetadataWikiPages.MODEL_0016_CITED_DOCUMENTS,
+                   "895d9504-3354-4639-9852-acf3aa2e42a6",
+                   "Images, video or sound media.",
+                   CitedDocumentProperties.class),
 
     /**
      * Link to related documents.
      */
     CITED_DOCUMENT_LINK_RELATIONSHIP("31964635-67f6-42a1-844d-9c1065ebe3fc",
-                                 "CitedDocumentLink",
-                                 OpenMetadataWikiPages.MODEL_0016_CITED_DOCUMENTS,
-                                 "53e8af0e-87bc-4e28-ac10-37b3e86f3a9e",
-                                 "Link to related documents."),
+                                     "CitedDocumentLink",
+                                     OpenMetadataWikiPages.MODEL_0016_CITED_DOCUMENTS,
+                                     "53e8af0e-87bc-4e28-ac10-37b3e86f3a9e",
+                                     "Link to related documents.",
+                                     CitedDocumentLinkProperties.class),
 
     /**
      * Alternative identifier used in another system.
@@ -284,7 +400,8 @@ public enum OpenMetadataType
                 "ExternalId",
                 OpenMetadataWikiPages.MODEL_0017_EXTERNAL_IDENTIFIERS,
                 null,
-                "Alternative identifier used in another system."),
+                "Alternative identifier used in another system.",
+                ExternalIdProperties.class),
 
     /**
      * Link between an external identifier and an asset or related item.
@@ -293,7 +410,8 @@ public enum OpenMetadataType
                                   "ExternalIdLink",
                                   OpenMetadataWikiPages.MODEL_0017_EXTERNAL_IDENTIFIERS,
                                   "4c97ac83-5c1f-4d15-90d8-39b28290c898",
-                                  "Link between an external identifier and an asset or related item."),
+                                  "Link between an external identifier and an asset or related item.",
+                                  ExternalIdLinkProperties.class),
 
     /**
      * Places where an external identifier is recognized.
@@ -302,7 +420,8 @@ public enum OpenMetadataType
                                    "ExternalIdScope",
                                    OpenMetadataWikiPages.MODEL_0017_EXTERNAL_IDENTIFIERS,
                                    "e1e481ce-0536-4637-8658-5224353c7d69",
-                                   "Places where an external identifier is recognized."),
+                                   "Places where an external identifier is recognized.",
+                                   null),
 
 
     /**
@@ -312,7 +431,8 @@ public enum OpenMetadataType
                                   "MoreInformation",
                                   OpenMetadataWikiPages.MODEL_0019_MORE_INFORMATION,
                                   "2d3f4815-d8e7-44c3-88cc-f587cfe26e70",
-                                  "Link to indicate that a referenceable provides additional information about another referenceable."),
+                                  "Link to indicate that a referenceable provides additional information about another referenceable.",
+                                  MoreInformationProperties.class),
 
     /**
      * Links supporting resources to a referenceable (typically an Actor Profile, Connector, Governance Domain, Project, Meeting or Community).
@@ -321,7 +441,8 @@ public enum OpenMetadataType
                                 "ResourceList",
                                 OpenMetadataWikiPages.MODEL_0019_MORE_INFORMATION,
                                 "cb027494-8de7-43cc-845c-57d4f0bbf6d5",
-                                "Links supporting resources to a referenceable (typically an Actor Profile, Connector, Governance Domain, Project, Meeting or Community)."),
+                                "Links supporting resources to a referenceable (typically an Actor Profile, Connector, Governance Domain, Project, Meeting or Community).",
+                                ResourceListProperties.class),
 
     /**
      * Additional properties that support a particular vendor or service.
@@ -330,7 +451,8 @@ public enum OpenMetadataType
                    "PropertyFacet",
                    OpenMetadataWikiPages.MODEL_0020_PROPERTY_FACETS,
                    "ff8c80af-5eb2-43a4-ae1c-1920d4a1a619",
-                   "Additional properties that support a particular vendor or service."),
+                   "Additional properties that support a particular vendor or service.",
+                   PropertyFacetProperties.class),
 
 
     /**
@@ -340,8 +462,8 @@ public enum OpenMetadataType
                                      "ReferenceableFacet",
                                      OpenMetadataWikiPages.MODEL_0020_PROPERTY_FACETS,
                                      "2393b97a-436a-44f6-a5ef-45ad8b16b5d4",
-                                     "Link between a property facet and the element it relates to."),
-
+                                     "Link between a property facet and the element it relates to.",
+                                     ReferenceableFacetProperties.class),
 
     /**
      * A group of related items.
@@ -350,7 +472,8 @@ public enum OpenMetadataType
                "Collection",
                OpenMetadataWikiPages.MODEL_0021_COLLECTIONS,
                "b5ff9f14-e7eb-465b-8803-b1ba6ea3a8afe",
-               "A group of related items."),
+               "A group of related items.",
+               CollectionProperties.class),
 
 
     /**
@@ -360,18 +483,29 @@ public enum OpenMetadataType
                                        "CollectionMembership",
                                        OpenMetadataWikiPages.MODEL_0021_COLLECTIONS,
                                        "5fdfa2b1-7511-4700-aa27-e87458b93446",
-                                       "Identifies a member of a collection."),
+                                       "Identifies a member of a collection.",
+                                       CollectionMembershipProperties.class),
 
 
     /**
      * This collection is the root collection in a collection hierarchy.
      */
-    ROOT_COLLECTION_CLASSIFICATION("9fdb6d71-fd69-4c40-81f3-5eab1c44d1f4",
-                                   "RootCollection",
-                                   OpenMetadataWikiPages.MODEL_0021_COLLECTIONS,
-                                   "f531c0b8-712c-4327-a8e5-7500727bab1d",
-                                   "This collection is the root collection in a collection hierarchy."),
+    ROOT_COLLECTION("128753c9-9518-47ba-9576-e88a8466e895",
+                    "RootCollection",
+                    OpenMetadataWikiPages.MODEL_0021_COLLECTIONS,
+                    "d7ea11e7-fc49-4ab1-9482-f088328e052e",
+                    "This collection is the root collection in a collection hierarchy.",
+                    RootCollectionProperties.class),
 
+    /**
+     * Defines that a collection should be treated like a folder.
+     */
+    COLLECTION_FOLDER("fecc7c33-274a-4413-9f32-d3d9e255c157",
+                      "CollectionFolder",
+                      OpenMetadataWikiPages.MODEL_0021_COLLECTIONS,
+                      "06af0148-0fc4-4bb0-a972-3af64592e080",
+                      "Defines that a collection should be treated like a folder.",
+                      CollectionFolderProperties.class),
 
     /**
      * This collection is the home collection for a referenceable.
@@ -380,7 +514,8 @@ public enum OpenMetadataType
                                    "HomeCollection",
                                    OpenMetadataWikiPages.MODEL_0021_COLLECTIONS,
                                    "e1138106-f222-4847-ba1e-c6f014de7b4a",
-                                   "This collection is the home collection for a referenceable."),
+                                   "This collection is the home collection for a referenceable.",
+                                   HomeCollectionProperties.class),
 
     /**
      * Defines that a collection is a set of results from an activity, query, ...
@@ -389,16 +524,18 @@ public enum OpenMetadataType
                                "ResultsSet",
                                OpenMetadataWikiPages.MODEL_0021_COLLECTIONS,
                                "883529d0-f230-4fd1-93d3-13820090f320",
-                               "Defines that a collection is a set of results from an activity, query, ..."),
+                               "Defines that a collection is a set of results from an activity, query, ...",
+                               ResultsSetProperties.class),
 
     /**
-     * Defines that a collection is a set of results from an activity, query, ...
+     * Defines that a collection is a set of external references such as external data/model sources, links to media or cited documents.
      */
     REFERENCE_LIST_CLASSIFICATION("f78e6fd3-0e76-42b4-9404-67dc458708ba",
                                   "ReferenceList",
                                   OpenMetadataWikiPages.MODEL_0021_COLLECTIONS,
                                   "31e8779d-226a-48f3-ba24-a75f61620d7c",
-                                  "Defines that a collection is a set of external references such as external data/model sources, links to media or cited documents."),
+                                  "Defines that a collection is a set of external references such as external data/model sources, links to media or cited documents.",
+                                  ReferenceListProperties.class),
 
     /**
      * A collection that lists elements that have been part of recent activity.
@@ -407,7 +544,8 @@ public enum OpenMetadataType
                                             "RecentAccess",
                                             OpenMetadataWikiPages.MODEL_0021_COLLECTIONS,
                                             "e3c0d70e-8d9c-4575-a21d-dcc7a2bb5dcc",
-                                            "A collection that lists elements that have been part of recent activity."),
+                                            "A collection that lists elements that have been part of recent activity.",
+                                            RecentAccessProperties.class),
 
     /**
      * Defines how the collection is being used.
@@ -418,14 +556,6 @@ public enum OpenMetadataType
                                    "db68722e-39a3-49b3-ba6f-ad00a880c91c",
                                    "Defines how the collection is being used."),
 
-    /**
-     * Defines that a collection should be treated like a folder.
-     */
-    FOLDER_COLLECTION_CLASSIFICATION("3c0fa687-8a63-4c8e-8bda-ede9c78be6c7",
-                                     "Folder",
-                                     OpenMetadataWikiPages.MODEL_0021_COLLECTIONS,
-                                     "b2fe2ac5-f4d5-4eac-b4cf-c5fd112395eb",
-                                     "Defines that a collection should be treated like a folder."),
 
     /**
      * Defines a list of activities such as ToDos, Tasks etc...
@@ -434,7 +564,8 @@ public enum OpenMetadataType
                                              "WorkItemList",
                                              OpenMetadataWikiPages.MODEL_0021_COLLECTIONS,
                                              "2ee49f29-da72-490f-a6c4-e7525516e6f0",
-                                             "Defines a list of activities such as ToDos, Tasks etc..."),
+                                             "Defines a list of activities such as ToDos, Tasks etc...",
+                                             WorkItemListProperties.class),
 
     /**
      * Defines a list of elements that are grouped under a particular namespace.
@@ -443,7 +574,8 @@ public enum OpenMetadataType
                                         "Namespace",
                                         OpenMetadataWikiPages.MODEL_0021_COLLECTIONS,
                                         "34b65dcd-de83-463c-9be6-30d765b42a6c",
-                                        "Defines a set of elements that are grouped under a particular namespace."),
+                                        "Defines a set of elements that are grouped under a particular namespace.",
+                                        NamespaceProperties.class),
 
 
     /**
@@ -453,7 +585,8 @@ public enum OpenMetadataType
                        "TranslationDetail",
                        OpenMetadataWikiPages.MODEL_0022_TRANSLATIONS,
                        "953e0048-e4da-4056-8dd1-2cb5caa5336a",
-                       "A collection of translated properties."),
+                       "A collection of translated properties.",
+                       TranslationDetailProperties.class),
 
     /**
      * Links an entity to a collection of translated properties.
@@ -462,17 +595,18 @@ public enum OpenMetadataType
                                   "TranslationLink",
                                   OpenMetadataWikiPages.MODEL_0022_TRANSLATIONS,
                                   "8baaef81-c7f8-4537-9ba7-36c629998343",
-                                  "Links an entity to a collection of translated properties."),
-
+                                  "Links an entity to a collection of translated properties.",
+                                  TranslationLinkProperties.class),
 
     /**
      * A physical place, digital location or area.
      */
     LOCATION("3e09cb2b-5f15-4fd2-b004-fe0146ad8628",
-                  "Location",
-                  OpenMetadataWikiPages.MODEL_0025_LOCATIONS,
-                  "b9ab8933-9453-4cfd-9fa7-61c8dd99934a",
-                  "A physical place, digital location or area."),
+             "Location",
+             OpenMetadataWikiPages.MODEL_0025_LOCATIONS,
+             "b9ab8933-9453-4cfd-9fa7-61c8dd99934a",
+             "A physical place, digital location or area.",
+             LocationProperties.class),
 
     /**
      * A location linked to a physical place.
@@ -481,7 +615,8 @@ public enum OpenMetadataType
                                   "FixedLocation",
                                   OpenMetadataWikiPages.MODEL_0025_LOCATIONS,
                                   "6c543c13-890e-4df5-968e-d06a38f11bf5",
-                                  "A location linked to a physical place."),
+                                  "A location linked to a physical place.",
+                                  FixedLocationProperties.class),
 
     /**
      * A location that protects the assets in its care.
@@ -490,7 +625,8 @@ public enum OpenMetadataType
                                    "SecureLocation",
                                    OpenMetadataWikiPages.MODEL_0025_LOCATIONS,
                                    "efdc3472-bb97-4340-aefe-b954b64aba4d",
-                                   "A location that protects the assets in its care."),
+                                   "A location that protects the assets in its care.",
+                                   SecureLocationProperties.class),
 
     /**
      * A digital location.
@@ -499,7 +635,8 @@ public enum OpenMetadataType
                                   "CyberLocation",
                                   OpenMetadataWikiPages.MODEL_0025_LOCATIONS,
                                   "51be87f3-f16e-4ff7-bce1-9d91d6f26959",
-                                  "A digital location."),
+                                  "A digital location.",
+                                  CyberLocationProperties.class),
 
     /**
      * A resource that is not restricted to a single physical location.
@@ -508,7 +645,8 @@ public enum OpenMetadataType
                                    "MobileResource",
                                    OpenMetadataWikiPages.MODEL_0025_LOCATIONS,
                                    "ccc9a6f2-f6dc-4236-8a9b-e122a2988bc3",
-                                   "A resource that is not restricted to a single physical location."),
+                                   "A resource that is not restricted to a single physical location.",
+                                   MobileResourceProperties.class),
 
     /**
      * Location of a person or object represented by the linked to element.
@@ -517,7 +655,8 @@ public enum OpenMetadataType
                                 "KnownLocation",
                                 OpenMetadataWikiPages.MODEL_0025_LOCATIONS,
                                 "1879264f-938b-457a-9e4a-cd8960195868",
-                                "Location of a person or object represented by the linked to element."),
+                                "Location of a person or object represented by the linked to element.",
+                                KnownLocationProperties.class),
 
     /**
      * Link between two locations to show one is nested inside another.
@@ -526,7 +665,8 @@ public enum OpenMetadataType
                                  "NestedLocation",
                                  OpenMetadataWikiPages.MODEL_0025_LOCATIONS,
                                  "de4a6f41-55ff-4532-8810-c70c0e5253ed",
-                                 "Link between two locations to show one is nested inside another."),
+                                 "Link between two locations to show one is nested inside another.",
+                                 NestedLocationProperties.class),
 
     /**
      * Link between two locations that are next to one another.
@@ -535,7 +675,8 @@ public enum OpenMetadataType
                                    "AdjacentLocation",
                                    OpenMetadataWikiPages.MODEL_0025_LOCATIONS,
                                    "ec37be06-e8ed-48e6-9e94-40da18c7366b",
-                                   "Link between two locations that are next to one another."),
+                                   "Link between two locations that are next to one another.",
+                                   AdjacentLocationProperties.class),
 
     /**
      * Defines an endpoint associated with a server.
@@ -544,7 +685,8 @@ public enum OpenMetadataType
                                  "ServerEndpoint",
                                  OpenMetadataWikiPages.MODEL_0026_ENDPOINTS,
                                  "18dc6138-5745-4a66-b162-11e75d6b514e",
-                                 "Defines an endpoint associated with a server."),
+                                 "Defines an endpoint associated with a server.",
+                                 ServerEndpointProperties.class),
 
     /**
      * Description of the network address and related information needed to call a software service.
@@ -553,7 +695,8 @@ public enum OpenMetadataType
              "Endpoint",
              OpenMetadataWikiPages.MODEL_0026_ENDPOINTS,
              "86da5332-80cf-4bef-8881-646eb410c53c",
-             "Description of the network address and related information needed to call a software service."),
+             "Description of the network address and related information needed to call a software service.",
+             EndpointProperties.class),
 
 
     /**
@@ -563,7 +706,8 @@ public enum OpenMetadataType
                       "ITInfrastructure",
                       OpenMetadataWikiPages.MODEL_0030_OPERATING_PLATFORMS,
                       "6da11871-b04e-4973-beb5-4b1aac37e164",
-                      "Hardware and base software that supports an IT system."),
+                      "Hardware and base software that supports an IT system.",
+                      ITInfrastructureProperties.class),
 
     /**
      * Characteristics of the operating system in use within a host.
@@ -626,7 +770,8 @@ public enum OpenMetadataType
          "Host",
          OpenMetadataWikiPages.MODEL_0035_HOSTS,
          "2f97b8f6-a136-4e30-8fc2-4fc129a4f272",
-         "Named IT infrastructure system that supports multiple software platforms and servers."),
+         "Named IT infrastructure system that supports multiple software platforms and servers.",
+         HostProperties.class),
 
 
     /**
@@ -636,7 +781,8 @@ public enum OpenMetadataType
                              "DeployedOn",
                              OpenMetadataWikiPages.MODEL_0035_HOSTS,
                              "d727b3ce-d58b-45d5-8abc-55b1394e030a",
-                             "Identifies an IT Infrastructure asset that is deployed to a specific destination."),
+                             "Identifies an IT Infrastructure asset that is deployed to a specific destination.",
+                             DeployedOnProperties.class),
 
     /**
      * A group of hosts operating together to provide a scalable platform.
@@ -645,16 +791,17 @@ public enum OpenMetadataType
                  "HostCluster",
                  OpenMetadataWikiPages.MODEL_0035_HOSTS,
                  "cfa602ae-5109-4ae0-8e8c-d066f8f3fe2d",
-                 "A group of hosts operating together to provide a scalable platform."),
+                 "A group of hosts operating together to provide a scalable platform.",
+                 HostClusterProperties.class),
 
     /**
      * Identifies a host as a member of a host cluster.
      */
     HOST_CLUSTER_MEMBER_RELATIONSHIP("1a1c3933-a583-4b0c-9e42-c3691296a8e0",
-                 "HostClusterMember",
-                 OpenMetadataWikiPages.MODEL_0035_HOSTS,
-                 "0381865a-4230-4689-ba10-7f8d511bc3b0",
-                 "Identifies a host as a member of a host cluster."),
+                                     "HostClusterMember",
+                                     OpenMetadataWikiPages.MODEL_0035_HOSTS,
+                                     "0381865a-4230-4689-ba10-7f8d511bc3b0",
+                                     "Identifies a host as a member of a host cluster."),
 
     /**
      * A computer that is hosting software directly on its operating system.
@@ -663,7 +810,8 @@ public enum OpenMetadataType
                         "BareMetalComputer",
                         OpenMetadataWikiPages.MODEL_0035_HOSTS,
                         "05e43e67-63c6-4133-af07-a19f5c5b33d6",
-                        "A computer that is hosting software directly on its operating system."),
+                        "A computer that is hosting software directly on its operating system.",
+                        BareMetalComputerProperties.class),
 
     /**
      * A virtual machine that uses a hypervisor to virtualize hardware.
@@ -672,45 +820,19 @@ public enum OpenMetadataType
                     "VirtualMachine",
                     OpenMetadataWikiPages.MODEL_0035_HOSTS,
                     "d8eef565-11b0-4e0c-8700-c80641405b8d",
-                    "A virtual machine that uses a hypervisor to virtualize hardware."),
+                    "A virtual machine that uses a hypervisor to virtualize hardware.",
+                    VirtualMachineProperties.class),
 
 
     /**
      * Container-based virtual host that mimics a cut-down operating system.
      */
     VIRTUAL_CONTAINER("e2393236-100f-4ac0-a5e6-ce4e96c521e7",
-                    "VirtualContainer",
-                    OpenMetadataWikiPages.MODEL_0035_HOSTS,
-                    "af2ae526-9f7b-4244-9bfc-819b7a902cb6",
-                    "Container-based virtual host that mimics a cut-down operating system."),
-
-
-    /**
-     * A virtual container using the docker platform.
-     */
-    DOCKER_CONTAINER("9882b8aa-eba3-4a30-94c6-43117efd11cc",
-                     "DockerContainer",
-                     OpenMetadataWikiPages.MODEL_0035_HOSTS,
-                     "85e33f77-f595-4e68-8d1f-baf16ecd230b",
-                     "A virtual container using the docker platform."),
-
-    /**
-     * A cluster of nodes for big data workloads.
-     */
-    HADOOP_CLUSTER("abc27cf7-e526-4d1b-9c25-7dd60a7993e4",
-                   "HadoopCluster",
-                   OpenMetadataWikiPages.MODEL_0035_HOSTS,
-                   "2851a6e4-a0a1-471d-8c73-1b666244789d",
-                   "A cluster of nodes for big data workloads."),
-
-    /**
-     * A host cluster managing containerized applications.
-     */
-    KUBERNETES_CLUSTER("101f1c93-7f5d-44e2-9ea4-5cf21726ba5c",
-                       "KubernetesCluster",
-                       OpenMetadataWikiPages.MODEL_0035_HOSTS,
-                       "3c0401e0-846c-4d6a-adb4-cba2d83a0390",
-                       "A host cluster managing containerized applications."),
+                      "VirtualContainer",
+                      OpenMetadataWikiPages.MODEL_0035_HOSTS,
+                      "af2ae526-9f7b-4244-9bfc-819b7a902cb6",
+                      "Container-based virtual host that mimics a cut-down operating system.",
+                      VirtualContainerProperties.class),
 
     /**
      * A persistent storage volume.
@@ -737,7 +859,8 @@ public enum OpenMetadataType
                              "SoftwareServerPlatform",
                              OpenMetadataWikiPages.MODEL_0037_SOFTWARE_SERVER_PLATFORMS,
                              "a69951e5-feab-4964-a23f-02d40a8f8938",
-                             "Software services packaged as an operating system process to support a runtime environment for a virtual software server."),
+                             "Software services packaged as an operating system process to support a runtime environment for a virtual software server.",
+                             SoftwareServerPlatformProperties.class),
 
     /**
      * Software services to support a runtime environment for applications and data stores.
@@ -746,88 +869,8 @@ public enum OpenMetadataType
                     "SoftwareServer",
                     OpenMetadataWikiPages.MODEL_0040_SOFTWARE_SERVERS,
                     "8cf6cb11-4a8d-4c1f-a246-8c8079a0319d",
-                    "Software services to support a runtime environment for applications and data stores."),
-
-    /**
-     * Adds more detail about the purpose of a deployed instance of IT infrastructure.
-     */
-    SERVER_PURPOSE_CLASSIFICATION("78f68757-600f-4e8e-843b-00e77cdee37c",
-                                  "ServerPurpose",
-                                  OpenMetadataWikiPages.MODEL_0041_SERVER_PURPOSES,
-                                  "403e188a-39b9-4109-92f9-2c792dc4ffdb",
-                                  "Adds more detail about the purpose of a deployed instance of IT infrastructure."),
-
-    /**
-     * A server that hosts applications.
-     */
-    APPLICATION_SERVER_CLASSIFICATION("19196efb-2706-47bf-8e51-e8ba5b36d033",
-                                      "ApplicationServer",
-                                      OpenMetadataWikiPages.MODEL_0041_SERVER_PURPOSES,
-                                      "d51766f2-40db-4d69-9d67-b0432c3972b0",
-                                      "A server that hosts applications."),
-
-    /**
-     * A server that supports HTTP-based application such as websites and REST services.
-     */
-    WEBSERVER_CLASSIFICATION("d13e1cc5-bb7e-41ec-8233-9647fbf92a19",
-                             "Webserver",
-                             OpenMetadataWikiPages.MODEL_0041_SERVER_PURPOSES,
-                             "c2f8f60c-e18c-4020-aeeb-8d7d0a5635d0",
-                             "A server that supports HTTP-based application such as websites and REST services."),
-
-    /**
-     * Identifies a server as one that manages one or more databases.
-     */
-    DATABASE_SERVER_CLASSIFICATION("6bb58cc9-ed9e-4f75-b2f2-6d308554eb52",
-                                   "DatabaseServer",
-                                   OpenMetadataWikiPages.MODEL_0041_SERVER_PURPOSES,
-                                   "5eb84a5c-2bfc-4c92-8941-084f3cf82ff5",
-                                   "Identifies a server as one that manages one or more databases."),
-
-    /**
-     * Identifies a server that exchanges data between between other servers.
-     */
-    INTEGRATION_SERVER_CLASSIFICATION("c165b760-d9ab-47ac-a2ee-7854ec74605a",
-                                      "IntegrationServer",
-                                      OpenMetadataWikiPages.MODEL_0041_SERVER_PURPOSES,
-                                      "d93a4834-6d68-43a5-926f-8c526f969e43",
-                                      "Identifies a server that exchanges data between between other servers."),
-
-    /**
-     * A server hosting a metadata collection.
-     */
-    METADATA_SERVER_CLASSIFICATION("74a256ad-4022-4518-a446-c65fe082d4d3",
-                                   "MetadataServer",
-                                   OpenMetadataWikiPages.MODEL_0041_SERVER_PURPOSES,
-                                   "0624e263-ca23-40e5-abe5-71cc6698421d",
-                                   "A server hosting a metadata collection."),
-
-    /**
-     * A server acting as an open metadata adapter for a metadata repository.
-     */
-    REPOSITORY_PROXY_CLASSIFICATION("ae81c35e-7078-46f0-9b2c-afc99accf3ec",
-                                    "RepositoryProxy",
-                                    OpenMetadataWikiPages.MODEL_0041_SERVER_PURPOSES,
-                                    "122d5b15-932c-4c27-8a36-e39ed93bd69c",
-                                    "A server acting as an open metadata adapter for a metadata repository."),
-
-    /**
-     * A server dedicated to managing activity relating to governance of data.
-     */
-    GOVERNANCE_DAEMON_CLASSIFICATION("7815f222-529d-4902-8f0b-e37cbc779885",
-                                     "GovernanceDaemon",
-                                     OpenMetadataWikiPages.MODEL_0041_SERVER_PURPOSES,
-                                     "2f106d43-ed20-4ef1-aa0b-e15520006640",
-                                     "A server dedicated to managing activity relating to governance of data."),
-
-    /**
-     * A server dedicated to managing stewardship activity relating to governance of data.
-     */
-    STEWARDSHIP_SERVER_CLASSIFICATION("eaaeaa31-6f8b-4ed5-88fe-422ed3733158",
-                                      "StewardshipServer",
-                                      OpenMetadataWikiPages.MODEL_0041_SERVER_PURPOSES,
-                                      "2f106d43-ed20-4ef1-aa0b-e15520006640",
-                                      "A server dedicated to managing stewardship activity relating to governance of data."),
+                    "Software services to support a runtime environment for applications and data stores.",
+                    SoftwareServerProperties.class),
 
     /**
      * A software implemented function such as a software service or engine.
@@ -836,7 +879,8 @@ public enum OpenMetadataType
                         "SoftwareCapability",
                         OpenMetadataWikiPages.MODEL_0042_SOFTWARE_CAPABILITIES,
                         "7fb02c7c-4a41-455b-ab7e-73e0afe7789f",
-                        "A software implemented function such as a software service or engine."),
+                        "A software implemented function such as a software service or engine.",
+                        SoftwareCapabilityProperties.class),
 
 
     /**
@@ -846,17 +890,8 @@ public enum OpenMetadataType
                                                "SupportedSoftwareCapability",
                                                OpenMetadataWikiPages.MODEL_0042_SOFTWARE_CAPABILITIES,
                                                "47fc8ae9-5f6b-42e8-bb9d-c261cc9371f3",
-                                               "Identifies a software capability that is deployed to an instance of IT infrastructure."),
-
-    /**
-     * Stores processing state information used by various SoftwareCapabilities.
-     */
-    PROCESSING_STATE_CLASSIFICATION("261fb0aa-b884-4ee8-87ea-a60510e9751d",
-                                    "ProcessingState",
-                                    OpenMetadataWikiPages.MODEL_0042_SOFTWARE_CAPABILITIES,
-                                    "262e70d6-08d4-4e09-87ee-5b1955d095d2",
-                                    "Stores processing state information used by various SoftwareCapabilities."),
-
+                                               "Identifies a software capability that is deployed to an instance of IT infrastructure.",
+                                               SupportedSoftwareCapabilityProperties.class),
 
     /**
      * Defines that a server capability is associated with an asset.
@@ -865,16 +900,18 @@ public enum OpenMetadataType
                                       "CapabilityAssetUse",
                                       OpenMetadataWikiPages.MODEL_0045_SERVERS_AND_ASSETS,
                                       "fb79cb7f-fcec-4798-a165-ebf4649c8513",
-                                      "Defines that a server capability is associated with an asset."),
+                                      "Defines that a server capability is associated with an asset.",
+                                      CapabilityAssetUseProperties.class),
 
     /**
      * A server capability supporting a specific business function.
      */
     APPLICATION("58280f3c-9d63-4eae-9509-3f223872fb25",
-                     "Application",
-                     OpenMetadataWikiPages.MODEL_0050_APPS_AND_PROCESSES,
-                     "920182b0-bf3c-4558-ad4b-a23804f00221",
-                     "A server capability supporting a specific business function."),
+                "Application",
+                OpenMetadataWikiPages.MODEL_0050_APPS_AND_PROCESSES,
+                "920182b0-bf3c-4558-ad4b-a23804f00221",
+                "A server capability supporting a specific business function.",
+                ApplicationProperties.class),
 
     /**
      * A capability that manages callable APIs.
@@ -883,7 +920,8 @@ public enum OpenMetadataType
                 "APIManager",
                 OpenMetadataWikiPages.MODEL_0050_APPS_AND_PROCESSES,
                 "dfbbb1d9-6c9c-4cfb-bc07-e48e07936ebf",
-                "A capability that manages callable APIs."),
+                "A capability that manages callable APIs.",
+                APIManagerProperties.class),
 
     /**
      * A capability that supports REST APIs in a server.
@@ -892,7 +930,8 @@ public enum OpenMetadataType
                      "RESTAPIManager",
                      OpenMetadataWikiPages.MODEL_0050_APPS_AND_PROCESSES,
                      "86f6504a-f7e1-441e-9143-38d67c52ff40",
-                     "A capability that supports REST APIs in a server."),
+                     "A capability that supports REST APIs in a server.",
+                     RESTAPIManagerProperties.class),
 
     /**
      * A capability that supports the authorization of requests.
@@ -901,34 +940,38 @@ public enum OpenMetadataType
                           "AuthorizationManager",
                           OpenMetadataWikiPages.MODEL_0050_APPS_AND_PROCESSES,
                           "6a33c5e9-39d7-4f0d-a81a-92faeda756d6",
-                          "A capability that supports the authorization of requests."),
+                          "A capability that supports the authorization of requests.",
+                          AuthorizationManagerProperties.class),
 
     /**
      * A capability that supports the identification/authentication of users.
      */
     USER_AUTHENTICATION_MANAGER("2de822e6-dad2-4df0-b5d8-13f82ffc33c1",
-                          "UserAuthenticationManager",
-                          OpenMetadataWikiPages.MODEL_0050_APPS_AND_PROCESSES,
-                          "4a8d9d89-7936-4ae8-ae1d-5d327e0e7cad",
-                          "A capability that supports the identification/authentication of users."),
+                                "UserAuthenticationManager",
+                                OpenMetadataWikiPages.MODEL_0050_APPS_AND_PROCESSES,
+                                "4a8d9d89-7936-4ae8-ae1d-5d327e0e7cad",
+                                "A capability that supports the identification/authentication of users.",
+                                UserAuthenticationManagerProperties.class),
 
     /**
      * A capability that ends and/or receives events as part of its software function.
      */
     EVENT_MANAGER("98383304-ca78-492a-b0a2-1bd46d690ed3",
-                           "EventManager",
-                           OpenMetadataWikiPages.MODEL_0050_APPS_AND_PROCESSES,
-                           "1d4324e9-0696-4bab-bbf8-6f4c7c0643d4",
-                           "A capability that ends and/or receives events as part of its software function."),
+                  "EventManager",
+                  OpenMetadataWikiPages.MODEL_0050_APPS_AND_PROCESSES,
+                  "1d4324e9-0696-4bab-bbf8-6f4c7c0643d4",
+                  "A capability that ends and/or receives events as part of its software function.",
+                  EventManagerProperties.class),
 
     /**
      * A capability that supports event-based services, typically around topics.
      */
     EVENT_BROKER("309dfc3c-663b-4732-957b-e4a084436314",
-                          "EventBroker",
-                          OpenMetadataWikiPages.MODEL_0050_APPS_AND_PROCESSES,
-                          "5cde95af-6bb8-4c83-9178-b05a995e32cb",
-                          "A capability that supports event-based services, typically around topics."),
+                 "EventBroker",
+                 OpenMetadataWikiPages.MODEL_0050_APPS_AND_PROCESSES,
+                 "5cde95af-6bb8-4c83-9178-b05a995e32cb",
+                 "A capability that supports event-based services, typically around topics.",
+                 EventBrokerProperties.class),
 
     /**
      * A capability that manages collections of stored data.
@@ -937,7 +980,8 @@ public enum OpenMetadataType
                  "DataManager",
                  OpenMetadataWikiPages.MODEL_0050_APPS_AND_PROCESSES,
                  "b2151b29-e115-417f-a711-521a9d66f99b",
-                 "A capability that manages collections of stored data.  It typically maintains a schema to describe how data is formatted and that schema is used in the query and maintenance APIs by the caller to work with the data they desire."),
+                 "A capability that manages collections of stored data.  It typically maintains a schema to describe how data is formatted and that schema is used in the query and maintenance APIs by the caller to work with the data they desire.",
+                 DataManagerProperties.class),
 
     /**
      * Defines a capability that manages data organized as relational schemas.
@@ -946,7 +990,8 @@ public enum OpenMetadataType
                      "DatabaseManager",
                      OpenMetadataWikiPages.MODEL_0050_APPS_AND_PROCESSES,
                      "b41f74bf-a633-49c4-9fda-3d4d5f82b066",
-                     "Defines a capability that manages data organized as relational schemas.  It is also responsible for managing the data including maintaining query indexes, statistics and backups."),
+                     "Defines a capability that manages data organized as relational schemas.  It is also responsible for managing the data including maintaining query indexes, statistics and backups.",
+                     DatabaseManagerProperties.class),
 
     /**
      * Defines a capability that manages data organized as relational schemas.
@@ -955,7 +1000,8 @@ public enum OpenMetadataType
                         "DataAccessManager",
                         OpenMetadataWikiPages.MODEL_0050_APPS_AND_PROCESSES,
                         "d54ad0a0-5254-4bf6-903c-82c1337eb209",
-                        "Defines a capability that manages data organized as structured schemas (typically relational tables and columns).  It does this by linking the schemas to data sources that are external to its own storage."),
+                        "Defines a capability that manages data organized as structured schemas (typically relational tables and columns).  It does this by linking the schemas to data sources that are external to its own storage.",
+                        DataAccessManagerProperties.class),
 
     /**
      * A capability that manages collections of descriptions about people, places, digital assets, things, ...
@@ -964,35 +1010,39 @@ public enum OpenMetadataType
                       "InventoryCatalog",
                       OpenMetadataWikiPages.MODEL_0050_APPS_AND_PROCESSES,
                       "df539ee4-fb5a-4555-8697-c391e244557d",
-                      "A capability that manages collections of descriptions about people, places, digital assets, things, ..."),
+                      "A capability that manages collections of descriptions about people, places, digital assets, things, ...",
+                      InventoryCatalogProperties.class),
 
     /**
      * A programmable engine for running automated processes.
      */
     ENGINE("3566527f-b1bd-4e7a-873e-a3e04d5f2a14",
-            "Engine",
-            OpenMetadataWikiPages.MODEL_0055_DATA_PROCESSING_ENGINES,
-            "8742ae9e-6ce4-48f1-baaf-8c7cae123092",
-            "A programmable engine for running automated processes."),
+           "Engine",
+           OpenMetadataWikiPages.MODEL_0055_DATA_PROCESSING_ENGINES,
+           "8742ae9e-6ce4-48f1-baaf-8c7cae123092",
+           "A programmable engine for running automated processes.",
+           EngineProperties.class),
 
 
     /**
      * An engine capable of running a mixture of human and automated tasks as part of a workflow process.
      */
-    WORKFLOW_ENGINE_CLASSIFICATION("37a6d212-7c4a-4a82-b4e2-601d4358381c",
-                                   "WorkflowEngine",
-                                   OpenMetadataWikiPages.MODEL_0055_DATA_PROCESSING_ENGINES,
-                                   "c980f0ad-c7f1-492b-96c3-ea85327f56de",
-                                   "An engine capable of running a mixture of human and automated tasks as part of a workflow process."),
+    WORKFLOW_ENGINE("37a6d212-7c4a-4a82-b4e2-601d4358381c",
+                    "WorkflowEngine",
+                    OpenMetadataWikiPages.MODEL_0055_DATA_PROCESSING_ENGINES,
+                    "c980f0ad-c7f1-492b-96c3-ea85327f56de",
+                    "An engine capable of running a mixture of human and automated tasks as part of a workflow process.",
+                    WorkflowEngineProperties.class),
 
     /**
      * An engine capable of creating reports by combining information from multiple data sets.
      */
-    REPORTING_ENGINE_CLASSIFICATION("e07eefaa-16e0-46cf-ad54-bed47fb15812",
-                                    "ReportingEngine",
-                                    OpenMetadataWikiPages.MODEL_0055_DATA_PROCESSING_ENGINES,
-                                    "04051763-2945-47c0-856c-dbe9278d7cb9",
-                                    "An engine capable of creating reports by combining information from multiple data sets."),
+    REPORTING_ENGINE("e07eefaa-16e0-46cf-ad54-bed47fb15812",
+                     "ReportingEngine",
+                     OpenMetadataWikiPages.MODEL_0055_DATA_PROCESSING_ENGINES,
+                     "04051763-2945-47c0-856c-dbe9278d7cb9",
+                     "An engine capable of creating reports by combining information from multiple data sets.",
+                     ReportingEngineProperties.class),
 
     /**
      * An engine capable of running analytics models using data from one or more data sets.
@@ -1025,66 +1075,63 @@ public enum OpenMetadataType
     /**
      * Defines a manager of resources.  Typically, a software capability or an asset.
      */
-    RESOURCE_MANAGER_CLASSIFICATION("bb6568e6-a2d8-4dfe-b9d6-6bd0119aa70e",
-                                       "ResourceManager",
-                                       OpenMetadataWikiPages.MODEL_0056_RESOURCE_MANAGERS,
-                                       "5116814c-5745-4b53-9a44-b68e4a07b045",
-                                       "Defines a manager of resources.  Typically, a software capability or an asset."),
+    RESOURCE_MANAGER("bb6568e6-a2d8-4dfe-b9d6-6bd0119aa70e",
+                     "ResourceManager",
+                     OpenMetadataWikiPages.MODEL_0056_RESOURCE_MANAGERS,
+                     "5116814c-5745-4b53-9a44-b68e4a07b045",
+                     "Defines a manager of resources.  Typically, a software capability or an asset.",
+                     ResourceManagerProperties.class),
 
-
-    /**
-     * Defines a capability that manages metadata about assets.
-     */
-    ASSET_MANAGER("03170ce7-edf1-4e94-b6ab-2d5cbbf1f13c",
-                  "AssetManager",
-                  OpenMetadataWikiPages.MODEL_0056_RESOURCE_MANAGERS,
-                  "44a1d90a-689e-4dc1-8dbb-cf3107388a1b",
-                  "Defines a capability that manages metadata about assets."),
 
     /**
      * Defines a software source code library that provides version control.
      */
-    SOURCE_CONTROL_LIBRARY_CLASSIFICATION("0ef3c90d-20d7-4259-8d66-9c8bb109f2ae",
-                                          "SourceControlLibrary",
-                                          OpenMetadataWikiPages.MODEL_0056_RESOURCE_MANAGERS,
-                                          "0caee5fd-b64b-4b38-97c6-38816cc4015c",
-                                          "Defines a software source code library that provides version control."),
+    SOURCE_CONTROL_LIBRARY("0ef3c90d-20d7-4259-8d66-9c8bb109f2ae",
+                           "SourceControlLibrary",
+                           OpenMetadataWikiPages.MODEL_0056_RESOURCE_MANAGERS,
+                           "0caee5fd-b64b-4b38-97c6-38816cc4015c",
+                           "Defines a software source code library that provides version control.",
+                           SourceControlLibraryProperties.class),
 
     /**
      * Defines a managed collection of requirements, defects and proposed changes to a project.
      */
-    CHANGE_MANAGEMENT_LIBRARY_CLASSIFICATION("4e236548-b802-4a1d-a329-4abdeaae5323",
-                                             "ChangeManagementLibrary",
-                                             OpenMetadataWikiPages.MODEL_0056_RESOURCE_MANAGERS,
-                                             "cd17363a-7b57-4ca5-9ed3-d07a7ddfa497",
-                                             "Defines a managed collection of requirements, defects and proposed changes to a project."),
+    CHANGE_MANAGEMENT_LIBRARY("4e236548-b802-4a1d-a329-4abdeaae5323",
+                              "ChangeManagementLibrary",
+                              OpenMetadataWikiPages.MODEL_0056_RESOURCE_MANAGERS,
+                              "cd17363a-7b57-4ca5-9ed3-d07a7ddfa497",
+                              "Defines a managed collection of requirements, defects and proposed changes to a project.",
+                              ChangeManagementLibraryProperties.class),
 
     /**
      * Defines a collection of software modules.  Also known as the definitive software library.
      */
-    SOFTWARE_LIBRARY_CLASSIFICATION("5708fa1a-2b64-4706-8e14-a020e4567db3",
-                                    "SoftwareLibrary",
-                                    OpenMetadataWikiPages.MODEL_0056_RESOURCE_MANAGERS,
-                                    "db77d01b-11ba-44cf-bab3-0a9c5e980843",
-                                    "Defines a collection of software modules.  Also known as the definitive software library."),
+    SOFTWARE_LIBRARY("5708fa1a-2b64-4706-8e14-a020e4567db3",
+                     "SoftwareLibrary",
+                     OpenMetadataWikiPages.MODEL_0056_RESOURCE_MANAGERS,
+                     "db77d01b-11ba-44cf-bab3-0a9c5e980843",
+                     "Defines a collection of software modules.  Also known as the definitive software library.",
+                     SoftwareLibraryProperties.class),
 
     /**
      * A capability that supports a store of files organized into a hierarchy of file folders.
      */
-    FILE_SYSTEM_CLASSIFICATION("cab5ba1d-cfd3-4fca-857d-c07711fc4157",
-                               "FileSystem",
-                               OpenMetadataWikiPages.MODEL_0056_RESOURCE_MANAGERS,
-                               "5a2077a7-6ff3-46b0-8799-93082e8a43b3",
-                               "A capability that supports a store of files organized into a hierarchy of file folders."),
+    FILE_SYSTEM("cab5ba1d-cfd3-4fca-857d-c07711fc4157",
+                "FileSystem",
+                OpenMetadataWikiPages.MODEL_0056_RESOURCE_MANAGERS,
+                "5a2077a7-6ff3-46b0-8799-93082e8a43b3",
+                "A capability that supports a store of files organized into a hierarchy of file folders.",
+                FileSystemProperties.class),
 
     /**
      * Identifies a software server capability as a manager of a collection of files and folders.
      */
-    FILE_MANAGER_CLASSIFICATION("eadec807-02f0-4d6f-911c-261eddd0c2f5",
-                               "FileManager",
-                               OpenMetadataWikiPages.MODEL_0056_RESOURCE_MANAGERS,
-                               "f126a519-bbae-4b2a-9e88-0c9ebf4494a9",
-                               "Identifies a software server capability as a manager of a collection of files and folders."),
+    FILE_MANAGER("eadec807-02f0-4d6f-911c-261eddd0c2f5",
+                 "FileManager",
+                 OpenMetadataWikiPages.MODEL_0056_RESOURCE_MANAGERS,
+                 "f126a519-bbae-4b2a-9e88-0c9ebf4494a9",
+                 "Identifies a software server capability as a manager of a collection of files and folders.",
+                 FileManagerProperties.class),
 
     /**
      * A system that stores descriptions of individuals and their roles/interests in an organization.
@@ -1093,7 +1140,8 @@ public enum OpenMetadataType
                          "UserProfileManager",
                          OpenMetadataWikiPages.MODEL_0056_RESOURCE_MANAGERS,
                          "c62b9be8-c01e-4750-9ef6-4687077614a2",
-                         "A system that stores descriptions of individuals and their roles/interests in an organization."),
+                         "A system that stores descriptions of individuals and their roles/interests in an organization.",
+                         UserProfileManagerProperties.class),
 
     /**
      * A system that stores the access rights and groups for users (people and automated processes).
@@ -1102,7 +1150,8 @@ public enum OpenMetadataType
                           "UserAccessDirectory",
                           OpenMetadataWikiPages.MODEL_0056_RESOURCE_MANAGERS,
                           "e8f1cd26-31db-4663-9cd6-67e9e6a4ac19",
-                          "A system that stores the access rights and groups for users (people and automated processes)."),
+                          "A system that stores the access rights and groups for users (people and automated processes).",
+                          UserAccessDirectoryProperties.class),
 
     /**
      * A system that manages the consolidation and reconciliation of master data - typically people, organizations, products and accounts.
@@ -1111,16 +1160,18 @@ public enum OpenMetadataType
                         "MasterDataManager",
                         OpenMetadataWikiPages.MODEL_0056_RESOURCE_MANAGERS,
                         "5e9d07f7-977c-4f60-a3c1-1e1107db6df1",
-                        "A system that manages the consolidation and reconciliation of master data - typically people, organizations, products and accounts."),
+                        "A system that manages the consolidation and reconciliation of master data - typically people, organizations, products and accounts.",
+                        MasterDataManagerProperties.class),
 
     /**
      * Identifies a server capability that is distributing events from a topic to its subscriber list.
      */
     NOTIFICATION_MANAGER("3e7502a7-396a-4737-a106-378c9c94c105",
-                        "NotificationManager",
-                        OpenMetadataWikiPages.MODEL_0056_RESOURCE_MANAGERS,
-                        "6a6ce1e2-7d09-47c7-a996-6ac839ca4ae8",
-                        "Identifies a server capability that is distributing events from a topic to its subscriber list."),
+                         "NotificationManager",
+                         OpenMetadataWikiPages.MODEL_0056_RESOURCE_MANAGERS,
+                         "6a6ce1e2-7d09-47c7-a996-6ac839ca4ae8",
+                         "Identifies a server capability that is distributing events from a topic to its subscriber list.",
+                         NotificationManagerProperties.class),
 
     /**
      * Identifies a software capability as a manager of controlled documents and related media.
@@ -1129,7 +1180,8 @@ public enum OpenMetadataType
                                "ContentCollectionManager",
                                OpenMetadataWikiPages.MODEL_0056_RESOURCE_MANAGERS,
                                "8cb201bf-4213-48cd-bf13-412b1a14e1fc",
-                               "Identifies a software capability as a manager of controlled documents and related media."),
+                               "Identifies a software capability as a manager of controlled documents and related media.",
+                               ContentCollectionManagerProperties.class),
 
     /**
      * Defines a capability that provides externally callable functions to other services.
@@ -1138,25 +1190,9 @@ public enum OpenMetadataType
                      "SoftwareService",
                      OpenMetadataWikiPages.MODEL_0057_SOFTWARE_SERVICES,
                      "b3c83676-88a3-49a5-84d0-15c735dfcd91",
-                     "Defines a capability that provides externally callable functions to other services."),
+                     "Defines a capability that provides externally callable functions to other services.",
+                     SoftwareServiceProperties.class),
 
-    /**
-     * A software service supporting a single reusable business function.
-     */
-    APPLICATION_SERVICE("5b7f340e-7dc9-45c0-a636-c20605147c94",
-                        "ApplicationService",
-                        OpenMetadataWikiPages.MODEL_0057_SOFTWARE_SERVICES,
-                        "252e4b9b-5cf0-4267-960b-a801645868bc",
-                        "A software service supporting a single reusable business function."),
-
-    /**
-     * Repository services for the Open Metadata Access Services (OMAS) supporting federated queries and aggregated events from the connected cohorts.
-     */
-    ENTERPRISE_ACCESS_LAYER("39444bf9-638e-4124-a5f9-1b8f3e1b008b",
-                            "EnterpriseAccessLayer",
-                            OpenMetadataWikiPages.MODEL_0057_SOFTWARE_SERVICES,
-                            "c1dfc168-f8cb-4cd5-b6fe-9d2dcbab638c",
-                            "Repository services for the Open Metadata Access Services (OMAS) supporting federated queries and aggregated events from the connected cohorts."),
 
     /**
      * A capability enabling a server to access an open metadata repository cohort.
@@ -1165,7 +1201,8 @@ public enum OpenMetadataType
                   "CohortMember",
                   OpenMetadataWikiPages.MODEL_0057_SOFTWARE_SERVICES,
                   "02a99f36-8a58-4c40-834e-47df456bae31",
-                  "A capability enabling a server to access an open metadata repository cohort."),
+                  "A capability enabling a server to access an open metadata repository cohort.",
+                  CohortMemberProperties.class),
 
     /**
      * A group of collaborating open metadata repositories.
@@ -1174,7 +1211,8 @@ public enum OpenMetadataType
                                "MetadataRepositoryCohort",
                                OpenMetadataWikiPages.MODEL_0057_SOFTWARE_SERVICES,
                                "d14c995b-95f0-4ab1-99d7-5cc1b417123d",
-                               "A group of collaborating open metadata repositories."),
+                               "A group of collaborating open metadata repositories.",
+                               MetadataRepositoryCohortProperties.class),
 
     /**
      * A metadata repository's registration with an open metadata cohort.
@@ -1183,61 +1221,8 @@ public enum OpenMetadataType
                                       "MetadataCohortPeer",
                                       OpenMetadataWikiPages.MODEL_0057_SOFTWARE_SERVICES,
                                       "e962cc4c-d673-46c7-b17d-8fa009cebd85",
-                                      "A metadata repository's registration with an open metadata cohort."),
-
-    /**
-     * Defines a capability that exchanges metadata between servers.
-     */
-    METADATA_INTEGRATION_SERVICE("92f7fe27-cd2f-441c-a084-156821aa5bca",
-                                 "MetadataIntegrationService",
-                                 OpenMetadataWikiPages.MODEL_0057_SOFTWARE_SERVICES,
-                                 "1dbc4ce0-d3ed-4246-a53e-470cb49a12ba",
-                                 "Defines a capability that exchanges metadata between servers."),
-
-    /**
-     * Defines a capability that provides access to stored metadata.
-     */
-    METADATA_ACCESS_SERVICE("0bc3a16a-e8ed-4ad0-a302-0773365fdef0",
-                            "MetadataAccessService",
-                            OpenMetadataWikiPages.MODEL_0057_SOFTWARE_SERVICES,
-                            "4fd9838d-8ad1-4f25-a573-4320c54a8e85",
-                            "Defines a capability that provides access to stored metadata."),
-
-    /**
-     * Defines a capability that provides services that delegate to a hosted engine.
-     */
-    ENGINE_HOSTING_SERVICES("90880f0b-c7a3-4d1d-93cc-0b877f27cd33",
-                            "EngineHostingService",
-                            OpenMetadataWikiPages.MODEL_0057_SOFTWARE_SERVICES,
-                            "61d24feb-bffc-4429-ac6d-098d1d3ac961",
-                            "Defines a capability that provides services that delegate to a hosted engine."),
-
-    /**
-     * Defines a capability that provides user interfaces access to digital resources.
-     */
-    USER_VIEW_SERVICE("1f83fc7c-75bb-491d-980d-ff9a6f80ae02",
-                      "UserViewService",
-                      OpenMetadataWikiPages.MODEL_0057_SOFTWARE_SERVICES,
-                      "3aa18b40-aa95-4bd0-94bd-25280ee611b3",
-                      "Defines a capability that provides user interfaces access to digital resources."),
-
-    /**
-     * Provides access to a metadata repository - either local or remote.
-     */
-    METADATA_REPOSITORY_SERVICE("27891e52-1255-4a33-98a2-377717a25334",
-                                "MetadataRepositoryService",
-                                OpenMetadataWikiPages.MODEL_0057_SOFTWARE_SERVICES,
-                                "0457d94e-f6f9-4169-b1fc-4ff081cec5d0",
-                                "Provides access to a metadata repository - either local or remote."),
-
-    /**
-     * Provides security services - classifications identify specific capabilities.
-     */
-    SECURITY_SERVICE("2df2069f-6475-400c-bf8c-6d2072a55d47",
-                     "SecurityService",
-                     OpenMetadataWikiPages.MODEL_0057_SOFTWARE_SERVICES,
-                     "c1294981-bfac-421f-8649-73e10ca87bec",
-                     "Provides security services - classifications identify specific capabilities."),
+                                      "A metadata repository's registration with an open metadata cohort.",
+                                      MetadataCohortPeerProperties.class),
 
     /**
      * Interconnectivity for systems.
@@ -1246,7 +1231,8 @@ public enum OpenMetadataType
             "Network",
             OpenMetadataWikiPages.MODEL_0070_NETWORKS_AND_GATEWAYS,
             "48cecd57-b223-4d23-af15-0efe65f74639",
-            "Interconnectivity for systems."),
+            "Interconnectivity for systems.",
+            NetworkProperties.class),
 
     /**
      * A connection point enabling network traffic to pass between two networks.
@@ -1255,7 +1241,8 @@ public enum OpenMetadataType
                     "NetworkGateway",
                     OpenMetadataWikiPages.MODEL_0070_NETWORKS_AND_GATEWAYS,
                     "7e665e17-f0bc-4c20-95e3-be1fec37bc52",
-                    "A connection point enabling network traffic to pass between two networks."),
+                    "A connection point enabling network traffic to pass between two networks.",
+                    NetworkGatewayProperties.class),
 
     /**
      * Link from a network to one of its network gateways.
@@ -1264,7 +1251,8 @@ public enum OpenMetadataType
                                       "NetworkGatewayLink",
                                       OpenMetadataWikiPages.MODEL_0070_NETWORKS_AND_GATEWAYS,
                                       "c8f17969-ee97-41cf-b5dc-80353a864220",
-                                      "Link from a network to one of its network gateways."),
+                                      "Link from a network to one of its network gateways.",
+                                      NetworkGatewayLinkProperties.class),
 
     /**
      * Shows that network that an endpoint is visible through.
@@ -1273,7 +1261,8 @@ public enum OpenMetadataType
                      "VisibleEndpoint",
                      OpenMetadataWikiPages.MODEL_0070_NETWORKS_AND_GATEWAYS,
                      "fc2a05a1-69bd-437f-bef7-20940a97f052",
-                     "Shows that network that an endpoint is visible through."),
+                     "Shows that network that an endpoint is visible through.",
+                     VisibleEndpointProperties.class),
 
     /**
      * A host supporting cloud services.
@@ -1282,7 +1271,8 @@ public enum OpenMetadataType
                                   "CloudProvider",
                                   OpenMetadataWikiPages.MODEL_0090_CLOUD_PLATFORMS,
                                   "0ef5ffaa-6497-40be-8781-5e7e9d74e890",
-                                  "A host supporting cloud services."),
+                                  "A host supporting cloud services.",
+                                  CloudProviderProperties.class),
 
 
     /**
@@ -1292,7 +1282,8 @@ public enum OpenMetadataType
                                   "CloudPlatform",
                                   OpenMetadataWikiPages.MODEL_0090_CLOUD_PLATFORMS,
                                   "4cf8cae4-e9e1-4ab2-8aeb-ffb393a1c7ff",
-                                  "A software server platform supporting cloud services."),
+                                  "A software server platform supporting cloud services.",
+                                  CloudPlatformProperties.class),
 
     /**
      * A software server supporting cloud services.
@@ -1301,7 +1292,8 @@ public enum OpenMetadataType
                                 "CloudTenant",
                                 OpenMetadataWikiPages.MODEL_0090_CLOUD_PLATFORMS,
                                 "5516ce5f-df5c-485d-90ca-7ab5647e2371",
-                                "A software server supporting cloud services."),
+                                "A software server supporting cloud services.",
+                                CloudTenantProperties.class),
 
 
     /**
@@ -1311,7 +1303,8 @@ public enum OpenMetadataType
                                  "CloudService",
                                  OpenMetadataWikiPages.MODEL_0090_CLOUD_PLATFORMS,
                                  "78ad50d9-8d7a-4dc3-ac87-697614d7c417",
-                                 "A service running on a cloud platform."),
+                                 "A service running on a cloud platform.",
+                                 CloudServiceProperties.class),
 
 
     /* ============================================================================================================================*/
@@ -1325,7 +1318,8 @@ public enum OpenMetadataType
           "Actor",
           OpenMetadataWikiPages.MODEL_0110_ACTORS,
           "93583bce-636d-4981-90db-729aafa6a76f",
-          "The representation of a person or group of people that are identified to perform an action or take on a responsibility."),
+          "The representation of a person or group of people that are identified to perform an action or take on a responsibility.",
+          ActorProperties.class),
 
 
     /**
@@ -1335,7 +1329,8 @@ public enum OpenMetadataType
                   "ActorProfile",
                   OpenMetadataWikiPages.MODEL_0110_ACTORS,
                   "5669141f-816d-45b4-899d-379674f0bcf3",
-                  "Description of a person, team or automated process that is working with data."),
+                  "Description of a person, team or automated process that is working with data.",
+                  ActorProfileProperties.class),
 
     /**
      * Name of the security account for a person or automated process.
@@ -1344,7 +1339,8 @@ public enum OpenMetadataType
                   "UserIdentity",
                   OpenMetadataWikiPages.MODEL_0110_ACTORS,
                   "d1313986-d512-49bf-bc1c-a3a529316978",
-                  "Name of the security account for a person or automated process."),
+                  "Name of the security account for a person or automated process.",
+                  UserIdentityProperties.class),
 
     /**
      * Correlates a user identity with an actor profile.
@@ -1353,8 +1349,8 @@ public enum OpenMetadataType
                                   "ProfileIdentity",
                                   OpenMetadataWikiPages.MODEL_0110_ACTORS,
                                   "f8ef0a3c-aa8d-4de3-8baf-2577365afa67",
-                                  "Correlates a user identity with an actor profile."),
-
+                                  "Correlates a user identity with an actor profile.",
+                                  ProfileIdentityProperties.class),
 
     /**
      * Information on how to send a message to an individual or automated process.
@@ -1363,7 +1359,8 @@ public enum OpenMetadataType
                     "ContactDetails",
                     OpenMetadataWikiPages.MODEL_0110_ACTORS,
                     "d3966e27-bed1-47df-830a-99b1e4d056d9",
-                    "Information on how to send a message to an individual or automated process."),
+                    "Information on how to send a message to an individual or automated process.",
+                    ContactDetailsProperties.class),
 
     /**
      * The contact details associated with an actor profile.
@@ -1372,7 +1369,8 @@ public enum OpenMetadataType
                                  "ContactThrough",
                                  OpenMetadataWikiPages.MODEL_0110_ACTORS,
                                  "e192b0fc-f483-4555-a09d-13f71c3829db",
-                                 "he contact details associated with an actor profile."),
+                                 "he contact details associated with an actor profile.",
+                                 ContactThroughProperties.class),
 
     /**
      * An individual.
@@ -1381,38 +1379,8 @@ public enum OpenMetadataType
            "Person",
            OpenMetadataWikiPages.MODEL_0112_PEOPLE,
            "dc55b455-b2ea-4065-a972-6bbdc52ca688",
-           "An individual."),
-
-
-    /**
-     * Relationship identifying a person's contribution record (replaced by Contribution).
-     */
-   PERSONAL_CONTRIBUTION_RELATIONSHIP("4a316abe-eeee-4d11-ad5a-4bfb4079b80b",
-                                      "PersonalContribution",
-                                      OpenMetadataWikiPages.MODEL_0125_CONTRIBUTION,
-                                      "73d21888-20f0-485f-b88e-36617b51b0a8",
-                                      "Deprecated Relationship identifying a person's contribution record (replaced by Contribution)."),
-
-
-    /**
-     * Relationship identifying an actor's contribution record.
-     */
-    CONTRIBUTION_RELATIONSHIP("4a383961-fa82-45b7-9018-d02233c80754",
-                                       "Contribution",
-                                       OpenMetadataWikiPages.MODEL_0125_CONTRIBUTION,
-                                       "47acc23d-a5d3-4ce3-acbd-0bb50433037b",
-                                       "Relationship identifying an actor's contribution record."),
-
-
-    /**
-     * A record of the contribution of an actor profile.
-     */
-    CONTRIBUTION_RECORD("6aaa1cea-d55f-4dcc-8c28-63a44132d1d7",
-                        "ContributionRecordProperties",
-                        OpenMetadataWikiPages.MODEL_0125_CONTRIBUTION,
-                        "84ac1aa6-f82c-4723-9c57-2b064d3c8418",
-                        "A record of the contribution of an actor profile."),
-
+           "An individual.",
+           PersonProperties.class),
 
     /**
      * Relationship identifying a person's peer network.
@@ -1421,7 +1389,8 @@ public enum OpenMetadataType
                       "Peer",
                       OpenMetadataWikiPages.MODEL_0112_PEOPLE,
                       "1d21a0e8-a80b-455f-9e5e-475026a6b8f4",
-                      "Relationship identifying a person's peer network."),
+                      "Relationship identifying a person's peer network.",
+                      PeerProperties.class),
 
     /**
      * Group of people working together.
@@ -1430,7 +1399,8 @@ public enum OpenMetadataType
          "Team",
          OpenMetadataWikiPages.MODEL_0115_TEAMS,
          "1e008894-4221-4409-838b-e78125da060b",
-         "Group of people working together."),
+         "Group of people working together.",
+         TeamProperties.class),
 
     /**
      * Describes a specific organization.
@@ -1439,7 +1409,8 @@ public enum OpenMetadataType
                  "Organization",
                  OpenMetadataWikiPages.MODEL_0115_TEAMS,
                  "1f885654-26a4-43bd-bb7b-62fbd8acdae9",
-                 "Describes a specific organization."),
+                 "Describes a specific organization.",
+                 OrganizationProperties.class),
 
     /**
      * Relationship identifying a team reporting hierarchy.
@@ -1448,7 +1419,8 @@ public enum OpenMetadataType
                                 "TeamStructure",
                                 OpenMetadataWikiPages.MODEL_0115_TEAMS,
                                 "51a4a318-d9d9-4833-a55b-b3f7948a1a37",
-                                "Relationship identifying a team reporting hierarchy."),
+                                "Relationship identifying a team reporting hierarchy.",
+                                TeamStructureProperties.class),
 
 
     /**
@@ -1458,7 +1430,8 @@ public enum OpenMetadataType
                "ITProfile",
                OpenMetadataWikiPages.MODEL_0117_IT_PROFILES,
                "c4fcd82e-24c8-40ef-8d80-e787841a6f92",
-               "Descriptive details about a processing engine or other IT infrastructure."),
+               "Descriptive details about a processing engine or other IT infrastructure.",
+               ITProfileProperties.class),
 
     /**
      * Link between an ITProfile and the asset for the piece of infrastructure it describes.
@@ -1467,8 +1440,8 @@ public enum OpenMetadataType
                                            "ITInfrastructureProfile",
                                            OpenMetadataWikiPages.MODEL_0117_IT_PROFILES,
                                            "f52f4e19-f148-495b-84df-8ec2f2b02263",
-                                           "Link between an ITProfile and the asset for the piece of infrastructure it describes."),
-
+                                           "Link between an ITProfile and the asset for the piece of infrastructure it describes.",
+                                           ITInfrastructureProfileProperties.class),
 
     /**
      * A collection of related responsibilities.
@@ -1477,8 +1450,8 @@ public enum OpenMetadataType
                "ActorRole",
                OpenMetadataWikiPages.MODEL_0118_ACTOR_ROLES,
                "5919c473-3769-4637-a638-45ef17bd0585",
-               "A collection of related responsibilities."),
-
+               "A collection of related responsibilities.",
+               ActorRoleProperties.class),
 
     /**
      * A role performed by one or more individuals.
@@ -1487,8 +1460,8 @@ public enum OpenMetadataType
                 "PersonRole",
                 OpenMetadataWikiPages.MODEL_0118_ACTOR_ROLES,
                 "6259c839-f310-4b73-87dc-28e60a119e1a",
-                "A role performed by one or more individuals."),
-
+                "A role performed by one or more individuals.",
+                PersonRoleProperties.class),
 
     /**
      * Relationship identifying a person's roles.
@@ -1497,47 +1470,49 @@ public enum OpenMetadataType
                                          "PersonRoleAppointment",
                                          OpenMetadataWikiPages.MODEL_0118_ACTOR_ROLES,
                                          "41282fe0-3d45-403f-97bc-c9c80c5081de",
-                                         "Relationship identifying a person's roles."),
-
+                                         "Relationship identifying a person's roles.",
+                                         PersonRoleAppointmentProperties.class),
 
     /**
      * A role performed by a team.
      */
     TEAM_ROLE("2dfe3f58-ff31-4933-a0d3-cf8c242400f2",
-                "TeamRole",
-                OpenMetadataWikiPages.MODEL_0118_ACTOR_ROLES,
-                "455fdae7-3f36-4adb-a402-af0ddaa59c25",
-                "A role performed by a team."),
-
+              "TeamRole",
+              OpenMetadataWikiPages.MODEL_0118_ACTOR_ROLES,
+              "455fdae7-3f36-4adb-a402-af0ddaa59c25",
+              "A role performed by a team.",
+              TeamRoleProperties.class),
 
     /**
      * Relationship identifying a team's roles.
      */
     TEAM_ROLE_APPOINTMENT_RELATIONSHIP("2c474468-e5f8-48bf-8140-854d516af3f3",
-                                         "TeamRoleAppointment",
-                                         OpenMetadataWikiPages.MODEL_0118_ACTOR_ROLES,
-                                         "e8b9570f-2eba-4a97-87a0-cb5300a65a62",
-                                         "Relationship identifying a team's roles."),
-
+                                       "TeamRoleAppointment",
+                                       OpenMetadataWikiPages.MODEL_0118_ACTOR_ROLES,
+                                       "e8b9570f-2eba-4a97-87a0-cb5300a65a62",
+                                       "Relationship identifying a team's roles.",
+                                       TeamRoleAppointmentProperties.class),
 
     /**
      * A role performed by some software automation.
      */
     IT_PROFILE_ROLE("3fe208fc-cff4-4fcf-8e74-b12267b154bb",
-                "ITProfileRole",
-                OpenMetadataWikiPages.MODEL_0118_ACTOR_ROLES,
-                "9cd02fe0-4926-401f-859d-0ccddd444510",
-                "A role performed by some software automation."),
+                    "ITProfileRole",
+                    OpenMetadataWikiPages.MODEL_0118_ACTOR_ROLES,
+                    "9cd02fe0-4926-401f-859d-0ccddd444510",
+                    "A role performed by some software automation.",
+                    ITProfileRoleProperties.class),
 
 
     /**
      * Relationship identifying a software automation executable's roles.
      */
     IT_PROFILE_ROLE_APPOINTMENT_RELATIONSHIP("ebf49c54-319d-4c5e-80e4-d3084d4ff9f1",
-                                         "ITProfileRoleAppointment",
-                                         OpenMetadataWikiPages.MODEL_0118_ACTOR_ROLES,
-                                         "6166a902-bd0d-42de-821a-f062f69b6e61",
-                                         "Relationship identifying a software automation executable's roles."),
+                                             "ITProfileRoleAppointment",
+                                             OpenMetadataWikiPages.MODEL_0118_ACTOR_ROLES,
+                                             "6166a902-bd0d-42de-821a-f062f69b6e61",
+                                             "Relationship identifying a software automation executable's roles.",
+                                             ITProfileRoleAppointmentProperties.class),
 
 
     /**
@@ -1547,7 +1522,8 @@ public enum OpenMetadataType
                 "TeamMember",
                 OpenMetadataWikiPages.MODEL_0119_TEAM_ROLES,
                 "69b06feb-3880-4796-ae15-f85fcce35900",
-                "Person assigned to a team."),
+                "Person assigned to a team.",
+                TeamMemberProperties.class),
 
     /**
      * Person leading a team.
@@ -1556,7 +1532,8 @@ public enum OpenMetadataType
                 "TeamLeader",
                 OpenMetadataWikiPages.MODEL_0119_TEAM_ROLES,
                 "021c3a71-c912-49e1-a099-1866746e4825",
-                "Person leading a team."),
+                "Person leading a team.",
+                TeamLeaderProperties.class),
 
     /**
      * Links a profile, role or project to the elements that they are responsible for managing.
@@ -1565,7 +1542,8 @@ public enum OpenMetadataType
                                   "AssignmentScope",
                                   OpenMetadataWikiPages.MODEL_0120_ASSIGNMENT_SCOPES,
                                   "d2f5cbd5-36f7-4471-83fb-b1aec78d39df",
-                                  "Links a profile, role or project to the elements that they are responsible for managing."),
+                                  "Links a profile, role or project to the elements that they are responsible for managing.",
+                                  AssignmentScopeProperties.class),
 
     /**
      * Link between a scope - such as a digital product, infrastructure element or organization - and an element restricted the scope.
@@ -1574,7 +1552,30 @@ public enum OpenMetadataType
                            "ScopedBy",
                            OpenMetadataWikiPages.MODEL_0120_ASSIGNMENT_SCOPES,
                            "ffe8adb8-58bd-469c-9077-f4c4088ca1d1",
-                           "Link between a scope - such as a digital product, infrastructure element or organization - and an element restricted the scope, such as a governance definition."),
+                           "Link between a scope - such as a digital product, infrastructure element or organization - and an element restricted the scope, such as a governance definition.",
+                           ScopedByProperties.class),
+
+
+    /**
+     * Relationship identifying an actor's contribution record.
+     */
+    CONTRIBUTION_RELATIONSHIP("4a383961-fa82-45b7-9018-d02233c80754",
+                              "Contribution",
+                              OpenMetadataWikiPages.MODEL_0125_CONTRIBUTION,
+                              "47acc23d-a5d3-4ce3-acbd-0bb50433037b",
+                              "Relationship identifying an actor's contribution record.",
+                              ContributionProperties.class),
+
+    /**
+     * A record of the contribution of an actor profile.
+     */
+    CONTRIBUTION_RECORD("6aaa1cea-d55f-4dcc-8c28-63a44132d1d7",
+                        "ContributionRecord",
+                        OpenMetadataWikiPages.MODEL_0125_CONTRIBUTION,
+                        "84ac1aa6-f82c-4723-9c57-2b064d3c8418",
+                        "A record of the contribution of an actor profile.",
+                        ContributionRecordProperties.class),
+
 
     /**
      * An organized activity, typically to achieve a well-defined goal.
@@ -1583,7 +1584,8 @@ public enum OpenMetadataType
             "Project",
             OpenMetadataWikiPages.MODEL_0130_PROJECTS,
             "1d8eed39-17e2-400c-adac-4d0c8f3063ad",
-            "An organized activity, typically to achieve a well-defined goal."),
+            "An organized activity, typically to achieve a well-defined goal.",
+            ProjectProperties.class),
 
     /**
      * A person with overall responsibility for one or more project.
@@ -1592,7 +1594,8 @@ public enum OpenMetadataType
                     "ProjectManager",
                     OpenMetadataWikiPages.MODEL_0130_PROJECTS,
                     "fbc22a33-8a07-45a3-afdf-839717be9f05",
-                    "A person with overall responsibility for one or more projects."),
+                    "A person with overall responsibility for one or more projects.",
+                    ProjectManagerProperties.class),
 
     /**
      * A nesting relationship between projects.
@@ -1601,7 +1604,8 @@ public enum OpenMetadataType
                                    "ProjectHierarchy",
                                    OpenMetadataWikiPages.MODEL_0130_PROJECTS,
                                    "d061fb2c-0315-4dcc-9f49-5dcf22f562f3",
-                                   "A nesting relationship between projects."),
+                                   "A nesting relationship between projects.",
+                                   ProjectHierarchyProperties.class),
 
     /**
      * A dependency relationship between projects.
@@ -1610,7 +1614,8 @@ public enum OpenMetadataType
                                     "ProjectDependency",
                                     OpenMetadataWikiPages.MODEL_0130_PROJECTS,
                                     "ee7973dc-022b-4d49-bb5d-5231ad64630b",
-                                    "A dependency relationship between projects."),
+                                    "A dependency relationship between projects.",
+                                    ProjectDependencyProperties.class),
 
     /**
      * A superclass for the project classifications that identify the role that the project is playing.
@@ -1628,7 +1633,8 @@ public enum OpenMetadataType
                             "Campaign",
                             OpenMetadataWikiPages.MODEL_0130_PROJECTS,
                             "5414bc9b-ff73-4eeb-a8a7-3cbb5beae166",
-                            "A long-term strategic initiative that is implemented through multiple related projects."),
+                            "A long-term strategic initiative that is implemented through multiple related projects.",
+                            CampaignProperties.class),
 
     /**
      * A self-contained, short activity, typically for one or two people.
@@ -1637,16 +1643,18 @@ public enum OpenMetadataType
                         "Task",
                         OpenMetadataWikiPages.MODEL_0130_PROJECTS,
                         "0b00b39b-4079-475e-b598-f31003078831",
-                        "A self-contained, short activity, typically for one or two people."),
+                        "A self-contained, short activity, typically for one or two people.",
+                        TaskProperties.class),
 
     /**
      * This is an informal project that has been created by an individual to help them organize their work.
      */
     PERSONAL_PROJECT_CLASSIFICATION("3d7b8500-cebd-4f18-b85c-a459bec3e3ef",
-                                    "PersonalProjectProperties",
+                                    "PersonalProject",
                                     OpenMetadataWikiPages.MODEL_0130_PROJECTS,
                                     "da65ba96-b9d8-45e7-b16f-24342b6695c0",
-                                    "This is an informal project that has been created by an individual to help them organize their work."),
+                                    "This is an informal project that has been created by an individual to help them organize their work.",
+                                    PersonalProjectProperties.class),
 
     /**
      * A focused analysis of a topic, person, object or situation.
@@ -1655,7 +1663,8 @@ public enum OpenMetadataType
                                  "StudyProject",
                                  OpenMetadataWikiPages.MODEL_0130_PROJECTS,
                                  "04b9427e-b6cc-45d4-b880-6eaa9a47f063",
-                                 "A focused analysis of a topic, person, object or situation."),
+                                 "A focused analysis of a topic, person, object or situation.",
+                                 StudyProjectProperties.class),
 
     /**
      * Two or more people come together to discuss a topic, agree and action or exchange information.
@@ -1664,26 +1673,39 @@ public enum OpenMetadataType
             "Meeting",
             OpenMetadataWikiPages.MODEL_0135_ACTIONS_FOR_PEOPLE,
             "dd75c9f3-8e17-4307-9729-c391bd7981bd",
-            "Two or more people come together to discuss a topic, agree and action or exchange information."),
+            "Two or more people come together to discuss a topic, agree and action or exchange information.",
+            MeetingProperties.class),
 
     /**
-     * An action assigned to an individual.
+     * A request for an individual to perform an action.
      */
     TO_DO("93dbc58d-c826-4bc2-b36f-195148d46f86",
           "ToDo",
           OpenMetadataWikiPages.MODEL_0135_ACTIONS_FOR_PEOPLE,
           "12780d85-66e8-45b3-9d0e-ef4bebbf1ed9",
-          "An action assigned to an individual."),
+          "A request for an individual to perform an action.",
+          ToDoProperties.class),
 
+
+    /**
+     * A review of the suitability, quality or correctness of the elements linked as action targets.
+     */
+    REVIEW("ef804efa-06e4-49f5-9872-90be280ae223",
+           "Review",
+           OpenMetadataWikiPages.MODEL_0135_ACTIONS_FOR_PEOPLE,
+           "4e6d19b3-0d9a-404d-9fa1-915bdbf0b04d",
+           "A review of the suitability, quality or correctness of the elements linked as action targets.",
+           ReviewProperties.class),
 
     /**
      * Information for an individual.
      */
     NOTIFICATION("96d104b6-4dbe-45c2-b21a-3f3a4545dabe",
-          "Notification",
-          OpenMetadataWikiPages.MODEL_0135_ACTIONS_FOR_PEOPLE,
-          "78af3743-fd24-4e94-b2d8-d3e70f1d32b7",
-          "Information for an individual."),
+                 "Notification",
+                 OpenMetadataWikiPages.MODEL_0135_ACTIONS_FOR_PEOPLE,
+                 "78af3743-fd24-4e94-b2d8-d3e70f1d32b7",
+                 "Information for an individual.",
+                 NotificationProperties.class),
 
 
     /**
@@ -1693,16 +1715,18 @@ public enum OpenMetadataType
               "Community",
               OpenMetadataWikiPages.MODEL_0140_COMMUNITIES,
               "e7300c49-b5ad-4808-aaa8-64ee81f40df6",
-              "A group of people with a common interest or skill."),
+              "A group of people with a common interest or skill.",
+              CommunityProperties.class),
 
     /**
      * A person who has joined a community.
      */
     COMMUNITY_MEMBER("fbd42379-f6c3-4f09-b6f7-378565cda993",
-              "CommunityMember",
-              OpenMetadataWikiPages.MODEL_0140_COMMUNITIES,
-              "38833f01-dbad-4cf7-b825-54a9a97d6d78",
-              "A person who has joined a community."),
+                     "CommunityMember",
+                     OpenMetadataWikiPages.MODEL_0140_COMMUNITIES,
+                     "38833f01-dbad-4cf7-b825-54a9a97d6d78",
+                     "A person who has joined a community.",
+                     CommunityMemberProperties.class),
 
 
     /**
@@ -1712,7 +1736,8 @@ public enum OpenMetadataType
            "Rating",
            OpenMetadataWikiPages.MODEL_0150_FEEDBACK,
            "bd05b809-b094-431d-905d-dad65bbe6484",
-           "Quantitative feedback related to an item."),
+           "Quantitative feedback related to an item.",
+           RatingProperties.class),
 
     /**
      * Links a rating to an item.
@@ -1721,7 +1746,8 @@ public enum OpenMetadataType
                                  "AttachedRating",
                                  OpenMetadataWikiPages.MODEL_0150_FEEDBACK,
                                  "87ea2c02-dae5-4d7d-8bc8-c4f2589026b0",
-                                 "Links a rating to an item."),
+                                 "Links a rating to an item.",
+                                 AttachedRatingProperties.class),
 
     /**
      * Descriptive feedback or discussion related to the attached element.
@@ -1730,7 +1756,8 @@ public enum OpenMetadataType
             "Comment",
             OpenMetadataWikiPages.MODEL_0150_FEEDBACK,
             "af656cd2-a73c-421f-9429-4b6749cb6f09",
-            "Descriptive feedback or discussion related to the attached element."),
+            "Descriptive feedback or discussion related to the attached element.",
+            CommentProperties.class),
 
     /**
      * Links a comment to an item, or another comment.
@@ -1739,7 +1766,8 @@ public enum OpenMetadataType
                                   "AttachedComment",
                                   OpenMetadataWikiPages.MODEL_0150_FEEDBACK,
                                   "7025c1a3-2026-422e-92f3-cf7d65832713",
-                                  "Links a comment to an item, or another comment."),
+                                  "Links a comment to an item, or another comment.",
+                                  AttachedCommentProperties.class),
 
     /**
      * Identifies a comment as answering a question asked in another comment.
@@ -1748,7 +1776,8 @@ public enum OpenMetadataType
                                  "AcceptedAnswer",
                                  OpenMetadataWikiPages.MODEL_0150_FEEDBACK,
                                  "2f207a82-e7e2-4fd6-9a91-c6055f287f66",
-                                 "Identifies a comment as answering a question asked in another comment."),
+                                 "Identifies a comment as answering a question asked in another comment.",
+                                 AcceptedAnswerProperties.class),
 
     /**
      * Boolean type of rating expressing a favorable impression.
@@ -1757,7 +1786,8 @@ public enum OpenMetadataType
          "Like",
          OpenMetadataWikiPages.MODEL_0150_FEEDBACK,
          "b2bbaacb-c547-41b9-9bb2-e11d55bf74f7",
-         "Boolean type of rating expressing a favorable impression."),
+         "Boolean type of rating expressing a favorable impression.",
+         LikeProperties.class),
 
     /**
      * Links a like to an item.
@@ -1766,7 +1796,8 @@ public enum OpenMetadataType
                                "AttachedLike",
                                OpenMetadataWikiPages.MODEL_0150_FEEDBACK,
                                "727783d2-de50-44f9-b5bc-d21a23b1a203",
-                               "Links a like to an item."),
+                               "Links a like to an item.",
+                               AttachedLikeProperties.class),
 
     /**
      * A descriptive tag for an item.
@@ -1775,7 +1806,8 @@ public enum OpenMetadataType
                  "InformalTag",
                  OpenMetadataWikiPages.MODEL_0150_FEEDBACK,
                  "74bf2e98-b334-4cc8-b89f-a03239a7b574",
-                 "A descriptive tag for an item."),
+                 "A descriptive tag for an item.",
+                 InformalTagProperties.class),
 
     /**
      * Links an informal tag to an item.
@@ -1784,7 +1816,8 @@ public enum OpenMetadataType
                               "AttachedTag",
                               OpenMetadataWikiPages.MODEL_0150_FEEDBACK,
                               "f5f7ed7d-bebe-454f-94aa-1029ff37ac6a",
-                              "Links an informal tag to an item."),
+                              "Links an informal tag to an item.",
+                              AttachedTagProperties.class),
 
     /**
      * Person contributing new content.
@@ -1793,7 +1826,8 @@ public enum OpenMetadataType
                                "CrowdSourcingContributor",
                                OpenMetadataWikiPages.MODEL_0155_CROWD_SOURCING,
                                "ee2046c9-aadd-4519-a76d-43e6cfce03a8",
-                               "Person contributing new content."),
+                               "Person contributing new content.",
+                               CrowdSourcingContributorProperties.class),
 
     /**
      * Defines one of the actors contributing content to a new description or asset.
@@ -1802,7 +1836,8 @@ public enum OpenMetadataType
                                              "CrowdSourcingContribution",
                                              OpenMetadataWikiPages.MODEL_0155_CROWD_SOURCING,
                                              "715c667a-7a9b-45f0-b44e-06c1c0401929",
-                                             "Defines one of the actors contributing content to a new description or asset."),
+                                             "Defines one of the actors contributing content to a new description or asset.",
+                                             CrowdSourcingContributionProperties.class),
 
     /**
      * An ordered list of related notes.
@@ -1849,7 +1884,8 @@ public enum OpenMetadataType
                "Connection",
                OpenMetadataWikiPages.MODEL_0201_CONNECTIONS,
                "6c57f5f6-e692-4688-8a16-e81e5eb985f6",
-               "A set of properties to identify and configure a connector instance."),
+               "A set of properties to identify and configure a connector instance.",
+               ConnectionProperties.class),
 
     /**
      * A set of properties describing a type of connector.
@@ -1858,35 +1894,8 @@ public enum OpenMetadataType
                    "ConnectorType",
                    OpenMetadataWikiPages.MODEL_0201_CONNECTIONS,
                    "83d59e58-8f1d-4554-8a93-3c3b9c9808d1",
-                   "A set of properties describing a type of connector."),
-
-    /**
-     * A detailed description of the effect of some data processing.
-     */
-    CONNECTOR_CATEGORY("fb60761f-7afd-4d3d-9efa-24bc85a7b22e",
-                       "ConnectorCategory",
-                       OpenMetadataWikiPages.MODEL_0201_CONNECTIONS,
-                       "81791f28-6d73-439d-ac2f-30b8aeaebcf9",
-                       "A detailed description of the effect of some data processing."),
-
-    /**
-     * Identifies a collection of related connector types.
-     */
-    CONNECTOR_TYPE_DIRECTORY_CLASSIFICATION("9678ef11-ed7e-404b-a041-736df7514339",
-                                            "ConnectorTypeDirectory",
-                                            OpenMetadataWikiPages.MODEL_0201_CONNECTIONS,
-                                            "1387ff91-42bc-4eb3-8945-ab21826802ca",
-                                            "Identifies a collection of related connector types."),
-
-    /**
-     * Relates a connector category for a specific type of technology with the connector types that support it.
-     */
-    CONNECTOR_IMPLEMENTATION_CHOICE_RELATIONSHIP("633648f3-c951-4ad7-b975-9fc04e0f3d2e",
-                                                 "ConnectorImplementationChoice",
-                                                 OpenMetadataWikiPages.MODEL_0201_CONNECTIONS,
-                                                 "62313ce0-7a48-461e-910e-6ec8a17abcae",
-                                                 "Relates a connector category for a specific type of technology with the connector types that support it."),
-
+                   "A set of properties describing a type of connector.",
+                   ConnectorTypeProperties.class),
 
     /**
      * A link between a connection and the endpoint of the associated digital resource.
@@ -1895,7 +1904,8 @@ public enum OpenMetadataType
                                      "ConnectToEndpoint",
                                      OpenMetadataWikiPages.MODEL_0201_CONNECTIONS,
                                      "8ee90e09-b0c6-4c5f-be82-03b03d8f4809",
-                                     "A link between a connection and the endpoint of the associated digital resource."),
+                                     "A link between a connection and the endpoint of the associated digital resource.",
+                                     ConnectToEndpointProperties.class),
 
     /**
      * A link between a connection and the connector type that should be used.
@@ -1904,7 +1914,8 @@ public enum OpenMetadataType
                                            "ConnectionConnectorType",
                                            OpenMetadataWikiPages.MODEL_0201_CONNECTIONS,
                                            "3ee0cc02-f058-4d88-a510-d463f448b4ac",
-                                           "A link between a connection and the connector type that should be used."),
+                                           "A link between a connection and the connector type that should be used.",
+                                           ConnectionConnectorTypeProperties.class),
 
     /**
      * A connector for a virtual resource that needs to retrieve data from multiple places.
@@ -1913,7 +1924,8 @@ public enum OpenMetadataType
                        "VirtualConnection",
                        OpenMetadataWikiPages.MODEL_0205_CONNECTION_LINKAGE,
                        "04928167-1a20-4137-bbd8-b42151a38d8c",
-                       "A connector for a virtual resource that needs to retrieve data from multiple places."),
+                       "A connector for a virtual resource that needs to retrieve data from multiple places.",
+                       VirtualConnectionProperties.class),
 
     /**
      * A link between a virtual connection and one of the connections it depends on.
@@ -1922,16 +1934,18 @@ public enum OpenMetadataType
                                      "EmbeddedConnection",
                                      OpenMetadataWikiPages.MODEL_0205_CONNECTION_LINKAGE,
                                      "c05c1143-3ac4-4044-a0aa-eed71e949097",
-                                     "A link between a virtual connection and one of the connections it depends on."),
+                                     "A link between a virtual connection and one of the connections it depends on.",
+                                     EmbeddedConnectionProperties.class),
 
     /**
      * Link between an asset and the connection to its digital resource.
      */
     ASSET_CONNECTION_RELATIONSHIP("c96593a5-9f42-41c8-82a0-16acafc77c44",
-                                     "AssetConnection",
-                                     OpenMetadataWikiPages.MODEL_0205_CONNECTION_LINKAGE,
-                                     "e09cf717-af6f-4daf-8469-bf21af4ecf29",
-                                     "Link between an asset and the connection to its digital resource."),
+                                  "AssetConnection",
+                                  OpenMetadataWikiPages.MODEL_0205_CONNECTION_LINKAGE,
+                                  "e09cf717-af6f-4daf-8469-bf21af4ecf29",
+                                  "Link between an asset and the connection to its digital resource.",
+                                  AssetConnectionProperties.class),
 
     /**
      * Collection of related data, not necessarily stored together.
@@ -1940,7 +1954,8 @@ public enum OpenMetadataType
              "DataSet",
              OpenMetadataWikiPages.MODEL_0210_DATA_STORES,
              "353a074a-079b-47ad-914f-c27a6174a8ed",
-             "Collection of related data, not necessarily stored together."),
+             "Collection of related data, not necessarily stored together.",
+             DataSetProperties.class),
 
     /**
      * A physical store of data
@@ -1949,7 +1964,8 @@ public enum OpenMetadataType
                "DataStore",
                OpenMetadataWikiPages.MODEL_0210_DATA_STORES,
                "186e8199-1987-4578-9799-c13a8eaa08b6",
-               "A physical store of data."),
+               "A physical store of data.",
+               DataStoreProperties.class),
 
     /**
      * Identifies the scope of the data stored in the digital resource(s).
@@ -1958,7 +1974,8 @@ public enum OpenMetadataType
                               "DataScope",
                               OpenMetadataWikiPages.MODEL_0210_DATA_STORES,
                               "b734ba5c-ce2c-4b02-b54d-9232db2f1c51",
-                              "Identifies the scope of the data stored in the digital resource(s)."),
+                              "Identifies the scope of the data stored in the digital resource(s).",
+                              DataScopeProperties.class),
 
     /**
      * Description for how data is organized and represented in a data asset.
@@ -1967,16 +1984,18 @@ public enum OpenMetadataType
                                        "DataAssetEncoding",
                                        OpenMetadataWikiPages.MODEL_0210_DATA_STORES,
                                        "6899c5aa-e815-4404-948c-52fc0188cf1e",
-                                       "Description for how data is organized and represented in a data asset."),
+                                       "Description for how data is organized and represented in a data asset.",
+                                       DataAssetEncodingProperties.class),
 
     /**
      * A data source that provides a constant stream of data, such as a sensor monitoring the environment.
      */
     DATA_FEED("e87836ad-f8bd-4c52-aecd-0f1872c692e5",
-             "DataFeed",
-             OpenMetadataWikiPages.MODEL_0210_DATA_STORES,
-             "26776fcd-0f7c-49c6-874e-729898ec2193",
-             "A data source that provides a constant stream of data, such as a sensor monitoring the environment."),
+              "DataFeed",
+              OpenMetadataWikiPages.MODEL_0210_DATA_STORES,
+              "26776fcd-0f7c-49c6-874e-729898ec2193",
+              "A data source that provides a constant stream of data, such as a sensor monitoring the environment.",
+              DataFeedProperties.class),
 
     /**
      * The assets that provide data for a data set.
@@ -1985,16 +2004,39 @@ public enum OpenMetadataType
                                   "DataSetContent",
                                   OpenMetadataWikiPages.MODEL_0210_DATA_STORES,
                                   "373a03e2-3a3c-407e-8f98-24fc7ff0dfde",
-                                  "The assets that provide data for a data set."),
+                                  "The assets that provide data for a data set.",
+                                  DataSetContentProperties.class),
+
+    /**
+     * Collection of related data, not necessarily stored together.
+     */
+    TABULAR_DATA_SET("3b6a6cda-8721-47ba-afc6-1a2786e04f77",
+             "TabularDataSet",
+             OpenMetadataWikiPages.MODEL_0211_TABULAR_DATA_SETS,
+             "d0417daa-2839-4acd-aaaf-28e6ca49e992",
+             "A collection of data organized as tabular data.",
+             TabularDataSetProperties.class),
+
+
+    /**
+     * Collection of related tabular data sets, not necessarily stored together.
+     */
+    TABULAR_DATA_SET_COLLECTION("8f5614c5-1777-4760-a500-07e60ba29746",
+                                "TabularDataSetCollection",
+                                OpenMetadataWikiPages.MODEL_0211_TABULAR_DATA_SETS,
+                                "67eadc07-e623-43bc-802e-fd465a3e12ac",
+                                "Collection of related tabular data sets, not necessarily stored together.",
+                                TabularDataSetCollectionProperties.class),
 
     /**
      * A callable interface running at an endpoint.
      */
-     DEPLOYED_API("7dbb3e63-138f-49f1-97b4-66313871fc14",
-                  "DeployedAPI",
-                  OpenMetadataWikiPages.MODEL_0212_DEPLOYED_APIS,
-                  "ce967655-024b-446d-a5b8-3fdf2a1b6f56",
-                  "A callable interface running at an endpoint."),
+    DEPLOYED_API("7dbb3e63-138f-49f1-97b4-66313871fc14",
+                 "DeployedAPI",
+                 OpenMetadataWikiPages.MODEL_0212_DEPLOYED_APIS,
+                 "ce967655-024b-446d-a5b8-3fdf2a1b6f56",
+                 "A callable interface running at an endpoint.",
+                 DeployedAPIProperties.class),
 
     /**
      * The endpoint for a deployed API.
@@ -2003,7 +2045,8 @@ public enum OpenMetadataType
                               "APIEndpoint",
                               OpenMetadataWikiPages.MODEL_0212_DEPLOYED_APIS,
                               "481182e8-90cf-47b2-ae1e-6247bf89698b",
-                              "The endpoint for a deployed API."),
+                              "The endpoint for a deployed API.",
+                              APIEndpointProperties.class),
 
     /**
      * Identifies an API that supports a request response interaction style.
@@ -2012,7 +2055,8 @@ public enum OpenMetadataType
                                               "RequestResponseInterface",
                                               OpenMetadataWikiPages.MODEL_0212_DEPLOYED_APIS,
                                               "343d4892-1f13-4a68-a9fc-32719cecb4a3",
-                                              "Identifies an API that supports a request response interaction style."),
+                                              "Identifies an API that supports a request response interaction style.",
+                                              RequestResponseInterfaceProperties.class),
 
     /**
      * Identifies an API that listens for incoming events and processes them.
@@ -2021,16 +2065,18 @@ public enum OpenMetadataType
                                       "ListenerInterface",
                                       OpenMetadataWikiPages.MODEL_0212_DEPLOYED_APIS,
                                       "39e5a428-663e-4fff-a4dd-e6d5e627c143",
-                                      "Identifies an API that listens for incoming events and processes them."),
+                                      "Identifies an API that listens for incoming events and processes them.",
+                                      ListenerInterfaceProperties.class),
 
     /**
      * Identifies an API that sends out events to other listening components.
      */
     PUBLISHER_INTERFACE_CLASSIFICATION("4fdedcd5-b186-4bee-887a-02fa29a10750",
-                                      "PublisherInterface",
-                                      OpenMetadataWikiPages.MODEL_0212_DEPLOYED_APIS,
-                                      "7c7d9e1c-72cd-4d64-89bf-be898edad980",
-                                      "Identifies an API that sends out events to other listening components."),
+                                       "PublisherInterface",
+                                       OpenMetadataWikiPages.MODEL_0212_DEPLOYED_APIS,
+                                       "7c7d9e1c-72cd-4d64-89bf-be898edad980",
+                                       "Identifies an API that sends out events to other listening components.",
+                                       PublisherInterfaceProperties.class),
 
     /**
      * A packaged and deployed software component supporting a well-defined function.
@@ -2039,7 +2085,8 @@ public enum OpenMetadataType
                                 "DeployedSoftwareComponent",
                                 OpenMetadataWikiPages.MODEL_0215_SOFTWARE_COMPONENTS,
                                 "37c211f4-80e3-40a7-b12b-8fdb7ad7af86",
-                                "A packaged and deployed software component supporting a well-defined function."),
+                                "A packaged and deployed software component supporting a well-defined function.",
+                                DeployedSoftwareComponentProperties.class),
 
     /**
      * A connector that is configured and deployed to run in a specific software server capability.
@@ -2048,25 +2095,28 @@ public enum OpenMetadataType
                        "DeployedConnector",
                        OpenMetadataWikiPages.MODEL_0215_SOFTWARE_COMPONENTS,
                        "98bb02cd-a05c-4b06-b723-e295213ec9b0",
-                       "A connector that is configured and deployed to run in a specific software server capability."),
+                       "A connector that is configured and deployed to run in a specific software server capability.",
+                       DeployedConnectorProperties.class),
 
     /**
      * A child process.
      */
     EMBEDDED_PROCESS("8145967e-bb83-44b2-bc8c-68112c6a5a06",
                      "EmbeddedProcess",
-                       OpenMetadataWikiPages.MODEL_0215_SOFTWARE_COMPONENTS,
+                     OpenMetadataWikiPages.MODEL_0215_SOFTWARE_COMPONENTS,
                      "0a1e7e7b-ce2e-4371-b9fa-8a37d9c0ce3e",
-                     "A child process."),
+                     "A child process.",
+                     EmbeddedProcessProperties.class),
 
     /**
      * A child process that runs for a short period of time.
      */
     TRANSIENT_EMBEDDED_PROCESS("9bd9d37a-b2ae-48ec-9776-080f667e91c5",
-                     "TransientEmbeddedProcess",
-                     OpenMetadataWikiPages.MODEL_0215_SOFTWARE_COMPONENTS,
-                     "ab03dfea-cfa7-4ab2-96db-ac6cb894f242",
-                     "A child process that runs for a short period of time compared to its parent process."),
+                               "TransientEmbeddedProcess",
+                               OpenMetadataWikiPages.MODEL_0215_SOFTWARE_COMPONENTS,
+                               "ab03dfea-cfa7-4ab2-96db-ac6cb894f242",
+                               "A child process that runs for a short period of time compared to its parent process.",
+                               TransientEmbeddedProcessProperties.class),
 
     /**
      * A hierarchical relationship between processes.
@@ -2075,7 +2125,8 @@ public enum OpenMetadataType
                                    "ProcessHierarchy",
                                    OpenMetadataWikiPages.MODEL_0215_SOFTWARE_COMPONENTS,
                                    "bc7ee6c0-8130-42c4-a27f-476ebea2c108",
-                                   "A hierarchical relationship between processes."),
+                                   "A hierarchical relationship between processes.",
+                                   ProcessHierarchyProperties.class),
 
     /**
      * An interface where data flows in and/or out of a process.
@@ -2084,7 +2135,8 @@ public enum OpenMetadataType
          "Port",
          OpenMetadataWikiPages.MODEL_0217_PORTS,
          "e4abcf2e-62c5-4370-b7e3-c6478900312b",
-         "An interface where data flows in and/or out of a process."),
+         "An interface where data flows in and/or out of a process.",
+         PortProperties.class),
 
     /**
      * A port for a composed process whose implementation comes from the port linked via a port delegation relationship.
@@ -2093,7 +2145,8 @@ public enum OpenMetadataType
                "PortAlias",
                OpenMetadataWikiPages.MODEL_0217_PORTS,
                "bbb9d111-01f9-4a28-974d-80ac22985fdf",
-               "A port for a composed process whose implementation comes from the port linked via a port delegation relationship."),
+               "A port for a composed process whose implementation comes from the port linked via a port delegation relationship.",
+               PortAliasProperties.class),
 
     /**
      * A port with a concrete implementation.
@@ -2102,7 +2155,8 @@ public enum OpenMetadataType
                         "PortImplementation",
                         OpenMetadataWikiPages.MODEL_0217_PORTS,
                         "1415862a-bcde-42f7-b9ad-44be29ae8c60",
-                        "A port with a concrete implementation."),
+                        "A port with a concrete implementation.",
+                        PortImplementationProperties.class),
 
     /**
      * A link between a process and one of its ports.
@@ -2111,7 +2165,8 @@ public enum OpenMetadataType
                               "ProcessPort",
                               OpenMetadataWikiPages.MODEL_0217_PORTS,
                               "9584078c-8a28-4852-bd9b-699d20385b6f",
-                              "A link between a process and one of its ports."),
+                              "A link between a process and one of its ports.",
+                              ProcessPortProperties.class),
 
     /**
      * A relationship between a parent (composed) process port and a port from a more granular process.  The relationship shows where data passed to the parent process is directed.
@@ -2120,7 +2175,8 @@ public enum OpenMetadataType
                                  "PortDelegation",
                                  OpenMetadataWikiPages.MODEL_0217_PORTS,
                                  "7a820388-49f6-4843-aa68-a2eda5501386",
-                                 "A relationship between a parent (composed) process port and a port from a more granular process.  The relationship shows where data passed to the parent process is directed."),
+                                 "A relationship between a parent (composed) process port and a port from a more granular process.  The relationship shows where data passed to the parent process is directed.",
+                                 PortDelegationProperties.class),
 
     /**
      * A description of a folder (directory) in a file system.
@@ -2129,7 +2185,8 @@ public enum OpenMetadataType
                 "FileFolder",
                 OpenMetadataWikiPages.MODEL_0220_FILE_AND_FOLDERS,
                 "4a4d75eb-9098-4e06-8873-47d026f5867f",
-                "A description of a folder (directory) in a file system."),
+                "A description of a folder (directory) in a file system.",
+                FileFolderProperties.class),
 
     /**
      * A folder (directory) in a file system that contains a collection of data.
@@ -2138,7 +2195,8 @@ public enum OpenMetadataType
                 "DataFolder",
                 OpenMetadataWikiPages.MODEL_0220_FILE_AND_FOLDERS,
                 "0432df9c-d04d-4a41-8a27-599e0331d167",
-                "A folder (directory) in a file system that contains a collection of data stored in individual files."),
+                "A folder (directory) in a file system that contains a collection of data stored in individual files.",
+                DataFolderProperties.class),
 
     /**
      * A description of a file stored in a file system.
@@ -2147,7 +2205,8 @@ public enum OpenMetadataType
               "DataFile",
               OpenMetadataWikiPages.MODEL_0220_FILE_AND_FOLDERS,
               "9805da73-c308-44ee-979c-86b1ef018dad",
-              "A description of a file stored in a file system."),
+              "A description of a file stored in a file system.",
+              DataFileProperties.class),
 
     /**
      * A description of a comma separated value (CSV) file.
@@ -2156,7 +2215,8 @@ public enum OpenMetadataType
              "CSVFile",
              OpenMetadataWikiPages.MODEL_0220_FILE_AND_FOLDERS,
              "4072c15f-9792-45a3-a4c9-d0602f4ffe87",
-             "A file containing comma-separated (or similar delimited) data."),
+             "A file containing comma-separated (or similar delimited) data.",
+             CSVFileProperties.class),
 
     /**
      * A description of a file that follows the Apache Avro specification.
@@ -2165,7 +2225,8 @@ public enum OpenMetadataType
               "AvroFile",
               OpenMetadataWikiPages.MODEL_0220_FILE_AND_FOLDERS,
               "ac017c45-d167-424a-b0db-501d1dbe7096",
-              "A description of a file that follows the Apache Avro specification."),
+              "A description of a file that follows the Apache Avro specification.",
+              AvroFileProperties.class),
 
     /**
      * A description of a file that follows the JavaScript Object Notation specification.
@@ -2174,7 +2235,8 @@ public enum OpenMetadataType
               "JSONFile",
               OpenMetadataWikiPages.MODEL_0220_FILE_AND_FOLDERS,
               "8fc52dce-17fe-426a-b504-c15d5df35524",
-              "A description of a file that follows the JavaScript Object Notation specification."),
+              "A description of a file that follows the JavaScript Object Notation specification.",
+              JSONFileProperties.class),
 
     /**
      * A file containing tabular data with formula.
@@ -2183,7 +2245,8 @@ public enum OpenMetadataType
                      "SpreadsheetFile",
                      OpenMetadataWikiPages.MODEL_0220_FILE_AND_FOLDERS,
                      "777064c4-756e-4c78-84d7-268316481b9d",
-                     "A file containing tabular data with formula."),
+                     "A file containing tabular data with formula.",
+                     SpreadsheetFileProperties.class),
 
     /**
      * A file containing an XML structure.
@@ -2192,7 +2255,8 @@ public enum OpenMetadataType
              "XMLFile",
              OpenMetadataWikiPages.MODEL_0220_FILE_AND_FOLDERS,
              "0dbaed30-1cd5-4259-a0b2-f586966890ee",
-             "A file containing an XML structure."),
+             "A file containing an XML structure.",
+             XMLFileProperties.class),
 
     /**
      * A data file which is formatted using the Apache Parquet format.
@@ -2201,7 +2265,8 @@ public enum OpenMetadataType
                  "ParquetFile",
                  OpenMetadataWikiPages.MODEL_0220_FILE_AND_FOLDERS,
                  "b472c4a1-708d-4787-b0c3-730052cf19f4",
-                 "A data file which is formatted using the Apache Parquet format."),
+                 "A data file which is formatted using the Apache Parquet format.",
+                 ParquetFileProperties.class),
 
     /**
      * A nested relationship between two file folders.
@@ -2210,7 +2275,8 @@ public enum OpenMetadataType
                                   "FolderHierarchy",
                                   OpenMetadataWikiPages.MODEL_0220_FILE_AND_FOLDERS,
                                   "1c35e932-a116-486c-891a-32c3300db62d",
-                                  "A nested relationship between two file folders."),
+                                  "A nested relationship between two file folders.",
+                                  FolderHierarchyProperties.class),
 
     /**
      * The link between a data file and its containing folder.
@@ -2219,7 +2285,8 @@ public enum OpenMetadataType
                              "NestedFile",
                              OpenMetadataWikiPages.MODEL_0220_FILE_AND_FOLDERS,
                              "25f5b1b2-3ed4-452c-8e67-9dae915195ef",
-                             "The link between a data file and its containing folder."),
+                             "The link between a data file and its containing folder.",
+                             NestedFileProperties.class),
 
     /**
      * A data file that is linked to a file folder (rather than stored in it).
@@ -2228,7 +2295,8 @@ public enum OpenMetadataType
                              "LinkedFile",
                              OpenMetadataWikiPages.MODEL_0220_FILE_AND_FOLDERS,
                              "214c7af3-89e7-4ff1-9642-68af6b9fa12d",
-                             "A data file that is linked to a file folder (rather than stored in it)."),
+                             "A data file that is linked to a file folder (rather than stored in it).",
+                             LinkedFileProperties.class),
 
     /**
      * A data set that consists of a collection files (do not need to be co-located).
@@ -2237,7 +2305,8 @@ public enum OpenMetadataType
                          "DataFileCollection",
                          OpenMetadataWikiPages.MODEL_0220_FILE_AND_FOLDERS,
                          "c2833bb5-5508-4328-a81d-f9b5971be095",
-                         "A data set that consists of a collection files (do not need to be co-located)."),
+                         "A data set that consists of a collection files (do not need to be co-located).",
+                         DataFileCollectionProperties.class),
 
     /**
      * A group of related media files.
@@ -2246,7 +2315,8 @@ public enum OpenMetadataType
                      "MediaCollection",
                      OpenMetadataWikiPages.MODEL_0221_DOCUMENT_STORES,
                      "5d968079-c51d-4168-8208-d6dabeab2105",
-                     "A group of related media files."),
+                     "A group of related media files.",
+                     MediaCollectionProperties.class),
 
     /**
      * Identifies a data store as one that contains documents.
@@ -2255,7 +2325,8 @@ public enum OpenMetadataType
                    "DocumentStore",
                    OpenMetadataWikiPages.MODEL_0221_DOCUMENT_STORES,
                    "a39cc327-bd4f-4cb7-9355-b7dbf55fa5c2",
-                   "Identifies a data store as one that contains documents."),
+                   "Identifies a data store as one that contains documents.",
+                   DocumentStoreProperties.class),
 
     /**
      * Links a media file to another media file and describes relationship.
@@ -2264,7 +2335,8 @@ public enum OpenMetadataType
                               "LinkedMedia",
                               OpenMetadataWikiPages.MODEL_0221_DOCUMENT_STORES,
                               "7eabb4c2-017e-4215-8ca0-5596ad4880d6",
-                              "Links a media file to another media file and describes relationship."),
+                              "Links a media file to another media file and describes relationship.",
+                              LinkedMediaProperties.class),
 
     /**
      * A data file containing formatted media such as images, audio or video.
@@ -2273,7 +2345,8 @@ public enum OpenMetadataType
                "MediaFile",
                OpenMetadataWikiPages.MODEL_0221_DOCUMENT_STORES,
                "6e9220c4-6f47-417a-93b5-18f365e19ade",
-               "A data file containing formatted media such as images, audio or video."),
+               "A data file containing formatted media such as images, audio or video.",
+               MediaFileProperties.class),
 
     /**
      * A data file containing formatted text.
@@ -2282,7 +2355,8 @@ public enum OpenMetadataType
              "Document",
              OpenMetadataWikiPages.MODEL_0221_DOCUMENT_STORES,
              "d5f2b2eb-9fc9-4088-b64e-539ec5a70f2a",
-             "A data file containing formatted text."),
+             "A data file containing formatted text.",
+             DocumentProperties.class),
 
     /**
      * A file containing an audio recording.
@@ -2291,7 +2365,8 @@ public enum OpenMetadataType
                "AudioFile",
                OpenMetadataWikiPages.MODEL_0221_DOCUMENT_STORES,
                "a064efd8-eff6-44ae-8608-4580691a3fb0",
-               "A file containing an audio recording."),
+               "A file containing an audio recording.",
+               AudioFileProperties.class),
 
     /**
      * A file containing a video recording.
@@ -2300,16 +2375,18 @@ public enum OpenMetadataType
                "VideoFile",
                OpenMetadataWikiPages.MODEL_0221_DOCUMENT_STORES,
                "adc363ff-49ba-449c-9e0b-8e1705dcd436",
-               "A file containing a video recording."),
+               "A file containing a video recording.",
+               VideoFileProperties.class),
 
     /**
      * A file containing a three-dimensional image.
      */
     THREE_D_IMAGE_FILE("b2d56d90-ef55-4fa4-b1d6-a6049fd49466",
-                       "3DImageFile",
+                       "ThreeDImageFile",
                        OpenMetadataWikiPages.MODEL_0221_DOCUMENT_STORES,
                        "a37ea95a-4e43-499b-b2c6-a73ac99abbf8",
-                       "A file containing a three-dimensional image."),
+                       "A file containing a three-dimensional image.",
+                       ThreeDImageFileProperties.class),
 
     /**
      * A file containing an image as a matrix of pixels.
@@ -2318,7 +2395,8 @@ public enum OpenMetadataType
                 "RasterFile",
                 OpenMetadataWikiPages.MODEL_0221_DOCUMENT_STORES,
                 "b92af812-05c4-4764-a8f0-d898277f69c1",
-                "A file containing an image as a matrix of pixels."),
+                "A file containing an image as a matrix of pixels.",
+                RasterFileProperties.class),
 
     /**
      * A file containing an image described using mathematical formulas.
@@ -2327,7 +2405,8 @@ public enum OpenMetadataType
                 "VectorFile",
                 OpenMetadataWikiPages.MODEL_0221_DOCUMENT_STORES,
                 "35d56124-280c-4434-9206-84eff153f73b",
-                "A file containing an image described using mathematical formulas."),
+                "A file containing an image described using mathematical formulas.",
+                VectorFileProperties.class),
 
 
     /**
@@ -2337,7 +2416,8 @@ public enum OpenMetadataType
                 "GraphStore",
                 OpenMetadataWikiPages.MODEL_0222_GRAPH_STORES,
                 "ca06f2ea-ba2d-4538-9deb-76240bb616d2",
-                "Identifies a data store as one that contains one or more graphs."),
+                "Identifies a data store as one that contains one or more graphs.",
+                GraphStoreProperties.class),
 
     /**
      * A location for storing and distributing related events.
@@ -2346,34 +2426,9 @@ public enum OpenMetadataType
           "Topic",
           OpenMetadataWikiPages.MODEL_0223_EVENTS_AND_LOGS,
           "a724d481-625b-4855-bc29-76f90983311f",
-          "A location for storing and distributing related events."),
+          "A location for storing and distributing related events.",
+          TopicProperties.class),
 
-    /**
-     * An event topic supported by Apache Kafka.
-     */
-    KAFKA_TOPIC("f2f5dae9-8410-420f-81f4-5d08543e07aa",
-                "KafkaTopic",
-                OpenMetadataWikiPages.MODEL_0223_EVENTS_AND_LOGS,
-                "38bdd80b-706a-483c-8c39-4cba69e9a767,",
-                "An event topic supported by Apache Kafka."),
-
-    /**
-     * A collection of elements registered to receive events from a topic.
-     */
-    SUBSCRIBER_LIST("69751093-35f9-42b1-944b-ba6251ff513d",
-                    "SubscriberList",
-                    OpenMetadataWikiPages.MODEL_0223_EVENTS_AND_LOGS,
-                    "934517a0-c664-4d08-80c9-d61da42a3167",
-                    "A collection of elements registered to receive events from a topic."),
-
-    /**
-     * Links the list of subscribers to a topic.
-     */
-    TOPIC_SUBSCRIBERS_RELATIONSHIP("bc91a28c-afb9-41a7-8eb2-fc8b5271fe9e",
-                                   "TopicSubscribers",
-                                   OpenMetadataWikiPages.MODEL_0223_EVENTS_AND_LOGS,
-                                   "e42ab697-7457-48ae-89f8-b786a08e94aa",
-                                   "Links the list of subscribers to a topic."),
 
     /**
      * "Identifies a data file as one containing log records."
@@ -2382,7 +2437,8 @@ public enum OpenMetadataType
              "LogFile",
              OpenMetadataWikiPages.MODEL_0223_EVENTS_AND_LOGS,
              "4ee71abb-c5b0-4b40-ac0e-63d6c4dad9dd",
-             "Identifies a data file as one containing log records."),
+             "Identifies a data file as one containing log records.",
+             LogFileProperties.class),
 
     /**
      * Defines destination information for the log of activity associated with an element.
@@ -2391,7 +2447,8 @@ public enum OpenMetadataType
                                 "AssociatedLog",
                                 OpenMetadataWikiPages.MODEL_0223_EVENTS_AND_LOGS,
                                 "b6a17f72-2add-4db8-bf4d-9c6460386318",
-                                "Defines destination information for the log of activity associated with an element."),
+                                "Defines destination information for the log of activity associated with an element.",
+                                AssociatedLogProperties.class),
 
     /**
      * A data store.
@@ -2400,7 +2457,8 @@ public enum OpenMetadataType
              "Database",
              OpenMetadataWikiPages.MODEL_0224_DATABASES,
              "735bb7f4-342c-4830-a8e9-6c56ec5f9e50",
-             "A data store."),
+             "A data store.",
+             DatabaseProperties.class),
 
     /**
      * A data store organized to facilitate a relational data model.
@@ -2409,7 +2467,8 @@ public enum OpenMetadataType
                         "RelationalDatabase",
                         OpenMetadataWikiPages.MODEL_0224_DATABASES,
                         "36e696b2-6795-4f53-9867-baaa4d50800e",
-                        "A data store organized to facilitate a relational data model."),
+                        "A data store organized to facilitate a relational data model.",
+                        RelationalDatabaseProperties.class),
 
     /**
      * A collection of database tables and views running in a database server.
@@ -2418,16 +2477,8 @@ public enum OpenMetadataType
                              "DeployedDatabaseSchema",
                              OpenMetadataWikiPages.MODEL_0224_DATABASES,
                              "85fcc8e5-01ec-4898-aac7-e7ca97326b94",
-                             "A collection of database tables and views running in a database server."),
-
-    /**
-     * A tabular data source (typically a database table) that is an asset in its own right.
-     */
-    TABLE_DATA_SET("20c45531-5d2e-4eb6-9a47-035cb1067b82",
-                   "TableDataSet",
-                   OpenMetadataWikiPages.MODEL_0224_DATABASES,
-                   "ff9fced9-daaf-4512-97c1-88381ffe05aa",
-                   "A tabular data source (typically a database table) that is an asset in its own right."),
+                             "A collection of database tables and views running in a database server.",
+                             DeployedDatabaseSchemaProperties.class),
 
     /**
      * A data store containing metadata.
@@ -2436,7 +2487,8 @@ public enum OpenMetadataType
                         "MetadataRepository",
                         OpenMetadataWikiPages.MODEL_0224_DATABASES,
                         "6e816783-17d2-43cf-88c9-2aef7aafc62e",
-                        "A data store containing metadata."),
+                        "A data store containing metadata.",
+                        MetadataRepositoryProperties.class),
 
     /**
      * A data store containing cohort membership registration details.
@@ -2445,7 +2497,8 @@ public enum OpenMetadataType
                           "CohortRegistryStore",
                           OpenMetadataWikiPages.MODEL_0224_DATABASES,
                           "5f3920a6-32db-4ddf-a81b-08a62b981f62",
-                          "A data store containing cohort membership registration details."),
+                          "A data store containing cohort membership registration details.",
+                          CohortRegistryStoreProperties.class),
 
     /**
      * A data set containing metadata.
@@ -2454,16 +2507,8 @@ public enum OpenMetadataType
                         "MetadataCollection",
                         OpenMetadataWikiPages.MODEL_0225_METADATA_REPOSITORIES,
                         "84d14b66-1c9b-4dd9-92c1-07c31ed4cbc7",
-                        "A data set containing metadata."),
-
-    /**
-     * The local metadata collection associated with a cohort peer.
-     */
-    COHORT_MEMBER_METADATA_COLLECTION_RELATIONSHIP("8b9dd3ea-057b-4709-9b42-f16098523907",
-                                                   "CohortMemberMetadataCollection",
-                                                   OpenMetadataWikiPages.MODEL_0225_METADATA_REPOSITORIES,
-                                                   "9f3a29eb-8ff2-4891-ac2a-1e0c7a64b837",
-                                                   "The local metadata collection associated with a cohort peer."),
+                        "A data set containing metadata.",
+                        MetadataCollectionProperties.class),
 
     /**
      * A file containing compressed files.  These files may be organized into a directory (folder) structure.
@@ -2472,7 +2517,8 @@ public enum OpenMetadataType
                  "ArchiveFile",
                  OpenMetadataWikiPages.MODEL_0226_ARCHIVE_FILES,
                  "de153806-44cd-465f-981b-4b703536018b",
-                 "A file containing compressed files.  These files may be organized into a directory (folder) structure."),
+                 "A file containing compressed files.  These files may be organized into a directory (folder) structure.",
+                 ArchiveFileProperties.class),
 
     /**
      * Links an archive to a collection that has a description of the archive's contents as its members.
@@ -2481,16 +2527,18 @@ public enum OpenMetadataType
                                   "ArchiveContents",
                                   OpenMetadataWikiPages.MODEL_0226_ARCHIVE_FILES,
                                   "01341540-1132-4412-adb1-e5725d55ab6f",
-                                  "Links an archive to a collection that has a description of the archive's contents as its members."),
+                                  "Links an archive to a collection that has a description of the archive's contents as its members.",
+                                  ArchiveContentsProperties.class),
 
     /**
      * An encrypted data store containing authentication and related security information.
      */
-    KEYSTORE_FILE("17bee904-5b35-4c81-ac63-871c615424a2",
-                  "KeystoreFile",
-                  OpenMetadataWikiPages.MODEL_0227_KEYSTORES,
-                  "8b628220-8c35-4ca7-814f-7f391ab0466e",
-                  "An encrypted data store containing authentication and related security information."),
+    KEY_STORE_FILE("17bee904-5b35-4c81-ac63-871c615424a2",
+                   "KeyStoreFile",
+                   OpenMetadataWikiPages.MODEL_0227_KEYSTORES,
+                   "8b628220-8c35-4ca7-814f-7f391ab0466e",
+                   "An encrypted data store containing authentication and related security information.",
+                   KeyStoreFileProperties.class),
 
     /**
      * A data set containing authentication and related security information.
@@ -2508,7 +2556,8 @@ public enum OpenMetadataType
                          "ReferenceCodeTable",
                          OpenMetadataWikiPages.MODEL_0230_CODE_TABLES,
                          "6b3023b5-0795-4346-b950-cfeaee9a7334",
-                         "A data set containing code values and their translations."),
+                         "A data set containing code values and their translations.",
+                         ReferenceCodeTableProperties.class),
 
     /**
      * A data set containing mappings between code values from different data sets.
@@ -2517,7 +2566,8 @@ public enum OpenMetadataType
                                  "ReferenceCodeMappingTable",
                                  OpenMetadataWikiPages.MODEL_0230_CODE_TABLES,
                                  "0f16856a-7be3-404e-bf01-282b0ce122a4",
-                                 "A data set containing mappings between code values from different data sets."),
+                                 "A data set containing mappings between code values from different data sets.",
+                                 ReferenceCodeMappingTableProperties.class),
 
     /**
      * An asset supported by data virtualization technology.
@@ -2526,17 +2576,19 @@ public enum OpenMetadataType
                      "InformationView",
                      OpenMetadataWikiPages.MODEL_0235_INFORMATION_VIEW,
                      "c0709c9e-8ff8-4af3-8b5d-85d89355bf64",
-                     "An asset supported by data virtualization technology."),
+                     "An asset supported by data virtualization technology.",
+                     InformationViewProperties.class),
 
 
     /**
      * A virtual asset that can be called as a table through a SQL-like API.
      */
     VIRTUAL_RELATIONAL_TABLE("fd166582-8ff5-46ad-978e-7770e7339949",
-                     "VirtualRelationalTable",
-                     OpenMetadataWikiPages.MODEL_0235_INFORMATION_VIEW,
-                     "b6a9209c-de82-4357-8e03-447f904814e0",
-                     "A virtual asset that can be called as a table through a SQL-like API."),
+                             "VirtualRelationalTable",
+                             OpenMetadataWikiPages.MODEL_0235_INFORMATION_VIEW,
+                             "b6a9209c-de82-4357-8e03-447f904814e0",
+                             "A virtual asset that can be called as a table through a SQL-like API.",
+                             VirtualRelationalTableProperties.class),
 
     /**
      * A template for generating report.
@@ -2545,7 +2597,8 @@ public enum OpenMetadataType
                 "ReportType",
                 OpenMetadataWikiPages.MODEL_0239_REPORTS,
                 "b7ba1739-bf1d-4c12-aa3f-dd5ef8dc7674",
-                "A template for generating report."),
+                "A template for generating report.",
+                ReportTypeProperties.class),
 
     /**
      * A collection if data items that describe a situation.  This is an instance of a report.
@@ -2554,25 +2607,28 @@ public enum OpenMetadataType
            "Report",
            OpenMetadataWikiPages.MODEL_0239_REPORTS,
            "c01207de-0f57-491a-9377-84b80317c81e",
-           "A collection if data items that describe a situation.  This is an instance of a report."),
+           "A collection if data items that describe a situation.  This is an instance of a report.",
+           ReportProperties.class),
 
     /**
      * Links a report to the element (typically a process) that created the report.
      */
     REPORT_ORIGINATOR("6d38cf1f-44ba-44f7-8ec9-029535544d0b",
-                    "ReportOriginator",
-                    OpenMetadataWikiPages.MODEL_0239_REPORTS,
-                    "c5fcbd04-4ba4-4d5a-abda-7c1b680e2b32",
-                    "Links a report to the element (typically a process) that created the report."),
+                      "ReportOriginator",
+                      OpenMetadataWikiPages.MODEL_0239_REPORTS,
+                      "c5fcbd04-4ba4-4d5a-abda-7c1b680e2b32",
+                      "Links a report to the element (typically a process) that created the report.",
+                      ReportOriginatorProperties.class),
 
     /**
      * Links a report to the element that the report is about.
      */
     REPORT_SUBJECT("559211a7-ddd2-4f31-9f2f-2bf3021124c8",
-                      "ReportSubject",
-                      OpenMetadataWikiPages.MODEL_0239_REPORTS,
-                      "cba2f1ce-d3fa-4619-8310-382d8161aa5a",
-                      "Links a report to the element that the report is about."),
+                   "ReportSubject",
+                   OpenMetadataWikiPages.MODEL_0239_REPORTS,
+                   "cba2f1ce-d3fa-4619-8310-382d8161aa5a",
+                   "Links a report to the element that the report is about.",
+                   ReportSubjectProperties.class),
 
     /**
      * Links a report to another related report.  There is a sense of time in this relationship.
@@ -2581,7 +2637,8 @@ public enum OpenMetadataType
                                    "ReportDependency",
                                    OpenMetadataWikiPages.MODEL_0239_REPORTS,
                                    "7f6fdb6a-afa3-46de-a257-be2b4bc3a148",
-                                   "Links a report to another related report.  There is a sense of time in this relationship."),
+                                   "Links a report to another related report.  There is a sense of time in this relationship.",
+                                   ReportDependencyProperties.class),
 
     /**
      * A structure used to request new data.
@@ -2590,16 +2647,18 @@ public enum OpenMetadataType
          "Form",
          OpenMetadataWikiPages.MODEL_0239_REPORTS,
          "18ae6f80-98de-4f05-8684-426a90523834",
-         "A structure used to request new data."),
+         "A structure used to request new data.",
+         FormProperties.class),
 
     /**
      * A packaged and deployed analytics model.
      */
     DEPLOYED_ANALYTICS_MODEL("ddace5d7-3f4d-4ff8-a23e-d4992b2e874f",
-                                "DeployedAnalyticsModel",
-                                OpenMetadataWikiPages.MODEL_0265_ANALYTIC_ASSETS,
-                                "0172e405-3500-42de-9d0b-cf9f851628e7",
-                                "A packaged and deployed analytics model."),
+                             "DeployedAnalyticsModel",
+                             OpenMetadataWikiPages.MODEL_0265_ANALYTIC_ASSETS,
+                             "0172e405-3500-42de-9d0b-cf9f851628e7",
+                             "A packaged and deployed analytics model.",
+                             DeployedAnalyticsModelProperties.class),
 
     /**
      * An execution (run) of a deployed analytics model.
@@ -2608,7 +2667,8 @@ public enum OpenMetadataType
                         "AnalyticsModelRun",
                         OpenMetadataWikiPages.MODEL_0265_ANALYTIC_ASSETS,
                         "52e73acc-fa40-4def-9df5-b5911ba0418b",
-                        "An execution (run) of a deployed analytics model."),
+                        "An execution (run) of a deployed analytics model.",
+                        AnalyticsModelRunProperties.class),
 
     /**
      * A text file containing a program written in a language that needs to be complied into an executable form before it can run.
@@ -2617,7 +2677,8 @@ public enum OpenMetadataType
                      "SourceCodeFile",
                      OpenMetadataWikiPages.MODEL_0280_SOFTWARE_DEVELOPMENT_ASSETS,
                      "e241c208-9055-476f-bf56-38c627d98848",
-                     "A text file containing a program written in a language that needs to be complied into an executable form before it can run."),
+                     "A text file containing a program written in a language that needs to be complied into an executable form before it can run.",
+                     SourceCodeFileProperties.class),
 
     /**
      * A file containing instructions to run a build of a software artifact or system.
@@ -2626,7 +2687,8 @@ public enum OpenMetadataType
                            "BuildInstructionFile",
                            OpenMetadataWikiPages.MODEL_0280_SOFTWARE_DEVELOPMENT_ASSETS,
                            "e26b1579-2397-4a42-ad1a-55fa351117d8",
-                           "A file containing instructions to run a build of a software artifact or system."),
+                           "A file containing instructions to run a build of a software artifact or system.",
+                           BuildInstructionFileProperties.class),
 
     /**
      * A file containing compiled code that can be executed.
@@ -2635,7 +2697,8 @@ public enum OpenMetadataType
                     "ExecutableFile",
                     OpenMetadataWikiPages.MODEL_0280_SOFTWARE_DEVELOPMENT_ASSETS,
                     "b1ed127d-c5c7-41aa-b295-d3a13053e24f",
-                    "A file containing compiled code that can be executed."),
+                    "A file containing compiled code that can be executed.",
+                    ExecutableFileProperties.class),
 
     /**
      * A file containing code that is interpreted when it is run.
@@ -2644,7 +2707,8 @@ public enum OpenMetadataType
                 "ScriptFile",
                 OpenMetadataWikiPages.MODEL_0280_SOFTWARE_DEVELOPMENT_ASSETS,
                 "b03e1bcd-6451-4e9c-b8ec-0e686c2ed18b",
-                "A file containing code that is interpreted when it is run."),
+                "A file containing code that is interpreted when it is run.",
+                ScriptFileProperties.class),
 
     /**
      * A file containing a list of properties, typically used for configuration of some software.
@@ -2653,7 +2717,8 @@ public enum OpenMetadataType
                     "PropertiesFile",
                     OpenMetadataWikiPages.MODEL_0280_SOFTWARE_DEVELOPMENT_ASSETS,
                     "b09718ca-f956-41a7-9528-a0976b87a5ea",
-                    "A file containing a list of properties, typically used for configuration of some software."),
+                    "A file containing a list of properties, typically used for configuration of some software.",
+                    PropertiesFileProperties.class),
 
     /**
      * A file containing properties in YAML format.  This it typically used for configuration.
@@ -2662,11 +2727,12 @@ public enum OpenMetadataType
               "YAMLFile",
               OpenMetadataWikiPages.MODEL_0280_SOFTWARE_DEVELOPMENT_ASSETS,
               "5e0ea8d1-bb58-4a85-931d-886f8388b9d2",
-              "A file containing properties in YAML format.  This it typically used for configuration."),
+              "A file containing properties in YAML format.  This it typically used for configuration.",
+              YAMLFileProperties.class),
 
 
     /* ============================================================================================================================*/
-    /* Area 3 - Glossary                                                                                                         */
+    /* Area 3 - Glossary                                                                                                           */
     /* ============================================================================================================================*/
 
     /**
@@ -2676,7 +2742,8 @@ public enum OpenMetadataType
              "Glossary",
              OpenMetadataWikiPages.MODEL_0310_GLOSSARY,
              "a4b5347b-f9af-4669-bcc9-67eeb70fa6ed",
-             "A collection of related glossary terms."),
+             "A collection of related glossary terms.",
+             GlossaryProperties.class),
 
 
     /**
@@ -2686,7 +2753,8 @@ public enum OpenMetadataType
                             "Taxonomy",
                             OpenMetadataWikiPages.MODEL_0310_GLOSSARY,
                             "9a0562c5-7654-46c7-a216-0c85e7027562",
-                            "Identifies a glossary that is organized as a taxonomy."),
+                            "Identifies a glossary that is organized as a taxonomy.",
+                            TaxonomyProperties.class),
 
     /**
      * Identifies a glossary that contains unique terms with consistent granularity.
@@ -2695,7 +2763,8 @@ public enum OpenMetadataType
                                         "CanonicalVocabulary",
                                         OpenMetadataWikiPages.MODEL_0310_GLOSSARY,
                                         "dd3c036e-e254-4337-9b71-b0db08b287b8",
-                                        "Identifies a glossary that contains unique terms with consistent granularity."),
+                                        "Identifies a glossary that contains unique terms with consistent granularity.",
+                                        CanonicalVocabularyProperties.class),
 
     /**
      * A semantic description of something, such as a concept, object, asset, technology, role or group.
@@ -2704,7 +2773,8 @@ public enum OpenMetadataType
                   "GlossaryTerm",
                   OpenMetadataWikiPages.MODEL_0330_TERMS,
                   "a1286149-2dae-414b-8913-462da900d395",
-                  "A semantic description of something, such as a concept, object, asset, technology, role or group."),
+                  "A semantic description of something, such as a concept, object, asset, technology, role or group.",
+                  GlossaryTermProperties.class),
 
     /**
      * Identifies that this glossary term describes an activity.
@@ -2713,7 +2783,8 @@ public enum OpenMetadataType
                                         "ActivityDescription",
                                         OpenMetadataWikiPages.MODEL_0340_DICTIONARY,
                                         "1e2296b4-f7c5-45d0-9fa4-de5f27e68bef",
-                                        "Identifies that this glossary term describes an activity."),
+                                        "Identifies that this glossary term describes an activity.",
+                                        ActivityDescriptionProperties.class),
 
     /**
      * Identifies that this glossary term describes an abstract concept.
@@ -2722,7 +2793,8 @@ public enum OpenMetadataType
                                     "AbstractConcept",
                                     OpenMetadataWikiPages.MODEL_0340_DICTIONARY,
                                     "a47a2a76-9212-47fd-ae4a-a8043eb5c417",
-                                    "Identifies that this glossary term describes an abstract concept."),
+                                    "Identifies that this glossary term describes an abstract concept.",
+                                    AbstractConceptProperties.class),
 
     /**
      * Identifies that this glossary term describes a data value.
@@ -2731,7 +2803,8 @@ public enum OpenMetadataType
                               "DataValue",
                               OpenMetadataWikiPages.MODEL_0340_DICTIONARY,
                               "1f9cefee-9987-437c-accf-0786821d6c27",
-                              "Identifies that this glossary term describes a data value."),
+                              "Identifies that this glossary term describes a data value.",
+                              DataValueProperties.class),
 
     /**
      * Link between similar glossary terms.
@@ -2740,7 +2813,8 @@ public enum OpenMetadataType
                               "RelatedTerm",
                               OpenMetadataWikiPages.MODEL_0350_RELATED_TERMS,
                               "6721cfb0-d45a-4cd4-bcb7-ac350b756535",
-                              "Link between similar glossary terms."),
+                              "Link between similar glossary terms.",
+                              RelatedTermProperties.class),
 
     /**
      * Link between glossary terms that have the same meaning.
@@ -2749,7 +2823,8 @@ public enum OpenMetadataType
                          "Synonym",
                          OpenMetadataWikiPages.MODEL_0350_RELATED_TERMS,
                          "3b30e0bb-8eb4-4c50-bd51-f0c2d8981d2f",
-                         "Link between glossary terms that have the same meaning."),
+                         "Link between glossary terms that have the same meaning.",
+                         SynonymProperties.class),
 
     /**
      * Link between glossary terms that have the opposite meaning.
@@ -2758,7 +2833,8 @@ public enum OpenMetadataType
                          "Antonym",
                          OpenMetadataWikiPages.MODEL_0350_RELATED_TERMS,
                          "8b041d5f-062b-4107-995e-e13a90025c4e",
-                         "Link between glossary terms that have the opposite meaning."),
+                         "Link between glossary terms that have the opposite meaning.",
+                         AntonymProperties.class),
 
     /**
      * Link to an alternative term that the organization prefers to use.
@@ -2767,7 +2843,8 @@ public enum OpenMetadataType
                                 "PreferredTerm",
                                 OpenMetadataWikiPages.MODEL_0350_RELATED_TERMS,
                                 "c75dc30a-165c-4c87-99f2-424fe4f1cc36",
-                                "Link to an alternative term that the organization prefers to use."),
+                                "Link to an alternative term that the organization prefers to use.",
+                                PreferredTermProperties.class),
 
     /**
      * Link to a glossary term that is replacing an obsolete glossary term.
@@ -2776,7 +2853,8 @@ public enum OpenMetadataType
                                   "ReplacementTerm",
                                   OpenMetadataWikiPages.MODEL_0350_RELATED_TERMS,
                                   "0f75a805-bce8-4f98-8225-c6c4321eaf50",
-                                  "Link to a glossary term that is replacing an obsolete glossary term."),
+                                  "Link to a glossary term that is replacing an obsolete glossary term.",
+                                  ReplacementTermProperties.class),
 
     /**
      * Link between a more general glossary term and a more specific definition.
@@ -2785,7 +2863,8 @@ public enum OpenMetadataType
                      "ISARelationship",
                      OpenMetadataWikiPages.MODEL_0350_RELATED_TERMS,
                      "603144c6-03bc-4ce1-b557-7161e4807161",
-                     "Link between a more general glossary term and a more specific definition."),
+                     "Link between a more general glossary term and a more specific definition.",
+                     ISARelationshipProperties.class),
 
     /**
      * Link between glossary terms where on describes the context where the other one is valid to use.
@@ -2794,7 +2873,8 @@ public enum OpenMetadataType
                                  "UsedInContext",
                                  OpenMetadataWikiPages.MODEL_0360_CONTEXTS,
                                  "27226e7d-c7b3-4eaf-b1ff-bf38445a857f",
-                                 "Link between glossary terms where on describes the context where the other one is valid to use."),
+                                 "Link between glossary terms where on describes the context where the other one is valid to use.",
+                                 UsedInContextProperties.class),
 
     /**
      * Identifies a glossary term that describes a context where processing or decisions occur.
@@ -2803,7 +2883,8 @@ public enum OpenMetadataType
                                       "ContextDefinition",
                                       OpenMetadataWikiPages.MODEL_0360_CONTEXTS,
                                       "1d798f81-3d29-465b-9dc3-aaca6aa5b3f7",
-                                      "Identifies a glossary term that describes a context where processing or decisions occur."),
+                                      "Identifies a glossary term that describes a context where processing or decisions occur.",
+                                      ContextDefinitionProperties.class),
 
     /**
      * Links a glossary term to another element such as an asset or schema element to indicate that the data stored in the corresponding part of the digital resource has this meaning.
@@ -2812,7 +2893,8 @@ public enum OpenMetadataType
                                      "SemanticAssignment",
                                      OpenMetadataWikiPages.MODEL_0370_SEMANTIC_ASSIGNMENT,
                                      "6b98085b-b70b-49cd-98e2-e87474d27e69",
-                                     "Links a glossary term to another element such as an asset or schema element to indicate that the data stored in the corresponding part of the digital resource has this meaning."),
+                                     "Links a glossary term to another element such as an asset or schema element to indicate that the data stored in the corresponding part of the digital resource has this meaning.",
+                                     SemanticAssignmentProperties.class),
 
     /**
      * Provides the semantic meaning of a definition by linking it to an appropriate glossary term.
@@ -2821,7 +2903,8 @@ public enum OpenMetadataType
                                      "SemanticDefinition",
                                      OpenMetadataWikiPages.MODEL_0370_SEMANTIC_ASSIGNMENT,
                                      "320c8f3b-2f2c-41b1-801e-7d5dd7e399c8",
-                                     "Provides the semantic meaning of a definition by linking it to an appropriate glossary term."),
+                                     "Provides the semantic meaning of a definition by linking it to an appropriate glossary term.",
+                                     SemanticDefinitionProperties.class),
 
     /**
      * A glossary holding copies of elements that are being edited.  The content is typically sourced from another collection.
@@ -2830,7 +2913,8 @@ public enum OpenMetadataType
                                       "EditingCollection",
                                       OpenMetadataWikiPages.MODEL_0385_CONTROLLED_GLOSSARY,
                                       "b324d53e-382a-41c7-bc7d-a71693242d1b",
-                                      "A collection holding copies of elements that are being edited.  This content is typically sourced from another collection."),
+                                      "A collection holding copies of elements that are being edited.  This content is typically sourced from another collection.",
+                                      EditingCollectionProperties.class),
 
     /**
      * A collection that is acting as a temporary home for elements that are being introduced into another collection.
@@ -2839,7 +2923,8 @@ public enum OpenMetadataType
                                       "StagingCollection",
                                       OpenMetadataWikiPages.MODEL_0385_CONTROLLED_GLOSSARY,
                                       "cc0e0ed5-70cb-4228-abff-eddd93dd15c6",
-                                      "A collection that is acting as a temporary home for elements that are being introduced into another collection."),
+                                      "A collection that is acting as a temporary home for elements that are being introduced into another collection.",
+                                      StagingCollectionProperties.class),
 
     /**
      * A collection that is acting as a grouping mechanism for elements that are being selected for a project or similar venture.
@@ -2848,7 +2933,8 @@ public enum OpenMetadataType
                                       "ScopingCollection",
                                       OpenMetadataWikiPages.MODEL_0385_CONTROLLED_GLOSSARY,
                                       "f460b722-add2-4ae6-acdc-784a227c09fe",
-                                      "A collection that is acting as a grouping mechanism for elements that are being selected for a project or similar venture."),
+                                      "A collection that is acting as a grouping mechanism for elements that are being selected for a project or similar venture.",
+                                      ScopingCollectionProperties.class),
 
     /**
      * Identifies a project that is defining new glossary terms and categories or maintaining an existing glossary.
@@ -2857,7 +2943,8 @@ public enum OpenMetadataType
                                     "GlossaryProject",
                                     OpenMetadataWikiPages.MODEL_0390_GLOSSARY_PROJECTS,
                                     "f2503fdb-6386-4497-8140-663e985e0f2d",
-                                    "Identifies a project that is defining new glossary terms and categories or maintaining an existing glossary."),
+                                    "Identifies a project that is defining new glossary terms and categories or maintaining an existing glossary.",
+                                    GlossaryProjectProperties.class),
 
     /**
      * Identifies a glossary term that is being used to supplement asset descriptions.
@@ -2866,7 +2953,8 @@ public enum OpenMetadataType
                                       "ElementSupplement",
                                       OpenMetadataWikiPages.MODEL_0395_SUPPLEMENTARY_PROPERTIES,
                                       "559c4dd2-0d75-4246-8084-329f08916be8",
-                                      "Identifies a glossary term that is being used to supplement asset descriptions."),
+                                      "Identifies a glossary term that is being used to supplement asset descriptions.",
+                                      ElementSupplementProperties.class),
 
     /**
      * Provides additional descriptive properties to augment technical metadata extracted from a third party technology.
@@ -2875,7 +2963,8 @@ public enum OpenMetadataType
                                           "SupplementaryProperties",
                                           OpenMetadataWikiPages.MODEL_0395_SUPPLEMENTARY_PROPERTIES,
                                           "812387e7-de78-47b4-bcbd-c5886dbcbe25",
-                                          "Provides additional descriptive properties to augment technical metadata extracted from a third party technology."),
+                                          "Provides additional descriptive properties to augment technical metadata extracted from a third party technology.",
+                                          SupplementaryPropertiesProperties.class),
 
 
     /* ============================================================================================================================*/
@@ -2889,7 +2978,8 @@ public enum OpenMetadataType
                           "GovernanceDefinition",
                           OpenMetadataWikiPages.MODEL_0401_GOVERNANCE_DEFINITIONS,
                           "8f4f3146-0c21-4754-b2d3-41e04c519226",
-                          "Defines an aspect of the governance program."),
+                          "Defines an aspect of the governance program.",
+                          GovernanceDefinitionProperties.class),
 
 
 
@@ -2900,7 +2990,8 @@ public enum OpenMetadataType
                              "GovernedBy",
                              OpenMetadataWikiPages.MODEL_0401_GOVERNANCE_DEFINITIONS,
                              "136ebb05-eedf-4c1e-ac93-1a415a4973bd",
-                             "Shows the resources that are governed by a specific governance definition."),
+                             "Shows the resources that are governed by a specific governance definition.",
+                             GovernedByProperties.class),
 
     /**
      * Defines a reason for having the governance program.
@@ -2909,7 +3000,8 @@ public enum OpenMetadataType
                       "GovernanceDriver",
                       OpenMetadataWikiPages.MODEL_0405_GOVERNANCE_DRIVERS,
                       "7dec9d4e-109c-42bc-b33d-5d3656dafccc",
-                      "Defines a reason for having the governance program."),
+                      "Defines a reason for having the governance program.",
+                      GovernanceDriverProperties.class),
 
     /**
      * Link between a two governance drivers.
@@ -2918,7 +3010,8 @@ public enum OpenMetadataType
                                         "GovernanceDriverLink",
                                         OpenMetadataWikiPages.MODEL_0405_GOVERNANCE_DRIVERS,
                                         "51cd807e-1db7-4a35-abe5-fc9652448a77",
-                                        "Link between a two governance drivers."),
+                                        "Link between a two governance drivers.",
+                                        GovernanceDriverLinkProperties.class),
 
     /**
      * Defines how the governance program and the supporting capabilities are supporting the business strategy.
@@ -2927,7 +3020,8 @@ public enum OpenMetadataType
                         "GovernanceStrategy",
                         OpenMetadataWikiPages.MODEL_0405_GOVERNANCE_DRIVERS,
                         "69c22d42-eed6-4b92-8b07-9a8d1ed916eb",
-                        "Defines how the governance program and the supporting capabilities are supporting the business strategy."),
+                        "Defines how the governance program and the supporting capabilities are supporting the business strategy.",
+                        GovernanceStrategyProperties.class),
 
     /**
      * A mandatory goal that must be met by the business for it to be successful.
@@ -2936,7 +3030,8 @@ public enum OpenMetadataType
                         "BusinessImperative",
                         OpenMetadataWikiPages.MODEL_0405_GOVERNANCE_DRIVERS,
                         "e1386858-118d-4995-94ed-dc43dc64a154",
-                        "A mandatory goal that must be met by the business for it to be successful."),
+                        "A mandatory goal that must be met by the business for it to be successful.",
+                        BusinessImperativeProperties.class),
 
     /**
      * Identifies a regulation related to data that must be supported.
@@ -2945,7 +3040,8 @@ public enum OpenMetadataType
                "Regulation",
                OpenMetadataWikiPages.MODEL_0405_GOVERNANCE_DRIVERS,
                "4c00dcc9-cf73-4c1f-bd7c-2f365bfb5aec",
-               "Identifies a regulation related to data that must be supported."),
+               "Identifies a regulation related to data that must be supported.",
+               RegulationProperties.class),
 
     /**
      * An specific requirement in a regulation.
@@ -2954,7 +3050,8 @@ public enum OpenMetadataType
                        "RegulationArticle",
                        OpenMetadataWikiPages.MODEL_0405_GOVERNANCE_DRIVERS,
                        "cfd6cbed-8a19-4c37-8740-ba5524648b83",
-                       "An specific requirement in a regulation."),
+                       "An specific requirement in a regulation.",
+                       RegulationArticleProperties.class),
 
     /**
      * A description of a specific threat.
@@ -2963,7 +3060,8 @@ public enum OpenMetadataType
            "Threat",
            OpenMetadataWikiPages.MODEL_0405_GOVERNANCE_DRIVERS,
            "feddfc70-7111-4d9e-b66a-8330cf3af946",
-           "A description of a specific threat."),
+           "A description of a specific threat.",
+           ThreatProperties.class),
 
     /**
      * Defines a goal or outcome expected from the organization.
@@ -2972,7 +3070,8 @@ public enum OpenMetadataType
                       "GovernancePolicy",
                       OpenMetadataWikiPages.MODEL_0415_GOVERNANCE_RESPONSES,
                       "411dbd24-cb9a-4137-9f7a-625704722e7c",
-                      "Defines a goal or outcome expected from the organization."),
+                      "Defines a goal or outcome expected from the organization.",
+                      GovernancePolicyProperties.class),
 
     /**
      * Defines a principle related to how data is managed or used that the organization should ensure remains true.
@@ -2981,7 +3080,8 @@ public enum OpenMetadataType
                          "GovernancePrinciple",
                          OpenMetadataWikiPages.MODEL_0415_GOVERNANCE_RESPONSES,
                          "dc33a7e5-103d-49b0-92c6-8070d2781b88",
-                         "Defines a principle related to how data is managed or used that the organization should ensure remains true."),
+                         "Defines a principle related to how data is managed or used that the organization should ensure remains true.",
+                         GovernancePrincipleProperties.class),
 
     /**
      * Defines a capability, rule or action that is required by a regulation or external party.
@@ -2990,7 +3090,8 @@ public enum OpenMetadataType
                           "GovernanceObligation",
                           OpenMetadataWikiPages.MODEL_0415_GOVERNANCE_RESPONSES,
                           "78a2e0a8-4bc9-4e45-9eed-945e5753f303",
-                          "Defines a capability, rule or action that is required by a regulation or external party."),
+                          "Defines a capability, rule or action that is required by a regulation or external party.",
+                          GovernanceObligationProperties.class),
 
     /**
      * Defines a preferred approach to managing or using data.
@@ -2999,7 +3100,8 @@ public enum OpenMetadataType
                         "GovernanceApproach",
                         OpenMetadataWikiPages.MODEL_0415_GOVERNANCE_RESPONSES,
                         "9417c20e-e440-40a6-8265-d39a77d7916b",
-                        "Defines a preferred approach to managing or using data."),
+                        "Defines a preferred approach to managing or using data.",
+                        GovernanceApproachProperties.class),
 
     /**
      * Links related governance policies together.
@@ -3008,7 +3110,8 @@ public enum OpenMetadataType
                                         "GovernancePolicyLink",
                                         OpenMetadataWikiPages.MODEL_0415_GOVERNANCE_RESPONSES,
                                         "3999b68b-9e66-425c-b1a3-0c76b2196c47",
-                                        "Links related governance policies together."),
+                                        "Links related governance policies together.",
+                                        GovernancePolicyLinkProperties.class),
 
     /**
      * Links a governance policy to a governance driver that it is supporting.
@@ -3017,7 +3120,8 @@ public enum OpenMetadataType
                                      "GovernanceResponse",
                                      OpenMetadataWikiPages.MODEL_0415_GOVERNANCE_RESPONSES,
                                      "269e802d-bc79-4211-a4f4-3a68d6063097",
-                                     "Links a governance policy to a governance driver that it is supporting."),
+                                     "Links a governance policy to a governance driver that it is supporting.",
+                                     GovernanceResponseProperties.class),
 
     /**
      * Identifies that a project is rolling out capability to support the governance program.
@@ -3028,7 +3132,6 @@ public enum OpenMetadataType
                                       "b35e995c-94b5-46eb-bd29-99d51ab294be",
                                       "Identifies that a project is rolling out capability to support the governance program."),
 
-
     /**
      * An implementation of a governance capability.
      */
@@ -3036,25 +3139,8 @@ public enum OpenMetadataType
                        "GovernanceControl",
                        OpenMetadataWikiPages.MODEL_0420_GOVERNANCE_CONTROLS,
                        "e4de161c-7403-424a-a618-5f06bbf08a2c",
-                       "An implementation of a governance capability."),
-
-    /**
-     * A governance control that is implemented using technology.
-     */
-    TECHNICAL_CONTROL("d8f6eb5b-36f0-49bd-9b25-bf16f370d1ec",
-                       "TechnicalControl",
-                       OpenMetadataWikiPages.MODEL_0420_GOVERNANCE_CONTROLS,
-                       "7b107e29-bb2c-491d-891c-e292371d716c",
-                       "A governance control that is implemented using technology."),
-
-    /**
-     * A governance control that is implemented using organization structure, training, roles manual procedures and reviews.
-     */
-    ORGANIZATIONAL_CONTROL("befa1458-79b8-446a-b813-536700e60fa8",
-                       "OrganizationalControl",
-                       OpenMetadataWikiPages.MODEL_0420_GOVERNANCE_CONTROLS,
-                       "ae48c751-4574-451e-9999-703259507819",
-                       "A governance control that is implemented using organization structure, training, roles manual procedures and reviews."),
+                       "An implementation of a governance capability.",
+                       GovernanceControlProperties.class),
 
     /**
      * Describes a responsibility of a person, team or organization that supports the implementation of a governance driver.
@@ -3063,7 +3149,8 @@ public enum OpenMetadataType
                               "GovernanceResponsibility",
                               OpenMetadataWikiPages.MODEL_0420_GOVERNANCE_CONTROLS,
                               "c6e947b0-13a6-4e2e-a410-17c0794db5a8",
-                              "Describes a responsibility of a person, team or organization that supports the implementation of a governance driver."),
+                              "Describes a responsibility of a person, team or organization that supports the implementation of a governance driver.",
+                              GovernanceResponsibilityProperties.class),
 
     /**
      * Describes a set of tasks that a person, team or organization performs to support the implementation of a governance driver.
@@ -3072,16 +3159,18 @@ public enum OpenMetadataType
                          "GovernanceProcedure",
                          OpenMetadataWikiPages.MODEL_0420_GOVERNANCE_CONTROLS,
                          "09d402ba-d4bc-40f2-bdff-eba8ed7f79f1",
-                         "Describes a set of tasks that a person, team or organization performs to support the implementation of a governance driver."),
+                         "Describes a set of tasks that a person, team or organization performs to support the implementation of a governance driver.",
+                         GovernanceProcedureProperties.class),
 
     /**
      * Describes a set of tasks that a person, team or organization performs to support the implementation of a governance driver.
      */
     METHODOLOGY("173a4c2f-016b-4dd2-950a-6ab25bb48887",
-                         "Methodology",
-                         OpenMetadataWikiPages.MODEL_0420_GOVERNANCE_CONTROLS,
-                         "94a9c08c-f636-4ef0-baec-2c4920da6a60",
-                         "Describes a system of ways of doing, teaching, or studying something."),
+                "Methodology",
+                OpenMetadataWikiPages.MODEL_0420_GOVERNANCE_CONTROLS,
+                "94a9c08c-f636-4ef0-baec-2c4920da6a60",
+                "Describes a system of ways of doing, teaching, or studying something.",
+                MethodologyProperties.class),
 
 
     /**
@@ -3091,7 +3180,8 @@ public enum OpenMetadataType
                                       "GovernanceMechanism",
                                       OpenMetadataWikiPages.MODEL_0420_GOVERNANCE_CONTROLS,
                                       "3fa34b67-02a7-429c-bde5-9b7a3e8dce28",
-                                      "A link between a governance control and the governance policy it is supporting."),
+                                      "A link between a governance control and the governance policy it is supporting.",
+                                      GovernanceMechanismProperties.class),
 
     /**
      * A link between two related governance controls.
@@ -3100,7 +3190,8 @@ public enum OpenMetadataType
                                          "GovernanceControlLink",
                                          OpenMetadataWikiPages.MODEL_0420_GOVERNANCE_CONTROLS,
                                          "2a19beb6-4c30-4f1c-a7ea-75f7f47e37b1",
-                                         "A link between two related governance controls."),
+                                         "A link between two related governance controls.",
+                                         GovernanceControlLinkProperties.class),
 
     /**
      * Defines the level of confidentiality of related data items.
@@ -3109,7 +3200,8 @@ public enum OpenMetadataType
                                    "Confidentiality",
                                    OpenMetadataWikiPages.MODEL_0422_GOVERNED_DATA_CLASSIFICATION,
                                    "0d791cad-bac5-4df3-8e0b-9bf326b4faf1",
-                                   "Defines the level of confidentiality of related data items."),
+                                   "Defines the level of confidentiality of related data items.",
+                                   ConfidentialityProperties.class),
 
 
     /**
@@ -3119,7 +3211,8 @@ public enum OpenMetadataType
                               "Confidence",
                               OpenMetadataWikiPages.MODEL_0422_GOVERNED_DATA_CLASSIFICATION,
                               "50c33566-ec2d-488c-91f3-87c66648857a",
-                              "Defines the level of confidence that should be placed in the accuracy of related data items."),
+                              "Defines the level of confidence that should be placed in the accuracy of related data items.",
+                              ConfidenceProperties.class),
 
     /**
      * Defines the retention requirements for related data items.
@@ -3128,7 +3221,8 @@ public enum OpenMetadataType
                              "Retention",
                              OpenMetadataWikiPages.MODEL_0422_GOVERNED_DATA_CLASSIFICATION,
                              "6615bfa4-ed4f-40f8-8ab9-3fd9fd3600ac",
-                             "Defines the retention requirements for related data items."),
+                             "Defines the retention requirements for related data items.",
+                             RetentionProperties.class),
 
     /**
      * Defines how critical the related data items are to the organization.
@@ -3137,7 +3231,8 @@ public enum OpenMetadataType
                                "Criticality",
                                OpenMetadataWikiPages.MODEL_0422_GOVERNED_DATA_CLASSIFICATION,
                                "12f769eb-f0a1-4d21-8afb-e005cc6ca2c5",
-                               "Defines how critical the related data items are to the organization."),
+                               "Defines how critical the related data items are to the organization.",
+                               CriticalityProperties.class),
 
     /**
      * Defines the severity of a situation described in the attached entity.
@@ -3146,7 +3241,8 @@ public enum OpenMetadataType
                           "Impact",
                           OpenMetadataWikiPages.MODEL_0422_GOVERNED_DATA_CLASSIFICATION,
                           "f6993c33-ccf6-4a7d-b089-d7608079ce01",
-                          "Defines the severity of a situation described in the attached entity."),
+                          "Defines the severity of a situation described in the attached entity.",
+                          ImpactProperties.class),
 
     /**
      * A collection of users that should be given the same, specific security privileges.
@@ -3155,7 +3251,8 @@ public enum OpenMetadataType
                    "SecurityGroup",
                    OpenMetadataWikiPages.MODEL_0423_SECURITY_DEFINITIONS,
                    "711e2a43-e7f0-4124-8f91-abc2a86d7a0b",
-                   "A collection of users that should be given the same, specific  security privileges."),
+                   "A collection of users that should be given the same, specific  security privileges.",
+                   SecurityGroupProperties.class),
 
     /**
      * Identifies the set of user groups that this user identity is a member of.
@@ -3164,16 +3261,18 @@ public enum OpenMetadataType
                                              "SecurityGroupMembership",
                                              OpenMetadataWikiPages.MODEL_0423_SECURITY_DEFINITIONS,
                                              "74509737-6fe9-4c9b-90f7-8abf16f7ed59",
-                                             "Identifies the set of user groups that this user identity is a member of."),
+                                             "Identifies the set of user groups that this user identity is a member of.",
+                                             SecurityGroupMembershipProperties.class),
 
     /**
      * Defines labels and properties used by a security engine.
      */
     SECURITY_TAGS_CLASSIFICATION("a0b07a86-9fd3-40ca-bb9b-fe83c6981deb",
-                                "SecurityTags",
-                                OpenMetadataWikiPages.MODEL_0423_SECURITY_DEFINITIONS,
-                                "01a03f5d-027c-462f-bf30-a11b755b168e",
-                                "Defines labels and properties used by a security engine."),
+                                 "SecurityTags",
+                                 OpenMetadataWikiPages.MODEL_0423_SECURITY_DEFINITIONS,
+                                 "01a03f5d-027c-462f-bf30-a11b755b168e",
+                                 "Defines labels and properties used by a security engine.",
+                                 SecurityTagsProperties.class),
 
     /**
      * A technical control that defines who has access to the attached element.
@@ -3182,7 +3281,8 @@ public enum OpenMetadataType
                             "SecurityAccessControl",
                             OpenMetadataWikiPages.MODEL_0423_SECURITY_DEFINITIONS,
                             "bf14cd7b-9417-4904-9a91-528d6ad6b7ba",
-                            "A technical control that defines who has access to the attached element."),
+                            "A technical control that defines who has access to the attached element.",
+                            SecurityAccessControlProperties.class),
 
 
     /**
@@ -3192,7 +3292,8 @@ public enum OpenMetadataType
                                            "AssociatedSecurityGroup",
                                            OpenMetadataWikiPages.MODEL_0423_SECURITY_DEFINITIONS,
                                            "de70d92a-ac47-4221-914b-bdb52bf1a161",
-                                           "Links a security access control to a security group."),
+                                           "Links a security access control to a security group.",
+                                           AssociatedSecurityGroupProperties.class),
 
     /**
      * Defines the element's membership of the governance zones.
@@ -3201,7 +3302,8 @@ public enum OpenMetadataType
                                    "ZoneMembership",
                                    OpenMetadataWikiPages.MODEL_0424_GOVERNANCE_ZONES,
                                    "1d3983a0-a237-46fd-a07d-027a2a0cb5b1",
-                                   "Defines the element's membership of the governance zones."),
+                                   "Defines the element's membership of the governance zones.",
+                                   ZoneMembershipProperties.class),
 
     /**
      * Defines a collection of assets that are suitable for a particular usage or are governed by a particular process.
@@ -3210,7 +3312,8 @@ public enum OpenMetadataType
                     "GovernanceZone",
                     OpenMetadataWikiPages.MODEL_0424_GOVERNANCE_ZONES,
                     "d748483f-7f63-46c2-ba08-765c0b1f82e4",
-                    "Defines a collection of assets that are suitable for a particular usage or are governed by a particular process."),
+                    "Defines a collection of assets that are suitable for a particular usage or are governed by a particular process.",
+                    GovernanceZoneProperties.class),
 
     /**
      * Creates a controlling hierarchy for governance zones.
@@ -3219,7 +3322,8 @@ public enum OpenMetadataType
                                 "ZoneHierarchy",
                                 OpenMetadataWikiPages.MODEL_0424_GOVERNANCE_ZONES,
                                 "d1fb3e10-53ec-49b9-99f9-b786450bf76d",
-                                "Creates a controlling hierarchy for governance zones."),
+                                "Creates a controlling hierarchy for governance zones.",
+                                ZoneHierarchyProperties.class),
 
     /**
      * Defines a collection of glossary elements that are related to a topic.
@@ -3228,7 +3332,8 @@ public enum OpenMetadataType
                             "SubjectAreaDefinition",
                             OpenMetadataWikiPages.MODEL_0424_GOVERNANCE_ZONES,
                             "067951d2-40d3-43da-a8c4-612ddbe5b7d8",
-                            "Defines a collection of glossary elements that are related to a topic."),
+                            "Defines a collection of glossary elements that are related to a topic.",
+                            SubjectAreaDefinitionProperties.class),
 
     /**
      * Creates a controlling hierarchy for subject areas.
@@ -3237,7 +3342,8 @@ public enum OpenMetadataType
                                         "SubjectAreaHierarchy",
                                         OpenMetadataWikiPages.MODEL_0424_GOVERNANCE_ZONES,
                                         "b5fd6a99-8a4f-44cb-87e9-359b14b75e4b",
-                                        "Creates a controlling hierarchy for subject areas."),
+                                        "Creates a controlling hierarchy for subject areas.",
+                                        SubjectAreaHierarchyProperties.class),
 
     /**
      * Identifies an element as part of a subject area definition.
@@ -3246,7 +3352,8 @@ public enum OpenMetadataType
                                 "SubjectArea",
                                 OpenMetadataWikiPages.MODEL_0425_SUBJECT_AREAS,
                                 "11857716-4f6c-4a31-bf4b-e99ac09ba0f5",
-                                "Identifies an element as part of a subject area definition."),
+                                "Identifies an element as part of a subject area definition.",
+                                SubjectAreaProperties.class),
 
     /**
      * Technical control expressed as a logic expression.
@@ -3255,7 +3362,8 @@ public enum OpenMetadataType
                     "GovernanceRule",
                     OpenMetadataWikiPages.MODEL_0430_TECHNICAL_CONTROLS,
                     "d9ed4134-cad6-4d47-9613-68325fca3430",
-                    "Technical control expressed as a logic expression."),
+                    "Technical control expressed as a logic expression.",
+                    GovernanceRuleProperties.class),
 
     /**
      * The set of behaviour-related objectives that an asset or capability seeks to achieve.
@@ -3264,7 +3372,8 @@ public enum OpenMetadataType
                             "ServiceLevelObjective",
                             OpenMetadataWikiPages.MODEL_0430_TECHNICAL_CONTROLS,
                             "6eac0c8f-1265-43b2-8307-c270053bc800",
-                            "The set of behaviour-related objectives that an asset or capability seeks to achieve."),
+                            "The set of behaviour-related objectives that an asset or capability seeks to achieve.",
+                            ServiceLevelObjectiveProperties.class),
 
     /**
      * Technical control expressed as one or more actions.
@@ -3273,7 +3382,8 @@ public enum OpenMetadataType
                       "GovernanceAction",
                       OpenMetadataWikiPages.MODEL_0430_TECHNICAL_CONTROLS,
                       "2e184032-436b-48ff-b5a2-93cc1bec250b",
-                      "Technical control expressed as one or more actions."),
+                      "Technical control expressed as one or more actions.",
+                      GovernanceActionProperties.class),
 
     /**
      * A definition of a situation that should be detected and acted upon.
@@ -3282,7 +3392,8 @@ public enum OpenMetadataType
                       "NotificationType",
                       OpenMetadataWikiPages.MODEL_0430_TECHNICAL_CONTROLS,
                       "44440e36-3fc0-4b27-81a7-2baa89eb93a3",
-                      "A definition of a situation that should be detected and acted upon."),
+                      "A definition of a situation that should be detected and acted upon.",
+                      NotificationTypeProperties.class),
 
     /**
      * An element that will act on the instance of notification.
@@ -3291,7 +3402,8 @@ public enum OpenMetadataType
                                          "NotificationSubscriber",
                                          OpenMetadataWikiPages.MODEL_0451_NOTIFICATIONS,
                                          "8ca8e5e9-0e09-4448-a739-fc5c8430a087",
-                                         "An element that will act on the instance of notification."),
+                                         "An element that will act on the instance of notification.",
+                                         NotificationSubscriberProperties.class),
 
     /**
      * An element that needs to be monitored to support a notification type.
@@ -3300,7 +3412,8 @@ public enum OpenMetadataType
                                     "MonitoredResource",
                                     OpenMetadataWikiPages.MODEL_0451_NOTIFICATIONS,
                                     "605fdf3c-655a-499a-a495-8fe39aa93b67",
-                                    "An element that needs to be monitored to support a notification type."),
+                                    "An element that needs to be monitored to support a notification type.",
+                                    MonitoredResourceProperties.class),
 
 
     /**
@@ -3355,7 +3468,8 @@ public enum OpenMetadataType
                          "NamingStandardRule",
                          OpenMetadataWikiPages.MODEL_0438_NAMING_STANDARDS,
                          "bf547932-cfaf-483a-a3c9-facac1aa50e6",
-                         "Describes a parsing rule used to create compliant names."),
+                         "Describes a parsing rule used to create compliant names.",
+                         NamingStandardRuleProperties.class),
 
     /**
      * Describes a collection of related naming standard rules.
@@ -3364,7 +3478,8 @@ public enum OpenMetadataType
                                         "NamingStandardRuleSet",
                                         OpenMetadataWikiPages.MODEL_0438_NAMING_STANDARDS,
                                         "44d13d19-e98d-4b8b-a1cb-1a540afe69e6",
-                                        "Describes a collection of related naming standard rules."),
+                                        "Describes a collection of related naming standard rules.",
+                                        NamingStandardRuleSetProperties.class),
 
     /**
      * Describes a primary noun, used in naming standards.
@@ -3395,22 +3510,14 @@ public enum OpenMetadataType
 
 
     /**
-     * Relationship identifying the digital services supporting each business capability.
-     */
-    DIGITAL_SUPPORT_RELATIONSHIP("9e187e1e-2547-46bd-b0ee-c33ac6df4a1f",
-                                 "DigitalSupport",
-                                 OpenMetadataWikiPages.MODEL_0715_DIGITAL_PRODUCT_MANAGEMENT,
-                                 "79f27291-ed2f-4012-a603-3e3aca5bcbe7",
-                                 "Relationship identifying the digital services supporting each business capability."),
-
-    /**
      * The set of entitlements, restrictions and obligations associated with an agreement, license etc.
      */
     TERMS_AND_CONDITIONS("2ddc42d3-7791-4b4e-a064-91df9300290a",
                          "TermsAndConditions",
                          OpenMetadataWikiPages.MODEL_0440_ORG_CONTROLS,
                          "d8aca540-2868-4c9f-a1b3-899f822f3127",
-                         "The set of entitlements, restrictions and obligations associated with an agreement, license etc."),
+                         "The set of entitlements, restrictions and obligations associated with an agreement, license etc.",
+                         TermsAndConditionsProperties.class),
 
     /**
      * A type of license that sets out specific terms and conditions for the use of a resource.
@@ -3419,7 +3526,8 @@ public enum OpenMetadataType
                  "LicenseType",
                  OpenMetadataWikiPages.MODEL_0440_ORG_CONTROLS,
                  "5e54973c-6a71-44b3-9570-1df85b905e73",
-                 "A type of license that sets out specific terms and conditions for the use of a resource."),
+                 "A type of license that sets out specific terms and conditions for the use of a resource.",
+                 LicenseTypeProperties.class),
 
     /**
      * A specific type of certification required by a regulation or governance process.
@@ -3428,7 +3536,8 @@ public enum OpenMetadataType
                        "CertificationType",
                        OpenMetadataWikiPages.MODEL_0440_ORG_CONTROLS,
                        "10dd155f-14f0-4bd4-90e4-eae761a652e8",
-                       "A specific type of certification required by a regulation or governance process."),
+                       "A specific type of certification required by a regulation or governance process.",
+                       CertificationTypeProperties.class),
 
     /**
      * Who is responsible for making decisions on the management and governance of this element.
@@ -3437,7 +3546,8 @@ public enum OpenMetadataType
                              "Ownership",
                              OpenMetadataWikiPages.MODEL_0445_GOVERNANCE_ROLES,
                              "a2825a97-ba55-4fd9-bc04-4d7adbd66f57",
-                             "Who is responsible for making decisions on the management and governance of this element."),
+                             "Who is responsible for making decisions on the management and governance of this element.",
+                             OwnershipProperties.class),
 
     /**
      * Describes a set of goals, tasks and skills that can be assigned a person and contribute to the governance of a resource.
@@ -3446,7 +3556,8 @@ public enum OpenMetadataType
                     "GovernanceRole",
                     OpenMetadataWikiPages.MODEL_0445_GOVERNANCE_ROLES,
                     "f8bfd5eb-2dea-4c41-8c7e-1c6965108944",
-                    "Describes a set of goals, tasks and skills that can be assigned a person and contribute to the governance of a resource."),
+                    "Describes a set of goals, tasks and skills that can be assigned a person and contribute to the governance of a resource.",
+                    GovernanceRoleProperties.class),
 
     /**
      * Person responsible for a governance domain.
@@ -3455,7 +3566,8 @@ public enum OpenMetadataType
                        "GovernanceOfficer",
                        OpenMetadataWikiPages.MODEL_0445_GOVERNANCE_ROLES,
                        "be460431-d42b-40a8-a4dd-616082c51c88",
-                       "Person responsible for a governance domain."),
+                       "Person responsible for a governance domain.",
+                       GovernanceOfficerProperties.class),
 
     /**
      * A role defining a responsibility to contribute to the operation of a governance activity.  Often represents the views of one or more interested parties.
@@ -3464,7 +3576,8 @@ public enum OpenMetadataType
                               "GovernanceRepresentative",
                               OpenMetadataWikiPages.MODEL_0445_GOVERNANCE_ROLES,
                               "d22a5441-3470-4bf9-9412-12c9a7864955",
-                              "A role defining a responsibility to contribute to the operation of a governance activity.  Often represents the views of one or more interested parties."),
+                              "A role defining a responsibility to contribute to the operation of a governance activity.  Often represents the views of one or more interested parties.",
+                              GovernanceRepresentativeProperties.class),
 
     /**
      * A role defining a responsibility for activity at a particular location.
@@ -3473,7 +3586,8 @@ public enum OpenMetadataType
                    "LocationOwner",
                    OpenMetadataWikiPages.MODEL_0445_GOVERNANCE_ROLES,
                    "4fea5fc9-eb6e-412e-a68f-f3041dda47ad",
-                   "A role defining a responsibility for activity at a particular location."),
+                   "A role defining a responsibility for activity at a particular location.",
+                   LocationOwnerProperties.class),
 
     /**
      * A role defining a responsibility to manage a part of the organization's business.  Often responsible for profit and loss.
@@ -3482,7 +3596,8 @@ public enum OpenMetadataType
                    "BusinessOwner",
                    OpenMetadataWikiPages.MODEL_0445_GOVERNANCE_ROLES,
                    "5707d6ff-2db5-431f-9e21-a92a9a20a62c",
-                   "A role defining a responsibility to manage a part of the organization's business.  Often responsible for profit and loss."),
+                   "A role defining a responsibility to manage a part of the organization's business.  Often responsible for profit and loss.",
+                   BusinessOwnerProperties.class),
 
     /**
      * A role defining a responsibility for an IT solution.
@@ -3491,7 +3606,8 @@ public enum OpenMetadataType
                    "SolutionOwner",
                    OpenMetadataWikiPages.MODEL_0445_GOVERNANCE_ROLES,
                    "eef70090-0ac9-4b9c-8de1-611660ca4387",
-                   "A role defining a responsibility for an IT solution."),
+                   "A role defining a responsibility for an IT solution.",
+                   SolutionOwnerProperties.class),
 
     /**
      * A role defining a responsibility to manage an asset.
@@ -3500,7 +3616,8 @@ public enum OpenMetadataType
                 "AssetOwner",
                 OpenMetadataWikiPages.MODEL_0445_GOVERNANCE_ROLES,
                 "5042920d-859f-4a7c-af3c-008a5ef1e388",
-                "A role defining a responsibility to manage an asset."),
+                "A role defining a responsibility to manage an asset.",
+                AssetOwnerProperties.class),
 
     /**
      * A role defining a responsibility to manage the development and maintenance of a subject area.
@@ -3509,7 +3626,8 @@ public enum OpenMetadataType
                        "SubjectAreaOwner",
                        OpenMetadataWikiPages.MODEL_0445_GOVERNANCE_ROLES,
                        "f8ee2921-90e1-4d12-aa7b-bedb8f2ee545",
-                       "A role defining a responsibility to manage the development and maintenance of a subject area."),
+                       "A role defining a responsibility to manage the development and maintenance of a subject area.",
+                       SubjectAreaOwnerProperties.class),
 
     /**
      * An ownership role for a component - typically part of an asset.
@@ -3518,7 +3636,8 @@ public enum OpenMetadataType
                     "ComponentOwner",
                     OpenMetadataWikiPages.MODEL_0445_GOVERNANCE_ROLES,
                     "d19d94eb-f53d-4eed-a87c-d6b026d96aa6",
-                    "An ownership role for a component - typically part of an asset."),
+                    "An ownership role for a component - typically part of an asset.",
+                    ComponentOwnerProperties.class),
 
     /**
      * An ownership role for a particular type of data value.  This may be stored as data fields in multiple assets and this person typically owns the end to end validation of the values as they move from asset to asset.
@@ -3527,7 +3646,8 @@ public enum OpenMetadataType
                     "DataItemOwner",
                     OpenMetadataWikiPages.MODEL_0445_GOVERNANCE_ROLES,
                     "13a43ee5-acad-4e67-a4d2-4f4d87e1abea",
-                    "An ownership role for a particular type of data value.  This may be stored as data fields in multiple assets and this person typically owns the end to end validation of the values as they move from asset to asset."),
+                    "An ownership role for a particular type of data value.  This may be stored as data fields in multiple assets and this person typically owns the end to end validation of the values as they move from asset to asset.",
+                    DataItemOwnerProperties.class),
 
     /**
      * A definition for how the effectiveness of the governance program is measured.
@@ -3536,7 +3656,8 @@ public enum OpenMetadataType
                       "GovernanceMetric",
                       OpenMetadataWikiPages.MODEL_0450_GOVERNANCE_ROLLOUT,
                       "c6e37924-a550-46ba-b8e6-92891bdf4178",
-                      "A definition for how the effectiveness of the governance program is measured."),
+                      "A definition for how the effectiveness of the governance program is measured.",
+                      GovernanceMetricProperties.class),
 
     /**
      * Link between a governance metric and a data set used to gather measurements from the landscape.
@@ -3545,7 +3666,8 @@ public enum OpenMetadataType
                                     "GovernanceResults",
                                     OpenMetadataWikiPages.MODEL_0450_GOVERNANCE_ROLLOUT,
                                     "e8da6c0f-bbc5-4fb1-bdb1-487cd71eafcf",
-                                    "Link between a governance metric and a data set used to gather measurements from the landscape."),
+                                    "Link between a governance metric and a data set used to gather measurements from the landscape.",
+                                    GovernanceResultsProperties.class),
 
     /**
      * A set of measurements on the performance and use of the connected resource.
@@ -3554,7 +3676,8 @@ public enum OpenMetadataType
                                            "GovernanceMeasurements",
                                            OpenMetadataWikiPages.MODEL_0450_GOVERNANCE_ROLLOUT,
                                            "380b61ea-68b8-4ec1-b24a-831d76d12b97",
-                                           "A set of measurements on the performance and use of the connected resource."),
+                                           "A set of measurements on the performance and use of the connected resource.",
+                                           GovernanceMeasurementsProperties.class),
 
     /**
      * A set of expected values on the performance and use of the connected resource.
@@ -3563,7 +3686,8 @@ public enum OpenMetadataType
                                            "GovernanceExpectations",
                                            OpenMetadataWikiPages.MODEL_0450_GOVERNANCE_ROLLOUT,
                                            "b8c6554d-48fa-4ef4-9f6c-166a56b819ea",
-                                           "A set of expected values on the performance and use of the connected resource."),
+                                           "A set of expected values on the performance and use of the connected resource.",
+                                           GovernanceExpectationsProperties.class),
 
     /**
      * A data set containing exceptions that need to be resolved.
@@ -3645,7 +3769,8 @@ public enum OpenMetadataType
                       "GovernanceEngine",
                       OpenMetadataWikiPages.MODEL_0461_GOVERNANCE_ENGINES,
                       "11b96995-f6f1-46e6-abee-846a2f77f2a8",
-                      "A collection of related governance services of the same type."),
+                      "A collection of related governance services of the same type.",
+                      GovernanceEngineProperties.class),
 
     /**
      * A connector that performs some governance operation.
@@ -3654,25 +3779,28 @@ public enum OpenMetadataType
                        "GovernanceService",
                        OpenMetadataWikiPages.MODEL_0461_GOVERNANCE_ENGINES,
                        "e091225c-1092-4f28-b7e1-bf53456f9705",
-                       "A connector that performs some governance operation."),
+                       "A connector that performs some governance operation.",
+                       GovernanceServiceProperties.class),
 
     /**
-     * A collection of related governance services of the same type from the Open Survey Framework (OGF).
+     * A collection of related governance services of the same type from the Open Governance Framework (OGF).
      */
     GOVERNANCE_ACTION_ENGINE("5d74250a-57ca-4197-9475-8911f620a94e",
                              "GovernanceActionEngine",
                              OpenMetadataWikiPages.MODEL_0461_GOVERNANCE_ENGINES,
                              "a8f14964-5028-4269-81be-5d23757c9caa",
-                             "A collection of related governance services of the same type from the Open Survey Framework (OGF)."),
+                             "A collection of related governance services of the same type from the Open Governance Framework (OGF).",
+                             GovernanceActionEngineProperties.class),
 
     /**
-     * A governance service that conforms to the Open Survey Framework (OGF).
+     * A governance service that conforms to the Open Governance Framework (OGF).
      */
     GOVERNANCE_ACTION_SERVICE("ececb378-31ac-4cc3-99b4-1c44e5fbc4d9",
                               "GovernanceActionService",
                               OpenMetadataWikiPages.MODEL_0461_GOVERNANCE_ENGINES,
                               "c927dcac-3481-4246-98ec-e0662e5e3a77",
-                              "A governance service that conforms to the Open Survey Framework (OGF)."),
+                              "A governance service that conforms to the Open Governance Framework (OGF).",
+                              GovernanceActionServiceProperties.class),
 
     /**
      * A governance engine for managing the surveying of real-world resources and capturing the results in survey report attached to the associated asset.
@@ -3681,7 +3809,8 @@ public enum OpenMetadataType
                          "SurveyActionEngine",
                          OpenMetadataWikiPages.MODEL_0461_GOVERNANCE_ENGINES,
                          "325b61dd-4d43-4bd7-bcf9-af5f20b77d05",
-                         "A governance engine for managing the surveying of real-world resources and capturing the results in survey report attached to the associated asset."),
+                         "A governance engine for managing the surveying of real-world resources and capturing the results in survey report attached to the associated asset.",
+                         SurveyActionEngineProperties.class),
 
     /**
      * A governance service for managing the surveying of real-world resources and capturing the results in survey report attached to the associated asset.
@@ -3690,26 +3819,29 @@ public enum OpenMetadataType
                           "SurveyActionService",
                           OpenMetadataWikiPages.MODEL_0461_GOVERNANCE_ENGINES,
                           "16009219-1913-466c-994b-853e0c5c961b",
-                          "A governance service for managing the surveying of real-world resources and capturing the results in survey report attached to the associated asset."),
+                          "A governance service for managing the surveying of real-world resources and capturing the results in survey report attached to the associated asset.",
+                          SurveyActionServiceProperties.class),
 
 
     /**
      * A governance engine for managing the monitoring of resources and situations/events and then notifying subscribers when they occur.
      */
     WATCHDOG_ACTION_ENGINE("61428b3b-d291-42a1-8b73-23109d6aef60",
-                         "WatchdogActionEngine",
-                         OpenMetadataWikiPages.MODEL_0461_GOVERNANCE_ENGINES,
-                         "4303ed44-2795-4702-8d87-19dc5cc05507",
-                         "A governance engine for managing the monitoring of resources and situations/events and then notifying subscribers when they occur."),
+                           "WatchdogActionEngine",
+                           OpenMetadataWikiPages.MODEL_0461_GOVERNANCE_ENGINES,
+                           "4303ed44-2795-4702-8d87-19dc5cc05507",
+                           "A governance engine for managing the monitoring of resources and situations/events and then notifying subscribers when they occur.",
+                           WatchdogActionEngineProperties.class),
 
     /**
      * A governance service for managing the monitoring of resources and situations/events and then notifying subscribers when they occur.
      */
     WATCHDOG_ACTION_SERVICE("15cfcb2c-530b-40e0-aef7-cf7490d33a29",
-                          "WatchdogActionService",
-                          OpenMetadataWikiPages.MODEL_0461_GOVERNANCE_ENGINES,
-                          "b349e24c-e686-451d-8865-7a6b755b1c34",
-                          "A governance service for managing the monitoring of resources and situations/events and then notifying subscribers when they occur."),
+                            "WatchdogActionService",
+                            OpenMetadataWikiPages.MODEL_0461_GOVERNANCE_ENGINES,
+                            "b349e24c-e686-451d-8865-7a6b755b1c34",
+                            "A governance service for managing the monitoring of resources and situations/events and then notifying subscribers when they occur.",
+                            WatchdogActionServiceProperties.class),
 
     /**
      * A governance engine for open metadata repositories.
@@ -3718,7 +3850,8 @@ public enum OpenMetadataType
                                  "RepositoryGovernanceEngine",
                                  OpenMetadataWikiPages.MODEL_0461_GOVERNANCE_ENGINES,
                                  "c283bb2c-f007-485c-b90f-cb81194d4c25",
-                                 "A governance engine for open metadata repositories."),
+                                 "A governance engine for open metadata repositories.",
+                                 RepositoryGovernanceEngineProperties.class),
 
     /**
      * A governance service for open metadata repositories.
@@ -3727,7 +3860,8 @@ public enum OpenMetadataType
                                   "RepositoryGovernanceService",
                                   OpenMetadataWikiPages.MODEL_0461_GOVERNANCE_ENGINES,
                                   "30671690-f94e-440b-abdb-2384ed36d8bf",
-                                  "A governance service for open metadata repositories."),
+                                  "A governance service for open metadata repositories.",
+                                  RepositoryGovernanceServiceProperties.class),
 
     /**
      * Link between a governance engine and one of its services.
@@ -3736,7 +3870,8 @@ public enum OpenMetadataType
                                               "SupportedGovernanceService",
                                               OpenMetadataWikiPages.MODEL_0461_GOVERNANCE_ENGINES,
                                               "346ca38f-287d-401f-bbe9-375ecd2b938f",
-                                              "Link between a governance engine and one of its services."),
+                                              "Link between a governance engine and one of its services.",
+                                              SupportedGovernanceServiceProperties.class),
 
     /**
      * A process implemented by chained engine actions that call governance services.
@@ -3745,7 +3880,8 @@ public enum OpenMetadataType
                               "GovernanceActionProcess",
                               OpenMetadataWikiPages.MODEL_0462_GOVERNANCE_ACTION_PROCESSES,
                               "839f6d58-5804-4d22-a7eb-7594fefc98d6",
-                              "A process implemented by chained engine actions that call governance services."),
+                              "A process implemented by chained engine actions that call governance services.",
+                              GovernanceActionProcessProperties.class),
 
     /**
      * A description of a call to a governance engine that acts as a template when creating the appropriate engine action instance.
@@ -3754,16 +3890,18 @@ public enum OpenMetadataType
                            "GovernanceActionType",
                            OpenMetadataWikiPages.MODEL_0462_GOVERNANCE_ACTION_PROCESSES,
                            "b74fe70f-e59c-4703-a1a6-4ef0a28cd829",
-                           "A description of a call to a governance engine that acts as a template when creating the appropriate engine action instance."),
+                           "A description of a call to a governance engine that acts as a template when creating the appropriate engine action instance.",
+                           GovernanceActionTypeProperties.class),
 
     /**
      * A description of a call to perform a step in a governance action process. This acts as a template when creating the appropriate engine action instance.
      */
     GOVERNANCE_ACTION_PROCESS_STEP("7ae66fcc-09be-4d16-b39f-b5e299473586",
-                              "GovernanceActionProcessStep",
-                              OpenMetadataWikiPages.MODEL_0462_GOVERNANCE_ACTION_PROCESSES,
-                              "fa551b44-7929-4a2e-9008-4fc89df4c851",
-                              "A description of a call to perform a step in a governance action process.  This acts as a template when creating the appropriate engine action instance."),
+                                   "GovernanceActionProcessStep",
+                                   OpenMetadataWikiPages.MODEL_0462_GOVERNANCE_ACTION_PROCESSES,
+                                   "fa551b44-7929-4a2e-9008-4fc89df4c851",
+                                   "A description of a call to perform a step in a governance action process.  This acts as a template when creating the appropriate engine action instance.",
+                                   GovernanceActionProcessStepProperties.class),
 
     /**
      * A link between a governance action process and its first process step.
@@ -3772,7 +3910,8 @@ public enum OpenMetadataType
                                                 "GovernanceActionProcessFlow",
                                                 OpenMetadataWikiPages.MODEL_0462_GOVERNANCE_ACTION_PROCESSES,
                                                 "89c8634e-7401-4bb3-87b5-93889278d0d7",
-                                                "A link between a governance action process and its first process step."),
+                                                "A link between a governance action process and its first process step.",
+                                                GovernanceActionProcessFlowProperties.class),
 
     /**
      * Link between two process steps in a governance action process flow.
@@ -3781,7 +3920,8 @@ public enum OpenMetadataType
                                                      "NextGovernanceActionProcessStep",
                                                      OpenMetadataWikiPages.MODEL_0462_GOVERNANCE_ACTION_PROCESSES,
                                                      "ed6a2f15-3c93-4742-943b-3c0ca1fb446a",
-                                                     "Link between two process steps in a governance action process flow."),
+                                                     "Link between two process steps in a governance action process flow.",
+                                                     NextGovernanceActionProcessStepProperties.class),
 
     /**
      * Link between a governance action type, or process step, and the governance engine that will execute it.
@@ -3790,8 +3930,8 @@ public enum OpenMetadataType
                                             "GovernanceActionExecutor",
                                             OpenMetadataWikiPages.MODEL_0462_GOVERNANCE_ACTION_PROCESSES,
                                             "1c514213-bcd0-4c99-9ff7-b3f91c684501",
-                                            "Link between a governance action type, or process step, and the governance engine that will execute it."),
-
+                                            "Link between a governance action type, or process step, and the governance engine that will execute it.",
+                                            GovernanceActionExecutorProperties.class),
 
 
     /**
@@ -3801,16 +3941,18 @@ public enum OpenMetadataType
                                               "TargetForGovernanceAction",
                                               OpenMetadataWikiPages.MODEL_0462_GOVERNANCE_ACTION_PROCESSES,
                                               "433f34f5-572e-44cf-888d-653bed1bce54",
-                                              "The element(s) that form the initial list of targets for action that are passed to the engine action as part of a request to run this governance action.  Additional targets for action can be supplied by the caller."),
+                                              "The element(s) that form the initial list of targets for action that are passed to the engine action as part of a request to run this governance action.  Additional targets for action can be supplied by the caller.",
+                                              TargetForGovernanceActionProperties.class),
 
     /**
      * Represents a single run of a governance action process.  It is linked to the parent governance action process using the GovernedBy relationship.
      */
     GOVERNANCE_ACTION_PROCESS_INSTANCE("206a6e44-ffe7-408b-8e59-79842d362776",
-                              "GovernanceActionProcessInstance",
-                              OpenMetadataWikiPages.MODEL_0462_GOVERNANCE_ACTION_PROCESSES,
-                              "6fcfbc4c-f08d-4946-a311-e76237fa1263",
-                              "Represents a single run of a governance action process.  It is linked to the parent governance action process using the GovernedBy relationship."),
+                                       "GovernanceActionProcessInstance",
+                                       OpenMetadataWikiPages.MODEL_0462_GOVERNANCE_ACTION_PROCESSES,
+                                       "6fcfbc4c-f08d-4946-a311-e76237fa1263",
+                                       "Represents a single run of a governance action process.  It is linked to the parent governance action process using the GovernedBy relationship.",
+                                       GovernanceActionProcessInstanceProperties.class),
 
     /**
      * An engine action that has been created to support the active governance of the open metadata ecosystem and/or digital landscape.
@@ -3819,16 +3961,8 @@ public enum OpenMetadataType
                   "EngineAction",
                   OpenMetadataWikiPages.MODEL_0463_ENGINE_ACTIONS,
                   "c002430c-ca96-4680-b930-1fc258747c39",
-                  "An engine action that has been created to support the active governance of the open metadata ecosystem and/or digital landscape."),
-
-    /**
-     * Link between an engine action and the governance engine that will execute it.
-     */
-    ENGINE_ACTION_EXECUTOR("e690ab17-6779-46b4-a8f1-6872d88c1bbb",
-                           "EngineActionExecutor",
-                           OpenMetadataWikiPages.MODEL_0463_ENGINE_ACTIONS,
-                           "f86f2040-652e-495e-b27d-ffcc7c75a05e",
-                           "Link between an engine action and the governance engine that will execute it."),
+                  "An engine action that has been created to support the active governance of the open metadata ecosystem and/or digital landscape.",
+                  EngineActionProperties.class),
 
     /**
      * A collection of integration connectors to run together.
@@ -3837,7 +3971,8 @@ public enum OpenMetadataType
                       "IntegrationGroup",
                       OpenMetadataWikiPages.MODEL_0464_INTEGRATION_GROUPS,
                       "1c5e6f3c-96ff-4e3d-876d-26c8905add7b",
-                      "A collection of integration connectors to run together."),
+                      "A collection of integration connectors to run together.",
+                      IntegrationGroupProperties.class),
 
     /**
      * A definition to control the execution of an integration connector.
@@ -3846,7 +3981,8 @@ public enum OpenMetadataType
                           "IntegrationConnector",
                           OpenMetadataWikiPages.MODEL_0464_INTEGRATION_GROUPS,
                           "fe907752-40e5-4bbc-9984-5a363bfd0241",
-                          "A definition to control the execution of an integration connector."),
+                          "A definition to control the execution of an integration connector.",
+                          IntegrationConnectorProperties.class),
 
     /**
      * A link between an integration group and an integration connector that is part of the group.
@@ -3855,7 +3991,8 @@ public enum OpenMetadataType
                                                   "RegisteredIntegrationConnector",
                                                   OpenMetadataWikiPages.MODEL_0464_INTEGRATION_GROUPS,
                                                   "8abc960c-af48-4e4e-91ae-df43481b8bb0",
-                                                  "A link between an integration group and an integration connector that is part of the group."),
+                                                  "A link between an integration group and an integration connector that is part of the group.",
+                                                  RegisteredIntegrationConnectorProperties.class),
 
     /**
      * Identifies an element that an integration connector is to work with.
@@ -3864,7 +4001,8 @@ public enum OpenMetadataType
                                 "CatalogTarget",
                                 OpenMetadataWikiPages.MODEL_0464_INTEGRATION_GROUPS,
                                 "0e976ec0-1a01-49a4-85f2-49b96b4203df",
-                                "Identifies an element that an integration connector is to work with."),
+                                "Identifies an element that an integration connector is to work with.",
+                                CatalogTargetProperties.class),
 
     /**
      * Details of the metadata changes made by the execution of the refresh() method by an integration connector or governance service.
@@ -3873,7 +4011,8 @@ public enum OpenMetadataType
                               "ConnectorActivityReport",
                               OpenMetadataWikiPages.MODEL_0457_CONNECTOR_ACTIVITY_REPORTS,
                               "56c76116-1b1c-447c-b74d-ff860a2e41c6",
-                              "Details of the metadata changes made by the execution of the refresh() method by an integration connector/governance service."),
+                              "Details of the metadata changes made by the execution of the refresh() method by an integration connector/governance service.",
+                              ConnectorActivityReportProperties.class),
 
     /**
      * Defines that duplicate resolution processing is required.
@@ -3919,7 +4058,8 @@ public enum OpenMetadataType
                     "IncidentReport",
                     OpenMetadataWikiPages.MODEL_0470_INCIDENT_REPORTING,
                     "56c76116-1b1c-447c-b74d-ff860a2e41c6",
-                    "A description of an adverse situation or activity."),
+                    "A description of an adverse situation or activity.",
+                    IncidentReportProperties.class),
 
     /**
      * Link between an impacted referenceable and an incident report.
@@ -3928,7 +4068,8 @@ public enum OpenMetadataType
                                    "ImpactedResource",
                                    OpenMetadataWikiPages.MODEL_0470_INCIDENT_REPORTING,
                                    "5bab8c09-1a03-4706-9e59-fd7ac5083a1a",
-                                   "Link between an impacted referenceable and an incident report."),
+                                   "Link between an impacted referenceable and an incident report.",
+                                   ImpactedResourceProperties.class),
 
     /**
      * A description of an event that impacts users, data, services, etcetera.  It is used to describe what was happening during a named time period.
@@ -3937,7 +4078,8 @@ public enum OpenMetadataType
                   "ContextEvent",
                   OpenMetadataWikiPages.MODEL_0475_CONTEXT_EVENTS,
                   "a4d2329e-3fa0-4165-a784-e9fcc32e646f",
-                  "A description of an event that impacts users, data, services, etcetera.  It is used to describe what was happening during a named time period."),
+                  "A description of an event that impacts users, data, services, etcetera.  It is used to describe what was happening during a named time period.",
+                  ContextEventProperties.class),
 
     /**
      * Link to evidence that the context event has occurred, started or is expected can appear as alerts/notification or incidents that people have raised.
@@ -3946,7 +4088,8 @@ public enum OpenMetadataType
                                         "ContextEventEvidence",
                                         OpenMetadataWikiPages.MODEL_0475_CONTEXT_EVENTS,
                                         "8a52bd3a-172e-46db-b362-038e4ff0edbf",
-                                        "Link to evidence that the context event has occurred, started or is expected can appear as alerts/notification or incidents that people have raised."),
+                                        "Link to evidence that the context event has occurred, started or is expected can appear as alerts/notification or incidents that people have raised.",
+                                        ContextEventEvidenceProperties.class),
 
     /**
      * Link between a parent context event and its children.
@@ -3955,7 +4098,8 @@ public enum OpenMetadataType
                                          "DependentContextEvent",
                                          OpenMetadataWikiPages.MODEL_0475_CONTEXT_EVENTS,
                                          "20aa9631-0ea3-4692-b464-a214495ecfd9",
-                                         "Link between a parent context event and its children."),
+                                         "Link between a parent context event and its children.",
+                                         DependentContextEventProperties.class),
 
     /**
      * Link between context events that are impacting one another in some way.
@@ -3964,7 +4108,8 @@ public enum OpenMetadataType
                                        "RelatedContextEvent",
                                        OpenMetadataWikiPages.MODEL_0475_CONTEXT_EVENTS,
                                        "f54937ff-7062-47d9-be68-a030461d7eaa",
-                                       "Link between context events that are impacting one another in some way."),
+                                       "Link between context events that are impacting one another in some way.",
+                                       RelatedContextEventProperties.class),
 
     /**
      * Defines a collection of related context events.
@@ -3973,7 +4118,8 @@ public enum OpenMetadataType
                                             "ContextEventCollection",
                                             OpenMetadataWikiPages.MODEL_0475_CONTEXT_EVENTS,
                                             "61a8ff8a-9425-4aaf-bea9-9ac5129d9be1",
-                                            "Defines a collection of related context events."),
+                                            "Defines a collection of related context events.",
+                                            ContextEventCollectionProperties.class),
 
     /**
      * Links a ContextEvent entity to Referenceable entities that describe resources that are impacted by the event.
@@ -3982,7 +4128,8 @@ public enum OpenMetadataType
                                       "ContextEventImpact",
                                       OpenMetadataWikiPages.MODEL_0475_CONTEXT_EVENTS,
                                       "006f5649-b20e-4de2-a2f6-a8fc061d8285",
-                                      "Links a ContextEvent entity to Referenceable entities that describe resources that are impacted by the event."),
+                                      "Links a ContextEvent entity to Referenceable entities that describe resources that are impacted by the event.",
+                                      ContextEventImpactProperties.class),
 
     /**
      * Associates a ContextEvent to a Referenceable (typically and Asset or DigitalProduct) whose data is effected by the event.
@@ -3991,7 +4138,8 @@ public enum OpenMetadataType
                                                     "ContextEventForTimelineEffects",
                                                     OpenMetadataWikiPages.MODEL_0475_CONTEXT_EVENTS,
                                                     "e13e03a3-4421-464c-829b-1aba11a119b9",
-                                                    "Associates a ContextEvent to a Referenceable (typically and Asset or DigitalProduct) whose data is effected by the event."),
+                                                    "Associates a ContextEvent to a Referenceable (typically and Asset or DigitalProduct) whose data is effected by the event.",
+                                                    ContextEventForTimelineEffectsProperties.class),
 
     /**
      * Link between a resource description and its license.
@@ -4000,7 +4148,8 @@ public enum OpenMetadataType
                          "License",
                          OpenMetadataWikiPages.MODEL_0481_LICENSES,
                          "84ff8464-aa51-4a64-8422-5439a34b9908",
-                         "Link between a resource description and its license."),
+                         "Link between a resource description and its license.",
+                         LicenseProperties.class),
 
     /**
      * An awarded certification of a specific type.
@@ -4009,7 +4158,8 @@ public enum OpenMetadataType
                                "Certification",
                                OpenMetadataWikiPages.MODEL_0482_CERTIFICATIONS,
                                "23fb4a8e-b86a-40be-86c9-f68ae0e37f24",
-                               "An awarded certification of a specific type."),
+                               "An awarded certification of a specific type.",
+                               CertificationProperties.class),
 
     /**
      * Identifies a certification required by a regulation.
@@ -4018,7 +4168,8 @@ public enum OpenMetadataType
                                   "RegulationCertificationType",
                                   OpenMetadataWikiPages.MODEL_0482_CERTIFICATIONS,
                                   "c7fb5690-b8c8-4db2-8f18-c441c77fb014",
-                                  "Identifies a certification required by a regulation."),
+                                  "Identifies a certification required by a regulation.",
+                                  RegulationCertificationTypeProperties.class),
 
 
     /**
@@ -4028,7 +4179,8 @@ public enum OpenMetadataType
               "Agreement",
               OpenMetadataWikiPages.MODEL_0484_AGREEMENTS,
               "58fe2ef2-bbab-4bb1-8327-8325fb4f213c",
-              "An agreement between parties."),
+              "An agreement between parties.",
+              AgreementProperties.class),
 
 
     /**
@@ -4047,7 +4199,8 @@ public enum OpenMetadataType
                                  "AgreementActor",
                                  OpenMetadataWikiPages.MODEL_0484_AGREEMENTS,
                                  "0a124f2b-ce46-4138-bccd-e298fda475e4",
-                                 "An actor identified in an agreement."),
+                                 "An actor identified in an agreement.",
+                                 AgreementActorProperties.class),
 
     /**
      * An identified item in an agreement.
@@ -4056,7 +4209,8 @@ public enum OpenMetadataType
                                 "AgreementItem",
                                 OpenMetadataWikiPages.MODEL_0484_AGREEMENTS,
                                 "b467985d-4e68-4c9c-9f81-cfe62fc70ddc",
-                                "An identified item in an agreement."),
+                                "An identified item in an agreement.",
+                                AgreementItemProperties.class),
 
     /**
      * Link to the contract document.
@@ -4065,7 +4219,8 @@ public enum OpenMetadataType
                                "ContractLink",
                                OpenMetadataWikiPages.MODEL_0484_AGREEMENTS,
                                "cea41a7f-8fac-41f4-8426-d715e79d4b16",
-                               "Link to the contract document."),
+                               "Link to the contract document.",
+                               ContractLinkProperties.class),
 
 
     /**
@@ -4075,7 +4230,8 @@ public enum OpenMetadataType
                                 "DataProcessingDescription",
                                 OpenMetadataWikiPages.MODEL_0485_DATA_PROCESSING_PURPOSES,
                                 "3c1d6681-5ef6-404a-8876-4ad6d9b48e37",
-                                "A detailed description of the effect of some data processing."),
+                                "A detailed description of the effect of some data processing.",
+                                DataProcessingDescriptionProperties.class),
 
     /**
      * Expected outcome, service or value from processing.
@@ -4084,16 +4240,18 @@ public enum OpenMetadataType
                             "DataProcessingPurpose",
                             OpenMetadataWikiPages.MODEL_0485_DATA_PROCESSING_PURPOSES,
                             "596481bd-0771-406b-8dd2-bac9487bf565",
-                            "Expected outcome, service or value from processing."),
+                            "Expected outcome, service or value from processing.",
+                            DataProcessingPurposeProperties.class),
 
     /**
      * Description of the processing on a single target item.
      */
     DATA_PROCESSING_ACTION("7f53928f-9148-4710-ad37-47633f33cb08",
-                           "DataProcessingActionProperties",
+                           "DataProcessingAction",
                            OpenMetadataWikiPages.MODEL_0485_DATA_PROCESSING_PURPOSES,
                            "85954b5a-ef3e-4bf7-94a6-ce7a24153ef6",
-                           "Description of the processing on a single target item."),
+                           "Description of the processing on a single target item.",
+                           DataProcessingActionProperties.class),
 
     /**
      * Relationship relates data processing descriptions with purposes (outcomes).
@@ -4152,7 +4310,8 @@ public enum OpenMetadataType
                    "SchemaElement",
                    OpenMetadataWikiPages.MODEL_0501_SCHEMA_ELEMENTS,
                    "e134ce59-0252-4876-b6cd-196a56713deb",
-                   "An element that is part of a schema definition."),
+                   "An element that is part of a schema definition.",
+                   SchemaElementProperties.class),
 
     /**
      * A specific type description.
@@ -4161,7 +4320,8 @@ public enum OpenMetadataType
                 "SchemaType",
                 OpenMetadataWikiPages.MODEL_0501_SCHEMA_ELEMENTS,
                 "e1eaec90-41e9-4816-802d-3069663790f5",
-                "A specific type description."),
+                "A specific type description.",
+                SchemaTypeProperties.class),
 
     /**
      * A fixed simple value.
@@ -4170,7 +4330,8 @@ public enum OpenMetadataType
                         "LiteralSchemaType",
                         OpenMetadataWikiPages.MODEL_0501_SCHEMA_ELEMENTS,
                         "61686e00-ed01-4462-a665-151d20340946",
-                        "A fixed simple value."),
+                        "A fixed simple value.",
+                        LiteralSchemaTypeProperties.class),
 
     /**
      * A single valued data item.
@@ -4179,7 +4340,8 @@ public enum OpenMetadataType
                        "SimpleSchemaType",
                        OpenMetadataWikiPages.MODEL_0501_SCHEMA_ELEMENTS,
                        "571cf586-6d31-4b69-ba3f-22f6db250765",
-                       "A single valued data item."),
+                       "A single valued data item.",
+                       SimpleSchemaTypeProperties.class),
 
     /**
      * A specific primitive type.
@@ -4188,7 +4350,8 @@ public enum OpenMetadataType
                           "PrimitiveSchemaType",
                           OpenMetadataWikiPages.MODEL_0501_SCHEMA_ELEMENTS,
                           "ed8d01c9-d413-4fb1-affd-56d1fa523558",
-                          "A specific primitive type."),
+                          "A specific primitive type.",
+                          PrimitiveSchemaTypeProperties.class),
 
     /**
      * A single valued type with fixed list of valid values.
@@ -4197,7 +4360,8 @@ public enum OpenMetadataType
                      "EnumSchemaType",
                      OpenMetadataWikiPages.MODEL_0501_SCHEMA_ELEMENTS,
                      "794b3c89-a2ab-49ea-b77f-14c491518cfa",
-                     "A single valued type with fixed list of valid values."),
+                     "A single valued type with fixed list of valid values.",
+                     EnumSchemaTypeProperties.class),
 
     /**
      * A list of alternative schema types for attribute.
@@ -4206,7 +4370,8 @@ public enum OpenMetadataType
                        "SchemaTypeChoice",
                        OpenMetadataWikiPages.MODEL_0501_SCHEMA_ELEMENTS,
                        "72cfe678-3160-4ed6-9f90-e04ced0aa98f",
-                       "A list of alternative schema types for attribute."),
+                       "A list of alternative schema types for attribute.",
+                       SchemaTypeChoiceProperties.class),
 
     /**
      * The list of alternative schema types.
@@ -4215,16 +4380,18 @@ public enum OpenMetadataType
                                     "SchemaTypeOption",
                                     OpenMetadataWikiPages.MODEL_0501_SCHEMA_ELEMENTS,
                                     "e3a332ff-cbf2-4d2b-bb74-cb04b002690d",
-                                    "The list of alternative schema types."),
+                                    "The list of alternative schema types.",
+                                    SchemaTypeOptionProperties.class),
 
     /**
-     * The structure of the data stored in a digital resource described by the attached asset.
+     * The structure of the data stored in a digital resource described by the attached asset/port.
      */
-    ASSET_SCHEMA_TYPE_RELATIONSHIP("815b004d-73c6-4728-9dd9-536f4fe803cd",
-                                   "AssetSchemaType",
-                                   OpenMetadataWikiPages.MODEL_0503_ASSET_SCHEMA,
-                                   "ea278feb-8073-49a3-8acf-006124ef0959",
-                                   "The structure of the data stored in a digital resource described by the attached asset."),
+    SCHEMA_RELATIONSHIP("815b004d-73c6-4728-9dd9-536f4fe803cd",
+                        "Schema",
+                        OpenMetadataWikiPages.MODEL_0503_ASSET_SCHEMA,
+                        "ea278feb-8073-49a3-8acf-006124ef0959",
+                        "The structure of the data stored in a digital resource described by the attached asset or port.",
+                        SchemaProperties.class),
 
     /**
      * A concrete implementation example for a schema element.
@@ -4235,23 +4402,6 @@ public enum OpenMetadataType
                            "1c085070-8d26-4488-b973-f46a4c49498d",
                            "A concrete implementation example for a schema element."),
 
-    /**
-     * Link between an element such as a schema type or data class and an implementation snippet.
-     */
-    ASSOCIATED_SNIPPET_RELATIONSHIP("6f89c320-22aa-4d99-9a97-442e8d214655",
-                                    "AssociatedSnippet",
-                                    OpenMetadataWikiPages.MODEL_0504_SNIPPETS,
-                                    "6e39e1a1-20a2-428c-b823-0c7ee0a9fdd1",
-                                    "Link between an element such as a schema type or data class and an implementation snippet."),
-
-    /**
-     * Link between a schema type and an implementation component.
-     */
-    SCHEMA_TYPE_IMPLEMENTATION_RELATIONSHIP("eed5565d-7ac2-46fe-9a26-4722fad8d993",
-                                            "SchemaTypeImplementation",
-                                            OpenMetadataWikiPages.MODEL_0504_SNIPPETS,
-                                            "29c9224b-9120-4a09-aaf1-a0a9d881f037",
-                                            "Link between a schema type and an implementation component."),
 
     /**
      * A schema type that has a complex structure of nested attributes and types.
@@ -4260,7 +4410,8 @@ public enum OpenMetadataType
                         "ComplexSchemaType",
                         OpenMetadataWikiPages.MODEL_0505_SCHEMA_ATTRIBUTES,
                         "d4d92678-4b22-410b-8563-5d2b0d107c6b",
-                        "A schema type that has a complex structure of nested attributes and types."),
+                        "A schema type that has a complex structure of nested attributes and types.",
+                        ComplexSchemaTypeProperties.class),
 
     /**
      * A schema type that has a list of attributes, typically of different types.
@@ -4269,7 +4420,8 @@ public enum OpenMetadataType
                        "StructSchemaType",
                        OpenMetadataWikiPages.MODEL_0505_SCHEMA_ATTRIBUTES,
                        "26d86816-e8b0-4a17-9250-fed94f47ea5b",
-                       "A schema type that has a list of attributes, typically of different types."),
+                       "A schema type that has a list of attributes, typically of different types.",
+                       StructSchemaTypeProperties.class),
 
 
     /**
@@ -4279,7 +4431,8 @@ public enum OpenMetadataType
                                       "AttributeForSchema",
                                       OpenMetadataWikiPages.MODEL_0505_SCHEMA_ATTRIBUTES,
                                       "40ed8943-c33f-4d55-912c-4bc0b97cb509",
-                                      "Link between a complex schema type and its attributes."),
+                                      "Link between a complex schema type and its attributes.",
+                                      AttributeForSchemaProperties.class),
 
     /**
      * A schema element that nests another schema type in its parent.
@@ -4288,7 +4441,8 @@ public enum OpenMetadataType
                      "SchemaAttribute",
                      OpenMetadataWikiPages.MODEL_0505_SCHEMA_ATTRIBUTES,
                      "473366bc-c474-439d-b7c8-8a36af5a523b",
-                     "A schema element that nests another schema type in its parent."),
+                     "A schema element that nests another schema type in its parent.",
+                     SchemaAttributeProperties.class),
 
     /**
      * Type information embedded within an attribute.
@@ -4297,7 +4451,8 @@ public enum OpenMetadataType
                                            "TypeEmbeddedAttribute",
                                            OpenMetadataWikiPages.MODEL_0505_SCHEMA_ATTRIBUTES,
                                            "b7daca27-d524-4f04-9c01-788a1306a651",
-                                           "Type information embedded within an attribute."),
+                                           "Type information embedded within an attribute.",
+                                           TypeEmbeddedAttributeProperties.class),
 
 
     /**
@@ -4307,16 +4462,8 @@ public enum OpenMetadataType
                                          "NestedSchemaAttribute",
                                          OpenMetadataWikiPages.MODEL_0505_SCHEMA_ATTRIBUTES,
                                          "31b00f9b-a5c8-4408-800a-e7238e663a37",
-                                         "The direct parent-child relationship between attributes with an embedded type."),
-
-    /**
-     * The schema type for an attribute.
-     */
-    SCHEMA_ATTRIBUTE_TYPE_RELATIONSHIP("2d955049-e59b-45dd-8e62-cde1add59f9e",
-                                       "SchemaAttributeType",
-                                       OpenMetadataWikiPages.MODEL_0505_SCHEMA_ATTRIBUTES,
-                                       "156e4d0f-301f-4472-a45d-b2b4dfb4a13d",
-                                       "The schema type for an attribute."),
+                                         "The direct parent-child relationship between attributes with an embedded type.",
+                                         NestedSchemaAttributeProperties.class),
 
     /**
      * The schema type is defined using an external schema.
@@ -4325,7 +4472,8 @@ public enum OpenMetadataType
                          "ExternalSchemaType",
                          OpenMetadataWikiPages.MODEL_0507_EXTERNAL_SCHEMA_TYPE,
                          "63e90343-b22a-4b10-b311-a936d0b419a3",
-                         "The schema type is defined using an external schema."),
+                         "The schema type is defined using an external schema.",
+                         ExternalSchemaTypeProperties.class),
 
     /**
      * Links to a reusable schema type that is external to this schema.
@@ -4334,7 +4482,8 @@ public enum OpenMetadataType
                                              "LinkedExternalSchemaType",
                                              OpenMetadataWikiPages.MODEL_0507_EXTERNAL_SCHEMA_TYPE,
                                              "43cd44fd-dbb4-464d-bd9f-4be0a369fc60",
-                                             "Links to a reusable schema type that is external to this schema."),
+                                             "Links to a reusable schema type that is external to this schema.",
+                                             LinkedExternalSchemaTypeProperties.class),
 
     /**
      * A schema type for a map between a key and value.
@@ -4343,7 +4492,8 @@ public enum OpenMetadataType
                     "MapSchemaType",
                     OpenMetadataWikiPages.MODEL_0511_MAP_SCHEMA_TYPE,
                     "9012cd30-4164-49a8-9faa-fa5affd2965b",
-                    "A schema type for a map between a key and value."),
+                    "A schema type for a map between a key and value.",
+                    MapSchemaTypeProperties.class),
 
     /**
      * Defines the type of the key for a map schema type.
@@ -4352,7 +4502,8 @@ public enum OpenMetadataType
                                        "MapFromElementType",
                                        OpenMetadataWikiPages.MODEL_0511_MAP_SCHEMA_TYPE,
                                        "3df5b152-d786-4fb6-8e74-3be9448f44ac",
-                                       "Defines the type of the key for a map schema type."),
+                                       "Defines the type of the key for a map schema type.",
+                                       MapFromElementTypeProperties.class),
 
     /**
      * Defines the type of value for a map schema type.
@@ -4361,7 +4512,8 @@ public enum OpenMetadataType
                                      "MapToElementType",
                                      OpenMetadataWikiPages.MODEL_0511_MAP_SCHEMA_TYPE,
                                      "edb0b0fc-6acb-408a-8a3a-24ce0f6dc6a0",
-                                     "Defines the type of value for a map schema type."),
+                                     "Defines the type of value for a map schema type.",
+                                     MapToElementTypeProperties.class),
 
 
     /**
@@ -4371,7 +4523,8 @@ public enum OpenMetadataType
                                     "CalculatedValue",
                                     OpenMetadataWikiPages.MODEL_0512_DERIVED_SCHEMA_TYPE,
                                     "2a55428f-2bfe-40bd-83dd-10eaae19a8f9",
-                                    "A field within a schema that is calculated via the formula and query targets rather than stored."),
+                                    "A field within a schema that is calculated via the formula and query targets rather than stored.",
+                                    CalculatedValueProperties.class),
 
     /**
      * Details of how a derived schema element is calculated.
@@ -4380,16 +4533,8 @@ public enum OpenMetadataType
                                                   "DerivedSchemaTypeQueryTarget",
                                                   OpenMetadataWikiPages.MODEL_0512_DERIVED_SCHEMA_TYPE,
                                                   "ecf0f3e5-11ec-4eec-a61f-67ec888384ca",
-                                                  "Details of how a derived schema element is calculated."),
-
-    /**
-     * A link between a Port and a SchemaType
-     */
-    PORT_SCHEMA_RELATIONSHIP("B216fA00-8281-F9CC-9911-Ae6377f2b457",
-                             "PortSchema",
-                             OpenMetadataWikiPages.MODEL_0520_PROCESS_SCHEMAS,
-                             "edb0b0fc-6acb-408a-8a3a-24ce0f6dc6a0",
-                             "A link between a Port and a SchemaType"),
+                                                  "Details of how a derived schema element is calculated.",
+                                                  DerivedSchemaTypeQueryTargetProperties.class),
 
     /**
      * The root of a complex schema - normally attaches to an asset or port.
@@ -4398,7 +4543,8 @@ public enum OpenMetadataType
                      "RootSchemaType",
                      OpenMetadataWikiPages.MODEL_0530_TABULAR_SCHEMAS,
                      "3e788ad5-4cad-4790-8744-0ad6674cb7b4",
-                     "The root of a complex schema - normally attaches to an asset or port."),
+                     "The root of a complex schema - normally attaches to an asset or port.",
+                     RootSchemaTypeProperties.class),
 
     /**
      * A schema type for a table oriented data structure.
@@ -4407,7 +4553,8 @@ public enum OpenMetadataType
                         "TabularSchemaType",
                         OpenMetadataWikiPages.MODEL_0530_TABULAR_SCHEMAS,
                         "62230df6-9d05-416d-9015-da428e5cd0e1",
-                        "A schema type for a table oriented data structure."),
+                        "A schema type for a table oriented data structure.",
+                        TabularSchemaTypeProperties.class),
 
     /**
      * A column attribute for a table oriented data structure.
@@ -4416,7 +4563,8 @@ public enum OpenMetadataType
                    "TabularColumn",
                    OpenMetadataWikiPages.MODEL_0530_TABULAR_SCHEMAS,
                    "f1eae42e-50ff-44dc-8fd4-4954915fb09c",
-                   "A column attribute for a table oriented data structure."),
+                   "A column attribute for a table oriented data structure.",
+                   TabularColumnProperties.class),
 
     /**
      * A column in a tabular file.
@@ -4425,7 +4573,8 @@ public enum OpenMetadataType
                         "TabularFileColumn",
                         OpenMetadataWikiPages.MODEL_0530_TABULAR_SCHEMAS,
                         "ebe8d246-9c59-415b-b920-ea251a02185f",
-                        "A column in a tabular file."),
+                        "A column in a tabular file.",
+                        TabularFileColumnProperties.class),
 
     /**
      * A schema type for a document.
@@ -4497,7 +4646,8 @@ public enum OpenMetadataType
                                  "GraphEdgeLink",
                                  OpenMetadataWikiPages.MODEL_0533_GRAPH_SCHEMAS,
                                  "15c806cf-c51e-4ab8-991b-0bf45bd0a96a",
-                                 "A link between a graph edge and a vertex.   Each edge should have two of these relationships."),
+                                 "A link between a graph edge and a vertex.   Each edge should have two of these relationships.",
+                                 GraphEdgeLinkProperties.class),
 
     /**
      * A schema type for a relational database.
@@ -4506,7 +4656,8 @@ public enum OpenMetadataType
                               "RelationalDBSchemaType",
                               OpenMetadataWikiPages.MODEL_0534_RELATIONAL_SCHEMAS,
                               "35e655b6-019d-411c-bd6b-a0a01f542d74",
-                              "A schema type for a relational database."),
+                              "A schema type for a relational database.",
+                              RelationalDBSchemaTypeProperties.class),
 
     /**
      * A table type for a relational database.
@@ -4524,7 +4675,8 @@ public enum OpenMetadataType
                      "RelationalTable",
                      OpenMetadataWikiPages.MODEL_0534_RELATIONAL_SCHEMAS,
                      "b4368f5d-2aec-4987-9592-9b28dba2da82",
-                     "A table within a relational database schema type."),
+                     "A table within a relational database schema type.",
+                     RelationalTableProperties.class),
 
     /**
      * A column within a relational table.
@@ -4533,7 +4685,8 @@ public enum OpenMetadataType
                       "RelationalColumn",
                       OpenMetadataWikiPages.MODEL_0534_RELATIONAL_SCHEMAS,
                       "59c6cdd5-cef0-40b0-9cef-2bce66df6268",
-                      "A column within a relational table."),
+                      "A column within a relational table.",
+                      RelationalColumnProperties.class),
 
     /**
      * A uniquely identifying relational column.
@@ -4542,7 +4695,8 @@ public enum OpenMetadataType
                                "PrimaryKey",
                                OpenMetadataWikiPages.MODEL_0534_RELATIONAL_SCHEMAS,
                                "b3298706-52de-40d3-8c70-9f4ed2c55ffe",
-                               "A uniquely identifying relational column."),
+                               "A uniquely identifying relational column.",
+                               PrimaryKeyProperties.class),
 
     /**
      * The primary key for another column is stored in a relational column from another table to enable them to be joined.
@@ -4551,7 +4705,8 @@ public enum OpenMetadataType
                              "ForeignKey",
                              OpenMetadataWikiPages.MODEL_0534_RELATIONAL_SCHEMAS,
                              "1386c460-d28e-4c19-ba32-b61ba11c8038",
-                             "The primary key for another column is stored in a relational column from another table to enable them to be joined."),
+                             "The primary key for another column is stored in a relational column from another table to enable them to be joined.",
+                             ForeignKeyProperties.class),
 
     /**
      * A collection of related event types.
@@ -4560,7 +4715,8 @@ public enum OpenMetadataType
                          "EventSet",
                          OpenMetadataWikiPages.MODEL_0535_EVENT_SCHEMAS,
                          "b1eeb73c-d7dd-4edb-b0fb-b0ffc1bc04ff",
-                         "A collection of related event types."),
+                         "A collection of related event types.",
+                         EventSetProperties.class),
 
     /**
      * A description of an event (message)
@@ -4569,7 +4725,8 @@ public enum OpenMetadataType
                "EventType",
                OpenMetadataWikiPages.MODEL_0535_EVENT_SCHEMAS,
                "a5d39be9-588f-41ec-b960-d00153c93146",
-               "A description of an event (message)"),
+               "A description of an event (message)",
+               EventTypeProperties.class),
 
 
     /**
@@ -4579,7 +4736,8 @@ public enum OpenMetadataType
                     "EventTypeList",
                     OpenMetadataWikiPages.MODEL_0535_EVENT_SCHEMAS,
                     "9467fd10-c15c-4f77-930e-1abce358c689",
-                    "A list of event types that flow on a topic."),
+                    "A list of event types that flow on a topic.",
+                    EventTypeListProperties.class),
 
     /**
      * A data field in an event type.
@@ -4588,7 +4746,8 @@ public enum OpenMetadataType
                            "EventSchemaAttribute",
                            OpenMetadataWikiPages.MODEL_0535_EVENT_SCHEMAS,
                            "2c666443-3bab-4651-ae14-e75ebe784bf1",
-                           "A data field in an event type."),
+                           "A data field in an event type.",
+                           EventSchemaAttributeProperties.class),
 
     /**
      * Description of an API.
@@ -4597,7 +4756,8 @@ public enum OpenMetadataType
                     "APISchemaType",
                     OpenMetadataWikiPages.MODEL_0536_API_SCHEMAS,
                     "d5d878cc-7ab1-4ae7-bc4b-e8bb7b241338",
-                    "Description of an API."),
+                    "Description of an API.",
+                    APISchemaTypeProperties.class),
 
     /**
      * Description of an API operation.
@@ -4606,7 +4766,8 @@ public enum OpenMetadataType
                   "APIOperation",
                   OpenMetadataWikiPages.MODEL_0536_API_SCHEMAS,
                   "9c4c7d66-bb43-4da3-9b39-71e50e4ebf8e",
-                  "Description of an API operation."),
+                  "Description of an API operation.",
+                  APIOperationProperties.class),
 
     /**
      * A data value that is part of an API definition.
@@ -4615,7 +4776,8 @@ public enum OpenMetadataType
                   "APIParameter",
                   OpenMetadataWikiPages.MODEL_0536_API_SCHEMAS,
                   "abd1f9d3-1389-43d8-882e-ece7bea79265",
-                  "A data value that is part of an API definition."),
+                  "A data value that is part of an API definition.",
+                  APIParameterProperties.class),
 
     /**
      * A list of parameters for an API operation.
@@ -4624,7 +4786,8 @@ public enum OpenMetadataType
                        "APIParameterList",
                        OpenMetadataWikiPages.MODEL_0536_API_SCHEMAS,
                        "5af7494f-fe21-4ecb-9710-311d442a16af",
-                       "A list of parameters for an API operation."),
+                       "A list of parameters for an API operation.",
+                       APIParameterListProperties.class),
 
     /**
      * Link between an API and its operations.
@@ -4723,7 +4886,8 @@ public enum OpenMetadataType
                "DataClass",
                OpenMetadataWikiPages.MODEL_0540_DATA_CLASSES,
                "b5ee2d50-c30f-4cf1-869b-d83294fab681",
-               "A logical data type specification."),
+               "A logical data type specification.",
+               DataClassProperties.class),
 
     /**
      * Links a data class to an asset or schema element to define its logical data type.
@@ -4732,7 +4896,8 @@ public enum OpenMetadataType
                                        "DataClassAssignment",
                                        OpenMetadataWikiPages.MODEL_0540_DATA_CLASSES,
                                        "296c55bc-0d5e-4a84-bb58-c5484d363ec2",
-                                       "Links a data class to an asset or schema element to define its logical data type."),
+                                       "Links a data class to an asset or schema element to define its logical data type.",
+                                       DataClassAssignmentProperties.class),
 
     /**
      * Links a referencable with its data value specification in the form of a data class.
@@ -4741,7 +4906,8 @@ public enum OpenMetadataType
                                        "DataClassDefinition",
                                        OpenMetadataWikiPages.MODEL_0540_DATA_CLASSES,
                                        "e83f0ff2-b8f9-4dd6-8d2d-7cce39345953",
-                                       "Links a referencable with its data value specification in the form of a data class."),
+                                       "Links a referencable with its data value specification in the form of a data class.",
+                                       DataClassDefinitionProperties.class),
 
     /**
      * Links a data class to another in a parent child hierarchy.
@@ -4750,7 +4916,8 @@ public enum OpenMetadataType
                                       "DataClassHierarchy",
                                       OpenMetadataWikiPages.MODEL_0540_DATA_CLASSES,
                                       "1949ace2-59c2-4f8f-9f3b-62def8b3d029",
-                                      "Links a data class to another in a parent child hierarchy."),
+                                      "Links a data class to another in a parent child hierarchy.",
+                                      DataClassHierarchyProperties.class),
 
     /**
      * Links a data class to another in a part of hierarchy.
@@ -4759,7 +4926,8 @@ public enum OpenMetadataType
                                         "DataClassComposition",
                                         OpenMetadataWikiPages.MODEL_0540_DATA_CLASSES,
                                         "e11693b6-f2f7-4693-aac7-a7a98c6c1c49",
-                                        "Links a data class to another in a part of hierarchy."),
+                                        "Links a data class to another in a part of hierarchy.",
+                                        DataClassCompositionProperties.class),
 
     /**
      * A single valid value for a referenceable.
@@ -4768,16 +4936,48 @@ public enum OpenMetadataType
                            "ValidValueDefinition",
                            OpenMetadataWikiPages.MODEL_0545_REFERENCE_DATA,
                            "7aebb099-27f7-4aad-9e22-d7b97d450b56",
-                           "A single valid value for a referenceable."),
+                           "A single valid value for a referenceable.",
+                           ValidValueDefinitionProperties.class),
 
     /**
-     * A data set with values defined by a valid value set.
+     * A reference data value defined by a valid value definition.
      */
-    REFERENCE_DATA_SET("001f87fc-beae-4714-b899-d620a8a8137a",
-                                  "ReferenceDataSet",
-                                  OpenMetadataWikiPages.MODEL_0545_REFERENCE_DATA,
-                                  "c9d87116-6c60-4dd6-a2f2-e774371948e0",
-                                  "A data set with values defined by a valid value set."),
+    REFERENCE_DATA_VALUE("b1350a71-6192-4fd4-9159-c3b799875626",
+                         "ReferenceDataValue",
+                         OpenMetadataWikiPages.MODEL_0545_REFERENCE_DATA,
+                         "f98b8166-c23e-4280-b1b5-2365baa32099",
+                         "A reference data value defined by a valid value definition.",
+                         ReferenceDataValueProperties.class),
+
+    /**
+     * A valid metadata value defined by a valid value definition.
+     */
+    VALID_METADATA_VALUE("dd9f0e3a-5f11-4de4-9dad-704fc65bb275",
+                         "ValidMetadataValue",
+                         OpenMetadataWikiPages.MODEL_0545_REFERENCE_DATA,
+                         "0cce70a2-d9a5-4c4c-8ae8-12844f2d6b8a",
+                         "A valid metadata value defined by a valid value definition.",
+                         ValidMetadataValueProperties.class),
+
+    /**
+     * A valid metadata value defined by a valid value definition.
+     */
+    TECHNOLOGY_TYPE("43b849bf-771d-429a-8663-fbfce5361025",
+                         "TechnologyType",
+                         OpenMetadataWikiPages.MODEL_0545_REFERENCE_DATA,
+                         "772a900b-cc0a-4da3-ae73-48cc98888a2f",
+                         "A valid metadata value describing a technology type stored in the deployedImplementationType attribute.",
+                         TechnologyTypeProperties.class),
+
+    /**
+     * A valid metadata value defined by a valid value definition.
+     */
+    SPECIFICATION_PROPERTY_VALUE("707222c6-4f26-4b87-b481-5a5ac003ea99",
+                         "SpecificationPropertyValue",
+                         OpenMetadataWikiPages.MODEL_0545_REFERENCE_DATA,
+                         "26670cc5-ad39-40e3-87f4-6f265ccf084a",
+                         "A description of a property that can be supplied to the linked element to control its operation.",
+                         SpecificationPropertyValueProperties.class),
 
     /**
      * An asset that contains trusted values for use as reference data.
@@ -4786,7 +4986,8 @@ public enum OpenMetadataType
                                   "ReferenceData",
                                   OpenMetadataWikiPages.MODEL_0545_REFERENCE_DATA,
                                   "2d88a635-81ee-4ad8-9e1b-7cccea448776",
-                                  "An asset that contains trusted values for use as reference data."),
+                                  "An asset that contains trusted values for use as reference data.",
+                                  ReferenceDataProperties.class),
 
     /**
      * Links a referenceable to its valid values.
@@ -4795,7 +4996,8 @@ public enum OpenMetadataType
                                          "ValidValuesAssignment",
                                          OpenMetadataWikiPages.MODEL_0545_REFERENCE_DATA,
                                          "5b4a2eb8-e959-4360-b4f0-298c504aeba7",
-                                         "Links a referenceable to its valid values."),
+                                         "Links a referenceable to its valid values.",
+                                         ValidValuesAssignmentProperties.class),
 
     /**
      * Enables valid values to be used as tags to help group and locate referenceables.
@@ -4804,17 +5006,19 @@ public enum OpenMetadataType
                                             "ReferenceValueAssignment",
                                             OpenMetadataWikiPages.MODEL_0545_REFERENCE_DATA,
                                             "94376fc4-7ca6-4650-8505-24d1127840e1",
-                                            "Enables valid values to be used as tags to help group and locate referenceables."),
+                                            "Enables valid values to be used as tags to help group and locate referenceables.",
+                                            ReferenceValueAssignmentProperties.class),
 
 
     /**
      * A link between a valid value representing a specification property and the element representing the implementation.
      */
     SPECIFICATION_PROPERTY_ASSIGNMENT_RELATIONSHIP("ae9118b0-b898-4f5b-968a-be3c17025580",
-                                            "SpecificationPropertyAssignment",
-                                            OpenMetadataWikiPages.MODEL_0545_REFERENCE_DATA,
-                                            "a161504d-861a-4eed-a7c6-4954c8ae837d",
-                                            "A link between a valid value representing a specification property and the element representing the implementation."),
+                                                   "SpecificationPropertyAssignment",
+                                                   OpenMetadataWikiPages.MODEL_0545_REFERENCE_DATA,
+                                                   "a161504d-861a-4eed-a7c6-4954c8ae837d",
+                                                   "A link between a valid value representing a specification property and the element representing the implementation.",
+                                                   SpecificationPropertyAssignmentProperties.class),
 
     /**
      * Represents an association between two valid values.
@@ -4823,7 +5027,8 @@ public enum OpenMetadataType
                                          "ValidValueAssociation",
                                          OpenMetadataWikiPages.MODEL_0545_REFERENCE_DATA,
                                          "3543498a-3afe-410e-bf8c-c7dc5ab03c0f",
-                                         "Represents an association between two valid values."),
+                                         "Represents an association between two valid values.",
+                                         ValidValueAssociationProperties.class),
 
     /**
      * Links valid value set to its child values.
@@ -4832,7 +5037,8 @@ public enum OpenMetadataType
                                     "ValidValueMember",
                                     OpenMetadataWikiPages.MODEL_0545_REFERENCE_DATA,
                                     "4974410c-952d-4c27-bc7a-172e195f1c6b",
-                                    "Links valid value definition to the child values it manages.  The parent valid value definition is then referred to as a valid values set."),
+                                    "Links valid value definition to the child values it manages.  The parent valid value definition is then referred to as a valid values set.",
+                                    ValidValueMemberProperties.class),
 
     /**
      * Identifies two valid values from different valid value sets (properties) that should be used together when in the same element for consistency.
@@ -4841,7 +5047,8 @@ public enum OpenMetadataType
                                          "ConsistentValidValues",
                                          OpenMetadataWikiPages.MODEL_0545_REFERENCE_DATA,
                                          "c82c3bbd-3ef4-46ed-9153-ca2ae56e1113",
-                                         "Identifies two valid values from different valid value sets (properties) that should be used together when in the same element for consistency."),
+                                         "Identifies two valid values from different valid value sets (properties) that should be used together when in the same element for consistency.",
+                                         ConsistentValidValuesProperties.class),
 
     /**
      * Link to an asset that implements the list of valid values.
@@ -4850,7 +5057,8 @@ public enum OpenMetadataType
                                    "ValidValuesImplementation",
                                    OpenMetadataWikiPages.MODEL_0545_REFERENCE_DATA,
                                    "4dc65e59-c376-464e-80bb-88783399e454",
-                                   "Link to an asset that implements the list of valid values."),
+                                   "Link to an asset that implements the list of valid values.",
+                                   ValidValuesImplementationProperties.class),
 
     /**
      * A link between two valid values from different valid value sets that have equivalent meanings and can be used to translate values from one set to another.
@@ -4859,7 +5067,8 @@ public enum OpenMetadataType
                                       "ValidValuesMapping",
                                       OpenMetadataWikiPages.MODEL_0545_REFERENCE_DATA,
                                       "b1e75f5d-0c80-49ee-8550-8e1a54b91cb6",
-                                      "A link between two valid values from different valid value sets that have equivalent meanings and can be used to translate values from one set to another."),
+                                      "A link between two valid values from different valid value sets that have equivalent meanings and can be used to translate values from one set to another.",
+                                      ValidValuesMappingProperties.class),
 
 
     /**
@@ -4876,73 +5085,20 @@ public enum OpenMetadataType
      */
     DESIGN_MODEL_ELEMENT("492e343f-2516-43b8-94b0-5bae0760dda6",
                          "DesignModelElement",
-                         OpenMetadataWikiPages.MODEL_0565_DESIGN_MODEL_ELEMENTS,
+                         OpenMetadataWikiPages.MODEL_0565_DESIGN_MODELS,
                          "ba357440-145c-4325-a33c-01e648513c23",
-                         "An abstract, but well-formed representation of a concept, activity, architecture or other design element."),
+                         "An abstract, but well-formed representation of a concept, activity, architecture or other design element.",
+                         DesignModelElementProperties.class),
 
     /**
      * A curated collection of design model elements.
      */
     DESIGN_MODEL("bf17143d-8605-48c2-ba80-64c2ac8f8379",
                  "DesignModel",
-                 OpenMetadataWikiPages.MODEL_0566_DESIGN_MODEL_ORG,
+                 OpenMetadataWikiPages.MODEL_0565_DESIGN_MODELS,
                  "dc91fec8-3ef1-47f3-acdf-7c6ce51f4351",
-                 "A curated collection of design model elements."),
-
-    /**
-     * A collection of related design model elements within a model.
-     */
-    DESIGN_MODEL_GROUP("b144ee2a-fa71-4897-b51a-dd5239c26910",
-                       "DesignModelGroup",
-                       OpenMetadataWikiPages.MODEL_0566_DESIGN_MODEL_ORG,
-                       "cf76adbb-3a46-4fb6-a9a6-080b879a63d1",
-                       "A collection of related design model elements within a model."),
-
-    /**
-     * Links a design model element to a group.
-     */
-    DESIGN_MODEL_GROUP_MEMBERSHIP_RELATIONSHIP("2dcfe62b-341c-4c3d-b336-a94a52c20556",
-                                               "DesignModelGroupMembership",
-                                               OpenMetadataWikiPages.MODEL_0566_DESIGN_MODEL_ORG,
-                                               "1dc7aa5a-f708-42fe-8de4-0da5059a9fb8",
-                                               "Links a design model element to a group."),
-
-    /**
-     * Links design model elements to their owning model.
-     */
-    DESIGN_MODEL_OWNERSHIP_RELATIONSHIP("d57043c2-eeab-4167-8d0d-2223af8aee93",
-                                        "DesignModelOwnership",
-                                        OpenMetadataWikiPages.MODEL_0566_DESIGN_MODEL_ORG,
-                                        "977c8b04-36f8-4eea-8550-686580bbb0aa",
-                                        "Links design model elements to their owning model."),
-
-    /**
-     * A selection of design model element needed for a project.
-     */
-    DESIGN_MODEL_SCOPE("788957f7-a203-45bd-994d-0ab018275821",
-                       "DesignModelScope",
-                       OpenMetadataWikiPages.MODEL_0568_DESIGN_MODEL_SCOPING,
-                       "0225762e-cc24-452b-af8c-1b87c5bd5805",
-                       "A selection of design model element needed for a project."),
-
-
-    /**
-     * Links a model to an implementation.
-     */
-    DESIGN_MODEL_ELEMENTS_IN_SCOPE_RELATIONSHIP("4ff6d91b-3836-4ba2-9ca9-87da91081faa",
-                                                "DesignModelElementsInScope",
-                                                OpenMetadataWikiPages.MODEL_0568_DESIGN_MODEL_SCOPING,
-                                                "59d19a45-77a9-4ea7-8c21-9f2684f383b5",
-                                                "Links a model to an implementation."),
-
-    /**
-     * Links a concept model to an implementation.
-     */
-    DESIGN_MODEL_IMPLEMENTATION_RELATIONSHIP("c5cb1362-07f6-486b-b80b-ba7922cacee9",
-                                             "DesignModelImplementation",
-                                             OpenMetadataWikiPages.MODEL_0569_DESIGN_MODEL_IMPL,
-                                             "7d16c709-552b-4843-b17e-02384c99da57",
-                                             "Links a concept model to an implementation."),
+                 "A curated collection of design model elements.",
+                 DesignModelProperties.class),
 
     /**
      * Identifies the element from a metadata model that this element embodies.
@@ -4954,31 +5110,24 @@ public enum OpenMetadataType
                                       "Identifies the element from a metadata model that this element embodies."),
 
     /**
-     * Identifies that a design model as a concept model.
-     */
-    CONCEPT_MODEL_CLASSIFICATION("7149c2de-5f24-4959-9b24-9d5e67709fac",
-                                 "ConceptModel",
-                                 OpenMetadataWikiPages.MODEL_0571_CONCEPT_MODELS,
-                                 "afb0861f-fe08-4b68-a832-16dbe792a15f",
-                                 "Identifies that a design model as a concept model."),
-
-    /**
-     * Identifies the coverage category of a concept bead attribute.
-     */
-    CONCEPT_BEAD_ATTRIBUTE_COVERAGE_CLASSIFICATION("f8b60afe-ddef-4b6f-9628-82ebfff34d65",
-                                                   "ConceptBeadAttributeCoverage",
-                                                   OpenMetadataWikiPages.MODEL_0571_CONCEPT_MODELS,
-                                                   "bcb67e57-52e8-42f3-881e-3f755ca02ae7",
-                                                   "Identifies the coverage category of a concept bead attribute."),
-
-    /**
      * An abstract, but well-formed representation of a concept.
      */
     CONCEPT_MODEL_ELEMENT("06659195-3111-4c91-8931-a65f655378d9",
                           "ConceptModelElement",
                           OpenMetadataWikiPages.MODEL_0571_CONCEPT_MODELS,
                           "bab09390-1aaf-47cf-8a5e-19363d4244e0",
-                          "An abstract, but well-formed representation of a concept."),
+                          "An abstract, but well-formed representation of a concept.",
+                          ConceptModelElementProperties.class),
+
+    /**
+     * A collection of concept model elements that describes the concepts for a design or implementation.
+     */
+    CONCEPT_MODEL("7834d6a6-46aa-4537-be1a-b51ba8213f53",
+                  "ConceptModel",
+                  OpenMetadataWikiPages.MODEL_0571_CONCEPT_MODELS,
+                  "c50d1493-03d8-4fbc-a7bc-5a7e556b9d43",
+                  "A collection of concept model elements that describes the concepts for a design or implementation.",
+                  ConceptModelProperties.class),
 
     /**
      * An abstract, but well-formed representation of a person, place or object.
@@ -4987,7 +5136,8 @@ public enum OpenMetadataType
                  "ConceptBead",
                  OpenMetadataWikiPages.MODEL_0571_CONCEPT_MODELS,
                  "f3d8f1e9-22c4-4ca9-b7a7-01a43f5e64f7",
-                 "An abstract, but well-formed representation of a person, place or object."),
+                 "An abstract, but well-formed representation of a person, place or object.",
+                 ConceptBeadProperties.class),
 
     /**
      * An abstract, but well-formed fact about a concept bead.
@@ -4996,44 +5146,90 @@ public enum OpenMetadataType
                            "ConceptBeadAttribute",
                            OpenMetadataWikiPages.MODEL_0571_CONCEPT_MODELS,
                            "298c47b9-f843-4b62-b017-e345b8300ed8",
-                           "An abstract, but well-formed fact about a concept bead."),
+                           "An abstract, but well-formed fact about a concept bead.",
+                           ConceptBeadAttributeProperties.class),
 
     /**
      * Links one end of a concept bead link relationship to a concept bead.
      */
-    CONCEPT_BEAD_RELATIONSHIP_END("1a379e55-a4c0-4289-a1a4-b89d257611d1",
-                                  "ConceptBeadRelationshipEnd",
-                                  OpenMetadataWikiPages.MODEL_0571_CONCEPT_MODELS,
-                                  "29e4ec95-1ab3-4a97-9157-1d7628ec664b",
-                                  "Links one end of a concept bead link relationship to a concept bead."),
+    CONCEPT_BEAD_RELATIONSHIP_END_RELATIONSHIP("1a379e55-a4c0-4289-a1a4-b89d257611d1",
+                                               "ConceptBeadRelationshipEnd",
+                                               OpenMetadataWikiPages.MODEL_0571_CONCEPT_MODELS,
+                                               "29e4ec95-1ab3-4a97-9157-1d7628ec664b",
+                                               "Links one end of a concept bead link relationship to a concept bead.",
+                                               ConceptBeadRelationshipEndProperties.class),
 
     /**
      * Links a concept bead to its attributes.
      */
-    CONCEPT_BEAN_ATTRIBUTE_LINK("5bad1df2-664b-407b-8036-2855e2ede92f",
-                                "ConceptBeadAttributeLink",
-                                OpenMetadataWikiPages.MODEL_0571_CONCEPT_MODELS,
-                                "1b6f0ca0-d9e1-4804-8f95-48e525e7f6d4",
-                                "Links a concept bead to its attributes."),
+    CONCEPT_BEAD_ATTRIBUTE_LINK_RELATIONSHIP("5bad1df2-664b-407b-8036-2855e2ede92f",
+                                             "ConceptBeadAttributeLink",
+                                             OpenMetadataWikiPages.MODEL_0571_CONCEPT_MODELS,
+                                             "1b6f0ca0-d9e1-4804-8f95-48e525e7f6d4",
+                                             "Links a concept bead to its attributes.",
+                                             ConceptBeadAttributeLinkProperties.class),
 
     /**
      * A relationship between concept beads.
      */
-    CONCEPT_BEAD_LINK("13defd95-6452-4398-8382-e47f1a271eff",
-                      "ConceptBeadLink",
-                      OpenMetadataWikiPages.MODEL_0571_CONCEPT_MODELS,
-                      "2b6315a9-d40d-43d7-bed9-ca1639cd826f",
-                      "A relationship between concept beads."),
+    CONCEPT_BEAD_RELATIONSHIP("13defd95-6452-4398-8382-e47f1a271eff",
+                              "ConceptBeadRelationship",
+                              OpenMetadataWikiPages.MODEL_0571_CONCEPT_MODELS,
+                              "2b6315a9-d40d-43d7-bed9-ca1639cd826f",
+                              "A relationship between concept beads.",
+                              ConceptBeadRelationshipProperties.class),
 
 
     /**
-     * This is a collection that describes the data requirements for a project or initiative..
+     * Creates an inheritance relationship between 2 concept beads.
+     */
+    IS_A_CONCEPT_BEAD_RELATIONSHIP("4455d9f3-f6a8-4999-8160-18d950db6285",
+                                   "IsAConceptBead",
+                                   OpenMetadataWikiPages.MODEL_0571_CONCEPT_MODELS,
+                                   "addd48da-30c7-4454-8cdd-e2aec54658e5",
+                                   "Creates an inheritance relationship between 2 concept beads.",
+                                   IsAConceptBeadProperties.class),
+
+    /**
+     * Links a concept bead to another concept bean that describes its type - this is where the type is complex, such as Address.
+     */
+    TYPED_BY_CONCEPT_BEAD_RELATIONSHIP("e2443b42-e969-4a83-82df-9aba3513dd4a",
+                                       "TypedByConceptBead",
+                                       OpenMetadataWikiPages.MODEL_0571_CONCEPT_MODELS,
+                                       "cd7596dc-e632-4a4c-b100-1efd112af2aa",
+                                       "Links a concept bead to another concept bean that describes its type - this is where the type is complex, such as Address.",
+                                       TypedByConceptBeadProperties.class),
+
+
+    /**
+     * Links a concept bead to another concept bead that provides attributes that are only valid in certain situations.
+     */
+    CONCEPT_BEAD_EXTENSION_RELATIONSHIP("b41fd13c-7f9b-4f29-a284-e994daf1b013",
+                                        "ConceptBeadExtension",
+                                        OpenMetadataWikiPages.MODEL_0571_CONCEPT_MODELS,
+                                        "20048c0e-6101-49b2-b125-c39c8eed3edc",
+                                        "Links a concept bead to another concept bead that provides attributes that are only valid in certain situations.",
+                                        ConceptBeadExtensionProperties.class),
+
+    /**
+     * Links a element to its concept model.
+     */
+    CONCEPT_DESIGN_RELATIONSHIP("75043479-3775-4195-b45a-154ccd308f93",
+                                "ConceptDesign",
+                                OpenMetadataWikiPages.MODEL_0571_CONCEPT_MODELS,
+                                "f8ad95eb-5c6f-4eaf-83d5-ca65831c1b32",
+                                "Links a element to its concept model.",
+                                ConceptDesignProperties.class),
+
+    /**
+     * This is a collection that describes the data requirements for a project or initiative.
      */
     DATA_SPEC_COLLECTION("781c5319-af83-4195-ada7-a44914f3e63a",
                          "DataSpec",
                          OpenMetadataWikiPages.MODEL_0580_DATA_DICTIONARIES,
                          "3d80f3ea-86d9-4a76-9531-d0ffd0650116",
-                         "This is a collection that describes the data requirements for a project or initiative."),
+                         "This is a collection that describes the data requirements for a project or initiative.",
+                         DataSpecProperties.class),
 
 
     /**
@@ -5043,16 +5239,28 @@ public enum OpenMetadataType
                                "DataDictionary",
                                OpenMetadataWikiPages.MODEL_0580_DATA_DICTIONARIES,
                                "88f2cf3d-5c6f-4b7a-b93e-8f14ea232bda",
-                               "This is an organized collection of defined data fields that can be used in a data specification to describe some desired data."),
+                               "This is an organized collection of defined data fields that can be used in a data specification to describe some desired data.",
+                               DataDictionaryProperties.class),
+
+    /**
+     * Represents an association between a referenceable, such as a digital product, and a collection of data fields that describes some data.
+     */
+    DATA_DESCRIPTION_RELATIONSHIP("c0708d78-20a6-4d07-8c80-09e87eccb93f",
+                                  "DataDescription",
+                                  OpenMetadataWikiPages.MODEL_0580_DATA_DICTIONARIES,
+                                  "3c1fb940-78d3-4216-8a3c-7bc80d3c167b",
+                                  "Represents an association between a referenceable, such as a digital product, and a collection of data fields that describes some data.",
+                                  DataDescriptionProperties.class),
 
     /**
      * A list of data fields that describe the structure of a data source.
      */
     DATA_STRUCTURE("99fbb751-853e-442f-ba7c-530bea17db9c",
-               "DataStructure",
-               OpenMetadataWikiPages.MODEL_0580_DATA_DICTIONARIES,
-               "4bd1faa7-90b5-409b-8f5e-5458d1075fea",
-               "A list of data fields that describe the structure of a data source."),
+                   "DataStructure",
+                   OpenMetadataWikiPages.MODEL_0580_DATA_DICTIONARIES,
+                   "4bd1faa7-90b5-409b-8f5e-5458d1075fea",
+                   "A list of data fields that describe the structure of a data source.",
+                   DataStructureProperties.class),
 
     /**
      * A description of a data field.
@@ -5061,7 +5269,8 @@ public enum OpenMetadataType
                "DataField",
                OpenMetadataWikiPages.MODEL_0580_DATA_DICTIONARIES,
                "3ae9c615-b214-46e2-b8d6-2f5eae14e0a3",
-               "A description of a data field."),
+               "A description of a data field.",
+               DataFieldProperties.class),
 
 
     /**
@@ -5081,7 +5290,8 @@ public enum OpenMetadataType
                                    "MemberDataField",
                                    OpenMetadataWikiPages.MODEL_0580_DATA_DICTIONARIES,
                                    "604abf7a-4456-447f-8232-a3e5782dba36",
-                                   "Represents an association between a data structure and one of its data fields."),
+                                   "Represents an association between a data structure and one of its data fields.",
+                                   MemberDataFieldProperties.class),
 
     /**
      * Represents an association between a data structure that describes a data source and a certification type that indicates that certified elements conform to the data structure and associated definitions (such as glossary term and data class).
@@ -5090,7 +5300,8 @@ public enum OpenMetadataType
                                            "DataStructureDefinition",
                                            OpenMetadataWikiPages.MODEL_0580_DATA_DICTIONARIES,
                                            "d495bec1-5aef-47ed-99df-7a22ee98d107",
-                                           "Represents an association between a data structure that describes a data source and a certification type that indicates that certified elements conform to the data structure and associated definitions (such as glossary term and data class)."),
+                                           "Represents an association between a data structure that describes a data source and a certification type that indicates that certified elements conform to the data structure and associated definitions (such as glossary term and data class).",
+                                           DataStructureDefinitionProperties.class),
 
     /**
      * Represents an association between two data fields in a schema.  This may describe a full relationship in the schema (for example, in a relational schema) or a relationship end (for example, in a graph schema).
@@ -5108,7 +5319,8 @@ public enum OpenMetadataType
                                    "NestedDataField",
                                    OpenMetadataWikiPages.MODEL_0581_DATA_FIELD_IMPLEMENTATION,
                                    "9d5e3850-6f11-4a10-b912-c23a3d5dd663",
-                                   "Data field nested under a single parent data field."),
+                                   "Data field nested under a single parent data field.",
+                                   NestedDataFieldProperties.class),
 
     /**
      * Link between data field analysis and the identified schema attribute definition.
@@ -5160,7 +5372,8 @@ public enum OpenMetadataType
                   "SurveyReport",
                   OpenMetadataWikiPages.MODEL_0603_SURVEY_REPORTS,
                   "97b45655-4393-499b-a997-589015342284",
-                  "A set of results describing the analysis from the execution of a survey action service."),
+                  "A set of results describing the analysis from the execution of a survey action service.",
+                  SurveyReportProperties.class),
 
     /**
      * Link between a SurveyReport and an Annotation generated from the same run of a survey action service.
@@ -5169,7 +5382,8 @@ public enum OpenMetadataType
                                      "ReportedAnnotation",
                                      OpenMetadataWikiPages.MODEL_0610_ANNOTATIONS,
                                      "69b91341-3f40-4e0a-a78d-cc6ff0aa524a",
-                                     "Link between a SurveyReport and an Annotation generated from the same run of a survey action service."),
+                                     "Link between a SurveyReport and an Annotation generated from the same run of a survey action service.",
+                                     ReportedAnnotationProperties.class),
 
     /**
      * Link between an element and an Annotation that describes a characteristic of its associated real-world counterpart.
@@ -5178,7 +5392,8 @@ public enum OpenMetadataType
                                        "AssociatedAnnotation",
                                        OpenMetadataWikiPages.MODEL_0610_ANNOTATIONS,
                                        "09b7622e-e0ea-4197-8f82-83fe69fb70de",
-                                       "Link between an element and an Annotation that describes a characteristic of its associated real-world counterpart."),
+                                       "Link between an element and an Annotation that describes a characteristic of its associated real-world counterpart.",
+                                       AssociatedAnnotationProperties.class),
 
     /**
      * A set of results from specific analysis of a resource by a survey action service.
@@ -5187,7 +5402,8 @@ public enum OpenMetadataType
                "Annotation",
                OpenMetadataWikiPages.MODEL_0610_ANNOTATIONS,
                "42de3ec5-b76f-45b7-98b3-7b09d3d4e76a",
-               "A set of results from specific analysis of a resource by a survey action service."),
+               "A set of results from specific analysis of a resource by a survey action service.",
+               AnnotationProperties.class),
 
 
     /**
@@ -5197,7 +5413,8 @@ public enum OpenMetadataType
                           "DataFieldAnnotation",
                           OpenMetadataWikiPages.MODEL_0610_ANNOTATIONS,
                           "772b7c96-0838-4b96-8547-6e581b93e8d2",
-                          "A collection of properties about a data field, or number of data fields, in an Asset."),
+                          "A collection of properties about a data field, or number of data fields, in an Asset.",
+                          DataFieldAnnotationProperties.class),
 
     /**
      * Additional information to augment an annotation.
@@ -5206,7 +5423,8 @@ public enum OpenMetadataType
                                       "AnnotationExtension",
                                       OpenMetadataWikiPages.MODEL_0610_ANNOTATIONS,
                                       "8b4fd712-505a-4d9c-a39d-3e23e0cbcd0e",
-                                      "Additional information to augment an annotation."),
+                                      "Additional information to augment an annotation.",
+                                      AnnotationExtensionProperties.class),
 
     /**
      * The results of a stewardship review of an annotation.
@@ -5215,16 +5433,9 @@ public enum OpenMetadataType
                       "AnnotationReview",
                       OpenMetadataWikiPages.MODEL_0610_ANNOTATIONS,
                       "0b625826-4663-44a0-b524-b04e1eddd7d0",
-                      "The results of a stewardship review of an annotation."),
+                      "The results of a stewardship review of an annotation.",
+                      AnnotationReviewProperties.class),
 
-    /**
-     * Review results for an annotation.
-     */
-    ANNOTATION_REVIEW_LINK_RELATIONSHIP("5d3c2fb7-fa04-4d77-83cb-fd9216a07769",
-                                        "AnnotationReviewLink",
-                                        OpenMetadataWikiPages.MODEL_0610_ANNOTATIONS,
-                                        "d6e66e06-5f3f-45cc-b6eb-f951b423603b",
-                                        "Review results for an annotation."),
 
     /**
      * A description of the internal structure of an Asset.
@@ -5233,7 +5444,8 @@ public enum OpenMetadataType
                                "SchemaAnalysisAnnotation",
                                OpenMetadataWikiPages.MODEL_0615_SCHEMA_EXTRACTION,
                                "32dde7be-5c68-41ea-89f4-31b53fa2e9f2",
-                               "A description of the internal structure of an Asset."),
+                               "A description of the internal structure of an Asset.",
+                               SchemaAnalysisAnnotationProperties.class),
 
     /**
      * Link between schema analysis annotation and the identified schema type definition.
@@ -5242,7 +5454,8 @@ public enum OpenMetadataType
                                         "DiscoveredSchemaType",
                                         OpenMetadataWikiPages.MODEL_0615_SCHEMA_EXTRACTION,
                                         "3be9ad33-e88a-465f-a2a9-db2228eac90c",
-                                        "Link between schema analysis annotation and the identified schema type definition."),
+                                        "Link between schema analysis annotation and the identified schema type definition.",
+                                        DiscoveredSchemaTypeProperties.class),
 
     /**
      * Attached data field level annotations.
@@ -5251,7 +5464,8 @@ public enum OpenMetadataType
                               "ClassificationAnnotation",
                               OpenMetadataWikiPages.MODEL_0635_CLASSIFICATION_DISCOVERY,
                               "6a2b2805-5e59-48d9-af11-92472a3650d4",
-                              "Attached data field level annotations."),
+                              "Attached data field level annotations.",
+                              ClassificationAnnotationProperties.class),
 
     /**
      * A collection of properties that characterize an aspect of a resource.
@@ -5260,7 +5474,8 @@ public enum OpenMetadataType
                                 "ResourceProfileAnnotation",
                                 OpenMetadataWikiPages.MODEL_0620_RESOURCE_PROFILING,
                                 "e1ba2eb5-bf03-4dc0-ab7e-0d99ba6ece55",
-                                "A collection of properties that characterize an aspect of a resource."),
+                                "A collection of properties that characterize an aspect of a resource.",
+                                ResourceProfileAnnotationProperties.class),
 
     /**
      * A link to a log file containing profile measures for a resource.
@@ -5269,7 +5484,8 @@ public enum OpenMetadataType
                                     "ResourceProfileLogAnnotation",
                                     OpenMetadataWikiPages.MODEL_0620_RESOURCE_PROFILING,
                                     "016944a4-5a11-4351-9b09-b4e4056d4816",
-                                    "A link to a log file containing profile measures for a resource."),
+                                    "A link to a log file containing profile measures for a resource.",
+                                    ResourceProfileLogAnnotationProperties.class),
 
     /**
      * An annotation capturing digital resource fingerprint information.
@@ -5278,7 +5494,8 @@ public enum OpenMetadataType
                            "FingerprintAnnotation",
                            OpenMetadataWikiPages.MODEL_0620_RESOURCE_PROFILING,
                            "dde4798b-0a23-4fe1-bdf6-ab91655c55c2",
-                           "An annotation capturing digital resource fingerprint information."),
+                           "An annotation capturing digital resource fingerprint information.",
+                           FingerprintAnnotationProperties.class),
 
     /**
      * An assessment of the match between a data class and the values stored in a data field, or number of data fields, in a resource.
@@ -5287,7 +5504,8 @@ public enum OpenMetadataType
                           "DataClassAnnotation",
                           OpenMetadataWikiPages.MODEL_0625_DATA_CLASS_DISCOVERY,
                           "d0c467cf-6be0-4bf0-9260-6a5aeeee1e52",
-                          "An assessment of the match between a data class and the values stored in a data field, or number of data fields, in a resource."),
+                          "An assessment of the match between a data class and the values stored in a data field, or number of data fields, in a resource.",
+                          DataClassAnnotationProperties.class),
 
     /**
      * The link between a data class annotation and the matching data class.
@@ -5296,7 +5514,8 @@ public enum OpenMetadataType
                                   "DataClassMatch",
                                   OpenMetadataWikiPages.MODEL_0625_DATA_CLASS_DISCOVERY,
                                   "f9727e59-ad9e-4d56-8510-38d8910825c9",
-                                  "The link between a data class annotation and the matching data class."),
+                                  "The link between a data class annotation and the matching data class.",
+                                  DataClassMatchProperties.class),
 
     /**
      * A recommendation of likely mappings to Glossary Terms for all or part of an Asset.
@@ -5305,7 +5524,8 @@ public enum OpenMetadataType
                         "SemanticAnnotation",
                         OpenMetadataWikiPages.MODEL_0630_SEMANTIC_DISCOVERY,
                         "231f71f9-300c-453b-aa65-02a155ec5804",
-                        "A recommendation of likely mappings to Glossary Terms for all or part of an Asset."),
+                        "A recommendation of likely mappings to Glossary Terms for all or part of an Asset.",
+                        SemanticAnnotationProperties.class),
 
     /**
      * A calculation of the level of quality found in the values associated with a resource.
@@ -5314,7 +5534,8 @@ public enum OpenMetadataType
                        "QualityAnnotation",
                        OpenMetadataWikiPages.MODEL_0640_QUALITY_SCORES,
                        "b9a28f99-3f10-480f-9e00-81a552de69ca",
-                       "A calculation of the level of quality found in the values associated with a resource."),
+                       "A calculation of the level of quality found in the values associated with a resource.",
+                       QualityAnnotationProperties.class),
 
     /**
      * A recommendation of the relationships that could be added to all or part of an asset.
@@ -5323,16 +5544,8 @@ public enum OpenMetadataType
                                    "RelationshipAdviceAnnotation",
                                    OpenMetadataWikiPages.MODEL_0650_RELATIONSHIP_DISCOVERY,
                                    "b38ac277-4279-4c6a-bfd6-12b3aeaa0a1e",
-                                   "A recommendation of the relationships that could be added to all or part of an Asset."),
-
-    /**
-     * Annotation relating two referenceables.
-     */
-    RELATIONSHIP_ANNOTATION_RELATIONSHIP("73510abd-49e6-4097-ba4b-23bd3ef15baa",
-                                         "RelationshipAnnotation",
-                                         OpenMetadataWikiPages.MODEL_0650_RELATIONSHIP_DISCOVERY,
-                                         "d67a16de-407a-48d0-8011-4f7f3a3e4c85",
-                                         "Annotation relating two referenceables."),
+                                   "A recommendation of the relationships that could be added to all or part of an Asset.",
+                                   RelationshipAdviceAnnotationProperties.class),
 
     /**
      * A summary set of measurements for a resource.
@@ -5341,7 +5554,8 @@ public enum OpenMetadataType
                                 "ResourceMeasureAnnotation",
                                 OpenMetadataWikiPages.MODEL_0660_MEASUREMENTS,
                                 "dbb4a6af-67af-449d-a5a6-b12bf6933955",
-                                "A summary set of measurements for a resource."),
+                                "A summary set of measurements for a resource.",
+                                ResourceMeasureAnnotationProperties.class),
 
     /**
      * A set of summary properties about the physical status of a resource.
@@ -5350,7 +5564,8 @@ public enum OpenMetadataType
                                         "ResourcePhysicalStatusAnnotation",
                                         OpenMetadataWikiPages.MODEL_0660_MEASUREMENTS,
                                         "109a8865-2ead-452e-b72f-9d9e09b2763f",
-                                        "A set of summary properties about the physical status of a resource."),
+                                        "A set of summary properties about the physical status of a resource.",
+                                        ResourcePhysicalStatusAnnotationProperties.class),
 
     /**
      * A request for a stewardship action to be initiated against an element.
@@ -5359,16 +5574,18 @@ public enum OpenMetadataType
                                   "RequestForAction",
                                   OpenMetadataWikiPages.MODEL_0690_REQUEST_FOR_ACTION,
                                   "2a94d1d6-ead8-4d57-a419-90c8704a27a2",
-                                  "A request for a stewardship action to be initiated against an element."),
+                                  "A request for a stewardship action to be initiated against an element.",
+                                  RequestForActionProperties.class),
 
     /**
      * A link to the element that should be acted upon by the resulting action.
      */
-    REQUEST_FOR_ACTION_TARGET("b6943670-93aa-4ce5-a00a-a50581de997d",
-                                  "RequestForActionTarget",
-                                  OpenMetadataWikiPages.MODEL_0690_REQUEST_FOR_ACTION,
-                                  "c2d0f01b-25f8-412f-abb1-2e88c9fba1e4",
-                                  "A link to the element that should be acted upon by the resulting action."),
+    REQUEST_FOR_ACTION_TARGET_RELATIONSHIP("b6943670-93aa-4ce5-a00a-a50581de997d",
+                                           "RequestForActionTarget",
+                                           OpenMetadataWikiPages.MODEL_0690_REQUEST_FOR_ACTION,
+                                           "c2d0f01b-25f8-412f-abb1-2e88c9fba1e4",
+                                           "A link to the element that should be acted upon by the resulting action.",
+                                           RequestForActionTargetProperties.class),
 
     /**
      * Link to the external data resource containing the surveyed resource's profile data.
@@ -5377,7 +5594,8 @@ public enum OpenMetadataType
                                        "ResourceProfileData",
                                        OpenMetadataWikiPages.MODEL_0620_RESOURCE_PROFILING,
                                        "11050162-ed05-4e5a-8a72-872c50001b5b",
-                                       "Link to the external data resource containing the surveyed resource's profile data."),
+                                       "Link to the external data resource containing the surveyed resource's profile data.",
+                                       ResourceProfileDataProperties.class),
 
 
     /* ============================================================================================================================*/
@@ -5391,7 +5609,8 @@ public enum OpenMetadataType
                                             "DigitalProductDependency",
                                             OpenMetadataWikiPages.MODEL_0710_DIGITAL_PRODUCT,
                                             "db671b3f-3468-4b6c-bdde-23244f5f001a",
-                                            "Relationship identifying dependencies between digital products."),
+                                            "Relationship identifying dependencies between digital products.",
+                                            DigitalProductDependencyProperties.class),
 
     /**
      * A digital product is a collection of digital resources that have been designed to meet a specific consumer need.
@@ -5400,17 +5619,41 @@ public enum OpenMetadataType
                     "DigitalProduct",
                     OpenMetadataWikiPages.MODEL_0710_DIGITAL_PRODUCT,
                     "6751673f-a4e7-4b64-84e4-4c59163d0102",
-                    "A digital product is a collection of digital resources that have been designed to meet a specific consumer need."),
+                    "A digital product is a collection of digital resources that have been designed to meet a specific consumer need.",
+                    DigitalProductProperties.class),
 
 
     /**
-     * Person managing a digital product.
+     * A collection of digital products designed to be used together.
+     */
+    DIGITAL_PRODUCT_FAMILY("e6a382aa-c89e-41ac-89a9-fe86db03143a",
+                           "DigitalProductFamily",
+                           OpenMetadataWikiPages.MODEL_0710_DIGITAL_PRODUCT,
+                           "e4f983fe-800d-4d4c-bcd4-0ed5b467d36d",
+                           "A collection of digital products designed to be used together.",
+                           DigitalProductFamilyProperties.class),
+
+
+    /**
+     * Role responsible for managing a digital product.
      */
     DIGITAL_PRODUCT_MANAGER("6dfba6ce-e925-4281-880d-d04100c5b991",
                             "DigitalProductManager",
                             OpenMetadataWikiPages.MODEL_0710_DIGITAL_PRODUCT,
                             "6057d7a8-4b7f-4d37-95dd-513c131c7381",
-                            "Person managing a digital product."),
+                            "Role responsible for managing a digital product.",
+                            DigitalProductManagerProperties.class),
+
+
+    /**
+     * A collection of digital products.
+     */
+    DIGITAL_PRODUCT_CATALOG("e2c351b9-0f52-4200-bbc5-19d1fe1e3781",
+                            "DigitalProductCatalog",
+                            OpenMetadataWikiPages.MODEL_0710_DIGITAL_PRODUCT,
+                            "f2ee3ae0-773d-4a9e-ba0a-248950aa1d74",
+                            "A collection of digital products.",
+                            DigitalProductCatalogProperties.class),
 
 
     /**
@@ -5420,7 +5663,8 @@ public enum OpenMetadataType
                          "DigitalSubscription",
                          OpenMetadataWikiPages.MODEL_0711_DIGITAL_SUBSCRIPTION,
                          "71fe7c8b-d1de-4090-8b18-1855cb8f89b3",
-                         "A specialized agreement that represents a subscription to a digital service such as a digital product."),
+                         "A specialized agreement that represents a subscription to a digital service such as a digital product.",
+                         DigitalSubscriptionProperties.class),
 
     /**
      * The link between a digital subscriber and the subscription details.
@@ -5429,7 +5673,19 @@ public enum OpenMetadataType
                                     "DigitalSubscriber",
                                     OpenMetadataWikiPages.MODEL_0711_DIGITAL_SUBSCRIPTION,
                                     "60dac0a2-8326-4321-ad88-92b343ef89d2",
-                                    "The link between a digital subscriber and the subscription details."),
+                                    "The link between a digital subscriber and the subscription details.",
+                                    DigitalSubscriberProperties.class),
+
+
+    /**
+     * Relationship identifying the digital services supporting each business capability.
+     */
+    DIGITAL_SUPPORT_RELATIONSHIP("9e187e1e-2547-46bd-b0ee-c33ac6df4a1f",
+                                 "DigitalSupport",
+                                 OpenMetadataWikiPages.MODEL_0715_DIGITAL_BUSINESS,
+                                 "79f27291-ed2f-4012-a603-3e3aca5bcbe7",
+                                 "Relationship identifying the digital services supporting each business capability.",
+                                 DigitalSupportProperties.class),
 
 
     /**
@@ -5437,19 +5693,21 @@ public enum OpenMetadataType
      */
     BUSINESS_CAPABILITY("7cc6bcb2-b573-4719-9412-cf6c3f4bbb15",
                         "BusinessCapability",
-                        OpenMetadataWikiPages.MODEL_0715_DIGITAL_PRODUCT_MANAGEMENT,
+                        OpenMetadataWikiPages.MODEL_0715_DIGITAL_BUSINESS,
                         "102f73be-7baf-4a10-997e-41e6eb42d66b",
-                        "Describes a function, capability or skill set."),
+                        "Describes a function, capability or skill set.",
+                        BusinessCapabilityProperties.class),
 
 
     /**
      * Describes the dependency relationship between business capabilities.
      */
     BUSINESS_CAPABILITY_DEPENDENCY_RELATIONSHIP("d3959ca9-24ef-4d3f-b524-0cc5956370c4",
-                                          "BusinessCapabilityDependency",
-                                          OpenMetadataWikiPages.MODEL_0715_DIGITAL_PRODUCT_MANAGEMENT,
-                                          "2673f14b-30bb-4a53-8ca8-30806bf7a6e9",
-                                          "Describes the dependency relationship between business capabilities."),
+                                                "BusinessCapabilityDependency",
+                                                OpenMetadataWikiPages.MODEL_0715_DIGITAL_BUSINESS,
+                                                "2673f14b-30bb-4a53-8ca8-30806bf7a6e9",
+                                                "Describes the dependency relationship between business capabilities.",
+                                                BusinessCapabilityDependencyProperties.class),
 
     /**
      * A description of a managed flow of information between multiple systems.
@@ -5458,16 +5716,9 @@ public enum OpenMetadataType
                              "InformationSupplyChain",
                              OpenMetadataWikiPages.MODEL_0720_INFORMATION_SUPPLY_CHAINS,
                              "aebbe57c-ebe6-48ff-bfd1-ce76f16f86b2",
-                             "A description of a managed flow of information between multiple systems."),
+                             "A description of a managed flow of information between multiple systems.",
+                             InformationSupplyChainProperties.class),
 
-    /**
-     * Relationship identifying the segments belonging to an information supply chain.
-     */
-    INFORMATION_SUPPLY_CHAIN_COMPOSITION_RELATIONSHIP("fcdccfa3-e9f0-4543-8720-1958799fb6dc",
-                                                      "InformationSupplyChainComposition",
-                                                      OpenMetadataWikiPages.MODEL_0720_INFORMATION_SUPPLY_CHAINS,
-                                                      "4eef2329-66cd-48ed-9e07-3c64cee41e8c",
-                                                      "Relationship identifying the segments belonging to an information supply chain."),
 
     /**
      * Relationship identifying the flow between segments in an information supply chain.
@@ -5476,7 +5727,8 @@ public enum OpenMetadataType
                                                "InformationSupplyChainLink",
                                                OpenMetadataWikiPages.MODEL_0720_INFORMATION_SUPPLY_CHAINS,
                                                "cbac3fcc-b685-4e99-abb3-d1a14061ffee",
-                                               "Relationship identifying the flow between segments in an information supply chain."),
+                                               "Relationship identifying the flow between segments in an information supply chain.",
+                                               InformationSupplyChainLinkProperties.class),
 
 
     /**
@@ -5486,7 +5738,8 @@ public enum OpenMetadataType
                        "SolutionComponent",
                        OpenMetadataWikiPages.MODEL_0730_SOLUTION_COMPONENTS,
                        "ff30e402-2f52-4dbf-85af-9d7ba0267fa8",
-                       "Description of a well-defined capability within a solution."),
+                       "Description of a well-defined capability within a solution.",
+                       SolutionComponentProperties.class),
 
     /**
      * Relationship showing the nesting structure of solution components.
@@ -5495,7 +5748,8 @@ public enum OpenMetadataType
                                       "SolutionComposition",
                                       OpenMetadataWikiPages.MODEL_0730_SOLUTION_COMPONENTS,
                                       "13594adb-47c6-49f2-80ac-565641588772",
-                                      "Relationship showing the nesting structure of solution components."),
+                                      "Relationship showing the nesting structure of solution components.",
+                                      SolutionCompositionProperties.class),
 
     /**
      * An actor role that is designed for interacting with a solution.
@@ -5504,7 +5758,8 @@ public enum OpenMetadataType
                         "SolutionActorRole",
                         OpenMetadataWikiPages.MODEL_0730_SOLUTION_COMPONENTS,
                         "44582ded-a6a2-4750-b428-c0a3bd021c7a",
-                        "An actor role that is designed for interacting with a solution."),
+                        "An actor role that is designed for interacting with a solution.",
+                        SolutionActorRoleProperties.class),
 
 
     /**
@@ -5514,7 +5769,8 @@ public enum OpenMetadataType
                                           "SolutionComponentActor",
                                           OpenMetadataWikiPages.MODEL_0730_SOLUTION_COMPONENTS,
                                           "a148f1d4-adcf-4a6b-934f-d5c74b91c8f0",
-                                          "An actor that is interacting with the solution component."),
+                                          "An actor that is interacting with the solution component.",
+                                          SolutionComponentActorProperties.class),
 
 
     /**
@@ -5524,16 +5780,18 @@ public enum OpenMetadataType
                                        "SolutionLinkingWire",
                                        OpenMetadataWikiPages.MODEL_0735_SOLUTION_PORTS_AND_WIRES,
                                        "9a207086-ce67-4419-a6c0-bcdd478648c3",
-                                       "Connection between two solution components/ports that shows how data flows."),
+                                       "Connection between two solution components/ports that shows how data flows.",
+                                       SolutionLinkingWireProperties.class),
 
     /**
      * An external endpoint for a solution component.
      */
     SOLUTION_PORT("62ef448c-d4c1-4c94-a565-5e5625f6a57b",
-                  "SolutionPortElement",
+                  "SolutionPort",
                   OpenMetadataWikiPages.MODEL_0735_SOLUTION_PORTS_AND_WIRES,
                   "7cef363f-9ea0-4f0b-9a86-145eb280be09",
-                  "An external endpoint for a solution component."),
+                  "An external endpoint for a solution component.",
+                  SolutionPortProperties.class),
 
     /**
      * Link between a solution component and its ports.
@@ -5542,7 +5800,8 @@ public enum OpenMetadataType
                                          "SolutionComponentPort",
                                          OpenMetadataWikiPages.MODEL_0735_SOLUTION_PORTS_AND_WIRES,
                                          "f92d07cf-5c73-455d-890e-d2e856ea8467",
-                                         "Link between a solution component and its ports."),
+                                         "Link between a solution component and its ports.",
+                                         SolutionComponentPortProperties.class),
 
     /**
      * Aligns ports from nested components with the parent's.
@@ -5551,25 +5810,18 @@ public enum OpenMetadataType
                                           "SolutionPortDelegation",
                                           OpenMetadataWikiPages.MODEL_0735_SOLUTION_PORTS_AND_WIRES,
                                           "eb2de5b6-bf82-43cc-a50c-fc6588cd2a46",
-                                          "Aligns ports from nested components with the parent's."),
-
-    /**
-     * Identifies the structure of data passed through a solution port.
-     */
-    SOLUTION_PORT_SCHEMA_RELATIONSHIP("bf02c703-57a2-4ab7-b6db-f49b57b05985",
-                                      "SolutionPortSchema",
-                                      OpenMetadataWikiPages.MODEL_0735_SOLUTION_PORTS_AND_WIRES,
-                                      "63e2ac1e-394f-47f6-87a6-7ae4ebed0887",
-                                      "Identifies the structure of data passed through a solution port."),
+                                          "Aligns ports from nested components with the parent's.",
+                                          SolutionPortDelegationProperties.class),
 
     /**
      * Identifies a useful component for creating an implementation of the parent.
      */
     IMPLEMENTATION_RESOURCE_RELATIONSHIP("c254256e-ca56-4155-96d1-93cf52e68d41",
-                                "ImplementationResource",
-                                OpenMetadataWikiPages.MODEL_0737_SOLUTION_IMPLEMENTATION,
-                                "0802f7f8-ad1a-449b-9a57-611a668f5bde",
-                                "Identifies a useful component for creating an implementation of the parent."),
+                                         "ImplementationResource",
+                                         OpenMetadataWikiPages.MODEL_0737_SOLUTION_IMPLEMENTATION,
+                                         "0802f7f8-ad1a-449b-9a57-611a668f5bde",
+                                         "Identifies a useful component for creating an implementation of the parent.",
+                                         ImplementationResourceProperties.class),
 
 
     /**
@@ -5579,7 +5831,8 @@ public enum OpenMetadataType
                                 "ImplementedBy",
                                 OpenMetadataWikiPages.MODEL_0737_SOLUTION_IMPLEMENTATION,
                                 "0aaa89b5-e05a-4b63-ba13-e05e91bd339b",
-                                "Identifies a step in the refinement of digital components and artifacts from design to concrete implementation."),
+                                "Identifies a step in the refinement of digital components and artifacts from design to concrete implementation.",
+                                ImplementedByProperties.class),
 
     /**
      * Collection of solution components that make up a solution for digital services such as digital products.
@@ -5588,16 +5841,8 @@ public enum OpenMetadataType
                        "SolutionBlueprint",
                        OpenMetadataWikiPages.MODEL_0740_SOLUTION_BLUEPRINTS,
                        "92042d1e-3717-4343-b111-72a0aaa7f63e",
-                       "Collection of solution components that make up a solution for digital services such as digital products.."),
-
-    /**
-     * Link between a solution blueprint and a solution component.
-     */
-    SOLUTION_BLUEPRINT_COMPOSITION_RELATIONSHIP("f1ae975f-f11a-467b-8c7a-b023081e4712",
-                                                "SolutionBlueprintComposition",
-                                                OpenMetadataWikiPages.MODEL_0740_SOLUTION_BLUEPRINTS,
-                                                "fc4c9bea-a93e-47d7-b812-25eae2fc4e65",
-                                                "Link between a solution blueprint and a solution component."),
+                       "Collection of solution components that make up a solution for digital services such as digital products.",
+                       SolutionBlueprintProperties.class),
 
     /**
      * Relationship identifying the solution blueprint for a digital service such as a digital product.
@@ -5606,7 +5851,8 @@ public enum OpenMetadataType
                                  "SolutionDesign",
                                  OpenMetadataWikiPages.MODEL_0740_SOLUTION_BLUEPRINTS,
                                  "490e2745-247c-4053-b50c-fff1548908e1",
-                                 "Relationship identifying the solution blueprint for a digital service such as a digital product."),
+                                 "Relationship identifying the solution blueprint for a digital service such as a digital product.",
+                                 SolutionDesignProperties.class),
 
 
     /**
@@ -5616,7 +5862,8 @@ public enum OpenMetadataType
                            "DataFlow",
                            OpenMetadataWikiPages.MODEL_0750_DATA_PASSING,
                            "e965ab1e-5c04-44a9-b301-3b359e6f169f",
-                           "Shows that data flows in one direction from one element to another."),
+                           "Shows that data flows in one direction from one element to another.",
+                           DataFlowProperties.class),
 
     /**
      * Shows that when one element completes processing, control passes to the next element.
@@ -5625,7 +5872,8 @@ public enum OpenMetadataType
                               "ControlFlow",
                               OpenMetadataWikiPages.MODEL_0750_DATA_PASSING,
                               "ce664de9-b65e-443e-bf58-15e8e44503d3",
-                              "Shows that when one element completes processing, control passes to the next element."),
+                              "Shows that when one element completes processing, control passes to the next element.",
+                              ControlFlowProperties.class),
 
     /**
      * Shows a request-response call between two elements.
@@ -5634,7 +5882,8 @@ public enum OpenMetadataType
                               "ProcessCall",
                               OpenMetadataWikiPages.MODEL_0750_DATA_PASSING,
                               "e5892596-1be2-4a22-9fb0-2aae6627f127",
-                              "Shows a request-response call between two elements."),
+                              "Shows a request-response call between two elements.",
+                              ProcessCallProperties.class),
 
     /**
      * Links a node in the lineage graph to its ultimate source - ie the node at the start of the lineage data flow.
@@ -5643,7 +5892,8 @@ public enum OpenMetadataType
                     "UltimateSource",
                     OpenMetadataWikiPages.MODEL_0755_ULTIMATE_SOURCE_DESTINATION,
                     "f85c52e9-cbfa-4e8c-9a54-17c0e0576cef",
-                    "Links a node in the lineage graph to its ultimate source - ie the node at the start of the lineage data flow."),
+                    "Links a node in the lineage graph to its ultimate source - ie the node at the start of the lineage data flow.",
+                    UltimateSourceProperties.class),
 
     /**
      * Links a node in the lineage graph to its ultimate destination - ie the node at the end of the lineage data flow.
@@ -5652,7 +5902,8 @@ public enum OpenMetadataType
                          "UltimateDestination",
                          OpenMetadataWikiPages.MODEL_0755_ULTIMATE_SOURCE_DESTINATION,
                          "f8e24bca-3fe7-48f6-af28-48a1cc9f18e7",
-                         "Links a node in the lineage graph to its ultimate destination - ie the node at the end of the lineage data flow."),
+                         "Links a node in the lineage graph to its ultimate destination - ie the node at the end of the lineage data flow.",
+                         UltimateDestinationProperties.class),
 
 
     /**
@@ -5662,7 +5913,8 @@ public enum OpenMetadataType
                                            "DigitalResourceOrigin",
                                            OpenMetadataWikiPages.MODEL_0755_ULTIMATE_SOURCE_DESTINATION,
                                            "55349176-4812-475b-abd4-34cd92e4a9d0",
-                                           "Describes the origin of a digital resource, or a collection of digital resources."),
+                                           "Describes the origin of a digital resource, or a collection of digital resources.",
+                                           DigitalResourceOriginProperties.class),
 
 
     /**
@@ -5681,7 +5933,8 @@ public enum OpenMetadataType
                                  "LineageMapping",
                                  OpenMetadataWikiPages.MODEL_0770_LINEAGE_MAPPING,
                                  "a1c53199-2c7c-4709-8e64-6ba1b303d5e3",
-                                 "A lineage stitching link between two equivalent elements."),
+                                 "A lineage stitching link between two equivalent elements.",
+                                 LineageMappingProperties.class),
 
     /**
      * A mapping relationship between schema attributes from different assets showing that data is copied from one to the other.
@@ -5690,7 +5943,8 @@ public enum OpenMetadataType
                               "DataMapping",
                               OpenMetadataWikiPages.MODEL_0770_LINEAGE_MAPPING,
                               "9021c6bc-7214-4580-849a-8583b11a3f2b",
-                              "A mapping relationship between data values from different assets showing how data is copied/transformed from one to the other."),
+                              "A mapping relationship between data values from different assets showing how data is copied/transformed from one to the other.",
+                              DataMappingProperties.class),
 
     /**
      * Accompanies a partial, incomplete Referenceable.
@@ -5709,7 +5963,18 @@ public enum OpenMetadataType
     public final String wikiURL;
     public final String descriptionGUID;
     public final String description;
+    public final Class<?> beanClass;
 
+
+    /**
+     * Create an enum for a type without a declared bean class.
+     *
+     * @param typeGUID unique identifier of the type
+     * @param typeName unique name of the type
+     * @param wikiURL link to the documentation
+     * @param descriptionGUID unique identifier of the valid value for this type
+     * @param description description of this type
+     */
     OpenMetadataType(String typeGUID,
                      String typeName,
                      String wikiURL,
@@ -5721,5 +5986,32 @@ public enum OpenMetadataType
         this.wikiURL         = wikiURL;
         this.descriptionGUID = descriptionGUID;
         this.description     = description;
+        this.beanClass       = null;
+    }
+
+
+    /**
+     * Create an enum for a type without a declared bean class.
+     *
+     * @param typeGUID unique identifier of the type
+     * @param typeName unique name of the type
+     * @param wikiURL link to the documentation
+     * @param descriptionGUID unique identifier of the valid value for this type
+     * @param description description of this type
+     * @param beanClass class of the bean that maps the attributes of the type
+     */
+    OpenMetadataType(String typeGUID,
+                     String typeName,
+                     String wikiURL,
+                     String descriptionGUID,
+                     String description,
+                     Class<?> beanClass)
+    {
+        this.typeGUID        = typeGUID;
+        this.typeName        = typeName;
+        this.wikiURL         = wikiURL;
+        this.descriptionGUID = descriptionGUID;
+        this.description     = description;
+        this.beanClass       = beanClass;
     }
 }

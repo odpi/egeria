@@ -8,8 +8,9 @@ import org.odpi.openmetadata.adapters.connectors.datastore.basicfile.ffdc.except
 import org.odpi.openmetadata.adapters.connectors.datastore.basicfile.ffdc.exception.FileReadException;
 import org.odpi.openmetadata.frameworks.auditlog.messagesets.ExceptionMessageDefinition;
 import org.odpi.openmetadata.frameworks.connectors.ConnectorBase;
-import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
+import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Endpoint;
+import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -21,7 +22,8 @@ import java.util.Date;
 
 
 /**
- * BasicFileStoreConnector works with files to retrieve simple objects.
+ * BasicFileStoreConnector works with files to retrieve simple information about the file and provides
+ * access to the file object.
  */
 public class BasicFileStoreConnector extends ConnectorBase implements BasicFileStore
 {
@@ -34,23 +36,23 @@ public class BasicFileStoreConnector extends ConnectorBase implements BasicFileS
 
 
     /**
-     * Initialize the connector.
+     * Indicates that the connector is completely configured and can begin processing.
      *
-     * @param connectorInstanceId - unique id for the connector instance - useful for messages etc
-     * @param connectionDetails - POJO for the configuration used to create the connector.
+     * @throws ConnectorCheckedException there is a problem within the connector.
+     * @throws UserNotAuthorizedException the connector was disconnected before/during start
      */
     @Override
-    public void initialize(String connectorInstanceId, Connection connectionDetails)
+    public void start() throws UserNotAuthorizedException, ConnectorCheckedException
     {
-        super.initialize(connectorInstanceId, connectionDetails);
+        super.start();
 
-        Endpoint endpoint = connectionDetails.getEndpoint();
+        Endpoint endpoint = connectionBean.getEndpoint();
 
         if (endpoint != null)
         {
             if (endpoint.getAddress() == null)
             {
-                log.error("Null endpoint address");
+                log.info("Null endpoint address");
             }
             else if (endpoint.getAddress().startsWith("file://"))
             {
@@ -63,9 +65,33 @@ public class BasicFileStoreConnector extends ConnectorBase implements BasicFileS
         }
         else
         {
-            log.error("Null endpoint");
+            /*
+             * It is possible that the file name will be supplied by the caller.  An exception
+             * is thrown if the name has not been supplied by the caller by the time that the
+             * file is accessed.
+             */
+            log.info("Null endpoint");
         }
+    }
 
+
+    /**
+     * Set up the name of the file store.  This may override the value supplied in the endpoint.
+     * An exception is thrown if the file name is not valid.
+     *
+     * @param fileStoreName path name of the desired file
+     * @throws FileException this is not a file that can be used
+     */
+    public void setFileStoreName(String fileStoreName) throws FileException
+    {
+        final String methodName = "setFileStoreName";
+
+        this.fileStoreName = fileStoreName;
+
+        /*
+         * Validate that this is a legal name
+         */
+        this.getFile(methodName);
     }
 
 
@@ -79,7 +105,7 @@ public class BasicFileStoreConnector extends ConnectorBase implements BasicFileS
     {
         final String  methodName = "getFileName";
 
-        getFile(methodName);
+        this.getFile(methodName);
 
         return fileStoreName;
     }
@@ -111,7 +137,7 @@ public class BasicFileStoreConnector extends ConnectorBase implements BasicFileS
     {
         final String  methodName = "getCreationDate";
 
-        File fileStore = getFile(methodName);
+        File fileStore = this.getFile(methodName);
 
         try
         {
@@ -135,13 +161,14 @@ public class BasicFileStoreConnector extends ConnectorBase implements BasicFileS
      * Return the last update date for the file.
      *
      * @return Date object
-     * @throws FileException problem accessing the file
+     * @throws FileReadException problem accessing the file
+     * @throws FileReadException problem accessing the file
      */
-    public Date getLastUpdateDate() throws FileException, FileReadException
+    public Date getLastUpdateDate() throws FileReadException, FileException
     {
         final String  methodName = "getLastUpdateDate";
 
-        File fileStore = getFile(methodName);
+        File fileStore = this.getFile(methodName);
 
         try
         {

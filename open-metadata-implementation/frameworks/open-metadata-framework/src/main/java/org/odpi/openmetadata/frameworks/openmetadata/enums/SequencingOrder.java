@@ -141,6 +141,10 @@ public enum SequencingOrder
     @Override
     public String toString()
     {
-        return "SequencingOrder{" + name + "}";
+        return "SequencingOrder{" + 
+              "ordinal=" + ordinal +
+            ", name='" + name + '\'' +
+            ", description='" + description + '\'' +
+            '}';
     }
 }
