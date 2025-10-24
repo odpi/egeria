@@ -3,6 +3,10 @@
 package org.odpi.openmetadata.viewservices.metadataexpert.server.spring;
 
 import io.swagger.v3.oas.annotations.ExternalDocumentation;
+import io.swagger.v3.oas.annotations.enums.SecuritySchemeIn;
+import io.swagger.v3.oas.annotations.enums.SecuritySchemeType;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import io.swagger.v3.oas.annotations.security.SecurityScheme;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.odpi.openmetadata.commonservices.ffdc.rest.*;
 import org.odpi.openmetadata.frameworkservices.omf.rest.*;
@@ -15,7 +19,13 @@ import org.springframework.web.bind.annotation.*;
  = */
 @RestController
 @RequestMapping("/servers/{serverName}/api/open-metadata/{urlMarker}")
-
+@SecurityScheme(
+        name = "BearerAuthorization",
+        type = SecuritySchemeType.HTTP,
+        bearerFormat = "JWT",
+        scheme = "bearer",
+        in = SecuritySchemeIn.HEADER
+)
 @Tag(name="API: Metadata Expert OMVS", description="The Metadata Expert OMVS provides APIs for supporting the search, query and retrieval of open metadata.  It is an advanced API for users that understand the [Open Metadata Types](https://egeria-project.org/types/).",
         externalDocs=@ExternalDocumentation(description="Further Information",
                 url="https://egeria-project.org/services/omvs/metadata-expert/overview/"))
@@ -48,6 +58,7 @@ public class MetadataExpertResource
      *  PropertyServerException there is a problem with the metadata store
      */
     @PostMapping(path = "/metadata-elements")
+    @SecurityRequirement(name = "BearerAuthorization")
 
     public GUIDResponse createMetadataElementInStore(@PathVariable String                            serverName,
                                                      @PathVariable String                            urlMarker,
@@ -71,6 +82,7 @@ public class MetadataExpertResource
      *  PropertyServerException there is a problem with the metadata store
      */
     @PostMapping(path = "/metadata-elements/from-template")
+    @SecurityRequirement(name = "BearerAuthorization")
 
     public GUIDResponse createMetadataElementFromTemplate(@PathVariable String                         serverName,
                                                           @PathVariable String                         urlMarker,
@@ -96,6 +108,7 @@ public class MetadataExpertResource
      *  PropertyServerException there is a problem with the metadata store
      */
     @PostMapping(path = "/metadata-elements/{metadataElementGUID}/update-properties")
+    @SecurityRequirement(name = "BearerAuthorization")
 
     public VoidResponse updateMetadataElementInStore(@PathVariable String                      serverName,
                                                      @PathVariable String                      urlMarker,
@@ -121,6 +134,7 @@ public class MetadataExpertResource
      *  PropertyServerException there is a problem with the metadata store
      */
     @PostMapping(path = "/metadata-elements/{metadataElementGUID}/update-status")
+    @SecurityRequirement(name = "BearerAuthorization")
 
     public VoidResponse updateMetadataElementStatusInStore(@PathVariable String                  serverName,
                                                            @PathVariable String                  urlMarker,
@@ -145,6 +159,7 @@ public class MetadataExpertResource
      *  PropertyServerException there is a problem with the metadata store
      */
     @PostMapping(path = "/metadata-elements/{metadataElementGUID}/update-effectivity")
+    @SecurityRequirement(name = "BearerAuthorization")
 
     public VoidResponse updateMetadataElementEffectivityInStore(@PathVariable String                           serverName,
                                                                 @PathVariable String                           urlMarker,
@@ -169,6 +184,7 @@ public class MetadataExpertResource
      *  PropertyServerException there is a problem with the metadata store
      */
     @PostMapping(path = "/metadata-elements/{metadataElementGUID}/delete")
+    @SecurityRequirement(name = "BearerAuthorization")
 
     public  VoidResponse deleteMetadataElementInStore(@PathVariable String            serverName,
                                                       @PathVariable String            urlMarker,
@@ -193,11 +209,12 @@ public class MetadataExpertResource
      *  PropertyServerException there is a problem with the metadata store
      */
     @PostMapping(path = "/metadata-elements/{metadataElementGUID}/archive")
+    @SecurityRequirement(name = "BearerAuthorization")
 
     public  VoidResponse archiveMetadataElementInStore(@PathVariable String           serverName,
                                                        @PathVariable String           urlMarker,
                                                        @PathVariable String           metadataElementGUID,
-                                                       @RequestBody(required = false) DeleteRequestBody requestBody)
+                                                       @RequestBody(required = false) DeleteElementRequestBody requestBody)
     {
         return restAPI.archiveMetadataElementInStore(serverName, urlMarker, metadataElementGUID, requestBody);
     }
@@ -221,6 +238,7 @@ public class MetadataExpertResource
      *  PropertyServerException there is a problem with the metadata store
      */
     @PostMapping(path = "/metadata-elements/{metadataElementGUID}/classifications/{classificationName}")
+    @SecurityRequirement(name = "BearerAuthorization")
 
     public VoidResponse classifyMetadataElementInStore(@PathVariable String                                  serverName,
                                                        @PathVariable String                                  urlMarker,
@@ -248,6 +266,7 @@ public class MetadataExpertResource
      *  PropertyServerException there is a problem with the metadata store
      */
     @PostMapping(path = "/metadata-elements/{metadataElementGUID}/classifications/{classificationName}/update-properties")
+    @SecurityRequirement(name = "BearerAuthorization")
 
     public VoidResponse reclassifyMetadataElementInStore(@PathVariable String                      serverName,
                                                          @PathVariable String                      urlMarker,
@@ -275,6 +294,7 @@ public class MetadataExpertResource
      *  PropertyServerException there is a problem with the metadata store
      */
     @PostMapping(path = "/metadata-elements/{metadataElementGUID}/classifications/{classificationName}/update-effectivity")
+    @SecurityRequirement(name = "BearerAuthorization")
 
     public VoidResponse updateClassificationEffectivityInStore(@PathVariable String                            serverName,
                                                                @PathVariable String                            urlMarker,
@@ -301,6 +321,7 @@ public class MetadataExpertResource
      *  PropertyServerException there is a problem with the metadata store
      */
     @PostMapping(path = "/metadata-elements/{metadataElementGUID}/classifications/{classificationName}/delete")
+    @SecurityRequirement(name = "BearerAuthorization")
 
     public VoidResponse declassifyMetadataElementInStore(@PathVariable String            serverName,
                                                          @PathVariable String            urlMarker,
@@ -327,6 +348,7 @@ public class MetadataExpertResource
      *  PropertyServerException there is a problem with the metadata store
      */
     @PostMapping(path = "/related-elements")
+    @SecurityRequirement(name = "BearerAuthorization")
 
     public GUIDResponse createRelatedElementsInStore(@PathVariable String                        serverName,
                                                      @PathVariable String                        urlMarker,
@@ -351,6 +373,7 @@ public class MetadataExpertResource
      *  PropertyServerException there is a problem with the metadata store
      */
     @PostMapping(path = "/related-elements/{relationshipGUID}/update-properties")
+    @SecurityRequirement(name = "BearerAuthorization")
 
     public VoidResponse updateRelatedElementsInStore(@PathVariable String                      serverName,
                                                      @PathVariable String                      urlMarker,
@@ -376,6 +399,7 @@ public class MetadataExpertResource
      *  PropertyServerException there is a problem with the metadata store
      */
     @PostMapping(path = "/related-elements/{relationshipGUID}/update-effectivity")
+    @SecurityRequirement(name = "BearerAuthorization")
 
     public VoidResponse updateRelatedElementsEffectivityInStore(@PathVariable String                            serverName,
                                                                 @PathVariable String                            urlMarker,
@@ -400,6 +424,7 @@ public class MetadataExpertResource
      *  PropertyServerException there is a problem with the metadata store
      */
     @PostMapping(path = "/related-elements/{relationshipGUID}/delete")
+    @SecurityRequirement(name = "BearerAuthorization")
 
     public VoidResponse deleteRelatedElementsInStore(@PathVariable String            serverName,
                                                      @PathVariable String            urlMarker,
@@ -427,6 +452,7 @@ public class MetadataExpertResource
      *  PropertyServerException there is a problem with the metadata store
      */
     @PostMapping(path = "/related-elements/{metadataElement1GUID}/{relationshipTypeName}/{metadataElement2GUID}/detach-all")
+    @SecurityRequirement(name = "BearerAuthorization")
 
     public VoidResponse detachRelatedElementsInStore(@PathVariable String            serverName,
                                                      @PathVariable String            urlMarker,

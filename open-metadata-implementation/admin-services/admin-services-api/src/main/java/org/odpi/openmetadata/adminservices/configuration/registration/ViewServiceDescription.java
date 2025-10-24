@@ -363,13 +363,13 @@ public enum ViewServiceDescription
                    "Manages the creation and maintenance of lineage relationships."),
 
     /**
-     * Manages the creation and maintenance of locations.
+     * Manages the creation and maintenance of external reference and external identifiers.
      */
-    EXTERNAL_REFERENCES(840,
+    EXTERNAL_LINKS(840,
                    ComponentDevelopmentStatus.IN_DEVELOPMENT,
-                   "External References",
-                   "external-references",
-                   "Manages the creation and maintenance of locations."),
+                   "External Links",
+                   "external-links",
+                   "Manages the creation and maintenance of external reference and external identifiers."),
 
     /**
      * Manages the creation and maintenance of locations.

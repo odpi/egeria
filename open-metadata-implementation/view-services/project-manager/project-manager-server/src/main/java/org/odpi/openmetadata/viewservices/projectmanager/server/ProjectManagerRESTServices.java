@@ -705,10 +705,9 @@ public class ProjectManagerRESTServices extends TokenController
      *  PropertyServerException    there is a problem retrieving information from the property server(s).
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    @SuppressWarnings(value = "unused")
     public VoidResponse deleteProject(String                   serverName,
                                       String                   projectGUID,
-                                      DeleteRequestBody requestBody)
+                                      DeleteElementRequestBody requestBody)
     {
         final String methodName = "deleteProject";
 
@@ -817,10 +816,10 @@ public class ProjectManagerRESTServices extends TokenController
      *  PropertyServerException    there is a problem updating information in the property server(s).
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    public VoidResponse removeFromProjectTeam(String                   serverName,
-                                              String                   projectGUID,
-                                              String                   actorGUID,
-                                              DeleteRequestBody requestBody)
+    public VoidResponse removeFromProjectTeam(String                        serverName,
+                                              String                        projectGUID,
+                                              String                        actorGUID,
+                                              DeleteRelationshipRequestBody requestBody)
     {
         final String methodName = "removeFromProjectTeam";
 
@@ -941,10 +940,10 @@ public class ProjectManagerRESTServices extends TokenController
      * UserNotAuthorizedException the user is not authorized to issue this request or
      * PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public VoidResponse clearProjectDependency(String                   serverName,
-                                               String                   projectGUID,
-                                               String                   dependsOnProjectGUID,
-                                               DeleteRequestBody requestBody)
+    public VoidResponse clearProjectDependency(String                        serverName,
+                                               String                        projectGUID,
+                                               String                        dependsOnProjectGUID,
+                                               DeleteRelationshipRequestBody requestBody)
     {
         final String methodName = "clearProjectDependency";
 
@@ -1065,10 +1064,10 @@ public class ProjectManagerRESTServices extends TokenController
      * UserNotAuthorizedException the user is not authorized to issue this request or
      * PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public VoidResponse clearProjectHierarchy(String                   serverName,
-                                              String                   projectGUID,
-                                              String                   managedProjectGUID,
-                                              DeleteRequestBody requestBody)
+    public VoidResponse clearProjectHierarchy(String                        serverName,
+                                              String                        projectGUID,
+                                              String                        managedProjectGUID,
+                                              DeleteRelationshipRequestBody requestBody)
     {
         final String methodName = "clearProjectHierarchy";
 

@@ -301,6 +301,7 @@ public class SoftwareCapabilityHandler extends OpenMetadataHandlerBase
         final String methodName = "getSoftwareCapabilitiesByName";
 
         List<String> propertyNames = Arrays.asList(OpenMetadataProperty.QUALIFIED_NAME.name,
+                                                   OpenMetadataProperty.IDENTIFIER.name,
                                                    OpenMetadataProperty.DISPLAY_NAME.name,
                                                    OpenMetadataProperty.RESOURCE_NAME.name);
 

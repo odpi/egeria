@@ -208,7 +208,7 @@ public class SoftwareCapabilityBuilder extends ReferenceableBuilder
                                                                                   null,
                                                                                   InstanceProvenanceType.LOCAL_COHORT,
                                                                                   userId,
-                                                                                  OpenMetadataType.FILE_SYSTEM_CLASSIFICATION.typeName,
+                                                                                  OpenMetadataType.FILE_SYSTEM.typeName,
                                                                                   typeName,
                                                                                   ClassificationOrigin.ASSIGNED,
                                                                                   null,
@@ -217,7 +217,7 @@ public class SoftwareCapabilityBuilder extends ReferenceableBuilder
         }
         catch (TypeErrorException error)
         {
-            errorHandler.handleUnsupportedType(error, methodName, OpenMetadataType.FILE_SYSTEM_CLASSIFICATION.typeName);
+            errorHandler.handleUnsupportedType(error, methodName, OpenMetadataType.FILE_SYSTEM.typeName);
         }
     }
 

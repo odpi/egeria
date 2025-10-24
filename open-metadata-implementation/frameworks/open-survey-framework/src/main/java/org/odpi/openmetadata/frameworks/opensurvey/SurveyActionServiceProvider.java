@@ -4,6 +4,8 @@ package org.odpi.openmetadata.frameworks.opensurvey;
 
 import org.odpi.openmetadata.frameworks.openmetadata.refdata.DeployedImplementationType;
 import org.odpi.openmetadata.frameworks.opengovernance.GovernanceServiceProviderBase;
+import org.odpi.openmetadata.frameworks.openmetadata.specificationproperties.AnalysisStepType;
+import org.odpi.openmetadata.frameworks.openmetadata.specificationproperties.AnnotationTypeType;
 import org.odpi.openmetadata.frameworks.opensurvey.controls.*;
 
 import java.util.List;

@@ -4,6 +4,10 @@ package org.odpi.openmetadata.viewservices.datadesigner.server.spring;
 
 import io.swagger.v3.oas.annotations.ExternalDocumentation;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.enums.SecuritySchemeIn;
+import io.swagger.v3.oas.annotations.enums.SecuritySchemeType;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import io.swagger.v3.oas.annotations.security.SecurityScheme;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.odpi.openmetadata.commonservices.ffdc.rest.*;
 import org.odpi.openmetadata.commonservices.ffdc.rest.GetRequestBody;
@@ -16,8 +20,14 @@ import org.springframework.web.bind.annotation.*;
  = */
 @RestController
 @RequestMapping("/servers/{serverName}/api/open-metadata/data-designer")
-
-@Tag(name="API: Data Designer OMVS", description="The Data Designer OMVS provides APIs for building schemas for new data assets.",
+@SecurityScheme(
+        name = "BearerAuthorization",
+        type = SecuritySchemeType.HTTP,
+        bearerFormat = "JWT",
+        scheme = "bearer",
+        in = SecuritySchemeIn.HEADER
+)
+@Tag(name="API: Data Designer OMVS", description="Supports the building of data specifications and data dictionaries to support your teams when communicating data requirements to one another.  The data dictionary defines commonly used data fields, and the data specification defines the specific data requirements for a project. Data specifications are also used to describe the data provided by a digital product.",
         externalDocs=@ExternalDocumentation(description="Further Information",
                 url="https://egeria-project.org/services/omvs/data-designer/overview/"))
 
@@ -45,6 +55,7 @@ public class DataDesignerResource
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     @PostMapping(path = "/data-structures")
+    @SecurityRequirement(name = "BearerAuthorization")
 
     @Operation(summary="createDataStructure",
             description="Create a data structure.",
@@ -73,6 +84,8 @@ public class DataDesignerResource
      *  PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     @PostMapping(path = "/data-structures/from-template")
+    @SecurityRequirement(name = "BearerAuthorization")
+
     @Operation(summary="createDataStructureFromTemplate",
             description="Create a new metadata element to represent a data structure using an existing metadata element as a template.  The template defines additional classifications and relationships that should be added to the new element.",
             externalDocs=@ExternalDocumentation(description="Further Information",
@@ -100,6 +113,8 @@ public class DataDesignerResource
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     @PostMapping(path = "/data-structures/{dataStructureGUID}/update")
+    @SecurityRequirement(name = "BearerAuthorization")
+
     @Operation(summary="updateDataStructure",
             description="Update the properties of a data structure.",
             externalDocs=@ExternalDocumentation(description="Further Information",
@@ -130,6 +145,8 @@ public class DataDesignerResource
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     @PostMapping(path = "/data-structures/{dataStructureGUID}/member-data-fields/{dataFieldGUID}/attach")
+    @SecurityRequirement(name = "BearerAuthorization")
+
     @Operation(summary="linkMemberDataField",
             description="Attach a data field to a data structure.",
             externalDocs=@ExternalDocumentation(description="Further Information",
@@ -162,6 +179,8 @@ public class DataDesignerResource
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     @PostMapping(path = "/data-structures/{parentDataStructureGUID}/member-data-fields/{memberDataFieldGUID}/detach")
+    @SecurityRequirement(name = "BearerAuthorization")
+
     @Operation(summary="detachMemberDataField",
             description="Detach a data field from a data structure.",
             externalDocs=@ExternalDocumentation(description="Further Information",
@@ -174,7 +193,7 @@ public class DataDesignerResource
                                               @PathVariable
                                               String memberDataFieldGUID,
                                               @RequestBody (required = false)
-                                                  DeleteRequestBody requestBody)
+                                                  DeleteRelationshipRequestBody requestBody)
     {
         return restAPI.detachMemberDataField(serverName, parentDataStructureGUID, memberDataFieldGUID, requestBody);
     }
@@ -193,6 +212,8 @@ public class DataDesignerResource
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     @PostMapping(path = "/data-structures/{dataStructureGUID}/delete")
+    @SecurityRequirement(name = "BearerAuthorization")
+
     @Operation(summary="deleteDataStructure",
             description="Delete a data structure.",
             externalDocs=@ExternalDocumentation(description="Further Information",
@@ -203,7 +224,7 @@ public class DataDesignerResource
                                             @PathVariable
                                             String                    dataStructureGUID,
                                             @RequestBody (required = false)
-                                                DeleteRequestBody requestBody)
+                                                DeleteElementRequestBody requestBody)
     {
         return restAPI.deleteDataStructure(serverName, dataStructureGUID, requestBody);
     }
@@ -221,6 +242,8 @@ public class DataDesignerResource
      *  PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     @PostMapping(path = "/data-structures/by-name")
+    @SecurityRequirement(name = "BearerAuthorization")
+
     @Operation(summary="getDataStructuresByName",
             description="Returns the list of data structures with a particular name.",
             externalDocs=@ExternalDocumentation(description="Further Information",
@@ -247,6 +270,8 @@ public class DataDesignerResource
      *  PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     @PostMapping(path = "/data-structures/by-search-string")
+    @SecurityRequirement(name = "BearerAuthorization")
+
     @Operation(summary="findDataStructures",
             description="Retrieve the list of data structure metadata elements that contain the search string.",
             externalDocs=@ExternalDocumentation(description="Further Information",
@@ -274,6 +299,8 @@ public class DataDesignerResource
      *  PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     @PostMapping(path = "/data-structures/{dataStructureGUID}/retrieve")
+    @SecurityRequirement(name = "BearerAuthorization")
+
     @Operation(summary="getDataStructureByGUID",
             description="Return the properties of a specific data structure.",
             externalDocs=@ExternalDocumentation(description="Further Information",
@@ -305,6 +332,7 @@ public class DataDesignerResource
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     @PostMapping(path = "/data-fields")
+    @SecurityRequirement(name = "BearerAuthorization")
 
     @Operation(summary="createDataField",
             description="Create a data field.",
@@ -333,6 +361,8 @@ public class DataDesignerResource
      *  PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     @PostMapping(path = "/data-fields/from-template")
+    @SecurityRequirement(name = "BearerAuthorization")
+
     @Operation(summary="createDataFieldFromTemplate",
             description="Create a new metadata element to represent a data field using an existing metadata element as a template.  The template defines additional classifications and relationships that should be added to the new element.",
             externalDocs=@ExternalDocumentation(description="Further Information",
@@ -360,6 +390,8 @@ public class DataDesignerResource
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     @PostMapping(path = "/data-fields/{dataFieldGUID}/update")
+    @SecurityRequirement(name = "BearerAuthorization")
+
     @Operation(summary="updateDataField",
             description="Update the properties of a data field.",
             externalDocs=@ExternalDocumentation(description="Further Information",
@@ -376,7 +408,6 @@ public class DataDesignerResource
     }
 
 
-
     /**
      * Connect two data field as parent and child.
      *
@@ -391,6 +422,8 @@ public class DataDesignerResource
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     @PostMapping(path = "/data-fields/{parentDataFieldGUID}/nested-data-fields/{nestedDataFieldGUID}/attach")
+    @SecurityRequirement(name = "BearerAuthorization")
+
     @Operation(summary="linkNestedDataFields",
             description="Connect two data field as parent and child.",
             externalDocs=@ExternalDocumentation(description="Further Information",
@@ -423,6 +456,8 @@ public class DataDesignerResource
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     @PostMapping(path = "/data-fields/{parentDataFieldGUID}/nested-data-fields/{nestedDataFieldGUID}/detach")
+    @SecurityRequirement(name = "BearerAuthorization")
+
     @Operation(summary="detachNestedDataFields",
             description="Detach two data fields from one another.",
             externalDocs=@ExternalDocumentation(description="Further Information",
@@ -435,7 +470,7 @@ public class DataDesignerResource
                                                @PathVariable
                                                String nestedDataFieldGUID,
                                                @RequestBody (required = false)
-                                                   DeleteRequestBody requestBody)
+                                                   DeleteRelationshipRequestBody requestBody)
     {
         return restAPI.detachNestedDataFields(serverName, parentDataFieldGUID, nestedDataFieldGUID, requestBody);
     }
@@ -454,6 +489,8 @@ public class DataDesignerResource
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     @PostMapping(path = "/data-fields/{dataFieldGUID}/delete")
+    @SecurityRequirement(name = "BearerAuthorization")
+
     @Operation(summary="deleteDataField",
             description="Delete a data field.",
             externalDocs=@ExternalDocumentation(description="Further Information",
@@ -464,7 +501,7 @@ public class DataDesignerResource
                                         @PathVariable
                                         String                    dataFieldGUID,
                                         @RequestBody (required = false)
-                                            DeleteRequestBody requestBody)
+                                            DeleteElementRequestBody requestBody)
     {
         return restAPI.deleteDataField(serverName, dataFieldGUID, requestBody);
     }
@@ -482,6 +519,8 @@ public class DataDesignerResource
      *  PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     @PostMapping(path = "/data-fields/by-name")
+    @SecurityRequirement(name = "BearerAuthorization")
+
     @Operation(summary="getDataFieldsByName",
             description="Returns the list of data fields with a particular name.",
             externalDocs=@ExternalDocumentation(description="Further Information",
@@ -508,6 +547,8 @@ public class DataDesignerResource
      *  PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     @PostMapping(path = "/data-fields/by-search-string")
+    @SecurityRequirement(name = "BearerAuthorization")
+
     @Operation(summary="findDataFields",
             description="Retrieve the list of data field metadata elements that contain the search string.",
             externalDocs=@ExternalDocumentation(description="Further Information",
@@ -520,7 +561,6 @@ public class DataDesignerResource
     {
         return restAPI.findDataFields(serverName, requestBody);
     }
-
 
 
     /**
@@ -536,6 +576,8 @@ public class DataDesignerResource
      *  PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     @PostMapping(path = "/data-fields/{dataFieldGUID}/retrieve")
+    @SecurityRequirement(name = "BearerAuthorization")
+
     @Operation(summary="getDataFieldByGUID",
             description="Return the properties of a specific data field.",
             externalDocs=@ExternalDocumentation(description="Further Information",
@@ -568,6 +610,7 @@ public class DataDesignerResource
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     @PostMapping(path = "/data-classes")
+    @SecurityRequirement(name = "BearerAuthorization")
 
     @Operation(summary="createDataClass",
             description="Create a data class.",
@@ -596,6 +639,8 @@ public class DataDesignerResource
      *  PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     @PostMapping(path = "/data-classes/from-template")
+    @SecurityRequirement(name = "BearerAuthorization")
+
     @Operation(summary="createDataClassFromTemplate",
             description="Create a new metadata element to represent a data class using an existing metadata element as a template.  The template defines additional classifications and relationships that should be added to the new element.",
             externalDocs=@ExternalDocumentation(description="Further Information",
@@ -623,6 +668,8 @@ public class DataDesignerResource
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     @PostMapping(path = "/data-classes/{dataClassGUID}/update")
+    @SecurityRequirement(name = "BearerAuthorization")
+
     @Operation(summary="updateDataClass",
             description="Update the properties of a data class.",
             externalDocs=@ExternalDocumentation(description="Further Information",
@@ -653,6 +700,8 @@ public class DataDesignerResource
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     @PostMapping(path = "/data-classes/{parentDataClassGUID}/nested-data-classes/{childDataClassGUID}/attach")
+    @SecurityRequirement(name = "BearerAuthorization")
+
     @Operation(summary="linkNestedDataClass",
             description="Connect two data classes to show that one is used by the other when it is validating (typically a complex data item).",
             externalDocs=@ExternalDocumentation(description="Further Information",
@@ -685,6 +734,8 @@ public class DataDesignerResource
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     @PostMapping(path = "/data-classes/{parentDataClassGUID}/nested-data-classes/{childDataClassGUID}/detach")
+    @SecurityRequirement(name = "BearerAuthorization")
+
     @Operation(summary="detachNestedDataClass",
             description="Detach two nested data classes from one another.",
             externalDocs=@ExternalDocumentation(description="Further Information",
@@ -697,7 +748,7 @@ public class DataDesignerResource
                                               @PathVariable
                                               String                    childDataClassGUID,
                                               @RequestBody (required = false)
-                                                  DeleteRequestBody requestBody)
+                                                  DeleteRelationshipRequestBody requestBody)
     {
         return restAPI.detachNestedDataClass(serverName, parentDataClassGUID, childDataClassGUID, requestBody);
     }
@@ -717,6 +768,8 @@ public class DataDesignerResource
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     @PostMapping(path = "/data-classes/{parentDataClassGUID}/specialized-data-classes/{childDataClassGUID}/attach")
+    @SecurityRequirement(name = "BearerAuthorization")
+
     @Operation(summary="linkSpecializedDataClass",
             description="Connect two data classes to show that one provides a more specialist evaluation.",
             externalDocs=@ExternalDocumentation(description="Further Information",
@@ -749,6 +802,8 @@ public class DataDesignerResource
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     @PostMapping(path = "/data-classes/{parentDataClassGUID}/specialized-data-classes/{childDataClassGUID}/detach")
+    @SecurityRequirement(name = "BearerAuthorization")
+
     @Operation(summary="detachSpecializedDataClass",
             description="Detach two data classes from one another.",
             externalDocs=@ExternalDocumentation(description="Further Information",
@@ -761,7 +816,7 @@ public class DataDesignerResource
                                                    @PathVariable
                                                    String                    childDataClassGUID,
                                                    @RequestBody (required = false)
-                                                       DeleteRequestBody requestBody)
+                                                       DeleteRelationshipRequestBody requestBody)
     {
         return restAPI.detachSpecializedDataClass(serverName, parentDataClassGUID, childDataClassGUID, requestBody);
     }
@@ -780,6 +835,8 @@ public class DataDesignerResource
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     @PostMapping(path = "/data-classes/{dataClassGUID}/delete")
+    @SecurityRequirement(name = "BearerAuthorization")
+
     @Operation(summary="deleteDataClass",
             description="Delete a data class.",
             externalDocs=@ExternalDocumentation(description="Further Information",
@@ -790,7 +847,7 @@ public class DataDesignerResource
                                         @PathVariable
                                         String                    dataClassGUID,
                                         @RequestBody (required = false)
-                                            DeleteRequestBody requestBody)
+                                            DeleteElementRequestBody requestBody)
     {
         return restAPI.deleteDataClass(serverName, dataClassGUID, requestBody);
     }
@@ -808,6 +865,8 @@ public class DataDesignerResource
      *  PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     @PostMapping(path = "/data-classes/by-name")
+    @SecurityRequirement(name = "BearerAuthorization")
+
     @Operation(summary="getDataClassesByName",
             description="Returns the list of data classes with a particular name.",
             externalDocs=@ExternalDocumentation(description="Further Information",
@@ -834,6 +893,8 @@ public class DataDesignerResource
      *  PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     @PostMapping(path = "/data-classes/by-search-string")
+    @SecurityRequirement(name = "BearerAuthorization")
+
     @Operation(summary="findDataClasses",
             description="Retrieve the list of data class metadata elements that contain the search string.",
             externalDocs=@ExternalDocumentation(description="Further Information",
@@ -861,6 +922,8 @@ public class DataDesignerResource
      *  PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     @PostMapping(path = "/data-classes/{dataClassGUID}/retrieve")
+    @SecurityRequirement(name = "BearerAuthorization")
+
     @Operation(summary="getDataClassByGUID",
             description="Return the properties of a specific data class.",
             externalDocs=@ExternalDocumentation(description="Further Information",
@@ -897,6 +960,8 @@ public class DataDesignerResource
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     @PostMapping(path = "/data-definitions/{dataDefinitionGUID}/data-class-definition/{dataClassGUID}/attach")
+    @SecurityRequirement(name = "BearerAuthorization")
+
     @Operation(summary="linkDataClassDefinition",
             description="Connect an element that is part of a data design to a data class to show that the data class should be used as the specification for the data values when interpreting the data definition.",
             externalDocs=@ExternalDocumentation(description="Further Information",
@@ -926,6 +991,8 @@ public class DataDesignerResource
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     @PostMapping(path = "/data-definitions/{dataDefinitionGUID}/data-class-definition/{dataClassGUID}/detach")
+    @SecurityRequirement(name = "BearerAuthorization")
+
     @Operation(summary="detachDataClassDefinition",
             description="Detach a data definition from a data class.",
             externalDocs=@ExternalDocumentation(description="Further Information",
@@ -935,7 +1002,7 @@ public class DataDesignerResource
                                                   @PathVariable String                    dataDefinitionGUID,
                                                   @PathVariable String                    dataClassGUID,
                                                   @RequestBody (required = false)
-                                                      DeleteRequestBody requestBody)
+                                                      DeleteRelationshipRequestBody requestBody)
     {
         return restAPI.detachDataClassDefinition(serverName, dataDefinitionGUID, dataClassGUID, requestBody);
     }
@@ -956,6 +1023,8 @@ public class DataDesignerResource
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     @PostMapping(path = "/data-definitions/{dataDefinitionGUID}/semantic-definition/{glossaryTermGUID}/attach")
+    @SecurityRequirement(name = "BearerAuthorization")
+
     @Operation(summary="linkSemanticDefinition",
             description="Connect an element that is part of a data design to a glossary term to show that the term should be used as the semantic definition for the data values when interpreting the data definition.",
             externalDocs=@ExternalDocumentation(description="Further Information",
@@ -985,6 +1054,8 @@ public class DataDesignerResource
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     @PostMapping(path = "/data-definitions/{dataDefinitionGUID}/semantic-definition/{glossaryTermGUID}/detach")
+    @SecurityRequirement(name = "BearerAuthorization")
+
     @Operation(summary="detachSemanticDefinition",
             description="Detach a data definition from a glossary term.",
             externalDocs=@ExternalDocumentation(description="Further Information",
@@ -994,7 +1065,7 @@ public class DataDesignerResource
                                                  @PathVariable String                    dataDefinitionGUID,
                                                  @PathVariable String                    glossaryTermGUID,
                                                  @RequestBody (required = false)
-                                                     DeleteRequestBody requestBody)
+                                                     DeleteRelationshipRequestBody requestBody)
     {
         return restAPI.detachSemanticDefinition(serverName, dataDefinitionGUID, glossaryTermGUID, requestBody);
     }
@@ -1017,6 +1088,8 @@ public class DataDesignerResource
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     @PostMapping(path = "/certification-types/{certificationTypeGUID}/data-structure-definition/{dataStructureGUID}/attach")
+    @SecurityRequirement(name = "BearerAuthorization")
+
     @Operation(summary="linkCertificationTypeToDataStructure",
             description="Connect a certification type to a data structure to guide the survey action service (that checks the data quality of a data resource as part of certifying it with the supplied certification type) to the definition of the data structure to use as a specification of how the data should be both structured and (if data classes are attached to the associated data fields using the DataClassDefinition relationship) contain the valid values.",
             externalDocs=@ExternalDocumentation(description="Further Information",
@@ -1046,6 +1119,8 @@ public class DataDesignerResource
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     @PostMapping(path = "/certification-types/{certificationTypeGUID}/data-structure-definition/{dataStructureGUID}/detach")
+    @SecurityRequirement(name = "BearerAuthorization")
+
     @Operation(summary="detachCertificationTypeToDataStructure",
             description="Detach a data structure from a certification type.",
             externalDocs=@ExternalDocumentation(description="Further Information",
@@ -1054,7 +1129,7 @@ public class DataDesignerResource
                                                                @PathVariable String                    certificationTypeGUID,
                                                                @PathVariable String                    dataStructureGUID,
                                                                @RequestBody (required = false)
-                                                                   DeleteRequestBody requestBody)
+                                                                   DeleteRelationshipRequestBody requestBody)
     {
         return restAPI.detachCertificationTypeToDataStructure(serverName, certificationTypeGUID, dataStructureGUID, requestBody);
     }

@@ -1058,6 +1058,7 @@ public class SchemaAttributeHandler extends OpenMetadataHandlerBase
         final String methodName = "getSchemaAttributesByName";
 
         List<String> propertyNames = Arrays.asList(OpenMetadataProperty.QUALIFIED_NAME.name,
+                                                   OpenMetadataProperty.IDENTIFIER.name,
                                                    OpenMetadataProperty.DISPLAY_NAME.name);
 
         return super.getRootElementsByName(userId, name, propertyNames, queryOptions, methodName);

@@ -264,6 +264,7 @@ public class DataStructureHandler extends OpenMetadataHandlerBase
         propertyHelper.validateMandatoryName(name, nameParameterName, methodName);
 
         List<String> propertyNames = Arrays.asList(OpenMetadataProperty.QUALIFIED_NAME.name,
+                                                   OpenMetadataProperty.IDENTIFIER.name,
                                                    OpenMetadataProperty.DISPLAY_NAME.name,
                                                    OpenMetadataProperty.NAMESPACE.name);
 

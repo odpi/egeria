@@ -14,17 +14,19 @@ import org.odpi.openmetadata.frameworks.integration.connectors.IntegrationConnec
 import org.odpi.openmetadata.frameworks.integration.context.IntegrationContext;
 import org.odpi.openmetadata.frameworks.integration.openlineage.OpenLineageEventListener;
 import org.odpi.openmetadata.frameworks.integration.openlineage.OpenLineageRunEvent;
+import org.odpi.openmetadata.frameworks.openmetadata.connectorcontext.AssetClient;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
-import org.odpi.openmetadata.frameworks.opengovernance.properties.CatalogTarget;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.OpenMetadataElement;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.RelatedMetadataElement;
-import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.OpenMetadataRootElement;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.RelatedMetadataElementSummary;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.connections.EndpointProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 
-
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 
 /**
@@ -130,20 +132,17 @@ public abstract class OpenLineageLogStoreConnectorBase extends IntegrationConnec
     {
         super.initialize(connectorInstanceId, connectionDetails);
 
-        if (connectionDetails != null)
+        if (connectionDetails.getDisplayName() != null)
         {
-            if (connectionDetails.getDisplayName() != null)
-            {
-                distributorName = connectionDetails.getDisplayName();
-            }
-            else if (connectionDetails.getConnectorType() != null)
-            {
-                ConnectorType connectorType = connectionDetails.getConnectorType();
+            distributorName = connectionDetails.getDisplayName();
+        }
+        else if (connectionDetails.getConnectorType() != null)
+        {
+            ConnectorType connectorType = connectionDetails.getConnectorType();
 
-                if (connectorType.getDisplayName() != null)
-                {
-                    distributorName = connectorType.getDisplayName();
-                }
+            if (connectorType.getDisplayName() != null)
+            {
+                distributorName = connectorType.getDisplayName();
             }
         }
     }
@@ -189,53 +188,67 @@ public abstract class OpenLineageLogStoreConnectorBase extends IntegrationConnec
 
         try
         {
-            int                startFrom = 0;
-            List<CatalogTarget> catalogTargets = myContext.getConnectorConfigClient().getCatalogTargets(integrationContext.getIntegrationConnectorGUID(),
-                                                                                                        startFrom,
-                                                                                                        myContext.getMaxPageSize());
+            AssetClient assetClient = integrationContext.getAssetClient();
+
+            int                           startFrom = 0;
+            List<OpenMetadataRootElement> catalogTargets = assetClient.getCatalogTargets(integrationContext.getIntegrationConnectorGUID(),
+                                                                                         assetClient.getQueryOptions(startFrom, myContext.getMaxPageSize()));
 
             while (catalogTargets != null)
             {
-                for (CatalogTarget catalogTarget : catalogTargets)
+                for (OpenMetadataRootElement catalogTarget : catalogTargets)
                 {
                     if (catalogTarget != null)
                     {
-                        String endpointGUID = null;
-                        if (propertyHelper.isTypeOf(catalogTarget.getCatalogTargetElement(), OpenMetadataType.ENDPOINT.typeName))
+                        if (propertyHelper.isTypeOf(catalogTarget.getElementHeader(), OpenMetadataType.ENDPOINT.typeName))
                         {
-                            endpointGUID = catalogTarget.getCatalogTargetElement().getGUID();
-                        }
-                        else if (propertyHelper.isTypeOf(catalogTarget.getCatalogTargetElement(), OpenMetadataType.CONNECTION.typeName))
-                        {
-                            endpointGUID = getEndpointGUID(catalogTarget.getCatalogTargetElement().getGUID());
-                        }
-                        else if (propertyHelper.isTypeOf(catalogTarget.getCatalogTargetElement(), OpenMetadataType.ASSET.typeName))
-                        {
-                            RelatedMetadataElement connectionElement = integrationContext.getOpenMetadataStore().getRelatedMetadataElement(catalogTarget.getCatalogTargetElement().getGUID(),
-                                                                                                                                                                     1,
-                                                                                                                                                                     OpenMetadataType.ASSET_CONNECTION_RELATIONSHIP.typeName);
-
-                            if (connectionElement != null)
+                            if (catalogTarget.getProperties() instanceof EndpointProperties endpointProperties)
                             {
-                                endpointGUID = getEndpointGUID(connectionElement.getElement().getElementGUID());
+                                if ((endpointProperties.getNetworkAddress() != null) && (! destinationAddresses.contains(endpointProperties.getNetworkAddress())))
+                                {
+                                    destinationAddresses.add(endpointProperties.getNetworkAddress());
+                                    newDestinationIdentified(endpointProperties.getNetworkAddress());
+                                }
                             }
                         }
-
-                        if (endpointGUID != null)
+                        else if (propertyHelper.isTypeOf(catalogTarget.getElementHeader(), OpenMetadataType.CONNECTION.typeName))
                         {
-                            OpenMetadataElement endpoint = integrationContext.getOpenMetadataStore().getMetadataElementByGUID(endpointGUID);
-
-                            if (endpoint != null)
+                            if (catalogTarget.getEndpoint() != null)
                             {
-                                String networkAddress = propertyHelper.getStringProperty(connectorName,
-                                                                                         OpenMetadataProperty.NETWORK_ADDRESS.name,
-                                                                                         endpoint.getElementProperties(),
-                                                                                         methodName);
-
-                                if ((networkAddress != null) && (! destinationAddresses.contains(networkAddress)))
+                                if (catalogTarget.getEndpoint().getRelatedElement().getProperties() instanceof EndpointProperties endpointProperties)
                                 {
-                                    destinationAddresses.add(networkAddress);
-                                    newDestinationIdentified(networkAddress);
+                                    if ((endpointProperties.getNetworkAddress() != null) && (! destinationAddresses.contains(endpointProperties.getNetworkAddress())))
+                                    {
+                                        destinationAddresses.add(endpointProperties.getNetworkAddress());
+                                        newDestinationIdentified(endpointProperties.getNetworkAddress());
+                                    }
+                                }
+                            }
+                        }
+                        else if (propertyHelper.isTypeOf(catalogTarget.getElementHeader(), OpenMetadataType.ASSET.typeName))
+                        {
+                            if (catalogTarget.getConnections() != null)
+                            {
+                                for (RelatedMetadataElementSummary connection : catalogTarget.getConnections())
+                                {
+                                    if (connection != null)
+                                    {
+                                        OpenMetadataRootElement connectionElement = integrationContext.getConnectionClient().getConnectionByGUID(connection.getRelatedElement().getElementHeader().getGUID(),
+                                                                                                                                                 assetClient.getGetOptions());
+
+                                        if (connectionElement.getEndpoint() != null)
+                                        {
+                                            if (catalogTarget.getEndpoint().getRelatedElement().getProperties() instanceof EndpointProperties endpointProperties)
+                                            {
+                                                if ((endpointProperties.getNetworkAddress() != null) && (! destinationAddresses.contains(endpointProperties.getNetworkAddress())))
+                                                {
+                                                    destinationAddresses.add(endpointProperties.getNetworkAddress());
+                                                    newDestinationIdentified(endpointProperties.getNetworkAddress());
+                                                }
+                                            }
+                                            break;
+                                        }
+                                    }
                                 }
                             }
                         }
@@ -244,9 +257,8 @@ public abstract class OpenLineageLogStoreConnectorBase extends IntegrationConnec
 
                 startFrom = startFrom + myContext.getMaxPageSize();
 
-                catalogTargets = myContext.getConnectorConfigClient().getCatalogTargets(integrationContext.getIntegrationConnectorGUID(),
-                                                                                        startFrom,
-                                                                                        myContext.getMaxPageSize());
+                catalogTargets = assetClient.getCatalogTargets(integrationContext.getIntegrationConnectorGUID(),
+                                                               assetClient.getQueryOptions(startFrom, myContext.getMaxPageSize()));
             }
         }
         catch (Exception error)
@@ -258,34 +270,6 @@ public abstract class OpenLineageLogStoreConnectorBase extends IntegrationConnec
                                                                                                                      error.getMessage()),
                                   error);
         }
-    }
-
-
-    /**
-     * Retrieve the endpoint for the connection.
-     *
-     * @param connectionGUID unique identifier of the connection
-     * @return unique identifier of the endpoint (or null)
-     * @throws InvalidParameterException bad parameter
-     * @throws PropertyServerException repository not working correctly
-     * @throws UserNotAuthorizedException security problem
-     */
-    private String getEndpointGUID(String connectionGUID) throws InvalidParameterException,
-                                                                 PropertyServerException,
-                                                                 UserNotAuthorizedException
-    {
-        String endpointGUID = null;
-
-        RelatedMetadataElement endpointElement = integrationContext.getOpenMetadataStore().getRelatedMetadataElement(connectionGUID,
-                                                                                                                     1,
-                                                                                                                     OpenMetadataType.CONNECT_TO_ENDPOINT_RELATIONSHIP.typeName);
-
-        if (endpointElement != null)
-        {
-            endpointGUID = endpointElement.getElement().getElementGUID();
-        }
-
-        return endpointGUID;
     }
 
 

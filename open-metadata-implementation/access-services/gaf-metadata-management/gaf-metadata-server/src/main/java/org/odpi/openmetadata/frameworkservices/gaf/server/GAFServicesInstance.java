@@ -32,7 +32,6 @@ public class GAFServicesInstance extends AccessServerServiceInstance
     private final EngineActionHandler<EngineActionElement>                               engineActionHandler;
     private final AssetHandler<GovernanceActionProcessElement>                           governanceActionProcessHandler;
     private final GovernanceActionProcessStepHandler<GovernanceActionProcessStepElement> governanceActionProcessStepHandler;
-    private final GovernanceActionTypeHandler<GovernanceActionTypeElement>               governanceActionTypeHandler;
 
     /**
      * Set up the local repository connector that will service the REST Calls.
@@ -126,7 +125,6 @@ public class GAFServicesInstance extends AccessServerServiceInstance
                                                                      supportedZones,
                                                                      defaultZones,
                                                                      publishZones,
-                                                                     null,
                                                                      auditLog);
 
             this.governanceActionProcessStepHandler = new GovernanceActionProcessStepHandler<>(new GovernanceActionProcessStepConverter<>(repositoryHelper, serviceName, serverName),
@@ -142,20 +140,6 @@ public class GAFServicesInstance extends AccessServerServiceInstance
                                                                                                defaultZones,
                                                                                                publishZones,
                                                                                                auditLog);
-
-            this.governanceActionTypeHandler = new GovernanceActionTypeHandler<>(new GovernanceActionTypeConverter<>(repositoryHelper, serviceName, serverName),
-                                                                                 GovernanceActionTypeElement.class,
-                                                                                 serviceName,
-                                                                                 serverName,
-                                                                                 invalidParameterHandler,
-                                                                                 repositoryHandler,
-                                                                                 repositoryHelper,
-                                                                                 localServerUserId,
-                                                                                 securityVerifier,
-                                                                                 supportedZones,
-                                                                                 defaultZones,
-                                                                                 publishZones,
-                                                                                 auditLog);
         }
         else
         {
@@ -217,17 +201,6 @@ public class GAFServicesInstance extends AccessServerServiceInstance
     GovernanceActionProcessStepHandler<GovernanceActionProcessStepElement> getGovernanceActionProcessStepHandler()
     {
         return governanceActionProcessStepHandler;
-    }
-
-
-    /**
-     * Return the handler for governance action type requests.
-     *
-     * @return handler object
-     */
-    GovernanceActionTypeHandler<GovernanceActionTypeElement> getGovernanceActionTypeHandler()
-    {
-        return governanceActionTypeHandler;
     }
 
 

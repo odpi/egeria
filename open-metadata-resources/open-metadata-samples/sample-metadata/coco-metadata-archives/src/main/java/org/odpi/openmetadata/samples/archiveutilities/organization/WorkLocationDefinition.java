@@ -3,8 +3,12 @@
 package org.odpi.openmetadata.samples.archiveutilities.organization;
 
 
+import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
+
 import java.util.HashMap;
 import java.util.Map;
+
+import static org.odpi.openmetadata.frameworks.openmetadata.mapper.OpenMetadataValidValues.constructValidValueQualifiedName;
 
 /**
  * The WorkLocationDefinition is used to feed the definition of the primary work locations for Coco Pharmaceuticals employees or its business partners.
@@ -170,7 +174,7 @@ public enum WorkLocationDefinition
 
     public static final String validValueSetName = "WorkLocation";
     public static final String validValueSetPropertyName = "workLocation";
-    public static final String validValueSetDescription = "Describes the reason behind a team's formation.";
+    public static final String validValueSetDescription = "Describes the primary work location.";
     public static final String validValueSetUsage = "Used as a tag to identify an employee's primary work location.";
     public static final String validValueSetScope = "Used for all types of people associated with Coco Pharmaceuticals.";
 
@@ -232,7 +236,10 @@ public enum WorkLocationDefinition
 
     public String getQualifiedName()
     {
-        return WorkLocationDefinition.validValueSetName + "." + workLocationId;
+        return constructValidValueQualifiedName(null,
+                                                OpenMetadataProperty.ADDITIONAL_PROPERTIES.name,
+                                                validValueSetPropertyName,
+                                                workLocationId);
     }
 
     /**

@@ -5,7 +5,7 @@ package org.odpi.openmetadata.adapters.connectors.apacheatlas.integration;
 
 import org.odpi.openmetadata.adapters.connectors.apacheatlas.integration.ffdc.AtlasIntegrationAuditCode;
 import org.odpi.openmetadata.adapters.connectors.apacheatlas.integration.ffdc.AtlasIntegrationErrorCode;
-import org.odpi.openmetadata.adapters.connectors.apacheatlas.integration.modules.RegisteredIntegrationModule;
+import org.odpi.openmetadata.adapters.connectors.apacheatlas.integration.modules.*;
 import org.odpi.openmetadata.adapters.connectors.apacheatlas.resource.ApacheAtlasRESTConnector;
 import org.odpi.openmetadata.adapters.connectors.apacheatlas.resource.ApacheAtlasRESTProvider;
 import org.odpi.openmetadata.adapters.connectors.apacheatlas.resource.properties.*;
@@ -34,17 +34,16 @@ import java.util.*;
  */
 public class ApacheAtlasIntegrationConnector extends IntegrationConnectorBase implements OpenMetadataEventListener
 {
-    private       String                                         targetRootURL = null;
-    private       IntegrationContext                             myContext     = null;
-    private       ApacheAtlasRESTConnector                       atlasClient   = null;
-    /* todo
+    private String                                         targetRootURL                             = null;
+    private IntegrationContext                             myContext                                 = null;
+    private ApacheAtlasRESTConnector                       atlasClient                               = null;
     private AtlasLineageIntegrationModule                  lineageIntegrationModule                  = null;
     private AtlasInformalTagsIntegrationModule             informalTagsIntegrationModule             = null;
     private AtlasRelatedElementsIntegrationModule          relatedElementsIntegrationModule          = null;
     private AtlasReferenceClassificationsIntegrationModule referenceClassificationsIntegrationModule = null;
 
 
-     */
+
     private final Map<String, List<RegisteredIntegrationModule>> moduleMap     = new HashMap<>();
     private final List<RegisteredIntegrationModule>              moduleList    = new ArrayList<>();
 
@@ -192,7 +191,6 @@ public class ApacheAtlasIntegrationConnector extends IntegrationConnectorBase im
              * Set up the processing modules.  This is currently static, but the intention is that the modules can be plug-in extensions too
              * to support privately defined types.
              */
-            /* todo
             this.registerSupportedModule(new AtlasGlossaryIntegrationModule(connectorName,
                                                                             connectionBean,
                                                                             auditLog,
@@ -315,7 +313,6 @@ public class ApacheAtlasIntegrationConnector extends IntegrationConnectorBase im
                                                                                                                 embeddedConnectors,
                                                                                                                 classificationReferenceSetName,
                                                                                                                classificationReferenceSetPolicy);
-          */
         }
         catch (Exception error)
         {

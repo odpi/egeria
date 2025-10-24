@@ -3,7 +3,6 @@
 package org.odpi.openmetadata.opentypes;
 
 
-import org.odpi.openmetadata.frameworks.openmetadata.enums.DeleteMethod;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 import org.odpi.openmetadata.repositoryservices.archiveutilities.OMRSArchiveBuilder;
@@ -160,7 +159,6 @@ public class OpenMetadataTypesArchive5_1
         update0210DataStores();
         update0235InformationView();
         update0462GovernanceActionProcesses();
-        update0464IntegrationGroups();
     }
 
 
@@ -307,9 +305,9 @@ public class OpenMetadataTypesArchive5_1
         /*
          * Set up end 1.
          */
-        final String                     end1AttributeName            = "associatedGovernanceAction";
-        final String                     end1AttributeDescription     = "Describes the governance action that will use this target for action.";
-        final String                     end1AttributeDescriptionGUID = null;
+        final String end1AttributeName            = "associatedGovernanceAction";
+        final String end1AttributeDescription     = "Describes the governance action that will use this target for action.";
+        final String end1AttributeDescriptionGUID = null;
 
         relationshipEndDef = archiveHelper.getRelationshipEndDef(this.archiveBuilder.getEntityDef(OpenMetadataType.GOVERNANCE_ACTION.typeName),
                                                                  end1AttributeName,
@@ -322,9 +320,9 @@ public class OpenMetadataTypesArchive5_1
         /*
          * Set up end 2.
          */
-        final String                     end2AttributeName            = "predefinedTargetForAction";
-        final String                     end2AttributeDescription     = "Provides a fixed target for action that will be used when this governance action executes.";
-        final String                     end2AttributeDescriptionGUID = null;
+        final String end2AttributeName            = "predefinedTargetForAction";
+        final String end2AttributeDescription     = "Provides a fixed target for action that will be used when this governance action executes.";
+        final String end2AttributeDescriptionGUID = null;
 
         relationshipEndDef = archiveHelper.getRelationshipEndDef(this.archiveBuilder.getEntityDef(OpenMetadataType.OPEN_METADATA_ROOT.typeName),
                                                                  end2AttributeName,
@@ -377,71 +375,5 @@ public class OpenMetadataTypesArchive5_1
      * -------------------------------------------------------------------------------------------------------
      */
 
-    private void update0464IntegrationGroups()
-    {
-        this.archiveBuilder.addEnumDef(getDeleteMethodEnum());
-        this.archiveBuilder.addTypeDefPatch(updateCatalogTarget());
-    }
 
-    private EnumDef getDeleteMethodEnum()
-    {
-        EnumDef enumDef = archiveHelper.getEmptyEnumDef(DeleteMethod.getOpenTypeGUID(),
-                                                        DeleteMethod.getOpenTypeName(),
-                                                        DeleteMethod.getOpenTypeDescription(),
-                                                        DeleteMethod.getOpenTypeDescriptionGUID(),
-                                                        DeleteMethod.getOpenTypeDescriptionWiki());
-
-        ArrayList<EnumElementDef> elementDefs = new ArrayList<>();
-        EnumElementDef            elementDef;
-
-        for (DeleteMethod deleteMethod : DeleteMethod.values())
-        {
-            elementDef = archiveHelper.getEnumElementDef(deleteMethod.getOrdinal(),
-                                                         deleteMethod.getName(),
-                                                         deleteMethod.getDescription(),
-                                                         deleteMethod.getDescriptionGUID());
-
-            elementDefs.add(elementDef);
-
-            if (deleteMethod.isDefault())
-            {
-                enumDef.setDefaultValue(elementDef);
-            }
-        }
-
-        enumDef.setElementDefs(elementDefs);
-
-        return enumDef;
-    }
-
-
-    /**
-     * Add multi-link and new properties
-     *
-     * @return patch
-     */
-    private TypeDefPatch updateCatalogTarget()
-    {
-        TypeDefPatch typeDefPatch = archiveBuilder.getPatchForType(OpenMetadataType.CATALOG_TARGET_RELATIONSHIP.typeName);
-
-        typeDefPatch.setUpdatedBy(originatorName);
-        typeDefPatch.setUpdateTime(creationDate);
-
-        typeDefPatch.setUpdateMultiLink(true);
-        typeDefPatch.setMultiLink(true);
-
-        /*
-         * Build the attributes
-         */
-        List<TypeDefAttribute> properties = new ArrayList<>();
-
-        properties.add(archiveHelper.getEnumTypeDefAttribute(OpenMetadataProperty.PERMITTED_SYNCHRONIZATION));
-        properties.add(archiveHelper.getEnumTypeDefAttribute(OpenMetadataProperty.DELETE_METHOD));
-
-        typeDefPatch.setPropertyDefinitions(properties);
-
-
-        return typeDefPatch;
-    }
 }
-

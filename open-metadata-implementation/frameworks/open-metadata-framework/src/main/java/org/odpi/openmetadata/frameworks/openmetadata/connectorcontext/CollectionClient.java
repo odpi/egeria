@@ -8,18 +8,21 @@ import org.odpi.openmetadata.frameworks.openmetadata.client.OpenMetadataClient;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
-import org.odpi.openmetadata.frameworks.openmetadata.handlers.AssetHandler;
 import org.odpi.openmetadata.frameworks.openmetadata.handlers.CollectionHandler;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.OpenMetadataRootElement;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.RelatedMetadataElementSummary;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.AnchorsProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.ClassificationProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.RelationshipProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.actors.AssignmentScopeProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.collections.*;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.datadictionaries.DataDescriptionProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.digitalbusiness.*;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.glossaries.CanonicalVocabularyProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.glossaries.TaxonomyProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.resources.ResourceListProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.search.*;
+import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 
 import java.util.List;
 import java.util.Map;
@@ -210,6 +213,51 @@ public class CollectionClient extends ConnectorContextClientBase
     }
 
 
+
+
+    /**
+     * Connect a data describing collection to an element using the DataDescription relationship (0580).
+     *
+     * @param dataDescriptionCollectionGUID    unique identifier of the collection
+     * @param parentGUID        unique identifier of referenceable object that the collection should be attached to
+     * @param makeAnchorOptions options to control access to open metadata
+     * @param properties        description of how the collection will be used.
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public void attachDataDescription(String                    parentGUID,
+                                      String                    dataDescriptionCollectionGUID,
+                                      MakeAnchorOptions         makeAnchorOptions,
+                                      DataDescriptionProperties properties) throws InvalidParameterException,
+                                                                                   PropertyServerException,
+                                                                                   UserNotAuthorizedException
+    {
+        collectionHandler.attachDataDescription(connectorUserId, parentGUID, dataDescriptionCollectionGUID, makeAnchorOptions, properties);
+    }
+
+
+    /**
+     * Detach an existing data describing collection from an element.  If the collection is anchored to the element, it is deleted.
+     *
+     * @param dataDescriptionCollectionGUID unique identifier of the collection.
+     * @param parentGUID     unique identifier of referenceable object that the collection should be attached to.
+     * @param deleteOptions  options to control access to open metadata
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public void detachDataDescription(String        parentGUID,
+                                      String        dataDescriptionCollectionGUID,
+                                      DeleteOptions deleteOptions) throws InvalidParameterException,
+                                                                          PropertyServerException,
+                                                                          UserNotAuthorizedException
+    {
+        collectionHandler.detachDataDescription(connectorUserId, parentGUID, dataDescriptionCollectionGUID, deleteOptions);
+    }
+
+
+
     /**
      * Link two dependent products.
      *
@@ -334,6 +382,7 @@ public class CollectionClient extends ConnectorContextClientBase
     {
         collectionHandler.detachProductManager(connectorUserId, digitalProductGUID, digitalProductManagerGUID, deleteOptions);
     }
+
 
     /**
      * Attach an actor to an agreement.
@@ -743,6 +792,67 @@ public class CollectionClient extends ConnectorContextClientBase
 
 
     /**
+     * Extract the glossary from a term.
+     *
+     * @param glossaryTerm glossary term root element.
+     *
+     * @return glossary root element or null
+     * @throws InvalidParameterException  one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public OpenMetadataRootElement getGlossaryForTerm(OpenMetadataRootElement glossaryTerm) throws InvalidParameterException,
+                                                                                                    PropertyServerException,
+                                                                                                    UserNotAuthorizedException
+    {
+        final String methodName = "getGlossaryFromTerm";
+        final String parameterName = "glossaryTerm";
+
+        propertyHelper.validateObject(glossaryTerm, parameterName, methodName);
+
+        /*
+         * Typically the glossary is the anchorScope of a glossary term.
+         */
+        if ((glossaryTerm.getElementHeader().getAnchor() != null) &&
+                (glossaryTerm.getElementHeader().getAnchor().getClassificationProperties() instanceof AnchorsProperties anchorsProperties) &&
+                (anchorsProperties.getAnchorScopeGUID() != null))
+        {
+            return this.getCollectionByGUID(anchorsProperties.getAnchorScopeGUID(), this.getGetOptions());
+        }
+
+        /*
+         * See if the glossary term is a member of a glossary.  Return that glossary if the term is
+         * only a member of one glossary.
+         */
+        if (glossaryTerm.getMemberOfCollections() != null)
+        {
+            RelatedMetadataElementSummary savedGlossary = null;
+            int                           glossaryCount = 0;
+
+            for (RelatedMetadataElementSummary parentCollection : glossaryTerm.getMemberOfCollections())
+            {
+                if ((parentCollection != null) && (propertyHelper.isTypeOf(parentCollection.getRelatedElement().getElementHeader(), OpenMetadataType.GLOSSARY.typeName)))
+                {
+                    if (glossaryCount == 0)
+                    {
+                        savedGlossary = parentCollection;
+                    }
+
+                    glossaryCount++;
+                }
+            }
+
+            if (glossaryCount == 1)
+            {
+                return this.getCollectionByGUID(savedGlossary.getRelatedElement().getElementHeader().getGUID(), this.getGetOptions());
+            }
+        }
+
+        return null;
+    }
+
+
+    /**
      * Return a list of elements that are a member of a collection.
      *
      * @param collectionGUID unique identifier of the collection.
@@ -759,7 +869,6 @@ public class CollectionClient extends ConnectorContextClientBase
     {
         return collectionHandler.getCollectionMembers(connectorUserId, collectionGUID, queryOptions);
     }
-
 
 
 

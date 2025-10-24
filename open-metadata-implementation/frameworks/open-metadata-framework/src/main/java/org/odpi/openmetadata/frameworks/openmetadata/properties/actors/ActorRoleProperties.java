@@ -29,9 +29,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
         })
 public class ActorRoleProperties extends ActorProperties
 {
-    private String identifier = null; /* identifier */
-    private String scope       = null; /* scope */
-
+    private String scope = null;
 
 
     /**
@@ -66,34 +64,9 @@ public class ActorRoleProperties extends ActorProperties
 
         if (template != null)
         {
-            this.identifier    = template.getIdentifier();
-            this.scope       = template.getScope();
+            this.scope = template.getScope();
         }
     }
-
-
-
-    /**
-     * Return the unique identifier for this job role/appointment typically from an HR system.
-     *
-     * @return unique identifier
-     */
-    public String getIdentifier()
-    {
-        return identifier;
-    }
-
-
-    /**
-     * Set up the unique identifier for this job role/appointment.
-     *
-     * @param identifier unique identifier
-     */
-    public void setIdentifier(String identifier)
-    {
-        this.identifier = identifier;
-    }
-
 
 
     /**
@@ -129,8 +102,7 @@ public class ActorRoleProperties extends ActorProperties
     public String toString()
     {
         return "ActorRoleProperties{" +
-                "identifier='" + identifier + '\'' +
-                ", scope='" + scope + '\'' +
+                "scope='" + scope + '\'' +
                 "} " + super.toString();
     }
 
@@ -157,8 +129,7 @@ public class ActorRoleProperties extends ActorProperties
             return false;
         }
         ActorRoleProperties that = (ActorRoleProperties) objectToCompare;
-        return Objects.equals(identifier, that.identifier) &&
-                       Objects.equals(scope, that.scope);
+        return Objects.equals(scope, that.scope);
     }
 
 
@@ -170,6 +141,6 @@ public class ActorRoleProperties extends ActorProperties
     @Override
     public int hashCode()
     {
-        return Objects.hash(identifier, scope);
+        return Objects.hash(super.hashCode(), scope);
     }
 }

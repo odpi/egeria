@@ -9,8 +9,8 @@ import org.odpi.openmetadata.commonservices.multitenant.ViewServiceClientMap;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.PropertyServerException;
+import org.odpi.openmetadata.frameworks.openmetadata.handlers.SearchKeywordHandler;
 import org.odpi.openmetadata.frameworks.openmetadata.handlers.StewardshipManagementHandler;
-import org.odpi.openmetadata.frameworkservices.omf.client.handlers.EgeriaOpenMetadataStoreHandler;
 
 import java.util.List;
 
@@ -23,9 +23,9 @@ public class ClassificationExplorerInstance extends OMVSServiceInstance
 {
     private static final ViewServiceDescription myDescription = ViewServiceDescription.CLASSIFICATION_EXPLORER;
 
+    private final ViewServiceClientMap<SearchKeywordHandler>         searchKeywordMap;
 
     private final ViewServiceClientMap<StewardshipManagementHandler>   stewardshipManagementHandlerHashMap;
-    private final ViewServiceClientMap<EgeriaOpenMetadataStoreHandler> openMetadataHandlerMap;
 
 
     /**
@@ -57,15 +57,6 @@ public class ClassificationExplorerInstance extends OMVSServiceInstance
               remoteServerName,
               remoteServerURL);
 
-        this.openMetadataHandlerMap = new ViewServiceClientMap<>(EgeriaOpenMetadataStoreHandler.class,
-                                                                 serverName,
-                                                                 localServerUserId,
-                                                                 localServerUserPassword,
-                                                                 auditLog,
-                                                                 activeViewServices,
-                                                                 myDescription.getViewServiceFullName(),
-                                                                 maxPageSize);
-
         this.stewardshipManagementHandlerHashMap = new ViewServiceClientMap<>(StewardshipManagementHandler.class,
                                                                               serverName,
                                                                               localServerUserId,
@@ -74,11 +65,20 @@ public class ClassificationExplorerInstance extends OMVSServiceInstance
                                                                               activeViewServices,
                                                                               myDescription.getViewServiceFullName(),
                                                                               maxPageSize);
+
+        this.searchKeywordMap = new ViewServiceClientMap<>(SearchKeywordHandler.class,
+                                                           serverName,
+                                                           localServerUserId,
+                                                           localServerUserPassword,
+                                                           auditLog,
+                                                           activeViewServices,
+                                                           myDescription.getViewServiceFullName(),
+                                                           maxPageSize);
     }
 
 
     /**
-     * Return the collaboration manager handler.
+     * Return the open metadata handler.
      *
      * @param urlMarker optional view service URL marker
      * @param methodName calling method
@@ -94,19 +94,20 @@ public class ClassificationExplorerInstance extends OMVSServiceInstance
     }
 
 
+
     /**
      * Return the open metadata handler.
      *
-     * @param urlMarker  view service URL marker
-     * @param methodName calling method
+     * @param urlMarker calling view service
+     * @param methodName calling operation
+     * @return client
      * @throws InvalidParameterException bad client initialization
      * @throws PropertyServerException bad client handler class
-     * @return client
      */
-    public EgeriaOpenMetadataStoreHandler getOpenMetadataStoreHandler(String urlMarker,
-                                                                      String methodName) throws InvalidParameterException,
-                                                                                                PropertyServerException
+    public SearchKeywordHandler getSearchKeywordHandler(String urlMarker,
+                                                        String methodName) throws InvalidParameterException,
+                                                                                  PropertyServerException
     {
-        return openMetadataHandlerMap.getClient(urlMarker, methodName);
+        return searchKeywordMap.getClient(urlMarker, methodName);
     }
 }

@@ -5,7 +5,6 @@ package org.odpi.openmetadata.frameworks.openmetadata.enums;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import org.odpi.openmetadata.frameworks.openmetadata.enums.OpenMetadataEnum;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataWikiPages;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
@@ -20,44 +19,44 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 public enum AnnotationStatus implements OpenMetadataEnum
 {
     /**
-     * Annotation has been created but not reviewed.
+     * AnnotationProperties has been created but not reviewed.
      */
-    NEW_ANNOTATION      (0,   "4a4cd94d-e407-4218-9d5b-fbc1a68a2d37", "New",      "Annotation has been created but not reviewed", false),
+    NEW_ANNOTATION      (0,   "4a4cd94d-e407-4218-9d5b-fbc1a68a2d37", "New",      "AnnotationProperties has been created but not reviewed", false),
 
     /**
-     * Annotation has been reviewed by no decision has been made.
+     * AnnotationProperties has been reviewed by no decision has been made.
      */
-    REVIEWED_ANNOTATION (1,   "273cb963-2145-470a-9040-7634c8f30f0b",   "Reviewed", "Annotation has been reviewed by no decision has been made", false),
+    REVIEWED_ANNOTATION (1,   "273cb963-2145-470a-9040-7634c8f30f0b",   "Reviewed", "AnnotationProperties has been reviewed by no decision has been made", false),
 
     /**
-     * Annotation has been approved.
+     * AnnotationProperties has been approved.
      */
-    APPROVED_ANNOTATION (2,   "c5447bdb-d1dc-4d6a-811b-b98845ca19da",   "Approved", "Annotation has been approved", false),
+    APPROVED_ANNOTATION (2,   "c5447bdb-d1dc-4d6a-811b-b98845ca19da",   "Approved", "AnnotationProperties has been approved", false),
 
     /**
-     * Annotation has been approved and insight has been added to Asset's metadata.
+     * AnnotationProperties has been approved and insight has been added to Asset's metadata.
      */
-    ACTIONED_ANNOTATION (3,   "f561ac14-d6ea-44d7-a432-8f0dd2e40123",    "Actioned", "Annotation has been approved and insight has been added to Asset's metadata", false),
+    ACTIONED_ANNOTATION (3,   "f561ac14-d6ea-44d7-a432-8f0dd2e40123",    "Actioned", "AnnotationProperties has been approved and insight has been added to Asset's metadata", false),
 
     /**
-     * Annotation has been reviewed and declared invalid.
+     * AnnotationProperties has been reviewed and declared invalid.
      */
-    INVALID_ANNOTATION  (4,   "6b9bc674-24ce-466f-8647-a2a303813341",    "Invalid",  "Annotation has been reviewed and declared invalid", false),
+    INVALID_ANNOTATION  (4,   "6b9bc674-24ce-466f-8647-a2a303813341",    "Invalid",  "AnnotationProperties has been reviewed and declared invalid", false),
 
     /**
-     * Annotation is invalid and should be ignored.
+     * AnnotationProperties is invalid and should be ignored.
      */
-    IGNORE_ANNOTATION   (5,   "90949088-ca0f-4bd9-9936-ee6b343f5e94",   "Ignore",   "Annotation is invalid and should be ignored", false),
+    IGNORE_ANNOTATION   (5,   "90949088-ca0f-4bd9-9936-ee6b343f5e94",   "Ignore",   "AnnotationProperties is invalid and should be ignored", false),
 
     /**
-     * Annotation's status stored in additional properties
+     * AnnotationProperties's status stored in additional properties
      */
-    OTHER_STATUS        (98,   "e16ec89e-f2af-4b63-bbac-a286ffdba771",  "Other",    "Annotation's status stored in additional properties", false),
+    OTHER_STATUS        (98,   "e16ec89e-f2af-4b63-bbac-a286ffdba771",  "Other",    "AnnotationProperties's status stored in additional properties", false),
 
     /**
-     * Annotation has not had a status assigned
+     * AnnotationProperties has not had a status assigned
      */
-    UNKNOWN_STATUS      (99,   "691a566f-27a7-4106-817a-9f04fad870ab", "Unknown",  "Annotation has not had a status assigned", false);
+    UNKNOWN_STATUS      (99,   "691a566f-27a7-4106-817a-9f04fad870ab", "Unknown",  "AnnotationProperties has not had a status assigned", false);
 
 
     private static final String ENUM_TYPE_GUID  = "71187df6-ef66-4f88-bc03-cd3c7f925165";

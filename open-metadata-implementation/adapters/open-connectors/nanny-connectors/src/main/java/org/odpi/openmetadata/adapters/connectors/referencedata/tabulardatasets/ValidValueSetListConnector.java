@@ -6,14 +6,19 @@ package org.odpi.openmetadata.adapters.connectors.referencedata.tabulardatasets;
 import org.odpi.openmetadata.adapters.connectors.referencedata.tabulardatasets.ffdc.ReferenceDataAuditCode;
 import org.odpi.openmetadata.adapters.connectors.referencedata.tabulardatasets.ffdc.ReferenceDataErrorCode;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLoggingComponent;
-import org.odpi.openmetadata.frameworks.connectors.ReadableTabularDataSource;
-import org.odpi.openmetadata.frameworks.connectors.TabularColumnDescription;
+import org.odpi.openmetadata.frameworks.connectors.tabulardatasets.ReadableTabularDataSource;
+import org.odpi.openmetadata.frameworks.connectors.tabulardatasets.TabularColumnDescription;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.OpenMetadataRootElement;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.OpenMetadataElementStub;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.OpenMetadataRelationship;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.OpenMetadataRelationshipList;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.validvalues.ValidValueDefinitionProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.search.QueryOptions;
 import org.odpi.openmetadata.frameworks.openmetadata.search.SearchOptions;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
+import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -88,32 +93,54 @@ public class ValidValueSetListConnector extends ReferenceDataSetConnectorBase im
          */
         try
         {
-            List<OpenMetadataRootElement> validValueSets = new ArrayList<>();
-            SearchOptions                 searchOptions  = new SearchOptions();
-            int                           pageSize       = connectorContext.getMaxPageSize();
+            int pageSize = connectorContext.getMaxPageSize();
 
             if (pageSize == 0)
             {
                 pageSize = 100;
             }
 
-            searchOptions.setPageSize(pageSize);
-            searchOptions.setStartFrom(0);
+            Map<String, OpenMetadataElementStub> validValueSetStubs = new HashMap<>();
+            QueryOptions  queryOptions = new SearchOptions();
 
-            List<OpenMetadataRootElement> validValueDefinitions = connectorContext.getValidValueDefinitionClient().findValidValueDefinitions(null, searchOptions);
+            queryOptions.setPageSize(pageSize);
+            queryOptions.setStartFrom(0);
+            queryOptions.setGraphQueryDepth(2);
 
-            while (validValueDefinitions != null)
+            /*
+             * Retrieve all of the valid value member relationships.  The valid value sets will be the valid value
+             * definitions at end 1.  Using the map will collect one instance of each valid value set.
+             */
+            OpenMetadataRelationshipList openMetadataRelationshipList = connectorContext.getOpenMetadataStore().findRelationshipsBetweenMetadataElements(OpenMetadataType.VALID_VALUE_MEMBER_RELATIONSHIP.typeName,
+                                                                                                                                                         null,
+                                                                                                                                                         queryOptions);
+
+            while ((openMetadataRelationshipList != null) && (openMetadataRelationshipList.getElementList() != null))
             {
-                for (OpenMetadataRootElement validValueElement : validValueDefinitions)
+                for (OpenMetadataRelationship openMetadataRelationship : openMetadataRelationshipList.getElementList())
                 {
-                    if ((validValueElement != null) && (validValueElement.getMemberOfValidValueSets() == null) && (validValueElement.getValidValueMembers() != null))
+                    if (openMetadataRelationship != null)
                     {
-                        validValueSets.add(validValueElement);
+                        validValueSetStubs.put(openMetadataRelationship.getElementGUIDAtEnd1(), openMetadataRelationship.getElementAtEnd1());
                     }
                 }
 
-                searchOptions.setStartFrom(searchOptions.getStartFrom() + pageSize);
-                validValueDefinitions = connectorContext.getValidValueDefinitionClient().findValidValueDefinitions(null, searchOptions);
+                queryOptions.setStartFrom(queryOptions.getStartFrom() + pageSize);
+                openMetadataRelationshipList = connectorContext.getOpenMetadataStore().findRelationshipsBetweenMetadataElements(OpenMetadataType.VALID_VALUE_MEMBER_RELATIONSHIP.typeName,
+                                                                                                                                null,
+                                                                                                                                queryOptions);
+            }
+
+            List<OpenMetadataRootElement> validValueSets = new ArrayList<>();
+
+            for (String validValueSetGUID : validValueSetStubs.keySet())
+            {
+                OpenMetadataRootElement validValueSet = connectorContext.getValidValueDefinitionClient().getValidValueDefinitionByGUID(validValueSetGUID, null);
+
+                if (validValueSet != null)
+                {
+                    validValueSets.add(validValueSet);
+                }
             }
 
             List<String> knownGUIDs = new ArrayList<>();
@@ -170,6 +197,34 @@ public class ValidValueSetListConnector extends ReferenceDataSetConnectorBase im
 
 
     /**
+     * Return the table name for this data source.  This is in canonical name format where each word in the name
+     * should be capitalized, with spaces between the words.
+     * This format allows easy translation between different naming conventions.
+     *
+     * @return string
+     * @throws ConnectorCheckedException there is a problem accessing the data
+     */
+    @Override
+    public String getTableName() throws ConnectorCheckedException
+    {
+        return "Valid Value Set List";
+    }
+
+
+
+    /**
+     * Return the description for this data source.
+     *
+     * @return string
+     */
+    @Override
+    public String getTableDescription()
+    {
+        return "A list of the valid value data sets stored in open metadata";
+    }
+
+
+    /**
      * Return the list of column descriptions associated with this data source.  The information
      * should be sufficient to define the schema in a target data store.  This list is the default
      * column descriptions.  The caller can override them.
@@ -183,16 +238,19 @@ public class ValidValueSetListConnector extends ReferenceDataSetConnectorBase im
         {
             columnDescriptions = new ArrayList<>();
 
-            columnDescriptions.add(getTabularColumnDescription(OpenMetadataProperty.GUID, false));
-            columnDescriptions.add(getTabularColumnDescription(OpenMetadataProperty.QUALIFIED_NAME, false));
-            columnDescriptions.add(getTabularColumnDescription(OpenMetadataProperty.DISPLAY_NAME, true));
-            columnDescriptions.add(getTabularColumnDescription(OpenMetadataProperty.DESCRIPTION, true));
-            columnDescriptions.add(getTabularColumnDescription(OpenMetadataProperty.CATEGORY, true));
-            columnDescriptions.add(getTabularColumnDescription(OpenMetadataProperty.PREFERRED_VALUE, true));
-            columnDescriptions.add(getTabularColumnDescription(OpenMetadataProperty.IS_CASE_SENSITIVE, true));
-            columnDescriptions.add(getTabularColumnDescription(OpenMetadataProperty.DATA_TYPE, true));
-            columnDescriptions.add(getTabularColumnDescription(OpenMetadataProperty.SCOPE, true));
-            columnDescriptions.add(getTabularColumnDescription(OpenMetadataProperty.USAGE, true));
+            columnDescriptions.add(getTabularColumnDescription(OpenMetadataProperty.GUID, false, true));
+            columnDescriptions.add(getTabularColumnDescription(OpenMetadataProperty.CREATE_TIME, false, true));
+            columnDescriptions.add(getTabularColumnDescription(OpenMetadataProperty.UPDATE_TIME, false, true));
+            columnDescriptions.add(getTabularColumnDescription(OpenMetadataProperty.QUALIFIED_NAME, false, false));
+            columnDescriptions.add(getTabularColumnDescription(OpenMetadataProperty.DISPLAY_NAME, true, false));
+            columnDescriptions.add(getTabularColumnDescription(OpenMetadataProperty.DESCRIPTION, true, false));
+            columnDescriptions.add(getTabularColumnDescription(OpenMetadataProperty.CATEGORY, true, false));
+            columnDescriptions.add(getTabularColumnDescription(OpenMetadataProperty.NAMESPACE, true, false));
+            columnDescriptions.add(getTabularColumnDescription(OpenMetadataProperty.PREFERRED_VALUE, true, false));
+            columnDescriptions.add(getTabularColumnDescription(OpenMetadataProperty.IS_CASE_SENSITIVE, true, false));
+            columnDescriptions.add(getTabularColumnDescription(OpenMetadataProperty.DATA_TYPE, true, false));
+            columnDescriptions.add(getTabularColumnDescription(OpenMetadataProperty.SCOPE, true, false));
+            columnDescriptions.add(getTabularColumnDescription(OpenMetadataProperty.USAGE, true, false));
         }
 
         return columnDescriptions;
@@ -253,18 +311,24 @@ public class ValidValueSetListConnector extends ReferenceDataSetConnectorBase im
                 }
                 else if (OpenMetadataProperty.CREATE_TIME.name.equals(tabularColumnDescription.columnName()))
                 {
-                    recordValues.add(validValue.getElementHeader().getVersions().getCreateTime().toString());
+                    long time = validValue.getElementHeader().getVersions().getCreateTime().getTime();
+
+                    recordValues.add(Long.toString(time));
                 }
                 else if (OpenMetadataProperty.UPDATE_TIME.name.equals(tabularColumnDescription.columnName()))
                 {
+                    long time;
+
                     if (validValue.getElementHeader().getVersions().getUpdateTime() == null)
                     {
-                        recordValues.add(null);
+                        time = validValue.getElementHeader().getVersions().getCreateTime().getTime();
                     }
                     else
                     {
-                        recordValues.add(validValue.getElementHeader().getVersions().getUpdateTime().toString());
+                        time = validValue.getElementHeader().getVersions().getUpdateTime().getTime();
                     }
+
+                    recordValues.add(Long.toString(time));
                 }
                 else if (validValue.getProperties() instanceof ValidValueDefinitionProperties validValueDefinitionProperties)
                 {

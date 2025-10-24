@@ -4,6 +4,10 @@ package org.odpi.openmetadata.viewservices.metadataexplorer.server.spring;
 
 import io.swagger.v3.oas.annotations.ExternalDocumentation;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.enums.SecuritySchemeIn;
+import io.swagger.v3.oas.annotations.enums.SecuritySchemeType;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import io.swagger.v3.oas.annotations.security.SecurityScheme;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.odpi.openmetadata.commonservices.ffdc.rest.*;
 import org.odpi.openmetadata.frameworkservices.omf.rest.*;
@@ -16,7 +20,13 @@ import org.springframework.web.bind.annotation.*;
  = */
 @RestController
 @RequestMapping("/servers/{serverName}/api/open-metadata/{urlMarker}")
-
+@SecurityScheme(
+        name = "BearerAuthorization",
+        type = SecuritySchemeType.HTTP,
+        bearerFormat = "JWT",
+        scheme = "bearer",
+        in = SecuritySchemeIn.HEADER
+)
 @Tag(name="API: Metadata Explorer OMVS", description="The Metadata Explorer OMVS provides APIs for supporting the search, query and retrieval of open metadata.  It is an advanced API for users that understand the [Open Metadata Types](https://egeria-project.org/types/).",
         externalDocs=@ExternalDocumentation(description="Further Information",
                 url="https://egeria-project.org/services/omvs/metadata-explorer/overview/"))
@@ -47,6 +57,7 @@ public class MetadataExplorerResource
      *  PropertyServerException there is a problem accessing the metadata store
      */
     @PostMapping(path = "/metadata-elements/{elementGUID}")
+    @SecurityRequirement(name = "BearerAuthorization")
 
     @Operation(summary="getMetadataElementByGUID",
             description="Retrieve the metadata element using its unique identifier.",
@@ -76,6 +87,7 @@ public class MetadataExplorerResource
      *  PropertyServerException there is a problem accessing the metadata store
      */
     @PostMapping(path = "/metadata-elements/by-unique-name")
+    @SecurityRequirement(name = "BearerAuthorization")
 
     @Operation(summary="getMetadataElementByUniqueName",
             description="Retrieve the metadata element using its unique name (typically the qualified name, but it is possible to specify a different property name in the request body as long as it is unique).  If multiple matching instances are found, and exception is thrown.",
@@ -103,6 +115,7 @@ public class MetadataExplorerResource
      *  PropertyServerException there is a problem accessing the metadata store
      */
     @PostMapping(path = "/metadata-elements/guid-by-unique-name")
+    @SecurityRequirement(name = "BearerAuthorization")
 
     @Operation(summary="getMetadataElementGUIDByUniqueName",
             description="Retrieve the metadata element GUID using its unique name (typically the qualified name, but it is possible to specify a different property name in the request body as long as it is unique).  If multiple matching instances are found, and exception is thrown.",
@@ -130,6 +143,7 @@ public class MetadataExplorerResource
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     @PostMapping(path = "/metadata-elements/{elementGUID}/history")
+    @SecurityRequirement(name = "BearerAuthorization")
 
     @Operation(summary="getMetadataElementHistory",
             description="Retrieve all the versions of an element.",
@@ -159,6 +173,7 @@ public class MetadataExplorerResource
      *  PropertyServerException there is a problem accessing the metadata store
      */
     @PostMapping(path = "/metadata-elements/by-search-string")
+    @SecurityRequirement(name = "BearerAuthorization")
 
     @Operation(summary="findMetadataElementsWithString",
             description="Retrieve the metadata elements that contain the requested string.",
@@ -189,6 +204,7 @@ public class MetadataExplorerResource
      * UserNotAuthorizedException the user does not have access to the properties
      */
     @PostMapping(path = "/metadata-elements/by-search-string/for-anchor/{anchorGUID}")
+    @SecurityRequirement(name = "BearerAuthorization")
 
     @Operation(summary="findElementsForAnchor",
             description="Return a list of elements with the requested search string in their (display, resource)name, qualified name, title, text, summary, identifier or description.  The search string is interpreted as a regular expression (RegEx).  The breadth of the search is determined by the supplied anchorGUID.",
@@ -220,6 +236,7 @@ public class MetadataExplorerResource
      * UserNotAuthorizedException the user does not have access to the properties
      */
     @PostMapping(path = "/metadata-elements/by-search-string/in-anchor-domain/{anchorDomainName}")
+    @SecurityRequirement(name = "BearerAuthorization")
 
     @Operation(summary="findElementsInAnchorDomain",
             description="Return a list of elements with the requested search string in their (display, resource)name, qualified name, title, text, summary, identifier or description.  The search string is interpreted as a regular expression (RegEx).  The breadth of the search is determined by the supplied domain name.",
@@ -252,6 +269,7 @@ public class MetadataExplorerResource
      */
 
     @PostMapping(path = "/metadata-elements/by-search-string/in-anchor-scope/{anchorScopeGUID}")
+    @SecurityRequirement(name = "BearerAuthorization")
 
     @Operation(summary="findElementsInAnchorScope",
             description="Return a list of elements with the requested search string in their (display, resource)name, qualified name, title, text, summary, identifier or description.  The search string is interpreted as a regular expression (RegEx).  The breadth of the search is determined by the supplied scope guid.",
@@ -282,6 +300,7 @@ public class MetadataExplorerResource
      *  PropertyServerException there is a problem accessing the metadata store
      */
     @PostMapping(path = "/related-elements/{elementGUID}/any-type")
+    @SecurityRequirement(name = "BearerAuthorization")
 
     @Operation(summary="getAllRelatedMetadataElements",
             description="Retrieve the metadata elements connected to the supplied element.",
@@ -321,6 +340,7 @@ public class MetadataExplorerResource
      *  PropertyServerException there is a problem accessing the metadata store
      */
     @PostMapping(path = "/related-elements/{elementGUID}/type/{relationshipTypeName}")
+    @SecurityRequirement(name = "BearerAuthorization")
 
     @Operation(summary="getRelatedMetadataElements",
             description="Retrieve the metadata elements connected to the supplied element via a specific relationship type.",
@@ -362,6 +382,7 @@ public class MetadataExplorerResource
      *  PropertyServerException there is a problem accessing the metadata store
      */
     @PostMapping(path = "/metadata-elements/{metadataElementAtEnd1GUID}/linked-by-any-type/to-elements/{metadataElementAtEnd2GUID}")
+    @SecurityRequirement(name = "BearerAuthorization")
 
     @Operation(summary="getAllMetadataElementRelationships",
             description="Retrieve the relationships linking the supplied elements.",
@@ -398,6 +419,7 @@ public class MetadataExplorerResource
      * UserNotAuthorizedException - the requesting user is not authorized to issue this request.
      */
     @PostMapping(path = "/metadata-elements/{elementGUID}/with-anchored-elements")
+    @SecurityRequirement(name = "BearerAuthorization")
 
     @Operation(summary="getAnchoredElementsGraph",
             description="Return all the elements that are anchored to an element plus relationships between these elements and to other elements.",
@@ -431,6 +453,7 @@ public class MetadataExplorerResource
      *  PropertyServerException there is a problem accessing the metadata store
      */
     @PostMapping(path = "/metadata-elements/{metadataElementAtEnd1GUID}/linked-by-type/{relationshipTypeName}/to-elements/{metadataElementAtEnd2GUID}")
+    @SecurityRequirement(name = "BearerAuthorization")
 
     @Operation(summary="getMetadataElementRelationships",
             description="Retrieve the relationships linking the supplied elements via a specific type of relationship.",
@@ -467,6 +490,7 @@ public class MetadataExplorerResource
      *  PropertyServerException there is a problem accessing the metadata store
      */
     @PostMapping(path = "/metadata-elements/by-search-conditions")
+    @SecurityRequirement(name = "BearerAuthorization")
 
     @Operation(summary="findMetadataElements",
             description="Return a list of metadata elements that match the supplied criteria.  The results can be returned over many pages.",
@@ -495,6 +519,7 @@ public class MetadataExplorerResource
      *  PropertyServerException there is a problem accessing the metadata store
      */
     @PostMapping(path = "/relationships/by-search-conditions")
+    @SecurityRequirement(name = "BearerAuthorization")
 
     @Operation(summary="findRelationshipsBetweenMetadataElements",
             description="Return a list of relationships that match the requested conditions.  The results can be received as a series of pages.",
@@ -523,6 +548,7 @@ public class MetadataExplorerResource
      *  PropertyServerException there is a problem accessing the metadata store
      */
     @PostMapping(path = "/relationships/by-guid/{relationshipGUID}")
+    @SecurityRequirement(name = "BearerAuthorization")
 
     @Operation(summary="getRelationshipByGUID",
             description="Retrieve the relationship using its unique identifier.",
@@ -553,6 +579,7 @@ public class MetadataExplorerResource
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     @PostMapping(path = "/relationships/{relationshipGUID}/history")
+    @SecurityRequirement(name = "BearerAuthorization")
 
     @Operation(summary="getRelationshipHistory",
             description="Retrieve all the versions of a relationship.",

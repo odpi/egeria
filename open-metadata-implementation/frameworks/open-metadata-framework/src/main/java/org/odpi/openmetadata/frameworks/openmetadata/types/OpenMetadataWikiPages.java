@@ -12,7 +12,7 @@ public class OpenMetadataWikiPages
     /**
      * <a href="https://egeria-project.org/types/0/0010-Base-Model/">...</a>
      */
-    public static final String MODEL_0010_BASIC_MODEL                  = "https://egeria-project.org/types/0/0010-Base-Model/";
+    public static final String MODEL_0010_BASE_MODEL = "https://egeria-project.org/types/0/0010-Base-Model/";
 
     /**
      * <a href="https://egeria-project.org/types/0/0011-Managing-Referenceables/">...</a>
@@ -28,11 +28,6 @@ public class OpenMetadataWikiPages
      * <a href="https://egeria-project.org/types/0/0013-Actions-For-People/">...</a>
      */
     public static final String MODEL_0013_ACTIONS              = "https://egeria-project.org/types/0/0013-Actions-For-People/";
-
-    /**
-     * <a href="https://egeria-project.org/types/0/0013-Translations/">...</a>
-     */
-    public static final String MODEL_0013_TRANSLATIONS              = "https://egeria-project.org/types/0/0013-Translations/";
 
     /**
      * <a href="https://egeria-project.org/types/0/0014-External-References/">...</a>
@@ -240,6 +235,11 @@ public class OpenMetadataWikiPages
     public static final String MODEL_0210_DATA_STORES                  = "https://egeria-project.org/types/2/0210-Data-Stores/";
 
     /**
+     * <a href="https://egeria-project.org/types/2/0211-Tabular-Data-Sets/">...</a>
+     */
+    public static final String MODEL_0211_TABULAR_DATA_SETS                  = "https://egeria-project.org/types/2/0211-Tabular-Data-Sets/";
+
+    /**
      * <a href="https://egeria-project.org/types/2/0212-Deployed-APIs/">...</a>
      */
     public static final String MODEL_0212_DEPLOYED_APIS                = "https://egeria-project.org/types/2/0212-Deployed-APIs/";
@@ -338,11 +338,6 @@ public class OpenMetadataWikiPages
      * <a href="https://egeria-project.org/types/3/0310-Glossary/">...</a>
      */
     public static final String MODEL_0310_GLOSSARY                     = "https://egeria-project.org/types/3/0310-Glossary/";
-
-    /**
-     * <a href="https://egeria-project.org/types/3/0320-Category-Hierarchy/">...</a>
-     */
-    public static final String MODEL_0320_CATEGORY_HIERARCHY           = "https://egeria-project.org/types/3/0320-Category-Hierarchy/";
 
     /**
      * <a href="https://egeria-project.org/types/3/0330-Terms/">...</a>
@@ -575,11 +570,6 @@ public class OpenMetadataWikiPages
     public static final String MODEL_0512_DERIVED_SCHEMA_TYPE          = "https://egeria-project.org/types/5/0512-Derived-Schema-Elements/";
 
     /**
-     * <a href="https://egeria-project.org/types/5/0520-Process-Schemas/">...</a>
-     */
-    public static final String MODEL_0520_PROCESS_SCHEMAS              = "https://egeria-project.org/types/5/0520-Process-Schemas/";
-
-    /**
      * <a href="https://egeria-project.org/types/5/0525-Process-Variables/">...</a>
      */
     public static final String MODEL_0525_PROCESS_VARIABLES            = "https://egeria-project.org/types/5/0525-Process-Variables/";
@@ -642,22 +632,7 @@ public class OpenMetadataWikiPages
     /**
      * <a href="https://egeria-project.org/types/5/0565-Design-Model-Elements/">...</a>
      */
-    public static final String MODEL_0565_DESIGN_MODEL_ELEMENTS        = "https://egeria-project.org/types/5/0565-Design-Model-Elements/";
-
-    /**
-     * <a href="https://egeria-project.org/types/5/0566-Design-Model-Organization/">...</a>
-     */
-    public static final String MODEL_0566_DESIGN_MODEL_ORG             = "https://egeria-project.org/types/5/0566-Design-Model-Organization/";
-
-    /**
-     * <a href="https://egeria-project.org/types/5/0568-Design-Model-Scoping/">...</a>
-     */
-    public static final String MODEL_0568_DESIGN_MODEL_SCOPING         = "https://egeria-project.org/types/5/0568-Design-Model-Scoping/";
-
-    /**
-     * <a href="https://egeria-project.org/types/5/0569-Design-Model-Implementation/">...</a>
-     */
-    public static final String MODEL_0569_DESIGN_MODEL_IMPL            = "https://egeria-project.org/types/5/0569-Design-Model-Implementation/";
+    public static final String MODEL_0565_DESIGN_MODELS = "https://egeria-project.org/types/5/0565-Design-Models/";
 
     /**
      * <a href="https://egeria-project.org/types/5/0570-Metamodels/">...</a>
@@ -760,7 +735,7 @@ public class OpenMetadataWikiPages
     /**
      * <a href="https://egeria-project.org/types/7/0715-Digital-Product-Management/">...</a>
      */
-    public static final String MODEL_0715_DIGITAL_PRODUCT_MANAGEMENT = "https://egeria-project.org/types/7/0715-Digital-Product-Management/";
+    public static final String MODEL_0715_DIGITAL_BUSINESS = "https://egeria-project.org/types/7/0715-Digital-Business/";
 
     /**
      * <a href="https://egeria-project.org/types/7/0720-Information-Supply-Chains/">...</a>

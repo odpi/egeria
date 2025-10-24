@@ -21,19 +21,26 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
         use = JsonTypeInfo.Id.NAME,
         include = JsonTypeInfo.As.PROPERTY,
         property = "class")
-// todo this mapping is not complete
 @JsonSubTypes({
+        @JsonSubTypes.Type(value = AnalyticsEngineProperties.class, name = "AnalyticsEngineProperties"),
         @JsonSubTypes.Type(value = APIManagerProperties.class, name = "APIManagerProperties"),
         @JsonSubTypes.Type(value = ApplicationProperties.class, name = "ApplicationProperties"),
         @JsonSubTypes.Type(value = AuthorizationManagerProperties.class, name = "AuthorizationManagerProperties"),
+        @JsonSubTypes.Type(value = CohortMemberProperties.class, name = "CohortMemberProperties"),
         @JsonSubTypes.Type(value = DataManagerProperties.class, name = "DataManagerProperties"),
+        @JsonSubTypes.Type(value = DataMovementEngineProperties.class, name = "DataMovementEngineProperties"),
+        @JsonSubTypes.Type(value = DataVirtualizationEngineProperties.class, name = "DataVirtualizationEngineProperties"),
         @JsonSubTypes.Type(value = EngineProperties.class, name = "EngineProperties"),
         @JsonSubTypes.Type(value = EventBrokerProperties.class, name = "EventBrokerProperties"),
         @JsonSubTypes.Type(value = GovernanceEngineProperties.class, name = "GovernanceEngineProperties"),
         @JsonSubTypes.Type(value = IntegrationGroupProperties.class, name = "IntegrationGroupProperties"),
         @JsonSubTypes.Type(value = InventoryCatalogProperties.class, name = "InventoryCatalogProperties"),
         @JsonSubTypes.Type(value = NetworkGatewayProperties.class, name = "NetworkGatewayProperties"),
+        @JsonSubTypes.Type(value = ReportingEngineProperties.class, name = "ReportingEngineProperties"),
+        @JsonSubTypes.Type(value = ResourceManagerProperties.class, name = "ResourceManagerProperties"),
+        @JsonSubTypes.Type(value = SoftwareServiceProperties.class, name = "SoftwareServiceProperties"),
         @JsonSubTypes.Type(value = UserAuthenticationManagerProperties.class, name = "UserAuthenticationManagerProperties"),
+        @JsonSubTypes.Type(value = WorkflowEngineProperties.class, name = "WorkflowEngineProperties"),
 
 })
 public class SoftwareCapabilityProperties extends ReferenceableProperties
@@ -64,7 +71,7 @@ public class SoftwareCapabilityProperties extends ReferenceableProperties
 
         if (template != null)
         {
-            deployedImplementationType = template.getDeployedImplementationType();
+            deployedImplementationType = template.getProtocolVersion();
             patchLevel                 = template.getPatchLevel();
             source                     = template.getSource();
         }
@@ -76,7 +83,7 @@ public class SoftwareCapabilityProperties extends ReferenceableProperties
      *
      * @return string description
      */
-    public String getDeployedImplementationType()
+    public String getProtocolVersion()
     {
         return deployedImplementationType;
     }
@@ -85,11 +92,11 @@ public class SoftwareCapabilityProperties extends ReferenceableProperties
     /**
      * Set up the description of the type of software capability this is.
      *
-     * @param deployedImplementationType string
+     * @param protocolVersion string
      */
-    public void setDeployedImplementationType(String deployedImplementationType)
+    public void setProtocolVersion(String protocolVersion)
     {
-        this.deployedImplementationType = deployedImplementationType;
+        this.deployedImplementationType = protocolVersion;
     }
 
 
@@ -175,7 +182,7 @@ public class SoftwareCapabilityProperties extends ReferenceableProperties
             return false;
         }
         SoftwareCapabilityProperties that = (SoftwareCapabilityProperties) objectToCompare;
-        return Objects.equals(getDeployedImplementationType(), that.getDeployedImplementationType()) &&
+        return Objects.equals(getProtocolVersion(), that.getProtocolVersion()) &&
                 Objects.equals(getPatchLevel(), that.getPatchLevel()) &&
                 Objects.equals(getSource(), that.getSource());
     }
@@ -189,6 +196,6 @@ public class SoftwareCapabilityProperties extends ReferenceableProperties
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), getDeployedImplementationType(), getPatchLevel(), getSource());
+        return Objects.hash(super.hashCode(), getProtocolVersion(), getPatchLevel(), getSource());
     }
 }

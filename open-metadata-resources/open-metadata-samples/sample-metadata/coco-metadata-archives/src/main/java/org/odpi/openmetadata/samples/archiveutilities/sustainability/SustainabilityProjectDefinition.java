@@ -2,6 +2,7 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.samples.archiveutilities.sustainability;
 
+import org.odpi.openmetadata.frameworks.openmetadata.refdata.ProjectStatus;
 import org.odpi.openmetadata.samples.archiveutilities.organization.PersonDefinition;
 
 import java.util.Arrays;
@@ -16,68 +17,94 @@ public enum SustainabilityProjectDefinition
      * Campaign coordinating the sustainability initiatives in Coco Pharmaceuticals.
      */
     SUS_GOV("Campaign:Sustainability",
+            "CAMP-SUS",
             "Sustainability Campaign",
             "Campaign coordinating the sustainability initiatives in Coco Pharmaceuticals.",
             true,
             false,
             null,
+            ProjectStatus.ACTIVE,
             null,
+            null,
+            PersonDefinition.TOM_TALLY,
             null),
 
     /**
      * Project to establish a sustainability focus and practices in Coco Pharmaceuticals.
      */
     SUS_BOOTSTRAP("Project:Sustainability Bootstrap",
+                  "PROJ-SUS-BOOTSTRAP",
                   "Sustainability Bootstrap Project",
                   "Project to establish a sustainability focus and practices in Coco Pharmaceuticals.",
                   false,
                   false,
+                  null,
+                  ProjectStatus.ACTIVATING,
                   SustainabilityProjectDefinition.SUS_GOV,
                   null,
+                  PersonDefinition.TOM_TALLY,
                   null),
 
 
     ;
 
-    private final String                          qualifiedName;
-    private final String                          displayName;
-    private final String                          description;
-    private final boolean                         isCampaign;
-    private final boolean                         isTask;
-    private final SustainabilityProjectDefinition controllingProject;
-    private final PersonDefinition[]              leaders;
-    private final PersonDefinition[]              members;
+
+    private final String                  qualifiedName;
+    private final String                  identifier;
+    private final String                  displayName;
+    private final String                  description;
+    private final boolean                 isCampaign;
+    private final boolean                 isTask;
+    private final String              projectTypeClassification;
+    private final ProjectStatus       projectStatus;
+    private final SustainabilityProjectDefinition   controllingProject;
+    private final SustainabilityProjectDefinition[] dependentOn;
+    private final PersonDefinition        leader;
+    private final PersonDefinition[]      members;
 
     /**
      * The constructor creates an instance of the enum
      *
-     * @param qualifiedName   unique id for the enum
+     * @param qualifiedName   unique id for the  entity
+     * @param identifier   unique id for the enum
      * @param displayName   name for the enum
      * @param description   description of the use of this value
      * @param isCampaign is this a collection of related projects
      * @param isTask is this a task within a project
-     * @param controllingProject team that this team reports to - can be null if the entry is an organization
-     * @param leaders person to link into the leadership role
+     * @param projectTypeClassification should a classification be added to describe the type of project
+     * @param projectStatus what is the status of the project
+     * @param controllingProject project that this project reports to - can be null if the project is standalone or a campaign
+     * @param dependentOn projects that this project is dependent on
+     * @param leader person to link into the leadership role
      * @param members list of people who are members of the team or organization
      */
-    SustainabilityProjectDefinition(String                          qualifiedName,
-                                    String                          displayName,
-                                    String                          description,
-                                    boolean                         isCampaign,
-                                    boolean                         isTask,
-                                    SustainabilityProjectDefinition controllingProject,
-                                    PersonDefinition[]              leaders,
-                                    PersonDefinition[]              members)
+    SustainabilityProjectDefinition(String                     qualifiedName,
+                                    String                     identifier,
+                                    String                     displayName,
+                                    String                     description,
+                                    boolean                    isCampaign,
+                                    boolean                    isTask,
+                                    String                     projectTypeClassification,
+                                    ProjectStatus                     projectStatus,
+                                    SustainabilityProjectDefinition   controllingProject,
+                                    SustainabilityProjectDefinition[] dependentOn,
+                                    PersonDefinition                  leader,
+                                    PersonDefinition[]                members)
     {
         this.qualifiedName = qualifiedName;
+        this.identifier = identifier;
         this.displayName = displayName;
         this.description = description;
         this.isCampaign = isCampaign;
         this.isTask = isTask;
+        this.projectTypeClassification = projectTypeClassification;
+        this.projectStatus = projectStatus;
+        this.dependentOn = dependentOn;
         this.controllingProject = controllingProject;
-        this.leaders = leaders;
+        this.leader = leader;
         this.members = members;
     }
+
 
     /**
      * Return the qualified name for the project.
@@ -89,6 +116,16 @@ public enum SustainabilityProjectDefinition
         return qualifiedName;
     }
 
+
+    /**
+     * Return the short identifier for the project.
+     *
+     * @return string name
+     */
+    public String getIdentifier()
+    {
+        return identifier;
+    }
 
 
     /**
@@ -130,6 +167,28 @@ public enum SustainabilityProjectDefinition
 
 
     /**
+     * How should this project be classified?
+     *
+     * @return classification
+     */
+    public String getProjectTypeClassification()
+    {
+        return projectTypeClassification;
+    }
+
+
+    /**
+     * What is the project's current status?
+     *
+     * @return status
+     */
+    public ProjectStatus getProjectStatus()
+    {
+        return projectStatus;
+    }
+
+
+    /**
      * Which project provides direction?
      *
      * @return project
@@ -141,18 +200,29 @@ public enum SustainabilityProjectDefinition
 
 
     /**
+     * Which projects is this project dependent on?
+     *
+     * @return list of projects
+     */
+    public List<SustainabilityProjectDefinition> getDependentOn()
+    {
+        if (dependentOn != null)
+        {
+            return Arrays.asList(dependentOn);
+        }
+
+        return null;
+    }
+
+
+    /**
      * Who is the leader for this project?
      *
      * @return person
      */
-    public List<PersonDefinition> getLeader()
+    public PersonDefinition getLeader()
     {
-        if (leaders != null)
-        {
-            return Arrays.asList(leaders);
-        }
-
-        return null;
+        return leader;
     }
 
 

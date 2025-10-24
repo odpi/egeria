@@ -62,7 +62,7 @@ ext {
     janusVersion = '0.6.4'
     javassistVersion = '3.29.2-GA'
     jaxbVersion = '2.3.1'
-    jenaVersion = '5.2.0'
+    jenaVersion = '5.5.0'
     jodatimeVersion = '2.13.0'
     jsonldVersion = '0.13.6'
     junitVersion = '4.13.2'
@@ -72,19 +72,19 @@ ext {
     jwtApiVersion = '0.13.0'
     jwtImplVersion = '0.11.5'
     jwtJacksonVersion = '0.11.5'
-    kafkaVersion = '3.9.0'
+    kafkaVersion = '4.1.0'
     lang3Version = '3.14.0'
 //    TODO: logbackVersion = '1.5.8' build break
-    logbackVersion = '1.5.6'
+    logbackVersion = '1.5.20'
     lettuceVersion = '6.5.0.RELEASE'
     //      TODO: Lucene Version 9 now available but changed the naming of Codec files and so does not work with XTDB
     luceneVersion = '8.11.3'
-    openlineageVersion = '1.32.1'
+    openlineageVersion = '1.37.0'
     ossVersion = '4.16.0'
     //      TODO: Held as data engine breaks
     mockitoVersion = '4.11.0'
     plexusVersion = '4.0.2'
-    postgresVersion = '42.7.4' // already there
+    postgresVersion = '42.7.8' // already there
     nettyVersion = '4.1.115.Final'
     prometheusVersion = '1.14.2'
     quartzVersion = '2.5.0'
@@ -101,7 +101,7 @@ ext {
     springsecurityVersion = '6.1.4'
     springsecurityJwtVersion = '1.1.1.RELEASE'
     testngVersion = '7.10.2'
-    swaggerVersion = '2.2.25'
+    swaggerVersion = '2.2.39'
     springwebVersion = '6.0.6'
     tinkVersion = '1.15.0'
     tomcatVersion = '10.1.13'
@@ -137,10 +137,10 @@ dependencies {
         api("com.fasterxml.jackson.dataformat:jackson-dataformat-yaml:${jacksonVersion}")
         api("com.fasterxml:classmate:${classmateVersion}")
         api("com.github.jsonld-java:jsonld-java:${jsonldVersion}")
-        api("com.google.crypto.tink:tink:${tinkVersion}")
+        //api("com.google.crypto.tink:tink:${tinkVersion}")
         api("com.github.spotbugs:spotbugs-annotations:${spotbugsVersion}")
         api("com.google.code.findbugs:jsr305:${findbugsVersion}")
-        api("com.google.guava:guava:${guavaVersion}")
+        //api("com.google.guava:guava:${guavaVersion}")
         api("com.sleepycat:je:${sleepycatVersion}")
         api("commons-codec:commons-codec:${commonscodecVersion}")
         api("commons-io:commons-io:${commonsioVersion}")
@@ -170,34 +170,34 @@ dependencies {
         api("org.apache.commons:commons-lang3:${lang3Version}")
         api("org.apache.jena:jena-core:${jenaVersion}")
         api("org.apache.kafka:kafka-clients:${kafkaVersion}")
-        api("org.apache.lucene:lucene-core:${luceneVersion}")
-        api("org.apache.lucene:lucene-analyzers-common:${luceneVersion}")
-        api("org.apache.lucene:lucene-queryparser:${luceneVersion}")
-        api("org.apache.lucene:lucene-spatial:${luceneVersion}")
-        api("org.apache.lucene:lucene-spatial-extras:${luceneVersion}")
-        api("org.apache.tinkerpop:tinkergraph-gremlin:${gremlinVersion}")
-        api("org.apache.tinkerpop:gremlin-driver:${gremlinVersion}")
-        api("org.apache.tinkerpop:gremlin-core:${gremlinVersion}")
-        api("org.apache.tinkerpop:gremlin-groovy:${gremlinVersion}")
-        api("org.apache.tinkerpop:gremlin-shaded:${gremlinVersion}")
+       // api("org.apache.lucene:lucene-core:${luceneVersion}")
+       // api("org.apache.lucene:lucene-analyzers-common:${luceneVersion}")
+       // api("org.apache.lucene:lucene-queryparser:${luceneVersion}")
+      //  api("org.apache.lucene:lucene-spatial:${luceneVersion}")
+      //  api("org.apache.lucene:lucene-spatial-extras:${luceneVersion}")
+      //  api("org.apache.tinkerpop:tinkergraph-gremlin:${gremlinVersion}")
+     //   api("org.apache.tinkerpop:gremlin-driver:${gremlinVersion}")
+      //  api("org.apache.tinkerpop:gremlin-core:${gremlinVersion}")
+     //   api("org.apache.tinkerpop:gremlin-groovy:${gremlinVersion}")
+    //    api("org.apache.tinkerpop:gremlin-shaded:${gremlinVersion}")
         api("org.apache.tomcat.embed:tomcat-embed-core:${tomcatVersion}")
         //TODO May need to exclude tomcat-annotations-api
         api("org.apache.tomcat:tomcat-coyote:${tomcatVersion}")
         //TODO May need to exclude tomcat-annotations-api
-        api("org.codehaus.groovy:groovy:${groovyVersion}")
-        api("org.codehaus.groovy:groovy-cli-picocli:${groovyVersion}")
-        api("org.codehaus.groovy:groovy-console:${groovyVersion}")
-        api("org.codehaus.groovy:groovy-jsr223:${groovyVersion}")
-        api("org.codehaus.groovy:groovy-templates:${groovyVersion}")
-        api("org.codehaus.groovy:groovysh:${groovyVersion}")
-        api("org.elasticsearch:elasticsearch:${elasticsearchVersion}")
-        api("org.elasticsearch.client:elasticsearch-rest-client:${elasticsearchVersion}")
-        api("co.elastic.clients:elasticsearch-java:${elasticsearchVersion}")
+    //    api("org.codehaus.groovy:groovy:${groovyVersion}")
+    //    api("org.codehaus.groovy:groovy-cli-picocli:${groovyVersion}")
+    //    api("org.codehaus.groovy:groovy-console:${groovyVersion}")
+    //    api("org.codehaus.groovy:groovy-jsr223:${groovyVersion}")
+    //    api("org.codehaus.groovy:groovy-templates:${groovyVersion}")
+    //    api("org.codehaus.groovy:groovysh:${groovyVersion}")
+    //    api("org.elasticsearch:elasticsearch:${elasticsearchVersion}")
+    //    api("org.elasticsearch.client:elasticsearch-rest-client:${elasticsearchVersion}")
+   //     api("co.elastic.clients:elasticsearch-java:${elasticsearchVersion}")
         api("org.codehaus.plexus:plexus-utils:${plexusVersion}")
-        api("org.hdrhistogram:HdrHistogram:${hdrhistogramVersion}")
-        api("org.janusgraph:janusgraph-core:${janusVersion}")
-        api("org.janusgraph:janusgraph-inmemory:${janusVersion}")
-        api("org.janusgraph:janusgraph-driver:${janusVersion}")
+    //    api("org.hdrhistogram:HdrHistogram:${hdrhistogramVersion}")
+    //    api("org.janusgraph:janusgraph-core:${janusVersion}")
+    //    api("org.janusgraph:janusgraph-inmemory:${janusVersion}")
+   //     api("org.janusgraph:janusgraph-driver:${janusVersion}")
         api("org.javassist:${javassistVersion}")
         api("org.postgresql:postgresql:${postgresVersion}")
         api("org.quartz-scheduler:quartz:${quartzVersion}")
@@ -236,7 +236,6 @@ dependencies {
         api("commons-configuration:commons-configuration:${commonsconfigurationVersion}")
         api("org.apache.commons:commons-configuration2:${commonsconfiguration2Version}")
         api("org.hibernate:hibernate-validator:${hibernatevalidatorVersion}")
-        api("org.apache.cassandra:cassandra-all:${cassandraVersion}")
         api("org.apache.ant:ant:${antVersion}")
         api("com.google.protobuf:protobuf-java:${protobufVersion}")
         api("com.google.code.gson:gson:${gsonVersion}")
@@ -244,7 +243,6 @@ dependencies {
         api("org.apache.logging.log4j:log4j-api:${log4jVersion}")
         api("com.fasterxml.jackson.datatype:jackson-datatype-jdk8:${jacksonjdk8Version}")
 
-        api("org.projectlombok:lombok:${lombokVersion}")
         api("org.springdoc:springdoc-openapi-starter-webmvc-ui:${springdocStarterVersion}")
         api("io.swagger.core.v3:swagger-annotations-jakarta:${swaggerVersion}")
 
@@ -256,11 +254,11 @@ dependencies {
         api("org.apache.jena:jena-arq:${jenaVersion}")
         api("org.codehaus.jackson:jackson-mapper-asl:${jacksonaslVersion}")
         api("org.codehaus.jackson:jackson-core-asl:${jacksonaslVersion}")
-        api("org.janusgraph:janusgraph-berkeleyje:${janusVersion}")
-        api("org.janusgraph:janusgraph-cql:${janusVersion}")
-        api("org.janusgraph:janusgraph-lucene:${janusVersion}")
-        api("org.janusgraph:janusgraph-es:${janusVersion}")
-        api("org.janusgraph:janusgraph-hbase:${janusVersion}")
+    //    api("org.janusgraph:janusgraph-berkeleyje:${janusVersion}")
+    //    api("org.janusgraph:janusgraph-cql:${janusVersion}")
+    //    api("org.janusgraph:janusgraph-lucene:${janusVersion}")
+    //    api("org.janusgraph:janusgraph-es:${janusVersion}")
+    //    api("org.janusgraph:janusgraph-hbase:${janusVersion}")
         api("org.xerial.snappy:snappy-java:${snappyVersion}")
         api("javax.servlet:javax.servlet-api:${servletVersion}")
         api("io.jsonwebtoken:jjwt-impl:${jwtImplVersion}")
@@ -288,19 +286,19 @@ dependencies {
         api("org.apache.ivy:ivy:2.5.2")
 
         // XTDB Additions
-        api("com.xtdb:xtdb-core:${xtdbVersion}")
-        api("org.clojure:clojure:${clojureVersion}")
+     //   api("com.xtdb:xtdb-core:${xtdbVersion}")
+      //  api("org.clojure:clojure:${clojureVersion}")
         // Dependencies only required if configured to run with these extras: they will be included in the
         // 'jar-with-dependencies' by default, but if you do not need them you can remove them and re-build
         // to get a smaller footprint with less potential CVE exposure.
         // runtimeOnly("org.apache.lucene:lucene-analyzers-common:${luceneVersion}")
-        api("com.xtdb:xtdb-lucene:${xtdbVersion}")
-        api("com.xtdb:xtdb-rocksdb:${xtdbVersion}")
-        api("com.xtdb:xtdb-lmdb:${xtdbVersion}")
-        api("com.xtdb:xtdb-kafka:${xtdbVersion}")
-        api("com.xtdb:xtdb-jdbc:${xtdbVersion}")
-        api("com.xtdb:xtdb-s3:${xtdbVersion}")
-        api("com.xtdb:xtdb-metrics:${xtdbVersion}")
+     //   api("com.xtdb:xtdb-lucene:${xtdbVersion}")
+   //     api("com.xtdb:xtdb-rocksdb:${xtdbVersion}")
+    //    api("com.xtdb:xtdb-lmdb:${xtdbVersion}")
+    //    api("com.xtdb:xtdb-kafka:${xtdbVersion}")
+    //    api("com.xtdb:xtdb-jdbc:${xtdbVersion}")
+    //    api("com.xtdb:xtdb-s3:${xtdbVersion}")
+    //    api("com.xtdb:xtdb-metrics:${xtdbVersion}")
 
         // Add in Egeria's own projects -- not for us, but for our users
         //subprojects.forEach { subProject ->

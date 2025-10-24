@@ -9,11 +9,11 @@ import org.odpi.openmetadata.adapters.connectors.apachekafka.survey.controls.Kaf
 import org.odpi.openmetadata.adapters.connectors.apachekafka.survey.ffdc.KafkaSurveyErrorCode;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.surveyreports.ResourceProfileAnnotationProperties;
 import org.odpi.openmetadata.frameworks.opensurvey.AnnotationStore;
 import org.odpi.openmetadata.frameworks.opensurvey.SurveyActionServiceConnector;
 import org.odpi.openmetadata.frameworks.opensurvey.controls.AnalysisStep;
-import org.odpi.openmetadata.frameworks.opensurvey.properties.Annotation;
-import org.odpi.openmetadata.frameworks.opensurvey.properties.ResourceProfileAnnotation;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.surveyreports.AnnotationProperties;
 
 import java.util.ArrayList;
 import java.util.Map;
@@ -53,8 +53,8 @@ public class SurveyApacheKafkaServerConnector extends SurveyActionServiceConnect
 
             annotationStore.setAnalysisStep(AnalysisStep.PROFILING_ASSOCIATED_RESOURCES.getName());
 
-            Set<String> topicNames = kafkaConnector.getTopicList();
-            ResourceProfileAnnotation resourceProfileAnnotation = new ResourceProfileAnnotation();
+            Set<String>                         topicNames                = kafkaConnector.getTopicList();
+            ResourceProfileAnnotationProperties resourceProfileAnnotation = new ResourceProfileAnnotationProperties();
 
             setUpAnnotation(resourceProfileAnnotation, KafkaAnnotationType.TOPIC_LIST);
 
@@ -91,7 +91,7 @@ public class SurveyApacheKafkaServerConnector extends SurveyActionServiceConnect
      * @param annotation output annotation
      * @param kafkaAnnotationType annotation type definition
      */
-    private void setUpAnnotation(Annotation          annotation,
+    private void setUpAnnotation(AnnotationProperties annotation,
                                  KafkaAnnotationType kafkaAnnotationType)
     {
         annotation.setAnnotationType(kafkaAnnotationType.getName());

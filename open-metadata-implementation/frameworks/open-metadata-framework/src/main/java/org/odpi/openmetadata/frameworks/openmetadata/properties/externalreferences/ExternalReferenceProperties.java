@@ -28,6 +28,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
                 @JsonSubTypes.Type(value = CitedDocumentProperties.class, name = "CitedDocumentProperties"),
                 @JsonSubTypes.Type(value = ExternalDataSourceProperties.class, name = "ExternalDataSourceProperties"),
                 @JsonSubTypes.Type(value = ExternalModelSourceProperties.class, name = "ExternalModelSourceProperties"),
+                @JsonSubTypes.Type(value = ExternalSourceCodeProperties.class, name = "ExternalSourceCodeProperties"),
                 @JsonSubTypes.Type(value = RelatedMediaProperties.class, name = "RelatedMediaProperties"),
         })
 public class ExternalReferenceProperties extends ReferenceableProperties
@@ -36,11 +37,10 @@ public class ExternalReferenceProperties extends ReferenceableProperties
     private String              referenceAbstract = null;
     private List<String>        authors           = null;
     private String              organization      = null;
-    private String              url               = null;
     private Map<String, String> sources           = null;
     private String              license           = null;
     private String              copyright         = null;
-    private String              attribution         = null;
+    private String              attribution       = null;
 
 
     /**
@@ -66,7 +66,6 @@ public class ExternalReferenceProperties extends ReferenceableProperties
         {
             referenceTitle    = template.getReferenceTitle();
             referenceAbstract = template.getReferenceAbstract();
-            url               = template.getURL();
             license           = template.getLicense();
             copyright         = template.getCopyright();
             organization      = template.getOrganization();
@@ -135,26 +134,6 @@ public class ExternalReferenceProperties extends ReferenceableProperties
     {
         this.license = license;
     }
-
-
-    /**
-     * Return the URI used to retrieve the resource that this external reference represents.
-     *
-     * @return String URI
-     */
-    public String getURL() { return url; }
-
-
-    /**
-     * Set up the URI used to retrieve the resource that this external reference represents.
-     *
-     * @param uri String URI
-     */
-    public void setURL(String uri)
-    {
-        this.url = uri;
-    }
-
 
 
     /**
@@ -274,7 +253,6 @@ public class ExternalReferenceProperties extends ReferenceableProperties
                 ", referenceAbstract='" + referenceAbstract + '\'' +
                 ", authors=" + authors +
                 ", organization='" + organization + '\'' +
-                ", url='" + url + '\'' +
                 ", sources=" + sources +
                 ", license='" + license + '\'' +
                 ", copyright='" + copyright + '\'' +
@@ -300,7 +278,6 @@ public class ExternalReferenceProperties extends ReferenceableProperties
                 Objects.equals(referenceAbstract, that.referenceAbstract) &&
                 Objects.equals(authors, that.authors) &&
                 Objects.equals(organization, that.organization) &&
-                Objects.equals(url, that.url) &&
                 Objects.equals(sources, that.sources) &&
                 Objects.equals(license, that.license) &&
                 Objects.equals(copyright, that.copyright) &&
@@ -315,6 +292,6 @@ public class ExternalReferenceProperties extends ReferenceableProperties
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), referenceTitle, referenceAbstract, authors, organization, url, sources, license, copyright, attribution);
+        return Objects.hash(super.hashCode(), referenceTitle, referenceAbstract, authors, organization, sources, license, copyright, attribution);
     }
 }

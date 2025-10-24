@@ -193,36 +193,10 @@ public class CocoGovernanceEnginesArchiveWriter extends EgeriaBaseArchiveWriter
                                                             governanceActionTypeGUID,
                                                             governanceActionDescription.resourceUse.getResourceUse(),
                                                             governanceActionDescription.governanceServiceDescription,
-                                                            requestParameters,
-                                                            false);
+                                                            requestParameters);
         }
     }
 
-
-
-
-    /**
-     * Create solution roles
-     */
-    private void addSolutionRoles()
-    {
-        for (SolutionRoleDefinition solutionRoleDefinition : SolutionRoleDefinition.values())
-        {
-            archiveHelper.setGUID(solutionRoleDefinition.getQualifiedName(), solutionRoleDefinition.getGUID());
-
-            String solutionRoleGUID = archiveHelper.addActorRole(OpenMetadataType.SOLUTION_ACTOR_ROLE.typeName,
-                                                                 solutionRoleDefinition.getQualifiedName(),
-                                                                 solutionRoleDefinition.getIdentifier(),
-                                                                 solutionRoleDefinition.getDisplayName(),
-                                                                 solutionRoleDefinition.getDescription(),
-                                                                 solutionRoleDefinition.getScope().getPreferredValue(),
-                                                                 false,
-                                                                 0,
-                                                                 null,
-                                                                 null);
-            assert(solutionRoleGUID.equals(solutionRoleDefinition.getGUID()));
-        }
-    }
 
 
     /**
@@ -278,137 +252,6 @@ public class CocoGovernanceEnginesArchiveWriter extends EgeriaBaseArchiveWriter
                                                                     informationSupplyChainLink.getSegment2().getGUID(),
                                                                     informationSupplyChainLink.getLabel(),
                                                                     informationSupplyChainLink.getDescription());
-        }
-    }
-
-
-    /**
-     * Link solution components together.
-     */
-    private void addSolutionComponentWires()
-    {
-        for (SolutionComponentWire solutionComponentWire : SolutionComponentWire.values())
-        {
-            archiveHelper.addSolutionLinkingWireRelationship(solutionComponentWire.getComponent1().getGUID(),
-                                                             solutionComponentWire.getComponent2().getGUID(),
-                                                             solutionComponentWire.getLabel(),
-                                                             solutionComponentWire.getDescription(),
-                                                             solutionComponentWire.getISCQualifiedNames());
-        }
-    }
-
-
-    /**
-     * Create solution blueprints
-     */
-    private void addSolutionBlueprints()
-    {
-        final String methodName = "addSolutionBlueprints";
-
-        for (SolutionBlueprint solutionBlueprint : SolutionBlueprint.values())
-        {
-            archiveHelper.setGUID(solutionBlueprint.getQualifiedName(), solutionBlueprint.getGUID());
-
-            String blueprintGUID = archiveHelper.addSolutionBlueprint(OpenMetadataType.SOLUTION_BLUEPRINT.typeName,
-                                                                      solutionBlueprint.getQualifiedName(),
-                                                                      solutionBlueprint.getDisplayName(),
-                                                                      solutionBlueprint.getDescription(),
-                                                                      solutionBlueprint.getVersionIdentifier(),
-                                                                      null,
-                                                                      null);
-            assert (blueprintGUID.equals(solutionBlueprint.getGUID()));
-
-            if (solutionBlueprint.isTemplate())
-            {
-                archiveHelper.addTemplateClassification(blueprintGUID,
-                                                        "Standard Solution Blueprint Template",
-                                                        null,
-                                                        "V1.0",
-                                                        null,
-                                                        methodName);
-            }
-        }
-    }
-
-
-    /**
-     * Create solution components
-     */
-    private void addSolutionComponents()
-    {
-        for (SolutionComponent solutionComponent : SolutionComponent.values())
-        {
-            archiveHelper.setGUID(solutionComponent.getQualifiedName(), solutionComponent.getGUID());
-
-            List<SolutionBlueprint> consumingSolutionBlueprints     = solutionComponent.getConsumingBlueprints();
-            List<String>            consumingSolutionBlueprintGUIDs = null;
-
-            if (consumingSolutionBlueprints != null)
-            {
-                consumingSolutionBlueprintGUIDs = new ArrayList<>();
-
-                for (SolutionBlueprint solutionBlueprint : consumingSolutionBlueprints)
-                {
-                    if (solutionBlueprint != null)
-                    {
-                        consumingSolutionBlueprintGUIDs.add(solutionBlueprint.getGUID());
-                    }
-                }
-            }
-
-            String componentGUID = archiveHelper.addSolutionComponent(consumingSolutionBlueprintGUIDs,
-                                                                      OpenMetadataType.SOLUTION_COMPONENT.typeName,
-                                                                      solutionComponent.getQualifiedName(),
-                                                                      solutionComponent.getDisplayName(),
-                                                                      solutionComponent.getDescription(),
-                                                                      solutionComponent.getVersionIdentifier(),
-                                                                      solutionComponent.getComponentType(),
-                                                                      solutionComponent.getImplementationType(),
-                                                                      null,
-                                                                      null,
-                                                                      null,
-                                                                      null);
-            assert(componentGUID.equals(solutionComponent.getGUID()));
-
-            if (solutionComponent.getSubComponents() != null)
-            {
-                for (SolutionComponent subComponent : solutionComponent.getSubComponents())
-                {
-                    archiveHelper.addSolutionCompositionRelationship(componentGUID, subComponent.getGUID());
-                }
-            }
-
-            if (solutionComponent.getLinkedFromSegment() != null)
-            {
-                for (InformationSupplyChain segment : solutionComponent.getLinkedFromSegment())
-                {
-                    archiveHelper.addImplementedByRelationship(segment.getGUID(),
-                                                               solutionComponent.getGUID(),
-                                                               "Information Supply Chain Refinement",
-                                                               "Supporting Supply Chain",
-                                                               null,
-                                                               null);
-                }
-            }
-
-            if (solutionComponent.getImplementationResource() != null)
-            {
-                archiveHelper.addImplementationResourceRelationship(solutionComponent.getGUID(),
-                                                                    solutionComponent.getImplementationResource(),
-                                                                    "Standard implementation of the main process step");
-            }
-        }
-    }
-
-
-    private void addSolutionComponentActorDefinitions()
-    {
-        for (SolutionComponentActor solutionRoleDefinition : SolutionComponentActor.values())
-        {
-            archiveHelper.addSolutionComponentActorRelationship(solutionRoleDefinition.getSolutionRole().getGUID(),
-                                                                solutionRoleDefinition.getSolutionComponent().getGUID(),
-                                                                solutionRoleDefinition.getRole(),
-                                                                solutionRoleDefinition.getDescription());
         }
     }
 
@@ -642,11 +485,9 @@ public class CocoGovernanceEnginesArchiveWriter extends EgeriaBaseArchiveWriter
             this.addGovernanceServiceDefinition(governanceServiceDefinition);
         }
 
-        addSolutionRoles();
+        archiveHelper.addSolutionRoles(List.of(SolutionRoleDefinition.values()));
         addInformationSupplyChains();
         addInformationSupplyChainLinks();
-        addSolutionBlueprints();
-
 
         /*
          * Connect the governance engines to the governance services using the request types.
@@ -665,9 +506,10 @@ public class CocoGovernanceEnginesArchiveWriter extends EgeriaBaseArchiveWriter
                                 requestTypeDefinition.getSupportedElementQualifiedName());
         }
 
-        addSolutionComponents();
-        addSolutionComponentActorDefinitions();
-        addSolutionComponentWires();
+        archiveHelper.addSolutionComponents(List.of(SolutionComponent.values()));
+        archiveHelper.addSolutionComponentActors(List.of(SolutionComponentActor.values()));
+        archiveHelper.addSolutionComponentWires(List.of(SolutionComponentWire.values()));
+        archiveHelper.addSolutionBlueprints(List.of(SolutionBlueprint.values()));
 
         this.addOnboardingGovernanceActionProcess();
     }

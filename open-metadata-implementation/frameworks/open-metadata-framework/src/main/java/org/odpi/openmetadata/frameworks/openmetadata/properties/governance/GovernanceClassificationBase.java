@@ -23,11 +23,11 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonSubTypes(
         {
                 @JsonSubTypes.Type(value = GovernanceClassificationProperties.class, name = "GovernanceClassificationProperties"),
-                @JsonSubTypes.Type(value = RetentionClassificationProperties.class, name = "RetentionClassificationProperties"),
+                @JsonSubTypes.Type(value = RetentionProperties.class, name = "RetentionClassificationProperties"),
         })
 public class GovernanceClassificationBase extends ClassificationBeanProperties
 {
-    private int    status              = 0;
+    private int    statusIdentifier    = 0;
     private int    confidence          = 0;
     private String steward             = null;
     private String stewardTypeName     = null;
@@ -56,7 +56,7 @@ public class GovernanceClassificationBase extends ClassificationBeanProperties
 
         if (template != null)
         {
-            status              = template.getStatus();
+            statusIdentifier    = template.getStatusIdentifier();
             confidence          = template.getConfidence();
             steward             = template.getSteward();
             stewardTypeName     = template.getStewardTypeName();
@@ -72,20 +72,20 @@ public class GovernanceClassificationBase extends ClassificationBeanProperties
      *
      * @return enum
      */
-    public int getStatus()
+    public int getStatusIdentifier()
     {
-        return status;
+        return statusIdentifier;
     }
 
 
     /**
      * Set up the status of the classification.
      *
-     * @param status enum
+     * @param statusIdentifier enum
      */
-    public void setStatus(int status)
+    public void setStatusIdentifier(int statusIdentifier)
     {
-        this.status = status;
+        this.statusIdentifier = statusIdentifier;
     }
 
 
@@ -230,7 +230,7 @@ public class GovernanceClassificationBase extends ClassificationBeanProperties
     public String toString()
     {
         return "GovernanceClassificationBase{" +
-                "status=" + status +
+                "status=" + statusIdentifier +
                 ", confidence=" + confidence +
                 ", steward='" + steward + '\'' +
                 ", stewardTypeName='" + stewardTypeName + '\'' +
@@ -264,7 +264,7 @@ public class GovernanceClassificationBase extends ClassificationBeanProperties
         }
         GovernanceClassificationBase that = (GovernanceClassificationBase) objectToCompare;
         return confidence == that.confidence &&
-                       status == that.status &&
+                       statusIdentifier == that.statusIdentifier &&
                        Objects.equals(steward, that.steward) &&
                        Objects.equals(stewardTypeName, that.stewardTypeName) &&
                        Objects.equals(stewardPropertyName, that.stewardPropertyName) &&
@@ -281,6 +281,6 @@ public class GovernanceClassificationBase extends ClassificationBeanProperties
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), status, confidence, steward, stewardTypeName, stewardPropertyName, source, notes);
+        return Objects.hash(super.hashCode(), statusIdentifier, confidence, steward, stewardTypeName, stewardPropertyName, source, notes);
     }
 }

@@ -8,13 +8,16 @@ import org.odpi.openmetadata.commonservices.ffdc.RESTCallToken;
 import org.odpi.openmetadata.commonservices.ffdc.RESTExceptionHandler;
 import org.odpi.openmetadata.commonservices.ffdc.rest.*;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
-import org.odpi.openmetadata.frameworks.openmetadata.handlers.GovernanceDefinitionGraphHandler;
+import org.odpi.openmetadata.frameworks.opengovernance.client.OpenGovernanceClient;
+import org.odpi.openmetadata.frameworkservices.gaf.rest.*;
 import org.odpi.openmetadata.frameworks.openmetadata.handlers.GovernanceDefinitionHandler;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.governance.*;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.implementations.ImplementationResourceProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.implementations.ImplementedByProperties;
 import org.odpi.openmetadata.tokencontroller.TokenController;
 import org.slf4j.LoggerFactory;
+
+import java.util.Date;
 
 
 /**
@@ -336,7 +339,7 @@ public class GovernanceOfficerRESTServices extends TokenController
                                               String                   governanceDefinitionOneGUID,
                                               String                   governanceDefinitionTwoGUID,
                                               String                   relationshipTypeName,
-                                              DeleteRequestBody requestBody)
+                                              DeleteRelationshipRequestBody requestBody)
     {
         final String methodName = "detachPeerDefinitions";
 
@@ -475,7 +478,7 @@ public class GovernanceOfficerRESTServices extends TokenController
                                                    String                   governanceDefinitionOneGUID,
                                                    String                   governanceDefinitionTwoGUID,
                                                    String                   relationshipTypeName,
-                                                   DeleteRequestBody requestBody)
+                                                   DeleteRelationshipRequestBody requestBody)
     {
         final String methodName = "detachSupportingDefinition";
 
@@ -605,7 +608,7 @@ public class GovernanceOfficerRESTServices extends TokenController
                                                               String            urlMarker,
                                                               String            elementGUID,
                                                               String            definitionGUID,
-                                                              DeleteRequestBody requestBody)
+                                                              DeleteRelationshipRequestBody requestBody)
     {
         final String methodName = "removeGovernanceDefinitionFromElement";
 
@@ -729,7 +732,7 @@ public class GovernanceOfficerRESTServices extends TokenController
                                                 String            urlMarker,
                                                 String            governanceMetricGUID,
                                                 String            dataSourceGUID,
-                                                DeleteRequestBody requestBody)
+                                                DeleteRelationshipRequestBody requestBody)
     {
         final String methodName = "detachGovernanceResults";
 
@@ -906,7 +909,7 @@ public class GovernanceOfficerRESTServices extends TokenController
     public VoidResponse unlicenseElement(String            serverName,
                                          String            urlMarker,
                                          String            licenseGUID,
-                                         DeleteRequestBody requestBody)
+                                         DeleteRelationshipRequestBody requestBody)
     {
         final String methodName = "unlicenseElement";
 
@@ -1087,7 +1090,7 @@ public class GovernanceOfficerRESTServices extends TokenController
     public VoidResponse decertifyElement(String            serverName,
                                          String            urlMarker,
                                          String            certificationGUID,
-                                         DeleteRequestBody requestBody)
+                                         DeleteRelationshipRequestBody requestBody)
     {
         final String methodName = "decertifyElement";
 
@@ -1132,7 +1135,7 @@ public class GovernanceOfficerRESTServices extends TokenController
     public VoidResponse deleteGovernanceDefinition(String                   serverName,
                                                    String                   urlMarker,
                                                    String                   governanceDefinitionGUID,
-                                                   DeleteRequestBody requestBody)
+                                                   DeleteElementRequestBody requestBody)
     {
         final String methodName = "deleteGovernanceDefinition";
 
@@ -1262,6 +1265,70 @@ public class GovernanceOfficerRESTServices extends TokenController
         restCallLogger.logRESTCallReturn(token, response.toString());
         return response;
     }
+
+
+
+
+    /* =====================================================================================================================
+     * A governance action process describes a well-defined series of steps that gets something done.
+     * The steps are defined using GovernanceActionProcessSteps.
+     */
+
+
+    /**
+     * Retrieve the governance action process metadata element with the supplied unique identifier
+     * along with the flow definition describing its implementation.
+     *
+     * @param serverName name of the service to route the request to
+     * @param urlMarker  view service URL marker
+     * @param processGUID unique identifier of the requested metadata element
+     * @param requestBody effectiveTime
+     *
+     * @return requested metadata element or
+     *  InvalidParameterException  one of the parameters is invalid
+     *  UserNotAuthorizedException the user is not authorized to issue this request
+     *  PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public GovernanceActionProcessGraphResponse getGovernanceActionProcessGraph(String             serverName,
+                                                                                String             urlMarker,
+                                                                                String             processGUID,
+                                                                                ResultsRequestBody requestBody)
+    {
+        final String methodName = "getGovernanceActionProcessGraph";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
+
+        GovernanceActionProcessGraphResponse response = new GovernanceActionProcessGraphResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+            OpenGovernanceClient handler = instanceHandler.getOpenGovernanceClient(userId, serverName, urlMarker, methodName);
+
+            if (requestBody != null)
+            {
+                response.setElement(handler.getGovernanceActionProcessGraph(userId, processGUID, requestBody.getEffectiveTime()));
+            }
+            else
+            {
+                response.setElement(handler.getGovernanceActionProcessGraph(userId, processGUID, new Date()));
+            }
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+        return response;
+    }
+
+
 
 
     /**
@@ -1415,7 +1482,7 @@ public class GovernanceOfficerRESTServices extends TokenController
                                                        String                   urlMarker,
                                                        String                   designGUID,
                                                        String                   implementationGUID,
-                                                       DeleteRequestBody requestBody)
+                                                       DeleteRelationshipRequestBody requestBody)
     {
         final String methodName = "detachDesignFromImplementation";
 
@@ -1543,7 +1610,7 @@ public class GovernanceOfficerRESTServices extends TokenController
                                                      String                   urlMarker,
                                                      String                   designGUID,
                                                      String                   implementationResourceGUID,
-                                                     DeleteRequestBody requestBody)
+                                                     DeleteRelationshipRequestBody requestBody)
     {
         final String methodName = "detachImplementationResource";
 

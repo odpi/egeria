@@ -30,7 +30,6 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
         })
 public class ReportProperties extends DataSetProperties
 {
-    private String identifier        = null;
     private String purpose           = null;
     private String author            = null;
     private Date   startTime         = null;
@@ -61,7 +60,6 @@ public class ReportProperties extends DataSetProperties
 
         if (template != null)
         {
-            identifier        = template.getIdentifier();
             purpose           = template.getPurpose();
             author            = template.getAuthor();
             startTime         = template.getStartTime();
@@ -71,28 +69,6 @@ public class ReportProperties extends DataSetProperties
             lastModifiedTime  = template.getLastModifiedTime();
             lastModifier      = template.getLastModifier();
         }
-    }
-
-
-    /**
-     * Return the business identifier for the report.
-     *
-     * @return string id
-     */
-    public String getIdentifier()
-    {
-        return identifier;
-    }
-
-
-    /**
-     * Set up the business identifier for the report.
-     *
-     * @param identifier string id
-     */
-    public void setIdentifier(String identifier)
-    {
-        this.identifier = identifier;
     }
 
 
@@ -284,8 +260,7 @@ public class ReportProperties extends DataSetProperties
     public String toString()
     {
         return "ReportProperties{" +
-                "identifier='" + identifier + '\'' +
-                ", purpose='" + purpose + '\'' +
+                "purpose='" + purpose + '\'' +
                 ", author='" + author + '\'' +
                 ", startTime=" + startTime +
                 ", completionTime=" + completionTime +
@@ -310,8 +285,7 @@ public class ReportProperties extends DataSetProperties
         if (objectToCompare == null || getClass() != objectToCompare.getClass()) return false;
         if (!super.equals(objectToCompare)) return false;
         ReportProperties that = (ReportProperties) objectToCompare;
-        return Objects.equals(identifier, that.identifier) &&
-                Objects.equals(purpose, that.purpose) &&
+        return Objects.equals(purpose, that.purpose) &&
                 Objects.equals(author, that.author) &&
                 Objects.equals(startTime, that.startTime) &&
                 Objects.equals(completionTime, that.completionTime) &&
@@ -329,6 +303,6 @@ public class ReportProperties extends DataSetProperties
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), identifier, purpose, author, startTime, completionTime, completionMessage, createdTime, lastModifiedTime, lastModifier);
+        return Objects.hash(super.hashCode(), purpose, author, startTime, completionTime, completionMessage, createdTime, lastModifiedTime, lastModifier);
     }
 }

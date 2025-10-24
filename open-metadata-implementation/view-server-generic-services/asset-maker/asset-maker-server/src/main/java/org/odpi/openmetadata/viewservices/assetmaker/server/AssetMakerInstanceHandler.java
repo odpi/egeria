@@ -35,7 +35,7 @@ public class AssetMakerInstanceHandler extends OMVSServiceInstanceHandler
      *
      * @param serverName           name of the server that the request is for
      * @param userId               local server userid
-     * @param urlMarker optional view service URL marker (overrides accessServiceURLMarker)
+     * @param urlMarker  view service URL marker
      * @param serviceOperationName service operation - usually the top level rest call
      * @return  client
      * @throws InvalidParameterException unknown server/service
@@ -43,11 +43,11 @@ public class AssetMakerInstanceHandler extends OMVSServiceInstanceHandler
      * @throws PropertyServerException internal error
      */
     public AssetHandler getAssetHandler(String userId,
-                                                  String serverName,
-                                                  String urlMarker,
-                                                  String serviceOperationName) throws InvalidParameterException,
-                                                                                      PropertyServerException,
-                                                                                      UserNotAuthorizedException
+                                        String serverName,
+                                        String urlMarker,
+                                        String serviceOperationName) throws InvalidParameterException,
+                                                                            PropertyServerException,
+                                                                            UserNotAuthorizedException
     {
         AssetMakerInstance instance = (AssetMakerInstance) getServerServiceInstance(userId, serverName, serviceOperationName);
 

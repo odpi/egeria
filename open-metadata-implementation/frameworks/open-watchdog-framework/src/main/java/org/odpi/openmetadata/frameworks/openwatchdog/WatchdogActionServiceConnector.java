@@ -10,18 +10,13 @@ import org.odpi.openmetadata.frameworks.auditlog.ComponentDescription;
 import org.odpi.openmetadata.frameworks.connectors.Connector;
 import org.odpi.openmetadata.frameworks.connectors.ConnectorBase;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
-import org.odpi.openmetadata.frameworks.opengovernance.WatchdogGovernanceListener;
 import org.odpi.openmetadata.frameworks.opengovernance.ffdc.GovernanceServiceException;
 import org.odpi.openmetadata.frameworks.openmetadata.events.OpenMetadataOutTopicEvent;
-import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.frameworks.openmetadata.search.PropertyHelper;
-import org.odpi.openmetadata.frameworks.openwatchdog.controls.WatchdogActionGuard;
-import org.odpi.openmetadata.frameworks.openwatchdog.ffdc.OWFAuditCode;
 import org.odpi.openmetadata.frameworks.openwatchdog.ffdc.OWFErrorCode;
 
-import java.util.Collections;
 import java.util.List;
 
 
@@ -127,23 +122,6 @@ public abstract class WatchdogActionServiceConnector extends ConnectorBase imple
     }
 
 
-
-    /**
-     * Return the survey context for this watchdog action service.  This is typically called after the disconnect()
-     * method is called.  If called before disconnect(), it may only contain partial results.
-     *
-     * @return survey context containing the results discovered (so far) by the watchdog action service.
-     * @throws UserNotAuthorizedException the service is no longer active
-     */
-    protected WatchdogContext getWatchdogContext() throws UserNotAuthorizedException
-    {
-        final String methodName = "getWatchdogContext";
-
-        watchdogContext.validateIsActive(methodName);
-        return watchdogContext;
-    }
-
-
     /**
      * Indicates that the watchdog action service is completely configured and can begin processing.
      * This is where the function of the watchdog action service is implemented.
@@ -162,7 +140,7 @@ public abstract class WatchdogActionServiceConnector extends ConnectorBase imple
 
         if (watchdogContext == null)
         {
-            throw new ConnectorCheckedException(OWFErrorCode.NULL_SURVEY_CONTEXT.getMessageDefinition(watchdogActionServiceName),
+            throw new ConnectorCheckedException(OWFErrorCode.NULL_WATCHDOG_CONTEXT.getMessageDefinition(watchdogActionServiceName),
                                                 this.getClass().getName(),
                                                 methodName);
         }

@@ -21,8 +21,8 @@ import java.util.UUID;
  */
 class ExternalIdentifierBuilder extends ReferenceableBuilder
 {
-    private String identifier                     = null;
-    private int    keyPattern                     = 0;
+    private String key        = null;
+    private int    keyPattern = 0;
     private String externalInstanceTypeName       = null;
     private String externalInstanceCreatedBy      = null;
     private Date   externalInstanceCreationTime   = null;
@@ -53,7 +53,7 @@ class ExternalIdentifierBuilder extends ReferenceableBuilder
     /**
      * Constructor supporting all properties for the ExternalId entity.
      *
-     * @param identifier the identifier from the external technology
+     * @param key the identifier from the external technology
      * @param keyPattern identifier from the external party
      * @param externalInstanceTypeName the type name of the instance in the external system
      * @param externalInstanceCreatedBy the username of the person or process that created the instance in the external system
@@ -65,7 +65,7 @@ class ExternalIdentifierBuilder extends ReferenceableBuilder
      * @param serviceName name of this OMAS
      * @param serverName name of local server
      */
-    ExternalIdentifierBuilder(String               identifier,
+    ExternalIdentifierBuilder(String key,
                               int                  keyPattern,
                               String               externalInstanceTypeName,
                               String               externalInstanceCreatedBy,
@@ -77,14 +77,14 @@ class ExternalIdentifierBuilder extends ReferenceableBuilder
                               String               serviceName,
                               String               serverName)
     {
-        super(identifier + "::" + UUID.randomUUID(),
+        super(key + "::" + UUID.randomUUID(),
               OpenMetadataType.EXTERNAL_ID.typeGUID,
               OpenMetadataType.EXTERNAL_ID.typeName,
               repositoryHelper,
               serviceName,
               serverName);
 
-        this.identifier = identifier;
+        this.key        = key;
         this.keyPattern = keyPattern;
         this.externalInstanceTypeName = externalInstanceTypeName;
         this.externalInstanceCreatedBy = externalInstanceCreatedBy;
@@ -109,8 +109,8 @@ class ExternalIdentifierBuilder extends ReferenceableBuilder
 
         properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                   properties,
-                                                                  OpenMetadataProperty.IDENTIFIER.name,
-                                                                  identifier,
+                                                                  OpenMetadataProperty.KEY.name,
+                                                                  key,
                                                                   methodName);
 
         try

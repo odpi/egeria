@@ -227,9 +227,9 @@ public class ConnectionHandler extends OpenMetadataHandlerBase
                                        String                       connectionGUID,
                                        String                       endpointGUID,
                                        MetadataSourceOptions        metadataSourceOptions,
-                                       ConnectionEndpointProperties relationshipProperties) throws InvalidParameterException,
-                                                                                                   PropertyServerException,
-                                                                                                   UserNotAuthorizedException
+                                       ConnectToEndpointProperties relationshipProperties) throws InvalidParameterException,
+                                                                                                  PropertyServerException,
+                                                                                                  UserNotAuthorizedException
     {
         final String methodName            = "linkConnectionEndpoint";
         final String end1GUIDParameterName = "connectionGUID";
@@ -470,6 +470,7 @@ public class ConnectionHandler extends OpenMetadataHandlerBase
         final String methodName        = "getConnectionsByName";
 
         List<String> propertyNames = Arrays.asList(OpenMetadataProperty.QUALIFIED_NAME.name,
+                                                   OpenMetadataProperty.IDENTIFIER.name,
                                                    OpenMetadataProperty.DISPLAY_NAME.name);
 
         return super.getRootElementsByName(userId,

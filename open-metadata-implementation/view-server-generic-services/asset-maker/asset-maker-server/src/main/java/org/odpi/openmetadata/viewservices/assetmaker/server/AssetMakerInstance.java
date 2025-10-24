@@ -43,13 +43,13 @@ public class AssetMakerInstance extends OMVSServiceInstance
      * @param activeViewServices list of view services active in this server
      */
     public AssetMakerInstance(String                  serverName,
-                                AuditLog                auditLog,
-                                String                  localServerUserId,
-                                String                  localServerUserPassword,
-                                int                     maxPageSize,
-                                String                  remoteServerName,
-                                String                  remoteServerURL,
-                                List<ViewServiceConfig> activeViewServices)
+                              AuditLog                auditLog,
+                              String                  localServerUserId,
+                              String                  localServerUserPassword,
+                              int                     maxPageSize,
+                              String                  remoteServerName,
+                              String                  remoteServerURL,
+                              List<ViewServiceConfig> activeViewServices)
     {
         super(serverName,
               myDescription.getViewServiceFullName(),
@@ -61,13 +61,13 @@ public class AssetMakerInstance extends OMVSServiceInstance
               remoteServerURL);
 
         this.assetHandlerMap = new ViewServiceClientMap<>(AssetHandler.class,
-                                                               serverName,
-                                                               localServerUserId,
-                                                               localServerUserPassword,
-                                                               auditLog,
-                                                               activeViewServices,
-                                                               myDescription.getViewServiceFullName(),
-                                                               maxPageSize);
+                                                          serverName,
+                                                          localServerUserId,
+                                                          localServerUserPassword,
+                                                          auditLog,
+                                                          activeViewServices,
+                                                          myDescription.getViewServiceFullName(),
+                                                          maxPageSize);
 
         this.schemaAttributeHandlerMap = new ViewServiceClientMap<>(SchemaAttributeHandler.class,
                                                                     serverName,
@@ -91,8 +91,8 @@ public class AssetMakerInstance extends OMVSServiceInstance
      * @throws PropertyServerException bad client handler class
      */
     public AssetHandler getAssetHandler(String urlMarker,
-                                                  String methodName) throws InvalidParameterException,
-                                                                            PropertyServerException
+                                        String methodName) throws InvalidParameterException,
+                                                                  PropertyServerException
     {
         return assetHandlerMap.getClient(urlMarker, methodName);
     }

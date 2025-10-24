@@ -6,7 +6,11 @@ package org.odpi.openmetadata.opentypes;
 
 import org.odpi.openmetadata.repositoryservices.connectors.stores.archivestore.properties.OpenMetadataArchive;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.archivestore.properties.OpenMetadataArchiveTypeStore;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDef;
 import org.testng.annotations.Test;
+
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Test that the open metadata archive types load without error.  This archive only contains types.
@@ -22,6 +26,7 @@ public class TestOpenMetadataTypesArchive
         OpenMetadataArchiveTypeStore typeStore         = archiveProperties.getArchiveTypeStore();
 
         assert (typeStore != null);
+        assert (typeStore.getNewTypeDefs() != null);
     }
 }
 

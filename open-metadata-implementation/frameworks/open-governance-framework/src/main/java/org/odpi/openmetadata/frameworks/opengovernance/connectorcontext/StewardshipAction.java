@@ -302,26 +302,6 @@ public  class StewardshipAction extends ConnectorContextClientBase
 
 
     /**
-     * Request the status of an executing engine action request.
-     *
-     * @param engineActionGUID identifier of the engine action request.
-     *
-     * @return status enum
-     *
-     * @throws InvalidParameterException one of the parameters is null or invalid.
-     * @throws UserNotAuthorizedException user not authorized to issue this request.
-     * @throws PropertyServerException there was a problem detected by the metadata store.
-     */
-    public EngineActionElement getEngineAction(String engineActionGUID) throws InvalidParameterException,
-                                                                               UserNotAuthorizedException,
-                                                                               PropertyServerException
-    {
-        return actionControlInterface.getEngineAction(userId, engineActionGUID);
-    }
-
-
-
-    /**
      * Request that execution of an engine action is stopped.
      *
      * @param engineActionGUID identifier of the engine action request.
@@ -337,25 +317,6 @@ public  class StewardshipAction extends ConnectorContextClientBase
         actionControlInterface.cancelEngineAction(userId, engineActionGUID);
     }
 
-
-    /**
-     * Retrieve the engine actions known to the server.
-     *
-     * @param startFrom starting from element
-     * @param pageSize maximum elements to return
-     * @return list of engine action elements
-     *
-     * @throws InvalidParameterException one of the parameters is null or invalid.
-     * @throws UserNotAuthorizedException user not authorized to issue this request.
-     * @throws PropertyServerException there was a problem detected by the metadata store.
-     */
-    public List<EngineActionElement>  getEngineActions(int    startFrom,
-                                                       int    pageSize) throws InvalidParameterException,
-                                                                               UserNotAuthorizedException,
-                                                                               PropertyServerException
-    {
-        return actionControlInterface.getEngineActions(userId, startFrom, pageSize);
-    }
 
 
     /**
@@ -375,53 +336,5 @@ public  class StewardshipAction extends ConnectorContextClientBase
                                                                                      PropertyServerException
     {
         return actionControlInterface.getActiveEngineActions(userId, startFrom, pageSize);
-    }
-
-
-    /**
-     * Retrieve the list of engine action metadata elements that contain the search string.
-     * The search string is treated as a regular expression.
-     *
-     * @param searchString string to find in the properties
-     * @param startFrom paging start point
-     * @param pageSize maximum results that can be returned
-     *
-     * @return list of matching metadata elements
-     *
-     * @throws InvalidParameterException  one of the parameters is invalid
-     * @throws UserNotAuthorizedException the user is not authorized to issue this request
-     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
-     */
-    public List<EngineActionElement> findEngineActions(String searchString,
-                                                       int    startFrom,
-                                                       int    pageSize) throws InvalidParameterException,
-                                                                               UserNotAuthorizedException,
-                                                                               PropertyServerException
-    {
-        return actionControlInterface.findEngineActions(userId, searchString, getSearchOptions(startFrom, pageSize));
-    }
-
-
-    /**
-     * Retrieve the list of engine action metadata elements with a matching qualified or display name.
-     * There are no wildcards supported on this request.
-     *
-     * @param name name to search for
-     * @param startFrom paging start point
-     * @param pageSize maximum results that can be returned
-     *
-     * @return list of matching metadata elements
-     *
-     * @throws InvalidParameterException  one of the parameters is invalid
-     * @throws UserNotAuthorizedException the user is not authorized to issue this request
-     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
-     */
-    public List<EngineActionElement> getEngineActionsByName(String name,
-                                                            int    startFrom,
-                                                            int    pageSize) throws InvalidParameterException,
-                                                                                    UserNotAuthorizedException,
-                                                                                    PropertyServerException
-    {
-        return actionControlInterface.getEngineActionsByName(userId, name, this.getQueryOptions(startFrom, pageSize));
     }
 }

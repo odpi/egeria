@@ -6,8 +6,11 @@ package org.odpi.openmetadata.frameworks.openmetadata.properties.assets.reports;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 
-import java.util.*;
+import java.util.Date;
+import java.util.List;
+import java.util.Objects;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
@@ -23,6 +26,10 @@ public class ConnectorActivityReportProperties extends ReportProperties
     private String              serverName              = null;
     private String              connectorId             = null;
     private String              connectorName           = null;
+    private Date                connectorStartDate      = null;
+    private Date                refreshStartDate        = null;
+    private Date                refreshCompletionDate   = null;
+    private Date                connectorDisconnectDate = null;
     private List<String>        createdElements         = null;
     private List<String>        updatedElements         = null;
     private List<String>        deletedElements         = null;
@@ -34,6 +41,7 @@ public class ConnectorActivityReportProperties extends ReportProperties
     public ConnectorActivityReportProperties()
     {
         super();
+        super.setTypeName(OpenMetadataType.CONNECTOR_ACTIVITY_REPORT.typeName);
     }
 
 
@@ -51,6 +59,10 @@ public class ConnectorActivityReportProperties extends ReportProperties
             serverName = template.getServerName();
             connectorId = template.getConnectorId();
             connectorName = template.getConnectorName();
+            connectorStartDate = template.getConnectorStartDate();
+            refreshStartDate = template.getRefreshStartDate();
+            refreshCompletionDate = template.getRefreshCompletionDate();
+            connectorDisconnectDate = template.getConnectorDisconnectDate();
             createdElements = template.getCreatedElements();
             updatedElements = template.getUpdatedElements();
             deletedElements = template.getDeletedElements();
@@ -123,6 +135,94 @@ public class ConnectorActivityReportProperties extends ReportProperties
     public void setConnectorName(String connectorName)
     {
         this.connectorName = connectorName;
+    }
+
+
+    /**
+     * Return the date/time that this connector started.
+     *
+     * @return timestamp
+     */
+    public Date getConnectorStartDate()
+    {
+        return connectorStartDate;
+    }
+
+
+    /**
+     * Set up the date/time that the connector started.
+     *
+     * @param connectorStartDate timestamp
+     */
+    public void setConnectorStartDate(Date connectorStartDate)
+    {
+        this.connectorStartDate = connectorStartDate;
+    }
+
+
+    /**
+     * Return the date/time that the connector last refreshed.
+     *
+     * @return timestamp
+     */
+    public Date getRefreshStartDate()
+    {
+        return refreshStartDate;
+    }
+
+
+    /**
+     * Set up the date/time that the connector last refreshed.
+     *
+     * @param refreshStartDate timestamp
+     */
+    public void setRefreshStartDate(Date refreshStartDate)
+    {
+        this.refreshStartDate = refreshStartDate;
+    }
+
+
+    /**
+     * Return the date/time that the connector last completed refresh.
+     *
+     * @return timestamp
+     */
+    public Date getRefreshCompletionDate()
+    {
+        return refreshCompletionDate;
+    }
+
+
+    /**
+     * Set up the date/time that the connector last complete refresh.
+     *
+     * @param refreshCompletionDate timestamp
+     */
+    public void setRefreshCompletionDate(Date refreshCompletionDate)
+    {
+        this.refreshCompletionDate = refreshCompletionDate;
+    }
+
+
+    /**
+     * Return the date/time that the connector disconnected (finished running).
+     *
+     * @return timestamp
+     */
+    public Date getConnectorDisconnectDate()
+    {
+        return connectorDisconnectDate;
+    }
+
+
+    /**
+     * Set up the date/time that the connector disconnected (finished running).
+     *
+     * @param connectorDisconnectDate timestamp
+     */
+    public void setConnectorDisconnectDate(Date connectorDisconnectDate)
+    {
+        this.connectorDisconnectDate = connectorDisconnectDate;
     }
 
 
@@ -203,11 +303,16 @@ public class ConnectorActivityReportProperties extends ReportProperties
                 "serverName='" + serverName + '\'' +
                 ", connectorId='" + connectorId + '\'' +
                 ", connectorName='" + connectorName + '\'' +
+                ", connectorStartDate=" + connectorStartDate +
+                ", refreshStartDate=" + refreshStartDate +
+                ", refreshCompletionDate=" + refreshCompletionDate +
+                ", connectorDisconnectDate=" + connectorDisconnectDate +
                 ", createdElements=" + createdElements +
                 ", updatedElements=" + updatedElements +
                 ", deletedElements=" + deletedElements +
                 "} " + super.toString();
     }
+
 
 
     /**
@@ -226,6 +331,10 @@ public class ConnectorActivityReportProperties extends ReportProperties
         return Objects.equals(serverName, that.serverName) &&
                 Objects.equals(connectorId, that.connectorId) &&
                 Objects.equals(connectorName, that.connectorName) &&
+                Objects.equals(connectorStartDate, that.connectorStartDate) &&
+                Objects.equals(refreshStartDate, that.refreshStartDate) &&
+                Objects.equals(refreshCompletionDate, that.refreshCompletionDate) &&
+                Objects.equals(connectorDisconnectDate, that.connectorDisconnectDate) &&
                 Objects.equals(createdElements, that.createdElements) &&
                 Objects.equals(updatedElements, that.updatedElements) &&
                 Objects.equals(deletedElements, that.deletedElements);
@@ -239,6 +348,8 @@ public class ConnectorActivityReportProperties extends ReportProperties
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), serverName, connectorId, connectorName, createdElements, updatedElements, deletedElements);
+        return Objects.hash(super.hashCode(), serverName, connectorId, connectorName, connectorStartDate,
+                            refreshStartDate, refreshCompletionDate, connectorDisconnectDate,
+                            createdElements, updatedElements, deletedElements);
     }
 }

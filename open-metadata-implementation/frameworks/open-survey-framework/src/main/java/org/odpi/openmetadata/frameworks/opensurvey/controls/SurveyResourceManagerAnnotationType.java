@@ -3,6 +3,7 @@
 
 package org.odpi.openmetadata.frameworks.opensurvey.controls;
 
+import org.odpi.openmetadata.frameworks.openmetadata.specificationproperties.AnnotationTypeType;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 import org.odpi.openmetadata.frameworks.opensurvey.measurements.SurveyMetric;
@@ -80,7 +81,7 @@ public enum SurveyResourceManagerAnnotationType implements AnnotationType
      * @param openMetadataTypeName the open metadata type used for this annotation type
      * @param summary short explanation of the annotation type
      * @param explanation explanation of the annotation type
-     * @param profilePropertyNames list of property names filled out in the ResourceProfileAnnotation
+     * @param profilePropertyNames list of property names filled out in the ResourceProfileAnnotationProperties
      * @param metrics optional metrics
      */
     SurveyResourceManagerAnnotationType(String                name,
@@ -210,7 +211,7 @@ public enum SurveyResourceManagerAnnotationType implements AnnotationType
         annotationTypeType.setName(name);
         annotationTypeType.setOpenMetadataTypeName(openMetadataTypeName);
         annotationTypeType.setAnalysisStepName(AnalysisStep.PROFILING_ASSOCIATED_RESOURCES.getName());
-        annotationTypeType.setSummary(summary);
+        annotationTypeType.setDescription(summary);
         annotationTypeType.setExplanation(explanation);
 
         if (metrics != null)

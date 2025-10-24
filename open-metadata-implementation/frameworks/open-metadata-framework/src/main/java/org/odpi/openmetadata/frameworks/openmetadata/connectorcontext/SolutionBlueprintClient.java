@@ -12,7 +12,7 @@ import org.odpi.openmetadata.frameworks.openmetadata.handlers.SolutionBlueprintH
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.OpenMetadataRootElement;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.ClassificationProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.RelationshipProperties;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.solutions.SolutionBlueprintCompositionProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.collections.CollectionMembershipProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.solutions.SolutionBlueprintProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.solutions.SolutionDesignProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.search.*;
@@ -161,12 +161,12 @@ public class SolutionBlueprintClient extends ConnectorContextClientBase
      * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    public void linkSolutionComponentToBlueprint(String                                 parentSolutionBlueprintGUID,
-                                                 String                                 solutionComponentGUID,
-                                                 MetadataSourceOptions                  metadataSourceOptions,
-                                                 SolutionBlueprintCompositionProperties relationshipProperties) throws InvalidParameterException,
-                                                                                                                       PropertyServerException,
-                                                                                                                       UserNotAuthorizedException
+    public void linkSolutionComponentToBlueprint(String                         parentSolutionBlueprintGUID,
+                                                 String                         solutionComponentGUID,
+                                                 MetadataSourceOptions          metadataSourceOptions,
+                                                 CollectionMembershipProperties relationshipProperties) throws InvalidParameterException,
+                                                                                                               PropertyServerException,
+                                                                                                               UserNotAuthorizedException
     {
         solutionBlueprintHandler.linkSolutionComponentToBlueprint(connectorUserId, parentSolutionBlueprintGUID, solutionComponentGUID, metadataSourceOptions, relationshipProperties);
     }

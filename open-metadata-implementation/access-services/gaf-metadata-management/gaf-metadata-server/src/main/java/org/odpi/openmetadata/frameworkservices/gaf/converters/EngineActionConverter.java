@@ -125,27 +125,7 @@ public class EngineActionConverter<B> extends OpenGovernanceConverterBase<B>
                                 String actualTypeName = relationship.getType().getTypeDefName();
                                 instanceProperties = new InstanceProperties(relationship.getProperties());
 
-                                if (repositoryHelper.isTypeOf(serviceName, actualTypeName, OpenMetadataType.ENGINE_ACTION_EXECUTOR.typeName))
-                                {
-                                    if (bean.getRequestType() == null)
-                                    {
-                                        bean.setRequestType(this.removeRequestType(instanceProperties));
-                                        bean.setRequestParameters(this.removeRequestParameters(instanceProperties));
-                                    }
-
-                                    if (bean.getGovernanceEngineGUID() == null)
-                                    {
-                                        EntityProxy entityProxy = relationship.getEntityTwoProxy();
-
-                                        bean.setGovernanceEngineGUID(entityProxy.getGUID());
-
-                                        if (entityProxy.getUniqueProperties() != null)
-                                        {
-                                            bean.setGovernanceEngineName(this.getQualifiedName(entityProxy.getUniqueProperties()));
-                                        }
-                                    }
-                                }
-                                else if (repositoryHelper.isTypeOf(serviceName, actualTypeName, OpenMetadataType.ACTION_TARGET_RELATIONSHIP.typeName))
+                                if (repositoryHelper.isTypeOf(serviceName, actualTypeName, OpenMetadataType.ACTION_TARGET_RELATIONSHIP.typeName))
                                 {
                                     ActionTargetElement actionTargetElement = new ActionTargetElement();
 

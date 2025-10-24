@@ -44,7 +44,7 @@ public class RepositoryGovernanceEngineProperties extends GovernanceEngineProper
      *
      * @param template template object to copy.
      */
-    public RepositoryGovernanceEngineProperties(SoftwareCapabilityProperties template)
+    public RepositoryGovernanceEngineProperties(EngineProperties template)
     {
         super(template);
     }

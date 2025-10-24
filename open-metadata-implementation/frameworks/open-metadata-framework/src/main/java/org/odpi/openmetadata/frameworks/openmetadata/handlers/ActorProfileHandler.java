@@ -61,6 +61,19 @@ public class ActorProfileHandler extends OpenMetadataHandlerBase
 
 
     /**
+     * Create a new handler.
+     *
+     * @param template        properties to copy
+     * @param specificTypeName   subtype to control handler
+     */
+    public ActorProfileHandler(ActorProfileHandler template,
+                               String       specificTypeName)
+    {
+        super(template, specificTypeName);
+    }
+
+
+    /**
      * Create a new actor profile.
      *
      * @param userId                       userId of user making request.
@@ -489,6 +502,7 @@ public class ActorProfileHandler extends OpenMetadataHandlerBase
         final String methodName = "getActorProfilesByName";
 
         List<String> propertyNames = Arrays.asList(OpenMetadataProperty.QUALIFIED_NAME.name,
+                                                   OpenMetadataProperty.IDENTIFIER.name,
                                                    OpenMetadataProperty.DISPLAY_NAME.name);
 
         return super.getRootElementsByName(userId,

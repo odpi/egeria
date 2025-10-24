@@ -6,9 +6,8 @@ package org.odpi.openmetadata.frameworks.openmetadata.metadataelements;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.OpenMetadataRootProperties;
 
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Objects;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
@@ -22,8 +21,8 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class MetadataElementSummary implements MetadataElement
 {
-    private ElementHeader       elementHeader = null;
-    private Map<String, String> properties = null;
+    private ElementHeader              elementHeader = null;
+    private OpenMetadataRootProperties properties    = null;
 
     /**
      * Default constructor used by subclasses
@@ -77,7 +76,7 @@ public class MetadataElementSummary implements MetadataElement
      *
      * @param properties  properties for the classification
      */
-    public void setProperties(Map<String, String> properties)
+    public void setProperties(OpenMetadataRootProperties properties)
     {
         this.properties = properties;
     }
@@ -89,7 +88,7 @@ public class MetadataElementSummary implements MetadataElement
      *
      * @return properties map
      */
-    public Map<String, String> getProperties()
+    public OpenMetadataRootProperties getProperties()
     {
         return properties;
     }

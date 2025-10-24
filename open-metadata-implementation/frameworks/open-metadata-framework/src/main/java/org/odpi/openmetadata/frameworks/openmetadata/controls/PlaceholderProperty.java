@@ -4,6 +4,7 @@
 package org.odpi.openmetadata.frameworks.openmetadata.controls;
 
 
+import org.odpi.openmetadata.frameworks.openmetadata.specificationproperties.PlaceholderPropertyType;
 import org.odpi.openmetadata.frameworks.openmetadata.types.DataType;
 
 import java.util.ArrayList;
@@ -62,6 +63,19 @@ public enum PlaceholderProperty
      * The name of the schema being catalogued.
      */
     SCHEMA_NAME ("schemaName", "The name of the schema being catalogued.", DataType.STRING.getName(), "MyServer.schema"),
+
+    /**
+     * The name of the database table being catalogued.
+     */
+    TABLE_NAME ("tableName", "The name of the database table being catalogued.", "string", "my_table"),
+
+    /**
+     * Provides an optional description used when defining the table.
+     */
+    TABLE_DESCRIPTION ("tableDescription",
+                       "Provides an optional description used when defining the table.",
+                       DataType.STRING.getName(),
+                       "This table is used to store selected open metadata values."),
 
     /**
      * The display name is used to identify the element.

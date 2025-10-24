@@ -321,6 +321,8 @@ Content-Type: application/json
   "class" : "FilterRequestBody",
    "filter" : "Add name here",
    "metadataElementTypeName": "SubjectAreaDefinition",
+   "startFrom": 0,
+   "pageSize": 10,
    "asOfTime" : "{{$isoTimestamp}}",
    "effectiveTime" : "{{$isoTimestamp}}",
    "forLineage" : false,
@@ -328,6 +330,7 @@ Content-Type: application/json
    "limitResultsByStatus" : ["ACTIVE"],
    "sequencingOrder" : "PROPERTY_ASCENDING",
    "sequencingProperty" : "qualifiedName"
+
 }
 
 
