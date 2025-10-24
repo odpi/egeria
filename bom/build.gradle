@@ -236,7 +236,6 @@ dependencies {
         api("commons-configuration:commons-configuration:${commonsconfigurationVersion}")
         api("org.apache.commons:commons-configuration2:${commonsconfiguration2Version}")
         api("org.hibernate:hibernate-validator:${hibernatevalidatorVersion}")
-    //    api("org.apache.cassandra:cassandra-all:${cassandraVersion}")
         api("org.apache.ant:ant:${antVersion}")
         api("com.google.protobuf:protobuf-java:${protobufVersion}")
         api("com.google.code.gson:gson:${gsonVersion}")
@@ -244,7 +243,6 @@ dependencies {
         api("org.apache.logging.log4j:log4j-api:${log4jVersion}")
         api("com.fasterxml.jackson.datatype:jackson-datatype-jdk8:${jacksonjdk8Version}")
 
-    //    api("org.projectlombok:lombok:${lombokVersion}")
         api("org.springdoc:springdoc-openapi-starter-webmvc-ui:${springdocStarterVersion}")
         api("io.swagger.core.v3:swagger-annotations-jakarta:${swaggerVersion}")
 
