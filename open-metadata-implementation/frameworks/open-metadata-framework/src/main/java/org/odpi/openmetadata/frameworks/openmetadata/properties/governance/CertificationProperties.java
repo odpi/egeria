@@ -22,9 +22,9 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class CertificationProperties extends RelationshipBeanProperties
 {
-    private String certificateId           = null;
-    private Date   startDate               = null;
-    private Date   endDate                 = null;
+    private String certificateGUID         = null;
+    private Date   coverageStart           = null;
+    private Date   coverageEnd             = null;
     private String conditions              = null;
     private String certifiedBy             = null;
     private String certifiedByTypeName     = null;
@@ -59,20 +59,20 @@ public class CertificationProperties extends RelationshipBeanProperties
 
         if (template != null)
         {
-            this.certificateId = template.getCertificateId();
-            this.startDate = template.getStartDate();
-            this.endDate = template.getEndDate();
-            this.conditions = template.getConditions();
-            this.certifiedBy = template.getCertifiedBy();
-            this.certifiedByTypeName = template.getCertifiedByTypeName();
+            this.certificateGUID         = template.getCertificateGUID();
+            this.coverageStart           = template.getCoverageStart();
+            this.coverageEnd             = template.getCoverageEnd();
+            this.conditions              = template.getConditions();
+            this.certifiedBy             = template.getCertifiedBy();
+            this.certifiedByTypeName     = template.getCertifiedByTypeName();
             this.certifiedByPropertyName = template.getCertifiedByPropertyName();
-            this.custodian = template.getCustodian();
-            this.custodianTypeName = template.getCustodianTypeName();
-            this.custodianPropertyName = template.getCustodianPropertyName();
-            this.recipient = template.getRecipient();
-            this.recipientTypeName = template.getRecipientTypeName();
-            this.recipientPropertyName = template.getRecipientPropertyName();
-            this.notes = template.getNotes();
+            this.custodian               = template.getCustodian();
+            this.custodianTypeName       = template.getCustodianTypeName();
+            this.custodianPropertyName   = template.getCustodianPropertyName();
+            this.recipient               = template.getRecipient();
+            this.recipientTypeName       = template.getRecipientTypeName();
+            this.recipientPropertyName   = template.getRecipientPropertyName();
+            this.notes                   = template.getNotes();
         }
     }
 
@@ -82,20 +82,20 @@ public class CertificationProperties extends RelationshipBeanProperties
      *
      * @return string
      */
-    public String getCertificateId()
+    public String getCertificateGUID()
     {
-        return certificateId;
+        return certificateGUID;
     }
 
 
     /**
      * Set up the unique identifier of the certificate.  This value comes from the certificate authority.
      *
-     * @param certificateId string
+     * @param certificateGUID string
      */
-    public void setCertificateId(String certificateId)
+    public void setCertificateGUID(String certificateGUID)
     {
-        this.certificateId = certificateId;
+        this.certificateGUID = certificateGUID;
     }
 
 
@@ -104,20 +104,20 @@ public class CertificationProperties extends RelationshipBeanProperties
      *
      * @return date/time
      */
-    public Date getStartDate()
+    public Date getCoverageStart()
     {
-        return startDate;
+        return coverageStart;
     }
 
 
     /**
      * Set up the date/time that this certificate is valid from.
      *
-     * @param startDate date/time
+     * @param coverageStart date/time
      */
-    public void setStartDate(Date startDate)
+    public void setCoverageStart(Date coverageStart)
     {
-        this.startDate = startDate;
+        this.coverageStart = coverageStart;
     }
 
 
@@ -126,20 +126,20 @@ public class CertificationProperties extends RelationshipBeanProperties
      *
      * @return date/time
      */
-    public Date getEndDate()
+    public Date getCoverageEnd()
     {
-        return endDate;
+        return coverageEnd;
     }
 
 
     /**
      * Set up the date/time that this certificate is no longer valid.
      *
-     * @param endDate date/time
+     * @param coverageEnd date/time
      */
-    public void setEndDate(Date endDate)
+    public void setCoverageEnd(Date coverageEnd)
     {
-        this.endDate = endDate;
+        this.coverageEnd = coverageEnd;
     }
 
 
@@ -395,9 +395,9 @@ public class CertificationProperties extends RelationshipBeanProperties
     public String toString()
     {
         return "CertificationProperties{" +
-                "certificateId='" + certificateId + '\'' +
-                ", startDate=" + startDate +
-                ", endDate=" + endDate +
+                "certificateId='" + certificateGUID + '\'' +
+                ", coverageStart=" + coverageStart +
+                ", coverageEnd=" + coverageEnd +
                 ", conditions='" + conditions + '\'' +
                 ", certifiedBy='" + certifiedBy + '\'' +
                 ", certifiedByTypeName='" + certifiedByTypeName + '\'' +
@@ -435,10 +435,10 @@ public class CertificationProperties extends RelationshipBeanProperties
             return false;
         }
         CertificationProperties that = (CertificationProperties) objectToCompare;
-        return Objects.equals(certificateId, that.certificateId) && Objects.equals(startDate,
-                                                                                   that.startDate) && Objects.equals(
-                endDate, that.endDate) && Objects.equals(conditions, that.conditions) && Objects.equals(certifiedBy,
-                                                                                                        that.certifiedBy) && Objects.equals(
+        return Objects.equals(certificateGUID, that.certificateGUID) && Objects.equals(coverageStart,
+                                                                                       that.coverageStart) && Objects.equals(
+                coverageEnd, that.coverageEnd) && Objects.equals(conditions, that.conditions) && Objects.equals(certifiedBy,
+                                                                                                                that.certifiedBy) && Objects.equals(
                 certifiedByTypeName, that.certifiedByTypeName) && Objects.equals(certifiedByPropertyName,
                                                                                  that.certifiedByPropertyName) && Objects.equals(
                 custodian, that.custodian) && Objects.equals(custodianTypeName, that.custodianTypeName) && Objects.equals(
@@ -457,7 +457,7 @@ public class CertificationProperties extends RelationshipBeanProperties
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), certificateId, startDate, endDate, conditions, certifiedBy, certifiedByTypeName,
+        return Objects.hash(super.hashCode(), certificateGUID, coverageStart, coverageEnd, conditions, certifiedBy, certifiedByTypeName,
                             certifiedByPropertyName,
                             custodian, custodianTypeName, custodianPropertyName, recipient, recipientTypeName, recipientPropertyName, notes);
     }

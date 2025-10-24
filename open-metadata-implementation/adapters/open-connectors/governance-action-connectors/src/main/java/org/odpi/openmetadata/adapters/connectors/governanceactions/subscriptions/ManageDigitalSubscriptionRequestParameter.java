@@ -4,7 +4,7 @@
 package org.odpi.openmetadata.adapters.connectors.governanceactions.subscriptions;
 
 
-import org.odpi.openmetadata.frameworks.opengovernance.controls.RequestParameterType;
+import org.odpi.openmetadata.frameworks.openmetadata.specificationproperties.RequestParameterType;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,7 +16,20 @@ import java.util.List;
  */
 public enum ManageDigitalSubscriptionRequestParameter
 {
-    TEMPLATE_GUID ("templateGUID", "The unique identifier of the template to use to catalog the digital subscription.", "string", "8541de59-d08a-4917-8e93-7aec61c22386"),
+    /**
+     * The name of the subscription type.
+     */
+    SUBSCRIPTION_NAME ("subscriptionType", "The name of the subscription type.", "string", "One-time evaluation subscription"),
+
+    /**
+     * The identifier of the subscription type used to match the associated notification type for the product.
+     */
+    SUBSCRIPTION_IDENTIFIER ("subscriptionTypeIdentifier", "The identifier of the subscription type used to match the associated notification type for the product.", "string", "EVALUATION-SUBSCRIPTION"),
+
+    /**
+     * A short description of the subscription characteristics.
+     */
+    SUBSCRIPTION_DESCRIPTION ("subscriptionDescription", "A short description of the subscription characteristics.", "string", "This subscription delivers the data to the target destination just once to allow an evaluation of the product data."),
 
     ;
 

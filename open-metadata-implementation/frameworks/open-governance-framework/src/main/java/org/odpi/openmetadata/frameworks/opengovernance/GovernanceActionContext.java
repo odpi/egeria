@@ -5,11 +5,14 @@ package org.odpi.openmetadata.frameworks.opengovernance;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.auditlog.MessageFormatter;
 import org.odpi.openmetadata.frameworks.auditlog.messagesets.AuditLogMessageDefinition;
+import org.odpi.openmetadata.frameworks.connectors.Connector;
+import org.odpi.openmetadata.frameworks.connectors.client.ConnectedAssetClient;
+import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectionCheckedException;
+import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
 import org.odpi.openmetadata.frameworks.opengovernance.client.*;
-import org.odpi.openmetadata.frameworks.opengovernance.connectorcontext.ConnectorConfigClient;
 import org.odpi.openmetadata.frameworks.opengovernance.connectorcontext.DuplicateManagementClient;
 import org.odpi.openmetadata.frameworks.opengovernance.properties.ActionTargetElement;
-import org.odpi.openmetadata.frameworks.opengovernance.properties.CompletionStatus;
+import org.odpi.openmetadata.frameworks.openmetadata.enums.CompletionStatus;
 import org.odpi.openmetadata.frameworks.opengovernance.properties.RequestSourceElement;
 import org.odpi.openmetadata.frameworks.openmetadata.client.OpenMetadataClient;
 import org.odpi.openmetadata.frameworks.openmetadata.connectorcontext.ConnectorContextBase;
@@ -51,6 +54,7 @@ public class GovernanceActionContext extends ConnectorContextBase implements Gov
     private final String                           engineActionGUID;
     private final ActionControlInterface           actionControlClient;
     private final GovernanceActionProcessInterface governanceActionProcessClient;
+    private final ConnectedAssetClient             connectedAssetClient;
     private final GovernanceCompletionInterface    governanceCompletionClient;
     private final DuplicateManagementClient duplicateManagementClient;
     private final WatchDogEventInterface    watchdogEventClient;
@@ -58,8 +62,6 @@ public class GovernanceActionContext extends ConnectorContextBase implements Gov
     private final PropertyHelper                   propertyHelper = new PropertyHelper();
 
     private final MessageFormatter                 messageFormatter = new MessageFormatter();
-
-    private final ConnectorConfigClient            connectorConfigClient;
 
     /**
      * Constructor sets up the key parameters for processing the request to the governance action service.
@@ -86,6 +88,7 @@ public class GovernanceActionContext extends ConnectorContextBase implements Gov
      * @param actionControlClient client to the open governance services for use by the governance action service
      * @param duplicateManagementClient client to the open governance services for use by the governance action service
      * @param governanceActionProcessClient client to the open governance services for use by the governance action service
+     * @param connectedAssetClient client for working with connectors
      * @param governanceCompletionClient client to the open governance services for use by the governance action service
      * @param watchdogEventClient client to the open governance services for use by the governance action service
      */
@@ -112,6 +115,7 @@ public class GovernanceActionContext extends ConnectorContextBase implements Gov
                                    ActionControlInterface           actionControlClient,
                                    OpenGovernanceClient             duplicateManagementClient,
                                    GovernanceActionProcessInterface governanceActionProcessClient,
+                                   ConnectedAssetClient             connectedAssetClient,
                                    GovernanceCompletionInterface    governanceCompletionClient,
                                    WatchDogEventInterface           watchdogEventClient)
     {
@@ -139,6 +143,7 @@ public class GovernanceActionContext extends ConnectorContextBase implements Gov
         this.governanceConfiguration = governanceConfiguration;
         this.actionControlClient = actionControlClient;
         this.governanceActionProcessClient = governanceActionProcessClient;
+        this.connectedAssetClient = connectedAssetClient;
         this.governanceCompletionClient = governanceCompletionClient;
         this.duplicateManagementClient = new DuplicateManagementClient(this,
                                                                        localServerName,
@@ -151,16 +156,6 @@ public class GovernanceActionContext extends ConnectorContextBase implements Gov
                                                                        auditLog,
                                                                        maxPageSize);
         this.watchdogEventClient       = watchdogEventClient;
-        this.connectorConfigClient     = new ConnectorConfigClient(this,
-                                                               localServerName,
-                                                               localServiceName,
-                                                               connectorUserId,
-                                                               connectorGUID,
-                                                               externalSourceGUID,
-                                                               externalSourceName,
-                                                               governanceConfiguration,
-                                                               auditLog,
-                                                               maxPageSize);
     }
 
 
@@ -238,21 +233,35 @@ public class GovernanceActionContext extends ConnectorContextBase implements Gov
 
 
     /**
-     * Return the client for managing the metadata associated with running connectors, governance engines and governance services.
-     *
-     * @return connector context client
-     */
-    @Override
-    public ConnectorConfigClient getConnectorConfigClient() { return connectorConfigClient; }
-
-
-    /**
      * Return the client that manages deduplication.
      *
      * @return deduplication manager
      */
     @Override
     public DuplicateManagementClient getDuplicateManagementClient() { return duplicateManagementClient; }
+
+
+    /**
+     * Return the connector to the requested asset.
+     *
+     * @param assetGUID unique identifier of the asset
+     * @return Open Connector Framework (OCF) connector
+     * @throws InvalidParameterException the asset guid is not recognized or the userId is null
+     * @throws ConnectionCheckedException there are errors in the configuration of the connection which is preventing
+     *                                      the creation of a connector.
+     * @throws ConnectorCheckedException there are errors in the initialization of the connector.
+     * @throws UserNotAuthorizedException the user is not authorized to access the asset and/or connection needed to
+     *                                    create the connector.
+     * @throws PropertyServerException there was a problem in the store whether the asset/connection properties are kept.
+     */
+    public Connector getConnectorForAsset(String assetGUID) throws InvalidParameterException,
+                                                                   ConnectionCheckedException,
+                                                                   ConnectorCheckedException,
+                                                                   UserNotAuthorizedException,
+                                                                   PropertyServerException
+    {
+        return connectedAssetClient.getConnectorForAsset(userId, assetGUID);
+    }
 
 
     /**

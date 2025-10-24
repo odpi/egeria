@@ -28,7 +28,6 @@ These version updates were successful.
 |  swaggerVersion       | 2.2.22        | 2.2.25        |   
 |  jnrVersion       | 3.1.19        | 3.1.20        |   
 | openhft | 2.26ea50 | 2.27ea5 | 
-| lombokVersion | 1.18.32 | 1.18.36 | 
 
 
 # Changes requiring further evaluation and potential changes

@@ -5,7 +5,7 @@ package org.odpi.openmetadata.frameworks.openmetadata.properties.implementations
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.RelationshipBeanProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.RoledRelationshipProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 
 import java.util.Objects;
@@ -19,11 +19,9 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class ImplementedByProperties extends RelationshipBeanProperties
+public class ImplementedByProperties extends RoledRelationshipProperties
 {
     private String designStep       = null;
-    private String description      = null;
-    private String role             = null;
     private String transformation   = null;
     private String iscQualifiedName = null;
 
@@ -49,8 +47,6 @@ public class ImplementedByProperties extends RelationshipBeanProperties
         if (template != null)
         {
             this.designStep       = template.getDesignStep();
-            this.description      = template.getDescription();
-            this.role             = template.getRole();
             this.transformation   = template.getTransformation();
             this.iscQualifiedName = template.getISCQualifiedName();
         }
@@ -76,50 +72,6 @@ public class ImplementedByProperties extends RelationshipBeanProperties
     public void setDesignStep(String designStep)
     {
         this.designStep = designStep;
-    }
-
-
-    /**
-     * Return the description for this element.
-     *
-     * @return string description
-     */
-    public String getDescription()
-    {
-        return description;
-    }
-
-
-    /**
-     * Set up the description for this element.
-     *
-     * @param description string
-     */
-    public void setDescription(String description)
-    {
-        this.description = description;
-    }
-
-
-    /**
-     * Return the role of this implementation in supporting the behaviour of element it is derived from.
-     *
-     * @return String
-     */
-    public String getRole()
-    {
-        return role;
-    }
-
-
-    /**
-     * Set up the role of this implementation in supporting the behaviour of element it is derived from.
-     *
-     * @param role String
-     */
-    public void setRole(String role)
-    {
-        this.role = role;
     }
 
 
@@ -166,9 +118,9 @@ public class ImplementedByProperties extends RelationshipBeanProperties
     {
         return "ImplementedByProperties{" +
                 "designStep='" + designStep + '\'' +
-                ", description='" + description + '\'' +
-                ", role='" + role + '\'' +
                 ", transformation='" + transformation + '\'' +
+                ", iscQualifiedName='" + iscQualifiedName + '\'' +
+                ", ISCQualifiedName='" + getISCQualifiedName() + '\'' +
                 "} " + super.toString();
     }
 
@@ -195,9 +147,8 @@ public class ImplementedByProperties extends RelationshipBeanProperties
             return false;
         }
         return Objects.equals(designStep, that.designStep) &&
-                Objects.equals(description, that.description) &&
                 Objects.equals(transformation, that.transformation) &&
-                       Objects.equals(role, that.role);
+                       Objects.equals(iscQualifiedName, that.iscQualifiedName);
     }
 
 
@@ -209,6 +160,6 @@ public class ImplementedByProperties extends RelationshipBeanProperties
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), designStep, description, transformation, role);
+        return Objects.hash(super.hashCode(), designStep, iscQualifiedName, transformation);
     }
 }

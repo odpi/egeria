@@ -3,7 +3,7 @@
 package org.odpi.openmetadata.samples.archiveutilities.sustainability;
 
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
-import org.odpi.openmetadata.samples.archiveutilities.organization.ScopeDefinition;
+import org.odpi.openmetadata.frameworks.openmetadata.refdata.ScopeDefinition;
 
 import java.util.Arrays;
 import java.util.List;
@@ -25,7 +25,7 @@ public enum GovernanceDefinition
                          null,
                          null,
                          SustainabilityDomainDefinition.SUSTAINABILITY_REPORTING.getDomainIdentifier(),
-                         ScopeDefinition.ALL_COCO,
+                         ScopeDefinition.WITHIN_ORGANIZATION,
                          null),
 
     CSRD_REGULATION("2ba17e3c-825a-409b-928f-d0e46e741c11",
@@ -38,7 +38,7 @@ public enum GovernanceDefinition
                     new String[]{"A greater awareness of sustainability will improve resource use"},
                     null,
                     SustainabilityDomainDefinition.SUSTAINABILITY_REPORTING.getDomainIdentifier(),
-                    ScopeDefinition.ALL_COCO,
+                    ScopeDefinition.WITHIN_ORGANIZATION,
                     "https://finance.ec.europa.eu/capital-markets-union-and-financial-markets/company-reporting-and-auditing/company-reporting/corporate-sustainability-reporting_en"),
 
     SUSTAINABILITY_STRATEGY("667c6480-a90a-4fd4-9022-8da646e203d2",
@@ -56,7 +56,7 @@ public enum GovernanceDefinition
                             null,
                             null,
                             SustainabilityDomainDefinition.SUSTAINABILITY_REPORTING.getDomainIdentifier(),
-                            ScopeDefinition.ALL_COCO,
+                            ScopeDefinition.WITHIN_ORGANIZATION,
                             null),
 
     GREENHOUSE_GASES_APPROACH("a68bd5ca-ec15-4f16-9cdc-b76735c35281",
@@ -69,7 +69,7 @@ public enum GovernanceDefinition
                               null,
                               null,
                               SustainabilityDomainDefinition.SUSTAINABILITY_REPORTING.getDomainIdentifier(),
-                              ScopeDefinition.ALL_COCO,
+                              ScopeDefinition.WITHIN_ORGANIZATION,
                               "https://ghgprotocol.org/"),
 
     AVOID_HARMFUL_MATERIALS("ed004f39-ab6e-47d7-bdc3-4fbaca213a07",
@@ -82,7 +82,7 @@ public enum GovernanceDefinition
                             null,
                             null,
                             SustainabilityDomainDefinition.SUSTAINABILITY_REPORTING.getDomainIdentifier(),
-                            ScopeDefinition.ALL_COCO,
+                            ScopeDefinition.WITHIN_ORGANIZATION,
                             null),
 
     NEW_SUSTAINABILITY_DOMAIN("334fc1df-692a-4960-bbff-343bf7c486d2",
@@ -95,7 +95,7 @@ public enum GovernanceDefinition
                               null,
                               null,
                               SustainabilityDomainDefinition.SUSTAINABILITY_REPORTING.getDomainIdentifier(),
-                              ScopeDefinition.ALL_COCO,
+                              ScopeDefinition.WITHIN_ORGANIZATION,
                               null),
 
     SUSTAINABILITY_LEADER_RESPONSIBILITY("27646717-3f23-496e-b35c-2772de3adfff",
@@ -108,7 +108,7 @@ public enum GovernanceDefinition
                                          null,
                                          null,
                                          SustainabilityDomainDefinition.SUSTAINABILITY_REPORTING.getDomainIdentifier(),
-                                         ScopeDefinition.ALL_COCO,
+                                         ScopeDefinition.WITHIN_ORGANIZATION,
                                          null),
 
     SUSTAINABILITY_CHAMPION_RESPONSIBILITY("b73fb3aa-f964-4118-9797-81e222a858ce",

@@ -6,7 +6,7 @@ package org.odpi.openmetadata.viewservices.peopleorganizer.server;
 import org.odpi.openmetadata.commonservices.ffdc.RESTCallLogger;
 import org.odpi.openmetadata.commonservices.ffdc.RESTCallToken;
 import org.odpi.openmetadata.commonservices.ffdc.RESTExceptionHandler;
-import org.odpi.openmetadata.commonservices.ffdc.rest.DeleteRequestBody;
+import org.odpi.openmetadata.commonservices.ffdc.rest.DeleteRelationshipRequestBody;
 import org.odpi.openmetadata.commonservices.ffdc.rest.NewRelationshipRequestBody;
 import org.odpi.openmetadata.commonservices.ffdc.rest.VoidResponse;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
@@ -126,10 +126,10 @@ public class PeopleOrganizerRESTServices extends TokenController
      *  PropertyServerException    there is a problem retrieving information from the property server(s).
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    public VoidResponse detachPeerPerson(String                   serverName,
-                                         String                   personOneGUID,
-                                         String                   personTwoGUID,
-                                         DeleteRequestBody requestBody)
+    public VoidResponse detachPeerPerson(String                        serverName,
+                                         String                        personOneGUID,
+                                         String                        personTwoGUID,
+                                         DeleteRelationshipRequestBody requestBody)
     {
         final String methodName = "detachPeerPerson";
 
@@ -245,10 +245,10 @@ public class PeopleOrganizerRESTServices extends TokenController
      *  PropertyServerException    there is a problem retrieving information from the property server(s).
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    public VoidResponse detachTeamStructure(String                   serverName,
-                                            String                   superTeamGUID,
-                                            String                   subteamGUID,
-                                            DeleteRequestBody requestBody)
+    public VoidResponse detachTeamStructure(String                        serverName,
+                                            String                        superTeamGUID,
+                                            String                        subteamGUID,
+                                            DeleteRelationshipRequestBody requestBody)
     {
         final String methodName = "detachTeamStructure";
 

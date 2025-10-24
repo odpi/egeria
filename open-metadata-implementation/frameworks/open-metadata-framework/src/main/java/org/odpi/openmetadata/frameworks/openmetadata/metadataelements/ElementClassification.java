@@ -5,6 +5,7 @@ package org.odpi.openmetadata.frameworks.openmetadata.metadataelements;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.ClassificationBeanProperties;
 
 import java.util.*;
 
@@ -19,8 +20,8 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class ElementClassification extends ElementClassificationHeader
 {
-    private String               classificationName            = null;
-    private Map<String, Object>  classificationProperties      = null;
+    private String                       classificationName       = null;
+    private ClassificationBeanProperties classificationProperties = null;
 
 
     /**
@@ -43,8 +44,8 @@ public class ElementClassification extends ElementClassificationHeader
 
         if (template != null)
         {
-            classificationName            = template.getClassificationName();
-            classificationProperties      = template.getClassificationProperties();
+            classificationName       = template.getClassificationName();
+            classificationProperties = template.getClassificationProperties();
         }
     }
 
@@ -88,7 +89,7 @@ public class ElementClassification extends ElementClassificationHeader
      *
      * @param classificationProperties  properties for the classification
      */
-    public void setClassificationProperties(Map<String, Object> classificationProperties)
+    public void setClassificationProperties(ClassificationBeanProperties classificationProperties)
     {
         this.classificationProperties = classificationProperties;
     }
@@ -100,7 +101,7 @@ public class ElementClassification extends ElementClassificationHeader
      *
      * @return properties map
      */
-    public Map<String, Object> getClassificationProperties()
+    public ClassificationBeanProperties getClassificationProperties()
     {
         return classificationProperties;
     }
@@ -115,16 +116,9 @@ public class ElementClassification extends ElementClassificationHeader
     public String toString()
     {
         return "ElementClassification{" +
-                       "classificationName='" + classificationName + '\'' +
-                       ", classificationProperties=" + classificationProperties +
-                       ", classificationOrigin=" + getClassificationOrigin() +
-                       ", classificationOriginGUID='" + getClassificationOriginGUID() + '\'' +
-                       ", status=" + getStatus() +
-                       ", type=" + getType() +
-                       ", origin=" + getOrigin() +
-                       ", versions=" + getVersions() +
-                       ", headerVersion=" + getHeaderVersion() +
-                       '}';
+                "classificationName='" + classificationName + '\'' +
+                ", classificationProperties=" + classificationProperties +
+                "} " + super.toString();
     }
 
 

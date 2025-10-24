@@ -3,7 +3,7 @@
 
 package org.odpi.openmetadata.adapters.connectors.postgres.controls;
 
-import org.odpi.openmetadata.frameworks.connectors.controls.ConfigurationPropertyType;
+import org.odpi.openmetadata.frameworks.openmetadata.specificationproperties.ConfigurationPropertyType;
 import org.odpi.openmetadata.frameworks.openmetadata.controls.PlaceholderProperty;
 
 import java.util.ArrayList;
@@ -71,20 +71,39 @@ public enum PostgresConfigurationProperty
     /**
      * The name of the database schema being catalogued.
      */
-    SCHEMA_NAME (PostgresPlaceholderProperty.SCHEMA_NAME.getName(),
-                 PostgresPlaceholderProperty.SCHEMA_NAME.getDescription(),
-                 PostgresPlaceholderProperty.SCHEMA_NAME.getDataType(),
-                 PostgresPlaceholderProperty.SCHEMA_NAME.getExample(),
+    SCHEMA_NAME (PlaceholderProperty.SCHEMA_NAME.getName(),
+                 PlaceholderProperty.SCHEMA_NAME.getDescription(),
+                 PlaceholderProperty.SCHEMA_NAME.getDataType(),
+                 PlaceholderProperty.SCHEMA_NAME.getExample(),
                  true),
+
+    /**
+     * The description of the database schema being catalogued.
+     */
+    SCHEMA_DESCRIPTION(PlaceholderProperty.DESCRIPTION.getName(),
+                       PlaceholderProperty.DESCRIPTION.getDescription(),
+                       PlaceholderProperty.DESCRIPTION.getDataType(),
+                       PlaceholderProperty.DESCRIPTION.getExample(),
+                       true),
 
     /**
      * The name of the database table being catalogued.
      */
-    TABLE_NAME (PostgresPlaceholderProperty.TABLE_NAME.getName(),
-                PostgresPlaceholderProperty.TABLE_NAME.getDescription(),
-                PostgresPlaceholderProperty.TABLE_NAME.getDataType(),
-                PostgresPlaceholderProperty.TABLE_NAME.getExample(),
+    TABLE_NAME (PlaceholderProperty.TABLE_NAME.getName(),
+                PlaceholderProperty.TABLE_NAME.getDescription(),
+                PlaceholderProperty.TABLE_NAME.getDataType(),
+                PlaceholderProperty.TABLE_NAME.getExample(),
                 true),
+
+
+    /**
+     * The description of the database table being catalogued.
+     */
+    TABLE_DESCRIPTION (PlaceholderProperty.TABLE_DESCRIPTION.getName(),
+                       PlaceholderProperty.TABLE_DESCRIPTION.getDescription(),
+                       PlaceholderProperty.TABLE_DESCRIPTION.getDataType(),
+                       PlaceholderProperty.TABLE_DESCRIPTION.getExample(),
+                       true),
 
 
     /**
@@ -254,11 +273,14 @@ public enum PostgresConfigurationProperty
      *
      * @return list of property names
      */
-    public static List<String> getPostgresTabularDataSourceConnectorNames()
+    public static List<String> getPostgresTabularDataSourceConfigPropertyNames()
     {
         List<String> recognizedConfigurationProperties = new ArrayList<>();
 
+        recognizedConfigurationProperties.add(PostgresConfigurationProperty.SCHEMA_NAME.getName());
+        recognizedConfigurationProperties.add(PostgresConfigurationProperty.SCHEMA_DESCRIPTION.getName());
         recognizedConfigurationProperties.add(PostgresConfigurationProperty.TABLE_NAME.getName());
+        recognizedConfigurationProperties.add(PostgresConfigurationProperty.TABLE_DESCRIPTION.getName());
 
         return recognizedConfigurationProperties;
     }
@@ -273,12 +295,13 @@ public enum PostgresConfigurationProperty
     {
         List<ConfigurationPropertyType> configurationPropertyTypes = new ArrayList<>();
 
+        configurationPropertyTypes.add(PostgresConfigurationProperty.SCHEMA_NAME.getConfigurationPropertyType());
+        configurationPropertyTypes.add(PostgresConfigurationProperty.SCHEMA_DESCRIPTION.getConfigurationPropertyType());
         configurationPropertyTypes.add(PostgresConfigurationProperty.TABLE_NAME.getConfigurationPropertyType());
+        configurationPropertyTypes.add(PostgresConfigurationProperty.TABLE_DESCRIPTION.getConfigurationPropertyType());
 
         return configurationPropertyTypes;
     }
-
-
 
 
     /**

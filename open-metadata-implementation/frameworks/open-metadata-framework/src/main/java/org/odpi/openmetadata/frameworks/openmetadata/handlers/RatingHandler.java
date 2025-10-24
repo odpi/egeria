@@ -49,17 +49,18 @@ public class RatingHandler extends FeedbackHandler
      * @param elementGUID   unique identifier for the element.
      * @param updateOptions provides a structure for the additional options when updating an element.
      * @param properties  properties of the rating
+     * @return unique identifier of the new rating
      *
      * @throws InvalidParameterException one of the parameters is null or invalid.
      * @throws PropertyServerException there is a problem adding the element properties to the property server.
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    public void addRatingToElement(String                            userId,
-                                   String                            elementGUID,
-                                   UpdateOptions                     updateOptions,
-                                   RatingProperties                  properties) throws InvalidParameterException,
-                                                                                        PropertyServerException,
-                                                                                        UserNotAuthorizedException
+    public String addRatingToElement(String                            userId,
+                                     String                            elementGUID,
+                                     UpdateOptions                     updateOptions,
+                                     RatingProperties                  properties) throws InvalidParameterException,
+                                                                                          PropertyServerException,
+                                                                                          UserNotAuthorizedException
     {
         final String methodName = "addRatingToElement";
         final String propertiesParameterName = "properties";
@@ -68,13 +69,13 @@ public class RatingHandler extends FeedbackHandler
         propertyHelper.validateObject(properties, propertiesParameterName, methodName);
         propertyHelper.validateObject(properties.getStarRating(), starRatingParameterName, methodName);
 
-        this.addFeedbackToElement(userId,
-                                  elementGUID,
-                                  OpenMetadataType.RATING.typeName,
-                                  OpenMetadataType.ATTACHED_RATING_RELATIONSHIP.typeName,
-                                  updateOptions,
-                                  elementBuilder.getNewElementProperties(properties),
-                                  methodName);
+        return this.addFeedbackToElement(userId,
+                                         elementGUID,
+                                         OpenMetadataType.RATING.typeName,
+                                         OpenMetadataType.ATTACHED_RATING_RELATIONSHIP.typeName,
+                                         updateOptions,
+                                         elementBuilder.getNewElementProperties(properties),
+                                         methodName);
     }
 
 
@@ -84,16 +85,17 @@ public class RatingHandler extends FeedbackHandler
      * @param userId      userId of user making request.
      * @param elementGUID  unique identifier for the attached element.
      * @param metadataSourceOptions  options to control access to open metadata
+     * @return unique identifier of the rating
      *
      * @throws InvalidParameterException one of the parameters is null or invalid.
      * @throws PropertyServerException there is a problem updating the element properties in the property server.
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    public void removeRatingFromElement(String                userId,
-                                        String                elementGUID,
-                                        MetadataSourceOptions metadataSourceOptions) throws InvalidParameterException,
-                                                                                            PropertyServerException,
-                                                                                            UserNotAuthorizedException
+    public String removeRatingFromElement(String                userId,
+                                          String                elementGUID,
+                                          MetadataSourceOptions metadataSourceOptions) throws InvalidParameterException,
+                                                                                              PropertyServerException,
+                                                                                              UserNotAuthorizedException
     {
         final String methodName = "removeRatingFromElement";
 
@@ -110,7 +112,11 @@ public class RatingHandler extends FeedbackHandler
             openMetadataClient.deleteMetadataElementInStore(userId,
                                                             existingRating.getElementHeader().getGUID(),
                                                             deleteOptions);
+
+            return existingRating.getElementHeader().getGUID();
         }
+
+        return null;
     }
 
 

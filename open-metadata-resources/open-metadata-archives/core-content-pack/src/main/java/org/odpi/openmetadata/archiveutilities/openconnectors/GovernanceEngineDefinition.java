@@ -143,7 +143,7 @@ public enum GovernanceEngineDefinition
                             "Provides specialist governance services to Egeria's OMAG Server Platform and Servers.",
                              "egeriagovernanceengine",
                              OpenMetadataType.GOVERNANCE_ACTION_ENGINE.typeName,
-                            ContentPackDefinition.NANNY_CONTENT_PACK),
+                            ContentPackDefinition.CORE_CONTENT_PACK),
 
     /**
      * Provides specialist governance services to Egeria's OMAG Server Platform and Servers.

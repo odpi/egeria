@@ -10,7 +10,6 @@ import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataWikiPages
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
-import static org.odpi.openmetadata.frameworks.openmetadata.mapper.OpenMetadataValidValues.constructValidValueNamespace;
 import static org.odpi.openmetadata.frameworks.openmetadata.mapper.OpenMetadataValidValues.constructValidValueQualifiedName;
 
 /**
@@ -216,26 +215,19 @@ public enum SolutionPortDirection implements OpenMetadataEnum
     }
 
 
-    /**
-     * Return the category for this value.
-     *
-     * @return string
-     */
-    public String getCategory()
-    {
-        return constructValidValueNamespace(ENUM_TYPE_NAME,
-                                            OpenMetadataProperty.DIRECTION.name,
-                                            null);
-    }
 
     /**
-     * Standard toString method.
+     * toString() JSON-style
      *
-     * @return print out of variables in a JSON-style
+     * @return string description
      */
     @Override
     public String toString()
     {
-        return "PortType{" + name + '}';
+        return "PortType{" +
+            "ordinal=" + ordinal +
+            ", name='" + name + '\'' +
+            ", description='" + description + '\'' +
+            '}';
     }
 }

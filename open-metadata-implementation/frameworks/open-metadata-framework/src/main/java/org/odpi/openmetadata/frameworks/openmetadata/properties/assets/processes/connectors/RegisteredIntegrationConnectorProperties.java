@@ -8,6 +8,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.PermittedSynchronization;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.RelationshipBeanProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 
 import java.util.Date;
 import java.util.Objects;
@@ -27,10 +28,10 @@ public class RegisteredIntegrationConnectorProperties extends RelationshipBeanPr
     private String                   connectorUserId             = null;
     private String                   metadataSourceQualifiedName = null;
     private Date                     startDate                   = null;
-    private long                     refreshTimeInterval      = 0L;
-    private Date                     connectorShutdownDate    = null;
-    private PermittedSynchronization permittedSynchronization = null;
-    private boolean                  generateIntegrationReports = true;
+    private long                     refreshTimeInterval         = 0L;
+    private Date                     connectorShutdownDate       = null;
+    private PermittedSynchronization permittedSynchronization         = null;
+    private boolean                  generateConnectorActivityReports = true;
 
 
     /**
@@ -38,6 +39,8 @@ public class RegisteredIntegrationConnectorProperties extends RelationshipBeanPr
      */
     public RegisteredIntegrationConnectorProperties()
     {
+        super();
+        super.setTypeName(OpenMetadataType.REGISTERED_INTEGRATION_CONNECTOR_RELATIONSHIP.typeName);
     }
 
 
@@ -58,8 +61,8 @@ public class RegisteredIntegrationConnectorProperties extends RelationshipBeanPr
             startDate                        = template.getStartDate();
             refreshTimeInterval      = template.getRefreshTimeInterval();
             connectorShutdownDate    = template.getConnectorShutdownDate();
-            permittedSynchronization = template.getPermittedSynchronization();
-            generateIntegrationReports       = template.getGenerateIntegrationReports();
+            permittedSynchronization         = template.getPermittedSynchronization();
+            generateConnectorActivityReports = template.getGenerateConnectorActivityReports();
         }
     }
 
@@ -237,20 +240,20 @@ public class RegisteredIntegrationConnectorProperties extends RelationshipBeanPr
      *
      * @return boolean flag (default = true)
      */
-    public boolean getGenerateIntegrationReports()
+    public boolean getGenerateConnectorActivityReports()
     {
-        return generateIntegrationReports;
+        return generateConnectorActivityReports;
     }
 
 
     /**
      * Set up a flag indicating whether the integration connector should create an integration report.
      *
-     * @param generateIntegrationReports boolean flag
+     * @param generateConnectorActivityReports boolean flag
      */
-    public void setGenerateIntegrationReports(boolean generateIntegrationReports)
+    public void setGenerateConnectorActivityReports(boolean generateConnectorActivityReports)
     {
-        this.generateIntegrationReports = generateIntegrationReports;
+        this.generateConnectorActivityReports = generateConnectorActivityReports;
     }
 
 
@@ -270,7 +273,7 @@ public class RegisteredIntegrationConnectorProperties extends RelationshipBeanPr
                 ", refreshTimeInterval=" + refreshTimeInterval +
                 ", connectorShutdownDate=" + connectorShutdownDate +
                 ", permittedSynchronization=" + permittedSynchronization +
-                ", generateIntegrationReports=" + generateIntegrationReports +
+                ", generateIntegrationReports=" + generateConnectorActivityReports +
                 "} " + super.toString();
     }
 
@@ -289,7 +292,7 @@ public class RegisteredIntegrationConnectorProperties extends RelationshipBeanPr
         if (!super.equals(objectToCompare)) return false;
         RegisteredIntegrationConnectorProperties that = (RegisteredIntegrationConnectorProperties) objectToCompare;
         return refreshTimeInterval == that.refreshTimeInterval &&
-                generateIntegrationReports == that.generateIntegrationReports &&
+                generateConnectorActivityReports == that.generateConnectorActivityReports &&
                 Objects.equals(connectorName, that.connectorName) &&
                 Objects.equals(connectorUserId, that.connectorUserId) &&
                 Objects.equals(metadataSourceQualifiedName, that.metadataSourceQualifiedName) &&
@@ -307,6 +310,6 @@ public class RegisteredIntegrationConnectorProperties extends RelationshipBeanPr
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), connectorName, connectorUserId, metadataSourceQualifiedName, startDate, refreshTimeInterval, connectorShutdownDate, permittedSynchronization, generateIntegrationReports);
+        return Objects.hash(super.hashCode(), connectorName, connectorUserId, metadataSourceQualifiedName, startDate, refreshTimeInterval, connectorShutdownDate, permittedSynchronization, generateConnectorActivityReports);
     }
 }

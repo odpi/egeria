@@ -3,7 +3,7 @@
 package org.odpi.openmetadata.frameworks.openmetadata.properties.governance.governanceactions;
 
 import com.fasterxml.jackson.annotation.*;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.governance.TechnicalControlProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.governance.GovernanceControlProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
@@ -24,7 +24,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
                 @JsonSubTypes.Type(value = GovernanceActionTypeProperties.class, name = "GovernanceActionTypeProperties"),
                 @JsonSubTypes.Type(value = GovernanceActionProcessProperties.class, name = "GovernanceActionProcessProperties"),
         })
-public class GovernanceActionProperties extends TechnicalControlProperties
+public class GovernanceActionProperties extends GovernanceControlProperties
 {
     /**
      * Default Constructor

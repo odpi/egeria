@@ -12,12 +12,15 @@ dependencies {
     compileOnly project(':open-metadata-implementation:frameworks:open-survey-framework')
     compileOnly project(':open-metadata-implementation:frameworks:open-governance-framework')
     compileOnly project(':open-metadata-implementation:common-services:ffdc-services')
+    compileOnly project(':open-metadata-implementation:access-services:omf-metadata-management:omf-metadata-api')
+    compileOnly project(':open-metadata-implementation:access-services:omf-metadata-management:omf-metadata-client')
     compileOnly project(':open-metadata-implementation:repository-services:repository-services-apis')
     compileOnly project(':open-metadata-implementation:adapters:open-connectors:data-store-connectors:jdbc-resource-connector')
     compileOnly project(':open-metadata-implementation:adapters:open-connectors:data-store-connectors:file-connectors:basic-file-connector')
     compileOnly project(':open-metadata-implementation:adapters:open-connectors:data-store-connectors:file-connectors:csv-file-connector')
     compileOnly project(':open-metadata-implementation:adapters:open-connectors:data-manager-connectors:unity-catalog-connectors')
     compileOnly project(':open-metadata-implementation:adapters:open-connectors:data-manager-connectors:postgres-server-connectors')
+    compileOnly project(':open-metadata-implementation:adapters:open-connectors:governance-action-connectors')
 
     compileOnly 'com.fasterxml.jackson.core:jackson-annotations'
     compileOnly 'com.fasterxml.jackson.core:jackson-databind'

@@ -3,7 +3,7 @@
 
 package org.odpi.openmetadata.frameworks.opensurvey.controls;
 
-import org.odpi.openmetadata.frameworks.opengovernance.controls.ActionTargetType;
+import org.odpi.openmetadata.frameworks.openmetadata.specificationproperties.ActionTargetType;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 
 import java.util.ArrayList;

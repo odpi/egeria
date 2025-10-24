@@ -40,6 +40,12 @@ public enum IntegrationGroupDefinition
          "Dynamic integration group supporting integration connectors extracting interesting information needed to observe the activity in the Open Metadata Ecosystem.",
          ContentPackDefinition.NANNY_CONTENT_PACK),
 
+    AUTO_PRODUCT_MANAGER("bfb863f0-b552-4d6a-91d6-02d7988fcc9a",
+          "Egeria:IntegrationGroup:OpenMetadataDigitalProducts",
+          "OpenMetadataDigitalProductsIntegrationGroup",
+          "Dynamic integration group supporting integration connectors extracting interesting information from the open metadata repositories that make useful digital products.",
+          ContentPackDefinition.PRODUCTS_CONTENT_PACK),
+
 
     POSTGRES("a5aa2d79-0027-44a7-bd02-f97004f5b324",
                  "Egeria:IntegrationGroup:PostgreSQL",

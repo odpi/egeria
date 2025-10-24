@@ -9,7 +9,6 @@ import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterExcept
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.*;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryConnector;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
-import org.odpi.openmetadata.repositoryservices.ffdc.exception.ClassificationErrorException;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.FunctionNotSupportedException;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.TypeErrorException;
 
@@ -208,30 +207,6 @@ public class RepositoryErrorHandler
     }
 
 
-    /**
-     * Determine if the entity is a consolidated duplicate.
-     *
-     * @param entity entity to test
-     * @param classificationName name of classification
-     * @param methodName calling method
-     * @return returned classification
-     */
-    Classification isClassifiedAs(EntityDetail entity,
-                                  String       classificationName,
-                                  String       methodName)
-    {
-        try
-        {
-            return repositoryHelper.getClassificationFromEntity(serviceName, entity, classificationName, methodName);
-        }
-        catch (ClassificationErrorException error)
-        {
-            // ignore
-        }
-
-        return null;
-    }
-
 
     /**
      * Verify that the external source supplied is able to update/delete the instance.  This is determined by the metadata provenance of
@@ -421,107 +396,6 @@ public class RepositoryErrorHandler
 
 
     /**
-     * Throw an exception to indicate that a retrieved entity has missing information.
-     *
-     * @param expectedTypeName type name of instance
-     * @param methodName calling method
-     */
-    public void logNullInstance(String  expectedTypeName,
-                                String  methodName)
-    {
-        if (auditLog != null)
-        {
-            auditLog.logMessage(methodName,
-                                RepositoryHandlerAuditCode.NULL_INSTANCE.getMessageDefinition(expectedTypeName, methodName, serviceName));
-        }
-    }
-
-
-    /**
-     * Throw an exception to indicate that a retrieved entity has missing information.
-     *
-     * @param expectedTypeName type name of instance
-     * @param entity the entity with the bad header
-     * @param methodName calling method
-     */
-    public void logBadEntity(String          expectedTypeName,
-                             EntityDetail    entity,
-                             String          methodName)
-    {
-        if (entity == null)
-        {
-            logNullInstance(expectedTypeName, methodName);
-        }
-        else if (auditLog != null)
-        {
-            auditLog.logMessage(methodName,
-                                RepositoryHandlerAuditCode.BAD_ENTITY.getMessageDefinition(expectedTypeName, methodName, serviceName, ((InstanceHeader)entity).toString()),
-                                entity.toString());
-        }
-    }
-
-
-    /**
-     * Throw an exception to indicate that a retrieved entity proxy is missing critical information.
-     *
-     * @param relationship the relationship with a bad entity proxy - not null
-     * @param end number of the end where the proxy is stored
-     * @param entityProxy the entity proxy with the bad values
-     * @param methodName calling method
-     */
-    public void handleBadEntityProxy(Relationship relationship,
-                                     int          end,
-                                     EntityProxy  entityProxy,
-                                     String       methodName)
-    {
-        if (auditLog != null)
-        {
-            String entityProxyString = "<null>";
-
-            if (entityProxy != null)
-            {
-                entityProxyString = entityProxy.toString();
-            }
-
-            auditLog.logMessage(methodName,
-                                RepositoryHandlerAuditCode.BAD_ENTITY_PROXY.getMessageDefinition(relationship.getGUID(),
-                                                                                                 methodName,
-                                                                                                 serviceName,
-                                                                                                 Integer.toString(end),
-                                                                                                 entityProxyString));
-        }
-    }
-
-
-    /**
-     * Throw an exception to indicate that a critical instance (typically the main entity) has not been passed
-     * to the converter.
-     *
-     * @param expectedTypeName type name of instance
-     * @param relationship the relationship with the bad header
-     * @param methodName calling method
-     */
-    public void logBadRelationship(String       expectedTypeName,
-                                   Relationship relationship,
-                                   String       methodName)
-    {
-        if (relationship == null)
-        {
-            logNullInstance(expectedTypeName, methodName);
-        }
-        else if (auditLog != null)
-        {
-            auditLog.logMessage(methodName,
-                                RepositoryHandlerAuditCode.BAD_RELATIONSHIP.getMessageDefinition(expectedTypeName,
-                                                                                                 methodName,
-                                                                                                 serviceName,
-                                                                                                 ((InstanceHeader)relationship).toString()),
-                                relationship.toString());
-        }
-    }
-
-
-    /**
      * Throw an exception if the supplied guid returned an entity of the wrong type
      *
      * @param guid  unique identifier of entity
@@ -551,33 +425,6 @@ public class RepositoryErrorHandler
     }
 
 
-
-
-    /**
-     * Report an error where an entity is being created with the same qualified name as an existing entity
-     * of the same type.
-     *
-     * @param typeName name of the type
-     * @param qualifiedName clashing qualified name
-     * @param existingEntityGUID existing entity found in the repository
-     * @param methodName calling method
-     * @throws InvalidParameterException exception that reports this error
-     */
-    public void handleDuplicateCreateRequest(String typeName,
-                                             String qualifiedName,
-                                             String existingEntityGUID,
-                                             String methodName) throws InvalidParameterException
-    {
-        final String  parameterName = "qualifiedName";
-
-        throw new InvalidParameterException(RepositoryHandlerErrorCode.DUPLICATE_CREATE_REQUEST.getMessageDefinition(typeName,
-                                                                                                                     parameterName,
-                                                                                                                     qualifiedName,
-                                                                                                                     existingEntityGUID),
-                                            this.getClass().getName(),
-                                            methodName,
-                                            parameterName);
-    }
 
 
     /**
@@ -623,30 +470,6 @@ public class RepositoryErrorHandler
                                             methodName,
                                             error,
                                             propertyName);
-    }
-
-
-    /**
-     * Throw an exception if the supplied parameter is invalid.
-     *
-     * @param methodName  name of the method making the call
-     * @param parameterName  name of the parameter in error
-     * @param parameterValue value of the parameter
-     *
-     * @throws InvalidParameterException invalid property
-     */
-    public void handleUnsupportedParameter(String     methodName,
-                                           String     parameterName,
-                                           String     parameterValue) throws InvalidParameterException
-    {
-        throw new InvalidParameterException(RepositoryHandlerErrorCode.INVALID_PARAMETER.getMessageDefinition(parameterName,
-                                                                                                              methodName,
-                                                                                                              serviceName,
-                                                                                                              serverName,
-                                                                                                              parameterValue),
-                                            this.getClass().getName(),
-                                            methodName,
-                                            parameterName);
     }
 
 
@@ -981,46 +804,6 @@ public class RepositoryErrorHandler
     }
 
 
-    /**
-     * Throw an exception if multiple relationships are returned when not expected.
-     *
-     * @param entityGUID  unique identifier for the anchor entity
-     * @param entityTypeName  name of the entity's type
-     * @param relationshipTypeName expected type of relationship
-     * @param attachedEntities list of entities returned
-     * @param methodName  name of the method making the call
-     *
-     * @throws PropertyServerException unexpected response from property server
-     */
-    public void handleAmbiguousAttachedEntities(String             entityGUID,
-                                                String             entityTypeName,
-                                                String             relationshipTypeName,
-                                                List<EntityDetail> attachedEntities,
-                                                String             methodName) throws PropertyServerException
-    {
-        List<String>  attachedEntityGUIDs = new ArrayList<>();
-
-        if (attachedEntities != null)
-        {
-            for (EntityDetail  attachedEntity: attachedEntities)
-            {
-                if (attachedEntity != null)
-                {
-                    attachedEntityGUIDs.add(attachedEntity.getGUID());
-                }
-            }
-        }
-
-        throw new PropertyServerException(RepositoryHandlerErrorCode.MULTIPLE_RELATIONSHIPS_FOUND.getMessageDefinition(relationshipTypeName,
-                                                                                                                       entityTypeName,
-                                                                                                                       entityGUID,
-                                                                                                                       attachedEntityGUIDs.toString(),
-                                                                                                                       methodName,
-                                                                                                                       serverName),
-                                          this.getClass().getName(),
-                                          methodName);
-    }
-
 
     /**
      * Throw an exception if multiple entities are returned when not expected.
@@ -1058,59 +841,6 @@ public class RepositoryErrorHandler
                                                                                                                   methodName,
                                                                                                                   nameParameterName,
                                                                                                                   serverName),
-                                          this.getClass().getName(),
-                                          methodName);
-    }
-
-
-    /**
-     * Throw an exception if multiple entities are returned when not expected.
-     *
-     * @param name  requested name for the entity
-     * @param nameParameterName  name of the parameter
-     * @param entityTypeName  name of the entity's type
-     * @param returnedEntityGUIDs list of entities returned
-     * @param methodName  name of the method making the call
-     *
-     * @throws PropertyServerException unexpected response from property server
-     */
-    public  void handleAmbiguousName(String             name,
-                                     String             nameParameterName,
-                                     String             entityTypeName,
-                                     List<String>       returnedEntityGUIDs,
-                                     String             methodName) throws PropertyServerException
-    {
-        throw new PropertyServerException(RepositoryHandlerErrorCode.MULTIPLE_ENTITIES_FOUND.getMessageDefinition(entityTypeName,
-                                                                                                                name,
-                                                                                                                returnedEntityGUIDs.toString(),
-                                                                                                                methodName,
-                                                                                                                nameParameterName,
-                                                                                                                serverName),
-                                          this.getClass().getName(),
-                                          methodName);
-    }
-
-
-    /**
-     * Throw an exception if no relationships are returned when not expected.
-     *
-     * @param entityGUID  unique identifier for the anchor entity
-     * @param entityTypeName  name of the entity's type
-     * @param relationshipTypeName expected type of relationship
-     * @param methodName  name of the method making the call
-     *
-     * @throws PropertyServerException unexpected response from property server
-     */
-    public void handleNoRelationship(String             entityGUID,
-                                     String             entityTypeName,
-                                     String             relationshipTypeName,
-                                     String             methodName) throws PropertyServerException
-    {
-       throw new PropertyServerException(RepositoryHandlerErrorCode.NO_RELATIONSHIPS_FOUND.getMessageDefinition(relationshipTypeName,
-                                                                                                                 entityTypeName,
-                                                                                                                 entityGUID,
-                                                                                                                 methodName,
-                                                                                                                 serverName),
                                           this.getClass().getName(),
                                           methodName);
     }

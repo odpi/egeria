@@ -9,8 +9,8 @@ import org.odpi.openmetadata.commonservices.ffdc.RESTExceptionHandler;
 import org.odpi.openmetadata.commonservices.ffdc.rest.*;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.ElementStatus;
-import org.odpi.openmetadata.frameworks.openmetadata.enums.GlossaryTermActivityType;
-import org.odpi.openmetadata.frameworks.openmetadata.enums.GlossaryTermRelationshipStatus;
+import org.odpi.openmetadata.frameworks.openmetadata.enums.ActivityType;
+import org.odpi.openmetadata.frameworks.openmetadata.enums.TermRelationshipStatus;
 import org.odpi.openmetadata.frameworks.openmetadata.handlers.CollectionHandler;
 import org.odpi.openmetadata.frameworks.openmetadata.handlers.GlossaryTermHandler;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.glossaries.*;
@@ -349,7 +349,7 @@ public class GlossaryManagerRESTServices extends TokenController
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            response.setStatuses(Arrays.asList(GlossaryTermRelationshipStatus.values()));
+            response.setStatuses(Arrays.asList(TermRelationshipStatus.values()));
         }
         catch (Throwable error)
         {
@@ -385,7 +385,7 @@ public class GlossaryManagerRESTServices extends TokenController
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            response.setTypes(Arrays.asList(GlossaryTermActivityType.values()));
+            response.setTypes(Arrays.asList(ActivityType.values()));
         }
         catch (Throwable error)
         {
@@ -649,10 +649,10 @@ public class GlossaryManagerRESTServices extends TokenController
      * UserNotAuthorizedException the user is not authorized to issue this request
      * PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public VoidResponse moveGlossaryTerm(String                   serverName,
-                                         String                   glossaryTermGUID,
-                                         String                   glossaryGUID,
-                                         DeleteRequestBody requestBody)
+    public VoidResponse moveGlossaryTerm(String                        serverName,
+                                         String                        glossaryTermGUID,
+                                         String                        glossaryGUID,
+                                         DeleteRelationshipRequestBody requestBody)
     {
         final String methodName = "moveGlossaryTerm";
 
@@ -767,7 +767,7 @@ public class GlossaryManagerRESTServices extends TokenController
 
             if (requestBody != null)
             {
-                if (requestBody.getProperties() instanceof GlossaryTermRelationship properties)
+                if (requestBody.getProperties() instanceof GlossaryTermRelationshipProperties properties)
                 {
                     GlossaryTermHandler handler = instanceHandler.getGlossaryTermHandler(userId, serverName, methodName);
 
@@ -780,7 +780,7 @@ public class GlossaryManagerRESTServices extends TokenController
                 }
                 else
                 {
-                    restExceptionHandler.handleInvalidPropertiesObject(GlossaryTermRelationship.class.getName(), methodName);
+                    restExceptionHandler.handleInvalidPropertiesObject(GlossaryTermRelationshipProperties.class.getName(), methodName);
                 }
             }
             else
@@ -836,7 +836,7 @@ public class GlossaryManagerRESTServices extends TokenController
 
             if (requestBody != null)
             {
-                if (requestBody.getProperties() instanceof GlossaryTermRelationship properties)
+                if (requestBody.getProperties() instanceof GlossaryTermRelationshipProperties properties)
                 {
                     GlossaryTermHandler handler = instanceHandler.getGlossaryTermHandler(userId, serverName, methodName);
 
@@ -849,7 +849,7 @@ public class GlossaryManagerRESTServices extends TokenController
                 }
                 else
                 {
-                    restExceptionHandler.handleInvalidPropertiesObject(GlossaryTermRelationship.class.getName(), methodName);
+                    restExceptionHandler.handleInvalidPropertiesObject(GlossaryTermRelationshipProperties.class.getName(), methodName);
                 }
             }
             else
@@ -887,7 +887,7 @@ public class GlossaryManagerRESTServices extends TokenController
                                               String                        glossaryTermOneGUID,
                                               String                        relationshipTypeName,
                                               String                        glossaryTermTwoGUID,
-                                              DeleteRequestBody requestBody)
+                                              DeleteRelationshipRequestBody requestBody)
     {
         final String methodName = "clearTermRelationship";
 
@@ -1379,7 +1379,7 @@ public class GlossaryManagerRESTServices extends TokenController
      */
     public VoidResponse deleteGlossaryTerm(String                   serverName,
                                            String                   glossaryTermGUID,
-                                           DeleteRequestBody requestBody)
+                                           DeleteElementRequestBody requestBody)
     {
         final String methodName = "deleteGlossaryTerm";
 

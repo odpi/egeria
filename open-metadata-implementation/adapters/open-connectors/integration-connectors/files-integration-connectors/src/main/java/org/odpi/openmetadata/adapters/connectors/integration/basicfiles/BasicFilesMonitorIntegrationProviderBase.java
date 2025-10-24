@@ -93,7 +93,7 @@ class BasicFilesMonitorIntegrationProviderBase extends IntegrationConnectorProvi
 
         connectorType.setRecognizedConfigurationProperties(recognizedConfigurationProperties);
         connectorType.setSupportedAssetTypeName(supportedAssetTypeName);
-        connectorType.setSupportedDeployedImplementationType(DeployedImplementationType.FILES_INTEGRATION_CONNECTOR.getDeployedImplementationType());
+        connectorType.setSupportedDeployedImplementationType(DeployedImplementationType.INTEGRATION_CONNECTOR.getDeployedImplementationType());
 
         super.connectorTypeBean = connectorType;
 

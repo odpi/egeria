@@ -18,39 +18,6 @@ Content-Type: application/json
 
 > {% client.global.set("token", response.body); %}
 
-###
-#==================================================
-# Load Archives
-#==================================================
-
-###
-# @name get the GUID for active-metadata-store
-# Retrieve the metadata element using its unique identifier.
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/runtime-manager/metadata-elements/guid-by-unique-name
-Authorization: Bearer {{token}}
-Content-Type: application/json
-
-{
-  "class" : "UniqueNameRequestBody",
-  "name" : "active-metadata-store",
-  "namePropertyName" : "displayName"
-}
-
-> {% client.global.set("activeMetadataStoreGUID", response.body.guid); %}
-
-
-###
-# @name addOpenMetadataArchiveFile (into active-metadata-store)
-# Add a new open metadata archive to running OMAG Server's repository.
-# An open metadata archive contains metadata types and instances.  This operation loads an open metadata archive
-# that is stored in the namrd file.  It can be used with OMAG servers that are of type Open Metadata Store.
-# https://egeria-project.org/concepts/open-metadata-archives/
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/runtime-manager/omag-servers/{{activeMetadataStoreGUID}}/instance/load/open-metadata-archives/file
-Authorization: Bearer {{token}}
-Content-Type: text/plain
-
-content-packs/CocoComboArchive.omarchive
-
 
 ###
 # =====================================================================================================================
@@ -156,7 +123,7 @@ Content-Type: application/json
 ###
 # @name updateInformationSupplyChain
 # Update the properties of an information supply chain.
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/solution-architect/information-supply-chains/{{informationSupplyChainGUID}}/update?replaceAllProperties=false
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/solution-architect/information-supply-chains/{{informationSupplyChainGUID}}/update
 Authorization: Bearer {{token}}
 Content-Type: application/json
 
@@ -176,6 +143,7 @@ Content-Type: application/json
     "effectiveFrom": "{{$isoTimestamp}}",
     "effectiveTo": "{{$isoTimestamp}}"
   },
+  "mergeUpdate": true,
   "externalSourceGUID": "add guid here",
   "externalSourceName": "add qualified name here",
   "effectiveTime" : "{{$isoTimestamp}}",
@@ -220,7 +188,7 @@ Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-  "class" : "MetadataSourceRequestBody",
+  "class" : "DeleteRelationshipRequestBody",
   "externalSourceGUID": "add guid here",
   "externalSourceName": "add qualified name here",
   "effectiveTime" : "{{$isoTimestamp}}",
@@ -260,7 +228,7 @@ Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-  "class" : "MetadataSourceRequestBody",
+  "class" : "DeleteRelationshipRequestBody",
   "externalSourceGUID": "add guid here",
   "externalSourceName": "add qualified name here",
   "effectiveTime" : "{{$isoTimestamp}}",
@@ -278,7 +246,7 @@ Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-  "class" : "MetadataSourceRequestBody",
+  "class" : "DeleteElementRequestBody",
   "externalSourceGUID": "add guid here",
   "externalSourceName": "add qualified name here",
   "effectiveTime" : "{{$isoTimestamp}}",
@@ -380,20 +348,22 @@ Content-Type: application/json
 
 # @name getInformationSupplyChainsByName - with full request body
 # Returns the list of information supply chains with a particular name.
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/solution-architect/information-supply-chains/by-name?addImplementation=true&startFrom=0&pageSize=10
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/solution-architect/information-supply-chains/by-name?addImplementation=true
 Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
   "class" : "FilterRequestBody",
+  "filter" : "Add name here",
+  "startFrom": 0,
+  "pageSize": 10,
   "asOfTime" : "{{$isoTimestamp}}",
   "effectiveTime" : "{{$isoTimestamp}}",
   "forLineage" : false,
   "forDuplicateProcessing" : false,
   "limitResultsByStatus" : ["ACTIVE"],
   "sequencingOrder" : "PROPERTY_ASCENDING",
-  "sequencingProperty" : "qualifiedName",
-  "filter" : "Add name here"
+  "sequencingProperty" : "qualifiedName"
 }
 
 
@@ -529,7 +499,7 @@ Content-Type: application/json
 ###
 # @name updateSolutionBlueprint
 # Update the properties of a solution blueprint.
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/solution-architect/solution-blueprints/{{solutionBlueprintGUID}}/update?replaceAllProperties=false
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/solution-architect/solution-blueprints/{{solutionBlueprintGUID}}/update
 Authorization: Bearer {{token}}
 Content-Type: application/json
 
@@ -548,6 +518,7 @@ Content-Type: application/json
     "effectiveFrom": "{{$isoTimestamp}}",
     "effectiveTo": "{{$isoTimestamp}}"
   },
+  "mergeUpdate": true,
   "externalSourceGUID": "add guid here",
   "externalSourceName": "add qualified name here",
   "effectiveTime" : "{{$isoTimestamp}}",
@@ -610,7 +581,7 @@ Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-  "class" : "MetadataSourceRequestBody",
+  "class" : "DeleteRelationshipRequestBody",
   "externalSourceGUID": "add guid here",
   "externalSourceName": "add qualified name here",
   "effectiveTime" : "{{$isoTimestamp}}",
@@ -627,7 +598,7 @@ Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-  "class" : "MetadataSourceRequestBody",
+  "class" : "DeleteElementRequestBody",
   "externalSourceGUID": "add guid here",
   "externalSourceName": "add qualified name here",
   "effectiveTime" : "{{$isoTimestamp}}",
@@ -653,10 +624,6 @@ Content-Type: application/json
 
 {
   "class" : "SearchStringRequestBody",
-  "searchString" : "Add value here",
-  "startsWith" : false,
-  "endsWith" : false,
-  "ignoreCase" : true,
   "startFrom" : 0,
   "pageSize": 10,
   "asOfTime" : "{{$isoTimestamp}}",
@@ -715,7 +682,7 @@ Content-Type: application/json
 
 # @name getSolutionBlueprintsByName
 # Returns the list of solution blueprints with a particular name.
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/solution-architect/solution-blueprints/by-name?startFrom=0&pageSize=10
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/solution-architect/solution-blueprints/by-name
 Authorization: Bearer {{token}}
 Content-Type: application/json
 
@@ -728,20 +695,22 @@ Content-Type: application/json
 
 # @name getSolutionBlueprintsByName - with full request body
 # Returns the list of solution blueprints with a particular name.
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/solution-architect/solution-blueprints/by-name?startFrom=0&pageSize=10
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/solution-architect/solution-blueprints/by-name
 Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
   "class" : "FilterRequestBody",
+  "filter" : "Add name here",
+  "startFrom": 0,
+  "pageSize": 10,
   "asOfTime" : "{{$isoTimestamp}}",
   "effectiveTime" : "{{$isoTimestamp}}",
   "forLineage" : false,
   "forDuplicateProcessing" : false,
   "limitResultsByStatus" : ["ACTIVE"],
   "sequencingOrder" : "PROPERTY_ASCENDING",
-  "sequencingProperty" : "qualifiedName",
-  "filter" : "Add name here"
+  "sequencingProperty" : "qualifiedName"
 }
 
 
@@ -769,135 +738,7 @@ Content-Type: application/json
 
 ###
 
-
-###
-# =====================================================================================================================
-# Work with Solution Roles (using Actor Manager OMVS)
-# https://egeria-project.org/concepts/solution-role
-
 @solutionRoleGUID=add guid here
-
-###
-# @name createSolutionRole
-# Create an actor role that is of type SolutionRole.
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/solution-architect/solution-roles
-Authorization: Bearer {{token}}
-Content-Type: application/json
-
-{
-  "class" : "NewElementRequestBody",
-  "anchorGUID" : "add guid here",
-  "isOwnAnchor": false,
-  "parentGUID": "add guid here",
-  "parentRelationshipTypeName": "add type name here",
-  "parentRelationshipProperties": {
-    "class": "RelationshipElementProperties",
-    "propertyValueMap" : {
-      "description" : {
-        "class": "PrimitiveTypePropertyValue",
-        "typeName": "string",
-        "primitiveValue" : "New description"
-      }
-    }
-  },
-  "parentAtEnd1": false,
-  "properties": {
-    "class" : "SolutionRoleProperties",
-    "qualifiedName": "add unique name here",
-    "name": "add short name here",
-    "description": "add description here",
-    "scope": "add scope of role here",
-    "additionalProperties": {
-      "property1" : "propertyValue1",
-      "property2" : "propertyValue2"
-    },
-    "effectiveFrom": "{{$isoTimestamp}}",
-    "effectiveTo": "{{$isoTimestamp}}"
-  },
-  "externalSourceGUID": "add guid here",
-  "externalSourceName": "add qualified name here",
-  "effectiveTime" : "{{$isoTimestamp}}",
-  "forLineage" : false,
-  "forDuplicateProcessing" : false
-}
-
-
-###
-# @name createSolutionRoleFromTemplate
-# Create a new metadata element to represent a actor role using an existing metadata element as a template.  The template defines additional classifications and relationships that should be added to the new element.",
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/solution-architect/solution-roles/from-template
-Authorization: Bearer {{token}}
-Content-Type: application/json
-
-{
-  "class" : "TemplateRequestBody",
-  "anchorGUID" : "add guid here",
-  "isOwnAnchor": false,
-  "parentGUID": "add guid here",
-  "parentRelationshipTypeName": "add type name here",
-  "parentRelationshipProperties": {
-    "class": "RelationshipElementProperties",
-    "propertyValueMap" : {
-      "description" : {
-        "class": "PrimitiveTypePropertyValue",
-        "typeName": "string",
-        "primitiveValue" : "New description"
-      }
-    }
-  },
-  "parentAtEnd1": false,
-  "templateGUID": "add guid here",
-  "replacementProperties": {
-    "class": "ElementProperties",
-    "propertyValueMap" : {
-      "description" : {
-        "class": "PrimitiveTypePropertyValue",
-        "typeName": "string",
-        "primitiveValue" : "New description"
-      }
-    }
-  },
-  "placeholderPropertyValues":  {
-    "placeholder1" : "propertyValue1",
-    "placeholder2" : "propertyValue2"
-  },
-  "externalSourceGUID": "add guid here",
-  "externalSourceName": "add qualified name here",
-  "effectiveTime" : "{{$isoTimestamp}}",
-  "forLineage" : false,
-  "forDuplicateProcessing" : false
-}
-
-
-###
-# @name updateSolutionRole
-# Update the properties of an actor role.
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/solution-architect/solution-roles/{{solutionRoleGUID}}/update?replaceAllProperties=false
-Authorization: Bearer {{token}}
-Content-Type: application/json
-
-{
-  "class" : "UpdateElementRequestBody",
-  "properties": {
-    "class" : "SolutionRoleProperties",
-    "qualifiedName": "add unique name here",
-    "name": "add short name here",
-    "description": "add description here",
-    "scope": "add scope of role here",
-    "additionalProperties": {
-      "property1" : "propertyValue1",
-      "property2" : "propertyValue2"
-    },
-    "effectiveFrom": "{{$isoTimestamp}}",
-    "effectiveTo": "{{$isoTimestamp}}"
-  },
-  "externalSourceGUID": "add guid here",
-  "externalSourceName": "add qualified name here",
-  "effectiveTime" : "{{$isoTimestamp}}",
-  "forLineage" : false,
-  "forDuplicateProcessing" : false
-}
-
 
 ###
 # @name linkSolutionComponentActor
@@ -932,7 +773,7 @@ Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-  "class" : "MetadataSourceRequestBody",
+  "class" : "DeleteRelationshipRequestBody",
   "externalSourceGUID": "add guid here",
   "externalSourceName": "add qualified name here",
   "effectiveTime" : "{{$isoTimestamp}}",
@@ -949,7 +790,7 @@ Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-  "class" : "MetadataSourceRequestBody",
+  "class" : "DeleteElementRequestBody",
   "externalSourceGUID": "add guid here",
   "externalSourceName": "add qualified name here",
   "effectiveTime" : "{{$isoTimestamp}}",
@@ -1055,14 +896,16 @@ Content-Type: application/json
 
 {
   "class" : "FilterRequestBody",
+  "filter" : "Add name here",
+  "startFrom": 0,
+  "pageSize": 10,
   "asOfTime" : "{{$isoTimestamp}}",
   "effectiveTime" : "{{$isoTimestamp}}",
   "forLineage" : false,
   "forDuplicateProcessing" : false,
   "limitResultsByStatus" : ["ACTIVE"],
   "sequencingOrder" : "PROPERTY_ASCENDING",
-  "sequencingProperty" : "qualifiedName",
-  "filter" : "Add name here"
+  "sequencingProperty" : "qualifiedName"
 }
 
 
@@ -1202,7 +1045,7 @@ Content-Type: application/json
 ###
 # @name updateSolutionComponent
 # Update the properties of a solution component.
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/solution-architect/solution-components/{{solutionComponentGUID}}/update?replaceAllProperties=false
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/solution-architect/solution-components/{{solutionComponentGUID}}/update
 Authorization: Bearer {{token}}
 Content-Type: application/json
 
@@ -1223,6 +1066,7 @@ Content-Type: application/json
     "effectiveFrom": "{{$isoTimestamp}}",
     "effectiveTo": "{{$isoTimestamp}}"
   },
+  "mergeUpdate": true,
   "externalSourceGUID": "add guid here",
   "externalSourceName": "add qualified name here",
   "effectiveTime" : "{{$isoTimestamp}}",
@@ -1257,7 +1101,7 @@ Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-  "class" : "MetadataSourceRequestBody",
+  "class" : "DeleteRelationshipRequestBody",
   "externalSourceGUID": "add guid here",
   "externalSourceName": "add qualified name here",
   "effectiveTime" : "{{$isoTimestamp}}",
@@ -1302,7 +1146,7 @@ Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-  "class" : "MetadataSourceRequestBody",
+  "class" : "DeleteRelationshipRequestBody",
   "externalSourceGUID": "add guid here",
   "externalSourceName": "add qualified name here",
   "effectiveTime" : "{{$isoTimestamp}}",
@@ -1319,7 +1163,7 @@ Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-  "class" : "MetadataSourceRequestBody",
+  "class" : "DeleteElementRequestBody",
   "externalSourceGUID": "add guid here",
   "externalSourceName": "add qualified name here",
   "effectiveTime" : "{{$isoTimestamp}}",
@@ -1434,14 +1278,16 @@ Content-Type: application/json
 
 {
   "class" : "FilterRequestBody",
+  "filter" : "Add name here",
+  "startFrom": 0,
+  "pageSize": 10,
   "asOfTime" : "{{$isoTimestamp}}",
   "effectiveTime" : "{{$isoTimestamp}}",
   "forLineage" : false,
   "forDuplicateProcessing" : false,
   "limitResultsByStatus" : ["ACTIVE"],
   "sequencingOrder" : "PROPERTY_ASCENDING",
-  "sequencingProperty" : "qualifiedName",
-  "filter" : "Add name here"
+  "sequencingProperty" : "qualifiedName"
 }
 
 

@@ -43,7 +43,7 @@ public class ExternalReferenceHandler extends OpenMetadataHandlerBase
               auditLog,
               localServiceName,
               openMetadataClient,
-              OpenMetadataType.LOCATION.typeName);
+              OpenMetadataType.EXTERNAL_REFERENCE.typeName);
     }
 
 
@@ -145,7 +145,6 @@ public class ExternalReferenceHandler extends OpenMetadataHandlerBase
     }
 
 
-
     /**
      * Attach an external reference to an element.
      *
@@ -215,8 +214,6 @@ public class ExternalReferenceHandler extends OpenMetadataHandlerBase
                                                         externalReferenceGUID,
                                                         deleteOptions);
     }
-
-
 
 
     /**
@@ -408,6 +405,7 @@ public class ExternalReferenceHandler extends OpenMetadataHandlerBase
 
         List<String> propertyNames = Arrays.asList(OpenMetadataProperty.QUALIFIED_NAME.name,
                                                    OpenMetadataProperty.DISPLAY_NAME.name,
+                                                   OpenMetadataProperty.IDENTIFIER.name,
                                                    OpenMetadataProperty.REFERENCE_TITLE.name);
 
         return super.getRootElementsByName(userId,

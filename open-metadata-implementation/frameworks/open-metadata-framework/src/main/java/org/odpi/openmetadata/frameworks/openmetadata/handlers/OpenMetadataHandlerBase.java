@@ -9,18 +9,24 @@ import org.odpi.openmetadata.frameworks.openmetadata.builders.OpenMetadataElemen
 import org.odpi.openmetadata.frameworks.openmetadata.builders.OpenMetadataRelationshipBuilder;
 import org.odpi.openmetadata.frameworks.openmetadata.client.OpenMetadataClient;
 import org.odpi.openmetadata.frameworks.openmetadata.converters.OpenMetadataRootConverter;
-import org.odpi.openmetadata.frameworks.openmetadata.converters.SolutionComponentConverter;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.ElementStatus;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.*;
 import org.odpi.openmetadata.frameworks.openmetadata.mermaid.OpenMetadataRootMermaidGraphBuilder;
+import org.odpi.openmetadata.frameworks.openmetadata.mermaid.SolutionBlueprintMermaidGraphBuilder;
 import org.odpi.openmetadata.frameworks.openmetadata.mermaid.SolutionComponentMermaidGraphBuilder;
+import org.odpi.openmetadata.frameworks.openmetadata.mermaid.SpecificationMermaidGraphBuilder;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.*;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.*;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.validvalues.SpecificationPropertyAssignmentProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.validvalues.ValidValueDefinitionProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.search.*;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * OpenMetadataHandlerBase provides a base class for the handlers.
@@ -368,6 +374,7 @@ public class OpenMetadataHandlerBase
         List<RelatedMetadataElement> relatedMetadataElements = new ArrayList<>();
 
         QueryOptions workingQueryOptions = new QueryOptions(queryOptions);
+        workingQueryOptions.setMetadataElementTypeName(OpenMetadataType.OPEN_METADATA_ROOT.typeName); // All types of entities
 
         if (queryOptions.getGraphQueryDepth() > 0)
         {
@@ -491,216 +498,6 @@ public class OpenMetadataHandlerBase
 
 
     /**
-     * Return the solution component extracted from the open metadata element.
-     *
-     * @param userId              calling user
-     * @param openMetadataElement element extracted from the repository
-     * @param addParentContext    should parent information supply chains, segments and solution components be added?
-     * @param queryOptions        multiple options to control the query
-     * @param fullDisplay         print all elements
-     * @param methodName          calling method
-     * @return bean or null
-     * @throws PropertyServerException problem with the conversion process
-     */
-    protected SolutionComponentElement convertSolutionComponent(String              userId,
-                                                                OpenMetadataElement openMetadataElement,
-                                                                boolean             addParentContext,
-                                                                boolean             fullDisplay,
-                                                                QueryOptions        queryOptions,
-                                                                String              methodName) throws PropertyServerException
-    {
-        try
-        {
-            List<RelatedMetadataElement>   relatedMetadataElements      = new ArrayList<>();
-            List<RelatedMetadataElement>   relatedParentElements        = new ArrayList<>();
-            List<SolutionPortElement>      relatedPortElements          = new ArrayList<>();
-            List<SolutionComponentElement> relatedSubComponentsElements = new ArrayList<>();
-
-            QueryOptions workingQueryOptions= new QueryOptions(queryOptions);
-
-            workingQueryOptions.setStartFrom(0);
-            workingQueryOptions.setPageSize(openMetadataClient.getMaxPagingSize());
-
-            RelatedMetadataElementList relatedMetadataElementList = openMetadataClient.getRelatedMetadataElements(userId,
-                                                                                                                  openMetadataElement.getElementGUID(),
-                                                                                                                  0,
-                                                                                                                  null,
-                                                                                                                  workingQueryOptions);
-            while ((relatedMetadataElementList != null) && (relatedMetadataElementList.getElementList() != null))
-            {
-                for (RelatedMetadataElement relatedMetadataElement : relatedMetadataElementList.getElementList())
-                {
-                    if (relatedMetadataElement != null)
-                    {
-                        if (propertyHelper.isTypeOf(relatedMetadataElement, OpenMetadataType.SOLUTION_COMPOSITION_RELATIONSHIP.typeName))
-                        {
-                            if (relatedMetadataElement.getElementAtEnd1())
-                            {
-                                relatedParentElements.add(relatedMetadataElement);
-                            }
-                            else
-                            {
-                                relatedSubComponentsElements.add(this.convertSolutionComponent(userId,
-                                                                                               relatedMetadataElement.getElement(),
-                                                                                               addParentContext,
-                                                                                               fullDisplay,
-                                                                                               queryOptions,
-                                                                                               methodName));
-                            }
-                        }
-                        else if (propertyHelper.isTypeOf(relatedMetadataElement, OpenMetadataType.IMPLEMENTED_BY_RELATIONSHIP.typeName))
-                        {
-                            if (relatedMetadataElement.getElementAtEnd1())
-                            {
-                                relatedParentElements.add(relatedMetadataElement);
-                            }
-                            else
-                            {
-                                relatedMetadataElements.add(relatedMetadataElement);
-                            }
-                        }
-                        else if (propertyHelper.isTypeOf(relatedMetadataElement, OpenMetadataType.SOLUTION_COMPONENT_PORT_RELATIONSHIP.typeName))
-                        {
-                            relatedPortElements.add(this.convertSolutionPort(userId, relatedMetadataElement, queryOptions, methodName));
-                        }
-                        else
-                        {
-                            relatedMetadataElements.add(relatedMetadataElement);
-                        }
-                    }
-                }
-
-                workingQueryOptions.setStartFrom(workingQueryOptions.getStartFrom() + openMetadataClient.getMaxPagingSize());
-
-                relatedMetadataElementList = openMetadataClient.getRelatedMetadataElements(userId,
-                                                                                           openMetadataElement.getElementGUID(),
-                                                                                           0,
-                                                                                           null,
-                                                                                           workingQueryOptions);
-            }
-
-            SolutionComponentConverter<SolutionComponentElement> converter = new SolutionComponentConverter<>(propertyHelper, localServiceName, localServerName, relatedSubComponentsElements, relatedPortElements);
-            SolutionComponentElement solutionComponentElement = converter.getNewComplexBean(SolutionComponentElement.class,
-                                                                                            openMetadataElement,
-                                                                                            relatedMetadataElements,
-                                                                                            methodName);
-
-            if (solutionComponentElement != null)
-            {
-                if (addParentContext)
-                {
-                    solutionComponentElement.setContext(this.getInformationSupplyChainContext(userId,
-                                                                                              relatedParentElements,
-                                                                                              queryOptions,
-                                                                                              methodName));
-                }
-
-                SolutionComponentMermaidGraphBuilder graphBuilder = new SolutionComponentMermaidGraphBuilder(solutionComponentElement,
-                                                                                                             fullDisplay);
-
-                solutionComponentElement.setMermaidGraph(graphBuilder.getMermaidGraph());
-            }
-
-            return solutionComponentElement;
-        }
-        catch (Exception error)
-        {
-            if (auditLog != null)
-            {
-                auditLog.logException(methodName,
-                                      OMFAuditCode.UNEXPECTED_CONVERTER_EXCEPTION.getMessageDefinition(error.getClass().getName(),
-                                                                                                       methodName,
-                                                                                                       localServiceName,
-                                                                                                       error.getMessage()),
-                                      error);
-            }
-
-            throw new PropertyServerException(OMFErrorCode.UNEXPECTED_CONVERTER_EXCEPTION.getMessageDefinition(error.getClass().getName(),
-                                                                                                               methodName,
-                                                                                                               localServiceName,
-                                                                                                               error.getMessage()),
-                                              error.getClass().getName(),
-                                              methodName,
-                                              error);
-        }
-    }
-
-
-    /**
-     * Navigate through the ImplementedBy and ImplementationSupplyChainComposition relationships to locate
-     * the Information Supply Chains associated with the originally requested element
-     *
-     * @param userId                calling userId
-     * @param relatedParentElements list of parents for requested element
-     * @param queryOptions          multiple options to control the query
-     * @param methodName            calling method
-     * @return supply chain context
-     * @throws PropertyServerException problem in converter
-     */
-    protected List<InformationSupplyChainContext> getInformationSupplyChainContext(String                       userId,
-                                                                                   List<RelatedMetadataElement> relatedParentElements,
-                                                                                   QueryOptions                 queryOptions,
-                                                                                   String                       methodName) throws PropertyServerException
-    {
-        if (relatedParentElements != null)
-        {
-            List<InformationSupplyChainContext> contexts = new ArrayList<>();
-
-            for (RelatedMetadataElement parentElement : relatedParentElements)
-            {
-                if (parentElement != null)
-                {
-                    if (propertyHelper.isTypeOf(parentElement.getElement(), OpenMetadataType.INFORMATION_SUPPLY_CHAIN.typeName))
-                    {
-                        contexts.add(new InformationSupplyChainContext(null,
-                                                                       Collections.singletonList(propertyHelper.getRelatedElementSummary(parentElement, methodName))));
-                    }
-                    else
-                    {
-                        List<RelatedMetadataElement>        fullParentContext       = this.getFullParentContext(userId, parentElement, queryOptions, methodName);
-                        List<RelatedMetadataElementSummary> informationSupplyChains = new ArrayList<>();
-                        List<RelatedMetadataElementSummary> parentComponents        = new ArrayList<>();
-
-                        for (RelatedMetadataElement relatedMetadataElement : fullParentContext)
-                        {
-                            if (relatedMetadataElement != null)
-                            {
-                                RelatedMetadataElementSummary bean = propertyHelper.getRelatedElementSummary(relatedMetadataElement, methodName);
-
-                                if (bean != null)
-                                {
-                                    if ((propertyHelper.isTypeOf(relatedMetadataElement.getElement(), OpenMetadataType.INFORMATION_SUPPLY_CHAIN.typeName)) && (relatedMetadataElement.getElementAtEnd1()))
-                                    {
-                                        informationSupplyChains.add(bean);
-                                    }
-                                    else
-                                    {
-                                        parentComponents.add(bean);
-                                    }
-                                }
-                            }
-                        }
-
-                        if (parentComponents.isEmpty())
-                        {
-                            parentComponents = null;
-                        }
-
-                        InformationSupplyChainContext context = new InformationSupplyChainContext(parentComponents,
-                                                                                                  informationSupplyChains);
-                        contexts.add(context);
-                    }
-                }
-            }
-
-            return contexts;
-        }
-
-        return null;
-    }
-
-
-    /**
      * Retrieve the context in which this component is used.
      *
      * @param userId               caller
@@ -733,7 +530,7 @@ public class OpenMetadataHandlerBase
                 {
                     if (relatedMetadataElement != null)
                     {
-                        if ((propertyHelper.isTypeOf(relatedMetadataElement, OpenMetadataType.INFORMATION_SUPPLY_CHAIN_COMPOSITION_RELATIONSHIP.typeName)) && relatedMetadataElement.getElementAtEnd1())
+                        if ((propertyHelper.isTypeOf(relatedMetadataElement, OpenMetadataType.COLLECTION_MEMBERSHIP_RELATIONSHIP.typeName)) && relatedMetadataElement.getElementAtEnd1())
                         {
                             fullParentContext.add(relatedMetadataElement);
                         }
@@ -773,27 +570,6 @@ public class OpenMetadataHandlerBase
 
         return fullParentContext;
     }
-
-
-    /**
-     * Return the solution port extracted from the open metadata element.
-     *
-     * @param userId              calling user
-     * @param openMetadataElement element extracted from the repository
-     * @param queryOptions        multiple options to control the query
-     * @param methodName          calling method
-     * @return bean or null
-     * @throws PropertyServerException problem with the conversion process
-     */
-    protected SolutionPortElement convertSolutionPort(String                 userId,
-                                                      RelatedMetadataElement openMetadataElement,
-                                                      QueryOptions           queryOptions,
-                                                      String                 methodName) throws PropertyServerException
-    {
-        // todo
-        return null;
-    }
-
 
     /*
      * Mapping functions
@@ -891,16 +667,18 @@ public class OpenMetadataHandlerBase
      *
      * @param userId                   calling user
      * @param openMetadataElement      element extracted from the repository
-     * @param queryOptions             multiple options to control the query
+     * @param suppliedQueryOptions             multiple options to control the query
      * @param methodName               calling method
      * @return bean or null
      * @throws PropertyServerException problem with the conversion process
      */
     protected OpenMetadataRootElement convertRootElement(String              userId,
                                                          OpenMetadataElement openMetadataElement,
-                                                         QueryOptions        queryOptions,
+                                                         QueryOptions        suppliedQueryOptions,
                                                          String              methodName) throws PropertyServerException
     {
+        QueryOptions queryOptions = new QueryOptions(suppliedQueryOptions);
+
         if (filterBySubtypes(openMetadataElement, queryOptions) &&
                 filterByClassifications(openMetadataElement.getClassifications(), queryOptions))
         {
@@ -913,7 +691,7 @@ public class OpenMetadataHandlerBase
                                                                                   this.getElementRelatedElements(userId, openMetadataElement, queryOptions),
                                                                                   methodName);
 
-                return addMermaidToRootElement(userId, rootElement, queryOptions);
+                return populateRootElement(userId, rootElement, queryOptions);
             }
             catch (Exception error)
             {
@@ -1058,7 +836,7 @@ public class OpenMetadataHandlerBase
                                                                                   this.getElementRelatedElements(userId, relatedMetadataElement.getElement(), queryOptions),
                                                                                   methodName);
 
-                return addMermaidToRootElement(userId, rootElement, queryOptions);
+                return populateRootElement(userId, rootElement, queryOptions);
             }
             catch (Exception error)
             {
@@ -1098,24 +876,19 @@ public class OpenMetadataHandlerBase
      * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    protected OpenMetadataRootElement addMermaidToRootElement(String                  userId,
-                                                              OpenMetadataRootElement rootElement,
-                                                              QueryOptions            queryOptions) throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException
+    protected OpenMetadataRootElement populateRootElement(String                  userId,
+                                                          OpenMetadataRootElement rootElement,
+                                                          QueryOptions            queryOptions) throws InvalidParameterException,
+                                                                                                       PropertyServerException,
+                                                                                                       UserNotAuthorizedException
     {
         if (rootElement != null)
         {
             addGovernanceDefinitionFamily(userId, rootElement, queryOptions);
 
-            rootElement.setCollectionMembers(this.getElementHierarchies(userId,
-                                                                         rootElement.getElementHeader().getGUID(),
-                                                                         rootElement.getCollectionMembers(),
-                                                                         1,
-                                                                         OpenMetadataType.COLLECTION_MEMBERSHIP_RELATIONSHIP.typeName,
-                                                                         queryOptions,
-                                                                         1));
+            addSpecification(rootElement);
 
             rootElement.setSubDataClasses(this.getElementHierarchies(userId,
-                                                                      rootElement.getElementHeader().getGUID(),
                                                                       rootElement.getSubDataClasses(),
                                                                       1,
                                                                       OpenMetadataType.DATA_CLASS_HIERARCHY_RELATIONSHIP.typeName,
@@ -1123,7 +896,6 @@ public class OpenMetadataHandlerBase
                                                                       1));
 
             rootElement.setPartOfDataClasses(this.getElementHierarchies(userId,
-                                                                         rootElement.getElementHeader().getGUID(),
                                                                          rootElement.getPartOfDataClasses(),
                                                                          1,
                                                                          OpenMetadataType.DATA_CLASS_COMPOSITION_RELATIONSHIP.typeName,
@@ -1131,7 +903,6 @@ public class OpenMetadataHandlerBase
                                                                          1));
 
             rootElement.setNestedDataFields(this.getElementHierarchies(userId,
-                                                                        rootElement.getElementHeader().getGUID(),
                                                                         rootElement.getNestedDataFields(),
                                                                         1,
                                                                         OpenMetadataType.NESTED_DATA_FIELD_RELATIONSHIP.typeName,
@@ -1139,7 +910,6 @@ public class OpenMetadataHandlerBase
                                                                         1));
 
             rootElement.setContainsDataFields(this.getElementHierarchies(userId,
-                                                                          rootElement.getElementHeader().getGUID(),
                                                                           rootElement.getContainsDataFields(),
                                                                           1,
                                                                           OpenMetadataType.MEMBER_DATA_FIELD_RELATIONSHIP.typeName,
@@ -1147,7 +917,6 @@ public class OpenMetadataHandlerBase
                                                                           1));
 
             rootElement.setNoteLogs(this.getElementHierarchies(userId,
-                                                               rootElement.getElementHeader().getGUID(),
                                                                rootElement.getNoteLogs(),
                                                                1,
                                                                OpenMetadataType.ATTACHED_NOTE_LOG_ENTRY_RELATIONSHIP.typeName,
@@ -1155,7 +924,6 @@ public class OpenMetadataHandlerBase
                                                                1));
 
             rootElement.setComments(this.getElementHierarchies(userId,
-                                                               rootElement.getElementHeader().getGUID(),
                                                                rootElement.getComments(),
                                                                1,
                                                                OpenMetadataType.ATTACHED_COMMENT_RELATIONSHIP.typeName,
@@ -1163,7 +931,6 @@ public class OpenMetadataHandlerBase
                                                                1));
 
             rootElement.setManagedProjects(this.getElementHierarchies(userId,
-                                                               rootElement.getElementHeader().getGUID(),
                                                                rootElement.getManagedProjects(),
                                                                1,
                                                                OpenMetadataType.PROJECT_HIERARCHY_RELATIONSHIP.typeName,
@@ -1171,7 +938,6 @@ public class OpenMetadataHandlerBase
                                                                1));
 
             rootElement.setManagingProjects(this.getElementHierarchies(userId,
-                                                                      rootElement.getElementHeader().getGUID(),
                                                                       rootElement.getManagingProjects(),
                                                                       2,
                                                                       OpenMetadataType.PROJECT_HIERARCHY_RELATIONSHIP.typeName,
@@ -1179,23 +945,246 @@ public class OpenMetadataHandlerBase
                                                                       1));
 
             rootElement.setDependsOnProjects(this.getElementHierarchies(userId,
-                                                                        rootElement.getElementHeader().getGUID(),
                                                                         rootElement.getDependsOnProjects(),
                                                                         1,
                                                                         OpenMetadataType.PROJECT_DEPENDENCY_RELATIONSHIP.typeName,
                                                                         queryOptions,
                                                                         1));
             rootElement.setDependentProjects(this.getElementHierarchies(userId,
-                                                                        rootElement.getElementHeader().getGUID(),
                                                                         rootElement.getDependentProjects(),
                                                                         2,
                                                                         OpenMetadataType.PROJECT_DEPENDENCY_RELATIONSHIP.typeName,
                                                                         queryOptions,
                                                                         1));
 
+            rootElement.setImplementedBy(this.getElementHierarchies(userId,
+                                                                    rootElement.getImplementedBy(),
+                                                                    1,
+                                                                    OpenMetadataType.IMPLEMENTED_BY_RELATIONSHIP.typeName,
+                                                                    queryOptions,
+                                                                    1));
+
+            rootElement.setDerivedFrom(this.getElementHierarchies(userId,
+                                                                    rootElement.getDerivedFrom(),
+                                                                    2,
+                                                                    OpenMetadataType.IMPLEMENTED_BY_RELATIONSHIP.typeName,
+                                                                    queryOptions,
+                                                                    1));
+
+            rootElement.setSchemaAttributes(this.getElementHierarchies(userId,
+                                                                        rootElement.getSchemaAttributes(),
+                                                                        1,
+                                                                        OpenMetadataType.NESTED_SCHEMA_ATTRIBUTE_RELATIONSHIP.typeName,
+                                                                        List.of(OpenMetadataType.EXTERNAL_ID_LINK_RELATIONSHIP.typeName,
+                                                                                OpenMetadataType.ASSOCIATED_ANNOTATION_RELATIONSHIP.typeName),
+                                                                        queryOptions,
+                                                                        1));
+
+            rootElement.setSchemaType(this.getElementHierarchy(userId,
+                                                               rootElement.getSchemaType(),
+                                                               1,
+                                                               OpenMetadataType.SCHEMA_TYPE_OPTION_RELATIONSHIP.typeName,
+                                                               List.of(OpenMetadataType.NESTED_SCHEMA_ATTRIBUTE_RELATIONSHIP.typeName,
+                                                                       OpenMetadataType.ATTACHED_NOTE_LOG_RELATIONSHIP.typeName,
+                                                                       OpenMetadataType.LINKED_EXTERNAL_SCHEMA_TYPE_RELATIONSHIP.typeName,
+                                                                       OpenMetadataType.MAP_FROM_ELEMENT_TYPE_RELATIONSHIP.typeName,
+                                                                       OpenMetadataType.MAP_TO_ELEMENT_TYPE_RELATIONSHIP.typeName,
+                                                                       OpenMetadataType.DERIVED_SCHEMA_TYPE_QUERY_TARGET_RELATIONSHIP.typeName,
+                                                                       OpenMetadataType.GRAPH_EDGE_LINK_RELATIONSHIP.typeName,
+                                                                       OpenMetadataType.FOREIGN_KEY_RELATIONSHIP.typeName,
+                                                                       OpenMetadataType.API_OPERATIONS_RELATIONSHIP.typeName,
+                                                                       OpenMetadataType.API_HEADER_RELATIONSHIP.typeName,
+                                                                       OpenMetadataType.API_REQUEST_RELATIONSHIP.typeName,
+                                                                       OpenMetadataType.API_RESPONSE_RELATIONSHIP.typeName),
+                                                               queryOptions,
+                                                               1,
+                                                               new ArrayList<>()));
+
+            rootElement.setSupplyTo(this.getElementHierarchies(userId,
+                                                               rootElement.getSupplyTo(),
+                                                               1,
+                                                               OpenMetadataType.INFORMATION_SUPPLY_CHAIN_LINK_RELATIONSHIP.typeName,
+                                                               null,
+                                                               queryOptions,
+                                                               1));
+
+            rootElement.setSupplyFrom(this.getElementHierarchies(userId,
+                                                                 rootElement.getSupplyFrom(),
+                                                                 2,
+                                                                 OpenMetadataType.INFORMATION_SUPPLY_CHAIN_LINK_RELATIONSHIP.typeName,
+                                                                 null,
+                                                                 queryOptions,
+                                                                 1));
+
+            if (propertyHelper.isTypeOf(rootElement.getElementHeader(), OpenMetadataType.ASSET.typeName))
+            {
+                rootElement.setConnections(this.getElementHierarchies(userId,
+                                                                      rootElement.getCollectionMembers(),
+                                                                      1,
+                                                                      OpenMetadataType.EMBEDDED_CONNECTION_RELATIONSHIP.typeName,
+                                                                      List.of(OpenMetadataType.CONNECT_TO_ENDPOINT_RELATIONSHIP.typeName,
+                                                                              OpenMetadataType.CONNECTION_CONNECTOR_TYPE_RELATIONSHIP.typeName),
+                                                                      queryOptions,
+                                                                      1));
+            }
+            else if (propertyHelper.isTypeOf(rootElement.getElementHeader(), OpenMetadataType.PORT.typeName))
+            {
+                rootElement.setPortDelegatingTo(this.getElementHierarchy(userId,
+                                                                         rootElement.getPortDelegatingTo(),
+                                                                         1,
+                                                                         OpenMetadataType.PORT_DELEGATION_RELATIONSHIP.typeName,
+                                                                         null,
+                                                                         queryOptions,
+                                                                         1,
+                                                                         new ArrayList<>()));
+
+                rootElement.setPortDelegatingFrom(this.getElementHierarchies(userId,
+                                                                             rootElement.getPortDelegatingFrom(),
+                                                                             2,
+                                                                             OpenMetadataType.PORT_DELEGATION_RELATIONSHIP.typeName,
+                                                                             null,
+                                                                             queryOptions,
+                                                                             1));
+
+                rootElement.setNestedSolutionComponents(this.getElementHierarchies(userId,
+                                                                                   rootElement.getNestedSolutionComponents(),
+                                                                                   1,
+                                                                                   null,
+                                                                                   List.of(OpenMetadataType.SOLUTION_COMPONENT_ACTOR_RELATIONSHIP.typeName,
+                                                                                           OpenMetadataType.SOLUTION_LINKING_WIRE_RELATIONSHIP.typeName,
+                                                                                           OpenMetadataType.SOLUTION_COMPONENT_PORT_RELATIONSHIP.typeName,
+                                                                                           OpenMetadataType.SOLUTION_PORT_DELEGATION_RELATIONSHIP.typeName),
+                                                                                   queryOptions,
+                                                                                   1));
+            }
+            else if ((propertyHelper.isTypeOf(rootElement.getElementHeader(), OpenMetadataType.SOLUTION_BLUEPRINT.typeName)) ||
+                     (propertyHelper.isTypeOf(rootElement.getElementHeader(), OpenMetadataType.INFORMATION_SUPPLY_CHAIN.typeName)))
+            {
+                rootElement.setCollectionMembers(this.getElementHierarchies(userId,
+                                                                            rootElement.getCollectionMembers(),
+                                                                            1,
+                                                                            OpenMetadataType.SOLUTION_COMPOSITION_RELATIONSHIP.typeName,
+                                                                            List.of(OpenMetadataType.SOLUTION_COMPONENT_ACTOR_RELATIONSHIP.typeName,
+                                                                                    OpenMetadataType.SOLUTION_LINKING_WIRE_RELATIONSHIP.typeName,
+                                                                                    OpenMetadataType.SOLUTION_COMPONENT_PORT_RELATIONSHIP.typeName,
+                                                                                    OpenMetadataType.SOLUTION_PORT_DELEGATION_RELATIONSHIP.typeName),
+                                                                            queryOptions,
+                                                                            1));
+            }
+            else
+            {
+                rootElement.setCollectionMembers(this.getElementHierarchies(userId,
+                                                                            rootElement.getCollectionMembers(),
+                                                                            1,
+                                                                            OpenMetadataType.COLLECTION_MEMBERSHIP_RELATIONSHIP.typeName,
+                                                                            queryOptions,
+                                                                            1));
+            }
+
+            return addMermaidToRootElement(userId, rootElement, queryOptions);
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Reformat the specification relationships to make it easier for callers.
+     *
+     * @param rootElement element to update
+     */
+    private void addSpecification(OpenMetadataRootElement rootElement)
+    {
+        if (rootElement.getSpecificationProperties() != null)
+        {
+            Map<String, List<Map<String, String>>> specification = new HashMap<>();
+
+            for (RelatedMetadataElementSummary refDataRelationship : rootElement.getSpecificationProperties())
+            {
+                if ((refDataRelationship != null) && (refDataRelationship.getRelationshipProperties() instanceof SpecificationPropertyAssignmentProperties specificationPropertyAssignmentProperties))
+                {
+                    if (specificationPropertyAssignmentProperties.getPropertyName() != null)
+                    {
+                        if (refDataRelationship.getRelatedElement().getProperties() instanceof ValidValueDefinitionProperties validValueDefinitionProperties)
+                        {
+                            Map<String, String> additionalProperties = validValueDefinitionProperties.getAdditionalProperties();
+
+                            if (additionalProperties == null)
+                            {
+                                additionalProperties = new HashMap<>();
+                            }
+
+                            additionalProperties.put(specificationPropertyAssignmentProperties.getPropertyName() + "Name",
+                                                     validValueDefinitionProperties.getPreferredValue());
+
+                            List<Map<String, String>> properties = specification.get(specificationPropertyAssignmentProperties.getPropertyName());
+
+                            if (properties == null)
+                            {
+                                properties = new ArrayList<>();
+                            }
+
+                            properties.add(additionalProperties);
+
+                            specification.put(specificationPropertyAssignmentProperties.getPropertyName(), properties);
+                        }
+                    }
+                }
+            }
+
+            if (! specification.isEmpty())
+            {
+                rootElement.setSpecification(specification);
+            }
+        }
+    }
+
+    /**
+     * Add a standard mermaid graph to the root element.  This method may be overridden by the subclasses if
+     * they have a more fancy graph to display.
+     *
+     * @param userId calling user
+     * @param rootElement new root element
+     * @param queryOptions options from the caller
+     * @return root element with graph
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    @SuppressWarnings(value = "unused")
+    protected OpenMetadataRootElement addMermaidToRootElement(String                  userId,
+                                                              OpenMetadataRootElement rootElement,
+                                                              QueryOptions            queryOptions) throws InvalidParameterException,
+                                                                                                           PropertyServerException,
+                                                                                                           UserNotAuthorizedException
+    {
+        if (rootElement != null)
+        {
             OpenMetadataRootMermaidGraphBuilder graphBuilder = new OpenMetadataRootMermaidGraphBuilder(rootElement);
 
             rootElement.setMermaidGraph(graphBuilder.getMermaidGraph());
+
+            if (rootElement.getSpecificationProperties() != null)
+            {
+                SpecificationMermaidGraphBuilder specificationMermaidGraphBuilder = new SpecificationMermaidGraphBuilder(rootElement);
+
+                rootElement.setSpecificationMermaidGraph(specificationMermaidGraphBuilder.getMermaidGraph());
+            }
+
+            if ((propertyHelper.isTypeOf(rootElement.getElementHeader(), OpenMetadataType.SOLUTION_BLUEPRINT.typeName)) && (rootElement.getCollectionMembers() != null))
+            {
+                SolutionBlueprintMermaidGraphBuilder solutionBlueprintMermaidGraphBuilder = new SolutionBlueprintMermaidGraphBuilder(rootElement);
+
+                rootElement.setSolutionBlueprintMermaidGraph(solutionBlueprintMermaidGraphBuilder.getMermaidGraph());
+            }
+
+            if ((propertyHelper.isTypeOf(rootElement.getElementHeader(), OpenMetadataType.SOLUTION_COMPONENT.typeName)) && (rootElement.getNestedSolutionComponents() != null))
+            {
+                SolutionComponentMermaidGraphBuilder solutionComponentMermaidGraphBuilder = new SolutionComponentMermaidGraphBuilder(rootElement);
+
+                rootElement.setSolutionSubcomponentMermaidGraph(solutionComponentMermaidGraphBuilder.getMermaidGraph());
+            }
+
         }
 
         return rootElement;
@@ -1222,7 +1211,6 @@ public class OpenMetadataHandlerBase
         if (rootElement != null)
         {
             List<RelatedMetadataElementSummary> parentElements1 = this.getElementHierarchies(userId,
-                                                                                              rootElement.getElementHeader().getGUID(),
                                                                                               rootElement.getSupportingGovernanceDefinitions(),
                                                                                               0,
                                                                                               OpenMetadataType.GOVERNANCE_RESPONSE_RELATIONSHIP.typeName,
@@ -1230,7 +1218,6 @@ public class OpenMetadataHandlerBase
                                                                                               1);
 
             List<RelatedMetadataElementSummary> parentElements2 = this.getElementHierarchies(userId,
-                                                                                              rootElement.getElementHeader().getGUID(),
                                                                                               rootElement.getSupportingGovernanceDefinitions(),
                                                                                               0,
                                                                                               OpenMetadataType.GOVERNANCE_MECHANISM_RELATIONSHIP.typeName,
@@ -1252,7 +1239,6 @@ public class OpenMetadataHandlerBase
             }
 
             List<RelatedMetadataElementSummary> peerElements1 = this.getElementHierarchies(userId,
-                                                                                            rootElement.getElementHeader().getGUID(),
                                                                                             rootElement.getPeerGovernanceDefinitions(),
                                                                                             0,
                                                                                             OpenMetadataType.GOVERNANCE_DRIVER_LINK_RELATIONSHIP.typeName,
@@ -1260,7 +1246,6 @@ public class OpenMetadataHandlerBase
                                                                                             1);
 
             List<RelatedMetadataElementSummary> peerElements2 = this.getElementHierarchies(userId,
-                                                                                            rootElement.getElementHeader().getGUID(),
                                                                                             rootElement.getPeerGovernanceDefinitions(),
                                                                                             0,
                                                                                             OpenMetadataType.GOVERNANCE_POLICY_LINK_RELATIONSHIP.typeName,
@@ -1268,7 +1253,6 @@ public class OpenMetadataHandlerBase
                                                                                             1);
 
             List<RelatedMetadataElementSummary> peerElements3 = this.getElementHierarchies(userId,
-                                                                                            rootElement.getElementHeader().getGUID(),
                                                                                             rootElement.getPeerGovernanceDefinitions(),
                                                                                             0,
                                                                                             OpenMetadataType.GOVERNANCE_CONTROL_LINK_RELATIONSHIP.typeName,
@@ -1305,15 +1289,13 @@ public class OpenMetadataHandlerBase
         }
     }
 
-
     /**
      * Return the nested elements to the required depth.
      *
      * @param userId calling user
-     * @param startingElementGUID guid where the query started
      * @param retrievedElements elements to query against
      * @param parentEnd start at end 1 or 2?
-     * @param relationshipName name of the relationship to follow
+     * @param relationshipName name of the relationship to iteratively follow
      * @param queryOptions callers query options
      * @param currentDepth how far away are we from the original element?
      * @return the hierarchy under/over this element
@@ -1322,10 +1304,38 @@ public class OpenMetadataHandlerBase
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     protected List<RelatedMetadataElementSummary> getElementHierarchies(String                              userId,
-                                                                        String                              startingElementGUID,
                                                                         List<RelatedMetadataElementSummary> retrievedElements,
                                                                         int                                 parentEnd,
                                                                         String                              relationshipName,
+                                                                        QueryOptions                        queryOptions,
+                                                                        int                                 currentDepth) throws InvalidParameterException,
+                                                                                                                                 PropertyServerException,
+                                                                                                                                 UserNotAuthorizedException
+    {
+        return this.getElementHierarchies(userId, retrievedElements, parentEnd, relationshipName, null, queryOptions, currentDepth);
+    }
+
+
+    /**
+     * Return the nested elements to the required depth.
+     *
+     * @param userId calling user
+     * @param retrievedElements elements to query against
+     * @param parentEnd start at end 1 or 2?
+     * @param relationshipName name of the relationship to iteratively follow
+     * @param sideRelationshipNames additional side relationships to capture (maybe null)
+     * @param queryOptions callers query options
+     * @param currentDepth how far away are we from the original element?
+     * @return the hierarchy under/over this element
+     * @throws InvalidParameterException  one of the parameters is invalid.
+     * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    protected List<RelatedMetadataElementSummary> getElementHierarchies(String                              userId,
+                                                                        List<RelatedMetadataElementSummary> retrievedElements,
+                                                                        int                                 parentEnd,
+                                                                        String                              relationshipName,
+                                                                        List<String>                        sideRelationshipNames,
                                                                         QueryOptions                        queryOptions,
                                                                         int                                 currentDepth) throws InvalidParameterException,
                                                                                                                                  PropertyServerException,
@@ -1339,15 +1349,16 @@ public class OpenMetadataHandlerBase
             {
                 if (retrievedElement != null)
                 {
-                    List<String> coveredElementsGUIDs = new ArrayList<>(List.of(startingElementGUID));
+                    List<String> coveredRelationshipsGUIDs = new ArrayList<>();
 
                     results.add(getElementHierarchy(userId,
                                                     retrievedElement,
                                                     parentEnd,
                                                     relationshipName,
+                                                    sideRelationshipNames,
                                                     queryOptions,
                                                     currentDepth,
-                                                    coveredElementsGUIDs));
+                                                    coveredRelationshipsGUIDs));
                 }
             }
 
@@ -1365,9 +1376,10 @@ public class OpenMetadataHandlerBase
      * @param retrievedElement element to query against
      * @param parentEnd start at end 1 or 2?
      * @param relationshipName name of the relationship to follow
+     * @param sideRelationshipNames additional side relationships to capture (maybe null)
      * @param queryOptions callers query options
      * @param currentDepth how far away are we from the original element?
-     * @param coveredElementsGUIDs do not revisit elements already processed
+     * @param coveredRelationshipsGUIDs do not revisit relationships already processed
      * @return the hierarchy under/over this element
      * @throws InvalidParameterException  one of the parameters is invalid.
      * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
@@ -1377,51 +1389,116 @@ public class OpenMetadataHandlerBase
                                                                 RelatedMetadataElementSummary retrievedElement,
                                                                 int                           parentEnd,
                                                                 String                        relationshipName,
+                                                                List<String>                  sideRelationshipNames,
                                                                 QueryOptions                  queryOptions,
                                                                 int                           currentDepth,
-                                                                List<String>                  coveredElementsGUIDs) throws InvalidParameterException,
+                                                                List<String>                  coveredRelationshipsGUIDs) throws InvalidParameterException,
                                                                                                                            PropertyServerException,
                                                                                                                            UserNotAuthorizedException
     {
-        final String methodName = "getElementHierarchy";
-
-        if (queryOptions.getGraphQueryDepth() > currentDepth)
+        if (retrievedElement != null)
         {
-            QueryOptions workingQueryOptions = new QueryOptions(queryOptions);
-            workingQueryOptions.setStartFrom(0);
-            workingQueryOptions.setPageSize(queryOptions.getRelationshipsPageSize());
-
-
-            List<RelatedMetadataElementSummary> nestedElements = new ArrayList<>();
-
-            RelatedMetadataElementList relatedMetadataElementList = openMetadataClient.getRelatedMetadataElements(userId,
-                                                                                                                  retrievedElement.getRelatedElement().getElementHeader().getGUID(),
-                                                                                                                  parentEnd,
-                                                                                                                  relationshipName,
-                                                                                                                  workingQueryOptions);
-            if ((relatedMetadataElementList != null) && (relatedMetadataElementList.getElementList() != null))
+            if (queryOptions.getGraphQueryDepth() > currentDepth)
             {
-                for (RelatedMetadataElement relatedMetadataElement : relatedMetadataElementList.getElementList())
-                {
-                    if ((relatedMetadataElement != null) && (! coveredElementsGUIDs.contains(relatedMetadataElement.getElement().getElementGUID())))
-                    {
-                        RelatedMetadataElementSummary nestedElement = propertyHelper.getRelatedElementSummary(relatedMetadataElement, methodName);
+                QueryOptions workingQueryOptions = new QueryOptions(queryOptions);
+                workingQueryOptions.setStartFrom(0);
+                workingQueryOptions.setPageSize(queryOptions.getRelationshipsPageSize());
+                workingQueryOptions.setMetadataElementTypeName(OpenMetadataType.OPEN_METADATA_ROOT.typeName); // want all types of elements back
 
-                        coveredElementsGUIDs.add(relatedMetadataElement.getElement().getElementGUID());
-                        nestedElements.add(getElementHierarchy(userId,
-                                                               nestedElement,
-                                                               parentEnd,
-                                                               relationshipName,
-                                                               queryOptions,
-                                                               currentDepth + 1,
-                                                               coveredElementsGUIDs));
+                /*
+                 * If there are no side relationships then we can optimise and only receive the main hierarchical relationship.
+                 */
+                String receiveRelationshipName = null;
+                int    receiveParentEnd = 0;
+
+                if (sideRelationshipNames == null)
+                {
+                    receiveRelationshipName = relationshipName;
+                    receiveParentEnd = parentEnd;
+                }
+
+                List<RelatedMetadataElementSummary> nestedElements = new ArrayList<>();
+                List<RelatedMetadataElementSummary> sideLinks = new ArrayList<>();
+
+                RelatedMetadataElementList relatedMetadataElementList = openMetadataClient.getRelatedMetadataElements(userId,
+                                                                                                                      retrievedElement.getRelatedElement().getElementHeader().getGUID(),
+                                                                                                                      receiveParentEnd,
+                                                                                                                      receiveRelationshipName,
+                                                                                                                      workingQueryOptions);
+                if ((relatedMetadataElementList != null) && (relatedMetadataElementList.getElementList() != null))
+                {
+                    /*
+                     * Remove the relationships that the caller asked to skip.
+                     */
+                    List<RelatedMetadataElement> relevantRelationships = this.getRelevantRelationships(relatedMetadataElementList.getElementList(), queryOptions);
+
+                    for (RelatedMetadataElement relatedMetadataElement : relevantRelationships)
+                    {
+                        if (relatedMetadataElement != null)
+                        {
+                            /*
+                             * Look for parent/child relationships
+                             */
+                            if ((relationshipName != null) && (propertyHelper.isTypeOf(relatedMetadataElement, relationshipName)))
+                            {
+                                /*
+                                 * The relationship is a parent/child relationship type.
+                                 * Is this orientated logically down the hierarchy?
+                                 */
+                                if (((parentEnd != 2) && (relatedMetadataElement.getElementAtEnd1())) ||
+                                        ((parentEnd != 1) && (! relatedMetadataElement.getElementAtEnd1())))
+                                {
+                                    /*
+                                     * Check that this relationship has not been covered already.
+                                     */
+                                    if (! coveredRelationshipsGUIDs.contains(relatedMetadataElement.getRelationshipGUID()))
+                                    {
+                                        RelatedMetadataElementSummary nestedElement = propertyHelper.getRelatedElementSummary(relatedMetadataElement);
+
+                                        coveredRelationshipsGUIDs.add(relatedMetadataElement.getElement().getElementGUID());
+                                        nestedElements.add(getElementHierarchy(userId,
+                                                                               nestedElement,
+                                                                               parentEnd,
+                                                                               relationshipName,
+                                                                               sideRelationshipNames,
+                                                                               workingQueryOptions,
+                                                                               currentDepth + 1,
+                                                                               coveredRelationshipsGUIDs));
+                                    }
+                                }
+                            }
+                            else if (sideRelationshipNames != null)
+                            {
+                                /*
+                                 * Save any relevant side relationships.
+                                 */
+                                for (String sideRelationshipName : sideRelationshipNames)
+                                {
+                                    if (propertyHelper.isTypeOf(relatedMetadataElement, sideRelationshipName))
+                                    {
+                                        sideLinks.add(propertyHelper.getRelatedElementSummary(relatedMetadataElement));
+                                    }
+                                }
+                            }
+                        }
                     }
                 }
-            }
 
-            if (! nestedElements.isEmpty())
-            {
-                return new RelatedMetadataHierarchySummary(retrievedElement, nestedElements);
+                if (! nestedElements.isEmpty())
+                {
+                    if (! sideLinks.isEmpty())
+                    {
+                        return new RelatedMetadataHierarchySummary(retrievedElement, nestedElements, sideLinks);
+                    }
+                    else
+                    {
+                        return new RelatedMetadataHierarchySummary(retrievedElement, nestedElements, null);
+                    }
+                }
+                else if (! sideLinks.isEmpty())
+                {
+                    return new RelatedMetadataHierarchySummary(retrievedElement, null, sideLinks);
+                }
             }
         }
 
@@ -1566,12 +1643,23 @@ public class OpenMetadataHandlerBase
 
         OpenMetadataElement openMetadataElement = openMetadataClient.getMetadataElementByGUID(userId, elementGUID, getOptions);
 
-        if ((openMetadataElement != null) && (propertyHelper.isTypeOf(openMetadataElement, metadataElementTypeName)))
+        if (openMetadataElement != null)
         {
-            return convertRootElement(userId,
-                                      openMetadataElement,
-                                      new QueryOptions(getOptions),
-                                      methodName);
+            if (propertyHelper.isTypeOf(openMetadataElement, getOptions.getMetadataElementTypeName()))
+            {
+                return convertRootElement(userId,
+                                          openMetadataElement,
+                                          new QueryOptions(getOptions),
+                                          methodName);
+            }
+
+            throw new InvalidParameterException(OMFErrorCode.WRONG_TYPE_FOR_ELEMENT.getMessageDefinition(elementGUID,
+                                                                                                         openMetadataElement.getType().getTypeName(),
+                                                                                                         getOptions.getMetadataElementTypeName()),
+                                                this.getClass().getName(),
+                                                methodName,
+                                                OpenMetadataProperty.OPEN_METADATA_TYPE_NAME.name);
+
         }
 
         return null;

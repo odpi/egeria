@@ -11,6 +11,7 @@ import org.odpi.openmetadata.frameworks.openmetadata.ffdc.PropertyServerExceptio
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.frameworks.openmetadata.handlers.GlossaryTermHandler;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.OpenMetadataRootElement;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.RelatedMetadataElementSummary;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.ClassificationProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.RelationshipProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.glossaries.*;
@@ -21,7 +22,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Provides services for connectors to work with Schema Type elements.
+ * Provides services for connectors to work with glossary term elements.
  */
 public class GlossaryTermClient extends ConnectorContextClientBase
 {
@@ -124,7 +125,7 @@ public class GlossaryTermClient extends ConnectorContextClientBase
      * The template defines additional classifications and relationships that should be added to the new glossaryTerm.
      *
      * @param templateOptions details of the element to create
-     * @param templateGUID the unique identifier of the existing glossaryTerm to copy (this will copy all the attachments such as nested content, schema
+     * @param templateGUID the unique identifier of the existing glossary term to copy (this will copy all the attachments such as nested content, schema
      *                     connection etc)
      * @param replacementProperties properties of the new metadata element.  These override the template values
      * @param placeholderProperties property name-to-property value map to replace any placeholder values in the
@@ -157,7 +158,7 @@ public class GlossaryTermClient extends ConnectorContextClientBase
     /**
      * Update the properties of a glossary term.
      *
-     * @param glossaryTermGUID       unique identifier of the glossaryTerm (returned from create)
+     * @param glossaryTermGUID       unique identifier of the glossary term (returned from create)
      * @param updateOptions provides a structure for the additional options when updating an element.
      * @param properties             properties for the element.
      * @throws InvalidParameterException  one of the parameters is invalid.
@@ -180,7 +181,7 @@ public class GlossaryTermClient extends ConnectorContextClientBase
 
 
     /**
-     * Update the properties of a solution blueprint, solution component or solution port.
+     * Update the status of the glossary term.
      *
      * @param glossaryTermGUID   unique identifier of the solution element (returned from create)
      * @param metadataSourceOptions options to control access to open metadata
@@ -272,9 +273,9 @@ public class GlossaryTermClient extends ConnectorContextClientBase
                                       String                   glossaryTermOneGUID,
                                       String                   glossaryTermTwoGUID,
                                       MetadataSourceOptions    metadataSourceOptions,
-                                      GlossaryTermRelationship relationshipProperties) throws InvalidParameterException,
-                                                                                              PropertyServerException,
-                                                                                              UserNotAuthorizedException
+                                      GlossaryTermRelationshipProperties relationshipProperties) throws InvalidParameterException,
+                                                                                                        PropertyServerException,
+                                                                                                        UserNotAuthorizedException
     {
         glossaryTermHandler.setupTermRelationship(connectorUserId,
                                                   relationshipTypeName,
@@ -301,9 +302,9 @@ public class GlossaryTermClient extends ConnectorContextClientBase
                                        String                   glossaryTermOneGUID,
                                        String                   glossaryTermTwoGUID,
                                        UpdateOptions            updateOptions,
-                                       GlossaryTermRelationship relationshipProperties) throws InvalidParameterException,
-                                                                                               PropertyServerException,
-                                                                                               UserNotAuthorizedException
+                                       GlossaryTermRelationshipProperties relationshipProperties) throws InvalidParameterException,
+                                                                                                         PropertyServerException,
+                                                                                                         UserNotAuthorizedException
     {
         glossaryTermHandler.updateTermRelationship(connectorUserId, relationshipTypeName, glossaryTermOneGUID, glossaryTermTwoGUID, updateOptions, relationshipProperties);
     }
@@ -349,6 +350,7 @@ public class GlossaryTermClient extends ConnectorContextClientBase
     {
         glossaryTermHandler.setTermAsAbstractConcept(connectorUserId, glossaryTermGUID, properties, metadataSourceOptions);
     }
+
 
     /**
      * Remove the abstract concept designation from the glossary term.
@@ -483,7 +485,7 @@ public class GlossaryTermClient extends ConnectorContextClientBase
 
 
     /**
-     * Delete a glossaryTerm.
+     * Delete a glossary term.
      *
      * @param glossaryTermGUID       unique identifier of the element
      * @throws InvalidParameterException  one of the parameters is null or invalid.
@@ -505,7 +507,7 @@ public class GlossaryTermClient extends ConnectorContextClientBase
 
 
     /**
-     * Returns the list of glossaryTerms with a particular name.
+     * Returns the list of glossary terms with a particular name.
      *
      * @param name                   name of the element to return - match is full text match in qualifiedName, resourceName or displayName
      * @param queryOptions           multiple options to control the query
@@ -543,8 +545,8 @@ public class GlossaryTermClient extends ConnectorContextClientBase
 
 
     /**
-     * Retrieve the list of glossaryTerms metadata elements that contain the search string and show which solution components (if any) are attached to it.
-     * The returned glossaryTerms include a list of the components that are associated with it.
+     * Retrieve the list of glossary terms metadata elements that contain the search string and show which solution components (if any) are attached to it.
+     * The returned glossary terms include a list of the components that are associated with it.
      * The search string is treated as a regular expression.
      *
      * @param searchString           string to find in the properties

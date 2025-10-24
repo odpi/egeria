@@ -33,6 +33,15 @@ public enum OpenGovernanceAuditCode implements AuditLogMessageSet
                                  "startup was intentional."),
 
     /**
+     * OPEN-GOVERNANCE-0002 - The catalog integrator context manager is being initialized for calls to server {0} on platform {1}
+     */
+    CONTEXT_INITIALIZING("OPEN-GOVERNANCE-0002",
+                         AuditLogRecordSeverityLevel.STARTUP,
+                         "The open integration context manager is being initialized for calls to server {0} on platform {1}",
+                         "The integration daemon is initializing its context manager.",
+                         "Verify that the start up sequence goes on to initialize the context for each connector configured for this service."),
+
+    /**
      * OPEN-GOVERNANCE-0005 - The Open Metadata Store Services has initialized a new instance for server {0}
      */
     SERVICE_INITIALIZED("OPEN-GOVERNANCE-0005",

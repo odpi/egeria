@@ -87,7 +87,7 @@ public class JDBCResourceConnectorProvider extends ConnectorProviderBase
         super.setConnectorComponentDescription(componentDescription);
 
         super.supportedTechnologyTypes = SupportedTechnologyType.getSupportedTechnologyTypes(new DeployedImplementationTypeDefinition[]{DeployedImplementationType.JDBC_RELATIONAL_DATABASE,
-                DeployedImplementationType.JDBC_RELATIONAL_DATABASE_SCHEMA, DeployedImplementationType.JDBC_RELATIONAL_DATABASE_TABLE});
+                DeployedImplementationType.JDBC_RELATIONAL_DATABASE_SCHEMA});
         super.supportedConfigurationProperties = JDBCConfigurationProperty.getConfigurationPropertyTypes();
     }
 }

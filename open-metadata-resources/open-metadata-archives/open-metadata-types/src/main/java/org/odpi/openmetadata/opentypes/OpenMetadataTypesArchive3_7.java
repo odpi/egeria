@@ -164,7 +164,6 @@ public class OpenMetadataTypesArchive3_7
          */
         update003040ITAssetDeployments();
         update0233EventsAndLogs();
-        updateArea7LineageRelationships();
     }
 
 
@@ -288,72 +287,6 @@ public class OpenMetadataTypesArchive3_7
 
         return relationshipDef;
     }
-
-
-    /*
-     * -------------------------------------------------------------------------------------------------------
-     */
-
-    /**
-     * Change the lineage relationships to allow multiLink and add missing properties.
-     */
-    private void updateArea7LineageRelationships()
-    {
-        this.archiveBuilder.addTypeDefPatch(enableMultiLinkOnLineageMappingRelationship());
-        this.archiveBuilder.addTypeDefPatch(enableMultiLinkOnProcessCallRelationship());
-    }
-
-
-    private TypeDefPatch enableMultiLinkOnLineageMappingRelationship()
-    {
-        /*
-         * Create the Patch
-         */
-        TypeDefPatch  typeDefPatch = archiveBuilder.getPatchForType(OpenMetadataType.LINEAGE_MAPPING_RELATIONSHIP.typeName);
-
-        typeDefPatch.setUpdatedBy(originatorName);
-        typeDefPatch.setUpdateTime(creationDate);
-        typeDefPatch.setUpdateMultiLink(true);
-        typeDefPatch.setMultiLink(true);
-
-        /*
-         * Build the attributes
-         */
-        List<TypeDefAttribute> properties = new ArrayList<>();
-
-        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.ISC_QUALIFIED_NAME));
-        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.DESCRIPTION));
-
-        typeDefPatch.setPropertyDefinitions(properties);
-
-        return typeDefPatch;
-    }
-
-
-    private TypeDefPatch enableMultiLinkOnProcessCallRelationship()
-    {
-        /*
-         * Create the Patch
-         */
-       TypeDefPatch  typeDefPatch = archiveBuilder.getPatchForType(OpenMetadataType.PROCESS_CALL_RELATIONSHIP.typeName);
-
-        typeDefPatch.setUpdatedBy(originatorName);
-        typeDefPatch.setUpdateTime(creationDate);
-        typeDefPatch.setUpdateMultiLink(true);
-        typeDefPatch.setMultiLink(true);
-
-        /*
-         * Build the attributes
-         */
-        List<TypeDefAttribute> properties = new ArrayList<>();
-
-        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.LINE_NUMBER));
-
-        typeDefPatch.setPropertyDefinitions(properties);
-
-        return typeDefPatch;
-    }
-
 
     /*
      * -------------------------------------------------------------------------------------------------------

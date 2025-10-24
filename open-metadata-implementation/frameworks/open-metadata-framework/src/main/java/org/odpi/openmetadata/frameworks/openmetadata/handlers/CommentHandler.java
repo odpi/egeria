@@ -100,7 +100,7 @@ public class CommentHandler extends OpenMetadataHandlerBase
     {
         final String propertiesParameterName   = "properties";
         final String commentQNameParameterName = "properties.qualifiedName";
-        final String commentTextParameterName  = "properties.commentText";
+        final String commentTextParameterName  = "properties.description";
 
         propertyHelper.validateObject(properties, propertiesParameterName, methodName);
         propertyHelper.validateMandatoryName(properties.getQualifiedName(), commentQNameParameterName, methodName);
@@ -132,8 +132,8 @@ public class CommentHandler extends OpenMetadataHandlerBase
                                   MetadataSourceOptions                 metadataSourceOptions,
                                   Map<String, ClassificationProperties> initialClassifications,
                                   CommentProperties                     properties) throws InvalidParameterException,
-                                                                                       PropertyServerException,
-                                                                                       UserNotAuthorizedException
+                                                                                           PropertyServerException,
+                                                                                           UserNotAuthorizedException
     {
         final String methodName = "addCommentToElement";
 
@@ -228,8 +228,8 @@ public class CommentHandler extends OpenMetadataHandlerBase
                                     String        questionCommentGUID,
                                     String        answerCommentGUID,
                                     DeleteOptions deleteOptions) throws InvalidParameterException,
-                                                                  UserNotAuthorizedException,
-                                                                  PropertyServerException
+                                                                        UserNotAuthorizedException,
+                                                                        PropertyServerException
     {
         QueryOptions queryOptions = new QueryOptions(deleteOptions);
 
@@ -267,7 +267,7 @@ public class CommentHandler extends OpenMetadataHandlerBase
      * @throws PropertyServerException there is a problem updating the element properties in the property server.
      * @throws UserNotAuthorizedException the user does not have permission to perform this request.
      */
-    public void removeComment(String        userId,
+    public void deleteComment(String        userId,
                               String        commentGUID,
                               DeleteOptions deleteOptions) throws InvalidParameterException,
                                                                   PropertyServerException,
@@ -288,13 +288,13 @@ public class CommentHandler extends OpenMetadataHandlerBase
      * @throws PropertyServerException there is a problem updating the element properties in the property server.
      * @throws UserNotAuthorizedException the user does not have permission to perform this request.
      */
-    public OpenMetadataRootElement getComment(String     userId,
-                                              String     commentGUID,
-                                              GetOptions getOptions) throws InvalidParameterException,
-                                                                            PropertyServerException,
-                                                                            UserNotAuthorizedException
+    public OpenMetadataRootElement getCommentByGUID(String     userId,
+                                                    String     commentGUID,
+                                                    GetOptions getOptions) throws InvalidParameterException,
+                                                                                  PropertyServerException,
+                                                                                  UserNotAuthorizedException
     {
-        final String methodName = "getComment";
+        final String methodName = "getCommentByGUID";
 
         return super.getRootElementByGUID(userId, commentGUID, getOptions, methodName);
     }
@@ -346,8 +346,8 @@ public class CommentHandler extends OpenMetadataHandlerBase
     public List<OpenMetadataRootElement> findComments(String        userId,
                                                       String        searchString,
                                                       SearchOptions searchOptions) throws InvalidParameterException,
-                                                                                 UserNotAuthorizedException,
-                                                                                 PropertyServerException
+                                                                                          UserNotAuthorizedException,
+                                                                                          PropertyServerException
     {
         final String methodName = "findComments";
 

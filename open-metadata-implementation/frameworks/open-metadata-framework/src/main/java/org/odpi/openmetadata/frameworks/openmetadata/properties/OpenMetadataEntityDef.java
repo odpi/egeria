@@ -51,7 +51,7 @@ public class OpenMetadataEntityDef extends OpenMetadataTypeDef
      *
      * @param template OpenMetadataEntityDef
      */
-    public OpenMetadataEntityDef(OpenMetadataEntityDef template)
+    public OpenMetadataEntityDef(OpenMetadataTypeDef template)
     {
         super(template);
     }
@@ -77,25 +77,6 @@ public class OpenMetadataEntityDef extends OpenMetadataTypeDef
     public String toString()
     {
         return "OpenMetadataEntityDef{" +
-                "name='" + getName() + '\'' +
-                ", superType=" + getSuperType() +
-                ", description='" + getDescription() + '\'' +
-                ", descriptionGUID='" + getDescriptionGUID() + '\'' +
-                ", descriptionWiki='" + getDescriptionWiki() + '\'' +
-                ", origin='" + getOrigin() + '\'' +
-                ", createdBy='" + getCreatedBy() + '\'' +
-                ", updatedBy='" + getUpdatedBy() + '\'' +
-                ", createTime=" + getCreateTime() +
-                ", updateTime=" + getUpdateTime() +
-                ", options=" + getOptions() +
-                ", externalStandardTypeMappings=" + getExternalStandardMappings() +
-                ", validInstanceStatusList=" + getValidElementStatusList() +
-                ", initialStatus=" + getInitialStatus() +
-                ", propertiesDefinition=" + getAttributeDefinitions() +
-                ", category=" + getCategory() +
-                ", version=" + getVersion() +
-                ", versionName='" + getVersionName() + '\'' +
-                ", GUID='" + getGUID() + '\'' +
-                '}';
+                "} " + super.toString();
     }
 }

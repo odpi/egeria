@@ -217,11 +217,11 @@ public class KafkaTopicIntegrationConnector extends IntegrationConnectorBase imp
     {
         final String methodName = "integrateCatalogTarget";
 
-        if (propertyHelper.isTypeOf(requestedCatalogTarget.getCatalogTargetElement(), OpenMetadataType.SOFTWARE_SERVER.typeName))
+        if (propertyHelper.isTypeOf(requestedCatalogTarget.getCatalogTargetElement().getElementHeader(), OpenMetadataType.SOFTWARE_SERVER.typeName))
         {
             try
             {
-                Connector connector = integrationContext.getConnectedAssetContext().getConnectorForAsset(requestedCatalogTarget.getCatalogTargetElement().getGUID(), auditLog);
+                Connector connector = integrationContext.getConnectedAssetContext().getConnectorForAsset(requestedCatalogTarget.getCatalogTargetElement().getElementHeader().getGUID(), auditLog);
 
                 if ((connector != null) && (connector.getConnection() != null) && (connector.getConnection().getEndpoint() != null))
                 {
@@ -248,8 +248,8 @@ public class KafkaTopicIntegrationConnector extends IntegrationConnectorBase imp
         }
         else
         {
-            super.throwWrongTypeOfAsset(requestedCatalogTarget.getCatalogTargetElement().getGUID(),
-                                        requestedCatalogTarget.getCatalogTargetElement().getType().getTypeName(),
+            super.throwWrongTypeOfAsset(requestedCatalogTarget.getCatalogTargetElement().getElementHeader().getGUID(),
+                                        requestedCatalogTarget.getCatalogTargetElement().getElementHeader().getType().getTypeName(),
                                         DeployedImplementationType.EVENT_BROKER.getAssociatedTypeName(),
                                         connectorName,
                                         methodName);

@@ -146,7 +146,7 @@ public class DataStructureHandler extends OpenMetadataHandlerBase
      * Attach a data field to a data structure.
      *
      * @param userId                  userId of user making request
-     * @param dataStructureGUID unique identifier of the parent
+     * @param dataStructureGUID unique identifier of the data structure
      * @param dataFieldGUID     unique identifier of the data field
      * @param metadataSourceOptions  options to control access to open metadata
      * @param relationshipProperties  description of the relationship.
@@ -163,8 +163,8 @@ public class DataStructureHandler extends OpenMetadataHandlerBase
                                                                                              UserNotAuthorizedException
     {
         final String methodName = "linkMemberDataField";
-        final String end1GUIDParameterName = "parentDataStructureGUID";
-        final String end2GUIDParameterName = "memberDataFieldGUID";
+        final String end1GUIDParameterName = "dataStructureGUID";
+        final String end2GUIDParameterName = "dataFieldGUID";
 
         propertyHelper.validateUserId(userId, methodName);
         propertyHelper.validateGUID(dataStructureGUID, end1GUIDParameterName, methodName);
@@ -183,7 +183,7 @@ public class DataStructureHandler extends OpenMetadataHandlerBase
      * Detach a data field from a data structure.
      *
      * @param userId                 userId of user making request.
-     * @param dataStructureGUID    unique identifier of the parent data field.
+     * @param dataStructureGUID    unique identifier of the data structure.
      * @param dataFieldGUID    unique identifier of the nested data field.
      * @param deleteOptions  options to control access to open metadata
      * @throws InvalidParameterException  one of the parameters is null or invalid.
@@ -199,8 +199,8 @@ public class DataStructureHandler extends OpenMetadataHandlerBase
     {
         final String methodName = "detachMemberDataField";
 
-        final String end1GUIDParameterName = "parentDataStructureGUID";
-        final String end2GUIDParameterName = "nestedDataFieldGUID";
+        final String end1GUIDParameterName = "dataStructureGUID";
+        final String end2GUIDParameterName = "dataFieldGUID";
 
         propertyHelper.validateUserId(userId, methodName);
         propertyHelper.validateGUID(dataStructureGUID, end1GUIDParameterName, methodName);
@@ -264,6 +264,7 @@ public class DataStructureHandler extends OpenMetadataHandlerBase
         propertyHelper.validateMandatoryName(name, nameParameterName, methodName);
 
         List<String> propertyNames = Arrays.asList(OpenMetadataProperty.QUALIFIED_NAME.name,
+                                                   OpenMetadataProperty.IDENTIFIER.name,
                                                    OpenMetadataProperty.DISPLAY_NAME.name,
                                                    OpenMetadataProperty.NAMESPACE.name);
 

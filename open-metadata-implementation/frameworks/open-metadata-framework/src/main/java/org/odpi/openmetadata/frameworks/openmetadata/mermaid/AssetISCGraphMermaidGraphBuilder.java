@@ -4,7 +4,8 @@
 package org.odpi.openmetadata.frameworks.openmetadata.mermaid;
 
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.AssetGraph;
-import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.MetadataElementSummary;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.RelatedMetadataElementSummary;
+import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 
 /**
  * Creates a mermaid graph rendering of the Open Metadata Framework's asset lineage edge graph.
@@ -30,21 +31,23 @@ public class AssetISCGraphMermaidGraphBuilder extends MermaidGraphBuilderBase
         appendNewMermaidNode(assetGraph.getElementHeader().getGUID(),
                              currentDisplayName,
                              assetGraph.getElementHeader().getType().getTypeName(),
+                             assetGraph.getProperties(),
                              VisualStyle.ANCHOR_ELEMENT);
 
-        if (assetGraph.getInformationSupplyChains() != null)
+        if (assetGraph.getMemberOfCollections() != null)
         {
-            for (MetadataElementSummary node : assetGraph.getInformationSupplyChains())
+            for (RelatedMetadataElementSummary node : assetGraph.getMemberOfCollections())
             {
-                if (node != null)
+                if ((node != null) && (propertyHelper.isTypeOf(node.getRelatedElement().getElementHeader(), OpenMetadataType.INFORMATION_SUPPLY_CHAIN.typeName)))
                 {
-                    appendNewMermaidNode(node.getElementHeader().getGUID(),
-                                         super.getNodeDisplayName(node),
-                                         node.getElementHeader().getType().getTypeName(),
+                    appendNewMermaidNode(node.getRelatedElement().getElementHeader().getGUID(),
+                                         super.getNodeDisplayName(node.getRelatedElement()),
+                                         node.getRelatedElement().getElementHeader().getType().getTypeName(),
+                                         node.getRelatedElement().getProperties(),
                                          VisualStyle.INFORMATION_SUPPLY_CHAIN);
 
                     super.appendMermaidLine(null,
-                                            node.getElementHeader().getGUID(),
+                                            node.getRelatedElement().getElementHeader().getGUID(),
                                             null,
                                             assetGraph.getElementHeader().getGUID());
                 }

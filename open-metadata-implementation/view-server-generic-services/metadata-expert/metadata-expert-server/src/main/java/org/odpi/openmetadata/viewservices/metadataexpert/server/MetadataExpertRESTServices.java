@@ -392,10 +392,10 @@ public class MetadataExpertRESTServices extends TokenController
      *  UserNotAuthorizedException the governance action service is not authorized to archive this element
      *  PropertyServerException there is a problem with the metadata store
      */
-    public  VoidResponse archiveMetadataElementInStore(String            serverName,
-                                                       String            urlMarker,
-                                                       String            metadataElementGUID,
-                                                       DeleteRequestBody requestBody)
+    public  VoidResponse archiveMetadataElementInStore(String                   serverName,
+                                                       String                   urlMarker,
+                                                       String                   metadataElementGUID,
+                                                       DeleteElementRequestBody requestBody)
     {
         final String methodName = "archiveMetadataElementInStore";
 

@@ -9,9 +9,9 @@ import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.OpenMetadataRootElement;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.OpenMetadataElement;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.templates.TemplateProperties;
-import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.TemplateElement;
 import org.odpi.openmetadata.frameworks.openmetadata.search.*;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
@@ -19,15 +19,13 @@ import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.regex.Pattern;
 
 /**
  * TemplateManager provides specialist methods for managing templates
  */
-public class TemplateHandler extends OpenMetadataHandlerBase
+public class TemplateHandler extends StewardshipManagementHandler
 {
-
     /**
      * Create a new handler.
      *
@@ -44,8 +42,7 @@ public class TemplateHandler extends OpenMetadataHandlerBase
         super(localServerName,
               auditLog,
               localServiceName,
-              openMetadataClient,
-              OpenMetadataType.REFERENCEABLE.typeName);
+              openMetadataClient);
     }
     
 
@@ -55,18 +52,16 @@ public class TemplateHandler extends OpenMetadataHandlerBase
      * @param userId        calling user
      * @param elementGUID   unique identifier of the element to classify as a template
      * @param properties    properties of the template
-     * @param specification values required to use the template
      * @throws InvalidParameterException  element not known, null userId or guid
      * @throws PropertyServerException    problem accessing property server
      * @throws UserNotAuthorizedException security access problem
      */
-    public void addTemplateClassification(String                                 userId,
-                                          String                                 elementGUID,
-                                          TemplateProperties                     properties,
-                                          Map<String, List<Map<String, String>>> specification,
-                                          MetadataSourceOptions                  metadataSourceOptions) throws InvalidParameterException,
-                                                                                                               UserNotAuthorizedException,
-                                                                                                               PropertyServerException
+    public void addTemplateClassification(String                 userId,
+                                          String                 elementGUID,
+                                          TemplateProperties     properties,
+                                          MetadataSourceOptions  metadataSourceOptions) throws InvalidParameterException,
+                                                                                               UserNotAuthorizedException,
+                                                                                               PropertyServerException
     {
         final String   methodName = "addTemplateClassification";
         final String   elementGUIDParameter = "elementGUID";
@@ -97,8 +92,6 @@ public class TemplateHandler extends OpenMetadataHandlerBase
                                                           OpenMetadataType.TEMPLATE_CLASSIFICATION.typeName,
                                                           metadataSourceOptions,
                                                           new NewElementProperties(elementProperties));
-
-        // todo add/update specification
     }
 
 
@@ -108,13 +101,15 @@ public class TemplateHandler extends OpenMetadataHandlerBase
      *
      * @param userId calling user
      * @param elementGUID unique identifier of the element to declassify
+     * @param metadataSourceOptions  options to control access to open metadata
      *
      * @throws InvalidParameterException element or element not known, null userId or guid
      * @throws PropertyServerException problem accessing property server
      * @throws UserNotAuthorizedException security access problem
      */
     public void removeTemplateClassification(String userId,
-                                             String elementGUID) throws InvalidParameterException,
+                                             String elementGUID,
+                                             MetadataSourceOptions metadataSourceOptions) throws InvalidParameterException,
                                                                         UserNotAuthorizedException,
                                                                         PropertyServerException
     {
@@ -124,7 +119,7 @@ public class TemplateHandler extends OpenMetadataHandlerBase
         propertyHelper.validateUserId(userId, methodName);
         propertyHelper.validateGUID(elementGUID, elementGUIDParameter, methodName);
 
-        // todo - both classification and specification
+        openMetadataClient.declassifyMetadataElementInStore(userId, elementGUID, OpenMetadataType.TEMPLATE_CLASSIFICATION.typeName, metadataSourceOptions);
     }
 
 
@@ -138,10 +133,10 @@ public class TemplateHandler extends OpenMetadataHandlerBase
      * @throws PropertyServerException    problem accessing property server
      * @throws UserNotAuthorizedException security access problem
      */
-    public List<TemplateElement> getTemplatesForType(String      userId,
-                                                     QueryOptions queryOptions) throws InvalidParameterException,
-                                                                                       UserNotAuthorizedException,
-                                                                                       PropertyServerException
+    public List<OpenMetadataRootElement> getTemplatesForType(String      userId,
+                                                             QueryOptions queryOptions) throws InvalidParameterException,
+                                                                                               UserNotAuthorizedException,
+                                                                                               PropertyServerException
     {
         final String methodName = "getTemplatesForType";
 
@@ -165,44 +160,9 @@ public class TemplateHandler extends OpenMetadataHandlerBase
                                                                                                  searchClassifications,
                                                                                                  queryOptions);
 
-        return convertTemplates(openMetadataElements, userId);
+        return super.convertRootElements(userId, openMetadataElements, queryOptions, methodName);
     }
 
-
-    /**
-     * Convert templates objects from the OpenMetadataClient to local beans.
-     *
-     * @param openMetadataElements retrieved elements
-     * @param userId calling user
-     * @return list of collection elements
-     * @throws PropertyServerException error in retrieved values
-     */
-    private List<TemplateElement> convertTemplates(List<OpenMetadataElement>  openMetadataElements,
-                                                   String                     userId) throws PropertyServerException,
-                                                                                             InvalidParameterException,
-                                                                                             UserNotAuthorizedException
-    {
-        if (openMetadataElements != null)
-        {
-            List<TemplateElement> templateElements = new ArrayList<>();
-
-            for (OpenMetadataElement openMetadataElement : openMetadataElements)
-            {
-                if (openMetadataElement != null)
-                {
-                    TemplateElement templateElement = new TemplateElement();
-
-                    templateElement.setSpecification(openMetadataClient.getSpecification(userId,
-                                                                                         openMetadataElement.getElementGUID()));
-                    templateElements.add(templateElement);
-                }
-            }
-
-            return templateElements;
-        }
-
-        return null;
-    }
 
 
     /**
@@ -216,11 +176,11 @@ public class TemplateHandler extends OpenMetadataHandlerBase
      * @throws PropertyServerException    problem accessing property server
      * @throws UserNotAuthorizedException security access problem
      */
-    public List<TemplateElement> findTemplates(String        userId,
-                                               String        searchString,
-                                               SearchOptions searchOptions) throws InvalidParameterException,
-                                                                                   UserNotAuthorizedException,
-                                                                                   PropertyServerException
+    public List<OpenMetadataRootElement> findTemplates(String        userId,
+                                                       String        searchString,
+                                                       SearchOptions searchOptions) throws InvalidParameterException,
+                                                                                           UserNotAuthorizedException,
+                                                                                           PropertyServerException
     {
         final String methodName    = "findTemplates";
         final String parameterName = "searchString";
@@ -234,7 +194,7 @@ public class TemplateHandler extends OpenMetadataHandlerBase
                                                                                                  this.getSearchClassifications(searchString, PropertyComparisonOperator.LIKE),
                                                                                                  searchOptions);
 
-        return convertTemplates(openMetadataElements, userId);
+        return super.convertRootElements(userId, openMetadataElements, searchOptions, methodName);
     }
 
 
@@ -249,11 +209,11 @@ public class TemplateHandler extends OpenMetadataHandlerBase
      * @throws PropertyServerException    problem accessing property server
      * @throws UserNotAuthorizedException security access problem
      */
-    public List<TemplateElement> getTemplatesByName(String       userId,
-                                                    String       name,
-                                                    QueryOptions queryOptions) throws InvalidParameterException, 
-                                                                                      UserNotAuthorizedException, 
-                                                                                      PropertyServerException
+    public List<OpenMetadataRootElement> getTemplatesByName(String       userId,
+                                                            String       name,
+                                                            QueryOptions queryOptions) throws InvalidParameterException,
+                                                                                              UserNotAuthorizedException,
+                                                                                              PropertyServerException
     {
         final String methodName    = "getTemplatesByName";
         final String parameterName = "name";
@@ -267,8 +227,40 @@ public class TemplateHandler extends OpenMetadataHandlerBase
                                                                                                  this.getSearchClassifications(name, PropertyComparisonOperator.EQ),
                                                                                                  queryOptions);
 
-        return convertTemplates(openMetadataElements, userId);
+        return super.convertRootElements(userId, openMetadataElements, queryOptions, methodName);
     }
+
+
+
+
+    /**
+     * Build a descriptions of the classification to look for.
+     *
+     * @param getTemplates look for templates?
+     * @return match classifications
+     */
+    private SearchClassifications getMatchClassifications(boolean getTemplates)
+    {
+        SearchClassifications matchClassifications = null;
+
+        if (getTemplates)
+        {
+            /*
+             * Attempt to retrieve only elements that have the template classification.
+             */
+            matchClassifications = new SearchClassifications();
+
+            List<ClassificationCondition> classificationConditions  = new ArrayList<>();
+            ClassificationCondition classificationCondition = new ClassificationCondition();
+            classificationCondition.setName(OpenMetadataType.TEMPLATE_CLASSIFICATION.typeName);
+            classificationConditions.add(classificationCondition);
+            matchClassifications.setConditions(classificationConditions);
+            matchClassifications.setMatchCriteria(MatchCriteria.ALL);
+        }
+
+        return matchClassifications;
+    }
+
 
 
     /**

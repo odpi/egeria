@@ -2,7 +2,7 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.adapters.connectors.unitycatalog.controls;
 
-import org.odpi.openmetadata.frameworks.opengovernance.controls.ActionTargetType;
+import org.odpi.openmetadata.frameworks.openmetadata.specificationproperties.ActionTargetType;
 import org.odpi.openmetadata.frameworks.integration.controls.CatalogTargetType;
 import org.odpi.openmetadata.frameworks.openmetadata.refdata.DeployedImplementationType;
 
@@ -30,9 +30,9 @@ public enum UnityCatalogTarget
                                  null),
 
     UNITY_CATALOG_CONNECTOR_TARGET("unityCatalogConnector",
-                                   DeployedImplementationType.CATALOG_INTEGRATION_CONNECTOR.getDescription(),
-                                   DeployedImplementationType.CATALOG_INTEGRATION_CONNECTOR.getAssociatedTypeName(),
-                                   DeployedImplementationType.CATALOG_INTEGRATION_CONNECTOR.getDeployedImplementationType(),
+                                   DeployedImplementationType.INTEGRATION_CONNECTOR.getDescription(),
+                                   DeployedImplementationType.INTEGRATION_CONNECTOR.getAssociatedTypeName(),
+                                   DeployedImplementationType.INTEGRATION_CONNECTOR.getDeployedImplementationType(),
                                    null),
 
     ;

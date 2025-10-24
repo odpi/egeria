@@ -11,6 +11,7 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.*;
 import org.odpi.openmetadata.frameworks.opengovernance.controls.ActionTarget;
 import org.odpi.openmetadata.frameworks.openmetadata.controls.PlaceholderProperty;
 import org.odpi.openmetadata.frameworks.opengovernance.properties.*;
+import org.odpi.openmetadata.frameworks.openmetadata.enums.CompletionStatus;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.*;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.processes.connectors.CatalogTargetProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.search.ElementProperties;
@@ -788,10 +789,11 @@ public class CocoClinicalTrialHospitalOnboardingService extends CocoClinicalTria
 
         if (genericProcess != null)
         {
-            String processGUID = super.createGovernanceActionProcess(processQualifiedName,
-                                                                     "Onboard " + hospitalName + " Landing Area Files for " + clinicalTrialName,
-                                                                     null,
-                                                                     clinicalTrialGUID);
+            String processGUID = governanceContext.createGovernanceActionProcess(processQualifiedName,
+                                                                                 "Onboard " + hospitalName + " Landing Area Files for " + clinicalTrialName,
+                                                                                 null,
+                                                                                 null,
+                                                                                 clinicalTrialGUID);
 
             addSolutionComponentImplementedByRelationship(ClinicalTrialSolutionComponent.WEEKLY_MEASUREMENTS_ONBOARDING_PIPELINE.getGUID(), processGUID, informationSupplyChainQualifiedName, "Supports clinical trial " + clinicalTrialId);
             governanceContext.createLineageRelationship(OpenMetadataType.DATA_FLOW_RELATIONSHIP.typeName,
@@ -969,9 +971,10 @@ public class CocoClinicalTrialHospitalOnboardingService extends CocoClinicalTria
 
         catalogTargetProperties.setConfigurationProperties(configurationProperties);
 
-        governanceContext.getConnectorConfigClient().addCatalogTarget(integrationConnectorGUID,
-                                                                      folderGUID,
-                                                                      catalogTargetProperties);
+        governanceContext.getAssetClient().addCatalogTarget(integrationConnectorGUID,
+                                                            folderGUID,
+                                                            governanceContext.getAssetClient().getMetadataSourceOptions(),
+                                                            catalogTargetProperties);
     }
 
 

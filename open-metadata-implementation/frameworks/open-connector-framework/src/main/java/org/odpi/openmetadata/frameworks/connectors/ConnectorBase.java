@@ -510,9 +510,6 @@ public abstract class ConnectorBase extends Connector implements SecureConnector
     }
 
 
-
-
-
     /**
      * Retrieve a configuration property that is a string formatted date or null if not set.
      *
@@ -551,6 +548,144 @@ public abstract class ConnectorBase extends Connector implements SecureConnector
         return null;
     }
 
+    /* ==========================================================================================================
+     * Connectors may need to convert names between different naming conventions.  Standards such as the
+     * Tabular Data Source exchanges names using a canonical format to allow connectors that support different
+     * technologies with their own naming conventions to exchange schema information.
+     * The methods below provide mechanisms to convert between standard naming conventions and the canonical format.
+     *
+     * The canonical format has a space between each word and the first character in each word is capitalized -
+     * eg "My Table Name".
+     *
+     * Snake case is all lower case with underscores between the words - eg "my_table_name".
+     *
+     * Camel case has the spaces removed from the canonical format.
+     * The first character of the first word is lower case; the first character of
+     * subsequent works is upper case - eg myTableName.
+     *
+     * Kebab case is like snake case but uses dashes rather than underscores = eg "my-table-name".
+     *
+     * Pascal case is like camel case except that the first character of the first word is also upper case - eg "MyTableName".
+     */
+
+    /**
+     * Convert a canonical name to a name in snake case.  Snake case is all in lower case with dashes between
+     * the words.
+     *
+     * @param name string to convert
+     * @return converted string
+     */
+    public String fromCanonicalToSnakeCase(String name)
+    {
+        if (name == null || name.isEmpty())
+        {
+            return name;
+        }
+
+        return name.replace(' ', '_').toLowerCase();
+    }
+
+
+    /**
+     * Return the supplied name in a canonical format used for this data source.  Each word in the name should be capitalized, with spaces
+     * between the words to allow translation between different naming conventions.
+     *
+     * @param name string to convert
+     * @return string
+     */
+    public String fromSnakeToCanonicalCase(String name)
+    {
+        if (name == null || name.isEmpty())
+        {
+            return name;
+        }
+
+        StringBuilder converted = new StringBuilder();
+        boolean convertNext = true;
+
+        for (Character ch : name.toCharArray())
+        {
+            if (ch.equals('_'))
+            {
+                ch = ' ';
+                convertNext = true; // next letter should be in upper case
+            }
+            else if (convertNext)
+            {
+                ch = Character.toTitleCase(ch);
+                convertNext = false;
+            }
+            else
+            {
+                ch = Character.toLowerCase(ch);
+            }
+
+            converted.append(ch);
+        }
+
+        return converted.toString();
+    }
+
+
+
+    /**
+     * Convert a canonical name to a name in snake case.  Snake case is all in lower case with dashes between
+     * the words.
+     *
+     * @param name string to convert
+     * @return converted string
+     */
+    public String fromCanonicalToKebabCase(String name)
+    {
+        if (name == null || name.isEmpty())
+        {
+            return name;
+        }
+
+        return name.replace(' ', '-').toLowerCase();
+    }
+
+
+    /**
+     * Return the supplied name in a canonical format used for this data source.
+     * Each word in the name should be capitalized, with spaces
+     * between the words to allow translation between different naming conventions.
+     *
+     * @param name string to convert
+     * @return string
+     */
+    public String fromKebabToCanonicalCase(String name)
+    {
+        if (name == null || name.isEmpty())
+        {
+            return name;
+        }
+
+        StringBuilder converted = new StringBuilder();
+        boolean convertNext = true;
+
+        for (Character ch : name.toCharArray())
+        {
+            if (ch.equals('-'))
+            {
+                ch = ' ';
+                convertNext = true; // next letter should be in upper case
+            }
+            else if (convertNext)
+            {
+                ch = Character.toTitleCase(ch);
+                convertNext = false;
+            }
+            else
+            {
+                ch = Character.toLowerCase(ch);
+            }
+
+            converted.append(ch);
+        }
+
+        return converted.toString();
+    }
 
     /**
      * Log that no asset has been returned to the connector.  It is unable to proceed without this basic information.

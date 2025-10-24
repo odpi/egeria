@@ -3,9 +3,7 @@
 package org.odpi.openmetadata.frameworks.openmetadata.properties.governance;
 
 
-import com.fasterxml.jackson.annotation.JsonAutoDetect;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.*;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.RelationshipBeanProperties;
 
 import java.util.Objects;
@@ -19,6 +17,14 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME,
+        include = JsonTypeInfo.As.PROPERTY,
+        property = "class")
+@JsonSubTypes(
+        {
+                @JsonSubTypes.Type(value = GovernanceResponseProperties.class, name = "GovernanceResponseProperties"),
+                @JsonSubTypes.Type(value = GovernanceMechanismProperties.class, name = "GovernanceMechanismProperties"),
+        })
 public class SupportingDefinitionProperties extends RelationshipBeanProperties
 {
     String rationale = null;

@@ -4,12 +4,11 @@ package org.odpi.openmetadata.frameworks.openmetadata.properties.assets;
 
 import com.fasterxml.jackson.annotation.*;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.ReferenceableProperties;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.apis.DeployedAPIProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.infrastructure.ITInfrastructureProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.processes.ProcessProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 
-import java.util.*;
+import java.util.Objects;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
@@ -25,7 +24,6 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
         include = JsonTypeInfo.As.PROPERTY,
         property = "class")
 @JsonSubTypes({
-        @JsonSubTypes.Type(value = DeployedAPIProperties.class, name = "DeployedAPIProperties"),
         @JsonSubTypes.Type(value = DataAssetProperties.class, name = "DataAssetProperties"),
         @JsonSubTypes.Type(value = ProcessProperties.class, name = "ProcessProperties"),
         @JsonSubTypes.Type(value = ITInfrastructureProperties.class, name = "ITInfrastructureProperties"),

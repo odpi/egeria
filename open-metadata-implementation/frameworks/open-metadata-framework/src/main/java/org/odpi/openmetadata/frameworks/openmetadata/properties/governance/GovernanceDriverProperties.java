@@ -3,6 +3,7 @@
 package org.odpi.openmetadata.frameworks.openmetadata.properties.governance;
 
 import com.fasterxml.jackson.annotation.*;
+import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
@@ -32,6 +33,8 @@ public class GovernanceDriverProperties extends GovernanceDefinitionProperties
      */
     public GovernanceDriverProperties()
     {
+        super();
+        super.setTypeName(OpenMetadataType.GOVERNANCE_DRIVER.typeName);
     }
 
 

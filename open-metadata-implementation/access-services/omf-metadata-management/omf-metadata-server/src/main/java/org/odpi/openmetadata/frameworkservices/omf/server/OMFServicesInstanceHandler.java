@@ -12,10 +12,9 @@ import org.odpi.openmetadata.frameworks.openmetadata.ffdc.PropertyServerExceptio
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.ElementHeader;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.MetadataElementSummary;
-import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.MetadataRelationship;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.MetadataCorrelationHeader;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.OpenMetadataElement;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.ValidMetadataValue;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.validvalues.ValidMetadataValueProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.ValidMetadataValueDetail;
 import org.odpi.openmetadata.frameworkservices.omf.handlers.MetadataElementHandler;
 
@@ -134,9 +133,9 @@ public class OMFServicesInstanceHandler extends AccessServerServiceInstanceHandl
      * @throws UserNotAuthorizedException user does not have access to the requested server
      * @throws PropertyServerException the service name is not known - indicating a logic error
      */
-    ValidValuesHandler<ValidMetadataValue> getValidMetadataValuesHandler(String userId,
-                                                                         String serverName,
-                                                                         String serviceOperationName) throws InvalidParameterException,
+    ValidValuesHandler<ValidMetadataValueProperties> getValidMetadataValuesHandler(String userId,
+                                                                                   String serverName,
+                                                                                   String serviceOperationName) throws InvalidParameterException,
                                                                                                               UserNotAuthorizedException,
                                                                                                               PropertyServerException
     {

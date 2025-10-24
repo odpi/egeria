@@ -7,7 +7,7 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import org.odpi.openmetadata.commonservices.ffdc.rest.FFDCResponseBase;
-import org.odpi.openmetadata.frameworks.openmetadata.enums.GlossaryTermRelationshipStatus;
+import org.odpi.openmetadata.frameworks.openmetadata.enums.TermRelationshipStatus;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -25,7 +25,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class GlossaryTermRelationshipStatusListResponse extends FFDCResponseBase
 {
-    private List<GlossaryTermRelationshipStatus> statuses = null;
+    private List<TermRelationshipStatus> statuses = null;
 
 
     /**
@@ -57,7 +57,7 @@ public class GlossaryTermRelationshipStatusListResponse extends FFDCResponseBase
      *
      * @return result object
      */
-    public List<GlossaryTermRelationshipStatus> getStatuses()
+    public List<TermRelationshipStatus> getStatuses()
     {
         if (statuses == null)
         {
@@ -79,7 +79,7 @@ public class GlossaryTermRelationshipStatusListResponse extends FFDCResponseBase
      *
      * @param statuses result object
      */
-    public void setStatuses(List<GlossaryTermRelationshipStatus> statuses)
+    public void setStatuses(List<TermRelationshipStatus> statuses)
     {
         this.statuses = statuses;
     }

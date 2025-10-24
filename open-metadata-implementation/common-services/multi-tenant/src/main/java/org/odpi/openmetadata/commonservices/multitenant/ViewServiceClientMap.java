@@ -11,6 +11,7 @@ import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.openmetadata.client.OpenMetadataClient;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.PropertyServerException;
+import org.odpi.openmetadata.frameworkservices.gaf.client.EgeriaOpenGovernanceClient;
 import org.odpi.openmetadata.frameworkservices.omf.client.handlers.EgeriaOpenMetadataStoreHandler;
 
 import java.lang.reflect.Constructor;
@@ -156,11 +157,16 @@ public class ViewServiceClientMap<B>
         B viewServiceClient = null;
 
         EgeriaOpenMetadataStoreHandler openMetadataClient;
+        EgeriaOpenGovernanceClient     openGovernanceClient;
         if (localServerUserPassword == null)
         {
             openMetadataClient = new EgeriaOpenMetadataStoreHandler(viewServiceConfig.getOMAGServerName(),
                                                                     viewServiceConfig.getOMAGServerPlatformRootURL(),
                                                                     maxPageSize);
+
+            openGovernanceClient = new EgeriaOpenGovernanceClient(viewServiceConfig.getOMAGServerName(),
+                                                                  viewServiceConfig.getOMAGServerPlatformRootURL(),
+                                                                  maxPageSize);
 
         }
         else
@@ -170,6 +176,12 @@ public class ViewServiceClientMap<B>
                                                                     localServerUserId,
                                                                     localServerUserPassword,
                                                                     maxPageSize);
+
+            openGovernanceClient = new EgeriaOpenGovernanceClient(viewServiceConfig.getOMAGServerName(),
+                                                                  viewServiceConfig.getOMAGServerPlatformRootURL(),
+                                                                  localServerUserId,
+                                                                  localServerUserPassword,
+                                                                  maxPageSize);
         }
 
         try
@@ -177,6 +189,10 @@ public class ViewServiceClientMap<B>
             if (handlerClass.isInstance(openMetadataClient))
             {
                 viewServiceClient = handlerClass.cast(openMetadataClient);
+            }
+            else if (handlerClass.isInstance(openGovernanceClient))
+            {
+                viewServiceClient = handlerClass.cast(openGovernanceClient);
             }
             else
             {

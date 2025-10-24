@@ -19,17 +19,24 @@ Content-Type: application/json
 > {% client.global.set("token", response.body); %}
 
 
+###
+
+@glossaryGUID = add guid here
 
 ###
 # @name Create a glossary term in a glossary
 # Add the returned guid as orgGlossaryTerm1GUID variable.
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/glossary-manager/glossaries/{{glossaryGUID}}/terms/new-controlled
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/glossary-manager/glossaries/terms
 Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-	"class" : "ReferenceableRequestBody",
-	"elementProperties" : 
+	"class" : "NewElementRequestBody",
+	"isOwnAnchor": true,
+	"anchorScopeGUID": "{{glossaryGUID}}",
+	"parentGUID": "{{glossaryGUID}}",
+	"parentRelationshipTypeName": "CollectionMembership",
+	"properties" :
 		{
 			"class" : "GlossaryTermProperties",
 			"qualifiedName" : "GlossaryTerm: term name : {{$isoTimestamp}}",
@@ -109,58 +116,37 @@ Content-Type: application/json
 ###
 # group: Glossaries
 # @name Update a glossary term in a glossary
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/glossary-manager/glossaries/terms/{{glossaryTermGUID}}/update?
-    isMergeUpdate=true
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/glossary-manager/glossaries/terms/{{glossaryTermGUID}}/update
 Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-	"class" : "ReferenceableRequestBody",
-	"elementProperties" : 
+	"class" : "UpdateElementRequestBody",
+    "mergeUpdate": true,
+	"properties" :
 		{
 			"class" : "GlossaryTermProperties",
 			"description" : "This is the long description of the term. And this is some more text."
-		},
-        "updateDescription" : "Final updates based on in-house review comments."
+		}
 }
 
 ###
 # group: Glossaries
 # @name Update a glossary term's version identfier
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/glossary-manager/glossaries/terms/{{glossaryTermGUID}}/update?
-    isMergeUpdate=true
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/glossary-manager/glossaries/terms/{{glossaryTermGUID}}/update
 Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-	"class" : "ReferenceableRequestBody",
-	"elementProperties" : 
+  "class" : "UpdateElementRequestBody",
+  "mergeUpdate": true,
+  "properties" :
 		{
 			"class" : "GlossaryTermProperties",
             "publishVersionIdentifier" : "V1.1"
 		}
 }
 
-###
-# group: Glossaries
-# @name Add a glossary term to a category
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/glossary-manager/glossaries/categories/{{glossaryCategoryGUID}}/terms/{{glossaryTermGUID}}
-Authorization: Bearer {{token}}
-Content-Type: application/json
-
-{
-    "class" : "NewRelationshipRequestBody",
-    "properties" : {
-        "class" : "CollectionMembership"
-     }
-}
-
-###
-# group: Glossaries
-# @name Remove a glossary term from a category
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/glossary-manager/glossaries/categories/{{glossaryCategoryGUID}}/terms/{{glossaryTermGUID}}/remove
-Authorization: Bearer {{token}}
-Content-Type: application/json
 
 ###
 # group: Glossaries
@@ -188,12 +174,7 @@ Content-Type: application/json
 ###
 # group: Glossaries
 # @name Search for term by version identifier
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/metadata-explorer/metadata-elements/by-search-conditions?
-    startFrom=0&
-    pageSize=0&
-    forLineage=false&
-    forDuplicateProcessing=false&
-    effectiveTime=0
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/metadata-explorer/metadata-elements/by-search-conditions
 Authorization: Bearer {{token}}
 Content-Type: application/json
 
@@ -235,7 +216,7 @@ Content-Type: application/json
 # group: Glossaries
 # @name Set up term relationship
 # Link two terms together using a specialist relationship
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/glossary-manager/glossaries/terms/{{glossaryTermOneGUID}}/relationships/{{relationshipTypeName}}/terms/{{glossaryTermTwoGUID}}?forLineage=false&forDuplicateProcessing=false
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/glossary-manager/glossaries/terms/{{glossaryTermOneGUID}}/relationships/{{relationshipTypeName}}/terms/{{glossaryTermTwoGUID}}
 Authorization: Bearer {{token}}
 Content-Type: application/json
 
@@ -262,7 +243,7 @@ Content-Type: application/json
 # group: Glossaries
 # @name Update term relationship
 # Update the properties for the two terms linked using a specialist relationship
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/glossary-manager/glossaries/terms/{{glossaryTermOneGUID}}/relationships/{{relationshipTypeName}}/terms/{{glossaryTermTwoGUID}}/update?forLineage=false&forDuplicateProcessing=false
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/glossary-manager/glossaries/terms/{{glossaryTermOneGUID}}/relationships/{{relationshipTypeName}}/terms/{{glossaryTermTwoGUID}}/update
 Authorization: Bearer {{token}}
 Content-Type: application/json
 
@@ -289,7 +270,7 @@ Content-Type: application/json
 # group: Glossaries
 # @name Update term relationship
 # Remove the relationship between two terms.
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/glossary-manager/glossaries/terms/{{glossaryTermOneGUID}}/relationships/{{relationshipTypeName}}/terms/{{glossaryTermTwoGUID}}/remove?forLineage=false&forDuplicateProcessing=false
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/glossary-manager/glossaries/terms/{{glossaryTermOneGUID}}/relationships/{{relationshipTypeName}}/terms/{{glossaryTermTwoGUID}}/remove
 Authorization: Bearer {{token}}
 Content-Type: application/json
 

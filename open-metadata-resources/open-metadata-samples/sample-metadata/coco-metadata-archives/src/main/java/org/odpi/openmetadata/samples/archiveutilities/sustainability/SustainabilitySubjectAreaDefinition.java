@@ -4,7 +4,7 @@ package org.odpi.openmetadata.samples.archiveutilities.sustainability;
 
 
 import org.odpi.openmetadata.samples.archiveutilities.governanceprogram.CocoSubjectAreaDefinition;
-import org.odpi.openmetadata.samples.archiveutilities.organization.ScopeDefinition;
+import org.odpi.openmetadata.frameworks.openmetadata.refdata.ScopeDefinition;
 
 /**
  * The CocoSubjectAreaDefinition is used to feed the definition of the subject areas for Coco Pharmaceuticals.
@@ -16,7 +16,7 @@ public enum SustainabilitySubjectAreaDefinition
                     CocoSubjectAreaDefinition.GOVERNANCE,
                     "Sustainability",
                     "Information relating to the Coco Pharmaceuticals' sustainability initiatives.",
-                    ScopeDefinition.ALL_COCO.getPreferredValue(),
+                    ScopeDefinition.WITHIN_ORGANIZATION.getPreferredValue(),
                     "Sustainability initiatives and greenhouse gas emissions reporting.",
                     SustainabilityDomainDefinition.SUSTAINABILITY_REPORTING.getDomainIdentifier()),
     ;

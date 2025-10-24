@@ -4,11 +4,11 @@
 package org.odpi.openmetadata.adapters.connectors.postgres.survey;
 
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.PropertyServerException;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.surveyreports.ResourceMeasureAnnotationProperties;
 import org.odpi.openmetadata.frameworks.opensurvey.SurveyActionServiceConnector;
 import org.odpi.openmetadata.frameworks.opensurvey.controls.SurveyDatabaseAnnotationType;
 import org.odpi.openmetadata.frameworks.opensurvey.measurements.*;
-import org.odpi.openmetadata.frameworks.opensurvey.properties.Annotation;
-import org.odpi.openmetadata.frameworks.opensurvey.properties.ResourceMeasureAnnotation;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.surveyreports.AnnotationProperties;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -368,12 +368,12 @@ public class PostgresDatabaseStatsExtractor
      * @return list of annotations
      * @throws PropertyServerException problem formatting JSON string
      */
-    List<Annotation> getAnnotations() throws PropertyServerException
+    List<AnnotationProperties> getAnnotations() throws PropertyServerException
     {
         /*
          * All information has been assembled so create the annotations.
          */
-        List<Annotation>  annotations = new ArrayList<>();
+        List<AnnotationProperties> annotations = new ArrayList<>();
 
         for (String databaseName : databaseResults.keySet())
         {
@@ -383,7 +383,7 @@ public class PostgresDatabaseStatsExtractor
             {
                 List<String> schemaNames = databaseDetails.getSchemaNames();
 
-                ResourceMeasureAnnotation databaseAnnotation = new ResourceMeasureAnnotation();
+                ResourceMeasureAnnotationProperties databaseAnnotation = new ResourceMeasureAnnotationProperties();
 
                 databaseAnnotation.setAnnotationType(SurveyDatabaseAnnotationType.DATABASE_MEASUREMENTS.getName());
                 databaseAnnotation.setSummary(SurveyDatabaseAnnotationType.DATABASE_MEASUREMENTS.getSummary());
@@ -402,7 +402,7 @@ public class PostgresDatabaseStatsExtractor
 
                     if (currentSchema != null)
                     {
-                        ResourceMeasureAnnotation schemaAnnotation = new ResourceMeasureAnnotation();
+                        ResourceMeasureAnnotationProperties schemaAnnotation = new ResourceMeasureAnnotationProperties();
 
                         schemaAnnotation.setAnnotationType(SurveyDatabaseAnnotationType.SCHEMA_MEASUREMENTS.getName());
                         schemaAnnotation.setSummary(SurveyDatabaseAnnotationType.SCHEMA_MEASUREMENTS.getSummary());
@@ -426,7 +426,7 @@ public class PostgresDatabaseStatsExtractor
 
                                 if (currentTable != null)
                                 {
-                                    ResourceMeasureAnnotation tableAnnotation = new ResourceMeasureAnnotation();
+                                    ResourceMeasureAnnotationProperties tableAnnotation = new ResourceMeasureAnnotationProperties();
 
                                     tableAnnotation.setAnnotationType(SurveyDatabaseAnnotationType.TABLE_MEASUREMENTS.getName());
                                     tableAnnotation.setSummary(SurveyDatabaseAnnotationType.TABLE_MEASUREMENTS.getSummary());
@@ -447,7 +447,7 @@ public class PostgresDatabaseStatsExtractor
                                         {
                                             ColumnDetails currentColumn = currentTable.getColumnDetails(columnName);
 
-                                            ResourceMeasureAnnotation columnAnnotation = new ResourceMeasureAnnotation();
+                                            ResourceMeasureAnnotationProperties columnAnnotation = new ResourceMeasureAnnotationProperties();
 
                                             columnAnnotation.setAnnotationType(SurveyDatabaseAnnotationType.COLUMN_MEASUREMENTS.getName());
                                             columnAnnotation.setSummary(SurveyDatabaseAnnotationType.COLUMN_MEASUREMENTS.getSummary());

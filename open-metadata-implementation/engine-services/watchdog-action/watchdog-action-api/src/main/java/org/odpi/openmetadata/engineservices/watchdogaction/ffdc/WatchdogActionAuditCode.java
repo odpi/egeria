@@ -63,12 +63,12 @@ public enum WatchdogActionAuditCode implements AuditLogMessageSet
 
     /**
      * OMES-WATCHDOG-ACTION-0017 - The watchdog action service {0} is starting to analyze asset {1} with request type {2}
-     * in watchdog action engine {3} (guid={4}); the results will be result in notifications/actions to subscribers of notification type {5}
+     * in watchdog action engine {3} (guid={4}); the results will be result in notifications/actions to subscribers of the {1} notification type
      */
     WATCHDOG_ACTION_SERVICE_STARTING("OMES-WATCHDOG-ACTION-0017",
                                    AuditLogRecordSeverityLevel.STARTUP,
                                    "The watchdog action service {0} is starting to monitor notification type {1} with request type {2} in watchdog action engine {3} (guid={4});" +
-                                       " the results will be result in notifications/actions to subscribers of notification type {5}",
+                                       " this will result in notifications/actions to subscribers of the {1} notification type",
                                    "A new monitoring request is being processed.",
                                    "Verify that the watchdog action service ran to completion."),
 

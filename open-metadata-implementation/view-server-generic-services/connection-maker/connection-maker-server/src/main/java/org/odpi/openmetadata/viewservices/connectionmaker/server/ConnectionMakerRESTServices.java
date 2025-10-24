@@ -325,11 +325,11 @@ public class ConnectionMakerRESTServices extends TokenController
      *  PropertyServerException    there is a problem retrieving information from the property server(s).
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    public VoidResponse detachConnectionConnectorType(String                   serverName,
-                                                      String                   urlMarker,
-                                                      String                   connectionGUID,
-                                                      String                   connectorTypeGUID,
-                                                      DeleteRequestBody requestBody)
+    public VoidResponse detachConnectionConnectorType(String                        serverName,
+                                                      String                        urlMarker,
+                                                      String                        connectionGUID,
+                                                      String                        connectorTypeGUID,
+                                                      DeleteRelationshipRequestBody requestBody)
     {
         final String methodName = "detachConnectionConnectorType";
 
@@ -401,7 +401,7 @@ public class ConnectionMakerRESTServices extends TokenController
 
             if (requestBody != null)
             {
-                if (requestBody.getProperties() instanceof ConnectionEndpointProperties properties)
+                if (requestBody.getProperties() instanceof ConnectToEndpointProperties properties)
                 {
                     handler.linkConnectionEndpoint(userId,
                                                    connectionGUID,
@@ -419,7 +419,7 @@ public class ConnectionMakerRESTServices extends TokenController
                 }
                 else
                 {
-                    restExceptionHandler.handleInvalidPropertiesObject(ConnectionEndpointProperties.class.getName(), methodName);
+                    restExceptionHandler.handleInvalidPropertiesObject(ConnectToEndpointProperties.class.getName(), methodName);
                 }
             }
             else
@@ -455,11 +455,11 @@ public class ConnectionMakerRESTServices extends TokenController
      *  PropertyServerException    there is a problem retrieving information from the property server(s).
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    public VoidResponse detachConnectionEndpoint(String                   serverName,
-                                                 String                   urlMarker,
-                                                 String                   connectionGUID,
-                                                 String                   endpointGUID,
-                                                 DeleteRequestBody requestBody)
+    public VoidResponse detachConnectionEndpoint(String                        serverName,
+                                                 String                        urlMarker,
+                                                 String                        connectionGUID,
+                                                 String                        endpointGUID,
+                                                 DeleteRelationshipRequestBody requestBody)
     {
         final String methodName = "detachConnectionEndpoint";
 
@@ -585,11 +585,11 @@ public class ConnectionMakerRESTServices extends TokenController
      *  PropertyServerException    there is a problem retrieving information from the property server(s).
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    public VoidResponse detachEmbeddedConnection(String                   serverName,
-                                                 String                   urlMarker,
-                                                 String                   connectionGUID,
-                                                 String                   embeddedConnectionGUID,
-                                                 DeleteRequestBody requestBody)
+    public VoidResponse detachEmbeddedConnection(String                        serverName,
+                                                 String                        urlMarker,
+                                                 String                        connectionGUID,
+                                                 String                        embeddedConnectionGUID,
+                                                 DeleteRelationshipRequestBody requestBody)
     {
         final String methodName = "detachEmbeddedConnection";
 
@@ -715,11 +715,11 @@ public class ConnectionMakerRESTServices extends TokenController
      *  PropertyServerException    there is a problem retrieving information from the property server(s).
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    public VoidResponse detachAssetFromConnection(String                   serverName,
-                                                  String                   urlMarker,
-                                                  String                   assetGUID,
-                                                  String                   connectionGUID,
-                                                  DeleteRequestBody requestBody)
+    public VoidResponse detachAssetFromConnection(String                        serverName,
+                                                  String                        urlMarker,
+                                                  String                        assetGUID,
+                                                  String                        connectionGUID,
+                                                  DeleteRelationshipRequestBody requestBody)
     {
         final String methodName = "detachAssetFromConnection";
 
@@ -845,11 +845,11 @@ public class ConnectionMakerRESTServices extends TokenController
      *  PropertyServerException    there is a problem retrieving information from the property server(s).
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    public VoidResponse detachEndpointFromITAsset(String                   serverName,
-                                                  String                   urlMarker,
-                                                  String                   itAssetGUID,
-                                                  String                   endpointGUID,
-                                                  DeleteRequestBody requestBody)
+    public VoidResponse detachEndpointFromITAsset(String                        serverName,
+                                                  String                        urlMarker,
+                                                  String                        itAssetGUID,
+                                                  String                        endpointGUID,
+                                                  DeleteRelationshipRequestBody requestBody)
     {
         final String methodName = "detachEndpointFromITAsset";
 
@@ -896,10 +896,10 @@ public class ConnectionMakerRESTServices extends TokenController
      *  PropertyServerException    there is a problem retrieving information from the property server(s).
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    public VoidResponse deleteConnection(String            serverName,
-                                         String            urlMarker,
-                                         String            connectionGUID,
-                                         DeleteRequestBody requestBody)
+    public VoidResponse deleteConnection(String                   serverName,
+                                         String                   urlMarker,
+                                         String                   connectionGUID,
+                                         DeleteElementRequestBody requestBody)
     {
         final String methodName = "deleteConnection";
 
@@ -1282,7 +1282,7 @@ public class ConnectionMakerRESTServices extends TokenController
     public VoidResponse deleteConnectorType(String                   serverName,
                                             String                   urlMarker,
                                             String                   connectorTypeGUID,
-                                            DeleteRequestBody requestBody)
+                                            DeleteElementRequestBody requestBody)
     {
         final String methodName = "deleteConnectorType";
 
@@ -1314,7 +1314,8 @@ public class ConnectionMakerRESTServices extends TokenController
 
 
     /**
-     * Retrieve the list of connectorType metadata elements that contain the search string.
+     * Retrieve the list of connectorType metadata elements that contain the supplied name in the displayName
+     * or qualifiedName attribute.
      *
      * @param serverName name of the service to route the request to
      * @param urlMarker  view service URL marker
@@ -1349,6 +1350,60 @@ public class ConnectionMakerRESTServices extends TokenController
             if (requestBody != null)
             {
                 response.setElements(handler.getConnectorTypesByName(userId, requestBody.getFilter(), requestBody));
+            }
+            else
+            {
+                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
+            }
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+        return response;
+    }
+
+
+    /**
+     * Returns the list of connector types with a particular connector provider class name.
+     * Provide the name of the connector provider's class name (including package; but without .class)
+     * in the filter.
+     *
+     * @param serverName name of the service to route the request to
+     * @param urlMarker  view service URL marker
+     * @param requestBody string to find in the properties
+     *
+     * @return list of matching metadata elements or
+     *  InvalidParameterException  one of the parameters is invalid
+     *  UserNotAuthorizedException the user is not authorized to issue this request
+     *  PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public OpenMetadataRootElementsResponse getConnectorTypesByConnectorProvider(String            serverName,
+                                                                                 String            urlMarker,
+                                                                                 FilterRequestBody requestBody)
+    {
+        final String methodName = "getConnectorTypesByConnectorProvider";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
+
+        OpenMetadataRootElementsResponse response = new OpenMetadataRootElementsResponse();
+        AuditLog                         auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            ConnectorTypeHandler handler = instanceHandler.getConnectorTypeHandler(userId, serverName, urlMarker, methodName);
+
+            if (requestBody != null)
+            {
+                response.setElements(handler.getConnectorTypesByConnectorProvider(userId, requestBody.getFilter(), requestBody));
             }
             else
             {
@@ -1672,7 +1727,7 @@ public class ConnectionMakerRESTServices extends TokenController
     public VoidResponse deleteEndpoint(String                   serverName,
                                        String                   urlMarker,
                                        String                   endpointGUID,
-                                       DeleteRequestBody requestBody)
+                                       DeleteElementRequestBody requestBody)
     {
         final String methodName = "deleteEndpoint";
 

@@ -7,6 +7,7 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.RelationshipBeanProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 
 import java.util.Objects;
 
@@ -22,9 +23,10 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class DerivedSchemaTypeQueryTargetProperties extends RelationshipBeanProperties
 {
-    private String queryId         = null;
-    private String query           = null;
-    private String queryType       = null;
+    private String queryId          = null;
+    private String query            = null;
+    private String queryType        = null;
+    private String iscQualifiedName = null;
 
 
     /**
@@ -33,6 +35,7 @@ public class DerivedSchemaTypeQueryTargetProperties extends RelationshipBeanProp
     public DerivedSchemaTypeQueryTargetProperties()
     {
         super();
+        super.setTypeName(OpenMetadataType.DERIVED_SCHEMA_TYPE_QUERY_TARGET_RELATIONSHIP.typeName);
     }
 
 
@@ -50,6 +53,7 @@ public class DerivedSchemaTypeQueryTargetProperties extends RelationshipBeanProp
             queryId = template.getQueryId();
             query = template.getQuery();
             queryType = template.getQueryType();
+            iscQualifiedName = template.getISCQualifiedName();
         }
     }
 
@@ -115,6 +119,29 @@ public class DerivedSchemaTypeQueryTargetProperties extends RelationshipBeanProp
     }
 
 
+
+    /**
+     * Set up the fully qualified name of the associated information supply chain.
+     *
+     * @param iscQualifiedName String name
+     */
+    public void setISCQualifiedName(String iscQualifiedName)
+    {
+        this.iscQualifiedName = iscQualifiedName;
+    }
+
+
+    /**
+     * Returns the stored qualified name of the associated information supply chain.
+     *
+     * @return qualifiedName
+     */
+    public String getISCQualifiedName()
+    {
+        return iscQualifiedName;
+    }
+
+
     /**
      * Standard toString method.
      *
@@ -127,6 +154,7 @@ public class DerivedSchemaTypeQueryTargetProperties extends RelationshipBeanProp
                 "queryId='" + queryId + '\'' +
                 ", query='" + query + '\'' +
                 ", queryType='" + queryType + '\'' +
+                ", iscQualifiedName='" + iscQualifiedName + '\'' +
                 "} " + super.toString();
     }
 
@@ -146,7 +174,8 @@ public class DerivedSchemaTypeQueryTargetProperties extends RelationshipBeanProp
         DerivedSchemaTypeQueryTargetProperties that = (DerivedSchemaTypeQueryTargetProperties) objectToCompare;
         return Objects.equals(queryId, that.queryId) &&
                 Objects.equals(query, that.query) &&
-                Objects.equals(queryType, that.queryType);
+                Objects.equals(queryType, that.queryType) &&
+                Objects.equals(iscQualifiedName, that.iscQualifiedName);
     }
 
 
@@ -158,6 +187,6 @@ public class DerivedSchemaTypeQueryTargetProperties extends RelationshipBeanProp
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), queryId, query, queryType);
+        return Objects.hash(super.hashCode(), queryId, query, queryType, iscQualifiedName);
     }
 }

@@ -4,10 +4,10 @@
 package org.odpi.openmetadata.frameworks.openmetadata.connectorcontext;
 
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
-
 import org.odpi.openmetadata.frameworks.openmetadata.client.ConnectorActivityReportClient;
 import org.odpi.openmetadata.frameworks.openmetadata.client.OpenMetadataClient;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.DeleteMethod;
+import org.odpi.openmetadata.frameworks.openmetadata.enums.ElementStatus;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.*;
 import org.odpi.openmetadata.frameworks.openmetadata.fileclassifier.FileClassifier;
 import org.odpi.openmetadata.frameworks.openmetadata.filelistener.FileDirectoryListenerInterface;
@@ -22,18 +22,26 @@ import org.odpi.openmetadata.frameworks.openmetadata.properties.contextevents.Co
 import org.odpi.openmetadata.frameworks.openmetadata.properties.contextevents.DependentContextEventProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.contextevents.RelatedContextEventProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.reports.ConnectorActivityReportWriter;
+import org.odpi.openmetadata.frameworks.openmetadata.search.ElementProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.search.NewElementProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.search.PropertyHelper;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 
-
 import java.io.File;
 import java.io.FileFilter;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import java.util.Map;
 
-public abstract class ConnectorContextBase
+/**
+ * This is the base class for a connector context.  The connector context provides access to open metadata for
+ * connectors.  Other frameworks extend this class to provide additional services.
+ */
+public class ConnectorContextBase
 {
-    protected final PropertyHelper propertyHelper = new PropertyHelper();
+    protected final PropertyHelper          propertyHelper = new PropertyHelper();
 
     protected final OpenMetadataClient      openMetadataClient;
 
@@ -48,32 +56,53 @@ public abstract class ConnectorContextBase
     protected final AuditLog                auditLog;
     protected final int                     maxPageSize;
     protected final DeleteMethod            defaultDeleteMethod;
-    protected final boolean                       generateIntegrationReport;
+    protected final boolean                 generateIntegrationReport;
     protected final ConnectorActivityReportWriter connectorActivityReportWriter;
 
     protected final FileClassifier       fileClassifier;
     private   final FilesListenerManager listenerManager;
 
 
-    protected final OpenMetadataStore          openMetadataStore;
-    private final   ActorProfileClient         actorProfileClient;
-    private final   ActorRoleClient            actorRoleClient;
-    private final   AssetClient                assetClient;
-    private final   ConnectionClient           connectionClient;
-    private final   ConnectorTypeClient        connectorTypeClient;
-    private final   EndpointClient             endpointClient;
-    protected final   GovernanceDefinitionClient governanceDefinitionClient;
-    private final   SoftwareCapabilityClient   softwareCapabilityClient;
-    private final   ValidValueDefinitionClient validValueDefinitionClient;
-    private final   GlossaryClient             glossaryClient;
-    private final   GlossaryTermClient         glossaryTermClient;
-    private final   MultiLanguageClient        multiLanguageClient;
-    private final   SchemaTypeClient           schemaTypeClient;
-    private final   SchemaAttributeClient      schemaAttributeClient;
-    private final   ValidMetadataValuesClient  validMetadataValuesClient;
+    protected final OpenMetadataStore           openMetadataStore;
+    private final   ActorProfileClient          actorProfileClient;
+    private final   ActorRoleClient             actorRoleClient;
+    private final   AnnotationClient            annotationClient;
+    private final   AssetClient                 assetClient;
+    private final   ClassificationManagerClient classificationManagerClient;
+    private final   CollectionClient            collectionClient;
+    private final   CommentClient               commentClient;
+    private final   CommunityClient             communityClient;
+    private final   ConnectionClient            connectionClient;
+    private final   ConnectorTypeClient         connectorTypeClient;
+    private final   DataClassClient             dataClassClient;
+    private final   DataFieldClient             dataFieldClient;
+    private final   DataStructureClient         dataStructureClient;
+    private final   EndpointClient              endpointClient;
+    private final   ExternalIdClient            externalIdClient;
+    private final   ExternalReferenceClient     externalReferenceClient;
+    private final   GlossaryTermClient          glossaryTermClient;
+    protected final GovernanceDefinitionClient  governanceDefinitionClient;
+    private final   InformalTagClient           informalTagClient;
+    private final   LikeClient                  likeClient;
+    private final   LineageClient               lineageClient;
+    private final   LocationClient              locationClient;
+    private final   MultiLanguageClient         multiLanguageClient;
+    private final   NoteLogClient               noteLogClient;
+    private final   ProjectClient               projectClient;
+    private final   RatingClient                ratingClient;
+    private final   SchemaAttributeClient       schemaAttributeClient;
+    private final   SchemaTypeClient            schemaTypeClient;
+    private final   SearchKeywordClient         searchKeywordClient;
+    private final   SoftwareCapabilityClient    softwareCapabilityClient;
+    private final   SolutionBlueprintClient     solutionBlueprintClient;
+    private final   SolutionComponentClient     solutionComponentClient;
+    private final   SpecificationPropertyClient specificationPropertyClient;
+    private final   UserIdentityClient          userIdentityClient;
+    private final   ValidMetadataValuesClient   validMetadataValuesClient;
+    private final   ValidValueDefinitionClient  validValueDefinitionClient;
 
 
-    private       boolean                     isActive = true;
+    private boolean isActive = true;
 
 
 
@@ -157,6 +186,17 @@ public abstract class ConnectorContextBase
                                                    auditLog,
                                                    maxPageSize);
 
+        this.annotationClient = new AnnotationClient(this,
+                                                     localServerName,
+                                                     localServiceName,
+                                                     connectorUserId,
+                                                     connectorGUID,
+                                                     externalSourceGUID,
+                                                     externalSourceName,
+                                                     openMetadataClient,
+                                                     auditLog,
+                                                     maxPageSize);
+
         this.assetClient = new AssetClient(this,
                                            localServerName,
                                            localServiceName,
@@ -167,6 +207,50 @@ public abstract class ConnectorContextBase
                                            openMetadataClient,
                                            auditLog,
                                            maxPageSize);
+
+        this.classificationManagerClient = new ClassificationManagerClient(this,
+                                                                           localServerName,
+                                                                           localServiceName,
+                                                                           connectorUserId,
+                                                                           connectorGUID,
+                                                                           externalSourceGUID,
+                                                                           externalSourceName,
+                                                                           openMetadataClient,
+                                                                           auditLog,
+                                                                           maxPageSize);
+
+        this.collectionClient = new CollectionClient(this,
+                                                     localServerName,
+                                                     localServiceName,
+                                                     connectorUserId,
+                                                     connectorGUID,
+                                                     externalSourceGUID,
+                                                     externalSourceName,
+                                                     openMetadataClient,
+                                                     auditLog,
+                                                     maxPageSize);
+
+        this.commentClient = new CommentClient(this,
+                                               localServerName,
+                                               localServiceName,
+                                               connectorUserId,
+                                               connectorGUID,
+                                               externalSourceGUID,
+                                               externalSourceName,
+                                               openMetadataClient,
+                                               auditLog,
+                                               maxPageSize);
+
+        this.communityClient = new CommunityClient(this,
+                                                   localServerName,
+                                                   localServiceName,
+                                                   connectorUserId,
+                                                   connectorGUID,
+                                                   externalSourceGUID,
+                                                   externalSourceName,
+                                                   openMetadataClient,
+                                                   auditLog,
+                                                   maxPageSize);
 
         this.connectionClient = new ConnectionClient(this,
                                                      localServerName,
@@ -190,6 +274,39 @@ public abstract class ConnectorContextBase
                                                            auditLog,
                                                            maxPageSize);
 
+        this.dataClassClient = new DataClassClient(this,
+                                                   localServerName,
+                                                   localServiceName,
+                                                   connectorUserId,
+                                                   connectorGUID,
+                                                   externalSourceGUID,
+                                                   externalSourceName,
+                                                   openMetadataClient,
+                                                   auditLog,
+                                                   maxPageSize);
+
+        this.dataFieldClient = new DataFieldClient(this,
+                                                   localServerName,
+                                                   localServiceName,
+                                                   connectorUserId,
+                                                   connectorGUID,
+                                                   externalSourceGUID,
+                                                   externalSourceName,
+                                                   openMetadataClient,
+                                                   auditLog,
+                                                   maxPageSize);
+
+        this.dataStructureClient = new DataStructureClient(this,
+                                                           localServerName,
+                                                           localServiceName,
+                                                           connectorUserId,
+                                                           connectorGUID,
+                                                           externalSourceGUID,
+                                                           externalSourceName,
+                                                           openMetadataClient,
+                                                           auditLog,
+                                                           maxPageSize);
+
         this.endpointClient = new EndpointClient(this,
                                                  localServerName,
                                                  localServiceName,
@@ -200,6 +317,39 @@ public abstract class ConnectorContextBase
                                                  openMetadataClient,
                                                  auditLog,
                                                  maxPageSize);
+
+        this.externalIdClient = new ExternalIdClient(this,
+                                                     localServerName,
+                                                     localServiceName,
+                                                     connectorUserId,
+                                                     connectorGUID,
+                                                     externalSourceGUID,
+                                                     externalSourceName,
+                                                     openMetadataClient,
+                                                     auditLog,
+                                                     maxPageSize);
+
+        this.externalReferenceClient = new ExternalReferenceClient(this,
+                                                                   localServerName,
+                                                                   localServiceName,
+                                                                   connectorUserId,
+                                                                   connectorGUID,
+                                                                   externalSourceGUID,
+                                                                   externalSourceName,
+                                                                   openMetadataClient,
+                                                                   auditLog,
+                                                                   maxPageSize);
+
+        this.glossaryTermClient = new GlossaryTermClient(this,
+                                                         localServerName,
+                                                         localServiceName,
+                                                         connectorUserId,
+                                                         connectorGUID,
+                                                         externalSourceGUID,
+                                                         externalSourceName,
+                                                         openMetadataClient,
+                                                         auditLog,
+                                                         maxPageSize);
 
         this.governanceDefinitionClient = new GovernanceDefinitionClient(this,
                                                                          localServerName,
@@ -212,16 +362,93 @@ public abstract class ConnectorContextBase
                                                                          auditLog,
                                                                          maxPageSize);
 
-        this.softwareCapabilityClient = new SoftwareCapabilityClient(this,
-                                                                     localServerName,
-                                                                     localServiceName,
-                                                                     connectorUserId,
-                                                                     connectorGUID,
-                                                                     externalSourceGUID,
-                                                                     externalSourceName,
-                                                                     openMetadataClient,
-                                                                     auditLog,
-                                                                     maxPageSize);
+        this.informalTagClient = new InformalTagClient(this,
+                                                       localServerName,
+                                                       localServiceName,
+                                                       connectorUserId,
+                                                       connectorGUID,
+                                                       externalSourceGUID,
+                                                       externalSourceName,
+                                                       openMetadataClient,
+                                                       auditLog,
+                                                       maxPageSize);
+
+        this.likeClient = new LikeClient(this,
+                                         localServerName,
+                                         localServiceName,
+                                         connectorUserId,
+                                         connectorGUID,
+                                         externalSourceGUID,
+                                         externalSourceName,
+                                         openMetadataClient,
+                                         auditLog,
+                                         maxPageSize);
+
+        this.lineageClient = new LineageClient(this,
+                                               localServerName,
+                                               localServiceName,
+                                               connectorUserId,
+                                               connectorGUID,
+                                               externalSourceGUID,
+                                               externalSourceName,
+                                               openMetadataClient,
+                                               auditLog,
+                                               maxPageSize);
+
+        this.locationClient = new LocationClient(this,
+                                                 localServerName,
+                                                 localServiceName,
+                                                 connectorUserId,
+                                                 connectorGUID,
+                                                 externalSourceGUID,
+                                                 externalSourceName,
+                                                 openMetadataClient,
+                                                 auditLog,
+                                                 maxPageSize);
+
+        this.multiLanguageClient = new MultiLanguageClient(this,
+                                                           localServerName,
+                                                           localServiceName,
+                                                           connectorUserId,
+                                                           connectorGUID,
+                                                           externalSourceGUID,
+                                                           externalSourceName,
+                                                           openMetadataClient,
+                                                           auditLog,
+                                                           maxPageSize);
+
+        this.noteLogClient = new NoteLogClient(this,
+                                               localServerName,
+                                               localServiceName,
+                                               connectorUserId,
+                                               connectorGUID,
+                                               externalSourceGUID,
+                                               externalSourceName,
+                                               openMetadataClient,
+                                               auditLog,
+                                               maxPageSize);
+
+        this.projectClient = new ProjectClient(this,
+                                               localServerName,
+                                               localServiceName,
+                                               connectorUserId,
+                                               connectorGUID,
+                                               externalSourceGUID,
+                                               externalSourceName,
+                                               openMetadataClient,
+                                               auditLog,
+                                               maxPageSize);
+
+        this.ratingClient = new RatingClient(this,
+                                             localServerName,
+                                             localServiceName,
+                                             connectorUserId,
+                                             connectorGUID,
+                                             externalSourceGUID,
+                                             externalSourceName,
+                                             openMetadataClient,
+                                             auditLog,
+                                             maxPageSize);
 
         this.schemaTypeClient = new SchemaTypeClient(this,
                                                      localServerName,
@@ -245,6 +472,72 @@ public abstract class ConnectorContextBase
                                                                auditLog,
                                                                maxPageSize);
 
+        this.searchKeywordClient = new SearchKeywordClient(this,
+                                                           localServerName,
+                                                           localServiceName,
+                                                           connectorUserId,
+                                                           connectorGUID,
+                                                           externalSourceGUID,
+                                                           externalSourceName,
+                                                           openMetadataClient,
+                                                           auditLog,
+                                                           maxPageSize);
+
+        this.softwareCapabilityClient = new SoftwareCapabilityClient(this,
+                                                                     localServerName,
+                                                                     localServiceName,
+                                                                     connectorUserId,
+                                                                     connectorGUID,
+                                                                     externalSourceGUID,
+                                                                     externalSourceName,
+                                                                     openMetadataClient,
+                                                                     auditLog,
+                                                                     maxPageSize);
+
+        this.solutionBlueprintClient = new SolutionBlueprintClient(this,
+                                                                   localServerName,
+                                                                   localServiceName,
+                                                                   connectorUserId,
+                                                                   connectorGUID,
+                                                                   externalSourceGUID,
+                                                                   externalSourceName,
+                                                                   openMetadataClient,
+                                                                   auditLog,
+                                                                   maxPageSize);
+
+        this.solutionComponentClient = new SolutionComponentClient(this,
+                                                                   localServerName,
+                                                                   localServiceName,
+                                                                   connectorUserId,
+                                                                   connectorGUID,
+                                                                   externalSourceGUID,
+                                                                   externalSourceName,
+                                                                   openMetadataClient,
+                                                                   auditLog,
+                                                                   maxPageSize);
+
+        this.specificationPropertyClient = new SpecificationPropertyClient(this,
+                                                                           localServerName,
+                                                                           localServiceName,
+                                                                           connectorUserId,
+                                                                           connectorGUID,
+                                                                           externalSourceGUID,
+                                                                           externalSourceName,
+                                                                           openMetadataClient,
+                                                                           auditLog,
+                                                                           maxPageSize);
+
+        this.userIdentityClient = new UserIdentityClient(this,
+                                                         localServerName,
+                                                         localServiceName,
+                                                         connectorUserId,
+                                                         connectorGUID,
+                                                         externalSourceGUID,
+                                                         externalSourceName,
+                                                         openMetadataClient,
+                                                         auditLog,
+                                                         maxPageSize);
+
         this.validValueDefinitionClient = new ValidValueDefinitionClient(this,
                                                                          localServerName,
                                                                          localServiceName,
@@ -256,38 +549,7 @@ public abstract class ConnectorContextBase
                                                                          auditLog,
                                                                          maxPageSize);
 
-        this.glossaryClient = new GlossaryClient(this,
-                                                 localServerName,
-                                                 localServiceName,
-                                                 connectorUserId,
-                                                 connectorGUID,
-                                                 externalSourceGUID,
-                                                 externalSourceName,
-                                                 openMetadataClient,
-                                                 auditLog,
-                                                 maxPageSize);
 
-        this.glossaryTermClient = new GlossaryTermClient(this,
-                                                         localServerName,
-                                                         localServiceName,
-                                                         connectorUserId,
-                                                         connectorGUID,
-                                                         externalSourceGUID,
-                                                         externalSourceName,
-                                                         openMetadataClient,
-                                                         auditLog,
-                                                         maxPageSize);
-
-        this.multiLanguageClient = new MultiLanguageClient(this,
-                                                           localServerName,
-                                                           localServiceName,
-                                                           connectorUserId,
-                                                           connectorGUID,
-                                                           externalSourceGUID,
-                                                           externalSourceName,
-                                                           openMetadataClient,
-                                                           auditLog,
-                                                           maxPageSize);
 
         this.validMetadataValuesClient = new ValidMetadataValuesClient(this,
                                                                        localServerName,
@@ -320,6 +582,30 @@ public abstract class ConnectorContextBase
             this.connectorActivityReportWriter = null;
         }
     }
+
+    /*=========================
+     * Return details of the metadata store that this connector is talking to
+     */
+
+
+    /**
+     * Return the name of the server that this client is connected to.
+     *
+     * @return string name
+     */
+    public String getMetadataAccessServer()
+    {
+        return openMetadataClient.getServerName();
+    }
+
+
+    /**
+     * Return the url root for the metadata access server's platform.
+     *
+     * @return string url root
+     */
+    public String getMetadataAccessServerPlatformURLRoot() { return openMetadataClient.getServerPlatformURLRoot(); }
+
 
 
     /* ========================================================
@@ -354,6 +640,18 @@ public abstract class ConnectorContextBase
 
 
     /**
+     * Return the client for managing profiles of a specific subtype.
+     *
+     * @param specificTypeName override type name
+     * @return connector context client
+     */
+    public ActorProfileClient getActorProfileClient(String specificTypeName)
+    {
+        return new ActorProfileClient(actorProfileClient, specificTypeName);
+    }
+
+
+    /**
      * Return the client for managing actor roles.
      *
      * @return connector context client
@@ -361,6 +659,52 @@ public abstract class ConnectorContextBase
     public ActorRoleClient getActorRoleClient()
     {
         return actorRoleClient;
+    }
+
+
+    /**
+     * Return the client for managing roles of a specific subtype.
+     *
+     * @param specificTypeName override type name
+     * @return connector context client
+     */
+    public ActorRoleClient getActorRoleClient(String specificTypeName)
+    {
+        return new ActorRoleClient(actorRoleClient, specificTypeName);
+    }
+
+
+    /**
+     * Return the client for managing annotations for survey reports.
+     *
+     * @return connector context client
+     */
+    public AnnotationClient getAnnotationClient()
+    {
+        return annotationClient;
+    }
+
+
+    /**
+     * Return the client for managing annotations of a specific subtype.
+     *
+     * @param specificTypeName override type name
+     * @return connector context client
+     */
+    public AnnotationClient getAnnotationClient(String specificTypeName)
+    {
+        return new AnnotationClient(annotationClient, specificTypeName);
+    }
+
+
+    /**
+     * Return the client for managing assets.
+     *
+     * @return connector context client
+     */
+    public AssetClient getAssetClient()
+    {
+        return assetClient;
     }
 
 
@@ -377,14 +721,68 @@ public abstract class ConnectorContextBase
 
 
     /**
-     * Return the client for managing assets.
+     * Return the client for managing classifications of a specific subtype.
+     *
+     * @param specificTypeName override type name
+     * @return connector context client
+     */
+    public ClassificationManagerClient getClassificationManagerClient(String specificTypeName)
+    {
+        return new ClassificationManagerClient(classificationManagerClient, specificTypeName);
+    }
+
+
+    /**
+     * Return the client for managing classifications.
      *
      * @return connector context client
      */
-    public AssetClient getAssetClient()
+    public ClassificationManagerClient getClassificationManagerClient()
     {
-        return assetClient;
+        return classificationManagerClient;
     }
+
+
+    /**
+     * Return the client for managing collection of a specific subtype.
+     *
+     * @param specificTypeName override type name
+     * @return connector context client
+     */
+    public CollectionClient getCollectionClient(String specificTypeName)
+    {
+        return new CollectionClient(collectionClient, specificTypeName);
+    }
+
+
+    /**
+     * Return the client for managing collection.
+     *
+     * @return connector context client
+     */
+    public CollectionClient getCollectionClient()
+    {
+        return collectionClient;
+    }
+
+
+    /**
+     * Return the client for managing comments.
+     *
+     * @return connector context client
+     */
+    public CommentClient getCommentClient()
+    {
+        return commentClient;
+    }
+
+
+    /**
+     * Return the client for managing communities.
+     *
+     * @return connector context client
+     */
+    public CommunityClient getCommunityClient() { return communityClient; }
 
 
     /**
@@ -399,13 +797,46 @@ public abstract class ConnectorContextBase
 
 
     /**
-     * Return the client for managing endpoints.
+     * Return the client for managing connector types.
      *
      * @return connector context client
      */
     public ConnectorTypeClient getConnectorTypeClient()
     {
         return connectorTypeClient;
+    }
+
+
+    /**
+     * Return the client for managing data classes.
+     *
+     * @return connector context client
+     */
+    public DataClassClient getDataClassClient()
+    {
+        return dataClassClient;
+    }
+
+
+    /**
+     * Return the client for managing data fields.
+     *
+     * @return connector context client
+     */
+    public DataFieldClient getDataFieldClient()
+    {
+        return dataFieldClient;
+    }
+
+
+    /**
+     * Return the client for managing data structures.
+     *
+     * @return connector context client
+     */
+    public DataStructureClient getDataStructureClient()
+    {
+        return dataStructureClient;
     }
 
 
@@ -420,27 +851,150 @@ public abstract class ConnectorContextBase
     }
 
 
-
     /**
-     * Return the client for managing assets of a specific subtype.
+     * Return the client for managing external ids.
      *
-     * @param specificTypeName override type name
      * @return connector context client
      */
-    public SoftwareCapabilityClient getSoftwareCapabilityClient(String specificTypeName)
+    public ExternalIdClient getExternalIdClient()
     {
-        return new SoftwareCapabilityClient(softwareCapabilityClient, specificTypeName);
+        return externalIdClient;
     }
 
 
     /**
-     * Return the client for managing assets.
+     * Return the client for managing external references.
      *
      * @return connector context client
      */
-    public SoftwareCapabilityClient getSoftwareCapabilityClient()
+    public ExternalReferenceClient getExternalReferenceClient()
     {
-        return softwareCapabilityClient;
+        return externalReferenceClient;
+    }
+
+
+    /**
+     * Return the client for managing glossary terms.
+     *
+     * @return connector context client
+     */
+    public GlossaryTermClient getGlossaryTermClient()
+    {
+        return glossaryTermClient;
+    }
+
+
+    /**
+     * Return the client for managing governance definitions of a specific subtype.
+     *
+     * @param specificTypeName override type name
+     * @return connector context client
+     */
+    public GovernanceDefinitionClient getGovernanceDefinitionClient(String specificTypeName)
+    {
+        return new GovernanceDefinitionClient(governanceDefinitionClient, specificTypeName);
+    }
+
+
+    /**
+     * Return the client for managing governance definitions.
+     *
+     * @return connector context client
+     */
+    public GovernanceDefinitionClient getGovernanceDefinitionClient()
+    {
+        return governanceDefinitionClient;
+    }
+
+
+    /**
+     * Return the client for managing informal tags.
+     *
+     * @return connector context client
+     */
+    public InformalTagClient getInformalTagClient()
+    {
+        return informalTagClient;
+    }
+
+
+
+    /**
+     * Return the client for managing likes.
+     *
+     * @return connector context client
+     */
+    public LikeClient getLikeClient()
+    {
+        return likeClient;
+    }
+
+
+
+    /**
+     * Return the client for managing lineage relationships.
+     *
+     * @return connector context client
+     */
+    public LineageClient getLineageClient()
+    {
+        return lineageClient;
+    }
+
+
+    /**
+     * Return the client for managing locations.
+     *
+     * @return connector context client
+     */
+    public LocationClient getLocationClient()
+    {
+        return locationClient;
+    }
+
+
+    /**
+     * Return the client for managing translations for properties of open metadata elements.
+     *
+     * @return connector context client
+     */
+    public MultiLanguageClient getMultiLanguageClient()
+    {
+        return multiLanguageClient;
+    }
+
+
+    /**
+     * Return the client for managing note logs.
+     *
+     * @return connector context client
+     */
+    public NoteLogClient getNoteLogClient()
+    {
+        return noteLogClient;
+    }
+
+
+
+    /**
+     * Return the client for managing projects.
+     *
+     * @return connector context client
+     */
+    public ProjectClient getProjectClient()
+    {
+        return projectClient;
+    }
+
+
+    /**
+     * Return the client for managing ratings.
+     *
+     * @return connector context client
+     */
+    public RatingClient getRatingClient()
+    {
+        return ratingClient;
     }
 
 
@@ -491,6 +1045,84 @@ public abstract class ConnectorContextBase
 
 
     /**
+     * Return the client for managing search keywords.
+     *
+     * @return connector context client
+     */
+    public SearchKeywordClient getSearchKeywordClient()
+    {
+        return searchKeywordClient;
+    }
+
+
+    /**
+     * Return the client for managing software capabilities of a specific subtype.
+     *
+     * @param specificTypeName override type name
+     * @return connector context client
+     */
+    public SoftwareCapabilityClient getSoftwareCapabilityClient(String specificTypeName)
+    {
+        return new SoftwareCapabilityClient(softwareCapabilityClient, specificTypeName);
+    }
+
+
+    /**
+     * Return the client for managing software capabilities.
+     *
+     * @return connector context client
+     */
+    public SoftwareCapabilityClient getSoftwareCapabilityClient()
+    {
+        return softwareCapabilityClient;
+    }
+
+
+    /**
+     * Return the client for managing solution blueprints.
+     *
+     * @return connector context client
+     */
+    public SolutionBlueprintClient getSolutionBlueprintClient()
+    {
+        return solutionBlueprintClient;
+    }
+
+
+    /**
+     * Return the client for managing solution components.
+     *
+     * @return connector context client
+     */
+    public SolutionComponentClient getSolutionComponentClient()
+    {
+        return solutionComponentClient;
+    }
+
+
+    /**
+     * Return the client for managing specification properties.
+     *
+     * @return connector context client
+     */
+    public SpecificationPropertyClient getSpecificationPropertyClient()
+    {
+        return specificationPropertyClient;
+    }
+
+
+    /**
+     * Return the client for managing user identities.
+     *
+     * @return connector context client
+     */
+    public UserIdentityClient getUserIdentityClient()
+    {
+        return userIdentityClient;
+    }
+
+
+    /**
      * Return the client for managing valid value definitions.
      *
      * @return connector context client
@@ -502,60 +1134,15 @@ public abstract class ConnectorContextBase
 
 
     /**
-     * Return the client for managing assets of a specific subtype.
+     * Return the client for managing valid value definitions.
      *
-     * @param specificTypeName override type name
+     * @param specialistTypeName override type name
      * @return connector context client
      */
-    public GovernanceDefinitionClient getGovernanceDefinitionClient(String specificTypeName)
+    public ValidValueDefinitionClient getValidValueDefinitionClient(String specialistTypeName)
     {
-        return new GovernanceDefinitionClient(governanceDefinitionClient, specificTypeName);
+        return new ValidValueDefinitionClient(validValueDefinitionClient, specialistTypeName);
     }
-
-
-    /**
-     * Return the client for managing assets.
-     *
-     * @return connector context client
-     */
-    public GovernanceDefinitionClient getGovernanceDefinitionClient()
-    {
-        return governanceDefinitionClient;
-    }
-
-
-    /**
-     * Return the client for managing glossaries.
-     *
-     * @return connector context client
-     */
-    public GlossaryClient getGlossaryClient()
-    {
-        return glossaryClient;
-    }
-
-
-    /**
-     * Return the client for managing glossary terms.
-     *
-     * @return connector context client
-     */
-    public GlossaryTermClient getGlossaryTermClient()
-    {
-        return glossaryTermClient;
-    }
-
-
-    /**
-     * Return the client for managing translations for properties of open metadata elements.
-     *
-     * @return connector context client
-     */
-    public MultiLanguageClient getMultiLanguageClient()
-    {
-        return multiLanguageClient;
-    }
-
 
 
     /**
@@ -740,16 +1327,9 @@ public abstract class ConnectorContextBase
 
             if (anchorClassification != null)
             {
-                Map<String, Object> properties = anchorClassification.getClassificationProperties();
-
-                if (properties != null)
+                if (anchorClassification.getClassificationProperties() instanceof AnchorsProperties anchorsProperties)
                 {
-                    Object anchorGUID = properties.get(OpenMetadataProperty.ANCHOR_GUID.name);
-
-                    if (anchorGUID != null)
-                    {
-                        return anchorGUID.toString();
-                    }
+                    return anchorsProperties.getAnchorGUID();
                 }
             }
         }
@@ -1136,6 +1716,178 @@ public abstract class ConnectorContextBase
                                                        contextEventEvidenceGUIDs,
                                                        contextEventProperties);
     }
+
+
+    /**
+     * Create a specific governance action process from a generic governance action type.
+     *
+     * @param processQualifiedName new qualified name for the process
+     * @param processName new name for the process
+     * @param processDescription new description for the process
+     * @param governanceActionTypeGUID the unique identifier of the governance action type
+     * @param additionalRequestParameters the additional, predefined request parameters to add to the
+     *                                   GovernanceActionProcessFlow relationship
+     * @param anchorScopeGUID unique identifier for the top level project - used as a search scope
+     * @return unique identifier of new governance action process
+     * @throws InvalidParameterException parameter error
+     * @throws PropertyServerException repository error
+     * @throws UserNotAuthorizedException authorization error
+     */
+    public String createProcessFromGovernanceActionType(String processQualifiedName,
+                                                        String processName,
+                                                        String processDescription,
+                                                        String governanceActionTypeGUID,
+                                                        Map<String, String> additionalRequestParameters,
+                                                        String anchorGUID,
+                                                        String anchorScopeGUID) throws InvalidParameterException,
+                                                                                                     PropertyServerException,
+                                                                                                     UserNotAuthorizedException
+    {
+        String processGUID = this.createGovernanceActionProcess(processQualifiedName, processName, processDescription,anchorGUID, anchorScopeGUID);
+
+        OpenMetadataElement governanceActionType = openMetadataStore.getMetadataElementByGUID(governanceActionTypeGUID);
+
+        if (governanceActionType != null)
+        {
+            RelatedMetadataElement governanceActionExecutorRelationship = openMetadataStore.getRelatedMetadataElement(governanceActionTypeGUID,
+                                                                                                                      1,
+                                                                                                                      OpenMetadataType.GOVERNANCE_ACTION_EXECUTOR_RELATIONSHIP.typeName,
+                                                                                                                      null);
+
+            if (governanceActionExecutorRelationship != null)
+            {
+                String governanceEngineGUID = governanceActionExecutorRelationship.getElement().getElementGUID();
+
+                ElementProperties processStepProperties = propertyHelper.addStringProperty(governanceActionType.getElementProperties(),
+                                                                                           OpenMetadataProperty.QUALIFIED_NAME.name,
+                                                                                           processQualifiedName + ":processStep1");
+
+                ElementProperties processFlowProperties = propertyHelper.addStringMapProperty(null,
+                                                                                              OpenMetadataProperty.REQUEST_PARAMETERS.name,
+                                                                                              additionalRequestParameters);
+
+                String processStep1GUID = openMetadataStore.createMetadataElementInStore(OpenMetadataType.GOVERNANCE_ACTION_PROCESS_STEP.typeName,
+                                                                                         ElementStatus.ACTIVE,
+                                                                                         null,
+                                                                                         processGUID,
+                                                                                         false,
+                                                                                         anchorScopeGUID,
+                                                                                         new NewElementProperties(processStepProperties),
+                                                                                         processGUID,
+                                                                                         OpenMetadataType.GOVERNANCE_ACTION_PROCESS_FLOW_RELATIONSHIP.typeName,
+                                                                                         new NewElementProperties(processFlowProperties),
+                                                                                         true);
+
+                openMetadataStore.createRelatedElementsInStore(OpenMetadataType.GOVERNANCE_ACTION_EXECUTOR_RELATIONSHIP.typeName,
+                                                               processStep1GUID,
+                                                               governanceEngineGUID,
+                                                               null,
+                                                               null,
+                                                               governanceActionExecutorRelationship.getRelationshipProperties());
+
+
+                /*
+                 * Copy the pre-populated governance action targets to the new process.
+                 */
+                RelatedMetadataElementList actionTargets = openMetadataStore.getRelatedMetadataElements(governanceActionTypeGUID,
+                                                                                                        1,
+                                                                                                        OpenMetadataType.TARGET_FOR_GOVERNANCE_ACTION_RELATIONSHIP.typeName,
+                                                                                                        0,
+                                                                                                        0);
+
+                if ((actionTargets != null) && (actionTargets.getElementList() != null))
+                {
+                    for (RelatedMetadataElement actionTarget : actionTargets.getElementList())
+                    {
+                        if (actionTarget != null)
+                        {
+                            openMetadataStore.createRelatedElementsInStore(OpenMetadataType.TARGET_FOR_GOVERNANCE_ACTION_RELATIONSHIP.typeName,
+                                                                           processGUID,
+                                                                           actionTarget.getElement().getElementGUID(),
+                                                                           null,
+                                                                           null,
+                                                                           actionTarget.getRelationshipProperties());
+                        }
+                    }
+                }
+
+
+                RelatedMetadataElementList specifications = openMetadataStore.getRelatedMetadataElements(governanceActionTypeGUID,
+                                                                                                         1,
+                                                                                                         OpenMetadataType.SPECIFICATION_PROPERTY_ASSIGNMENT_RELATIONSHIP.typeName,
+                                                                                                         0,
+                                                                                                         0);
+
+                if ((specifications != null) && (specifications.getElementList() != null))
+                {
+                    for (RelatedMetadataElement specification : specifications.getElementList())
+                    {
+                        if (specification != null)
+                        {
+                            openMetadataStore.createRelatedElementsInStore(OpenMetadataType.SPECIFICATION_PROPERTY_ASSIGNMENT_RELATIONSHIP.typeName,
+                                                                           processGUID,
+                                                                           specification.getElement().getElementGUID(),
+                                                                           null,
+                                                                           null,
+                                                                           specification.getRelationshipProperties());
+                        }
+                    }
+                }
+            }
+        }
+
+        return processGUID;
+    }
+
+
+    /**
+     * Create the governance action process asset.
+     *
+     * @param processQualifiedName new qualified name for the process
+     * @param processName new name for the process
+     * @param processDescription new description for the process
+     * @param anchorGUID unique identifier for the anchor = may be null
+     * @param anchorScopeGUID unique identifier for the top level folder - used as a search scope
+     * @return unique identifier of new governance action process
+     * @throws InvalidParameterException parameter error
+     * @throws PropertyServerException repository error
+     * @throws UserNotAuthorizedException authorization error
+     */
+    public String createGovernanceActionProcess(String processQualifiedName,
+                                                String processName,
+                                                String processDescription,
+                                                String anchorGUID,
+                                                String anchorScopeGUID) throws InvalidParameterException,
+                                                                               PropertyServerException,
+                                                                               UserNotAuthorizedException
+    {
+
+        ElementProperties processProperties = propertyHelper.addStringProperty(null,
+                                                                               OpenMetadataProperty.QUALIFIED_NAME.name,
+                                                                               processQualifiedName);
+
+        processProperties = propertyHelper.addStringProperty(processProperties,
+                                                             OpenMetadataProperty.DISPLAY_NAME.name,
+                                                             processName);
+
+        processProperties = propertyHelper.addStringProperty(processProperties,
+                                                             OpenMetadataProperty.DESCRIPTION.name,
+                                                             processDescription);
+
+        return openMetadataStore.createMetadataElementInStore(OpenMetadataType.GOVERNANCE_ACTION_PROCESS.typeName,
+                                                              ElementStatus.ACTIVE,
+                                                              null,
+                                                              anchorGUID,
+                                                              (anchorGUID == null),
+                                                              anchorScopeGUID,
+                                                              new NewElementProperties(processProperties),
+                                                              null,
+                                                              null,
+                                                              null,
+                                                              false);
+    }
+
+
 
 
     /**

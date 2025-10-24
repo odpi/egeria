@@ -16,6 +16,8 @@ import org.odpi.openmetadata.frameworks.openmetadata.enums.CapabilityAssetUseTyp
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.OpenMetadataRootElement;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.ReferenceableProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.processes.connectors.CatalogTargetProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.OpenMetadataElement;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.RelatedMetadataElement;
@@ -153,10 +155,10 @@ public class PostgresServerIntegrationConnector extends IntegrationConnectorBase
     {
         final String methodName = "integrateCatalogTarget";
 
-        if (PostgresDeployedImplementationType.POSTGRESQL_SERVER.getAssociatedTypeName().equals(requestedCatalogTarget.getCatalogTargetElement().getType().getTypeName()))
+        if (PostgresDeployedImplementationType.POSTGRESQL_SERVER.getAssociatedTypeName().equals(requestedCatalogTarget.getCatalogTargetElement().getElementHeader().getType().getTypeName()))
         {
-            String databaseServerGUID = requestedCatalogTarget.getCatalogTargetElement().getGUID();
-            String databaseManagerGUID = this.getDatabaseManagerGUID(databaseServerGUID, requestedCatalogTarget.getCatalogTargetElement().getUniqueName());
+            String databaseServerGUID = requestedCatalogTarget.getCatalogTargetElement().getElementHeader().getGUID();
+            String databaseManagerGUID = this.getDatabaseManagerGUID(databaseServerGUID, requestedCatalogTarget.getCatalogTargetElement());
             try
             {
                 Connector connector = integrationContext.getConnectedAssetContext().getConnectorForAsset(databaseServerGUID, auditLog);
@@ -185,8 +187,8 @@ public class PostgresServerIntegrationConnector extends IntegrationConnectorBase
         }
         else
         {
-            super.throwWrongTypeOfAsset(requestedCatalogTarget.getCatalogTargetElement().getGUID(),
-                                        requestedCatalogTarget.getCatalogTargetElement().getType().getTypeName(),
+            super.throwWrongTypeOfAsset(requestedCatalogTarget.getCatalogTargetElement().getElementHeader().getGUID(),
+                                        requestedCatalogTarget.getCatalogTargetElement().getElementHeader().getType().getTypeName(),
                                         PostgresDeployedImplementationType.POSTGRESQL_SERVER.getAssociatedTypeName(),
                                         connectorName,
                                         methodName);
@@ -198,12 +200,11 @@ public class PostgresServerIntegrationConnector extends IntegrationConnectorBase
      * Retrieve or recreate the database manager for this PostgreSQL Server.
      *
      * @param databaseServerGUID unique identifier of the database server
-     * @param databaseServerQualifiedName unique name of the database server
+     * @param databaseServerElement unique name of the database server
      * @return unique identifier of the database manager
-     * @throws ConnectorCheckedException there is an unrecoverable error and the connector should stop processing.
      */
-    private String getDatabaseManagerGUID(String databaseServerGUID,
-                                          String databaseServerQualifiedName)
+    private String getDatabaseManagerGUID(String                  databaseServerGUID,
+                                          OpenMetadataRootElement databaseServerElement)
     {
         final String methodName = "getDatabaseManagerGUID";
 
@@ -213,7 +214,7 @@ public class PostgresServerIntegrationConnector extends IntegrationConnectorBase
         {
             OpenMetadataStore openMetadataStore = integrationContext.getOpenMetadataStore();
 
-            int                          startFrom = 0;
+            int                        startFrom = 0;
             RelatedMetadataElementList relatedCapabilities = openMetadataStore.getRelatedMetadataElements(databaseServerGUID,
                                                                                                            1,
                                                                                                            OpenMetadataType.SUPPORTED_SOFTWARE_CAPABILITY_RELATIONSHIP.typeName,
@@ -240,6 +241,13 @@ public class PostgresServerIntegrationConnector extends IntegrationConnectorBase
 
             if (databaseManagerGUID == null)
             {
+                String databaseServerQualifiedName = null;
+
+                if (databaseServerElement.getProperties() instanceof ReferenceableProperties referenceableProperties)
+                {
+                    databaseServerQualifiedName = referenceableProperties.getQualifiedName();
+                }
+
                 NewElementOptions newElementOptions = new NewElementOptions(openMetadataStore.getMetadataSourceOptions());
 
                 newElementOptions.setInitialStatus(ElementStatus.ACTIVE);
@@ -522,7 +530,10 @@ public class PostgresServerIntegrationConnector extends IntegrationConnectorBase
 
                 catalogTargetProperties.setConfigurationProperties(targetConfigurationProperties);
 
-                String relationshipGUID = integrationContext.getConnectorConfigClient().addCatalogTarget(friendshipConnectorGUID, databaseGUID, catalogTargetProperties);
+                String relationshipGUID = integrationContext.getAssetClient().addCatalogTarget(friendshipConnectorGUID,
+                                                                                               databaseGUID,
+                                                                                               integrationContext.getAssetClient().getMetadataSourceOptions(),
+                                                                                               catalogTargetProperties);
 
                 auditLog.logMessage(methodName,
                                     PostgresAuditCode.NEW_CATALOG_TARGET.getMessageDefinition(connectorName,

@@ -71,51 +71,6 @@ public class GovernanceEngineMap
 
 
     /**
-     * Retrieve, or create the governance handler for a governance engine.
-     *
-     * @param governanceEngineGUID unique identifier of the governance engine definition in open metadata
-     * @param governanceEngineName unique name of the governance engine definition in open metadata
-     * @return governance engine handler
-     */
-    public synchronized GovernanceEngineHandler getGovernanceEngineHandler(String governanceEngineGUID,
-                                                                           String governanceEngineName)
-    {
-        final String methodName = "getGovernanceEngineHandler(guid, name)";
-
-        GovernanceEngineHandlerProperties engineHandlerProperties = governanceEngineHandlerMap.get(governanceEngineName);
-
-        if (engineHandlerProperties != null)
-        {
-            GovernanceEngineHandler governanceEngineHandler = engineHandlerProperties.getGovernanceEngineHandler();
-
-            if (governanceEngineHandler == null)
-            {
-                try
-                {
-                    GovernanceEngineElement governanceEngineElement = configurationClient.getGovernanceEngineByGUID(localServerUserId,
-                                                                                                                        governanceEngineGUID);
-
-                    governanceEngineHandler = this.createGovernanceEngineHandler(governanceEngineElement);
-                }
-                catch (Exception error)
-                {
-                    auditLog.logException(methodName,
-                                          EngineHostServicesAuditCode.GOVERNANCE_ENGINE_NO_CONFIG.getMessageDefinition(governanceEngineGUID,
-                                                                                                                       governanceEngineName,
-                                                                                                                       error.getClass().getName(),
-                                                                                                                       error.getMessage()),
-                                          error);
-                }
-            }
-
-            return governanceEngineHandler;
-        }
-
-        return null;
-    }
-
-
-    /**
      * Return the governance engine handler for a specific governance engine name if known.
      * If the handler does not yet exist, null is returned
      *
