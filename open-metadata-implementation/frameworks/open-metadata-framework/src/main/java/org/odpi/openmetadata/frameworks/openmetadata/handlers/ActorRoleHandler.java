@@ -59,6 +59,19 @@ public class ActorRoleHandler extends OpenMetadataHandlerBase
 
 
     /**
+     * Create a new handler.
+     *
+     * @param template        properties to copy
+     * @param specificTypeName   subtype to control handler
+     */
+    public ActorRoleHandler(ActorRoleHandler template,
+                            String       specificTypeName)
+    {
+        super(template, specificTypeName);
+    }
+
+
+    /**
      * Create a new actor role.
      *
      * @param userId                       userId of user making request.
@@ -416,6 +429,7 @@ public class ActorRoleHandler extends OpenMetadataHandlerBase
         final String methodName = "getActorRolesByName";
 
         List<String> propertyNames = Arrays.asList(OpenMetadataProperty.QUALIFIED_NAME.name,
+                                                   OpenMetadataProperty.IDENTIFIER.name,
                                                    OpenMetadataProperty.DISPLAY_NAME.name);
 
         return super.getRootElementsByName(userId, name, propertyNames, queryOptions, methodName);

@@ -10,7 +10,6 @@ import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataWikiPages
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
-import static org.odpi.openmetadata.frameworks.openmetadata.mapper.OpenMetadataValidValues.constructValidValueNamespace;
 import static org.odpi.openmetadata.frameworks.openmetadata.mapper.OpenMetadataValidValues.constructValidValueQualifiedName;
 
 /**
@@ -26,7 +25,8 @@ import static org.odpi.openmetadata.frameworks.openmetadata.mapper.OpenMetadataV
 @JsonAutoDetect(getterVisibility = PUBLIC_ONLY, setterVisibility = PUBLIC_ONLY, fieldVisibility = NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown = true)
-public enum PortType implements OpenMetadataEnum
+public enum
+    PortType implements OpenMetadataEnum
 {
     /**
      * Input Port - Data is passed into the process.
@@ -215,18 +215,6 @@ public enum PortType implements OpenMetadataEnum
 
 
     /**
-     * Return the category for this value.
-     *
-     * @return string
-     */
-    public String getCategory()
-    {
-        return constructValidValueNamespace(ENUM_TYPE_NAME,
-                                            OpenMetadataProperty.PORT_TYPE.name,
-                                            null);
-    }
-
-    /**
      * Standard toString method.
      *
      * @return print out of variables in a JSON-style
@@ -234,6 +222,12 @@ public enum PortType implements OpenMetadataEnum
     @Override
     public String toString()
     {
-        return "PortType{" + name + '}';
+        return "PortType{" +
+            "ordinal=" + ordinal +
+            ", name='" + name + '\'' +
+            ", description='" + description + '\'' +
+            ", descriptionGUID='" + descriptionGUID + '\'' +
+            '}';
+
     }
 }

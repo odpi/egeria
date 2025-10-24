@@ -3,7 +3,6 @@
 package org.odpi.openmetadata.frameworks.openmetadata.properties.softwarecapabilities;
 
 import com.fasterxml.jackson.annotation.*;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.ClassificationBeanProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
@@ -22,11 +21,10 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
         property = "class")
 // todo this mapping is not complete
 @JsonSubTypes({
-        @JsonSubTypes.Type(value = AssetManagerProperties.class, name = "AssetManagerProperties"),
         @JsonSubTypes.Type(value = ChangeManagementLibraryProperties.class, name = "ChangeManagementLibraryProperties"),
         @JsonSubTypes.Type(value = ContentCollectionManagerProperties.class, name = "ContentCollectionManagerProperties"),
-        @JsonSubTypes.Type(value = FileSystemProperties.class, name = "FileSystemProperties"),
         @JsonSubTypes.Type(value = FileManagerProperties.class, name = "FileManagerProperties"),
+        @JsonSubTypes.Type(value = FileSystemProperties.class, name = "FileSystemProperties"),
         @JsonSubTypes.Type(value = NotificationManagerProperties.class, name = "NotificationManagerProperties"),
         @JsonSubTypes.Type(value = MasterDataManagerProperties.class, name = "MasterDataManagerProperties"),
         @JsonSubTypes.Type(value = SourceControlLibraryProperties.class, name = "SourceControlLibraryProperties"),
@@ -35,7 +33,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
         @JsonSubTypes.Type(value = UserProfileManagerProperties.class, name = "UserProfileManagerProperties"),
 
 })
-public class ResourceManagerProperties extends ClassificationBeanProperties
+public class ResourceManagerProperties extends SoftwareCapabilityProperties
 {
     /**
      * Default constructor
@@ -43,7 +41,7 @@ public class ResourceManagerProperties extends ClassificationBeanProperties
     public ResourceManagerProperties()
     {
         super();
-        super.setTypeName(OpenMetadataType.RESOURCE_MANAGER_CLASSIFICATION.typeName);
+        super.setTypeName(OpenMetadataType.RESOURCE_MANAGER.typeName);
     }
 
 

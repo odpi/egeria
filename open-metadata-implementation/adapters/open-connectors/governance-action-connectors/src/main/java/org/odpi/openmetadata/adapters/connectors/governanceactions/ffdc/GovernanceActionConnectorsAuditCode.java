@@ -76,22 +76,22 @@ public enum GovernanceActionConnectorsAuditCode implements AuditLogMessageSet
      * GOVERNANCE-ACTION-CONNECTORS-0006 - The {0} governance action service is unable to provision file {1} 
      * to {2} destination folder using {3} file pattern
      */
-    PROVISIONING_FAILURE("GOVERNANCE-ACTION-CONNECTORS-0006",
-                         AuditLogRecordSeverityLevel.ERROR,
-                              "The {0} governance action service is unable to provision file {1} to {2} destination folder using {3} file pattern",
-                              "This message is logged and the governance action is marked as failed",
-                              "Since no exception occurred it means that there are currently files already occupying all the possible file names allowed by the file pattern.  " +
+    FILE_PATTERN_FULL("GOVERNANCE-ACTION-CONNECTORS-0006",
+                      AuditLogRecordSeverityLevel.ERROR,
+                      "The {0} governance action service is unable to provision file {1} to {2} destination folder using {3} file pattern",
+                      "This message is logged and the governance action is marked as failed",
+                      "Since no exception occurred it means that there are currently files already occupying all the possible file names allowed by the file pattern.  " +
                                       "Files in the destination folder need to be deleted or this connector needs to be reconfigured with a new destination folder or file pattern."),
 
     /**
      * GOVERNANCE-ACTION-CONNECTORS-0007 - The {0} governance action service encountered an {1} exception when provisioning file {2} to {3}
      * destination folder using the {4} file pattern.  The exception message included was {5}
      */
-    PROVISIONING_EXCEPTION("GOVERNANCE-ACTION-CONNECTORS-0007",
-                           AuditLogRecordSeverityLevel.EXCEPTION,
-                          "The {0} governance action service encountered an {1} exception when provisioning file {2} to {3} destination folder using the {4} file pattern.  The exception message included was {5}",
-                          "The exception is logged.  More messages may follow if follow on attempts are made to provision the file.  These can help to determine how to recover from this error.",
-                          "This message contains the exception that was the original cause of the problem. Use the information from the " +
+    FILE_PROVISIONING_EXCEPTION("GOVERNANCE-ACTION-CONNECTORS-0007",
+                                AuditLogRecordSeverityLevel.EXCEPTION,
+                                "The {0} governance action service encountered an {1} exception when provisioning file {2} to {3} destination folder using the {4} file pattern.  The exception message included was {5}",
+                                "The exception is logged.  More messages may follow if follow on attempts are made to provision the file.  These can help to determine how to recover from this error.",
+                                "This message contains the exception that was the original cause of the problem. Use the information from the " +
                                   "exception stack trace to determine why the connector is not able to access the directory and resolve that issue.  " +
                                   "Use the messages that where subsequently logged during the error handling to discover how to restart the " +
                                   "connector in the integration daemon once the original cause of the error has been corrected."),
@@ -411,13 +411,33 @@ public enum GovernanceActionConnectorsAuditCode implements AuditLogMessageSet
                          "Use the details from the error message to determine the cause of the error and retry the request once it is resolved."),
 
     /**
-     * GOVERNANCE-ACTION-CONNECTORS-0038 - The governance action service {0} received an unexpected {1} exception during method {2}; the error message was: {3}
+     * GOVERNANCE-ACTION-CONNECTORS-0038 - The governance action service {0} completed successfully
      */
     SERVICE_COMPLETED_SUCCESSFULLY("GOVERNANCE-ACTION-CONNECTORS-0038",
-                         AuditLogRecordSeverityLevel.EXCEPTION,
+                         AuditLogRecordSeverityLevel.INFO,
                          "The governance service {0} has completed successfully",
                          "The service is shutting down.",
                          "No action is required except to validate that the shutdown is occurring at an appropriate time."),
+
+    /**
+     * GOVERNANCE-ACTION-CONNECTORS-0039 - The {0} governance action service has not been passed a {1} request parameter
+     */
+    MISSING_REQUEST_PARAMETER("GOVERNANCE-ACTION-CONNECTORS-0039",
+                          AuditLogRecordSeverityLevel.ERROR,
+                          "The {0} governance action service has not been passed a {1} request parameter",
+                          "The governance action service returns an INVALID completion status with this message.",
+                          "This is an error in the way that the governance action service has been called since a vital piece of information is missing." +
+                                  "Identify the way it was called which could be a direct invocation through the initiateGovernanceAction() method," +
+                                  "or as part of a governance action process.  Then correct this approach so that this request parameter is set up."),
+
+    /**
+     * GOVERNANCE-ACTION-CONNECTORS-0040 - The {0} governance action service has created a new {1} digital subscription {2} for {3} {4} ({5}) requested by {6} {7} ({8})
+     */
+    NEW_SUBSCRIPTION_CREATED("GOVERNANCE-ACTION-CONNECTORS-0040",
+                      AuditLogRecordSeverityLevel.INFO,
+                      "The {0} governance action service has created a new {1} digital subscription {2} for {3} {4} ({5}) requested by {6} {7} ({8})",
+                      "The governance action service returns an ACTIONED completion status with this subscription as a new action target.",
+                      "Ensure follow-on uses of the subscription are successful."),
 
     ;
 

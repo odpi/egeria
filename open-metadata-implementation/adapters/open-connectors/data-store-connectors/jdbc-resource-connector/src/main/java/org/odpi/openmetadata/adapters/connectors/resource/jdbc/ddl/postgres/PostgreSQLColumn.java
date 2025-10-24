@@ -11,11 +11,11 @@ import org.odpi.openmetadata.adapters.connectors.resource.jdbc.properties.Column
 public interface PostgreSQLColumn
 {
     /**
-     * retrieve the name of the column.
+     * Retrieve the name of the column.
      *
      * @return name
      */
-    public String getColumnName();
+    String getColumnName();
 
 
     /**
@@ -23,7 +23,7 @@ public interface PostgreSQLColumn
      *
      * @return ColumnType
      */
-    public ColumnType getColumnType();
+    ColumnType getColumnType();
 
 
     /**
@@ -31,7 +31,7 @@ public interface PostgreSQLColumn
      *
      * @return text
      */
-    public String getColumnDescription();
+    String getColumnDescription();
 
 
     /**
@@ -39,5 +39,5 @@ public interface PostgreSQLColumn
      *
      * @return boolean
      */
-    public boolean isNotNull();
+    boolean isNotNull();
 }

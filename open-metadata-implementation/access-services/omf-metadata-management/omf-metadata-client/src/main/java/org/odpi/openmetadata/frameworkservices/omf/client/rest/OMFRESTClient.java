@@ -3,8 +3,7 @@
 package org.odpi.openmetadata.frameworkservices.omf.client.rest;
 
 
-import org.odpi.openmetadata.commonservices.ffdc.rest.BooleanResponse;
-import org.odpi.openmetadata.commonservices.ffdc.rest.FFDCRESTClient;
+import org.odpi.openmetadata.commonservices.ffdc.rest.*;
 import org.odpi.openmetadata.frameworkservices.omf.rest.*;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
@@ -702,83 +701,6 @@ public class OMFRESTClient extends FFDCRESTClient
         return restResult;
     }
 
-
-    /**
-     * Issue a GET REST call that returns a ValidMetadataValueDetailListResponse object.
-     *
-     * @param methodName  name of the method being called.
-     * @param urlTemplate template of the URL for the REST API call, with place-holders for the parameters.
-     * @param params      a list of parameters that are slotted into the url template.
-     *
-     * @return response object
-     * @throws InvalidParameterException one of the parameters is invalid.
-     * @throws UserNotAuthorizedException the user is not authorized to make this request.
-     * @throws PropertyServerException the repository is not available or not working properly.
-     */
-    public ValidMetadataValueDetailListResponse callValidMetadataValueDetailListGetRESTCall(String    methodName,
-                                                                                            String    urlTemplate,
-                                                                                            Object... params) throws InvalidParameterException,
-                                                                                                         UserNotAuthorizedException,
-                                                                                                         PropertyServerException
-    {
-        ValidMetadataValueDetailListResponse restResult = this.callGetRESTCall(methodName, ValidMetadataValueDetailListResponse.class, urlTemplate, params);
-
-        exceptionHandler.detectAndThrowStandardExceptions(methodName, restResult);
-
-        return restResult;
-    }
-
-
-    /**
-     * Issue a GET REST call that returns a ValidMetadataValueListResponse object.
-     *
-     * @param methodName  name of the method being called.
-     * @param urlTemplate template of the URL for the REST API call, with place-holders for the parameters.
-     * @param params      a list of parameters that are slotted into the url template.
-     *
-     * @return response object
-     * @throws InvalidParameterException one of the parameters is invalid.
-     * @throws UserNotAuthorizedException the user is not authorized to make this request.
-     * @throws PropertyServerException the repository is not available or not working properly.
-     */
-    public ValidMetadataValueListResponse callValidMetadataValueListGetRESTCall(String    methodName,
-                                                                                String    urlTemplate,
-                                                                                Object... params) throws InvalidParameterException,
-                                                                                                         UserNotAuthorizedException,
-                                                                                                         PropertyServerException
-    {
-        ValidMetadataValueListResponse restResult = this.callGetRESTCall(methodName, ValidMetadataValueListResponse.class, urlTemplate, params);
-
-        exceptionHandler.detectAndThrowStandardExceptions(methodName, restResult);
-
-        return restResult;
-    }
-
-
-    /**
-     * Issue a GET REST call that returns a ValidMetadataValueResponse object.
-     *
-     * @param methodName  name of the method being called.
-     * @param urlTemplate template of the URL for the REST API call, with place-holders for the parameters.
-     * @param params      a list of parameters that are slotted into the url template.
-     *
-     * @return response object
-     * @throws InvalidParameterException one of the parameters is invalid.
-     * @throws UserNotAuthorizedException the user is not authorized to make this request.
-     * @throws PropertyServerException the repository is not available or not working properly.
-     */
-    public ValidMetadataValueResponse callValidMetadataValueGetRESTCall(String    methodName,
-                                                                        String    urlTemplate,
-                                                                        Object... params) throws InvalidParameterException,
-                                                                                                 UserNotAuthorizedException,
-                                                                                                 PropertyServerException
-    {
-        ValidMetadataValueResponse restResult = this.callGetRESTCall(methodName, ValidMetadataValueResponse.class, urlTemplate, params);
-
-        exceptionHandler.detectAndThrowStandardExceptions(methodName, restResult);
-
-        return restResult;
-    }
 
 
     /**

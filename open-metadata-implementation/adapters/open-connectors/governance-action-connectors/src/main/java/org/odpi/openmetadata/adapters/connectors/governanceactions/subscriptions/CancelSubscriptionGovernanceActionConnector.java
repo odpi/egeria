@@ -6,16 +6,17 @@ package org.odpi.openmetadata.adapters.connectors.governanceactions.subscription
 import org.odpi.openmetadata.adapters.connectors.governanceactions.ffdc.GovernanceActionConnectorsAuditCode;
 import org.odpi.openmetadata.adapters.connectors.governanceactions.ffdc.GovernanceActionConnectorsErrorCode;
 import org.odpi.openmetadata.adapters.connectors.governanceactions.stewardship.ManageAssetGuard;
-import org.odpi.openmetadata.adapters.connectors.governanceactions.stewardship.ManageAssetRequestParameter;
 import org.odpi.openmetadata.frameworks.auditlog.messagesets.AuditLogMessageDefinition;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
 import org.odpi.openmetadata.frameworks.opengovernance.GeneralGovernanceActionService;
-import org.odpi.openmetadata.frameworks.opengovernance.controls.ActionTarget;
-import org.odpi.openmetadata.frameworks.opengovernance.properties.CompletionStatus;
+import org.odpi.openmetadata.frameworks.opengovernance.properties.ActionTargetElement;
+import org.odpi.openmetadata.frameworks.openmetadata.enums.CompletionStatus;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.NewActionTarget;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.OpenMetadataElement;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.OpenMetadataRelationship;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.OpenMetadataRelationshipList;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
+import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -54,58 +55,55 @@ public class CancelSubscriptionGovernanceActionConnector extends GeneralGovernan
             List<NewActionTarget>     outputActionTargets = new ArrayList<>();
             CompletionStatus          completionStatus;
             AuditLogMessageDefinition messageDefinition;
-            String                    templateGUID;
 
-            templateGUID = getProperty(ManageAssetRequestParameter.TEMPLATE_GUID.getName(), null);
+            ActionTargetElement subscription = super.getActionTarget(ManageDigitalSubscriptionActionTarget.DIGITAL_SUBSCRIPTION.getName());
 
-            if (templateGUID == null)
+            if (subscription == null)
             {
-                messageDefinition = GovernanceActionConnectorsAuditCode.NO_TEMPLATE_GUID.getMessageDefinition(governanceServiceName);
-                outputGuards.add(ManageAssetGuard.MISSING_TEMPLATE.getName());
-                completionStatus = ManageAssetGuard.MISSING_TEMPLATE.getCompletionStatus();
+                messageDefinition = GovernanceActionConnectorsAuditCode.MISSING_ACTION_TARGET.getMessageDefinition(governanceServiceName, ManageDigitalSubscriptionActionTarget.DIGITAL_SUBSCRIPTION.getName());
+                outputGuards.add(ManageDigitalSubscriptionGuard.MISSING_ACTION_TARGET.getName());
+                completionStatus = ManageDigitalSubscriptionGuard.MISSING_ACTION_TARGET.getCompletionStatus();
             }
             else
             {
-                String assetGUID = governanceContext.getOpenMetadataStore().getMetadataElementFromTemplate(null,
-                                                                                                            null,
-                                                                                                            true,
-                                                                                                            null,
-                                                                                                            null,
-                                                                                                            null,
-                                                                                                            templateGUID,
-                                                                                                            null,
-                                                                                                            governanceContext.getRequestParameters(),
-                                                                                                            null,
-                                                                                                            null,
-                                                                                                            null,
-                                                                                                            true);
+                governanceContext.getCollectionClient().deleteCollection(subscription.getActionTargetGUID(), null);
 
-                OpenMetadataElement assetElement = governanceContext.getOpenMetadataStore().getMetadataElementByGUID(assetGUID);
+                ActionTargetElement licenceType = super.getActionTarget(ManageDigitalSubscriptionActionTarget.LICENSE_TYPE.getName());
+                ActionTargetElement targetAsset = super.getActionTarget(ManageDigitalSubscriptionActionTarget.DIGITAL_SUBSCRIPTION_TARGET.getName());
 
-                messageDefinition = GovernanceActionConnectorsAuditCode.NEW_ASSET_CREATED.getMessageDefinition(governanceServiceName,
-                                                                                                               assetElement.getType().getTypeName(),
-                                                                                                               propertyHelper.getStringProperty(governanceServiceName,
-                                                                                                                                                OpenMetadataProperty.QUALIFIED_NAME.name,
-                                                                                                                                                assetElement.getElementProperties(),
-                                                                                                                                                methodName),
-                                                                                                               assetGUID);
-                NewActionTarget newActionTarget = new NewActionTarget();
+                if ((licenceType != null) && (targetAsset != null))
+                {
+                    OpenMetadataRelationshipList licenses = governanceContext.getOpenMetadataStore().getMetadataElementRelationships(targetAsset.getActionTargetGUID(),
+                                                                                                                                     licenceType.getActionTargetGUID(),
+                                                                                                                                     OpenMetadataType.LICENSE_RELATIONSHIP.typeName,
+                                                                                                                                     0, 0);
 
-                newActionTarget.setActionTargetGUID(assetGUID);
-                newActionTarget.setActionTargetName(ActionTarget.NEW_ASSET.name);
+                    if ((licenses != null) && (licenses.getElementList() != null))
+                    {
+                        for (OpenMetadataRelationship licence : licenses.getElementList())
+                        {
+                            if (licence != null)
+                            {
+                                String licenseGUID = propertyHelper.getStringProperty(governanceServiceName,
+                                                                                      OpenMetadataProperty.LICENSE_GUID.name,
+                                                                                      licence.getRelationshipProperties(),
+                                                                                      methodName);
+                                if (subscription.getActionTargetGUID().equals(licenseGUID))
+                                {
+                                    governanceContext.getOpenMetadataStore().deleteRelationshipInStore(licence.getRelationshipGUID());
+                                }
+                            }
+                        }
+                    }
+                }
 
-                outputActionTargets.add(newActionTarget);
+                messageDefinition = GovernanceActionConnectorsAuditCode.SERVICE_COMPLETED_SUCCESSFULLY.getMessageDefinition(governanceServiceName);
 
-                completionStatus = ManageAssetGuard.SET_UP_COMPLETE.getCompletionStatus();
-                outputGuards.add(ManageAssetGuard.SET_UP_COMPLETE.getName());
+                completionStatus = ManageAssetGuard.DELETE_COMPLETE.getCompletionStatus();
+                outputGuards.add(ManageAssetGuard.DELETE_COMPLETE.getName());
             }
 
             auditLog.logMessage(methodName, messageDefinition);
-
-            if (outputActionTargets.isEmpty())
-            {
-                outputActionTargets = null;
-            }
 
             governanceContext.recordCompletionStatus(completionStatus, outputGuards, null, outputActionTargets, messageDefinition);
         }

@@ -5,14 +5,12 @@ package org.odpi.openmetadata.frameworks.openmetadata.handlers;
 
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.openmetadata.client.OpenMetadataClient;
-import org.odpi.openmetadata.frameworks.openmetadata.converters.InformationSupplyChainConverter;
+import org.odpi.openmetadata.frameworks.openmetadata.converters.MetadataRelationshipSummaryConverter;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.*;
 import org.odpi.openmetadata.frameworks.openmetadata.mermaid.InformationSupplyChainMermaidGraphBuilder;
-import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.InformationSupplyChainComponent;
-import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.InformationSupplyChainElement;
-import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.InformationSupplyChainSegment;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.*;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.*;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.informationsupplychains.InformationSupplyChainCompositionProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.collections.CollectionMembershipProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.informationsupplychains.InformationSupplyChainLinkProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.informationsupplychains.InformationSupplyChainProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.search.*;
@@ -29,6 +27,8 @@ import java.util.Map;
  */
 public class InformationSupplyChainHandler extends OpenMetadataHandlerBase
 {
+    final private MetadataRelationshipSummaryConverter<MetadataRelationshipSummary> metadataRelationshipSummaryConverter;
+
     /**
      * Create a new handler.
      *
@@ -43,6 +43,10 @@ public class InformationSupplyChainHandler extends OpenMetadataHandlerBase
                                          OpenMetadataClient openMetadataClient)
     {
         super(localServerName, auditLog, serviceName, openMetadataClient, OpenMetadataType.INFORMATION_SUPPLY_CHAIN.typeName);
+
+        this.metadataRelationshipSummaryConverter = new MetadataRelationshipSummaryConverter<>(propertyHelper,
+                                                                                               localServiceName,
+                                                                                               localServerName);
     }
 
 
@@ -237,13 +241,13 @@ public class InformationSupplyChainHandler extends OpenMetadataHandlerBase
      * @throws PropertyServerException there is a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    public void composeInformationSupplyChains(String                                      userId,
-                                               String                                      informationSupplyChainGUID,
-                                               String                                      nestedInformationSupplyChainGUID,
-                                               MetadataSourceOptions                       metadataSourceOptions,
-                                               InformationSupplyChainCompositionProperties compositionProperties) throws InvalidParameterException,
-                                                                                                                         PropertyServerException,
-                                                                                                                         UserNotAuthorizedException
+    public void composeInformationSupplyChains(String                         userId,
+                                               String                         informationSupplyChainGUID,
+                                               String                         nestedInformationSupplyChainGUID,
+                                               MetadataSourceOptions          metadataSourceOptions,
+                                               CollectionMembershipProperties compositionProperties) throws InvalidParameterException,
+                                                                                                            PropertyServerException,
+                                                                                                            UserNotAuthorizedException
     {
         final String methodName = "composeInformationSupplyChains";
         final String end1GUIDParameterName = "informationSupplyChainGUID";
@@ -254,7 +258,7 @@ public class InformationSupplyChainHandler extends OpenMetadataHandlerBase
         propertyHelper.validateGUID(nestedInformationSupplyChainGUID, end2GUIDParameterName, methodName);
 
         openMetadataClient.createRelatedElementsInStore(userId,
-                                                        OpenMetadataType.INFORMATION_SUPPLY_CHAIN_COMPOSITION_RELATIONSHIP.typeName,
+                                                        OpenMetadataType.COLLECTION_MEMBERSHIP_RELATIONSHIP.typeName,
                                                         informationSupplyChainGUID,
                                                         nestedInformationSupplyChainGUID,
                                                         metadataSourceOptions,
@@ -291,7 +295,7 @@ public class InformationSupplyChainHandler extends OpenMetadataHandlerBase
         propertyHelper.validateGUID(nestedInformationSupplyChainGUID, end2GUIDParameterName, methodName);
 
         openMetadataClient.detachRelatedElementsInStore(userId,
-                                                        OpenMetadataType.INFORMATION_SUPPLY_CHAIN_COMPOSITION_RELATIONSHIP.typeName,
+                                                        OpenMetadataType.COLLECTION_MEMBERSHIP_RELATIONSHIP.typeName,
                                                         informationSupplyChainGUID,
                                                         nestedInformationSupplyChainGUID,
                                                         deleteOptions);
@@ -339,10 +343,10 @@ public class InformationSupplyChainHandler extends OpenMetadataHandlerBase
      * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    public List<InformationSupplyChainElement> getInformationSupplyChainsByName(String       userId,
-                                                                                String       name,
-                                                                                QueryOptions queryOptions,
-                                                                                boolean      addImplementation) throws InvalidParameterException,
+    public List<OpenMetadataRootElement> getInformationSupplyChainsByName(String       userId,
+                                                                          String       name,
+                                                                          QueryOptions queryOptions,
+                                                                          boolean      addImplementation) throws InvalidParameterException,
                                                                                                                        PropertyServerException,
                                                                                                                        UserNotAuthorizedException
     {
@@ -354,6 +358,7 @@ public class InformationSupplyChainHandler extends OpenMetadataHandlerBase
         propertyHelper.validatePaging(queryOptions, openMetadataClient.getMaxPagingSize(), methodName);
 
         List<String> propertyNames = Arrays.asList(OpenMetadataProperty.QUALIFIED_NAME.name,
+                                                   OpenMetadataProperty.IDENTIFIER.name,
                                                    OpenMetadataProperty.DISPLAY_NAME.name);
 
         List<OpenMetadataElement> openMetadataElements = openMetadataClient.findMetadataElements(userId,
@@ -425,21 +430,21 @@ public class InformationSupplyChainHandler extends OpenMetadataHandlerBase
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public List<InformationSupplyChainElement> findInformationSupplyChains(String        userId,
-                                                                           String        searchString,
-                                                                           boolean       addImplementation,
-                                                                           SearchOptions searchOptions) throws InvalidParameterException,
-                                                                                                               UserNotAuthorizedException,
-                                                                                                               PropertyServerException
+    public List<OpenMetadataRootElement> findInformationSupplyChains(String        userId,
+                                                                     String        searchString,
+                                                                     boolean       addImplementation,
+                                                                     SearchOptions searchOptions) throws InvalidParameterException,
+                                                                                                         UserNotAuthorizedException,
+                                                                                                         PropertyServerException
     {
         final String methodName = "findInformationSupplyChains";
-        final String searchStringParameterName = "searchString";
 
         propertyHelper.validateUserId(userId, methodName);
-        propertyHelper.validateSearchString(searchString, searchStringParameterName, methodName);
         propertyHelper.validatePaging(searchOptions, openMetadataClient.getMaxPagingSize(), methodName);
 
-        List<OpenMetadataElement> openMetadataElements = openMetadataClient.findMetadataElementsWithString(userId, searchString, super.addDefaultType(searchOptions));
+        List<OpenMetadataElement> openMetadataElements = openMetadataClient.findMetadataElementsWithString(userId,
+                                                                                                           searchString,
+                                                                                                           super.addDefaultType(searchOptions));
 
         return convertInformationSupplyChains(userId,
                                               openMetadataElements,
@@ -460,7 +465,7 @@ public class InformationSupplyChainHandler extends OpenMetadataHandlerBase
      * @return list of information supply chains (or null)
      * @throws PropertyServerException problem with the conversion process
      */
-    private List<InformationSupplyChainElement> convertInformationSupplyChains(String                    userId,
+    private List<OpenMetadataRootElement> convertInformationSupplyChains(String                    userId,
                                                                                List<OpenMetadataElement> openMetadataElements,
                                                                                boolean                   addImplementation,
                                                                                QueryOptions              queryOptions,
@@ -468,7 +473,7 @@ public class InformationSupplyChainHandler extends OpenMetadataHandlerBase
     {
         if (openMetadataElements != null)
         {
-            List<InformationSupplyChainElement> informationSupplyChainElements = new ArrayList<>();
+            List<OpenMetadataRootElement> informationSupplyChainElements = new ArrayList<>();
 
             for (OpenMetadataElement openMetadataElement : openMetadataElements)
             {
@@ -509,115 +514,19 @@ public class InformationSupplyChainHandler extends OpenMetadataHandlerBase
     {
         try
         {
-            List<InformationSupplyChainComponent> relatedComponents    = new ArrayList<>();
-            List<InformationSupplyChainSegment>   relatedSegments      = new ArrayList<>();
-            List<RelatedMetadataElement>          otherRelatedElements = new ArrayList<>();
-
-            /*
-             * This is a temporary list for holding the elements linked by ImplementedBy and
-             * InformationSupplyChainComposition relationships.
-             */
-            List<RelatedMetadataElement> extractedImplementedByElements = new ArrayList<>();
-            List<RelatedMetadataElement> extractedSegmentElements       = new ArrayList<>();
-
-            QueryOptions workingQueryOptions = new QueryOptions(queryOptions);
-            workingQueryOptions.setStartFrom(0);
-            workingQueryOptions.setPageSize(openMetadataClient.getMaxPagingSize());
-
-            RelatedMetadataElementList relatedMetadataElementList = openMetadataClient.getRelatedMetadataElements(userId,
-                                                                                                                  openMetadataElement.getElementGUID(),
-                                                                                                                  0,
-                                                                                                                  null,
-                                                                                                                  workingQueryOptions);
-            while ((relatedMetadataElementList != null) && (relatedMetadataElementList.getElementList() != null))
-            {
-                for (RelatedMetadataElement relatedMetadataElement : relatedMetadataElementList.getElementList())
-                {
-                    if (relatedMetadataElement != null)
-                    {
-                        if (propertyHelper.isTypeOf(relatedMetadataElement, OpenMetadataType.IMPLEMENTED_BY_RELATIONSHIP.typeName))
-                        {
-                            extractedImplementedByElements.add(relatedMetadataElement);
-                        }
-                        else if ((propertyHelper.isTypeOf(relatedMetadataElement, OpenMetadataType.INFORMATION_SUPPLY_CHAIN_COMPOSITION_RELATIONSHIP.typeName)) && (! relatedMetadataElement.getElementAtEnd1()))
-                        {
-                            extractedSegmentElements.add(relatedMetadataElement);
-                        }
-                        else
-                        {
-                            otherRelatedElements.add(relatedMetadataElement);
-                        }
-                    }
-                }
-
-                workingQueryOptions.setStartFrom(workingQueryOptions.getStartFrom() + openMetadataClient.getMaxPagingSize());
-                relatedMetadataElementList = openMetadataClient.getRelatedMetadataElements(userId,
-                                                                                           openMetadataElement.getElementGUID(),
-                                                                                           0,
-                                                                                           null,
-                                                                                           workingQueryOptions);
-            }
-
-            if (! extractedSegmentElements.isEmpty())
-            {
-                for (RelatedMetadataElement relatedMetadataElement : extractedImplementedByElements)
-                {
-                    if (relatedMetadataElement != null)
-                    {
-                        InformationSupplyChainSegment segment = this.getSegment(userId,
-                                                                                relatedMetadataElement,
-                                                                                queryOptions,
-                                                                                methodName);
-
-                        if (segment != null)
-                        {
-                            relatedSegments.add(segment);
-                        }
-                    }
-                }
-            }
-            else
-            {
-                relatedSegments = null;
-            }
-
-            if (! extractedImplementedByElements.isEmpty())
-            {
-                List<String> processedComponentGUIDs = new ArrayList<>();
-
-                for (RelatedMetadataElement relatedMetadataElement : extractedImplementedByElements)
-                {
-                    if (relatedMetadataElement != null)
-                    {
-                        InformationSupplyChainComponent informationSupplyChainComponent = this.getInformationSupplyChainComponent(userId,
-                                                                                                                                  relatedMetadataElement,
-                                                                                                                                  queryOptions,
-                                                                                                                                  processedComponentGUIDs,
-                                                                                                                                  methodName);
-
-
-                        if (informationSupplyChainComponent != null)
-                        {
-                            relatedComponents.add(informationSupplyChainComponent);
-                        }
-                    }
-                }
-            }
-            else
-            {
-                relatedComponents = null;
-            }
-            List<OpenMetadataRelationship> lineageRelationships = null;
+            OpenMetadataRootElement openMetadataRootElement = super.convertRootElement(userId, openMetadataElement,queryOptions, methodName);
 
             /*
              * The implementation is a query to extract all lineage relationships that iscQualifiedName in
              * their properties, and it is set to this information supply chain's qualified name.
              */
+            List<OpenMetadataRelationship> lineageRelationships = new ArrayList<>();
+
             if (addImplementation)
             {
-                lineageRelationships = new ArrayList<>();
-
+                QueryOptions workingQueryOptions = new QueryOptions(queryOptions);
                 workingQueryOptions.setStartFrom(0);
+                workingQueryOptions.setPageSize(openMetadataClient.getMaxPagingSize());
 
                 SearchProperties        searchProperties   = new SearchProperties();
                 List<PropertyCondition> propertyConditions = new ArrayList<>();
@@ -651,17 +560,15 @@ public class InformationSupplyChainHandler extends OpenMetadataHandlerBase
                 }
             }
 
-            InformationSupplyChainConverter<InformationSupplyChainElement> converter = new InformationSupplyChainConverter<>(propertyHelper, localServiceName, localServerName, relatedSegments, relatedComponents, lineageRelationships);
-            InformationSupplyChainElement informationSupplyChainElement = converter.getNewComplexBean(InformationSupplyChainElement.class,
-                                                                                                      openMetadataElement,
-                                                                                                      otherRelatedElements,
-                                                                                                      methodName);
-            if (informationSupplyChainElement != null)
-            {
-                InformationSupplyChainMermaidGraphBuilder graphBuilder = new InformationSupplyChainMermaidGraphBuilder(informationSupplyChainElement);
+            InformationSupplyChainElement informationSupplyChainElement = new InformationSupplyChainElement(openMetadataRootElement);
 
-                informationSupplyChainElement.setMermaidGraph(graphBuilder.getMermaidGraph(false));
-            }
+
+            informationSupplyChainElement.setImplementation(metadataRelationshipSummaryConverter.getNewBeans(MetadataRelationshipSummary.class,
+                                                                                                             lineageRelationships,
+                                                                                                             methodName));
+
+            InformationSupplyChainMermaidGraphBuilder graphBuilder = new InformationSupplyChainMermaidGraphBuilder(informationSupplyChainElement);
+            informationSupplyChainElement.setISCImplementationMermaidGraph(graphBuilder.getMermaidGraph(false));
 
             return informationSupplyChainElement;
         }
@@ -685,163 +592,5 @@ public class InformationSupplyChainHandler extends OpenMetadataHandlerBase
                                               methodName,
                                               error);
         }
-    }
-
-
-    /**
-     * Extract the elements related to this information supply chain's implementation components.  Typically,
-     * they are solution components, but there may also be assets, if the design is integrating with
-     * existing assets.
-     *
-     * @param userId calling user
-     * @param startingElement retrieved implementation component
-     * @param queryOptions           multiple options to control the query
-     * @param methodName calling method
-     * @return filled out component
-     * @throws InvalidParameterException invalid parameter
-     * @throws PropertyServerException problem with the conversion process, or repository
-     * @throws UserNotAuthorizedException authorization issue
-     */
-    private InformationSupplyChainSegment getSegment(String                 userId,
-                                                     RelatedMetadataElement startingElement,
-                                                     QueryOptions           queryOptions,
-                                                     String                 methodName) throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException
-    {
-        if (startingElement != null)
-        {
-            InformationSupplyChainSegment informationSupplyChainComponent = new InformationSupplyChainSegment(propertyHelper.getRelatedElementSummary(startingElement, methodName));
-
-            /*
-             * Only pick up a single page to limit output
-             */
-            RelatedMetadataElementList relatedMetadataElementList = openMetadataClient.getRelatedMetadataElements(userId,
-                                                                                                                  startingElement.getElement().getElementGUID(),
-                                                                                                                  1,
-                                                                                                                  OpenMetadataType.INFORMATION_SUPPLY_CHAIN_LINK_RELATIONSHIP.typeName,
-                                                                                                                  queryOptions);
-
-            if ((relatedMetadataElementList != null) && (relatedMetadataElementList.getElementList() != null))
-            {
-                List<InformationSupplyChainSegment> nestedSegments = new ArrayList<>();
-
-                for (RelatedMetadataElement relatedMetadataElement : relatedMetadataElementList.getElementList())
-                {
-                    if (relatedMetadataElement != null)
-                    {
-                        /*
-                         * Solution components need additional information to extract ports and solution linking wires
-                         */
-                        if (propertyHelper.isTypeOf(relatedMetadataElement.getElement(), OpenMetadataType.INFORMATION_SUPPLY_CHAIN.typeName))
-                        {
-                            InformationSupplyChainSegment nestedSegment = this.getSegment(userId,
-                                                                                          relatedMetadataElement,
-                                                                                          queryOptions,
-                                                                                          methodName);
-
-                            if (nestedSegment != null)
-                            {
-                                nestedSegments.add(nestedSegment);
-                            }
-                        }
-                        else
-                        {
-                            nestedSegments.add(new InformationSupplyChainSegment(propertyHelper.getRelatedElementSummary(relatedMetadataElement, methodName)));
-                        }
-                    }
-                }
-
-                if (!nestedSegments.isEmpty())
-                {
-                    informationSupplyChainComponent.setNestedSegments(nestedSegments);
-                }
-            }
-
-            return informationSupplyChainComponent;
-        }
-
-        return null;
-    }
-
-
-    /**
-     * Extract the elements related to this information supply chain's implementation components.  Typically,
-     * they are solution components, but there may also be assets, if the design is integrating with
-     * existing assets.
-     *
-     * @param userId calling user
-     * @param startingElement retrieved implementation component
-     * @param queryOptions           multiple options to control the query
-     * @param processedComponentGUIDs list of GUID of components already processed
-     * @param methodName calling method
-     * @return filled out component
-     * @throws InvalidParameterException invalid parameter
-     * @throws PropertyServerException problem with the conversion process, or repository
-     * @throws UserNotAuthorizedException authorization issue
-     */
-    private InformationSupplyChainComponent getInformationSupplyChainComponent(String                 userId,
-                                                                               RelatedMetadataElement startingElement,
-                                                                               QueryOptions           queryOptions,
-                                                                               List<String>           processedComponentGUIDs,
-                                                                               String                 methodName) throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException
-    {
-        if (startingElement != null)
-        {
-            InformationSupplyChainComponent       informationSupplyChainComponent = new InformationSupplyChainComponent(propertyHelper.getRelatedElementSummary(startingElement, methodName));
-
-            /*
-             * Only pick up a single page to limit output
-             */
-            RelatedMetadataElementList relatedMetadataElementList = openMetadataClient.getRelatedMetadataElements(userId,
-                                                                                                                  startingElement.getElement().getElementGUID(),
-                                                                                                                  0,
-                                                                                                                  null,
-                                                                                                                  queryOptions);
-
-            if ((relatedMetadataElementList != null) && (relatedMetadataElementList.getElementList() != null))
-            {
-                List<InformationSupplyChainComponent> nestedComponents = new ArrayList<>();
-
-                for (RelatedMetadataElement relatedMetadataElement : relatedMetadataElementList.getElementList())
-                {
-                    if ((relatedMetadataElement != null) && (! processedComponentGUIDs.contains(relatedMetadataElement.getElement().getElementGUID())))
-                    {
-                        /*
-                         * Only process each component once.
-                         */
-                        processedComponentGUIDs.add(relatedMetadataElement.getElement().getElementGUID());
-
-                        /*
-                         * Solution components need additional information to extract ports and solution linking wires
-                         */
-                        if (propertyHelper.isTypeOf(relatedMetadataElement.getElement(), OpenMetadataType.SOLUTION_COMPONENT.typeName))
-                        {
-                            InformationSupplyChainComponent nestedComponent = this.getInformationSupplyChainComponent(userId,
-                                                                                                                      relatedMetadataElement,
-                                                                                                                      queryOptions,
-                                                                                                                      processedComponentGUIDs,
-                                                                                                                      methodName);
-
-                            if (nestedComponent != null)
-                            {
-                                nestedComponents.add(nestedComponent);
-                            }
-                        }
-                        else
-                        {
-                            nestedComponents.add(new InformationSupplyChainComponent(propertyHelper.getRelatedElementSummary(relatedMetadataElement, methodName)));
-                        }
-                    }
-                }
-
-                if (!nestedComponents.isEmpty())
-                {
-                    informationSupplyChainComponent.setNestedElements(nestedComponents);
-                }
-            }
-
-            return informationSupplyChainComponent;
-        }
-
-        return null;
     }
 }

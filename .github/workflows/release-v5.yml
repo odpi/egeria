@@ -11,7 +11,7 @@ on:
   release:
     types:
       - created
-    branches: [main, egeria-release-5*]
+    branches: [egeria-release-5*]
 
   workflow_dispatch:
 

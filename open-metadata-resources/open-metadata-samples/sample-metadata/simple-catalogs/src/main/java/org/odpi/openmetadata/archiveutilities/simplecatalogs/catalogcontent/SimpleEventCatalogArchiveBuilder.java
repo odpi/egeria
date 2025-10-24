@@ -4,6 +4,8 @@
 package org.odpi.openmetadata.archiveutilities.simplecatalogs.catalogcontent;
 
 
+import org.odpi.openmetadata.frameworks.openmetadata.refdata.DeployedImplementationType;
+import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 import org.odpi.openmetadata.opentypes.OpenMetadataTypesArchive;
 import org.odpi.openmetadata.repositoryservices.archiveutilities.OMRSArchiveBuilder;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.archivestore.properties.OpenMetadataArchive;
@@ -60,15 +62,6 @@ public class SimpleEventCatalogArchiveBuilder
     private static final String customerStatusDataType      = "string";
     private static final int    customerStatusLength        = 10;
 
-    /*
-     * Additional AssetTypes for basic file connector
-     */
-    private static final String topicAssetTypeName     = "KafkaTopic";
-    private static final String eventTypeTypeName      = "EventType";
-    private static final String eventAttributeTypeName = "EventSchemaAttribute";
-    private static final String eventTypeListTypeName  = "EventTypeList";
-    private static final String eventSetTypeName       = "EventSet";
-
 
     /*
      * Specific values for initializing TypeDefs
@@ -107,6 +100,7 @@ public class SimpleEventCatalogArchiveBuilder
         this.archiveHelper = new SimpleCatalogArchiveHelper(archiveBuilder,
                                                             archiveGUID,
                                                             archiveName,
+                                                            archiveDescription,
                                                             archiveRootName,
                                                             originatorName,
                                                             creationDate,
@@ -136,24 +130,27 @@ public class SimpleEventCatalogArchiveBuilder
      */
     public void fillBuilder()
     {
-        String assetGUID = archiveHelper.addAsset(topicAssetTypeName,
+        String assetGUID = archiveHelper.addAsset(OpenMetadataType.TOPIC.typeName,
                                                   customerChangeQualifiedName,
                                                   customerChangeDisplayName,
+                                                  DeployedImplementationType.APACHE_KAFKA_TOPIC.getDeployedImplementationType(),
+                                                  null,
                                                   customerChangeDescription,
+                                                  null,
                                                   null,
                                                   null);
 
         String eventTypeListGUID = archiveHelper.addTopLevelSchemaType(assetGUID,
-                                                                       topicAssetTypeName,
-                                                                       eventTypeListTypeName,
+                                                                       OpenMetadataType.TOPIC.typeName,
+                                                                       OpenMetadataType.EVENT_TYPE_LIST.typeName,
                                                                        customerChangeQualifiedName + "_event_type_list",
                                                                        customerChangeDisplayName + " Event Type List",
                                                                        null,
                                                                        null);
 
         String eventTypeGUID  = archiveHelper.addSchemaType(assetGUID,
-                                                            topicAssetTypeName,
-                                                            eventTypeTypeName,
+                                                            OpenMetadataType.TOPIC.typeName,
+                                                            OpenMetadataType.EVENT_TYPE.typeName,
                                                             newCustomerStatusQualifiedName,
                                                             newCustomerStatusDisplayName,
                                                             newCustomerStatusDescription,
@@ -162,8 +159,8 @@ public class SimpleEventCatalogArchiveBuilder
         archiveHelper.addSchemaTypeOption(eventTypeListGUID, eventTypeGUID);
 
         String eventAttributeGUID = archiveHelper.addSchemaAttribute(assetGUID,
-                                                                     topicAssetTypeName,
-                                                                     eventAttributeTypeName,
+                                                                     OpenMetadataType.TOPIC.typeName,
+                                                                     OpenMetadataType.EVENT_SCHEMA_ATTRIBUTE.typeName,
                                                                      null,
                                                                      customerIdQualifiedName,
                                                                      customerIdDisplayName,
@@ -176,8 +173,8 @@ public class SimpleEventCatalogArchiveBuilder
         archiveHelper.addAttributeForSchemaType(eventTypeGUID, 1, 1, 1, eventAttributeGUID);
 
         eventAttributeGUID = archiveHelper.addSchemaAttribute(assetGUID,
-                                                              topicAssetTypeName,
-                                                              eventAttributeTypeName,
+                                                              OpenMetadataType.TOPIC.typeName,
+                                                              OpenMetadataType.EVENT_SCHEMA_ATTRIBUTE.typeName,
                                                               null,
                                                               customerNameQualifiedName,
                                                               customerNameDisplayName,
@@ -190,8 +187,8 @@ public class SimpleEventCatalogArchiveBuilder
         archiveHelper.addAttributeForSchemaType(eventTypeGUID, 2, 1, 1, eventAttributeGUID);
 
         eventAttributeGUID = archiveHelper.addSchemaAttribute(assetGUID,
-                                                              topicAssetTypeName,
-                                                              eventAttributeTypeName,
+                                                              OpenMetadataType.TOPIC.typeName,
+                                                              OpenMetadataType.EVENT_SCHEMA_ATTRIBUTE.typeName,
                                                               null,
                                                               customerStatusQualifiedName,
                                                               customerStatusDisplayName,

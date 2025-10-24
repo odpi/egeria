@@ -5,7 +5,7 @@ package org.odpi.openmetadata.frameworks.openmetadata.properties.solutions;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.RelationshipBeanProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.RoledRelationshipProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
@@ -17,7 +17,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class SolutionCompositionProperties extends RelationshipBeanProperties
+public class SolutionCompositionProperties extends RoledRelationshipProperties
 {
     /**
      * Default constructor
@@ -34,10 +34,11 @@ public class SolutionCompositionProperties extends RelationshipBeanProperties
      *
      * @param template object to copy
      */
-    public SolutionCompositionProperties(SolutionCompositionProperties template)
+    public SolutionCompositionProperties(RoledRelationshipProperties template)
     {
         super(template);
     }
+
 
     /**
      * JSON-style toString.

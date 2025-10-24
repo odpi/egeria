@@ -21,8 +21,8 @@ import org.odpi.openmetadata.adapters.connectors.unitycatalog.controls.UnityCata
 import org.odpi.openmetadata.adapters.connectors.unitycatalog.resource.OSSUnityCatalogResourceProvider;
 import org.odpi.openmetadata.frameworks.connectors.controls.SecretsStorePurpose;
 import org.odpi.openmetadata.frameworks.openmetadata.controls.PlaceholderProperty;
-import org.odpi.openmetadata.frameworks.openmetadata.controls.PlaceholderPropertyType;
-import org.odpi.openmetadata.frameworks.openmetadata.controls.ReplacementAttributeType;
+import org.odpi.openmetadata.frameworks.openmetadata.specificationproperties.PlaceholderPropertyType;
+import org.odpi.openmetadata.frameworks.openmetadata.specificationproperties.ReplacementAttributeType;
 import org.odpi.openmetadata.frameworks.openmetadata.controls.TemplateDefinition;
 import org.odpi.openmetadata.frameworks.openmetadata.refdata.DeployedImplementationType;
 import org.odpi.openmetadata.frameworks.openmetadata.refdata.DeployedImplementationTypeDefinition;
@@ -271,7 +271,7 @@ public enum SoftwareServerTemplateDefinition implements TemplateDefinition
     @Override
     public String getTemplateVersionIdentifier()
     {
-        return "V1.0";
+        return "6.0-SNAPSHOT";
     }
 
 

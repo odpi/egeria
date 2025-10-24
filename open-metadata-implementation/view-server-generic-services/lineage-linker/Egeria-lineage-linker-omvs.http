@@ -44,7 +44,7 @@ Content-Type: application/json
 #  PropertyServerException    there is a problem retrieving information from the property server(s).
 #  UserNotAuthorizedException the requesting user is not authorized to issue this request.
 #
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/lineage-linker/elements/{{elementOneGUID}}/{{relationshipTypeName}}/{{elementTwoGUID}}/attach
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/lineage-linker/from-elements/{{elementOneGUID}}/via/{{relationshipTypeName}}/to-elements/{{elementTwoGUID}}/attach
 Authorization: Bearer {{token}}
 Content-Type: application/json
 

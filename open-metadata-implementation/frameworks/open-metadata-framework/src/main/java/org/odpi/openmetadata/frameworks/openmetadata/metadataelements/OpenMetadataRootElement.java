@@ -6,6 +6,8 @@ package org.odpi.openmetadata.frameworks.openmetadata.metadataelements;
 import com.fasterxml.jackson.annotation.*;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.OpenMetadataRootProperties;
 
+import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
@@ -26,12 +28,19 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
                 @JsonSubTypes.Type(value = AssetLineageGraphNode.class, name = "AssetLineageGraphNode"),
                 @JsonSubTypes.Type(value = AssetSearchMatches.class, name = "AssetSearchMatches"),
                 @JsonSubTypes.Type(value = OpenMetadataRootHierarchy.class, name = "OpenMetadataRootHierarchy"),
-                @JsonSubTypes.Type(value = ExternalIdElement.class, name = "ExternalIdElement"),
-                @JsonSubTypes.Type(value = TemplateElement.class, name = "TemplateElement"),
         })
 public class OpenMetadataRootElement extends AttributedMetadataElement
 {
-    private OpenMetadataRootProperties properties = null;
+    private OpenMetadataRootProperties                 properties    = null;
+    private Map<String, List<Map<String, String>>>     specification = null;
+
+    /*
+     * These are mermaid markdown version of the values from the properties and retrieved relationships.
+     */
+    private String mermaidGraph                     = null;
+    private String specificationMermaidGraph        = null;
+    private String solutionBlueprintMermaidGraph    = null;
+    private String solutionSubcomponentMermaidGraph = null;
 
     /**
      * Default constructor
@@ -53,7 +62,12 @@ public class OpenMetadataRootElement extends AttributedMetadataElement
 
         if (template != null)
         {
-            properties = template.getProperties();
+            properties   = template.getProperties();
+            specification = template.getSpecification();
+            mermaidGraph                  = template.getMermaidGraph();
+            specificationMermaidGraph     = template.getSpecificationMermaidGraph();
+            solutionBlueprintMermaidGraph = template.getSolutionBlueprintMermaidGraph();
+            solutionSubcomponentMermaidGraph = template.getSolutionSubcomponentMermaidGraph();
         }
     }
 
@@ -81,6 +95,115 @@ public class OpenMetadataRootElement extends AttributedMetadataElement
 
 
     /**
+     * Return the specification reference data for the attached element.
+     *
+     * @return specification (attributeName, list[propertyName, propertyValue])
+     */
+    public Map<String, List<Map<String, String>>> getSpecification()
+    {
+        return specification;
+    }
+
+
+    /**
+     * Set up the specification reference data for the attached element.
+     *
+     * @param specification specification
+     */
+    public void setSpecification(Map<String, List<Map<String, String>>> specification)
+    {
+        this.specification = specification;
+    }
+
+
+    /**
+     * Return the mermaid representation of this data structure.
+     *
+     * @return string markdown
+     */
+    public String getMermaidGraph()
+    {
+        return mermaidGraph;
+    }
+
+
+    /**
+     * Set up the mermaid representation of this data structure.
+     *
+     * @param mermaidGraph markdown string
+     */
+    public void setMermaidGraph(String mermaidGraph)
+    {
+        this.mermaidGraph = mermaidGraph;
+    }
+
+
+    /**
+     * Return the mermaid graph of a linked specification if there is one.
+     *
+     * @return mermaid markdown
+     */
+    public String getSpecificationMermaidGraph()
+    {
+        return specificationMermaidGraph;
+    }
+
+
+    /**
+     * Set up the mermaid graph of a linked specification if there is one.
+     *
+     * @param specificationMermaidGraph mermaid markdown
+     */
+    public void setSpecificationMermaidGraph(String specificationMermaidGraph)
+    {
+        this.specificationMermaidGraph = specificationMermaidGraph;
+    }
+
+
+    /**
+     * Return the graph view of the solution blueprint.  This just contains the top level components linked together.
+     *
+     * @return mermaid markdown
+     */
+    public String getSolutionBlueprintMermaidGraph()
+    {
+        return solutionBlueprintMermaidGraph;
+    }
+
+
+    /**
+     * Set up the graph view of the solution component.
+     *
+     * @param solutionBlueprintMermaidGraph mermaid markdown
+     */
+    public void setSolutionBlueprintMermaidGraph(String solutionBlueprintMermaidGraph)
+    {
+        this.solutionBlueprintMermaidGraph = solutionBlueprintMermaidGraph;
+    }
+
+
+    /**
+     * Return the graph of a solution component's subcomponents.
+     *
+     * @return mermaid markdown
+     */
+    public String getSolutionSubcomponentMermaidGraph()
+    {
+        return solutionSubcomponentMermaidGraph;
+    }
+
+
+    /**
+     * Set up the graph of a solution component's subcomponents.
+     *
+     * @param solutionSubcomponentMermaidGraph mermaid markdown
+     */
+    public void setSolutionSubcomponentMermaidGraph(String solutionSubcomponentMermaidGraph)
+    {
+        this.solutionSubcomponentMermaidGraph = solutionSubcomponentMermaidGraph;
+    }
+
+    /**
      * JSON-style toString
      *
      * @return return string containing the property names and values
@@ -90,8 +213,14 @@ public class OpenMetadataRootElement extends AttributedMetadataElement
     {
         return "OpenMetadataRootElement{" +
                 "properties=" + properties +
+                ", specification=" + specification +
+                ", mermaidGraph='" + mermaidGraph + '\'' +
+                ", specificationMermaidGraph='" + specificationMermaidGraph + '\'' +
+                ", solutionBlueprintMermaidGraph='" + solutionBlueprintMermaidGraph + '\'' +
+                ", solutionSubcomponentMermaidGraph='" + solutionSubcomponentMermaidGraph + '\'' +
                 "} " + super.toString();
     }
+
 
     /**
      * Return comparison result based on the content of the properties.
@@ -106,7 +235,12 @@ public class OpenMetadataRootElement extends AttributedMetadataElement
         if (objectToCompare == null || getClass() != objectToCompare.getClass()) return false;
         if (!super.equals(objectToCompare)) return false;
         OpenMetadataRootElement that = (OpenMetadataRootElement) objectToCompare;
-        return Objects.equals(properties, that.properties);
+        return Objects.equals(properties, that.properties) &&
+                Objects.equals(specification, that.specification) &&
+                Objects.equals(mermaidGraph, that.mermaidGraph) &&
+                Objects.equals(specificationMermaidGraph, that.specificationMermaidGraph) &&
+                Objects.equals(solutionBlueprintMermaidGraph, that.solutionBlueprintMermaidGraph) &&
+                Objects.equals(solutionSubcomponentMermaidGraph, that.solutionSubcomponentMermaidGraph);
     }
 
 
@@ -118,6 +252,6 @@ public class OpenMetadataRootElement extends AttributedMetadataElement
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), properties);
+        return Objects.hash(super.hashCode(), properties, specification, mermaidGraph, specificationMermaidGraph, solutionBlueprintMermaidGraph, solutionSubcomponentMermaidGraph);
     }
 }

@@ -3,6 +3,7 @@
 
 package org.odpi.openmetadata.frameworks.opengovernance.controls;
 
+import org.odpi.openmetadata.frameworks.openmetadata.specificationproperties.ActionTargetType;
 import org.odpi.openmetadata.frameworks.openmetadata.refdata.DeployedImplementationType;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 
@@ -57,15 +58,6 @@ public enum ActionTarget
               "A newly created digital subscription (or a subtype of).",
               OpenMetadataType.DIGITAL_SUBSCRIPTION.typeName,
               null),
-
-
-    /**
-     * An actor to associate with the digital subscription.
-     */
-    DIGITAL_SUBSCRIPTION_ACTOR("digitalSubscriptionActor",
-                             "An actor to associate with the digital subscription.",
-                             OpenMetadataType.ACTOR.typeName,
-                             null),
 
 
     /**

@@ -4,6 +4,10 @@ package org.odpi.openmetadata.viewservices.solutionarchitect.server.spring;
 
 import io.swagger.v3.oas.annotations.ExternalDocumentation;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.enums.SecuritySchemeIn;
+import io.swagger.v3.oas.annotations.enums.SecuritySchemeType;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import io.swagger.v3.oas.annotations.security.SecurityScheme;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.odpi.openmetadata.commonservices.ffdc.rest.*;
 import org.odpi.openmetadata.commonservices.ffdc.rest.TemplateRequestBody;
@@ -17,8 +21,14 @@ import org.springframework.web.bind.annotation.*;
  = */
 @RestController
 @RequestMapping("/servers/{serverName}/api/open-metadata/solution-architect")
-
-@Tag(name="API: Solution Architect OMVS", description="The Solution Architect OMVS is a REST API designed to support user interfaces (UIs) relating to the definition and display of solution blueprints and their supporting solution components along with the relevant information supply chains.",
+@SecurityScheme(
+        name = "BearerAuthorization",
+        type = SecuritySchemeType.HTTP,
+        bearerFormat = "JWT",
+        scheme = "bearer",
+        in = SecuritySchemeIn.HEADER
+)
+@Tag(name="API: Solution Architect OMVS", description="During the planning phase of a project, architects typically use drawing tools to sketch out the new components that are to be developed and how they relate to existing components.  Solution blueprints are the open metadata equivalent of the sketch and they show the solution components and actors involved and how they collaborate.  The advantage of creating a solution blueprint over a sketch diagram is that it is easy to visualize different levels of detail and, as the project rolls out, the implementation of the components can be linked into the blueprint, providing traceability from project intent to actual operation.  In a similar way, information supply chains allow the modelling of key data flows needed by your organization.   These can then be linked to metadata about the systems and pipelines that implement them, providing a means to summarize statistics from lineage about the operation of the data flows.  The Solution Architect OMVS supports the definition and display of solution blueprints and their supporting solution components along with the relevant information supply chains.",
         externalDocs=@ExternalDocumentation(description="Further Information",
                 url="https://egeria-project.org/services/omvs/solution-architect/overview/"))
 
@@ -46,6 +56,7 @@ public class SolutionArchitectResource
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     @PostMapping(path = "/information-supply-chains")
+    @SecurityRequirement(name = "BearerAuthorization")
 
     @Operation(summary="createInformationSupplyChain",
             description="Create an information supply chain.",
@@ -74,6 +85,8 @@ public class SolutionArchitectResource
      *  PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     @PostMapping(path = "/information-supply-chains/from-template")
+    @SecurityRequirement(name = "BearerAuthorization")
+
     @Operation(summary="createInformationSupplyChainFromTemplate",
             description="Create a new metadata element to represent an information supply chain using an existing metadata element as a template.  The template defines additional classifications and relationships that should be added to the new element.",
             externalDocs=@ExternalDocumentation(description="Further Information",
@@ -101,6 +114,8 @@ public class SolutionArchitectResource
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     @PostMapping(path = "/information-supply-chains/{informationSupplyChainGUID}/update")
+    @SecurityRequirement(name = "BearerAuthorization")
+
     @Operation(summary="updateInformationSupplyChain",
             description="Update the properties of an information supply chain.",
             externalDocs=@ExternalDocumentation(description="Further Information",
@@ -132,6 +147,8 @@ public class SolutionArchitectResource
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     @PostMapping(path = "/information-supply-chains/{peerOneGUID}/peer-links/{peerTwoGUID}/attach")
+    @SecurityRequirement(name = "BearerAuthorization")
+
     @Operation(summary="linkPeersInInformationSupplyChain",
             description="Connect two peer information supply chains.  The linked elements are of type 'Referenceable' to allow significant data stores to be included in the definition of the information supply chain.",
             externalDocs=@ExternalDocumentation(description="Further Information",
@@ -164,6 +181,8 @@ public class SolutionArchitectResource
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     @PostMapping(path = "/information-supply-chains/{peerOneGUID}/peer-links/{peerTwoGUID}/detach")
+    @SecurityRequirement(name = "BearerAuthorization")
+
     @Operation(summary="unlinkPeerInformationSupplyChains",
             description="Detach two peers in an information supply chain from one another.  The linked elements are of type 'Referenceable' to allow significant data stores to be included in the definition of the information supply chain.",
             externalDocs=@ExternalDocumentation(description="Further Information",
@@ -176,7 +195,7 @@ public class SolutionArchitectResource
                                        @PathVariable
                                        String peerTwoGUID,
                                        @RequestBody (required = false)
-                                                              DeleteRequestBody requestBody)
+                                                              DeleteRelationshipRequestBody requestBody)
     {
         return restAPI.unlinkPeersInInformationSupplyChain(serverName, peerOneGUID, peerTwoGUID, requestBody);
     }
@@ -196,6 +215,8 @@ public class SolutionArchitectResource
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     @PostMapping(path = "/information-supply-chains/{informationSupplyChainGUID}/compositions/{nestedInformationSupplyChainGUID}/attach")
+    @SecurityRequirement(name = "BearerAuthorization")
+
     @Operation(summary="composeInformationSupplyChains",
             description="Connect a nested information supply chain to its parent.",
             externalDocs=@ExternalDocumentation(description="Further Information",
@@ -228,6 +249,8 @@ public class SolutionArchitectResource
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     @PostMapping(path = "/information-supply-chains/{informationSupplyChainGUID}/compositions/{nestedInformationSupplyChainGUID}/detach")
+    @SecurityRequirement(name = "BearerAuthorization")
+
     @Operation(summary="decomposeInformationSupplyChains",
             description="Detach a nested information supply chain from its parent.",
             externalDocs=@ExternalDocumentation(description="Further Information",
@@ -240,7 +263,7 @@ public class SolutionArchitectResource
                                                           @PathVariable
                                                           String nestedInformationSupplyChainGUID,
                                                           @RequestBody (required = false)
-                                                             DeleteRequestBody requestBody)
+                                                             DeleteRelationshipRequestBody requestBody)
     {
         return restAPI.decomposeInformationSupplyChains(serverName, informationSupplyChainGUID, nestedInformationSupplyChainGUID, requestBody);
     }
@@ -259,6 +282,8 @@ public class SolutionArchitectResource
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     @PostMapping(path = "/information-supply-chains/{informationSupplyChainGUID}/delete")
+    @SecurityRequirement(name = "BearerAuthorization")
+
     @Operation(summary="deleteInformationSupplyChain",
             description="Delete an information supply chain.",
             externalDocs=@ExternalDocumentation(description="Further Information",
@@ -269,7 +294,7 @@ public class SolutionArchitectResource
                                                      @PathVariable
                                                      String                    informationSupplyChainGUID,
                                                      @RequestBody (required = false)
-                                                         DeleteRequestBody requestBody)
+                                                         DeleteElementRequestBody requestBody)
     {
         return restAPI.deleteInformationSupplyChain(serverName, informationSupplyChainGUID, requestBody);
     }
@@ -288,12 +313,14 @@ public class SolutionArchitectResource
      *  PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     @PostMapping(path = "/information-supply-chains/by-name")
+    @SecurityRequirement(name = "BearerAuthorization")
+
     @Operation(summary="getInformationSupplyChainsByName",
             description="Returns the list of information supply chains with a particular name.",
             externalDocs=@ExternalDocumentation(description="Further Information",
                     url="https://egeria-project.org/concepts/information-supply-chain"))
 
-    public InformationSupplyChainsResponse getInformationSupplyChainsByName(@PathVariable
+    public OpenMetadataRootElementsResponse getInformationSupplyChainsByName(@PathVariable
                                                                             String            serverName,
                                                                             @RequestParam (required = false, defaultValue = "true")
                                                                             boolean           addImplementation,
@@ -317,12 +344,14 @@ public class SolutionArchitectResource
      *  PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     @PostMapping(path = "/information-supply-chains/by-search-string")
+    @SecurityRequirement(name = "BearerAuthorization")
+
     @Operation(summary="findInformationSupplyChains",
             description="Retrieve the list of information supply chain metadata elements that contain the search string.",
             externalDocs=@ExternalDocumentation(description="Further Information",
                     url="https://egeria-project.org/concepts/information-supply-chain"))
 
-    public InformationSupplyChainsResponse findInformationSupplyChains(@PathVariable
+    public OpenMetadataRootElementsResponse findInformationSupplyChains(@PathVariable
                                                                        String                  serverName,
                                                                        @RequestParam (required = false, defaultValue = "true")
                                                                        boolean                 addImplementation,
@@ -348,12 +377,14 @@ public class SolutionArchitectResource
      *  PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     @PostMapping(path = "/information-supply-chains/{informationSupplyChainGUID}/retrieve")
+    @SecurityRequirement(name = "BearerAuthorization")
+
     @Operation(summary="getInformationSupplyChainByGUID",
             description="Return the properties of a specific information supply chain.",
             externalDocs=@ExternalDocumentation(description="Further Information",
                     url="https://egeria-project.org/concepts/information-supply-chain"))
 
-    public InformationSupplyChainResponse getInformationSupplyChainByGUID(@PathVariable
+    public OpenMetadataRootElementResponse getInformationSupplyChainByGUID(@PathVariable
                                                                           String             serverName,
                                                                           @PathVariable
                                                                           String             informationSupplyChainGUID,
@@ -378,6 +409,7 @@ public class SolutionArchitectResource
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     @PostMapping(path = "/solution-blueprints")
+    @SecurityRequirement(name = "BearerAuthorization")
 
     @Operation(summary="createSolutionBlueprint",
             description="Create a solution blueprint.",
@@ -406,6 +438,8 @@ public class SolutionArchitectResource
      *  PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     @PostMapping(path = "/solution-blueprints/from-template")
+    @SecurityRequirement(name = "BearerAuthorization")
+
     @Operation(summary="createSolutionBlueprintFromTemplate",
             description="Create a new metadata element to represent a solution blueprint using an existing metadata element as a template.  The template defines additional classifications and relationships that should be added to the new element.",
             externalDocs=@ExternalDocumentation(description="Further Information",
@@ -433,6 +467,8 @@ public class SolutionArchitectResource
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     @PostMapping(path = "/solution-blueprints/{solutionBlueprintGUID}/update")
+    @SecurityRequirement(name = "BearerAuthorization")
+
     @Operation(summary="updateSolutionBlueprint",
             description="Update the properties of a solution blueprint.",
             externalDocs=@ExternalDocumentation(description="Further Information",
@@ -463,6 +499,8 @@ public class SolutionArchitectResource
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     @PostMapping(path = "/solution-blueprints/{parentSolutionBlueprintGUID}/solution-components/{solutionComponentGUID}/attach")
+    @SecurityRequirement(name = "BearerAuthorization")
+
     @Operation(summary="linkSolutionComponentToBlueprint",
             description="Attach a solution component to a solution blueprint.",
             externalDocs=@ExternalDocumentation(description="Further Information",
@@ -495,6 +533,8 @@ public class SolutionArchitectResource
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     @PostMapping(path = "/solution-blueprints/{parentSolutionBlueprintGUID}/solution-components/{solutionComponentGUID}/detach")
+    @SecurityRequirement(name = "BearerAuthorization")
+
     @Operation(summary="detachSolutionComponentFromBlueprint",
             description="Detach a solution component from a solution blueprint.",
             externalDocs=@ExternalDocumentation(description="Further Information",
@@ -507,7 +547,7 @@ public class SolutionArchitectResource
                                                              @PathVariable
                                                              String solutionComponentGUID,
                                                              @RequestBody (required = false)
-                                                                 DeleteRequestBody requestBody)
+                                                                 DeleteRelationshipRequestBody requestBody)
     {
         return restAPI.detachSolutionComponentFromBlueprint(serverName, parentSolutionBlueprintGUID, solutionComponentGUID, requestBody);
     }
@@ -529,6 +569,8 @@ public class SolutionArchitectResource
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     @PostMapping(path = "/elements/{parentGUID}/solution-designs/{solutionBlueprintGUID}/attach")
+    @SecurityRequirement(name = "BearerAuthorization")
+
     @Operation(summary="linkSolutionDesign",
             description="Attach a solution blueprint to the element that is describes.",
             externalDocs=@ExternalDocumentation(description="Further Information",
@@ -561,6 +603,8 @@ public class SolutionArchitectResource
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     @PostMapping(path = "/elements/{parentGUID}/solution-designs/{solutionBlueprintGUID}/detach")
+    @SecurityRequirement(name = "BearerAuthorization")
+
     @Operation(summary="detachSolutionDesign",
             description="Detach a solution blueprint from the element it describes..",
             externalDocs=@ExternalDocumentation(description="Further Information",
@@ -573,7 +617,7 @@ public class SolutionArchitectResource
                                              @PathVariable
                                                  String solutionBlueprintGUID,
                                              @RequestBody (required = false)
-                                                 DeleteRequestBody requestBody)
+                                                 DeleteRelationshipRequestBody requestBody)
     {
         return restAPI.detachSolutionDesign(serverName, parentGUID, solutionBlueprintGUID, requestBody);
     }
@@ -592,6 +636,8 @@ public class SolutionArchitectResource
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     @PostMapping(path = "/solution-blueprints/{solutionBlueprintGUID}/delete")
+    @SecurityRequirement(name = "BearerAuthorization")
+
     @Operation(summary="deleteSolutionBlueprint",
             description="Delete a solution blueprint.",
             externalDocs=@ExternalDocumentation(description="Further Information",
@@ -602,7 +648,7 @@ public class SolutionArchitectResource
                                                 @PathVariable
                                                 String                    solutionBlueprintGUID,
                                                 @RequestBody (required = false)
-                                                    DeleteRequestBody requestBody)
+                                                    DeleteElementRequestBody requestBody)
     {
         return restAPI.deleteSolutionBlueprint(serverName, solutionBlueprintGUID, requestBody);
     }
@@ -620,15 +666,15 @@ public class SolutionArchitectResource
      *  PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     @PostMapping(path = "/solution-blueprints/by-name")
+    @SecurityRequirement(name = "BearerAuthorization")
+
     @Operation(summary="getSolutionBlueprintsByName",
             description="Returns the list of solution blueprints with a particular name.",
             externalDocs=@ExternalDocumentation(description="Further Information",
                     url="https://egeria-project.org/concepts/solution-blueprint"))
 
-    public SolutionBlueprintsResponse getSolutionBlueprintsByName(@PathVariable
-                                                                  String            serverName,
-                                                                  @RequestBody (required = false)
-                                                                  FilterRequestBody requestBody)
+    public OpenMetadataRootElementsResponse getSolutionBlueprintsByName(@PathVariable String            serverName,
+                                                                        @RequestBody (required = false) FilterRequestBody requestBody)
     {
         return restAPI.getSolutionBlueprintsByName(serverName, requestBody);
     }
@@ -647,12 +693,14 @@ public class SolutionArchitectResource
      *  PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     @PostMapping(path = "/solution-blueprints/{solutionBlueprintGUID}/retrieve")
+    @SecurityRequirement(name = "BearerAuthorization")
+
     @Operation(summary="getSolutionBlueprintByGUID",
             description="Return the properties of a specific solution blueprint.",
             externalDocs=@ExternalDocumentation(description="Further Information",
                     url="https://egeria-project.org/concepts/solution-blueprint"))
 
-    public SolutionBlueprintResponse getSolutionBlueprintByGUID(@PathVariable
+    public OpenMetadataRootElementResponse getSolutionBlueprintByGUID(@PathVariable
                                                                 String             serverName,
                                                                 @PathVariable
                                                                 String             solutionBlueprintGUID,
@@ -675,12 +723,14 @@ public class SolutionArchitectResource
      *  PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     @PostMapping(path = "/solution-blueprints/by-search-string")
+    @SecurityRequirement(name = "BearerAuthorization")
+
     @Operation(summary="findSolutionBlueprints",
             description="Retrieve the list of solution blueprint metadata elements that contain the search string.  The returned blueprints include a list of the components that are associated with it.",
             externalDocs=@ExternalDocumentation(description="Further Information",
                     url="https://egeria-project.org/concepts/solution-blueprint"))
 
-    public SolutionBlueprintsResponse findSolutionBlueprints(@PathVariable String                  serverName,
+    public OpenMetadataRootElementsResponse findSolutionBlueprints(@PathVariable String                  serverName,
                                                              @RequestBody  (required = false)
                                                              SearchStringRequestBody requestBody)
     {
@@ -702,6 +752,8 @@ public class SolutionArchitectResource
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     @PostMapping(path = "/solution-roles/{solutionRoleGUID}/solution-component-actors/{dataFieldGUID}/attach")
+    @SecurityRequirement(name = "BearerAuthorization")
+
     @Operation(summary="linkSolutionComponentActor",
             description="Attach a solution component to a solution role.",
             externalDocs=@ExternalDocumentation(description="Further Information",
@@ -734,6 +786,8 @@ public class SolutionArchitectResource
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     @PostMapping(path = "/solution-roles/{solutionRoleGUID}/solution-component-actors/{solutionComponentGUID}/detach")
+    @SecurityRequirement(name = "BearerAuthorization")
+
     @Operation(summary="detachSolutionComponentActor",
             description="Detach a solution component from a solution role.",
             externalDocs=@ExternalDocumentation(description="Further Information",
@@ -746,7 +800,7 @@ public class SolutionArchitectResource
                                                      @PathVariable
                                                      String solutionComponentGUID,
                                                      @RequestBody (required = false)
-                                                         DeleteRequestBody requestBody)
+                                                         DeleteRelationshipRequestBody requestBody)
     {
         return restAPI.detachSolutionComponentActor(serverName, solutionRoleGUID, solutionComponentGUID, requestBody);
     }
@@ -764,6 +818,7 @@ public class SolutionArchitectResource
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     @PostMapping(path = "/solution-components")
+    @SecurityRequirement(name = "BearerAuthorization")
 
     @Operation(summary="createSolutionComponent",
             description="Create a solution component.",
@@ -792,6 +847,8 @@ public class SolutionArchitectResource
      *  PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     @PostMapping(path = "/solution-components/from-template")
+    @SecurityRequirement(name = "BearerAuthorization")
+
     @Operation(summary="createSolutionComponentFromTemplate",
             description="Create a new metadata element to represent a solution component using an existing metadata element as a template.  The template defines additional classifications and relationships that should be added to the new element.",
             externalDocs=@ExternalDocumentation(description="Further Information",
@@ -819,6 +876,8 @@ public class SolutionArchitectResource
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     @PostMapping(path = "/solution-components/{solutionComponentGUID}/update")
+    @SecurityRequirement(name = "BearerAuthorization")
+
     @Operation(summary="updateSolutionComponent",
             description="Update the properties of a solution component.",
             externalDocs=@ExternalDocumentation(description="Further Information",
@@ -849,6 +908,8 @@ public class SolutionArchitectResource
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     @PostMapping(path = "/solution-components/{solutionComponentGUID}/subcomponents/{subcomponentGUID}/attach")
+    @SecurityRequirement(name = "BearerAuthorization")
+
     @Operation(summary="linkSubcomponent",
             description="Attach a solution component to a nested solution component.",
             externalDocs=@ExternalDocumentation(description="Further Information",
@@ -881,6 +942,8 @@ public class SolutionArchitectResource
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     @PostMapping(path = "/solution-components/{parentSolutionComponentGUID}/subcomponents/{subcomponentGUID}/detach")
+    @SecurityRequirement(name = "BearerAuthorization")
+
     @Operation(summary="detachSubcomponent",
             description="Detach a solution component from a solution component.",
             externalDocs=@ExternalDocumentation(description="Further Information",
@@ -893,7 +956,7 @@ public class SolutionArchitectResource
                                            @PathVariable
                                            String subcomponentGUID,
                                            @RequestBody (required = false)
-                                               DeleteRequestBody requestBody)
+                                               DeleteRelationshipRequestBody requestBody)
     {
         return restAPI.detachSubcomponent(serverName, parentSolutionComponentGUID, subcomponentGUID, requestBody);
     }
@@ -913,6 +976,8 @@ public class SolutionArchitectResource
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     @PostMapping(path = "/solution-components/{solutionComponentOneGUID}/wired-to/{solutionComponentTwoGUID}/attach")
+    @SecurityRequirement(name = "BearerAuthorization")
+
     @Operation(summary="linkSolutionLinkingWire",
             description="Attach a solution component to a solution component as a peer in a solution.",
             externalDocs=@ExternalDocumentation(description="Further Information",
@@ -945,6 +1010,8 @@ public class SolutionArchitectResource
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     @PostMapping(path = "/solution-components/{solutionComponentOneGUID}/wired-to/{solutionComponentTwoGUID}/detach")
+    @SecurityRequirement(name = "BearerAuthorization")
+
     @Operation(summary="detachSolutionLinkingWire",
             description="Detach a solution component from a peer solution component.",
             externalDocs=@ExternalDocumentation(description="Further Information",
@@ -957,7 +1024,7 @@ public class SolutionArchitectResource
                                            @PathVariable
                                            String solutionComponentTwoGUID,
                                            @RequestBody (required = false)
-                                                      DeleteRequestBody requestBody)
+                                                      DeleteRelationshipRequestBody requestBody)
     {
         return restAPI.detachSolutionLinkingWire(serverName, solutionComponentOneGUID, solutionComponentTwoGUID, requestBody);
     }
@@ -976,6 +1043,8 @@ public class SolutionArchitectResource
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     @PostMapping(path = "/solution-components/{solutionComponentGUID}/delete")
+    @SecurityRequirement(name = "BearerAuthorization")
+
     @Operation(summary="deleteSolutionComponent",
             description="Delete a solution component.",
             externalDocs=@ExternalDocumentation(description="Further Information",
@@ -986,7 +1055,7 @@ public class SolutionArchitectResource
                                                 @PathVariable
                                                 String                    solutionComponentGUID,
                                                @RequestBody (required = false)
-                                                    DeleteRequestBody requestBody)
+                                                    DeleteElementRequestBody requestBody)
     {
         return restAPI.deleteSolutionComponent(serverName, solutionComponentGUID, requestBody);
     }
@@ -1004,12 +1073,14 @@ public class SolutionArchitectResource
      *  PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     @PostMapping(path = "/solution-components/by-name")
+    @SecurityRequirement(name = "BearerAuthorization")
+
     @Operation(summary="getSolutionComponentsByName",
             description="Returns the list of solution components with a particular name.",
             externalDocs=@ExternalDocumentation(description="Further Information",
                     url="https://egeria-project.org/concepts/solution-component"))
 
-    public SolutionComponentsResponse getSolutionComponentsByName(@PathVariable
+    public OpenMetadataRootElementsResponse getSolutionComponentsByName(@PathVariable
                                                                   String            serverName,
                                                                   @RequestBody (required = false)
                                                                   FilterRequestBody requestBody)
@@ -1030,12 +1101,14 @@ public class SolutionArchitectResource
      *  PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     @PostMapping(path = "/solution-components/by-search-string")
+    @SecurityRequirement(name = "BearerAuthorization")
+
     @Operation(summary="findSolutionComponents",
             description="Retrieve the list of solution metadata elements that contain the search string.  The solutions components returned include information about the consumers, actors and other solution components that are associated with them.",
             externalDocs=@ExternalDocumentation(description="Further Information",
                     url="https://egeria-project.org/concepts/solution-component"))
 
-    public SolutionComponentsResponse findSolutionComponents(@PathVariable String                  serverName,
+    public OpenMetadataRootElementsResponse findSolutionComponents(@PathVariable String                  serverName,
                                                              @RequestBody (required = false)
                                                              SearchStringRequestBody requestBody)
     {
@@ -1057,12 +1130,14 @@ public class SolutionArchitectResource
      *  PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     @PostMapping(path = "/solution-components/{solutionComponentGUID}/retrieve")
+    @SecurityRequirement(name = "BearerAuthorization")
+
     @Operation(summary="getSolutionComponentByGUID",
             description="Return the properties of a specific solution component.",
             externalDocs=@ExternalDocumentation(description="Further Information",
                     url="https://egeria-project.org/concepts/solution-role"))
 
-    public SolutionComponentResponse getSolutionComponentByGUID(@PathVariable
+    public OpenMetadataRootElementResponse getSolutionComponentByGUID(@PathVariable
                                                                 String             serverName,
                                                                 @PathVariable
                                                                 String             solutionComponentGUID,
@@ -1087,6 +1162,8 @@ public class SolutionArchitectResource
      *  PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     @PostMapping(path = "/solution-components/{solutionComponentGUID}/implementations")
+    @SecurityRequirement(name = "BearerAuthorization")
+
     @Operation(summary="getSolutionComponentImplementations",
             description="Retrieve the list of  metadata elements that are associated with the solution component via the ImplementedBy relationship.",
             externalDocs=@ExternalDocumentation(description="Further Information",

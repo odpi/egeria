@@ -21,7 +21,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
         {
                 @JsonSubTypes.Type(value = NamingStandardRuleProperties.class, name = "NamingStandardRuleProperties"),
         })
-public class GovernanceRuleProperties extends TechnicalControlProperties
+public class GovernanceRuleProperties extends GovernanceControlProperties
 {
 
     /**
@@ -39,7 +39,7 @@ public class GovernanceRuleProperties extends TechnicalControlProperties
      *
      * @param template object to copy
      */
-    public GovernanceRuleProperties(TechnicalControlProperties template)
+    public GovernanceRuleProperties(GovernanceControlProperties template)
     {
         super(template);
     }

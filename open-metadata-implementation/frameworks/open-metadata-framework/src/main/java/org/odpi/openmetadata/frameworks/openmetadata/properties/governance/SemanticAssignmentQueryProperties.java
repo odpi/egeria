@@ -6,7 +6,7 @@ package org.odpi.openmetadata.frameworks.openmetadata.properties.governance;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import org.odpi.openmetadata.frameworks.openmetadata.enums.GlossaryTermAssignmentStatus;
+import org.odpi.openmetadata.frameworks.openmetadata.enums.TermAssignmentStatus;
 import org.odpi.openmetadata.frameworks.openmetadata.search.FindProperties;
 
 import java.util.Objects;
@@ -23,9 +23,9 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 public class SemanticAssignmentQueryProperties extends FindProperties
 {
     private String                       expression               = null;
-    private String                       description              = null;
-    private GlossaryTermAssignmentStatus status                   = GlossaryTermAssignmentStatus.VALIDATED;
-    private boolean                      returnSpecificConfidence = false;
+    private String               description              = null;
+    private TermAssignmentStatus status                   = TermAssignmentStatus.VALIDATED;
+    private boolean              returnSpecificConfidence = false;
     private int                          confidence               = 0;
     private String                       createdBy                = null;
     private String                       steward                  = null;
@@ -113,7 +113,7 @@ public class SemanticAssignmentQueryProperties extends FindProperties
      *
      * @param status status enum
      */
-    public void setStatus(GlossaryTermAssignmentStatus status)
+    public void setStatus(TermAssignmentStatus status)
     {
         this.status = status;
     }
@@ -124,7 +124,7 @@ public class SemanticAssignmentQueryProperties extends FindProperties
      *
      * @return status enum
      */
-    public GlossaryTermAssignmentStatus getStatus()
+    public TermAssignmentStatus getStatus()
     {
         return status;
     }

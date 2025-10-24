@@ -125,17 +125,12 @@ Content-Type: application/json
 ###
 # @name updateSubjectArea
 # Update the properties of a subject area.
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/subject-area/subject-areas/{{subjectAreaGUID}}/update?replaceAllProperties=false
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/subject-area/subject-areas/{{subjectAreaGUID}}/update
 Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
   "class" : "UpdateElementRequestBody",
-  "externalSourceGUID": "add guid here",
-  "externalSourceName": "add qualified name here",
-  "effectiveTime" : "{{$isoTimestamp}}",
-  "forLineage" : false,
-  "forDuplicateProcessing" : false,
   "properties": {
     "class" : "SubjectAreaProperties",
     "qualifiedName": "add unique name here",
@@ -151,7 +146,13 @@ Content-Type: application/json
     },
     "effectiveFrom": "{{$isoTimestamp}}",
     "effectiveTo": "{{$isoTimestamp}}"
-  }
+  },
+  "mergeUpdate" : true,
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
 }
 
 
@@ -320,6 +321,8 @@ Content-Type: application/json
   "class" : "FilterRequestBody",
    "filter" : "Add name here",
    "metadataElementTypeName": "SubjectAreaDefinition",
+   "startFrom": 0,
+   "pageSize": 10,
    "asOfTime" : "{{$isoTimestamp}}",
    "effectiveTime" : "{{$isoTimestamp}}",
    "forLineage" : false,
@@ -327,6 +330,7 @@ Content-Type: application/json
    "limitResultsByStatus" : ["ACTIVE"],
    "sequencingOrder" : "PROPERTY_ASCENDING",
    "sequencingProperty" : "qualifiedName"
+
 }
 
 

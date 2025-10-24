@@ -81,8 +81,25 @@ public enum CSVFileConnectorErrorCode implements ExceptionMessageSet
     FIXED_COLUMN_NAMES(500, "CSV-FILE-CONNECTOR-500-002",
                                     "The connector cannot change its column names because they are fixed in the connector's configuration",
                                     "The connector is unable to process the new column descriptions.",
-                                    "Remove the column names definition from the configuration properties to enable new column names to be specified.");
+                                    "Remove the column names definition from the configuration properties to enable new column names to be specified."),
 
+    /**
+     * CSV-FILE-CONNECTOR-500-003 - Connection {0} has been configured without the embedded CSV File Store connection
+     */
+    NO_EMBEDDED_FILE_STORE(500, "CSV-FILE-CONNECTOR-500-003",
+                                   "Connection {0} has been configured without the embedded CSV File Store connection",
+                                   "The connector is unable to start because it does not have the connector that manages the file.",
+                                   "Update the connection to include the embedded connection needed to work with CSV files."),
+
+    /**
+     * CSV-FILE-CONNECTOR-500-004 - The {0} postgreSQL connector received an unexpected exception {1} during method {2}; the error message was: {3}
+     */
+    UNEXPECTED_EXCEPTION(500, "CSV-FILE-CONNECTOR-500-004",
+                                 "The {0} CSV File connector received an unexpected exception {1} during method {2}; the error message was: {3}",
+                                 "The connector is unable to process the current request.",
+                                 "Use the details from the error message to determine the cause of the error and retry the request once it is resolved."),
+
+    ;
 
     private final int    httpErrorCode;
     private final String errorMessageId;

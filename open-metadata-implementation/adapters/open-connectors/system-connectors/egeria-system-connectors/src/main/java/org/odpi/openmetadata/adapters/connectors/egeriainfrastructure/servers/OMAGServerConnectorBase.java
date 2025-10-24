@@ -3,6 +3,7 @@
 
 package org.odpi.openmetadata.adapters.connectors.egeriainfrastructure.servers;
 
+import org.odpi.openmetadata.adapters.connectors.egeriainfrastructure.control.OMAGServerPlatformConfigurationProperty;
 import org.odpi.openmetadata.adapters.connectors.egeriainfrastructure.extractor.EgeriaExtractor;
 import org.odpi.openmetadata.adapters.connectors.egeriainfrastructure.ffdc.OMAGConnectorAuditCode;
 import org.odpi.openmetadata.adapters.connectors.egeriainfrastructure.ffdc.OMAGConnectorErrorCode;
@@ -37,6 +38,11 @@ public abstract class OMAGServerConnectorBase extends ConnectorBase implements A
     protected EgeriaExtractor extractor = null;
 
 
+    /**
+     * Constructor used to set up the name of this connector (supplied by the subclasses).
+     *
+     * @param connectorName name of the connector
+     */
     public OMAGServerConnectorBase(String connectorName)
     {
         this.connectorName = connectorName;
@@ -123,9 +129,9 @@ public abstract class OMAGServerConnectorBase extends ConnectorBase implements A
         String serverName = null;
 
         if ((connectionBean.getConfigurationProperties() != null) &&
-                (connectionBean.getConfigurationProperties().get("serverName") != null))
+                (connectionBean.getConfigurationProperties().get(OMAGServerPlatformConfigurationProperty.SERVER_NAME.getName()) != null))
         {
-            serverName = connectionBean.getConfigurationProperties().get("serverName").toString();
+            serverName = connectionBean.getConfigurationProperties().get(OMAGServerPlatformConfigurationProperty.SERVER_NAME.getName()).toString();
         }
 
         if (serverName == null)

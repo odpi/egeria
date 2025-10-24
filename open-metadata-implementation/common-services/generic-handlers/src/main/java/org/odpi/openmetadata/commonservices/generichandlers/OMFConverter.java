@@ -156,54 +156,6 @@ public abstract class OMFConverter<B> extends OpenMetadataAPIGenericConverter<B>
     }
 
 
-    /**
-     * Extract the properties from the element.
-     *
-     * @param beanClass name of the class to create
-     * @param relatedEntity from the repository
-     * @param methodName calling method
-     * @return filled out element header
-     * @throws PropertyServerException there is a problem in the use of the generic handlers because
-     * the converter has been configured with a type of bean that is incompatible with the handler
-     */
-    public RelatedMetadataElementSummary getRelatedMetadataElementSummary(Class<B>      beanClass,
-                                                                          RelatedEntity relatedEntity,
-                                                                          String        methodName) throws PropertyServerException
-    {
-        if ((relatedEntity != null) && (relatedEntity.entityDetail() != null) && (relatedEntity.relationship() != null))
-        {
-            RelatedMetadataElementSummary relatedElementSummary = new RelatedMetadataElementSummary();
-            MetadataElementSummary        elementSummary = new MetadataElementSummary();
-            ElementHeader                 elementHeader  = getMetadataElementHeader(beanClass, relatedEntity.relationship(), null, methodName);
-
-            elementHeader.setGUID(relatedEntity.relationship().getGUID());
-
-            relatedElementSummary.setRelationshipHeader(elementHeader);
-            if (relatedEntity.relationship().getProperties() != null)
-            {
-                relatedElementSummary.setRelationshipProperties(super.getPropertiesAsStrings(relatedEntity.relationship().getProperties()));
-            }
-
-            elementHeader = getMetadataElementHeader(beanClass, relatedEntity.entityDetail(), relatedEntity.entityDetail().getClassifications(), methodName);
-            elementSummary.setElementHeader(elementHeader);
-
-            if (relatedEntity.entityDetail().getProperties() != null)
-            {
-                elementSummary.setProperties(super.getPropertiesAsStrings(relatedEntity.entityDetail().getProperties()));
-            }
-
-            relatedElementSummary.setRelatedElement(elementSummary);
-
-            return relatedElementSummary;
-        }
-        else
-        {
-            handleMissingMetadataInstance(beanClass.getName(), TypeDefCategory.ENTITY_DEF, methodName);
-        }
-
-        return null;
-    }
-
 
     /**
      * Using the supplied instances, return a new instance of the Connection bean. It may be a Connection or a VirtualConnection.

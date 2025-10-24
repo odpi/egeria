@@ -39,7 +39,7 @@ public class APIPackArchiveWriter extends ContentPackBaseArchiveWriter
          * Integration Connector Types may need to link to deployedImplementationType valid value element.
          * This information is in the connector provider.
          */
-        archiveHelper.addConnectorType(null, new OpenAPIMonitorIntegrationProvider());
+        archiveHelper.addConnectorType(new OpenAPIMonitorIntegrationProvider());
 
         /*
          * Create the default integration group.

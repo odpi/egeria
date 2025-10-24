@@ -82,7 +82,7 @@ public class KafkaTopicIntegrationProvider extends IntegrationConnectorProvider
         recognizedConfigurationProperties.add(TEMPLATE_QUALIFIED_NAME_CONFIGURATION_PROPERTY);
         connectorType.setRecognizedConfigurationProperties(recognizedConfigurationProperties);
         connectorType.setSupportedAssetTypeName(supportedAssetTypeName);
-        connectorType.setSupportedDeployedImplementationType(DeployedImplementationType.TOPIC_INTEGRATION_CONNECTOR.getDeployedImplementationType());
+        connectorType.setSupportedDeployedImplementationType(DeployedImplementationType.INTEGRATION_CONNECTOR.getDeployedImplementationType());
 
 
         super.connectorTypeBean = connectorType;

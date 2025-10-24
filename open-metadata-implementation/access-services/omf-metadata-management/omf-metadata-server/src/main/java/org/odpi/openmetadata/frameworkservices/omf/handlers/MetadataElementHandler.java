@@ -131,6 +131,7 @@ public class MetadataElementHandler<B> extends ReferenceableHandler<B>
      */
     public B getMetadataElementByGUID(String       userId,
                                       String       elementGUID,
+                                      String       requestedTypeName,
                                       boolean      forLineage,
                                       boolean      forDuplicateProcessing,
                                       List<String> serviceSupportedZones,
@@ -145,10 +146,15 @@ public class MetadataElementHandler<B> extends ReferenceableHandler<B>
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(elementGUID, guidParameterName, methodName);
 
+        /*
+         * This validates the type name before calling the repository.
+         */
+        this.getEntityTypeGUID(requestedTypeName);
+
         return this.getBeanFromRepository(userId,
                                           elementGUID,
                                           guidParameterName,
-                                          OpenMetadataType.OPEN_METADATA_ROOT.typeName,
+                                          this.getEntityTypeName(requestedTypeName),
                                           forLineage,
                                           forDuplicateProcessing,
                                           serviceSupportedZones,
@@ -175,12 +181,55 @@ public class MetadataElementHandler<B> extends ReferenceableHandler<B>
 
 
     /**
+     * Set up a type name to use on the call.  If the caller passes a type name, it is used, otherwise
+     * OpenMetadataRoot is used.
+     *
+     * @param requestedTypeName type name from the caller
+     * @return type name to use with the repository
+     */
+    private String getEntityTypeName(String requestedTypeName)
+    {
+        String typeName = OpenMetadataType.OPEN_METADATA_ROOT.typeName;
+
+        if ((requestedTypeName != null) && (! requestedTypeName.isBlank()))
+        {
+            typeName = requestedTypeName;
+        }
+
+        return typeName;
+    }
+
+
+    /**
+     * Set up a type GUID to use on the call.  If the caller passes a type name, it is used, otherwise
+     * OpenMetadataRoot is used.  If the type name is invalid an exception is thrown.
+     *
+     * @param requestedTypeName type name from the caller
+     * @throws InvalidParameterException bad type name
+     * @return type name to use with the repository
+     */
+    private String getEntityTypeGUID(String requestedTypeName) throws InvalidParameterException
+    {
+        final String methodName = "getEntityTypeGUID";
+
+        String typeName = this.getEntityTypeName(requestedTypeName);
+
+        return invalidParameterHandler.validateTypeName(typeName,
+                                                        OpenMetadataType.OPEN_METADATA_ROOT.typeName,
+                                                        serviceName,
+                                                        methodName,
+                                                        repositoryHelper);
+    }
+
+
+    /**
      * Retrieve the metadata element using its unique name (typically the qualified name).
      *
      * @param userId caller's userId
      * @param uniqueName unique name for the metadata element
      * @param uniqueNameParameterName name of the parameter that passed the unique name (optional)
      * @param uniqueNamePropertyName name of the property from the open types to use in the lookup
+     * @param requestedTypeName typeName from caller
      * @param limitResultsByStatus By default, relationships in all statuses (other than DELETE) are returned.  However, it is possible
      *                             to specify a list of statuses (for example ACTIVE) to restrict the results to.  Null means all status values.
      * @param asOfTime Requests a historical query of the entity.  Null means return the present values.
@@ -202,6 +251,7 @@ public class MetadataElementHandler<B> extends ReferenceableHandler<B>
                                             String              uniqueName,
                                             String              uniqueNameParameterName,
                                             String              uniqueNamePropertyName,
+                                            String              requestedTypeName,
                                             List<ElementStatus> limitResultsByStatus,
                                             Date                asOfTime,
                                             SequencingOrder     sequencingOrder,
@@ -228,8 +278,8 @@ public class MetadataElementHandler<B> extends ReferenceableHandler<B>
                                             uniqueName,
                                             uniqueNameParameterName,
                                             uniqueNamePropertyName,
-                                            OpenMetadataType.OPEN_METADATA_ROOT.typeGUID,
-                                            OpenMetadataType.OPEN_METADATA_ROOT.typeName,
+                                            this.getEntityTypeGUID(requestedTypeName),
+                                            this.getEntityTypeName(requestedTypeName),
                                             getInstanceStatuses(limitResultsByStatus),
                                             asOfTime,
                                             getSequencingOrder(sequencingOrder),
@@ -248,8 +298,8 @@ public class MetadataElementHandler<B> extends ReferenceableHandler<B>
                                             uniqueName,
                                             nameParameterName,
                                             uniqueNamePropertyName,
-                                            OpenMetadataType.OPEN_METADATA_ROOT.typeGUID,
-                                            OpenMetadataType.OPEN_METADATA_ROOT.typeName,
+                                            this.getEntityTypeGUID(requestedTypeName),
+                                            this.getEntityTypeName(requestedTypeName),
                                             getInstanceStatuses(limitResultsByStatus),
                                             asOfTime,
                                             getSequencingOrder(sequencingOrder),
@@ -270,6 +320,7 @@ public class MetadataElementHandler<B> extends ReferenceableHandler<B>
      * @param uniqueName unique name for the metadata element
      * @param uniqueNameParameterName name of the parameter that passed the unique name (optional)
      * @param uniqueNamePropertyName name of the property from the open types to use in the lookup
+     * @param requestedTypeName typeName from caller
      * @param limitResultsByStatus By default, relationships in all statuses (other than DELETE) are returned.  However, it is possible
      *                             to specify a list of statuses (for example ACTIVE) to restrict the results to.  Null means all status values.
      * @param asOfTime Requests a historical query of the entity.  Null means return the present values.
@@ -291,6 +342,7 @@ public class MetadataElementHandler<B> extends ReferenceableHandler<B>
                                                      String              uniqueName,
                                                      String              uniqueNameParameterName,
                                                      String              uniqueNamePropertyName,
+                                                     String              requestedTypeName,
                                                      List<ElementStatus> limitResultsByStatus,
                                                      Date                asOfTime,
                                                      SequencingOrder     sequencingOrder,
@@ -320,8 +372,8 @@ public class MetadataElementHandler<B> extends ReferenceableHandler<B>
                                             uniqueName,
                                             uniqueNameParameterName,
                                             uniqueNamePropertyName,
-                                            OpenMetadataType.OPEN_METADATA_ROOT.typeGUID,
-                                            OpenMetadataType.OPEN_METADATA_ROOT.typeName,
+                                            this.getEntityTypeGUID(requestedTypeName),
+                                            this.getEntityTypeName(requestedTypeName),
                                             getInstanceStatuses(limitResultsByStatus),
                                             asOfTime,
                                             getSequencingOrder(sequencingOrder),
@@ -339,7 +391,7 @@ public class MetadataElementHandler<B> extends ReferenceableHandler<B>
      *
      * @param userId caller's userId
      * @param searchString name to retrieve
-     * @param typeName optional type name to restrict search to a specific type of element (and their subtypes)
+     * @param requestedTypeName optional type name to restrict search to a specific type of element (and their subtypes)
      * @param limitResultsByStatus By default, relationships in all statuses (other than DELETE) are returned.  However, it is possible
      *                             to specify a list of statuses (for example ACTIVE) to restrict the results to.  Null means all status values.
      * @param asOfTime Requests a historical query of the entity.  Null means return the present values.
@@ -361,7 +413,7 @@ public class MetadataElementHandler<B> extends ReferenceableHandler<B>
      */
     public List<B> findMetadataElementsWithString(String              userId,
                                                   String              searchString,
-                                                  String              typeName,
+                                                  String              requestedTypeName,
                                                   List<ElementStatus> limitResultsByStatus,
                                                   Date                asOfTime,
                                                   String              sequencingProperty,
@@ -380,33 +432,20 @@ public class MetadataElementHandler<B> extends ReferenceableHandler<B>
 
         invalidParameterHandler.validateUserId(userId, methodName);
 
-        if (typeName == null)
+        if (requestedTypeName == null)
         {
             invalidParameterHandler.validateSearchString(searchString, searchStringParameterName, methodName);
         }
-        else if (searchString == null)
+        else if ((searchString == null) || (searchString.isBlank()) || ("*".equals(searchString)))
         {
             searchString = ".*";
         }
 
-        String searchTypeName = OpenMetadataType.OPEN_METADATA_ROOT.typeName;
-
-        if (typeName != null)
-        {
-            searchTypeName = typeName;
-        }
-
-        String searchTypeGUID = invalidParameterHandler.validateTypeName(searchTypeName,
-                                                                         OpenMetadataType.OPEN_METADATA_ROOT.typeName,
-                                                                         serviceName,
-                                                                         methodName,
-                                                                         repositoryHelper);
-
         return this.findBeans(userId,
                               searchString,
                               searchStringParameterName,
-                              searchTypeGUID,
-                              searchTypeName,
+                              this.getEntityTypeGUID(requestedTypeName),
+                              this.getEntityTypeName(requestedTypeName),
                               getInstanceStatuses(limitResultsByStatus),
                               asOfTime,
                               getSequencingOrder(sequencingOrder),
@@ -425,7 +464,7 @@ public class MetadataElementHandler<B> extends ReferenceableHandler<B>
      * Retrieve the metadata elements that are of the correct type.
      *
      * @param userId caller's userId
-     * @param typeName   specific type of element (and their subtypes) to retrieve
+     * @param requestedTypeName   specific type of element (and their subtypes) to retrieve
      * @param forLineage the retrieved element is for lineage processing so include archived elements
      * @param forDuplicateProcessing the retrieved element is for duplicate processing so do not combine results from known duplicates.
      * @param limitResultsByStatus By default, relationships in all non-DELETED statuses are returned.  However, it is possible
@@ -447,7 +486,7 @@ public class MetadataElementHandler<B> extends ReferenceableHandler<B>
      * @throws PropertyServerException there is a problem accessing the metadata store
      */
     public List<B> getMetadataElementsByType(String              userId,
-                                             String              typeName,
+                                             String              requestedTypeName,
                                              boolean             forLineage,
                                              boolean             forDuplicateProcessing,
                                              List<ElementStatus> limitResultsByStatus,
@@ -462,20 +501,13 @@ public class MetadataElementHandler<B> extends ReferenceableHandler<B>
                                                                                     UserNotAuthorizedException,
                                                                                     PropertyServerException
     {
-        final String typeParameterName = "typeName";
+        final String typeParameterName = "metadataElementTypeName";
 
         invalidParameterHandler.validateUserId(userId, methodName);
-        invalidParameterHandler.validateName(typeName, typeParameterName, methodName);
-
-        String entityTypeGUID = invalidParameterHandler.validateTypeName(typeName,
-                                                                         null,
-                                                                         serviceName,
-                                                                         methodName,
-                                                                         repositoryHelper);
-
+        invalidParameterHandler.validateName(requestedTypeName, typeParameterName, methodName);
 
         List<EntityDetail> entities = repositoryHandler.getEntitiesByType(userId,
-                                                                          entityTypeGUID,
+                                                                          this.getEntityTypeGUID(requestedTypeName),
                                                                           this.getInstanceStatuses(limitResultsByStatus),
                                                                           asOfTime,
                                                                           sequencingProperty,
@@ -504,6 +536,7 @@ public class MetadataElementHandler<B> extends ReferenceableHandler<B>
      * @param startingEntity the starting metadata element
      * @param startingAtEnd indicates which end to retrieve from (0 is "either end"; 1 is end1; 2 is end 2)
      * @param relationshipTypeName type name of relationships to follow (or null for all)
+     * @param attachmentEntityTypeName requested type name for retrieved entities
      * @param limitResultsByStatus By default, relationships in all statuses (other than DELETE) are returned.  However, it is possible
      *                             to specify a list of statuses (for example ACTIVE) to restrict the results to.  Null means all status values.
      * @param asOfTime Requests a historical query of the entity.  Null means return the present values.
@@ -528,6 +561,7 @@ public class MetadataElementHandler<B> extends ReferenceableHandler<B>
                                                                    EntityDetail        startingEntity,
                                                                    int                 startingAtEnd,
                                                                    String              relationshipTypeName,
+                                                                   String              attachmentEntityTypeName,
                                                                    List<ElementStatus> limitResultsByStatus,
                                                                    Date                asOfTime,
                                                                    String              sequencingProperty,
@@ -602,7 +636,7 @@ public class MetadataElementHandler<B> extends ReferenceableHandler<B>
                                                                                 startingEntity.getGUID(),
                                                                                 startingEntity.getType().getTypeDefName(),
                                                                                 relationships,
-                                                                                OpenMetadataType.OPEN_METADATA_ROOT.typeName,
+                                                                                this.getEntityTypeName(attachmentEntityTypeName),
                                                                                 null,
                                                                                 null,
                                                                                 selectionEnd,
@@ -778,7 +812,7 @@ public class MetadataElementHandler<B> extends ReferenceableHandler<B>
     public List<B> findMetadataElements(String                userId,
                                         String                metadataElementTypeName,
                                         List<String>          metadataElementSubtypeName,
-                                        SearchProperties searchProperties,
+                                        SearchProperties      searchProperties,
                                         List<ElementStatus>   limitResultsByStatus,
                                         SearchClassifications searchClassifications,
                                         Date                  asOfTime,
@@ -967,7 +1001,7 @@ public class MetadataElementHandler<B> extends ReferenceableHandler<B>
 
 
     /**
-     * Create an OMRS instance property value from a omf property value.
+     * Create an OMRS instance property value from an omf property value.
      *
      * @param typeDef property's type definition
      * @param arrayCount number of elements in the array
@@ -1006,7 +1040,7 @@ public class MetadataElementHandler<B> extends ReferenceableHandler<B>
 
 
     /**
-     * Create an OMRS instance property value from a omf property value.
+     * Create an OMRS instance property value from an omf property value.
      *
      * @param typeDef  property's type definition
      * @param symbolicName enum value
@@ -1055,7 +1089,7 @@ public class MetadataElementHandler<B> extends ReferenceableHandler<B>
 
 
     /**
-     * Create an OMRS instance property value from a omf property value.
+     * Create an OMRS instance property value from an omf property value.
      *
      * @param typeDef property's type definition
      * @param mapValues values in the array
@@ -1090,7 +1124,7 @@ public class MetadataElementHandler<B> extends ReferenceableHandler<B>
 
 
     /**
-     * Create an OMRS instance property value from a omf property value.
+     * Create an OMRS instance property value from an omf property value.
      *
      * @param typeDef property's type definition
      * @param primitiveTypeCategory value type
@@ -1170,7 +1204,7 @@ public class MetadataElementHandler<B> extends ReferenceableHandler<B>
 
 
     /**
-     * Create an OMRS instance property value from a omf property value.
+     * Create an OMRS instance property value from an omf property value.
      *
      * @param typeDef property's type definition
      * @param attributes values in the array
@@ -1337,7 +1371,7 @@ public class MetadataElementHandler<B> extends ReferenceableHandler<B>
 
 
     /**
-     * Convert a omf ElementStatus into an OMRS InstanceStatus.
+     * Convert an omf ElementStatus into an OMRS InstanceStatus.
      *
      * @param elementStatus omf ElementStatus
      * @return OMRS InstanceStatus

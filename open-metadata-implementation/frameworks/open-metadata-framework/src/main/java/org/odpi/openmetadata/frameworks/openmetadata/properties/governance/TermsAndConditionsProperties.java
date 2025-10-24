@@ -3,11 +3,8 @@
 package org.odpi.openmetadata.frameworks.openmetadata.properties.governance;
 
 import com.fasterxml.jackson.annotation.*;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.RelationshipBeanProperties;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.dataprocessing.DataProcessingPurposeProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 
-import java.util.Date;
 import java.util.Map;
 import java.util.Objects;
 
@@ -27,8 +24,9 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
         {
                 @JsonSubTypes.Type(value = CertificationTypeProperties.class, name = "CertificationTypeProperties"),
                 @JsonSubTypes.Type(value = LicenseTypeProperties.class, name = "LicenseTypeProperties"),
+                @JsonSubTypes.Type(value = ServiceLevelObjectiveProperties.class, name = "ServiceLevelObjectiveProperties"),
         })
-public class TermsAndConditionsProperties extends OrganizationalControlProperties
+public class TermsAndConditionsProperties extends GovernanceControlProperties
 {
     private Map<String, String> entitlements = null;
     private Map<String, String> restrictions = null;

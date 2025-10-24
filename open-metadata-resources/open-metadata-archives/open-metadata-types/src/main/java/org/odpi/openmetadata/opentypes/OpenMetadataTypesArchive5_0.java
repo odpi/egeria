@@ -157,7 +157,6 @@ public class OpenMetadataTypesArchive5_0
         /*
          * Add the type updates
          */
-        update0010BaseModel();
         update0011UpdateTemplates();
         update0021Collections();
         update0050ApplicationsAndProcesses();
@@ -168,7 +167,6 @@ public class OpenMetadataTypesArchive5_0
         add0226ArchiveFiles();
         update0280SoftwareArtifacts();
         update0461GovernanceEngines();
-        update0464IntegrationGroups();
         update0545ReferenceData();
         update0462GovernanceActionTypes();
         add00475ContextEvents();
@@ -183,54 +181,29 @@ public class OpenMetadataTypesArchive5_0
      * -------------------------------------------------------------------------------------------------------
      */
 
-    private void update0010BaseModel()
-    {
-        this.archiveBuilder.addTypeDefPatch(updateAnchors());
-    }
-
-    private TypeDefPatch updateAnchors()
-    {
-        /*
-         * Create the Patch
-         */
-        TypeDefPatch typeDefPatch = archiveBuilder.getPatchForType(OpenMetadataType.ANCHORS_CLASSIFICATION.typeName);
-
-        typeDefPatch.setUpdatedBy(originatorName);
-        typeDefPatch.setUpdateTime(creationDate);
-
-        /*
-         * Build the attributes
-         */
-        List<TypeDefAttribute> properties = new ArrayList<>();
-
-        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.ANCHOR_TYPE_NAME));
-        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.ANCHOR_DOMAIN_NAME));
-
-        typeDefPatch.setPropertyDefinitions(properties);
-
-        return typeDefPatch;
-    }
-
-    /*
-     * -------------------------------------------------------------------------------------------------------
-     */
-
     private void update0021Collections()
     {
-        this.archiveBuilder.addClassificationDef(getRootCollectionClassification());
+        this.archiveBuilder.addEntityDef(getRootCollectionEntity());
+        this.archiveBuilder.addEntityDef(getCollectionFolderEntity());
         this.archiveBuilder.addClassificationDef(getHomeCollectionClassification());
         this.archiveBuilder.addClassificationDef(getRecentAccessClassification());
         this.archiveBuilder.addClassificationDef(getWorkItemListClassification());
     }
 
 
-    private ClassificationDef getRootCollectionClassification()
+    private EntityDef getRootCollectionEntity()
     {
-        return archiveHelper.getClassificationDef(OpenMetadataType.ROOT_COLLECTION_CLASSIFICATION,
-                                                  this.archiveBuilder.getClassificationDef(OpenMetadataType.COLLECTION_ROLE_CLASSIFICATION.typeName),
-                                                  this.archiveBuilder.getEntityDef(OpenMetadataType.COLLECTION.typeName),
-                                                  false);
+        return archiveHelper.getDefaultEntityDef(OpenMetadataType.ROOT_COLLECTION,
+                                                 this.archiveBuilder.getEntityDef(OpenMetadataType.COLLECTION.typeName));
     }
+
+
+    private EntityDef getCollectionFolderEntity()
+    {
+        return archiveHelper.getDefaultEntityDef(OpenMetadataType.COLLECTION_FOLDER,
+                                                 this.archiveBuilder.getEntityDef(OpenMetadataType.COLLECTION.typeName));
+    }
+
 
     private ClassificationDef getHomeCollectionClassification()
     {
@@ -538,38 +511,8 @@ public class OpenMetadataTypesArchive5_0
 
     private void update0220DataFiles()
     {
-        this.archiveBuilder.addTypeDefPatch(updateDataFile());
         this.archiveBuilder.addEntityDef(addXMLFileEntity());
         this.archiveBuilder.addEntityDef(addSpreadsheetFileEntity());
-    }
-
-
-    /**
-     * Update DataFile with an explicit property for fileExtension.  Prior to this change the file extension
-     * was stored in the fileType property.  The fileType property is now a logical fileType.
-     *
-     * @return type def patch
-     */
-    private TypeDefPatch updateDataFile()
-    {
-        /*
-         * Create the Patch
-         */
-        TypeDefPatch typeDefPatch = archiveBuilder.getPatchForType(OpenMetadataType.DATA_FILE.typeName);
-
-        typeDefPatch.setUpdatedBy(originatorName);
-        typeDefPatch.setUpdateTime(creationDate);
-
-        /*
-         * Build the attributes
-         */
-        List<TypeDefAttribute> properties = new ArrayList<>();
-
-        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.FILE_EXTENSION));
-
-        typeDefPatch.setPropertyDefinitions(properties);
-
-        return typeDefPatch;
     }
 
 
@@ -859,44 +802,6 @@ public class OpenMetadataTypesArchive5_0
 
 
 
-
-    /*
-     * -------------------------------------------------------------------------------------------------------
-     */
-
-    private void update0464IntegrationGroups()
-    {
-        this.archiveBuilder.addTypeDefPatch(updateCatalogTarget());
-    }
-
-    /**
-     * Add configurationProperties
-     *
-     * @return patch
-     */
-    private TypeDefPatch updateCatalogTarget()
-    {
-        TypeDefPatch typeDefPatch = archiveBuilder.getPatchForType(OpenMetadataType.CATALOG_TARGET_RELATIONSHIP.typeName);
-
-        typeDefPatch.setUpdatedBy(originatorName);
-        typeDefPatch.setUpdateTime(creationDate);
-
-        /*
-         * Build the attributes
-         */
-        List<TypeDefAttribute> properties = new ArrayList<>();
-
-        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.TEMPLATES));
-        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.CONNECTION_NAME));
-        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.METADATA_SOURCE_QUALIFIED_NAME));
-        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.CONFIGURATION_PROPERTIES));
-
-        typeDefPatch.setPropertyDefinitions(properties);
-
-        return typeDefPatch;
-    }
-
-
     /*
      * -------------------------------------------------------------------------------------------------------
      */
@@ -978,6 +883,16 @@ public class OpenMetadataTypesArchive5_0
                                                                  RelationshipEndCardinality.ANY_NUMBER);
         relationshipDef.setEndDef2(relationshipEndDef);
 
+        /*
+         * Build the attributes
+         */
+        List<TypeDefAttribute> properties = new ArrayList<>();
+
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.LABEL));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.DESCRIPTION));
+
+        relationshipDef.setPropertiesDefinition(properties);
+
         return relationshipDef;
     }
 
@@ -1017,6 +932,16 @@ public class OpenMetadataTypesArchive5_0
                                                                  end2AttributeDescriptionGUID,
                                                                  RelationshipEndCardinality.ANY_NUMBER);
         relationshipDef.setEndDef2(relationshipEndDef);
+
+        /*
+         * Build the attributes
+         */
+        List<TypeDefAttribute> properties = new ArrayList<>();
+
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.LABEL));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.DESCRIPTION));
+
+        relationshipDef.setPropertiesDefinition(properties);
 
         return relationshipDef;
     }
@@ -1064,6 +989,7 @@ public class OpenMetadataTypesArchive5_0
         List<TypeDefAttribute> properties = new ArrayList<>();
 
         properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.SEVERITY_LEVEL_IDENTIFIER));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.LABEL));
         properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.DESCRIPTION));
 
         relationshipDef.setPropertiesDefinition(properties);
@@ -1121,6 +1047,7 @@ public class OpenMetadataTypesArchive5_0
          */
         List<TypeDefAttribute> properties = new ArrayList<>();
 
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.LABEL));
         properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.DESCRIPTION));
 
         relationshipDef.setPropertiesDefinition(properties);
@@ -1170,6 +1097,9 @@ public class OpenMetadataTypesArchive5_0
          */
         List<TypeDefAttribute> properties = new ArrayList<>();
 
+
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.LABEL));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.DESCRIPTION));
         properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.STATUS_IDENTIFIER));
         properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.CONFIDENCE));
         properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.STEWARD));
@@ -1496,7 +1426,7 @@ public class OpenMetadataTypesArchive5_0
 
     private RelationshipDef getRequestForActionTargetRelationship()
     {
-        RelationshipDef relationshipDef = archiveHelper.getBasicRelationshipDef(OpenMetadataType.REQUEST_FOR_ACTION_TARGET,
+        RelationshipDef relationshipDef = archiveHelper.getBasicRelationshipDef(OpenMetadataType.REQUEST_FOR_ACTION_TARGET_RELATIONSHIP,
                                                                                 null,
                                                                                 ClassificationPropagationRule.NONE);
 
@@ -1598,6 +1528,8 @@ public class OpenMetadataTypesArchive5_0
         List<TypeDefAttribute> properties = new ArrayList<>();
 
         properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.ISC_QUALIFIED_NAME));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.LABEL));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.DESCRIPTION));
         properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.HOPS));
 
         relationshipDef.setPropertiesDefinition(properties);
@@ -1650,6 +1582,8 @@ public class OpenMetadataTypesArchive5_0
         List<TypeDefAttribute> properties = new ArrayList<>();
 
         properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.ISC_QUALIFIED_NAME));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.LABEL));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.DESCRIPTION));
         properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.HOPS));
 
         relationshipDef.setPropertiesDefinition(properties);

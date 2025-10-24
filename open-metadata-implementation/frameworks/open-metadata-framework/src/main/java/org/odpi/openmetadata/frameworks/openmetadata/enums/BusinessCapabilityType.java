@@ -45,7 +45,7 @@ public enum BusinessCapabilityType implements OpenMetadataEnum
 
     private static final String ENUM_DESCRIPTION = "Defines the type or category of a business capability.";
     private static final String ENUM_DESCRIPTION_GUID = "ad3fcd68-4371-421e-9c9c-e944b11ad288";
-    private static final String ENUM_DESCRIPTION_WIKI = OpenMetadataWikiPages.MODEL_0440_ORG_CONTROLS;
+    private static final String ENUM_DESCRIPTION_WIKI = OpenMetadataWikiPages.MODEL_0715_DIGITAL_BUSINESS;
 
     private final String descriptionGUID;
 
@@ -186,6 +186,12 @@ public enum BusinessCapabilityType implements OpenMetadataEnum
     @Override
     public String toString()
     {
-        return "BusinessCapabilityType : " + name;
+        return "BusinessCapabilityType{" +
+            "ordinal=" + ordinal +
+            ", name='" + name + '\'' +
+            ", description='" + description + '\'' +
+            ", descriptionGUID='" + descriptionGUID + '\'' +
+            ", isDefault='" + isDefault + '\'' +
+            '}';
     }
 }

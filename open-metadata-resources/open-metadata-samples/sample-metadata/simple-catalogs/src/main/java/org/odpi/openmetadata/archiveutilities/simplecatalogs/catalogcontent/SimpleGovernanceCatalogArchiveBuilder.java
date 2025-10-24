@@ -80,6 +80,7 @@ public class SimpleGovernanceCatalogArchiveBuilder
         this.archiveHelper = new SimpleCatalogArchiveHelper(archiveBuilder,
                                                             archiveGUID,
                                                             archiveName,
+                                                            archiveDescription,
                                                             archiveRootName,
                                                             originatorName,
                                                             creationDate,

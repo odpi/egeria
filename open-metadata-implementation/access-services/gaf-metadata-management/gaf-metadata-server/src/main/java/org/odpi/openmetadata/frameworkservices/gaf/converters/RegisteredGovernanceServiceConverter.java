@@ -101,10 +101,10 @@ public class RegisteredGovernanceServiceConverter
                                                                                                                                 instanceProperties,
                                                                                                                                 methodName));
 
-                            supportedGovernanceServiceProperties.setGenerateActivityReports(repositoryHelper.getBooleanProperty(serviceName,
-                                                                                                                                OpenMetadataProperty.GENERATE_CONNECTOR_ACTIVITY_REPORT.name,
-                                                                                                                                instanceProperties,
-                                                                                                                                methodName));
+                            supportedGovernanceServiceProperties.setGenerateConnectorActivityReports(repositoryHelper.getBooleanProperty(serviceName,
+                                                                                                                                         OpenMetadataProperty.GENERATE_CONNECTOR_ACTIVITY_REPORT.name,
+                                                                                                                                         instanceProperties,
+                                                                                                                                         methodName));
 
                             int deleteMethodOrdinal = repositoryHelper.getEnumPropertyOrdinal(serviceName,
                                                                                               OpenMetadataProperty.DELETE_METHOD.name,

@@ -119,10 +119,10 @@ public enum CollectionDefCategory implements Serializable
     public String toString()
     {
         return "CollectionDefCategory{" +
-                "code=" + code +
+                "ordinal=" + code +
                 ", name='" + name + '\'' +
                 ", argumentCount=" + argumentCount +
-                ", javaClassName='" + javaClassName + '\'' +
+                ", description='" + javaClassName + '\'' +
                 '}';
     }
 }

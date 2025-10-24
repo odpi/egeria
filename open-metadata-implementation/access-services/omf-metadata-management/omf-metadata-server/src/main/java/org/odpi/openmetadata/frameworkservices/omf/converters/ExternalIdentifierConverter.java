@@ -87,7 +87,7 @@ public class ExternalIdentifierConverter<B> extends OpenMetadataStoreConverter<B
 
     /**
      * Using the supplied instances, return a new instance of the bean.  It is used for beans such as
-     * an Annotation or DataField bean which combine knowledge from the entity and its linked relationships.
+     * an AnnotationProperties or DataField bean which combine knowledge from the entity and its linked relationships.
      *
      * @param beanClass name of the class to create
      * @param primaryEntity entity that is the root of the collection of entities that make up the
@@ -110,10 +110,8 @@ public class ExternalIdentifierConverter<B> extends OpenMetadataStoreConverter<B
              */
             B returnBean = beanClass.getDeclaredConstructor().newInstance();
 
-            if (returnBean instanceof MetadataCorrelationHeader)
+            if (returnBean instanceof MetadataCorrelationHeader bean)
             {
-                MetadataCorrelationHeader bean = (MetadataCorrelationHeader) returnBean;
-
                 if (primaryEntity != null)
                 {
                     /*

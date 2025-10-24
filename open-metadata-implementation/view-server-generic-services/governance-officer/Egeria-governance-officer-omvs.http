@@ -28,26 +28,21 @@ Content-Type: application/json
 
 ###
 # @name createGovernanceDefinition (with parent)
-# Create an anchored governance definition linked to a parent.  It may be of type:
-## * BusinessImperative
-## * RegulationArticle
-## * Threat
-## * GovernancePrinciple
-## * GovernanceObligation
-## * GovernanceApproach
-## * GovernanceProcessingPurpose
-# The type is added to the "typeName" property,
+# Create an anchored governance definition linked to a parent.  It may be of class:
+## * BusinessImperativeProperties
+## * RegulationArticleProperties
+## * ThreatProperties
+## * GovernancePrincipleProperties
+## * GovernanceObligationProperties
+## * GovernanceApproachProperties
+## * GovernanceProcessingPurposeProperties
+# The class replaces "GovernanceDefinitionProperties" in the "class" property under "properties"
 POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/governance-officer/governance-definitions
 Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
   "class" : "NewElementRequestBody",
-  "externalSourceGUID": "add guid here",
-  "externalSourceName": "add qualified name here",
-  "effectiveTime" : "{{$isoTimestamp}}",
-  "forLineage" : false,
-  "forDuplicateProcessing" : false,
   "anchorGUID" : "add guid here",
   "isOwnAnchor": false,
   "parentGUID": "add guid here",
@@ -65,7 +60,6 @@ Content-Type: application/json
   "parentAtEnd1": false,
   "properties": {
     "class" : "GovernanceDefinitionProperties",
-    "typeName" : "enter the type of the governance definition",
     "domainIdentifier": 0,
     "qualifiedName": "add unique name here",
     "displayName": "add short name here",
@@ -83,7 +77,12 @@ Content-Type: application/json
     "effectiveFrom": "{{$isoTimestamp}}",
     "effectiveTo": "{{$isoTimestamp}}"
   },
-  "initialStatus": "ACTIVE"
+  "initialStatus": "ACTIVE",
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
 }
 
 ###
@@ -95,11 +94,6 @@ Content-Type: application/json
 
 {
   "class" : "NewElementRequestBody",
-  "externalSourceGUID": "add guid here",
-  "externalSourceName": "add qualified name here",
-  "effectiveTime" : "{{$isoTimestamp}}",
-  "forLineage" : false,
-  "forDuplicateProcessing" : false,
   "anchorGUID" : "add guid here",
   "isOwnAnchor": false,
   "parentGUID": "add guid here",
@@ -117,7 +111,6 @@ Content-Type: application/json
   "parentAtEnd1": false,
   "properties": {
     "class" : "GovernanceStrategyProperties",
-    "typeName" : "GovernanceStrategy",
     "domainIdentifier": 0,
     "qualifiedName": "add unique name here",
     "displayName": "add short name here",
@@ -136,7 +129,12 @@ Content-Type: application/json
     "effectiveFrom": "{{$isoTimestamp}}",
     "effectiveTo": "{{$isoTimestamp}}"
   },
-  "initialStatus": "ACTIVE"
+  "initialStatus": "ACTIVE",
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
 }
 
 ###
@@ -148,11 +146,6 @@ Content-Type: application/json
 
 {
   "class" : "NewElementRequestBody",
-  "externalSourceGUID": "add guid here",
-  "externalSourceName": "add qualified name here",
-  "effectiveTime" : "{{$isoTimestamp}}",
-  "forLineage" : false,
-  "forDuplicateProcessing" : false,
   "anchorGUID" : "add guid here",
   "isOwnAnchor": false,
   "parentGUID": "add guid here",
@@ -170,7 +163,6 @@ Content-Type: application/json
   "parentAtEnd1": false,
   "properties": {
     "class" : "RegulationProperties",
-    "typeName" : "Regulation",
     "domainIdentifier": 0,
     "qualifiedName": "add unique name here",
     "displayName": "add short name here",
@@ -189,31 +181,31 @@ Content-Type: application/json
     "effectiveFrom": "{{$isoTimestamp}}",
     "effectiveTo": "{{$isoTimestamp}}"
   },
-  "initialStatus": "ACTIVE"
+  "initialStatus": "ACTIVE",
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
 }
 
 
 ###
 # @name createGovernanceControl (with parent)
-# Create a governance control definition. It may be of type:
-## * GovernanceRule
-## * ServiceLevelObjective
-## * GovernanceProcess
-## * GoveranceResponsibility
-## * GovernanceProcedure
-## * SecurityAccessControl
-# The type is added to the "typeName" property.
+# Create a governance control definition. It may be of class:
+## * GovernanceRuleProperties
+## * ServiceLevelObjectiveProperties
+## * GovernanceProcessProperties
+## * GoveranceResponsibilityProperties
+## * GovernanceProcedureProperties
+## * SecurityAccessControlProperties
+# The class places "GovernanceControlProperties" in the "class" property.
 POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/governance-officer/governance-definitions
 Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
   "class" : "NewElementRequestBody",
-  "externalSourceGUID": "add guid here",
-  "externalSourceName": "add qualified name here",
-  "effectiveTime" : "{{$isoTimestamp}}",
-  "forLineage" : false,
-  "forDuplicateProcessing" : false,
   "anchorGUID" : "add guid here",
   "isOwnAnchor": false,
   "parentGUID": "add guid here",
@@ -250,7 +242,12 @@ Content-Type: application/json
     "effectiveFrom": "{{$isoTimestamp}}",
     "effectiveTo": "{{$isoTimestamp}}"
   },
-  "initialStatus": "ACTIVE"
+  "initialStatus": "ACTIVE",
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
 }
 
 ###
@@ -262,11 +259,6 @@ Content-Type: application/json
 
 {
   "class" : "NewElementRequestBody",
-  "externalSourceGUID": "add guid here",
-  "externalSourceName": "add qualified name here",
-  "effectiveTime" : "{{$isoTimestamp}}",
-  "forLineage" : false,
-  "forDuplicateProcessing" : false,
   "anchorGUID" : "add guid here",
   "isOwnAnchor": false,
   "parentGUID": "add guid here",
@@ -284,7 +276,6 @@ Content-Type: application/json
   "parentAtEnd1": false,
   "properties": {
     "class" : "SecurityGroupProperties",
-    "typeName" : "SecurityGroup",
     "domainIdentifier": 0,
     "distinguishedName" : "",
     "qualifiedName": "add unique name here",
@@ -304,7 +295,12 @@ Content-Type: application/json
     "effectiveFrom": "{{$isoTimestamp}}",
     "effectiveTo": "{{$isoTimestamp}}"
   },
-  "initialStatus": "ACTIVE"
+  "initialStatus": "ACTIVE",
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
 }
 
 ###
@@ -316,11 +312,6 @@ Content-Type: application/json
 
 {
   "class" : "NewElementRequestBody",
-  "externalSourceGUID": "add guid here",
-  "externalSourceName": "add qualified name here",
-  "effectiveTime" : "{{$isoTimestamp}}",
-  "forLineage" : false,
-  "forDuplicateProcessing" : false,
   "anchorGUID" : "add guid here",
   "isOwnAnchor": false,
   "parentGUID": "add guid here",
@@ -338,7 +329,6 @@ Content-Type: application/json
   "parentAtEnd1": false,
   "properties": {
     "class" : "NamingStandardRuleProperties",
-    "typeName" : "NamingStandardRule",
     "domainIdentifier": 0,
     "qualifiedName": "add unique name here",
     "displayName": "add short name here",
@@ -358,7 +348,12 @@ Content-Type: application/json
     "effectiveFrom": "{{$isoTimestamp}}",
     "effectiveTo": "{{$isoTimestamp}}"
   },
-  "initialStatus": "ACTIVE"
+  "initialStatus": "ACTIVE",
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
 }
 
 ###
@@ -370,11 +365,6 @@ Content-Type: application/json
 
 {
   "class" : "NewElementRequestBody",
-  "externalSourceGUID": "add guid here",
-  "externalSourceName": "add qualified name here",
-  "effectiveTime" : "{{$isoTimestamp}}",
-  "forLineage" : false,
-  "forDuplicateProcessing" : false,
   "anchorGUID" : "add guid here",
   "isOwnAnchor": false,
   "parentGUID": "add guid here",
@@ -392,7 +382,6 @@ Content-Type: application/json
   "parentAtEnd1": false,
   "properties": {
     "class" : "CertificationTypeProperties",
-    "typeName" : "CertificationType",
     "domainIdentifier": 0,
     "qualifiedName": "add unique name here",
     "displayName": "add short name here",
@@ -411,7 +400,12 @@ Content-Type: application/json
     "effectiveFrom": "{{$isoTimestamp}}",
     "effectiveTo": "{{$isoTimestamp}}"
   },
-  "initialStatus": "ACTIVE"
+  "initialStatus": "ACTIVE",
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
 }
 
 ###
@@ -423,11 +417,6 @@ Content-Type: application/json
 
 {
   "class" : "NewElementRequestBody",
-  "externalSourceGUID": "add guid here",
-  "externalSourceName": "add qualified name here",
-  "effectiveTime" : "{{$isoTimestamp}}",
-  "forLineage" : false,
-  "forDuplicateProcessing" : false,
   "anchorGUID" : "add guid here",
   "isOwnAnchor": false,
   "parentGUID": "add guid here",
@@ -445,7 +434,6 @@ Content-Type: application/json
   "parentAtEnd1": false,
   "properties": {
     "class" : "LicenseTypeProperties",
-    "typeName" : "LicenseType",
     "domainIdentifier": 0,
     "qualifiedName": "add unique name here",
     "displayName": "add short name here",
@@ -465,7 +453,12 @@ Content-Type: application/json
     "effectiveFrom": "{{$isoTimestamp}}",
     "effectiveTo": "{{$isoTimestamp}}"
   },
-  "initialStatus": "ACTIVE"
+  "initialStatus": "ACTIVE",
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
 }
 
 
@@ -520,20 +513,14 @@ Content-Type: application/json
 ###
 # @name updateGovernanceDefinition
 # Update the properties of a governance definition.
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/governance-officer/governance-definitions/{{governanceDefinitionGUID}}/update?replaceAllProperties=false
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/governance-officer/governance-definitions/{{governanceDefinitionGUID}}/update
 Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
   "class" : "UpdateElementRequestBody",
-  "externalSourceGUID": "add guid here",
-  "externalSourceName": "add qualified name here",
-  "effectiveTime" : "{{$isoTimestamp}}",
-  "forLineage" : false,
-  "forDuplicateProcessing" : false,
   "properties": {
     "class" : "GovernanceDefinitionProperties",
-    "typeName" : "Add type name here",
     "qualifiedName": "add unique name here",
     "displayName": "add short name here",
     "description": "add description here",
@@ -549,7 +536,13 @@ Content-Type: application/json
     },
     "effectiveFrom": "{{$isoTimestamp}}",
     "effectiveTo": "{{$isoTimestamp}}"
-  }
+  },
+  "mergeUpdate": true,
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
 }
 
 
@@ -562,12 +555,12 @@ Content-Type: application/json
 
 {
   "class" : "UpdateStatusRequestBody",
+  "newStatus": "ACTIVE",
   "externalSourceGUID": "add guid here",
   "externalSourceName": "add qualified name here",
   "effectiveTime" : "{{$isoTimestamp}}",
   "forLineage" : false,
-  "forDuplicateProcessing" : false,
-  "newStatus": "ACTIVE"
+  "forDuplicateProcessing" : false
 }
 
 ###
@@ -589,17 +582,17 @@ Content-Type: application/json
 
 {
   "class" : "NewRelationshipRequestBody",
-  "externalSourceGUID": "add guid here",
-  "externalSourceName": "add qualified name here",
-  "effectiveTime" : "{{$isoTimestamp}}",
-  "forLineage" : false,
-  "forDuplicateProcessing" : false,
   "properties": {
     "class": "PeerDefinitionProperties",
     "description": "",
     "effectiveFrom": "{{$isoTimestamp}}",
     "effectiveTo": "{{$isoTimestamp}}"
-  }
+  },
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
 }
 
 
@@ -612,7 +605,7 @@ Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-  "class" : "DeleteRequestBody",
+  "class" : "DeleteRelationshipRequestBody",
   "externalSourceGUID": "add guid here",
   "externalSourceName": "add qualified name here",
   "effectiveTime" : "{{$isoTimestamp}}",
@@ -633,17 +626,17 @@ Content-Type: application/json
 
 {
   "class" : "NewRelationshipRequestBody",
-  "externalSourceGUID": "add guid here",
-  "externalSourceName": "add qualified name here",
-  "effectiveTime" : "{{$isoTimestamp}}",
-  "forLineage" : false,
-  "forDuplicateProcessing" : false,
   "properties": {
     "class": "SupportingDefinitionProperties",
     "rationale": "",
     "effectiveFrom": "{{$isoTimestamp}}",
     "effectiveTo": "{{$isoTimestamp}}"
-  }
+  },
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
 }
 
 
@@ -656,7 +649,7 @@ Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-  "class" : "DeleteRequestBody",
+  "class" : "DeleteRelationshipRequestBody",
   "externalSourceGUID": "add guid here",
   "externalSourceName": "add qualified name here",
   "effectiveTime" : "{{$isoTimestamp}}",
@@ -673,7 +666,7 @@ Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-  "class" : "DeleteRequestBody",
+  "class" : "DeleteElementRequestBody",
   "externalSourceGUID": "add guid here",
   "externalSourceName": "add qualified name here",
   "effectiveTime" : "{{$isoTimestamp}}",
@@ -685,7 +678,7 @@ Content-Type: application/json
 ###
 # @name findAllGovernanceDefinitions
 # Retrieve the list of governance definition metadata elements that contain the search string.
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/governance-officer/governance-definitions/by-search-string?startFrom=0&pageSize=10&startsWith=true&endsWith=false&ignoreCase=false
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/governance-officer/governance-definitions/by-search-string
 Authorization: Bearer {{token}}
 Content-Type: application/json
 
@@ -693,12 +686,17 @@ Content-Type: application/json
 ###
 # @name findAllGovernanceDefinitions - with full request body
 # Retrieve the list of governance definition metadata elements that contain the search string.
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/governance-officer/governance-definitions/by-search-string?startFrom=0&pageSize=10&startsWith=true&endsWith=false&ignoreCase=false
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/governance-officer/governance-definitions/by-search-string
 Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-  "class" : "FilterRequestBody",
+  "class" : "SearchStringRequestBody",
+  "startsWith" : false,
+  "endsWith" : false,
+  "ignoreCase" : true,
+  "startFrom" : 0,
+  "pageSize": 0,
   "asOfTime" : "{{$isoTimestamp}}",
   "effectiveTime" : "{{$isoTimestamp}}",
   "forLineage" : false,
@@ -712,44 +710,57 @@ Content-Type: application/json
 ###
 # @name findGovernanceDefinitions
 # Retrieve the list of governance definition metadata elements that contain the search string.
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/governance-officer/governance-definitions/by-search-string?startFrom=0&pageSize=10&startsWith=true&endsWith=false&ignoreCase=false
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/governance-officer/governance-definitions/by-search-string
 Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-  "filter" : "Add name here"
+  "class" : "SearchStringRequestBody",
+  "searchString": "xxx",
+  "startsWith" : false,
+  "endsWith" : false,
+  "ignoreCase" : true,
+  "startFrom" : 0,
+  "pageSize": 0
 }
 
 
 ###
 # @name findGovernanceDefinitions - with full request body
 # Retrieve the list of governance definition metadata elements that contain the search string.
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/governance-officer/governance-definitions/by-search-string?startFrom=0&pageSize=10&startsWith=true&endsWith=false&ignoreCase=false
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/governance-officer/governance-definitions/by-search-string
 Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-  "class" : "FilterRequestBody",
- "asOfTime" : "{{$isoTimestamp}}",
+  "class" : "SearchStringRequestBody",
+  "searchString": "xxx",
+  "startsWith" : false,
+  "endsWith" : false,
+  "ignoreCase" : true,
+  "startFrom" : 0,
+  "pageSize": 0,
+  "asOfTime" : "{{$isoTimestamp}}",
   "effectiveTime" : "{{$isoTimestamp}}",
   "forLineage" : false,
   "forDuplicateProcessing" : false,
   "limitResultsByStatus" : ["ACTIVE"],
   "sequencingOrder" : "PROPERTY_ASCENDING",
-  "sequencingProperty" : "qualifiedName",
-  "filter" : "Add name here"
+  "sequencingProperty" : "qualifiedName"
 }
 
 ###
 
 # @name getGovernanceDefinitionsByName
 # Returns the list of governance definitions with a particular name.
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/governance-officer/governance-definitions/by-name?startFrom=0&pageSize=10
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/governance-officer/governance-definitions/by-name
 Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-  "filter" : "Add name here"
+  "filter" : "Add name here",
+  "startFrom": 0,
+  "pageSize": 10
 }
 
 
@@ -757,20 +768,22 @@ Content-Type: application/json
 
 # @name getGovernanceDefinitionsByName - with full request body
 # Returns the list of governance definitions with a particular name.
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/governance-officer/governance-definitions/by-name?startFrom=0&pageSize=10
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/governance-officer/governance-definitions/by-name
 Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
   "class" : "FilterRequestBody",
+  "filter" : "Add name here",
+  "startFrom": 0,
+  "pageSize": 10,
   "asOfTime" : "{{$isoTimestamp}}",
   "effectiveTime" : "{{$isoTimestamp}}",
   "forLineage" : false,
   "forDuplicateProcessing" : false,
   "limitResultsByStatus" : ["ACTIVE"],
   "sequencingOrder" : "PROPERTY_ASCENDING",
-  "sequencingProperty" : "qualifiedName",
-  "filter" : "Add name here"
+  "sequencingProperty" : "qualifiedName"
 }
 
 
@@ -790,12 +803,298 @@ Content-Type: application/json
 
 {
   "class" : "GetRequestBody",
+  "metadataElementTypeName": "GovernancePolicy",
+  "metadataElementSubtypeNames": [],
+  "skipRelationships": [],
+  "includeOnlyRelationships": [],
+  "relationshipsPageSize": 100,
+  "skipClassifiedElements": [],
+  "includeOnlyClassifiedElements": [],
   "asOfTime" : "{{$isoTimestamp}}",
   "effectiveTime" : "{{$isoTimestamp}}",
   "forLineage" : false,
   "forDuplicateProcessing" : false
 }
 
+
+###
+# =====================================================================================================================
+# A governance action type runs a single engine action.
+#
+
+
+###
+# @name getAllGovernanceActionTypes
+# Retrieve the list of governance action type metadata elements that contain the search string.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/governance-officer/governance-definitions/by-search-string
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "SearchStringRequestBody",
+  "metadataElementTypeName": "GovernanceActionType"
+}
+
+###
+# @name findGovernanceActionTypes
+# Retrieve the list of governance action type metadata elements that contain the search string.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/governance-officer/governance-definitions/by-search-string
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "SearchStringRequestBody",
+  "metadataElementTypeName": "GovernanceActionType",
+  "searchString": "xxx",
+  "startsWith" : false,
+  "endsWith" : false,
+  "ignoreCase" : true,
+  "startFrom" : 0,
+  "pageSize": 0,
+  "asOfTime" : "{{$isoTimestamp}}",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false,
+  "limitResultsByStatus" : ["ACTIVE"],
+  "sequencingOrder" : "PROPERTY_ASCENDING",
+  "sequencingProperty" : "qualifiedName"
+}
+
+
+###
+# @name getGovernanceActionTypesByName
+# Retrieve the list of governance action type metadata elements with a matching qualified or display name.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/governance-officer/governance-definitions/by-name
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "filter" : "AssetSurvey:survey-kafka-server",
+  "metadataElementTypeName": "GovernanceActionType",
+  "startFrom" : 0,
+  "pageSize": 0
+}
+
+###
+
+@governanceActionTypeGUID=add guid here
+
+###
+# @name getGovernanceActionTypeByGUID
+# Retrieve the governance action type metadata element with the supplied unique identifier.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/governance-officer/governance-definitions/{{governanceActionTypeGUID}}/retrieve
+Authorization: Bearer {{token}}
+
+
+###
+# @name getGovernanceActionTypeByGUID (Survey Folder)
+# Retrieve the governance action type metadata element with the supplied unique identifier.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/governance-officer/governance-definitions/2f988d28-8fb6-4e11-83a3-63b9ae6ef031/retrieve
+Authorization: Bearer {{token}}
+
+
+###
+# =====================================================================================================================
+# A governance action process describes a well-defined series of steps that gets something done.
+
+# This is the unique identifier of the governance action process
+@processGUID = guid
+
+
+###
+# @name findGovernanceActionProcesses
+# Retrieve the list of governance action process metadata elements that contain the search string.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/governance-officer/governance-action-processes/by-search-string
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "SearchStringRequestBody",
+  "metadataElementTypeName": "GovernanceActionProcess",
+  "searchString": "xxx",
+  "startsWith" : false,
+  "endsWith" : false,
+  "ignoreCase" : true,
+  "startFrom" : 0,
+  "pageSize": 0,
+  "asOfTime" : "{{$isoTimestamp}}",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false,
+  "limitResultsByStatus" : ["ACTIVE"],
+  "sequencingOrder" : "PROPERTY_ASCENDING",
+  "sequencingProperty" : "qualifiedName"
+}
+
+
+###
+# @name getAllGovernanceActionProcesses
+# Retrieve the list of governance action process metadata elements that contain the search string.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/governance-officer/governance-definitions/by-search-string
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "SearchStringRequestBody",
+  "metadataElementTypeName": "GovernanceActionProcess"
+}
+
+###
+# @name getGovernanceActionProcessesByName
+# Retrieve the list of governance action process metadata elements with a matching qualified or display name.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/governance-officer/governance-definitions/by-name
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "FilterRequestBody",
+  "metadataElementTypeName": "GovernanceActionProcess"
+}
+
+
+###
+# @name getGovernanceActionProcessesByName
+# Retrieve the list of governance action process metadata elements with a matching qualified or display name.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/governance-officer/governance-definitions/by-name
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "FilterRequestBody",
+  "metadataElementTypeName": "GovernanceActionProcess",
+  "filter": "xxx",
+  "startFrom" : 0,
+  "pageSize": 0,
+  "asOfTime" : "{{$isoTimestamp}}",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false,
+  "limitResultsByStatus" : ["ACTIVE"],
+  "sequencingOrder" : "PROPERTY_ASCENDING",
+  "sequencingProperty" : "qualifiedName"
+}
+
+
+###
+# @name getGovernanceActionProcessesByName
+# Retrieve the list of governance action process metadata elements with a matching qualified or display name.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/governance-officer/governance-definitions/by-name
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "FilterRequestBody",
+  "metadataElementTypeName": "GovernanceActionProcess",
+  "filter": "GovernanceActionProcess::Valid Value Sets List::Create Subscription::EVALUATION-SUBSCRIPTION",
+  "startFrom" : 0,
+  "pageSize": 0
+}
+
+
+###
+# @name getGovernanceActionProcessByGUID
+# Retrieve the governance action process metadata element with the supplied unique identifier.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/governance-officer/governance-definitions/{{processGUID}}/retrieve
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "GetRequestBody",
+  "metadataElementTypeName": "GovernanceActionProcess"
+}
+
+
+###
+# @name getGovernanceActionProcessByGUID (Daily Process)
+# Retrieve the governance action process metadata element with the supplied unique identifier.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/governance-officer/governance-definitions/dde1e255-6d0c-4589-b4a6-17e7d01db5ab/retrieve
+Authorization: Bearer {{token}}
+
+
+###
+# @name getGovernanceActionProcessGraph
+# Retrieve the governance action process metadata element with the supplied unique identifier
+# along with the flow definition describing its implementation.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/governance-officer/governance-action-processes/{{processGUID}}/graph
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "ResultsRequestBody",
+  "asOfTime" : "{{$isoTimestamp}}",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false,
+  "limitResultsByStatus" : ["ACTIVE"],
+  "sequencingOrder" : "PROPERTY_ASCENDING",
+  "sequencingProperty" : "qualifiedName"
+}
+
+###
+# @name getGovernanceActionProcessGraph (Daily Process)
+# Retrieve the governance action process metadata element with the supplied unique identifier
+# along with the flow definition describing its implementation.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/governance-officer/governance-action-processes/dde1e255-6d0c-4589-b4a6-17e7d01db5ab/graph
+Authorization: Bearer {{token}}
+
+###
+# @name getGovernanceActionProcessGraph (Onboarding Data Process)
+# Retrieve the governance action process metadata element with the supplied unique identifier
+# along with the flow definition describing its implementation.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/governance-officer/governance-action-processes/508d3878-8eae-47e5-8507-ee936f33b418/graph
+Authorization: Bearer {{token}}
+
+
+###
+
+@elementGUID=add guid here
+@definitionGUID=add guid here
+
+###
+# @name addGovernanceDefinitionToElement
+# Link a governance definition to an element using the GovernedBy relationship.
+#
+# Governance Definitions: https://egeria-project.org/types/4/0401-Governance-Definitions/
+
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/classification-manager/elements/{{elementGUID}}/governed-by/definition/{{definitionGUID}}/attach
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+   "class" : "NewRelationshipRequestBody",
+   "properties" : {
+     "class" : "GovernedByProperties",
+     "label" : "add label here",
+     "description" : "add description here"
+   },
+   "externalSourceGUID": "Add guid here",
+   "externalSourceName": "Add qualified name here",
+   "forLineage": false,
+   "forDuplicateProcessing": false,
+   "effectiveTime" : "{{$isoTimestamp}}"
+}
+
+
+###
+# @name removeGovernanceDefinitionFromElement
+# Remove the GovernedBy relationship between a governance definition and an element.
+#
+# Governance Definition: https://egeria-project.org/types/4/0401-Governance-Definitions/
+
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/classification-manager/elements/{{elementGUID}}/governed-by/definition/{{definitionGUID}}/detach
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+   "class" : "MetadataSourceRequestBody",
+   "externalSourceGUID": "Add guid here",
+   "externalSourceName": "Add qualified name here",
+   "forLineage": false,
+   "forDuplicateProcessing": false,
+   "effectiveTime" : "{{$isoTimestamp}}"
+}
+
+###
 
 ###
 
@@ -813,11 +1112,6 @@ Content-Type: application/json
 
 {
   "class" : "NewRelationshipRequestBody",
-  "externalSourceGUID": "add guid here",
-  "externalSourceName": "add qualified name here",
-  "effectiveTime" : "{{$isoTimestamp}}",
-  "forLineage" : false,
-  "forDuplicateProcessing" : false,
   "properties": {
     "class": "ImplementedByProperties",
     "designStep": "",
@@ -827,7 +1121,12 @@ Content-Type: application/json
     "iscQualifiedName": "",
     "effectiveFrom": "{{$isoTimestamp}}",
     "effectiveTo": "{{$isoTimestamp}}"
-  }
+  },
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
 }
 
 
@@ -841,7 +1140,7 @@ Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-  "class" : "DeleteRequestBody",
+  "class" : "DeleteRelationshipRequestBody",
   "externalSourceGUID": "add guid here",
   "externalSourceName": "add qualified name here",
   "effectiveTime" : "{{$isoTimestamp}}",
@@ -860,17 +1159,17 @@ Content-Type: application/json
 
 {
   "class" : "NewRelationshipRequestBody",
-  "externalSourceGUID": "add guid here",
-  "externalSourceName": "add qualified name here",
-  "effectiveTime" : "{{$isoTimestamp}}",
-  "forLineage" : false,
-  "forDuplicateProcessing" : false,
   "properties": {
     "class": "ImplementationResourceProperties",
     "description": "",
     "effectiveFrom": "{{$isoTimestamp}}",
     "effectiveTo": "{{$isoTimestamp}}"
-  }
+  },
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
 }
 
 
@@ -884,7 +1183,7 @@ Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-  "class" : "DeleteRequestBody",
+  "class" : "DeleteRelationshipRequestBody",
   "externalSourceGUID": "add guid here",
   "externalSourceName": "add qualified name here",
   "effectiveTime" : "{{$isoTimestamp}}",
@@ -908,17 +1207,17 @@ Content-Type: application/json
 
 {
   "class" : "NewRelationshipRequestBody",
-  "externalSourceGUID": "add guid here",
-  "externalSourceName": "add qualified name here",
-  "effectiveTime" : "{{$isoTimestamp}}",
-  "forLineage" : false,
-  "forDuplicateProcessing" : false,
   "properties": {
     "class": "GovernanceResultsProperties",
     "description": "",
     "effectiveFrom": "{{$isoTimestamp}}",
     "effectiveTo": "{{$isoTimestamp}}"
-  }
+  },
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
 }
 
 ###
@@ -930,7 +1229,7 @@ Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-  "class" : "DeleteRequestBody",
+  "class" : "DeleteRelationshipRequestBody",
   "externalSourceGUID": "add guid here",
   "externalSourceName": "add qualified name here",
   "effectiveTime" : "{{$isoTimestamp}}",

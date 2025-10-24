@@ -23,11 +23,12 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class GovernanceMeasurementsProperties extends ClassificationBeanProperties
 {
-    private Date dataCollectionStartTime = null;
-    private Date dataCollectionEndTime   = null;
-    private Map<String, Integer> counts = null;
-    private Map<String, String>  values = null;
-    private Map<String, Boolean> flags  = null;
+    private Date                 dataCollectionStartTime = null;
+    private Date                 dataCollectionEndTime   = null;
+    private Map<String, Integer> counts                  = null;
+    private Map<String, String>  values                  = null;
+    private Map<String, Boolean> flags                   = null;
+    private Map<String, Date>    dates                   = null;
 
 
     /**
@@ -52,10 +53,11 @@ public class GovernanceMeasurementsProperties extends ClassificationBeanProperti
         if (template != null)
         {
             dataCollectionStartTime = template.getDataCollectionStartTime();
-            dataCollectionEndTime   = template.getDataCollectionEndTime();
-            counts = template.getCounts();
-            values = template.getValues();
-            flags = template.getFlags();
+            dataCollectionEndTime = template.getDataCollectionEndTime();
+            counts                = template.getCounts();
+            values                = template.getValues();
+            flags                 = template.getFlags();
+            dates                 = template.getDates();
         }
     }
 
@@ -171,6 +173,28 @@ public class GovernanceMeasurementsProperties extends ClassificationBeanProperti
 
 
     /**
+     * Return the set of name-value dates.
+     *
+     * @return name-value dates
+     */
+    public Map<String, Date> getDates()
+    {
+        return dates;
+    }
+
+
+    /**
+     * Set up the set of name-value dates.
+     *
+     * @param dates name-value dates
+     */
+    public void setDates(Map<String, Date> dates)
+    {
+        this.dates = dates;
+    }
+
+
+    /**
      * JSON-style toString
      *
      * @return return string containing the property names and values
@@ -184,6 +208,7 @@ public class GovernanceMeasurementsProperties extends ClassificationBeanProperti
                 ", counts=" + counts +
                 ", values=" + values +
                 ", flags=" + flags +
+                ", dates=" + dates +
                 "} " + super.toString();
     }
 
@@ -213,7 +238,8 @@ public class GovernanceMeasurementsProperties extends ClassificationBeanProperti
                 Objects.equals(dataCollectionEndTime, that.dataCollectionEndTime) &&
                 Objects.equals(counts, that.counts) &&
                 Objects.equals(values, that.values) &&
-                Objects.equals(flags, that.flags);
+                Objects.equals(flags, that.flags)  &&
+                Objects.equals(dates, that.dates);
     }
 
 
@@ -225,6 +251,6 @@ public class GovernanceMeasurementsProperties extends ClassificationBeanProperti
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), dataCollectionStartTime, dataCollectionEndTime, counts, values, flags);
+        return Objects.hash(super.hashCode(), dataCollectionStartTime, dataCollectionEndTime, counts, values, flags, dates);
     }
 }

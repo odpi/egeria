@@ -15,7 +15,7 @@ import org.odpi.openmetadata.frameworks.opensurvey.controls.SurveyActionTarget;
 public class SurveyReportProvider extends GovernanceActionServiceProviderBase
 {
     private static final String  connectorTypeGUID = "f1071e6c-da8b-4a01-899a-14b9d24b1165";
-    private static final String  connectorTypeQualifiedName = "Egeria:GovernanceActionService:Reporter:SurveyReport";
+    private static final String  connectorTypeQualifiedName = "Egeria:GovernanceActionService:Reporter:SurveyReportProperties";
     private static final String  connectorTypeDisplayName = "Survey Report Governance Action Service";
     private static final String  connectorTypeDescription = "Outputs a survey report for an asset as a file.";
 

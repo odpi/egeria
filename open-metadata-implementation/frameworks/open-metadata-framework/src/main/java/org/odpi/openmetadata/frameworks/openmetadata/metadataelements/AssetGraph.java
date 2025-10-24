@@ -15,7 +15,7 @@ public class AssetGraph extends OpenMetadataRootElement
 {
     private List<MetadataElementSummary>     anchoredElements                   = null;
     private List<RelatedMetadataNodeSummary> relationships                      = null;
-    private List<MetadataElementSummary>     informationSupplyChains            = null;
+    private List<MetadataElementSummary>     partOfInformationSupplyChains      = null;
     private String                           informationSupplyChainMermaidGraph = null;
     private String                           fieldLevelLineageGraph             = null;
     private String                           actionMermaidGraph                 = null;
@@ -53,7 +53,7 @@ public class AssetGraph extends OpenMetadataRootElement
         {
             anchoredElements                   = template.getAnchoredElements();
             relationships                      = template.getRelationships();
-            informationSupplyChains            = template.getInformationSupplyChains();
+            partOfInformationSupplyChains      = template.getPartOfInformationSupplyChains();
             informationSupplyChainMermaidGraph = template.getInformationSupplyChainMermaidGraph();
             fieldLevelLineageGraph             = template.getFieldLevelLineageGraph();
             actionMermaidGraph                 = template.getActionMermaidGraph();
@@ -113,9 +113,9 @@ public class AssetGraph extends OpenMetadataRootElement
      *
      * @return list of information supply chain elements
      */
-    public List<MetadataElementSummary> getInformationSupplyChains()
+    public List<MetadataElementSummary> getPartOfInformationSupplyChains()
     {
-        return informationSupplyChains;
+        return partOfInformationSupplyChains;
     }
 
 
@@ -124,9 +124,9 @@ public class AssetGraph extends OpenMetadataRootElement
      *
      * @param informationSupplyChains list of information supply chain elements
      */
-    public void setInformationSupplyChains(List<MetadataElementSummary> informationSupplyChains)
+    public void setPartOfInformationSupplyChains(List<MetadataElementSummary> informationSupplyChains)
     {
-        this.informationSupplyChains = informationSupplyChains;
+        this.partOfInformationSupplyChains = informationSupplyChains;
     }
 
 
@@ -231,7 +231,7 @@ public class AssetGraph extends OpenMetadataRootElement
         return "AssetGraph{" +
                 "anchoredElements=" + anchoredElements +
                 ", relationships=" + relationships +
-                ", informationSupplyChains=" + informationSupplyChains +
+                ", partOfInformationSupplyChains=" + partOfInformationSupplyChains +
                 ", informationSupplyChainMermaidGraph='" + informationSupplyChainMermaidGraph + '\'' +
                 ", fieldLevelLineageGraph='" + fieldLevelLineageGraph + '\'' +
                 ", actionMermaidGraph='" + actionMermaidGraph + '\'' +
@@ -255,6 +255,7 @@ public class AssetGraph extends OpenMetadataRootElement
         AssetGraph that = (AssetGraph) objectToCompare;
         return Objects.equals(anchoredElements, that.anchoredElements) &&
                 Objects.equals(relationships, that.relationships) &&
+                Objects.equals(partOfInformationSupplyChains, that.partOfInformationSupplyChains) &&
                 Objects.equals(informationSupplyChainMermaidGraph, that.informationSupplyChainMermaidGraph) &&
                 Objects.equals(actionMermaidGraph, that.actionMermaidGraph) &&
                 Objects.equals(localLineageGraph, that.localLineageGraph) &&
@@ -270,7 +271,7 @@ public class AssetGraph extends OpenMetadataRootElement
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), anchoredElements, relationships,
+        return Objects.hash(super.hashCode(), anchoredElements, relationships, partOfInformationSupplyChains,
                             informationSupplyChainMermaidGraph, fieldLevelLineageGraph,
                             actionMermaidGraph, localLineageGraph);
     }

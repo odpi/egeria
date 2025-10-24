@@ -69,6 +69,21 @@ public class ActorRoleClient extends ConnectorContextClientBase
 
 
     /**
+     * Copy/clone constructor.
+     *
+     * @param template client to copy
+     * @param specificTypeName type name override
+     */
+    public ActorRoleClient(ActorRoleClient template,
+                           String          specificTypeName)
+    {
+        super(template);
+
+        this.actorRoleHandler = new ActorRoleHandler(template.actorRoleHandler, specificTypeName);
+    }
+
+
+    /**
      * Create a new actor role.
      *
      * @param newElementOptions details of the element to create

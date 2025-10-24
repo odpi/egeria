@@ -5,7 +5,6 @@ package org.odpi.openmetadata.frameworks.openmetadata.properties.communities;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.ReferenceableProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.actors.PersonRoleProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 

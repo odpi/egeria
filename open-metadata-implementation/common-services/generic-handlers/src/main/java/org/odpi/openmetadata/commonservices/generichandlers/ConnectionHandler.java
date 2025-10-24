@@ -254,7 +254,6 @@ public class ConnectionHandler<B> extends ReferenceableHandler<B>
      * @param assetTypeName type of asset
      * @param parentQualifiedName qualified name of associated asset/connection
      * @param connection object to add
-     * @param assetSummary description of the asset for the connection
      * @param forLineage return elements marked with the Memento classification?
      * @param forDuplicateProcessing do not merge elements marked as duplicates?
      * @param serviceSupportedZones supported zones for this service
@@ -275,7 +274,6 @@ public class ConnectionHandler<B> extends ReferenceableHandler<B>
                                   String       assetTypeName,
                                   String       parentQualifiedName,
                                   Connection   connection,
-                                  String       assetSummary,
                                   boolean      forLineage,
                                   boolean      forDuplicateProcessing,
                                   List<String> serviceSupportedZones,
@@ -312,7 +310,6 @@ public class ConnectionHandler<B> extends ReferenceableHandler<B>
                                  assetTypeName,
                                  parentQualifiedName,
                                  connection,
-                                 assetSummary,
                                  forLineage,
                                  forDuplicateProcessing,
                                  serviceSupportedZones,
@@ -536,7 +533,6 @@ public class ConnectionHandler<B> extends ReferenceableHandler<B>
                                                                     null,
                                                                     connectionQualifiedName,
                                                                     realConnection,
-                                                                    null,
                                                                     forLineage,
                                                                     forDuplicateProcessing,
                                                                     serviceSupportedZones,
@@ -582,7 +578,6 @@ public class ConnectionHandler<B> extends ReferenceableHandler<B>
      * @param assetTypeName type of asset
      * @param parentQualifiedName qualified name of parent asset/connection
      * @param connection object to add
-     * @param assetSummary description of the asset for the connection
      * @param forLineage return elements marked with the Memento classification?
      * @param forDuplicateProcessing do not merge elements marked as duplicates?
      * @param serviceSupportedZones list of supported zones for this service
@@ -603,7 +598,6 @@ public class ConnectionHandler<B> extends ReferenceableHandler<B>
                                   String       assetTypeName,
                                   String       parentQualifiedName,
                                   Connection   connection,
-                                  String       assetSummary,
                                   boolean      forLineage,
                                   boolean      forDuplicateProcessing,
                                   List<String> serviceSupportedZones,
@@ -708,15 +702,6 @@ public class ConnectionHandler<B> extends ReferenceableHandler<B>
             if (assetGUID != null)
             {
                 InstanceProperties properties = null;
-
-                if (assetSummary != null)
-                {
-                    properties = repositoryHelper.addStringPropertyToInstance(serviceName,
-                                                                              null,
-                                                                              OpenMetadataProperty.ASSET_SUMMARY.name,
-                                                                              assetSummary,
-                                                                              methodName);
-                }
 
                 this.linkElementToElement(userId,
                                           null,
@@ -1012,162 +997,66 @@ public class ConnectionHandler<B> extends ReferenceableHandler<B>
 
 
     /**
-     * Creates a new connection, connects it to the asset and returns the unique identifier for it.
-     *
-     * @param userId           userId of user making request
-     * @param externalSourceGUID guid of the software capability entity that represented the external source - null for local
-     * @param externalSourceName name of the software capability entity that represented the external source
-     * @param assetGUID the unique identifier for the asset entity (null for standalone connections)
-     * @param assetGUIDParameterName the parameter supplying assetGUID
-     * @param qualifiedName unique name
-     * @param displayName new value for the display name.
-     * @param description new description for the connection.
-     * @param additionalProperties additional properties
-     * @param securedProperties protected properties
-     * @param configurationProperties  properties passed to configure underlying technologies
-     * @param connectorUserId user identity that the connector should use
-     * @param clearPassword password for the userId in clear text
-     * @param encryptedPassword encrypted password that the connector needs to decrypt before use
-     * @param connectorTypeGUID unique identifier of the connector type to used for this connection
-     * @param connectorTypeGUIDParameterName the parameter supplying connectorTypeGUID
-     * @param endpointGUID unique identifier of the endpoint to used for this connection
-     * @param endpointGUIDParameterName the parameter supplying endpointGUID
-     * @param effectiveFrom starting time for this relationship (null for all time)
-     * @param effectiveTo ending time for this relationship (null for all time)
-     * @param forLineage return elements marked with the Memento classification?
-     * @param forDuplicateProcessing do not merge elements marked as duplicates?
-     * @param serviceSupportedZones supported zones for this service
-     * @param effectiveTime the time that the retrieved elements must be effective for
-     * @param methodName calling method
-     *
-     * @return GUID for new connection
-     *
-     * @throws InvalidParameterException one of the parameters is null or invalid.
-     * @throws PropertyServerException there is a problem adding the connection properties to the property server.
-     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
-     */
-    public String createConnection(String              userId,
-                                   String              externalSourceGUID,
-                                   String              externalSourceName,
-                                   String              assetGUID,
-                                   String              assetGUIDParameterName,
-                                   String              qualifiedName,
-                                   String              displayName,
-                                   String              description,
-                                   Map<String, String> additionalProperties,
-                                   Map<String, String> securedProperties,
-                                   Map<String, Object> configurationProperties,
-                                   String              connectorUserId,
-                                   String              clearPassword,
-                                   String              encryptedPassword,
-                                   String              connectorTypeGUID,
-                                   String              connectorTypeGUIDParameterName,
-                                   String              endpointGUID,
-                                   String              endpointGUIDParameterName,
-                                   Date                effectiveFrom,
-                                   Date                effectiveTo,
-                                   boolean             forLineage,
-                                   boolean             forDuplicateProcessing,
-                                   List<String>        serviceSupportedZones,
-                                   Date                effectiveTime,
-                                   String              methodName) throws InvalidParameterException,
-                                                                          PropertyServerException,
-                                                                          UserNotAuthorizedException
-    {
-        return this.createConnection(userId,
-                                     externalSourceGUID,
-                                     externalSourceName,
-                                     assetGUID,
-                                     assetGUIDParameterName,
-                                     qualifiedName,
-                                     displayName,
-                                     description,
-                                     additionalProperties,
-                                     securedProperties,
-                                     configurationProperties,
-                                     connectorUserId,
-                                     clearPassword,
-                                     encryptedPassword,
-                                     OpenMetadataType.CONNECTION.typeName,
-                                     null,
-                                     connectorTypeGUID,
-                                     connectorTypeGUIDParameterName,
-                                     endpointGUID,
-                                     endpointGUIDParameterName,
-                                     effectiveFrom,
-                                     effectiveTo,
-                                     forLineage,
-                                     forDuplicateProcessing,
-                                     serviceSupportedZones,
-                                     effectiveTime,
-                                     methodName);
-    }
-
-
-    /**
      * Creates a new connection and returns the unique identifier for it.
      *
-     * @param userId           userId of user making request
-     * @param externalSourceGUID guid of the software capability entity that represented the external source - null for local
-     * @param externalSourceName name of the software capability entity that represented the external source
-     * @param assetGUID the unique identifier for the asset entity (null for standalone connections)
-     * @param assetGUIDParameterName the parameter supplying assetGUID
-     * @param qualifiedName unique name
-     * @param displayName new value for the display name.
-     * @param description new description for the connection.
-     * @param additionalProperties additional properties
-     * @param securedProperties protected properties
-     * @param configurationProperties  properties passed to configure underlying technologies
-     * @param connectorUserId user identity that the connector should use
-     * @param clearPassword password for the userId in clear text
-     * @param encryptedPassword encrypted password that the connector needs to decrypt before use
-     * @param suppliedConnectionTypeName type name for the connection
-     * @param extendedProperties parameters from a subtype
-     * @param connectorTypeGUID unique identifier of the connector type to used for this connection
+     * @param userId                         userId of user making request
+     * @param externalSourceGUID             guid of the software capability entity that represented the external source - null for local
+     * @param externalSourceName             name of the software capability entity that represented the external source
+     * @param assetGUID                      the unique identifier for the asset entity (null for standalone connections)
+     * @param assetGUIDParameterName         the parameter supplying assetGUID
+     * @param qualifiedName                  unique name
+     * @param displayName                    new value for the display name.
+     * @param description                    new description for the connection.
+     * @param additionalProperties           additional properties
+     * @param securedProperties              protected properties
+     * @param configurationProperties        properties passed to configure underlying technologies
+     * @param connectorUserId                user identity that the connector should use
+     * @param clearPassword                  password for the userId in clear text
+     * @param encryptedPassword              encrypted password that the connector needs to decrypt before use
+     * @param suppliedConnectionTypeName     type name for the connection
+     * @param extendedProperties             parameters from a subtype
+     * @param connectorTypeGUID              unique identifier of the connector type to used for this connection
      * @param connectorTypeGUIDParameterName the parameter supplying connectorTypeGUID
-     * @param endpointGUID unique identifier of the endpoint to used for this connection
-     * @param endpointGUIDParameterName the parameter supplying endpointGUID
-     * @param effectiveFrom starting time for this relationship (null for all time)
-     * @param effectiveTo ending time for this relationship (null for all time)
-     * @param forLineage return elements marked with the Memento classification?
-     * @param forDuplicateProcessing do not merge elements marked as duplicates?
-     * @param serviceSupportedZones supported zones for this service
-     * @param effectiveTime the time that the retrieved elements must be effective for
-     * @param methodName calling method
-     *
-     * @return GUID for new connection
-     *
-     * @throws InvalidParameterException one of the parameters is null or invalid.
-     * @throws PropertyServerException there is a problem adding the connection properties to the property server.
+     * @param endpointGUID                   unique identifier of the endpoint to used for this connection
+     * @param endpointGUIDParameterName      the parameter supplying endpointGUID
+     * @param effectiveFrom                  starting time for this relationship (null for all time)
+     * @param effectiveTo                    ending time for this relationship (null for all time)
+     * @param forLineage                     return elements marked with the Memento classification?
+     * @param forDuplicateProcessing         do not merge elements marked as duplicates?
+     * @param serviceSupportedZones          supported zones for this service
+     * @param effectiveTime                  the time that the retrieved elements must be effective for
+     * @param methodName                     calling method
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws PropertyServerException    there is a problem adding the connection properties to the property server.
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    public String  createConnection(String              userId,
-                                    String              externalSourceGUID,
-                                    String              externalSourceName,
-                                    String              assetGUID,
-                                    String              assetGUIDParameterName,
-                                    String              qualifiedName,
-                                    String              displayName,
-                                    String              description,
-                                    Map<String, String> additionalProperties,
-                                    Map<String, String> securedProperties,
-                                    Map<String, Object> configurationProperties,
-                                    String              connectorUserId,
-                                    String              clearPassword,
-                                    String              encryptedPassword,
-                                    String              suppliedConnectionTypeName,
-                                    Map<String, Object> extendedProperties,
-                                    String              connectorTypeGUID,
-                                    String              connectorTypeGUIDParameterName,
-                                    String              endpointGUID,
-                                    String              endpointGUIDParameterName,
-                                    Date                effectiveFrom,
-                                    Date                effectiveTo,
-                                    boolean             forLineage,
-                                    boolean             forDuplicateProcessing,
-                                    List<String>        serviceSupportedZones,
-                                    Date                effectiveTime,
-                                    String              methodName) throws InvalidParameterException,
+    public void createConnection(String              userId,
+                                 String              externalSourceGUID,
+                                 String              externalSourceName,
+                                 String              assetGUID,
+                                 String              assetGUIDParameterName,
+                                 String              qualifiedName,
+                                 String              displayName,
+                                 String              description,
+                                 Map<String, String> additionalProperties,
+                                 Map<String, String> securedProperties,
+                                 Map<String, Object> configurationProperties,
+                                 String              connectorUserId,
+                                 String              clearPassword,
+                                 String              encryptedPassword,
+                                 String              suppliedConnectionTypeName,
+                                 Map<String, Object> extendedProperties,
+                                 String              connectorTypeGUID,
+                                 String              connectorTypeGUIDParameterName,
+                                 String              endpointGUID,
+                                 String              endpointGUIDParameterName,
+                                 Date                effectiveFrom,
+                                 Date                effectiveTo,
+                                 boolean             forLineage,
+                                 boolean             forDuplicateProcessing,
+                                 List<String>        serviceSupportedZones,
+                                 Date                effectiveTime,
+                                 String              methodName) throws InvalidParameterException,
                                                                            PropertyServerException,
                                                                            UserNotAuthorizedException
     {
@@ -1308,223 +1197,8 @@ public class ConnectionHandler<B> extends ReferenceableHandler<B>
             }
         }
 
-        return connectionGUID;
     }
 
-
-    /**
-     * Link a connection into a virtual connection using the EmbeddedConnection relationship.  The properties associated with the
-     * EmbeddedConnection relationship are typically used where the connection represents connectors that are part of a
-     * dynamic process (such as in an open discovery pipeline).
-     *
-     * @param userId calling user
-     * @param externalSourceGUID guid of the software capability entity that represented the external source - null for local
-     * @param externalSourceName name of the software capability entity that represented the external source
-     * @param virtualConnectionGUID unique identifier for the virtual connection
-     * @param virtualConnectionGUIDParameterName parameter supplying virtualConnectionGUID
-     * @param position position in the virtual connection
-     * @param displayName name of the embedded connection
-     * @param arguments arguments to use with the embedded connector when created as part of the virtual connector
-     * @param embeddedConnectionGUID unique identifier for the embedded connection
-     * @param embeddedConnectionGUIDParameterName parameter supplying embeddedConnectionGUID
-     * @param effectiveFrom             the date when this element is active - null for active now
-     * @param effectiveTo               the date when this element becomes inactive - null for active until deleted
-     * @param forLineage return elements marked with the Memento classification?
-     * @param forDuplicateProcessing do not merge elements marked as duplicates?
-     * @param serviceSupportedZones supported zones for this service
-     * @param effectiveTime the time that the retrieved elements must be effective for
-     * @param methodName calling method
-     * @throws InvalidParameterException one of the parameters is null or invalid.
-     * @throws PropertyServerException there is a problem adding the connection properties to the property server.
-     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
-     */
-    public void addEmbeddedConnection(String              userId,
-                                      String              externalSourceGUID,
-                                      String              externalSourceName,
-                                      String              virtualConnectionGUID,
-                                      String              virtualConnectionGUIDParameterName,
-                                      int                 position,
-                                      String              displayName,
-                                      Map<String, Object> arguments,
-                                      String              embeddedConnectionGUID,
-                                      String              embeddedConnectionGUIDParameterName,
-                                      Date                effectiveFrom,
-                                      Date                effectiveTo,
-                                      boolean             forLineage,
-                                      boolean             forDuplicateProcessing,
-                                      List<String>        serviceSupportedZones,
-                                      Date                effectiveTime,
-                                      String              methodName)  throws InvalidParameterException,
-                                                                              PropertyServerException,
-                                                                              UserNotAuthorizedException
-    {
-        invalidParameterHandler.validateUserId(userId, methodName);
-        invalidParameterHandler.validateGUID(virtualConnectionGUID, virtualConnectionGUIDParameterName, methodName);
-        invalidParameterHandler.validateGUID(embeddedConnectionGUID, embeddedConnectionGUIDParameterName, methodName);
-
-        InstanceProperties properties = repositoryHelper.addIntPropertyToInstance(serviceName,
-                                                                                  null,
-                                                                                  OpenMetadataProperty.POSITION.name,
-                                                                                  position,
-                                                                                  methodName);
-
-        if (displayName != null)
-        {
-            properties = repositoryHelper.addStringPropertyToInstance(serviceName,
-                                                                      properties,
-                                                                      OpenMetadataProperty.DISPLAY_NAME.name,
-                                                                      displayName,
-                                                                      methodName);
-        }
-
-        if ((arguments != null) && (! arguments.isEmpty()))
-        {
-            properties = repositoryHelper.addMapPropertyToInstance(serviceName,
-                                                                   properties,
-                                                                   OpenMetadataProperty.ARGUMENTS.name,
-                                                                   arguments,
-                                                                   methodName);
-        }
-
-        this.linkElementToElement(userId,
-                                  externalSourceGUID,
-                                  externalSourceName,
-                                  virtualConnectionGUID,
-                                  virtualConnectionGUIDParameterName,
-                                  OpenMetadataType.VIRTUAL_CONNECTION.typeName,
-                                  embeddedConnectionGUID,
-                                  embeddedConnectionGUIDParameterName,
-                                  OpenMetadataType.CONNECTION.typeName,
-                                  forLineage,
-                                  forDuplicateProcessing,
-                                  serviceSupportedZones,
-                                  OpenMetadataType.EMBEDDED_CONNECTION_RELATIONSHIP.typeGUID,
-                                  OpenMetadataType.EMBEDDED_CONNECTION_RELATIONSHIP.typeName,
-                                  properties,
-                                  effectiveFrom,
-                                  effectiveTo,
-                                  effectiveTime,
-                                  methodName);
-    }
-
-
-    /**
-     * Remove a relationship between a virtual connection and an embedded connection.
-     *
-     * @param userId calling user
-     * @param externalSourceGUID unique identifier of software capability representing the caller
-     * @param externalSourceName unique name of software capability representing the caller
-     * @param connectionGUID unique identifier of the virtual connection in the external data manager
-     * @param connectionGUIDParameterName parameter for connectionGUID
-     * @param embeddedConnectionGUID unique identifier of the embedded connection in the external data manager
-     * @param embeddedConnectionGUIDParameterName parameter for embeddedConnectionGUID
-     * @param forLineage return elements marked with the Memento classification?
-     * @param forDuplicateProcessing do not merge elements marked as duplicates?
-     * @param serviceSupportedZones supported zones for this service
-     * @param effectiveTime the time that the retrieved elements must be effective for
-     * @param methodName calling method
-     *
-     * @throws InvalidParameterException  one of the parameters is invalid
-     * @throws UserNotAuthorizedException the user is not authorized to issue this request
-     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
-     */
-    public void removeEmbeddedConnection(String       userId,
-                                         String       externalSourceGUID,
-                                         String       externalSourceName,
-                                         String       connectionGUID,
-                                         String       connectionGUIDParameterName,
-                                         String       embeddedConnectionGUID,
-                                         String       embeddedConnectionGUIDParameterName,
-                                         boolean      forLineage,
-                                         boolean      forDuplicateProcessing,
-                                         List<String> serviceSupportedZones,
-                                         Date         effectiveTime,
-                                         String       methodName) throws InvalidParameterException,
-                                                                         UserNotAuthorizedException,
-                                                                         PropertyServerException
-    {
-        this.unlinkElementFromElement(userId,
-                                      false,
-                                      externalSourceGUID,
-                                      externalSourceName,
-                                      connectionGUID,
-                                      connectionGUIDParameterName,
-                                      OpenMetadataType.VIRTUAL_CONNECTION.typeName,
-                                      embeddedConnectionGUID,
-                                      embeddedConnectionGUIDParameterName,
-                                      OpenMetadataType.CONNECTION.typeGUID,
-                                      OpenMetadataType.CONNECTION.typeName,
-                                      forLineage,
-                                      forDuplicateProcessing,
-                                      serviceSupportedZones,
-                                      OpenMetadataType.EMBEDDED_CONNECTION_RELATIONSHIP.typeGUID,
-                                      OpenMetadataType.EMBEDDED_CONNECTION_RELATIONSHIP.typeName,
-                                      effectiveTime,
-                                      methodName);
-    }
-
-
-    /**
-     * Create a new metadata element to represent a connection using an existing metadata element as a template.
-     * The template defines additional classifications and relationships that should be added to the new element.
-     *
-     * @param userId calling user
-     * @param externalSourceGUID guid of the software capability entity that represented the external source - null for local
-     * @param externalSourceName name of the software capability entity that represented the external source
-     * @param templateGUID unique identifier of the metadata element to copy
-     * @param templateGUIDParameterName parameter name for templateGUID
-     * @param qualifiedName unique name for the element - used in other configuration
-     * @param qualifiedNameParameterName parameter name for qualifiedName
-     * @param displayName short display name for the new element
-     * @param description description of the new element
-     * @param methodName calling method
-     *
-     * @return unique identifier of the new metadata element
-     *
-     * @throws InvalidParameterException  one of the parameters is invalid
-     * @throws UserNotAuthorizedException the user is not authorized to issue this request
-     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
-     */
-    public String createConnectionFromTemplate(String userId,
-                                               String externalSourceGUID,
-                                               String externalSourceName,
-                                               String templateGUID,
-                                               String templateGUIDParameterName,
-                                               String qualifiedName,
-                                               String qualifiedNameParameterName,
-                                               String displayName,
-                                               String description,
-                                               String methodName) throws InvalidParameterException,
-                                                                         UserNotAuthorizedException,
-                                                                         PropertyServerException
-    {
-        invalidParameterHandler.validateUserId(userId, methodName);
-        invalidParameterHandler.validateGUID(templateGUID, templateGUIDParameterName, methodName);
-        invalidParameterHandler.validateName(qualifiedName, qualifiedNameParameterName, methodName);
-
-        ConnectionBuilder builder = new ConnectionBuilder(qualifiedName,
-                                                          displayName,
-                                                          description,
-                                                          repositoryHelper,
-                                                          serviceName,
-                                                          serverName);
-
-        return this.createBeanFromTemplate(userId,
-                                           externalSourceGUID,
-                                           externalSourceName,
-                                           templateGUID,
-                                           templateGUIDParameterName,
-                                           OpenMetadataType.CONNECTION.typeGUID,
-                                           OpenMetadataType.CONNECTION.typeName,
-                                           qualifiedName,
-                                           OpenMetadataProperty.QUALIFIED_NAME.name,
-                                           builder,
-                                           supportedZones,
-                                           true,
-                                           false,
-                                           null,
-                                           methodName);
-    }
 
 
     /**
@@ -1627,429 +1301,6 @@ public class ConnectionHandler<B> extends ReferenceableHandler<B>
                                     supportedZones,
                                     builder.getInstanceProperties(methodName),
                                     isMergeUpdate,
-                                    effectiveTime,
-                                    methodName);
-    }
-
-
-    /**
-     * Create a relationship between a connection and a connector type.
-     *
-     * @param userId calling user
-     * @param externalSourceGUID guid of the software capability entity that represented the external source - null for local
-     * @param externalSourceName name of the software capability entity that represented the external source
-     * @param connectionGUID unique identifier of the connection
-     * @param connectionGUIDParameterName parameter for connectionGUID
-     * @param connectorTypeGUID unique identifier of the connector type
-     * @param connectorTypeGUIDParameterName parameter for connectorTypeGUID
-     * @param effectiveFrom             the date when this element is active - null for active now
-     * @param effectiveTo               the date when this element becomes inactive - null for active until deleted
-     * @param forLineage return elements marked with the Memento classification?
-     * @param forDuplicateProcessing do not merge elements marked as duplicates?
-     * @param effectiveTime the time that the retrieved elements must be effective for
-     * @param methodName calling method
-     *
-     * @throws InvalidParameterException  one of the parameters is invalid
-     * @throws UserNotAuthorizedException the user is not authorized to issue this request
-     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
-     */
-    public void addConnectionConnectorType(String  userId,
-                                           String  externalSourceGUID,
-                                           String  externalSourceName,
-                                           String  connectionGUID,
-                                           String  connectionGUIDParameterName,
-                                           String  connectorTypeGUID,
-                                           String  connectorTypeGUIDParameterName,
-                                           Date    effectiveFrom,
-                                           Date    effectiveTo,
-                                           boolean forLineage,
-                                           boolean forDuplicateProcessing,
-                                           Date    effectiveTime,
-                                           String  methodName) throws InvalidParameterException,
-                                                                      UserNotAuthorizedException,
-                                                                      PropertyServerException
-    {
-        this.linkElementToElement(userId,
-                                  externalSourceGUID,
-                                  externalSourceName,
-                                  connectionGUID,
-                                  connectionGUIDParameterName,
-                                  OpenMetadataType.CONNECTION.typeName,
-                                  connectorTypeGUID,
-                                  connectorTypeGUIDParameterName,
-                                  OpenMetadataType.CONNECTOR_TYPE.typeName,
-                                  forLineage,
-                                  forDuplicateProcessing,
-                                  supportedZones,
-                                  OpenMetadataType.CONNECTION_CONNECTOR_TYPE_RELATIONSHIP.typeGUID,
-                                  OpenMetadataType.CONNECTION_CONNECTOR_TYPE_RELATIONSHIP.typeName,
-                                  null,
-                                  effectiveFrom,
-                                  effectiveTo,
-                                  effectiveTime,
-                                  methodName);
-    }
-
-
-    /**
-     * Remove the relationship between a connection and a connector type.
-     *
-     * @param userId calling user
-     * @param externalSourceGUID guid of the software capability entity that represented the external source - null for local
-     * @param externalSourceName name of the software capability entity that represented the external source
-     * @param connectionGUID unique identifier of the connection
-     * @param connectionGUIDParameterName parameter for connectionGUID
-     * @param connectorTypeGUID unique identifier of the connector type
-     * @param connectorTypeGUIDParameterName parameter for connectorTypeGUID
-     * @param forLineage return elements marked with the Memento classification?
-     * @param forDuplicateProcessing do not merge elements marked as duplicates?
-     * @param effectiveTime the time that the retrieved elements must be effective for
-     * @param methodName calling method
-     *
-     * @throws InvalidParameterException  one of the parameters is invalid
-     * @throws UserNotAuthorizedException the user is not authorized to issue this request
-     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
-     */
-    public void removeConnectionConnectorType(String  userId,
-                                              String  externalSourceGUID,
-                                              String  externalSourceName,
-                                              String  connectionGUID,
-                                              String  connectionGUIDParameterName,
-                                              String  connectorTypeGUID,
-                                              String  connectorTypeGUIDParameterName,
-                                              boolean forLineage,
-                                              boolean forDuplicateProcessing,
-                                              Date    effectiveTime,
-                                              String  methodName) throws InvalidParameterException,
-                                                                         UserNotAuthorizedException,
-                                                                         PropertyServerException
-    {
-        this.unlinkElementFromElement(userId,
-                                      false,
-                                      externalSourceGUID,
-                                      externalSourceName,
-                                      connectionGUID,
-                                      connectionGUIDParameterName,
-                                      OpenMetadataType.CONNECTION.typeName,
-                                      connectorTypeGUID,
-                                      connectorTypeGUIDParameterName,
-                                      OpenMetadataType.CONNECTOR_TYPE.typeGUID,
-                                      OpenMetadataType.CONNECTOR_TYPE.typeName,
-                                      forLineage,
-                                      forDuplicateProcessing,
-                                      supportedZones,
-                                      OpenMetadataType.CONNECTION_CONNECTOR_TYPE_RELATIONSHIP.typeGUID,
-                                      OpenMetadataType.CONNECTION_CONNECTOR_TYPE_RELATIONSHIP.typeName,
-                                      effectiveTime,
-                                      methodName);
-    }
-
-
-    /**
-     * Create a relationship between a connection and an endpoint.
-     *
-     * @param userId calling user
-     * @param externalSourceGUID guid of the software capability entity that represented the external source - null for local
-     * @param externalSourceName name of the software capability entity that represented the external source
-     * @param connectionGUID unique identifier of the connection
-     * @param connectionGUIDParameterName parameter for connectionGUID
-     * @param endpointGUID unique identifier of the endpoint
-     * @param endpointGUIDParameterName parameter for endpointGUID
-     * @param effectiveFrom             the date when this element is active - null for active now
-     * @param effectiveTo               the date when this element becomes inactive - null for active until deleted
-     * @param forLineage return elements marked with the Memento classification?
-     * @param forDuplicateProcessing do not merge elements marked as duplicates?
-     * @param effectiveTime the time that the retrieved elements must be effective for
-     * @param methodName calling method
-     *
-     * @throws InvalidParameterException  one of the parameters is invalid
-     * @throws UserNotAuthorizedException the user is not authorized to issue this request
-     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
-     */
-    public void addConnectionEndpoint(String  userId,
-                                      String  externalSourceGUID,
-                                      String  externalSourceName,
-                                      String  connectionGUID,
-                                      String  connectionGUIDParameterName,
-                                      String  endpointGUID,
-                                      String  endpointGUIDParameterName,
-                                      Date    effectiveFrom,
-                                      Date    effectiveTo,
-                                      boolean forLineage,
-                                      boolean forDuplicateProcessing,
-                                      Date    effectiveTime,
-                                      String  methodName) throws InvalidParameterException,
-                                                                 UserNotAuthorizedException,
-                                                                 PropertyServerException
-    {
-        this.linkElementToElement(userId,
-                                  externalSourceGUID,
-                                  externalSourceName,
-                                  connectionGUID,
-                                  connectionGUIDParameterName,
-                                  OpenMetadataType.CONNECTION.typeName,
-                                  endpointGUID,
-                                  endpointGUIDParameterName,
-                                  OpenMetadataType.ENDPOINT.typeName,
-                                  forLineage,
-                                  forDuplicateProcessing,
-                                  supportedZones,
-                                  OpenMetadataType.CONNECT_TO_ENDPOINT_RELATIONSHIP.typeGUID,
-                                  OpenMetadataType.CONNECT_TO_ENDPOINT_RELATIONSHIP.typeName,
-                                  null,
-                                  effectiveFrom,
-                                  effectiveTo,
-                                  effectiveTime,
-                                  methodName);
-    }
-
-
-    /**
-     * Remove the relationship between a connection and an endpoint.
-     *
-     * @param userId calling user
-     * @param externalSourceGUID guid of the software capability entity that represented the external source - null for local
-     * @param externalSourceName name of the software capability entity that represented the external source
-     * @param connectionGUID unique identifier of the connection in the external data manager
-     * @param connectionGUIDParameterName parameter for connectionGUID
-     * @param endpointGUID unique identifier of the connector type in the external data manager
-     * @param endpointGUIDParameterName parameter for endpointGUID
-     * @param forLineage return elements marked with the Memento classification?
-     * @param forDuplicateProcessing do not merge elements marked as duplicates?
-     * @param effectiveTime the time that the retrieved elements must be effective for
-     * @param methodName calling method
-     *
-     * @throws InvalidParameterException  one of the parameters is invalid
-     * @throws UserNotAuthorizedException the user is not authorized to issue this request
-     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
-     */
-    public void removeConnectionEndpoint(String  userId,
-                                         String  externalSourceGUID,
-                                         String  externalSourceName,
-                                         String  connectionGUID,
-                                         String  connectionGUIDParameterName,
-                                         String  endpointGUID,
-                                         String  endpointGUIDParameterName,
-                                         boolean forLineage,
-                                         boolean forDuplicateProcessing,
-                                         Date    effectiveTime,
-                                         String  methodName) throws InvalidParameterException,
-                                                                   UserNotAuthorizedException,
-                                                                   PropertyServerException
-    {
-        this.unlinkElementFromElement(userId,
-                                      false,
-                                      externalSourceGUID,
-                                      externalSourceName,
-                                      connectionGUID,
-                                      connectionGUIDParameterName,
-                                      OpenMetadataType.CONNECTION.typeName,
-                                      endpointGUID,
-                                      endpointGUIDParameterName,
-                                      OpenMetadataType.ENDPOINT.typeGUID,
-                                      OpenMetadataType.ENDPOINT.typeName,
-                                      forLineage,
-                                      forDuplicateProcessing,
-                                      supportedZones,
-                                      OpenMetadataType.CONNECT_TO_ENDPOINT_RELATIONSHIP.typeGUID,
-                                      OpenMetadataType.CONNECT_TO_ENDPOINT_RELATIONSHIP.typeName,
-                                      effectiveTime,
-                                      methodName);
-    }
-
-
-    /**
-     * Create a relationship between an asset and its connection.
-     *
-     * @param userId calling user
-     * @param externalSourceGUID unique identifier of software capability representing the caller
-     * @param externalSourceName unique name of software capability representing the caller
-     * @param assetGUID unique identifier of the asset
-     * @param assetGUIDParameterName parameter for assetGUID
-
-     * @param connectionGUID unique identifier of the  connection
-     * @param connectionGUIDParameterName parameter for connectionGUID
-     * @param effectiveFrom             the date when this element is active - null for active now
-     * @param effectiveTo               the date when this element becomes inactive - null for active until deleted
-     * @param forLineage return elements marked with the Memento classification?
-     * @param forDuplicateProcessing do not merge elements marked as duplicates?
-     * @param effectiveTime the time that the retrieved elements must be effective for
-     * @param methodName calling method
-     *
-     * @throws InvalidParameterException  one of the parameters is invalid
-     * @throws UserNotAuthorizedException the user is not authorized to issue this request
-     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
-     */
-    public void addConnectionToAsset(String  userId,
-                                     String  externalSourceGUID,
-                                     String  externalSourceName,
-                                     String  connectionGUID,
-                                     String  connectionGUIDParameterName,
-                                     String  assetGUID,
-                                     String  assetGUIDParameterName,
-                                     Date    effectiveFrom,
-                                     Date    effectiveTo,
-                                     boolean forLineage,
-                                     boolean forDuplicateProcessing,
-                                     Date    effectiveTime,
-                                     String  methodName) throws InvalidParameterException,
-                                                                UserNotAuthorizedException,
-                                                                PropertyServerException
-    {
-        EntityDetail connectionEntity = this.getEntityFromRepository(userId,
-                                                                     connectionGUID,
-                                                                     connectionGUIDParameterName,
-                                                                     OpenMetadataType.CONNECTION.typeName,
-                                                                     null,
-                                                                     null,
-                                                                     forLineage,
-                                                                     forDuplicateProcessing,
-                                                                     supportedZones,
-                                                                     null,
-                                                                     effectiveTime,
-                                                                     methodName);
-
-        this.linkElementToElement(userId,
-                                  externalSourceGUID,
-                                  externalSourceName,
-                                  assetGUID,
-                                  assetGUIDParameterName,
-                                  OpenMetadataType.ASSET.typeName,
-                                  connectionGUID,
-                                  connectionGUIDParameterName,
-                                  OpenMetadataType.CONNECTION.typeName,
-                                  forLineage,
-                                  forDuplicateProcessing,
-                                  supportedZones,
-                                  OpenMetadataType.ASSET_CONNECTION_RELATIONSHIP.typeGUID,
-                                  OpenMetadataType.ASSET_CONNECTION_RELATIONSHIP.typeName,
-                                  null,
-                                  effectiveFrom,
-                                  effectiveTo,
-                                  effectiveTime,
-                                  methodName);
-
-        EntityDetail  assetEntity = repositoryHandler.getEntityByGUID(userId,
-                                                                      assetGUID,
-                                                                      assetGUIDParameterName,
-                                                                      OpenMetadataType.ASSET.typeName,
-                                                                      forLineage,
-                                                                      forDuplicateProcessing,
-                                                                      effectiveTime,
-                                                                      methodName);
-
-        if (assetEntity != null)
-        {
-            this.addAnchorsClassification(userId,
-                                          connectionEntity,
-                                          connectionGUIDParameterName,
-                                          assetGUID,
-                                          assetEntity.getType().getTypeDefName(),
-                                          OpenMetadataType.ASSET.typeName,
-                                          null,
-                                          forLineage,
-                                          forDuplicateProcessing,
-                                          effectiveTime,
-                                          methodName);
-        }
-    }
-
-
-    /**
-     * Remove a relationship between an asset and its connection.
-     *
-     * @param userId calling user
-     * @param externalSourceGUID unique identifier of software capability representing the caller
-     * @param externalSourceName unique name of software capability representing the caller
-     * @param assetGUID unique identifier of the asset
-     * @param assetGUIDParameterName parameter for assetGUID
-     * @param connectionGUID unique identifier of the connection
-     * @param connectionGUIDParameterName parameter for connectionGUID
-     * @param forLineage return elements marked with the Memento classification?
-     * @param forDuplicateProcessing do not merge elements marked as duplicates?
-     * @param effectiveTime the time that the retrieved elements must be effective for
-     * @param methodName calling method
-     *
-     * @throws InvalidParameterException  one of the parameters is invalid
-     * @throws UserNotAuthorizedException the user is not authorized to issue this request
-     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
-     */
-    public void removeConnectionToAsset(String  userId,
-                                        String  externalSourceGUID,
-                                        String  externalSourceName,
-                                        String  connectionGUID,
-                                        String  connectionGUIDParameterName,
-                                        String  assetGUID,
-                                        String  assetGUIDParameterName,
-                                        boolean forLineage,
-                                        boolean forDuplicateProcessing,
-                                        Date    effectiveTime,
-                                        String  methodName) throws InvalidParameterException,
-                                                                   UserNotAuthorizedException,
-                                                                   PropertyServerException
-    {
-        this.unlinkElementFromElement(userId,
-                                      false,
-                                      externalSourceGUID,
-                                      externalSourceName,
-                                      assetGUID,
-                                      assetGUIDParameterName,
-                                      OpenMetadataType.ASSET.typeGUID,
-                                      connectionGUID,
-                                      connectionGUIDParameterName,
-                                      OpenMetadataType.CONNECTION.typeGUID,
-                                      OpenMetadataType.CONNECTION.typeName,
-                                      forLineage,
-                                      forDuplicateProcessing,
-                                      supportedZones,
-                                      OpenMetadataType.ASSET_CONNECTION_RELATIONSHIP.typeGUID,
-                                      OpenMetadataType.ASSET_CONNECTION_RELATIONSHIP.typeName,
-                                      effectiveTime,
-                                      methodName);
-    }
-
-
-    /**
-     * Remove the metadata element.  This will delete all elements anchored to it.
-     *
-     * @param userId calling user
-     * @param externalSourceGUID guid of the software capability entity that represented the external source - null for local
-     * @param externalSourceName name of the software capability entity that represented the external source
-     * @param guid unique identifier of the metadata element to remove
-     * @param guidParameterName parameter supplying the guid
-     * @param forLineage return elements marked with the Memento classification?
-     * @param forDuplicateProcessing do not merge elements marked as duplicates?
-     * @param effectiveTime the time that the retrieved elements must be effective for
-     * @param methodName calling method
-     *
-     * @throws InvalidParameterException  one of the parameters is invalid
-     * @throws UserNotAuthorizedException the user is not authorized to issue this request
-     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
-     */
-    public void removeConnection(String  userId,
-                                 String  externalSourceGUID,
-                                 String  externalSourceName,
-                                 String  guid,
-                                 String  guidParameterName,
-                                 boolean forLineage,
-                                 boolean forDuplicateProcessing,
-                                 Date    effectiveTime,
-                                 String  methodName) throws InvalidParameterException,
-                                                            UserNotAuthorizedException,
-                                                            PropertyServerException
-    {
-        this.deleteBeanInRepository(userId,
-                                    externalSourceGUID,
-                                    externalSourceName,
-                                    guid,
-                                    guidParameterName,
-                                    OpenMetadataType.CONNECTION.typeGUID,
-                                    OpenMetadataType.CONNECTION.typeName,
-                                    false,
-                                    null,
-                                    null,
-                                    forLineage,
-                                    forDuplicateProcessing,
                                     effectiveTime,
                                     methodName);
     }
@@ -2332,284 +1583,5 @@ public class ConnectionHandler<B> extends ReferenceableHandler<B>
         }
 
         return supplementaryRelationships;
-    }
-
-
-    /**
-     * Convert a list of connection entities into a list of beans.
-     * 
-     * @param userId calling user
-     * @param entities retrieved entities
-     * @param forLineage return elements marked with the Memento classification?
-     * @param forDuplicateProcessing do not merge elements marked as duplicates?
-     * @param effectiveTime the time that the retrieved elements must be effective for
-     * @param methodName calling method
-     *                   
-     * @return list of beans
-     *
-     * @throws InvalidParameterException the parameters are invalid
-     * @throws UserNotAuthorizedException user not authorized to issue this request
-     * @throws PropertyServerException problem accessing the property server
-     */
-    private List<B> getFullConnections(String             userId,
-                                       List<EntityDetail> entities,
-                                       boolean            forLineage,
-                                       boolean            forDuplicateProcessing,
-                                       Date               effectiveTime,
-                                       String             methodName) throws InvalidParameterException,
-                                                                             PropertyServerException,
-                                                                             UserNotAuthorizedException
-    {
-        List<B> results = new ArrayList<>();
-
-        if (entities != null)
-        {
-            for (EntityDetail entity : entities)
-            {
-                if (entity != null)
-                {
-                    B bean = this.getFullConnection(userId, entity, forLineage, forDuplicateProcessing, effectiveTime, methodName);
-
-                    if (bean != null)
-                    {
-                        results.add(bean);
-                    }
-                }
-            }
-        }
-
-        if (! results.isEmpty())
-        {
-            return results;
-        }
-
-        return null;
-    }
-    
-    
-
-    /**
-     * Retrieve the list of connection objects attached to the requested asset object.
-     *
-     * @param userId calling user
-     * @param assetGUID unique identifier of the asset object
-     * @param assetGUIDParameterName parameter name supplying assetGUID
-     * @param serviceSupportedZones list of supported zones for the calling service
-     * @param startingFrom start position for results
-     * @param pageSize     maximum number of results
-     * @param forLineage return elements marked with the Memento classification?
-     * @param forDuplicateProcessing do not merge elements marked as duplicates?
-     * @param effectiveTime the time that the retrieved elements must be effective for
-     * @param methodName calling method
-     *
-     * @return list of Connection beans
-     *
-     * @throws InvalidParameterException the parameters are invalid
-     * @throws UserNotAuthorizedException user not authorized to issue this request
-     * @throws PropertyServerException problem accessing the property server
-     */
-    public List<B> getConnectionsForAsset(String       userId,
-                                          String       assetGUID,
-                                          String       assetGUIDParameterName,
-                                          List<String> serviceSupportedZones,
-                                          int          startingFrom,
-                                          int          pageSize,
-                                          boolean      forLineage,
-                                          boolean      forDuplicateProcessing,
-                                          Date         effectiveTime,
-                                          String       methodName) throws InvalidParameterException,
-                                                                          PropertyServerException,
-                                                                          UserNotAuthorizedException
-    {
-        /*
-         * The generic handler calls to the security verifier as each connector is retrieved.
-         */
-        List<EntityDetail> entities = super.getAttachedEntities(userId,
-                                                                assetGUID,
-                                                                assetGUIDParameterName,
-                                                                OpenMetadataType.ASSET.typeName,
-                                                                OpenMetadataType.ASSET_CONNECTION_RELATIONSHIP.typeGUID,
-                                                                OpenMetadataType.ASSET_CONNECTION_RELATIONSHIP.typeName,
-                                                                OpenMetadataType.CONNECTION.typeName,
-                                                                null,
-                                                                null,
-                                                                2,
-                                                                null,
-                                                                null,
-                                                                SequencingOrder.CREATION_DATE_RECENT,
-                                                                null,
-                                                                forLineage,
-                                                                forDuplicateProcessing,
-                                                                serviceSupportedZones,
-                                                                startingFrom,
-                                                                pageSize,
-                                                                effectiveTime,
-                                                                methodName);
-
-        return getFullConnections(userId, entities, forLineage, forDuplicateProcessing, effectiveTime, methodName);
-    }
-
-
-    /**
-     * Retrieve the list of metadata elements that contain the search string.
-     * The search string is treated as a regular expression. This only retrieves the connection entity.
-     *
-     * @param userId calling user
-     * @param searchString string to find in the properties
-     * @param searchStringParameterName name of parameter supplying the search string
-     * @param startFrom paging start point
-     * @param pageSize maximum results that can be returned
-     * @param forLineage return elements marked with the Memento classification?
-     * @param forDuplicateProcessing do not merge elements marked as duplicates?
-     * @param effectiveTime the time that the retrieved elements must be effective for
-     * @param methodName calling method
-     *
-     * @return list of matching metadata elements
-     *
-     * @throws InvalidParameterException  one of the parameters is invalid
-     * @throws UserNotAuthorizedException the user is not authorized to issue this request
-     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
-     */
-    public List<B> findConnections(String  userId,
-                                   String  searchString,
-                                   String  searchStringParameterName,
-                                   int     startFrom,
-                                   int     pageSize,
-                                   boolean forLineage,
-                                   boolean forDuplicateProcessing,
-                                   Date     effectiveTime,
-                                   String  methodName) throws InvalidParameterException,
-                                                              UserNotAuthorizedException,
-                                                              PropertyServerException
-    {
-        List<EntityDetail> entities = this.findEntities(userId,
-                                                        searchString,
-                                                        searchStringParameterName,
-                                                        OpenMetadataType.CONNECTION.typeGUID,
-                                                        OpenMetadataType.CONNECTION.typeName,
-                                                        null,
-                                                        null,
-                                                        startFrom,
-                                                        pageSize,
-                                                        null,
-                                                        null,
-                                                        SequencingOrder.CREATION_DATE_RECENT,
-                                                        null,
-                                                        forLineage,
-                                                        forDuplicateProcessing,
-                                                        effectiveTime,
-                                                        methodName);
-
-        return getFullConnections(userId, entities, forLineage, forDuplicateProcessing, effectiveTime, methodName);
-    }
-
-
-    /**
-     * Retrieve the list of metadata elements with a matching qualified name or display name.
-     * There are no wildcards supported on this request. This only retrieves the connection entity.
-     *
-     * @param userId calling user
-     * @param name name to search for
-     * @param nameParameterName parameter supplying name
-     * @param startFrom paging start point
-     * @param pageSize maximum results that can be returned
-     * @param forLineage return elements marked with the Memento classification?
-     * @param forDuplicateProcessing do not merge elements marked as duplicates?
-     * @param effectiveTime  the time that the retrieved elements must be effective for (null for any time, new Date() for now)
-     * @param methodName calling method
-     *
-     * @return list of matching metadata elements
-     *
-     * @throws InvalidParameterException  one of the parameters is invalid
-     * @throws UserNotAuthorizedException the user is not authorized to issue this request
-     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
-     */
-    public List<B> getConnectionsByName(String userId,
-                                        String  name,
-                                        String  nameParameterName,
-                                        int     startFrom,
-                                        int     pageSize,
-                                        boolean forLineage,
-                                        boolean forDuplicateProcessing,
-                                        Date    effectiveTime,
-                                        String  methodName) throws InvalidParameterException,
-                                                                   UserNotAuthorizedException,
-                                                                   PropertyServerException
-    {
-        List<String> specificMatchPropertyNames = new ArrayList<>();
-        specificMatchPropertyNames.add(OpenMetadataProperty.QUALIFIED_NAME.name);
-        specificMatchPropertyNames.add(OpenMetadataProperty.DISPLAY_NAME.name);
-        
-        List<EntityDetail> entities =  this.getEntitiesByValue(userId,
-                                                               name,
-                                                               nameParameterName,
-                                                               OpenMetadataType.CONNECTION.typeGUID,
-                                                               OpenMetadataType.CONNECTION.typeName,
-                                                               specificMatchPropertyNames,
-                                                               true,
-                                                               false,
-                                                               null,
-                                                               null,
-                                                               null,
-                                                               null,
-                                                               SequencingOrder.CREATION_DATE_RECENT,
-                                                               null,
-                                                               forLineage,
-                                                               forDuplicateProcessing,
-                                                               supportedZones,
-                                                               startFrom,
-                                                               pageSize,
-                                                               effectiveTime,
-                                                               methodName);
-
-        return getFullConnections(userId, entities, forLineage, forDuplicateProcessing, effectiveTime, methodName);
-    }
-
-
-    /**
-     * Retrieve the metadata element with the supplied unique identifier.
-     *
-     * @param userId calling user
-     * @param guid unique identifier of the requested metadata element
-     * @param guidParameterName parameter name of guid
-     * @param forLineage return elements marked with the Memento classification?
-     * @param forDuplicateProcessing do not merge elements marked as duplicates?
-     * @param effectiveTime  the time that the retrieved elements must be effective for (null for any time, new Date() for now)
-     * @param methodName calling method
-     *
-     * @return matching metadata element
-     *
-     * @throws InvalidParameterException  one of the parameters is invalid
-     * @throws UserNotAuthorizedException the user is not authorized to issue this request
-     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
-     */
-    public B getConnectionByGUID(String  userId,
-                                 String  guid,
-                                 String  guidParameterName,
-                                 boolean forLineage,
-                                 boolean forDuplicateProcessing,
-                                 Date    effectiveTime,
-                                 String  methodName) throws InvalidParameterException,
-                                                            UserNotAuthorizedException,
-                                                            PropertyServerException
-    {
-        EntityDetail entity = this.getEntityFromRepository(userId,
-                                                           guid,
-                                                           guidParameterName,
-                                                           OpenMetadataType.CONNECTION.typeName,
-                                                           null,
-                                                           null,
-                                                           forLineage,
-                                                           forDuplicateProcessing,
-                                                           supportedZones,
-                                                           effectiveTime,
-                                                           methodName);
-
-        if (entity != null)
-        {
-            return getFullConnection(userId, entity, forLineage, forDuplicateProcessing, effectiveTime, methodName);
-        }
-
-        return null;
     }
 }

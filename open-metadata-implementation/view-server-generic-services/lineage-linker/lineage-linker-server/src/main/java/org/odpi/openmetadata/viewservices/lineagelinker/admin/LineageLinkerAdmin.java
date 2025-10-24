@@ -67,13 +67,13 @@ public class LineageLinkerAdmin extends ViewServerGenericServiceAdmin
              * because they are set at runtime by the user and potentially changed between operations.
              */
             this.instance = new LineageLinkerInstance(serverName,
-                                                          auditLog,
-                                                          serverUserName,
-                                                          serverUserPassword,
-                                                          maxPageSize,
-                                                          viewServiceConfig.getOMAGServerName(),
-                                                          viewServiceConfig.getOMAGServerPlatformRootURL(),
-                                                          activeViewServices);
+                                                      auditLog,
+                                                      serverUserName,
+                                                      serverUserPassword,
+                                                      maxPageSize,
+                                                      viewServiceConfig.getOMAGServerName(),
+                                                      viewServiceConfig.getOMAGServerPlatformRootURL(),
+                                                      activeViewServices);
 
             auditLog.logMessage(actionDescription,
                                 LineageLinkerAuditCode.SERVICE_INITIALIZED.getMessageDefinition(),

@@ -6,8 +6,6 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
-import java.io.Serializable;
-
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
@@ -104,9 +102,9 @@ public enum OpenMetadataAttributeTypeDefCategory
     public String toString()
     {
         return "OpenMetadataAttributeTypeDefCategory{" +
-                "typeCode=" + typeCode +
-                ", typeName='" + typeName + '\'' +
-                ", typeDescription='" + typeDescription + '\'' +
+                "ordinal=" + typeCode +
+                ", name='" + typeName + '\'' +
+                ", description='" + typeDescription + '\'' +
                 '}';
     }
 }

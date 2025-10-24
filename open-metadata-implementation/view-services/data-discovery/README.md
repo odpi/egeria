@@ -1,11 +1,11 @@
 <!-- SPDX-License-Identifier: CC-BY-4.0 -->
 <!-- Copyright Contributors to the Egeria project. -->
 
-![InDev](../../../images/egeria-content-status-in-development.png#pagewidth)
+![Stable](../../../images/egeria-content-status-released.png#pagewidth)
 
 # Data Discovery OMVS 
 
-The Data Discovery OMVS enables the caller to define and search for new data resources.
+The Data Discovery OMVS enables the caller to capture surveys of data resources.
 
 Link to documentation: [https://egeria-project.org/services/omvs/data-discovery/overview/](https://egeria-project.org/services/omvs/data-discovery/overview/)
 

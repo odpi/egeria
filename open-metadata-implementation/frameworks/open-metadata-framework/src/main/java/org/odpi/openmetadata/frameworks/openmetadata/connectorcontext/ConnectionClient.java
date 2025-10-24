@@ -203,9 +203,9 @@ public class ConnectionClient extends ConnectorContextClientBase
     public void linkConnectionEndpoint(String                       connectionGUID,
                                        String                       endpointGUID,
                                        MetadataSourceOptions        metadataSourceOptions,
-                                       ConnectionEndpointProperties relationshipProperties) throws InvalidParameterException,
-                                                                                                   PropertyServerException,
-                                                                                                   UserNotAuthorizedException
+                                       ConnectToEndpointProperties relationshipProperties) throws InvalidParameterException,
+                                                                                                  PropertyServerException,
+                                                                                                  UserNotAuthorizedException
     {
         connectionHandler.linkConnectionEndpoint(connectorUserId, connectionGUID, endpointGUID, metadataSourceOptions, relationshipProperties);
     }

@@ -64,12 +64,12 @@ public class MetadataRelationshipSummaryConverter<B> extends OpenMetadataConvert
 
                 elementHeader.setGUID(relationship.getRelationshipGUID());
 
-                elementSummary.setElementHeader(elementHeader);
+                elementSummary.setRelationshipHeader(elementHeader);
                 elementSummary.setEnd1(super.getElementStub(beanClass, relationship.getElementAtEnd1(), methodName));
                 elementSummary.setEnd2(super.getElementStub(beanClass, relationship.getElementAtEnd2(), methodName));
                 if (relationship.getRelationshipProperties() != null)
                 {
-                    elementSummary.setProperties(relationship.getRelationshipProperties().getPropertiesAsStrings());
+                    elementSummary.setRelationshipProperties(getRelationshipProperties(relationship));
                 }
             }
             return returnBean;
@@ -97,13 +97,36 @@ public class MetadataRelationshipSummaryConverter<B> extends OpenMetadataConvert
                                OpenMetadataRelationshipList openMetadataRelationships,
                                String                       methodName) throws PropertyServerException
     {
+        if (openMetadataRelationships != null)
+        {
+            return this.getNewBeans(beanClass, openMetadataRelationships.getElementList(), methodName);
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Using the supplied openMetadataElement, return a new instance of the bean. This is used for most beans that have
+     * a one to one correspondence with the repository instances.
+     *
+     * @param beanClass name of the class to create
+     * @param openMetadataRelationships list of openMetadataRelationships containing the properties
+     * @param methodName calling method
+     * @return bean populated with properties from the instances supplied
+     * @throws PropertyServerException there is a problem instantiating the bean
+     */
+    public List<B> getNewBeans(Class<B>                       beanClass,
+                               List<OpenMetadataRelationship> openMetadataRelationships,
+                               String                         methodName) throws PropertyServerException
+    {
         List<B> results = null;
 
-        if ((openMetadataRelationships != null) && openMetadataRelationships.getElementList() != null)
+        if (openMetadataRelationships != null)
         {
             results = new ArrayList<>();
 
-            for (OpenMetadataRelationship openMetadataElement : openMetadataRelationships.getElementList())
+            for (OpenMetadataRelationship openMetadataElement : openMetadataRelationships)
             {
                 if (openMetadataElement != null)
                 {

@@ -12,6 +12,7 @@ import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedExcep
 import org.odpi.openmetadata.frameworks.openmetadata.handlers.AssetHandler;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.OpenMetadataRootElement;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.ClassificationProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.OpenMetadataRelationship;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.RelationshipProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.AssetProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.DataSetContentProperties;
@@ -20,6 +21,7 @@ import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.filesandf
 import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.filesandfolders.NestedFileProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.infrastructure.DeployedOnProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.processes.ProcessHierarchyProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.processes.connectors.CatalogTargetProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.search.*;
 
 import java.util.List;
@@ -710,4 +712,128 @@ public class AssetClient extends ConnectorContextClientBase
     {
         return assetHandler.findAssets(connectorUserId, searchString, searchOptions);
     }
+
+
+
+    /**
+     * Add an element to an integration connector's workload.
+     *
+     * @param integrationConnectorGUID        unique identifier of the integration connector.
+     * @param metadataSourceOptions options to control access to open metadata
+     * @param catalogTargetProperties  properties describing the relationship characteristics.
+     * @param elementGUID           unique identifier of the target element.
+     * @return relationship GUID
+     * @throws InvalidParameterException  one of the parameters is invalid.
+     * @throws PropertyServerException    there is a problem updating information in the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public String addCatalogTarget(String                  integrationConnectorGUID,
+                                   String                  elementGUID,
+                                   MetadataSourceOptions   metadataSourceOptions,
+                                   CatalogTargetProperties catalogTargetProperties) throws InvalidParameterException,
+                                                                                           PropertyServerException,
+                                                                                           UserNotAuthorizedException
+    {
+        return assetHandler.addCatalogTarget(connectorUserId,
+                                             integrationConnectorGUID,
+                                             elementGUID,
+                                             metadataSourceOptions,
+                                             catalogTargetProperties);
+    }
+
+
+    /**
+     * Update the properties of a catalog target relationship.
+     *
+     * @param relationshipGUID     unique identifier of the relationship
+     * @param updateOptions        provides a structure for the additional options when updating a relationship.
+     * @param catalogTargetProperties properties describing the catalog target processing characteristics.
+     */
+    public void updateCatalogTarget(String                  relationshipGUID,
+                                    UpdateOptions           updateOptions,
+                                    CatalogTargetProperties catalogTargetProperties) throws InvalidParameterException,
+                                                                                            PropertyServerException,
+                                                                                            UserNotAuthorizedException
+    {
+        assetHandler.updateCatalogTarget(connectorUserId, relationshipGUID, updateOptions, catalogTargetProperties);
+    }
+
+
+    /**
+     * Retrieve a specific catalog target associated with an integration connector.
+     *
+     * @param relationshipGUID unique identifier of the relationship.
+     * @param getOptions options to control the retrieve
+     *
+     * @return details of the integration connector and the elements it is to catalog
+     * @throws InvalidParameterException one of the parameters is null or invalid.
+     * @throws UserNotAuthorizedException user not authorized to issue this request.
+     * @throws PropertyServerException problem retrieving the integration connector definition.
+     */
+    public OpenMetadataRelationship getCatalogTarget(String     relationshipGUID,
+                                                     GetOptions getOptions) throws InvalidParameterException,
+                                                                                   UserNotAuthorizedException,
+                                                                                   PropertyServerException
+    {
+        return assetHandler.getCatalogTarget(connectorUserId, relationshipGUID, getOptions);
+    }
+
+
+    /**
+     * Return a list of elements that are target elements for an integration connector.
+     *
+     * @param integrationConnectorGUID unique identifier of the integration connector.
+     * @param queryOptions   options for query
+     * @return list of member details
+     * @throws InvalidParameterException  one of the parameters is invalid.
+     * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public List<OpenMetadataRootElement> getCatalogTargets(String       integrationConnectorGUID,
+                                                           QueryOptions queryOptions) throws InvalidParameterException,
+                                                                                             PropertyServerException,
+                                                                                             UserNotAuthorizedException
+    {
+        return assetHandler.getCatalogTargets(connectorUserId, integrationConnectorGUID, queryOptions);
+    }
+
+
+    /**
+     * Remove an element from an integration connector's workload.
+     *
+     * @param integrationConnectorGUID unique identifier of the integration connector.
+     * @param elementGUID    unique identifier of the element.
+     * @param deleteOptions  options to control access to open metadata
+     * @throws InvalidParameterException  one of the parameters is invalid.
+     * @throws PropertyServerException    there is a problem updating information in the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public void removeCatalogTarget(String        integrationConnectorGUID,
+                                    String        elementGUID,
+                                    DeleteOptions deleteOptions) throws InvalidParameterException,
+                                                                        PropertyServerException,
+                                                                        UserNotAuthorizedException
+    {
+        assetHandler.removeCatalogTarget(connectorUserId, integrationConnectorGUID, elementGUID, deleteOptions);
+    }
+
+
+    /**
+     * Remove an element from an integration connector's workload.
+     *
+     * @param relationshipGUID unique identifier of the relationship.
+     * @param deleteOptions  options to control access to open metadata
+     * @throws InvalidParameterException  one of the parameters is invalid.
+     * @throws PropertyServerException    there is a problem updating information in the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public void removeCatalogTarget(String        relationshipGUID,
+                                    DeleteOptions deleteOptions) throws InvalidParameterException,
+                                                                        PropertyServerException,
+                                                                        UserNotAuthorizedException
+    {
+        assetHandler.removeCatalogTarget(connectorUserId, relationshipGUID, deleteOptions);
+    }
+
+
 }

@@ -4,7 +4,6 @@ package org.odpi.openmetadata.frameworks.openmetadata.properties.assets.processe
 
 import com.fasterxml.jackson.annotation.*;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.processes.DeployedSoftwareComponentProperties;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.processes.TransientEmbeddedProcessProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;

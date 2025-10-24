@@ -5,16 +5,18 @@ package org.odpi.openmetadata.viewservices.validmetadata.admin;
 import org.odpi.openmetadata.adminservices.configuration.properties.ViewServiceConfig;
 import org.odpi.openmetadata.adminservices.configuration.registration.ViewServiceDescription;
 import org.odpi.openmetadata.adminservices.ffdc.exception.OMAGConfigurationErrorException;
-import org.odpi.openmetadata.adminservices.registration.ViewServiceAdmin;
+import org.odpi.openmetadata.adminservices.registration.ViewServerGenericServiceAdmin;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.viewservices.validmetadata.ffdc.ValidMetadataAuditCode;
 import org.odpi.openmetadata.viewservices.validmetadata.server.ValidMetadataInstance;
+
+import java.util.List;
 
 /**
  * ValidMetadataAdmin is the class that is called by the View Server to initialize and terminate
  * the Valid Metadata OMVS.  The initialization call provides this OMVS with the Audit log and configuration.
  */
-public class ValidMetadataAdmin extends ViewServiceAdmin
+public class ValidMetadataAdmin extends ViewServerGenericServiceAdmin
 {
     private AuditLog              auditLog   = null;
     private ValidMetadataInstance instance   = null;
@@ -37,15 +39,17 @@ public class ValidMetadataAdmin extends ViewServiceAdmin
      * @param serverUserName                     user id to use on OMRS calls where there is no end user, or as part of an HTTP authentication mechanism with serverUserPassword.
      * @param serverUserPassword                 password to use as part of an HTTP authentication mechanism.
      * @param maxPageSize                        maximum page size. 0 means unlimited
+     * @param activeViewServices list of view services active in this server
      * @throws OMAGConfigurationErrorException   invalid parameters in the configuration properties.
      */
     @Override
-    public void initialize(String                       serverName,
-                           ViewServiceConfig            viewServiceConfig,
-                           AuditLog                     auditLog,
-                           String                       serverUserName,
-                           String                       serverUserPassword,
-                           int                          maxPageSize) throws OMAGConfigurationErrorException
+    public void initialize(String                  serverName,
+                           ViewServiceConfig       viewServiceConfig,
+                           AuditLog                auditLog,
+                           String                  serverUserName,
+                           String                  serverUserPassword,
+                           int                     maxPageSize,
+                           List<ViewServiceConfig> activeViewServices) throws OMAGConfigurationErrorException
     {
 
         final String actionDescription = "initialize";
@@ -67,7 +71,8 @@ public class ValidMetadataAdmin extends ViewServiceAdmin
                                                       serverUserPassword,
                                                       maxPageSize,
                                                       viewServiceConfig.getOMAGServerName(),
-                                                      viewServiceConfig.getOMAGServerPlatformRootURL());
+                                                      viewServiceConfig.getOMAGServerPlatformRootURL(),
+                                                      activeViewServices);
 
             auditLog.logMessage(actionDescription,
                                 ValidMetadataAuditCode.SERVICE_INITIALIZED.getMessageDefinition(),

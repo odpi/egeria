@@ -3,12 +3,8 @@
 
 package org.odpi.openmetadata.frameworks.openmetadata.mermaid;
 
-import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.SolutionBlueprintComponent;
-import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.SolutionBlueprintElement;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.UUID;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.OpenMetadataRootElement;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.solutions.SolutionBlueprintProperties;
 
 
 /**
@@ -21,82 +17,31 @@ public class SolutionBlueprintMermaidGraphBuilder extends MermaidGraphBuilderBas
      *
      * @param solutionBlueprintElement content
      */
-    public SolutionBlueprintMermaidGraphBuilder(SolutionBlueprintElement solutionBlueprintElement)
+    public SolutionBlueprintMermaidGraphBuilder(OpenMetadataRootElement solutionBlueprintElement)
     {
-        mermaidGraph.append("---\n");
-        mermaidGraph.append("title: Components and Roles for Solution Blueprint - ");
-        mermaidGraph.append(solutionBlueprintElement.getProperties().getDisplayName());
-        mermaidGraph.append(" [");
-        mermaidGraph.append(solutionBlueprintElement.getElementHeader().getGUID());
-        mermaidGraph.append("]\n---\nflowchart TD\n%%{init: {\"flowchart\": {\"htmlLabels\": false}} }%%\n\n");
-
-        String currentNodeName    = solutionBlueprintElement.getElementHeader().getGUID();
-        String currentDisplayName = solutionBlueprintElement.getProperties().getDisplayName();
-
-        if (solutionBlueprintElement.getSolutionComponents() != null)
+        if (solutionBlueprintElement.getProperties() instanceof SolutionBlueprintProperties solutionBlueprintProperties)
         {
-            super.startSubgraph("Components and Actors", VisualStyle.SOLUTION_BLUEPRINT_GRAPH);
+            mermaidGraph.append("---\n");
+            mermaidGraph.append("title: Components and Roles for Solution Blueprint - ");
+            mermaidGraph.append(solutionBlueprintProperties.getDisplayName());
+            mermaidGraph.append(" [");
+            mermaidGraph.append(solutionBlueprintElement.getElementHeader().getGUID());
+            mermaidGraph.append("]\n---\nflowchart TD\n%%{init: {\"flowchart\": {\"htmlLabels\": false}} }%%\n\n");
 
-            addDescription(solutionBlueprintElement, false);
-
-            List<String> solutionLinkingWireGUIDs = new ArrayList<>();
-
-            for (SolutionBlueprintComponent node : solutionBlueprintElement.getSolutionComponents())
+            if (solutionBlueprintElement.getCollectionMembers() != null)
             {
-                if (node != null)
-                {
-                    super.addSolutionComponentToGraph(null,
-                                                      null,
-                                                      node.getSolutionComponent(),
-                                                      solutionLinkingWireGUIDs,
-                                                      false);
-                }
+                super.startSubgraph("Components and Actors", VisualStyle.SOLUTION_BLUEPRINT_GRAPH);
+
+                super.addSolutionComponentListToGraph(solutionBlueprintElement.getCollectionMembers());
+
+                super.endSubgraph();
             }
-
-            super.endSubgraph();
-        }
-        else
-        {
-            appendNewMermaidNode(currentNodeName,
-                                 currentDisplayName,
-                                 solutionBlueprintElement.getElementHeader().getType().getTypeName(),
-                                 getVisualStyleForEntity(solutionBlueprintElement.getElementHeader(),
-                                                         VisualStyle.SOLUTION_BLUEPRINT));
-
-            addDescription(solutionBlueprintElement, true);
-        }
-    }
-
-
-
-    /**
-     * Add a text box with the description (if any)
-     *
-     * @param solutionBlueprintElement element with the potential description
-     * @param linkToBlueprint should it be linked to the parent node?
-     */
-    private void addDescription(SolutionBlueprintElement solutionBlueprintElement,
-                                boolean                  linkToBlueprint)
-    {
-        if (solutionBlueprintElement.getProperties() != null)
-        {
-            if (solutionBlueprintElement.getProperties().getDescription() != null)
+            else
             {
-                String descriptionNodeName = UUID.randomUUID().toString();
-
-                appendNewMermaidNode(descriptionNodeName,
-                                     solutionBlueprintElement.getProperties().getDescription(),
-                                     "Description",
-                                     VisualStyle.DESCRIPTION);
-
-                if (linkToBlueprint)
-                {
-                    super.appendMermaidLine(null,
-                                            solutionBlueprintElement.getElementHeader().getGUID(),
-                                            null,
-                                            descriptionNodeName);
-                }
+                clearGraph();
             }
         }
     }
+
+
 }

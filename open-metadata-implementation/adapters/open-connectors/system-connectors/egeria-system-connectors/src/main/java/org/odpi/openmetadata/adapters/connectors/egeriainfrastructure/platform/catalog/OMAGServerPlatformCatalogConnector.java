@@ -3,7 +3,10 @@
 
 package org.odpi.openmetadata.adapters.connectors.egeriainfrastructure.platform.catalog;
 
-import org.odpi.openmetadata.adapters.connectors.egeriainfrastructure.control.EgeriaDeployedImplementationType;
+import org.odpi.openmetadata.adapters.connectors.egeriainfrastructure.properties.OMAGMetadataStoreProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.connectorcontext.GovernanceDefinitionClient;
+import org.odpi.openmetadata.frameworks.openmetadata.connectorcontext.SoftwareCapabilityClient;
+import org.odpi.openmetadata.frameworks.openmetadata.definitions.EgeriaDeployedImplementationType;
 import org.odpi.openmetadata.adapters.connectors.egeriainfrastructure.control.EgeriaSoftwareServerTemplateDefinition;
 import org.odpi.openmetadata.adapters.connectors.egeriainfrastructure.control.OMAGServerPlatformConfigurationProperty;
 import org.odpi.openmetadata.adapters.connectors.egeriainfrastructure.ffdc.OMAGConnectorAuditCode;
@@ -16,9 +19,11 @@ import org.odpi.openmetadata.frameworks.connectors.Connector;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
 import org.odpi.openmetadata.frameworks.integration.connectors.IntegrationConnectorBase;
 import org.odpi.openmetadata.frameworks.openmetadata.connectorcontext.AssetClient;
-import org.odpi.openmetadata.frameworks.openmetadata.connectorcontext.ConnectionClient;
 import org.odpi.openmetadata.frameworks.openmetadata.connectorcontext.OpenMetadataStore;
 import org.odpi.openmetadata.frameworks.openmetadata.controls.PlaceholderProperty;
+import org.odpi.openmetadata.frameworks.openmetadata.definitions.EgeriaSolutionComponent;
+import org.odpi.openmetadata.frameworks.openmetadata.enums.CapabilityAssetUseType;
+import org.odpi.openmetadata.frameworks.openmetadata.enums.ElementOriginCategory;
 import org.odpi.openmetadata.frameworks.openmetadata.events.OpenMetadataEventListener;
 import org.odpi.openmetadata.frameworks.openmetadata.events.OpenMetadataOutTopicEvent;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
@@ -27,9 +32,15 @@ import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedExcep
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.ElementHeader;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.OpenMetadataRootElement;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.RelatedMetadataElementSummary;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.AssetProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.infrastructure.CapabilityAssetUseProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.infrastructure.SoftwareServerPlatformProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.metadatarepositories.MetadataCollectionProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.connections.ConnectionProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.implementations.ImplementedByProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.softwarecapabilities.CohortMemberProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.search.ElementProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.search.NewElementOptions;
 import org.odpi.openmetadata.frameworks.openmetadata.search.SearchOptions;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
@@ -330,10 +341,10 @@ public class OMAGServerPlatformCatalogConnector extends IntegrationConnectorBase
                             for (RelatedMetadataElementSummary deploymentElement : platformElement.getHostedITAssets())
                             {
                                 if ((deploymentElement != null) &&
-                                        (deploymentElement.getRelatedElement().getProperties() != null) &&
-                                        (deploymentElement.getRelatedElement().getProperties().get(OpenMetadataProperty.DISPLAY_NAME.name) != null))
+                                        (deploymentElement.getRelatedElement().getProperties() instanceof AssetProperties assetProperties) &&
+                                        (assetProperties.getDisplayName() != null))
                                 {
-                                    String serverDisplayName = deploymentElement.getRelatedElement().getProperties().get(OpenMetadataProperty.DISPLAY_NAME.name);
+                                    String serverDisplayName = assetProperties.getDisplayName();
 
                                     OMAGServerProperties omagServerProperties = knownServerMap.get(serverDisplayName);
 
@@ -484,6 +495,39 @@ public class OMAGServerPlatformCatalogConnector extends IntegrationConnectorBase
     }
 
 
+
+    /**
+     * Return the unique identifier of the solution component for the server.
+     *
+     * @param serverType server type
+     * @return string
+     */
+    private String getSolutionComponentGUID(String serverType)
+    {
+        if (ServerTypeClassification.INTEGRATION_DAEMON.getServerTypeName().equals(serverType))
+        {
+            return EgeriaSolutionComponent.INTEGRATION_DAEMON.getGUID();
+        }
+        else if (ServerTypeClassification.ENGINE_HOST.getServerTypeName().equals(serverType))
+        {
+            return EgeriaSolutionComponent.ENGINE_HOST.getGUID();
+        }
+        else if (ServerTypeClassification.METADATA_ACCESS_STORE.getServerTypeName().equals(serverType) ||
+                ServerTypeClassification.METADATA_ACCESS_POINT.getServerTypeName().equals(serverType) ||
+                ServerTypeClassification.METADATA_ACCESS_SERVER.getServerTypeName().equals(serverType))
+        {
+            return EgeriaSolutionComponent.METADATA_ACCESS_STORE.getGUID();
+        }
+        else if (ServerTypeClassification.VIEW_SERVER.getServerTypeName().equals(serverType))
+        {
+            return EgeriaSolutionComponent.VIEW_SERVER.getGUID();
+        }
+
+        return null;
+    }
+
+
+
     /**
      * Create a metadata element to represent the server.
      *
@@ -515,6 +559,9 @@ public class OMAGServerPlatformCatalogConnector extends IntegrationConnectorBase
         placeholderProperties.put(PlaceholderProperty.DESCRIPTION.getName(), omagServerProperties.getDescription());
         placeholderProperties.put(PlaceholderProperty.CONNECTION_USER_ID.getName(), omagServerProperties.getUserId());
 
+        String serverQualifiedName = this.getServerQualifiedName(omagServerProperties.getServerType(),
+                                                                 omagServerProperties.getServerId(),
+                                                                 omagServerProperties.getServerName());
         /*
          * Replacement properties are used to override the standard naming conventions for software servers and to
          * ensure this connector is able to match the operational configuration with the values in open metadata.
@@ -522,9 +569,7 @@ public class OMAGServerPlatformCatalogConnector extends IntegrationConnectorBase
          */
         ElementProperties elementProperties = propertyHelper.addStringProperty(null,
                                                                                OpenMetadataProperty.QUALIFIED_NAME.name,
-                                                                               this.getServerQualifiedName(omagServerProperties.getServerType(),
-                                                                                                           omagServerProperties.getServerId(),
-                                                                                                           omagServerProperties.getServerName()));
+                                                                               serverQualifiedName);
 
         elementProperties = propertyHelper.addStringProperty(elementProperties,
                                                              OpenMetadataProperty.DISPLAY_NAME.name,
@@ -542,7 +587,7 @@ public class OMAGServerPlatformCatalogConnector extends IntegrationConnectorBase
                                                              OpenMetadataProperty.CATEGORY.name,
                                                              EGERIA_DEPLOYMENT_CATEGORY);
 
-        return openMetadataAccess.getMetadataElementFromTemplate(OpenMetadataType.SOFTWARE_SERVER.typeName,
+        String serverGUID = openMetadataAccess.getMetadataElementFromTemplate(OpenMetadataType.SOFTWARE_SERVER.typeName,
                                                                  null,
                                                                  true,
                                                                  null,
@@ -555,6 +600,77 @@ public class OMAGServerPlatformCatalogConnector extends IntegrationConnectorBase
                                                                  null,
                                                                  null,
                                                                  false);
+
+        GovernanceDefinitionClient governanceDefinitionClient = integrationContext.getGovernanceDefinitionClient();
+
+        String solutionComponentGUID = this.getSolutionComponentGUID(omagServerProperties.getServerType());
+
+        if (solutionComponentGUID != null)
+        {
+            ImplementedByProperties implementedByProperties = new ImplementedByProperties();
+
+            implementedByProperties.setRole("running instance");
+            implementedByProperties.setDescription("Server instance discovered by " + connectorName + ".");
+
+            governanceDefinitionClient.linkDesignToImplementation(solutionComponentGUID, serverGUID, governanceDefinitionClient.getMetadataSourceOptions(), implementedByProperties);
+        }
+
+        if (omagServerProperties instanceof OMAGMetadataStoreProperties omagMetadataStoreProperties)
+        {
+            AssetClient              assetClient              = integrationContext.getAssetClient();
+            SoftwareCapabilityClient softwareCapabilityClient = integrationContext.getSoftwareCapabilityClient();
+
+            CohortMemberProperties cohortMemberProperties = new CohortMemberProperties();
+
+            cohortMemberProperties.setQualifiedName(OpenMetadataType.COHORT_MEMBER.typeName + "_cohortMember");
+            cohortMemberProperties.setDisplayName("Cohort member capability for server " + omagMetadataStoreProperties.getServerName() + ".");
+
+            NewElementOptions newElementOptions = new NewElementOptions(softwareCapabilityClient.getMetadataSourceOptions());
+
+            newElementOptions.setIsOwnAnchor(false);
+            newElementOptions.setAnchorGUID(serverGUID);
+            newElementOptions.setParentGUID(serverGUID);
+            newElementOptions.setParentAtEnd1(true);
+            newElementOptions.setParentRelationshipTypeName(OpenMetadataType.SUPPORTED_SOFTWARE_CAPABILITY_RELATIONSHIP.typeName);
+
+            String cohortMemberGUID = softwareCapabilityClient.createSoftwareCapability(newElementOptions,
+                                                                                        null,
+                                                                                        cohortMemberProperties,
+                                                                                        null);
+
+            if (omagMetadataStoreProperties.getLocalMetadataCollectionId() != null)
+            {
+                MetadataCollectionProperties metadataCollectionProperties = new MetadataCollectionProperties();
+
+                metadataCollectionProperties.setQualifiedName(OpenMetadataType.METADATA_COLLECTION.typeName + "::" + omagMetadataStoreProperties.getServerName() + " [" + omagMetadataStoreProperties.getServerId() + "]");
+                metadataCollectionProperties.setDeployedImplementationType(ElementOriginCategory.LOCAL_COHORT.getName());
+
+                if (omagMetadataStoreProperties.getLocalMetadataCollectionName() != null)
+                {
+                    metadataCollectionProperties.setDisplayName(omagMetadataStoreProperties.getLocalMetadataCollectionName());
+                }
+                else
+                {
+                    metadataCollectionProperties.setDisplayName("Metadata collection for server " + omagMetadataStoreProperties.getServerName());
+                }
+
+                metadataCollectionProperties.setDescription("This is the metadata belonging to (homed on) server " + omagMetadataStoreProperties.getServerName() + ".");
+
+                CapabilityAssetUseProperties capabilityAssetUseProperties = new CapabilityAssetUseProperties();
+
+                capabilityAssetUseProperties.setUseType(CapabilityAssetUseType.OWNS);
+                newElementOptions.setParentGUID(cohortMemberGUID);
+                newElementOptions.setParentAtEnd1(true);
+                newElementOptions.setParentRelationshipTypeName(OpenMetadataType.CAPABILITY_ASSET_USE_RELATIONSHIP.typeName);
+
+                assetClient.createAsset(newElementOptions,
+                                        null,
+                                        metadataCollectionProperties,
+                                        capabilityAssetUseProperties);
+            }
+        }
+
+        return serverGUID;
     }
 
 
@@ -573,20 +689,11 @@ public class OMAGServerPlatformCatalogConnector extends IntegrationConnectorBase
             for (RelatedMetadataElementSummary connection : platformElement.getConnections())
             {
                 if ((connection != null) &&
-                        (connection.getRelatedElement().getProperties() != null) &&
-                        (connection.getRelatedElement().getProperties().get(OpenMetadataProperty.CONFIGURATION_PROPERTIES.name) != null))
+                        (connection.getRelatedElement().getProperties() instanceof ConnectionProperties connectionProperties) &&
+                        (connectionProperties.getConfigurationProperties() != null) &&
+                        (connectionProperties.getConfigurationProperties().get(PlaceholderProperty.SECRETS_STORE.getName()) != null))
                 {
-                    ConnectionClient connectionClient = integrationContext.getConnectionClient();
-
-                    OpenMetadataRootElement connectionElement = connectionClient.getConnectionByGUID(connection.getRelatedElement().getElementHeader().getGUID(), connectionClient.getGetOptions());
-
-                    if ((connectionElement != null) &&
-                            (connectionElement.getProperties() instanceof ConnectionProperties connectionProperties) &&
-                            (connectionProperties.getConfigurationProperties() != null) &&
-                            (connectionProperties.getConfigurationProperties().get(PlaceholderProperty.SECRETS_STORE.getName()) != null))
-                    {
-                        return connectionProperties.getConfigurationProperties().get(PlaceholderProperty.SECRETS_STORE.getName()).toString();
-                    }
+                    return connectionProperties.getConfigurationProperties().get(PlaceholderProperty.SECRETS_STORE.getName()).toString();
                 }
             }
         }

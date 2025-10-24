@@ -393,7 +393,7 @@ public class LocationHandler extends OpenMetadataHandlerBase
      * Returns the list of locations with a particular name.
      *
      * @param userId                 userId of user making request
-     * @param name                   name of the element to return - match is full text match in qualifiedName or name
+     * @param name                   name of the element to return - match is full text match in qualifiedName, identifier or displayName
      * @param queryOptions           multiple options to control the query
      * @return a list of elements
      * @throws InvalidParameterException  one of the parameters is null or invalid.

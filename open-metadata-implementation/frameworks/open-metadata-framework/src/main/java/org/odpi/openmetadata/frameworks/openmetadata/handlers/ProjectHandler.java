@@ -30,9 +30,6 @@ import java.util.*;
  */
 public class ProjectHandler extends OpenMetadataHandlerBase
 {
-
-    final private ActorRoleHandler actorRoleHandler;
-
     /**
      * Create a new handler.
      *
@@ -51,8 +48,6 @@ public class ProjectHandler extends OpenMetadataHandlerBase
               serviceName,
               openMetadataClient,
               OpenMetadataType.PROJECT.typeName);
-
-        actorRoleHandler = new ActorRoleHandler(localServerName, auditLog, serviceName, openMetadataClient);
     }
 
     /* =====================================================================================================================
@@ -61,7 +56,7 @@ public class ProjectHandler extends OpenMetadataHandlerBase
 
 
     /**
-     * Create a new generic project.
+     * Create a new project.
      *
      * @param userId                 userId of user making request.
      * @param newElementOptions details of the element to create
@@ -404,7 +399,7 @@ public class ProjectHandler extends OpenMetadataHandlerBase
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public void removeProject(String        userId,
+    public void deleteProject(String        userId,
                               String        projectGUID,
                               DeleteOptions deleteOptions) throws InvalidParameterException,
                                                                   UserNotAuthorizedException,
@@ -789,7 +784,7 @@ public class ProjectHandler extends OpenMetadataHandlerBase
      *
      * @param userId             userId of user making request
      * @param projectGUID unique identifier of the project
-     * @param teamRole optional team role
+     * @param teamRole optional team role value found in AssignmentScope's assignmentType attribute.  Used to filter the results.
      * @param queryOptions multiple options to control the query
      *
      * @return list of team members
@@ -823,6 +818,9 @@ public class ProjectHandler extends OpenMetadataHandlerBase
         {
             List<OpenMetadataRootElement> teamMembers = new ArrayList<>();
 
+            /*
+             * Optional filtering on assignmentType attribute
+             */
             for (OpenMetadataRootElement linkedActor : linkedActors)
             {
                 if ((teamRole == null) || (linkedActor == null))
@@ -904,62 +902,6 @@ public class ProjectHandler extends OpenMetadataHandlerBase
                                            propertyNames,
                                            queryOptions,
                                            methodName);
-    }
-
-
-    /**
-     * Retrieve the list of projects.
-     *
-     * @param userId calling user
-     * @param queryOptions multiple options to control the query
-     *
-     * @return list of matching metadata elements
-     *
-     * @throws InvalidParameterException  one of the parameters is invalid
-     * @throws UserNotAuthorizedException the user is not authorized to issue this request
-     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
-     */
-    public List<OpenMetadataRootElement> getProjects(String       userId,
-                                                     QueryOptions queryOptions) throws InvalidParameterException,
-                                                                                       UserNotAuthorizedException,
-                                                                                       PropertyServerException
-    {
-        final String methodName = "getProjects";
-
-        return super.findRootElements(userId,null, new SearchOptions(queryOptions), methodName);
-    }
-
-
-
-    /**
-     * Return information about the actors linked to a project.
-     *
-     * @param userId calling user
-     * @param projectGUID unique identifier for the project
-     * @param queryOptions multiple options to control the query
-     *
-     * @return list of matching actor profiles
-     *
-     * @throws InvalidParameterException name or userId is null
-     * @throws PropertyServerException problem accessing property server
-     * @throws UserNotAuthorizedException security access problem
-     */
-    public List<OpenMetadataRootElement> getProjectActors(String       userId,
-                                                          String       projectGUID,
-                                                          QueryOptions queryOptions) throws InvalidParameterException,
-                                                                                        UserNotAuthorizedException,
-                                                                                        PropertyServerException
-    {
-        final String methodName        = "getProjectActors";
-        final String guidPropertyName  = "projectGUID";
-
-        return actorRoleHandler.getRelatedRootElements(userId,
-                                                       projectGUID,
-                                                       guidPropertyName,
-                                                       2,
-                                                       OpenMetadataType.ASSIGNMENT_SCOPE_RELATIONSHIP.typeName,
-                                                       queryOptions,
-                                                       methodName);
     }
 
 

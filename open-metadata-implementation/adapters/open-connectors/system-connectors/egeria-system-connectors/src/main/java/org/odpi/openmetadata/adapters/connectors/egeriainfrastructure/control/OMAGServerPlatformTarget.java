@@ -2,8 +2,9 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.adapters.connectors.egeriainfrastructure.control;
 
-import org.odpi.openmetadata.frameworks.opengovernance.controls.ActionTargetType;
+import org.odpi.openmetadata.frameworks.openmetadata.specificationproperties.ActionTargetType;
 import org.odpi.openmetadata.frameworks.integration.controls.CatalogTargetType;
+import org.odpi.openmetadata.frameworks.openmetadata.definitions.EgeriaDeployedImplementationType;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,7 +21,7 @@ public enum OMAGServerPlatformTarget
                     EgeriaDeployedImplementationType.OMAG_SERVER_PLATFORM.getDescription(),
                     EgeriaDeployedImplementationType.OMAG_SERVER_PLATFORM.getAssociatedTypeName(),
                     EgeriaDeployedImplementationType.OMAG_SERVER_PLATFORM.getDeployedImplementationType(),
-                   null);
+                    null);
 
 
     /**

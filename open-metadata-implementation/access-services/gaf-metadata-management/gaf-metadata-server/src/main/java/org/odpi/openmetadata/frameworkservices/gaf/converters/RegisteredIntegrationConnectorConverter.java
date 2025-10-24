@@ -86,10 +86,10 @@ public class RegisteredIntegrationConnectorConverter
                                                                                                  OpenMetadataProperty.CONNECTOR_SHUTDOWN_DATE.name,
                                                                                                  instanceProperties,
                                                                                                  methodName));
-                registrationProperties.setGenerateIntegrationReports(repositoryHelper.getBooleanProperty(serviceName,
-                                                                                                         OpenMetadataProperty.GENERATE_CONNECTOR_ACTIVITY_REPORT.name,
-                                                                                                         instanceProperties,
-                                                                                                         methodName));
+                registrationProperties.setGenerateConnectorActivityReports(repositoryHelper.getBooleanProperty(serviceName,
+                                                                                                               OpenMetadataProperty.GENERATE_CONNECTOR_ACTIVITY_REPORT.name,
+                                                                                                               instanceProperties,
+                                                                                                               methodName));
 
                 registrationProperties.setPermittedSynchronization(this.removePermittedSynchronization(instanceProperties));
 

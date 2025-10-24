@@ -6,7 +6,7 @@ package org.odpi.openmetadata.archiveutilities.openconnectors;
 import org.odpi.openmetadata.adapters.connectors.apacheatlas.controls.AtlasDeployedImplementationType;
 import org.odpi.openmetadata.adapters.connectors.apacheatlas.integration.ApacheAtlasIntegrationProvider;
 import org.odpi.openmetadata.adapters.connectors.apachekafka.integration.KafkaTopicIntegrationProvider;
-import org.odpi.openmetadata.adapters.connectors.egeriainfrastructure.control.EgeriaDeployedImplementationType;
+import org.odpi.openmetadata.frameworks.openmetadata.definitions.EgeriaDeployedImplementationType;
 import org.odpi.openmetadata.adapters.connectors.egeriainfrastructure.platform.catalog.OMAGServerPlatformCatalogProvider;
 import org.odpi.openmetadata.adapters.connectors.integration.basicfiles.DataFilesMonitorIntegrationProvider;
 import org.odpi.openmetadata.adapters.connectors.integration.basicfiles.DataFolderMonitorIntegrationProvider;
@@ -19,6 +19,7 @@ import org.odpi.openmetadata.adapters.connectors.nannyconnectors.harvestopenmeta
 import org.odpi.openmetadata.adapters.connectors.nannyconnectors.harvestsurveys.HarvestSurveysProvider;
 import org.odpi.openmetadata.adapters.connectors.postgres.catalog.PostgresServerIntegrationProvider;
 import org.odpi.openmetadata.adapters.connectors.postgres.controls.PostgresConfigurationProperty;
+import org.odpi.openmetadata.adapters.connectors.productmanager.OpenMetadataProductsHarvesterProvider;
 import org.odpi.openmetadata.adapters.connectors.unitycatalog.controls.UnityCatalogConfigurationProperty;
 import org.odpi.openmetadata.adapters.connectors.unitycatalog.sync.OSSUnityCatalogInsideCatalogSyncProvider;
 import org.odpi.openmetadata.adapters.connectors.unitycatalog.sync.OSSUnityCatalogServerSyncProvider;
@@ -313,6 +314,19 @@ public enum IntegrationConnectorDefinition
                     new String[]{PostgresDeployedImplementationType.POSTGRESQL_DATABASE_SCHEMA.getQualifiedName(),
                             DeployedImplementationType.FILE_FOLDER.getQualifiedName()},
                     ContentPackDefinition.NANNY_CONTENT_PACK),
+
+    PRODUCT_HARVESTER("8a3d91da-05a0-49ca-83e0-77f5c48bdf0c",
+                     "HarvestOpenMetadataProductsIntegrationConnector",
+                     "Defines and maintains digital products based on the content of the open metadata repositories.",
+                     OpenMetadataProductsHarvesterProvider.class.getName(),
+                     "HarvestOpenMetadataDigitalProducts",
+                     "autoprodmgrnpa",
+                     null,
+                     null,
+                     null,
+                     60,
+                     null,
+                     ContentPackDefinition.PRODUCTS_CONTENT_PACK),
     ;
 
 

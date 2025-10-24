@@ -173,32 +173,10 @@ public class OpenMetadataTypesArchive3_9
      */
     private void update0015LinkedMediaTypes()
     {
-        this.archiveBuilder.addTypeDefPatch(updateExternalReferenceLinkRelationship());
         this.archiveBuilder.addTypeDefPatch(updateMediaReferenceRelationship());
         this.archiveBuilder.addTypeDefPatch(updateRelatedMediaEntity());
     }
 
-    private TypeDefPatch updateExternalReferenceLinkRelationship()
-    {
-        /*
-         * Create the Patch
-         */
-        TypeDefPatch  typeDefPatch = archiveBuilder.getPatchForType(OpenMetadataType.EXTERNAL_REFERENCE_LINK_RELATIONSHIP.typeName);
-
-        typeDefPatch.setUpdatedBy(originatorName);
-        typeDefPatch.setUpdateTime(creationDate);
-
-        /*
-         * Build the attributes
-         */
-        List<TypeDefAttribute> properties = new ArrayList<>();
-
-        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.LABEL));
-
-        typeDefPatch.setPropertyDefinitions(properties);
-
-        return typeDefPatch;
-    }
 
     private TypeDefPatch updateMediaReferenceRelationship()
     {
