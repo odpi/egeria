@@ -60,13 +60,13 @@ public class CommunityHandler extends OpenMetadataHandlerBase
      * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    public String createCommunity(String                                userId,
-                                 NewElementOptions                     newElementOptions,
-                                 Map<String, ClassificationProperties> initialClassifications,
-                                 CommunityProperties                    properties,
-                                 RelationshipProperties                parentRelationshipProperties) throws InvalidParameterException,
-                                                                                                            PropertyServerException,
-                                                                                                            UserNotAuthorizedException
+    public String createCommunity(String                               userId,
+                                  NewElementOptions                     newElementOptions,
+                                  Map<String, ClassificationProperties> initialClassifications,
+                                  CommunityProperties                   properties,
+                                  RelationshipProperties                parentRelationshipProperties) throws InvalidParameterException,
+                                                                                                             PropertyServerException,
+                                                                                                             UserNotAuthorizedException
     {
         final String methodName = "createCommunity";
 
@@ -98,13 +98,13 @@ public class CommunityHandler extends OpenMetadataHandlerBase
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     public String createCommunityFromTemplate(String                 userId,
-                                             TemplateOptions        templateOptions,
-                                             String                 templateGUID,
-                                             ElementProperties      replacementProperties,
-                                             Map<String, String>    placeholderProperties,
-                                             RelationshipProperties parentRelationshipProperties) throws InvalidParameterException,
-                                                                                                         UserNotAuthorizedException,
-                                                                                                         PropertyServerException
+                                              TemplateOptions        templateOptions,
+                                              String                 templateGUID,
+                                              ElementProperties      replacementProperties,
+                                              Map<String, String>    placeholderProperties,
+                                              RelationshipProperties parentRelationshipProperties) throws InvalidParameterException,
+                                                                                                          UserNotAuthorizedException,
+                                                                                                          PropertyServerException
     {
         return super.createElementFromTemplate(userId,
                                                templateOptions,
@@ -127,11 +127,11 @@ public class CommunityHandler extends OpenMetadataHandlerBase
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public void updateCommunity(String             userId,
-                               String             communityGUID,
-                               UpdateOptions      updateOptions,
-                               CommunityProperties properties) throws InvalidParameterException,
-                                                                     PropertyServerException,
-                                                                     UserNotAuthorizedException
+                                String             communityGUID,
+                                UpdateOptions      updateOptions,
+                                CommunityProperties properties) throws InvalidParameterException,
+                                                                       PropertyServerException,
+                                                                       UserNotAuthorizedException
     {
         final String methodName        = "updateCommunity";
         final String guidParameterName = "communityGUID";
@@ -156,10 +156,10 @@ public class CommunityHandler extends OpenMetadataHandlerBase
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public void deleteCommunity(String        userId,
-                               String        communityGUID,
-                               DeleteOptions deleteOptions) throws InvalidParameterException,
-                                                                   PropertyServerException,
-                                                                   UserNotAuthorizedException
+                                String        communityGUID,
+                                DeleteOptions deleteOptions) throws InvalidParameterException,
+                                                                    PropertyServerException,
+                                                                    UserNotAuthorizedException
     {
         final String methodName        = "deleteCommunity";
         final String guidParameterName = "communityGUID";
@@ -183,10 +183,10 @@ public class CommunityHandler extends OpenMetadataHandlerBase
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public List<OpenMetadataRootElement> getCommunitiesByName(String       userId,
-                                                            String       name,
-                                                            QueryOptions queryOptions) throws InvalidParameterException,
-                                                                                              PropertyServerException,
-                                                                                              UserNotAuthorizedException
+                                                              String       name,
+                                                              QueryOptions queryOptions) throws InvalidParameterException,
+                                                                                                PropertyServerException,
+                                                                                                UserNotAuthorizedException
     {
         final String methodName = "getCommunitiesByName";
 
@@ -214,10 +214,10 @@ public class CommunityHandler extends OpenMetadataHandlerBase
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public OpenMetadataRootElement getCommunityByGUID(String     userId,
-                                                     String     communityGUID,
-                                                     GetOptions getOptions) throws InvalidParameterException,
-                                                                                   PropertyServerException,
-                                                                                   UserNotAuthorizedException
+                                                      String     communityGUID,
+                                                      GetOptions getOptions) throws InvalidParameterException,
+                                                                                    PropertyServerException,
+                                                                                    UserNotAuthorizedException
     {
         final String methodName = "getCommunityByGUID";
 
@@ -241,10 +241,10 @@ public class CommunityHandler extends OpenMetadataHandlerBase
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     public List<OpenMetadataRootElement> findCommunities(String        userId,
-                                                       String        searchString,
-                                                       SearchOptions searchOptions) throws InvalidParameterException,
-                                                                                           UserNotAuthorizedException,
-                                                                                           PropertyServerException
+                                                         String        searchString,
+                                                         SearchOptions searchOptions) throws InvalidParameterException,
+                                                                                             UserNotAuthorizedException,
+                                                                                             PropertyServerException
     {
         final String methodName  = "findCommunities";
 

@@ -3,6 +3,7 @@
 
 package org.odpi.openmetadata.frameworks.opengovernance.controls;
 
+import org.odpi.openmetadata.frameworks.openmetadata.specificationproperties.ActionTargetType;
 import org.odpi.openmetadata.frameworks.openmetadata.refdata.DeployedImplementationType;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 
@@ -49,8 +50,18 @@ public enum ActionTarget
               OpenMetadataType.ASSET.typeName,
               null),
 
+
     /**
-     * A newly prepared Notification Type.
+     * A newly created digital subscription (or a subtype of).
+     */
+    NEW_DIGITAL_SUBSCRIPTION("newDigitalSubscription",
+              "A newly created digital subscription (or a subtype of).",
+              OpenMetadataType.DIGITAL_SUBSCRIPTION.typeName,
+              null),
+
+
+    /**
+     * A Notification Type ready for monitoring.
      */
     NOTIFICATION_TYPE("notificationType",
                       "A Notification Type ready for monitoring.",

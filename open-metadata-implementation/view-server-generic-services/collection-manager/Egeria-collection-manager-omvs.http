@@ -196,7 +196,7 @@ Content-Type: application/json
 
 ###
 
-@collectionGUID=6b14500f-9571-4f99-8469-0e872371598d
+@collectionGUID=dcec6ddb-317e-4c64-907e-be508ceba6d9
 
 ###
 # @name getCollectionByGUID
@@ -288,6 +288,34 @@ Content-Type: application/json
     "description" : "Add description of the collection here",
     "category": "Add appropriate valid value for type"
   }
+}
+
+
+###
+# @name createClassifiedCollection (own anchor)
+# Create a new generic collection.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/collection-manager/collections
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+
+  "class" : "NewElementRequestBody",
+  "isOwnAnchor" : true,
+  "initialClassifications" : {
+    "Folder" : {
+      "class": "FolderProperties"
+    }
+  },
+
+  "properties": {
+    "class" : "CollectionProperties",
+    "qualifiedName": "Folder::another",
+    "displayName" : "Another",
+    "description" : "Folder description",
+    "category": "Folder-Category"
+  }
+
 }
 
 ###
@@ -486,7 +514,7 @@ Content-Type: application/json
 # Update the properties of a collection.  
 # Use the correct properties object (CollectionProperties, DigitalProductProperties, AgreementProperties)
 # That is appropriate for your element.
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/collection-manager/collections/{{collectionGUID}}/update?replaceAllProperties=false
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/collection-manager/collections/{{collectionGUID}}/update
 Authorization: Bearer {{token}}
 Content-Type: application/json
 
@@ -499,6 +527,7 @@ Content-Type: application/json
     "description" : "Add description of the collection here",
     "category": "Add appropriate valid value for type"
   },
+  "mergeUpdate": true,
   "externalSourceGUID": "add guid here",
   "externalSourceName": "add qualified name here",
   "effectiveTime" : "{{$isoTimestamp}}",
@@ -559,7 +588,7 @@ Content-Type: application/json
 ###
 # @name updateDigitalProduct
 # Update the properties of the DigitalProduct collection.
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/collection-manager/collections/{{digitalProductGUID}}/update?replaceAllProperties=false
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/collection-manager/collections/{{digitalProductGUID}}/update
 Authorization: Bearer {{token}}
 Content-Type: application/json
 
@@ -585,6 +614,7 @@ Content-Type: application/json
       "property2Name" : "property2Value"
     }
   },
+  "mergeUpdate": true,
   "externalSourceGUID": "add guid here",
   "externalSourceName": "add qualified name here",
   "effectiveTime" : "{{$isoTimestamp}}",
@@ -646,7 +676,7 @@ Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-  "class" : "DeleteRequestBody",
+  "class" : "DeleteRelationshipRequestBody",
   "externalSourceGUID": "add guid here",
   "externalSourceName": "add qualified name here",
   "effectiveTime" : "{{$isoTimestamp}}",
@@ -691,7 +721,7 @@ Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-  "class" : "DeleteRequestBody",
+  "class" : "DeleteRelationshipRequestBody",
   "externalSourceGUID": "add guid here",
   "externalSourceName": "add qualified name here",
   "effectiveTime" : "{{$isoTimestamp}}",
@@ -858,7 +888,7 @@ Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-  "class" : "DeleteRequestBody",
+  "class" : "DeleteRelationshipRequestBody",
   "externalSourceGUID": "add guid here",
   "externalSourceName": "add qualified name here",
   "effectiveTime" : "{{$isoTimestamp}}",
@@ -921,7 +951,7 @@ Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-  "class" : "DeleteRequestBody",
+  "class" : "DeleteRelationshipRequestBody",
   "externalSourceGUID": "add guid here",
   "externalSourceName": "add qualified name here",
   "effectiveTime" : "{{$isoTimestamp}}",
@@ -967,7 +997,7 @@ Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-  "class" : "DeleteRequestBody",
+  "class" : "DeleteRelationshipRequestBody",
   "externalSourceGUID": "add guid here",
   "externalSourceName": "add qualified name here",
   "effectiveTime" : "{{$isoTimestamp}}",
@@ -1025,7 +1055,7 @@ Content-Type: application/json
 ###
 # @name updateDigitalSubscription
 # Update the properties of the digital subscription collection.
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/collection-manager/collections/{{digitalSubscriptionGUID}}/update?replaceAllProperties=false
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/collection-manager/collections/{{digitalSubscriptionGUID}}/update
 Authorization: Bearer {{token}}
 Content-Type: application/json
 
@@ -1048,6 +1078,7 @@ Content-Type: application/json
       "property2Name" : "property2Value"
     }
   },
+  "mergeUpdate": true,
   "externalSourceGUID": "add guid here",
   "externalSourceName": "add qualified name here",
   "effectiveTime" : "{{$isoTimestamp}}",
@@ -1105,7 +1136,7 @@ Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-  "class" : "DeleteRequestBody",
+  "class" : "DeleteRelationshipRequestBody",
   "externalSourceGUID": "add guid here",
   "externalSourceName": "add qualified name here",
   "effectiveTime" : "{{$isoTimestamp}}",
@@ -1148,7 +1179,47 @@ Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-  "class" : "DeleteRequestBody",
+  "class" : "DeleteRelationshipRequestBody",
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
+}
+
+
+
+
+###
+# @name attachDataDescription
+# Connect an existing data describing collection to an element using the DataDescription relationship (0580).
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/collection-manager/metadata-elements/{{parentGUID}}/data-descriptions/{{collectionGUID}}/attach?makeAnchor=false
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "NewRelationshipRequestBody",
+  "properties": {
+    "class": "DataDescriptionProperties",
+    "label": "Add label here",
+    "description": "Add description here"
+  },
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
+}
+
+###
+# @name detachDataDescription
+# Detach an existing data describing collection from an element.  If the collection is anchored to the element, it is deleted.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/collection-manager/metadata-elements/{{parentGUID}}/data-descriptions/{{collectionGUID}}/detach
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "DeleteRelationshipRequestBody",
   "externalSourceGUID": "add guid here",
   "externalSourceName": "add qualified name here",
   "effectiveTime" : "{{$isoTimestamp}}",
@@ -1169,7 +1240,7 @@ Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-  "class" : "DeleteRequestBody",
+  "class" : "DeleteElementRequestBody",
   "externalSourceGUID": "add guid here",
   "externalSourceName": "add qualified name here",
   "effectiveTime" : "{{$isoTimestamp}}",
@@ -1214,7 +1285,7 @@ Content-Type: application/json
 ###
 # @name updateCollectionMembership
 # Update an element's membership to a collection.
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/collection-manager/collections/{{collectionGUID}}/members/{{elementGUID}}/update?replaceAllProperties=false
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/collection-manager/collections/{{collectionGUID}}/members/{{elementGUID}}/update
 Authorization: Bearer {{token}}
 Content-Type: application/json
 
@@ -1234,6 +1305,7 @@ Content-Type: application/json
     "source": "source of the member",
     "notes": "Add notes here"
   },
+  "mergeUpdate": true,
   "externalSourceGUID": "add guid here",
   "externalSourceName": "add qualified name here",
   "effectiveTime" : "{{$isoTimestamp}}",
@@ -1249,7 +1321,7 @@ Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-  "class" : "DeleteRequestBody",
+  "class" : "DeleteRelationshipRequestBody",
   "externalSourceGUID": "add guid here",
   "externalSourceName": "add qualified name here",
   "effectiveTime" : "{{$isoTimestamp}}",

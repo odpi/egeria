@@ -35,6 +35,10 @@ public class ConnectorActivityReportWriter
     private final String connectorId;
     private final String integrationConnectorGUID;
     private final String connectorName;
+    private final Date   connectorStartDate = new Date();
+    private Date   refreshStartDate = null;
+    private Date   refreshEndDate = null;
+
 
     private final ConnectorActivityReportClient connectorActivityReportClient;
 
@@ -49,11 +53,11 @@ public class ConnectorActivityReportWriter
      * @param userId calling user
      * @param connectorActivityReportClient client used to publish reports.
      */
-    public ConnectorActivityReportWriter(String                  localServerName,
-                                         String                  connectorId,
-                                         String                  connectorGUID,
-                                         String                  connectorName,
-                                         String                  userId,
+    public ConnectorActivityReportWriter(String                        localServerName,
+                                         String                        connectorId,
+                                         String                        connectorGUID,
+                                         String                        connectorName,
+                                         String                        userId,
                                          ConnectorActivityReportClient connectorActivityReportClient)
     {
         this.serverName               = localServerName;
@@ -77,6 +81,25 @@ public class ConnectorActivityReportWriter
         updatedElements = new HashSet<>();
         deletedElements = new HashSet<>();
         additionalProperties = new HashMap<>();
+    }
+
+
+    /**
+     * Set up properties ready for a new report.
+     */
+    public void setRefreshStartDate()
+    {
+        refreshStartDate = new Date();
+    }
+
+
+
+    /**
+     * Set up properties ready for a new report.
+     */
+    public void setRefreshEndDate()
+    {
+        refreshEndDate = new Date();
     }
 
 
@@ -106,6 +129,9 @@ public class ConnectorActivityReportWriter
                 report.setConnectorName(connectorName);
                 report.setStartTime(startDate);
                 report.setCompletionTime(completionDate);
+                report.setConnectorStartDate(connectorStartDate);
+                report.setRefreshStartDate(refreshStartDate);
+                report.setRefreshCompletionDate(refreshEndDate);
                 report.setAdditionalProperties(additionalProperties);
                 report.setCreatedElements(getReportElements(createdElements));
                 report.setUpdatedElements(getReportElements(updatedElements));
@@ -120,7 +146,7 @@ public class ConnectorActivityReportWriter
 
 
     /**
-     * Converts a set into a list.  This should not be required by using the ArrayList constructor returns an
+     * Converts a set into a list.  This should not be required by using the ArrayList constructor returns a
      * java.lang.ArrayIndexOutOfBoundsException exception.
      *
      * @param elementGUIDs set of element GUIDs.
@@ -145,6 +171,7 @@ public class ConnectorActivityReportWriter
 
         return null;
     }
+
 
     /**
      * Set whether an integration report should be assembled and published.

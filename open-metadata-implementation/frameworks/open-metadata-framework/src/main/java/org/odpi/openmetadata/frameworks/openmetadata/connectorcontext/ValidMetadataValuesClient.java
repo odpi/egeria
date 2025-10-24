@@ -7,8 +7,10 @@ import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterExcept
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.frameworks.openmetadata.client.OpenMetadataClient;
+import org.odpi.openmetadata.frameworks.openmetadata.handlers.ValidMetadataValueHandler;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.ValidMetadataValue;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.ValidMetadataValueDetail;
+import org.odpi.openmetadata.frameworks.openmetadata.search.DeleteOptions;
 
 import java.util.List;
 
@@ -19,7 +21,7 @@ import java.util.List;
  */
 public class ValidMetadataValuesClient  extends ConnectorContextClientBase
 {
-    private final OpenMetadataClient openMetadataClient;
+    private final ValidMetadataValueHandler validMetadataValueHandler;
 
 
     /**
@@ -57,7 +59,7 @@ public class ValidMetadataValuesClient  extends ConnectorContextClientBase
               auditLog,
               maxPageSize);
 
-        this.openMetadataClient = openMetadataClient;
+        this.validMetadataValueHandler = new ValidMetadataValueHandler(localServerName, auditLog, localServiceName, openMetadataClient);
     }
 
 
@@ -82,7 +84,7 @@ public class ValidMetadataValuesClient  extends ConnectorContextClientBase
                                                                                       UserNotAuthorizedException,
                                                                                       PropertyServerException
     {
-        openMetadataClient.setUpValidMetadataValue(connectorUserId, typeName, propertyName, validMetadataValue);
+        validMetadataValueHandler.setUpValidMetadataValue(connectorUserId, typeName, propertyName, validMetadataValue);
     }
 
 
@@ -107,7 +109,7 @@ public class ValidMetadataValuesClient  extends ConnectorContextClientBase
                                                                                         UserNotAuthorizedException,
                                                                                         PropertyServerException
     {
-        openMetadataClient.setUpValidMetadataMapName(connectorUserId, typeName, propertyName, validMetadataValue);
+        validMetadataValueHandler.setUpValidMetadataMapName(connectorUserId, typeName, propertyName, validMetadataValue);
     }
 
 
@@ -134,7 +136,7 @@ public class ValidMetadataValuesClient  extends ConnectorContextClientBase
                                                                                          UserNotAuthorizedException,
                                                                                          PropertyServerException
     {
-        openMetadataClient.setUpValidMetadataMapValue(connectorUserId, typeName, propertyName, mapName, validMetadataValue);
+        validMetadataValueHandler.setUpValidMetadataMapValue(connectorUserId, typeName, propertyName, mapName, validMetadataValue);
     }
 
 
@@ -144,18 +146,20 @@ public class ValidMetadataValuesClient  extends ConnectorContextClientBase
      * @param typeName type name if this is valid value is specific for a type, or null if this valid value if for the property name for all types
      * @param propertyName name of property that this valid value applies
      * @param preferredValue specific valid value to remove
+     * @param deleteOptions options to control the behaviour of delete
      *
      * @throws InvalidParameterException  the property name is null or not known.
      * @throws UserNotAuthorizedException the service is not able to create/access the element
      * @throws PropertyServerException    there is a problem accessing the metadata store
      */
-    public void clearValidMetadataValue(String typeName,
-                                        String propertyName,
-                                        String preferredValue) throws InvalidParameterException,
-                                                                      UserNotAuthorizedException,
-                                                                      PropertyServerException
+    public void clearValidMetadataValue(String        typeName,
+                                        String        propertyName,
+                                        String        preferredValue,
+                                        DeleteOptions deleteOptions) throws InvalidParameterException,
+                                                                            UserNotAuthorizedException,
+                                                                            PropertyServerException
     {
-        openMetadataClient.clearValidMetadataValue(connectorUserId, typeName, propertyName, preferredValue);
+        validMetadataValueHandler.clearValidMetadataValue(connectorUserId, typeName, propertyName, preferredValue, deleteOptions);
     }
 
 
@@ -165,18 +169,20 @@ public class ValidMetadataValuesClient  extends ConnectorContextClientBase
      * @param typeName type name if this is valid value is specific for a type, or null if this valid value if for the property name for all types
      * @param propertyName name of property that this valid value applies
      * @param preferredValue specific valid value to remove
+     * @param deleteOptions options to control the behaviour of delete
      *
      * @throws InvalidParameterException  the property name is null or not known.
      * @throws UserNotAuthorizedException the service is not able to create/access the element
      * @throws PropertyServerException    there is a problem accessing the metadata store
      */
-    public void clearValidMetadataMapName(String typeName,
-                                          String propertyName,
-                                          String preferredValue) throws InvalidParameterException,
-                                                                        UserNotAuthorizedException,
-                                                                        PropertyServerException
+    public void clearValidMetadataMapName(String        typeName,
+                                          String        propertyName,
+                                          String        preferredValue,
+                                          DeleteOptions deleteOptions) throws InvalidParameterException,
+                                                                              UserNotAuthorizedException,
+                                                                              PropertyServerException
     {
-        openMetadataClient.clearValidMetadataMapName(connectorUserId, typeName, propertyName, preferredValue);
+        validMetadataValueHandler.clearValidMetadataMapName(connectorUserId, typeName, propertyName, preferredValue, deleteOptions);
     }
 
 
@@ -187,19 +193,21 @@ public class ValidMetadataValuesClient  extends ConnectorContextClientBase
      * @param propertyName name of property that this valid value applies
      * @param mapName name in the map that this valid value applies.  If null then the value can be used for any name in the map.
      * @param preferredValue specific valid value to remove
+     * @param deleteOptions options to control the behaviour of delete
      *
      * @throws InvalidParameterException  the property name is null or not known.
      * @throws UserNotAuthorizedException the service is not able to create/access the element
      * @throws PropertyServerException    there is a problem accessing the metadata store
      */
-    public void clearValidMetadataMapValue(String typeName,
-                                           String propertyName,
-                                           String mapName,
-                                           String preferredValue) throws InvalidParameterException,
-                                                                         UserNotAuthorizedException,
-                                                                         PropertyServerException
+    public void clearValidMetadataMapValue(String        typeName,
+                                           String        propertyName,
+                                           String        mapName,
+                                           String        preferredValue,
+                                           DeleteOptions deleteOptions) throws InvalidParameterException,
+                                                                               UserNotAuthorizedException,
+                                                                               PropertyServerException
     {
-        openMetadataClient.clearValidMetadataMapValue(connectorUserId, typeName, propertyName, mapName, preferredValue);
+        validMetadataValueHandler.clearValidMetadataMapValue(connectorUserId, typeName, propertyName, mapName, preferredValue, deleteOptions);
     }
 
 
@@ -222,7 +230,7 @@ public class ValidMetadataValuesClient  extends ConnectorContextClientBase
                                                                     UserNotAuthorizedException,
                                                                     PropertyServerException
     {
-        return openMetadataClient.validateMetadataValue(connectorUserId, typeName, propertyName, actualValue);
+        return validMetadataValueHandler.validateMetadataValue(connectorUserId, typeName, propertyName, actualValue);
     }
 
 
@@ -245,7 +253,7 @@ public class ValidMetadataValuesClient  extends ConnectorContextClientBase
                                                                       UserNotAuthorizedException,
                                                                       PropertyServerException
     {
-        return openMetadataClient.validateMetadataMapName(connectorUserId, typeName, propertyName, actualValue);
+        return validMetadataValueHandler.validateMetadataMapName(connectorUserId, typeName, propertyName, actualValue);
     }
 
 
@@ -270,7 +278,7 @@ public class ValidMetadataValuesClient  extends ConnectorContextClientBase
                                                                        UserNotAuthorizedException,
                                                                        PropertyServerException
     {
-        return openMetadataClient.validateMetadataMapValue(connectorUserId, typeName, propertyName, mapName, actualValue);
+        return validMetadataValueHandler.validateMetadataMapValue(connectorUserId, typeName, propertyName, mapName, actualValue);
     }
 
 
@@ -287,13 +295,13 @@ public class ValidMetadataValuesClient  extends ConnectorContextClientBase
      * @throws UserNotAuthorizedException the service is not able to create/access the element
      * @throws PropertyServerException    there is a problem accessing the metadata store
      */
-    public ValidMetadataValue getValidMetadataValue(String typeName,
-                                                    String propertyName,
-                                                    String preferredValue) throws InvalidParameterException,
-                                                                                  UserNotAuthorizedException,
-                                                                                  PropertyServerException
+    public ValidMetadataValueDetail getValidMetadataValue(String typeName,
+                                                          String propertyName,
+                                                          String preferredValue) throws InvalidParameterException,
+                                                                                        UserNotAuthorizedException,
+                                                                                        PropertyServerException
     {
-        return openMetadataClient.getValidMetadataValue(connectorUserId, typeName, propertyName, preferredValue);
+        return validMetadataValueHandler.getValidMetadataValue(connectorUserId, typeName, propertyName, preferredValue);
     }
 
 
@@ -310,13 +318,13 @@ public class ValidMetadataValuesClient  extends ConnectorContextClientBase
      * @throws UserNotAuthorizedException the service is not able to create/access the element
      * @throws PropertyServerException    there is a problem accessing the metadata store
      */
-    public ValidMetadataValue getValidMetadataMapName(String typeName,
-                                                      String propertyName,
-                                                      String preferredValue) throws InvalidParameterException,
-                                                                                    UserNotAuthorizedException,
-                                                                                    PropertyServerException
+    public ValidMetadataValueDetail getValidMetadataMapName(String typeName,
+                                                            String propertyName,
+                                                            String preferredValue) throws InvalidParameterException,
+                                                                                          UserNotAuthorizedException,
+                                                                                          PropertyServerException
     {
-        return openMetadataClient.getValidMetadataMapName(connectorUserId, typeName, propertyName, preferredValue);
+        return validMetadataValueHandler.getValidMetadataMapName(connectorUserId, typeName, propertyName, preferredValue);
     }
 
 
@@ -334,14 +342,14 @@ public class ValidMetadataValuesClient  extends ConnectorContextClientBase
      * @throws UserNotAuthorizedException the service is not able to create/access the element
      * @throws PropertyServerException    there is a problem accessing the metadata store
      */
-    public ValidMetadataValue getValidMetadataMapValue(String typeName,
-                                                       String propertyName,
-                                                       String mapName,
-                                                       String preferredValue) throws InvalidParameterException,
-                                                                                     UserNotAuthorizedException,
-                                                                                     PropertyServerException
+    public ValidMetadataValueDetail getValidMetadataMapValue(String typeName,
+                                                             String propertyName,
+                                                             String mapName,
+                                                             String preferredValue) throws InvalidParameterException,
+                                                                                           UserNotAuthorizedException,
+                                                                                           PropertyServerException
     {
-        return openMetadataClient.getValidMetadataMapValue(connectorUserId, typeName, propertyName, mapName, preferredValue);
+        return validMetadataValueHandler.getValidMetadataMapValue(connectorUserId, typeName, propertyName, mapName, preferredValue);
     }
 
 
@@ -366,7 +374,7 @@ public class ValidMetadataValuesClient  extends ConnectorContextClientBase
                                                                                          UserNotAuthorizedException,
                                                                                          PropertyServerException
     {
-        return openMetadataClient.getValidMetadataValues(connectorUserId, typeName, propertyName, startFrom, pageSize);
+        return validMetadataValueHandler.getValidMetadataValues(connectorUserId, typeName, propertyName, startFrom, pageSize);
     }
 
 
@@ -386,15 +394,15 @@ public class ValidMetadataValuesClient  extends ConnectorContextClientBase
      * @throws UserNotAuthorizedException the service is not able to create/access the element
      * @throws PropertyServerException    there is a problem accessing the metadata store
      */
-    public List<ValidMetadataValue> getConsistentMetadataValues(String typeName,
-                                                                String propertyName,
-                                                                String mapName,
-                                                                String preferredValue,
-                                                                int    startFrom,
-                                                                int    pageSize) throws InvalidParameterException,
-                                                                                        UserNotAuthorizedException,
-                                                                                        PropertyServerException
+    public List<ValidMetadataValueDetail> getConsistentMetadataValues(String typeName,
+                                                                      String propertyName,
+                                                                      String mapName,
+                                                                      String preferredValue,
+                                                                      int    startFrom,
+                                                                      int    pageSize) throws InvalidParameterException,
+                                                                                              UserNotAuthorizedException,
+                                                                                              PropertyServerException
     {
-        return openMetadataClient.getConsistentMetadataValues(connectorUserId, typeName, propertyName, mapName, preferredValue, startFrom, pageSize);
+        return validMetadataValueHandler.getConsistentMetadataValues(connectorUserId, typeName, propertyName, mapName, preferredValue, startFrom, pageSize);
     }
 }

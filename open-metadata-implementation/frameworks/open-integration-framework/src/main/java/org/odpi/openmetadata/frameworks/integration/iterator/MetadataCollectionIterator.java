@@ -12,7 +12,7 @@ import org.odpi.openmetadata.frameworks.openmetadata.enums.PermittedSynchronizat
 
 
 /**
- * MetadataCollectionIterator is ued to iterate through the elements of a particular type within a metadata collection.
+ * MetadataCollectionIterator is used to iterate through the elements of a particular type within a metadata collection.
  */
 public class MetadataCollectionIterator extends IntegrationIterator
 {

@@ -11,6 +11,7 @@ import org.odpi.openmetadata.frameworkservices.gaf.client.EgeriaOpenGovernanceCl
 import org.odpi.openmetadata.frameworkservices.gaf.client.GovernanceConfigurationClient;
 import org.odpi.openmetadata.frameworkservices.gaf.client.GovernanceContextClient;
 import org.odpi.openmetadata.frameworkservices.gaf.client.rest.GAFRESTClient;
+import org.odpi.openmetadata.frameworkservices.ocf.metadatamanagement.client.EgeriaConnectedAssetClient;
 import org.odpi.openmetadata.frameworkservices.omf.client.EgeriaOpenMetadataStoreClient;
 import org.odpi.openmetadata.governanceservers.enginehostservices.admin.GovernanceEngineHandler;
 import org.odpi.openmetadata.governanceservers.enginehostservices.registration.GovernanceEngineHandlerFactory;
@@ -53,6 +54,7 @@ public class GovernanceActionEngineHandlerFactory extends GovernanceEngineHandle
             GovernanceContextClient       governanceContextClient;
             OpenGovernanceClient          openGovernanceClient;
             EgeriaOpenMetadataStoreClient openMetadataStoreClient;
+            EgeriaConnectedAssetClient    connectedAssetClient;
             GAFRESTClient                 restClient;
 
             if ((localServerName != null) && (localServerPassword != null))
@@ -60,6 +62,10 @@ public class GovernanceActionEngineHandlerFactory extends GovernanceEngineHandle
                 openMetadataStoreClient = new EgeriaOpenMetadataStoreClient(partnerServerName,
                                                                             partnerURLRoot,
                                                                             maxPageSize);
+                connectedAssetClient = new EgeriaConnectedAssetClient(partnerServerName,
+                                                                      partnerURLRoot,
+                                                                      maxPageSize,
+                                                                      auditLog);
                 openGovernanceClient = new EgeriaOpenGovernanceClient(partnerServerName,
                                                                       partnerURLRoot,
                                                                       maxPageSize);
@@ -70,6 +76,17 @@ public class GovernanceActionEngineHandlerFactory extends GovernanceEngineHandle
             }
             else
             {
+                openMetadataStoreClient = new EgeriaOpenMetadataStoreClient(partnerServerName,
+                                                                            partnerURLRoot,
+                                                                            localServerUserId,
+                                                                            localServerPassword,
+                                                                            maxPageSize);
+                connectedAssetClient = new EgeriaConnectedAssetClient(partnerServerName,
+                                                                      partnerURLRoot,
+                                                                      localServerUserId,
+                                                                      localServerPassword,
+                                                                      maxPageSize,
+                                                                      auditLog);
                 openMetadataStoreClient = new EgeriaOpenMetadataStoreClient(partnerServerName,
                                                                             partnerURLRoot,
                                                                             localServerUserId,
@@ -96,6 +113,7 @@ public class GovernanceActionEngineHandlerFactory extends GovernanceEngineHandle
                                                      partnerURLRoot,
                                                      localServerUserId,
                                                      openMetadataStoreClient,
+                                                     connectedAssetClient,
                                                      configurationClient,
                                                      serverClient,
                                                      governanceContextClient,

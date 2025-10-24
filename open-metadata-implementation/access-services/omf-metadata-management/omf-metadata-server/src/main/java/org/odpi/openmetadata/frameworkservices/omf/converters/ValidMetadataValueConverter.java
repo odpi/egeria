@@ -2,7 +2,7 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.frameworkservices.omf.converters;
 
-import org.odpi.openmetadata.frameworks.openmetadata.properties.ValidMetadataValue;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.validvalues.ValidMetadataValueProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.PropertyServerException;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
@@ -56,15 +56,14 @@ public class ValidMetadataValueConverter<B> extends OpenMetadataStoreConverter<B
              */
             B returnBean = beanClass.getDeclaredConstructor().newInstance();
 
-            if (returnBean instanceof ValidMetadataValue)
+            if (returnBean instanceof ValidMetadataValueProperties bean)
             {
-                ValidMetadataValue bean = (ValidMetadataValue) returnBean;
 
                 if (entity != null)
                 {
                     InstanceProperties instanceProperties = new InstanceProperties(entity.getProperties());
 
-                    bean.setCategory(this.removeCategory(instanceProperties));
+                    bean.setNamespace(this.removeNamespace(instanceProperties));
                     bean.setDisplayName(this.removeName(instanceProperties));
                     bean.setDescription(this.removeDescription(instanceProperties));
                     bean.setPreferredValue(this.removePreferredValue(instanceProperties));

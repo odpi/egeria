@@ -68,7 +68,7 @@ public class PostgresServerIntegrationProvider extends IntegrationConnectorProvi
          * Information about the type of assets this type of connector works with and the interface it supports.
          */
         connectorType.setSupportedAssetTypeName(supportedAssetTypeName);
-        connectorType.setSupportedDeployedImplementationType(DeployedImplementationType.INFRASTRUCTURE_INTEGRATION_CONNECTOR.getDeployedImplementationType());
+        connectorType.setSupportedDeployedImplementationType(DeployedImplementationType.INTEGRATION_CONNECTOR.getDeployedImplementationType());
         connectorType.setRecognizedConfigurationProperties(PostgresConfigurationProperty.getPostgresServerIntegrationConnectorNames());
 
         super.connectorTypeBean = connectorType;

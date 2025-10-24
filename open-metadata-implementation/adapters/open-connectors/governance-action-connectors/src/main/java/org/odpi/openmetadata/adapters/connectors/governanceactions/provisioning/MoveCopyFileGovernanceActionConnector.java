@@ -12,7 +12,7 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.*;
 import org.odpi.openmetadata.frameworks.opengovernance.GeneralGovernanceActionService;
 import org.odpi.openmetadata.frameworks.opengovernance.controls.ActionTarget;
 import org.odpi.openmetadata.frameworks.opengovernance.properties.ActionTargetElement;
-import org.odpi.openmetadata.frameworks.opengovernance.properties.CompletionStatus;
+import org.odpi.openmetadata.frameworks.openmetadata.enums.CompletionStatus;
 import org.odpi.openmetadata.frameworks.openmetadata.controls.PlaceholderProperty;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.ElementStatus;
 import org.odpi.openmetadata.frameworks.openmetadata.connectorcontext.OpenMetadataStore;
@@ -193,10 +193,10 @@ public class MoveCopyFileGovernanceActionConnector extends GeneralGovernanceActi
         if (auditLog != null)
         {
             auditLog.logMessage(methodName,
-                                GovernanceActionConnectorsAuditCode.PROVISIONING_FAILURE.getMessageDefinition(governanceServiceName,
-                                                                                                              sourceFilePathName,
-                                                                                                              destinationFolderName,
-                                                                                                              fileNamePattern));
+                                GovernanceActionConnectorsAuditCode.FILE_PATTERN_FULL.getMessageDefinition(governanceServiceName,
+                                                                                                           sourceFilePathName,
+                                                                                                           destinationFolderName,
+                                                                                                           fileNamePattern));
         }
 
         return null;
@@ -469,12 +469,12 @@ public class MoveCopyFileGovernanceActionConnector extends GeneralGovernanceActi
         }
         catch (Exception  error)
         {
-            completionMessage = GovernanceActionConnectorsAuditCode.PROVISIONING_EXCEPTION.getMessageDefinition(governanceServiceName,
-                                                                                                                error.getClass().getName(),
-                                                                                                                sourceFileName,
-                                                                                                                destinationFolderName,
-                                                                                                                destinationFileNamePattern,
-                                                                                                                error.getMessage());
+            completionMessage = GovernanceActionConnectorsAuditCode.FILE_PROVISIONING_EXCEPTION.getMessageDefinition(governanceServiceName,
+                                                                                                                     error.getClass().getName(),
+                                                                                                                     sourceFileName,
+                                                                                                                     destinationFolderName,
+                                                                                                                     destinationFileNamePattern,
+                                                                                                                     error.getMessage());
             super.logExceptionRecord(methodName, completionMessage, error);
 
 
@@ -1015,7 +1015,7 @@ public class MoveCopyFileGovernanceActionConnector extends GeneralGovernanceActi
         {
             RelatedMetadataElement schemaType = metadataStore.getRelatedMetadataElement(sourceFileGUID,
                                                                                         1,
-                                                                                        OpenMetadataType.ASSET_SCHEMA_TYPE_RELATIONSHIP.typeName,
+                                                                                        OpenMetadataType.SCHEMA_RELATIONSHIP.typeName,
                                                                                         metadataStore.getGetOptions());
 
             if (schemaType != null)
@@ -1086,7 +1086,7 @@ public class MoveCopyFileGovernanceActionConnector extends GeneralGovernanceActi
 
                 RelatedMetadataElement schemaType = metadataStore.getRelatedMetadataElement(assetGUID,
                                                                                             1,
-                                                                                            OpenMetadataType.ASSET_SCHEMA_TYPE_RELATIONSHIP.typeName,
+                                                                                            OpenMetadataType.SCHEMA_RELATIONSHIP.typeName,
                                                                                             metadataStore.getGetOptions());
 
                 if (schemaType != null)

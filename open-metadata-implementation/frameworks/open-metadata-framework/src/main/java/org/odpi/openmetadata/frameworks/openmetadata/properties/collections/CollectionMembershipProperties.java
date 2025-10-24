@@ -22,17 +22,17 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class CollectionMembershipProperties extends RelationshipBeanProperties
 {
-    private String                     membershipRationale = null;
-    private String                     createdBy           = null;
-    private String                     expression          = null;
-    private int                        confidence          = 0;
-    private CollectionMemberStatus     status              = null;
-    private String                     userDefinedStatus   = null;
-    private String                     steward             = null;
-    private String                     stewardTypeName     = null;
-    private String                     stewardPropertyName = null;
-    private String                     source              = null;
-    private String                     notes               = null;
+    private String                 membershipRationale = null;
+    private String                 membershipType      = null;
+    private String                 expression          = null;
+    private int                    confidence          = 0;
+    private CollectionMemberStatus membershipStatus    = null;
+    private String                 userDefinedStatus   = null;
+    private String                 steward             = null;
+    private String                 stewardTypeName     = null;
+    private String                 stewardPropertyName = null;
+    private String                 source              = null;
+    private String                 notes               = null;
 
 
 
@@ -55,17 +55,17 @@ public class CollectionMembershipProperties extends RelationshipBeanProperties
     {
         if (template != null)
         {
-            membershipRationale    = template.getMembershipRationale();
-            createdBy              = template.getCreatedBy();
-            confidence             = template.getConfidence();
-            expression             = template.getExpression();
-            status                 = template.getStatus();
-            userDefinedStatus      = template.getUserDefinedStatus();
-            source                 = template.getSource();
-            steward                = template.getSteward();
-            stewardTypeName        = template.getStewardTypeName();
-            stewardPropertyName    = template.getStewardPropertyName();
-            notes                  = template.getNotes();
+            membershipRationale = template.getMembershipRationale();
+            membershipType      = template.getMembershipType();
+            confidence          = template.getConfidence();
+            expression          = template.getExpression();
+            membershipStatus    = template.getMembershipStatus();
+            userDefinedStatus   = template.getUserDefinedStatus();
+            source              = template.getSource();
+            steward             = template.getSteward();
+            stewardTypeName     = template.getStewardTypeName();
+            stewardPropertyName = template.getStewardPropertyName();
+            notes               = template.getNotes();
         }
     }
 
@@ -93,28 +93,24 @@ public class CollectionMembershipProperties extends RelationshipBeanProperties
 
 
     /**
-     * Return the identifier of the person/process that created this membership.  The userId of the creator
-     * is automatically captured.  This field can be used to add additional information about the creator.
-     * For example, this could be the identifier of a process instance that created the membership relationship.
+     * Return the type of membership.
      *
      * @return string
      */
-    public String getCreatedBy()
+    public String getMembershipType()
     {
-        return createdBy;
+        return membershipType;
     }
 
 
     /**
-     * Set up the identifier of the person/process that created this membership.  The userId of the creator
-     * is automatically captured.  This field can be used to add additional information about the creator.
-     * For example, this could be the identifier of a process instance that created the membership relationship.
+     * Set up the type of membership
      *
-     * @param createdBy string
+     * @param membershipType string
      */
-    public void setCreatedBy(String createdBy)
+    public void setMembershipType(String membershipType)
     {
-        this.createdBy = createdBy;
+        this.membershipType = membershipType;
     }
 
 
@@ -168,20 +164,20 @@ public class CollectionMembershipProperties extends RelationshipBeanProperties
      *
      * @return enum
      */
-    public CollectionMemberStatus getStatus()
+    public CollectionMemberStatus getMembershipStatus()
     {
-        return status;
+        return membershipStatus;
     }
 
 
     /**
      * Set up the status of the membership in the collection.
      *
-     * @param status enum
+     * @param membershipStatus enum
      */
-    public void setStatus(CollectionMemberStatus status)
+    public void setMembershipStatus(CollectionMemberStatus membershipStatus)
     {
-        this.status = status;
+        this.membershipStatus = membershipStatus;
     }
 
 
@@ -327,10 +323,10 @@ public class CollectionMembershipProperties extends RelationshipBeanProperties
     {
         return "CollectionMembershipProperties{" +
                 "membershipRationale='" + membershipRationale + '\'' +
-                ", createdBy='" + createdBy + '\'' +
+                ", membershipType='" + membershipType + '\'' +
                 ", expression='" + expression + '\'' +
                 ", confidence=" + confidence +
-                ", status=" + status +
+                ", membershipStatus=" + membershipStatus +
                 ", userDefinedStatus='" + userDefinedStatus + '\'' +
                 ", steward='" + steward + '\'' +
                 ", stewardTypeName='" + stewardTypeName + '\'' +
@@ -361,9 +357,9 @@ public class CollectionMembershipProperties extends RelationshipBeanProperties
         CollectionMembershipProperties that = (CollectionMembershipProperties) objectToCompare;
         return confidence == that.confidence &&
                 Objects.equals(membershipRationale, that.membershipRationale) &&
-                Objects.equals(createdBy, that.createdBy) &&
+                Objects.equals(membershipType, that.membershipType) &&
                 Objects.equals(expression, that.expression) &&
-                status == that.status &&
+                membershipStatus == that.membershipStatus &&
                 Objects.equals(userDefinedStatus, that.userDefinedStatus) &&
                 Objects.equals(steward, that.steward) &&
                 Objects.equals(stewardTypeName, that.stewardTypeName) &&
@@ -380,7 +376,7 @@ public class CollectionMembershipProperties extends RelationshipBeanProperties
     @Override
     public int hashCode()
     {
-        return Objects.hash(membershipRationale, createdBy, expression, confidence, status, userDefinedStatus, steward, stewardTypeName,
+        return Objects.hash(membershipRationale, membershipType, expression, confidence, membershipStatus, userDefinedStatus, steward, stewardTypeName,
                             stewardPropertyName, source, notes);
     }
 }

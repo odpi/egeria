@@ -167,12 +167,9 @@ public class OpenMetadataTypesArchive3_11
         add0022Translations();
         update0110ActorProfile();
         updateResponsibilityAssignments();
-        update04xxExplicitNames();
         update04xxNewGovernanceRoles();
         update04xxMultiLinkGovernanceImplementationTypes();
-        update0545ValidValues();
         update07xxImplementationRelationships();
-        add0735SolutionPortSchemaRelationship();
     }
 
 
@@ -271,6 +268,7 @@ public class OpenMetadataTypesArchive3_11
         List<TypeDefAttribute> properties = new ArrayList<>();
 
         properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.LANGUAGE));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.LANGUAGE_CODE));
         properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.LOCALE));
         properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.DISPLAY_NAME));
         properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.DESCRIPTION));
@@ -291,8 +289,6 @@ public class OpenMetadataTypesArchive3_11
     {
         this.archiveBuilder.addTypeDefPatch(updateUserIdentity());
         this.archiveBuilder.addTypeDefPatch(updatePerson());
-        this.archiveBuilder.addTypeDefPatch(updatePersonRole());
-        this.archiveBuilder.addTypeDefPatch(updateTeam());
         this.archiveBuilder.addTypeDefPatch(updateContactDetails());
     }
 
@@ -336,52 +332,6 @@ public class OpenMetadataTypesArchive3_11
         List<TypeDefAttribute> properties = new ArrayList<>();
 
         properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.PRONOUNS));
-
-        typeDefPatch.setPropertyDefinitions(properties);
-
-        return typeDefPatch;
-    }
-
-
-    private TypeDefPatch updatePersonRole()
-    {
-        /*
-         * Create the Patch
-         */
-        TypeDefPatch  typeDefPatch = archiveBuilder.getPatchForType(OpenMetadataType.PERSON_ROLE.typeName);
-
-        typeDefPatch.setUpdatedBy(originatorName);
-        typeDefPatch.setUpdateTime(creationDate);
-
-        /*
-         * Build the attributes
-         */
-        List<TypeDefAttribute> properties = new ArrayList<>();
-
-        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.HEAD_COUNT));
-
-        typeDefPatch.setPropertyDefinitions(properties);
-
-        return typeDefPatch;
-    }
-
-
-    private TypeDefPatch updateTeam()
-    {
-        /*
-         * Create the Patch
-         */
-        TypeDefPatch  typeDefPatch = archiveBuilder.getPatchForType(OpenMetadataType.TEAM.typeName);
-
-        typeDefPatch.setUpdatedBy(originatorName);
-        typeDefPatch.setUpdateTime(creationDate);
-
-        /*
-         * Build the attributes
-         */
-        List<TypeDefAttribute> properties = new ArrayList<>();
-
-        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.IDENTIFIER));
 
         typeDefPatch.setPropertyDefinitions(properties);
 
@@ -475,40 +425,6 @@ public class OpenMetadataTypesArchive3_11
         return relationshipDef;
     }
 
-
-    /*
-     * -------------------------------------------------------------------------------------------------------
-     */
-
-
-
-    private void update04xxExplicitNames()
-    {
-        this.archiveBuilder.addTypeDefPatch(updateBusinessCapability());
-    }
-
-
-    private TypeDefPatch updateBusinessCapability()
-    {
-        /*
-         * Create the Patch
-         */
-        TypeDefPatch  typeDefPatch = archiveBuilder.getPatchForType(OpenMetadataType.BUSINESS_CAPABILITY.typeName);
-
-        typeDefPatch.setUpdatedBy(originatorName);
-        typeDefPatch.setUpdateTime(creationDate);
-
-        /*
-         * Build the attributes
-         */
-        List<TypeDefAttribute> properties = new ArrayList<>();
-
-        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.IDENTIFIER));
-
-        typeDefPatch.setPropertyDefinitions(properties);
-
-        return typeDefPatch;
-    }
 
 
     /*
@@ -636,86 +552,6 @@ public class OpenMetadataTypesArchive3_11
     }
 
 
-    /*
-     * -------------------------------------------------------------------------------------------------------
-     */
-
-
-    /**
-     * Add multi-link flags and extend properties to be able to record proper attributions.
-     */
-    private void update0545ValidValues()
-    {
-        this.archiveBuilder.addTypeDefPatch(updateReferenceValueAssignment());
-        this.archiveBuilder.addTypeDefPatch(updateValidValuesMapping());
-        this.archiveBuilder.addTypeDefPatch(updateValidValuesImplementation());
-    }
-
-
-    private TypeDefPatch updateReferenceValueAssignment()
-    {
-        /*
-         * Create the Patch
-         */
-        TypeDefPatch  typeDefPatch = archiveBuilder.getPatchForType(OpenMetadataType.REFERENCE_VALUE_ASSIGNMENT_RELATIONSHIP.typeName);
-
-        typeDefPatch.setUpdatedBy(originatorName);
-        typeDefPatch.setUpdateTime(creationDate);
-
-        /*
-         * Build the attributes
-         */
-        List<TypeDefAttribute> properties = new ArrayList<>();
-
-        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.STEWARD_TYPE_NAME));
-        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.STEWARD_PROPERTY_NAME));
-
-        typeDefPatch.setPropertyDefinitions(properties);
-
-        return typeDefPatch;
-    }
-
-
-    private TypeDefPatch updateValidValuesMapping()
-    {
-        /*
-         * Create the Patch
-         */
-        TypeDefPatch  typeDefPatch = archiveBuilder.getPatchForType(OpenMetadataType.VALID_VALUES_MAPPING_RELATIONSHIP.typeName);
-
-        typeDefPatch.setUpdatedBy(originatorName);
-        typeDefPatch.setUpdateTime(creationDate);
-
-        /*
-         * Build the attributes
-         */
-        List<TypeDefAttribute> properties = new ArrayList<>();
-
-        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.STEWARD_TYPE_NAME));
-        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.STEWARD_PROPERTY_NAME));
-
-        typeDefPatch.setPropertyDefinitions(properties);
-
-        return typeDefPatch;
-    }
-
-
-    private TypeDefPatch updateValidValuesImplementation()
-    {
-        /*
-         * Create the Patch
-         */
-        TypeDefPatch  typeDefPatch = archiveBuilder.getPatchForType(OpenMetadataType.VALID_VALUES_IMPL_RELATIONSHIP.typeName);
-
-        typeDefPatch.setUpdatedBy(originatorName);
-        typeDefPatch.setUpdateTime(creationDate);
-        typeDefPatch.setUpdateMultiLink(true);
-        typeDefPatch.setMultiLink(true);
-
-        return typeDefPatch;
-    }
-
-
 
     /*
      * -------------------------------------------------------------------------------------------------------
@@ -780,56 +616,6 @@ public class OpenMetadataTypesArchive3_11
         return relationshipDef;
     }
 
-
-
-    /*
-     * -------------------------------------------------------------------------------------------------------
-     */
-
-    private void add0735SolutionPortSchemaRelationship()
-    {
-        this.archiveBuilder.addRelationshipDef(getSolutionPortSchemaRelationship());
-    }
-
-
-    private RelationshipDef getSolutionPortSchemaRelationship()
-    {
-        RelationshipDef relationshipDef = archiveHelper.getBasicRelationshipDef(OpenMetadataType.SOLUTION_PORT_SCHEMA_RELATIONSHIP,
-                                                                                null,
-                                                                                ClassificationPropagationRule.NONE);
-
-        RelationshipEndDef relationshipEndDef;
-
-        /*
-         * Set up end 1.
-         */
-        final String                     end1AttributeName            = "describesSolutionPortData";
-        final String                     end1AttributeDescription     = "Port that uses the schema type.";
-        final String                     end1AttributeDescriptionGUID = null;
-
-        relationshipEndDef = archiveHelper.getRelationshipEndDef(this.archiveBuilder.getEntityDef(OpenMetadataType.SOLUTION_PORT.typeName),
-                                                                 end1AttributeName,
-                                                                 end1AttributeDescription,
-                                                                 end1AttributeDescriptionGUID,
-                                                                 RelationshipEndCardinality.ANY_NUMBER);
-        relationshipDef.setEndDef1(relationshipEndDef);
-
-        /*
-         * Set up end 2.
-         */
-        final String                     end2AttributeName            = "solutionPortSchema";
-        final String                     end2AttributeDescription     = "Structure of the solution port's data.";
-        final String                     end2AttributeDescriptionGUID = null;
-
-        relationshipEndDef = archiveHelper.getRelationshipEndDef(this.archiveBuilder.getEntityDef(OpenMetadataType.SCHEMA_TYPE.typeName),
-                                                                 end2AttributeName,
-                                                                 end2AttributeDescription,
-                                                                 end2AttributeDescriptionGUID,
-                                                                 RelationshipEndCardinality.AT_MOST_ONE);
-        relationshipDef.setEndDef2(relationshipEndDef);
-
-        return relationshipDef;
-    }
 
 
     /*

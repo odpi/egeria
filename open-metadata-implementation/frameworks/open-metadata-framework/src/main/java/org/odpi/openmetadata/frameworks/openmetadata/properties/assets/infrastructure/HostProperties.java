@@ -3,9 +3,7 @@
 
 package org.odpi.openmetadata.frameworks.openmetadata.properties.assets.infrastructure;
 
-import com.fasterxml.jackson.annotation.JsonAutoDetect;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.*;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.AssetProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 
@@ -18,6 +16,16 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME,
+        include = JsonTypeInfo.As.PROPERTY,
+        property = "class")
+@JsonSubTypes(
+        {
+                @JsonSubTypes.Type(value = HostClusterProperties.class, name = "HostClusterProperties"),
+                @JsonSubTypes.Type(value = BareMetalComputerProperties.class, name = "BareMetalComputerProperties"),
+                @JsonSubTypes.Type(value = VirtualMachineProperties.class, name = "VirtualMachineProperties"),
+                @JsonSubTypes.Type(value = VirtualContainerProperties.class, name = "VirtualContainerProperties"),
+        })
 public class HostProperties extends ITInfrastructureProperties
 {
     /**

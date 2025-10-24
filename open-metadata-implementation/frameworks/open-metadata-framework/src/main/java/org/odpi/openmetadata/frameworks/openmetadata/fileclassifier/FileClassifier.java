@@ -3,15 +3,16 @@
 
 package org.odpi.openmetadata.frameworks.openmetadata.fileclassifier;
 
+import org.apache.commons.io.FileUtils;
 import org.odpi.openmetadata.frameworks.openmetadata.connectorcontext.ConnectorContextBase;
 import org.odpi.openmetadata.frameworks.openmetadata.connectorcontext.ValidMetadataValuesClient;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
+import org.odpi.openmetadata.frameworks.openmetadata.mapper.OpenMetadataValidValues;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.ValidMetadataValueDetail;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
-import org.odpi.openmetadata.frameworks.openmetadata.mapper.OpenMetadataValidValues;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.ValidMetadataValue;
 
 import java.io.File;
 import java.io.IOException;
@@ -21,7 +22,6 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import org.apache.commons.io.FileUtils;
 
 /**
  * Manages different types of classifications for files.  It retrieves file reference data from
@@ -36,25 +36,6 @@ public class FileClassifier
     private final static Map<String, FileReferenceDataCache> fileExtensionReferenceDataCache = new HashMap<>();
 
     private final ValidMetadataValuesClient validMetadataValuesClient;
-
-    /**
-     * Construct the name used to find the file type reference value
-     */
-    private static final String fileTypeCategory =
-            OpenMetadataValidValues.constructValidValueCategory(OpenMetadataType.DATA_FILE.typeName,
-                                                                OpenMetadataProperty.FILE_TYPE.name,
-                                                                null);
-
-    /**
-     * Construct the name used to find the deployed implementation type reference value
-     */
-    private static final String deployedImplementationTypeCategory =
-            OpenMetadataValidValues.constructValidValueCategory(OpenMetadataType.DATA_FILE.typeName,
-                                                                OpenMetadataProperty.DEPLOYED_IMPLEMENTATION_TYPE.name,
-                                                                null);
-
-
-
 
 
     /**
@@ -247,19 +228,19 @@ public class FileClassifier
         /*
          * Is the file name or file extension recognized?
          */
-        ValidMetadataValue validMetadataValue;
+        ValidMetadataValueDetail validMetadataValue;
         try
         {
             validMetadataValue = validMetadataValuesClient.getValidMetadataValue(OpenMetadataType.DATA_FILE.typeName,
-                                                                         OpenMetadataProperty.FILE_NAME.name,
-                                                                         fileName);
+                                                                                 OpenMetadataProperty.FILE_NAME.name,
+                                                                                 fileName);
         }
         catch (InvalidParameterException notKnown)
         {
             validMetadataValue = null;
         }
 
-        List<ValidMetadataValue> consistentValues = null;
+        List<ValidMetadataValueDetail> consistentValues = null;
 
         if (validMetadataValue != null)
         {
@@ -306,11 +287,11 @@ public class FileClassifier
          */
         if (consistentValues != null)
         {
-            for (ValidMetadataValue consistentValue : consistentValues)
+            for (ValidMetadataValueDetail consistentValue : consistentValues)
             {
                 if (consistentValue != null)
                 {
-                    if (consistentValue.getCategory().contains(OpenMetadataProperty.FILE_TYPE.name))
+                    if (consistentValue.getPropertyName().contains(OpenMetadataProperty.FILE_TYPE.name))
                     {
                         fileReferenceDataCache.fileType = consistentValue.getPreferredValue();
 
@@ -327,7 +308,7 @@ public class FileClassifier
                             }
                         }
 
-                        List<ValidMetadataValue> consistentFileTypeValues =
+                        List<ValidMetadataValueDetail> consistentFileTypeValues =
                                 validMetadataValuesClient.getConsistentMetadataValues(OpenMetadataType.DATA_FILE.typeName,
                                                                               OpenMetadataProperty.FILE_TYPE.name,
                                                                               null,
@@ -337,11 +318,11 @@ public class FileClassifier
 
                         if (consistentFileTypeValues != null)
                         {
-                            for (ValidMetadataValue consistentFileTypeValue : consistentFileTypeValues)
+                            for (ValidMetadataValueDetail consistentFileTypeValue : consistentFileTypeValues)
                             {
                                 if (consistentFileTypeValue != null)
                                 {
-                                    if (consistentFileTypeValue.getCategory().contains(OpenMetadataProperty.DEPLOYED_IMPLEMENTATION_TYPE.name))
+                                    if (consistentFileTypeValue.getPropertyName().contains(OpenMetadataProperty.DEPLOYED_IMPLEMENTATION_TYPE.name))
                                     {
                                         fileReferenceDataCache.deployedImplementationType = consistentFileTypeValue.getPreferredValue();
                                     }
@@ -349,7 +330,7 @@ public class FileClassifier
                             }
                         }
                     }
-                    else if (consistentValue.getCategory().contains(OpenMetadataProperty.DEPLOYED_IMPLEMENTATION_TYPE.name))
+                    else if (consistentValue.getPropertyName().contains(OpenMetadataProperty.DEPLOYED_IMPLEMENTATION_TYPE.name))
                     {
                         fileReferenceDataCache.deployedImplementationType = consistentValue.getPreferredValue();
                     }

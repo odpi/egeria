@@ -23,6 +23,8 @@ import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.processes
 import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.processes.actions.ActionProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.processes.actions.ActionRequesterProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.processes.actions.ActionTargetProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.processes.connectors.CatalogTargetProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.lineage.LineageRelationshipProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.refdata.AssignmentType;
 import org.odpi.openmetadata.frameworks.openmetadata.search.*;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
@@ -176,9 +178,9 @@ public class AssetHandler extends OpenMetadataHandlerBase
                                AnchorOptions                     anchorOptions,
                                Map<String, NewElementProperties> initialClassifications,
                                List<NewActionTarget>             newActionTargets,
-                               ActionProperties properties) throws InvalidParameterException,
-                                                                   PropertyServerException,
-                                                                   UserNotAuthorizedException
+                               ActionProperties                  properties) throws InvalidParameterException,
+                                                                                    PropertyServerException,
+                                                                                    UserNotAuthorizedException
     {
         final String methodName                 = "createAction";
         final String toDoPropertiesName         = "properties";
@@ -477,8 +479,8 @@ public class AssetHandler extends OpenMetadataHandlerBase
 
         openMetadataClient.detachRelatedElementsInStore(userId,
                                                         OpenMetadataType.DEPLOYED_ON_RELATIONSHIP.typeName,
-                                                        destinationGUID,
                                                         assetGUID,
+                                                        destinationGUID,
                                                         deleteOptions);
     }
 
@@ -487,8 +489,8 @@ public class AssetHandler extends OpenMetadataHandlerBase
      * Attach a data set to another asset (typically a data store) that is supplying the data.
      *
      * @param userId                 userId of user making request
-     * @param dataSetGUID          unique identifier of the first person profile
-     * @param dataContentAssetGUID          unique identifier of the second person profile
+     * @param dataSetGUID          unique identifier of the data set
+     * @param dataContentAssetGUID          unique identifier of the data asset supplying the data
      * @param metadataSourceOptions  options to control access to open metadata
      * @param relationshipProperties description of the relationship.
      * @throws InvalidParameterException  one of the parameters is null or invalid.
@@ -524,8 +526,8 @@ public class AssetHandler extends OpenMetadataHandlerBase
      * Detach a data set from another asset that was supplying the data and is no more.
      *
      * @param userId                 userId of user making request.
-     * @param dataSetGUID          unique identifier of the first person profile
-     * @param dataContentAssetGUID          unique identifier of the second person profile
+     * @param dataSetGUID          unique identifier of the data set
+     * @param dataContentAssetGUID          unique identifier of the data asset supplying the data
      * @param deleteOptions  options to control access to open metadata
      * @throws InvalidParameterException  one of the parameters is null or invalid.
      * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
@@ -551,6 +553,189 @@ public class AssetHandler extends OpenMetadataHandlerBase
                                                         dataSetGUID,
                                                         dataContentAssetGUID,
                                                         deleteOptions);
+    }
+
+
+    /**
+     * Add an element to an integration connector's workload.
+     *
+     * @param userId                userId of user making request.
+     * @param integrationConnectorGUID        unique identifier of the integration connector.
+     * @param metadataSourceOptions options to control access to open metadata
+     * @param catalogTargetProperties  properties describing the relationship characteristics.
+     * @param elementGUID           unique identifier of the target element.
+     * @return relationship GUID
+     * @throws InvalidParameterException  one of the parameters is invalid.
+     * @throws PropertyServerException    there is a problem updating information in the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public String addCatalogTarget(String                  userId,
+                                   String                  integrationConnectorGUID,
+                                   String                  elementGUID,
+                                   MetadataSourceOptions   metadataSourceOptions,
+                                   CatalogTargetProperties catalogTargetProperties) throws InvalidParameterException,
+                                                                                           PropertyServerException,
+                                                                                           UserNotAuthorizedException
+    {
+        final String methodName               = "addCatalogTarget";
+        final String assetGUIDParameterName   = "integrationConnectorGUID";
+        final String elementGUIDParameterName = "elementGUID";
+
+        propertyHelper.validateUserId(userId, methodName);
+        propertyHelper.validateGUID(integrationConnectorGUID, assetGUIDParameterName, methodName);
+        propertyHelper.validateGUID(elementGUID, elementGUIDParameterName, methodName);
+
+        return openMetadataClient.createRelatedElementsInStore(userId,
+                                                               OpenMetadataType.CATALOG_TARGET_RELATIONSHIP.typeName,
+                                                               integrationConnectorGUID,
+                                                               elementGUID,
+                                                               metadataSourceOptions,
+                                                               relationshipBuilder.getNewElementProperties(catalogTargetProperties));
+    }
+
+
+    /**
+     * Update the properties of a catalog target relationship.
+     *
+     * @param userId               calling user
+     * @param relationshipGUID     unique identifier of the relationship
+     * @param updateOptions        provides a structure for the additional options when updating a relationship.
+     * @param catalogTargetProperties properties describing the catalog target processing characteristics.
+     */
+    public void updateCatalogTarget(String                  userId,
+                                    String                  relationshipGUID,
+                                    UpdateOptions           updateOptions,
+                                    CatalogTargetProperties catalogTargetProperties) throws InvalidParameterException,
+                                                                                            PropertyServerException,
+                                                                                            UserNotAuthorizedException
+    {
+        openMetadataClient.updateRelationshipInStore(userId,
+                                                     relationshipGUID,
+                                                     updateOptions,
+                                                     relationshipBuilder.getElementProperties(catalogTargetProperties));
+    }
+
+
+    /**
+     * Retrieve a specific catalog target associated with an integration connector.
+     *
+     * @param userId identifier of calling user.
+     * @param relationshipGUID unique identifier of the relationship.
+     * @param getOptions options to control the retrieve
+     *
+     * @return details of the integration connector and the elements it is to catalog
+     * @throws InvalidParameterException one of the parameters is null or invalid.
+     * @throws UserNotAuthorizedException user not authorized to issue this request.
+     * @throws PropertyServerException problem retrieving the integration connector definition.
+     */
+    public OpenMetadataRelationship getCatalogTarget(String     userId,
+                                                     String     relationshipGUID,
+                                                     GetOptions getOptions) throws InvalidParameterException,
+                                                                                   UserNotAuthorizedException,
+                                                                                   PropertyServerException
+    {
+        final String methodName                        = "getCatalogTarget";
+        final String integrationConnectorGUIDParameter = "relationshipGUID";
+
+        propertyHelper.validateUserId(userId, methodName);
+        propertyHelper.validateGUID(relationshipGUID, integrationConnectorGUIDParameter, methodName);
+
+        return openMetadataClient.getRelationshipByGUID(userId, relationshipGUID, getOptions);
+    }
+
+
+    /**
+     * Return a list of elements that are target elements for an integration connector.
+     *
+     * @param userId         userId of user making request.
+     * @param integrationConnectorGUID unique identifier of the integration connector.
+     * @param queryOptions   options for query
+     * @return list of member details
+     * @throws InvalidParameterException  one of the parameters is invalid.
+     * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public List<OpenMetadataRootElement> getCatalogTargets(String       userId,
+                                                           String       integrationConnectorGUID,
+                                                           QueryOptions queryOptions) throws InvalidParameterException,
+                                                                                                PropertyServerException,
+                                                                                                UserNotAuthorizedException
+    {
+        final String methodName                  = "getCatalogTargets";
+        final String assetGUIDParameterName = "integrationConnectorGUID";
+
+        propertyHelper.validateUserId(userId, methodName);
+        propertyHelper.validateGUID(integrationConnectorGUID, assetGUIDParameterName, methodName);
+        propertyHelper.validatePaging(queryOptions, openMetadataClient.getMaxPagingSize(), methodName);
+
+        return super.getRelatedRootElements(userId,
+                                            integrationConnectorGUID,
+                                            assetGUIDParameterName,
+                                            1,
+                                            OpenMetadataType.CATALOG_TARGET_RELATIONSHIP.typeName,
+                                            queryOptions,
+                                            methodName);
+    }
+
+
+
+    /**
+     * Remove an element from an integration connector's workload.
+     *
+     * @param userId         userId of user making request.
+     * @param integrationConnectorGUID unique identifier of the integration connector.
+     * @param elementGUID    unique identifier of the element.
+     * @param deleteOptions  options to control access to open metadata
+     * @throws InvalidParameterException  one of the parameters is invalid.
+     * @throws PropertyServerException    there is a problem updating information in the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public void removeCatalogTarget(String        userId,
+                                    String        integrationConnectorGUID,
+                                    String        elementGUID,
+                                    DeleteOptions deleteOptions) throws InvalidParameterException,
+                                                                        PropertyServerException,
+                                                                        UserNotAuthorizedException
+    {
+        final String methodName               = "removeCatalogTarget";
+        final String assetGUIDParameterName   = "integrationConnectorGUID";
+        final String elementGUIDParameterName = "elementGUID";
+
+        propertyHelper.validateUserId(userId, methodName);
+        propertyHelper.validateGUID(integrationConnectorGUID, assetGUIDParameterName, methodName);
+        propertyHelper.validateGUID(elementGUID, elementGUIDParameterName, methodName);
+
+        openMetadataClient.detachRelatedElementsInStore(userId,
+                                                        OpenMetadataType.CATALOG_TARGET_RELATIONSHIP.typeName,
+                                                        integrationConnectorGUID,
+                                                        elementGUID,
+                                                        deleteOptions);
+    }
+
+
+    /**
+     * Remove an element from an integration connector's workload.
+     *
+     * @param userId         userId of user making request.
+     * @param relationshipGUID unique identifier of the relationship.
+     * @param deleteOptions  options to control access to open metadata
+     * @throws InvalidParameterException  one of the parameters is invalid.
+     * @throws PropertyServerException    there is a problem updating information in the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public void removeCatalogTarget(String        userId,
+                                    String        relationshipGUID,
+                                    DeleteOptions deleteOptions) throws InvalidParameterException,
+                                                                        PropertyServerException,
+                                                                        UserNotAuthorizedException
+    {
+        final String methodName                    = "removeCatalogTarget";
+        final String relationshipGUIDParameterName = "relationshipGUID";
+
+        propertyHelper.validateUserId(userId, methodName);
+        propertyHelper.validateGUID(relationshipGUID, relationshipGUIDParameterName, methodName);
+
+        openMetadataClient.deleteRelationshipInStore(userId, relationshipGUID, deleteOptions);
     }
 
 
@@ -690,7 +875,7 @@ public class AssetHandler extends OpenMetadataHandlerBase
 
         openMetadataClient.detachRelatedElementsInStore(userId,
                                                         OpenMetadataType.PROCESS_HIERARCHY_RELATIONSHIP.typeName,
-                                                        childProcessGUID,
+                                                        parentProcessGUID,
                                                         childProcessGUID,
                                                         deleteOptions);
     }
@@ -956,6 +1141,7 @@ public class AssetHandler extends OpenMetadataHandlerBase
         final String methodName = "getAssetsByName";
 
         List<String> propertyNames = Arrays.asList(OpenMetadataProperty.QUALIFIED_NAME.name,
+                                                   OpenMetadataProperty.IDENTIFIER.name,
                                                    OpenMetadataProperty.DISPLAY_NAME.name,
                                                    OpenMetadataProperty.RESOURCE_NAME.name);
 
@@ -1018,7 +1204,7 @@ public class AssetHandler extends OpenMetadataHandlerBase
     {
         final String methodName = "getAssetsByMetadataCollectionId";
 
-        List<String> propertyNames = Collections.singletonList(OpenMetadataProperty.DEPLOYED_IMPLEMENTATION_TYPE.name);
+        List<String> propertyNames = Collections.singletonList(OpenMetadataProperty.METADATA_COLLECTION_ID.name);
 
         return super.getRootElementsByName(userId,
                                            metadataCollectionId,
@@ -1473,7 +1659,7 @@ public class AssetHandler extends OpenMetadataHandlerBase
      * @throws PropertyServerException there is a problem access in the property server
      * @throws UserNotAuthorizedException the user does not have access to the properties
      */
-    public List<AssetSearchMatches> findAssetsInDomain(String        userId,
+    public List<OpenMetadataRootElement> findAssetsInDomain(String        userId,
                                                        String        searchString,
                                                        SearchOptions searchOptions) throws InvalidParameterException,
                                                                                            PropertyServerException,
@@ -1485,14 +1671,14 @@ public class AssetHandler extends OpenMetadataHandlerBase
         propertyHelper.validateUserId(userId, methodName);
         propertyHelper.validateSearchString(searchString, nameParameter, methodName);
 
-        List <AnchorSearchMatches> matches = openMetadataClient.findElementsInAnchorDomain(userId,
+        List<AnchorSearchMatches> matches = openMetadataClient.findElementsInAnchorDomain(userId,
                                                                                            searchString,
                                                                                            OpenMetadataType.ASSET.typeName,
                                                                                            searchOptions);
 
         if (matches != null)
         {
-            List<AssetSearchMatches> assetSearchMatchesList = new ArrayList<>();
+            List<OpenMetadataRootElement> assetSearchMatchesList = new ArrayList<>();
 
             for (AnchorSearchMatches anchorSearchMatches : matches)
             {
@@ -1653,7 +1839,7 @@ public class AssetHandler extends OpenMetadataHandlerBase
             /*
              * Pick up requests for actions and ToDos
              */
-            lineageRelationshipTypeNames.add(OpenMetadataType.REQUEST_FOR_ACTION_TARGET.typeName);
+            lineageRelationshipTypeNames.add(OpenMetadataType.REQUEST_FOR_ACTION_TARGET_RELATIONSHIP.typeName);
             lineageRelationshipTypeNames.add(OpenMetadataType.ASSIGNMENT_SCOPE_RELATIONSHIP.typeName);
             lineageRelationshipTypeNames.add(OpenMetadataType.ACTION_REQUESTER_RELATIONSHIP.typeName);
         }
@@ -1913,9 +2099,9 @@ public class AssetHandler extends OpenMetadataHandlerBase
         String relationshipName        = this.getRelationshipName(relationship);
         String relationshipSupplyChain = null;
 
-        if (relationship.getRelationshipProperties() != null)
+        if (relationship.getRelationshipProperties() instanceof LineageRelationshipProperties lineageRelationshipProperties)
         {
-            relationshipSupplyChain = relationship.getRelationshipProperties().get(OpenMetadataProperty.ISC_QUALIFIED_NAME.name);
+            relationshipSupplyChain = lineageRelationshipProperties.getISCQualifiedName();
         }
 
         LineageLink currentLineageLinks = lineageAssets.get(relationship.getRelatedElement().getElementHeader().getGUID());
@@ -1969,9 +2155,9 @@ public class AssetHandler extends OpenMetadataHandlerBase
          */
         String label = null;
 
-        if (relationship.getRelationshipProperties() != null)
+        if (relationship.getRelationshipProperties() instanceof LabeledRelationshipProperties labeledRelationshipProperties)
         {
-            label = relationship.getRelationshipProperties().get(OpenMetadataProperty.LABEL.name);
+            label = labeledRelationshipProperties.getLabel();
         }
 
         if (label != null)
@@ -2206,7 +2392,6 @@ public class AssetHandler extends OpenMetadataHandlerBase
              */
             List<String> iscQualifiedNames = new ArrayList<>();
 
-
             RelatedMetadataElementList relationships = openMetadataClient.getRelatedMetadataElements(userId,
                                                                                                      assetGUID,
                                                                                                      0,
@@ -2370,7 +2555,7 @@ public class AssetHandler extends OpenMetadataHandlerBase
 
             if (! informationSupplyChains.isEmpty())
             {
-                assetGraph.setInformationSupplyChains(informationSupplyChains);
+                assetGraph.setPartOfInformationSupplyChains(informationSupplyChains);
             }
 
             /*

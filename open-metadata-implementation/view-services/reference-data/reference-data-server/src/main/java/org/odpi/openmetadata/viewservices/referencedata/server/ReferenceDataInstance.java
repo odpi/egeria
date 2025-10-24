@@ -8,6 +8,7 @@ import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.openmetadata.client.OpenMetadataClient;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.openmetadata.handlers.ValidValueDefinitionHandler;
+import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 import org.odpi.openmetadata.frameworkservices.omf.client.handlers.EgeriaOpenMetadataStoreHandler;
 
 /**
@@ -70,7 +71,8 @@ public class ReferenceDataInstance extends OMVSServiceInstance
         validValueDefinitionHandler = new ValidValueDefinitionHandler(serverName,
                                                                       auditLog,
                                                                       myDescription.getViewServiceFullName(),
-                                                                      openMetadataClient);
+                                                                      openMetadataClient,
+                                                                      OpenMetadataType.REFERENCE_DATA_VALUE.typeName);
     }
 
 

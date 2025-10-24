@@ -7,7 +7,6 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -140,28 +139,9 @@ public class OpenMetadataClassificationDef extends OpenMetadataTypeDef
     public String toString()
     {
         return "OpenMetadataClassificationDef{" +
-                "name='" + name + '\'' +
-                ", validEntityDefs=" + validEntityDefs +
+                "validEntityDefs=" + validEntityDefs +
                 ", propagatable=" + propagatable +
-                ", superType=" + superType +
-                ", description='" + description + '\'' +
-                ", descriptionGUID='" + descriptionGUID + '\'' +
-                ", descriptionWiki='" + descriptionWiki + '\'' +
-                ", origin='" + origin + '\'' +
-                ", createdBy='" + createdBy + '\'' +
-                ", updatedBy='" + updatedBy + '\'' +
-                ", createTime=" + createTime +
-                ", updateTime=" + updateTime +
-                ", options=" + options +
-                ", externalStandardTypeMappings=" + externalStandardTypeMappings +
-                ", validInstanceStatusList=" + validElementStatusList +
-                ", initialStatus=" + initialStatus +
-                ", propertiesDefinition=" + attributeDefinitions +
-                ", version=" + version +
-                ", versionName='" + versionName + '\'' +
-                ", category=" + category +
-                ", guid='" + guid + '\'' +
-                '}';
+                "} " + super.toString();
     }
 
 

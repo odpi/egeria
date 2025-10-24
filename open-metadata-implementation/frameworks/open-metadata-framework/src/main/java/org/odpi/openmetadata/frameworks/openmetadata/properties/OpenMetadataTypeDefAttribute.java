@@ -7,7 +7,6 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -23,19 +22,19 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class OpenMetadataTypeDefAttribute extends OpenMetadataTypeDefElementHeader
 {
-    protected String                       attributeName   = null;
-    protected OpenMetadataAttributeTypeDef       attributeType       = null;
-    protected OpenMetadataTypeDefAttributeStatus attributeStatus     = null;
-    protected String                             replacedByAttribute = null;
-    protected String                             attributeDescription     = null;
-    protected String                           attributeDescriptionGUID = null;
-    protected OpenMetadataAttributeCardinality cardinality              = OpenMetadataAttributeCardinality.UNKNOWN;
-    protected int                              valuesMinCount           = 0;
-    protected int                                valuesMaxCount           = 1;
-    protected boolean                            isIndexable              = true;
-    protected boolean                            isUnique                 = false;
-    protected String                            defaultValue                 = null;
-    protected List<ExternalStandardTypeMapping> externalStandardTypeMappings = null;
+    protected String                             attributeName                = null;
+    protected OpenMetadataAttributeTypeDef       attributeType                = null;
+    protected OpenMetadataTypeDefAttributeStatus attributeStatus              = null;
+    protected String                             replacedByAttribute          = null;
+    protected String                             attributeDescription         = null;
+    protected String                             attributeDescriptionGUID     = null;
+    protected OpenMetadataAttributeCardinality   cardinality                  = OpenMetadataAttributeCardinality.UNKNOWN;
+    protected int                                valuesMinCount               = 0;
+    protected int                                valuesMaxCount               = 1;
+    protected boolean                            isIndexable                  = true;
+    protected boolean                            isUnique                     = false;
+    protected String                             defaultValue                 = null;
+    protected List<ExternalStandardTypeMapping>  externalStandardTypeMappings = null;
 
 
     /**

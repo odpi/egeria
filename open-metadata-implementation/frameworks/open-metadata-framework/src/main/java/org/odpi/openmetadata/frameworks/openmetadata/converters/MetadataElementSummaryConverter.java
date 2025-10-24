@@ -62,7 +62,7 @@ public class MetadataElementSummaryConverter<B> extends OpenMetadataConverterBas
                     elementSummary.setElementHeader(elementHeader);
                     if (openMetadataElement.getElementProperties() != null)
                     {
-                        elementSummary.setProperties(openMetadataElement.getElementProperties().getPropertiesAsStrings());
+                        elementSummary.setProperties(getBeanProperties(openMetadataElement));
                     }
                 }
                 return returnBean;

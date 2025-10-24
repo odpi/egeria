@@ -6,7 +6,7 @@ package org.odpi.openmetadata.frameworks.openmetadata.properties.governance;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import org.odpi.openmetadata.frameworks.openmetadata.enums.GlossaryTermAssignmentStatus;
+import org.odpi.openmetadata.frameworks.openmetadata.enums.TermAssignmentStatus;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.RelationshipBeanProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 
@@ -24,9 +24,9 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 public class SemanticAssignmentProperties extends RelationshipBeanProperties
 {
     private String                       expression          = null;
-    private String                       description         = null;
-    private GlossaryTermAssignmentStatus status              = GlossaryTermAssignmentStatus.VALIDATED;
-    private int                          confidence          = 0;
+    private String               description          = null;
+    private TermAssignmentStatus termAssignmentStatus = TermAssignmentStatus.VALIDATED;
+    private int                  confidence           = 0;
     private String                       createdBy           = null;
     private String                       steward             = null;
     private String                       stewardTypeName     = null;
@@ -57,9 +57,9 @@ public class SemanticAssignmentProperties extends RelationshipBeanProperties
         if (template != null)
         {
             expression = template.getExpression();
-            description = template.getDescription();
-            status = template.getStatus();
-            confidence = template.getConfidence();
+            description          = template.getDescription();
+            termAssignmentStatus = template.getTermAssignmentStatus();
+            confidence           = template.getConfidence();
             createdBy = template.getCreatedBy();
             steward = template.getSteward();
             stewardTypeName = template.getStewardTypeName();
@@ -117,11 +117,11 @@ public class SemanticAssignmentProperties extends RelationshipBeanProperties
     /**
      * Set up whether this relationship should be used.
      *
-     * @param status status enum
+     * @param termAssignmentStatus status enum
      */
-    public void setStatus(GlossaryTermAssignmentStatus status)
+    public void setTermAssignmentStatus(TermAssignmentStatus termAssignmentStatus)
     {
-        this.status = status;
+        this.termAssignmentStatus = termAssignmentStatus;
     }
 
 
@@ -130,9 +130,9 @@ public class SemanticAssignmentProperties extends RelationshipBeanProperties
      *
      * @return status enum
      */
-    public GlossaryTermAssignmentStatus getStatus()
+    public TermAssignmentStatus getTermAssignmentStatus()
     {
-        return status;
+        return termAssignmentStatus;
     }
 
 
@@ -305,7 +305,7 @@ public class SemanticAssignmentProperties extends RelationshipBeanProperties
         return "SemanticAssignmentProperties{" +
                 "expression='" + expression + '\'' +
                 ", description='" + description + '\'' +
-                ", status=" + status +
+                ", status=" + termAssignmentStatus +
                 ", confidence=" + confidence +
                 ", createdBy='" + createdBy + '\'' +
                 ", steward='" + steward + '\'' +
@@ -341,7 +341,7 @@ public class SemanticAssignmentProperties extends RelationshipBeanProperties
         return confidence == that.confidence &&
                 Objects.equals(expression, that.expression) &&
                 Objects.equals(description, that.description) &&
-                status == that.status &&
+                termAssignmentStatus == that.termAssignmentStatus &&
                 Objects.equals(createdBy, that.createdBy) &&
                 Objects.equals(steward, that.steward) &&
                 Objects.equals(stewardTypeName, that.stewardTypeName) &&
@@ -359,6 +359,6 @@ public class SemanticAssignmentProperties extends RelationshipBeanProperties
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), expression, description, status, confidence, createdBy, steward, stewardTypeName, stewardPropertyName, notes, source);
+        return Objects.hash(super.hashCode(), expression, description, termAssignmentStatus, confidence, createdBy, steward, stewardTypeName, stewardPropertyName, notes, source);
     }
 }

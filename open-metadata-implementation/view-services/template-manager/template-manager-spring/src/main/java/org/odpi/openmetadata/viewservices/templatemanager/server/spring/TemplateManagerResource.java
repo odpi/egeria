@@ -4,13 +4,9 @@ package org.odpi.openmetadata.viewservices.templatemanager.server.spring;
 
 import io.swagger.v3.oas.annotations.ExternalDocumentation;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import org.odpi.openmetadata.commonservices.ffdc.rest.DeleteRequestBody;
-import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDResponse;
-import org.odpi.openmetadata.commonservices.ffdc.rest.VoidResponse;
-import org.odpi.openmetadata.commonservices.ffdc.rest.MetadataSourceRequestBody;
-import org.odpi.openmetadata.frameworkservices.omf.rest.*;
 import org.odpi.openmetadata.viewservices.templatemanager.server.TemplateManagerRESTServices;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 
 /**

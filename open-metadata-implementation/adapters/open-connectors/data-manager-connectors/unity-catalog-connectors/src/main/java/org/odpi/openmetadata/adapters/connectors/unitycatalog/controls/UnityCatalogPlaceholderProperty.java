@@ -5,7 +5,7 @@ package org.odpi.openmetadata.adapters.connectors.unitycatalog.controls;
 
 
 import org.odpi.openmetadata.frameworks.openmetadata.controls.PlaceholderProperty;
-import org.odpi.openmetadata.frameworks.openmetadata.controls.PlaceholderPropertyType;
+import org.odpi.openmetadata.frameworks.openmetadata.specificationproperties.PlaceholderPropertyType;
 import org.odpi.openmetadata.frameworks.openmetadata.types.DataType;
 
 import java.util.ArrayList;

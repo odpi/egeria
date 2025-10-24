@@ -4,8 +4,12 @@ package org.odpi.openmetadata.frameworks.opengovernance;
 
 
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
+import org.odpi.openmetadata.frameworks.opengovernance.controls.ActionTarget;
+import org.odpi.openmetadata.frameworks.opengovernance.properties.ActionTargetElement;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 
@@ -39,6 +43,73 @@ public abstract class GeneralGovernanceActionService extends GovernanceActionSer
     public void setGovernanceContext(GovernanceActionContext governanceContext)
     {
         this.governanceContext = governanceContext;
+    }
+
+
+    /**
+     * Retrieve the first action target element that matches the name.
+     *
+     * @param actionTargetName name of the action target
+     * @return property value
+     */
+    protected ActionTargetElement getActionTarget(String actionTargetName)
+    {
+        if (governanceContext.getActionTargetElements() != null)
+        {
+            for (ActionTargetElement actionTargetElement : governanceContext.getActionTargetElements())
+            {
+                if (actionTargetElement != null)
+                {
+                    if ((actionTargetName == null) && (actionTargetElement.getActionTargetName() == null))
+                    {
+                        return actionTargetElement;
+                    }
+                    else if ((actionTargetName != null) && (actionTargetName.equals(actionTargetElement.getActionTargetName())))
+                    {
+                        return actionTargetElement;
+                    }
+                }
+            }
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Retrieve the all the action target elements that matches the name.
+     *
+     * @param actionTargetName name of the action target
+     * @return property value
+     */
+    protected List<ActionTargetElement> getAllActionTargets(String actionTargetName)
+    {
+        if (governanceContext.getActionTargetElements() != null)
+        {
+            List<ActionTargetElement> results = new ArrayList<>();
+
+            for (ActionTargetElement actionTargetElement : governanceContext.getActionTargetElements())
+            {
+                if (actionTargetElement != null)
+                {
+                    if ((actionTargetName == null) && (actionTargetElement.getActionTargetName() == null))
+                    {
+                        results.add(actionTargetElement);
+                    }
+                    else if ((actionTargetName != null) && (actionTargetName.equals(actionTargetElement.getActionTargetName())))
+                    {
+                        results.add(actionTargetElement);
+                    }
+                }
+            }
+
+            if (! results.isEmpty())
+            {
+                return results;
+            }
+        }
+
+        return null;
     }
 
 

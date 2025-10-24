@@ -8,7 +8,6 @@ import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.MetadataEl
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
 
 import java.util.List;
-import java.util.UUID;
 
 
 /**
@@ -38,9 +37,8 @@ public class CertificationMermaidGraphBuilder extends MermaidGraphBuilderBase
         super.appendNewMermaidNode(startingNodeId,
                                    currentDisplayName,
                                    this.getTypeNameForEntity(startingElement.getElementHeader()),
+                                   startingElement.getProperties(),
                                    getVisualStyleForEntity(startingElement.getElementHeader(), VisualStyle.GOVERNED_ELEMENT));
-
-        this.addDescription(startingElement);
 
         if (certifications != null)
         {
@@ -84,94 +82,6 @@ public class CertificationMermaidGraphBuilder extends MermaidGraphBuilderBase
                                                     OpenMetadataProperty.RECIPIENT.name,
                                                     certificationElement.getRecipient().getElementHeader().getGUID());
                     }
-                }
-            }
-        }
-    }
-
-
-    /**
-     * Add a text boxes with the description of the process (if any)
-     *
-     * @param metadataElementSummary element with the potential description
-     */
-    private void addDescription(MetadataElementSummary metadataElementSummary)
-    {
-        String lastNodeName = null;
-
-        if (metadataElementSummary.getProperties() != null)
-        {
-            if (metadataElementSummary.getProperties().get(OpenMetadataProperty.DISPLAY_NAME.name) != null)
-            {
-                String descriptionNodeName = UUID.randomUUID().toString();
-
-                appendNewMermaidNode(descriptionNodeName,
-                                     metadataElementSummary.getProperties().get(OpenMetadataProperty.DISPLAY_NAME.name),
-                                     "Title",
-                                     VisualStyle.DESCRIPTION);
-
-                lastNodeName = descriptionNodeName;
-            }
-
-            if (metadataElementSummary.getProperties().get(OpenMetadataProperty.SUMMARY.name) != null)
-            {
-                String descriptionNodeName = UUID.randomUUID().toString();
-
-                appendNewMermaidNode(descriptionNodeName,
-                                     metadataElementSummary.getProperties().get(OpenMetadataProperty.SUMMARY.name),
-                                     "Summary",
-                                     VisualStyle.DESCRIPTION);
-
-                if (lastNodeName != null)
-                {
-                    super.appendInvisibleMermaidLine(lastNodeName, descriptionNodeName);
-                }
-
-                lastNodeName = descriptionNodeName;
-            }
-
-            if (metadataElementSummary.getProperties().get(OpenMetadataProperty.DESCRIPTION.name) != null)
-            {
-                String descriptionNodeName = UUID.randomUUID().toString();
-
-                appendNewMermaidNode(descriptionNodeName,
-                                     metadataElementSummary.getProperties().get(OpenMetadataProperty.DESCRIPTION.name),
-                                     "Description",
-                                     VisualStyle.DESCRIPTION);
-
-                if (lastNodeName != null)
-                {
-                    super.appendInvisibleMermaidLine(lastNodeName, descriptionNodeName);
-                }
-            }
-
-            if (metadataElementSummary.getProperties().get(OpenMetadataProperty.COVERAGE_START.name) != null)
-            {
-                String descriptionNodeName = UUID.randomUUID().toString();
-
-                appendNewMermaidNode(descriptionNodeName,
-                                     metadataElementSummary.getProperties().get(OpenMetadataProperty.COVERAGE_START.name),
-                                     "Start Date",
-                                     VisualStyle.DESCRIPTION);
-
-                if (lastNodeName != null)
-                {
-                    super.appendInvisibleMermaidLine(lastNodeName, descriptionNodeName);
-                }
-            }
-
-            if (metadataElementSummary.getProperties().get(OpenMetadataProperty.COVERAGE_END.name) != null)
-            {
-                String descriptionNodeName = UUID.randomUUID().toString();
-
-                appendNewMermaidNode(descriptionNodeName,
-                                     metadataElementSummary.getProperties().get(OpenMetadataProperty.COVERAGE_END.name),
-                                     "End Date",
-                                     VisualStyle.DESCRIPTION);
-
-                if (lastNodeName != null)
-                {
-                    super.appendInvisibleMermaidLine(lastNodeName, descriptionNodeName);
                 }
             }
         }

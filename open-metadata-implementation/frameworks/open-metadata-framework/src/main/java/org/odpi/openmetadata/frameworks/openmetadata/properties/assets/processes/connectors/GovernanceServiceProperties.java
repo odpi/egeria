@@ -23,6 +23,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
         @JsonSubTypes.Type(value = GovernanceActionServiceProperties.class, name = "GovernanceActionServiceProperties"),
         @JsonSubTypes.Type(value = RepositoryGovernanceServiceProperties.class, name = "RepositoryGovernanceServiceProperties"),
         @JsonSubTypes.Type(value = SurveyActionServiceProperties.class, name = "SurveyActionServiceProperties"),
+        @JsonSubTypes.Type(value = WatchdogActionServiceProperties.class, name = "WatchdogActionServiceProperties"),
 })
 public class GovernanceServiceProperties extends DeployedConnectorProperties
 {

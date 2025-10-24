@@ -22,7 +22,7 @@ Content-Type: application/json
 
 ###
 # =====================================================================================================================
-# Work with Schema Elements
+# Work with Assets
 # https://egeria-project.org/concepts/asset
 
 @assetGUID=add guid here
@@ -146,8 +146,6 @@ Content-Type: application/json
 # Update the properties of an asset.
 #
 # @param assetGUID unique identifier of the asset (returned from create)
-# @param replaceAllProperties flag to indicate whether to completely replace the existing properties with the new properties, or just update
-#                          the individual properties specified on the request.
 # Request body provides     properties for the new element.
 #
 # Returns void or
@@ -189,7 +187,6 @@ Content-Type: application/json
 # Delete an asset.
 #
 # @param assetGUID  unique identifier of the element to delete
-# @param cascadedDelete can assets be deleted if data fields are attached?
 # Request body provides  description of the relationship.
 #
 # Returns void or
@@ -215,8 +212,6 @@ Content-Type: application/json
 # @name getAssetsByName
 # Returns the list of assets with a particular name.
 #
-# @param startFrom paging start point
-# @param pageSize maximum results that can be returned
 # Request body provides string to find in the properties
 #
 # Returns list of matching metadata elements or
@@ -247,11 +242,6 @@ Content-Type: application/json
 # @name findAssets
 # Retrieve the list of asset metadata elements that contain the search string.
 #
-# @param startsWith does the value start with the supplied string?
-# @param endsWith does the value end with the supplied string?
-# @param ignoreCase should the search ignore case?
-# @param startFrom paging start point
-# @param pageSize maximum results that can be returned
 # Request body provides string to find in the properties
 #
 # Returns list of matching metadata elements or
@@ -266,11 +256,20 @@ Content-Type: application/json
 {
   "class" : "SearchStringRequestBody",
   "searchString" : "Add value here",
+  "metadataElementTypeName": "DataFile",
+  "metadataElementSubtypeNames": ["CSVFile", "JSONFile"],
   "startsWith" : false,
   "endsWith" : false,
   "ignoreCase" : true,
   "startFrom" : 0,
   "pageSize": 10,
+  "includeOnlyClassifiedElements": [],
+  "skipClassifiedElements": [],
+  "includeOnlyRelationships": [],
+  "skipRelationships": [],
+  "relationshipsPageSize": 0,
+  "graphQueryDepth": 10,
+  "governanceZoneFilter": [],
   "asOfTime" : "{{$isoTimestamp}}",
   "effectiveTime" : "{{$isoTimestamp}}",
   "forLineage" : false,
@@ -279,6 +278,28 @@ Content-Type: application/json
   "sequencingOrder" : "PROPERTY_ASCENDING",
   "sequencingProperty" : "qualifiedName"
 }
+
+
+###
+# @name find All Metadata Collections
+# Retrieve the list of metadata collections.
+#
+# Request body provides string to find in the properties
+#
+# Returns list of matching metadata elements or
+#  InvalidParameterException  one of the parameters is invalid
+#  UserNotAuthorizedException the user is not authorized to issue this request
+#  PropertyServerException    there is a problem reported in the open metadata server(s)
+#
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/asset-maker/assets/by-search-string
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "SearchStringRequestBody",
+  "metadataElementTypeName" : "MetadataCollection"
+}
+
 
 
 ###
@@ -304,3 +325,124 @@ Content-Type: application/json
   "forLineage" : false,
   "forDuplicateProcessing" : false
 }
+
+
+
+###
+# =====================================================================================================================
+# A catalog target links an element (typically an asset) to an integration connector for processing.
+#
+
+@integrationConnectorGUID=fa1f711c-0b34-4b57-8e6e-16162b132b0c
+@metadataElementGUID=add guid here
+@relationshipGUID=add guid here
+
+###
+# @name addCatalogTarget
+# Add a catalog target to an integration connector.
+# Further Information: https://egeria-project.org/concepts/integration-connector/
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/automated-curation/integration-connectors/{{integrationConnectorGUID}}/catalog-targets/{{metadataElementGUID}}
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "NewRelationshipRequestBody",
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false,
+  "properties": {
+    "class": "CatalogTargetProperties",
+    "catalogTargetName" : "Freddy",
+    "metadataSourceQualifiedName" : "",
+    "templates" : {
+       "templateName1" : "template1GUID",
+       "templateName2" : "template2GUID"
+    },
+    "configurationProperties" : {
+      "propertyName1" : "propertyValue1",
+      "propertyName2" : "propertyValue2"
+    },
+    "effectiveFrom": "{{$isoTimestamp}}",
+    "effectiveTo": "{{$isoTimestamp}}"
+  }
+}
+
+
+###
+# Full catalog target properties
+#{
+#    "class": "CatalogTargetProperties",
+#    "catalogTargetName" : "",
+#    "metadataSourceQualifiedName" : "",
+#    "templates" : {
+#        "templateName1" : "template1GUID",
+#        "templateName2" : "template2GUID"
+#    },
+#    "configurationProperties" : {
+#        "propertyName1" : "propertyValue1",
+#        "propertyName2" : "propertyValue2"
+#    }
+#}
+
+
+###
+# @name updateCatalogTarget
+# Update a catalog target for an integration connector.
+# Further Information: https://egeria-project.org/concepts/integration-connector/
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/automated-curation/catalog-targets/{{relationshipGUID}}/update
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "UpdateRelationshipRequestBody",
+  "properties" : {
+    "class": "CatalogTargetProperties",
+    "catalogTargetName" : "Freddy",
+    "metadataSourceQualifiedName" : "",
+    "templates" : {
+       "templateName1" : "template1GUID",
+       "templateName2" : "template2GUID"
+    },
+    "configurationProperties" : {
+      "propertyName1" : "propertyValue1",
+      "propertyName2" : "propertyValue2"
+    }
+  },
+  "mergeUpdate": true,
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
+}
+
+
+###
+# @name getCatalogTarget
+# Retrieve a specific catalog target associated with an integration connector.
+# Further Information: https://egeria-project.org/concepts/integration-connector/
+GET {{baseURL}}/servers/{{viewServer}}/api/open-metadata/automated-curation/catalog-targets/{{relationshipGUID}}
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+
+###
+# @name getCatalogTargets
+# Retrieve the details of the metadata elements identified as catalog targets with an integration connector.
+# Further Information: https://egeria-project.org/concepts/integration-connector/
+GET {{baseURL}}/servers/{{viewServer}}/api/open-metadata/automated-curation/integration-connectors/{{integrationConnectorGUID}}/catalog-targets?startFrom=0&pageSize=0
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+
+###
+# @name removeCatalogTarget
+# Unregister a catalog target from the integration connector.
+# Further Information: https://egeria-project.org/concepts/integration-connector/
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/automated-curation/catalog-targets/{{relationshipGUID}}/remove
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+

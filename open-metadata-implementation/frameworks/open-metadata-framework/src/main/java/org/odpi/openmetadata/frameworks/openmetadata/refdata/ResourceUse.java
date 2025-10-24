@@ -6,7 +6,6 @@ import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
 
 import java.util.List;
 
-import static org.odpi.openmetadata.frameworks.openmetadata.mapper.OpenMetadataValidValues.constructValidValueCategory;
 import static org.odpi.openmetadata.frameworks.openmetadata.mapper.OpenMetadataValidValues.constructValidValueQualifiedName;
 
 /**
@@ -69,6 +68,20 @@ public enum ResourceUse
      */
     PROVISION_RESOURCE("Provision Resource",
                        "Make a change to the real-world resource such as add or copy data.",
+                       null),
+
+    /**
+     * Supports the action to create a digital subscription to the associated element.
+     */
+    CREATE_SUBSCRIPTION("Create Subscription",
+                        "Supports the action to create a digital subscription to the associated element.",
+                        null),
+
+    /**
+     * Supports the action to cancel the linked subscription.
+     */
+    CANCEL_SUBSCRIPTION("Cancel Subscription",
+                       "Supports the action to cancel the linked subscription.",
                        null),
 
     /**
@@ -253,19 +266,6 @@ public enum ResourceUse
                                                 OpenMetadataProperty.RESOURCE_USE.name,
                                                 null,
                                                 resourceUse);
-    }
-
-
-    /**
-     * Return the category for this resourceUse value.
-     *
-     * @return string
-     */
-    public String getCategory()
-    {
-        return constructValidValueCategory(null,
-                                           OpenMetadataProperty.RESOURCE_USE.name,
-                                           null);
     }
 
 

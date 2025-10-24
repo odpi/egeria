@@ -6,7 +6,7 @@ package org.odpi.openmetadata.frameworks.openmetadata.properties.glossaries;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import org.odpi.openmetadata.frameworks.openmetadata.enums.GlossaryTermActivityType;
+import org.odpi.openmetadata.frameworks.openmetadata.enums.ActivityType;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.ClassificationBeanProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 
@@ -24,7 +24,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class ActivityDescriptionProperties extends ClassificationBeanProperties
 {
-    private GlossaryTermActivityType activityType = null;
+    private ActivityType activityType = null;
 
 
     /**
@@ -58,7 +58,7 @@ public class ActivityDescriptionProperties extends ClassificationBeanProperties
      *
      * @return enum
      */
-    public GlossaryTermActivityType getActivityType()
+    public ActivityType getActivityType()
     {
         return activityType;
     }
@@ -69,7 +69,7 @@ public class ActivityDescriptionProperties extends ClassificationBeanProperties
      *
      * @param activityType enum
      */
-    public void setActivityType(GlossaryTermActivityType activityType)
+    public void setActivityType(ActivityType activityType)
     {
         this.activityType = activityType;
     }

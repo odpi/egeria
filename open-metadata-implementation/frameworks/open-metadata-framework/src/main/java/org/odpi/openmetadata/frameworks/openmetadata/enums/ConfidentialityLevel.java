@@ -11,7 +11,6 @@ import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataWikiPages
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
-import static org.odpi.openmetadata.frameworks.openmetadata.mapper.OpenMetadataValidValues.constructValidValueCategory;
 import static org.odpi.openmetadata.frameworks.openmetadata.mapper.OpenMetadataValidValues.constructValidValueQualifiedName;
 
 /**
@@ -203,19 +202,6 @@ public enum ConfidentialityLevel implements OpenMetadataEnum
                                                 OpenMetadataProperty.CONFIDENTIALITY_LEVEL_IDENTIFIER.name,
                                                 null,
                                                 name);
-    }
-
-
-    /**
-     * Return the category for this value.
-     *
-     * @return string
-     */
-    public String getCategory()
-    {
-        return constructValidValueCategory(ENUM_TYPE_NAME,
-                                           OpenMetadataProperty.CONFIDENTIALITY_LEVEL_IDENTIFIER.name,
-                                           null);
     }
 
 

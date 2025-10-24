@@ -50,16 +50,16 @@ public class AssetCatalogRESTServices extends TokenController
      * PropertyServerException - there is a problem retrieving the connected asset properties from the property server or
      * UserNotAuthorizedException - the requesting user is not authorized to issue this request.
      */
-    public AssetGraphResponse getAssetGraph(String       serverName,
-                                            String       assetGUID,
-                                            QueryOptions queryOptions)
+    public OpenMetadataRootElementResponse getAssetGraph(String       serverName,
+                                                         String       assetGUID,
+                                                         QueryOptions queryOptions)
     {
         final String methodName    = "getAssetGraph";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
 
-        AssetGraphResponse response = new AssetGraphResponse();
-        AuditLog           auditLog = null;
+        OpenMetadataRootElementResponse response = new OpenMetadataRootElementResponse();
+        AuditLog                        auditLog = null;
 
         try
         {
@@ -71,7 +71,7 @@ public class AssetCatalogRESTServices extends TokenController
 
             AssetHandler handler = instanceHandler.getAssetHandler(userId, serverName, methodName);
 
-            response.setAssetGraph(handler.getAssetGraph(userId, assetGUID, queryOptions));
+            response.setElement(handler.getAssetGraph(userId, assetGUID, queryOptions));
         }
         catch (Throwable error)
         {
@@ -97,16 +97,16 @@ public class AssetCatalogRESTServices extends TokenController
      * PropertyServerException - there is a problem retrieving the connected asset properties from the property server or
      * UserNotAuthorizedException - the requesting user is not authorized to issue this request.
      */
-    public AssetLineageGraphResponse getAssetLineageGraph(String                       serverName,
-                                                          String                       assetGUID,
-                                                          AssetLineageGraphRequestBody requestBody)
+    public OpenMetadataRootElementResponse getAssetLineageGraph(String                       serverName,
+                                                                String                       assetGUID,
+                                                                AssetLineageGraphRequestBody requestBody)
     {
-        final String methodName    = "getAssetLineageGraph";
+        final String methodName = "getAssetLineageGraph";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
 
-        AssetLineageGraphResponse response = new AssetLineageGraphResponse();
-        AuditLog           auditLog = null;
+        OpenMetadataRootElementResponse response = new OpenMetadataRootElementResponse();
+        AuditLog                        auditLog = null;
 
         try
         {
@@ -120,19 +120,19 @@ public class AssetCatalogRESTServices extends TokenController
 
             if (requestBody != null)
             {
-                response.setAssetLineageGraph(handler.getAssetLineageGraph(userId,
-                                                                           assetGUID,
-                                                                           requestBody.getLimitToISCQualifiedName(),
-                                                                           requestBody.getHighlightISCQualifiedName(),
-                                                                           requestBody));
+                response.setElement(handler.getAssetLineageGraph(userId,
+                                                                 assetGUID,
+                                                                 requestBody.getLimitToISCQualifiedName(),
+                                                                 requestBody.getHighlightISCQualifiedName(),
+                                                                 requestBody));
             }
             else
             {
-                response.setAssetLineageGraph(handler.getAssetLineageGraph(userId,
-                                                                           assetGUID,
-                                                                           null,
-                                                                           null,
-                                                                           null));
+                response.setElement(handler.getAssetLineageGraph(userId,
+                                                                 assetGUID,
+                                                                 null,
+                                                                 null,
+                                                                 null));
             }
         }
         catch (Throwable error)
@@ -157,15 +157,15 @@ public class AssetCatalogRESTServices extends TokenController
      * PropertyServerException there is a problem access in the property server or
      * UserNotAuthorizedException the user does not have access to the properties
      */
-    public AssetSearchMatchesListResponse findInAssetDomain(String                  serverName,
-                                                            SearchStringRequestBody requestBody)
+    public OpenMetadataRootElementsResponse findInAssetDomain(String                  serverName,
+                                                              SearchStringRequestBody requestBody)
     {
         final String methodName = "findInAssetDomain";
 
         RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
 
-        AssetSearchMatchesListResponse response = new AssetSearchMatchesListResponse();
-        AuditLog                       auditLog = null;
+        OpenMetadataRootElementsResponse response = new OpenMetadataRootElementsResponse();
+        AuditLog                         auditLog = null;
 
         try
         {
@@ -179,9 +179,9 @@ public class AssetCatalogRESTServices extends TokenController
 
             if (requestBody != null)
             {
-                response.setSearchMatches(handler.findAssetsInDomain(userId,
-                                                                     requestBody.getSearchString(),
-                                                                     requestBody));
+                response.setElements(handler.findAssetsInDomain(userId,
+                                                                requestBody.getSearchString(),
+                                                                requestBody));
             }
             else
             {
@@ -254,7 +254,6 @@ public class AssetCatalogRESTServices extends TokenController
     }
 
 
-
     /**
      * Returns the list with supported types for search, including the subtypes supported.
      * The list is deduplicated.
@@ -293,5 +292,4 @@ public class AssetCatalogRESTServices extends TokenController
 
         return response;
     }
-
 }

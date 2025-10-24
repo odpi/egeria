@@ -4,8 +4,12 @@ package org.odpi.openmetadata.frameworks.openmetadata.properties.assets;
 
 import com.fasterxml.jackson.annotation.*;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.databases.DatabaseProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.databases.GraphStoreProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.filesandfolders.DataFileProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.filesandfolders.DocumentStoreProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.filesandfolders.FileFolderProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.metadatarepositories.CohortRegistryStoreProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.metadatarepositories.MetadataRepositoryProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 
 import java.util.Date;
@@ -26,8 +30,12 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
         include = JsonTypeInfo.As.PROPERTY,
         property = "class")
 @JsonSubTypes({
+        @JsonSubTypes.Type(value = CohortRegistryStoreProperties.class, name = "CohortRegistryStoreProperties"),
         @JsonSubTypes.Type(value = DataFileProperties.class, name = "DataFileProperties"),
         @JsonSubTypes.Type(value = DatabaseProperties.class, name = "DatabaseProperties"),
+        @JsonSubTypes.Type(value = DocumentStoreProperties.class, name = "DocumentStoreProperties"),
+        @JsonSubTypes.Type(value = GraphStoreProperties.class, name = "GraphStoreProperties"),
+        @JsonSubTypes.Type(value = MetadataRepositoryProperties.class, name = "MetadataRepositoryProperties"),
         @JsonSubTypes.Type(value = FileFolderProperties.class, name = "FileFolderProperties"),
 
               })

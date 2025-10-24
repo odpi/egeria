@@ -39,7 +39,7 @@ public class OpenMetadataTypesArchive
     private static final String                  archiveName        = "Open Metadata Types";
     private static final String                  archiveDescription = "Standard types for open metadata repositories.";
     private static final OpenMetadataArchiveType archiveType        = OpenMetadataArchiveType.CONTENT_PACK;
-    private static final String                  archiveVersion     = "5.4-SNAPSHOT";
+    private static final String                  archiveVersion     = "6.0-SNAPSHOT";
     private static final String                  originatorName     = "Egeria";
     private static final String                  originatorLicense  = "Apache-2.0";
     private static final Date                    creationDate       = new Date(1588261366992L);
@@ -174,6 +174,7 @@ public class OpenMetadataTypesArchive
      {
          this.archiveBuilder.addEntityDef(getExternalDataSourceEntity());
          this.archiveBuilder.addEntityDef(getExternalModelSourceEntity());
+         this.archiveBuilder.addEntityDef(getExternalSourceCodeEntity());
          this.archiveBuilder.addEntityDef(getCitedDocumentEntity());
 
          this.archiveBuilder.addRelationshipDef(getCitedDocumentLinkRelationship());
@@ -185,6 +186,13 @@ public class OpenMetadataTypesArchive
     private EntityDef getExternalDataSourceEntity()
     {
         return archiveHelper.getDefaultEntityDef(OpenMetadataType.EXTERNAL_DATA_SOURCE,
+                                                 this.archiveBuilder.getEntityDef(OpenMetadataType.EXTERNAL_REFERENCE.typeName));
+    }
+
+
+    private EntityDef getExternalSourceCodeEntity()
+    {
+        return archiveHelper.getDefaultEntityDef(OpenMetadataType.EXTERNAL_SOURCE_CODE,
                                                  this.archiveBuilder.getEntityDef(OpenMetadataType.EXTERNAL_REFERENCE.typeName));
     }
 
@@ -529,6 +537,7 @@ public class OpenMetadataTypesArchive
          */
         List<TypeDefAttribute> properties = new ArrayList<>();
 
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.ROLE));
         properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.DESCRIPTION));
 
         relationshipDef.setPropertiesDefinition(properties);

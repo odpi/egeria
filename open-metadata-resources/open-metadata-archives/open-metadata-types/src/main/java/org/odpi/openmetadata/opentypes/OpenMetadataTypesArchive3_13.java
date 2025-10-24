@@ -163,8 +163,6 @@ public class OpenMetadataTypesArchive3_13
         /*
          * Calls for new and changed types go here
          */
-        update0022Translations();
-        addArea1Actors();
         add0222DataFilesAndFolders();
         add0430ServiceLevelObjectives();
         update0481Licenses();
@@ -172,135 +170,7 @@ public class OpenMetadataTypesArchive3_13
         add00711DigitalSubscription();
     }
 
-    /*
-     * -------------------------------------------------------------------------------------------------------
-     */
 
-    private void update0022Translations()
-    {
-        this.archiveBuilder.addTypeDefPatch(updateTranslation());
-    }
-
-
-    private TypeDefPatch updateTranslation()
-    {
-        /*
-         * Create the Patch
-         */
-        TypeDefPatch  typeDefPatch = archiveBuilder.getPatchForType(OpenMetadataType.TRANSLATION_DETAIL.typeName);
-
-        typeDefPatch.setUpdatedBy(originatorName);
-        typeDefPatch.setUpdateTime(creationDate);
-
-        /*
-         * Build the attributes
-         */
-        List<TypeDefAttribute> properties = new ArrayList<>();
-
-        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.LANGUAGE_CODE));
-
-        typeDefPatch.setPropertyDefinitions(properties);
-
-        return typeDefPatch;
-    }
-
-
-
-    /*
-     * -------------------------------------------------------------------------------------------------------
-     */
-
-
-    private void addArea1Actors()
-    {
-        this.archiveBuilder.addEntityDef(getActorEntity());
-
-        this.archiveBuilder.addTypeDefPatch(updateActorProfile());
-        this.archiveBuilder.addTypeDefPatch(updateUserIdentity());
-        this.archiveBuilder.addTypeDefPatch(updatePersonRole());
-        this.archiveBuilder.addTypeDefPatch(updateCrowdSourcingContribution());
-    }
-
-    private EntityDef getActorEntity()
-    {
-        return archiveHelper.getDefaultEntityDef(OpenMetadataType.ACTOR,
-                                                 this.archiveBuilder.getEntityDef(OpenMetadataType.REFERENCEABLE.typeName));
-    }
-
-
-    private TypeDefPatch updateActorProfile()
-    {
-        /*
-         * Create the Patch
-         */
-        TypeDefPatch typeDefPatch = archiveBuilder.getPatchForType(OpenMetadataType.ACTOR_PROFILE.typeName);
-
-        typeDefPatch.setUpdatedBy(originatorName);
-        typeDefPatch.setUpdateTime(creationDate);
-        typeDefPatch.setSuperType(this.archiveBuilder.getEntityDef(OpenMetadataType.ACTOR.typeName));
-
-        return typeDefPatch;
-    }
-
-
-    private TypeDefPatch updateUserIdentity()
-    {
-        /*
-         * Create the Patch
-         */
-        TypeDefPatch typeDefPatch = archiveBuilder.getPatchForType(OpenMetadataType.USER_IDENTITY.typeName);
-
-        typeDefPatch.setUpdatedBy(originatorName);
-        typeDefPatch.setUpdateTime(creationDate);
-        typeDefPatch.setSuperType(this.archiveBuilder.getEntityDef(OpenMetadataType.ACTOR.typeName));
-
-        return typeDefPatch;
-    }
-
-
-    private TypeDefPatch updatePersonRole()
-    {
-        /*
-         * Create the Patch
-         */
-        TypeDefPatch typeDefPatch = archiveBuilder.getPatchForType(OpenMetadataType.PERSON_ROLE.typeName);
-
-        typeDefPatch.setUpdatedBy(originatorName);
-        typeDefPatch.setUpdateTime(creationDate);
-        typeDefPatch.setSuperType(this.archiveBuilder.getEntityDef(OpenMetadataType.ACTOR.typeName));
-
-        return typeDefPatch;
-    }
-
-
-    private TypeDefPatch updateCrowdSourcingContribution()
-    {
-        /*
-         * Create the Patch
-         */
-        TypeDefPatch  typeDefPatch = archiveBuilder.getPatchForType(OpenMetadataType.CROWD_SOURCING_CONTRIBUTION_RELATIONSHIP.typeName);
-
-        typeDefPatch.setUpdatedBy(originatorName);
-        typeDefPatch.setUpdateTime(creationDate);
-
-        /*
-         * Set up end 2.
-         */
-        final String                     end2AttributeName            = "contributors";
-        final String                     end2AttributeDescription     = "The person/people making the contribution.";
-        final String                     end2AttributeDescriptionGUID = null;
-
-        RelationshipEndDef relationshipEndDef = archiveHelper.getRelationshipEndDef(this.archiveBuilder.getEntityDef(OpenMetadataType.ACTOR.typeName),
-                                                                                    end2AttributeName,
-                                                                                    end2AttributeDescription,
-                                                                                    end2AttributeDescriptionGUID,
-                                                                                    RelationshipEndCardinality.ANY_NUMBER);
-
-
-        typeDefPatch.setEndDef2(relationshipEndDef);
-
-        return typeDefPatch;
-    }
 
 
     /*
@@ -311,31 +181,8 @@ public class OpenMetadataTypesArchive3_13
     private void add0222DataFilesAndFolders()
     {
         this.archiveBuilder.addEntityDef(getParquetFileEntity());
-        this.archiveBuilder.addTypeDefPatch(updateDataFileEntity());
     }
 
-
-    private TypeDefPatch updateDataFileEntity()
-    {
-        /*
-         * Create the Patch
-         */
-        TypeDefPatch  typeDefPatch = archiveBuilder.getPatchForType(OpenMetadataType.DATA_FILE.typeName);
-
-        typeDefPatch.setUpdatedBy(originatorName);
-        typeDefPatch.setUpdateTime(creationDate);
-
-        /*
-         * Build the attributes
-         */
-        List<TypeDefAttribute> properties = new ArrayList<>();
-
-        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.FILE_NAME));
-
-        typeDefPatch.setPropertyDefinitions(properties);
-
-        return typeDefPatch;
-    }
 
 
 
@@ -360,7 +207,7 @@ public class OpenMetadataTypesArchive3_13
     private EntityDef getServiceLevelObjectivesEntity()
     {
         return archiveHelper.getDefaultEntityDef(OpenMetadataType.SERVICE_LEVEL_OBJECTIVE,
-                                                 this.archiveBuilder.getEntityDef(OpenMetadataType.TECHNICAL_CONTROL.typeName));
+                                                 this.archiveBuilder.getEntityDef(OpenMetadataType.TERMS_AND_CONDITIONS.typeName));
     }
 
     /*
@@ -421,7 +268,6 @@ public class OpenMetadataTypesArchive3_13
         List<TypeDefAttribute> properties = new ArrayList<>();
 
         properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.USER_DEFINED_STATUS));
-        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.IDENTIFIER));
 
         entityDef.setPropertiesDefinition(properties);
 

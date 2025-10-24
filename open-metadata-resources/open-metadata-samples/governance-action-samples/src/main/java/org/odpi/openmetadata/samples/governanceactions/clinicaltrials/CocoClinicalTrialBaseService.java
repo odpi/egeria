@@ -204,51 +204,6 @@ public class CocoClinicalTrialBaseService extends GeneralGovernanceActionService
 
 
     /**
-     * Create the governance action process asset.
-     *
-     * @param processQualifiedName new qualified name for the process
-     * @param processName new name for the process
-     * @param processDescription new description for the process
-     * @param topLevelProjectGUID unique identifier for the top level project - used as a search scope
-     * @return unique identifier of new governance action process
-     * @throws InvalidParameterException parameter error
-     * @throws PropertyServerException repository error
-     * @throws UserNotAuthorizedException authorization error
-     */
-    protected String createGovernanceActionProcess(String processQualifiedName,
-                                                   String processName,
-                                                   String processDescription,
-                                                   String topLevelProjectGUID) throws InvalidParameterException,
-                                                                                      PropertyServerException,
-                                                                                      UserNotAuthorizedException
-    {
-        ElementProperties processProperties = propertyHelper.addStringProperty(null,
-                                                                               OpenMetadataProperty.QUALIFIED_NAME.name,
-                                                                               processQualifiedName);
-
-        processProperties = propertyHelper.addStringProperty(processProperties,
-                                                             OpenMetadataProperty.DISPLAY_NAME.name,
-                                                             processName);
-
-        processProperties = propertyHelper.addStringProperty(processProperties,
-                                                             OpenMetadataProperty.DESCRIPTION.name,
-                                                             processDescription);
-
-        return governanceContext.getOpenMetadataStore().createMetadataElementInStore(OpenMetadataType.GOVERNANCE_ACTION_PROCESS.typeName,
-                                                                                     ElementStatus.ACTIVE,
-                                                                                     null,
-                                                                                     null,
-                                                                                     true,
-                                                                                     topLevelProjectGUID,
-                                                                                     new NewElementProperties(processProperties),
-                                                                                     null,
-                                                                                     null,
-                                                                                     null,
-                                                                                     false);
-    }
-
-
-    /**
      * Set up the ImplementedBy relationship between an implementation component and a solution component.
      * The information supply chain qualified names ensures that the appropriate assets are returned
      * on a specific ISC lineage query.
@@ -297,6 +252,7 @@ public class CocoClinicalTrialBaseService extends GeneralGovernanceActionService
      *
      * @param solutionComponentGUID unique identifier of the solution component
      * @param implementationGUID unique identifier of the newly set up governance action process
+     * @param role role of the component in an implementation
      * @param description optional description of the implementation
      * @throws InvalidParameterException invalid parameter
      * @throws PropertyServerException repository error
@@ -304,13 +260,18 @@ public class CocoClinicalTrialBaseService extends GeneralGovernanceActionService
      */
     protected void addSolutionComponentImplementationResource(String solutionComponentGUID,
                                                               String implementationGUID,
+                                                              String role,
                                                               String description) throws InvalidParameterException,
                                                                                          PropertyServerException,
                                                                                          UserNotAuthorizedException
     {
         ElementProperties properties = propertyHelper.addStringProperty(null,
-                                                                        OpenMetadataProperty.DESCRIPTION.name,
-                                                                        description);
+                                                                        OpenMetadataProperty.ROLE.name,
+                                                                        role);
+
+        properties = propertyHelper.addStringProperty(properties,
+                                                      OpenMetadataProperty.DESCRIPTION.name,
+                                                      description);
 
         governanceContext.getOpenMetadataStore().createRelatedElementsInStore(OpenMetadataType.IMPLEMENTATION_RESOURCE_RELATIONSHIP.typeName,
                                                                               solutionComponentGUID,
@@ -360,7 +321,7 @@ public class CocoClinicalTrialBaseService extends GeneralGovernanceActionService
                                                                         resourceUse.getResourceUse());
 
         properties = propertyHelper.addStringProperty(properties,
-                                                      OpenMetadataProperty.RESOURCE_USE_DESCRIPTION.name,
+                                                      OpenMetadataProperty.DESCRIPTION.name,
                                                       resourceUse.getResourceUse());
 
         return new NewElementProperties(properties);

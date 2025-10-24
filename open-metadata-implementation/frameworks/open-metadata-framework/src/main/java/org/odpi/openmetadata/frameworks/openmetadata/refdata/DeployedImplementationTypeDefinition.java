@@ -2,13 +2,6 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.frameworks.openmetadata.refdata;
 
-import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
-import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
-import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataWikiPages;
-
-import static org.odpi.openmetadata.frameworks.openmetadata.mapper.OpenMetadataValidValues.constructValidValueCategory;
-import static org.odpi.openmetadata.frameworks.openmetadata.mapper.OpenMetadataValidValues.constructValidValueQualifiedName;
-
 /**
  * DeployedImplementationType describes the standard deployed implementation types supplied with Egeria. These are encoded in the
  * CoreContentPack.omarchive and are available in the open metadata repository as valid values.
@@ -53,14 +46,6 @@ public interface DeployedImplementationTypeDefinition
      * @return string
      */
     String getQualifiedName();
-
-
-    /**
-     * Return the category for this deployed implementation type.
-     *
-     * @return string
-     */
-    String getCategory();
 
 
     /**

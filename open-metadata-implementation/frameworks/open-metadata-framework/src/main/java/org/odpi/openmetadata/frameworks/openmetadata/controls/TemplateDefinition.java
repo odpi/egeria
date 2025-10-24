@@ -4,6 +4,8 @@
 package org.odpi.openmetadata.frameworks.openmetadata.controls;
 
 import org.odpi.openmetadata.frameworks.openmetadata.refdata.DeployedImplementationTypeDefinition;
+import org.odpi.openmetadata.frameworks.openmetadata.specificationproperties.PlaceholderPropertyType;
+import org.odpi.openmetadata.frameworks.openmetadata.specificationproperties.ReplacementAttributeType;
 
 import java.util.List;
 

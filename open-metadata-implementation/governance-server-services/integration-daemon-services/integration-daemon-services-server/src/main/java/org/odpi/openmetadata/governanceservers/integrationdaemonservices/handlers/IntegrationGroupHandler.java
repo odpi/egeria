@@ -388,7 +388,7 @@ public class IntegrationGroupHandler
                                                                            registeredIntegrationConnectorElement.getProperties().getConnection(),
                                                                            registeredIntegrationConnectorElement.getProperties().getUsesBlockingCalls(),
                                                                            registeredIntegrationConnectorElement.getRegistrationProperties().getPermittedSynchronization(),
-                                                                           registeredIntegrationConnectorElement.getRegistrationProperties().getGenerateIntegrationReports(),
+                                                                           registeredIntegrationConnectorElement.getRegistrationProperties().getGenerateConnectorActivityReports(),
                                                                            serverName,
                                                                            integrationContextManager,
                                                                            auditLog);

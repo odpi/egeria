@@ -3,6 +3,8 @@
 
 package org.odpi.openmetadata.frameworks.opensurvey.controls;
 
+import org.odpi.openmetadata.frameworks.openmetadata.specificationproperties.AnalysisStepType;
+
 import java.util.ArrayList;
 import java.util.List;
 

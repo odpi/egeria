@@ -3,6 +3,7 @@
 
 package org.odpi.openmetadata.adapters.connectors.surveyaction.extractors;
 
+import org.odpi.openmetadata.frameworks.openmetadata.properties.surveyreports.AnnotationProperties;
 import org.odpi.openmetadata.frameworks.opensurvey.controls.SurveyFileAnnotationType;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.PropertyServerException;
@@ -12,8 +13,7 @@ import org.odpi.openmetadata.frameworks.openmetadata.fileclassifier.FileClassifi
 import org.odpi.openmetadata.frameworks.opensurvey.SurveyActionServiceConnector;
 import org.odpi.openmetadata.frameworks.opensurvey.measurements.FileMeasurement;
 import org.odpi.openmetadata.frameworks.opensurvey.measurements.FileMetric;
-import org.odpi.openmetadata.frameworks.opensurvey.properties.Annotation;
-import org.odpi.openmetadata.frameworks.opensurvey.properties.ResourcePhysicalStatusAnnotation;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.surveyreports.ResourcePhysicalStatusAnnotationProperties;
 
 import java.io.File;
 import java.io.IOException;
@@ -46,23 +46,23 @@ public class FileStatsExtractor
     }
 
 
-    public Annotation getAnnotation() throws InvalidParameterException,
-                                             PropertyServerException,
-                                             UserNotAuthorizedException,
-                                             IOException
+    public AnnotationProperties getAnnotation() throws InvalidParameterException,
+                                                       PropertyServerException,
+                                                       UserNotAuthorizedException,
+                                                       IOException
     {
         FileClassification fileClassification = fileClassifier.classifyFile(file);
 
-        ResourcePhysicalStatusAnnotation measurementAnnotation = new ResourcePhysicalStatusAnnotation();
+        ResourcePhysicalStatusAnnotationProperties measurementAnnotation = new ResourcePhysicalStatusAnnotationProperties();
 
         measurementAnnotation.setAnnotationType(SurveyFileAnnotationType.MEASUREMENTS.getName());
         measurementAnnotation.setSummary(SurveyFileAnnotationType.MEASUREMENTS.getSummary());
         measurementAnnotation.setExplanation(SurveyFileAnnotationType.MEASUREMENTS.getExplanation());
         measurementAnnotation.setExpression(SurveyFileAnnotationType.MEASUREMENTS.getExpression());
         measurementAnnotation.setAnalysisStep(SurveyFileAnnotationType.MEASUREMENTS.getAnalysisStep());
-        measurementAnnotation.setCreateTime(fileClassification.getCreationTime());
-        measurementAnnotation.setModifiedTime(fileClassification.getLastModifiedTime());
-        measurementAnnotation.setLastAccessedTime(fileClassification.getLastAccessedTime());
+        measurementAnnotation.setResourceCreateTime(fileClassification.getCreationTime());
+        measurementAnnotation.setResourceUpdateTime(fileClassification.getLastModifiedTime());
+        measurementAnnotation.setResourceLastAccessedTime(fileClassification.getLastAccessedTime());
         measurementAnnotation.setSize(fileClassification.getFileSize());
 
         Map<String, String> dataSourceProperties = new HashMap<>();

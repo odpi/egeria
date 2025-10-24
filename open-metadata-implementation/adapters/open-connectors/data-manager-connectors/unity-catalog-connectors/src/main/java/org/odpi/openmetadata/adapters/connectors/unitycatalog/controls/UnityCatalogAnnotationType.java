@@ -3,6 +3,7 @@
 
 package org.odpi.openmetadata.adapters.connectors.unitycatalog.controls;
 
+import org.odpi.openmetadata.frameworks.openmetadata.specificationproperties.AnnotationTypeType;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 import org.odpi.openmetadata.frameworks.opensurvey.controls.*;
@@ -111,7 +112,7 @@ public enum UnityCatalogAnnotationType implements AnnotationType
      * @param summary short explanation of the annotation type
      * @param explanation explanation of the annotation type
      * @param analysisStepName name of the step that produces this annotation
-     * @param profilePropertyNames list of property names filled out in the ResourceProfileAnnotation
+     * @param profilePropertyNames list of property names filled out in the ResourceProfileAnnotationProperties
      * @param metrics optional metrics
      */
     UnityCatalogAnnotationType(String                name,
@@ -307,7 +308,7 @@ public enum UnityCatalogAnnotationType implements AnnotationType
         annotationTypeType.setName(name);
         annotationTypeType.setOpenMetadataTypeName(openMetadataTypeName);
         annotationTypeType.setAnalysisStepName(analysisStepName);
-        annotationTypeType.setSummary(summary);
+        annotationTypeType.setDescription(summary);
         annotationTypeType.setExplanation(explanation);
 
         if (metrics != null)

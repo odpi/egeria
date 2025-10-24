@@ -3,6 +3,8 @@
 package org.odpi.openmetadata.samples.archiveutilities.businesssystems;
 
 
+import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
+
 /**
  * The SystemTypeDefinition is used to set up the deployedImplementationType and cloud classifications.
  */
@@ -15,8 +17,7 @@ public enum SystemTypeDefinition
          "Custom off-the-shelf application server",
          "Server deployed as part of a COTS application package.  Coco Pharmaceuticals has minimal control over the structure and naming of this type of software server.",
          "These servers drive the business.  They provide standard business functions.",
-          new String[]{"Application"},
-         "ApplicationServer"),
+          new String[]{OpenMetadataType.APPLICATION.typeName}),
 
     /**
      * homegrown-application-server - "Server deployed as part of a bespoke application written by Coco Pharmaceuticals.
@@ -25,8 +26,7 @@ public enum SystemTypeDefinition
          "Homegrown application server",
          "Server deployed as part of a bespoke application written by Coco Pharmaceuticals.",
          "These servers drive specialized aspects of the business.",
-         new String[]{"Application"},
-         "ApplicationServer"),
+         new String[]{OpenMetadataType.APPLICATION.typeName}),
 
 
     /**
@@ -36,8 +36,7 @@ public enum SystemTypeDefinition
          "Extract-Transform-Load (ETL) engine",
          "Server deployed to run jobs that copy and transform data from one system to another.",
          "These servers are part of a middleware deployment.",
-         new String[]{"DataMovementEngine"},
-         "IntegrationServer"),
+         new String[]{OpenMetadataType.DATA_MOVEMENT_ENGINE.typeName}),
 
     /**
      * database-server - Database server providing a collection of data that can be flexibly queried.
@@ -46,8 +45,7 @@ public enum SystemTypeDefinition
          "Database Server",
          "Database server providing a collection of data that can be flexibly queried.",
          "These servers are part of a middleware deployment.",
-          new String[]{"DatabaseManager"},
-         "DatabaseServer"),
+          new String[]{OpenMetadataType.DATABASE_MANAGER.typeName}),
 
     /**
      * event-broker - Event broker server providing event notifications based on subscriptions.
@@ -56,8 +54,7 @@ public enum SystemTypeDefinition
          "Event Broker",
          "Event broker server providing event notifications based on subscriptions.",
          "These servers are part of a middleware deployment.",
-          new String[]{"EventBroker"},
-         "IntegrationServer"),
+          new String[]{OpenMetadataType.EVENT_BROKER.typeName}),
 
     /**
      * reporting-server - Server that delivers business reports.
@@ -66,8 +63,7 @@ public enum SystemTypeDefinition
          "Reporting Server",
          "Server that delivers business reports.",
          "These servers are part of a middleware deployment.",
-         new String[]{"ReportingEngine"},
-         "ApplicationServer"),
+         new String[]{OpenMetadataType.REPORTING_ENGINE.typeName}),
 
 
     /**
@@ -77,8 +73,10 @@ public enum SystemTypeDefinition
         "Open Metadata Access Store",
         "Metadata server with a repository that is part of the open metadata ecosystem.",
         "These servers are part of a middleware deployment.",
-         new String[]{"MetadataAccessService", "MetadataRepositoryService", "CohortMember"},
-        "MetadataServer"),
+         new String[]{
+                 OpenMetadataType.SOFTWARE_SERVICE.typeName,
+                 OpenMetadataType.INVENTORY_CATALOG.typeName,
+                 OpenMetadataType.COHORT_MEMBER.typeName}),
 
     /**
      * metadata-access-point - Server supporting Open Metadata Access Services (OMASs) but no metadata repository. It is connected to the open metadata ecosystem via a cohort.
@@ -87,8 +85,8 @@ public enum SystemTypeDefinition
          "Open Metadata Access Point",
          "Server supporting Open Metadata Access Services (OMASs) but no metadata repository. It is connected to the open metadata ecosystem via a cohort.",
          "These servers are part of a middleware deployment.",
-           new String[]{"MetadataAccessService", "CohortMember"},
-         null),
+           new String[]{OpenMetadataType.SOFTWARE_SERVICE.typeName,
+                   OpenMetadataType.COHORT_MEMBER.typeName}),
 
 
     /**
@@ -98,8 +96,7 @@ public enum SystemTypeDefinition
          "Open Metadata Engine Host Server",
          "Server hosting governance engine. It is part of the open metadata ecosystem.",
          "These servers are part of a middleware deployment.",
-         new String[]{"EngineHostingService"},
-         "GovernanceDaemon"),
+         new String[]{OpenMetadataType.WORKFLOW_ENGINE.typeName}),
 
     /**
      * integration-daemon - Server hosting integration connectors responsible for synchronizing metadata. It is part of the open metadata ecosystem.
@@ -108,8 +105,7 @@ public enum SystemTypeDefinition
          "Open Metadata Integration Daemon",
          "Server hosting integration connectors responsible for synchronizing metadata. It is part of the open metadata ecosystem.",
          "These servers are part of a middleware deployment.",
-         new String[]{"MetadataIntegrationService"},
-         "GovernanceDaemon"),
+         new String[]{OpenMetadataType.DATA_MOVEMENT_ENGINE.typeName}),
 
     /**
      * repository-proxy - Server hosting a repository connector responsible for synchronizing metadata from a third party metadata repository. It is part of the open metadata ecosystem.
@@ -118,8 +114,7 @@ public enum SystemTypeDefinition
          "Open Metadata Repository Proxy",
          "Server hosting a repository connector responsible for synchronizing metadata from a third party metadata repository. It is part of the open metadata ecosystem.",
          "These servers are part of a middleware deployment.",
-         new String[]{"MetadataIntegrationService", "CohortMember"},
-         "RepositoryProxy"),
+         new String[]{OpenMetadataType.DATA_MOVEMENT_ENGINE.typeName, OpenMetadataType.COHORT_MEMBER.typeName}),
 
     /**
      * view-server - Open Metadata View Server
@@ -128,8 +123,7 @@ public enum SystemTypeDefinition
                 "Open Metadata View Server",
                 "Server providing REST API implementations for a UI.",
                 "These servers are part of a middleware deployment.",
-                new String[]{"MetadataViewService"},
-                null),
+                new String[]{OpenMetadataType.SOFTWARE_SERVICE.typeName}),
 
     /**
      * view-client - UI server supplying UI code (javascript/typescript) to the browser.
@@ -138,7 +132,6 @@ public enum SystemTypeDefinition
                 "Open Metadata View Client",
                 "UI server supplying UI code (javascript/typescript) to the browser.",
                 "These servers are part of a middleware deployment.",
-                null,
                 null),
 
     /**
@@ -148,8 +141,7 @@ public enum SystemTypeDefinition
                "External Business Cloud Service",
                "Application or service hosted by an external cloud provider.",
                "These servers are managed by an external organization.",
-               null,
-               "ApplicationServer"),
+               null),
      ;
 
     public static final String validValueSetName = "SystemType";
@@ -162,7 +154,6 @@ public enum SystemTypeDefinition
     private final String   description;
     private final String   usage;
     private final String[] softwareServerCapabilities;
-    private final String   serverPurpose;
 
     /**
      * The constructor creates an instance of the enum
@@ -172,21 +163,18 @@ public enum SystemTypeDefinition
      * @param description   description of the use of this value
      * @param usage   criteria for use
      * @param softwareServerCapabilities array of software server capabilities to associate with this server
-     * @param serverPurpose purpose of this server
      */
     SystemTypeDefinition(String   preferredValue,
                          String   displayName,
                          String   description,
                          String   usage,
-                         String[] softwareServerCapabilities,
-                         String   serverPurpose)
+                         String[] softwareServerCapabilities)
     {
         this.preferredValue = preferredValue;
         this.displayName = displayName;
         this.description = description;
         this.usage = usage;
         this.softwareServerCapabilities = softwareServerCapabilities;
-        this.serverPurpose = serverPurpose;
     }
 
 
@@ -255,17 +243,6 @@ public enum SystemTypeDefinition
     public String[] getSoftwareServerCapabilities()
     {
         return softwareServerCapabilities;
-    }
-
-
-    /**
-     * Return the purpose of this system.  This is the type name of the server purpose classification.
-     *
-     * @return string type name
-     */
-    public String getServerPurpose()
-    {
-        return serverPurpose;
     }
 
 

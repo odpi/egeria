@@ -238,7 +238,7 @@ public class SchemaMakerRESTServices extends TokenController
     public VoidResponse deleteSchemaType(String                   serverName,
                                          String                   urlMarker,
                                          String                   schemaTypeGUID,
-                                         DeleteRequestBody requestBody)
+                                         DeleteElementRequestBody requestBody)
     {
         final String methodName = "deleteSchemaType";
 
@@ -624,7 +624,7 @@ public class SchemaMakerRESTServices extends TokenController
     public VoidResponse deleteSchemaAttribute(String                   serverName,
                                               String                   urlMarker,
                                               String                   schemaAttributeGUID,
-                                              DeleteRequestBody requestBody)
+                                              DeleteElementRequestBody requestBody)
     {
         final String methodName = "deleteSchemaAttribute";
 

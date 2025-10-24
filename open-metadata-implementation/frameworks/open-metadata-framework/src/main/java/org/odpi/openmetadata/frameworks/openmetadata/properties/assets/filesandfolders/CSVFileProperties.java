@@ -5,8 +5,8 @@ package org.odpi.openmetadata.frameworks.openmetadata.properties.assets.filesand
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 
-import java.util.List;
 import java.util.Objects;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
@@ -20,8 +20,8 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class CSVFileProperties extends DataFileProperties
 {
-    private Character    delimiterCharacter = null;
-    private Character    quoteCharacter     = null;
+    private String    delimiterCharacter = null;
+    private String    quoteCharacter     = null;
 
 
     /**
@@ -29,6 +29,8 @@ public class CSVFileProperties extends DataFileProperties
      */
     public CSVFileProperties()
     {
+        super();
+        super.setTypeName(OpenMetadataType.CSV_FILE.typeName);
     }
 
 
@@ -54,7 +56,7 @@ public class CSVFileProperties extends DataFileProperties
      *
      * @return character
      */
-    public Character getDelimiterCharacter()
+    public String getDelimiterCharacter()
     {
         return delimiterCharacter;
     }
@@ -65,7 +67,7 @@ public class CSVFileProperties extends DataFileProperties
      *
      * @param delimiterCharacter character
      */
-    public void setDelimiterCharacter(Character delimiterCharacter)
+    public void setDelimiterCharacter(String delimiterCharacter)
     {
         this.delimiterCharacter = delimiterCharacter;
     }
@@ -77,7 +79,7 @@ public class CSVFileProperties extends DataFileProperties
      *
      * @return character
      */
-    public Character getQuoteCharacter()
+    public String getQuoteCharacter()
     {
         return quoteCharacter;
     }
@@ -89,7 +91,7 @@ public class CSVFileProperties extends DataFileProperties
      *
      * @param quoteCharacter character
      */
-    public void setQuoteCharacter(Character quoteCharacter)
+    public void setQuoteCharacter(String quoteCharacter)
     {
         this.quoteCharacter = quoteCharacter;
     }

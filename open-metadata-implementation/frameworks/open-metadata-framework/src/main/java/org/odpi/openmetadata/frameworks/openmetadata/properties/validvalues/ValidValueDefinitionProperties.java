@@ -2,9 +2,7 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.frameworks.openmetadata.properties.validvalues;
 
-import com.fasterxml.jackson.annotation.JsonAutoDetect;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.*;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.ReferenceableProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 
@@ -19,8 +17,18 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME,
+        include = JsonTypeInfo.As.PROPERTY,
+        property = "class")
+@JsonSubTypes(
+        {
+                @JsonSubTypes.Type(value = ReferenceDataValueProperties.class, name = "ReferenceDataValueProperties"),
+                @JsonSubTypes.Type(value = SpecificationPropertyValueProperties.class, name = "SpecificationPropertyValueProperties"),
+                @JsonSubTypes.Type(value = ValidMetadataValueProperties.class, name = "ValidMetadataValue"),
+        })
 public class ValidValueDefinitionProperties extends ReferenceableProperties
 {
+    private String  namespace         = null;
     private String  usage             = null;
     private String  scope             = null;
     private String  preferredValue    = null;
@@ -50,13 +58,36 @@ public class ValidValueDefinitionProperties extends ReferenceableProperties
 
         if (template != null)
         {
-            usage = template.getUsage();
-            scope = template.getScope();
-            preferredValue = template.getPreferredValue();
+            namespace         = template.getNamespace();
+            usage             = template.getUsage();
+            scope             = template.getScope();
+            preferredValue    = template.getPreferredValue();
             dataType          = template.getDataType();
             userDefinedStatus = template.getUserDefinedStatus();
             isCaseSensitive   = template.getIsCaseSensitive();
         }
+    }
+
+
+    /**
+     * Return the name of the namespace that this type belongs to.
+     *
+     * @return string name
+     */
+    public String getNamespace()
+    {
+        return namespace;
+    }
+
+
+    /**
+     * Set up the name of the namespace that this type belongs to.
+     *
+     * @param namespace string name
+     */
+    public void setNamespace(String namespace)
+    {
+        this.namespace = namespace;
     }
 
 

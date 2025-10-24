@@ -10,12 +10,8 @@ import org.odpi.openmetadata.frameworks.openmetadata.ffdc.PropertyServerExceptio
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.OpenMetadataRootElement;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.ClassificationProperties;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.OpenMetadataElement;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.RelatedMetadataElement;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.RelationshipProperties;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.actors.*;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.validvalues.*;
-import org.odpi.openmetadata.frameworks.openmetadata.refdata.SpecificationPropertyType;
 import org.odpi.openmetadata.frameworks.openmetadata.search.*;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
@@ -29,7 +25,6 @@ import java.util.Map;
  */
 public class ValidValueDefinitionHandler extends OpenMetadataHandlerBase
 {
-
     /**
      * Create a new handler.
      *
@@ -48,6 +43,42 @@ public class ValidValueDefinitionHandler extends OpenMetadataHandlerBase
               localServiceName,
               openMetadataClient,
               OpenMetadataType.VALID_VALUE_DEFINITION.typeName);
+    }
+
+
+    /**
+     * Create a new handler.
+     *
+     * @param localServerName        name of this server (view server)
+     * @param auditLog               logging destination
+     * @param localServiceName       local service name
+     * @param openMetadataClient     access to open metadata
+     * @param metadataElementTypeName type of principle element
+     */
+    public ValidValueDefinitionHandler(String             localServerName,
+                                       AuditLog           auditLog,
+                                       String             localServiceName,
+                                       OpenMetadataClient openMetadataClient,
+                                       String             metadataElementTypeName)
+    {
+        super(localServerName,
+              auditLog,
+              localServiceName,
+              openMetadataClient,
+              metadataElementTypeName);
+    }
+
+
+    /**
+     * Create a new handler.
+     *
+     * @param template        properties to copy
+     * @param specificTypeName   subtype  to control handler
+     */
+    public ValidValueDefinitionHandler(ValidValueDefinitionHandler template,
+                                       String                      specificTypeName)
+    {
+        super(template, specificTypeName);
     }
 
 
@@ -237,9 +268,9 @@ public class ValidValueDefinitionHandler extends OpenMetadataHandlerBase
                                           String                         elementGUID,
                                           String                         validValueDefinitionGUID,
                                           MetadataSourceOptions          metadataSourceOptions,
-                                          ValidValueAssignmentProperties relationshipProperties) throws InvalidParameterException,
-                                                                                                        PropertyServerException,
-                                                                                                        UserNotAuthorizedException
+                                          ValidValuesAssignmentProperties relationshipProperties) throws InvalidParameterException,
+                                                                                                         PropertyServerException,
+                                                                                                         UserNotAuthorizedException
     {
         final String methodName            = "linkValidValuesAssignment";
         final String end1GUIDParameterName = "elementGUID";
@@ -766,6 +797,8 @@ public class ValidValueDefinitionHandler extends OpenMetadataHandlerBase
         final String methodName = "getValidValueDefinitionsByName";
 
         List<String> propertyNames = Arrays.asList(OpenMetadataProperty.QUALIFIED_NAME.name,
+                                                   OpenMetadataProperty.IDENTIFIER.name,
+                                                   OpenMetadataProperty.PREFERRED_VALUE.name,
                                                    OpenMetadataProperty.DISPLAY_NAME.name);
 
         return super.getRootElementsByName(userId,
@@ -799,55 +832,6 @@ public class ValidValueDefinitionHandler extends OpenMetadataHandlerBase
                                           validValueDefinitionGUID,
                                           getOptions,
                                           methodName);
-    }
-
-
-    /**
-     * Return the properties of a specific validValueDefinition retrieved using an associated userId.
-     *
-     * @param userId                 userId of user making request
-     * @param requiredUserId         identifier of user
-     * @param getOptions multiple options to control the query
-     * @return retrieved properties
-     * @throws InvalidParameterException  one of the parameters is null or invalid.
-     * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
-     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
-     */
-    public OpenMetadataRootElement getValidValueDefinitionByUserId(String     userId,
-                                                                   String     requiredUserId,
-                                                                   GetOptions getOptions) throws InvalidParameterException,
-                                                                                                 PropertyServerException,
-                                                                                                 UserNotAuthorizedException
-    {
-        final String methodName        = "getValidValueDefinitionByUserId";
-        final String nameParameterName = "requiredUserId";
-
-        propertyHelper.validateUserId(userId, methodName);
-        propertyHelper.validateMandatoryName(requiredUserId, nameParameterName, methodName);
-
-        OpenMetadataElement userIdentityElement = openMetadataClient.getMetadataElementByUniqueName(userId,
-                                                                                                    requiredUserId,
-                                                                                                    OpenMetadataProperty.USER_ID.name,
-                                                                                                    getOptions);
-
-        if (userIdentityElement != null)
-        {
-            RelatedMetadataElement profileElement = openMetadataClient.getRelatedMetadataElement(userId,
-                                                                                                 userIdentityElement.getElementGUID(),
-                                                                                                 2,
-                                                                                                 OpenMetadataType.PROFILE_IDENTITY_RELATIONSHIP.typeName,
-                                                                                                 getOptions);
-
-            if (profileElement != null)
-            {
-                return convertRootElement(userId,
-                                          profileElement.getElement(),
-                                          new QueryOptions(getOptions),
-                                          methodName);
-            }
-        }
-
-        return null;
     }
 
 

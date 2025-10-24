@@ -79,6 +79,7 @@ public class OpenMetadataRootHierarchyMermaidGraphBuilder extends OpenMetadataRo
         appendNewMermaidNode(openMetadataRootHierarchy.getElementHeader().getGUID(),
                              super.getNodeDisplayName(openMetadataRootHierarchy.getElementHeader(), openMetadataRootHierarchy.getProperties()),
                              super.getTypeNameForEntity(openMetadataRootHierarchy.getElementHeader()),
+                             openMetadataRootHierarchy.getProperties(),
                              super.getVisualStyleForEntity(openMetadataRootHierarchy.getElementHeader(), principleStyle));
 
         if (parentNodeName != null)

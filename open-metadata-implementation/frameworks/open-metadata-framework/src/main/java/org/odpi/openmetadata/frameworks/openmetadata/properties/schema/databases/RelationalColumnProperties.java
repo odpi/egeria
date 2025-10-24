@@ -3,7 +3,10 @@
 
 package org.odpi.openmetadata.frameworks.openmetadata.properties.schema.databases;
 
-import com.fasterxml.jackson.annotation.*;
+import com.fasterxml.jackson.annotation.JsonAutoDetect;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.schema.SchemaAttributeProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.schema.tabular.TabularColumnProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 
@@ -36,6 +39,18 @@ public class RelationalColumnProperties extends TabularColumnProperties
      * @param template object to copy
      */
     public RelationalColumnProperties(TabularColumnProperties template)
+    {
+        super(template);
+    }
+
+
+
+    /**
+     * Copy/clone constructor.
+     *
+     * @param template object to copy
+     */
+    public RelationalColumnProperties(SchemaAttributeProperties template)
     {
         super(template);
     }

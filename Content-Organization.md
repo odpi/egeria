@@ -19,7 +19,7 @@ The Egeria core repository contains the core Egeria functionality, and is organi
 
   * **[access-services](open-metadata-implementation/access-services)** - client support for the frameworks
     * **[ocf-metadata-management](open-metadata-implementation/access-services/ocf-metadata-management)** - provides metadata management for the [Open Connector Framework (OCF)](open-metadata-implementation/frameworks/open-connector-framework) properties and APIs.
-    * **[oif-metadata-management](open-metadata-implementation/access-services/oif-metadata-management)** - provides metadata management for the [Open Integration Framework (OCF)](open-metadata-implementation/frameworks/open-integration-framework) properties and APIs.
+    * **[omf-metadata-management](open-metadata-implementation/access-services/omf-metadata-management)** - provides metadata management for the [Open Metadata Framework (OMF)](open-metadata-implementation/frameworks/open-metadata-framework) properties and APIs.
     * **[gaf-metadata-management](open-metadata-implementation/access-services/gaf-metadata-management)** - provides metadata management for the [Open Governance Framework (OGF)](open-metadata-implementation/frameworks/open-governance-framework) properties and APIs.
 
   * **[adapters](open-metadata-implementation/adapters)** - pluggable component implementations.

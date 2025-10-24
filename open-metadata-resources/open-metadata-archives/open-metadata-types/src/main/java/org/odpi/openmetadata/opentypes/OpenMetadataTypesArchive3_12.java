@@ -3,22 +3,14 @@
 package org.odpi.openmetadata.opentypes;
 
 
-import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
-import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 import org.odpi.openmetadata.repositoryservices.archiveutilities.OMRSArchiveBuilder;
 import org.odpi.openmetadata.repositoryservices.archiveutilities.OMRSArchiveHelper;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.archivestore.properties.OpenMetadataArchive;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.archivestore.properties.OpenMetadataArchiveType;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.ClassificationDef;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.EntityDef;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDefAttribute;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDefPatch;
 import org.odpi.openmetadata.repositoryservices.ffdc.OMRSErrorCode;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.OMRSLogicErrorException;
 
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 
 /**
  * OpenMetadataTypesArchive builds an open metadata archive containing all the standard open metadata types.
@@ -157,208 +149,8 @@ public class OpenMetadataTypesArchive3_12
          */
         previousTypes.getOriginalTypes();
 
-        /*
-         * Calls for new and changed types go here
-         */
-        add0053XRootSchemaType();
-        add0042ProcessingStateClassification();
     }
 
-
-    /*
-     * -------------------------------------------------------------------------------------------------------
-     */
-
-    /**
-     * 0042  Add the Processing State Classification
-     */
-    private void add0042ProcessingStateClassification()
-    {
-        this.archiveBuilder.addClassificationDef(addProcessingStateClassification());
-    }
-
-    private ClassificationDef addProcessingStateClassification()
-    {
-        ClassificationDef classificationDef = archiveHelper.getClassificationDef(OpenMetadataType.PROCESSING_STATE_CLASSIFICATION,
-                                                                                 null,
-                                                                                 this.archiveBuilder.getEntityDef(OpenMetadataType.SOFTWARE_CAPABILITY.typeName),
-                                                                                 true);
-
-        /*
-         * Build the attributes
-         */
-        List<TypeDefAttribute> properties = new ArrayList<>();
-
-        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.SYNC_DATES_BY_KEY));
-
-        classificationDef.setPropertiesDefinition(properties);
-
-        return classificationDef;
-    }
-
-
-    /*
-     * -------------------------------------------------------------------------------------------------------
-     */
-
-
-    private void add0053XRootSchemaType()
-    {
-        this.archiveBuilder.addEntityDef(getRootSchemaTypeEntity());
-
-        this.archiveBuilder.addTypeDefPatch(updateTabularSchemaType());
-        this.archiveBuilder.addTypeDefPatch(updateDocumentSchemaType());
-        this.archiveBuilder.addTypeDefPatch(updateObjectSchemaType());
-        this.archiveBuilder.addTypeDefPatch(updateEventType());
-        this.archiveBuilder.addTypeDefPatch(updateRelationalDBSchemaType());
-        this.archiveBuilder.addTypeDefPatch(updateAPISchemaType());
-        this.archiveBuilder.addTypeDefPatch(updateDisplayDataSchemaType());
-        this.archiveBuilder.addTypeDefPatch(updateQuerySchemaType());
-        this.archiveBuilder.addTypeDefPatch(updateGraphSchemaType());
-    }
-
-
-    private EntityDef getRootSchemaTypeEntity()
-    {
-        return archiveHelper.getDefaultEntityDef(OpenMetadataType.ROOT_SCHEMA_TYPE,
-                                                 this.archiveBuilder.getEntityDef(OpenMetadataType.COMPLEX_SCHEMA_TYPE.typeName));
-    }
-
-
-    private TypeDefPatch updateTabularSchemaType()
-    {
-        /*
-         * Create the Patch
-         */
-        TypeDefPatch typeDefPatch = archiveBuilder.getPatchForType(OpenMetadataType.TABULAR_SCHEMA_TYPE.typeName);
-
-        typeDefPatch.setUpdatedBy(originatorName);
-        typeDefPatch.setUpdateTime(creationDate);
-        typeDefPatch.setSuperType(this.archiveBuilder.getEntityDef(OpenMetadataType.ROOT_SCHEMA_TYPE.typeName));
-
-        return typeDefPatch;
-    }
-
-
-    private TypeDefPatch updateDocumentSchemaType()
-    {
-        /*
-         * Create the Patch
-         */
-        TypeDefPatch typeDefPatch = archiveBuilder.getPatchForType(OpenMetadataType.DOCUMENT_SCHEMA_TYPE.typeName);
-
-        typeDefPatch.setUpdatedBy(originatorName);
-        typeDefPatch.setUpdateTime(creationDate);
-        typeDefPatch.setSuperType(this.archiveBuilder.getEntityDef(OpenMetadataType.ROOT_SCHEMA_TYPE.typeName));
-
-        return typeDefPatch;
-    }
-
-
-    private TypeDefPatch updateObjectSchemaType()
-    {
-        /*
-         * Create the Patch
-         */
-        TypeDefPatch typeDefPatch = archiveBuilder.getPatchForType(OpenMetadataType.OBJECT_SCHEMA_TYPE.typeName);
-
-        typeDefPatch.setUpdatedBy(originatorName);
-        typeDefPatch.setUpdateTime(creationDate);
-        typeDefPatch.setSuperType(this.archiveBuilder.getEntityDef(OpenMetadataType.ROOT_SCHEMA_TYPE.typeName));
-
-        return typeDefPatch;
-    }
-
-
-
-    private TypeDefPatch updateEventType()
-    {
-        /*
-         * Create the Patch
-         */
-        TypeDefPatch typeDefPatch = archiveBuilder.getPatchForType(OpenMetadataType.EVENT_TYPE.typeName);
-
-        typeDefPatch.setUpdatedBy(originatorName);
-        typeDefPatch.setUpdateTime(creationDate);
-        typeDefPatch.setSuperType(this.archiveBuilder.getEntityDef(OpenMetadataType.ROOT_SCHEMA_TYPE.typeName));
-
-        return typeDefPatch;
-    }
-
-
-    private TypeDefPatch updateRelationalDBSchemaType()
-    {
-        /*
-         * Create the Patch
-         */
-        TypeDefPatch typeDefPatch = archiveBuilder.getPatchForType(OpenMetadataType.RELATIONAL_DB_SCHEMA_TYPE.typeName);
-
-        typeDefPatch.setUpdatedBy(originatorName);
-        typeDefPatch.setUpdateTime(creationDate);
-        typeDefPatch.setSuperType(this.archiveBuilder.getEntityDef(OpenMetadataType.ROOT_SCHEMA_TYPE.typeName));
-
-        return typeDefPatch;
-    }
-
-
-    private TypeDefPatch updateAPISchemaType()
-    {
-        /*
-         * Create the Patch
-         */
-        TypeDefPatch typeDefPatch = archiveBuilder.getPatchForType(OpenMetadataType.API_SCHEMA_TYPE.typeName);
-
-        typeDefPatch.setUpdatedBy(originatorName);
-        typeDefPatch.setUpdateTime(creationDate);
-        typeDefPatch.setSuperType(this.archiveBuilder.getEntityDef(OpenMetadataType.ROOT_SCHEMA_TYPE.typeName));
-
-        return typeDefPatch;
-    }
-
-
-    private TypeDefPatch updateDisplayDataSchemaType()
-    {
-        /*
-         * Create the Patch
-         */
-        TypeDefPatch typeDefPatch = archiveBuilder.getPatchForType(OpenMetadataType.DISPLAY_DATA_SCHEMA_TYPE.typeName);
-
-        typeDefPatch.setUpdatedBy(originatorName);
-        typeDefPatch.setUpdateTime(creationDate);
-        typeDefPatch.setSuperType(this.archiveBuilder.getEntityDef(OpenMetadataType.ROOT_SCHEMA_TYPE.typeName));
-
-        return typeDefPatch;
-    }
-
-
-    private TypeDefPatch updateQuerySchemaType()
-    {
-        /*
-         * Create the Patch
-         */
-        TypeDefPatch typeDefPatch = archiveBuilder.getPatchForType(OpenMetadataType.QUERY_SCHEMA_TYPE.typeName);
-
-        typeDefPatch.setUpdatedBy(originatorName);
-        typeDefPatch.setUpdateTime(creationDate);
-        typeDefPatch.setSuperType(this.archiveBuilder.getEntityDef(OpenMetadataType.ROOT_SCHEMA_TYPE.typeName));
-
-        return typeDefPatch;
-    }
-
-
-    private TypeDefPatch updateGraphSchemaType()
-    {
-        /*
-         * Create the Patch
-         */
-        TypeDefPatch typeDefPatch = archiveBuilder.getPatchForType(OpenMetadataType.GRAPH_SCHEMA_TYPE.typeName);
-
-        typeDefPatch.setUpdatedBy(originatorName);
-        typeDefPatch.setUpdateTime(creationDate);
-        typeDefPatch.setSuperType(this.archiveBuilder.getEntityDef(OpenMetadataType.ROOT_SCHEMA_TYPE.typeName));
-
-        return typeDefPatch;
-    }
 
 
     /*

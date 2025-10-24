@@ -402,7 +402,7 @@ public class HarvestSurveysCatalogTargetProcessor extends CatalogTargetProcessor
                 int startFrom = 0;
                 RelatedMetadataElementList relatedMetadataElements = openMetadataStore.getRelatedMetadataElements(relatedAnnotationElement.getElement().getElementGUID(),
                                                                                                                   1,
-                                                                                                                  OpenMetadataType.REQUEST_FOR_ACTION_TARGET.typeName,
+                                                                                                                  OpenMetadataType.REQUEST_FOR_ACTION_TARGET_RELATIONSHIP.typeName,
                                                                                                                   startFrom,
                                                                                                                   openMetadataStore.getMaxPagingSize());
                 while ((relatedMetadataElements != null) && (relatedMetadataElements.getElementList() != null))
@@ -424,7 +424,7 @@ public class HarvestSurveysCatalogTargetProcessor extends CatalogTargetProcessor
 
                     relatedMetadataElements = openMetadataStore.getRelatedMetadataElements(relatedAnnotationElement.getElement().getElementGUID(),
                                                                                            1,
-                                                                                           OpenMetadataType.REQUEST_FOR_ACTION_TARGET.typeName,
+                                                                                           OpenMetadataType.REQUEST_FOR_ACTION_TARGET_RELATIONSHIP.typeName,
                                                                                            startFrom,
                                                                                            openMetadataStore.getMaxPagingSize());
                 }

@@ -10,7 +10,6 @@ import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataWikiPages
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
-import static org.odpi.openmetadata.frameworks.openmetadata.mapper.OpenMetadataValidValues.constructValidValueCategory;
 import static org.odpi.openmetadata.frameworks.openmetadata.mapper.OpenMetadataValidValues.constructValidValueQualifiedName;
 
 /**
@@ -213,19 +212,6 @@ public enum ContactMethodType implements OpenMetadataEnum
 
 
     /**
-     * Return the category for this value.
-     *
-     * @return string
-     */
-    public String getCategory()
-    {
-        return constructValidValueCategory(ENUM_TYPE_NAME,
-                                           OpenMetadataProperty.CONTACT_METHOD_TYPE.name,
-                                           null);
-    }
-
-
-    /**
      * toString() JSON-style
      *
      * @return string description
@@ -233,6 +219,13 @@ public enum ContactMethodType implements OpenMetadataEnum
     @Override
     public String toString()
     {
-        return "ContactMethodType : " + name;
+        return "ContactMethodType{" +
+            "ordinal=" + ordinal +
+            ", name='" + name + '\'' +
+            ", description='" + description + '\'' +
+            ", descriptionGUID='" + descriptionGUID + '\'' +
+            ", isDefault='" + isDefault + '\'' +
+            '}';
+
     }
 }

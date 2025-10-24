@@ -6,7 +6,9 @@ package org.odpi.openmetadata.frameworks.openmetadata.properties.externalidentif
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import org.odpi.openmetadata.frameworks.openmetadata.enums.PermittedSynchronization;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.RelationshipBeanProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 
 import java.util.Date;
 import java.util.Map;
@@ -24,10 +26,12 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class ExternalIdLinkProperties extends RelationshipBeanProperties
 {
-    private String              usage             = null;
-    private String              source            = null;
-    private Date                lastSynchronized  = null;
-    private Map<String, String> mappingProperties = null;
+    private String                   usage                    = null;
+    private String                   source                   = null;
+    private Date                     lastSynchronized         = null;
+    private Map<String, String>      mappingProperties        = null;
+    private PermittedSynchronization permittedSynchronization = null;
+
 
     /**
      * Default constructor
@@ -35,6 +39,7 @@ public class ExternalIdLinkProperties extends RelationshipBeanProperties
     public ExternalIdLinkProperties()
     {
         super();
+        super.setTypeName(OpenMetadataType.EXTERNAL_ID_LINK_RELATIONSHIP.typeName);
     }
 
 
@@ -49,10 +54,12 @@ public class ExternalIdLinkProperties extends RelationshipBeanProperties
 
         if (template != null)
         {
-            usage             = template.getUsage();
-            source            = template.getSource();
-            lastSynchronized  = template.getLastSynchronized();
-            mappingProperties = template.getMappingProperties();
+            usage                    = template.getUsage();
+            source                   = template.getSource();
+            lastSynchronized         = template.getLastSynchronized();
+            mappingProperties        = template.getMappingProperties();
+            permittedSynchronization = template.getPermittedSynchronization();
+
         }
     }
 
@@ -149,6 +156,30 @@ public class ExternalIdLinkProperties extends RelationshipBeanProperties
     }
 
 
+
+    /**
+     * Return details of the synchronization direction.
+     *
+     * @return enum
+     */
+    public PermittedSynchronization getPermittedSynchronization()
+    {
+        return permittedSynchronization;
+    }
+
+
+    /**
+     * Set up details of the synchronization direction.
+     *
+     * @param permittedSynchronization enum
+     */
+    public void setPermittedSynchronization(PermittedSynchronization permittedSynchronization)
+    {
+        this.permittedSynchronization = permittedSynchronization;
+    }
+
+
+
     /**
      * Standard toString method.
      *
@@ -162,6 +193,7 @@ public class ExternalIdLinkProperties extends RelationshipBeanProperties
                 ", source='" + source + '\'' +
                 ", lastSynchronized=" + lastSynchronized +
                 ", mappingProperties=" + mappingProperties +
+                ", permittedSynchronization=" + permittedSynchronization +
                 "} " + super.toString();
     }
 
@@ -179,7 +211,11 @@ public class ExternalIdLinkProperties extends RelationshipBeanProperties
         if (objectToCompare == null || getClass() != objectToCompare.getClass()) return false;
         if (!super.equals(objectToCompare)) return false;
         ExternalIdLinkProperties that = (ExternalIdLinkProperties) objectToCompare;
-        return Objects.equals(usage, that.usage) && Objects.equals(source, that.source) && Objects.equals(lastSynchronized, that.lastSynchronized) && Objects.equals(mappingProperties, that.mappingProperties);
+        return  permittedSynchronization == that.permittedSynchronization &&
+                Objects.equals(usage, that.usage) &&
+                Objects.equals(source, that.source) &&
+                Objects.equals(lastSynchronized, that.lastSynchronized) &&
+                Objects.equals(mappingProperties, that.mappingProperties);
     }
 
 
@@ -191,6 +227,6 @@ public class ExternalIdLinkProperties extends RelationshipBeanProperties
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), usage, source, lastSynchronized, mappingProperties);
+        return Objects.hash(super.hashCode(), usage, source, lastSynchronized, mappingProperties, permittedSynchronization);
     }
 }

@@ -6,6 +6,7 @@ import org.odpi.openmetadata.archiveutilities.openconnectors.apacheatlas.ApacheA
 import org.odpi.openmetadata.archiveutilities.openconnectors.apachekafka.ApacheKafkaPackArchiveWriter;
 import org.odpi.openmetadata.archiveutilities.openconnectors.apis.APIPackArchiveWriter;
 import org.odpi.openmetadata.archiveutilities.openconnectors.core.CorePackArchiveWriter;
+import org.odpi.openmetadata.archiveutilities.openconnectors.digitalproducts.ProductPackArchiveWriter;
 import org.odpi.openmetadata.archiveutilities.openconnectors.nanny.NannyPackArchiveWriter;
 import org.odpi.openmetadata.archiveutilities.openconnectors.postgres.PostgresPackArchiveWriter;
 import org.odpi.openmetadata.archiveutilities.openconnectors.unitycatalog.UnityCatalogPackArchiveWriter;
@@ -30,6 +31,9 @@ public class CorePacksArchivesWriter
 
             CorePackArchiveWriter corePackArchiveWriter = new CorePackArchiveWriter();
             corePackArchiveWriter.writeOpenMetadataArchive(folderName);
+
+            ProductPackArchiveWriter productPackArchiveWriter = new ProductPackArchiveWriter();
+            productPackArchiveWriter.writeOpenMetadataArchive(folderName);
 
             UnityCatalogPackArchiveWriter unityCatalogPackArchiveWriter = new UnityCatalogPackArchiveWriter();
             unityCatalogPackArchiveWriter.writeOpenMetadataArchive(folderName);

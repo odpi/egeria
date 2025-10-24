@@ -3,25 +3,27 @@
 
 package org.odpi.openmetadata.frameworks.openmetadata.handlers;
 
-import org.odpi.openmetadata.frameworks.openmetadata.client.OpenMetadataClient;
-import org.odpi.openmetadata.frameworks.openmetadata.enums.*;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
-import org.odpi.openmetadata.frameworks.openmetadata.converters.*;
-import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
-import org.odpi.openmetadata.frameworks.openmetadata.ffdc.PropertyServerException;
-import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.*;
-import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.*;
+import org.odpi.openmetadata.frameworks.openmetadata.client.OpenMetadataClient;
+import org.odpi.openmetadata.frameworks.openmetadata.ffdc.*;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.OpenMetadataRootElement;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.RelatedMetadataElementSummary;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.ClassificationProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.RelatedMetadataElement;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.RelatedMetadataElementList;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.RelationshipProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.solutions.SolutionComponentActorProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.solutions.SolutionComponentProperties;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.solutions.*;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.solutions.SolutionCompositionProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.solutions.SolutionLinkingWireProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.search.*;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
-import org.odpi.openmetadata.frameworks.openmetadata.ffdc.OMFAuditCode;
-import org.odpi.openmetadata.frameworks.openmetadata.ffdc.OMFErrorCode;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Map;
 
 /**
  * SolutionComponentHandler provides methods to define solution components and their supporting objects.
@@ -216,7 +218,7 @@ public class SolutionComponentHandler extends OpenMetadataHandlerBase
 
 
     /**
-     * Attach a design object such as a solution component or governance definition to its implementation via the ImplementedBy relationship.
+     * Attach an element communicating with a solution component.
      *
      * @param userId                  userId of user making request
      * @param solutionComponentOneGUID unique identifier of the solution component at end 1
@@ -253,7 +255,7 @@ public class SolutionComponentHandler extends OpenMetadataHandlerBase
 
 
     /**
-     * Detach a design object such as a solution component or governance definition from its implementation.
+     * Detach an element communicating with a solution component.
      *
      * @param userId                 userId of user making request.
      * @param solutionComponentOneGUID unique identifier of the solution component at end 1
@@ -397,33 +399,19 @@ public class SolutionComponentHandler extends OpenMetadataHandlerBase
      * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    public List<SolutionComponentElement> getSolutionComponentsByName(String       userId,
-                                                                      String       name,
-                                                                      QueryOptions queryOptions) throws InvalidParameterException,
+    public List<OpenMetadataRootElement> getSolutionComponentsByName(String       userId,
+                                                                     String       name,
+                                                                     QueryOptions queryOptions) throws InvalidParameterException,
                                                                                                         PropertyServerException,
                                                                                                         UserNotAuthorizedException
     {
         final String methodName = "getSolutionComponentsByName";
-        final String nameParameterName = "name";
-
-        propertyHelper.validateUserId(userId, methodName);
-        propertyHelper.validateMandatoryName(name, nameParameterName, methodName);
-        propertyHelper.validatePaging(queryOptions, openMetadataClient.getMaxPagingSize(), methodName);
 
         List<String> propertyNames = Arrays.asList(OpenMetadataProperty.QUALIFIED_NAME.name,
+                                                   OpenMetadataProperty.IDENTIFIER.name,
                                                    OpenMetadataProperty.DISPLAY_NAME.name);
 
-        List<OpenMetadataElement> openMetadataElements = openMetadataClient.findMetadataElements(userId,
-                                                                                                 propertyHelper.getSearchPropertiesByName(propertyNames, name, PropertyComparisonOperator.EQ),
-                                                                                                 null,
-                                                                                                 super.addDefaultType(queryOptions));
-
-        return convertSolutionComponents(userId,
-                                         openMetadataElements,
-                                         true,
-                                         true,
-                                         queryOptions,
-                                         methodName);
+        return super.getRootElementsByName(userId, name, propertyNames, queryOptions, methodName);
     }
 
 
@@ -438,11 +426,11 @@ public class SolutionComponentHandler extends OpenMetadataHandlerBase
      * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    public SolutionComponentElement getSolutionComponentByGUID(String     userId,
-                                                               String     solutionComponentGUID,
-                                                               GetOptions getOptions) throws InvalidParameterException,
-                                                                                             PropertyServerException,
-                                                                                             UserNotAuthorizedException
+    public OpenMetadataRootElement getSolutionComponentByGUID(String     userId,
+                                                              String     solutionComponentGUID,
+                                                              GetOptions getOptions) throws InvalidParameterException,
+                                                                                            PropertyServerException,
+                                                                                            UserNotAuthorizedException
     {
         final String methodName = "getSolutionComponentByGUID";
         final String guidParameterName = "solutionComponentGUID";
@@ -450,21 +438,7 @@ public class SolutionComponentHandler extends OpenMetadataHandlerBase
         propertyHelper.validateUserId(userId, methodName);
         propertyHelper.validateGUID(solutionComponentGUID, guidParameterName, methodName);
 
-        OpenMetadataElement openMetadataElement = openMetadataClient.getMetadataElementByGUID(userId,
-                                                                                              solutionComponentGUID,
-                                                                                              getOptions);
-
-        if ((openMetadataElement != null) && (propertyHelper.isTypeOf(openMetadataElement, metadataElementTypeName)))
-        {
-            return convertSolutionComponent(userId,
-                                            openMetadataElement,
-                                            true,
-                                            true,
-                                            new QueryOptions(getOptions),
-                                            methodName);
-        }
-
-        return null;
+        return super.getRootElementByGUID(userId, solutionComponentGUID, getOptions, methodName);
     }
 
 
@@ -480,28 +454,15 @@ public class SolutionComponentHandler extends OpenMetadataHandlerBase
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
      */
-    public List<SolutionComponentElement> findSolutionComponents(String        userId,
-                                                                 String        searchString,
-                                                                 SearchOptions searchOptions) throws InvalidParameterException,
-                                                                                                      UserNotAuthorizedException,
-                                                                                                      PropertyServerException
+    public List<OpenMetadataRootElement> findSolutionComponents(String        userId,
+                                                                String        searchString,
+                                                                SearchOptions searchOptions) throws InvalidParameterException,
+                                                                                                    UserNotAuthorizedException,
+                                                                                                    PropertyServerException
     {
         final String methodName = "findSolutionComponents";
-        final String searchStringParameterName = "searchString";
 
-        propertyHelper.validateUserId(userId, methodName);
-        propertyHelper.validateSearchString(searchString, searchStringParameterName, methodName);
-
-        List<OpenMetadataElement> openMetadataElements = openMetadataClient.findMetadataElementsWithString(userId,
-                                                                                                           searchString,
-                                                                                                           super.addDefaultType(searchOptions));
-
-        return convertSolutionComponents(userId,
-                                         openMetadataElements,
-                                         true,
-                                         true,
-                                         super.addDefaultType(searchOptions),
-                                         methodName);
+        return super.findRootElements(userId, searchString,searchOptions, methodName);
     }
 
 
@@ -540,49 +501,6 @@ public class SolutionComponentHandler extends OpenMetadataHandlerBase
 
 
     /**
-     * Convert the open metadata elements retrieve into solution component elements.
-     *
-     * @param userId calling user
-     * @param openMetadataElements elements extracted from the repository
-     * @param addParentContext should parent information supply chains, segments and solution components be added?
-     * @param queryOptions           multiple options to control the query
-     * @param fullDisplay print all elements
-     * @param methodName calling method
-     * @return list of solution components (or null)
-     * @throws PropertyServerException problem with the conversion process
-     */
-    private List<SolutionComponentElement> convertSolutionComponents(String                    userId,
-                                                                     List<OpenMetadataElement> openMetadataElements,
-                                                                     boolean                   addParentContext,
-                                                                     boolean                   fullDisplay,
-                                                                     QueryOptions              queryOptions,
-                                                                     String                    methodName) throws PropertyServerException
-    {
-        if (openMetadataElements != null)
-        {
-            List<SolutionComponentElement> solutionComponentElements = new ArrayList<>();
-
-            for (OpenMetadataElement openMetadataElement : openMetadataElements)
-            {
-                if (openMetadataElement != null)
-                {
-                    solutionComponentElements.add(convertSolutionComponent(userId,
-                                                                           openMetadataElement,
-                                                                           addParentContext,
-                                                                           fullDisplay,
-                                                                           queryOptions,
-                                                                           methodName));
-                }
-            }
-
-            return solutionComponentElements;
-        }
-
-        return null;
-    }
-
-
-    /**
      * Convert the open metadata elements retrieve into summary elements.
      *
      * @param relatedMetadataElementList elements retrieved from the repository
@@ -613,83 +531,6 @@ public class SolutionComponentHandler extends OpenMetadataHandlerBase
 
 
     /**
-     * Return the port summaries for a solution component.
-     *
-     * @param userId calling user
-     * @param solutionComponentGUID starting guid
-     * @param queryOptions           multiple options to control the query
-     * @param methodName calling method
-     * @return list
-     * @throws PropertyServerException problem with the conversion process
-     */
-    private List<RelatedMetadataElementSummary> convertPortSummaries(String       userId,
-                                                                     String       solutionComponentGUID,
-                                                                     QueryOptions queryOptions,
-                                                                     String       methodName) throws PropertyServerException
-    {
-        try
-        {
-            OpenMetadataConverterBase<RelatedMetadataElementSummary> portConverter = new OpenMetadataConverterBase<>(propertyHelper, localServiceName, localServerName);
-            List<RelatedMetadataElementSummary>                      portSummaries = new ArrayList<>();
-
-            QueryOptions workingQueryOptions = new QueryOptions(queryOptions);
-            workingQueryOptions.setStartFrom(0);
-            workingQueryOptions.setPageSize(openMetadataClient.getMaxPagingSize());
-
-            RelatedMetadataElementList relatedMetadataElementList = openMetadataClient.getRelatedMetadataElements(userId,
-                                                                                                                  solutionComponentGUID,
-                                                                                                                  1,
-                                                                                                                  OpenMetadataType.SOLUTION_COMPONENT_PORT_RELATIONSHIP.typeName,
-                                                                                                                  workingQueryOptions);
-            while ((relatedMetadataElementList != null) && (relatedMetadataElementList.getElementList() != null))
-            {
-                for (RelatedMetadataElement relatedMetadataElement : relatedMetadataElementList.getElementList())
-                {
-                    if (propertyHelper.isTypeOf(relatedMetadataElement.getElement(), OpenMetadataType.SOLUTION_COMPONENT.typeName))
-                    {
-                        portSummaries.add(portConverter.getRelatedElementSummary(relatedMetadataElement, methodName));
-                    }
-                }
-
-                workingQueryOptions.setStartFrom(workingQueryOptions.getStartFrom() + openMetadataClient.getMaxPagingSize());
-                relatedMetadataElementList = openMetadataClient.getRelatedMetadataElements(userId,
-                                                                                           solutionComponentGUID,
-                                                                                           1,
-                                                                                           OpenMetadataType.SOLUTION_COMPONENT_PORT_RELATIONSHIP.typeName,
-                                                                                           workingQueryOptions);
-            }
-
-            if (! portSummaries.isEmpty())
-            {
-                return portSummaries;
-            }
-        }
-        catch (Exception error)
-        {
-            if (auditLog != null)
-            {
-                auditLog.logException(methodName,
-                                      OMFAuditCode.UNEXPECTED_CONVERTER_EXCEPTION.getMessageDefinition(error.getClass().getName(),
-                                                                                                       methodName,
-                                                                                                       localServiceName,
-                                                                                                       error.getMessage()),
-                                      error);
-            }
-
-            throw new PropertyServerException(OMFErrorCode.UNEXPECTED_CONVERTER_EXCEPTION.getMessageDefinition(error.getClass().getName(),
-                                                                                                                       methodName,
-                                                                                                               localServiceName,
-                                                                                                                       error.getMessage()),
-                                              error.getClass().getName(),
-                                              methodName,
-                                              error);
-        }
-
-        return null;
-    }
-
-
-    /**
      * Return the solution component implementation extracted from the open metadata element.
      *
      * @param relatedMetadataElement element extracted from the repository
@@ -702,7 +543,7 @@ public class SolutionComponentHandler extends OpenMetadataHandlerBase
     {
         try
         {
-            return propertyHelper.getRelatedElementSummary(relatedMetadataElement, methodName);
+            return propertyHelper.getRelatedElementSummary(relatedMetadataElement);
         }
         catch (PropertyServerException error)
         {
@@ -710,16 +551,16 @@ public class SolutionComponentHandler extends OpenMetadataHandlerBase
             {
                 auditLog.logException(methodName,
                                       OMFAuditCode.UNEXPECTED_CONVERTER_EXCEPTION.getMessageDefinition(error.getClass().getName(),
-                                                                                                               methodName,
+                                                                                                       methodName,
                                                                                                        localServiceName,
-                                                                                                               error.getMessage()),
+                                                                                                       error.getMessage()),
                                       error);
             }
 
             throw new PropertyServerException(OMFErrorCode.UNEXPECTED_CONVERTER_EXCEPTION.getMessageDefinition(error.getClass().getName(),
-                                                                                                                       methodName,
+                                                                                                               methodName,
                                                                                                                localServiceName,
-                                                                                                                       error.getMessage()),
+                                                                                                               error.getMessage()),
                                               error.getClass().getName(),
                                               methodName,
                                               error);

@@ -734,7 +734,7 @@ public class ExternalIdentifierHandler<EXTERNAL_ID, OPEN_METADATA_ELEMENT_HEADER
 
         InstanceProperties matchProperties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                                           null,
-                                                                                          OpenMetadataProperty.IDENTIFIER.name,
+                                                                                          OpenMetadataProperty.KEY.name,
                                                                                           identifier,
                                                                                           methodName);
 
@@ -1175,6 +1175,7 @@ public class ExternalIdentifierHandler<EXTERNAL_ID, OPEN_METADATA_ELEMENT_HEADER
      * @param identifierMappingProperties additional properties used to manage the mapping to the elements in the third party technology
      * @param methodName calling method
      *
+     * @throws InvalidParameterException  one of the parameters is invalid
      * @throws UserNotAuthorizedException user not authorized to issue this request
      * @throws PropertyServerException    problem accessing the property server
      */
@@ -1185,7 +1186,7 @@ public class ExternalIdentifierHandler<EXTERNAL_ID, OPEN_METADATA_ELEMENT_HEADER
                                       String              identifierSource,
                                       Map<String, String> identifierMappingProperties,
                                       String              methodName) throws UserNotAuthorizedException,
-                                                                             PropertyServerException
+                                                                             PropertyServerException, InvalidParameterException
     {
         ExternalIdentifierBuilder builder = new ExternalIdentifierBuilder(repositoryHelper, serviceName, serverName);
 
@@ -1736,7 +1737,7 @@ public class ExternalIdentifierHandler<EXTERNAL_ID, OPEN_METADATA_ELEMENT_HEADER
 
         List<String> propertyNames = new ArrayList<>();
 
-        propertyNames.add(OpenMetadataProperty.IDENTIFIER.name);
+        propertyNames.add(OpenMetadataProperty.KEY.name);
 
         List<EntityDetail> matchingExternalIds = this.getEntitiesByValue(userId,
                                                                          externalIdentifier,

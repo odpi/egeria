@@ -4,7 +4,6 @@ package org.odpi.openmetadata.frameworks.openmetadata.refdata;
 
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
 
-import static org.odpi.openmetadata.frameworks.openmetadata.mapper.OpenMetadataValidValues.constructValidValueCategory;
 import static org.odpi.openmetadata.frameworks.openmetadata.mapper.OpenMetadataValidValues.constructValidValueQualifiedName;
 
 /**
@@ -39,6 +38,34 @@ public enum SolutionComponentType
      */
     DATA_STORAGE("Data Storage",
                  "The storage of data for later retrieval by automated processes."),
+
+
+    /**
+     * The storage of data for later retrieval by automated processes.
+     */
+    SOFTWARE_SERVICE("Software Service",
+                     "Provides remote access to digital resources."),
+
+
+    /**
+     * Provides a set of locally callable functions.
+     */
+    SOFTWARE_LIBRARY("Software Library",
+                     "Provides a set of locally callable functions."),
+
+
+    /**
+     * Provides a guided interface for a user to locate function, issue commands and retrieve information.
+     */
+    USER_INTERFACE("User Interface",
+                     "Provides a guided interface for a user to locate function, issue commands and retrieve information."),
+
+
+    /**
+     * Provides a callable function that can be issued from a console/command line.
+     */
+    CONSOLE_COMMAND("Console Command",
+                   "Provides a callable function that can be issued from a console/command line."),
 
 
     /**
@@ -124,19 +151,6 @@ public enum SolutionComponentType
                                                 OpenMetadataProperty.SOLUTION_COMPONENT_TYPE.name,
                                                 null,
                                                 solutionComponentType);
-    }
-
-
-    /**
-     * Return the category for this resourceUse value.
-     *
-     * @return string
-     */
-    public String getCategory()
-    {
-        return constructValidValueCategory(null,
-                                           OpenMetadataProperty.SOLUTION_COMPONENT_TYPE.name,
-                                           null);
     }
 
 

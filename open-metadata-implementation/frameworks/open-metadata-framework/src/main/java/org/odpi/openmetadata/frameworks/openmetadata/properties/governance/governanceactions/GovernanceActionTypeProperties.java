@@ -4,6 +4,7 @@
 package org.odpi.openmetadata.frameworks.openmetadata.properties.governance.governanceactions;
 
 import com.fasterxml.jackson.annotation.*;
+import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 
 import java.util.Objects;
 
@@ -34,6 +35,7 @@ public class GovernanceActionTypeProperties extends GovernanceActionProperties
     public GovernanceActionTypeProperties()
     {
         super();
+        super.setTypeName(OpenMetadataType.GOVERNANCE_ACTION_TYPE.typeName);
     }
 
 

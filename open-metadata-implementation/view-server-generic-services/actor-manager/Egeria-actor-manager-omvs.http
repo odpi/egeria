@@ -239,7 +239,7 @@ Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-  "class" : "DeleteRequestBody",
+  "class" : "DeleteRelationshipRequestBody",
   "deleteMethod": "LOOK_FOR_LINEAGE",
   "externalSourceGUID": "add guid here",
   "externalSourceName": "add qualified name here",
@@ -254,7 +254,6 @@ Content-Type: application/json
 # Delete a actor profile.
 #
 # @param actorProfileGUID  unique identifier of the element to delete
-# @param cascadedDelete can actor profiles be deleted if data fields are attached?
 # Request body provides  description of the relationship.
 #
 # Returns void or
@@ -267,7 +266,7 @@ Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-  "class" : "DeleteRequestBody",
+  "class" : "DeleteElementRequestBody",
   "cascadeDelete" : false,
   "externalSourceGUID": "add guid here",
   "externalSourceName": "add qualified name here",
@@ -281,8 +280,6 @@ Content-Type: application/json
 # @name getActorProfilesByName
 # Returns the list of actor profiles with a particular name.
 #
-# @param startFrom paging start point
-# @param pageSize maximum results that can be returned
 # Request body provides string to find in the properties
 #
 # Returns list of matching metadata elements or
@@ -296,14 +293,16 @@ Content-Type: application/json
 
 {
   "class" : "FilterRequestBody",
+  "filter" : "Add name here",
+  "startFrom": 0,
+  "pageSize": 10,
   "asOfTime" : "{{$isoTimestamp}}",
   "effectiveTime" : "{{$isoTimestamp}}",
   "forLineage" : false,
   "forDuplicateProcessing" : false,
   "limitResultsByStatus" : ["ACTIVE"],
   "sequencingOrder" : "PROPERTY_ASCENDING",
-  "sequencingProperty" : "qualifiedName",
-  "filter" : "Add name here"
+  "sequencingProperty" : "qualifiedName"
 }
 
 
@@ -311,11 +310,6 @@ Content-Type: application/json
 # @name findActorProfiles
 # Retrieve the list of actor profile metadata elements that contain the search string.
 #
-# @param startsWith does the value start with the supplied string?
-# @param endsWith does the value end with the supplied string?
-# @param ignoreCase should the search ignore case?
-# @param startFrom paging start point
-# @param pageSize maximum results that can be returned
 # Request body provides string to find in the properties
 #
 # Returns list of matching metadata elements or
@@ -323,20 +317,25 @@ Content-Type: application/json
 #  UserNotAuthorizedException the user is not authorized to issue this request
 #  PropertyServerException    there is a problem reported in the open metadata server(s)
 #
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/actor-manager/actor-profiles/by-search-string?startFrom=0&pageSize=10&startsWith=true&endsWith=false&ignoreCase=false
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/actor-manager/actor-profiles/by-search-string
 Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-  "class" : "FilterRequestBody",
+  "class" : "SearchStringRequestBody",
+  "searchString": "xxx",
+  "startsWith" : false,
+  "endsWith" : false,
+  "ignoreCase" : true,
+  "startFrom" : 0,
+  "pageSize": 0,
   "asOfTime" : "{{$isoTimestamp}}",
   "effectiveTime" : "{{$isoTimestamp}}",
   "forLineage" : false,
   "forDuplicateProcessing" : false,
   "limitResultsByStatus" : ["ACTIVE"],
   "sequencingOrder" : "PROPERTY_ASCENDING",
-  "sequencingProperty" : "qualifiedName",
-  "filter" : "Add name here"
+  "sequencingProperty" : "qualifiedName"
 }
 
 
@@ -582,7 +581,7 @@ Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-  "class" : "DeleteRequestBody",
+  "class" : "DeleteRelationshipRequestBody",
   "deleteMethod": "LOOK_FOR_LINEAGE",
   "externalSourceGUID": "add guid here",
   "externalSourceName": "add qualified name here",
@@ -647,7 +646,7 @@ Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-  "class" : "DeleteRequestBody",
+  "class" : "DeleteRelationshipRequestBody",
   "deleteMethod": "LOOK_FOR_LINEAGE",
   "externalSourceGUID": "add guid here",
   "externalSourceName": "add qualified name here",
@@ -710,7 +709,7 @@ Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-  "class" : "DeleteRequestBody",
+  "class" : "DeleteRelationshipRequestBody",
   "externalSourceGUID": "add guid here",
   "externalSourceName": "add qualified name here",
   "effectiveTime" : "{{$isoTimestamp}}",
@@ -724,7 +723,6 @@ Content-Type: application/json
 # Delete a actor role.
 #
 # @param actorRoleGUID  unique identifier of the element to delete
-# @param cascadedDelete can actor roles be deleted if data fields are attached?
 # Request body provides  description of the relationship.
 #
 # Returns void or
@@ -737,7 +735,7 @@ Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-  "class" : "DeleteRequestBody",
+  "class" : "DeleteRelationshipRequestBody",
   "cascadeDelete" : false,
   "externalSourceGUID": "add guid here",
   "externalSourceName": "add qualified name here",
@@ -751,8 +749,6 @@ Content-Type: application/json
 # @name getActorRolesByName
 # Returns the list of actor roles with a particular name.
 #
-# @param startFrom paging start point
-# @param pageSize maximum results that can be returned
 # Request body provides string to find in the properties
 #
 # Returns list of matching metadata elements or
@@ -766,14 +762,16 @@ Content-Type: application/json
 
 {
   "class" : "FilterRequestBody",
+  "filter" : "Add name here",
+  "startFrom": 0,
+  "pageSize": 10,
   "asOfTime" : "{{$isoTimestamp}}",
   "effectiveTime" : "{{$isoTimestamp}}",
   "forLineage" : false,
   "forDuplicateProcessing" : false,
   "limitResultsByStatus" : ["ACTIVE"],
   "sequencingOrder" : "PROPERTY_ASCENDING",
-  "sequencingProperty" : "qualifiedName",
-  "filter" : "Add name here"
+  "sequencingProperty" : "qualifiedName"
 }
 
 
@@ -781,11 +779,6 @@ Content-Type: application/json
 # @name findActorRoles
 # Retrieve the list of actor role metadata elements that contain the search string.
 #
-# @param startsWith does the value start with the supplied string?
-# @param endsWith does the value end with the supplied string?
-# @param ignoreCase should the search ignore case?
-# @param startFrom paging start point
-# @param pageSize maximum results that can be returned
 # Request body provides string to find in the properties
 #
 # Returns list of matching metadata elements or
@@ -793,20 +786,25 @@ Content-Type: application/json
 #  UserNotAuthorizedException the user is not authorized to issue this request
 #  PropertyServerException    there is a problem reported in the open metadata server(s)
 #
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/actor-manager/actor-roles/by-search-string?startFrom=0&pageSize=10&startsWith=true&endsWith=false&ignoreCase=false
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/actor-manager/actor-roles/by-search-string
 Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-  "class" : "FilterRequestBody",
+  "class" : "SearchStringRequestBody",
+  "searchString": "xxx",
+  "startsWith" : false,
+  "endsWith" : false,
+  "ignoreCase" : true,
+  "startFrom" : 0,
+  "pageSize": 0,
   "asOfTime" : "{{$isoTimestamp}}",
   "effectiveTime" : "{{$isoTimestamp}}",
   "forLineage" : false,
   "forDuplicateProcessing" : false,
   "limitResultsByStatus" : ["ACTIVE"],
   "sequencingOrder" : "PROPERTY_ASCENDING",
-  "sequencingProperty" : "qualifiedName",
-  "filter" : "Add name here"
+  "sequencingProperty" : "qualifiedName"
 }
 
 ###
@@ -1052,7 +1050,7 @@ Authorization: Bearer {{token}}
 Content-Type: application/json
 
  {
-  "class" : "DeleteRequestBody",
+  "class" : "DeleteRelationshipRequestBody",
   "deleteMethod": "LOOK_FOR_LINEAGE",
   "externalSourceGUID": "add guid here",
   "externalSourceName": "add qualified name here",
@@ -1159,7 +1157,6 @@ Content-Type: application/json
 # Delete a user identity.
 #
 # @param userIdentityGUID  unique identifier of the element to delete
-# @param cascadedDelete can user identities be deleted if data fields are attached?
 # Request body provides  description of the relationship.
 #
 # Returns void or
@@ -1172,7 +1169,7 @@ Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-  "class" : "DeleteRequestBody",
+  "class" : "DeleteElementRequestBody",
   "cascadeDelete" : false,
   "deleteMethod": "LOOK_FOR_LINEAGE",
   "externalSourceGUID": "add guid here",
@@ -1187,8 +1184,6 @@ Content-Type: application/json
 # @name getUserIdentitiesByName
 # Returns the list of user identities with a particular name.
 #
-# @param startFrom paging start point
-# @param pageSize maximum results that can be returned
 # Request body provides string to find in the properties
 #
 # Returns list of matching metadata elements or
@@ -1202,14 +1197,16 @@ Content-Type: application/json
 
 {
   "class" : "FilterRequestBody",
+  "filter" : "Add name here",
+  "startFrom": 0,
+  "pageSize": 10,
   "asOfTime" : "{{$isoTimestamp}}",
   "effectiveTime" : "{{$isoTimestamp}}",
   "forLineage" : false,
   "forDuplicateProcessing" : false,
   "limitResultsByStatus" : ["ACTIVE"],
   "sequencingOrder" : "PROPERTY_ASCENDING",
-  "sequencingProperty" : "qualifiedName",
-  "filter" : "Add name here"
+  "sequencingProperty" : "qualifiedName"
 }
 
 
@@ -1217,11 +1214,6 @@ Content-Type: application/json
 # @name findUserIdentities
 # Retrieve the list of user identity metadata elements that contain the search string.
 #
-# @param startsWith does the value start with the supplied string?
-# @param endsWith does the value end with the supplied string?
-# @param ignoreCase should the search ignore case?
-# @param startFrom paging start point
-# @param pageSize maximum results that can be returned
 # Request body provides string to find in the properties
 #
 # Returns list of matching metadata elements or
@@ -1229,20 +1221,25 @@ Content-Type: application/json
 #  UserNotAuthorizedException the user is not authorized to issue this request
 #  PropertyServerException    there is a problem reported in the open metadata server(s)
 #
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/actor-manager/user-identities/by-search-string?startFrom=0&pageSize=10&startsWith=true&endsWith=false&ignoreCase=false
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/actor-manager/user-identities/by-search-string
 Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-  "class" : "FilterRequestBody",
+  "class" : "SearchStringRequestBody",
+  "searchString": "xxx",
+  "startsWith" : false,
+  "endsWith" : false,
+  "ignoreCase" : true,
+  "startFrom" : 0,
+  "pageSize": 0,
   "asOfTime" : "{{$isoTimestamp}}",
   "effectiveTime" : "{{$isoTimestamp}}",
   "forLineage" : false,
   "forDuplicateProcessing" : false,
   "limitResultsByStatus" : ["ACTIVE"],
   "sequencingOrder" : "PROPERTY_ASCENDING",
-  "sequencingProperty" : "qualifiedName",
-  "filter" : "Add name here"
+  "sequencingProperty" : "qualifiedName"
 }
 
 
@@ -1308,7 +1305,7 @@ Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-  "class" : "DeleteRequestBody",
+  "class" : "DeleteRelationshipRequestBody",
   "externalSourceGUID": "add guid here",
   "externalSourceName": "add qualified name here",
   "effectiveTime" : "{{$isoTimestamp}}",

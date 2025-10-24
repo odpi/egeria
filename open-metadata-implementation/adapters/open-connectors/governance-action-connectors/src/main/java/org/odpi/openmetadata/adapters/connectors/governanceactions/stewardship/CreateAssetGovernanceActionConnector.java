@@ -9,7 +9,7 @@ import org.odpi.openmetadata.frameworks.auditlog.messagesets.AuditLogMessageDefi
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
 import org.odpi.openmetadata.frameworks.opengovernance.GeneralGovernanceActionService;
 import org.odpi.openmetadata.frameworks.opengovernance.controls.ActionTarget;
-import org.odpi.openmetadata.frameworks.opengovernance.properties.CompletionStatus;
+import org.odpi.openmetadata.frameworks.openmetadata.enums.CompletionStatus;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.NewActionTarget;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.OpenMetadataElement;
@@ -19,7 +19,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * CreateAssetGovernanceActionConnector creates an asset and passes its GUID as an action target for follow on work.
+ * CreateSubscriptionGovernanceActionConnector creates an asset and passes its GUID as an action target for follow on work.
  */
 public class CreateAssetGovernanceActionConnector extends GeneralGovernanceActionService
 {

@@ -3,10 +3,10 @@
 package org.odpi.openmetadata.frameworks.connectors;
 
 import org.odpi.openmetadata.frameworks.connectors.controls.SupportedTechnologyType;
-import org.odpi.openmetadata.frameworks.connectors.controls.TemplateType;
+import org.odpi.openmetadata.frameworks.openmetadata.specificationproperties.TemplateType;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectionCheckedException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
-import org.odpi.openmetadata.frameworks.connectors.controls.ConfigurationPropertyType;
+import org.odpi.openmetadata.frameworks.openmetadata.specificationproperties.ConfigurationPropertyType;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.ConnectorType;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;

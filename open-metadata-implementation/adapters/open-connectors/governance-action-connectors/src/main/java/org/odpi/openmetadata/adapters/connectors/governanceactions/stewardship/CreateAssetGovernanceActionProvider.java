@@ -13,7 +13,7 @@ import org.odpi.openmetadata.frameworks.openmetadata.refdata.DeployedImplementat
 import java.util.List;
 
 /**
- * CreateAssetGovernanceActionProvider is the OCF connector provider for the "Create Asset"
+ * CreateSubscriptionGovernanceActionProvider is the OCF connector provider for the "Create Asset"
  * Governance Action Service.
  */
 public class CreateAssetGovernanceActionProvider extends GovernanceActionServiceProviderBase

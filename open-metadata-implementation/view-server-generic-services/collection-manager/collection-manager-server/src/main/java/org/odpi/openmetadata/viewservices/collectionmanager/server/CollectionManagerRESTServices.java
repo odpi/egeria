@@ -10,9 +10,9 @@ import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.openmetadata.handlers.CollectionHandler;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.actors.AssignmentScopeProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.collections.*;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.datadictionaries.DataDescriptionProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.digitalbusiness.*;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.resources.ResourceListProperties;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.solutions.SolutionBlueprintCompositionProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.search.MakeAnchorOptions;
 import org.odpi.openmetadata.frameworks.openmetadata.search.MetadataSourceOptions;
 import org.odpi.openmetadata.frameworks.openmetadata.search.UpdateOptions;
@@ -499,10 +499,10 @@ public class CollectionManagerRESTServices extends TokenController
      *  PropertyServerException    there is a problem retrieving information from the property server(s).
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    public VoidResponse attachCollection(String                  serverName,
-                                         String                  urlMarker,
-                                         String                  collectionGUID,
-                                         String                  parentGUID,
+    public VoidResponse attachCollection(String                     serverName,
+                                         String                     urlMarker,
+                                         String                     parentGUID,
+                                         String                     collectionGUID,
                                          NewRelationshipRequestBody requestBody)
     {
         final String methodName = "attachCollection";
@@ -580,9 +580,9 @@ public class CollectionManagerRESTServices extends TokenController
      */
     public VoidResponse detachCollection(String                   serverName,
                                          String                   urlMarker,
-                                         String                   collectionGUID,
                                          String                   parentGUID,
-                                         DeleteRequestBody requestBody)
+                                         String                   collectionGUID,
+                                         DeleteRelationshipRequestBody requestBody)
     {
         final String methodName = "detachCollection";
 
@@ -602,6 +602,135 @@ public class CollectionManagerRESTServices extends TokenController
             CollectionHandler handler = instanceHandler.getCollectionHandler(userId, serverName, urlMarker, methodName);
 
             handler.detachCollection(userId, collectionGUID, parentGUID, requestBody);
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+        return response;
+    }
+
+
+
+    /**
+     * Connect an existing collection to an element using the ResourceList relationship (0019).
+     *
+     * @param serverName         name of called server
+     * @param urlMarker  view service URL marker
+     * @param collectionGUID unique identifier of the collection
+     * @param parentGUID     unique identifier of referenceable object that the collection should be attached to
+     * @param requestBody  description of how the collection will be used.
+     *
+     * @return void or
+     *  InvalidParameterException  one of the parameters is null or invalid.
+     *  PropertyServerException    there is a problem retrieving information from the property server(s).
+     *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public VoidResponse attachDataDescription(String                     serverName,
+                                              String                     urlMarker,
+                                              String                     parentGUID,
+                                              String                     collectionGUID,
+                                              NewRelationshipRequestBody requestBody)
+    {
+        final String methodName = "attachDataDescription";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
+
+        VoidResponse response = new VoidResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            CollectionHandler handler = instanceHandler.getCollectionHandler(userId, serverName, urlMarker, methodName);
+
+            if (requestBody != null)
+            {
+                if (requestBody.getProperties() instanceof DataDescriptionProperties properties)
+                {
+                    handler.attachDataDescription(userId,
+                                                  parentGUID,
+                                                  collectionGUID,
+                                                  requestBody,
+                                                  properties);
+                }
+                else if (requestBody.getProperties() == null)
+                {
+                    handler.attachDataDescription(userId,
+                                                  parentGUID,
+                                                  collectionGUID,
+                                                  requestBody,
+                                                  null);
+                }
+                else
+                {
+                    restExceptionHandler.handleInvalidPropertiesObject(ResourceListProperties.class.getName(), methodName);
+                }
+            }
+            else
+            {
+                handler.attachDataDescription(userId,
+                                              parentGUID,
+                                              collectionGUID,
+                                              new MakeAnchorOptions(),
+                                              null);
+            }
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+        return response;
+    }
+
+
+    /**
+     * Detach an existing collection from an element.  If the collection is anchored to the element, it is deleted.
+     *
+     * @param serverName         name of called server.
+     * @param urlMarker  view service URL marker
+     * @param parentGUID     unique identifier of referenceable object that the collection should be attached to
+     * @param collectionGUID unique identifier of the collection.
+     * @param requestBody null request body
+     *
+     * @return void or
+     *  InvalidParameterException  one of the parameters is null or invalid.
+     *  PropertyServerException    there is a problem retrieving information from the property server(s).
+     *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public VoidResponse detachDataDescription(String            serverName,
+                                              String            urlMarker,
+                                              String            parentGUID,
+                                              String            collectionGUID,
+                                              DeleteRelationshipRequestBody requestBody)
+    {
+        final String methodName = "detachDataDescription";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
+
+        VoidResponse response = new VoidResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            CollectionHandler handler = instanceHandler.getCollectionHandler(userId, serverName, urlMarker, methodName);
+
+            handler.detachDataDescription(userId, parentGUID, collectionGUID, requestBody);
         }
         catch (Throwable error)
         {
@@ -670,7 +799,7 @@ public class CollectionManagerRESTServices extends TokenController
                 }
                 else
                 {
-                    restExceptionHandler.handleInvalidPropertiesObject(SolutionBlueprintCompositionProperties.class.getName(), methodName);
+                    restExceptionHandler.handleInvalidPropertiesObject(DigitalProductDependencyProperties.class.getName(), methodName);
                 }
             }
             else
@@ -710,7 +839,7 @@ public class CollectionManagerRESTServices extends TokenController
                                                        String                   urlMarker,
                                                        String                   consumerDigitalProductGUID,
                                                        String                   consumedDigitalProductGUID,
-                                                       DeleteRequestBody requestBody)
+                                                       DeleteRelationshipRequestBody requestBody)
     {
         final String methodName = "detachDigitalProductDependency";
 
@@ -800,7 +929,7 @@ public class CollectionManagerRESTServices extends TokenController
                 }
                 else
                 {
-                    restExceptionHandler.handleInvalidPropertiesObject(SolutionBlueprintCompositionProperties.class.getName(), methodName);
+                    restExceptionHandler.handleInvalidPropertiesObject(DigitalSubscriberProperties.class.getName(), methodName);
                 }
             }
             else
@@ -840,7 +969,7 @@ public class CollectionManagerRESTServices extends TokenController
                                          String                   urlMarker,
                                          String                   digitalSubscriberGUID,
                                          String                   digitalSubscriptionGUID,
-                                         DeleteRequestBody requestBody)
+                                         DeleteRelationshipRequestBody requestBody)
     {
         final String methodName = "detachSubscriber";
 
@@ -930,7 +1059,7 @@ public class CollectionManagerRESTServices extends TokenController
                 }
                 else
                 {
-                    restExceptionHandler.handleInvalidPropertiesObject(SolutionBlueprintCompositionProperties.class.getName(), methodName);
+                    restExceptionHandler.handleInvalidPropertiesObject(AssignmentScopeProperties.class.getName(), methodName);
                 }
             }
             else
@@ -970,7 +1099,7 @@ public class CollectionManagerRESTServices extends TokenController
                                              String            urlMarker,
                                              String            digitalProductGUID,
                                              String            digitalProductManagerRoleGUID,
-                                             DeleteRequestBody requestBody)
+                                             DeleteRelationshipRequestBody requestBody)
     {
         final String methodName = "detachProductManager";
 
@@ -1061,7 +1190,7 @@ public class CollectionManagerRESTServices extends TokenController
                 }
                 else
                 {
-                    restExceptionHandler.handleInvalidPropertiesObject(SolutionBlueprintCompositionProperties.class.getName(), methodName);
+                    restExceptionHandler.handleInvalidPropertiesObject(AgreementActorProperties.class.getName(), methodName);
                 }
             }
             else
@@ -1099,7 +1228,7 @@ public class CollectionManagerRESTServices extends TokenController
     public VoidResponse detachAgreementActor(String                   serverName,
                                              String                   urlMarker,
                                              String                   agreementActorRelationshipGUID,
-                                             DeleteRequestBody requestBody)
+                                             DeleteRelationshipRequestBody requestBody)
     {
         final String methodName = "detachAgreementActor";
 
@@ -1186,7 +1315,7 @@ public class CollectionManagerRESTServices extends TokenController
                 }
                 else
                 {
-                    restExceptionHandler.handleInvalidPropertiesObject(SolutionBlueprintCompositionProperties.class.getName(), methodName);
+                    restExceptionHandler.handleInvalidPropertiesObject(AgreementItemProperties.class.getName(), methodName);
                 }
             }
             else
@@ -1226,7 +1355,7 @@ public class CollectionManagerRESTServices extends TokenController
                                             String                   urlMarker,
                                             String                   agreementGUID,
                                             String                   agreementItemGUID,
-                                            DeleteRequestBody requestBody)
+                                            DeleteRelationshipRequestBody requestBody)
     {
         final String methodName = "detachAgreementItem";
 
@@ -1313,7 +1442,7 @@ public class CollectionManagerRESTServices extends TokenController
                 }
                 else
                 {
-                    restExceptionHandler.handleInvalidPropertiesObject(SolutionBlueprintCompositionProperties.class.getName(), methodName);
+                    restExceptionHandler.handleInvalidPropertiesObject(ContractLinkProperties.class.getName(), methodName);
                 }
             }
             else
@@ -1353,7 +1482,7 @@ public class CollectionManagerRESTServices extends TokenController
                                        String                   urlMarker,
                                        String                   agreementGUID,
                                        String                   externalReferenceGUID,
-                                       DeleteRequestBody requestBody)
+                                       DeleteRelationshipRequestBody requestBody)
     {
         final String methodName = "detachContract";
 
@@ -1746,7 +1875,7 @@ public class CollectionManagerRESTServices extends TokenController
     public VoidResponse deleteCollection(String            serverName,
                                          String            urlMarker,
                                          String            collectionGUID,
-                                         DeleteRequestBody requestBody)
+                                         DeleteRelationshipRequestBody requestBody)
     {
         final String methodName = "deleteCollection";
 
@@ -2049,7 +2178,7 @@ public class CollectionManagerRESTServices extends TokenController
                                              String                   urlMarker,
                                              String                   collectionGUID,
                                              String                   elementGUID,
-                                             DeleteRequestBody requestBody)
+                                             DeleteRelationshipRequestBody requestBody)
     {
         final String methodName = "removeFromCollection";
 

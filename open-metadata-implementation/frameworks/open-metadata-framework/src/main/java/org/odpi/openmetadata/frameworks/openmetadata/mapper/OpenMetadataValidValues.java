@@ -30,11 +30,6 @@ public class OpenMetadataValidValues
     public static final String VALID_METADATA_VALUES_USAGE = "Used to control valid values in open metadata.";
 
     /**
-     * This is the name of the valid values set that contains all the valid values for open metadata
-     */
-    public static final String VALID_METADATA_VALUES_SET_CATEGORY   = "Open Metadata Valid Values";
-
-    /**
      * This is the prefix used on valid value definitions for open metadata elements
      */
     public static final String VALID_METADATA_VALUES_QUALIFIED_NAME_PREFIX   = "Egeria:ValidMetadataValue:";
@@ -131,103 +126,5 @@ public class OpenMetadataValidValues
         }
 
         return qualifiedName;
-    }
-
-
-    /**
-     * Creates the category of the element based on the properties supplied.
-     *
-     * <ul>
-     *     <li><i>Open Metadata Valid Values</i> - This is the category for the top level set.</li>
-     *     <li><i>typeName</i> - This is the name of a set for a specific type.</li>
-     *     <li><i>typeName:propertyName</i> - This is the name of the set for a property name for a specific type.</li>
-     *     <li><i>typeName:propertyName--mapName</i> - This is a valid map name for a property name used within a specific type.</li>
-     *     <li><i>typeName:--mapName</i> This is a valid map name for a property name used with any type</li>
-     *     <li><i>propertyName</i> - This is the name of the set for a property name for all types where the property name appears.</li>
-     *     <li><i>propertyName--mapName</i> This is a valid map name for a property name used with any type</li>
-     * </ul>
-     *
-     * @param incomingTypeName name of the type (can be null)
-     * @param incomingPropertyName name of the property (can be null)
-     * @param incomingMapName name of the mapName (can be null)
-     * @return string (never null)
-     */
-    public static String constructValidValueCategory(String incomingTypeName,
-                                                     String incomingPropertyName,
-                                                     String incomingMapName)
-    {
-        final String propertyNameStartSpacer = ":";
-        final String mapNameStartSpacer = "-";
-        final String mapNameEndSpacer = "--";
-
-        String typeName = incomingTypeName;
-        String propertyName = incomingPropertyName;
-        String mapName = incomingMapName;
-
-        if ((typeName != null) && (typeName.isBlank()))
-        {
-            typeName = null;
-        }
-
-        if ((propertyName != null) && (propertyName.isBlank()))
-        {
-            propertyName = null;
-        }
-
-        if ((mapName != null) && (mapName.isBlank()))
-        {
-            mapName = null;
-        }
-
-        if (typeName != null)
-        {
-            if (propertyName != null)
-            {
-                if (mapName != null)
-                {
-                    return typeName + propertyNameStartSpacer + propertyName + mapNameStartSpacer + mapName + mapNameEndSpacer;
-                }
-                else // mapName = null
-                {
-                    return typeName + propertyNameStartSpacer + propertyName;
-                }
-            }
-            else // propertyName = null
-            {
-                if (mapName != null)
-                {
-                    return typeName + mapNameStartSpacer + mapName + mapNameEndSpacer;
-                }
-                else // mapName = null
-                {
-                    return typeName;
-                }
-            }
-        }
-        else // typeName == null
-        {
-            if (propertyName != null)
-            {
-                if (mapName != null)
-                {
-                    return propertyNameStartSpacer + propertyName + mapNameStartSpacer + mapName + mapNameEndSpacer;
-                }
-                else // mapName = null
-                {
-                    return propertyNameStartSpacer + propertyName;
-                }
-            }
-            else // propertyName = null
-            {
-                if (mapName != null)
-                {
-                    return mapNameStartSpacer + mapName + mapNameEndSpacer;
-                }
-                else // mapName = null
-                {
-                    return VALID_METADATA_VALUES_SET_CATEGORY;
-                }
-            }
-        }
     }
 }

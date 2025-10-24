@@ -3,10 +3,14 @@
 
 package org.odpi.openmetadata.samples.archiveutilities.governanceengines;
 
+import org.odpi.openmetadata.frameworks.openmetadata.definitions.ActorRoleDefinition;
+import org.odpi.openmetadata.frameworks.openmetadata.definitions.SolutionComponentActorDefinition;
+import org.odpi.openmetadata.frameworks.openmetadata.definitions.SolutionComponentDefinition;
+
 /**
  * Define the relationship between the solution roles and the solution components
  */
-public enum SolutionComponentActor
+public enum SolutionComponentActor implements SolutionComponentActorDefinition
 {
     COORDINATOR_TO_PARTICIPATING_HOSPITAL(SolutionRoleDefinition.PARTICIPATING_HOSPITAL_COORDINATOR,
                                           SolutionComponent.HOSPITAL,
@@ -102,25 +106,53 @@ public enum SolutionComponentActor
     }
 
 
-    public SolutionRoleDefinition getSolutionRole()
+
+    /**
+     * Return the solution role to link to.
+     *
+     * @return role definition
+     */
+    @Override
+    public ActorRoleDefinition getSolutionRole()
     {
         return solutionRole;
     }
 
-    public SolutionComponent getSolutionComponent()
+    /**
+     * Return the solution component to link to.
+     *
+     * @return component definition
+     */
+    @Override
+    public SolutionComponentDefinition getSolutionComponent()
     {
         return solutionComponent;
     }
 
+
+    /**
+     * Return the role relationship label.
+     *
+     * @return string
+     */
+    @Override
     public String getRole()
     {
         return role;
     }
 
+
+    /**
+     * Return the role relationship description.
+     *
+     * @return string
+     */
+    @Override
     public String getDescription()
     {
         return description;
     }
+
 
 
     /**

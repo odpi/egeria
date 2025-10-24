@@ -188,32 +188,12 @@ public class OpenMetadataRelationshipDef extends OpenMetadataTypeDef
     public String toString()
     {
         return "OpenMetadataRelationshipDef{" +
-                "name='" + getName() + '\'' +
-                ", description='" + getDescription() + '\'' +
+                "propagationRule=" + propagationRule +
                 ", endDef1=" + endDef1 +
                 ", endDef2=" + endDef2 +
                 ", multiLink=" + multiLink +
-                ", superType=" + getSuperType() +
-                ", descriptionGUID='" + getDescriptionGUID() + '\'' +
-                ", descriptionWiki='" + getDescriptionWiki() + '\'' +
-                ", origin='" + getOrigin() + '\'' +
-                ", createdBy='" + getCreatedBy() + '\'' +
-                ", updatedBy='" + getUpdatedBy() + '\'' +
-                ", createTime=" + getCreateTime() +
-                ", updateTime=" + getUpdateTime() +
-                ", options=" + getOptions() +
-                ", externalStandardTypeMappings=" + getExternalStandardMappings() +
-                ", validInstanceStatusList=" + getValidElementStatusList() +
-                ", initialStatus=" + getInitialStatus() +
-                ", propertiesDefinition=" + getAttributeDefinitions() +
-                ", category=" + getCategory() +
-                ", propagationRule=" + propagationRule +
-                ", version=" + getVersion() +
-                ", versionName='" + getVersionName() + '\'' +
-                ", GUID='" + getGUID() + '\'' +
-                '}';
+                "} " + super.toString();
     }
-
 
     /**
      * Validate that an object is equal depending on their stored values.
