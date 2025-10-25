@@ -24,7 +24,8 @@ pluginManagement {
         id 'org.gradlex.java-ecosystem-capabilities' version "1.5.3"
         // Docs don't recommend specifying a version for checkstyle
         id 'checkstyle'
-        id 'org.springframework.boot' version '2.7.16'
+        // This plugin needs to be kept in step with bom
+        id 'org.springframework.boot' version '3.1.4'
         id 'com.github.johnrengelman.shadow' version '8.1.1'
         id 'com.github.psxpaul.execfork' version '0.2.2'
     }
