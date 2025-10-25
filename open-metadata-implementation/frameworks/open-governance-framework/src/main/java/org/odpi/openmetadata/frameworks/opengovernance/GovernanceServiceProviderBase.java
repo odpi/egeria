@@ -3,10 +3,10 @@
 package org.odpi.openmetadata.frameworks.opengovernance;
 
 import org.odpi.openmetadata.frameworks.connectors.ConnectorProviderBase;
-import org.odpi.openmetadata.frameworks.opengovernance.controls.ActionTargetType;
-import org.odpi.openmetadata.frameworks.opengovernance.controls.GuardType;
-import org.odpi.openmetadata.frameworks.opengovernance.controls.RequestParameterType;
-import org.odpi.openmetadata.frameworks.opengovernance.controls.RequestTypeType;
+import org.odpi.openmetadata.frameworks.openmetadata.specificationproperties.ActionTargetType;
+import org.odpi.openmetadata.frameworks.openmetadata.specificationproperties.GuardType;
+import org.odpi.openmetadata.frameworks.openmetadata.specificationproperties.RequestParameterType;
+import org.odpi.openmetadata.frameworks.openmetadata.specificationproperties.RequestTypeType;
 import org.odpi.openmetadata.frameworks.openmetadata.refdata.DeployedImplementationType;
 
 import java.util.List;

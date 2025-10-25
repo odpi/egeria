@@ -13,7 +13,6 @@ import org.odpi.openmetadata.frameworks.openmetadata.properties.collections.*;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.datadictionaries.DataDescriptionProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.digitalbusiness.*;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.resources.ResourceListProperties;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.solutions.SolutionBlueprintCompositionProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.search.MakeAnchorOptions;
 import org.odpi.openmetadata.frameworks.openmetadata.search.MetadataSourceOptions;
 import org.odpi.openmetadata.frameworks.openmetadata.search.UpdateOptions;
@@ -583,7 +582,7 @@ public class CollectionManagerRESTServices extends TokenController
                                          String                   urlMarker,
                                          String                   parentGUID,
                                          String                   collectionGUID,
-                                         DeleteRequestBody requestBody)
+                                         DeleteRelationshipRequestBody requestBody)
     {
         final String methodName = "detachCollection";
 
@@ -712,7 +711,7 @@ public class CollectionManagerRESTServices extends TokenController
                                               String            urlMarker,
                                               String            parentGUID,
                                               String            collectionGUID,
-                                              DeleteRequestBody requestBody)
+                                              DeleteRelationshipRequestBody requestBody)
     {
         final String methodName = "detachDataDescription";
 
@@ -800,7 +799,7 @@ public class CollectionManagerRESTServices extends TokenController
                 }
                 else
                 {
-                    restExceptionHandler.handleInvalidPropertiesObject(SolutionBlueprintCompositionProperties.class.getName(), methodName);
+                    restExceptionHandler.handleInvalidPropertiesObject(DigitalProductDependencyProperties.class.getName(), methodName);
                 }
             }
             else
@@ -840,7 +839,7 @@ public class CollectionManagerRESTServices extends TokenController
                                                        String                   urlMarker,
                                                        String                   consumerDigitalProductGUID,
                                                        String                   consumedDigitalProductGUID,
-                                                       DeleteRequestBody requestBody)
+                                                       DeleteRelationshipRequestBody requestBody)
     {
         final String methodName = "detachDigitalProductDependency";
 
@@ -930,7 +929,7 @@ public class CollectionManagerRESTServices extends TokenController
                 }
                 else
                 {
-                    restExceptionHandler.handleInvalidPropertiesObject(SolutionBlueprintCompositionProperties.class.getName(), methodName);
+                    restExceptionHandler.handleInvalidPropertiesObject(DigitalSubscriberProperties.class.getName(), methodName);
                 }
             }
             else
@@ -970,7 +969,7 @@ public class CollectionManagerRESTServices extends TokenController
                                          String                   urlMarker,
                                          String                   digitalSubscriberGUID,
                                          String                   digitalSubscriptionGUID,
-                                         DeleteRequestBody requestBody)
+                                         DeleteRelationshipRequestBody requestBody)
     {
         final String methodName = "detachSubscriber";
 
@@ -1060,7 +1059,7 @@ public class CollectionManagerRESTServices extends TokenController
                 }
                 else
                 {
-                    restExceptionHandler.handleInvalidPropertiesObject(SolutionBlueprintCompositionProperties.class.getName(), methodName);
+                    restExceptionHandler.handleInvalidPropertiesObject(AssignmentScopeProperties.class.getName(), methodName);
                 }
             }
             else
@@ -1100,7 +1099,7 @@ public class CollectionManagerRESTServices extends TokenController
                                              String            urlMarker,
                                              String            digitalProductGUID,
                                              String            digitalProductManagerRoleGUID,
-                                             DeleteRequestBody requestBody)
+                                             DeleteRelationshipRequestBody requestBody)
     {
         final String methodName = "detachProductManager";
 
@@ -1191,7 +1190,7 @@ public class CollectionManagerRESTServices extends TokenController
                 }
                 else
                 {
-                    restExceptionHandler.handleInvalidPropertiesObject(SolutionBlueprintCompositionProperties.class.getName(), methodName);
+                    restExceptionHandler.handleInvalidPropertiesObject(AgreementActorProperties.class.getName(), methodName);
                 }
             }
             else
@@ -1229,7 +1228,7 @@ public class CollectionManagerRESTServices extends TokenController
     public VoidResponse detachAgreementActor(String                   serverName,
                                              String                   urlMarker,
                                              String                   agreementActorRelationshipGUID,
-                                             DeleteRequestBody requestBody)
+                                             DeleteRelationshipRequestBody requestBody)
     {
         final String methodName = "detachAgreementActor";
 
@@ -1316,7 +1315,7 @@ public class CollectionManagerRESTServices extends TokenController
                 }
                 else
                 {
-                    restExceptionHandler.handleInvalidPropertiesObject(SolutionBlueprintCompositionProperties.class.getName(), methodName);
+                    restExceptionHandler.handleInvalidPropertiesObject(AgreementItemProperties.class.getName(), methodName);
                 }
             }
             else
@@ -1356,7 +1355,7 @@ public class CollectionManagerRESTServices extends TokenController
                                             String                   urlMarker,
                                             String                   agreementGUID,
                                             String                   agreementItemGUID,
-                                            DeleteRequestBody requestBody)
+                                            DeleteRelationshipRequestBody requestBody)
     {
         final String methodName = "detachAgreementItem";
 
@@ -1443,7 +1442,7 @@ public class CollectionManagerRESTServices extends TokenController
                 }
                 else
                 {
-                    restExceptionHandler.handleInvalidPropertiesObject(SolutionBlueprintCompositionProperties.class.getName(), methodName);
+                    restExceptionHandler.handleInvalidPropertiesObject(ContractLinkProperties.class.getName(), methodName);
                 }
             }
             else
@@ -1483,7 +1482,7 @@ public class CollectionManagerRESTServices extends TokenController
                                        String                   urlMarker,
                                        String                   agreementGUID,
                                        String                   externalReferenceGUID,
-                                       DeleteRequestBody requestBody)
+                                       DeleteRelationshipRequestBody requestBody)
     {
         final String methodName = "detachContract";
 
@@ -1876,7 +1875,7 @@ public class CollectionManagerRESTServices extends TokenController
     public VoidResponse deleteCollection(String            serverName,
                                          String            urlMarker,
                                          String            collectionGUID,
-                                         DeleteRequestBody requestBody)
+                                         DeleteRelationshipRequestBody requestBody)
     {
         final String methodName = "deleteCollection";
 
@@ -2179,7 +2178,7 @@ public class CollectionManagerRESTServices extends TokenController
                                              String                   urlMarker,
                                              String                   collectionGUID,
                                              String                   elementGUID,
-                                             DeleteRequestBody requestBody)
+                                             DeleteRelationshipRequestBody requestBody)
     {
         final String methodName = "removeFromCollection";
 

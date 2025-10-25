@@ -4,8 +4,13 @@ package org.odpi.openmetadata.viewservices.governanceofficer.server.spring;
 
 import io.swagger.v3.oas.annotations.ExternalDocumentation;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.enums.SecuritySchemeIn;
+import io.swagger.v3.oas.annotations.enums.SecuritySchemeType;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import io.swagger.v3.oas.annotations.security.SecurityScheme;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.odpi.openmetadata.commonservices.ffdc.rest.*;
+import org.odpi.openmetadata.frameworkservices.gaf.rest.*;
 import org.odpi.openmetadata.commonservices.ffdc.rest.GetRequestBody;
 import org.odpi.openmetadata.viewservices.governanceofficer.server.GovernanceOfficerRESTServices;
 import org.springframework.web.bind.annotation.*;
@@ -16,7 +21,13 @@ import org.springframework.web.bind.annotation.*;
  = */
 @RestController
 @RequestMapping("/servers/{serverName}/api/open-metadata/{urlMarker}")
-
+@SecurityScheme(
+        name = "BearerAuthorization",
+        type = SecuritySchemeType.HTTP,
+        bearerFormat = "JWT",
+        scheme = "bearer",
+        in = SecuritySchemeIn.HEADER
+)
 @Tag(name="API: Governance Officer OMVS", description="The Governance Officer OMVS provides APIs for supporting the creation and editing of a new governance domain.",
         externalDocs=@ExternalDocumentation(description="Further Information",
                 url="https://egeria-project.org/services/omvs/governance-officer/overview/"))
@@ -33,7 +44,6 @@ public class GovernanceOfficerResource
     }
 
 
-
     /**
      * Create a governance definition.
      *
@@ -47,6 +57,7 @@ public class GovernanceOfficerResource
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     @PostMapping(path = "/governance-definitions")
+    @SecurityRequirement(name = "BearerAuthorization")
 
     @Operation(summary="createGovernanceDefinition",
             description="Create a governance definition.",
@@ -76,6 +87,8 @@ public class GovernanceOfficerResource
      *  PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     @PostMapping(path = "/governance-definitions/from-template")
+    @SecurityRequirement(name = "BearerAuthorization")
+
     @Operation(summary="createGovernanceDefinitionFromTemplate",
             description="Create a new metadata element to represent a governance definition using an existing metadata element as a template.  The template defines additional classifications and relationships that should be added to the new element.",
             externalDocs=@ExternalDocumentation(description="Further Information",
@@ -105,6 +118,8 @@ public class GovernanceOfficerResource
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     @PostMapping(path = "/governance-definitions/{governanceDefinitionGUID}/update")
+    @SecurityRequirement(name = "BearerAuthorization")
+
     @Operation(summary="updateGovernanceDefinition",
             description="Update the properties of a governance definition.",
             externalDocs=@ExternalDocumentation(description="Further Information",
@@ -138,6 +153,8 @@ public class GovernanceOfficerResource
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     @PostMapping(path = "/governance-definitions/{governanceDefinitionOneGUID}/peer-definitions/{relationshipTypeName}/{governanceDefinitionTwoGUID}/attach")
+    @SecurityRequirement(name = "BearerAuthorization")
+
     @Operation(summary="linkPeerDefinitions",
             description="Attach two peer governance definitions.",
             externalDocs=@ExternalDocumentation(description="Further Information",
@@ -175,6 +192,8 @@ public class GovernanceOfficerResource
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     @PostMapping(path = "/governance-definitions/{governanceDefinitionOneGUID}/peer-definitions/{relationshipTypeName}/{governanceDefinitionTwoGUID}/detach")
+    @SecurityRequirement(name = "BearerAuthorization")
+
     @Operation(summary="detachPeerDefinitions",
             description="Detach a governance definition from one of its peers.",
             externalDocs=@ExternalDocumentation(description="Further Information",
@@ -190,7 +209,7 @@ public class GovernanceOfficerResource
                                               @PathVariable
                                               String                     governanceDefinitionTwoGUID,
                                               @RequestBody (required = false)
-                                                  DeleteRequestBody requestBody)
+                                                  DeleteRelationshipRequestBody requestBody)
     {
         return restAPI.detachPeerDefinitions(serverName, urlMarker, governanceDefinitionOneGUID, governanceDefinitionTwoGUID, relationshipTypeName, requestBody);
     }
@@ -212,6 +231,8 @@ public class GovernanceOfficerResource
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     @PostMapping(path = "/governance-definitions/{governanceDefinitionOneGUID}/supporting-definitions/{relationshipTypeName}/{governanceDefinitionTwoGUID}/attach")
+    @SecurityRequirement(name = "BearerAuthorization")
+
     @Operation(summary="attachSupportingDefinition",
             description="Attach a supporting governance definition.",
             externalDocs=@ExternalDocumentation(description="Further Information",
@@ -249,6 +270,8 @@ public class GovernanceOfficerResource
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     @PostMapping(path = "/governance-definitions/{governanceDefinitionOneGUID}/supporting-definitions/{relationshipTypeName}/{governanceDefinitionTwoGUID}/detach")
+    @SecurityRequirement(name = "BearerAuthorization")
+
     @Operation(summary="detachSupportingDefinition",
             description="Detach a governance definition from a supporting governance definition.",
             externalDocs=@ExternalDocumentation(description="Further Information",
@@ -264,7 +287,7 @@ public class GovernanceOfficerResource
                                                    @PathVariable
                                                    String                     governanceDefinitionTwoGUID,
                                                    @RequestBody (required = false)
-                                                       DeleteRequestBody requestBody)
+                                                       DeleteRelationshipRequestBody requestBody)
     {
         return restAPI.detachSupportingDefinition(serverName, urlMarker, governanceDefinitionOneGUID, governanceDefinitionTwoGUID, relationshipTypeName, requestBody);
     }
@@ -285,6 +308,7 @@ public class GovernanceOfficerResource
      * UserNotAuthorizedException security access problem
      */
     @PostMapping(path = "/elements/{elementGUID}/governed-by/definition/{definitionGUID}/attach")
+    @SecurityRequirement(name = "BearerAuthorization")
 
     @Operation(summary="addGovernanceDefinitionToElement",
             description="Link a governance definition to an element using the GovernedBy relationship.",
@@ -317,6 +341,7 @@ public class GovernanceOfficerResource
      * UserNotAuthorizedException security access problem
      */
     @PostMapping(path = "/elements/{elementGUID}/governed-by/definition/{definitionGUID}/detach")
+    @SecurityRequirement(name = "BearerAuthorization")
 
     @Operation(summary="removeGovernanceDefinitionFromElement",
             description="Remove the GovernedBy relationship between a governance definition and an element.",
@@ -328,12 +353,10 @@ public class GovernanceOfficerResource
                                                               @PathVariable String  elementGUID,
                                                               @PathVariable String  definitionGUID,
                                                               @RequestBody  (required = false)
-                                                                  DeleteRequestBody requestBody)
+                                                                  DeleteRelationshipRequestBody requestBody)
     {
         return restAPI.removeGovernanceDefinitionFromElement(serverName, urlMarker, elementGUID, definitionGUID, requestBody);
     }
-
-
 
 
     /**
@@ -351,6 +374,7 @@ public class GovernanceOfficerResource
      * UserNotAuthorizedException security access problem
      */
     @PostMapping(path = "/governance-metrics/{governanceMetricGUID}/measurements/{dataSourceGUID}/attach")
+    @SecurityRequirement(name = "BearerAuthorization")
 
     @Operation(summary="linkGovernanceResults",
             description="Attach a governance metric to an asset that represents the data store where the measurements are located.",
@@ -383,6 +407,7 @@ public class GovernanceOfficerResource
      * UserNotAuthorizedException security access problem
      */
     @PostMapping(path = "/governance-metrics/{governanceMetricGUID}/measurements/{dataSourceGUID}/detach")
+    @SecurityRequirement(name = "BearerAuthorization")
 
     @Operation(summary="detachGovernanceResults",
             description="Detach a governance metric from an asset that represents the data store where the measurements are located.",
@@ -394,7 +419,7 @@ public class GovernanceOfficerResource
                                                               @PathVariable String  governanceMetricGUID,
                                                               @PathVariable String  dataSourceGUID,
                                                               @RequestBody  (required = false)
-                                                              DeleteRequestBody requestBody)
+                                                              DeleteRelationshipRequestBody requestBody)
     {
         return restAPI.detachGovernanceResults(serverName, urlMarker, governanceMetricGUID, dataSourceGUID, requestBody);
     }
@@ -419,6 +444,7 @@ public class GovernanceOfficerResource
      *  UserNotAuthorizedException security access problem
      */
     @PostMapping (path = "/elements/{elementGUID}/license-types/{licenseTypeGUID}/license")
+    @SecurityRequirement(name = "BearerAuthorization")
 
     public GUIDResponse licenseElement(@PathVariable String                    serverName,
                                        @PathVariable String                    urlMarker,
@@ -445,6 +471,7 @@ public class GovernanceOfficerResource
      *  UserNotAuthorizedException security access problem
      */
     @PostMapping (path = "/licenses/{licenseGUID}/update")
+    @SecurityRequirement(name = "BearerAuthorization")
 
     public VoidResponse updateLicense(@PathVariable String                        serverName,
                                       @PathVariable String                        urlMarker,
@@ -469,11 +496,12 @@ public class GovernanceOfficerResource
      *  UserNotAuthorizedException security access problem
      */
     @PostMapping (path = "/licenses/{licenseGUID}/delete")
+    @SecurityRequirement(name = "BearerAuthorization")
 
     public VoidResponse unlicenseElement(@PathVariable String           serverName,
                                          @PathVariable String           urlMarker,
                                          @PathVariable String           licenseGUID,
-                                         @RequestBody DeleteRequestBody requestBody)
+                                         @RequestBody DeleteRelationshipRequestBody requestBody)
     {
         return restAPI.unlicenseElement(serverName, urlMarker, licenseGUID, requestBody);
     }
@@ -499,6 +527,7 @@ public class GovernanceOfficerResource
      *  UserNotAuthorizedException security access problem
      */
     @PostMapping (path = "/elements/{elementGUID}/certification-types/{certificationTypeGUID}/certify")
+    @SecurityRequirement(name = "BearerAuthorization")
 
     public GUIDResponse certifyElement(@PathVariable String                    serverName,
                                        @PathVariable String                    urlMarker,
@@ -525,6 +554,7 @@ public class GovernanceOfficerResource
      *  UserNotAuthorizedException security access problem
      */
     @PostMapping (path = "/certifications/{certificationGUID}/update")
+    @SecurityRequirement(name = "BearerAuthorization")
 
     public VoidResponse updateCertification(@PathVariable String                        serverName,
                                             @PathVariable String                        urlMarker,
@@ -549,11 +579,12 @@ public class GovernanceOfficerResource
      *  UserNotAuthorizedException security access problem
      */
     @PostMapping (path = "/certifications/{certificationGUID}/delete")
+    @SecurityRequirement(name = "BearerAuthorization")
 
     public VoidResponse decertifyElement(@PathVariable String           serverName,
                                          @PathVariable String           urlMarker,
                                          @PathVariable String           certificationGUID,
-                                         @RequestBody DeleteRequestBody requestBody)
+                                         @RequestBody DeleteRelationshipRequestBody requestBody)
     {
         return restAPI.decertifyElement(serverName, urlMarker, certificationGUID, requestBody);
     }
@@ -573,6 +604,8 @@ public class GovernanceOfficerResource
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     @PostMapping(path = "/governance-definitions/{governanceDefinitionGUID}/delete")
+    @SecurityRequirement(name = "BearerAuthorization")
+
     @Operation(summary="deleteGovernanceDefinition",
             description="Delete a governance definition.",
             externalDocs=@ExternalDocumentation(description="Further Information",
@@ -584,7 +617,7 @@ public class GovernanceOfficerResource
                                                    @PathVariable
                                                    String                    governanceDefinitionGUID,
                                                    @RequestBody (required = false)
-                                                       DeleteRequestBody requestBody)
+                                                       DeleteElementRequestBody requestBody)
     {
         return restAPI.deleteGovernanceDefinition(serverName, urlMarker, governanceDefinitionGUID, requestBody);
     }
@@ -603,6 +636,8 @@ public class GovernanceOfficerResource
      *  PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     @PostMapping(path = "/governance-definitions/by-name")
+    @SecurityRequirement(name = "BearerAuthorization")
+
     @Operation(summary="getGovernanceDefinitionsByName",
             description="Returns the list of governance definitions with a particular name.",
             externalDocs=@ExternalDocumentation(description="Further Information",
@@ -631,6 +666,8 @@ public class GovernanceOfficerResource
      *  PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     @PostMapping(path = "/governance-definitions/by-search-string")
+    @SecurityRequirement(name = "BearerAuthorization")
+
     @Operation(summary="findGovernanceDefinitions",
             description="Retrieve the list of governance definition metadata elements that contain the search string.",
             externalDocs=@ExternalDocumentation(description="Further Information",
@@ -660,6 +697,8 @@ public class GovernanceOfficerResource
      *  PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     @PostMapping(path = "/governance-definitions/{governanceDefinitionGUID}/retrieve")
+    @SecurityRequirement(name = "BearerAuthorization")
+
     @Operation(summary="getGovernanceDefinitionByGUID",
             description="Return the properties of a specific governance definition.",
             externalDocs=@ExternalDocumentation(description="Further Information",
@@ -677,6 +716,49 @@ public class GovernanceOfficerResource
     }
 
 
+
+    /* =====================================================================================================================
+     * A governance action process describes a well-defined series of steps that gets something done.
+     * The steps are defined using GovernanceActionProcessSteps.
+     */
+
+    /**
+     * Retrieve the governance action process metadata element with the supplied unique identifier
+     * along with the flow definition describing its implementation.
+     *
+     * @param serverName name of the service to route the request to
+     * @param urlMarker  view service URL marker
+     * @param processGUID unique identifier of the requested metadata element
+     * @param requestBody effective time
+     *
+     * @return requested metadata element or
+     *  InvalidParameterException  one of the parameters is invalid
+     *  UserNotAuthorizedException the user is not authorized to issue this request
+     *  PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    @PostMapping(path = "/governance-action-processes/{processGUID}/graph")
+    @SecurityRequirement(name = "BearerAuthorization")
+
+    @Operation(summary="getGovernanceActionProcessGraph",
+            description="Retrieve the governance action process metadata element with the supplied " +
+                    "unique identifier along with the flow definition describing its implementation.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/concepts/governance-action-process"))
+
+    public GovernanceActionProcessGraphResponse getGovernanceActionProcessGraph(@PathVariable String                   serverName,
+                                                                                @PathVariable String             urlMarker,
+                                                                                @PathVariable String                   processGUID,
+                                                                                @RequestBody(required = false)
+                                                                                ResultsRequestBody requestBody)
+    {
+        return restAPI.getGovernanceActionProcessGraph(serverName, urlMarker, processGUID, requestBody);
+    }
+
+
+    /* =====================================================================================================================
+     * Linking designs to implementation
+     */
+
     /**
      * Attach a design object such as a solution component or governance definition to its implementation via the ImplementedBy relationship. Request body is optional.
      *
@@ -692,6 +774,8 @@ public class GovernanceOfficerResource
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     @PostMapping(path = "/designs/{designGUID}/implementations/{implementationGUID}/attach")
+    @SecurityRequirement(name = "BearerAuthorization")
+
     @Operation(summary="linkDesignToImplementation",
             description="Attach a design object such as a solution component or governance definition to its implementation via the ImplementedBy relationship. Request body is optional.",
             externalDocs=@ExternalDocumentation(description="Further Information",
@@ -726,6 +810,8 @@ public class GovernanceOfficerResource
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     @PostMapping(path = "/designs/{designGUID}/implementations/{implementationGUID}/detach")
+    @SecurityRequirement(name = "BearerAuthorization")
+
     @Operation(summary="detachDesignFromImplementation",
             description="Detach a design object such as a solution component or governance definition from its implementation. Request body is optional.",
             externalDocs=@ExternalDocumentation(description="Further Information",
@@ -739,7 +825,7 @@ public class GovernanceOfficerResource
                                                        @PathVariable
                                                        String                     implementationGUID,
                                                        @RequestBody (required = false)
-                                                           DeleteRequestBody requestBody)
+                                                           DeleteRelationshipRequestBody requestBody)
     {
         return restAPI.detachDesignFromImplementation(serverName, urlMarker, designGUID, implementationGUID, requestBody);
     }
@@ -760,6 +846,8 @@ public class GovernanceOfficerResource
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     @PostMapping(path = "/designs/{designGUID}/implementation-resources/{implementationResourceGUID}/attach")
+    @SecurityRequirement(name = "BearerAuthorization")
+
     @Operation(summary="linkImplementationResource",
             description="Attach a design object such as a solution component or governance definition to one of its implementation resources via the ImplementationResource relationship. Request body is optional.",
             externalDocs=@ExternalDocumentation(description="Further Information",
@@ -794,6 +882,8 @@ public class GovernanceOfficerResource
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     @PostMapping(path = "/designs/{designGUID}/implementation-resources/{implementationResourceGUID}/detach")
+    @SecurityRequirement(name = "BearerAuthorization")
+
     @Operation(summary="detachImplementationResource",
             description="Detach a design object such as a solution component or governance definition from one of its implementation resources. Request body is optional.",
             externalDocs=@ExternalDocumentation(description="Further Information",
@@ -803,7 +893,7 @@ public class GovernanceOfficerResource
                                                      @PathVariable String             urlMarker,
                                                      @PathVariable String                     designGUID,
                                                      @PathVariable String implementationResourceGUID,
-                                                     @RequestBody (required = false) DeleteRequestBody requestBody)
+                                                     @RequestBody (required = false) DeleteRelationshipRequestBody requestBody)
     {
         return restAPI.detachImplementationResource(serverName, urlMarker, designGUID, implementationResourceGUID, requestBody);
     }

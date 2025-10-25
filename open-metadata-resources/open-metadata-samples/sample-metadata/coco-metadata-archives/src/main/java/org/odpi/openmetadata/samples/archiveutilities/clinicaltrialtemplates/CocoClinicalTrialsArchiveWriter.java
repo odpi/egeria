@@ -112,6 +112,7 @@ public class CocoClinicalTrialsArchiveWriter extends EgeriaBaseArchiveWriter
                                                             null,
                                                             glossaryTermDefinition.getAbbreviation(),
                                                             glossaryTermDefinition.getUsage(),
+                                                            null,
                                                             false,
                                                             null,
                                                             null,
@@ -132,6 +133,7 @@ public class CocoClinicalTrialsArchiveWriter extends EgeriaBaseArchiveWriter
                                                                       null,
                                                                       null,
                                                                       glossaryTermDefinition.getTemplateSubstituteUsage(),
+                                                                      null,
                                                                       false,
                                                                       null,
                                                                       null,
@@ -166,7 +168,6 @@ public class CocoClinicalTrialsArchiveWriter extends EgeriaBaseArchiveWriter
 
         extendedProperties.put(OpenMetadataProperty.PATH_NAME.name, PlaceholderProperty.FILE_PATH_NAME.getPlaceholder());
         extendedProperties.put(OpenMetadataProperty.FILE_NAME.name, PlaceholderProperty.FILE_NAME.getPlaceholder());
-        extendedProperties.put(OpenMetadataProperty.DEPLOYED_IMPLEMENTATION_TYPE.name, FileType.CSV_FILE.getDeployedImplementationType().getDeployedImplementationType());
         extendedProperties.put(OpenMetadataProperty.FILE_TYPE.name, FileType.CSV_FILE.getFileTypeName());
         extendedProperties.put(OpenMetadataProperty.FILE_EXTENSION.name, "csv");
         extendedProperties.put(OpenMetadataProperty.DELIMITER_CHARACTER.name, ",");
@@ -211,6 +212,7 @@ public class CocoClinicalTrialsArchiveWriter extends EgeriaBaseArchiveWriter
         String assetGUID = archiveHelper.addAsset(FileType.CSV_FILE.getAssetSubTypeName(),
                                                   qualifiedName,
                                                   PlaceholderProperty.FILE_NAME.getPlaceholder() + " from " + CocoClinicalTrialPlaceholderProperty.HOSPITAL_NAME.getPlaceholder(),
+                                                  FileType.CSV_FILE.getDeployedImplementationType().getDeployedImplementationType(),
                                                   "V1.0",
                                                   CocoClinicalTrialPlaceholderProperty.HOSPITAL_NAME.getPlaceholder() + " weekly measurements received on " + PlaceholderProperty.RECEIVED_DATE.getPlaceholder() + " for " + CocoClinicalTrialPlaceholderProperty.CLINICAL_TRIAL_NAME.getPlaceholder(),
                                                   this.getAssetAdditionalProperties(),
@@ -395,7 +397,6 @@ public class CocoClinicalTrialsArchiveWriter extends EgeriaBaseArchiveWriter
 
         extendedProperties.put(OpenMetadataProperty.PATH_NAME.name, PlaceholderProperty.FILE_PATH_NAME.getPlaceholder());
         extendedProperties.put(OpenMetadataProperty.FILE_NAME.name, PlaceholderProperty.FILE_NAME.getPlaceholder());
-        extendedProperties.put(OpenMetadataProperty.DEPLOYED_IMPLEMENTATION_TYPE.name, FileType.CSV_FILE.getDeployedImplementationType().getDeployedImplementationType());
         extendedProperties.put(OpenMetadataProperty.FILE_TYPE.name, FileType.CSV_FILE.getFileTypeName());
         extendedProperties.put(OpenMetadataProperty.FILE_EXTENSION.name, "csv");
         extendedProperties.put(OpenMetadataProperty.DELIMITER_CHARACTER.name, ",");
@@ -420,6 +421,7 @@ public class CocoClinicalTrialsArchiveWriter extends EgeriaBaseArchiveWriter
         String assetGUID = archiveHelper.addAsset(FileType.CSV_FILE.getAssetSubTypeName(),
                                                   qualifiedName,
                                                   PlaceholderProperty.FILE_NAME.getPlaceholder() + " from " + CocoClinicalTrialPlaceholderProperty.HOSPITAL_NAME.getPlaceholder(),
+                                                  FileType.CSV_FILE.getDeployedImplementationType().getDeployedImplementationType(),
                                                   "V1.0",
                                                   CocoClinicalTrialPlaceholderProperty.HOSPITAL_NAME.getPlaceholder() + " weekly measurements received on "+ PlaceholderProperty.RECEIVED_DATE.getPlaceholder() + " for " + CocoClinicalTrialPlaceholderProperty.CLINICAL_TRIAL_NAME.getPlaceholder(),
                                                   this.getAssetAdditionalProperties(),

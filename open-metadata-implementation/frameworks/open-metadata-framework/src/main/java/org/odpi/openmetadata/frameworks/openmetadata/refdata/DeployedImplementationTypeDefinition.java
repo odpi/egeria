@@ -49,14 +49,6 @@ public interface DeployedImplementationTypeDefinition
 
 
     /**
-     * Return the namespace for this deployed implementation type.
-     *
-     * @return string
-     */
-    String getNamespace();
-
-
-    /**
      * Return the description for this value.
      * 
      * @return string

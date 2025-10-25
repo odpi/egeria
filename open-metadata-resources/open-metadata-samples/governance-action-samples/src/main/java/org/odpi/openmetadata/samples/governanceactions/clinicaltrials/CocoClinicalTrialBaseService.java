@@ -252,6 +252,7 @@ public class CocoClinicalTrialBaseService extends GeneralGovernanceActionService
      *
      * @param solutionComponentGUID unique identifier of the solution component
      * @param implementationGUID unique identifier of the newly set up governance action process
+     * @param role role of the component in an implementation
      * @param description optional description of the implementation
      * @throws InvalidParameterException invalid parameter
      * @throws PropertyServerException repository error
@@ -259,13 +260,18 @@ public class CocoClinicalTrialBaseService extends GeneralGovernanceActionService
      */
     protected void addSolutionComponentImplementationResource(String solutionComponentGUID,
                                                               String implementationGUID,
+                                                              String role,
                                                               String description) throws InvalidParameterException,
                                                                                          PropertyServerException,
                                                                                          UserNotAuthorizedException
     {
         ElementProperties properties = propertyHelper.addStringProperty(null,
-                                                                        OpenMetadataProperty.DESCRIPTION.name,
-                                                                        description);
+                                                                        OpenMetadataProperty.ROLE.name,
+                                                                        role);
+
+        properties = propertyHelper.addStringProperty(properties,
+                                                      OpenMetadataProperty.DESCRIPTION.name,
+                                                      description);
 
         governanceContext.getOpenMetadataStore().createRelatedElementsInStore(OpenMetadataType.IMPLEMENTATION_RESOURCE_RELATIONSHIP.typeName,
                                                                               solutionComponentGUID,

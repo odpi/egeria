@@ -100,7 +100,7 @@ public class ValidValueDefinitionClient extends ConnectorContextClientBase
         newElementOptions.setParentRelationshipTypeName(OpenMetadataType.VALID_VALUE_MEMBER_RELATIONSHIP.typeName);
 
         ValidValueMemberProperties validValueMemberProperties = new ValidValueMemberProperties();
-        validValueMemberProperties.setDefaultValue(isDefaultValue);
+        validValueMemberProperties.setIsDefaultValue(isDefaultValue);
 
         return this.createValidValueDefinition(newElementOptions,
                                                null,
@@ -257,9 +257,9 @@ public class ValidValueDefinitionClient extends ConnectorContextClientBase
     public void linkValidValuesAssignment(String                         elementGUID,
                                           String                         validValueDefinitionGUID,
                                           MetadataSourceOptions          metadataSourceOptions,
-                                          ValidValueAssignmentProperties relationshipProperties) throws InvalidParameterException,
-                                                                                                        PropertyServerException,
-                                                                                                        UserNotAuthorizedException
+                                          ValidValuesAssignmentProperties relationshipProperties) throws InvalidParameterException,
+                                                                                                         PropertyServerException,
+                                                                                                         UserNotAuthorizedException
     {
         validValueDefinitionHandler.linkValidValuesAssignment(connectorUserId, elementGUID, validValueDefinitionGUID, metadataSourceOptions, relationshipProperties);
     }

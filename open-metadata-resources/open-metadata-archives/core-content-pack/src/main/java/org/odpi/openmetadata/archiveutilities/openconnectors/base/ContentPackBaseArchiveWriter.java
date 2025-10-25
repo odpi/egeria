@@ -2,15 +2,15 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.archiveutilities.openconnectors.base;
 
-import org.odpi.openmetadata.adapters.connectors.egeriainfrastructure.control.EgeriaDeployedImplementationType;
+import org.odpi.openmetadata.frameworks.openmetadata.definitions.EgeriaDeployedImplementationType;
 import org.odpi.openmetadata.adapters.connectors.governanceactions.stewardship.ManageAssetGuard;
 import org.odpi.openmetadata.archiveutilities.openconnectors.*;
 import org.odpi.openmetadata.frameworks.connectors.controls.SecretsStoreConfigurationProperty;
-import org.odpi.openmetadata.frameworks.opengovernance.controls.RequestParameterType;
+import org.odpi.openmetadata.frameworks.openmetadata.specificationproperties.RequestParameterType;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.NewActionTarget;
 import org.odpi.openmetadata.frameworks.openmetadata.controls.PlaceholderProperty;
-import org.odpi.openmetadata.frameworks.openmetadata.controls.PlaceholderPropertyType;
-import org.odpi.openmetadata.frameworks.openmetadata.controls.ReplacementAttributeType;
+import org.odpi.openmetadata.frameworks.openmetadata.specificationproperties.PlaceholderPropertyType;
+import org.odpi.openmetadata.frameworks.openmetadata.specificationproperties.ReplacementAttributeType;
 import org.odpi.openmetadata.frameworks.openmetadata.controls.TemplateDefinition;
 import org.odpi.openmetadata.frameworks.openmetadata.mapper.OpenMetadataValidValues;
 import org.odpi.openmetadata.frameworks.openmetadata.refdata.*;
@@ -84,26 +84,43 @@ public abstract class ContentPackBaseArchiveWriter extends EgeriaBaseArchiveWrit
             {
                 archiveHelper.setGUID(catalogDefinition.getQualifiedName(), catalogDefinition.getGUID());
 
-                String collectionGUID = archiveHelper.addCollection(OpenMetadataType.COLLECTION.typeName,
-                                                                    catalogDefinition.getGUID(),
-                                                                    OpenMetadataType.COLLECTION.typeName,
-                                                                    OpenMetadataType.COLLECTION.typeName,
-                                                                    null,
-                                                                    OpenMetadataType.ROOT_COLLECTION_CLASSIFICATION.typeName,
-                                                                    catalogDefinition.getQualifiedName(),
-                                                                    catalogDefinition.getName(),
-                                                                    catalogDefinition.getDescription(),
-                                                                    null,
-                                                                    null,
-                                                                    null,
-                                                                    null);
-
                 if (catalogDefinition.getParent() != null)
                 {
+                    String collectionGUID = archiveHelper.addCollection(catalogDefinition.getTypeName(),
+                                                                        catalogDefinition.getParent().getGUID(),
+                                                                        catalogDefinition.getParent().getTypeName(),
+                                                                        OpenMetadataType.COLLECTION.typeName,
+                                                                        catalogDefinition.getAnchorScopeGUID(),
+                                                                        null,
+                                                                        catalogDefinition.getQualifiedName(),
+                                                                        catalogDefinition.getName(),
+                                                                        catalogDefinition.getDescription(),
+                                                                        null,
+                                                                        null,
+                                                                        null,
+                                                                        null);
+
                     archiveHelper.addMemberToCollection(catalogDefinition.getParent().getGUID(),
                                                         collectionGUID,
                                                         null);
                 }
+                else
+                {
+                    archiveHelper.addCollection(catalogDefinition.getTypeName(),
+                                                catalogDefinition.getGUID(),
+                                                catalogDefinition.getTypeName(),
+                                                OpenMetadataType.COLLECTION.typeName,
+                                                catalogDefinition.getAnchorScopeGUID(),
+                                                null,
+                                                catalogDefinition.getQualifiedName(),
+                                                catalogDefinition.getName(),
+                                                catalogDefinition.getDescription(),
+                                                null,
+                                                null,
+                                                null,
+                                                null);
+                }
+
             }
         }
     }
@@ -133,7 +150,6 @@ public abstract class ContentPackBaseArchiveWriter extends EgeriaBaseArchiveWrit
         Map<String, Object>  extendedProperties = new HashMap<>();
         List<Classification> classifications    = new ArrayList<>();
 
-        extendedProperties.put(OpenMetadataProperty.DEPLOYED_IMPLEMENTATION_TYPE.name, deployedImplementationType.getDeployedImplementationType());
         extendedProperties.put(OpenMetadataProperty.RESOURCE_NAME.name, PlaceholderProperty.FILE_PATH_NAME.getPlaceholder());
         extendedProperties.put(OpenMetadataProperty.PATH_NAME.name, PlaceholderProperty.FILE_PATH_NAME.getPlaceholder());
         extendedProperties.put(OpenMetadataProperty.FILE_TYPE.name, PlaceholderProperty.FILE_TYPE.getPlaceholder());
@@ -142,7 +158,7 @@ public abstract class ContentPackBaseArchiveWriter extends EgeriaBaseArchiveWrit
 
         classifications.add(archiveHelper.getTemplateClassification(deployedImplementationType.getDeployedImplementationType() + " template",
                                                                     "Create a data asset of type " + deployedImplementationType.getAssociatedTypeName() + " with an associated Connection.",
-                                                                    "V1.0",
+                                                                    "V6.0-SNAPSHOT",
                                                                     null, methodName));
 
         classifications.add(archiveHelper.getDataAssetEncodingClassification(PlaceholderProperty.FILE_ENCODING.getPlaceholder(),
@@ -153,6 +169,7 @@ public abstract class ContentPackBaseArchiveWriter extends EgeriaBaseArchiveWrit
         String assetGUID = archiveHelper.addAsset(deployedImplementationType.getAssociatedTypeName(),
                                                   qualifiedName,
                                                   PlaceholderProperty.FILE_NAME.getPlaceholder(),
+                                                  deployedImplementationType.getDeployedImplementationType(),
                                                   PlaceholderProperty.VERSION_IDENTIFIER.getPlaceholder(),
                                                   PlaceholderProperty.DESCRIPTION.getPlaceholder(),
                                                   null,
@@ -202,92 +219,6 @@ public abstract class ContentPackBaseArchiveWriter extends EgeriaBaseArchiveWrit
                                                OpenMetadataType.ASSET.typeName,
                                                null,
                                                placeholderPropertyTypes);
-    }
-
-
-    protected void addDataSetCatalogTemplates(ContentPackDefinition contentPackDefinition)
-    {
-        for (DataSetTemplateDefinition templateDefinition : DataSetTemplateDefinition.values())
-        {
-            if (templateDefinition.getContentPackDefinition() == contentPackDefinition)
-            {
-                createDataSetCatalogTemplate(templateDefinition.getTemplateGUID(),
-                                             templateDefinition.getDeployedImplementationType(),
-                                             templateDefinition.getQualifiedName(),
-                                             templateDefinition.getConnectorTypeGUID());
-            }
-        }
-    }
-
-    /**
-     * Create a template for a dataset and link it to the associated open metadata type.
-     * The template consists of a DataFile asset plus an optional connection, linked
-     * to the supplied connector type and an endpoint,
-     *
-     * @param deployedImplementationType values for the template
-     * @param connectorTypeGUID          connector type to link to the connection
-     */
-    protected void createDataSetCatalogTemplate(String                               templateGUID,
-                                                DeployedImplementationTypeDefinition deployedImplementationType,
-                                                String                               qualifiedName,
-                                                String                               connectorTypeGUID)
-    {
-        final String methodName = "createDataSetCatalogTemplate";
-
-        Map<String, Object>  extendedProperties = new HashMap<>();
-        List<Classification> classifications    = new ArrayList<>();
-
-        extendedProperties.put(OpenMetadataProperty.DEPLOYED_IMPLEMENTATION_TYPE.name, deployedImplementationType.getDeployedImplementationType());
-
-        classifications.add(archiveHelper.getTemplateClassification(deployedImplementationType.getDeployedImplementationType() + " template",
-                                                                    "Create an asset of type " + deployedImplementationType.getAssociatedTypeName() + " with an associated Connection.",
-                                                                    "V1.0",
-                                                                    null, methodName));
-
-        archiveHelper.setGUID(qualifiedName, templateGUID);
-        String assetGUID = archiveHelper.addAsset(deployedImplementationType.getAssociatedTypeName(),
-                                                  qualifiedName,
-                                                  PlaceholderProperty.DISPLAY_NAME.getPlaceholder(),
-                                                  PlaceholderProperty.VERSION_IDENTIFIER.getPlaceholder(),
-                                                  PlaceholderProperty.DESCRIPTION.getPlaceholder(),
-                                                  null,
-                                                  extendedProperties,
-                                                  classifications);
-
-        assert(assetGUID.equals(templateGUID));
-
-        if (connectorTypeGUID != null)
-        {
-            String connectionGUID = archiveHelper.addConnection(qualifiedName + ":Connection",
-                                                                PlaceholderProperty.DISPLAY_NAME.getPlaceholder() + " connection",
-                                                                null,
-                                                                null,
-                                                                null,
-                                                                null,
-                                                                null,
-                                                                null,
-                                                                null,
-                                                                connectorTypeGUID,
-                                                                null,
-                                                                assetGUID,
-                                                                deployedImplementationType.getAssociatedTypeName(),
-                                                                OpenMetadataType.ASSET.typeName,
-                                                                null);
-
-            archiveHelper.addConnectionForAsset(assetGUID, connectionGUID);
-        }
-
-        String deployedImplementationTypeGUID = archiveHelper.getGUID(deployedImplementationType.getQualifiedName());
-
-        archiveHelper.addCatalogTemplateRelationship(deployedImplementationTypeGUID, assetGUID);
-
-        archiveHelper.addPlaceholderProperties(assetGUID,
-                                               deployedImplementationType.getAssociatedTypeName(),
-                                               assetGUID,
-                                               deployedImplementationType.getAssociatedTypeName(),
-                                               OpenMetadataType.ASSET.typeName,
-                                               null,
-                                               PlaceholderProperty.getDataSetPlaceholderPropertyTypes());
     }
 
 
@@ -365,6 +296,43 @@ public abstract class ContentPackBaseArchiveWriter extends EgeriaBaseArchiveWrit
 
 
     /**
+     * Loop through the server template definitions creating the specified templates.
+     *
+     * @param contentPackDefinition which content pack are these templates for?
+     */
+    protected void addTabularDataSetCatalogTemplates(ContentPackDefinition contentPackDefinition)
+    {
+        for (TabularDataSetTemplateDefinition templateDefinition : TabularDataSetTemplateDefinition.values())
+        {
+            if (templateDefinition.getContentPackDefinition() == contentPackDefinition)
+            {
+                createTabularDataSetCatalogTemplate(templateDefinition.getTemplateGUID(),
+                                               templateDefinition.getTemplateVersionIdentifier(),
+                                               templateDefinition.getDeployedImplementationType(),
+                                               templateDefinition.getAssetName(),
+                                               templateDefinition.getAssetDescription(),
+                                               templateDefinition.getQualifiedName(),
+                                               templateDefinition.getElementVersionIdentifier(),
+                                               templateDefinition.getExtendedProperties(),
+                                               templateDefinition.getEncoding(),
+                                               templateDefinition.getEncodingLanguage(),
+                                               templateDefinition.getDataSetConnectorTypeGUID(),
+                                               templateDefinition.getDataSetConfigurationProperties(),
+                                               templateDefinition.getTechnologyConnectorTypeGUID(),
+                                               templateDefinition.getTechnologyNetworkAddress(),
+                                               templateDefinition.getTechnologyConfigurationProperties(),
+                                               templateDefinition.getSecretsCollectionName(),
+                                               templateDefinition.getSecretsStorePurpose(),
+                                               templateDefinition.getSecretsStoreConnectorTypeGUID(),
+                                               templateDefinition.getSecretsStoreFileName(),
+                                               templateDefinition.getReplacementAttributes(),
+                                               templateDefinition.getPlaceholders());
+            }
+        }
+    }
+
+
+    /**
      * Create a template for a software server and link it to the associated deployed implementation type.
      * The template consists of a SoftwareServer asset linked to a software capability, plus a connection, linked
      * to the supplied connector type and an endpoint,
@@ -418,10 +386,7 @@ public abstract class ContentPackBaseArchiveWriter extends EgeriaBaseArchiveWrit
         Map<String, Object>  extendedProperties = new HashMap<>();
         List<Classification> classifications    = new ArrayList<>();
 
-        extendedProperties.put(OpenMetadataProperty.DEPLOYED_IMPLEMENTATION_TYPE.name,
-                               deployedImplementationType.getDeployedImplementationType());
-        extendedProperties.put(OpenMetadataProperty.RESOURCE_NAME.name,
-                               serverName);
+        extendedProperties.put(OpenMetadataProperty.RESOURCE_NAME.name, serverName);
 
         if (deployedImplementationType.getAssociatedClassification() != null)
         {
@@ -438,6 +403,7 @@ public abstract class ContentPackBaseArchiveWriter extends EgeriaBaseArchiveWrit
         String assetGUID = archiveHelper.addAsset(deployedImplementationType.getAssociatedTypeName(),
                                                   qualifiedName,
                                                   serverName,
+                                                  deployedImplementationType.getDeployedImplementationType(),
                                                   serverVersionIdentifier,
                                                   description,
                                                   null,
@@ -696,20 +662,18 @@ public abstract class ContentPackBaseArchiveWriter extends EgeriaBaseArchiveWrit
         Map<String, Object>  extendedProperties = new HashMap<>();
         List<Classification> classifications    = new ArrayList<>();
 
-        extendedProperties.put(OpenMetadataProperty.DEPLOYED_IMPLEMENTATION_TYPE.name,
-                               deployedImplementationType.getDeployedImplementationType());
-        extendedProperties.put(OpenMetadataProperty.RESOURCE_NAME.name,
-                               PlaceholderProperty.HOST_URL.getPlaceholder());
+        extendedProperties.put(OpenMetadataProperty.RESOURCE_NAME.name, PlaceholderProperty.HOST_URL.getPlaceholder());
 
         classifications.add(archiveHelper.getTemplateClassification(deployedImplementationType.getDeployedImplementationType() + " template",
                                                                     "Create a " + deployedImplementationType.getDeployedImplementationType() + " Host with an associated SoftwareCapability.",
-                                                                    "V1.0",
+                                                                    "6.0-SNAPSHOT",
                                                                     null, methodName));
 
         archiveHelper.setGUID(qualifiedName, guid);
         String assetGUID = archiveHelper.addAsset(deployedImplementationType.getAssociatedTypeName(),
                                                   qualifiedName,
                                                   PlaceholderProperty.DISPLAY_NAME.getPlaceholder(),
+                                                  deployedImplementationType.getDeployedImplementationType(),
                                                   PlaceholderProperty.VERSION_IDENTIFIER.getPlaceholder(),
                                                   PlaceholderProperty.DESCRIPTION.getPlaceholder(),
                                                   null,
@@ -792,7 +756,7 @@ public abstract class ContentPackBaseArchiveWriter extends EgeriaBaseArchiveWrit
 
         classifications.add(archiveHelper.getTemplateClassification(deployedImplementationType.getDeployedImplementationType() + " template",
                                                                     "Create a " + deployedImplementationType.getDeployedImplementationType() + " SoftwareCapability.",
-                                                                    "V1.0",
+                                                                    "6.0-SNAPSHOT",
                                                                     null, methodName));
 
         if (softwareCapabilityClassification != null)
@@ -916,6 +880,7 @@ public abstract class ContentPackBaseArchiveWriter extends EgeriaBaseArchiveWrit
         String assetGUID = archiveHelper.addAsset(deployedImplementationType.getAssociatedTypeName(),
                                                   qualifiedName,
                                                   assetName,
+                                                  deployedImplementationType.getDeployedImplementationType(),
                                                   versionIdentifier,
                                                   assetDescription,
                                                   null,
@@ -923,96 +888,19 @@ public abstract class ContentPackBaseArchiveWriter extends EgeriaBaseArchiveWrit
                                                   classifications);
         assert(templateGUID.equals(assetGUID));
 
-        if (connectorTypeGUID != null)
+        String connectionGUID = addTechnologyConnection(assetGUID,
+                                                        deployedImplementationType,
+                                                        qualifiedName,
+                                                        assetName,
+                                                        connectorTypeGUID,
+                                                        networkAddress,
+                                                        configurationProperties,
+                                                        secretsStoreConnectorTypeGUID,
+                                                        secretsStoreCollectionName,
+                                                        secretsStoreFileName,
+                                                        secretsStorePurpose);
+        if (connectionGUID != null)
         {
-            String endpointGUID = archiveHelper.addEndpoint(assetGUID,
-                                                            deployedImplementationType.getAssociatedTypeName(),
-                                                            OpenMetadataType.ASSET.typeName,
-                                                            null,
-                                                            qualifiedName + ":Endpoint",
-                                                            assetName + " endpoint",
-                                                            null,
-                                                            networkAddress,
-                                                            null,
-                                                            null);
-
-            String connectionGUID;
-            if (secretsStoreConnectorTypeGUID == null)
-            {
-                connectionGUID = archiveHelper.addConnection(qualifiedName + ":Connection",
-                                                             assetName + " connection",
-                                                             null,
-                                                             null,
-                                                             null,
-                                                             null,
-                                                             null,
-                                                             configurationProperties,
-                                                             null,
-                                                             connectorTypeGUID,
-                                                             endpointGUID,
-                                                             assetGUID,
-                                                             deployedImplementationType.getAssociatedTypeName(),
-                                                             OpenMetadataType.ASSET.typeName,
-                                                             null);
-            }
-            else
-            {
-                connectionGUID = archiveHelper.addConnection(OpenMetadataType.VIRTUAL_CONNECTION.typeName,
-                                                             qualifiedName + ":Connection",
-                                                             assetName + " connection",
-                                                             null,
-                                                             null,
-                                                             null,
-                                                             null,
-                                                             null,
-                                                             configurationProperties,
-                                                             null,
-                                                             connectorTypeGUID,
-                                                             endpointGUID,
-                                                             assetGUID,
-                                                             deployedImplementationType.getAssociatedTypeName(),
-                                                             OpenMetadataType.ASSET.typeName,
-                                                             null);
-
-                Map<String, Object> secretsStoreConfigurationProperties = new HashMap<>();
-
-                secretsStoreConfigurationProperties.put(SecretsStoreConfigurationProperty.SECRETS_COLLECTION_NAME.getName(), secretsStoreCollectionName);
-
-                String secretStoreEndpointGUID = archiveHelper.addEndpoint(assetGUID,
-                                                                           deployedImplementationType.getAssociatedTypeName(),
-                                                                           OpenMetadataType.ASSET.typeName,
-                                                                           null,
-                                                                           qualifiedName + ":SecretStoreEndpoint",
-                                                                           assetName + " secret store endpoint",
-                                                                           null,
-                                                                           secretsStoreFileName,
-                                                                           null,
-                                                                           null);
-
-                String secretsStoreConnectionGUID = archiveHelper.addConnection(OpenMetadataType.CONNECTION.typeName,
-                                                                                qualifiedName + ":SecretsStoreConnection",
-                                                                                assetName + " secrets store connection",
-                                                                                null,
-                                                                                null,
-                                                                                null,
-                                                                                null,
-                                                                                null,
-                                                                                secretsStoreConfigurationProperties,
-                                                                                null,
-                                                                                secretsStoreConnectorTypeGUID,
-                                                                                secretStoreEndpointGUID,
-                                                                                assetGUID,
-                                                                                deployedImplementationType.getAssociatedTypeName(),
-                                                                                OpenMetadataType.ASSET.typeName,
-                                                                                null);
-
-                archiveHelper.addEmbeddedConnection(connectionGUID,
-                                                    0,
-                                                    secretsStorePurpose,
-                                                    null,
-                                                    secretsStoreConnectionGUID);
-            }
-
             archiveHelper.addConnectionForAsset(assetGUID, connectionGUID);
         }
 
@@ -1040,12 +928,345 @@ public abstract class ContentPackBaseArchiveWriter extends EgeriaBaseArchiveWrit
 
 
     /**
+     * Create a template for a type of asset and link it to the associated deployed implementation type.
+     * The template consists of an asset linked to a connection, that is in turn linked
+     * to the supplied connector type and an endpoint, along with a nested secrets store
+     *
+     * @param templateGUID fixed unique identifier
+     * @param templateVersion version of the template
+     * @param deployedImplementationType deployed implementation type for the technology
+     * @param assetName name for the asset
+     * @param assetDescription description
+     * @param qualifiedName optional server name
+     * @param versionIdentifier version identifier
+     * @param suppliedExtendedProperties extended properties for the asset
+     * @param encoding           what encoding is needed?
+     * @param encodingLanguage           language used to encode the contents of the file
+     * @param dataSetConnectorTypeGUID connectorGUID for the wrapper connector - this is optional if the technology
+     *                                 connector supports tabular data set directly.
+     * @param dataSetConfigurationProperties  configuration properties for the data set connection eg tableName
+     * @param technologyConnectorTypeGUID connector type to link to the technology
+     * @param networkAddress network address for the technology endpoint
+     * @param technologyConfigurationProperties  additional properties for the technology connection
+     * @param secretsStoreCollectionName name of the collection to use in the secrets store
+     * @param secretsStorePurpose              purpose for the secrets store
+     * @param secretsStoreConnectorTypeGUID    optional name for the secrets store connector provider to include in the template
+     * @param secretsStoreFileName             location of the secrets store
+     * @param replacementAttributeTypes attributes that should have a replacement value to successfully use the template
+     * @param placeholderPropertyTypes placeholder variables used in the supplied parameters
+     */
+    protected void createTabularDataSetCatalogTemplate(String                               templateGUID,
+                                                       String                               templateVersion,
+                                                       DeployedImplementationTypeDefinition deployedImplementationType,
+                                                       String                               assetName,
+                                                       String                               assetDescription,
+                                                       String                               qualifiedName,
+                                                       String                               versionIdentifier,
+                                                       Map<String, Object>                  suppliedExtendedProperties,
+                                                       String                               encoding,
+                                                       String                               encodingLanguage,
+                                                       String                               dataSetConnectorTypeGUID,
+                                                       Map<String, Object>                  dataSetConfigurationProperties,
+                                                       String                               technologyConnectorTypeGUID,
+                                                       String                               networkAddress,
+                                                       Map<String, Object>                  technologyConfigurationProperties,
+                                                       String                               secretsStoreCollectionName,
+                                                       String                               secretsStorePurpose,
+                                                       String                               secretsStoreConnectorTypeGUID,
+                                                       String                               secretsStoreFileName,
+                                                       List<ReplacementAttributeType>       replacementAttributeTypes,
+                                                       List<PlaceholderPropertyType>        placeholderPropertyTypes)
+    {
+        final String methodName = "createTabularDataSetCatalogTemplate";
+
+        Map<String, Object>  extendedProperties = new HashMap<>();
+        List<Classification> classifications = new ArrayList<>();
+
+        extendedProperties.put(OpenMetadataProperty.DEPLOYED_IMPLEMENTATION_TYPE.name,
+                               deployedImplementationType.getDeployedImplementationType());
+
+        if (suppliedExtendedProperties != null)
+        {
+            extendedProperties.putAll(suppliedExtendedProperties);
+        }
+
+        classifications.add(archiveHelper.getTemplateClassification(deployedImplementationType.getDeployedImplementationType() + " template",
+                                                                    "Create a tabular data set of type " + deployedImplementationType.getAssociatedTypeName() + " with an associated Connection.",
+                                                                    templateVersion,
+                                                                    null,
+                                                                    methodName));
+
+        if (encoding != null)
+        {
+            classifications.add(archiveHelper.getDataAssetEncodingClassification(encoding,
+                                                                                 encodingLanguage,
+                                                                                 null,
+                                                                                 null));
+        }
+
+        archiveHelper.setGUID(qualifiedName, templateGUID);
+
+        String assetGUID = archiveHelper.addAsset(deployedImplementationType.getAssociatedTypeName(),
+                                                  qualifiedName,
+                                                  assetName,
+                                                  deployedImplementationType.getDeployedImplementationType(),
+                                                  versionIdentifier,
+                                                  assetDescription,
+                                                  null,
+                                                  extendedProperties,
+                                                  classifications);
+        assert(templateGUID.equals(assetGUID));
+
+        String connectionGUID;
+        if (dataSetConnectorTypeGUID != null)
+        {
+            connectionGUID = archiveHelper.addConnection(OpenMetadataType.VIRTUAL_CONNECTION.typeName,
+                                                                qualifiedName + "::DataSetConnection",
+                                                                assetName + " data set connection",
+                                                                null,
+                                                                null,
+                                                                null,
+                                                                null,
+                                                                null,
+                                                                dataSetConfigurationProperties,
+                                                                null,
+                                                                dataSetConnectorTypeGUID,
+                                                                null,
+                                                                assetGUID,
+                                                                deployedImplementationType.getAssociatedTypeName(),
+                                                                OpenMetadataType.ASSET.typeName,
+                                                                null);
+
+
+
+            String technologyConnectionGUID = addTechnologyConnection(assetGUID,
+                                                                      deployedImplementationType,
+                                                                      qualifiedName,
+                                                                      assetName,
+                                                                      technologyConnectorTypeGUID,
+                                                                      networkAddress,
+                                                                      technologyConfigurationProperties,
+                                                                      secretsStoreConnectorTypeGUID,
+                                                                      secretsStoreCollectionName,
+                                                                      secretsStoreFileName,
+                                                                      secretsStorePurpose);
+            if (technologyConnectionGUID != null)
+            {
+                archiveHelper.addEmbeddedConnection(connectionGUID,
+                                                    0,
+                                                    "Connect to technology",
+                                                    null,
+                                                    technologyConnectionGUID);
+            }
+        }
+        else
+        {
+            connectionGUID = addTechnologyConnection(assetGUID,
+                                                     deployedImplementationType,
+                                                     qualifiedName,
+                                                     assetName,
+                                                     technologyConnectorTypeGUID,
+                                                     networkAddress,
+                                                     technologyConfigurationProperties,
+                                                     secretsStoreConnectorTypeGUID,
+                                                     secretsStoreCollectionName,
+                                                     secretsStoreFileName,
+                                                     secretsStorePurpose);
+        }
+
+        if (connectionGUID != null)
+        {
+            archiveHelper.addConnectionForAsset(assetGUID, connectionGUID);
+        }
+
+        String deployedImplementationTypeGUID = archiveHelper.getGUID(deployedImplementationType.getQualifiedName());
+
+        archiveHelper.addCatalogTemplateRelationship(deployedImplementationTypeGUID, assetGUID);
+
+        archiveHelper.addReplacementAttributes(assetGUID,
+                                               deployedImplementationType.getAssociatedTypeName(),
+                                               assetGUID,
+                                               deployedImplementationType.getAssociatedTypeName(),
+                                               OpenMetadataType.ASSET.typeName,
+                                               null,
+                                               replacementAttributeTypes);
+
+        archiveHelper.addPlaceholderProperties(assetGUID,
+                                               deployedImplementationType.getAssociatedTypeName(),
+                                               assetGUID,
+                                               deployedImplementationType.getAssociatedTypeName(),
+                                               OpenMetadataType.ASSET.typeName,
+                                               null,
+                                               placeholderPropertyTypes);
+    }
+
+
+    /**
+     * Add the connection for the connector that interacts with a specific technology.
+     *
+     * @param assetGUID unique id of asset
+     * @param deployedImplementationType asset's deployed implementation type
+     * @param qualifiedName asset's qualified name
+     * @param assetName asset's display name
+     * @param connectorTypeGUID optional unique identifier of the connector type for the connection
+     * @param networkAddress address to access technology
+     * @param configurationProperties configuration properties for the technology connector
+     * @param secretsStoreConnectorTypeGUID connector type for the optional embedded secrets store connector
+     * @param secretsStoreCollectionName collection name for the optional embedded secrets store connector
+     * @param secretsStoreFileName file name for the optional embedded secrets store connector
+     * @param secretsStorePurpose purpose of the optional embedded secrets store connector
+     * @return unique identifier of the connection - or null if connectorTypeGUID is null
+     */
+    protected String addTechnologyConnection(String                               assetGUID,
+                                             DeployedImplementationTypeDefinition deployedImplementationType,
+                                             String                               qualifiedName,
+                                             String                               assetName,
+                                             String                               connectorTypeGUID,
+                                             String                               networkAddress,
+                                             Map<String,Object>                   configurationProperties,
+                                             String                               secretsStoreConnectorTypeGUID,
+                                             String                               secretsStoreCollectionName,
+                                             String                               secretsStoreFileName,
+                                             String                               secretsStorePurpose)
+    {
+        if (connectorTypeGUID != null)
+        {
+            String endpointGUID = archiveHelper.addEndpoint(assetGUID,
+                                                            deployedImplementationType.getAssociatedTypeName(),
+                                                            OpenMetadataType.ASSET.typeName,
+                                                            null,
+                                                            qualifiedName + "::Endpoint",
+                                                            assetName + " endpoint",
+                                                            null,
+                                                            networkAddress,
+                                                            null,
+                                                            null);
+
+            String connectionGUID;
+            if (secretsStoreConnectorTypeGUID == null)
+            {
+                connectionGUID = archiveHelper.addConnection(qualifiedName + "::Connection",
+                                                             assetName + " connection",
+                                                             null,
+                                                             null,
+                                                             null,
+                                                             null,
+                                                             null,
+                                                             configurationProperties,
+                                                             null,
+                                                             connectorTypeGUID,
+                                                             endpointGUID,
+                                                             assetGUID,
+                                                             deployedImplementationType.getAssociatedTypeName(),
+                                                             OpenMetadataType.ASSET.typeName,
+                                                             null);
+            }
+            else
+            {
+                connectionGUID = archiveHelper.addConnection(OpenMetadataType.VIRTUAL_CONNECTION.typeName,
+                                                             qualifiedName + "::Connection",
+                                                             assetName + " connection",
+                                                             null,
+                                                             null,
+                                                             null,
+                                                             null,
+                                                             null,
+                                                             configurationProperties,
+                                                             null,
+                                                             connectorTypeGUID,
+                                                             endpointGUID,
+                                                             assetGUID,
+                                                             deployedImplementationType.getAssociatedTypeName(),
+                                                             OpenMetadataType.ASSET.typeName,
+                                                             null);
+
+                addSecretStoreConnection(assetGUID,
+                                         deployedImplementationType,
+                                         qualifiedName,
+                                         assetName,
+                                         secretsStoreConnectorTypeGUID,
+                                         secretsStoreCollectionName,
+                                         secretsStoreFileName,
+                                         secretsStorePurpose,
+                                         connectionGUID);
+            }
+
+            return connectionGUID;
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Add the connection for a nested secrets store connector.
+     *
+     * @param assetGUID unique id of asset
+     * @param deployedImplementationType asset's deployed implementation type
+     * @param qualifiedName asset's qualified name
+     * @param assetName asset's display name
+     * @param secretsStoreConnectorTypeGUID connector type for the optional embedded secrets store connector
+     * @param secretsStoreCollectionName collection name for the optional embedded secrets store connector
+     * @param secretsStoreFileName file name for the optional embedded secrets store connector
+     * @param secretsStorePurpose purpose of the optional embedded secrets store connector
+     * @param parentConnectionGUID connection GUID to connect new connection to
+     */
+    protected void addSecretStoreConnection(String                               assetGUID,
+                                            DeployedImplementationTypeDefinition deployedImplementationType,
+                                            String                               qualifiedName,
+                                            String                               assetName,
+                                            String                               secretsStoreConnectorTypeGUID,
+                                            String                               secretsStoreCollectionName,
+                                            String                               secretsStoreFileName,
+                                            String                               secretsStorePurpose,
+                                            String                               parentConnectionGUID)
+    {
+        Map<String, Object> secretsStoreConfigurationProperties = new HashMap<>();
+
+        secretsStoreConfigurationProperties.put(SecretsStoreConfigurationProperty.SECRETS_COLLECTION_NAME.getName(), secretsStoreCollectionName);
+
+        String secretStoreEndpointGUID = archiveHelper.addEndpoint(assetGUID,
+                                                                   deployedImplementationType.getAssociatedTypeName(),
+                                                                   OpenMetadataType.ASSET.typeName,
+                                                                   null,
+                                                                   qualifiedName + ":SecretStoreEndpoint",
+                                                                   assetName + " secret store endpoint",
+                                                                   null,
+                                                                   secretsStoreFileName,
+                                                                   null,
+                                                                   null);
+
+        String secretsStoreConnectionGUID = archiveHelper.addConnection(OpenMetadataType.CONNECTION.typeName,
+                                                                        qualifiedName + ":SecretsStoreConnection",
+                                                                        assetName + " secrets store connection",
+                                                                        null,
+                                                                        null,
+                                                                        null,
+                                                                        null,
+                                                                        null,
+                                                                        secretsStoreConfigurationProperties,
+                                                                        null,
+                                                                        secretsStoreConnectorTypeGUID,
+                                                                        secretStoreEndpointGUID,
+                                                                        assetGUID,
+                                                                        deployedImplementationType.getAssociatedTypeName(),
+                                                                        OpenMetadataType.ASSET.typeName,
+                                                                        null);
+
+        archiveHelper.addEmbeddedConnection(parentConnectionGUID,
+                                            0,
+                                            secretsStorePurpose,
+                                            null,
+                                            secretsStoreConnectionGUID);
+    }
+
+
+    /**
      * Add a new valid values record for a deployed implementation type.
      *
      * @param deployedImplementationType preferred value
      * @param associatedTypeName         specific type name to tie it to (maybe null)
      * @param qualifiedName              qualifiedName for this value
-     * @param namespace                   namespace for this value
      * @param description                description of this value
      * @param wikiLink                   optional URL link to more information
      * @param isATypeOf                  superType
@@ -1054,7 +1275,6 @@ public abstract class ContentPackBaseArchiveWriter extends EgeriaBaseArchiveWrit
     protected String addDeployedImplementationType(String                               deployedImplementationType,
                                                    String                               associatedTypeName,
                                                    String                               qualifiedName,
-                                                   String                               namespace,
                                                    String                               description,
                                                    String                               wikiLink,
                                                    DeployedImplementationTypeDefinition isATypeOf)
@@ -1074,46 +1294,21 @@ public abstract class ContentPackBaseArchiveWriter extends EgeriaBaseArchiveWrit
                                                                  OpenMetadataType.VALID_METADATA_VALUE.typeName,
                                                                  OpenMetadataType.VALID_VALUE_DEFINITION.typeName,
                                                                  null,
-                                                                 OpenMetadataType.VALID_METADATA_VALUE.typeName,
+                                                                 OpenMetadataType.TECHNOLOGY_TYPE.typeName,
                                                                  qualifiedName,
                                                                  Category.VALID_METADATA_VALUES.getName(),
+                                                                 OpenMetadataProperty.DEPLOYED_IMPLEMENTATION_TYPE.name,
                                                                  deployedImplementationType,
                                                                  description,
-                                                                 namespace,
-                                                                 OpenMetadataValidValues.VALID_METADATA_VALUES_USAGE,
+                                                                 null,
+                                                                 null,
                                                                  DataType.STRING.getName(),
                                                                  OpenMetadataValidValues.OPEN_METADATA_ECOSYSTEM_SCOPE,
                                                                  deployedImplementationType,
                                                                  null,
+                                                                 wikiLink,
                                                                  false,
                                                                  additionalProperties);
-
-        if (wikiLink != null)
-        {
-            String externalReferenceGUID = this.archiveHelper.addExternalReference(null,
-                                                                                   validValueGUID,
-                                                                                   OpenMetadataType.VALID_VALUE_DEFINITION.typeName,
-                                                                                   OpenMetadataType.VALID_VALUE_DEFINITION.typeName,
-                                                                                   null,
-                                                                                   qualifiedName + "_wikiLink",
-                                                                                   "More information about deployedImplementationType: " + deployedImplementationType,
-                                                                                   null,
-                                                                                   null,
-                                                                                   null,
-                                                                                   null,
-                                                                                   null,
-                                                                                   originatorName,
-                                                                                   null,
-                                                                                   wikiLink,
-                                                                                   null,
-                                                                                   null,
-                                                                                   null,
-                                                                                   null,
-                                                                                   null,
-                                                                                   null);
-
-            this.archiveHelper.addExternalReferenceLink(validValueGUID, externalReferenceGUID, null, null, null);
-        }
 
         if (isATypeOf != null)
         {
@@ -1440,8 +1635,7 @@ public abstract class ContentPackBaseArchiveWriter extends EgeriaBaseArchiveWrit
                                                             governanceActionTypeGUID,
                                                             governanceActionDescription.resourceUse.getResourceUse(),
                                                             governanceActionDescription.governanceServiceDescription,
-                                                            requestParameters,
-                                                            false);
+                                                            requestParameters);
         }
     }
 
@@ -1602,8 +1796,7 @@ public abstract class ContentPackBaseArchiveWriter extends EgeriaBaseArchiveWrit
                                                             processGUID,
                                                             ResourceUse.SURVEY_RESOURCE.getResourceUse(),
                                                             description,
-                                                            createRequestType.getRequestParameters(),
-                                                            false);
+                                                            createRequestType.getRequestParameters());
         }
     }
 
@@ -1851,8 +2044,7 @@ public abstract class ContentPackBaseArchiveWriter extends EgeriaBaseArchiveWrit
                                                             processGUID,
                                                             ResourceUse.CATALOG_RESOURCE.getResourceUse(),
                                                             description,
-                                                            createRequestType.getRequestParameters(),
-                                                            false);
+                                                            createRequestType.getRequestParameters());
         }
     }
 
@@ -1923,8 +2115,7 @@ public abstract class ContentPackBaseArchiveWriter extends EgeriaBaseArchiveWrit
                                                             processGUID,
                                                             ResourceUse.SURVEY_RESOURCE.getResourceUse(),
                                                             description,
-                                                            deleteRequestType.getRequestParameters(),
-                                                            false);
+                                                            deleteRequestType.getRequestParameters());
         }
     }
 

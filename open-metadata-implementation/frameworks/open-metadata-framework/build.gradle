@@ -7,15 +7,25 @@
 dependencies {
     implementation 'commons-io:commons-io'
     implementation 'org.slf4j:slf4j-api'
+    implementation 'com.fasterxml.jackson.core:jackson-databind'
     compileOnly 'com.fasterxml.jackson.core:jackson-annotations'
     implementation project(':open-metadata-implementation:frameworks:audit-log-framework')
     testImplementation 'org.testng:testng'
     testImplementation project(':open-metadata-test:open-metadata-ut')
-}
+    testImplementation project(':open-metadata-implementation:repository-services:repository-services-apis')
+    testImplementation project(':open-metadata-implementation:repository-services:repository-services-archive-utilities')
+    testImplementation project(':open-metadata-resources:open-metadata-archives:open-metadata-types')
+    testCompileOnly 'com.fasterxml.jackson.core:jackson-annotations'}
 
 
 description = 'Open Metadata Framework (OMF)'
 
 java {
     withJavadocJar()
+}
+
+test {
+    useTestNG()
+    // This will default to standard search pattern - see https://docs.gradle.org/current/userguide/java_testing.html#sec:test_detection
+    scanForTestClasses = false
 }

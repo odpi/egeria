@@ -268,9 +268,9 @@ public class ValidValueDefinitionHandler extends OpenMetadataHandlerBase
                                           String                         elementGUID,
                                           String                         validValueDefinitionGUID,
                                           MetadataSourceOptions          metadataSourceOptions,
-                                          ValidValueAssignmentProperties relationshipProperties) throws InvalidParameterException,
-                                                                                                        PropertyServerException,
-                                                                                                        UserNotAuthorizedException
+                                          ValidValuesAssignmentProperties relationshipProperties) throws InvalidParameterException,
+                                                                                                         PropertyServerException,
+                                                                                                         UserNotAuthorizedException
     {
         final String methodName            = "linkValidValuesAssignment";
         final String end1GUIDParameterName = "elementGUID";
@@ -798,6 +798,7 @@ public class ValidValueDefinitionHandler extends OpenMetadataHandlerBase
 
         List<String> propertyNames = Arrays.asList(OpenMetadataProperty.QUALIFIED_NAME.name,
                                                    OpenMetadataProperty.IDENTIFIER.name,
+                                                   OpenMetadataProperty.PREFERRED_VALUE.name,
                                                    OpenMetadataProperty.DISPLAY_NAME.name);
 
         return super.getRootElementsByName(userId,

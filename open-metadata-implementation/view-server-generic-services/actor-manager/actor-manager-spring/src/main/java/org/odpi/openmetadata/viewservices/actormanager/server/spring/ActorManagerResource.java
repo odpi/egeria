@@ -4,6 +4,10 @@ package org.odpi.openmetadata.viewservices.actormanager.server.spring;
 
 import io.swagger.v3.oas.annotations.ExternalDocumentation;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.enums.SecuritySchemeIn;
+import io.swagger.v3.oas.annotations.enums.SecuritySchemeType;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import io.swagger.v3.oas.annotations.security.SecurityScheme;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.odpi.openmetadata.commonservices.ffdc.rest.*;
 import org.odpi.openmetadata.commonservices.ffdc.rest.GetRequestBody;
@@ -16,8 +20,14 @@ import org.springframework.web.bind.annotation.*;
  = */
 @RestController
 @RequestMapping("/servers/{serverName}/api/open-metadata/{urlMarker}")
-
-@Tag(name="API: Actor Manager OMVS", description="The Actor Manager OMVS provides APIs for supporting the creation and editing of actor profiles, actor roles and user identities.",
+@SecurityScheme(
+        name = "BearerAuthorization",
+        type = SecuritySchemeType.HTTP,
+        bearerFormat = "JWT",
+        scheme = "bearer",
+        in = SecuritySchemeIn.HEADER
+)
+@Tag(name="API: Actor Manager OMVS", description="Create and edit information about the people, teams and automated processes running in your organization. These are collectively called actors and their definition includes an actor profile, the roles they perform, and their user identities.",
         externalDocs=@ExternalDocumentation(description="Further Information",
                 url="https://egeria-project.org/services/omvs/actor-manager/overview/"))
 
@@ -46,6 +56,7 @@ public class ActorManagerResource
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     @PostMapping(path = "/actor-profiles")
+    @SecurityRequirement(name = "BearerAuthorization")
 
     @Operation(summary="createActorProfile",
             description="Create a actor profile.",
@@ -75,6 +86,8 @@ public class ActorManagerResource
      *  PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     @PostMapping(path = "/actor-profiles/from-template")
+    @SecurityRequirement(name = "BearerAuthorization")
+
     @Operation(summary="createActorProfileFromTemplate",
             description="Create a new metadata element to represent a actor profile using an existing metadata element as a template.  The template defines additional classifications and relationships that should be added to the new element.",
             externalDocs=@ExternalDocumentation(description="Further Information",
@@ -104,6 +117,8 @@ public class ActorManagerResource
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     @PostMapping(path = "/actor-profiles/{actorProfileGUID}/update")
+    @SecurityRequirement(name = "BearerAuthorization")
+
     @Operation(summary="updateActorProfile",
             description="Update the properties of a actor profile.",
             externalDocs=@ExternalDocumentation(description="Further Information",
@@ -136,6 +151,8 @@ public class ActorManagerResource
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     @PostMapping(path = "/assets/{assetGUID}/it-profiles/{itProfileGUID}/attach")
+    @SecurityRequirement(name = "BearerAuthorization")
+
     @Operation(summary="linkAssetToProfile",
             description="Attach an asset to an IT profile.",
             externalDocs=@ExternalDocumentation(description="Further Information",
@@ -170,6 +187,8 @@ public class ActorManagerResource
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     @PostMapping(path = "/assets/{assetGUID}/it-profiles/{itProfileGUID}/detach")
+    @SecurityRequirement(name = "BearerAuthorization")
+
     @Operation(summary="detachAssetFromProfile",
             description="Detach an asset from an IT profile.",
             externalDocs=@ExternalDocumentation(description="Further Information",
@@ -189,7 +208,6 @@ public class ActorManagerResource
     }
 
 
-
     /**
      * Delete a actor profile.
      *
@@ -204,6 +222,8 @@ public class ActorManagerResource
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     @PostMapping(path = "/actor-profiles/{actorProfileGUID}/delete")
+    @SecurityRequirement(name = "BearerAuthorization")
+
     @Operation(summary="deleteActorProfile",
             description="Delete a actor profile.",
             externalDocs=@ExternalDocumentation(description="Further Information",
@@ -234,6 +254,8 @@ public class ActorManagerResource
      *  PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     @PostMapping(path = "/actor-profiles/by-name")
+    @SecurityRequirement(name = "BearerAuthorization")
+
     @Operation(summary="getActorProfilesByName",
             description="Returns the list of actor profiles with a particular name.",
             externalDocs=@ExternalDocumentation(description="Further Information",
@@ -262,6 +284,8 @@ public class ActorManagerResource
      *  PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     @PostMapping(path = "/actor-profiles/by-search-string")
+    @SecurityRequirement(name = "BearerAuthorization")
+
     @Operation(summary="findActorProfiles",
             description="Retrieve the list of actor profile metadata elements that contain the search string.",
             externalDocs=@ExternalDocumentation(description="Further Information",
@@ -291,6 +315,8 @@ public class ActorManagerResource
      *  PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     @PostMapping(path = "/actor-profiles/{actorProfileGUID}/retrieve")
+    @SecurityRequirement(name = "BearerAuthorization")
+
     @Operation(summary="getActorProfileByGUID",
             description="Return the properties of a specific actor profile.",
             externalDocs=@ExternalDocumentation(description="Further Information",
@@ -321,6 +347,7 @@ public class ActorManagerResource
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     @PostMapping(path = {"/actor-roles","/solution-roles"})
+    @SecurityRequirement(name = "BearerAuthorization")
 
     @Operation(summary="createActorRole",
             description="Create a actor role.",
@@ -350,6 +377,8 @@ public class ActorManagerResource
      *  PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     @PostMapping(path = {"/actor-roles/from-template","/solution-roles/from-template"})
+    @SecurityRequirement(name = "BearerAuthorization")
+
     @Operation(summary="createActorRoleFromTemplate",
             description="Create a new metadata element to represent a actor role using an existing metadata element as a template.  The template defines additional classifications and relationships that should be added to the new element.",
             externalDocs=@ExternalDocumentation(description="Further Information",
@@ -379,6 +408,8 @@ public class ActorManagerResource
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     @PostMapping(path = {"/actor-roles/{actorRoleGUID}/update","/solution-roles/{actorRoleGUID}/update"})
+    @SecurityRequirement(name = "BearerAuthorization")
+
     @Operation(summary="updateActorRole",
             description="Update the properties of a actor role.",
             externalDocs=@ExternalDocumentation(description="Further Information",
@@ -411,6 +442,8 @@ public class ActorManagerResource
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     @PostMapping(path = "/actor-roles/{personRoleGUID}/person-role-appointments/{personProfileGUID}/attach")
+    @SecurityRequirement(name = "BearerAuthorization")
+
     @Operation(summary="linkPersonRoleToProfile",
             description="Attach a person role to a person profile.",
             externalDocs=@ExternalDocumentation(description="Further Information",
@@ -445,6 +478,8 @@ public class ActorManagerResource
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     @PostMapping(path = "/actor-roles/{personRoleGUID}/person-role-appointments/{personProfileGUID}/detach")
+    @SecurityRequirement(name = "BearerAuthorization")
+
     @Operation(summary="detachPersonRoleFromProfile",
             description="Detach a person role from a profile.",
             externalDocs=@ExternalDocumentation(description="Further Information",
@@ -480,6 +515,8 @@ public class ActorManagerResource
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     @PostMapping(path = "/actor-roles/{teamRoleGUID}/team-role-appointments/{teamProfileGUID}/attach")
+    @SecurityRequirement(name = "BearerAuthorization")
+
     @Operation(summary="linkTeamRoleToProfile",
             description="Attach a team role to a team profile.",
             externalDocs=@ExternalDocumentation(description="Further Information",
@@ -514,6 +551,8 @@ public class ActorManagerResource
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     @PostMapping(path = "/actor-roles/{teamRoleGUID}/team-role-appointments/{teamProfileGUID}/detach")
+    @SecurityRequirement(name = "BearerAuthorization")
+
     @Operation(summary="Detach a team role from a team profile.",
             description="Detach a actor role from one of its peers.",
             externalDocs=@ExternalDocumentation(description="Further Information",
@@ -548,6 +587,8 @@ public class ActorManagerResource
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     @PostMapping(path = "/actor-roles/{itProfileRoleGUID}/it-profile-role-appointments/{itProfileGUID}/attach")
+    @SecurityRequirement(name = "BearerAuthorization")
+
     @Operation(summary="linkITProfileRoleToProfile",
             description="Attach an IT profile role to an IT profile.",
             externalDocs=@ExternalDocumentation(description="Further Information",
@@ -582,6 +623,8 @@ public class ActorManagerResource
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     @PostMapping(path = "/actor-roles/{itProfileRoleGUID}/it-profile-role-appointments/{itProfileGUID}/detach")
+    @SecurityRequirement(name = "BearerAuthorization")
+
     @Operation(summary="detachITProfileRoleFromProfile",
             description="Detach an IT profile role from an IT profile.",
             externalDocs=@ExternalDocumentation(description="Further Information",
@@ -615,6 +658,8 @@ public class ActorManagerResource
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     @PostMapping(path = {"/actor-roles/{actorRoleGUID}/delete","/solution-roles/{actorRoleGUID}/delete"})
+    @SecurityRequirement(name = "BearerAuthorization")
+
     @Operation(summary="deleteActorRole",
             description="Delete a actor role.",
             externalDocs=@ExternalDocumentation(description="Further Information",
@@ -645,6 +690,8 @@ public class ActorManagerResource
      *  PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     @PostMapping(path = {"/actor-roles/by-name","/solution-roles/by-name"})
+    @SecurityRequirement(name = "BearerAuthorization")
+
     @Operation(summary="getActorRolesByName",
             description="Returns the list of actor roles with a particular name.",
             externalDocs=@ExternalDocumentation(description="Further Information",
@@ -673,6 +720,8 @@ public class ActorManagerResource
      *  PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     @PostMapping(path = {"/actor-roles/by-search-string", "/solution-roles/by-search-string"})
+    @SecurityRequirement(name = "BearerAuthorization")
+
     @Operation(summary="findActorRoles",
             description="Retrieve the list of actor role metadata elements that contain the search string.",
             externalDocs=@ExternalDocumentation(description="Further Information",
@@ -702,6 +751,8 @@ public class ActorManagerResource
      *  PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     @PostMapping(path = {"/actor-roles/{actorRoleGUID}/retrieve","/solution-roles/{actorRoleGUID}/retrieve"})
+    @SecurityRequirement(name = "BearerAuthorization")
+
     @Operation(summary="getActorRoleByGUID",
             description="Return the properties of a specific actor role.",
             externalDocs=@ExternalDocumentation(description="Further Information",
@@ -719,7 +770,6 @@ public class ActorManagerResource
     }
 
 
-
     /**
      * Create a user identity.
      *
@@ -733,6 +783,7 @@ public class ActorManagerResource
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     @PostMapping(path = "/user-identities")
+    @SecurityRequirement(name = "BearerAuthorization")
 
     @Operation(summary="createUserIdentity",
             description="Create a user identity.",
@@ -762,6 +813,8 @@ public class ActorManagerResource
      *  PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     @PostMapping(path = "/user-identities/from-template")
+    @SecurityRequirement(name = "BearerAuthorization")
+
     @Operation(summary="createUserIdentityFromTemplate",
             description="Create a new metadata element to represent a user identity using an existing metadata element as a template.  The template defines additional classifications and relationships that should be added to the new element.",
             externalDocs=@ExternalDocumentation(description="Further Information",
@@ -791,6 +844,8 @@ public class ActorManagerResource
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     @PostMapping(path = "/user-identities/{userIdentityGUID}/update")
+    @SecurityRequirement(name = "BearerAuthorization")
+
     @Operation(summary="updateUserIdentity",
             description="Update the properties of a user identity.",
             externalDocs=@ExternalDocumentation(description="Further Information",
@@ -823,6 +878,8 @@ public class ActorManagerResource
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     @PostMapping(path = "/user-identities/{userIdentityGUID}/profile-identity/{profileGUID}/attach")
+    @SecurityRequirement(name = "BearerAuthorization")
+
     @Operation(summary="linkIdentityToProfile",
             description="Attach a profile to a user identity.",
             externalDocs=@ExternalDocumentation(description="Further Information",
@@ -857,6 +914,8 @@ public class ActorManagerResource
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     @PostMapping(path = "/user-identities/{userIdentityGUID}/profile-identity/{profileGUID}/detach")
+    @SecurityRequirement(name = "BearerAuthorization")
+
     @Operation(summary="detachProfileIdentity",
             description="Detach an actor profile from a user identity.",
             externalDocs=@ExternalDocumentation(description="Further Information",
@@ -890,6 +949,8 @@ public class ActorManagerResource
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     @PostMapping(path = "/user-identities/{userIdentityGUID}/security-group-memberships/classify")
+    @SecurityRequirement(name = "BearerAuthorization")
+
     @Operation(summary="addSecurityGroupMembership",
             description="Add the SecurityGroupMembership classification to the user identity.",
             externalDocs=@ExternalDocumentation(description="Further Information",
@@ -921,6 +982,8 @@ public class ActorManagerResource
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     @PostMapping(path = "/user-identities/{userIdentityGUID}/security-group-memberships/reclassify")
+    @SecurityRequirement(name = "BearerAuthorization")
+
     @Operation(summary="updateSecurityGroupMembership",
             description="Update the SecurityGroupMembership classification to the user identity.",
             externalDocs=@ExternalDocumentation(description="Further Information",
@@ -952,6 +1015,8 @@ public class ActorManagerResource
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     @PostMapping(path = "/user-identities/{userIdentityGUID}/security-group-memberships/declassify")
+    @SecurityRequirement(name = "BearerAuthorization")
+
     @Operation(summary="removeAllSecurityGroupMembership",
             description="Remove the SecurityGroupMembership classification from the user identity.",
             externalDocs=@ExternalDocumentation(description="Further Information",
@@ -982,6 +1047,8 @@ public class ActorManagerResource
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     @PostMapping(path = "/user-identities/{userIdentityGUID}/delete")
+    @SecurityRequirement(name = "BearerAuthorization")
+
     @Operation(summary="deleteUserIdentity",
             description="Delete a user identity.",
             externalDocs=@ExternalDocumentation(description="Further Information",
@@ -1012,6 +1079,8 @@ public class ActorManagerResource
      *  PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     @PostMapping(path = "/user-identities/by-name")
+    @SecurityRequirement(name = "BearerAuthorization")
+
     @Operation(summary="getUserIdentitiesByName",
             description="Returns the list of user identities with a particular name.",
             externalDocs=@ExternalDocumentation(description="Further Information",
@@ -1040,6 +1109,8 @@ public class ActorManagerResource
      *  PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     @PostMapping(path = "/user-identities/by-search-string")
+    @SecurityRequirement(name = "BearerAuthorization")
+
     @Operation(summary="findUserIdentities",
             description="Retrieve the list of user identity metadata elements that contain the search string.",
             externalDocs=@ExternalDocumentation(description="Further Information",
@@ -1070,6 +1141,8 @@ public class ActorManagerResource
      *  PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     @PostMapping(path = "/user-identities/{userIdentityGUID}/retrieve")
+    @SecurityRequirement(name = "BearerAuthorization")
+
     @Operation(summary="getUserIdentityByGUID",
             description="Return the properties of a specific user identity.",
             externalDocs=@ExternalDocumentation(description="Further Information",
@@ -1087,8 +1160,6 @@ public class ActorManagerResource
     }
 
 
-
-
     /**
      * Attach an actor to an element that describes its scope.
      *
@@ -1104,6 +1175,8 @@ public class ActorManagerResource
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     @PostMapping(path = "/elements/{scopeElementGUID}/actors/{actorGUID}/attach")
+    @SecurityRequirement(name = "BearerAuthorization")
+
     @Operation(summary="linkAssignmentScope",
             description="Attach an actor to an element that describes its scope.",
             externalDocs=@ExternalDocumentation(description="Further Information",
@@ -1138,6 +1211,8 @@ public class ActorManagerResource
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     @PostMapping(path = "/elements/{scopeElementGUID}/actors/{actorGUID}/detach")
+    @SecurityRequirement(name = "BearerAuthorization")
+
     @Operation(summary="detachAssignmentScope",
             description="Detach an actor from the element that describes its scope.",
             externalDocs=@ExternalDocumentation(description="Further Information",
@@ -1155,6 +1230,4 @@ public class ActorManagerResource
     {
         return restAPI.detachAssignmentScope(serverName, urlMarker, scopeElementGUID, actorGUID, requestBody);
     }
-
-
 }

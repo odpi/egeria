@@ -115,7 +115,7 @@ public class OpenMetadataProductsHarvesterCatalogTargetProcessor extends Catalog
                     Date lastUpdateTime = null;
 
                     AssetClient             dataSetClient = integrationContext.getAssetClient(OpenMetadataType.DATA_SET.typeName);
-                    OpenMetadataRootElement dataSet       = dataSetClient.getAssetByGUID(getCatalogTargetElement().getGUID(), null);
+                    OpenMetadataRootElement dataSet       = dataSetClient.getAssetByGUID(getCatalogTargetElement().getElementHeader().getGUID(), null);
 
                     if (dataSet.getElementHeader().getGovernanceMeasurements() != null)
                     {

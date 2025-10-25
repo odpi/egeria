@@ -5,7 +5,7 @@ package org.odpi.openmetadata.adapters.connectors.postgres.controls;
 
 
 import org.odpi.openmetadata.frameworks.openmetadata.controls.PlaceholderProperty;
-import org.odpi.openmetadata.frameworks.openmetadata.controls.PlaceholderPropertyType;
+import org.odpi.openmetadata.frameworks.openmetadata.specificationproperties.PlaceholderPropertyType;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -62,7 +62,13 @@ public enum PostgresPlaceholderProperty
     /**
      * The name of the database table being catalogued.
      */
-    TABLE_NAME ("tableName", "The name of the database table being catalogued.", "string", "myTable"),
+    TABLE_NAME ("tableName", "The name of the database table being catalogued.", "string", "my_table"),
+
+    /**
+     * The description of the table being catalogued.
+     */
+    TABLE_DESCRIPTION ("schemaDescription", "The description of the database table being catalogued.", "string", null),
+
     ;
 
     public final String name;
@@ -225,6 +231,31 @@ public enum PostgresPlaceholderProperty
         placeholderPropertyTypes.add(PostgresPlaceholderProperty.DATABASE_NAME.getPlaceholderType());
         placeholderPropertyTypes.add(PostgresPlaceholderProperty.SCHEMA_NAME.getPlaceholderType());
         placeholderPropertyTypes.add(PostgresPlaceholderProperty.SCHEMA_DESCRIPTION.getPlaceholderType());
+        placeholderPropertyTypes.add(PlaceholderProperty.SECRETS_STORE.getPlaceholderType());
+        placeholderPropertyTypes.add(PlaceholderProperty.SECRETS_COLLECTION_NAME.getPlaceholderType());
+
+        return placeholderPropertyTypes;
+    }
+
+
+    /**
+     * Retrieve all the defined placeholder properties
+     *
+     * @return list of placeholder property types
+     */
+    public static List<PlaceholderPropertyType> getPostgresTablePlaceholderPropertyTypes()
+    {
+        List<PlaceholderPropertyType> placeholderPropertyTypes = new ArrayList<>();
+
+        placeholderPropertyTypes.add(PlaceholderProperty.HOST_IDENTIFIER.getPlaceholderType());
+        placeholderPropertyTypes.add(PlaceholderProperty.PORT_NUMBER.getPlaceholderType());
+        placeholderPropertyTypes.add(PlaceholderProperty.SERVER_NAME.getPlaceholderType());
+        placeholderPropertyTypes.add(PlaceholderProperty.VERSION_IDENTIFIER.getPlaceholderType());
+        placeholderPropertyTypes.add(PostgresPlaceholderProperty.DATABASE_NAME.getPlaceholderType());
+        placeholderPropertyTypes.add(PostgresPlaceholderProperty.SCHEMA_NAME.getPlaceholderType());
+        placeholderPropertyTypes.add(PostgresPlaceholderProperty.SCHEMA_DESCRIPTION.getPlaceholderType());
+        placeholderPropertyTypes.add(PostgresPlaceholderProperty.TABLE_NAME.getPlaceholderType());
+        placeholderPropertyTypes.add(PostgresPlaceholderProperty.TABLE_DESCRIPTION.getPlaceholderType());
         placeholderPropertyTypes.add(PlaceholderProperty.SECRETS_STORE.getPlaceholderType());
         placeholderPropertyTypes.add(PlaceholderProperty.SECRETS_COLLECTION_NAME.getPlaceholderType());
 

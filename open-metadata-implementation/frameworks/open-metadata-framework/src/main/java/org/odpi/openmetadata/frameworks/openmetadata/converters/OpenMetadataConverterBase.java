@@ -519,55 +519,6 @@ public class OpenMetadataConverterBase<B> extends OpenMetadataPropertyConverterB
     }
 
 
-    /**
-     * Convert a list of relationships
-     * @param beanClass specific class
-     * @param retrievedRelationships values retrieved from the metadata repository
-     * @param methodName calling method
-     * @return list of relationships
-     * @throws PropertyServerException there is a problem in the use of the generic handlers because
-     * the converter has been configured with a type of bean that is incompatible with the handler
-     */
-    public List<RelationshipElement> getRelationshipElements(Class<B>                       beanClass,
-                                                             List<OpenMetadataRelationship> retrievedRelationships,
-                                                             String                         methodName) throws PropertyServerException
-    {
-        if (retrievedRelationships != null)
-        {
-            List<RelationshipElement> relationshipElements = new ArrayList<>();
-
-            for (OpenMetadataRelationship retrievedRelationship : retrievedRelationships)
-            {
-                if (retrievedRelationship != null)
-                {
-                    RelationshipElement relationshipElement = new RelationshipElement();
-
-                    relationshipElement.setRelationshipHeader(this.getMetadataElementHeader(beanClass,
-                                                                                            retrievedRelationship,
-                                                                                            retrievedRelationship.getRelationshipGUID(),
-                                                                                            null,
-                                                                                            methodName));
-                    RelationshipBeanProperties relationshipProperties = new RelationshipBeanProperties();
-
-                    relationshipProperties.setExtendedProperties(this.getRemainingExtendedProperties(retrievedRelationship.getRelationshipProperties()));
-                    relationshipProperties.setEffectiveFrom(retrievedRelationship.getEffectiveFromTime());
-                    relationshipProperties.setEffectiveTo(retrievedRelationship.getEffectiveToTime());
-
-                    relationshipElement.setRelationshipProperties(relationshipProperties);
-
-                    relationshipElement.setEnd1(getElementStub(beanClass, retrievedRelationship.getElementAtEnd1(), methodName));
-                    relationshipElement.setEnd2(getElementStub(beanClass, retrievedRelationship.getElementAtEnd2(), methodName));
-
-                    relationshipElements.add(relationshipElement);
-                }
-            }
-
-            return relationshipElements;
-        }
-
-        return null;
-    }
-
 
     /**
      * Extract the properties from the element.

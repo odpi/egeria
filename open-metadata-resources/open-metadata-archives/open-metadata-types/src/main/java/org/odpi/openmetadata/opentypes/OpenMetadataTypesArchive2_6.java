@@ -386,6 +386,8 @@ public class OpenMetadataTypesArchive2_6
      */
     private void add0461GovernanceActionEngines()
     {
+        this.archiveBuilder.addEnumDef(getDeleteMethodEnum());
+
         this.archiveBuilder.addEntityDef(addGovernanceEngineEntity());
         this.archiveBuilder.addEntityDef(addGovernanceServiceEntity());
         this.archiveBuilder.addEntityDef(addGovernanceActionEngineEntity());
@@ -394,10 +396,43 @@ public class OpenMetadataTypesArchive2_6
         this.archiveBuilder.addRelationshipDef(addSupportedGovernanceServiceRelationship());
     }
 
+
+    private EnumDef getDeleteMethodEnum()
+    {
+        EnumDef enumDef = archiveHelper.getEmptyEnumDef(DeleteMethod.getOpenTypeGUID(),
+                                                        DeleteMethod.getOpenTypeName(),
+                                                        DeleteMethod.getOpenTypeDescription(),
+                                                        DeleteMethod.getOpenTypeDescriptionGUID(),
+                                                        DeleteMethod.getOpenTypeDescriptionWiki());
+
+        ArrayList<EnumElementDef> elementDefs = new ArrayList<>();
+        EnumElementDef            elementDef;
+
+        for (DeleteMethod deleteMethod : DeleteMethod.values())
+        {
+            elementDef = archiveHelper.getEnumElementDef(deleteMethod.getOrdinal(),
+                                                         deleteMethod.getName(),
+                                                         deleteMethod.getDescription(),
+                                                         deleteMethod.getDescriptionGUID());
+
+            elementDefs.add(elementDef);
+
+            if (deleteMethod.isDefault())
+            {
+                enumDef.setDefaultValue(elementDef);
+            }
+        }
+
+        enumDef.setElementDefs(elementDefs);
+
+        return enumDef;
+    }
+
+
     private EntityDef addGovernanceEngineEntity()
     {
         return archiveHelper.getDefaultEntityDef(OpenMetadataType.GOVERNANCE_ENGINE,
-                                                 this.archiveBuilder.getEntityDef(OpenMetadataType.SOFTWARE_CAPABILITY.typeName));
+                                                 this.archiveBuilder.getEntityDef(OpenMetadataType.ENGINE.typeName));
     }
 
     private EntityDef addGovernanceServiceEntity()
@@ -423,6 +458,7 @@ public class OpenMetadataTypesArchive2_6
         RelationshipDef relationshipDef = archiveHelper.getBasicRelationshipDef(OpenMetadataType.SUPPORTED_GOVERNANCE_SERVICE_RELATIONSHIP,
                                                                                 null,
                                                                                 ClassificationPropagationRule.NONE);
+        relationshipDef.setMultiLink(true);
 
         RelationshipEndDef relationshipEndDef;
 
@@ -461,7 +497,10 @@ public class OpenMetadataTypesArchive2_6
         List<TypeDefAttribute> properties = new ArrayList<>();
 
         properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.REQUEST_TYPE));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.SERVICE_REQUEST_TYPE));
         properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.REQUEST_PARAMETERS));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.GENERATE_CONNECTOR_ACTIVITY_REPORT));
+        properties.add(archiveHelper.getEnumTypeDefAttribute(OpenMetadataProperty.DELETE_METHOD));
 
         relationshipDef.setPropertiesDefinition(properties);
 

@@ -157,49 +157,12 @@ public class OpenMetadataTypesArchive5_3
         /*
          * New types for this release
          */
-        this.update0010BaseModel();
         this.update0330GlossaryTerms();
-        this.update0017ExternalIds();
         this.add058xDataDictionaries();
-        this.update0056ResourceManagers();
         this.update0201Connections();
         this.update0205ConnectionLinkage();
-        this.update0720InformationSupplyChains();
         this.update0730SolutionComponents();
-        this.update0735SolutionPortsAndWires();
         this.update0770LineageMapping();
-    }
-
-
-    /*
-     * -------------------------------------------------------------------------------------------------------
-     */
-
-    private void update0010BaseModel()
-    {
-        this.archiveBuilder.addTypeDefPatch(updateAnchors());
-    }
-
-    private TypeDefPatch updateAnchors()
-    {
-        /*
-         * Create the Patch
-         */
-        TypeDefPatch typeDefPatch = archiveBuilder.getPatchForType(OpenMetadataType.ANCHORS_CLASSIFICATION.typeName);
-
-        typeDefPatch.setUpdatedBy(originatorName);
-        typeDefPatch.setUpdateTime(creationDate);
-
-        /*
-         * Build the attributes
-         */
-        List<TypeDefAttribute> properties = new ArrayList<>();
-
-        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.ANCHOR_SCOPE_GUID));
-
-        typeDefPatch.setPropertyDefinitions(properties);
-
-        return typeDefPatch;
     }
 
 
@@ -236,39 +199,6 @@ public class OpenMetadataTypesArchive5_3
     }
 
 
-    /*
-     * -------------------------------------------------------------------------------------------------------
-     */
-
-    /**
-     * 0118 Actor Roles and related updates
-     */
-    private void update0017ExternalIds()
-    {
-        this.archiveBuilder.addTypeDefPatch(updateExternalId());
-    }
-
-    private TypeDefPatch updateExternalId()
-    {
-        /*
-         * Create the Patch
-         */
-        TypeDefPatch typeDefPatch = archiveBuilder.getPatchForType(OpenMetadataType.EXTERNAL_ID.typeName);
-
-        typeDefPatch.setUpdatedBy(originatorName);
-        typeDefPatch.setUpdateTime(creationDate);
-
-        /*
-         * Build the attributes
-         */
-        List<TypeDefAttribute> properties = new ArrayList<>();
-
-        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.EXT_INSTANCE_TYPE_NAME));
-
-        typeDefPatch.setPropertyDefinitions(properties);
-
-        return typeDefPatch;
-    }
 
     /*
      * -------------------------------------------------------------------------------------------------------
@@ -865,6 +795,16 @@ public class OpenMetadataTypesArchive5_3
                                                                  RelationshipEndCardinality.AT_MOST_ONE);
         relationshipDef.setEndDef2(relationshipEndDef);
 
+        /*
+         * Build the attributes
+         */
+        List<TypeDefAttribute> properties = new ArrayList<>();
+
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.LABEL));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.DESCRIPTION));
+
+        relationshipDef.setPropertiesDefinition(properties);
+
         return relationshipDef;
     }
 
@@ -918,33 +858,8 @@ public class OpenMetadataTypesArchive5_3
      */
     private void update0730SolutionComponents()
     {
-        this.archiveBuilder.addTypeDefPatch(updateSolutionComponent());
         this.archiveBuilder.addEntityDef(getSolutionActorRoleEntity());
         this.archiveBuilder.addRelationshipDef(getSolutionComponentActorRelationship());
-    }
-
-
-    private TypeDefPatch updateSolutionComponent()
-    {
-        /*
-         * Create the Patch
-         */
-        TypeDefPatch typeDefPatch = archiveBuilder.getPatchForType(OpenMetadataType.SOLUTION_COMPONENT.typeName);
-
-        typeDefPatch.setUpdatedBy(originatorName);
-        typeDefPatch.setUpdateTime(creationDate);
-
-        /*
-         * Build the attributes
-         */
-        List<TypeDefAttribute> properties = new ArrayList<>();
-
-        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.SOLUTION_COMPONENT_TYPE));
-        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.PLANNED_DEPLOYED_IMPLEMENTATION_TYPE));
-
-        typeDefPatch.setPropertyDefinitions(properties);
-
-        return typeDefPatch;
     }
 
 
@@ -1004,114 +919,6 @@ public class OpenMetadataTypesArchive5_3
 
         return relationshipDef;
     }
-
-    /*
-     * -------------------------------------------------------------------------------------------------------
-     */
-
-    /**
-     * 0720 Information Supply Chains
-     */
-    private void update0720InformationSupplyChains()
-    {
-        this.archiveBuilder.addTypeDefPatch(updateInformationSupplyChainLink());
-    }
-
-    private TypeDefPatch updateInformationSupplyChainLink()
-    {
-        /*
-         * Create the Patch
-         */
-        TypeDefPatch  typeDefPatch = archiveBuilder.getPatchForType(OpenMetadataType.INFORMATION_SUPPLY_CHAIN_LINK_RELATIONSHIP.typeName);
-
-        typeDefPatch.setUpdatedBy(originatorName);
-        typeDefPatch.setUpdateTime(creationDate);
-
-        /*
-         * Build the attributes
-         */
-        List<TypeDefAttribute> properties = new ArrayList<>();
-
-        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.LABEL));
-        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.DESCRIPTION));
-
-        typeDefPatch.setPropertyDefinitions(properties);
-
-        return typeDefPatch;
-    }
-
-
-    /*
-     * -------------------------------------------------------------------------------------------------------
-     */
-
-    /**
-     * 0735 Solution Ports And Wires
-     */
-    private void update0735SolutionPortsAndWires()
-    {
-        this.archiveBuilder.addTypeDefPatch(updateSolutionLinkingWire());
-    }
-
-    private TypeDefPatch updateSolutionLinkingWire()
-    {
-        /*
-         * Create the Patch
-         */
-        TypeDefPatch  typeDefPatch = archiveBuilder.getPatchForType(OpenMetadataType.SOLUTION_LINKING_WIRE_RELATIONSHIP.typeName);
-
-        typeDefPatch.setUpdatedBy(originatorName);
-        typeDefPatch.setUpdateTime(creationDate);
-
-        /*
-         * Build the attributes
-         */
-        List<TypeDefAttribute> properties = new ArrayList<>();
-
-        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.LABEL));
-        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.DESCRIPTION));
-
-        typeDefPatch.setPropertyDefinitions(properties);
-
-        return typeDefPatch;
-    }
-
-
-    /*
-     * -------------------------------------------------------------------------------------------------------
-     */
-
-    /**
-     * 0056 Resource Managers
-     */
-    private void update0056ResourceManagers()
-    {
-        this.archiveBuilder.addTypeDefPatch(updateFileSystemClassification());
-    }
-
-    private TypeDefPatch updateFileSystemClassification()
-    {
-        /*
-         * Create the Patch
-         */
-        TypeDefPatch  typeDefPatch = archiveBuilder.getPatchForType(OpenMetadataType.FILE_SYSTEM_CLASSIFICATION.typeName);
-
-        typeDefPatch.setUpdatedBy(originatorName);
-        typeDefPatch.setUpdateTime(creationDate);
-
-        /*
-         * Build the attributes
-         */
-        List<TypeDefAttribute> properties = new ArrayList<>();
-
-        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.LOCAL_MOUNT_POINT));
-        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.CANONICAL_MOUNT_POINT));
-
-        typeDefPatch.setPropertyDefinitions(properties);
-
-        return typeDefPatch;
-    }
-
 
 
 

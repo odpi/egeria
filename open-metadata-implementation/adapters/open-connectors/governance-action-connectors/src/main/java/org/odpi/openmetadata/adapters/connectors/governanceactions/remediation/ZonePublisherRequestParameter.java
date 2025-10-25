@@ -4,7 +4,7 @@
 package org.odpi.openmetadata.adapters.connectors.governanceactions.remediation;
 
 
-import org.odpi.openmetadata.frameworks.opengovernance.controls.RequestParameterType;
+import org.odpi.openmetadata.frameworks.openmetadata.specificationproperties.RequestParameterType;
 
 import java.util.ArrayList;
 import java.util.List;

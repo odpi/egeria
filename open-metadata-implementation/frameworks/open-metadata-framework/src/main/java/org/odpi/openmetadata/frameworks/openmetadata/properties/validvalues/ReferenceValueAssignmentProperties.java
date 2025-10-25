@@ -253,6 +253,6 @@ public class ReferenceValueAssignmentProperties extends RelationshipBeanProperti
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), confidence, steward, stewardTypeName, stewardPropertyName, notes);
+        return Objects.hash(super.hashCode(), attributeName, confidence, steward, stewardTypeName, stewardPropertyName, notes);
     }
 }

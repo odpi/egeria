@@ -32,7 +32,6 @@ dependencies {
     implementation project(':open-metadata-implementation:adapters:open-connectors:data-store-connectors:file-connectors:csv-file-connector')
     implementation project(':open-metadata-implementation:adapters:open-connectors:data-store-connectors:file-connectors:data-folder-connector')
     implementation project(':open-metadata-implementation:adapters:open-connectors:data-store-connectors:jdbc-resource-connector')
-    implementation project(':open-metadata-implementation:adapters:open-connectors:configuration-store-connectors:configuration-encrypted-file-store-connector')
     implementation project(':open-metadata-implementation:adapters:open-connectors:configuration-store-connectors:configuration-file-store-connector')
     implementation project(':open-metadata-implementation:adapters:open-connectors:metadata-security-connectors:open-metadata-access-security-connector')
     implementation project(':open-metadata-implementation:adapters:open-connectors:integration-connectors:files-integration-connectors')
@@ -69,7 +68,6 @@ dependencies {
 
     implementation project(':open-metadata-implementation:access-services:omf-metadata-management:omf-metadata-client')
     implementation project(':open-metadata-implementation:access-services:ocf-metadata-management:ocf-metadata-client')
-    implementation project(':open-metadata-implementation:access-services:oif-metadata-management:oif-metadata-client')
     implementation project(':open-metadata-implementation:access-services:gaf-metadata-management:gaf-metadata-client')
     implementation project(':open-metadata-conformance-suite:open-metadata-conformance-suite-client')
     implementation project(':open-metadata-resources:open-metadata-samples:admin-services-samples:config-metadata-server-sample')
@@ -191,7 +189,6 @@ distributions {
                 from { project(':open-metadata-implementation:adapters:open-connectors:data-store-connectors:file-connectors:csv-file-connector').jar }
                 from { project(':open-metadata-implementation:adapters:open-connectors:data-store-connectors:file-connectors:data-folder-connector').jar }
                 from { project(':open-metadata-implementation:adapters:open-connectors:data-store-connectors:jdbc-resource-connector').shadowJar }
-                from { project(':open-metadata-implementation:adapters:open-connectors:configuration-store-connectors:configuration-encrypted-file-store-connector').jar }
                 from { project(':open-metadata-implementation:adapters:open-connectors:configuration-store-connectors:configuration-file-store-connector').jar }
                 from { project(':open-metadata-implementation:adapters:open-connectors:file-survey-connectors').jar }
                 from { project(':open-metadata-implementation:adapters:open-connectors:dynamic-archiver-connectors').jar }
@@ -340,7 +337,11 @@ distributions {
                         { include 'Egeria*.http' }
                 from { "$rootProject.projectDir/open-metadata-implementation/view-server-generic-services/asset-maker" }
                         { include 'Egeria*.http' }
+                from { "$rootProject.projectDir/open-metadata-implementation/view-server-generic-services/automated-curation" }
+                        { include 'Egeria*.http' }
                 from { "$rootProject.projectDir/open-metadata-implementation/view-server-generic-services/classification-explorer" }
+                        { include 'Egeria*.http' }
+                from { "$rootProject.projectDir/open-metadata-implementation/view-server-generic-services/classification-manager" }
                         { include 'Egeria*.http' }
                 from { "$rootProject.projectDir/open-metadata-implementation/view-server-generic-services/collection-manager" }
                         { include 'Egeria*.http' }
@@ -358,6 +359,8 @@ distributions {
                         { include 'Egeria*.http' }
                 from { "$rootProject.projectDir/open-metadata-implementation/view-server-generic-services/metadata-explorer" }
                         { include 'Egeria*.http' }
+                from { "$rootProject.projectDir/open-metadata-implementation/view-server-generic-services/multi-language" }
+                        { include 'Egeria*.http' }
                 from { "$rootProject.projectDir/open-metadata-implementation/view-server-generic-services/schema-maker" }
                         { include 'Egeria*.http' }
                 from { "$rootProject.projectDir/open-metadata-implementation/view-server-generic-services/time-keeper" }
@@ -368,10 +371,6 @@ distributions {
                 from { "$rootProject.projectDir/open-metadata-implementation/view-services/action-author" }
                         { include 'Egeria*.http' }
                 from { "$rootProject.projectDir/open-metadata-implementation/view-services/asset-catalog" }
-                        { include 'Egeria*.http' }
-                from { "$rootProject.projectDir/open-metadata-implementation/view-services/automated-curation" }
-                        { include 'Egeria*.http' }
-                from { "$rootProject.projectDir/open-metadata-implementation/view-services/classification-manager" }
                         { include 'Egeria*.http' }
                 from { "$rootProject.projectDir/open-metadata-implementation/view-services/community-matters" }
                         { include 'Egeria*.http' }
@@ -390,8 +389,6 @@ distributions {
                 from { "$rootProject.projectDir/open-metadata-implementation/view-services/glossary-manager" }
                         { include 'Egeria*.http' }
                 from { "$rootProject.projectDir/open-metadata-implementation/view-services/location-arena" }
-                        { include 'Egeria*.http' }
-                from { "$rootProject.projectDir/open-metadata-implementation/view-services/multi-language" }
                         { include 'Egeria*.http' }
                 from { "$rootProject.projectDir/open-metadata-implementation/view-services/my-profile" }
                         { include 'Egeria*.http' }

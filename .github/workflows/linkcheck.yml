@@ -16,9 +16,9 @@ jobs:
     runs-on: ubuntu-latest
     if: startsWith(github.repository,'odpi/')
     steps:
-      - uses: actions/checkout@v4.2.2
+      - uses: actions/checkout@v5.0.0
       - name: Link Checker
-        uses: lycheeverse/lychee-action@v2.1.0
+        uses: lycheeverse/lychee-action@v2.6.1
         with:
           # Can switch to true once we run clean
           fail: false

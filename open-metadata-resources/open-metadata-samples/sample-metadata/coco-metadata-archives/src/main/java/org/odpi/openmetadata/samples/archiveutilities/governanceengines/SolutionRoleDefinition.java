@@ -2,13 +2,14 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.samples.archiveutilities.governanceengines;
 
+import org.odpi.openmetadata.frameworks.openmetadata.definitions.ActorRoleDefinition;
 import org.odpi.openmetadata.frameworks.openmetadata.refdata.ScopeDefinition;
 
 /**
  * The SolutionRoleDefinition is used to feed the definition of the solution roles for
  * Coco Pharmaceuticals' solution blueprints.
  */
-public enum SolutionRoleDefinition
+public enum SolutionRoleDefinition implements ActorRoleDefinition
 {
     PARTICIPATING_HOSPITAL("30adaab5-8870-47a8-8ae9-facbf84cb05a",
                            "ClinicalTrialParticipatingHospital",
@@ -97,6 +98,7 @@ public enum SolutionRoleDefinition
      *
      * @return type name
      */
+    @Override
     public String getGUID()
     {
         return guid;
@@ -108,6 +110,7 @@ public enum SolutionRoleDefinition
      *
      * @return identifier
      */
+    @Override
     public String getQualifiedName()
     {
         return "SolutionActorRole::" + guid + "::" + identifier;
@@ -119,6 +122,7 @@ public enum SolutionRoleDefinition
      *
      * @return identifier
      */
+    @Override
     public String getIdentifier()
     {
         return identifier;
@@ -130,6 +134,7 @@ public enum SolutionRoleDefinition
      *
      * @return display name
      */
+    @Override
     public String getDisplayName()
     {
         return displayName;
@@ -140,6 +145,7 @@ public enum SolutionRoleDefinition
      *
      * @return description
      */
+    @Override
     public String getDescription()
     {
         return description;
@@ -151,9 +157,10 @@ public enum SolutionRoleDefinition
      *
      * @return scope
      */
-    public ScopeDefinition getScope()
+    @Override
+    public String getScope()
     {
-        return ScopeDefinition.WITHIN_SOLUTION;
+        return ScopeDefinition.WITHIN_SOLUTION.getPreferredValue();
     }
 
 

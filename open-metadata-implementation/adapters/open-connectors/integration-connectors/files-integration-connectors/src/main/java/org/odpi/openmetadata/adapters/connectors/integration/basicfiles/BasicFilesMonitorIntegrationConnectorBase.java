@@ -12,7 +12,6 @@ import org.odpi.openmetadata.adapters.connectors.integration.basicfiles.ffdc.exc
 import org.odpi.openmetadata.frameworks.auditlog.messagesets.ExceptionMessageDefinition;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Endpoint;
-import org.odpi.openmetadata.frameworks.opengovernance.properties.CatalogTarget;
 import org.odpi.openmetadata.frameworks.integration.connectors.IntegrationConnectorBase;
 import org.odpi.openmetadata.frameworks.openmetadata.connectorcontext.AssetClient;
 import org.odpi.openmetadata.frameworks.openmetadata.controls.PlaceholderProperty;
@@ -20,6 +19,7 @@ import org.odpi.openmetadata.frameworks.openmetadata.enums.DeleteMethod;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.OpenMetadataRootElement;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.filesandfolders.FileFolderProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.processes.connectors.CatalogTargetProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.search.DeleteOptions;
 import org.odpi.openmetadata.frameworks.openmetadata.search.TemplateOptions;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
@@ -225,6 +225,8 @@ public abstract class BasicFilesMonitorIntegrationConnectorBase extends Integrat
 
         try
         {
+            AssetClient assetClient = integrationContext.getAssetClient();
+
             /*
              * Ensure all the catalog targets are included
              */
@@ -233,22 +235,23 @@ public abstract class BasicFilesMonitorIntegrationConnectorBase extends Integrat
             int startFrom   = 0;
             int maxPageSize = integrationContext.getMaxPageSize();
 
-            List<CatalogTarget> catalogTargets = integrationContext.getConnectorConfigClient().getCatalogTargets(integrationContext.getIntegrationConnectorGUID(),
-                                                                                                                 startFrom,
-                                                                                                                 maxPageSize);
+            List<OpenMetadataRootElement> catalogTargets = assetClient.getCatalogTargets(integrationContext.getIntegrationConnectorGUID(),
+                                                                                         assetClient.getQueryOptions(startFrom, maxPageSize));
 
             while (catalogTargets != null)
             {
-                for (CatalogTarget catalogTarget : catalogTargets)
+                for (OpenMetadataRootElement catalogTarget : catalogTargets)
                 {
-                    this.addCatalogTarget(catalogTarget);
-                    activeCatalogTargets.add(catalogTarget.getRelationshipGUID());
+                    if ((catalogTarget != null) && (catalogTarget.getRelatedBy() != null))
+                    {
+                        this.addCatalogTarget(catalogTarget);
+                        activeCatalogTargets.add(catalogTarget.getRelatedBy().getRelationshipHeader().getGUID());
+                    }
                 }
 
                 startFrom = startFrom + maxPageSize;
-                catalogTargets = integrationContext.getConnectorConfigClient().getCatalogTargets(integrationContext.getIntegrationConnectorGUID(),
-                                                                                                 startFrom,
-                                                                                                 maxPageSize);
+                catalogTargets = assetClient.getCatalogTargets(integrationContext.getIntegrationConnectorGUID(),
+                                                               assetClient.getQueryOptions(startFrom, maxPageSize));
             }
 
             /*
@@ -316,14 +319,14 @@ public abstract class BasicFilesMonitorIntegrationConnectorBase extends Integrat
      * @throws ConnectorCheckedException problem with open metadata or the connector
      * @throws IOException problem resolving the file name
      */
-    void addCatalogTarget(CatalogTarget catalogTarget) throws ConnectorCheckedException, IOException
+    void addCatalogTarget(OpenMetadataRootElement catalogTarget) throws ConnectorCheckedException, IOException
     {
         /*
          * First perform a simple check - does the relationship GUID of the catalog target match one of the directories to monitor?
          */
         for (DirectoryToMonitor directoryToMonitor : directoriesToMonitor)
         {
-            if (catalogTarget.getRelationshipGUID().equals(directoryToMonitor.catalogTargetGUID))
+            if (catalogTarget.getRelatedBy().getRelationshipHeader().getGUID().equals(directoryToMonitor.catalogTargetGUID))
             {
                 /*
                  * Already processing this catalog target.
@@ -335,12 +338,12 @@ public abstract class BasicFilesMonitorIntegrationConnectorBase extends Integrat
         /*
          * Seems to be new - but we need to check that this is not matching the endpoint catalog target.
          */
-        if (integrationContext.isTypeOf(catalogTarget.getCatalogTargetElement(), OpenMetadataType.FILE_FOLDER.typeName))
+        if (integrationContext.isTypeOf(catalogTarget.getElementHeader(), OpenMetadataType.FILE_FOLDER.typeName))
         {
             /*
              * It is the right type of catalog target.  We now need the path name associated with this catalog target.
              */
-            OpenMetadataRootElement fileFolderElement = this.getFolderElement(catalogTarget.getCatalogTargetElement().getGUID());
+            OpenMetadataRootElement fileFolderElement = this.getFolderElement(catalogTarget.getElementHeader().getGUID());
 
             if ((fileFolderElement != null) &&
                     (fileFolderElement.getProperties() instanceof FileFolderProperties fileFolderProperties) &&
@@ -355,7 +358,7 @@ public abstract class BasicFilesMonitorIntegrationConnectorBase extends Integrat
                 {
                     if (directoryToMonitor.directoryFile.getCanonicalPath().equals(pathFile.getCanonicalPath()))
                     {
-                        directoryToMonitor.catalogTargetGUID = catalogTarget.getRelationshipGUID();
+                        directoryToMonitor.catalogTargetGUID = catalogTarget.getRelatedBy().getRelationshipHeader().getGUID();
 
                         return;
                     }
@@ -366,21 +369,24 @@ public abstract class BasicFilesMonitorIntegrationConnectorBase extends Integrat
                  */
                 try
                 {
-                    Map<String, String> templates = defaultTemplates;
-
-                    if (catalogTarget.getTemplates() != null)
+                    if (catalogTarget.getRelatedBy().getRelationshipProperties() instanceof CatalogTargetProperties catalogTargetProperties)
                     {
-                        templates.putAll(catalogTarget.getTemplates());
+                        Map<String, String> templates = defaultTemplates;
+
+                        if (catalogTargetProperties.getTemplates() != null)
+                        {
+                            templates.putAll(catalogTargetProperties.getTemplates());
+                        }
+
+                        DirectoryToMonitor directoryToMonitor = checkDirectoryToMonitor(OpenMetadataType.CATALOG_TARGET_RELATIONSHIP.typeName + "::" + catalogTarget.getRelatedBy().getRelationshipHeader().getGUID(),
+                                                                                        fileFolderProperties.getPathName(),
+                                                                                        catalogTarget.getRelatedBy().getRelationshipHeader().getGUID(),
+                                                                                        catalogTargetProperties.getDeleteMethod(),
+                                                                                        templates,
+                                                                                        catalogTargetProperties.getConfigurationProperties());
+
+                        directoriesToMonitor.add(directoryToMonitor);
                     }
-
-                    DirectoryToMonitor directoryToMonitor = checkDirectoryToMonitor(OpenMetadataType.CATALOG_TARGET_RELATIONSHIP.typeName + "::" + catalogTarget.getRelationshipGUID(),
-                                                                                    fileFolderProperties.getPathName(),
-                                                                                    catalogTarget.getRelationshipGUID(),
-                                                                                    catalogTarget.getDeleteMethod(),
-                                                                                    templates,
-                                                                                    catalogTarget.getConfigurationProperties());
-
-                    directoriesToMonitor.add(directoryToMonitor);
                 }
                 catch (ConnectorCheckedException exception)
                 {

@@ -9,7 +9,6 @@ import org.odpi.openmetadata.repositoryservices.archiveutilities.OMRSArchiveBuil
 import org.odpi.openmetadata.repositoryservices.archiveutilities.OMRSArchiveHelper;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.archivestore.properties.OpenMetadataArchive;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.archivestore.properties.OpenMetadataArchiveType;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.ClassificationDef;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.ClassificationPropagationRule;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.EntityDef;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.RelationshipDef;
@@ -167,10 +166,8 @@ public class OpenMetadataTypesArchive3_8
         update0011ManagingReferenceables();
         update0015LinkedMediaTypes();
         update0030OperatingPlatforms();
-        update0057SoftwareServices();
         update0070NetworksAndGateways();
         update0461GovernanceEngines();
-        update0571ConceptModels();
     }
 
 
@@ -241,23 +238,7 @@ public class OpenMetadataTypesArchive3_8
      */
     private void update0015LinkedMediaTypes()
     {
-        this.archiveBuilder.addTypeDefPatch(updateExternalReferenceLinkRelationship());
         this.archiveBuilder.addTypeDefPatch(updateMediaReferenceRelationship());
-    }
-
-    private TypeDefPatch updateExternalReferenceLinkRelationship()
-    {
-        /*
-         * Create the Patch
-         */
-        TypeDefPatch  typeDefPatch = archiveBuilder.getPatchForType(OpenMetadataType.EXTERNAL_REFERENCE_LINK_RELATIONSHIP.typeName);
-
-        typeDefPatch.setUpdatedBy(originatorName);
-        typeDefPatch.setUpdateTime(creationDate);
-        typeDefPatch.setUpdateMultiLink(true);
-        typeDefPatch.setMultiLink(true);
-
-        return typeDefPatch;
     }
 
 
@@ -275,34 +256,6 @@ public class OpenMetadataTypesArchive3_8
 
         return typeDefPatch;
     }
-
-
-    /*
-     * -------------------------------------------------------------------------------------------------------
-     */
-
-    /**
-     * Add new software services
-     */
-    private void update0057SoftwareServices()
-    {
-        this.archiveBuilder.addEntityDef(addMetadataRepositoryServiceEntity());
-        this.archiveBuilder.addEntityDef(addSecurityServiceEntity());
-    }
-
-    private EntityDef addMetadataRepositoryServiceEntity()
-    {
-        return archiveHelper.getDefaultEntityDef(OpenMetadataType.METADATA_REPOSITORY_SERVICE,
-                                                 this.archiveBuilder.getEntityDef(OpenMetadataType.SOFTWARE_SERVICE.typeName));
-    }
-
-
-    private EntityDef addSecurityServiceEntity()
-    {
-        return archiveHelper.getDefaultEntityDef(OpenMetadataType.SECURITY_SERVICE,
-                                                 this.archiveBuilder.getEntityDef(OpenMetadataType.SOFTWARE_SERVICE.typeName));
-    }
-
 
 
     /*
@@ -369,7 +322,6 @@ public class OpenMetadataTypesArchive3_8
     private void update0070NetworksAndGateways()
     {
         this.archiveBuilder.addRelationshipDef(getVisibleEndpointRelationship());
-        this.archiveBuilder.addTypeDefPatch(updateNetworkGatewayLinkRelationship());
     }
 
     private RelationshipDef getVisibleEndpointRelationship()
@@ -412,33 +364,6 @@ public class OpenMetadataTypesArchive3_8
         return relationshipDef;
     }
 
-    private TypeDefPatch updateNetworkGatewayLinkRelationship()
-    {
-        /*
-         * Create the Patch
-         */
-        TypeDefPatch  typeDefPatch = archiveBuilder.getPatchForType(OpenMetadataType.NETWORK_GATEWAY_LINK_RELATIONSHIP.typeName);
-
-        typeDefPatch.setUpdatedBy(originatorName);
-        typeDefPatch.setUpdateTime(creationDate);
-        typeDefPatch.setUpdateMultiLink(true);
-        typeDefPatch.setMultiLink(true);
-
-        /*
-         * Build the attributes
-         */
-        List<TypeDefAttribute> properties = new ArrayList<>();
-
-        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.DISPLAY_NAME));
-        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.DESCRIPTION));
-        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.EXTERNAL_ENDPOINT_ADDRESS));
-        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.INTERNAL_ENDPOINT_ADDRESS));
-
-        typeDefPatch.setPropertyDefinitions(properties);
-
-        return typeDefPatch;
-    }
-
 
     /*
      * -------------------------------------------------------------------------------------------------------
@@ -453,23 +378,6 @@ public class OpenMetadataTypesArchive3_8
     {
         this.archiveBuilder.addEntityDef(getRepositoryGovernanceEngineEntity());
         this.archiveBuilder.addEntityDef(getRepositoryGovernanceServiceEntity());
-        this.archiveBuilder.addTypeDefPatch(updateSupportedGovernanceServiceRelationship());
-    }
-
-
-    private TypeDefPatch updateSupportedGovernanceServiceRelationship()
-    {
-        /*
-         * Create the Patch
-         */
-        TypeDefPatch  typeDefPatch = archiveBuilder.getPatchForType(OpenMetadataType.SUPPORTED_GOVERNANCE_SERVICE_RELATIONSHIP.typeName);
-
-        typeDefPatch.setUpdatedBy(originatorName);
-        typeDefPatch.setUpdateTime(creationDate);
-        typeDefPatch.setUpdateMultiLink(true);
-        typeDefPatch.setMultiLink(true);
-
-        return typeDefPatch;
     }
 
 
@@ -495,27 +403,6 @@ public class OpenMetadataTypesArchive3_8
     }
 
 
-    /*
-     * -------------------------------------------------------------------------------------------------------
-     */
-
-    /**
-     * Add concept model classification
-     */
-    private void update0571ConceptModels()
-    {
-        this.archiveBuilder.addClassificationDef(addConceptModelClassification());
-    }
-
-    private ClassificationDef addConceptModelClassification()
-    {
-        return archiveHelper.getClassificationDef(OpenMetadataType.CONCEPT_MODEL_CLASSIFICATION,
-                                                  null,
-                                                  this.archiveBuilder.getEntityDef(OpenMetadataType.DESIGN_MODEL.typeName),
-                                                  false);
-
-
-    }
 
     /*
      * -------------------------------------------------------------------------------------------------------

@@ -4,8 +4,8 @@ package org.odpi.openmetadata.frameworks.openmetadata.properties.assets.processe
 
 import com.fasterxml.jackson.annotation.*;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.ActivityStatus;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.processes.actions.ActionProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.AssetProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.processes.actions.ActionProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 
 import java.util.Date;

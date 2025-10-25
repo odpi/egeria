@@ -7,6 +7,7 @@ import com.fasterxml.jackson.annotation.*;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.CoverageCategory;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.datadictionaries.MemberDataFieldProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.datadictionaries.NestedDataFieldProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.designmodels.ConceptBeadAttributeLinkProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.schema.AttributeForSchemaProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.schema.NestedSchemaAttributeProperties;
 
@@ -27,6 +28,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonSubTypes(
         {
                 @JsonSubTypes.Type(value = AttributeForSchemaProperties.class, name = "AttributeForSchemaProperties"),
+                @JsonSubTypes.Type(value = ConceptBeadAttributeLinkProperties.class, name = "ConceptBeadAttributeLinkProperties"),
                 @JsonSubTypes.Type(value = MemberDataFieldProperties.class, name = "MemberDataFieldProperties"),
                 @JsonSubTypes.Type(value = NestedDataFieldProperties.class, name = "NestedDataFieldProperties"),
                 @JsonSubTypes.Type(value = NestedSchemaAttributeProperties.class, name = "NestedSchemaAttributeProperties"),
@@ -70,7 +72,7 @@ public class PartOfRelationshipProperties extends RelationshipBeanProperties
     /**
      * Return the position of this data field in the data structure.
      *
-     * @return int position in schema - 0 means first
+     * @return int position in schema - 0 means none or not applicable
      */
     public int getPosition() { return position; }
 
@@ -78,7 +80,7 @@ public class PartOfRelationshipProperties extends RelationshipBeanProperties
     /**
      * Set up the position of this data field in the data structure.
      *
-     * @param position int position in schema - 0 means first
+     * @param position int position in schema - 0 means none or not applicable
      */
     public void setPosition(int position)
     {

@@ -117,7 +117,7 @@ public class FeedbackManagerRESTServices extends TokenController
     public VoidResponse removeRatingFromElement(String            serverName,
                                                 String            urlMarker,
                                                 String            guid,
-                                                DeleteRequestBody requestBody)
+                                                DeleteElementRequestBody requestBody)
     {
         final String methodName = "removeRatingFromElement";
 
@@ -274,7 +274,7 @@ public class FeedbackManagerRESTServices extends TokenController
     public VoidResponse removeLikeFromElement(String            serverName,
                                               String            urlMarker,
                                               String            guid,
-                                              DeleteRequestBody requestBody)
+                                              DeleteElementRequestBody requestBody)
     {
         final String methodName = "removeLikeFromElement";
 
@@ -369,7 +369,7 @@ public class FeedbackManagerRESTServices extends TokenController
     public GUIDResponse addCommentToElement(String                 serverName,
                                             String                 urlMarker,
                                             String                 elementGUID,
-                                            NewFeedbackRequestBody requestBody)
+                                            NewAttachmentRequestBody requestBody)
     {
         final String methodName = "addCommentToElement";
 
@@ -402,7 +402,7 @@ public class FeedbackManagerRESTServices extends TokenController
             }
             else
             {
-                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName, NewFeedbackRequestBody.class.getName());
+                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName, NewAttachmentRequestBody.class.getName());
             }
         }
         catch (Throwable error)
@@ -434,7 +434,7 @@ public class FeedbackManagerRESTServices extends TokenController
                                         String                 urlMarker,
                                         String                 elementGUID,
                                         String                 commentGUID,
-                                        NewFeedbackRequestBody requestBody)
+                                        NewAttachmentRequestBody requestBody)
     {
         final String methodName = "addCommentReply";
 
@@ -471,7 +471,7 @@ public class FeedbackManagerRESTServices extends TokenController
             }
             else
             {
-                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName, NewFeedbackRequestBody.class.getName());
+                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName, NewAttachmentRequestBody.class.getName());
             }
         }
         catch (Throwable error)
@@ -614,7 +614,7 @@ public class FeedbackManagerRESTServices extends TokenController
                                             String            urlMarker,
                                             String            questionCommentGUID,
                                             String            answerCommentGUID,
-                                            DeleteRequestBody requestBody)
+                                            DeleteRelationshipRequestBody requestBody)
     {
         final String methodName = "clearAcceptedAnswer";
 
@@ -663,7 +663,7 @@ public class FeedbackManagerRESTServices extends TokenController
     public VoidResponse removeCommentFromElement(String            serverName,
                                                  String            urlMarker,
                                                  String            commentGUID,
-                                                 DeleteRequestBody requestBody)
+                                                 DeleteElementRequestBody requestBody)
     {
         final String methodName = "removeElementComment";
 
@@ -788,7 +788,6 @@ public class FeedbackManagerRESTServices extends TokenController
 
     /**
      * Retrieve the list of comment metadata elements that contain the search string.
-     * The search string is treated as a regular expression.
      *
      * @param serverName name of the server to route the request to
      * @param urlMarker  view service URL marker
@@ -969,7 +968,7 @@ public class FeedbackManagerRESTServices extends TokenController
     public VoidResponse   deleteTag(String            serverName,
                                     String            urlMarker,
                                     String            tagGUID,
-                                    DeleteRequestBody requestBody)
+                                    DeleteElementRequestBody requestBody)
     {
         final String methodName = "deleteTag";
 
@@ -1276,7 +1275,7 @@ public class FeedbackManagerRESTServices extends TokenController
                                                String            urlMarker,
                                                String            elementGUID,
                                                String            tagGUID,
-                                               DeleteRequestBody requestBody)
+                                               DeleteRelationshipRequestBody requestBody)
     {
         final String   methodName  = "removeTagFromElement";
 
@@ -1410,8 +1409,8 @@ public class FeedbackManagerRESTServices extends TokenController
      * Creates a new noteLog and returns the unique identifier for it.
      *
      * @param serverName   name of the server instances for this request
-     * @param elementGUID unique identifier of the element where the note log is located
      * @param urlMarker  view service URL marker
+     * @param elementGUID unique identifier of the element where the note log is located
      * @param requestBody  contains the name of the tag and (optional) description of the tag
      *
      * @return guid for new tag or
@@ -1422,7 +1421,7 @@ public class FeedbackManagerRESTServices extends TokenController
     public GUIDResponse createNoteLog(String                 serverName,
                                       String                 urlMarker,
                                       String                 elementGUID,
-                                      NewFeedbackRequestBody requestBody)
+                                      NewAttachmentRequestBody requestBody)
     {
         final String   methodName = "createNoteLog";
 
@@ -1447,6 +1446,68 @@ public class FeedbackManagerRESTServices extends TokenController
                 {
                     response.setGUID(handler.createNoteLog(userId, elementGUID, requestBody, requestBody.getInitialClassifications(), noteLogProperties));
                 }
+                else
+                {
+                    restExceptionHandler.handleInvalidPropertiesObject(NoteLogProperties.class.getName(), methodName);
+                }
+            }
+            else
+            {
+                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName, NoteLogProperties.class.getName());
+            }
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+        return response;
+    }
+
+
+    /**
+     * Creates a new noteLog and returns the unique identifier for it.
+     *
+     * @param serverName   name of the server instances for this request
+     * @param urlMarker  view service URL marker
+     * @param requestBody  contains the name of the tag and (optional) description of the tag
+     *
+     * @return guid for new tag or
+     * InvalidParameterException - one of the parameters is invalid or
+     * PropertyServerException - there is a problem retrieving information from the property server(s) or
+     * UserNotAuthorizedException - the requesting user is not authorized to issue this request.
+     */
+    public GUIDResponse createNoteLog(String                serverName,
+                                      String                urlMarker,
+                                      NewElementRequestBody requestBody)
+    {
+        final String   methodName = "createNoteLog";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
+
+        GUIDResponse  response = new GUIDResponse();
+        AuditLog      auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            if (requestBody != null)
+            {
+                NoteLogHandler handler = instanceHandler.getNoteLogHandler(userId, serverName, urlMarker, methodName);
+
+                auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+                if (requestBody.getProperties() instanceof NoteLogProperties noteLogProperties)
+                {
+                    response.setGUID(handler.createNoteLog(userId,
+                                                           requestBody,
+                                                           requestBody.getInitialClassifications(),
+                                                           noteLogProperties,
+                                                           requestBody.getParentRelationshipProperties()));                }
                 else
                 {
                     restExceptionHandler.handleInvalidPropertiesObject(NoteLogProperties.class.getName(), methodName);
@@ -1544,7 +1605,7 @@ public class FeedbackManagerRESTServices extends TokenController
     public VoidResponse   deleteNoteLog(String            serverName,
                                         String            urlMarker,
                                         String            noteLogGUID,
-                                        DeleteRequestBody requestBody)
+                                        DeleteElementRequestBody requestBody)
     {
         final String methodName = "deleteNoteLog";
 

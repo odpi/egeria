@@ -4,6 +4,10 @@ package org.odpi.openmetadata.viewservices.referencedata.server.spring;
 
 import io.swagger.v3.oas.annotations.ExternalDocumentation;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.enums.SecuritySchemeIn;
+import io.swagger.v3.oas.annotations.enums.SecuritySchemeType;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import io.swagger.v3.oas.annotations.security.SecurityScheme;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.odpi.openmetadata.commonservices.ffdc.rest.*;
 import org.odpi.openmetadata.viewservices.referencedata.server.ReferenceDataRESTServices;
@@ -15,8 +19,14 @@ import org.springframework.web.bind.annotation.*;
  = */
 @RestController
 @RequestMapping("/servers/{serverName}/api/open-metadata/reference-data")
-
-@Tag(name="API: Reference Data OMVS", description="The Reference Data OMVS provides APIs for retrieving configuration and status from servers and platforms.",
+@SecurityScheme(
+        name = "BearerAuthorization",
+        type = SecuritySchemeType.HTTP,
+        bearerFormat = "JWT",
+        scheme = "bearer",
+        in = SecuritySchemeIn.HEADER
+)
+@Tag(name="API: Reference Data OMVS", description="Reference data is used by systems as valid value lists.  Although the lists of reference data may be similar from system to system, they often vary in small details and use different identifiers.  Reference data management supports the capture, mapping and synchronization of the reference data across your systems, simplifying data pipeline processing and reducing data integration errors.",
         externalDocs=@ExternalDocumentation(description="Further Information",
                 url="https://egeria-project.org/services/omvs/reference-data/overview/"))
 
@@ -45,6 +55,7 @@ public class ReferenceDataResource
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     @PostMapping(path = "/valid-value-definitions")
+    @SecurityRequirement(name = "BearerAuthorization")
 
     @Operation(summary="createValidValueDefinition",
             description="Create a validValueDefinition.",
@@ -72,6 +83,8 @@ public class ReferenceDataResource
      *  PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     @PostMapping(path = "/valid-value-definitions/from-template")
+    @SecurityRequirement(name = "BearerAuthorization")
+
     @Operation(summary="createValidValueDefinitionFromTemplate",
             description="Create a new metadata element to represent a validValueDefinition using an existing metadata element as a template.  The template defines additional classifications and relationships that should be added to the new element.",
             externalDocs=@ExternalDocumentation(description="Further Information",
@@ -99,6 +112,8 @@ public class ReferenceDataResource
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     @PostMapping(path = "/valid-value-definitions/{validValueDefinitionGUID}/update")
+    @SecurityRequirement(name = "BearerAuthorization")
+
     @Operation(summary="updateValidValueDefinition",
             description="Update the properties of a validValueDefinition.",
             externalDocs=@ExternalDocumentation(description="Further Information",
@@ -129,6 +144,8 @@ public class ReferenceDataResource
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     @PostMapping(path = "/valid-values/{validValueDefinitionGUID}/implementation/elements/{elementGUID}/attach")
+    @SecurityRequirement(name = "BearerAuthorization")
+
     @Operation(summary="linkValidValueImplementation",
             description="Attach a valid value to an implementation - probably a referenceable.",
             externalDocs=@ExternalDocumentation(description="Further Information",
@@ -158,6 +175,8 @@ public class ReferenceDataResource
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     @PostMapping(path = "/valid-values/{validValueDefinitionGUID}/implementation/elements/{elementGUID}/detach")
+    @SecurityRequirement(name = "BearerAuthorization")
+
     @Operation(summary="detachValidValueImplementation",
             description="Detach a valid value from an implementation - probably a referenceable.",
             externalDocs=@ExternalDocumentation(description="Further Information",
@@ -187,6 +206,8 @@ public class ReferenceDataResource
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     @PostMapping(path = "/elements/{elementGUID}/valid-values-assignment/{validValueDefinitionGUID}/attach")
+    @SecurityRequirement(name = "BearerAuthorization")
+
     @Operation(summary="linkValidValuesAssignment",
             description="Attach a valid value to a consumer - probably a schema element or data set.",
             externalDocs=@ExternalDocumentation(description="Further Information",
@@ -219,6 +240,8 @@ public class ReferenceDataResource
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     @PostMapping(path = "/elements/{elementGUID}/valid-values-assignment/{validValueDefinitionGUID}/detach")
+    @SecurityRequirement(name = "BearerAuthorization")
+
     @Operation(summary="detachValidValuesAssignment",
             description="Detach a valid value from a consumer - probably a schema element or data set.",
             externalDocs=@ExternalDocumentation(description="Further Information",
@@ -252,6 +275,8 @@ public class ReferenceDataResource
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     @PostMapping(path = "/elements/{elementGUID}/reference-value-assignment/{validValueDefinitionGUID}/attach")
+    @SecurityRequirement(name = "BearerAuthorization")
+
     @Operation(summary="linkReferenceValueAssignment",
             description="Attach a valid value to a tagged element.",
             externalDocs=@ExternalDocumentation(description="Further Information",
@@ -281,6 +306,8 @@ public class ReferenceDataResource
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     @PostMapping(path = "/elements/{elementGUID}/reference-value-assignment/{validValueDefinitionGUID}/detach")
+    @SecurityRequirement(name = "BearerAuthorization")
+
     @Operation(summary="detachReferenceValueAssignment",
             description="Detach a valid value from a tagged element.",
             externalDocs=@ExternalDocumentation(description="Further Information",
@@ -311,6 +338,8 @@ public class ReferenceDataResource
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     @PostMapping(path = "/valid-values/{validValueDefinitionOneGUID}/associated-valid-values/{validValueDefinitionTwoGUID}/attach")
+    @SecurityRequirement(name = "BearerAuthorization")
+
     @Operation(summary="linkAssociatedValidValues",
             description="Attach a valid value to one of its peers.",
             externalDocs=@ExternalDocumentation(description="Further Information",
@@ -340,6 +369,8 @@ public class ReferenceDataResource
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     @PostMapping(path = "/valid-values/{validValueDefinitionOneGUID}/associated-valid-values/{validValueDefinitionTwoGUID}/detach")
+    @SecurityRequirement(name = "BearerAuthorization")
+
     @Operation(summary="detachAssociatedValidValues",
             description="Detach a valid value from one of its peers.",
             externalDocs=@ExternalDocumentation(description="Further Information",
@@ -370,6 +401,8 @@ public class ReferenceDataResource
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     @PostMapping(path = "/valid-values/{validValueDefinitionOneGUID}/consistent-valid-values/{validValueDefinitionTwoGUID}/attach")
+    @SecurityRequirement(name = "BearerAuthorization")
+
     @Operation(summary="linkConsistentValidValues",
             description="Attach a valid value to one of its peers.",
             externalDocs=@ExternalDocumentation(description="Further Information",
@@ -399,6 +432,8 @@ public class ReferenceDataResource
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     @PostMapping(path = "/valid-values/{validValueDefinitionOneGUID}/consistent-valid-values/{validValueDefinitionTwoGUID}/detach")
+    @SecurityRequirement(name = "BearerAuthorization")
+
     @Operation(summary="detachConsistentValidValues",
             description="Detach a valid value from one of its peers.",
             externalDocs=@ExternalDocumentation(description="Further Information",
@@ -428,6 +463,8 @@ public class ReferenceDataResource
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     @PostMapping(path = "/valid-values/{validValueDefinitionOneGUID}/mapped-valid-values/{validValueDefinitionTwoGUID}/attach")
+    @SecurityRequirement(name = "BearerAuthorization")
+
     @Operation(summary="linkMappedValidValues",
             description="Attach a valid value to one of its peers.",
             externalDocs=@ExternalDocumentation(description="Further Information",
@@ -457,6 +494,8 @@ public class ReferenceDataResource
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     @PostMapping(path = "/valid-values/{validValueDefinitionOneGUID}/mapped-valid-values/{validValueDefinitionTwoGUID}/detach")
+    @SecurityRequirement(name = "BearerAuthorization")
+
     @Operation(summary="detachMappedValidValues",
             description="Detach a valid value from one of its peers.",
             externalDocs=@ExternalDocumentation(description="Further Information",
@@ -486,6 +525,8 @@ public class ReferenceDataResource
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     @PostMapping(path = "/valid-values/{validValueDefinitionGUID}/members/{nestedValidValueDefinitionGUID}/attach")
+    @SecurityRequirement(name = "BearerAuthorization")
+
     @Operation(summary="linkValidValueMember",
             description="Attach a valid value to a valid value set.",
             externalDocs=@ExternalDocumentation(description="Further Information",
@@ -515,6 +556,8 @@ public class ReferenceDataResource
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     @PostMapping(path = "/valid-values/{validValueDefinitionGUID}/members/{nestedValidValueDefinitionGUID}/detach")
+    @SecurityRequirement(name = "BearerAuthorization")
+
     @Operation(summary="detachValidValueMember",
             description="Detach a valid value from a valid value set.",
             externalDocs=@ExternalDocumentation(description="Further Information",
@@ -544,6 +587,8 @@ public class ReferenceDataResource
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     @PostMapping(path = "/valid-value-definitions/{validValueDefinitionGUID}/delete")
+    @SecurityRequirement(name = "BearerAuthorization")
+
     @Operation(summary="deleteValidValueDefinition",
             description="Delete a validValueDefinition.",
             externalDocs=@ExternalDocumentation(description="Further Information",
@@ -572,6 +617,8 @@ public class ReferenceDataResource
      *  PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     @PostMapping(path = "/valid-value-definitions/by-name")
+    @SecurityRequirement(name = "BearerAuthorization")
+
     @Operation(summary="getValidValueDefinitionsByName",
             description="Returns the list of validValueDefinitions with a particular name.",
             externalDocs=@ExternalDocumentation(description="Further Information",
@@ -598,6 +645,8 @@ public class ReferenceDataResource
      *  PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     @PostMapping(path = "/valid-value-definitions/by-search-string")
+    @SecurityRequirement(name = "BearerAuthorization")
+
     @Operation(summary="findValidValueDefinitions",
             description="Retrieve the list of validValueDefinition metadata elements that contain the search string.",
             externalDocs=@ExternalDocumentation(description="Further Information",
@@ -625,6 +674,8 @@ public class ReferenceDataResource
      *  PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     @PostMapping(path = "/valid-value-definitions/{validValueDefinitionGUID}/retrieve")
+    @SecurityRequirement(name = "BearerAuthorization")
+
     @Operation(summary="getValidValueDefinitionByGUID",
             description="Return the properties of a specific validValueDefinition.",
             externalDocs=@ExternalDocumentation(description="Further Information",

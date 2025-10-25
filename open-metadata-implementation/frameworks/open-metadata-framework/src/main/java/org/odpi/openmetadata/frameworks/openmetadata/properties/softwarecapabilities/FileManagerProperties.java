@@ -3,9 +3,20 @@
 package org.odpi.openmetadata.frameworks.openmetadata.properties.softwarecapabilities;
 
 
+import com.fasterxml.jackson.annotation.JsonAutoDetect;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
+
+import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
+import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
+
 /**
- * FileSystemProperties describes an application that manages a collection of files.
+ * FileManagerProperties describes an application that manages a collection of files.
  */
+@JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
+@JsonInclude(JsonInclude.Include.NON_NULL)
+@JsonIgnoreProperties(ignoreUnknown=true)
 public class FileManagerProperties extends ResourceManagerProperties
 {
     /**
@@ -14,6 +25,7 @@ public class FileManagerProperties extends ResourceManagerProperties
     public FileManagerProperties()
     {
         super();
+        super.setTypeName(OpenMetadataType.FILE_MANAGER.typeName);
     }
 
 
@@ -29,7 +41,7 @@ public class FileManagerProperties extends ResourceManagerProperties
 
 
     /**
-     * Copy/clone constructor from OCF bean.
+     * Copy/clone constructor.
      *
      * @param template object to copy
      */

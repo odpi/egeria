@@ -8,22 +8,28 @@ import com.fasterxml.jackson.databind.ObjectReader;
 import com.fasterxml.jackson.databind.ObjectWriter;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.client.ConnectedAssetClient;
-import org.odpi.openmetadata.frameworks.opengovernance.client.OpenGovernanceClient;
+import org.odpi.openmetadata.frameworks.integration.connectors.IntegrationConnector;
+import org.odpi.openmetadata.frameworks.integration.context.IntegrationContext;
+import org.odpi.openmetadata.frameworks.integration.ffdc.OIFAuditCode;
 import org.odpi.openmetadata.frameworks.integration.openlineage.OpenLineageEventListener;
 import org.odpi.openmetadata.frameworks.integration.openlineage.OpenLineageListenerManager;
 import org.odpi.openmetadata.frameworks.integration.openlineage.OpenLineageRunEvent;
+import org.odpi.openmetadata.frameworks.opengovernance.client.GovernanceConfiguration;
+import org.odpi.openmetadata.frameworks.opengovernance.client.OpenGovernanceClient;
+import org.odpi.openmetadata.frameworks.openmetadata.client.OpenMetadataClient;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.DeleteMethod;
+import org.odpi.openmetadata.frameworks.openmetadata.enums.ElementOriginCategory;
+import org.odpi.openmetadata.frameworks.openmetadata.enums.PermittedSynchronization;
 import org.odpi.openmetadata.frameworks.openmetadata.events.OpenMetadataEventClient;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
-import org.odpi.openmetadata.frameworks.opengovernance.client.GovernanceConfiguration;
-import org.odpi.openmetadata.frameworks.openmetadata.client.OpenMetadataClient;
-import org.odpi.openmetadata.frameworks.integration.client.OpenIntegrationClient;
-import org.odpi.openmetadata.frameworks.integration.connectors.IntegrationConnector;
-import org.odpi.openmetadata.frameworks.integration.context.*;
-import org.odpi.openmetadata.frameworks.integration.ffdc.*;
-import org.odpi.openmetadata.frameworks.openmetadata.enums.PermittedSynchronization;
+import org.odpi.openmetadata.frameworks.openmetadata.handlers.AssetHandler;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.OpenMetadataRootElement;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.metadatarepositories.MetadataCollectionProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.search.NewElementOptions;
+import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
+import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -35,10 +41,10 @@ public abstract class IntegrationContextManager implements OpenLineageListenerMa
 {
     protected String                  partnerOMASPlatformRootURL = null;
     protected String                  partnerOMASServerName      = null;
-    protected OpenIntegrationClient   openIntegrationClient      = null;
     protected GovernanceConfiguration governanceConfiguration    = null;
     protected ConnectedAssetClient    connectedAssetClient       = null;
     protected OpenMetadataClient      openMetadataClient         = null;
+    protected AssetHandler            assetHandler               = null;
     protected OpenMetadataEventClient openMetadataEventClient    = null;
     protected OpenGovernanceClient    openGovernanceClient       = null;
     protected String                  localServerName            = null;
@@ -120,8 +126,9 @@ public abstract class IntegrationContextManager implements OpenLineageListenerMa
      * for this service.
      *
      * @param metadataSourceQualifiedName unique name of the software capability that represents this integration service
-     * @param typeName subtype name of the software capability
-     * @param classificationName optional classification for the software capability
+     * @param connectorId unique identifier of the connector (used to configure the event listener)
+     * @param connectorName name of connector from config
+     * @param connectorUserId userId for the connector
      *
      * @return unique identifier of the metadata source
      *
@@ -129,27 +136,40 @@ public abstract class IntegrationContextManager implements OpenLineageListenerMa
      * @throws UserNotAuthorizedException the integration daemon's userId does not have access to the partner OMAS
      * @throws PropertyServerException there is a problem in the remote server running the partner OMAS
      */
-    protected String setUpMetadataSource(String   metadataSourceQualifiedName,
-                                         String   typeName,
-                                         String   classificationName,
-                                         String   deployedImplementationType) throws InvalidParameterException,
-                                                                                     UserNotAuthorizedException,
-                                                                                     PropertyServerException
+    protected String setUpMetadataSource(String metadataSourceQualifiedName,
+                                         String connectorId,
+                                         String connectorName,
+                                         String connectorUserId) throws InvalidParameterException,
+                                                                        UserNotAuthorizedException,
+                                                                        PropertyServerException
     {
-        if ((openIntegrationClient != null) && (metadataSourceQualifiedName != null))
+        if ((assetHandler != null) && (metadataSourceQualifiedName != null))
         {
-            String metadataSourceGUID = openIntegrationClient.getMetadataSourceGUID(localServerUserId, metadataSourceQualifiedName);
+            OpenMetadataRootElement metadataCollection = assetHandler.getAssetByUniqueName(localServerUserId, metadataSourceQualifiedName, OpenMetadataProperty.QUALIFIED_NAME.name, null);
 
-            if (metadataSourceGUID == null)
+            if (metadataCollection == null)
             {
-                metadataSourceGUID = openIntegrationClient.createMetadataOrigin(localServerUserId,
-                                                                                typeName,
-                                                                                classificationName,
-                                                                                metadataSourceQualifiedName,
-                                                                                deployedImplementationType);
-            }
+                NewElementOptions newElementOptions = new NewElementOptions();
 
-            return metadataSourceGUID;
+                newElementOptions.setIsOwnAnchor(true);
+
+                MetadataCollectionProperties metadataCollectionProperties = new MetadataCollectionProperties();
+
+                metadataCollectionProperties.setQualifiedName(OpenMetadataType.METADATA_COLLECTION.typeName + "::" +  connectorName + " [" + connectorId + "]");
+                metadataCollectionProperties.setDeployedImplementationType(ElementOriginCategory.EXTERNAL_SOURCE.getName());
+                metadataCollectionProperties.setDisplayName("Metadata collection for connector " + connectorName);
+                metadataCollectionProperties.setDescription("This is the metadata belonging to connector " + connectorName + " that is running with userId " + connectorUserId + ".");
+
+                return assetHandler.createAsset(localServerUserId,
+                                                newElementOptions,
+                                                null,
+                                                metadataCollectionProperties,
+                                                null);
+            }
+            else
+            {
+                return metadataCollection.getElementHeader().getGUID();
+            }
         }
 
         return null;
@@ -198,7 +218,7 @@ public abstract class IntegrationContextManager implements OpenLineageListenerMa
             externalSourceName = null;
         }
 
-        if ((openIntegrationClient != null) && (openMetadataClient != null))
+        if (openMetadataClient != null)
         {
             integrationContext = new IntegrationContext(localServerName,
                                                          localServiceName,
@@ -213,7 +233,6 @@ public abstract class IntegrationContextManager implements OpenLineageListenerMa
                                                          openMetadataClient,
                                                          this.createEventClient(connectorId),
                                                          connectedAssetClient,
-                                                         openIntegrationClient,
                                                          this,
                                                          governanceConfiguration,
                                                          openGovernanceClient,

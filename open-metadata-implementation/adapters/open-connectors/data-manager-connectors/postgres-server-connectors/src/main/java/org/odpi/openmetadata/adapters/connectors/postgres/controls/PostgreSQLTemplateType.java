@@ -2,10 +2,10 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.adapters.connectors.postgres.controls;
 
-import org.odpi.openmetadata.frameworks.connectors.controls.TemplateType;
+import org.odpi.openmetadata.frameworks.openmetadata.specificationproperties.TemplateType;
 import org.odpi.openmetadata.frameworks.openmetadata.controls.PlaceholderProperty;
-import org.odpi.openmetadata.frameworks.openmetadata.controls.PlaceholderPropertyType;
-import org.odpi.openmetadata.frameworks.openmetadata.controls.ReplacementAttributeType;
+import org.odpi.openmetadata.frameworks.openmetadata.specificationproperties.PlaceholderPropertyType;
+import org.odpi.openmetadata.frameworks.openmetadata.specificationproperties.ReplacementAttributeType;
 import org.odpi.openmetadata.frameworks.openmetadata.controls.TemplateDefinition;
 import org.odpi.openmetadata.frameworks.openmetadata.refdata.DeployedImplementationTypeDefinition;
 
@@ -45,6 +45,24 @@ public enum PostgreSQLTemplateType implements TemplateDefinition
                              PostgresDeployedImplementationType.POSTGRESQL_DATABASE_SCHEMA,
                              PostgresPlaceholderProperty.getPostgresSchemaPlaceholderPropertyTypes(),
                              null),
+
+    POSTGRES_TABULAR_DATA_SET_TEMPLATE(PostgresDeployedImplementationType.POSTGRESQL_TABULAR_DATA_SET.getDeployedImplementationType(),
+                                       "Create a " + PostgresDeployedImplementationType.POSTGRESQL_TABULAR_DATA_SET.getAssociatedTypeName() + " asset.",
+                                       PostgresDeployedImplementationType.POSTGRESQL_TABULAR_DATA_SET.getAssociatedTypeName(),
+                                       false,
+                                       "1e76e109-61a5-42d8-a29b-86cb675fc750",
+                                       PostgresDeployedImplementationType.POSTGRESQL_TABULAR_DATA_SET,
+                                       PostgresPlaceholderProperty.getPostgresTablePlaceholderPropertyTypes(),
+                                       null),
+
+    POSTGRES_TABULAR_DATA_SET_COLLECTION_TEMPLATE(PostgresDeployedImplementationType.POSTGRESQL_TABULAR_DATA_SET_COLLECTION.getDeployedImplementationType(),
+                                       "Create a " + PostgresDeployedImplementationType.POSTGRESQL_TABULAR_DATA_SET_COLLECTION.getAssociatedTypeName() + " asset.",
+                                       PostgresDeployedImplementationType.POSTGRESQL_TABULAR_DATA_SET_COLLECTION.getAssociatedTypeName(),
+                                       false,
+                                       "3f9a0ab3-072c-4cb1-a14f-6e0492e00dd7",
+                                       PostgresDeployedImplementationType.POSTGRESQL_TABULAR_DATA_SET_COLLECTION,
+                                       PostgresPlaceholderProperty.getPostgresSchemaPlaceholderPropertyTypes(),
+                                       null),
     ;
 
 
@@ -160,7 +178,7 @@ public enum PostgreSQLTemplateType implements TemplateDefinition
     @Override
     public String getTemplateVersionIdentifier()
     {
-        return "V1.0";
+        return "6.0-SNAPSHOT";
     }
 
 
@@ -274,7 +292,7 @@ public enum PostgreSQLTemplateType implements TemplateDefinition
 
         templateType.setTemplateName(templateName);
         templateType.setTypeName(typeName);
-        templateType.setTemplateDescription(templateDescription);
+        templateType.setDescription(templateDescription);
         templateType.setRequired(required);
         templateType.setDefaultTemplateGUID(defaultTemplateGUID);
         templateType.setOtherPropertyValues(otherPropertyValues);

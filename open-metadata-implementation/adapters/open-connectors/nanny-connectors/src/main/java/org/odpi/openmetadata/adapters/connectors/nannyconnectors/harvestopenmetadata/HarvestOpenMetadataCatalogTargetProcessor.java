@@ -877,7 +877,7 @@ public class HarvestOpenMetadataCatalogTargetProcessor extends CatalogTargetProc
                     {
                         syncCertification(databaseConnection, elementHeader.getGUID(), relatedMetadataElement);
                     }
-                    else if (OpenMetadataType.ASSET_SCHEMA_TYPE_RELATIONSHIP.typeName.equals(relationshipType))
+                    else if (OpenMetadataType.SCHEMA_RELATIONSHIP.typeName.equals(relationshipType))
                     {
                         processAssetSchemaType(databaseConnection, elementHeader.getGUID(), elementQualifiedName, relatedMetadataElement);
                     }
@@ -2284,7 +2284,7 @@ public class HarvestOpenMetadataCatalogTargetProcessor extends CatalogTargetProc
     {
         if (classificationProperties instanceof GovernanceClassificationBase governanceClassification)
         {
-            return governanceClassification.getStatus();
+            return governanceClassification.getStatusIdentifier();
         }
         else
         {
@@ -4079,7 +4079,7 @@ public class HarvestOpenMetadataCatalogTargetProcessor extends CatalogTargetProc
                                                                                                                   methodName));
 
         addDateValueToRow(openMetadataRecord, HarvestOpenMetadataColumn.CREATION_TIME, propertyHelper.getDateProperty(connectorName,
-                                                                                                                      OpenMetadataProperty.START_DATE.name,
+                                                                                                                      OpenMetadataProperty.ACTUAL_START_DATE.name,
                                                                                                                       projectElement.getElementProperties(),
                                                                                                                       methodName));
 
@@ -4103,7 +4103,7 @@ public class HarvestOpenMetadataCatalogTargetProcessor extends CatalogTargetProc
                                                                                                             methodName));
 
         addDateValueToRow(openMetadataRecord, HarvestOpenMetadataColumn.DUE_TIME, propertyHelper.getDateProperty(connectorName,
-                                                                                                                 OpenMetadataProperty.PLANNED_END_DATE.name,
+                                                                                                                 OpenMetadataProperty.PLANNED_COMPLETION_DATE.name,
                                                                                                                  projectElement.getElementProperties(),
                                                                                                                  methodName));
 
@@ -4485,7 +4485,7 @@ public class HarvestOpenMetadataCatalogTargetProcessor extends CatalogTargetProc
                                                                                                                    digitalProductProperties,
                                                                                                                    methodName));
         addValueToRow(openMetadataRecord, HarvestOpenMetadataColumn.CURRENT_VERSION, propertyHelper.getStringProperty(connectorName,
-                                                                                                                   OpenMetadataProperty.CURRENT_VERSION.name,
+                                                                                                                   OpenMetadataProperty.VERSION_IDENTIFIER.name,
                                                                                                                    digitalProductProperties,
                                                                                                                    methodName));
         addDateValueToRow(openMetadataRecord, HarvestOpenMetadataColumn.NEXT_VERSION, propertyHelper.getDateProperty(connectorName,

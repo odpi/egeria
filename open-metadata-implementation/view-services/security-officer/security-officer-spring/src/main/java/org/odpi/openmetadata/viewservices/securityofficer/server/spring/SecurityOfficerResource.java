@@ -4,6 +4,10 @@ package org.odpi.openmetadata.viewservices.securityofficer.server.spring;
 
 import io.swagger.v3.oas.annotations.ExternalDocumentation;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.enums.SecuritySchemeIn;
+import io.swagger.v3.oas.annotations.enums.SecuritySchemeType;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import io.swagger.v3.oas.annotations.security.SecurityScheme;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.odpi.openmetadata.commonservices.ffdc.rest.DeleteRelationshipRequestBody;
 import org.odpi.openmetadata.commonservices.ffdc.rest.NewRelationshipRequestBody;
@@ -17,7 +21,13 @@ import org.springframework.web.bind.annotation.*;
 = */
 @RestController
 @RequestMapping("/servers/{serverName}/api/open-metadata/security-officer")
-
+@SecurityScheme(
+        name = "BearerAuthorization",
+        type = SecuritySchemeType.HTTP,
+        bearerFormat = "JWT",
+        scheme = "bearer",
+        in = SecuritySchemeIn.HEADER
+)
 @Tag(name="API: Security Officer OMVS", description="The Security Officer OMVS provides APIs for supporting a Security Officer as they lead the security governance program.  This builds on the capabilities of the Governance Officer OMVS.",
         externalDocs=@ExternalDocumentation(description="Further Information",
                 url="https://egeria-project.org/services/omvs/security-officer/overview/"))
@@ -49,6 +59,8 @@ public class SecurityOfficerResource
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     @PostMapping(path = "/governance-zones/{governanceZoneGUID}/governance-zone-hierarchies/{nestedGovernanceZoneGUID}/attach")
+    @SecurityRequirement(name = "BearerAuthorization")
+
     @Operation(summary="linkGovernanceZones",
             description="Attach a nested governance zone to a broader governance zone definition.",
             externalDocs=@ExternalDocumentation(description="Further Information",
@@ -81,6 +93,8 @@ public class SecurityOfficerResource
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     @PostMapping(path = "/governance-zones/{parentGovernanceZoneGUID}/governance-zone-hierarchies/{memberDataFieldGUID}/detach")
+    @SecurityRequirement(name = "BearerAuthorization")
+
     @Operation(summary="detachGovernanceZones",
             description="Detach a nested governance zone from a broader governance zone definition.",
             externalDocs=@ExternalDocumentation(description="Further Information",

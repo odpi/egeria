@@ -689,7 +689,7 @@ public class OSSUnityCatalogInsideCatalogSyncTables extends OSSUnityCatalogInsid
 
         newElementOptions.setParentGUID(tableGUID);
         newElementOptions.setParentAtEnd1(true);
-        newElementOptions.setParentRelationshipTypeName( OpenMetadataType.ASSET_SCHEMA_TYPE_RELATIONSHIP.typeName);
+        newElementOptions.setParentRelationshipTypeName( OpenMetadataType.SCHEMA_RELATIONSHIP.typeName);
 
         /*
          * Create the root schema type.

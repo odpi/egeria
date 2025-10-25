@@ -14,6 +14,8 @@ import java.util.List;
  */
 public class ProductDefinitionBean implements ProductDefinition
 {
+    private final String                          typeName;
+    private final ProductDefinition[]             productGroups;
     private final String                          productName;
     private final String                          identifier;
     private final ProductFolderDefinition         parent;
@@ -34,6 +36,8 @@ public class ProductDefinitionBean implements ProductDefinition
     /**
      * Construct a product definition.
      *
+     * @param typeName name of the type to use - eg DigitalProduct or DigitalProductFamily
+     * @param productGroups list of groups that this product belongs to (can be null)
      * @param productName name of the product
      * @param identifier product identifier
      * @param parent folder/product group
@@ -41,7 +45,7 @@ public class ProductDefinitionBean implements ProductDefinition
      * @param description description
      * @param category category of product
      * @param license license
-     * @param community optional community
+     * @param community community
      * @param subscriptionTypes list of subscription types offered
      * @param dataSpecTableName logical name of the tabular data set
      * @param dataSpecIdentifiers list of data fields that form the unique identifier
@@ -49,21 +53,25 @@ public class ProductDefinitionBean implements ProductDefinition
      * @param connectorProvider connector provider class (or null)
      * @param catalogTargetName catalog target name for the refresh process
      */
-    public ProductDefinitionBean(String productName,
-                                 String identifier,
-                                 ProductFolderDefinition parent,
-                                 String displayName,
-                                 String description,
-                                 String category,
-                                 ProductGovernanceDefinition license,
-                                 ProductCommunityDefinition community,
+    public ProductDefinitionBean(String                          typeName,
+                                 ProductDefinition[]             productGroups,
+                                 String                          productName,
+                                 String                          identifier,
+                                 ProductFolderDefinition         parent,
+                                 String                          displayName,
+                                 String                          description,
+                                 String                          category,
+                                 ProductGovernanceDefinition     license,
+                                 ProductCommunityDefinition      community,
                                  ProductSubscriptionDefinition[] subscriptionTypes,
-                                 String dataSpecTableName,
-                                 ProductDataFieldDefinition[] dataSpecIdentifiers,
-                                 ProductDataFieldDefinition[] dataSpecFields,
-                                 ConnectorProvider connectorProvider,
-                                 String catalogTargetName)
+                                 String                          dataSpecTableName,
+                                 ProductDataFieldDefinition[]    dataSpecIdentifiers,
+                                 ProductDataFieldDefinition[]    dataSpecFields,
+                                 ConnectorProvider               connectorProvider,
+                                 String                          catalogTargetName)
     {
+        this.typeName            = typeName;
+        this.productGroups       = productGroups;
         this.productName         = productName;
         this.identifier          = identifier;
         this.parent              = parent;
@@ -84,7 +92,7 @@ public class ProductDefinitionBean implements ProductDefinition
 
 
     /**
-     * Returns the unique name for the subject area entity.
+     * Returns the unique name for the product entity.
      *
      * @return qualified name
      */
@@ -92,6 +100,35 @@ public class ProductDefinitionBean implements ProductDefinition
     public String getQualifiedName()
     {
         return "OpenMetadataProductCatalog::DigitalProduct::" + identifier + "::" + displayName;
+    }
+
+
+    /**
+     * Returns the unique name for the collection type.
+     *
+     * @return type name
+     */
+    @Override
+    public String getTypeName()
+    {
+        return typeName;
+    }
+
+
+    /**
+     * Return the list of product groups (if any) that this product belongs to.
+     *
+     * @return list
+     */
+    @Override
+    public List<ProductDefinition> getProductFamilies()
+    {
+        if (productGroups != null)
+        {
+            return new ArrayList<>(Arrays.asList(productGroups));
+        }
+
+        return null;
     }
 
 
@@ -120,12 +157,12 @@ public class ProductDefinitionBean implements ProductDefinition
 
 
     /**
-     * Return the entry of the parent folder - null for top level.
+     * Return the entry of the parent folder - null for top level and products that are part of groups.
      *
      * @return enum
      */
     @Override
-    public ProductFolderDefinition getParent()
+    public ProductFolderDefinition getFolder()
     {
         return parent;
     }
@@ -215,6 +252,7 @@ public class ProductDefinitionBean implements ProductDefinition
         {
             return new ArrayList<>(Arrays.asList(subscriptionTypes));
         }
+
         return null;
     }
 
@@ -297,7 +335,7 @@ public class ProductDefinitionBean implements ProductDefinition
     @Override
     public String getVersionIdentifier()
     {
-        return "V1.0";
+        return "6.0-SNAPSHOT";
     }
 
 

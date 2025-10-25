@@ -6,6 +6,7 @@ package org.odpi.openmetadata.samples.governanceactions.clinicaltrials;
 import org.odpi.openmetadata.frameworks.auditlog.messagesets.AuditLogMessageDefinition;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.*;
 import org.odpi.openmetadata.frameworks.opengovernance.properties.*;
+import org.odpi.openmetadata.frameworks.openmetadata.enums.CompletionStatus;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.RelatedMetadataElement;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.RelatedMetadataElementList;
 import org.odpi.openmetadata.frameworks.openmetadata.refdata.AssignmentType;
@@ -410,7 +411,7 @@ public class CocoClinicalTrialSetUpService extends CocoClinicalTrialBaseService
 
         RelatedMetadataElementList relatedMetadataElementList = governanceContext.getOpenMetadataStore().getRelatedMetadataElements(toplevelInformationSupplyChainGUID,
                                                                                                                                     1,
-                                                                                                                                    OpenMetadataType.INFORMATION_SUPPLY_CHAIN_COMPOSITION_RELATIONSHIP.typeName,
+                                                                                                                                    OpenMetadataType.COLLECTION_MEMBERSHIP_RELATIONSHIP.typeName,
                                                                                                                                     0,
                                                                                                                                     governanceContext.getMaxPageSize());
 

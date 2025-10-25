@@ -174,33 +174,27 @@ public class OpenMetadataTypesArchive2_9
      */
     private void update0056AssetManagers()
     {
-        this.archiveBuilder.addClassificationDef(getUserProfileManagerClassification());
-        this.archiveBuilder.addClassificationDef(getUserAccessDirectoryClassification());
-        this.archiveBuilder.addClassificationDef(getMasterDataManagerClassification());
+        this.archiveBuilder.addEntityDef(getUserProfileManager());
+        this.archiveBuilder.addEntityDef(getUserAccessDirectory());
+        this.archiveBuilder.addEntityDef(getMasterDataManager());
     }
 
-    private ClassificationDef getUserProfileManagerClassification()
+    private EntityDef getUserProfileManager()
     {
-        return archiveHelper.getClassificationDef(OpenMetadataType.USER_PROFILE_MANAGER,
-                                                  this.archiveBuilder.getClassificationDef(OpenMetadataType.RESOURCE_MANAGER_CLASSIFICATION.typeName),
-                                                  this.archiveBuilder.getEntityDef(OpenMetadataType.REFERENCEABLE.typeName),
-                                                  false);
+        return archiveHelper.getDefaultEntityDef(OpenMetadataType.USER_PROFILE_MANAGER,
+                                                  this.archiveBuilder.getEntityDef(OpenMetadataType.RESOURCE_MANAGER.typeName));
     }
 
-    private ClassificationDef getUserAccessDirectoryClassification()
+    private EntityDef getUserAccessDirectory()
     {
-        return archiveHelper.getClassificationDef(OpenMetadataType.USER_ACCESS_DIRECTORY,
-                                                  this.archiveBuilder.getClassificationDef(OpenMetadataType.RESOURCE_MANAGER_CLASSIFICATION.typeName),
-                                                  this.archiveBuilder.getEntityDef(OpenMetadataType.REFERENCEABLE.typeName),
-                                                  false);
+        return archiveHelper.getDefaultEntityDef(OpenMetadataType.USER_ACCESS_DIRECTORY,
+                                                  this.archiveBuilder.getEntityDef(OpenMetadataType.RESOURCE_MANAGER.typeName));
     }
 
-    private ClassificationDef getMasterDataManagerClassification()
+    private EntityDef getMasterDataManager()
     {
-        return archiveHelper.getClassificationDef(OpenMetadataType.MASTER_DATA_MANAGER,
-                                                  this.archiveBuilder.getClassificationDef(OpenMetadataType.RESOURCE_MANAGER_CLASSIFICATION.typeName),
-                                                  this.archiveBuilder.getEntityDef(OpenMetadataType.REFERENCEABLE.typeName),
-                                                  false);
+        return archiveHelper.getDefaultEntityDef(OpenMetadataType.MASTER_DATA_MANAGER,
+                                                  this.archiveBuilder.getEntityDef(OpenMetadataType.RESOURCE_MANAGER.typeName));
     }
 
 

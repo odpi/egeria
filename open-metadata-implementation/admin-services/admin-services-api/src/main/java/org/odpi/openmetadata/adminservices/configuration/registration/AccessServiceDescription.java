@@ -35,18 +35,6 @@ public enum AccessServiceDescription implements Serializable
                                       null),
 
     /**
-     * Provides operational support for the integration connectors.
-     */
-    OIF_METADATA_MANAGEMENT          (186,
-                                      ComponentDevelopmentStatus.STABLE,
-                                      "Open Integration Service",
-                                      "open-integration-service",
-                                      "Provides operational support for the integration connectors.",
-                                      "https://egeria-project.org/services/oif-metadata-management",
-                                      null),
-
-
-    /**
      * Provides generic open metadata retrieval and management services for the Open Frameworks and Open Metadata Access Services (OMASs).
      */
     OMF_METADATA_MANAGEMENT     (188,

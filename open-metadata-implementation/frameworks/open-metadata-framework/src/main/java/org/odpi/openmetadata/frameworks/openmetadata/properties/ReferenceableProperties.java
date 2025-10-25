@@ -19,22 +19,20 @@ import org.odpi.openmetadata.frameworks.openmetadata.properties.datadictionaries
 import org.odpi.openmetadata.frameworks.openmetadata.properties.datadictionaries.DataStructureProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.dataprocessing.DataProcessingActionProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.dataprocessing.DataProcessingDescriptionProperties;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.digitalbusiness.BusinessCapabilityProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.designmodels.DesignModelElementProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.externalidentifiers.ExternalIdProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.externalreferences.ExternalReferenceProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.feedback.CommentProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.feedback.NoteLogProperties;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.feedback.NoteProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.glossaries.GlossaryTermProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.governance.GovernanceDefinitionProperties;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.informationsupplychains.InformationSupplyChainProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.locations.LocationProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.projects.ProjectProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.propertyfacets.PropertyFacetProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.schema.SchemaElementProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.softwarecapabilities.SoftwareCapabilityProperties;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.solutions.SolutionBlueprintProperties;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.solutions.SolutionComponentProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.validvalues.ValidValueDefinitionProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 
 import java.util.Map;
 import java.util.Objects;
@@ -56,7 +54,6 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
         {
                 @JsonSubTypes.Type(value = ActorProperties.class, name = "ActorProperties"),
                 @JsonSubTypes.Type(value = AssetProperties.class, name = "AssetProperties"),
-                @JsonSubTypes.Type(value = BusinessCapabilityProperties.class, name = "BusinessCapabilityProperties"),
                 @JsonSubTypes.Type(value = CollectionProperties.class, name = "CollectionProperties"),
                 @JsonSubTypes.Type(value = CommentProperties.class, name = "CommentProperties"),
                 @JsonSubTypes.Type(value = CommunityProperties.class, name = "CommunityProperties"),
@@ -70,21 +67,19 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
                 @JsonSubTypes.Type(value = DataProcessingActionProperties.class, name = "DataProcessingActionProperties"),
                 @JsonSubTypes.Type(value = DataProcessingDescriptionProperties.class, name = "DataProcessingDescriptionProperties"),
                 @JsonSubTypes.Type(value = DataStructureProperties.class, name = "DataStructureProperties"),
+                @JsonSubTypes.Type(value = DesignModelElementProperties.class, name = "DesignModelElementProperties"),
                 @JsonSubTypes.Type(value = EndpointProperties.class, name = "EndpointProperties"),
                 @JsonSubTypes.Type(value = ExternalIdProperties.class, name = "ExternalIdProperties"),
                 @JsonSubTypes.Type(value = ExternalReferenceProperties.class, name = "ExternalReferenceProperties"),
                 @JsonSubTypes.Type(value = GlossaryTermProperties.class, name = "GlossaryTermProperties"),
                 @JsonSubTypes.Type(value = GovernanceDefinitionProperties.class, name = "GovernanceDefinitionProperties"),
-                @JsonSubTypes.Type(value = InformationSupplyChainProperties.class, name = "InformationSupplyChainProperties"),
                 @JsonSubTypes.Type(value = LocationProperties.class, name = "LocationProperties"),
-                @JsonSubTypes.Type(value = NoteProperties.class, name = "NoteProperties"),
                 @JsonSubTypes.Type(value = NoteLogProperties.class, name = "NoteLogProperties"),
                 @JsonSubTypes.Type(value = PortProperties.class, name = "PortProperties"),
                 @JsonSubTypes.Type(value = ProjectProperties.class, name = "ProjectProperties"),
+                @JsonSubTypes.Type(value = PropertyFacetProperties.class, name = "PropertyFacetProperties"),
                 @JsonSubTypes.Type(value = SchemaElementProperties.class, name = "SchemaElementProperties"),
                 @JsonSubTypes.Type(value = SoftwareCapabilityProperties.class, name = "SoftwareCapabilityProperties"),
-                @JsonSubTypes.Type(value = SolutionBlueprintProperties.class, name = "SolutionBlueprintProperties"),
-                @JsonSubTypes.Type(value = SolutionComponentProperties.class, name = "SolutionComponentProperties"),
                 @JsonSubTypes.Type(value = ValidValueDefinitionProperties.class, name = "ValidValueDefinitionProperties"),
         })
 public class ReferenceableProperties extends OpenMetadataRootProperties
@@ -95,6 +90,7 @@ public class ReferenceableProperties extends OpenMetadataRootProperties
     private String              description          = null;
     private String              versionIdentifier    = null;
     private String              category             = null;
+    private String              url                  = null;
     private Map<String, String> additionalProperties = null;
 
 
@@ -104,6 +100,7 @@ public class ReferenceableProperties extends OpenMetadataRootProperties
     public ReferenceableProperties()
     {
         super();
+        super.setTypeName(OpenMetadataType.REFERENCEABLE.typeName);
     }
 
 
@@ -124,6 +121,7 @@ public class ReferenceableProperties extends OpenMetadataRootProperties
             description          = template.getDescription();
             versionIdentifier    = template.getVersionIdentifier();
             category             = template.getCategory();
+            url                  = template.getURL();
             additionalProperties = template.getAdditionalProperties();
         }
     }
@@ -173,7 +171,6 @@ public class ReferenceableProperties extends OpenMetadataRootProperties
     {
         this.identifier = identifier;
     }
-
 
 
     /**
@@ -268,6 +265,25 @@ public class ReferenceableProperties extends OpenMetadataRootProperties
 
 
     /**
+     * Return the URL used to retrieve the resource that this external reference represents.
+     *
+     * @return String URI
+     */
+    public String getURL() { return url; }
+
+
+    /**
+     * Set up the URI used to retrieve the resource that this external reference represents.
+     *
+     * @param uri String URI
+     */
+    public void setURL(String uri)
+    {
+        this.url = uri;
+    }
+
+
+    /**
      * Set up additional properties.
      *
      * @param additionalProperties Additional properties object
@@ -304,6 +320,7 @@ public class ReferenceableProperties extends OpenMetadataRootProperties
                 ", description='" + description + '\'' +
                 ", versionIdentifier='" + versionIdentifier + '\'' +
                 ", category='" + category + '\'' +
+                ", url='" + url + '\'' +
                 ", additionalProperties=" + additionalProperties +
                 "} " + super.toString();
     }
@@ -328,6 +345,7 @@ public class ReferenceableProperties extends OpenMetadataRootProperties
                 Objects.equals(description, that.description) &&
                 Objects.equals(versionIdentifier, that.versionIdentifier) &&
                 Objects.equals(category, that.category) &&
+                Objects.equals(url, that.url) &&
                 Objects.equals(additionalProperties, that.additionalProperties);
     }
 
@@ -340,6 +358,6 @@ public class ReferenceableProperties extends OpenMetadataRootProperties
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), qualifiedName, identifier, displayName, description, versionIdentifier, category, additionalProperties);
+        return Objects.hash(super.hashCode(), qualifiedName, identifier, displayName, description, versionIdentifier, category, url, additionalProperties);
     }
 }

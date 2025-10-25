@@ -4,8 +4,6 @@ package org.odpi.openmetadata.frameworks.openmetadata.properties.validvalues;
 
 import com.fasterxml.jackson.annotation.*;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.ReferenceableProperties;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.ValidMetadataValue;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.locations.AdjacentLocationProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 
 import java.util.Objects;
@@ -25,7 +23,8 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonSubTypes(
         {
                 @JsonSubTypes.Type(value = ReferenceDataValueProperties.class, name = "ReferenceDataValueProperties"),
-                @JsonSubTypes.Type(value = ValidMetadataValue.class, name = "ValidMetadataValue"),
+                @JsonSubTypes.Type(value = SpecificationPropertyValueProperties.class, name = "SpecificationPropertyValueProperties"),
+                @JsonSubTypes.Type(value = ValidMetadataValueProperties.class, name = "ValidMetadataValue"),
         })
 public class ValidValueDefinitionProperties extends ReferenceableProperties
 {

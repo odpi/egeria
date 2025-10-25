@@ -8,6 +8,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.KeyPattern;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.ReferenceableProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 
 import java.util.Date;
 import java.util.Objects;
@@ -39,6 +40,7 @@ public class ExternalIdProperties extends ReferenceableProperties
     public ExternalIdProperties()
     {
         super();
+        super.setTypeName(OpenMetadataType.EXTERNAL_ID.typeName);
     }
 
 

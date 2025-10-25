@@ -7,7 +7,7 @@ import org.odpi.openmetadata.frameworks.auditlog.messagesets.ExceptionMessageSet
 
 /**
  * The DocStoreErrorCode is used to define first failure data capture (FFDC) for errors that occur when working with
- * the unencrypted file based doc store.  It is used in conjunction with all Exceptions, both Checked and Runtime (unchecked).
+ * the clear text file based doc store.  It is used in conjunction with all Exceptions, both Checked and Runtime (unchecked).
  * The 5 fields in the enum are:
  * <ul>
  *     <li>HTTP Error Code for translating between REST and JAVA - Typically the numbers used are:</li>

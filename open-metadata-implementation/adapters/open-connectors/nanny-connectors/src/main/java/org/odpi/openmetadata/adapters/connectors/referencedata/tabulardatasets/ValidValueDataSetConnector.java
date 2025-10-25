@@ -7,9 +7,10 @@ import org.odpi.openmetadata.adapters.connectors.referencedata.tabulardatasets.c
 import org.odpi.openmetadata.adapters.connectors.referencedata.tabulardatasets.ffdc.ReferenceDataAuditCode;
 import org.odpi.openmetadata.adapters.connectors.referencedata.tabulardatasets.ffdc.ReferenceDataErrorCode;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLoggingComponent;
-import org.odpi.openmetadata.frameworks.connectors.ReadableTabularDataSource;
-import org.odpi.openmetadata.frameworks.connectors.TabularColumnDescription;
-import org.odpi.openmetadata.frameworks.connectors.WritableTabularDataSource;
+import org.odpi.openmetadata.frameworks.connectors.tabulardatasets.ReadableTabularDataSource;
+import org.odpi.openmetadata.frameworks.connectors.tabulardatasets.TabularColumnDescription;
+import org.odpi.openmetadata.frameworks.connectors.tabulardatasets.TabularDataCollection;
+import org.odpi.openmetadata.frameworks.connectors.tabulardatasets.WritableTabularDataSource;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.OpenMetadataRootElement;
@@ -31,14 +32,18 @@ import java.util.Map;
  */
 public class ValidValueDataSetConnector extends ReferenceDataSetConnectorBase implements AuditLoggingComponent,
                                                                                          ReadableTabularDataSource,
-                                                                                         WritableTabularDataSource
+                                                                                         WritableTabularDataSource,
+                                                                                         TabularDataCollection
 {
     private static final String myConnectorName = "ValidValueDataSetConnector";
     private static final Logger log = LoggerFactory.getLogger(ValidValueDataSetConnector.class);
 
     private final Map<Long, RelatedMetadataElementSummary> records                    = new HashMap<>();
     private String                                         validValueSetQualifiedName = null;
+    private String                                         tableName = null;
+    private String                                         tableDescription = null;
     protected String                                       validValueSetGUID = null;
+
 
     /**
      * Default constructor
@@ -107,6 +112,22 @@ public class ValidValueDataSetConnector extends ReferenceDataSetConnectorBase im
             if (validValueSet.getProperties() instanceof ValidValueDefinitionProperties validValueDefinitionProperties)
             {
                 validValueSetQualifiedName = validValueDefinitionProperties.getQualifiedName();
+                tableDescription = validValueDefinitionProperties.getDescription();
+
+                if (tableName == null)
+                {
+                    tableName = validValueDefinitionProperties.getPreferredValue();
+
+                    if (tableName == null)
+                    {
+                        tableName = validValueDefinitionProperties.getDisplayName();
+                    }
+
+                    if (tableName == null)
+                    {
+                        tableName = validValueDefinitionProperties.getQualifiedName().replaceAll("::", " ").replaceAll("-", " ");
+                    }
+                }
             }
             else
             {
@@ -172,6 +193,49 @@ public class ValidValueDataSetConnector extends ReferenceDataSetConnectorBase im
     public long getRecordCount()
     {
         return records.size();
+    }
+
+
+    /**
+     * Return the canonical table name for this data source.  Each word in the name should be capitalized, with spaces
+     * between the words to allow translation between different naming conventions.
+     *
+     * @return string
+     * @throws ConnectorCheckedException there is a problem accessing the data
+     */
+    @Override
+    public String getTableName() throws ConnectorCheckedException
+    {
+        return tableName;
+    }
+
+
+
+    /**
+     * Return the description for this data source.
+     *
+     * @return string
+     */
+    @Override
+    public String getTableDescription()
+    {
+        return tableDescription;
+    }
+
+
+    /**
+     * Set up the canonical table name for this data source.  Each word in the name should be capitalized, with spaces
+     * between the words to allow translation between different naming conventions.
+     *
+     * @param tableName  string
+     * @param tableDescription optional description
+     */
+    @Override
+    public void setTableName(String tableName,
+                             String tableDescription)
+    {
+        this.tableName = tableName;
+        this.tableDescription = tableDescription;
     }
 
 

@@ -4,12 +4,13 @@ package org.odpi.openmetadata.adapters.connectors.governanceactions.provisioning
 
 import org.odpi.openmetadata.adapters.connectors.governanceactions.ffdc.GovernanceActionConnectorsAuditCode;
 import org.odpi.openmetadata.frameworks.auditlog.messagesets.AuditLogMessageDefinition;
-import org.odpi.openmetadata.frameworks.connectors.ReadableTabularDataSource;
-import org.odpi.openmetadata.frameworks.connectors.WritableTabularDataSource;
+import org.odpi.openmetadata.frameworks.connectors.tabulardatasets.ReadableTabularDataSource;
+import org.odpi.openmetadata.frameworks.connectors.tabulardatasets.TabularDataCollection;
+import org.odpi.openmetadata.frameworks.connectors.tabulardatasets.WritableTabularDataSource;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
 import org.odpi.openmetadata.frameworks.opengovernance.GeneralGovernanceActionService;
 import org.odpi.openmetadata.frameworks.opengovernance.properties.ActionTargetElement;
-import org.odpi.openmetadata.frameworks.opengovernance.properties.CompletionStatus;
+import org.odpi.openmetadata.frameworks.openmetadata.enums.CompletionStatus;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.OMFCheckedExceptionBase;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.OpenMetadataElement;
@@ -133,6 +134,12 @@ public class ProvisionTabularDataSetGovernanceActionConnector extends GeneralGov
 
                 long sourceRecordCount = sourceConnector.getRecordCount();
                 long destinationRecordCount = destinationConnector.getRecordCount();
+
+                if (destinationConnector instanceof TabularDataCollection tabularDataCollection)
+                {
+                    tabularDataCollection.setTableName(sourceConnector.getTableName(),
+                                                       sourceConnector.getTableDescription());
+                }
 
                 destinationConnector.setColumnDescriptions(sourceConnector.getColumnDescriptions());
 

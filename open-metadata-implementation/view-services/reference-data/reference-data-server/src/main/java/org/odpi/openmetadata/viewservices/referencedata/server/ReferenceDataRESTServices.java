@@ -381,13 +381,13 @@ public class ReferenceDataRESTServices extends TokenController
 
             if (requestBody != null)
             {
-                if (requestBody.getProperties() instanceof ValidValueAssignmentProperties validValueAssignmentProperties)
+                if (requestBody.getProperties() instanceof ValidValuesAssignmentProperties validValuesAssignmentProperties)
                 {
                     handler.linkValidValuesAssignment(userId,
                                                       elementGUID,
                                                       validValueDefinitionGUID,
                                                       requestBody,
-                                                      validValueAssignmentProperties);
+                                                      validValuesAssignmentProperties);
                 }
                 else if (requestBody.getProperties() == null)
                 {
@@ -399,7 +399,7 @@ public class ReferenceDataRESTServices extends TokenController
                 }
                 else
                 {
-                    restExceptionHandler.handleInvalidPropertiesObject(ValidValueAssignmentProperties.class.getName(), methodName);
+                    restExceptionHandler.handleInvalidPropertiesObject(ValidValuesAssignmentProperties.class.getName(), methodName);
                 }
             }
             else
@@ -508,13 +508,13 @@ public class ReferenceDataRESTServices extends TokenController
 
             if (requestBody != null)
             {
-                if (requestBody.getProperties() instanceof ValidValueAssignmentProperties validValueAssignmentProperties)
+                if (requestBody.getProperties() instanceof ValidValuesAssignmentProperties validValuesAssignmentProperties)
                 {
                     handler.linkValidValuesAssignment(userId,
                                                       elementGUID,
                                                       validValueDefinitionGUID,
                                                       requestBody,
-                                                      validValueAssignmentProperties);
+                                                      validValuesAssignmentProperties);
                 }
                 else if (requestBody.getProperties() == null)
                 {
@@ -526,7 +526,7 @@ public class ReferenceDataRESTServices extends TokenController
                 }
                 else
                 {
-                    restExceptionHandler.handleInvalidPropertiesObject(ValidValueAssignmentProperties.class.getName(), methodName);
+                    restExceptionHandler.handleInvalidPropertiesObject(ValidValuesAssignmentProperties.class.getName(), methodName);
                 }
             }
             else

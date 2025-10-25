@@ -9,14 +9,14 @@ import org.odpi.openmetadata.frameworks.connectors.Connector;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
 import org.odpi.openmetadata.frameworks.opengovernance.controls.ActionTarget;
 import org.odpi.openmetadata.frameworks.opengovernance.properties.ActionTargetElement;
-import org.odpi.openmetadata.frameworks.opengovernance.properties.CompletionStatus;
+import org.odpi.openmetadata.frameworks.openmetadata.enums.CompletionStatus;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.OpenMetadataRootElement;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.RelatedMetadataElementSummary;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.schema.AttributeForSchemaProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.schema.SchemaAttributeProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.surveyreports.QualityAnnotationProperties;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.surveyreports.RequestForActionAnnotationProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.surveyreports.RequestForActionProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.search.ElementProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
@@ -408,7 +408,7 @@ public class CocoClinicalTrialCertifyWeeklyMeasurementsService extends SurveyAct
                 }
                 else
                 {
-                    RequestForActionAnnotationProperties requestForActionAnnotation = new RequestForActionAnnotationProperties();
+                    RequestForActionProperties requestForActionAnnotation = new RequestForActionProperties();
 
                     super.setUpAnnotation(requestForActionAnnotation, CocoClinicalTrialsAnnotationType.FAILED_TO_PASS_QUALITY_GATE);
 

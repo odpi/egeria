@@ -5,7 +5,7 @@ package org.odpi.openmetadata.adapters.connectors.egeriainfrastructure.control;
 
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 import org.odpi.openmetadata.frameworks.opensurvey.controls.AnalysisStep;
-import org.odpi.openmetadata.frameworks.opensurvey.controls.AnnotationTypeType;
+import org.odpi.openmetadata.frameworks.openmetadata.specificationproperties.AnnotationTypeType;
 import org.odpi.openmetadata.frameworks.opensurvey.measurements.SurveyMetric;
 
 import java.util.ArrayList;
@@ -161,7 +161,7 @@ public enum OMAGServerPlatformAnnotationType
         annotationTypeType.setName(name);
         annotationTypeType.setOpenMetadataTypeName(openMetadataTypeName);
         annotationTypeType.setAnalysisStepName(AnalysisStep.PROFILING_ASSOCIATED_RESOURCES.getName());
-        annotationTypeType.setSummary(summary);
+        annotationTypeType.setDescription(summary);
         annotationTypeType.setExplanation(explanation);
 
         if (metrics != null)

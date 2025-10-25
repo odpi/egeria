@@ -289,11 +289,6 @@ public enum OpenMetadataProperty
     CLASSIFICATION_NAME("classificationName", DataType.STRING, DataType.STRING.getName(), "The name of the associated classification.", "Ownership", "ef2169c4-c8f3-48b0-9051-cfb2bbb1e5f2"),
 
     /**
-     * Name of the property in the classification where this value is used.
-     */
-    CLASSIFICATION_PROPERTY_NAME("classificationPropertyName", DataType.STRING, DataType.STRING.getName(), "Name of the property in the classification where this value is used.", "owner", "5471ec69-a23d-4d89-b134-b30a8a01f435"),
-
-    /**
      * If an attached entity or relationship to it changed, this is its unique identifier.
      */
     ATTACHMENT_GUID("attachmentGUID", DataType.STRING, DataType.STRING.getName(), "If an attached entity or relationship to it changed, this is its unique identifier.", null, "74d62753-fd42-47c5-a804-29334f394728"),
@@ -317,16 +312,6 @@ public enum OpenMetadataProperty
      * The user identifier for the person/system executing the request.
      */
     USER_ID("userId", DataType.STRING, DataType.STRING.getName(), "The user identifier for the person/system executing the request.", null, "c65a21dc-d1ae-4a8f-ba33-58ec401c1b42"),
-
-    /**
-     * The unique identifier of the engine action that initiated the governance service that created this element.
-     */
-    ENGINE_ACTION_GUID("engineActionGUID", DataType.STRING, DataType.STRING.getName(), "The unique identifier of the engine action that initiated the governance service that created this element.", null, "519cf063-9386-42e5-88dd-c5baab234df6"),
-
-    /**
-     * The unique identifier of the associated asset.
-     */
-    ASSET_GUID("assetGUID", DataType.STRING, DataType.STRING.getName(), "The unique identifier of the associated asset.", null, "fd4b6779-9582-4cc2-885e-72e44445ff04"),
 
     /**
      * Description of the activity.
@@ -539,7 +524,7 @@ public enum OpenMetadataProperty
     /**
      * Usage and lifecycle for this connection between the concept bead and the link.
      */
-    DECORATION("decoration", DataType.STRING, ConceptModelDecoration.getOpenTypeName(), "Usage and lifecycle for this connection between the concept bead and the link.", ConceptModelDecoration.AGGREGATION.getName(), "3f986ca0-c8f6-41b7-9693-53d4d228de3e"),
+    DECORATION("decoration", DataType.STRING, RelationshipDecoration.getOpenTypeName(), "Usage and lifecycle for this connection between the concept bead and the link.", RelationshipDecoration.AGGREGATION.getName(), "3f986ca0-c8f6-41b7-9693-53d4d228de3e"),
 
     /**
      * List of properties in the data class that should be used in the match processing.
@@ -562,9 +547,10 @@ public enum OpenMetadataProperty
     MATCH_THRESHOLD("matchThreshold", DataType.INT, DataType.INT.getName(), "Percentage of matching data values that a data resource is expected to achieve to be assigned this data class.", null, "d1257da4-d04f-4ef6-8c73-40083f359044"),
 
     /**
-     * Technical name (no spaces) that can be used in artifact generation.
+     * Each word in the name should be capitalized, with spaces
+     * between the words to allow translation between different naming conventions.
      */
-    TECHNICAL_NAME("technicalName", DataType.STRING, DataType.STRING.getName(), "Technical name (no spaces) that can be used in artifact generation.", null, "fce3a665-be7e-45ec-ab08-6fcbd90f8ea0"),
+    CANONICAL_NAME("canonicalName", DataType.STRING, DataType.STRING.getName(), "Each word in the name should be capitalized, with spaces between the words to allow translation between different naming conventions.", null, "fce3a665-be7e-45ec-ab08-6fcbd90f8ea0"),
 
     /**
      * Initial value for the attribute (overriding the default value of its type.
@@ -708,11 +694,6 @@ public enum OpenMetadataProperty
     START_DATE("startDate", DataType.DATE, DataType.DATE.getName(), "Date/time that work started on this element.", null, "e3e374cc-0f9d-45f6-ae74-7d7a438b17bf"),
 
     /**
-     * Date/time that work is expected to be complete for this element.
-     */
-    PLANNED_END_DATE("plannedEndDate", DataType.DATE, DataType.DATE.getName(), "Date/time that work is expected to be complete for this element.", null, "330ae312-1e88-4c7b-810e-4b4a50e540e8"),
-
-    /**
      * An example of the described concept, element or value.
      */
     EXAMPLE("example", DataType.STRING, DataType.STRING.getName(), "An example of the described concept, element or value.", null, "b207bc5c-b5b5-43f1-94f8-41f4e2902ee5"),
@@ -746,11 +727,6 @@ public enum OpenMetadataProperty
      * Message to provide additional information on the results of acting on the target by the actor or the reasons for any failures.
      */
     COMPLETION_MESSAGE("completionMessage", DataType.STRING, DataType.STRING.getName(), "Message to provide additional information on the results of acting on the target by the actor or the reasons for any failures.", null, "f7633bda-9a90-4561-8d5a-356126a855ea"),
-
-    /**
-     * Name of the keyword.
-     */
-    KEYWORD("keyword", DataType.STRING, DataType.STRING.getName(), "Name of the keyword.", null, "b15f3d92-c4fb-44f6-a773-986b0c02906b"),
 
     /**
      * Unique name of the process that initiated this request (if applicable).
@@ -1019,11 +995,6 @@ public enum OpenMetadataProperty
     RESOURCE_USE("resourceUse", DataType.STRING, DataType.STRING.getName(), "Identifier that describes the type of resource use.", null, "152aafd9-57c4-4341-82bb-945d213a686e"),
 
     /**
-     * Indicator whether the anchor should receive notifications of changes to the resource.
-     */
-    WATCH_RESOURCE("watchResource", DataType.BOOLEAN, DataType.BOOLEAN.getName(), "Indicator whether the anchor should receive notifications of changes to the resource.", null, "d727b3ce-d58b-45d5-8abc-55b1394e030a"),
-
-    /**
      * "Time that the IT Infrastructure was deployed."
      */
     DEPLOYMENT_TIME( "deploymentTime", DataType.DATE, DataType.DATE.getName(), "Time that the IT Infrastructure was deployed.", null, "aa372f7f-8284-4e24-902e-9f01dcc70b3e"),
@@ -1236,11 +1207,6 @@ public enum OpenMetadataProperty
     SERVICE_LIFE("serviceLife", DataType.STRING, DataType.STRING.getName(), "Length of time that the product is expected to be in service.", "2 years", "f61776bc-e78e-4c4a-9b22-275c8eb4c132"),
 
     /**
-     * Which is the current supported version that is recommended for consumers.  Specified as a versionIdentifier from the asset.
-     */
-    CURRENT_VERSION("currentVersion", DataType.STRING, DataType.STRING.getName(), "Which is the current supported version that is recommended for consumers.  Specified as a versionIdentifier from the asset.", "V1.0", "d863a1f5-5770-4a57-a331-01ef59994fba"),
-
-    /**
      * Defines the provenance and confidence that a member belongs in a collection.
      */
     MEMBERSHIP_STATUS("membershipStatus", DataType.STRING, CollectionMemberStatus.getOpenTypeName(), CollectionMemberStatus.getOpenTypeDescription(), CollectionMemberStatus.PROPOSED.getName(), "e304a92d-60d2-4605-8e3f-d338bd33e6d3"),
@@ -1254,11 +1220,6 @@ public enum OpenMetadataProperty
      * Name of the type of membership.
      */
     MEMBERSHIP_TYPE("membershipType", DataType.STRING, DataType.STRING.getName(), "Name of the type of membership.", null, "ebf4af8d-b9f7-45d1-8f87-8cc383df4605"),
-
-    /**
-     * Name of property to use for ordering.
-     */
-    ORDER_BY_PROPERTY_NAME("orderByPropertyName", DataType.STRING, DataType.STRING.getName(), "Name of property to use for ordering.", OpenMetadataProperty.STEWARD.name, "31b6f74e-5759-47e1-8b92-a0ce43bc73db"),
 
     /**
      * Defines the sequential order in which bytes are arranged into larger numerical values when stored in memory or when transmitted over digital links.
@@ -1344,17 +1305,17 @@ public enum OpenMetadataProperty
     /**
      * Different types of activities.
      */
-    ACTIVITY_TYPE("type", DataType.STRING, GlossaryTermActivityType.getOpenTypeName(), GlossaryTermActivityType.getOpenTypeDescription(), GlossaryTermActivityType.PROJECT.getName(), "6949c588-d7ab-441f-be03-a97b1dc2900b"),
+    ACTIVITY_TYPE("type", DataType.STRING, ActivityType.getOpenTypeName(), ActivityType.getOpenTypeDescription(), ActivityType.PROJECT.getName(), "6949c588-d7ab-441f-be03-a97b1dc2900b"),
 
     /**
      * Defines the confidence in the assigned relationship.
      */
-    TERM_RELATIONSHIP_STATUS("status", DataType.STRING, GlossaryTermRelationshipStatus.getOpenTypeName(), GlossaryTermRelationshipStatus.getOpenTypeDescription(), GlossaryTermRelationshipStatus.DRAFT.getName(), "5cc02a53-2428-434a-9b97-883eae896552"),
+    TERM_RELATIONSHIP_STATUS("status", DataType.STRING, TermRelationshipStatus.getOpenTypeName(), TermRelationshipStatus.getOpenTypeDescription(), TermRelationshipStatus.DRAFT.getName(), "5cc02a53-2428-434a-9b97-883eae896552"),
 
     /**
      * Defines the provenance and confidence of a semantic assignment.
      */
-    TERM_ASSIGNMENT_STATUS("termAssignmentStatus", DataType.STRING, GlossaryTermAssignmentStatus.getOpenTypeName(), GlossaryTermAssignmentStatus.getOpenTypeDescription(), GlossaryTermAssignmentStatus.IMPORTED.getName(), "d842dfdd-f080-4539-9a3c-eacdf0a03d07"),
+    TERM_ASSIGNMENT_STATUS("termAssignmentStatus", DataType.STRING, TermAssignmentStatus.getOpenTypeName(), TermAssignmentStatus.getOpenTypeDescription(), TermAssignmentStatus.IMPORTED.getName(), "d842dfdd-f080-4539-9a3c-eacdf0a03d07"),
 
     /**
      * Defines the provenance and confidence of a data class assignment.
@@ -1570,12 +1531,12 @@ public enum OpenMetadataProperty
     /**
      * Instance of the database.
      */
-    INSTANCE ("instance", DataType.STRING, DataType.STRING.getName(), "Instance of the database.", null, "ecd5593a-647f-4767-b465-279e4bd35efc"),
+    INSTANCE ("databaseInstance", DataType.STRING, DataType.STRING.getName(), "Instance of the database.", null, "ecd5593a-647f-4767-b465-279e4bd35efc"),
 
     /**
      * importedFrom
      */
-    IMPORTED_FROM("importedFrom", DataType.STRING, DataType.STRING.getName(), "System that the database was imported from.", null, "6e7b1e16-bcf4-4010-becd-244506f1d3ed"),
+    IMPORTED_FROM("importedFrom", DataType.STRING, DataType.STRING.getName(), "System that the data was imported from.", null, "6e7b1e16-bcf4-4010-becd-244506f1d3ed"),
 
     /**
      * Name of the language used to implement this component.
@@ -1921,11 +1882,6 @@ public enum OpenMetadataProperty
      * Additional arguments needed by the virtual connector when using each connection.
      */
     ARGUMENTS("arguments", DataType.MAP_STRING_OBJECT, DataType.MAP_STRING_OBJECT.getName(), "Additional arguments needed by the virtual connector when using each connection.", null, "0ba7abef-1a62-4bf6-a21c-0239c3521d50"),
-
-    /**
-     * Description of the asset that is retrieved through this connection.
-     */
-    ASSET_SUMMARY("assetSummary", DataType.STRING, DataType.STRING.getName(), "Description of the asset that is retrieved through this connection.", null, "2ab4e6eb-9064-4638-8c72-5c9d5eb61383"),
 
     /**
      * Character used between each column.

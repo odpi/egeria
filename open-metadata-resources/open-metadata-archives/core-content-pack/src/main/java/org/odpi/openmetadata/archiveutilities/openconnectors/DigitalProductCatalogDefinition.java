@@ -3,15 +3,19 @@
 
 package org.odpi.openmetadata.archiveutilities.openconnectors;
 
+import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
+
 /**
  * Describes the integration groups in the core content packs.
  */
 public enum DigitalProductCatalogDefinition
 {
     ROOT("dcec6ddb-317e-4c64-907e-be508ceba6d9",
+         OpenMetadataType.ROOT_COLLECTION.typeName,
          "Egeria::DigitalProductCatalogsRoot",
          "Digital Product Catalogs Root",
          "Root collection linking the digital product catalogs together.",
+         null,
          null,
          ContentPackDefinition.CORE_CONTENT_PACK),
 
@@ -19,20 +23,24 @@ public enum DigitalProductCatalogDefinition
     ;
 
     private final String                          guid;
+    private final String                          typeName;
     private final String                          qualifiedName;
     private final String                          name;
     private final String                          description;
+    private final String                          anchorScopeGUID;
     private final ContentPackDefinition           contentPackDefinition;
     private final DigitalProductCatalogDefinition parent;
 
 
-    DigitalProductCatalogDefinition(String guid, String qualifiedName, String name, String description, DigitalProductCatalogDefinition parent, ContentPackDefinition contentPackDefinition)
+    DigitalProductCatalogDefinition(String guid, String typeName, String qualifiedName, String name, String description, DigitalProductCatalogDefinition parent, String anchorScopeGUID, ContentPackDefinition contentPackDefinition)
     {
         this.guid                  = guid;
+        this.typeName              = typeName;
         this.qualifiedName         = qualifiedName;
         this.name                  = name;
         this.description           = description;
         this.parent                = parent;
+        this.anchorScopeGUID       = anchorScopeGUID;
         this.contentPackDefinition = contentPackDefinition;
     }
 
@@ -45,6 +53,17 @@ public enum DigitalProductCatalogDefinition
     public String getGUID()
     {
         return guid;
+    }
+
+
+    /**
+     * Return the type name to use.
+     *
+     * @return string
+     */
+    public String getTypeName()
+    {
+        return typeName;
     }
 
 
@@ -96,6 +115,16 @@ public enum DigitalProductCatalogDefinition
         return contentPackDefinition;
     }
 
+
+    /**
+     * Get the anchorScopeGUID.
+     *
+     * @return string
+     */
+    public String getAnchorScopeGUID()
+    {
+        return anchorScopeGUID;
+    }
 
     /**
      * JSON-style toString

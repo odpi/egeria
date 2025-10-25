@@ -14,6 +14,7 @@ import org.odpi.openmetadata.frameworks.integration.connectors.IntegrationConnec
 import org.odpi.openmetadata.frameworks.integration.properties.RequestedCatalogTarget;
 import org.odpi.openmetadata.frameworks.openmetadata.connectorcontext.AssetClient;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.OpenMetadataRootElement;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.ReferenceableProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.search.PropertyHelper;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 
@@ -88,10 +89,15 @@ public class JDBCIntegrationConnector extends IntegrationConnectorBase implement
     {
         final String methodName = "integrateCatalogTarget";
 
-        if (propertyHelper.isTypeOf(requestedCatalogTarget.getCatalogTargetElement(), OpenMetadataType.RELATIONAL_DATABASE.typeName))
+        if (propertyHelper.isTypeOf(requestedCatalogTarget.getCatalogTargetElement().getElementHeader(), OpenMetadataType.RELATIONAL_DATABASE.typeName))
         {
-            String databaseGUID = requestedCatalogTarget.getCatalogTargetElement().getGUID();
-            String databaseName = requestedCatalogTarget.getCatalogTargetElement().getUniqueName();
+            String databaseGUID = requestedCatalogTarget.getCatalogTargetElement().getElementHeader().getGUID();
+            String databaseName = null;
+
+            if (requestedCatalogTarget.getCatalogTargetElement().getProperties() instanceof ReferenceableProperties referenceableProperties)
+            {
+                databaseName = referenceableProperties.getQualifiedName();
+            }
 
             try
             {
@@ -122,8 +128,8 @@ public class JDBCIntegrationConnector extends IntegrationConnectorBase implement
         }
         else
         {
-            super.throwWrongTypeOfAsset(requestedCatalogTarget.getCatalogTargetElement().getGUID(),
-                                        requestedCatalogTarget.getCatalogTargetElement().getType().getTypeName(),
+            super.throwWrongTypeOfAsset(requestedCatalogTarget.getCatalogTargetElement().getElementHeader().getGUID(),
+                                        requestedCatalogTarget.getCatalogTargetElement().getElementHeader().getType().getTypeName(),
                                         OpenMetadataType.RELATIONAL_DATABASE.typeName,
                                         connectorName,
                                         methodName);

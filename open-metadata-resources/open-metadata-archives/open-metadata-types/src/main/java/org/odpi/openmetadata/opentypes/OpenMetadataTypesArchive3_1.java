@@ -170,9 +170,7 @@ public class OpenMetadataTypesArchive3_1
         update0040SoftwareServers();
         update0045ServersAndAssets();
         update0050ApplicationsAndProcesses();
-        update0057SoftwareServices();
         update0201Connections();
-        update0223Events();
         add0485DataProcessingPurposes();
     }
 
@@ -277,9 +275,6 @@ public class OpenMetadataTypesArchive3_1
     {
         this.archiveBuilder.addEntityDef(addBareMetalComputerEntity());
         this.archiveBuilder.addEntityDef(addVirtualMachineEntity());
-        this.archiveBuilder.addEntityDef(addDockerContainerEntity());
-        this.archiveBuilder.addEntityDef(addHadoopClusterEntity());
-        this.archiveBuilder.addEntityDef(addKubernetesClusterEntity());
     }
 
 
@@ -297,26 +292,6 @@ public class OpenMetadataTypesArchive3_1
                                                  this.archiveBuilder.getEntityDef(OpenMetadataType.HOST.typeName));
     }
 
-
-    private EntityDef addDockerContainerEntity()
-    {
-        return archiveHelper.getDefaultEntityDef(OpenMetadataType.DOCKER_CONTAINER,
-                                                 this.archiveBuilder.getEntityDef(OpenMetadataType.VIRTUAL_CONTAINER.typeName));
-    }
-
-
-    private EntityDef addHadoopClusterEntity()
-    {
-        return archiveHelper.getDefaultEntityDef(OpenMetadataType.HADOOP_CLUSTER,
-                                                 this.archiveBuilder.getEntityDef(OpenMetadataType.HOST_CLUSTER.typeName));
-    }
-
-
-    private EntityDef addKubernetesClusterEntity()
-    {
-        return archiveHelper.getDefaultEntityDef(OpenMetadataType.KUBERNETES_CLUSTER,
-                                                 this.archiveBuilder.getEntityDef(OpenMetadataType.HOST_CLUSTER.typeName));
-    }
 
     /*
      * -------------------------------------------------------------------------------------------------------
@@ -468,33 +443,9 @@ public class OpenMetadataTypesArchive3_1
      * -------------------------------------------------------------------------------------------------------
      */
 
-
-    /**
-     * The ApplicationService is designed to represent a business microservice.
-     */
-    private void update0057SoftwareServices()
-    {
-        this.archiveBuilder.addEntityDef(addApplicationServiceEntity());
-    }
-
-
-
-    private EntityDef addApplicationServiceEntity()
-    {
-        return archiveHelper.getDefaultEntityDef(OpenMetadataType.APPLICATION_SERVICE,
-                                                 this.archiveBuilder.getEntityDef(OpenMetadataType.SOFTWARE_SERVICE.typeName));
-    }
-
-
-    /*
-     * -------------------------------------------------------------------------------------------------------
-     */
-
     private void update0050ApplicationsAndProcesses()
     {
         this.archiveBuilder.addEntityDef(addCatalogEntity());
-        this.archiveBuilder.addEntityDef(addDataManagerEntity());
-        this.archiveBuilder.addTypeDefPatch(updateDatabaseManager());
     }
 
 
@@ -504,25 +455,6 @@ public class OpenMetadataTypesArchive3_1
                                                  this.archiveBuilder.getEntityDef(OpenMetadataType.SOFTWARE_CAPABILITY.typeName));
     }
 
-    private EntityDef addDataManagerEntity()
-    {
-        return archiveHelper.getDefaultEntityDef(OpenMetadataType.DATA_MANAGER,
-                                                 this.archiveBuilder.getEntityDef(OpenMetadataType.SOFTWARE_CAPABILITY.typeName));
-    }
-
-    private TypeDefPatch updateDatabaseManager()
-    {
-        /*
-         * Create the Patch
-         */
-        TypeDefPatch typeDefPatch = archiveBuilder.getPatchForType(OpenMetadataType.DATABASE_MANAGER.typeName);
-
-        typeDefPatch.setUpdatedBy(originatorName);
-        typeDefPatch.setUpdateTime(creationDate);
-        typeDefPatch.setSuperType(this.archiveBuilder.getEntityDef(OpenMetadataType.DATA_MANAGER.typeName));
-
-        return typeDefPatch;
-    }
 
 
     /*
@@ -531,42 +463,7 @@ public class OpenMetadataTypesArchive3_1
 
     private void update0201Connections()
     {
-        this.archiveBuilder.addClassificationDef(addConnectorTypeDirectoryClassification());
-        this.archiveBuilder.addEntityDef(addConnectorCategoryEntity());
         this.archiveBuilder.addTypeDefPatch(updateConnectorTypeEntity());
-        this.archiveBuilder.addRelationshipDef(addConnectorImplementationChoiceRelationship());
-    }
-
-
-    private ClassificationDef addConnectorTypeDirectoryClassification()
-    {
-        return archiveHelper.getClassificationDef(OpenMetadataType.CONNECTOR_TYPE_DIRECTORY_CLASSIFICATION,
-                                                  this.archiveBuilder.getClassificationDef(OpenMetadataType.COLLECTION_ROLE_CLASSIFICATION.typeName),
-                                                  this.archiveBuilder.getEntityDef(OpenMetadataType.COLLECTION.typeName),
-                                                  false);
-    }
-
-
-
-    private EntityDef addConnectorCategoryEntity()
-    {
-        EntityDef entityDef = archiveHelper.getDefaultEntityDef(OpenMetadataType.CONNECTOR_CATEGORY,
-                                                                this.archiveBuilder.getEntityDef(OpenMetadataType.REFERENCEABLE.typeName));
-
-        /*
-         * Build the attributes
-         */
-        List<TypeDefAttribute> properties = new ArrayList<>();
-
-        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.TARGET_TECHNOLOGY_SOURCE));
-        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.TARGET_TECHNOLOGY_NAME));
-        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.RECOGNIZED_ADDITIONAL_PROPERTIES));
-        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.RECOGNIZED_SECURED_PROPERTIES));
-        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.RECOGNIZED_CONFIGURATION_PROPERTIES));
-
-        entityDef.setPropertiesDefinition(properties);
-
-        return entityDef;
     }
 
 
@@ -600,63 +497,6 @@ public class OpenMetadataTypesArchive3_1
     }
 
 
-    private RelationshipDef addConnectorImplementationChoiceRelationship()
-    {
-        RelationshipDef relationshipDef = archiveHelper.getBasicRelationshipDef(OpenMetadataType.CONNECTOR_IMPLEMENTATION_CHOICE_RELATIONSHIP,
-                                                                                null,
-                                                                                ClassificationPropagationRule.NONE);
-
-        RelationshipEndDef relationshipEndDef;
-
-        /*
-         * Set up end 1.
-         */
-        final String                     end1AttributeName            = "connectorCategories";
-        final String                     end1AttributeDescription     = "The categories that a connector type belongs to.";
-        final String                     end1AttributeDescriptionGUID = null;
-
-        relationshipEndDef = archiveHelper.getRelationshipEndDef(this.archiveBuilder.getEntityDef(OpenMetadataType.CONNECTOR_CATEGORY.typeName),
-                                                                 end1AttributeName,
-                                                                 end1AttributeDescription,
-                                                                 end1AttributeDescriptionGUID,
-                                                                 RelationshipEndCardinality.ANY_NUMBER);
-        relationshipDef.setEndDef1(relationshipEndDef);
-
-
-        /*
-         * Set up end 2.
-         */
-        final String                     end2AttributeName            = "connectorTypes";
-        final String                     end2AttributeDescription     = "The connector types that support the technology described in the connector category.";
-        final String                     end2AttributeDescriptionGUID = null;
-
-        relationshipEndDef = archiveHelper.getRelationshipEndDef(this.archiveBuilder.getEntityDef(OpenMetadataType.CONNECTOR_TYPE.typeName),
-                                                                 end2AttributeName,
-                                                                 end2AttributeDescription,
-                                                                 end2AttributeDescriptionGUID,
-                                                                 RelationshipEndCardinality.ANY_NUMBER);
-        relationshipDef.setEndDef2(relationshipEndDef);
-
-        return relationshipDef;
-    }
-
-
-    /*
-     * -------------------------------------------------------------------------------------------------------
-     */
-
-    private void update0223Events()
-    {
-        this.archiveBuilder.addEntityDef(addKafkaTopicEntity());
-    }
-
-
-    private EntityDef addKafkaTopicEntity()
-    {
-        return archiveHelper.getDefaultEntityDef(OpenMetadataType.KAFKA_TOPIC,
-                                                 this.archiveBuilder.getEntityDef(OpenMetadataType.TOPIC.typeName));
-    }
-
 
     /*
      * -------------------------------------------------------------------------------------------------------
@@ -684,7 +524,7 @@ public class OpenMetadataTypesArchive3_1
     private EntityDef getDataProcessingDescriptionEntity()
     {
         return archiveHelper.getDefaultEntityDef(OpenMetadataType.DATA_PROCESSING_DESCRIPTION,
-                                                 this.archiveBuilder.getEntityDef(OpenMetadataType.DATA_PROCESSING_ACTION.typeName));
+                                                 this.archiveBuilder.getEntityDef(OpenMetadataType.REFERENCEABLE.typeName));
     }
 
 

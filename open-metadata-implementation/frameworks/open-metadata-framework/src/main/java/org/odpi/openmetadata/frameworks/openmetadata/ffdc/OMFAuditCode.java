@@ -75,8 +75,8 @@ public enum OMFAuditCode implements AuditLogMessageSet
     FILE_SYSTEM_MONITORING_STOPPING("OPEN-METADATA-0005",
                                     AuditLogRecordSeverityLevel.INFO,
                                     "The {0} connector has stopped its file system monitoring and is shutting down",
-                                    "The connector is disconnecting.",
-                                    "No action is required unless there are errors that follow indicating that there were problems shutting down."),
+                                    "The file system monitor connector is disconnecting.",
+                                    "No action is required unless there are errors that follow indicating that there were problems shutting down the connector."),
 
     /**
      * OPEN-METADATA-0006 - The {0} connector has been disconnected - either due to its own actions or a cancel request
@@ -86,6 +86,33 @@ public enum OMFAuditCode implements AuditLogMessageSet
                         "The {0} connector has been disconnected - either due to its own actions or a cancel request",
                         "Egeria will attempt to stop the work of the connector",
                         "Monitor the shutdown of the connector."),
+
+    /**
+     * OPEN-METADATA-0007 - The {0} connector can not retrieve the correlation information for {1} open metadata element {2} linked via metadata collection {3} to external element {4}
+     */
+    MISSING_CORRELATION("OPEN-METADATA-0007",
+                        AuditLogRecordSeverityLevel.ERROR,
+                        "The {0} connector can not retrieve the correlation information for {1} open metadata element {2} linked via metadata collection {3} to external element {4}",
+                        "The correlation information that should be associated with the open metadata element is missing and the connector is not able to confidently synchronize it with the element from the external system.",
+                        "Review the audit log to determine if there were errors detected when the open metadata entity was created.  The simplest resolution is to add the correlation information to the open metadata entity to allow the synchronization to continue."),
+
+    /**
+     * OPEN-METADATA-0008 - The valid metadata value {0} for property {1} has been created/updated in metadata element {2}
+     */
+    VALID_METADATA_UPDATE("OPEN-METADATA-0008",
+                        AuditLogRecordSeverityLevel.INFO,
+                        "The valid metadata value {0} for property {1} has been created/updated in metadata element {2}",
+                        "The new or updated element is stored in the metadata repository.",
+                        "This is an informational message to provide an audit log of changes to the open metadata valid values. If this is of interest then these messages can be captured and retained."),
+
+    /**
+     * OPEN-METADATA-0009 - The valid metadata value {0} for property {1} stored in metadata element {2} has been deleted
+     */
+    VALID_METADATA_DELETE("OPEN-METADATA-0009",
+                          AuditLogRecordSeverityLevel.INFO,
+                          "The valid metadata value {0} for property {1} stored in metadata element {2} has been deleted",
+                          "The metadata element has been deleted from the repository.  There are no changed to other metadata elements using the obsolete value.",
+                          "Use an API like Classification Explorer OMVS to find any metadata elements that is using this obsolete value and update them to use one of the remaining valid values."),
 
     /**
      * OPEN-METADATA-0010 - The {0} connector has detected an unsynchronized {1} element ({2}) in metadata collection {3} ({4}) but the permitted synchronization to catalog target {5} is {6}
@@ -124,13 +151,22 @@ public enum OMFAuditCode implements AuditLogMessageSet
                          "Use the details from the error message to determine the cause of the error and retry the request once it is resolved."),
 
     /**
-     * OPEN-METADATA-0013 - The {0} connector has stopped its monitoring and is shutting down
+     * OPEN-METADATA-0014 - The {0} connector has stopped its monitoring and is shutting down
      */
     CONNECTOR_STOPPING("OPEN-METADATA-0014",
                        AuditLogRecordSeverityLevel.INFO,
                        "The {0} connector has stopped its monitoring and is shutting down",
                        "The connector is disconnecting.",
                        "No action is required unless there are errors that follow indicating that there were problems shutting down."),
+
+    /**
+     * OPEN-METADATA-0015 - The valid metadata value {0} for property {1} is not found
+     */
+    VALID_METADATA_MISSING("OPEN-METADATA-0015",
+                          AuditLogRecordSeverityLevel.ERROR,
+                          "The valid metadata value {0} for property {1} is not found",
+                          "The metadata element for this valid metadata value is not stored in the repository.",
+                          "Check the parameter of the call to make sure there name and value have been properly defined."),
 
     /**
      * OPEN-METADATA-0025 - The Open Metadata Store has received an unexpected {0} exception while formatting a response during method {1}.  The message was: {2}

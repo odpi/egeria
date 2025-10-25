@@ -3,10 +3,8 @@
 
 package org.odpi.openmetadata.frameworks.openmetadata.properties.glossaries;
 
-import com.fasterxml.jackson.annotation.JsonAutoDetect;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import org.odpi.openmetadata.frameworks.openmetadata.enums.GlossaryTermRelationshipStatus;
+import com.fasterxml.jackson.annotation.*;
+import org.odpi.openmetadata.frameworks.openmetadata.enums.TermRelationshipStatus;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.RelationshipBeanProperties;
 
 import java.util.Objects;
@@ -20,14 +18,28 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonAutoDetect(getterVisibility = PUBLIC_ONLY, setterVisibility = PUBLIC_ONLY, fieldVisibility = NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown = true)
+@JsonTypeInfo(
+        use = JsonTypeInfo.Id.NAME,
+        include = JsonTypeInfo.As.PROPERTY,
+        property = "class")
+@JsonSubTypes({
+        @JsonSubTypes.Type(value = RelatedTermProperties.class, name = "RelatedTermProperties"),
+        @JsonSubTypes.Type(value = SynonymProperties.class, name = "SynonymProperties"),
+        @JsonSubTypes.Type(value = AntonymProperties.class, name = "AntonymProperties"),
+        @JsonSubTypes.Type(value = PreferredTermProperties.class, name = "PreferredTermProperties"),
+        @JsonSubTypes.Type(value = ReplacementTermProperties.class, name = "ReplacementTermProperties"),
+        @JsonSubTypes.Type(value = ISARelationshipProperties.class, name = "ISARelationshipProperties"),
+        @JsonSubTypes.Type(value = UsedInContextProperties.class, name = "UsedInContextProperties"),
+
+})
 public class GlossaryTermRelationshipProperties extends RelationshipBeanProperties
 {
-    private String                         expression  = null;
-    private int                            confidence  = 0;
-    private String                         description = null;
-    private GlossaryTermRelationshipStatus status      = null;
-    private String                         steward     = null;
-    private String                         source      = null;
+    private String                 expression  = null;
+    private int                    confidence  = 0;
+    private String                 description = null;
+    private TermRelationshipStatus status      = null;
+    private String                 steward     = null;
+    private String                 source      = null;
 
 
     /**
@@ -134,7 +146,7 @@ public class GlossaryTermRelationshipProperties extends RelationshipBeanProperti
      *
      * @param status status enum (draft, active, deprecated, obsolete, other)
      */
-    public void setStatus(GlossaryTermRelationshipStatus status)
+    public void setStatus(TermRelationshipStatus status)
     {
         this.status = status;
     }
@@ -145,7 +157,7 @@ public class GlossaryTermRelationshipProperties extends RelationshipBeanProperti
      *
      * @return status enum (draft, active, deprecated, obsolete, other)
      */
-    public GlossaryTermRelationshipStatus getStatus()
+    public TermRelationshipStatus getStatus()
     {
         return status;
     }

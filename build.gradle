@@ -9,7 +9,6 @@
  */
 plugins {
     id "io.freefair.aggregate-javadoc"
-    id "io.freefair.lombok"
     // Checks for unnecessary dependencies
     id 'com.autonomousapps.dependency-analysis'
     // helps resolve log implementation clashes
@@ -29,7 +28,7 @@ plugins {
  */
 allprojects {
     group = 'org.odpi.egeria'
-    version = '5.4-SNAPSHOT'
+    version = '6.0-SNAPSHOT'
 
     // Signing/publish used in parent & child projects
     apply plugin: 'maven-publish'
@@ -38,8 +37,6 @@ allprojects {
     // Only use maven central
     repositories {
         mavenCentral()
-        // used by tink (encrypted filestore connector)
-        google()
     }
 } // end of allProjects
 
@@ -54,7 +51,6 @@ subprojects {
         apply plugin: 'java'
         apply plugin: 'jacoco'
         apply plugin: 'checkstyle'
-        //apply plugin: 'io.freefair.lombok'
         apply plugin: 'com.autonomousapps.dependency-analysis'
         apply plugin: 'dev.jacomet.logging-capabilities'
         apply plugin: 'org.gradlex.java-ecosystem-capabilities'

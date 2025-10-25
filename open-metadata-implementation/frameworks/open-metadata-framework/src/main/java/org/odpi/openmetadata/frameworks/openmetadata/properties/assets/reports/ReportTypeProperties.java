@@ -3,7 +3,9 @@
 
 package org.odpi.openmetadata.frameworks.openmetadata.properties.assets.reports;
 
-import com.fasterxml.jackson.annotation.*;
+import com.fasterxml.jackson.annotation.JsonAutoDetect;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.DataAssetProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 
@@ -21,7 +23,6 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class ReportTypeProperties extends DataAssetProperties
 {
-    private String identifier        = null;
     private String purpose           = null;
     private String author           = null;
     private Date   createdTime      = null;
@@ -49,35 +50,12 @@ public class ReportTypeProperties extends DataAssetProperties
 
         if (template != null)
         {
-            identifier        = template.getIdentifier();
-            purpose           = template.getPurpose();
+            purpose          = template.getPurpose();
             author           = template.getAuthor();
             createdTime      = template.getCreatedTime();
             lastModifiedTime = template.getLastModifiedTime();
-            lastModifier      = template.getLastModifier();
+            lastModifier     = template.getLastModifier();
         }
-    }
-
-
-    /**
-     * Return the business identifier for the report.
-     *
-     * @return string id
-     */
-    public String getIdentifier()
-    {
-        return identifier;
-    }
-
-
-    /**
-     * Set up the business identifier for the report.
-     *
-     * @param identifier string id
-     */
-    public void setIdentifier(String identifier)
-    {
-        this.identifier = identifier;
     }
 
 
@@ -200,8 +178,7 @@ public class ReportTypeProperties extends DataAssetProperties
     public String toString()
     {
         return "ReportTypeProperties{" +
-                "identifier='" + identifier + '\'' +
-                ", purpose='" + purpose + '\'' +
+                "purpose='" + purpose + '\'' +
                 ", author='" + author + '\'' +
                 ", createTime=" + createdTime +
                 ", lastModifiedTime=" + lastModifiedTime +
@@ -223,8 +200,7 @@ public class ReportTypeProperties extends DataAssetProperties
         if (objectToCompare == null || getClass() != objectToCompare.getClass()) return false;
         if (!super.equals(objectToCompare)) return false;
         ReportTypeProperties that = (ReportTypeProperties) objectToCompare;
-        return Objects.equals(identifier, that.identifier) &&
-                Objects.equals(purpose, that.purpose) &&
+        return Objects.equals(purpose, that.purpose) &&
                 Objects.equals(author, that.author) &&
                 Objects.equals(createdTime, that.createdTime) &&
                 Objects.equals(lastModifiedTime, that.lastModifiedTime) &&
@@ -239,7 +215,7 @@ public class ReportTypeProperties extends DataAssetProperties
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), identifier, purpose, author,
+        return Objects.hash(super.hashCode(), purpose, author,
                             createdTime, lastModifiedTime, lastModifier);
     }
 }

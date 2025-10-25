@@ -11,7 +11,7 @@ import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedExcep
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.OpenMetadataRootElement;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.ClassificationProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.RelationshipProperties;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.solutions.SolutionBlueprintCompositionProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.collections.CollectionMembershipProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.solutions.SolutionBlueprintProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.solutions.SolutionDesignProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.search.*;
@@ -154,13 +154,13 @@ public class SolutionBlueprintHandler extends OpenMetadataHandlerBase
      * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    public void linkSolutionComponentToBlueprint(String                                 userId,
-                                                 String                                 parentSolutionBlueprintGUID,
-                                                 String                                 solutionComponentGUID,
-                                                 MetadataSourceOptions                  metadataSourceOptions,
-                                                 SolutionBlueprintCompositionProperties relationshipProperties) throws InvalidParameterException,
-                                                                                                                       PropertyServerException,
-                                                                                                                       UserNotAuthorizedException
+    public void linkSolutionComponentToBlueprint(String                         userId,
+                                                 String                         parentSolutionBlueprintGUID,
+                                                 String                         solutionComponentGUID,
+                                                 MetadataSourceOptions          metadataSourceOptions,
+                                                 CollectionMembershipProperties relationshipProperties) throws InvalidParameterException,
+                                                                                                               PropertyServerException,
+                                                                                                               UserNotAuthorizedException
     {
         final String methodName = "linkSolutionComponentToBlueprint";
         final String end1GUIDParameterName = "parentSolutionBlueprintGUID";
@@ -171,7 +171,7 @@ public class SolutionBlueprintHandler extends OpenMetadataHandlerBase
         propertyHelper.validateGUID(solutionComponentGUID, end2GUIDParameterName, methodName);
 
         openMetadataClient.createRelatedElementsInStore(userId,
-                                                        OpenMetadataType.SOLUTION_BLUEPRINT_COMPOSITION_RELATIONSHIP.typeName,
+                                                        OpenMetadataType.COLLECTION_MEMBERSHIP_RELATIONSHIP.typeName,
                                                         parentSolutionBlueprintGUID,
                                                         solutionComponentGUID,
                                                         metadataSourceOptions,
@@ -207,7 +207,7 @@ public class SolutionBlueprintHandler extends OpenMetadataHandlerBase
         propertyHelper.validateGUID(solutionComponentGUID, end2GUIDParameterName, methodName);
 
         openMetadataClient.detachRelatedElementsInStore(userId,
-                                                        OpenMetadataType.SOLUTION_BLUEPRINT_COMPOSITION_RELATIONSHIP.typeName,
+                                                        OpenMetadataType.COLLECTION_MEMBERSHIP_RELATIONSHIP.typeName,
                                                         solutionBlueprintGUID,
                                                         solutionComponentGUID,
                                                         deleteOptions);

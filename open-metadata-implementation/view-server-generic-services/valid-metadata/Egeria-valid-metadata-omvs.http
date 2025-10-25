@@ -215,6 +215,8 @@ Authorization: Bearer {{token}}
 Content-Type: application/json
 
 ###
+# =====================================================================================================================
+###
 
 # @name getAllTypes
 # Returns the list of different types of metadata organized into two groups.  The first are the
@@ -278,9 +280,164 @@ GET {{baseURL}}/servers/{{viewServer}}/api/open-metadata/valid-metadata/open-met
 Authorization: Bearer {{token}}
 Content-Type: application/json
 
-####
+###
 # @name getTypeDefByName
 # Return the TypeDef identified by the unique name.
 GET {{baseURL}}/servers/{{viewServer}}/api/open-metadata/valid-metadata/open-metadata-types/name/{{typeName}}
 Authorization: Bearer {{token}}
 Content-Type: application/json
+
+###
+# =====================================================================================================================
+# Specification properties
+
+@specificationPropertyGUID=add guid here
+@elementGUID=add guid here
+
+###
+# @name getSpecificationPropertyTypes
+# Return the list of specification property types.
+
+GET {{baseURL}}/servers/{{viewServer}}/api/open-metadata/valid-metadata/specification-properties/type-names
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+###
+# @name setUpSpecificationProperty
+# Creates a specification property and attaches it to an element. The request body varies depending on the type of property.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/valid-metadata/elements/{elementGUID}/specification-properties
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "GuardType",
+  "name": "guard name",
+  "description": "guard description",
+  "completionStatus" : "INVALID",
+  "otherPropertyValues": {
+    "property1" : "propertyValue1",
+    "property2" : "propertyValue2"
+  }
+}
+
+
+###
+# @name deleteSpecificationProperty
+# Removes a specification property added to the element.  This deletes the link to the specification property and the specification property itself.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/valid-metadata/specification-properties/{specificationPropertyGUID}/delete
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "DeleteElementRequestBody",
+  "cascadeDelete" : false,
+  "externalSourceGUID": "add guid here",
+  "externalSourceName": "add qualified name here",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
+}
+
+###
+# @name findSpecificationProperty
+# Return the list of specification properties containing the supplied string.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/valid-metadata/specification-properties/by-search-string
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "SearchStringRequestBody",
+  "searchString" : "Add value here",
+  "startsWith" : false,
+  "endsWith" : false,
+  "ignoreCase" : true,
+  "startFrom" : 0,
+  "pageSize": 10,
+  "asOfTime" : "{{$isoTimestamp}}",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false,
+  "limitResultsByStatus" : ["ACTIVE"],
+  "sequencingOrder" : "PROPERTY_ASCENDING",
+  "sequencingProperty" : "qualifiedName"
+}
+
+###
+# @name getSpecificationPropertyByType
+#  Return the list of specification properties containing the supplied type.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/valid-metadata/specification-properties/by-type?specificationPropertyType=PRODUCED_GUARDS
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "ResultsRequestBody",
+  "startFrom" : 0,
+  "pageSize": 10,
+  "asOfTime" : "{{$isoTimestamp}}",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false,
+  "limitResultsByStatus" : ["ACTIVE"],
+  "sequencingOrder" : "PROPERTY_ASCENDING",
+  "sequencingProperty" : "qualifiedName"
+}
+
+
+###
+# @name getSpecificationPropertyByType
+#  Return the list of specification properties containing the supplied name.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/valid-metadata/specification-properties/by-name
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "FilterRequestBody",
+  "filter" : "Add value here",
+  "startFrom" : 0,
+  "pageSize": 10,
+  "asOfTime" : "{{$isoTimestamp}}",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false,
+  "limitResultsByStatus" : ["ACTIVE"],
+  "sequencingOrder" : "PROPERTY_ASCENDING",
+  "sequencingProperty" : "qualifiedName"
+}
+
+
+###
+# @name getSpecificationPropertyByType
+#  Return the list of specification properties containing the supplied keyword.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/valid-metadata/specification-properties/by-type?specificationPropertyType=PRODUCED_GUARDS
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "ResultsRequestBody",
+  "startFrom" : 0,
+  "pageSize": 10,
+  "asOfTime" : "{{$isoTimestamp}}",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false,
+  "limitResultsByStatus" : ["ACTIVE"],
+  "sequencingOrder" : "PROPERTY_ASCENDING",
+  "sequencingProperty" : "qualifiedName"
+}
+
+###
+# @name getSpecificationPropertyByGUID
+# Return the requested specificationProperty.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/valid-metadata/specification-properties/{specificationPropertyGUID}/retrieve
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "GetRequestBody",
+  "asOfTime" : "{{$isoTimestamp}}",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false
+}
+
+###

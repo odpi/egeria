@@ -5,6 +5,7 @@ package org.odpi.openmetadata.frameworks.openmetadata.properties.surveyreports;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 
 import java.util.Objects;
 
@@ -30,6 +31,7 @@ public class SchemaAnalysisAnnotationProperties extends AnnotationProperties
     public SchemaAnalysisAnnotationProperties()
     {
         super();
+        super.setTypeName(OpenMetadataType.SCHEMA_ANALYSIS_ANNOTATION.typeName);
     }
 
 

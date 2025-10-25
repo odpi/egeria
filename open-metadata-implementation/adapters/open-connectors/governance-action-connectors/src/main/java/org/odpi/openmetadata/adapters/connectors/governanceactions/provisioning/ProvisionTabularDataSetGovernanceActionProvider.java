@@ -6,12 +6,6 @@ package org.odpi.openmetadata.adapters.connectors.governanceactions.provisioning
 
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.ConnectorType;
 import org.odpi.openmetadata.frameworks.opengovernance.GovernanceActionServiceProviderBase;
-import org.odpi.openmetadata.frameworks.opengovernance.controls.ActionTarget;
-import org.odpi.openmetadata.frameworks.opengovernance.controls.ActionTargetType;
-import org.odpi.openmetadata.frameworks.openmetadata.refdata.DeployedImplementationType;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * ProvisionTabularDataSetGovernanceActionProvider is the OCF connector provider for the Tabular Data Provisioning Governance Action Service.

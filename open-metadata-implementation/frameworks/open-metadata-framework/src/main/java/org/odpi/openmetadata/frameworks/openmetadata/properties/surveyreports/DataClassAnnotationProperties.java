@@ -2,7 +2,10 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.frameworks.openmetadata.properties.surveyreports;
 
-import com.fasterxml.jackson.annotation.*;
+import com.fasterxml.jackson.annotation.JsonAutoDetect;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 
 import java.util.List;
 import java.util.Objects;
@@ -28,6 +31,8 @@ public class DataClassAnnotationProperties extends DataFieldAnnotationProperties
      */
     public DataClassAnnotationProperties()
     {
+        super();
+        super.setTypeName(OpenMetadataType.DATA_CLASS_ANNOTATION.typeName);
     }
 
 

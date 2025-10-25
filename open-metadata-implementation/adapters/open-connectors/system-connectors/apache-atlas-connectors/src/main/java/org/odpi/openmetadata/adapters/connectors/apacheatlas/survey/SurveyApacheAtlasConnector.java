@@ -714,12 +714,12 @@ public class SurveyApacheAtlasConnector extends SurveyActionServiceConnector
 
         if (assetUniverse != null)
         {
-            if (assetUniverse.getRootSchemaType() != null)
+            if (assetUniverse.getSchemaType() != null)
             {
                 /*
                  * The root schema type is already in place - check it is of the correct type.
                  */
-                if (propertyHelper.isTypeOf(assetUniverse.getRootSchemaType().getRelatedElement().getElementHeader(), OpenMetadataType.GRAPH_SCHEMA_TYPE.typeName))
+                if (propertyHelper.isTypeOf(assetUniverse.getSchemaType().getRelatedElement().getElementHeader(), OpenMetadataType.GRAPH_SCHEMA_TYPE.typeName))
                 {
                     /*
                      * The root schema type is already defined and set up.
@@ -734,17 +734,17 @@ public class SurveyApacheAtlasConnector extends SurveyActionServiceConnector
                 {
                     auditLog.logMessage(methodName,
                                         AtlasSurveyAuditCode.WRONG_ROOT_SCHEMA_TYPE.getMessageDefinition(assetGUID,
-                                                                                                         assetUniverse.getRootSchemaType().getRelatedElement().getElementHeader().getType().getTypeName(),
+                                                                                                         assetUniverse.getSchemaType().getRelatedElement().getElementHeader().getType().getTypeName(),
                                                                                                          OpenMetadataType.GRAPH_SCHEMA_TYPE.typeName,
                                                                                                          surveyActionServiceName,
-                                                                                                         assetUniverse.getRootSchemaType().toString()));
+                                                                                                         assetUniverse.getSchemaType().toString()));
                 }
 
                 throw new ConnectorCheckedException(AtlasSurveyErrorCode.WRONG_ROOT_SCHEMA_TYPE.getMessageDefinition(assetGUID,
-                                                                                                                     assetUniverse.getRootSchemaType().getRelatedElement().getElementHeader().getType().getTypeName(),
+                                                                                                                     assetUniverse.getSchemaType().getRelatedElement().getElementHeader().getType().getTypeName(),
                                                                                                                      OpenMetadataType.GRAPH_SCHEMA_TYPE.typeName,
                                                                                                                      surveyActionServiceName,
-                                                                                                                     assetUniverse.getRootSchemaType().toString()),
+                                                                                                                     assetUniverse.getSchemaType().toString()),
                                                     this.getClass().getName(),
                                                     methodName);
             }
@@ -774,7 +774,7 @@ public class SurveyApacheAtlasConnector extends SurveyActionServiceConnector
                     newElementOptions.setIsOwnAnchor(false);
                     newElementOptions.setParentGUID(assetGUID);
                     newElementOptions.setParentAtEnd1(true);
-                    newElementOptions.setParentRelationshipTypeName(OpenMetadataType.ASSET_SCHEMA_TYPE_RELATIONSHIP.typeName);
+                    newElementOptions.setParentRelationshipTypeName(OpenMetadataType.SCHEMA_RELATIONSHIP.typeName);
 
                     openMetadataStore.createMetadataElementInStore(OpenMetadataType.GRAPH_SCHEMA_TYPE.typeName,
                                                                    newElementOptions,
@@ -1069,7 +1069,7 @@ public class SurveyApacheAtlasConnector extends SurveyActionServiceConnector
                     newElementOptions.setAnchorGUID(assetUniverse.getElementHeader().getGUID());
                     newElementOptions.setIsOwnAnchor(false);
 
-                    newElementOptions.setParentGUID(assetUniverse.getRootSchemaType().getRelatedElement().getElementHeader().getGUID());
+                    newElementOptions.setParentGUID(assetUniverse.getSchemaType().getRelatedElement().getElementHeader().getGUID());
                     newElementOptions.setParentRelationshipTypeName(OpenMetadataType.ATTRIBUTE_FOR_SCHEMA_RELATIONSHIP.typeName);
                     newElementOptions.setParentAtEnd1(true);
 

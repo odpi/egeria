@@ -36,7 +36,6 @@ open-metadata-implementation/adapters/ @mandy-chessell
 open-metadata-implementation/adapters/authentication-plugins/ @mandy-chessell
 open-metadata-implementation/adapters/open-connectors/ @mandy-chessell
 open-metadata-implementation/adapters/open-connectors/rest-client-connectors/spring-rest-client-connector/ @mandy-chessell
-open-metadata-implementation/adapters/open-connectors/configuration-store-connectors/configuration-encrypted-file-store-connector/ @cmgrote
 open-metadata-implementation/adapters/open-connectors/repository-services-connectors/open-metadata-collection-store-connectors/graph-repository-connector/ @mandy-chessell
 open-metadata-implementation/admin-services/ @mandy-chessell
 open-metadata-implementation/common-services/ @mandy-chessell

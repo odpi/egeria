@@ -6,10 +6,8 @@ package org.odpi.openmetadata.frameworks.openmetadata.metadataelements;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.OpenMetadataRootProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.RelationshipBeanProperties;
 
-import java.util.Map;
 import java.util.Objects;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
@@ -24,12 +22,12 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class MetadataRelationshipSummary implements MetadataElement
+public class MetadataRelationshipSummary
 {
-    private ElementHeader              elementHeader = null;
-    private RelationshipBeanProperties properties    = null;
-    private ElementStub                end1          = null;
-    private ElementStub                end2          = null;
+    private ElementHeader              relationshipHeader     = null;
+    private RelationshipBeanProperties relationshipProperties = null;
+    private ElementStub                end1                   = null;
+    private ElementStub                end2                   = null;
 
     /**
      * Default constructor
@@ -48,9 +46,9 @@ public class MetadataRelationshipSummary implements MetadataElement
     {
         if (template != null)
         {
-            elementHeader = template.getElementHeader();
-            properties = template.getProperties();
-            end1 = template.getEnd1();
+            relationshipHeader     = template.getRelationshipHeader();
+            relationshipProperties = template.getRelationshipProperties();
+            end1                   = template.getEnd1();
             end2 = template.getEnd2();
         }
     }
@@ -61,21 +59,20 @@ public class MetadataRelationshipSummary implements MetadataElement
      *
      * @return element header object
      */
-    @Override
-    public ElementHeader getElementHeader()
+
+    public ElementHeader getRelationshipHeader()
     {
-        return elementHeader;
+        return relationshipHeader;
     }
 
     /**
      * Set up the element header associated with the properties.
      *
-     * @param elementHeader element header object
+     * @param relationshipHeader element header object
      */
-    @Override
-    public void setElementHeader(ElementHeader elementHeader)
+    public void setRelationshipHeader(ElementHeader relationshipHeader)
     {
-        this.elementHeader = elementHeader;
+        this.relationshipHeader = relationshipHeader;
     }
 
 
@@ -83,11 +80,11 @@ public class MetadataRelationshipSummary implements MetadataElement
      * Set up the  properties for the element.
      * If no stored properties are present then null is returned.
      *
-     * @param properties  properties for the classification
+     * @param relationshipProperties  properties for the classification
      */
-    public void setProperties(RelationshipBeanProperties properties)
+    public void setRelationshipProperties(RelationshipBeanProperties relationshipProperties)
     {
-        this.properties = properties;
+        this.relationshipProperties = relationshipProperties;
     }
 
 
@@ -97,9 +94,9 @@ public class MetadataRelationshipSummary implements MetadataElement
      *
      * @return properties map
      */
-    public RelationshipBeanProperties getProperties()
+    public RelationshipBeanProperties getRelationshipProperties()
     {
-        return properties;
+        return relationshipProperties;
     }
 
 
@@ -156,8 +153,8 @@ public class MetadataRelationshipSummary implements MetadataElement
     public String toString()
     {
         return "MetadataRelationshipSummary{" +
-                "elementHeader=" + elementHeader +
-                ", properties=" + properties +
+                "relationshipHeader=" + relationshipHeader +
+                ", relationshipProperties=" + relationshipProperties +
                 ", end1=" + end1 +
                 ", end2=" + end2 +
                 '}';
@@ -186,8 +183,8 @@ public class MetadataRelationshipSummary implements MetadataElement
             return false;
         }
         MetadataRelationshipSummary that = (MetadataRelationshipSummary) objectToCompare;
-        return Objects.equals(elementHeader, that.elementHeader) &&
-                Objects.equals(properties, that.properties) &&
+        return Objects.equals(relationshipHeader, that.relationshipHeader) &&
+                Objects.equals(relationshipProperties, that.relationshipProperties) &&
                 Objects.equals(end1, that.end1) &&
                 Objects.equals(end2, that.end2);
     }
@@ -201,6 +198,6 @@ public class MetadataRelationshipSummary implements MetadataElement
     @Override
     public int hashCode()
     {
-        return Objects.hash(elementHeader, properties, end1, end2);
+        return Objects.hash(relationshipHeader, relationshipProperties, end1, end2);
     }
 }

@@ -4,6 +4,10 @@ package org.odpi.openmetadata.viewservices.classificationexplorer.server.spring;
 
 import io.swagger.v3.oas.annotations.ExternalDocumentation;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.enums.SecuritySchemeIn;
+import io.swagger.v3.oas.annotations.enums.SecuritySchemeType;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import io.swagger.v3.oas.annotations.security.SecurityScheme;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.odpi.openmetadata.commonservices.ffdc.rest.*;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.governance.FindDigitalResourceOriginProperties;
@@ -22,8 +26,15 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/servers/{serverName}/api/open-metadata/{urlMarker}")
+@SecurityScheme(
+        name = "BearerAuthorization",
+        type = SecuritySchemeType.HTTP,
+        bearerFormat = "JWT",
+        scheme = "bearer",
+        in = SecuritySchemeIn.HEADER
+)
 @Tag(name="API: Classification Explorer OMVS",
-        description="Retrieve elements by type, or by classifications/relationships attached to them.",
+        description="Retrieve open metadata elements by type, or by the classifications/relationships attached to them.",
         externalDocs=@ExternalDocumentation(description="Further Information",url="https://egeria-project.org/services/omvs/classification-explorer/overview/"))
 
 public class ClassificationExplorerResource
@@ -52,6 +63,7 @@ public class ClassificationExplorerResource
      *      UserNotAuthorizedException security access problem
      */
     @PostMapping(path = "/elements/by-impact")
+    @SecurityRequirement(name = "BearerAuthorization")
 
     @Operation(summary="getImpactClassifiedElements",
             description="Return information about the elements classified with the impact classification.",
@@ -80,6 +92,7 @@ public class ClassificationExplorerResource
      *      UserNotAuthorizedException security access problem
      */
     @PostMapping(path = "/elements/by-confidence")
+    @SecurityRequirement(name = "BearerAuthorization")
 
     @Operation(summary="getConfidenceClassifiedElements",
             description="Return information about the elements classified with the confidence classification.",
@@ -108,6 +121,7 @@ public class ClassificationExplorerResource
      *      UserNotAuthorizedException security access problem
      */
     @PostMapping(path = "/elements/by-criticality")
+    @SecurityRequirement(name = "BearerAuthorization")
 
     @Operation(summary="getCriticalityClassifiedElements",
             description="Return information about the elements classified with the criticality classification.",
@@ -135,6 +149,7 @@ public class ClassificationExplorerResource
      *      UserNotAuthorizedException security access problem
      */
     @PostMapping(path = "/elements/by-confidentiality")
+    @SecurityRequirement(name = "BearerAuthorization")
 
     @Operation(summary="getConfidentialityClassifiedElements",
             description="Return information about the elements classified with the confidentiality classification.",
@@ -162,6 +177,7 @@ public class ClassificationExplorerResource
      *      UserNotAuthorizedException security access problem
      */
     @PostMapping(path = "/elements/by-retention")
+    @SecurityRequirement(name = "BearerAuthorization")
 
     @Operation(summary="getRetentionClassifiedElements",
             description="Return information about the elements classified with the retention classification.",
@@ -189,6 +205,7 @@ public class ClassificationExplorerResource
      *      UserNotAuthorizedException security access problem
      */
     @PostMapping(path = "/elements/by-security-tags")
+    @SecurityRequirement(name = "BearerAuthorization")
 
     @Operation(summary="getSecurityTaggedElements",
             description="Return information about the elements classified with the security tags classification.",
@@ -216,6 +233,7 @@ public class ClassificationExplorerResource
      *      UserNotAuthorizedException security access problem
      */
     @PostMapping(path = "/elements/by-ownership")
+    @SecurityRequirement(name = "BearerAuthorization")
 
     @Operation(summary="getOwnersElements",
             description="Return information about the elements classified with the ownership classification.",
@@ -224,7 +242,7 @@ public class ClassificationExplorerResource
     public MetadataElementSummariesResponse getOwnersElements(@PathVariable String                      serverName,
                                                               @PathVariable String                        urlMarker,
                                                               @RequestBody(required = false)
-                                                              FindNameProperties requestBody)
+                                                              FilterRequestBody requestBody)
     {
         return restAPI.getOwnersElements(serverName, urlMarker, requestBody);
     }
@@ -243,6 +261,7 @@ public class ClassificationExplorerResource
      *      UserNotAuthorizedException security access problem
      */
     @PostMapping(path = "/elements/by-subject-area-membership")
+    @SecurityRequirement(name = "BearerAuthorization")
 
     @Operation(summary="getMembersOfSubjectArea",
             description="Return information about the elements classified with the subject area classification.",
@@ -251,7 +270,7 @@ public class ClassificationExplorerResource
     public MetadataElementSummariesResponse getMembersOfSubjectArea(@PathVariable String                      serverName,
                                                                     @PathVariable String                        urlMarker,
                                                                     @RequestBody(required = false)
-                                                                    FindNameProperties requestBody)
+                                                                    FilterRequestBody requestBody)
     {
         return restAPI.getMembersOfSubjectArea(serverName, urlMarker, requestBody);
     }
@@ -270,6 +289,7 @@ public class ClassificationExplorerResource
      *      UserNotAuthorizedException security access problem
      */
     @PostMapping(path = "/elements/by-digital-resource-origin")
+    @SecurityRequirement(name = "BearerAuthorization")
 
     @Operation(summary="getElementsByOrigin",
             description="Return information about the digital resources from a specific origin.",
@@ -299,6 +319,7 @@ public class ClassificationExplorerResource
      */
 
     @PostMapping("/glossaries/terms/by-semantic-assignment/{elementGUID}")
+    @SecurityRequirement(name = "BearerAuthorization")
 
     @Operation(summary="getMeanings",
             description="Retrieve the glossary terms linked via a SemanticAssignment relationship to the requested element.",
@@ -327,6 +348,7 @@ public class ClassificationExplorerResource
      * UserNotAuthorizedException security access problem
      */
     @PostMapping("/elements/by-semantic-assignment/{glossaryTermGUID}")
+    @SecurityRequirement(name = "BearerAuthorization")
 
     @Operation(summary="getSemanticAssignees",
             description="Retrieve the elements linked via a SemanticAssignment relationship to the requested glossary term",
@@ -356,6 +378,7 @@ public class ClassificationExplorerResource
      * UserNotAuthorizedException security access problem
      */
     @PostMapping(path = "/elements/governed-by/{governanceDefinitionGUID}")
+    @SecurityRequirement(name = "BearerAuthorization")
 
     @Operation(summary="getGovernedElements",
             description="Retrieve the governance definitions linked via a GovernedBy relationship to the requested element.",
@@ -365,7 +388,7 @@ public class ClassificationExplorerResource
                                                                        @PathVariable String                        urlMarker,
                                                                        @PathVariable String                        governanceDefinitionGUID,
                                                                        @RequestBody(required = false)
-                                                                       FindProperties requestBody)
+                                                                       ResultsRequestBody requestBody)
     {
         return restAPI.getGovernedElements(serverName, urlMarker, governanceDefinitionGUID, requestBody);
     }
@@ -385,6 +408,7 @@ public class ClassificationExplorerResource
      * UserNotAuthorizedException security access problem
      */
     @PostMapping(path = "/elements/{elementGUID}/governed-by")
+    @SecurityRequirement(name = "BearerAuthorization")
 
     @Operation(summary="getGovernedByDefinitions",
             description="Retrieve the elements linked via a GovernedBy relationship to the requested governance definition.",
@@ -394,7 +418,7 @@ public class ClassificationExplorerResource
                                                                             @PathVariable String                        urlMarker,
                                                                             @PathVariable String                        elementGUID,
                                                                             @RequestBody(required = false)
-                                                                            FindProperties requestBody)
+                                                                            ResultsRequestBody requestBody)
     {
         return restAPI.getGovernedByDefinitions(serverName, urlMarker, elementGUID, requestBody);
     }
@@ -415,6 +439,7 @@ public class ClassificationExplorerResource
      * UserNotAuthorizedException security access problem
      */
     @PostMapping(path = "/elements/{elementGUID}/source")
+    @SecurityRequirement(name = "BearerAuthorization")
 
     @Operation(summary="getSourceElements",
             description="Retrieve the elements linked via a SourceFrom relationship to the requested element.  The elements returned were used to create the requested element.  Typically only one element is returned.",
@@ -424,7 +449,7 @@ public class ClassificationExplorerResource
                                                                      @PathVariable String                        urlMarker,
                                                                      @PathVariable String elementGUID,
                                                                      @RequestBody  (required = false)
-                                                                     FindProperties requestBody)
+                                                                     ResultsRequestBody requestBody)
     {
         return restAPI.getSourceElements(serverName, urlMarker, elementGUID, requestBody);
     }
@@ -445,6 +470,7 @@ public class ClassificationExplorerResource
      * UserNotAuthorizedException security access problem
      */
     @PostMapping(path = "/elements/{elementGUID}/sourced-from")
+    @SecurityRequirement(name = "BearerAuthorization")
 
     @Operation(summary="getElementsSourcedFrom",
             description="Retrieve the elements linked via a SourcedFrom relationship to the requested element. The elements returned were created using the requested element as a template.",
@@ -454,7 +480,7 @@ public class ClassificationExplorerResource
                                                                           @PathVariable String                        urlMarker,
                                                                           @PathVariable String                        elementGUID,
                                                                           @RequestBody  (required = false)
-                                                                          FindProperties requestBody)
+                                                                          ResultsRequestBody requestBody)
     {
         return restAPI.getElementsSourcedFrom(serverName, urlMarker, elementGUID, requestBody);
     }
@@ -474,6 +500,7 @@ public class ClassificationExplorerResource
      * UserNotAuthorizedException security access problem
      */
     @PostMapping(path = "/elements/{elementGUID}/scoped-by")
+    @SecurityRequirement(name = "BearerAuthorization")
 
     @Operation(summary="getScopes",
             description="Retrieve the elements linked via a ScopedBy relationship to the requested element.",
@@ -483,7 +510,7 @@ public class ClassificationExplorerResource
                                                              @PathVariable String                        urlMarker,
                                                              @PathVariable String                        elementGUID,
                                                              @RequestBody  (required = false)
-                                                             FindProperties requestBody)
+                                                             ResultsRequestBody requestBody)
     {
         return restAPI.getScopes(serverName, urlMarker, elementGUID, requestBody);
     }
@@ -503,6 +530,7 @@ public class ClassificationExplorerResource
      * UserNotAuthorizedException security access problem
      */
     @PostMapping(path = "/elements/scoped-by/{scopeGUID}")
+    @SecurityRequirement(name = "BearerAuthorization")
 
     @Operation(summary="getScopedElements",
             description="Retrieve the elements linked via a ScopedBy relationship to the requested scope.",
@@ -512,7 +540,7 @@ public class ClassificationExplorerResource
                                                                      @PathVariable String                        urlMarker,
                                                                      @PathVariable String scopeGUID,
                                                                      @RequestBody  (required = false)
-                                                                     FindProperties requestBody)
+                                                                     ResultsRequestBody requestBody)
     {
         return restAPI.getScopedElements(serverName, urlMarker, scopeGUID, requestBody);
     }
@@ -532,6 +560,7 @@ public class ClassificationExplorerResource
      * UserNotAuthorizedException security access problem
      */
     @PostMapping(path = "/elements/{elementGUID}/resource-list")
+    @SecurityRequirement(name = "BearerAuthorization")
 
     @Operation(summary="getResourceList",
             description="Retrieve the elements linked via a ResourceList relationship to the requested element.",
@@ -541,7 +570,7 @@ public class ClassificationExplorerResource
                                                                    @PathVariable String                        urlMarker,
                                                                    @PathVariable String                        elementGUID,
                                                                    @RequestBody  (required = false)
-                                                                   FindProperties requestBody)
+                                                                   ResultsRequestBody requestBody)
     {
         return restAPI.getResourceList(serverName, urlMarker, elementGUID, requestBody);
     }
@@ -561,6 +590,7 @@ public class ClassificationExplorerResource
      * UserNotAuthorizedException security access problem
      */
     @PostMapping(path = "/elements/resource-list/{resourceGUID}")
+    @SecurityRequirement(name = "BearerAuthorization")
 
     @Operation(summary="getSupportedByResource",
             description="Retrieve the elements linked via a ResourceList relationship to the requested resource.",
@@ -570,7 +600,7 @@ public class ClassificationExplorerResource
                                                                           @PathVariable String                        urlMarker,
                                                                           @PathVariable String resourceGUID,
                                                                           @RequestBody  (required = false)
-                                                                          FindProperties requestBody)
+                                                                          ResultsRequestBody requestBody)
     {
         return restAPI.getSupportedByResource(serverName, urlMarker, resourceGUID, requestBody);
     }
@@ -590,6 +620,7 @@ public class ClassificationExplorerResource
      *  UserNotAuthorizedException security access problem
      */
     @PostMapping (path = "/elements/licenses/{licenseTypeGUID}")
+    @SecurityRequirement(name = "BearerAuthorization")
 
     public RelatedMetadataElementSummariesResponse  getLicensedElements(@PathVariable String serverName,
                                                                         @PathVariable String                        urlMarker,
@@ -614,6 +645,7 @@ public class ClassificationExplorerResource
      *  UserNotAuthorizedException security access problem
      */
     @PostMapping (path = "/elements/{elementGUID}/licenses")
+    @SecurityRequirement(name = "BearerAuthorization")
 
     public RelatedMetadataElementSummariesResponse getLicenses(@PathVariable String serverName,
                                                                @PathVariable String urlMarker,
@@ -638,6 +670,7 @@ public class ClassificationExplorerResource
      *  UserNotAuthorizedException security access problem
      */
     @PostMapping (path = "/elements/certifications/{certificationTypeGUID}")
+    @SecurityRequirement(name = "BearerAuthorization")
 
     public CertificationElementsResponse  geCertifiedElements(@PathVariable String serverName,
                                                               @PathVariable String                        urlMarker,
@@ -662,6 +695,7 @@ public class ClassificationExplorerResource
      *  UserNotAuthorizedException security access problem
      */
     @PostMapping (path = "/elements/{elementGUID}/certifications")
+    @SecurityRequirement(name = "BearerAuthorization")
 
     public CertificationElementsResponse getCertifications(@PathVariable String serverName,
                                                            @PathVariable String urlMarker,
@@ -686,6 +720,7 @@ public class ClassificationExplorerResource
      *  PropertyServerException there is a problem accessing the metadata store
      */
     @PostMapping(path = "/elements/{elementGUID}")
+    @SecurityRequirement(name = "BearerAuthorization")
 
     @Operation(summary="getMetadataElementByGUID",
             description="Retrieve the metadata element using its unique identifier.",
@@ -696,7 +731,7 @@ public class ClassificationExplorerResource
                                                                    @PathVariable String                        urlMarker,
                                                                    @PathVariable String  elementGUID,
                                                                    @RequestBody  (required = false)
-                                                                   FindRequest requestBody)
+                                                                   GetRequestBody requestBody)
     {
         return restAPI.getMetadataElementByGUID(serverName, urlMarker, elementGUID, requestBody);
     }
@@ -715,6 +750,7 @@ public class ClassificationExplorerResource
      *  PropertyServerException there is a problem accessing the metadata store
      */
     @PostMapping(path = "/elements/by-unique-name")
+    @SecurityRequirement(name = "BearerAuthorization")
 
     @Operation(summary="getMetadataElementByUniqueName",
             description="Retrieve the metadata element using its unique name (typically the qualified name, but it is possible to specify a different property name in the request body as long as it is unique).  If multiple matching instances are found, and exception is thrown.",
@@ -742,6 +778,7 @@ public class ClassificationExplorerResource
      *  PropertyServerException there is a problem accessing the metadata store
      */
     @PostMapping(path = "/elements/guid-by-unique-name")
+    @SecurityRequirement(name = "BearerAuthorization")
 
     @Operation(summary="getMetadataElementGUIDByUniqueName",
             description="Retrieve the metadata element GUID using its unique name (typically the qualified name, but it is possible to specify a different property name in the request body as long as it is unique).  If multiple matching instances are found, and exception is thrown.",
@@ -769,6 +806,7 @@ public class ClassificationExplorerResource
      *  PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     @PostMapping(path = "/elements/by-type")
+    @SecurityRequirement(name = "BearerAuthorization")
 
     @Operation(summary="getElements",
             description="Retrieve elements of the requested type name.  If no type name is specified then any type of element may be returned.",
@@ -777,7 +815,7 @@ public class ClassificationExplorerResource
     public MetadataElementSummariesResponse getElements(@PathVariable String                    serverName,
                                                         @PathVariable String                        urlMarker,
                                                         @RequestBody  (required = false)
-                                                        FindProperties requestBody)
+                                                        ResultsRequestBody requestBody)
     {
         return restAPI.getElements(serverName, urlMarker, requestBody);
     }
@@ -797,6 +835,7 @@ public class ClassificationExplorerResource
      *  PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     @PostMapping(path = "/elements/by-exact-property-value")
+    @SecurityRequirement(name = "BearerAuthorization")
 
     @Operation(summary="getElementsByPropertyValue",
             description="Retrieve elements by a value found in one of the properties specified.  The value must match exactly. An open metadata type name may be supplied to restrict the results.",
@@ -826,6 +865,7 @@ public class ClassificationExplorerResource
      *  PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     @PostMapping(path = "/elements/by-property-value-search")
+    @SecurityRequirement(name = "BearerAuthorization")
 
     @Operation(summary="findElementsByPropertyValue",
             description="Retrieve elements by a value found in one of the properties specified.  The value must only be contained in the" +
@@ -857,6 +897,7 @@ public class ClassificationExplorerResource
      *  PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     @PostMapping(path = "/elements/by-classification/{classificationName}")
+    @SecurityRequirement(name = "BearerAuthorization")
 
     @Operation(summary="getElementsByClassification",
             description="Retrieve elements with the requested classification name. It is also possible to limit the results by specifying a type name for the elements that should be returned. If no type name is specified then any type of element may be returned.",
@@ -866,7 +907,7 @@ public class ClassificationExplorerResource
                                                                         @PathVariable String                        urlMarker,
                                                                         @PathVariable String                    classificationName,
                                                                         @RequestBody  (required = false)
-                                                                        FindProperties requestBody)
+                                                                        ResultsRequestBody requestBody)
     {
         return restAPI.getElementsByClassification(serverName, urlMarker, classificationName, requestBody);
     }
@@ -888,6 +929,7 @@ public class ClassificationExplorerResource
      *  PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     @PostMapping(path = "/elements/by-classification/{classificationName}/with-exact-property-value")
+    @SecurityRequirement(name = "BearerAuthorization")
 
     @Operation(summary="getElementsByClassificationWithPropertyValue",
             description="Retrieve elements with the requested classification name and with the requested a value found in one of the classification's properties specified.  The value must match exactly. An open metadata type name may be supplied to restrict the types of elements returned.",
@@ -920,6 +962,7 @@ public class ClassificationExplorerResource
      *  PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     @PostMapping(path = "/elements/by-classification/{classificationName}/with-property-value-search")
+    @SecurityRequirement(name = "BearerAuthorization")
 
     @Operation(summary="findElementsByClassificationWithPropertyValue",
             description="Retrieve elements with the requested classification name and with the requested a value found in one of the classification's" +
@@ -952,6 +995,7 @@ public class ClassificationExplorerResource
      *  PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     @PostMapping(path = "/elements/{elementGUID}/by-relationship")
+    @SecurityRequirement(name = "BearerAuthorization")
 
     @Operation(summary="getRelatedElements",
             description="Retrieve elements linked via the requested relationship type name. It is also possible to limit the results by specifying a type name for the elements that should be returned. If no type name is specified then any type of element may be returned.",
@@ -963,12 +1007,10 @@ public class ClassificationExplorerResource
                                                                       @RequestParam (required = false, defaultValue = "0")
                                                                       int     startingAtEnd,
                                                                       @RequestBody  (required = false)
-                                                                      FindProperties requestBody)
+                                                                      ResultsRequestBody requestBody)
     {
         return restAPI.getRelatedElements(serverName, urlMarker, elementGUID, null, startingAtEnd, requestBody);
     }
-
-
 
 
     /**
@@ -987,6 +1029,7 @@ public class ClassificationExplorerResource
      *  PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     @PostMapping(path = "/elements/{elementGUID}/by-relationship/{relationshipTypeName}")
+    @SecurityRequirement(name = "BearerAuthorization")
 
     @Operation(summary="getRelatedElements",
             description="Retrieve elements linked via the requested relationship type name. It is also possible to limit the results by specifying a type name for the elements that should be returned. If no type name is specified then any type of element may be returned.",
@@ -999,11 +1042,10 @@ public class ClassificationExplorerResource
                                                                       @RequestParam (required = false, defaultValue = "0")
                                                                       int     startingAtEnd,
                                                                       @RequestBody  (required = false)
-                                                                      FindProperties requestBody)
+                                                                      ResultsRequestBody requestBody)
     {
         return restAPI.getRelatedElements(serverName, urlMarker, elementGUID, relationshipTypeName, startingAtEnd, requestBody);
     }
-
 
 
     /**
@@ -1024,6 +1066,7 @@ public class ClassificationExplorerResource
      *  PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     @PostMapping(path = "/elements/{elementGUID}/by-relationship/{relationshipTypeName}/with-exact-property-value")
+    @SecurityRequirement(name = "BearerAuthorization")
 
     @Operation(summary="getRelatedElementsWithPropertyValue",
             description="Retrieve elements linked via the requested relationship type name and with the requested a value found in one of the relationship's properties specified.  The value must match exactly. An open metadata type name may be supplied to restrict the types of elements returned.",
@@ -1062,6 +1105,7 @@ public class ClassificationExplorerResource
      *  PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     @PostMapping(path = "/elements/{elementGUID}/by-relationship/{relationshipTypeName}/with-property-value-search")
+    @SecurityRequirement(name = "BearerAuthorization")
 
     @Operation(summary="findRelatedElementsWithPropertyValue",
             description="Retrieve elements linked via the requested relationship type name and with the requested value found in one of the relationship's properties specified (or any property if no property names are specified).  The value must only be contained in the properties rather than needing to be an exact match.  An open metadata type name may be supplied to restrict the results.",
@@ -1093,6 +1137,7 @@ public class ClassificationExplorerResource
      *  PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     @PostMapping(path = "/relationships")
+    @SecurityRequirement(name = "BearerAuthorization")
 
     @Operation(summary="getRelationships",
             description="Retrieve relationships of the requested relationship type name (passed in the request body as openMetadataType).",
@@ -1101,9 +1146,38 @@ public class ClassificationExplorerResource
     public MetadataRelationshipSummariesResponse getRelationships(@PathVariable String                    serverName,
                                                                   @PathVariable String                        urlMarker,
                                                                   @RequestBody  (required = false)
-                                                                  FindProperties requestBody)
+                                                                  ResultsRequestBody requestBody)
     {
-        return restAPI.getRelationships(serverName, urlMarker, requestBody);
+        return restAPI.getRelationships(serverName, urlMarker, null, requestBody);
+    }
+
+
+    /**
+     * Retrieve relationships of the requested relationship type name.
+     *
+     * @param serverName  name of the server instance to connect to
+     * @param urlMarker  view service URL marker
+     * @param requestBody  open metadata type to search on
+     *
+     * @return list of matching elements or
+     *  InvalidParameterException  one of the parameters is invalid
+     *  UserNotAuthorizedException the user is not authorized to issue this request
+     *  PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    @PostMapping(path = "/relationships/{relationshipTypeName}")
+    @SecurityRequirement(name = "BearerAuthorization")
+
+    @Operation(summary="getRelationships",
+            description="Retrieve relationships of the requested relationship type name.",
+            externalDocs=@ExternalDocumentation(description="Open Metadata Types", url="https://egeria-project.org/types/"))
+
+    public MetadataRelationshipSummariesResponse getRelationships(@PathVariable String                    serverName,
+                                                                  @PathVariable String                        urlMarker,
+                                                                  @PathVariable String       relationshipTypeName,
+                                                                  @RequestBody  (required = false)
+                                                                  ResultsRequestBody requestBody)
+    {
+        return restAPI.getRelationships(serverName, urlMarker, relationshipTypeName, requestBody);
     }
 
 
@@ -1121,9 +1195,10 @@ public class ClassificationExplorerResource
      *  PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     @PostMapping(path = "/relationships/with-exact-property-value")
+    @SecurityRequirement(name = "BearerAuthorization")
 
     @Operation(summary="getRelationshipsWithPropertyValue",
-            description="Retrieve relationships of the requested relationship type name and with the requested a value found in one of the relationship's properties specified.  The value must match exactly.",
+            description="Retrieve relationships of any relationship type name and with the requested a value found in one of the relationship's properties specified.  The value must match exactly.",
             externalDocs=@ExternalDocumentation(description="Open Metadata Types", url="https://egeria-project.org/types/"))
 
     public MetadataRelationshipSummariesResponse getRelationshipsWithPropertyValue(@PathVariable String                       serverName,
@@ -1131,7 +1206,38 @@ public class ClassificationExplorerResource
                                                                                    @RequestBody  (required = false)
                                                                                    FindPropertyNamesProperties requestBody)
     {
-        return restAPI.getRelationshipsWithPropertyValue(serverName, urlMarker, requestBody);
+        return restAPI.getRelationshipsWithPropertyValue(serverName, urlMarker, null, requestBody);
+    }
+
+
+    /**
+     * Retrieve relationships of the requested relationship type name and with the requested a value found in
+     * one of the relationship's properties specified.  The value must match exactly.
+     *
+     * @param serverName  name of the server instance to connect to
+     * @param urlMarker  view service URL marker
+     * @param relationshipTypeName name of relationship
+     * @param requestBody properties and optional open metadata type to search on
+     *
+     * @return list of matching elements or
+     *  InvalidParameterException  one of the parameters is invalid
+     *  UserNotAuthorizedException the user is not authorized to issue this request
+     *  PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    @PostMapping(path = "/relationships/{relationshipTypeName}/with-exact-property-value")
+    @SecurityRequirement(name = "BearerAuthorization")
+
+    @Operation(summary="getRelationshipsWithPropertyValue",
+            description="Retrieve relationships of the requested relationship type name and with the requested a value found in one of the relationship's properties specified.  The value must match exactly.",
+            externalDocs=@ExternalDocumentation(description="Open Metadata Types", url="https://egeria-project.org/types/"))
+
+    public MetadataRelationshipSummariesResponse getRelationshipsWithPropertyValue(@PathVariable String                       serverName,
+                                                                                   @PathVariable String                        urlMarker,
+                                                                                   @PathVariable String                        relationshipTypeName,
+                                                                                   @RequestBody  (required = false)
+                                                                                   FindPropertyNamesProperties requestBody)
+    {
+        return restAPI.getRelationshipsWithPropertyValue(serverName, urlMarker, relationshipTypeName, requestBody);
     }
 
 
@@ -1150,9 +1256,10 @@ public class ClassificationExplorerResource
      *  PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     @PostMapping(path = "/relationships/with-property-value-search")
+    @SecurityRequirement(name = "BearerAuthorization")
 
     @Operation(summary="findRelationshipsWithPropertyValue",
-            description="Retrieve relationships of the requested relationship type name and with the requested a value found in one of the relationship's properties specified.  The value must only be contained in the properties rather than needing to be an exact match.",
+            description="Retrieve relationships of any relationship type name and with the requested a value found in one of the relationship's properties specified.  The value must only be contained in the properties rather than needing to be an exact match.",
             externalDocs=@ExternalDocumentation(description="Open Metadata Types", url="https://egeria-project.org/types/"))
 
     public MetadataRelationshipSummariesResponse findRelationshipsWithPropertyValue(@PathVariable String                       serverName,
@@ -1160,7 +1267,39 @@ public class ClassificationExplorerResource
                                                                                     @RequestBody  (required = false)
                                                                                     FindPropertyNamesProperties requestBody)
     {
-        return restAPI.findRelationshipsWithPropertyValue(serverName, urlMarker, requestBody);
+        return restAPI.findRelationshipsWithPropertyValue(serverName, urlMarker, null, requestBody);
+    }
+
+
+    /**
+     * Retrieve relationships of the requested relationship type name and with the requested a value found in one of
+     * the relationship's properties specified.  The value must only be contained in the properties rather than
+     * needing to be an exact match.
+     *
+     * @param serverName  name of the server instance to connect to
+     * @param urlMarker  view service URL marker
+     * @param relationshipTypeName name of relationship
+     * @param requestBody properties and optional open metadata type to search on
+     *
+     * @return list of matching elements or
+     *  InvalidParameterException  one of the parameters is invalid
+     *  UserNotAuthorizedException the user is not authorized to issue this request
+     *  PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    @PostMapping(path = "/relationships/{relationshipTypeName}/with-property-value-search")
+    @SecurityRequirement(name = "BearerAuthorization")
+
+    @Operation(summary="findRelationshipsWithPropertyValue",
+            description="Retrieve relationships of the requested relationship type name and with the requested a value found in one of the relationship's properties specified.  The value must only be contained in the properties rather than needing to be an exact match.",
+            externalDocs=@ExternalDocumentation(description="Open Metadata Types", url="https://egeria-project.org/types/"))
+
+    public MetadataRelationshipSummariesResponse findRelationshipsWithPropertyValue(@PathVariable String                       serverName,
+                                                                                    @PathVariable String                        urlMarker,
+                                                                                    @PathVariable String                        relationshipTypeName,
+                                                                                    @RequestBody  (required = false)
+                                                                                    FindPropertyNamesProperties requestBody)
+    {
+        return restAPI.findRelationshipsWithPropertyValue(serverName, urlMarker, relationshipTypeName, requestBody);
     }
 
 
@@ -1177,6 +1316,7 @@ public class ClassificationExplorerResource
      *  PropertyServerException    there is a problem reported in the open metadata server(s)
      */
     @PostMapping(path = "/guids/{guid}")
+    @SecurityRequirement(name = "BearerAuthorization")
 
     @Operation(summary="retrieveInstanceForGUID",
             description="Retrieve the header for the instance identified by the supplied unique identifier.  It may be an element (entity) or a relationship between elements.",
@@ -1189,5 +1329,94 @@ public class ClassificationExplorerResource
     {
         return restAPI.retrieveInstanceForGUID(serverName, urlMarker, guid, requestBody);
     }
+
+
+    /**
+     * Return the list of search keywords containing the supplied string.
+     *
+     * @param serverName name of the server instances for this request.
+     * @param urlMarker  view service URL marker
+     * @param requestBody search string and effective time.
+     *
+     * @return list of search keyword objects or
+     * InvalidParameterException - one of the parameters is invalid or
+     * PropertyServerException - there is a problem retrieving information from the property server(s) or
+     * UserNotAuthorizedException - the requesting user is not authorized to issue this request.
+     */
+    @PostMapping(path = "/search-keywords/by-search-string")
+    @SecurityRequirement(name = "BearerAuthorization")
+
+    @Operation(summary="findSearchKeyword",
+            description="Return the list of search keywords containing the supplied string. The search string is located in the request body and is interpreted as a plain string.  The request parameters, startsWith, endsWith and ignoreCase can be used to allow a fuzzy search.  The request body also supports the specification of an effective time to restrict the search to element that are/were effective at a particular time.",
+            externalDocs=@ExternalDocumentation(description="Search Keywords",
+                    url="https://egeria-project.org/concepts/search-keyword/"))
+
+    public OpenMetadataRootElementsResponse findSearchKeywords(@PathVariable String                  serverName,
+                                                               @PathVariable String                        urlMarker,
+                                                               @RequestBody  (required = false)
+                                                               SearchStringRequestBody              requestBody)
+    {
+        return restAPI.findSearchKeywords(serverName, urlMarker, requestBody);
+    }
+
+
+    /**
+     * Return the list of search keywords containing the supplied keyword.
+     *
+     * @param serverName name of the server instances for this request.
+     * @param urlMarker  view service URL marker
+     * @param requestBody search string and effective time.
+     *
+     * @return list of search keyword objects or
+     * InvalidParameterException - one of the parameters is invalid or
+     * PropertyServerException - there is a problem retrieving information from the property server(s) or
+     * UserNotAuthorizedException - the requesting user is not authorized to issue this request.
+     */
+    @PostMapping(path = "/search-keywords/by-keyword")
+    @SecurityRequirement(name = "BearerAuthorization")
+
+    @Operation(summary="getSearchKeywordByKeyword",
+            description="Return the list of search keywords containing the supplied keyword. The keyword is located in the request body and is interpreted as a plain string.",
+            externalDocs=@ExternalDocumentation(description="Search Keywords",
+                    url="https://egeria-project.org/concepts/search-keyword/"))
+
+    public OpenMetadataRootElementsResponse getSearchKeywordByKeyword(@PathVariable String                  serverName,
+                                                                      @PathVariable String                        urlMarker,
+                                                                      @RequestBody  (required = false)
+                                                                      FilterRequestBody              requestBody)
+    {
+        return restAPI.getSearchKeywordsByKeyword(serverName, urlMarker, requestBody);
+    }
+
+
+    /**
+     * Return the requested searchKeyword.
+     *
+     * @param serverName name of the server instances for this request
+     * @param urlMarker  view service URL marker
+     * @param searchKeywordGUID  unique identifier for the search keyword object.
+     * @param requestBody optional effective time
+     * @return search keyword properties or
+     *  InvalidParameterException one of the parameters is null or invalid.
+     *  PropertyServerException there is a problem updating the element properties in the property server.
+     *  UserNotAuthorizedException the user does not have permission to perform this request.
+     */
+    @PostMapping(path = "/search-keywords/{searchKeywordGUID}/retrieve")
+    @SecurityRequirement(name = "BearerAuthorization")
+
+    @Operation(summary="getSearchKeywordByGUID",
+            description="Return the requested searchKeyword.",
+            externalDocs=@ExternalDocumentation(description="Search Keywords",
+                    url="https://egeria-project.org/concepts/search-keyword/"))
+
+    public OpenMetadataRootElementResponse getSearchKeywordByGUID(@PathVariable String                        serverName,
+                                                                  @PathVariable String                        urlMarker,
+                                                                  @PathVariable String                        searchKeywordGUID,
+                                                                  @RequestBody(required = false)
+                                                                  GetRequestBody requestBody)
+    {
+        return restAPI.getSearchKeywordByGUID(serverName, urlMarker, searchKeywordGUID, requestBody);
+    }
+
 }
 
