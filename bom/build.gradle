@@ -68,7 +68,7 @@ ext {
     junitVersion = '4.13.2'
     junitjupiterVersion = '5.11.3'
     junitplatformVersion = '1.9.2'
-    jwtVersion = '9.47'
+    jwtVersion = '10.5'
     jwtApiVersion = '0.13.0'
     jwtImplVersion = '0.11.5'
     jwtJacksonVersion = '0.11.5'
@@ -98,7 +98,7 @@ ext {
     // This must be kept in step with the version of the springboot plugin in settings.gradle
     springbootVersion = '3.1.4'
 
-    spotbugsVersion = '4.8.5'
+    spotbugsVersion = '4.9.8'
     springdataVersion = '3.0.3'
     springldapVersion = '3.0.1'
     springsecurityVersion = '6.1.4'
