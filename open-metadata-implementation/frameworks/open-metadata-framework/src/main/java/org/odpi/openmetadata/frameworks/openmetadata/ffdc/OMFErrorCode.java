@@ -319,20 +319,12 @@ public enum OMFErrorCode implements ExceptionMessageSet
                                    "Review the stack trace to identify where the error occurred and work to resolve the cause."),
 
     /**
-     * OPEN-METADATA-503-001 - A caller {0} has passed an invalid parameter to the propertiesHelper {1} operation as part of the {2} request
-     */
-    HELPER_LOGIC_ERROR(503, "OPEN-METADATA-503-001",
-                       "A caller {0} has passed an invalid parameter to the propertiesHelper {1} operation as part of the {2} request",
-                       "The open metadata component has invoked the property helper operations in the wrong order or has a similar logic error.",
-                       "Review the calling code to detect the source of the error."),
-
-    /**
      * OPEN-METADATA-503-002 - A caller {0} has passed an invalid parameter to the property helper {1} operation as part of the {2}
      * request resulting in an unexpected exception {3} with message {4}
      */
     HELPER_LOGIC_EXCEPTION(503, "OPEN-METADATA-503-002",
                            "A caller {0} has passed an invalid parameter to the property helper {1} operation as part of the {2} request resulting in an " +
-                                   "unexpected exception {3} with message {4}",
+                                   "unexpected {3} exception with message {4}",
                            "The open metadata component has invoked the property helper operations in the wrong sequence or has a similar logic error.",
                            "Review the code around the original exception to detect the source of the error."),
 

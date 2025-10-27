@@ -4343,25 +4343,6 @@ public class PropertyHelper
     }
 
 
-    /**
-     * Throws a logic error exception when the repository helper is called with invalid parameters.
-     * Normally this means the repository helper methods have been called in the wrong order.
-     *
-     * @param sourceName name of the calling repository or service
-     * @param originatingMethodName method that called the repository validator
-     * @param localMethodName local method that detected the error
-     */
-    private void throwHelperLogicError(String     sourceName,
-                                       String     originatingMethodName,
-                                       String     localMethodName)
-    {
-        throw new OMFRuntimeException(OMFErrorCode.HELPER_LOGIC_ERROR.getMessageDefinition(sourceName,
-                                                                                           localMethodName,
-                                                                                           originatingMethodName),
-                                      this.getClass().getName(),
-                                      localMethodName);
-    }
-
 
     /**
      * Throws a logic error exception when the repository helper is called with invalid parameters.
@@ -4379,7 +4360,9 @@ public class PropertyHelper
     {
         throw new OMFRuntimeException(OMFErrorCode.HELPER_LOGIC_EXCEPTION.getMessageDefinition(sourceName,
                                                                                                localMethodName,
-                                                                                               originatingMethodName),
+                                                                                               originatingMethodName,
+                                                                                               unexpectedException.getClass().getName(),
+                                                                                               unexpectedException.getMessage()),
                                       this.getClass().getName(),
                                       localMethodName,
                                       unexpectedException);
