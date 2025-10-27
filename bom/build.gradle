@@ -28,7 +28,7 @@ ext {
     clojureVersion = '1.12.0'
 
     classgraphVersion = '4.8.179'
-    classmateVersion = '1.5.1'
+    classmateVersion = '1.7.1'
     collections4Version = '4.4'
     // TODO: Version 1.17.0 breaks XTDB because of a change in lucene's library names
     commonscodecVersion = '1.16.0'
