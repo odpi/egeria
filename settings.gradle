@@ -15,7 +15,8 @@ pluginManagement {
         gradlePluginPortal()
     }
     plugins {
-        id "io.freefair.aggregate-javadoc" version "9.0.0"
+        // problem when upgraded to version "9.0.0"
+        id "io.freefair.aggregate-javadoc" version "6.6.3"
         // Checks for unnecessary dependencies
         id("com.autonomousapps.dependency-analysis") version "1.32.0"
         // helps resolve log implementation clashes
