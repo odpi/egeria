@@ -228,7 +228,6 @@ public class InvalidParameterException extends OMFCheckedExceptionBase
      * @param userAction   instructions for correcting the error
      * @param parameterName name of the invalid parameter if known
      */
-    @Deprecated
     public InvalidParameterException(int    httpCode,
                                      String className,
                                      String actionDescription,
@@ -242,91 +241,6 @@ public class InvalidParameterException extends OMFCheckedExceptionBase
         this.parameterName = parameterName;
     }
 
-
-    /**
-     * This is the typical constructor used for creating an exception.
-     *
-     * @param httpCode   http response code to use if this exception flows over a rest call
-     * @param className   name of class reporting error
-     * @param actionDescription   description of function it was performing when error detected
-     * @param errorMessage   description of error
-     * @param systemAction   actions of the system as a result of the error
-     * @param userAction   instructions for correcting the error
-     * @param parameterName name of the invalid parameter if known
-     * @param relatedProperties  arbitrary properties that may help with diagnosing the problem.
-     */
-    @Deprecated
-    public InvalidParameterException(int                  httpCode,
-                                     String               className,
-                                     String               actionDescription,
-                                     String               errorMessage,
-                                     String               systemAction,
-                                     String               userAction,
-                                     String               parameterName,
-                                     Map<String, Object> relatedProperties)
-    {
-        super(httpCode, className, actionDescription, errorMessage, systemAction, userAction, relatedProperties);
-
-        this.parameterName = parameterName;
-    }
-
-
-    /**
-     * This is the constructor used for creating an exception that resulted from a previous error.
-     *
-     * @param httpCode  http response code to use if this exception flows over a rest call
-     * @param className name of class reporting error
-     * @param actionDescription description of function it was performing when error detected
-     * @param errorMessage description of error
-     * @param systemAction actions of the system as a result of the error
-     * @param userAction instructions for correcting the error
-     * @param caughtError the error that resulted in this exception.
-     * @param parameterName name of the invalid parameter if known
-     */
-    @Deprecated
-    public InvalidParameterException(int       httpCode,
-                                     String    className,
-                                     String    actionDescription,
-                                     String    errorMessage,
-                                     String    systemAction,
-                                     String    userAction,
-                                     Exception caughtError,
-                                     String    parameterName)
-    {
-        super(httpCode, className, actionDescription, errorMessage, systemAction, userAction, caughtError);
-
-        this.parameterName = parameterName;
-    }
-
-
-    /**
-     * This is the constructor used for creating an exception that resulted from a previous error.
-     *
-     * @param httpCode  http response code to use if this exception flows over a rest call
-     * @param className name of class reporting error
-     * @param actionDescription description of function it was performing when error detected
-     * @param errorMessage description of error
-     * @param systemAction actions of the system as a result of the error
-     * @param userAction instructions for correcting the error
-     * @param caughtError the error that resulted in this exception.
-     * @param parameterName name of the invalid parameter if known
-     * @param relatedProperties  arbitrary properties that may help with diagnosing the problem.
-     */
-    @Deprecated
-    public InvalidParameterException(int                  httpCode,
-                                     String               className,
-                                     String               actionDescription,
-                                     String               errorMessage,
-                                     String               systemAction,
-                                     String               userAction,
-                                     Exception            caughtError,
-                                     String               parameterName,
-                                     Map<String, Object>  relatedProperties)
-    {
-        super(httpCode, className, actionDescription, errorMessage, systemAction, userAction, caughtError, relatedProperties);
-
-        this.parameterName = parameterName;
-    }
 
 
     /**
@@ -378,7 +292,7 @@ public class InvalidParameterException extends OMFCheckedExceptionBase
         {
             return true;
         }
-        if (!(objectToCompare instanceof InvalidParameterException))
+        if (!(objectToCompare instanceof InvalidParameterException that))
         {
             return false;
         }
@@ -386,7 +300,6 @@ public class InvalidParameterException extends OMFCheckedExceptionBase
         {
             return false;
         }
-        InvalidParameterException that = (InvalidParameterException) objectToCompare;
         return Objects.equals(getParameterName(), that.getParameterName());
     }
 

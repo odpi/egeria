@@ -42,7 +42,7 @@ public class GlossaryDynamicArchiverProvider extends DynamicArchiveProvider
 
         actionTargetType.setName(DynamicGlossaryArchiveRequestParameter.GLOSSARY_NAME.getName());
         actionTargetType.setDescription(DynamicGlossaryArchiveRequestParameter.GLOSSARY_NAME.getDescription());
-        actionTargetType.setTypeName(OpenMetadataType.GLOSSARY.typeName);
+        actionTargetType.setOpenMetadataTypeName(OpenMetadataType.GLOSSARY.typeName);
 
         super.supportedActionTargetTypes.add(actionTargetType);
 

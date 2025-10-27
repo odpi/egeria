@@ -3,22 +3,32 @@
 
 package org.odpi.openmetadata.frameworks.openmetadata.specificationproperties;
 
+import com.fasterxml.jackson.annotation.*;
+
 import java.util.Objects;
 
+import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
+import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
+
 /**
- * TemplateType defines a template supported by this integration connector.
+ * SupportedTemplate defines a template supported by the linked element (typically a connector or governance action).
  */
+@JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
+@JsonInclude(JsonInclude.Include.NON_NULL)
+@JsonIgnoreProperties(ignoreUnknown=true)
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME,
+        include = JsonTypeInfo.As.PROPERTY,
+        property = "class")
+@JsonSubTypes(
+        {
+                @JsonSubTypes.Type(value = SupportedTemplate.class, name = "SupportedTemplate"),
+        })
 public class TemplateType extends SpecificationProperty
 {
     /**
-     * Symbolic name of the template.
-     */
-    private String templateName = null;
-
-    /**
      * Open metadata type name of the template.
      */
-    private String typeName = null;
+    private String openMetadataTypeName = null;
 
     /**
      * Is this catalog template required for the connector to work successfully.
@@ -50,33 +60,10 @@ public class TemplateType extends SpecificationProperty
 
         if (template != null)
         {
-            this.templateName = template.getTemplateName();
-            this.typeName = template.getTypeName();
-            this.required = template.getRequired();
+            this.openMetadataTypeName = template.getOpenMetadataTypeName();
+            this.required             = template.getRequired();
             this.defaultTemplateGUID = template.getDefaultTemplateGUID();
         }
-    }
-
-
-    /**
-     * Return the name of the template.
-     *
-     * @return name
-     */
-    public String getTemplateName()
-    {
-        return templateName;
-    }
-
-
-    /**
-     * Set up the name of the template.
-     *
-     * @param templateName name
-     */
-    public void setTemplateName(String templateName)
-    {
-        this.templateName = templateName;
     }
 
 
@@ -85,20 +72,20 @@ public class TemplateType extends SpecificationProperty
      * 
      * @return open metadata type name
      */
-    public String getTypeName()
+    public String getOpenMetadataTypeName()
     {
-        return typeName;
+        return openMetadataTypeName;
     }
 
 
     /**
      * Set up open metadata type name.
      * 
-     * @param typeName open metadata type name
+     * @param openMetadataTypeName open metadata type name
      */
-    public void setTypeName(String typeName)
+    public void setOpenMetadataTypeName(String openMetadataTypeName)
     {
-        this.typeName = typeName;
+        this.openMetadataTypeName = openMetadataTypeName;
     }
 
 
@@ -155,8 +142,7 @@ public class TemplateType extends SpecificationProperty
     public String toString()
     {
         return "TemplateType{" +
-                "templateName='" + templateName + '\'' +
-                ", typeName='" + typeName + '\'' +
+                "openMetadataTypeName='" + openMetadataTypeName + '\'' +
                 ", required=" + required +
                 ", defaultTemplateGUID='" + defaultTemplateGUID + '\'' +
                 "} " + super.toString();
@@ -177,8 +163,7 @@ public class TemplateType extends SpecificationProperty
         if (!super.equals(objectToCompare)) return false;
         TemplateType that = (TemplateType) objectToCompare;
         return required == that.required &&
-                Objects.equals(templateName, that.templateName) &&
-                Objects.equals(typeName, that.typeName) &&
+                Objects.equals(openMetadataTypeName, that.openMetadataTypeName) &&
                 Objects.equals(defaultTemplateGUID, that.defaultTemplateGUID);
     }
 
@@ -191,6 +176,6 @@ public class TemplateType extends SpecificationProperty
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), templateName, typeName, required, defaultTemplateGUID);
+        return Objects.hash(super.hashCode(), openMetadataTypeName, required, defaultTemplateGUID);
     }
 }

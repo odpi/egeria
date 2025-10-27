@@ -67,6 +67,7 @@ public class SchemaMakerInstance extends OMVSServiceInstance
                                                                auditLog,
                                                                activeViewServices,
                                                                myDescription.getViewServiceFullName(),
+                                                               myDescription.getViewServiceURLMarker(),
                                                                maxPageSize);
 
         this.schemaAttributeHandlerMap = new ViewServiceClientMap<>(SchemaAttributeHandler.class,
@@ -76,6 +77,7 @@ public class SchemaMakerInstance extends OMVSServiceInstance
                                                                     auditLog,
                                                                     activeViewServices,
                                                                     myDescription.getViewServiceFullName(),
+                                                                    myDescription.getViewServiceURLMarker(),
                                                                     maxPageSize);
     }
 

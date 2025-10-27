@@ -64,6 +64,7 @@ public class ConnectorContextBase
 
 
     protected final OpenMetadataStore           openMetadataStore;
+    protected final OpenMetadataTypes           openMetadataTypes;
     private final   ActorProfileClient          actorProfileClient;
     private final   ActorRoleClient             actorRoleClient;
     private final   AnnotationClient            annotationClient;
@@ -154,6 +155,17 @@ public class ConnectorContextBase
         this.openMetadataClient        = openMetadataClient;
 
         this.openMetadataStore = new OpenMetadataStore(this,
+                                                       localServerName,
+                                                       localServiceName,
+                                                       connectorUserId,
+                                                       connectorGUID,
+                                                       externalSourceGUID,
+                                                       externalSourceName,
+                                                       openMetadataClient,
+                                                       auditLog,
+                                                       maxPageSize);
+
+        this.openMetadataTypes = new OpenMetadataTypes(this,
                                                        localServerName,
                                                        localServiceName,
                                                        connectorUserId,
@@ -611,6 +623,22 @@ public class ConnectorContextBase
     /* ========================================================
      * Return the different types of context clients. Each serves a particular type of metadata.
      */
+
+    /**
+     * Return the client for retrieving the open metadata types.
+     *
+     * @return connector context client
+     * @throws UserNotAuthorizedException connector is disconnected
+     */
+    public OpenMetadataTypes getOpenMetadataTypes() throws UserNotAuthorizedException
+    {
+        final String methodName = "getOpenMetadataTypes";
+
+        validateIsActive(methodName);
+
+        return openMetadataTypes;
+    }
+
 
     /**
      * Return the client for managing all types of metadata.

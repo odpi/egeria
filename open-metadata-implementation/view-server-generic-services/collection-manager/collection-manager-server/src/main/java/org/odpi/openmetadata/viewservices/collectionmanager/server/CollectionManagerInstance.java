@@ -61,6 +61,7 @@ public class CollectionManagerInstance extends OMVSServiceInstance
                                                                auditLog,
                                                                activeViewServices,
                                                                myDescription.getViewServiceFullName(),
+                                                               myDescription.getViewServiceURLMarker(),
                                                                maxPageSize);
     }
 

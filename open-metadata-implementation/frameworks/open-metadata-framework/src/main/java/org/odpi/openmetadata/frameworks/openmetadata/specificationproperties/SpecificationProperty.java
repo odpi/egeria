@@ -3,6 +3,7 @@
 package org.odpi.openmetadata.frameworks.openmetadata.specificationproperties;
 
 import com.fasterxml.jackson.annotation.*;
+import org.odpi.openmetadata.frameworks.openmetadata.refdata.SpecificationPropertyType;
 
 import java.util.Map;
 import java.util.Objects;
@@ -34,6 +35,11 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
         })
 public class SpecificationProperty
 {
+    /**
+     * Defines the type of specification property.
+     */
+    private SpecificationPropertyType specificationPropertyType = null;
+
     /**
      * Value to use for the specification property.
      */
@@ -69,10 +75,33 @@ public class SpecificationProperty
     {
         if (template != null)
         {
-            this.name          = template.getName();
-            this.description = template.getDescription();
-            this.otherPropertyValues = template.getOtherPropertyValues();
+            this.specificationPropertyType = template.getSpecificationPropertyType();
+            this.name                      = template.getName();
+            this.description               = template.getDescription();
+            this.otherPropertyValues       = template.getOtherPropertyValues();
         }
+    }
+
+
+    /**
+     * Return the type of specification property.
+     *
+     * @return enum
+     */
+    public SpecificationPropertyType getSpecificationPropertyType()
+    {
+        return specificationPropertyType;
+    }
+
+
+    /**
+     * Set up the type of specification property.
+     *
+     * @param specificationPropertyType enum
+     */
+    public void setSpecificationPropertyType(SpecificationPropertyType specificationPropertyType)
+    {
+        this.specificationPropertyType = specificationPropertyType;
     }
 
 
@@ -152,7 +181,8 @@ public class SpecificationProperty
     public String toString()
     {
         return "SpecificationProperty{" +
-                "name='" + name + '\'' +
+                "specificationPropertyType=" + specificationPropertyType +
+                ", name='" + name + '\'' +
                 ", description='" + description + '\'' +
                 ", otherPropertyValues=" + otherPropertyValues +
                 '}';
@@ -176,7 +206,8 @@ public class SpecificationProperty
         {
             return false;
         }
-        return Objects.equals(name, that.name) &&
+        return this.specificationPropertyType == that.specificationPropertyType &&
+                Objects.equals(name, that.name) &&
                 Objects.equals(description, that.description) &&
                 Objects.equals(otherPropertyValues, that.otherPropertyValues);
     }
@@ -190,6 +221,6 @@ public class SpecificationProperty
     @Override
     public int hashCode()
     {
-        return Objects.hash(name, description, otherPropertyValues);
+        return Objects.hash(specificationPropertyType, name, description, otherPropertyValues);
     }
 }

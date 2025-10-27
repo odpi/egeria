@@ -69,6 +69,7 @@ public class ValidMetadataInstance extends OMVSServiceInstance
                                                                        auditLog,
                                                                        activeViewServices,
                                                                        myDescription.getViewServiceFullName(),
+                                                                       myDescription.getViewServiceURLMarker(),
                                                                        maxPageSize);
 
         this.specificationPropertyHandlerMap = new ViewServiceClientMap<>(SpecificationPropertyHandler.class,
@@ -78,6 +79,7 @@ public class ValidMetadataInstance extends OMVSServiceInstance
                                                                           auditLog,
                                                                           activeViewServices,
                                                                           myDescription.getViewServiceFullName(),
+                                                                          myDescription.getViewServiceURLMarker(),
                                                                           maxPageSize);
 
         this.openMetadataHandlerMap = new ViewServiceClientMap<>(EgeriaOpenMetadataStoreHandler.class,
@@ -87,6 +89,7 @@ public class ValidMetadataInstance extends OMVSServiceInstance
                                                                  auditLog,
                                                                  activeViewServices,
                                                                  myDescription.getViewServiceFullName(),
+                                                                 myDescription.getViewServiceURLMarker(),
                                                                  maxPageSize);
     }
 

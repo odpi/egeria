@@ -33,6 +33,7 @@ public class ViewServiceClientMap<B>
     private final String                  localServerName;
     private final AuditLog                auditLog;
     private final String                  serviceName;
+    private final String                  serviceURLMarker;
     private final int                     maxPageSize;
 
     private final String localServerUserId;
@@ -51,6 +52,7 @@ public class ViewServiceClientMap<B>
      * @param maxPageSize           maximum number of results supported by this server
      * @param activeViewServices    which view services are running
      * @param serviceName           local service name
+     * @param serviceURLMarker      local service's urlMarker - for error handling
      * @param auditLog              logging destination
      */
     public ViewServiceClientMap(Class<B>                handlerClass,
@@ -60,6 +62,7 @@ public class ViewServiceClientMap<B>
                                 AuditLog                auditLog,
                                 List<ViewServiceConfig> activeViewServices,
                                 String                  serviceName,
+                                String                  serviceURLMarker,
                                 int                     maxPageSize)
     {
         this.handlerClass    = handlerClass;
@@ -67,6 +70,7 @@ public class ViewServiceClientMap<B>
         this.activeViewServices = activeViewServices;
         this.auditLog = auditLog;
         this.serviceName = serviceName;
+        this.serviceURLMarker = serviceURLMarker;
         this.localServerUserId = userId;
         this.localServerUserPassword = password;
         this.maxPageSize = maxPageSize;
@@ -130,10 +134,21 @@ public class ViewServiceClientMap<B>
 
         if (viewServiceClient == null)
         {
-            throw new InvalidParameterException(OMAGServerInstanceErrorCode.INVALID_URL_MARKER.getMessageDefinition(viewServiceURLMarker),
-                                                this.getClass().getName(),
-                                                methodName,
-                                                "viewServiceURLMarker");
+            if (serviceURLMarker.equals(viewServiceURLMarker))
+            {
+                throw new InvalidParameterException(OMAGServerInstanceErrorCode.UNCONFIGURED_URL_MARKER.getMessageDefinition(serviceName,
+                                                                                                                             viewServiceURLMarker),
+                                                    this.getClass().getName(),
+                                                    methodName,
+                                                    "viewServiceURLMarker");
+            }
+            else
+            {
+                throw new InvalidParameterException(OMAGServerInstanceErrorCode.INVALID_URL_MARKER.getMessageDefinition(viewServiceURLMarker),
+                                                    this.getClass().getName(),
+                                                    methodName,
+                                                    "viewServiceURLMarker");
+            }
         }
 
         return viewServiceClient;

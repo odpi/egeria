@@ -1340,7 +1340,6 @@ public class ValidMetadataRESTServices extends TokenController
      * @param serverName name of the server instances for this request
      * @param urlMarker  view service URL marker
      * @param elementGUID unique identifier of the element to connect it to
-     * @param specificationPropertyType type of specification property (enum)
      * @param requestBody the property description
      *
      * @return elementGUID for new specification property object or
@@ -1352,7 +1351,6 @@ public class ValidMetadataRESTServices extends TokenController
     public GUIDResponse setUpSpecificationProperty(String                    serverName,
                                                    String                    urlMarker,
                                                    String                    elementGUID,
-                                                   SpecificationPropertyType specificationPropertyType,
                                                    SpecificationProperty     requestBody)
     {
         final String methodName = "setUpSpecificationProperty";
@@ -1374,11 +1372,11 @@ public class ValidMetadataRESTServices extends TokenController
 
             if (requestBody != null)
             {
-                response.setGUID(handler.setUpSpecificationProperty(userId, elementGUID, specificationPropertyType, requestBody, new MetadataSourceOptions()));
+                response.setGUID(handler.setUpSpecificationProperty(userId, elementGUID, requestBody, new MetadataSourceOptions()));
             }
             else
             {
-                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName, NewAttachmentRequestBody.class.getName());
+                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName, SpecificationProperty.class.getName());
             }
         }
         catch (Throwable error)
@@ -1588,7 +1586,7 @@ public class ValidMetadataRESTServices extends TokenController
             }
             else
             {
-                restExceptionHandler.handleNoRequestBody(userId, methodName, FilterRequestBody.class.getName());
+                restExceptionHandler.handleNoRequestBody(userId, methodName, ResultsRequestBody.class.getName());
             }
         }
         catch (Throwable error)

@@ -347,7 +347,7 @@ distributions {
                         { include 'Egeria*.http' }
                 from { "$rootProject.projectDir/open-metadata-implementation/view-server-generic-services/connection-maker" }
                         { include 'Egeria*.http' }
-                from { "$rootProject.projectDir/open-metadata-implementation/view-server-generic-services/external-references" }
+                from { "$rootProject.projectDir/open-metadata-implementation/view-server-generic-services/external-links" }
                         { include 'Egeria*.http' }
                 from { "$rootProject.projectDir/open-metadata-implementation/view-server-generic-services/feedback-manager" }
                         { include 'Egeria*.http' }

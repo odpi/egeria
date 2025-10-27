@@ -302,8 +302,8 @@ public enum CSVFileTemplateType implements TemplateDefinition
     {
         TemplateType templateType = new TemplateType();
 
-        templateType.setTemplateName(templateName);
-        templateType.setTypeName(typeName);
+        templateType.setName(templateName);
+        templateType.setOpenMetadataTypeName(typeName);
         templateType.setDescription(templateDescription);
         templateType.setRequired(required);
         templateType.setDefaultTemplateGUID(defaultTemplateGUID);

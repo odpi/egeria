@@ -69,7 +69,7 @@ public class FileSurveyServiceProvider extends SurveyActionServiceProvider
 
         actionTargetType.setName(FILE_TARGET_PROPERTY);
         actionTargetType.setDescription(FILE_TARGET_PROPERTY_DESCRIPTION);
-        actionTargetType.setTypeName(DeployedImplementationType.FILE.getAssociatedTypeName());
+        actionTargetType.setOpenMetadataTypeName(DeployedImplementationType.FILE.getAssociatedTypeName());
         actionTargetType.setDeployedImplementationType(DeployedImplementationType.FILE.getDeployedImplementationType());
 
         super.supportedActionTargetTypes.add(actionTargetType);

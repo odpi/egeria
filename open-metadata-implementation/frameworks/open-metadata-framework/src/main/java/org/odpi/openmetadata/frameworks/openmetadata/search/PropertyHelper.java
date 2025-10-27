@@ -3438,7 +3438,7 @@ public class PropertyHelper
                 }
                 catch (Exception error)
                 {
-                    throwHelperLogicError(sourceName, methodName, thisMethodName);
+                    throwHelperLogicError(sourceName, methodName, thisMethodName, error);
                 }
             }
         }
@@ -3699,7 +3699,7 @@ public class PropertyHelper
                 }
                 catch (Exception error)
                 {
-                    throwHelperLogicError(sourceName, methodName, thisMethodName);
+                    throwHelperLogicError(sourceName, methodName, thisMethodName, error);
                 }
             }
         }
@@ -3751,7 +3751,7 @@ public class PropertyHelper
                 }
                 catch (Exception error)
                 {
-                    throwHelperLogicError(sourceName, callingMethodName, thisMethodName);
+                    throwHelperLogicError(sourceName, callingMethodName, thisMethodName, error);
                 }
             }
         }
@@ -3832,7 +3832,7 @@ public class PropertyHelper
                 }
                 catch (Exception error)
                 {
-                    throwHelperLogicError(sourceName, methodName, thisMethodName);
+                    throwHelperLogicError(sourceName, methodName, thisMethodName, error);
                 }
             }
         }
@@ -3880,7 +3880,7 @@ public class PropertyHelper
                 }
                 catch (Exception error)
                 {
-                    throwHelperLogicError(sourceName, methodName, thisMethodName);
+                    throwHelperLogicError(sourceName, methodName, thisMethodName, error);
                 }
             }
         }
@@ -3927,7 +3927,7 @@ public class PropertyHelper
                 }
                 catch (Exception error)
                 {
-                    throwHelperLogicError(sourceName, methodName, thisMethodName);
+                    throwHelperLogicError(sourceName, methodName, thisMethodName, error);
                 }
             }
         }
@@ -3976,7 +3976,7 @@ public class PropertyHelper
                 }
                 catch (Exception error)
                 {
-                    throwHelperLogicError(sourceName, methodName, thisMethodName);
+                    throwHelperLogicError(sourceName, methodName, thisMethodName, error);
                 }
             }
         }
@@ -4025,7 +4025,7 @@ public class PropertyHelper
                 }
                 catch (Exception error)
                 {
-                    throwHelperLogicError(sourceName, methodName, thisMethodName);
+                    throwHelperLogicError(sourceName, methodName, thisMethodName, error);
                 }
             }
         }

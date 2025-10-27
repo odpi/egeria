@@ -65,6 +65,7 @@ public class GovernanceOfficerInstance extends OMVSServiceInstance
                                                                          auditLog,
                                                                          activeViewServices,
                                                                          myDescription.getViewServiceFullName(),
+                                                                         myDescription.getViewServiceURLMarker(),
                                                                          maxPageSize);
 
         this.openGovernanceClientMap = new ViewServiceClientMap<>(EgeriaOpenGovernanceClient.class,
@@ -74,6 +75,7 @@ public class GovernanceOfficerInstance extends OMVSServiceInstance
                                                                   auditLog,
                                                                   activeViewServices,
                                                                   myDescription.getViewServiceFullName(),
+                                                                  myDescription.getViewServiceURLMarker(),
                                                                   maxPageSize);
     }
 

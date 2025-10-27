@@ -41,7 +41,7 @@ public class QualifiedNamePeerDuplicateGovernanceActionProvider extends Governan
         ActionTargetType actionTargetType = new ActionTargetType();
 
         actionTargetType.setName(ACTION_TARGET_NAME);
-        actionTargetType.setTypeName(OpenMetadataType.REFERENCEABLE.typeName);
+        actionTargetType.setOpenMetadataTypeName(OpenMetadataType.REFERENCEABLE.typeName);
 
         super.supportedActionTargetTypes.add(actionTargetType);
 

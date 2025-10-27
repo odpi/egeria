@@ -82,7 +82,7 @@ public class SpecificationPropertyHandler extends OpenMetadataHandlerBase
 
         if (specificationProperty instanceof ActionTargetType actionTargetType)
         {
-            specificationPropertyValueProperties.setDataType(actionTargetType.getTypeName());
+            specificationPropertyValueProperties.setDataType(actionTargetType.getOpenMetadataTypeName());
 
             additionalProperties.put(OpenMetadataProperty.DEPLOYED_IMPLEMENTATION_TYPE.name, actionTargetType.getDeployedImplementationType());
             additionalProperties.put(OpenMetadataProperty.REQUIRED.name, Boolean.toString(actionTargetType.getRequired()));
@@ -143,7 +143,7 @@ public class SpecificationPropertyHandler extends OpenMetadataHandlerBase
         }
         else if (specificationProperty instanceof TemplateType templateType)
         {
-            specificationPropertyValueProperties.setDataType(templateType.getTypeName());
+            specificationPropertyValueProperties.setDataType(templateType.getOpenMetadataTypeName());
 
             additionalProperties.put(OpenMetadataProperty.REQUIRED.name, Boolean.toString(templateType.getRequired()));
         }
@@ -162,7 +162,6 @@ public class SpecificationPropertyHandler extends OpenMetadataHandlerBase
      *
      * @param userId calling user
      * @param elementGUID unique identifier of the element to connect it to
-     * @param specificationPropertyType type of specification property (enum)
      * @param specificationProperty the property description
      * @param metadataSourceOptions query options
      *
@@ -173,7 +172,6 @@ public class SpecificationPropertyHandler extends OpenMetadataHandlerBase
      */
     public String setUpSpecificationProperty(String                    userId,
                                              String                    elementGUID,
-                                             SpecificationPropertyType specificationPropertyType,
                                              SpecificationProperty     specificationProperty,
                                              MetadataSourceOptions     metadataSourceOptions) throws InvalidParameterException,
                                                                                                       PropertyServerException,
@@ -185,7 +183,7 @@ public class SpecificationPropertyHandler extends OpenMetadataHandlerBase
         final String specificationPropertyNameParameterName = "specificationProperty.name";
 
         propertyHelper.validateObject(specificationProperty, specificationPropertyParameterName, methodName);
-        propertyHelper.validateObject(specificationPropertyType, specificationPropertyTypeParameterName, methodName);
+        propertyHelper.validateObject(specificationProperty.getSpecificationPropertyType(), specificationPropertyTypeParameterName, methodName);
         propertyHelper.validateMandatoryName(specificationProperty.getName(), specificationPropertyNameParameterName, methodName);
 
         OpenMetadataElement parentElement = openMetadataClient.getMetadataElementByGUID(userId,
@@ -196,7 +194,7 @@ public class SpecificationPropertyHandler extends OpenMetadataHandlerBase
         {
             SpecificationPropertyAssignmentProperties relationshipProperties = new SpecificationPropertyAssignmentProperties();
 
-            relationshipProperties.setPropertyName(specificationPropertyType.getPropertyType());
+            relationshipProperties.setPropertyName(specificationProperty.getSpecificationPropertyType().getPropertyType());
 
             NewElementOptions newElementOptions = new NewElementOptions(metadataSourceOptions);
 
@@ -211,7 +209,7 @@ public class SpecificationPropertyHandler extends OpenMetadataHandlerBase
                                           null,
                                           this.getSpecificationPropertyValueProperties(parentElement.getElementGUID(),
                                                                                        parentElement.getType().getTypeName(),
-                                                                                       specificationPropertyType,
+                                                                                       specificationProperty.getSpecificationPropertyType(),
                                                                                        specificationProperty),
                                           relationshipProperties,
                                           methodName);
@@ -253,7 +251,7 @@ public class SpecificationPropertyHandler extends OpenMetadataHandlerBase
 
         for (SpecificationPropertyType specificationPropertyType : SpecificationPropertyType.values())
         {
-            results.put(specificationPropertyType.getTypeName(), specificationPropertyType.getPropertyType() + " --> " + specificationPropertyType.getDescription());
+            results.put(specificationPropertyType.getBeanClass(), specificationPropertyType.getPropertyType() + " --> " + specificationPropertyType.getDescription());
         }
 
         return results;

@@ -255,7 +255,7 @@ public enum UnityCatalogTarget
 
         actionTargetType.setName(name);
         actionTargetType.setDescription(description);
-        actionTargetType.setTypeName(typeName);
+        actionTargetType.setOpenMetadataTypeName(typeName);
         actionTargetType.setDeployedImplementationType(deployedImplementationType);
 
         return actionTargetType;

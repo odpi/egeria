@@ -868,7 +868,6 @@ public class ValidMetadataOMVSResource
      * @param serverName name of the server instances for this request.
      * @param urlMarker  view service URL marker
      * @param elementGUID        String - unique id for the element.
-     * @param specificationPropertyType type to create
      * @param requestBody containing details of the specificationProperty.
      *
      * @return elementGUID for new specification property object or
@@ -887,12 +886,10 @@ public class ValidMetadataOMVSResource
 
     public GUIDResponse setUpSpecificationProperty(@PathVariable String                 serverName,
                                                    @PathVariable String                 urlMarker,
-                                                   @RequestParam (required = false)
-                                                   SpecificationPropertyType specificationPropertyType,
                                                    @PathVariable String                 elementGUID,
                                                    @RequestBody(required = false) SpecificationProperty requestBody)
     {
-        return restAPI.setUpSpecificationProperty(serverName, urlMarker, elementGUID, specificationPropertyType, requestBody);
+        return restAPI.setUpSpecificationProperty(serverName, urlMarker, elementGUID, requestBody);
     }
 
 

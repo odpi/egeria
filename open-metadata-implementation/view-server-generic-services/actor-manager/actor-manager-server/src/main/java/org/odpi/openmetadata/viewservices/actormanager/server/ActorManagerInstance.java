@@ -68,6 +68,7 @@ public class ActorManagerInstance extends OMVSServiceInstance
                                                             auditLog,
                                                             activeViewServices,
                                                             myDescription.getViewServiceFullName(),
+                                                            myDescription.getViewServiceURLMarker(),
                                                             maxPageSize);
         actorRoleHandlerMap = new ViewServiceClientMap<>(ActorRoleHandler.class,
                                                          serverName,
@@ -76,6 +77,7 @@ public class ActorManagerInstance extends OMVSServiceInstance
                                                          auditLog,
                                                          activeViewServices,
                                                          myDescription.getViewServiceFullName(),
+                                                         myDescription.getViewServiceURLMarker(),
                                                          maxPageSize);
         userIdentityHandlerMap = new ViewServiceClientMap<>(UserIdentityHandler.class,
                                                             serverName,
@@ -84,6 +86,7 @@ public class ActorManagerInstance extends OMVSServiceInstance
                                                             auditLog,
                                                             activeViewServices,
                                                             myDescription.getViewServiceFullName(),
+                                                            myDescription.getViewServiceURLMarker(),
                                                             maxPageSize);
         this.governanceDefinitionClientMap = new ViewServiceClientMap<>(GovernanceDefinitionHandler.class,
                                                                         serverName,
@@ -92,6 +95,7 @@ public class ActorManagerInstance extends OMVSServiceInstance
                                                                         auditLog,
                                                                         activeViewServices,
                                                                         myDescription.getViewServiceFullName(),
+                                                                        myDescription.getViewServiceURLMarker(),
                                                                         maxPageSize);
     }
 
