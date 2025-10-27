@@ -289,7 +289,7 @@ Content-Type: application/json
 
 ###
 # =====================================================================================================================
-# Specification properties
+# Specification properties - Note: The request body varies depending on the type of property.
 
 @specificationPropertyGUID=add guid here
 @elementGUID=add guid here
@@ -303,17 +303,274 @@ Authorization: Bearer {{token}}
 Content-Type: application/json
 
 ###
-# @name setUpSpecificationProperty
-# Creates a specification property and attaches it to an element. The request body varies depending on the type of property.
+# @name setUpSpecificationProperty (placeholderProperty)
+# Create a placeholderProperty specification property and attach it to an element.
 POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/valid-metadata/elements/{elementGUID}/specification-properties
 Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-  "class" : "GuardType",
+  "class" : "PlaceholderProperty",
+  "name": "placeholder property name",
+  "description": "placeholder property description",
+  "otherPropertyValues": {
+    "property1" : "propertyValue1",
+    "property2" : "propertyValue2"
+  }
+}
+
+
+###
+# @name setUpSpecificationProperty (replacementAttribute)
+# Create a replacementAttribute specification property and attach it to an element.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/valid-metadata/elements/{elementGUID}/specification-properties
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "ReplacementAttribute",
+  "name": "replacement attribute name",
+  "description": "replacement attribute description",
+  "datatype": "data type of the attribute, eg string",
+  "example": "this is an example - often it is the default value for an optional replacement attribute.",
+  "required": false,
+  "otherPropertyValues": {
+    "property1" : "propertyValue1",
+    "property2" : "propertyValue2"
+  }
+}
+
+
+###
+# @name setUpSpecificationProperty (replacementAttribute)
+# Create a replacementAttribute specification property and attach it to an element.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/valid-metadata/elements/{elementGUID}/specification-properties
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "ReplacementAttribute",
+  "name": "replacement attribute name",
+  "description": "replacement attribute description",
+  "datatype": "data type of the attribute, eg string",
+  "example": "this is an example - often it is the default value for an optional replacement attribute.",
+  "required": false,
+  "otherPropertyValues": {
+    "property1" : "propertyValue1",
+    "property2" : "propertyValue2"
+  }
+}
+
+
+###
+# @name setUpSpecificationProperty (supportedTemplate)
+# Create a supportedTemplate specification property and attach it to an element.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/valid-metadata/elements/{elementGUID}/specification-properties
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "SupportedTemplate",
+  "name": "template name",
+  "description": "template description",
+  "openMetadataTypeName": "open metadata type of the element produced by the template",
+  "required": false,
+  "otherPropertyValues": {
+    "property1" : "propertyValue1",
+    "property2" : "propertyValue2"
+  }
+}
+
+###
+# @name setUpSpecificationProperty (supportedRequestType)
+# Create a supportedRequestType specification property and attach it to an element.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/valid-metadata/elements/{elementGUID}/specification-properties
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "SupportedRequestType",
+  "name": "request type name",
+  "description": "request type description",
+  "otherPropertyValues": {
+    "property1" : "propertyValue1",
+    "property2" : "propertyValue2"
+  }
+}
+
+###
+# @name setUpSpecificationProperty (supportedRequestParameter)
+# Create a supportedRequestParameter specification property and attach it to an element.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/valid-metadata/elements/{elementGUID}/specification-properties
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "SupportedRequestParameter",
+  "name": "request parameter name",
+  "description": "request parameter description",
+  "datatype": "data type of the parameter, eg string",
+  "example": "this is an example - often it is the default value for an optional request parameter.",
+  "required": false,
+  "otherPropertyValues": {
+    "property1" : "propertyValue1",
+    "property2" : "propertyValue2"
+  }
+}
+
+###
+# @name setUpSpecificationProperty (supportedActionTarget)
+# Create a supportedActionTarget specification property and attach it to an element.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/valid-metadata/elements/{elementGUID}/specification-properties
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "SupportedActionTarget",
+  "name": "action target name",
+  "description": "action target description",
+  "openMetadataTypeName" : "add open metadata type name of the action target element here",
+  "deployedImplementationType" : "add deployed implementation type here",
+  "required" : true,
+  "otherPropertyValues": {
+    "property1" : "propertyValue1",
+    "property2" : "propertyValue2"
+  }
+}
+
+###
+# @name setUpSpecificationProperty (supportedAnalysisStep)
+# Create a supportedActionTarget specification property and attach it to an element.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/valid-metadata/elements/{elementGUID}/specification-properties
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "SupportedAnalysisStep",
+  "name": "analysis step name",
+  "description": "analysis step description",
+  "otherPropertyValues": {
+    "property1" : "propertyValue1",
+    "property2" : "propertyValue2"
+  }
+}
+
+
+###
+# @name setUpSpecificationProperty (supportedConfigurationProperty)
+# Create a supportedActionTarget specification property and attach it to an element.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/valid-metadata/elements/{elementGUID}/specification-properties
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "SupportedConfigurationProperty",
+  "name": "configuration property name",
+  "description": "configuration property description",
+  "datatype": "data type of the property, eg string",
+  "example": "this is an example - often it is the default value for an optional configuration property",
+  "required": false,
+  "otherPropertyValues": {
+    "property1" : "propertyValue1",
+    "property2" : "propertyValue2"
+  }
+}
+
+###
+# @name setUpSpecificationProperty (producedGuard)
+# Create a producedGuard specification property and attach it to an element.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/valid-metadata/elements/{elementGUID}/specification-properties
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "ProducedGuard",
   "name": "guard name",
   "description": "guard description",
   "completionStatus" : "INVALID",
+  "otherPropertyValues": {
+    "property1" : "propertyValue1",
+    "property2" : "propertyValue2"
+  }
+}
+
+###
+# @name setUpSpecificationProperty (producedRequestParameter)
+# Create a producedRequestParameter specification property and attach it to an element.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/valid-metadata/elements/{elementGUID}/specification-properties
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "ProducedRequestParameter",
+  "name": "request parameter name",
+  "description": "request parameter description",
+  "datatype": "data type of the parameter, eg string",
+  "example": "this is an example - often it is the default value for an optional request parameter.",
+  "required": false,
+  "otherPropertyValues": {
+    "property1" : "propertyValue1",
+    "property2" : "propertyValue2"
+  }
+}
+
+
+###
+# @name setUpSpecificationProperty (producedRequestParameter)
+# Create a producedRequestParameter specification property and attach it to an element.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/valid-metadata/elements/{elementGUID}/specification-properties
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "ProducedRequestParameter",
+  "name": "request parameter name",
+  "description": "request parameter description",
+  "datatype": "data type of the parameter, eg string",
+  "example": "this is an example - often it is the default value for an optional request parameter.",
+  "required": false,
+  "otherPropertyValues": {
+    "property1" : "propertyValue1",
+    "property2" : "propertyValue2"
+  }
+}
+
+###
+# @name setUpSpecificationProperty (producedActionTarget)
+# Create a producedActionTarget specification property and attach it to an element.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/valid-metadata/elements/{elementGUID}/specification-properties
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "ProducedActionTarget",
+  "name": "action target name",
+  "description": "action target description",
+  "openMetadataTypeName" : "add open metadata type name of the action target element here",
+  "deployedImplementationType" : "add deployed implementation type here",
+  "required" : true,
+  "otherPropertyValues": {
+    "property1" : "propertyValue1",
+    "property2" : "propertyValue2"
+  }
+}
+
+
+###
+# @name setUpSpecificationProperty (producedAnnotationType)
+# Create a producedActionTarget specification property and attach it to an element.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/valid-metadata/elements/{elementGUID}/specification-properties
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "ProducedAnnotationType",
+  "name": "annotation type name",
+  "description": "annotation type description",
+  "openMetadataTypeName" : "add open metadata type used for the annotation here",
+  "analysisStepName" : "add name of analysis step where this annotation type is produced here",
+  "explanation" : "add explanation of the processing or results stored in the annotation here",
+  "expression" : "add description of any calculation here",
   "otherPropertyValues": {
     "property1" : "propertyValue1",
     "property2" : "propertyValue2"
@@ -384,7 +641,7 @@ Content-Type: application/json
 
 
 ###
-# @name getSpecificationPropertyByType
+# @name getSpecificationPropertyByName
 #  Return the list of specification properties containing the supplied name.
 POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/valid-metadata/specification-properties/by-name
 Authorization: Bearer {{token}}
@@ -404,26 +661,6 @@ Content-Type: application/json
   "sequencingProperty" : "qualifiedName"
 }
 
-
-###
-# @name getSpecificationPropertyByType
-#  Return the list of specification properties containing the supplied keyword.
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/valid-metadata/specification-properties/by-type?specificationPropertyType=PRODUCED_GUARDS
-Authorization: Bearer {{token}}
-Content-Type: application/json
-
-{
-  "class" : "ResultsRequestBody",
-  "startFrom" : 0,
-  "pageSize": 10,
-  "asOfTime" : "{{$isoTimestamp}}",
-  "effectiveTime" : "{{$isoTimestamp}}",
-  "forLineage" : false,
-  "forDuplicateProcessing" : false,
-  "limitResultsByStatus" : ["ACTIVE"],
-  "sequencingOrder" : "PROPERTY_ASCENDING",
-  "sequencingProperty" : "qualifiedName"
-}
 
 ###
 # @name getSpecificationPropertyByGUID

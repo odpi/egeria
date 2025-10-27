@@ -67,6 +67,7 @@ public class LineageLinkerInstance extends OMVSServiceInstance
                                                             auditLog,
                                                             activeViewServices,
                                                             myDescription.getViewServiceFullName(),
+                                                            myDescription.getViewServiceURLMarker(),
                                                             maxPageSize);
     }
 

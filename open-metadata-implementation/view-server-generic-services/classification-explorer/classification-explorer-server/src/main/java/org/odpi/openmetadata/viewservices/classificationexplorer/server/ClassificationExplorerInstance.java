@@ -64,6 +64,7 @@ public class ClassificationExplorerInstance extends OMVSServiceInstance
                                                                               auditLog,
                                                                               activeViewServices,
                                                                               myDescription.getViewServiceFullName(),
+                                                                              myDescription.getViewServiceURLMarker(),
                                                                               maxPageSize);
 
         this.searchKeywordMap = new ViewServiceClientMap<>(SearchKeywordHandler.class,
@@ -73,6 +74,7 @@ public class ClassificationExplorerInstance extends OMVSServiceInstance
                                                            auditLog,
                                                            activeViewServices,
                                                            myDescription.getViewServiceFullName(),
+                                                           myDescription.getViewServiceURLMarker(),
                                                            maxPageSize);
     }
 

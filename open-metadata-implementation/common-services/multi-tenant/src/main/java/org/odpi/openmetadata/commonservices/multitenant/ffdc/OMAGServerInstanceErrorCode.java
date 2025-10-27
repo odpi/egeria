@@ -70,6 +70,14 @@ public enum OMAGServerInstanceErrorCode implements ExceptionMessageSet
                        "Update the parameters passed on the request to either remove the URL marker, or set it to a URL marker that is recognized by the OMAG Server Platform."),
 
     /**
+     * OMAG-MULTI-TENANT-400-006 - Generic view service {0} is not configured for this server and can only be called with the URL marker of a configured view service; {1} is not configured
+     */
+    UNCONFIGURED_URL_MARKER(400, "OMAG-MULTI-TENANT-400-006",
+                       "Generic view service {0} is not configured for this server and can only be called with the URL marker of a configured view service; {1} is not configured",
+                       "The system is unable to continue with the request because the supplied URL marker does not match the configured view services.  This generic service is running only as a support service for other, configured services.",
+                       "Update the parameters passed on the request to use a URL Marker for a configured view service, or add this view service to the configuration document for this server."),
+
+    /**
      * OMAG-MULTI-TENANT-404-001 - The OMAG Server {0} is not available to service a request from user {1}
      */
     SERVER_NOT_AVAILABLE(404, "OMAG-MULTI-TENANT-404-001",

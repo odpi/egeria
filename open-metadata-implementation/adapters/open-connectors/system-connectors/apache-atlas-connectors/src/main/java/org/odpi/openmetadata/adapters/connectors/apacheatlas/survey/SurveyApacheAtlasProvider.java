@@ -95,7 +95,7 @@ public class SurveyApacheAtlasProvider extends SurveyActionServiceProvider
 
         actionTargetType.setName("*");
         actionTargetType.setDescription("Any Software Server entity that represents an Apache Atlas server linked to the connection for the Apache Atlas REST API connector.");
-        actionTargetType.setTypeName(AtlasDeployedImplementationType.APACHE_ATLAS_SERVER.getAssociatedTypeName());
+        actionTargetType.setOpenMetadataTypeName(AtlasDeployedImplementationType.APACHE_ATLAS_SERVER.getAssociatedTypeName());
         actionTargetType.setDeployedImplementationType(AtlasDeployedImplementationType.APACHE_ATLAS_SERVER.getDeployedImplementationType());
 
         super.supportedActionTargetTypes.add(actionTargetType);

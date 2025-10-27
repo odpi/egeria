@@ -163,7 +163,6 @@ public class UserNotAuthorizedException extends OMFCheckedExceptionBase
      * @param userAction   instructions for correcting the error
      * @param userId failing userId
      */
-    @Deprecated
     public UserNotAuthorizedException(int    httpCode,
                                       String className,
                                       String actionDescription,
@@ -190,7 +189,6 @@ public class UserNotAuthorizedException extends OMFCheckedExceptionBase
      * @param userId failing userId
      * @param relatedProperties  arbitrary properties that may help with diagnosing the problem.
      */
-    @Deprecated
     public UserNotAuthorizedException(int                 httpCode,
                                       String              className,
                                       String              actionDescription,
@@ -218,7 +216,6 @@ public class UserNotAuthorizedException extends OMFCheckedExceptionBase
      * @param caughtError   the error that resulted in this exception.
      * @param userId failing userId
      */
-    @Deprecated
     public UserNotAuthorizedException(int       httpCode,
                                       String    className,
                                       String    actionDescription,
@@ -247,7 +244,6 @@ public class UserNotAuthorizedException extends OMFCheckedExceptionBase
      * @param userId failing userId
      * @param relatedProperties  arbitrary properties that may help with diagnosing the problem.
      */
-    @Deprecated
     public UserNotAuthorizedException(int                 httpCode,
                                       String              className,
                                       String              actionDescription,

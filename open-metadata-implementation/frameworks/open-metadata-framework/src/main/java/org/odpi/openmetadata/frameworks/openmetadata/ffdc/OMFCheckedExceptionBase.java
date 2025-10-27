@@ -142,7 +142,7 @@ public abstract class OMFCheckedExceptionBase extends Exception
 
         this.validateCoreProperties();
 
-        log.debug("{}, {}, {}, {}", messageDefinition, className, actionDescription, caughtError);
+        log.debug("{}, {}, {}", messageDefinition, className, actionDescription, caughtError);
     }
 
 
@@ -203,7 +203,6 @@ public abstract class OMFCheckedExceptionBase extends Exception
      * @param systemAction   actions of the system as a result of the error
      * @param userAction   instructions for correcting the error
      */
-    @Deprecated
     public OMFCheckedExceptionBase(int    httpCode,
                                    String className,
                                    String actionDescription,
@@ -226,7 +225,6 @@ public abstract class OMFCheckedExceptionBase extends Exception
      * @param userAction   instructions for correcting the error
      * @param relatedProperties  arbitrary properties that may help with diagnosing the problem.
      */
-    @Deprecated
     public OMFCheckedExceptionBase(int                 httpCode,
                                    String              className,
                                    String              actionDescription,
@@ -260,7 +258,6 @@ public abstract class OMFCheckedExceptionBase extends Exception
      * @param userAction   instructions for correcting the error
      * @param caughtError   previous error causing this exception
      */
-    @Deprecated
     public OMFCheckedExceptionBase(int       httpCode,
                                    String    className,
                                    String    actionDescription,
@@ -285,7 +282,6 @@ public abstract class OMFCheckedExceptionBase extends Exception
      * @param caughtError   previous error causing this exception
      * @param relatedProperties  arbitrary properties that may help with diagnosing the problem.
      */
-    @Deprecated
     public OMFCheckedExceptionBase(int                 httpCode,
                                    String              className,
                                    String              actionDescription,
@@ -333,6 +329,7 @@ public abstract class OMFCheckedExceptionBase extends Exception
             this.reportedSystemAction = template.getReportedSystemAction();
             this.reportedUserAction = template.getReportedUserAction();
             this.reportedCaughtException = template.getReportedCaughtException();
+            this.reportedCaughtExceptionClassName = template.getReportedCaughtExceptionClassName();
             this.relatedProperties = template.getRelatedProperties();
         }
 
@@ -355,9 +352,13 @@ public abstract class OMFCheckedExceptionBase extends Exception
             this.reportingClassName = template.getReportingClassName();
             this.reportingActionDescription = template.getReportingActionDescription();
             this.reportedErrorMessage = template.getErrorMessage();
+            this.reportedErrorMessageId = template.getReportedErrorMessageId();
+            this.reportedErrorMessageParameters = template.getReportedErrorMessageParameters();
             this.reportedSystemAction = template.getReportedSystemAction();
             this.reportedUserAction = template.getReportedUserAction();
             this.reportedCaughtException = template.getReportedCaughtException();
+            this.reportedCaughtExceptionClassName = template.getReportedCaughtExceptionClassName();
+            this.relatedProperties = template.getRelatedProperties();
         }
 
         this.validateCoreProperties();
@@ -447,7 +448,6 @@ public abstract class OMFCheckedExceptionBase extends Exception
      *
      * @return string message
      */
-    @Deprecated
     public String getErrorMessage()
     {
         return reportedErrorMessage;
@@ -483,7 +483,7 @@ public abstract class OMFCheckedExceptionBase extends Exception
      * These are provided both for automated processing and to enable the error message to be reformatted
      * in a different language.
      *
-     * @return list of parameter values
+     * @return array of parameter values
      */
     public String[] getReportedErrorMessageParameters()
     {

@@ -69,25 +69,28 @@ public class AutomatedCurationInstance extends OMVSServiceInstance
                                                                  auditLog,
                                                                  activeViewServices,
                                                                  myDescription.getViewServiceFullName(),
+                                                                 myDescription.getViewServiceURLMarker(),
                                                                  maxPageSize);
 
         this.technologyTypeHandlerMap = new ViewServiceClientMap<>(TechnologyTypeHandler.class,
-                                                                 serverName,
-                                                                 localServerUserId,
-                                                                 localServerUserPassword,
-                                                                 auditLog,
-                                                                 activeViewServices,
-                                                                 myDescription.getViewServiceFullName(),
-                                                                 maxPageSize);
-
-        this.openGovernanceClientMap = new ViewServiceClientMap<>(EgeriaOpenGovernanceClient.class,
                                                                    serverName,
                                                                    localServerUserId,
                                                                    localServerUserPassword,
                                                                    auditLog,
                                                                    activeViewServices,
                                                                    myDescription.getViewServiceFullName(),
+                                                                   myDescription.getViewServiceURLMarker(),
                                                                    maxPageSize);
+
+        this.openGovernanceClientMap = new ViewServiceClientMap<>(EgeriaOpenGovernanceClient.class,
+                                                                  serverName,
+                                                                  localServerUserId,
+                                                                  localServerUserPassword,
+                                                                  auditLog,
+                                                                  activeViewServices,
+                                                                  myDescription.getViewServiceFullName(),
+                                                                  myDescription.getViewServiceURLMarker(),
+                                                                  maxPageSize);
     }
 
 

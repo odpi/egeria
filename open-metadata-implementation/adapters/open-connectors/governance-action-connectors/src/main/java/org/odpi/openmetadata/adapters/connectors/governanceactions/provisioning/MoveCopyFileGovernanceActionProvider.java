@@ -54,7 +54,7 @@ public class MoveCopyFileGovernanceActionProvider extends GovernanceActionServic
 
         actionTargetType.setName(SOURCE_FILE_PROPERTY);
         actionTargetType.setDescription(SOURCE_FILE_PROPERTY_DESCRIPTION);
-        actionTargetType.setTypeName(DeployedImplementationType.FILE.getAssociatedTypeName());
+        actionTargetType.setOpenMetadataTypeName(DeployedImplementationType.FILE.getAssociatedTypeName());
         actionTargetType.setDeployedImplementationType(DeployedImplementationType.FILE.getDeployedImplementationType());
 
         supportedActionTargetTypes.add(actionTargetType);
@@ -63,7 +63,7 @@ public class MoveCopyFileGovernanceActionProvider extends GovernanceActionServic
 
         actionTargetType.setName(DESTINATION_FOLDER_PROPERTY);
         actionTargetType.setDescription(DESTINATION_FOLDER_PROPERTY_DESCRIPTION);
-        actionTargetType.setTypeName(DeployedImplementationType.FILE_FOLDER.getAssociatedTypeName());
+        actionTargetType.setOpenMetadataTypeName(DeployedImplementationType.FILE_FOLDER.getAssociatedTypeName());
         actionTargetType.setDeployedImplementationType(DeployedImplementationType.FILE_FOLDER.getDeployedImplementationType());
 
         supportedActionTargetTypes.add(actionTargetType);

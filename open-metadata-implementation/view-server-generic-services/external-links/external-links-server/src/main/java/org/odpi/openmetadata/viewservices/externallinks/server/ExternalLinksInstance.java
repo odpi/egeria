@@ -71,6 +71,7 @@ public class ExternalLinksInstance extends OMVSServiceInstance
                                                                  auditLog,
                                                                  activeViewServices,
                                                                  myDescription.getViewServiceFullName(),
+                                                                 myDescription.getViewServiceURLMarker(),
                                                                  maxPageSize);
 
 
@@ -81,6 +82,7 @@ public class ExternalLinksInstance extends OMVSServiceInstance
                                                                       auditLog,
                                                                       activeViewServices,
                                                                       myDescription.getViewServiceFullName(),
+                                                                      myDescription.getViewServiceURLMarker(),
                                                                       maxPageSize);
 
         this.externalIdHandlerMap = new ViewServiceClientMap<>(ExternalIdHandler.class,
@@ -90,6 +92,7 @@ public class ExternalLinksInstance extends OMVSServiceInstance
                                                                auditLog,
                                                                activeViewServices,
                                                                myDescription.getViewServiceFullName(),
+                                                               myDescription.getViewServiceURLMarker(),
                                                                maxPageSize);
     }
 

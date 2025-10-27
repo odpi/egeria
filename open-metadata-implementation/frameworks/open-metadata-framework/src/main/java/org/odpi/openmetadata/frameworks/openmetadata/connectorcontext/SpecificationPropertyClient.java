@@ -59,7 +59,6 @@ public class SpecificationPropertyClient extends ConnectorContextClientBase
      * Retrieve/create/update the metadata element for a valid metadata value.
      *
      * @param elementGUID unique identifier of the element to connect it to
-     * @param specificationPropertyType type of specification property (enum)
      * @param specificationProperty the property description
      * @param metadataSourceOptions query options
      *
@@ -69,13 +68,12 @@ public class SpecificationPropertyClient extends ConnectorContextClientBase
      * @throws PropertyServerException    there is a problem accessing the metadata store
      */
     private String setUpSpecificationProperty(String                    elementGUID,
-                                              SpecificationPropertyType specificationPropertyType,
                                               SpecificationProperty     specificationProperty,
                                               MetadataSourceOptions     metadataSourceOptions) throws InvalidParameterException,
                                                                                                       PropertyServerException,
                                                                                                       UserNotAuthorizedException
     {
-        return specificationPropertyHandler.setUpSpecificationProperty(connectorUserId, elementGUID, specificationPropertyType, specificationProperty, metadataSourceOptions);
+        return specificationPropertyHandler.setUpSpecificationProperty(connectorUserId, elementGUID, specificationProperty, metadataSourceOptions);
     }
 
 

@@ -138,7 +138,7 @@ public class OMFRuntimeException extends RuntimeException
 
         this.validateCoreProperties();
 
-        log.debug("{}, {}, {}, {}", messageDefinition, className, actionDescription, caughtError);
+        log.debug("{}, {}, {}", messageDefinition, className, actionDescription, caughtError);
     }
 
 
@@ -212,6 +212,7 @@ public class OMFRuntimeException extends RuntimeException
             this.reportedSystemAction = template.getReportedSystemAction();
             this.reportedUserAction = template.getReportedUserAction();
             this.reportedCaughtException = template.getReportedCaughtException();
+            this.reportedCaughtExceptionClassName = template.getReportedCaughtExceptionClassName();
             this.relatedProperties = template.getRelatedProperties();
         }
 
@@ -234,9 +235,13 @@ public class OMFRuntimeException extends RuntimeException
             this.reportingClassName = template.getReportingClassName();
             this.reportingActionDescription = template.getReportingActionDescription();
             this.reportedErrorMessage = template.getReportedErrorMessage();
+            this.reportedErrorMessageId = template.getReportedErrorMessageId();
+            this.reportedErrorMessageParameters = template.getReportedErrorMessageParameters();
             this.reportedSystemAction = template.getReportedSystemAction();
             this.reportedUserAction = template.getReportedUserAction();
             this.reportedCaughtException = template.getReportedCaughtException();
+            this.reportedCaughtExceptionClassName = template.getReportedCaughtExceptionClassName();
+            this.relatedProperties = template.getRelatedProperties();
         }
 
         this.validateCoreProperties();
@@ -348,7 +353,7 @@ public class OMFRuntimeException extends RuntimeException
      * These are provided both for automated processing and to enable the error message to be reformatted
      * in a different language.
      *
-     * @return list of parameter values
+     * @return array of parameter values
      */
     public String[] getReportedErrorMessageParameters()
     {
@@ -501,7 +506,6 @@ public class OMFRuntimeException extends RuntimeException
      * @param userAction   instructions for correcting the error
      * @param relatedProperties  arbitrary properties that may help with diagnosing the problem.
      */
-    @Deprecated
     public OMFRuntimeException(int  httpCode, String className, String  actionDescription, String errorMessage, String systemAction, String userAction, Map<String, Object> relatedProperties)
     {
         super(errorMessage);
@@ -528,37 +532,8 @@ public class OMFRuntimeException extends RuntimeException
      * @param systemAction   actions of the system as a result of the error
      * @param userAction   instructions for correcting the error
      * @param caughtError   previous error causing this exception
-     */
-    @Deprecated
-    public OMFRuntimeException(int  httpCode, String className, String  actionDescription, String errorMessage, String systemAction, String userAction, Exception caughtError)
-    {
-        super(errorMessage, caughtError);
-        this.reportedHTTPCode = httpCode;
-        this.reportingClassName = className;
-        this.reportingActionDescription = actionDescription;
-        this.reportedErrorMessage = errorMessage;
-        this.reportedSystemAction = systemAction;
-        this.reportedUserAction = userAction;
-        this.reportedCaughtException = caughtError;
-
-        log.debug(httpCode + ", " + className + ", " + actionDescription + ", " + caughtError.toString());
-    }
-
-
-    /**
-     * This is the constructor used for creating a OMFRuntimeException that results from a previous error/exception
-     * being thrown.
-     *
-     * @param httpCode   http response code to use if this exception flows over a rest call
-     * @param className   name of class reporting error
-     * @param actionDescription   description of function it was performing when error detected
-     * @param errorMessage   description of error
-     * @param systemAction   actions of the system as a result of the error
-     * @param userAction   instructions for correcting the error
-     * @param caughtError   previous error causing this exception
      * @param relatedProperties  arbitrary properties that may help with diagnosing the problem.
      */
-    @Deprecated
     public OMFRuntimeException(int  httpCode, String className, String  actionDescription, String errorMessage, String systemAction, String userAction, Exception caughtError, Map<String, Object> relatedProperties)
     {
         super(errorMessage, caughtError);

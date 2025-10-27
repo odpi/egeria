@@ -959,6 +959,7 @@ public class OMAGServerOperationalServices
             int configuredViewServiceCount = 0;
             int enabledViewServiceCount = 0;
             List<ViewServiceConfig> activeViewServices = new ArrayList<>();
+            List<String> activeURLMarkers = new ArrayList<>();
             String partnerServerName = null;
             String partnerPlatformURLRoot = null;
 
@@ -969,6 +970,7 @@ public class OMAGServerOperationalServices
                 if (ServiceOperationalStatus.ENABLED.equals(viewServiceConfig.getViewServiceOperationalStatus()))
                 {
                     enabledViewServiceCount++;
+                    activeURLMarkers.add(viewServiceConfig.getViewServiceURLMarker());
                     instance.setServerServiceActiveStatus(viewServiceConfig.getViewServiceFullName(), ServerActiveStatus.STARTING);
                     activeViewServices.add(viewServiceConfig);
 
@@ -1058,10 +1060,17 @@ public class OMAGServerOperationalServices
                 }
             }
 
+            auditLog.logMessage(actionDescription,
+                                ServerOpsAuditCode.ALL_CONFIGURED_VIEW_SERVICES_STARTED.getMessageDefinition(Integer.toString(enabledViewServiceCount),
+                                                                                                             Integer.toString(configuredViewServiceCount),
+                                                                                                             activeURLMarkers.toString()));
+
+
             /*
              * This final loop activates the generic services that have not been activated through configuration.
              * The process is the same except these services do not appear in the active services lists.
              */
+            int unconfiguredViewServiceCount = 0;
             for (ViewServiceRegistrationEntry genericService : genericServices)
             {
                 boolean alreadyActive = false;
@@ -1076,6 +1085,12 @@ public class OMAGServerOperationalServices
 
                 if (! alreadyActive)
                 {
+                    if (unconfiguredViewServiceCount == 0)
+                    {
+                        auditLog.logMessage(actionDescription, ServerOpsAuditCode.ACTIVATING_UNCONFIGURED_GENERIC_VIEW_SERVICES.getMessageDefinition(serverName));
+                    }
+                    unconfiguredViewServiceCount++;
+
                     try
                     {
                         ViewServiceConfig viewServiceConfig = new ViewServiceConfig(genericService);
@@ -1132,9 +1147,11 @@ public class OMAGServerOperationalServices
                 }
             }
 
-            auditLog.logMessage(actionDescription,
-                                ServerOpsAuditCode.ALL_VIEW_SERVICES_STARTED.getMessageDefinition(Integer.toString(enabledViewServiceCount),
-                                                                                                  Integer.toString(configuredViewServiceCount)));
+            if (unconfiguredViewServiceCount > 0)
+            {
+                auditLog.logMessage(actionDescription,
+                                    ServerOpsAuditCode.ALL_UNCONFIGURED_GENERIC_VIEW_SERVICES_STARTED.getMessageDefinition(Integer.toString(unconfiguredViewServiceCount)));
+            }
         }
 
         /*

@@ -71,6 +71,7 @@ public class ConnectionMakerInstance extends OMVSServiceInstance
                                                                auditLog,
                                                                activeViewServices,
                                                                myDescription.getViewServiceFullName(),
+                                                               myDescription.getViewServiceURLMarker(),
                                                                maxPageSize);
 
         this.connectorTypeHandlerMap = new ViewServiceClientMap<>(ConnectorTypeHandler.class,
@@ -80,6 +81,7 @@ public class ConnectionMakerInstance extends OMVSServiceInstance
                                                                   auditLog,
                                                                   activeViewServices,
                                                                   myDescription.getViewServiceFullName(),
+                                                                  myDescription.getViewServiceURLMarker(),
                                                                   maxPageSize);
 
         this.endpointHandlerMap = new ViewServiceClientMap<>(EndpointHandler.class,
@@ -89,6 +91,7 @@ public class ConnectionMakerInstance extends OMVSServiceInstance
                                                              auditLog,
                                                              activeViewServices,
                                                              myDescription.getViewServiceFullName(),
+                                                             myDescription.getViewServiceURLMarker(),
                                                              maxPageSize);
 
     }
@@ -119,8 +122,8 @@ public class ConnectionMakerInstance extends OMVSServiceInstance
      * @throws PropertyServerException bad client handler class
      */
     public ConnectorTypeHandler getConnectorTypeHandler(String urlMarker,
-                                                String methodName) throws InvalidParameterException,
-                                                                          PropertyServerException
+                                                        String methodName) throws InvalidParameterException,
+                                                                                  PropertyServerException
     {
         return connectorTypeHandlerMap.getClient(urlMarker, methodName);
     }

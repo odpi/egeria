@@ -2,9 +2,7 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.frameworks.openmetadata.specificationproperties;
 
-import com.fasterxml.jackson.annotation.JsonAutoDetect;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.*;
 
 import java.util.Objects;
 
@@ -12,18 +10,26 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
 /**
- * ActionTargetType characterises one of the types of open metadata element supported by a specific governance service.
- * This enables the capability of a governance service to be correctly matched to the resources and elements that it works with.
+ * ActionTargetType characterises a type of element that the linked governance service/governance action
+ * works with when it runs.
  */
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME,
+        include = JsonTypeInfo.As.PROPERTY,
+        property = "class")
+@JsonSubTypes(
+        {
+                @JsonSubTypes.Type(value = ProducedActionTarget.class, name = "ProducedActionTarget"),
+                @JsonSubTypes.Type(value = SupportedActionTarget.class, name = "SupportedActionTarget"),
+        })
 public class ActionTargetType extends SpecificationProperty
 {
     /**
      * The open metadata type name of the element that can be an action target.
      */
-    private String typeName = null;
+    private String openMetadataTypeName = null;
 
     /**
      * The deployed implementation type allows the service to be more specific about the resources it works with.
@@ -42,6 +48,7 @@ public class ActionTargetType extends SpecificationProperty
      */
     public ActionTargetType()
     {
+        super();
     }
 
 
@@ -56,7 +63,7 @@ public class ActionTargetType extends SpecificationProperty
 
         if (template != null)
         {
-            this.typeName                   = template.getTypeName();
+            this.openMetadataTypeName       = template.getOpenMetadataTypeName();
             this.deployedImplementationType = template.getDeployedImplementationType();
             this.required                   = template.getRequired();
         }
@@ -68,20 +75,20 @@ public class ActionTargetType extends SpecificationProperty
      *
      * @return name of an open metadata type
      */
-    public String getTypeName()
+    public String getOpenMetadataTypeName()
     {
-        return typeName;
+        return openMetadataTypeName;
     }
 
 
     /**
      * Set up the type name (or super type name) of a permitted action target.
      *
-     * @param typeName name of an open metadata type
+     * @param openMetadataTypeName name of an open metadata type
      */
-    public void setTypeName(String typeName)
+    public void setOpenMetadataTypeName(String openMetadataTypeName)
     {
-        this.typeName = typeName;
+        this.openMetadataTypeName = openMetadataTypeName;
     }
 
 
@@ -138,7 +145,7 @@ public class ActionTargetType extends SpecificationProperty
     public String toString()
     {
         return "ActionTargetType{" +
-                "typeName='" + typeName + '\'' +
+                "typeName='" + openMetadataTypeName + '\'' +
                 ", deployedImplementationType='" + deployedImplementationType + '\'' +
                 ", required=" + required +
                 "} " + super.toString();
@@ -159,7 +166,7 @@ public class ActionTargetType extends SpecificationProperty
         if (!super.equals(objectToCompare)) return false;
         ActionTargetType that = (ActionTargetType) objectToCompare;
         return required == that.required &&
-                Objects.equals(typeName, that.typeName) &&
+                Objects.equals(openMetadataTypeName, that.openMetadataTypeName) &&
                 Objects.equals(deployedImplementationType, that.deployedImplementationType);
     }
 
@@ -172,6 +179,6 @@ public class ActionTargetType extends SpecificationProperty
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), typeName, deployedImplementationType, required);
+        return Objects.hash(super.hashCode(), openMetadataTypeName, deployedImplementationType, required);
     }
 }

@@ -66,6 +66,7 @@ public class FeedbackManagerInstance extends OMVSServiceInstance
                                                   auditLog,
                                                   activeViewServices,
                                                   myDescription.getViewServiceFullName(),
+                                                  myDescription.getViewServiceURLMarker(),
                                                   maxPageSize);
 
         this.ratingMap = new ViewServiceClientMap<>(RatingHandler.class,
@@ -75,6 +76,7 @@ public class FeedbackManagerInstance extends OMVSServiceInstance
                                                     auditLog,
                                                     activeViewServices,
                                                     myDescription.getViewServiceFullName(),
+                                                    myDescription.getViewServiceURLMarker(),
                                                     maxPageSize);
 
         this.commentMap = new ViewServiceClientMap<>(CommentHandler.class,
@@ -84,6 +86,7 @@ public class FeedbackManagerInstance extends OMVSServiceInstance
                                                      auditLog,
                                                      activeViewServices,
                                                      myDescription.getViewServiceFullName(),
+                                                     myDescription.getViewServiceURLMarker(),
                                                      maxPageSize);
 
         this.informalTagMap = new ViewServiceClientMap<>(InformalTagHandler.class,
@@ -93,6 +96,7 @@ public class FeedbackManagerInstance extends OMVSServiceInstance
                                                          auditLog,
                                                          activeViewServices,
                                                          myDescription.getViewServiceFullName(),
+                                                         myDescription.getViewServiceURLMarker(),
                                                          maxPageSize);
 
         this.noteLogMap = new ViewServiceClientMap<>(NoteLogHandler.class,
@@ -102,6 +106,7 @@ public class FeedbackManagerInstance extends OMVSServiceInstance
                                                      auditLog,
                                                      activeViewServices,
                                                      myDescription.getViewServiceFullName(),
+                                                     myDescription.getViewServiceURLMarker(),
                                                      maxPageSize);
     }
 

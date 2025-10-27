@@ -71,7 +71,7 @@ public class CSVSurveyServiceProvider extends SurveyActionServiceProvider
 
         actionTargetType.setName(FILE_TARGET_PROPERTY);
         actionTargetType.setDescription(FILE_TARGET_PROPERTY_DESCRIPTION);
-        actionTargetType.setTypeName(DeployedImplementationType.CSV_FILE.getAssociatedTypeName());
+        actionTargetType.setOpenMetadataTypeName(DeployedImplementationType.CSV_FILE.getAssociatedTypeName());
         actionTargetType.setDeployedImplementationType(DeployedImplementationType.CSV_FILE.getDeployedImplementationType());
 
         super.supportedActionTargetTypes.add(actionTargetType);

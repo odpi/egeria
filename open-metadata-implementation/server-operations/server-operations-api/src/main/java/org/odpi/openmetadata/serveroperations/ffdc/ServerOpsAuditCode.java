@@ -243,17 +243,17 @@ public enum ServerOpsAuditCode implements AuditLogMessageSet
     /**
      * SERVER-OPS-0022 - {0} out of {1} configured Open Metadata View Services (OMVSs) have started
      */
-    ALL_VIEW_SERVICES_STARTED("SERVER-OPS-0022",
-            AuditLogRecordSeverityLevel.STARTUP,
-            "{0} out of {1} configured Open Metadata View Services (OMVSs) have started",
-            "The operational admin services have completed the initialization of all the view service subsystems " +
-                    "enabled in the view server.  They are ready for use.  An view service is configured by adding " +
-                    "its configuration to the server's configuration document.  By default a newly configured view " +
-                    "service is also ENABLED. A configured view service may be temporarily disabled in the configuration" +
-                    "document.  In which case the start up sequence skips it and the number of started view services" +
-                    "is less than the number of configured view services.",
-            "Review the start up messages to ensure that all the correct view services have been started " +
-                    "and they are operating without errors."),
+    ALL_CONFIGURED_VIEW_SERVICES_STARTED("SERVER-OPS-0022",
+                                         AuditLogRecordSeverityLevel.STARTUP,
+                                         "{0} out of {1} configured Open Metadata View Services (OMVSs) have started; the active urlMarkers are: {2}",
+                                         "The operational admin services have completed the initialization of all the configured view service subsystems " +
+                                                 "enabled in the view server.  They are ready for use.  An view service is configured by adding " +
+                                                 "its configuration to the server's configuration document.  By default a newly configured view " +
+                                                 "service is also ENABLED. A configured view service may be temporarily disabled in the configuration" +
+                                                 "document.  In which case the start up sequence skips it and the number of started view services" +
+                                                 "is less than the number of configured view services.",
+                                         "Review the start up messages to ensure that all the correct view services have been started " +
+                                                 "and they are operating without errors."),
 
     /**
      * SERVER-OPS-0023 - The Open Metadata View Services (OMVSs) in server {0} are shutting down
@@ -326,6 +326,26 @@ public enum ServerOpsAuditCode implements AuditLogMessageSet
                     "in the view service's configuration and restart the server instance. Otherwise, " +
                     "remove the configuration for this view service and restart the view server."),
 
+    /**
+     * SERVER-OPS-0029 - The OMAG server {0} is activating generic view services that are not configured; these view services can only be called using a urlMarker of a configured service
+     */
+    ACTIVATING_UNCONFIGURED_GENERIC_VIEW_SERVICES("SERVER-OPS-0029",
+                                  AuditLogRecordSeverityLevel.INFO,
+                                  "The OMAG server {0} is activating generic view services that are not configured; these view services can only be called using a urlMarker of a configured service",
+                                  "The system is initializing any of the generic view services that are not configured.  These services can only be used if called using a urlMarker from one of hte configured services.",
+                                  "Check whether these view services should be properly configured."),
+
+    /**
+     * SERVER-OPS-0022 - {0} unconfigured Open Metadata View Services (OMVSs) have started
+     */
+    ALL_UNCONFIGURED_GENERIC_VIEW_SERVICES_STARTED("SERVER-OPS-0030",
+                              AuditLogRecordSeverityLevel.STARTUP,
+                              "{0} unconfigured generic Open Metadata View Services (OMVSs) have started",
+                              "The operational admin services have completed the initialization of all the unconfigured generic view service subsystems " +
+                                      "enabled in the view server.  They are ready for use, but they may only be called using a urlMarker of a configured view service.  An view service is configured by adding " +
+                                      "its configuration to the server's configuration document.",
+                              "Review the start up messages to ensure that all the view services have been started " +
+                                      "and they are operating without errors."),
     /**
      * SERVER-OPS-0040 - The Open Metadata Engine Services (OMESs) are starting
      */

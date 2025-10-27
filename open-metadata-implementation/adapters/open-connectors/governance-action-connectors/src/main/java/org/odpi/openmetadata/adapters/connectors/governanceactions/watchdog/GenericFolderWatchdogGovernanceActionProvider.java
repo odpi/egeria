@@ -54,7 +54,7 @@ public class GenericFolderWatchdogGovernanceActionProvider extends GovernanceAct
 
         actionTargetType.setName(FOLDER_TARGET_PROPERTY);
         actionTargetType.setDescription(FOLDER_TARGET_PROPERTY_DESCRIPTION);
-        actionTargetType.setTypeName(DeployedImplementationType.FILE_FOLDER.getAssociatedTypeName());
+        actionTargetType.setOpenMetadataTypeName(DeployedImplementationType.FILE_FOLDER.getAssociatedTypeName());
         actionTargetType.setDeployedImplementationType(DeployedImplementationType.FILE_FOLDER.getDeployedImplementationType());
 
         super.supportedActionTargetTypes.add(actionTargetType);

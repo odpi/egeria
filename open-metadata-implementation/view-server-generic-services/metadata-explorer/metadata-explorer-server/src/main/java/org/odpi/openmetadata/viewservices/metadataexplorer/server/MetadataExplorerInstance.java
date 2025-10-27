@@ -63,6 +63,7 @@ public class MetadataExplorerInstance extends OMVSServiceInstance
                                                                  auditLog,
                                                                  activeViewServices,
                                                                  myDescription.getViewServiceFullName(),
+                                                                 myDescription.getViewServiceURLMarker(),
                                                                  maxPageSize);
     }
 

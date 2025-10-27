@@ -2,9 +2,7 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.frameworks.openmetadata.specificationproperties;
 
-import com.fasterxml.jackson.annotation.JsonAutoDetect;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.*;
 
 import java.util.Objects;
 
@@ -19,15 +17,24 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME,
+        include = JsonTypeInfo.As.PROPERTY,
+        property = "class")
+@JsonSubTypes(
+        {
+                @JsonSubTypes.Type(value = SupportedConfigurationProperty.class, name = "SupportedConfigurationProperty"),
+        })
 public class ConfigurationPropertyType extends SpecificationProperty
 {
     /**
-     * The type name of the value for this configuration property.
+     * The type name of the value for this configuration property. Use DataType enum for consistency.
+     * @see org.odpi.openmetadata.frameworks.openmetadata.types.DataType
      */
     private String dataType = null;
 
     /**
      * An example values for this configuration property.
+     * Often it is the default value for an optional configuration property.
      */
     private String example = null;
 

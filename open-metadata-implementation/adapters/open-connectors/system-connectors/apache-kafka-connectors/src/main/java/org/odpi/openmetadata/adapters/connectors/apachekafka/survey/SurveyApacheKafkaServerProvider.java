@@ -86,7 +86,7 @@ public class SurveyApacheKafkaServerProvider extends SurveyActionServiceProvider
 
         actionTargetType.setName("*");
         actionTargetType.setDescription("Any Software Server entity that represents an Apache Kafka server linked to the connection for the Apache Kafka Admin connector.");
-        actionTargetType.setTypeName(KafkaDeployedImplementationType.APACHE_KAFKA_SERVER.getAssociatedTypeName());
+        actionTargetType.setOpenMetadataTypeName(KafkaDeployedImplementationType.APACHE_KAFKA_SERVER.getAssociatedTypeName());
         actionTargetType.setDeployedImplementationType(KafkaDeployedImplementationType.APACHE_KAFKA_SERVER.getDeployedImplementationType());
 
         super.supportedActionTargetTypes.add(actionTargetType);
