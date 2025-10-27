@@ -77,11 +77,15 @@ loadScripts(document, 'script');</script>
 </div>
 </div>
 <section class="class-description" id="class-description">
+<dl class="notes">
+<dt>Direct Known Subclasses:</dt>
+<dd><code><a href="ProducedActionTarget.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.specificationproperties">ProducedActionTarget</a></code>, <code><a href="SupportedActionTarget.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.specificationproperties">SupportedActionTarget</a></code>, <code><a href="SupportedRequestParameter.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.specificationproperties">SupportedRequestParameter</a></code></dd>
+</dl>
 <hr>
 <div class="type-signature"><span class="modifiers">public class </span><span class="element-name type-name-label">ActionTargetType</span>
 <span class="extends-implements">extends <a href="SpecificationProperty.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.specificationproperties">SpecificationProperty</a></span></div>
-<div class="block">ActionTargetType characterises one of the types of open metadata element supported by a specific governance service.
- This enables the capability of a governance service to be correctly matched to the resources and elements that it works with.</div>
+<div class="block">ActionTargetType characterises a type of element that the linked governance service/governance action
+ works with when it runs.</div>
 </section>
 <section class="summary">
 <ul class="summary-list">
@@ -125,15 +129,15 @@ loadScripts(document, 'script');</script>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Return a more specific definition of a permitted action target.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>boolean</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getRequired()" class="member-name-link">getRequired</a>()</code></div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getOpenMetadataTypeName()" class="member-name-link">getOpenMetadataTypeName</a>()</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Return whether this action target type is required for this service to work successful.</div>
-</div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getTypeName()" class="member-name-link">getTypeName</a>()</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Return the type name (or super type name) of a permitted action target.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>boolean</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getRequired()" class="member-name-link">getRequired</a>()</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Return whether this action target type is required for this service to work successful.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>int</code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#hashCode()" class="member-name-link">hashCode</a>()</code></div>
@@ -146,14 +150,14 @@ loadScripts(document, 'script');</script>
 <div class="block">Set up a more specific definition of a permitted action target.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setRequired(boolean)" class="member-name-link">setRequired</a><wbr>(boolean&nbsp;required)</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setOpenMetadataTypeName(java.lang.String)" class="member-name-link">setOpenMetadataTypeName</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;openMetadataTypeName)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Set up whether this action target type is required for this service to work successful.</div>
+<div class="block">Set up the type name (or super type name) of a permitted action target.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setTypeName(java.lang.String)" class="member-name-link">setTypeName</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;typeName)</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setRequired(boolean)" class="member-name-link">setRequired</a><wbr>(boolean&nbsp;required)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Set up the type name (or super type name) of a permitted action target.</div>
+<div class="block">Set up whether this action target type is required for this service to work successful.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#toString()" class="member-name-link">toString</a>()</code></div>
@@ -165,7 +169,7 @@ loadScripts(document, 'script');</script>
 </div>
 <div class="inherited-list">
 <h3 id="methods-inherited-from-class-org.odpi.openmetadata.frameworks.openmetadata.specificationproperties.SpecificationProperty">Methods inherited from class&nbsp;org.odpi.openmetadata.frameworks.openmetadata.specificationproperties.<a href="SpecificationProperty.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.specificationproperties">SpecificationProperty</a></h3>
-<code><a href="SpecificationProperty.html#getDescription()">getDescription</a>, <a href="SpecificationProperty.html#getName()">getName</a>, <a href="SpecificationProperty.html#getOtherPropertyValues()">getOtherPropertyValues</a>, <a href="SpecificationProperty.html#setDescription(java.lang.String)">setDescription</a>, <a href="SpecificationProperty.html#setName(java.lang.String)">setName</a>, <a href="SpecificationProperty.html#setOtherPropertyValues(java.util.Map)">setOtherPropertyValues</a></code></div>
+<code><a href="SpecificationProperty.html#getDescription()">getDescription</a>, <a href="SpecificationProperty.html#getName()">getName</a>, <a href="SpecificationProperty.html#getOtherPropertyValues()">getOtherPropertyValues</a>, <a href="SpecificationProperty.html#getSpecificationPropertyType()">getSpecificationPropertyType</a>, <a href="SpecificationProperty.html#setDescription(java.lang.String)">setDescription</a>, <a href="SpecificationProperty.html#setName(java.lang.String)">setName</a>, <a href="SpecificationProperty.html#setOtherPropertyValues(java.util.Map)">setOtherPropertyValues</a>, <a href="SpecificationProperty.html#setSpecificationPropertyType(org.odpi.openmetadata.frameworks.openmetadata.refdata.SpecificationPropertyType)">setSpecificationPropertyType</a></code></div>
 <div class="inherited-list">
 <h3 id="methods-inherited-from-class-java.lang.Object">Methods inherited from class&nbsp;java.lang.<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a></h3>
 <code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#clone()" title="class or interface in java.lang" class="external-link">clone</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#finalize()" title="class or interface in java.lang" class="external-link">finalize</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#getClass()" title="class or interface in java.lang" class="external-link">getClass</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#notify()" title="class or interface in java.lang" class="external-link">notify</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#notifyAll()" title="class or interface in java.lang" class="external-link">notifyAll</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#wait()" title="class or interface in java.lang" class="external-link">wait</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#wait(long)" title="class or interface in java.lang" class="external-link">wait</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#wait(long,int)" title="class or interface in java.lang" class="external-link">wait</a></code></div>
@@ -207,9 +211,9 @@ loadScripts(document, 'script');</script>
 <h2>Method Details</h2>
 <ul class="member-list">
 <li>
-<section class="detail" id="getTypeName()">
-<h3>getTypeName</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">getTypeName</span>()</div>
+<section class="detail" id="getOpenMetadataTypeName()">
+<h3>getOpenMetadataTypeName</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">getOpenMetadataTypeName</span>()</div>
 <div class="block">Return the type name (or super type name) of a permitted action target.</div>
 <dl class="notes">
 <dt>Returns:</dt>
@@ -218,13 +222,13 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
-<section class="detail" id="setTypeName(java.lang.String)">
-<h3>setTypeName</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">setTypeName</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;typeName)</span></div>
+<section class="detail" id="setOpenMetadataTypeName(java.lang.String)">
+<h3>setOpenMetadataTypeName</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">setOpenMetadataTypeName</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;openMetadataTypeName)</span></div>
 <div class="block">Set up the type name (or super type name) of a permitted action target.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
-<dd><code>typeName</code> - name of an open metadata type</dd>
+<dd><code>openMetadataTypeName</code> - name of an open metadata type</dd>
 </dl>
 </section>
 </li>

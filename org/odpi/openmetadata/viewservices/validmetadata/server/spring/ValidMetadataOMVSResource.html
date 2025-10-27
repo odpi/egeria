@@ -304,9 +304,8 @@ loadScripts(document, 'script');</script>
 <div class="block">Set up consistent metadata values relationship between the two property values.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../../commonservices/ffdc/rest/GUIDResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">GUIDResponse</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setUpSpecificationProperty(java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.refdata.SpecificationPropertyType,java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.specificationproperties.SpecificationProperty)" class="member-name-link">setUpSpecificationProperty</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setUpSpecificationProperty(java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.specificationproperties.SpecificationProperty)" class="member-name-link">setUpSpecificationProperty</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;urlMarker,
- <a href="../../../../frameworks/openmetadata/refdata/SpecificationPropertyType.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.refdata">SpecificationPropertyType</a>&nbsp;specificationPropertyType,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;elementGUID,
  <a href="../../../../frameworks/openmetadata/specificationproperties/SpecificationProperty.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.specificationproperties">SpecificationProperty</a>&nbsp;requestBody)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
@@ -1125,15 +1124,13 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
-<section class="detail" id="setUpSpecificationProperty(java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.refdata.SpecificationPropertyType,java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.specificationproperties.SpecificationProperty)">
+<section class="detail" id="setUpSpecificationProperty(java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.specificationproperties.SpecificationProperty)">
 <h3>setUpSpecificationProperty</h3>
 <div class="member-signature"><span class="annotations">@PostMapping(path="/elements/{elementGUID}/specification-properties")
 </span><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../../../commonservices/ffdc/rest/GUIDResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">GUIDResponse</a></span>&nbsp;<span class="element-name">setUpSpecificationProperty</span><wbr><span class="parameters">(@PathVariable
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
  @PathVariable
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;urlMarker,
- @RequestParam(required=false)
- <a href="../../../../frameworks/openmetadata/refdata/SpecificationPropertyType.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.refdata">SpecificationPropertyType</a>&nbsp;specificationPropertyType,
  @PathVariable
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;elementGUID,
  @RequestBody(required=false)
@@ -1144,7 +1141,6 @@ loadScripts(document, 'script');</script>
 <dd><code>serverName</code> - name of the server instances for this request.</dd>
 <dd><code>urlMarker</code> - view service URL marker</dd>
 <dd><code>elementGUID</code> - String - unique id for the element.</dd>
-<dd><code>specificationPropertyType</code> - type to create</dd>
 <dd><code>requestBody</code> - containing details of the specificationProperty.</dd>
 <dt>Returns:</dt>
 <dd>elementGUID for new specification property object or

@@ -123,13 +123,21 @@ implements <a href="../../frameworks/auditlog/messagesets/AuditLogMessageSet.htm
 <div class="col-last odd-row-color">
 <div class="block">SERVER-OPS-0015 - The {0} access service is unable to initialize a new instance; error message is {1}</div>
 </div>
-<div class="col-first even-row-color"><code><a href="#ALL_ACCESS_SERVICES_STARTED" class="member-name-link">ALL_ACCESS_SERVICES_STARTED</a></code></div>
+<div class="col-first even-row-color"><code><a href="#ACTIVATING_UNCONFIGURED_GENERIC_VIEW_SERVICES" class="member-name-link">ACTIVATING_UNCONFIGURED_GENERIC_VIEW_SERVICES</a></code></div>
 <div class="col-last even-row-color">
+<div class="block">SERVER-OPS-0029 - The OMAG server {0} is activating generic view services that are not configured; these view services can only be called using a urlMarker of a configured service</div>
+</div>
+<div class="col-first odd-row-color"><code><a href="#ALL_ACCESS_SERVICES_STARTED" class="member-name-link">ALL_ACCESS_SERVICES_STARTED</a></code></div>
+<div class="col-last odd-row-color">
 <div class="block">SERVER-OPS-0012 - {0} out of {1} configured Open Metadata Access Services (OMASs) have started</div>
 </div>
-<div class="col-first odd-row-color"><code><a href="#ALL_ACCESS_SERVICES_STOPPED" class="member-name-link">ALL_ACCESS_SERVICES_STOPPED</a></code></div>
-<div class="col-last odd-row-color">
+<div class="col-first even-row-color"><code><a href="#ALL_ACCESS_SERVICES_STOPPED" class="member-name-link">ALL_ACCESS_SERVICES_STOPPED</a></code></div>
+<div class="col-last even-row-color">
 <div class="block">SERVER-OPS-0014 - The Open Metadata Access Services (OMASs) in server {0} have shutdown</div>
+</div>
+<div class="col-first odd-row-color"><code><a href="#ALL_CONFIGURED_VIEW_SERVICES_STARTED" class="member-name-link">ALL_CONFIGURED_VIEW_SERVICES_STARTED</a></code></div>
+<div class="col-last odd-row-color">
+<div class="block">SERVER-OPS-0022 - {0} out of {1} configured Open Metadata View Services (OMVSs) have started</div>
 </div>
 <div class="col-first even-row-color"><code><a href="#ALL_ENGINE_SERVICES_STARTED" class="member-name-link">ALL_ENGINE_SERVICES_STARTED</a></code></div>
 <div class="col-last even-row-color">
@@ -139,9 +147,9 @@ implements <a href="../../frameworks/auditlog/messagesets/AuditLogMessageSet.htm
 <div class="col-last odd-row-color">
 <div class="block">SERVER-OPS-0044 - The Open Metadata Engine Services (OMESs) in server {0} have shutdown</div>
 </div>
-<div class="col-first even-row-color"><code><a href="#ALL_VIEW_SERVICES_STARTED" class="member-name-link">ALL_VIEW_SERVICES_STARTED</a></code></div>
+<div class="col-first even-row-color"><code><a href="#ALL_UNCONFIGURED_GENERIC_VIEW_SERVICES_STARTED" class="member-name-link">ALL_UNCONFIGURED_GENERIC_VIEW_SERVICES_STARTED</a></code></div>
 <div class="col-last even-row-color">
-<div class="block">SERVER-OPS-0022 - {0} out of {1} configured Open Metadata View Services (OMVSs) have started</div>
+<div class="block">SERVER-OPS-0022 - {0} unconfigured Open Metadata View Services (OMVSs) have started</div>
 </div>
 <div class="col-first odd-row-color"><code><a href="#ALL_VIEW_SERVICES_STOPPED" class="member-name-link">ALL_VIEW_SERVICES_STOPPED</a></code></div>
 <div class="col-last odd-row-color">
@@ -447,9 +455,9 @@ the order they are declared.</div>
 </section>
 </li>
 <li>
-<section class="detail" id="ALL_VIEW_SERVICES_STARTED">
-<h3>ALL_VIEW_SERVICES_STARTED</h3>
-<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="ServerOpsAuditCode.html" title="enum class in org.odpi.openmetadata.serveroperations.ffdc">ServerOpsAuditCode</a></span>&nbsp;<span class="element-name">ALL_VIEW_SERVICES_STARTED</span></div>
+<section class="detail" id="ALL_CONFIGURED_VIEW_SERVICES_STARTED">
+<h3>ALL_CONFIGURED_VIEW_SERVICES_STARTED</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="ServerOpsAuditCode.html" title="enum class in org.odpi.openmetadata.serveroperations.ffdc">ServerOpsAuditCode</a></span>&nbsp;<span class="element-name">ALL_CONFIGURED_VIEW_SERVICES_STARTED</span></div>
 <div class="block">SERVER-OPS-0022 - {0} out of {1} configured Open Metadata View Services (OMVSs) have started</div>
 </section>
 </li>
@@ -494,6 +502,20 @@ the order they are declared.</div>
 <h3>NULL_VIEW_SERVICE_ADMIN_CLASS</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="ServerOpsAuditCode.html" title="enum class in org.odpi.openmetadata.serveroperations.ffdc">ServerOpsAuditCode</a></span>&nbsp;<span class="element-name">NULL_VIEW_SERVICE_ADMIN_CLASS</span></div>
 <div class="block">SERVER-OPS-0028 - The OMAG server {0} has been passed a null admin services class name for view service {1}</div>
+</section>
+</li>
+<li>
+<section class="detail" id="ACTIVATING_UNCONFIGURED_GENERIC_VIEW_SERVICES">
+<h3>ACTIVATING_UNCONFIGURED_GENERIC_VIEW_SERVICES</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="ServerOpsAuditCode.html" title="enum class in org.odpi.openmetadata.serveroperations.ffdc">ServerOpsAuditCode</a></span>&nbsp;<span class="element-name">ACTIVATING_UNCONFIGURED_GENERIC_VIEW_SERVICES</span></div>
+<div class="block">SERVER-OPS-0029 - The OMAG server {0} is activating generic view services that are not configured; these view services can only be called using a urlMarker of a configured service</div>
+</section>
+</li>
+<li>
+<section class="detail" id="ALL_UNCONFIGURED_GENERIC_VIEW_SERVICES_STARTED">
+<h3>ALL_UNCONFIGURED_GENERIC_VIEW_SERVICES_STARTED</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="ServerOpsAuditCode.html" title="enum class in org.odpi.openmetadata.serveroperations.ffdc">ServerOpsAuditCode</a></span>&nbsp;<span class="element-name">ALL_UNCONFIGURED_GENERIC_VIEW_SERVICES_STARTED</span></div>
+<div class="block">SERVER-OPS-0022 - {0} unconfigured Open Metadata View Services (OMVSs) have started</div>
 </section>
 </li>
 <li>

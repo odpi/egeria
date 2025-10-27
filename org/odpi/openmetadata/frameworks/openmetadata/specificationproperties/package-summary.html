@@ -61,7 +61,7 @@ loadScripts(document, 'script');</script>
 <hr>
 <div class="package-signature">package <span class="element-name">org.odpi.openmetadata.frameworks.openmetadata.specificationproperties</span></div>
 <section class="package-description" id="package-description">
-<div class="block">The specification properties are used to describe the requirements for using,running templates,
+<div class="block">The specification properties are used to describe the requirements for using/running templates,
  governance actions and connectors.</div>
 </section>
 <section class="summary">
@@ -74,7 +74,8 @@ loadScripts(document, 'script');</script>
 <div class="table-header col-last">Description</div>
 <div class="col-first even-row-color class-summary class-summary-tab2"><a href="ActionTargetType.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.specificationproperties">ActionTargetType</a></div>
 <div class="col-last even-row-color class-summary class-summary-tab2">
-<div class="block">ActionTargetType characterises one of the types of open metadata element supported by a specific governance service.</div>
+<div class="block">ActionTargetType characterises a type of element that the linked governance service/governance action
+ works with when it runs.</div>
 </div>
 <div class="col-first odd-row-color class-summary class-summary-tab2"><a href="AnalysisStepType.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.specificationproperties">AnalysisStepType</a></div>
 <div class="col-last odd-row-color class-summary class-summary-tab2">
@@ -83,8 +84,7 @@ loadScripts(document, 'script');</script>
 </div>
 <div class="col-first even-row-color class-summary class-summary-tab2"><a href="AnnotationTypeType.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.specificationproperties">AnnotationTypeType</a></div>
 <div class="col-last even-row-color class-summary class-summary-tab2">
-<div class="block">AnnotationTypeType describes an annotation type of survey action service it is part of the metadata to help
- tools understand the operations of a service.</div>
+<div class="block">AnnotationTypeType describes an annotation type of survey action service.</div>
 </div>
 <div class="col-first odd-row-color class-summary class-summary-tab2"><a href="ConfigurationPropertyType.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.specificationproperties">ConfigurationPropertyType</a></div>
 <div class="col-last odd-row-color class-summary class-summary-tab2">
@@ -94,9 +94,36 @@ loadScripts(document, 'script');</script>
 <div class="col-last even-row-color class-summary class-summary-tab2">
 <div class="block">GuardType describes a guard.</div>
 </div>
-<div class="col-first odd-row-color class-summary class-summary-tab2"><a href="PlaceholderPropertyType.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.specificationproperties">PlaceholderPropertyType</a></div>
+<div class="col-first odd-row-color class-summary class-summary-tab2"><a href="PlaceholderProperty.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.specificationproperties">PlaceholderProperty</a></div>
 <div class="col-last odd-row-color class-summary class-summary-tab2">
+<div class="block">PlaceholderProperty characterises one of the placeholder properties used in a template.</div>
+</div>
+<div class="col-first even-row-color class-summary class-summary-tab2"><a href="PlaceholderPropertyType.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.specificationproperties">PlaceholderPropertyType</a></div>
+<div class="col-last even-row-color class-summary class-summary-tab2">
 <div class="block">PlaceholderPropertyType characterises one of the placeholder properties used in a template.</div>
+</div>
+<div class="col-first odd-row-color class-summary class-summary-tab2"><a href="ProducedActionTarget.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.specificationproperties">ProducedActionTarget</a></div>
+<div class="col-last odd-row-color class-summary class-summary-tab2">
+<div class="block">ProducedActionTarget characterises one of the action targets that this governance service
+ sets up to pass on to any follow-on steps in a governance action process that it is a part of.</div>
+</div>
+<div class="col-first even-row-color class-summary class-summary-tab2"><a href="ProducedAnnotationType.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.specificationproperties">ProducedAnnotationType</a></div>
+<div class="col-last even-row-color class-summary class-summary-tab2">
+<div class="block">ProducedAnnotationType describes an annotation type of survey action service.</div>
+</div>
+<div class="col-first odd-row-color class-summary class-summary-tab2"><a href="ProducedGuard.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.specificationproperties">ProducedGuard</a></div>
+<div class="col-last odd-row-color class-summary class-summary-tab2">
+<div class="block">GuardType describes a guard.</div>
+</div>
+<div class="col-first even-row-color class-summary class-summary-tab2"><a href="ProducedRequestParameter.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.specificationproperties">ProducedRequestParameter</a></div>
+<div class="col-last even-row-color class-summary class-summary-tab2">
+<div class="block">ProducedRequestParameter characterises one of the request parameters that this governance service
+ sets up to pass on to any follow-on steps in a governance action process that it is a part of.</div>
+</div>
+<div class="col-first odd-row-color class-summary class-summary-tab2"><a href="ReplacementAttribute.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.specificationproperties">ReplacementAttribute</a></div>
+<div class="col-last odd-row-color class-summary class-summary-tab2">
+<div class="block">ReplacementAttribute characterises one of the attribute values that should be provided when using a specific
+ template.</div>
 </div>
 <div class="col-first even-row-color class-summary class-summary-tab2"><a href="ReplacementAttributeType.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.specificationproperties">ReplacementAttributeType</a></div>
 <div class="col-last even-row-color class-summary class-summary-tab2">
@@ -116,9 +143,36 @@ loadScripts(document, 'script');</script>
 <div class="block">SpecificationProperty characterises one of the specification properties used to explain to a caller
  how to use a template, or a connector.</div>
 </div>
+<div class="col-first even-row-color class-summary class-summary-tab2"><a href="SupportedActionTarget.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.specificationproperties">SupportedActionTarget</a></div>
+<div class="col-last even-row-color class-summary class-summary-tab2">
+<div class="block">SupportedActionTarget characterises one of the types of open metadata element supported by a specific
+ governance service or governance action.</div>
+</div>
+<div class="col-first odd-row-color class-summary class-summary-tab2"><a href="SupportedAnalysisStep.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.specificationproperties">SupportedAnalysisStep</a></div>
+<div class="col-last odd-row-color class-summary class-summary-tab2">
+<div class="block">SupportedAnalysisStep describes an analysis step of a survey action service it is part of the metadata to help
+ tools understand the operations of a service.</div>
+</div>
+<div class="col-first even-row-color class-summary class-summary-tab2"><a href="SupportedConfigurationProperty.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.specificationproperties">SupportedConfigurationProperty</a></div>
+<div class="col-last even-row-color class-summary class-summary-tab2">
+<div class="block">SupportedConfigurationProperty characterises one of the configuration parameters supported by a specific connector.</div>
+</div>
+<div class="col-first odd-row-color class-summary class-summary-tab2"><a href="SupportedRequestParameter.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.specificationproperties">SupportedRequestParameter</a></div>
+<div class="col-last odd-row-color class-summary class-summary-tab2">
+<div class="block">SupportedRequestParameter characterises one of the request parameters supported by a specific
+ governance service or governance action.</div>
+</div>
+<div class="col-first even-row-color class-summary class-summary-tab2"><a href="SupportedRequestType.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.specificationproperties">SupportedRequestType</a></div>
+<div class="col-last even-row-color class-summary class-summary-tab2">
+<div class="block">SupportedRequestTypeType characterises one of the governance request types supported by a specific governance service.</div>
+</div>
+<div class="col-first odd-row-color class-summary class-summary-tab2"><a href="SupportedTemplate.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.specificationproperties">SupportedTemplate</a></div>
+<div class="col-last odd-row-color class-summary class-summary-tab2">
+<div class="block">SupportedTemplate defines a template supported by the linked element (typically a connector or governance action).</div>
+</div>
 <div class="col-first even-row-color class-summary class-summary-tab2"><a href="TemplateType.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.specificationproperties">TemplateType</a></div>
 <div class="col-last even-row-color class-summary class-summary-tab2">
-<div class="block">TemplateType defines a template supported by this integration connector.</div>
+<div class="block">SupportedTemplate defines a template supported by the linked element (typically a connector or governance action).</div>
 </div>
 </div>
 </div>
