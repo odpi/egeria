@@ -3,6 +3,8 @@
 
 package org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.utilities;
 
+import org.odpi.openmetadata.frameworks.openmetadata.search.PrimitiveTypePropertyValue;
+import org.odpi.openmetadata.frameworks.openmetadata.search.PropertyValue;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.MatchCriteria;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.*;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.search.PropertyComparisonOperator;
@@ -372,37 +374,43 @@ public class OMRSRepositoryPropertiesUtilities implements OMRSRepositoryProperti
         if (instanceProperties != null)
         {
             Map<String, InstancePropertyValue> instancePropertyValues = instanceProperties.getInstanceProperties();
-            List<String>                       resultingArray = new ArrayList<>();
+            int arrayCapacity = instancePropertyValues.size(); // default value
 
+            /*
+             * ArrayList returns IndexOutOfBoundsException if its size is not big enough - so check
+             * there are no outlying indices ...
+             */
             for (String arrayOrdinalName : instancePropertyValues.keySet())
             {
                 if (arrayOrdinalName != null)
                 {
-                    log.debug(thisMethodName + " processing array element: " + arrayOrdinalName);
+                    int arrayOrdinalNumber  = Integer.decode(arrayOrdinalName);
 
-                    int                   arrayOrdinalNumber  = Integer.decode(arrayOrdinalName);
-                    InstancePropertyValue actualPropertyValue = instanceProperties.getPropertyValue(arrayOrdinalName);
+                    if (arrayOrdinalNumber+1 > arrayCapacity)
+                    {
+                        arrayCapacity = arrayOrdinalNumber+1;
+                    }
+                }
+            }
 
-                    if (actualPropertyValue != null)
-                    {
-                        if (actualPropertyValue.getInstancePropertyCategory() == InstancePropertyCategory.PRIMITIVE)
-                        {
-                            PrimitivePropertyValue primitivePropertyValue = (PrimitivePropertyValue) actualPropertyValue;
-                            resultingArray.add(arrayOrdinalNumber, primitivePropertyValue.getPrimitiveValue().toString());
-                        }
-                        else
-                        {
-                            log.error(thisMethodName + " skipping collection value: " + actualPropertyValue + " from method " + callingMethodName);
-                        }
-                    }
-                    else
-                    {
-                        log.error(thisMethodName + " skipping null value" + " from method " + callingMethodName);
-                    }
+            List<String> resultingArray = new ArrayList<>(arrayCapacity);
+
+            /*
+             * Fill array ...
+             */
+            for (int i=0 ; i<arrayCapacity ; i++)
+            {
+                String indexName = Integer.toString(i);
+
+                InstancePropertyValue actualPropertyValue = instanceProperties.getPropertyValue(indexName);
+
+                if (actualPropertyValue instanceof PrimitivePropertyValue primitiveTypePropertyValue)
+                {
+                    resultingArray.add(primitiveTypePropertyValue.getPrimitiveValue().toString());
                 }
                 else
                 {
-                    log.error(thisMethodName + " skipping null ordinal" + " from method " + callingMethodName);
+                    log.error(thisMethodName + " skipping collection value: " + actualPropertyValue + " from method " + callingMethodName);
                 }
             }
 

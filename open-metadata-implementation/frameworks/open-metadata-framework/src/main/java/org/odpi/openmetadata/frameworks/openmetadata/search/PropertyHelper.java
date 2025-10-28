@@ -3717,10 +3717,10 @@ public class PropertyHelper
      * @param callingMethodName method of caller
      * @return array property value or null
      */
-    public List<String> getStringArrayProperty(String             sourceName,
-                                               String             propertyName,
+    public List<String> getStringArrayProperty(String            sourceName,
+                                               String            propertyName,
                                                ElementProperties properties,
-                                               String             callingMethodName)
+                                               String            callingMethodName)
     {
         final String  thisMethodName = "getStringArrayProperty";
 
@@ -3740,7 +3740,7 @@ public class PropertyHelper
                 {
                     if (instancePropertyValue instanceof ArrayTypePropertyValue arrayPropertyValue)
                     {
-                        if (arrayPropertyValue.getArrayCount() > 0)
+                        if ((arrayPropertyValue.getArrayCount() > 0) && (arrayPropertyValue.getArrayValues() != null))
                         {
                             /*
                              * There are values to extract
@@ -3762,6 +3762,8 @@ public class PropertyHelper
 
     /**
      * Convert the values in the instance properties into a String Array.  It assumes all the elements are primitives.
+     * The order that the elements are returned from the repository is arbitrary
+     * so the array has to be assembled using the stored indices to preserve the original order.
      *
      * @param elementProperties instance properties containing the values.  They should all be primitive Strings.
      * @return list of strings
@@ -3771,19 +3773,39 @@ public class PropertyHelper
         if (elementProperties != null)
         {
             Map<String, PropertyValue> instancePropertyValues = elementProperties.getPropertyValueMap();
-            List<String>               resultingArray = new ArrayList<>();
+            int arrayCapacity = instancePropertyValues.size(); // default value
 
+            /*
+             * ArrayList returns IndexOutOfBoundsException if its size is not big enough - so check
+             * there are no outlying indices ...
+             */
             for (String arrayOrdinalName : instancePropertyValues.keySet())
             {
                 if (arrayOrdinalName != null)
                 {
-                    int           arrayOrdinalNumber  = Integer.decode(arrayOrdinalName);
-                    PropertyValue actualPropertyValue = elementProperties.getPropertyValue(arrayOrdinalName);
+                    int arrayOrdinalNumber  = Integer.decode(arrayOrdinalName);
 
-                    if (actualPropertyValue instanceof PrimitiveTypePropertyValue primitiveTypePropertyValue)
+                    if (arrayOrdinalNumber+1 > arrayCapacity)
                     {
-                        resultingArray.add(arrayOrdinalNumber, primitiveTypePropertyValue.getPrimitiveValue().toString());
+                        arrayCapacity = arrayOrdinalNumber+1;
                     }
+                }
+            }
+
+            List<String> resultingArray = new ArrayList<>(arrayCapacity);
+
+            /*
+             * Fill array ...
+             */
+            for (int i=0 ; i<arrayCapacity ; i++)
+            {
+                String indexName = Integer.toString(i);
+
+                PropertyValue actualPropertyValue = elementProperties.getPropertyValue(indexName);
+
+                if (actualPropertyValue instanceof PrimitiveTypePropertyValue primitiveTypePropertyValue)
+                {
+                    resultingArray.add(primitiveTypePropertyValue.getPrimitiveValue().toString());
                 }
             }
 
