@@ -68,7 +68,6 @@ Content-Type: application/json
   "parentAtEnd1": false,
   "properties": {
     "class" : "ExternalReferenceProperties",
-    "typeName" : "enter the type of the element",
     "qualifiedName": "add unique name here",
     "displayName": "add short name here",
     "description": "add description here",
@@ -85,6 +84,32 @@ Content-Type: application/json
   }
 }
 
+###
+# @name createExternalReference
+# Create an external reference.
+#
+# Request body provides             properties for the external reference.
+#
+# Returns unique identifier of the newly created element
+#  InvalidParameterException  one of the parameters is invalid.
+#  PropertyServerException    there is a problem retrieving information from the property server(s).
+#  UserNotAuthorizedException the requesting user is not authorized to issue this request.
+#
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/external-links/external-references
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "NewElementRequestBody",
+  "isOwnAnchor": true,
+  "properties": {
+    "class" : "ExternalReferenceProperties",
+    "qualifiedName": "add unique name here",
+    "displayName": "add short name here",
+    "description": "add description here",
+    "authors": ["a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l"]
+  }
+}
 
 ###
 # @name createExternalReferenceFromTemplate
