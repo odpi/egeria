@@ -111,53 +111,6 @@ public class CommentHandler extends OpenMetadataHandlerBase
 
 
     /**
-     * Adds a comment to the element.
-     *
-     * @param userId        userId of user making request.
-     * @param commentGUID     unique identifier for the comment to attach to.
-     * @param elementGUID     unique identifier for the anchor element.
-     * @param metadataSourceOptions  options to control access to open metadata
-     * @param initialClassifications map of classification names to classification properties to include in the entity creation request
-     * @param properties   properties of the comment
-     *
-     * @return guid of new comment.
-     *
-     * @throws InvalidParameterException one of the parameters is null or invalid.
-     * @throws PropertyServerException there is a problem adding the element properties to the property server.
-     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
-     */
-    public String addCommentReply(String                                userId,
-                                  String                                elementGUID,
-                                  String                                commentGUID,
-                                  MetadataSourceOptions                 metadataSourceOptions,
-                                  Map<String, ClassificationProperties> initialClassifications,
-                                  CommentProperties                     properties) throws InvalidParameterException,
-                                                                                           PropertyServerException,
-                                                                                           UserNotAuthorizedException
-    {
-        final String methodName = "addCommentToElement";
-
-        NewElementProperties elementProperties = this.getElementPropertiesForComment(properties, methodName);
-
-        NewElementOptions newElementOptions = new NewElementOptions(metadataSourceOptions);
-
-        newElementOptions.setInitialStatus(ElementStatus.ACTIVE);
-        newElementOptions.setAnchorGUID(elementGUID);
-        newElementOptions.setIsOwnAnchor(false);
-        newElementOptions.setParentGUID(commentGUID);
-        newElementOptions.setParentRelationshipTypeName(OpenMetadataType.ATTACHED_COMMENT_RELATIONSHIP.typeName);
-        newElementOptions.setParentAtEnd1(true);
-
-        return openMetadataClient.createMetadataElementInStore(userId,
-                                                               OpenMetadataType.COMMENT.typeName,
-                                                               newElementOptions,
-                                                               classificationBuilder.getInitialClassifications(initialClassifications),
-                                                               elementProperties,
-                                                               null);
-    }
-
-
-    /**
      * Update an existing comment.
      *
      * @param userId        userId of user making request.

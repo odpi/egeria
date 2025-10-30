@@ -71,29 +71,6 @@ Content-Type: application/json
 
 
 ###
-# @name addCommentReply
-# Adds a reply to a comment. Optional request parameters:
-#  
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/feedback-manager/elements/{{elementGUID}}/comments/{{commentGUID}}/replies
-Authorization: Bearer {{token}}
-Content-Type: application/json
-
-{
-  "class" : "NewAttachmentRequestBody",
-  "properties" : {
-    "class" : "CommentProperties",
-    "qualifiedName" : "Add unique name here",
-    "description" : "Add comment text here",
-    "commentType" : "STANDARD_COMMENT",
-    "additionalProperties" : {
-      "propertyName 1" : "property value 1",
-      "propertyName 2" : "property value 2"
-    }
-  }
-}
-
-
-###
 # @name updateComment
 # Update an existing comment.
 # The request body property mergeUpdate indicates wither the new properties should be merged with existing properties (true) or completely replace them (false)?

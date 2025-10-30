@@ -10,6 +10,7 @@ import org.odpi.openmetadata.frameworks.openmetadata.specificationproperties.Act
 import org.odpi.openmetadata.frameworks.openmetadata.specificationproperties.GuardType;
 import org.odpi.openmetadata.frameworks.openmetadata.specificationproperties.RequestParameterType;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.ReferenceableProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 
 import java.util.List;
 import java.util.Map;
@@ -44,6 +45,7 @@ public class GovernanceActionTypeProperties extends ReferenceableProperties
     public GovernanceActionTypeProperties()
     {
         super();
+        super.setTypeName(OpenMetadataType.GOVERNANCE_ACTION_TYPE.typeName);
     }
 
 
