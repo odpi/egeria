@@ -210,6 +210,19 @@ public class ValidMetadataValueHandler extends OpenMetadataHandlerBase
                                                                                                     OpenMetadataProperty.QUALIFIED_NAME.name,
                                                                                                     null);
 
+        if ((openMetadataElement == null) && (typeName != null))
+        {
+            qualifiedName = OpenMetadataValidValues.constructValidValueQualifiedName(null,
+                                                                                     propertyName,
+                                                                                     mapName,
+                                                                                     preferredValue);
+
+            openMetadataElement = openMetadataClient.getMetadataElementByUniqueName(userId,
+                                                                                    qualifiedName,
+                                                                                    OpenMetadataProperty.QUALIFIED_NAME.name,
+                                                                                    null);
+        }
+
         return this.convertValidValue(openMetadataElement);
     }
 

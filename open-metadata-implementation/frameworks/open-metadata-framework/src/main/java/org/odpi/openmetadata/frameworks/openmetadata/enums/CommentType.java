@@ -42,9 +42,9 @@ public enum CommentType implements OpenMetadataEnum
     SUGGESTION       (3,  "ae22e098-29e3-46d5-a733-7c411276dc5d", "Suggestion", "Provides a suggestion on how to improve the element or its properties and description.", false),
 
     /**
-     * Experience - Describes situations where this asset has been used and related hints and tips.
+     * Usage Experience - Describes situations where this asset has been used and related hints and tips.
      */
-    USAGE_EXPERIENCE (4,  "072f1357-f9fc-45a1-8c9d-27ee400ad2b2", "Experience", "Describes situations where this asset has been used and related hints and tips.", false),
+    USAGE_EXPERIENCE (4,  "072f1357-f9fc-45a1-8c9d-27ee400ad2b2", "Usage Experience", "Describes situations where this element has been used and related hints and tips.", false),
 
     /**
      * Requirement - Describes mandatory changes that must be made to the attached element(s).

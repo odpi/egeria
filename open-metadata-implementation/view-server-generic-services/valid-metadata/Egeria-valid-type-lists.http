@@ -1,0 +1,103 @@
+# Egeria-valid-metadata-lists
+# Further Information: https://egeria-project.org/services/omvs/valid-metadata/overview/
+
+@baseURL=https://localhost:9443
+@viewServer=view-server
+
+###
+# =====================================================================================================================
+# Manage the authentication token.  Run this request to create/refresh the token.
+
+# @name Token (RequestBody)
+POST {{baseURL}}/api/token
+Content-Type: application/json
+
+{
+  "userId" : "peterprofile",
+  "password" : "secret"
+}
+
+> {% client.global.set("token", response.body); %}
+
+###
+
+# =====================================================================================================================
+###
+
+# @name getAllTypes
+# Returns the list of different types of metadata organized into two groups.  The first are the
+# attribute type definitions (AttributeTypeDefs).  These provide types for attributes in full
+# type definitions.  Full type definitions (TypeDefs) describe types for entities, relationships
+# and classifications.
+#
+GET {{baseURL}}/servers/{{viewServer}}/api/open-metadata/valid-metadata/open-metadata-types
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+####
+# @name getEntityDefs
+# Returns all the entity type definitions.
+GET {{baseURL}}/servers/{{viewServer}}/api/open-metadata/valid-metadata/open-metadata-types/entity-defs
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+####
+# @name getRelationshipDefs
+# Returns all the relationship type definitions.
+GET {{baseURL}}/servers/{{viewServer}}/api/open-metadata/valid-metadata/open-metadata-types/relationship-defs
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+####
+# @name getClassificationDefs
+# Returns all the classification type definitions.
+GET {{baseURL}}/servers/{{viewServer}}/api/open-metadata/valid-metadata/open-metadata-types/classification-defs
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+###
+
+@typeName=Project
+@superType=Collection
+
+####
+# @name getSubTypes
+# Returns all the TypeDefs for a specific subtype.  If a null result is returned it means the
+# type has no subtypes.
+#
+GET {{baseURL}}/servers/{{viewServer}}/api/open-metadata/valid-metadata/open-metadata-types/sub-types/{{superType}}
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+####
+# @name getValidRelationshipTypes
+# Returns all the TypeDefs for relationships that can be attached to the requested entity type.
+#
+GET {{baseURL}}/servers/{{viewServer}}/api/open-metadata/valid-metadata/open-metadata-types/{{typeName}}/attached-relationships
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+####
+# @name getValidClassificationTypes
+# Returns all the TypeDefs for classifications that can be attached to the requested entity type.
+#
+GET {{baseURL}}/servers/{{viewServer}}/api/open-metadata/valid-metadata/open-metadata-types/{{typeName}}/attached-classifications
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+###
+# @name getTypeDefByName
+# Return the TypeDef identified by the unique name.
+GET {{baseURL}}/servers/{{viewServer}}/api/open-metadata/valid-metadata/open-metadata-types/name/{{typeName}}
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+
+###
+# @name getTypeDefByName
+# Return the TypeDef identified by the unique name.
+GET {{baseURL}}/servers/{{viewServer}}/api/open-metadata/valid-metadata/open-metadata-types/name/Anchors
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+###

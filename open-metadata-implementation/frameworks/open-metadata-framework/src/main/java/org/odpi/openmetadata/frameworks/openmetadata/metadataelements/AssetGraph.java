@@ -15,8 +15,9 @@ public class AssetGraph extends OpenMetadataRootElement
 {
     private List<MetadataElementSummary>     anchoredElements                   = null;
     private List<RelatedMetadataNodeSummary> relationships                      = null;
-    private List<MetadataElementSummary>     partOfInformationSupplyChains      = null;
-    private String                           informationSupplyChainMermaidGraph = null;
+    private List<MetadataElementSummary> partOfInformationSupplyChains      = null;
+    private String                       anchorMermaidGraph                 = null;
+    private String                       informationSupplyChainMermaidGraph = null;
     private String                           fieldLevelLineageGraph             = null;
     private String                           actionMermaidGraph                 = null;
     private String                           localLineageGraph                  = null;
@@ -54,6 +55,7 @@ public class AssetGraph extends OpenMetadataRootElement
             anchoredElements                   = template.getAnchoredElements();
             relationships                      = template.getRelationships();
             partOfInformationSupplyChains      = template.getPartOfInformationSupplyChains();
+            anchorMermaidGraph                 = template.getAnchorMermaidGraph();
             informationSupplyChainMermaidGraph = template.getInformationSupplyChainMermaidGraph();
             fieldLevelLineageGraph             = template.getFieldLevelLineageGraph();
             actionMermaidGraph                 = template.getActionMermaidGraph();
@@ -128,6 +130,29 @@ public class AssetGraph extends OpenMetadataRootElement
     {
         this.partOfInformationSupplyChains = informationSupplyChains;
     }
+
+
+    /**
+     * Set up the graph of anchored elements.
+     *
+     * @return string in Mermaid markdown
+     */
+    public String getAnchorMermaidGraph()
+    {
+        return anchorMermaidGraph;
+    }
+
+
+    /**
+     * Return the graph of anchored elements.
+     *
+     * @param anchorMermaidGraph string in Mermaid markdown
+     */
+    public void setAnchorMermaidGraph(String anchorMermaidGraph)
+    {
+        this.anchorMermaidGraph = anchorMermaidGraph;
+    }
+
 
 
     /**
@@ -232,6 +257,7 @@ public class AssetGraph extends OpenMetadataRootElement
                 "anchoredElements=" + anchoredElements +
                 ", relationships=" + relationships +
                 ", partOfInformationSupplyChains=" + partOfInformationSupplyChains +
+                ", anchorMermaidGraph='" + anchorMermaidGraph + '\'' +
                 ", informationSupplyChainMermaidGraph='" + informationSupplyChainMermaidGraph + '\'' +
                 ", fieldLevelLineageGraph='" + fieldLevelLineageGraph + '\'' +
                 ", actionMermaidGraph='" + actionMermaidGraph + '\'' +
@@ -256,6 +282,7 @@ public class AssetGraph extends OpenMetadataRootElement
         return Objects.equals(anchoredElements, that.anchoredElements) &&
                 Objects.equals(relationships, that.relationships) &&
                 Objects.equals(partOfInformationSupplyChains, that.partOfInformationSupplyChains) &&
+                Objects.equals(anchorMermaidGraph, that.anchorMermaidGraph) &&
                 Objects.equals(informationSupplyChainMermaidGraph, that.informationSupplyChainMermaidGraph) &&
                 Objects.equals(actionMermaidGraph, that.actionMermaidGraph) &&
                 Objects.equals(localLineageGraph, that.localLineageGraph) &&
@@ -272,7 +299,7 @@ public class AssetGraph extends OpenMetadataRootElement
     public int hashCode()
     {
         return Objects.hash(super.hashCode(), anchoredElements, relationships, partOfInformationSupplyChains,
-                            informationSupplyChainMermaidGraph, fieldLevelLineageGraph,
+                            anchorMermaidGraph, informationSupplyChainMermaidGraph, fieldLevelLineageGraph,
                             actionMermaidGraph, localLineageGraph);
     }
 }
