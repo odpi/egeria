@@ -1,4 +1,5 @@
 # Egeria-valid-metadata-lists
+# Further Information: https://egeria-project.org/services/omvs/valid-metadata/overview/
 
 @baseURL=https://localhost:9443
 @viewServer=view-server
@@ -21,9 +22,9 @@ Content-Type: application/json
 ###
 # =====================================================================================================================
 # Setting up 4 valid values for the category property: "clinical-trial", "manufacturing-improvement",
-# "security-assessment", "incident-investigation"
+# "security-assessment", "incident-investigation".  TypeName is not specified which means these are valid values for
+# the category attribute in any type.
 #
-# Further Information: https://egeria-project.org/services/omvs/valid-metadata/overview/
 
 ###
 # @name setUpValidMetadataValue - clinical-trial
@@ -71,16 +72,203 @@ Content-Type: application/json
 }
 
 ###
-# @name setUpValidMetadataValue - security-assessment
+# @name setUpValidMetadataValue - incident-investigation
 #
 POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/valid-metadata/setup-value/category
 Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-  "displayName": "Security Assessment",
-  "description": "Element supporting one or more security assessments.",
-  "preferredValue": "security-assessment",
+  "displayName": "Incident Investigation",
+  "description": "Element supporting the investigation of an incident such as a data breach.",
+  "preferredValue": "incident-investigation",
+  "dataType": "string",
+  "isCaseSensitive": false
+}
+
+
+###
+# =====================================================================================================================
+# Setting up 5 valid values for the purposes property: "governance", "market-analysis", "product-development",
+# "product-verification", "patient-treatment".  TypeName is is set to Project which means these are valid values for
+# the purposes attribute only in Project entities.
+#
+
+@typeName=Project
+
+###
+# @name setUpValidMetadataValue - governance
+#
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/valid-metadata/setup-value/purposes?typeName={{typeName}}
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "displayName": "Governance",
+  "description": "Indicates that this project is supporting a governance requirement.",
+  "preferredValue": "governance",
+  "dataType": "string",
+  "isCaseSensitive": true
+}
+
+###
+# @name setUpValidMetadataValue - market-analysis
+#
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/valid-metadata/setup-value/purposes?typeName={{typeName}}
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "displayName": "Market Analysis",
+  "description": "Indicates that this project is supporting analysis of a new market requirement, or the perception of the company and/or its products in the market.",
+  "preferredValue": "market-analysis",
+  "dataType": "string",
+  "isCaseSensitive": true
+}
+
+
+###
+# @name setUpValidMetadataValue - product-development
+#
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/valid-metadata/setup-value/purposes?typeName={{typeName}}
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "displayName": "Product Development",
+  "description": "Indicates that this project is supporting the development of a new product.",
+  "preferredValue": "product-development",
+  "dataType": "string",
+  "isCaseSensitive": true
+}
+
+
+###
+# @name setUpValidMetadataValue - product-verification
+#
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/valid-metadata/setup-value/purposes?typeName={{typeName}}
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "displayName": "Product Verification",
+  "description": "Indicates that this project is supporting the verification of all aspects of a new product (including clinical trials).",
+  "preferredValue": "product-verification",
+  "dataType": "string",
+  "isCaseSensitive": true
+}
+
+###
+# @name setUpValidMetadataValue - patient-treatment
+#
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/valid-metadata/setup-value/purposes?typeName={{typeName}}
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "displayName": "Patient Treatment",
+  "description": "Indicates that this project is supporting the treatment of a patient.",
+  "preferredValue": "patient-treatment",
+  "dataType": "string",
+  "isCaseSensitive": true
+}
+
+###
+# =====================================================================================================================
+# Setting up the values for addtionalProperties is in two parts: first setting the valid values for the map name
+# "expectedDuration" and then setting the mapValues for each value of "expectedDuration"
+
+###
+# @name setUpValidMetadataMapName expectedDuration
+#
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/valid-metadata/setup-map-name/additionalProperties?typeName={{typeName}}
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "displayName": "Expected Duration",
+  "description": "How long (roughly) is this project expected to run?",
+  "preferredValue": "expectedDuration",
+  "dataType": "string",
+  "isCaseSensitive": false
+}
+
+
+###
+# @name setUpValidMetadataMapValue - 1 month
+#
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/valid-metadata/setup-map-value/additionalProperties/expectedDuration?typeName={{typeName}}
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "displayName": "One Month",
+  "description": "The project is expected to run for a month.",
+  "preferredValue": "1 month",
+  "dataType": "string",
+  "isCaseSensitive": false
+}
+
+
+###
+# @name setUpValidMetadataMapValue - 2 months
+#
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/valid-metadata/setup-map-value/additionalProperties/expectedDuration?typeName={{typeName}}
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "displayName": "Two Month",
+  "description": "The project is expected to run for two months.",
+  "preferredValue": "2 months",
+  "dataType": "string",
+  "isCaseSensitive": false
+}
+
+
+###
+# @name setUpValidMetadataMapValue - 6 months
+#
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/valid-metadata/setup-map-value/additionalProperties/expectedDuration?typeName={{typeName}}
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "displayName": "Six Month",
+  "description": "The project is expected to run for six months.",
+  "preferredValue": "6 months",
+  "dataType": "string",
+  "isCaseSensitive": false
+}
+
+
+###
+# @name setUpValidMetadataMapValue - 1 year
+#
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/valid-metadata/setup-map-value/additionalProperties/expectedDuration?typeName={{typeName}}
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "displayName": "One year",
+  "description": "The project is expected to run for about a year.",
+  "preferredValue": "1 year",
+  "dataType": "string",
+  "isCaseSensitive": false
+}
+
+
+###
+# @name setUpValidMetadataMapValue - other
+#
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/valid-metadata/setup-map-value/additionalProperties/expectedDuration?typeName={{typeName}}
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "displayName": "One year",
+  "description": "The project is expected to run for longer than 1 year.",
+  "preferredValue": "other",
   "dataType": "string",
   "isCaseSensitive": false
 }
@@ -88,81 +276,66 @@ Content-Type: application/json
 ###
 # =====================================================================================================================
 
-###
-# @name setUpValidMetadataMapName
-# Create or update the valid value for a name that can be stored in a particular open metadata property name.
-# This property is of type map from name to string.
-# The mapName is stored in the preferredValue property of validMetadataValue.
-# If the typeName is null, this valid value applies to properties of this name from any open metadata type.
-# If a valid value is already set up for this property (with overlapping effective dates) then the valid value is updated.
-#
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/valid-metadata/setup-map-name/{{propertyName}}?typeName={{typeName}}
-Authorization: Bearer {{token}}
-Content-Type: application/json
-
-{
-  "displayName": "",
-  "description": "",
-  "preferredValue": "put mapName value here",
-  "dataType": "",
-  "isCaseSensitive": false,
-  "isDeprecated" : false
-}
-
 
 ###
-# @name setUpValidMetadataMapValue
-# Create or update the valid value for a name that can be stored in a particular open metadata property name.
-# This property is of type map from name to string.
-# The valid value is stored in the preferredValue property of validMetadataValue.
-# If the typeName is null, this valid value applies to properties of this name from any open metadata type.
-# If a valid value is already set up for this property (with overlapping effective dates) then the valid value is updated.
+# @name getValidMetadataValue - clinical-trial
+# Retrieve details of a specific valid value for a property.
 #
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/valid-metadata/setup-map-value/{{propertyName}}/{{mapName}}?typeName={{typeName}}
-Authorization: Bearer {{token}}
-Content-Type: application/json
-
-{
-  "displayName": "",
-  "description": "",
-  "preferredValue": "put map value here",
-  "dataType": "",
-  "isCaseSensitive": false
-}
-
-
-###
-# @name clearValidMetadataValue
-# Remove a valid value for a property.
-#
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/valid-metadata/clear-value/{{propertyName}}?typeName={{typeName}}&preferredValue={{preferredValue}}
+GET {{baseURL}}/servers/{{viewServer}}/api/open-metadata/valid-metadata/get-value/category?typeName={{typeName}}&preferredValue=clinical-trial
 Authorization: Bearer {{token}}
 Content-Type: application/json
 
 
 ###
-# @name clearValidMetadataMapName
-# Remove a valid map name value for a property.  The match is done on mapName name.
+# @name getValidMetadataMapName - expectedDuration
+# Retrieve details of a specific valid name for a map property.
 #
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/valid-metadata/clear-map-name/{{propertyName}}?typeName={{typeName}}&mapName={{mapName}}
+GET {{baseURL}}/servers/{{viewServer}}/api/open-metadata/valid-metadata/get-map-name/additionalProperties?typeName={{typeName}}&mapName=expectedDuration
 Authorization: Bearer {{token}}
 Content-Type: application/json
 
 
 ###
-# @name clearValidMetadataMapValue
-# Remove a valid map name value for a property.  The match is done on preferred name.
+# @name getValidMetadataMapValue - 1 month
+# Retrieve details of a specific valid value for a map name.
 #
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/valid-metadata/clear-map-value/{{propertyName}}/{{mapName}}?typeName={{typeName}}&preferredValue={{preferredValue}}
+GET {{baseURL}}/servers/{{viewServer}}/api/open-metadata/valid-metadata/get-map-value/additionalProperties/expectedDuration?typeName={{typeName}}&preferredValue=1 month
 Authorization: Bearer {{token}}
 Content-Type: application/json
 
+
+###
+# @name getValidMetadataValues - category
+# Retrieve all the valid values for the category property.
+#
+GET {{baseURL}}/servers/{{viewServer}}/api/open-metadata/valid-metadata/get-valid-metadata-values/category?typeName={{typeName}}&startFrom=0&pageSize=0
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+###
+# @name getValidMetadataValues - purposes
+# Retrieve all the valid values for the purposes property.
+#
+GET {{baseURL}}/servers/{{viewServer}}/api/open-metadata/valid-metadata/get-valid-metadata-values/purposes?typeName={{typeName}}&startFrom=0&pageSize=0
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+###
+# =====================================================================================================================
 
 ###
 # @name validateMetadataValue
 # Validate whether the value found in an open metadata property is valid.
 #
-GET {{baseURL}}/servers/{{viewServer}}/api/open-metadata/valid-metadata/validate-value/{{propertyName}}?typeName={{typeName}}&actualValue={{actualValue}}
+GET {{baseURL}}/servers/{{viewServer}}/api/open-metadata/valid-metadata/validate-value/category?typeName={{typeName}}&actualValue=clinical-trial
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+###
+# @name validateMetadataValue
+# Validate whether the value found in an open metadata property is valid.
+#
+GET {{baseURL}}/servers/{{viewServer}}/api/open-metadata/valid-metadata/validate-value/purposes?typeName={{typeName}}&actualValue=marketing
 Authorization: Bearer {{token}}
 Content-Type: application/json
 
@@ -171,7 +344,7 @@ Content-Type: application/json
 # @name validateMetadataMapName
 # Validate whether the name found in an open metadata map property is valid.
 #
-GET {{baseURL}}/servers/{{viewServer}}/api/open-metadata/valid-metadata/validate-map-name/{{propertyName}}?typeName={{typeName}}&mapName={{mapName}}
+GET {{baseURL}}/servers/{{viewServer}}/api/open-metadata/valid-metadata/validate-map-name/additionalProperties?typeName={{typeName}}&mapName=expectedDuration
 Authorization: Bearer {{token}}
 Content-Type: application/json
 
@@ -180,537 +353,48 @@ Content-Type: application/json
 # @name validateMetadataMapValue
 # Validate whether the value found in an open metadata map property is valid.
 #
-GET {{baseURL}}/servers/{{viewServer}}/api/open-metadata/valid-metadata/validate-map-value/{{propertyName}}/{{mapName}}?typeName={{typeName}}&actualValue={{actualValue}}
+GET {{baseURL}}/servers/{{viewServer}}/api/open-metadata/valid-metadata/validate-map-value/additionalProperties/expectedDuration?typeName={{typeName}}&actualValue=1 year
 Authorization: Bearer {{token}}
 Content-Type: application/json
 
-
 ###
-# @name getValidMetadataValue
-# Retrieve details of a specific valid value for a property.
+# @name validateMetadataMapValue
+# Validate whether the value found in an open metadata map property is valid.
 #
-GET {{baseURL}}/servers/{{viewServer}}/api/open-metadata/valid-metadata/get-value/{{propertyName}}?typeName={{typeName}}&preferredValue={{preferredValue}}
+GET {{baseURL}}/servers/{{viewServer}}/api/open-metadata/valid-metadata/validate-map-value/additionalProperties/expectedDuration?typeName={{typeName}}&actualValue=2 years
 Authorization: Bearer {{token}}
 Content-Type: application/json
 
-
 ###
-# @name getValidMetadataMapName
-# Retrieve details of a specific valid name for a map property.
-#
-GET {{baseURL}}/servers/{{viewServer}}/api/open-metadata/valid-metadata/get-map-name/{{propertyName}}?typeName={{typeName}}&mapName={{mapName}}
-Authorization: Bearer {{token}}
-Content-Type: application/json
-
-
-###
-# @name getValidMetadataMapValue
-# Retrieve details of a specific valid value for a map name.
-#
-GET {{baseURL}}/servers/{{viewServer}}/api/open-metadata/valid-metadata/get-map-value/{{propertyName}}/{{mapName}}?typeName={{typeName}}&preferredValue={{preferredValue}}
-Authorization: Bearer {{token}}
-Content-Type: application/json
-
-
-###
-# @name getValidMetadataValues
-# Retrieve all the valid values for the requested property.
-#
-GET {{baseURL}}/servers/{{viewServer}}/api/open-metadata/valid-metadata/get-valid-metadata-values/{{propertyName}}?typeName={{typeName}}&startFrom=0&pageSize=0
-Authorization: Bearer {{token}}
-Content-Type: application/json
-
-
-###
-# @name getConsistentMetadataValues
-# Retrieve all the consistent valid values for the requested property.
-#
-GET {{baseURL}}/servers/{{viewServer}}/api/open-metadata/valid-metadata/{{propertyName}}/consistent-metadata-values?typeName={{typeName}}&mapName={{mapName}}&preferredValue={{preferredValue}}&startFrom=0&pageSize=0
-Authorization: Bearer {{token}}
-Content-Type: application/json
-
-
+# =====================================================================================================================
+# The ConsistentValidValues relationship shows how valid values should be used together.
 ###
 
-@typeName1=
-@propertyName1=
-@mapName1=
-@preferredValue1=
-
-@typeName2=
-@propertyName2=
-@mapName2=
-@preferredValue2=
-
 ###
-# @name setConsistentMetadataValues
+# @name setConsistentMetadataValues - clinical-trials (category) and product-verification (purposes)
 # Set up consistent metadata values relationship between the two property values.
 #
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/valid-metadata/{{propertyName1}}/consistent-metadata-values/{{propertyName2}}?typeName1={{typeName1}}&mapName1={{mapName1}}&preferredValue1={{preferredValue1}}&?typeName2={{typeName2}}&mapName2={{mapName2}}&preferredValue2={{preferredValue2}}
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/valid-metadata/category/consistent-metadata-values/purposes?preferredValue1=clinical-trial&typeName2={{typeName}}&preferredValue2=product-verification
 Authorization: Bearer {{token}}
 Content-Type: application/json
 
 ###
-# =====================================================================================================================
-###
-
-# @name getAllTypes
-# Returns the list of different types of metadata organized into two groups.  The first are the
-# attribute type definitions (AttributeTypeDefs).  These provide types for attributes in full
-# type definitions.  Full type definitions (TypeDefs) describe types for entities, relationships
-# and classifications.
+# @name getConsistentMetadataValues - clinical-trial
+# Retrieve all the consistent valid values for the requested property.
 #
-GET {{baseURL}}/servers/{{viewServer}}/api/open-metadata/valid-metadata/open-metadata-types
+GET {{baseURL}}/servers/{{viewServer}}/api/open-metadata/valid-metadata/category/consistent-metadata-values?typeName={{typeName}}&preferredValue=clinical-trial&startFrom=0&pageSize=0
 Authorization: Bearer {{token}}
 Content-Type: application/json
 
-####
-# @name getEntityDefs
-# Returns all the entity type definitions.
-GET {{baseURL}}/servers/{{viewServer}}/api/open-metadata/valid-metadata/open-metadata-types/entity-defs
-Authorization: Bearer {{token}}
-Content-Type: application/json
-
-####
-# @name getRelationshipDefs
-# Returns all the relationship type definitions.
-GET {{baseURL}}/servers/{{viewServer}}/api/open-metadata/valid-metadata/open-metadata-types/relationship-defs
-Authorization: Bearer {{token}}
-Content-Type: application/json
-
-####
-# @name getClassificationDefs
-# Returns all the classification type definitions.
-GET {{baseURL}}/servers/{{viewServer}}/api/open-metadata/valid-metadata/open-metadata-types/classification-defs
-Authorization: Bearer {{token}}
-Content-Type: application/json
 
 ###
-
-@standard=
-@organization=
-@identifier=
-
-####
-# @name getSubTypes
-# Returns all the TypeDefs for a specific subtype.  If a null result is returned it means the
-# type has no subtypes.
+# @name getConsistentMetadataValues - fileType
+# Retrieve all the consistent valid values for the fileType property.
 #
-GET {{baseURL}}/servers/{{viewServer}}/api/open-metadata/valid-metadata/open-metadata-types/sub-types/{{typeName}}
-Authorization: Bearer {{token}}
-Content-Type: application/json
-
-####
-# @name getValidRelationshipTypes
-# Returns all the TypeDefs for relationships that can be attached to the requested entity type.
-#
-GET {{baseURL}}/servers/{{viewServer}}/api/open-metadata/valid-metadata/open-metadata-types/{{typeName}}/attached-relationships
-Authorization: Bearer {{token}}
-Content-Type: application/json
-
-####
-# @name getValidClassificationTypes
-# Returns all the TypeDefs for classifications that can be attached to the requested entity type.
-#
-GET {{baseURL}}/servers/{{viewServer}}/api/open-metadata/valid-metadata/open-metadata-types/{{typeName}}/attached-classifications
+GET {{baseURL}}/servers/{{viewServer}}/api/open-metadata/valid-metadata/fileType/consistent-metadata-values?preferredValue=CSV File&startFrom=0&pageSize=0
 Authorization: Bearer {{token}}
 Content-Type: application/json
 
 ###
-# @name getTypeDefByName
-# Return the TypeDef identified by the unique name.
-GET {{baseURL}}/servers/{{viewServer}}/api/open-metadata/valid-metadata/open-metadata-types/name/{{typeName}}
-Authorization: Bearer {{token}}
-Content-Type: application/json
-
-###
-# =====================================================================================================================
-# Specification properties - Note: The request body varies depending on the type of property.
-
-@specificationPropertyGUID=add guid here
-@elementGUID=add guid here
-
-###
-# @name getSpecificationPropertyTypes
-# Return the list of specification property types.
-
-GET {{baseURL}}/servers/{{viewServer}}/api/open-metadata/valid-metadata/specification-properties/type-names
-Authorization: Bearer {{token}}
-Content-Type: application/json
-
-###
-# @name setUpSpecificationProperty (placeholderProperty)
-# Create a placeholderProperty specification property and attach it to an element.
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/valid-metadata/elements/{elementGUID}/specification-properties
-Authorization: Bearer {{token}}
-Content-Type: application/json
-
-{
-  "class" : "PlaceholderProperty",
-  "name": "placeholder property name",
-  "description": "placeholder property description",
-  "otherPropertyValues": {
-    "property1" : "propertyValue1",
-    "property2" : "propertyValue2"
-  }
-}
-
-
-###
-# @name setUpSpecificationProperty (replacementAttribute)
-# Create a replacementAttribute specification property and attach it to an element.
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/valid-metadata/elements/{elementGUID}/specification-properties
-Authorization: Bearer {{token}}
-Content-Type: application/json
-
-{
-  "class" : "ReplacementAttribute",
-  "name": "replacement attribute name",
-  "description": "replacement attribute description",
-  "datatype": "data type of the attribute, eg string",
-  "example": "this is an example - often it is the default value for an optional replacement attribute.",
-  "required": false,
-  "otherPropertyValues": {
-    "property1" : "propertyValue1",
-    "property2" : "propertyValue2"
-  }
-}
-
-
-###
-# @name setUpSpecificationProperty (replacementAttribute)
-# Create a replacementAttribute specification property and attach it to an element.
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/valid-metadata/elements/{elementGUID}/specification-properties
-Authorization: Bearer {{token}}
-Content-Type: application/json
-
-{
-  "class" : "ReplacementAttribute",
-  "name": "replacement attribute name",
-  "description": "replacement attribute description",
-  "datatype": "data type of the attribute, eg string",
-  "example": "this is an example - often it is the default value for an optional replacement attribute.",
-  "required": false,
-  "otherPropertyValues": {
-    "property1" : "propertyValue1",
-    "property2" : "propertyValue2"
-  }
-}
-
-
-###
-# @name setUpSpecificationProperty (supportedTemplate)
-# Create a supportedTemplate specification property and attach it to an element.
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/valid-metadata/elements/{elementGUID}/specification-properties
-Authorization: Bearer {{token}}
-Content-Type: application/json
-
-{
-  "class" : "SupportedTemplate",
-  "name": "template name",
-  "description": "template description",
-  "openMetadataTypeName": "open metadata type of the element produced by the template",
-  "required": false,
-  "otherPropertyValues": {
-    "property1" : "propertyValue1",
-    "property2" : "propertyValue2"
-  }
-}
-
-###
-# @name setUpSpecificationProperty (supportedRequestType)
-# Create a supportedRequestType specification property and attach it to an element.
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/valid-metadata/elements/{elementGUID}/specification-properties
-Authorization: Bearer {{token}}
-Content-Type: application/json
-
-{
-  "class" : "SupportedRequestType",
-  "name": "request type name",
-  "description": "request type description",
-  "otherPropertyValues": {
-    "property1" : "propertyValue1",
-    "property2" : "propertyValue2"
-  }
-}
-
-###
-# @name setUpSpecificationProperty (supportedRequestParameter)
-# Create a supportedRequestParameter specification property and attach it to an element.
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/valid-metadata/elements/{elementGUID}/specification-properties
-Authorization: Bearer {{token}}
-Content-Type: application/json
-
-{
-  "class" : "SupportedRequestParameter",
-  "name": "request parameter name",
-  "description": "request parameter description",
-  "datatype": "data type of the parameter, eg string",
-  "example": "this is an example - often it is the default value for an optional request parameter.",
-  "required": false,
-  "otherPropertyValues": {
-    "property1" : "propertyValue1",
-    "property2" : "propertyValue2"
-  }
-}
-
-###
-# @name setUpSpecificationProperty (supportedActionTarget)
-# Create a supportedActionTarget specification property and attach it to an element.
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/valid-metadata/elements/{elementGUID}/specification-properties
-Authorization: Bearer {{token}}
-Content-Type: application/json
-
-{
-  "class" : "SupportedActionTarget",
-  "name": "action target name",
-  "description": "action target description",
-  "openMetadataTypeName" : "add open metadata type name of the action target element here",
-  "deployedImplementationType" : "add deployed implementation type here",
-  "required" : true,
-  "otherPropertyValues": {
-    "property1" : "propertyValue1",
-    "property2" : "propertyValue2"
-  }
-}
-
-###
-# @name setUpSpecificationProperty (supportedAnalysisStep)
-# Create a supportedActionTarget specification property and attach it to an element.
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/valid-metadata/elements/{elementGUID}/specification-properties
-Authorization: Bearer {{token}}
-Content-Type: application/json
-
-{
-  "class" : "SupportedAnalysisStep",
-  "name": "analysis step name",
-  "description": "analysis step description",
-  "otherPropertyValues": {
-    "property1" : "propertyValue1",
-    "property2" : "propertyValue2"
-  }
-}
-
-
-###
-# @name setUpSpecificationProperty (supportedConfigurationProperty)
-# Create a supportedActionTarget specification property and attach it to an element.
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/valid-metadata/elements/{elementGUID}/specification-properties
-Authorization: Bearer {{token}}
-Content-Type: application/json
-
-{
-  "class" : "SupportedConfigurationProperty",
-  "name": "configuration property name",
-  "description": "configuration property description",
-  "datatype": "data type of the property, eg string",
-  "example": "this is an example - often it is the default value for an optional configuration property",
-  "required": false,
-  "otherPropertyValues": {
-    "property1" : "propertyValue1",
-    "property2" : "propertyValue2"
-  }
-}
-
-###
-# @name setUpSpecificationProperty (producedGuard)
-# Create a producedGuard specification property and attach it to an element.
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/valid-metadata/elements/{elementGUID}/specification-properties
-Authorization: Bearer {{token}}
-Content-Type: application/json
-
-{
-  "class" : "ProducedGuard",
-  "name": "guard name",
-  "description": "guard description",
-  "completionStatus" : "INVALID",
-  "otherPropertyValues": {
-    "property1" : "propertyValue1",
-    "property2" : "propertyValue2"
-  }
-}
-
-###
-# @name setUpSpecificationProperty (producedRequestParameter)
-# Create a producedRequestParameter specification property and attach it to an element.
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/valid-metadata/elements/{elementGUID}/specification-properties
-Authorization: Bearer {{token}}
-Content-Type: application/json
-
-{
-  "class" : "ProducedRequestParameter",
-  "name": "request parameter name",
-  "description": "request parameter description",
-  "datatype": "data type of the parameter, eg string",
-  "example": "this is an example - often it is the default value for an optional request parameter.",
-  "required": false,
-  "otherPropertyValues": {
-    "property1" : "propertyValue1",
-    "property2" : "propertyValue2"
-  }
-}
-
-
-###
-# @name setUpSpecificationProperty (producedRequestParameter)
-# Create a producedRequestParameter specification property and attach it to an element.
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/valid-metadata/elements/{elementGUID}/specification-properties
-Authorization: Bearer {{token}}
-Content-Type: application/json
-
-{
-  "class" : "ProducedRequestParameter",
-  "name": "request parameter name",
-  "description": "request parameter description",
-  "datatype": "data type of the parameter, eg string",
-  "example": "this is an example - often it is the default value for an optional request parameter.",
-  "required": false,
-  "otherPropertyValues": {
-    "property1" : "propertyValue1",
-    "property2" : "propertyValue2"
-  }
-}
-
-###
-# @name setUpSpecificationProperty (producedActionTarget)
-# Create a producedActionTarget specification property and attach it to an element.
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/valid-metadata/elements/{elementGUID}/specification-properties
-Authorization: Bearer {{token}}
-Content-Type: application/json
-
-{
-  "class" : "ProducedActionTarget",
-  "name": "action target name",
-  "description": "action target description",
-  "openMetadataTypeName" : "add open metadata type name of the action target element here",
-  "deployedImplementationType" : "add deployed implementation type here",
-  "required" : true,
-  "otherPropertyValues": {
-    "property1" : "propertyValue1",
-    "property2" : "propertyValue2"
-  }
-}
-
-
-###
-# @name setUpSpecificationProperty (producedAnnotationType)
-# Create a producedActionTarget specification property and attach it to an element.
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/valid-metadata/elements/{elementGUID}/specification-properties
-Authorization: Bearer {{token}}
-Content-Type: application/json
-
-{
-  "class" : "ProducedAnnotationType",
-  "name": "annotation type name",
-  "description": "annotation type description",
-  "openMetadataTypeName" : "add open metadata type used for the annotation here",
-  "analysisStepName" : "add name of analysis step where this annotation type is produced here",
-  "explanation" : "add explanation of the processing or results stored in the annotation here",
-  "expression" : "add description of any calculation here",
-  "otherPropertyValues": {
-    "property1" : "propertyValue1",
-    "property2" : "propertyValue2"
-  }
-}
-
-
-###
-# @name deleteSpecificationProperty
-# Removes a specification property added to the element.  This deletes the link to the specification property and the specification property itself.
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/valid-metadata/specification-properties/{specificationPropertyGUID}/delete
-Authorization: Bearer {{token}}
-Content-Type: application/json
-
-{
-  "class" : "DeleteElementRequestBody",
-  "cascadeDelete" : false,
-  "externalSourceGUID": "add guid here",
-  "externalSourceName": "add qualified name here",
-  "effectiveTime" : "{{$isoTimestamp}}",
-  "forLineage" : false,
-  "forDuplicateProcessing" : false
-}
-
-###
-# @name findSpecificationProperty
-# Return the list of specification properties containing the supplied string.
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/valid-metadata/specification-properties/by-search-string
-Authorization: Bearer {{token}}
-Content-Type: application/json
-
-{
-  "class" : "SearchStringRequestBody",
-  "searchString" : "Add value here",
-  "startsWith" : false,
-  "endsWith" : false,
-  "ignoreCase" : true,
-  "startFrom" : 0,
-  "pageSize": 10,
-  "asOfTime" : "{{$isoTimestamp}}",
-  "effectiveTime" : "{{$isoTimestamp}}",
-  "forLineage" : false,
-  "forDuplicateProcessing" : false,
-  "limitResultsByStatus" : ["ACTIVE"],
-  "sequencingOrder" : "PROPERTY_ASCENDING",
-  "sequencingProperty" : "qualifiedName"
-}
-
-###
-# @name getSpecificationPropertyByType
-#  Return the list of specification properties containing the supplied type.
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/valid-metadata/specification-properties/by-type?specificationPropertyType=PRODUCED_GUARDS
-Authorization: Bearer {{token}}
-Content-Type: application/json
-
-{
-  "class" : "ResultsRequestBody",
-  "startFrom" : 0,
-  "pageSize": 10,
-  "asOfTime" : "{{$isoTimestamp}}",
-  "effectiveTime" : "{{$isoTimestamp}}",
-  "forLineage" : false,
-  "forDuplicateProcessing" : false,
-  "limitResultsByStatus" : ["ACTIVE"],
-  "sequencingOrder" : "PROPERTY_ASCENDING",
-  "sequencingProperty" : "qualifiedName"
-}
-
-
-###
-# @name getSpecificationPropertyByName
-#  Return the list of specification properties containing the supplied name.
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/valid-metadata/specification-properties/by-name
-Authorization: Bearer {{token}}
-Content-Type: application/json
-
-{
-  "class" : "FilterRequestBody",
-  "filter" : "Add value here",
-  "startFrom" : 0,
-  "pageSize": 10,
-  "asOfTime" : "{{$isoTimestamp}}",
-  "effectiveTime" : "{{$isoTimestamp}}",
-  "forLineage" : false,
-  "forDuplicateProcessing" : false,
-  "limitResultsByStatus" : ["ACTIVE"],
-  "sequencingOrder" : "PROPERTY_ASCENDING",
-  "sequencingProperty" : "qualifiedName"
-}
-
-
-###
-# @name getSpecificationPropertyByGUID
-# Return the requested specificationProperty.
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/valid-metadata/specification-properties/{specificationPropertyGUID}/retrieve
-Authorization: Bearer {{token}}
-Content-Type: application/json
-
-{
-  "class" : "GetRequestBody",
-  "asOfTime" : "{{$isoTimestamp}}",
-  "effectiveTime" : "{{$isoTimestamp}}",
-  "forLineage" : false,
-  "forDuplicateProcessing" : false
-}
 
 ###

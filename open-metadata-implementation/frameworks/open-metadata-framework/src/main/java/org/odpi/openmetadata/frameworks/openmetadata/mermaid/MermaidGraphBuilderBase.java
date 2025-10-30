@@ -12,7 +12,6 @@ import org.odpi.openmetadata.frameworks.openmetadata.properties.digitalbusiness.
 import org.odpi.openmetadata.frameworks.openmetadata.properties.digitalbusiness.AgreementItemProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.externalidentifiers.ExternalIdProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.externalreferences.ExternalReferenceProperties;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.feedback.LikeProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.feedback.RatingProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.solutions.SolutionComponentProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.search.PropertyHelper;
@@ -1002,14 +1001,24 @@ public class MermaidGraphBuilderBase
         }
         else
         {
+            boolean newTypeName = true;
             for (char c : typeName.toCharArray())
             {
-                if ((Character.isUpperCase(c)) && (!spacedName.isEmpty()))
+                if ((Character.isUpperCase(c)) && (! newTypeName))
                 {
                     spacedName.append(' ');
                 }
 
                 spacedName.append(c);
+
+                if (c == '[')
+                {
+                    newTypeName = true;
+                }
+                else
+                {
+                    newTypeName = false;
+                }
             }
         }
 
@@ -1085,7 +1094,7 @@ public class MermaidGraphBuilderBase
         if (currentDisplayName != null)
         {
             mermaidGraph.append("**");
-            mermaidGraph.append(removeDoubleSlash(currentDisplayName.trim()));
+            mermaidGraph.append(removeTroublesomeCharacters(currentDisplayName.trim()));
             mermaidGraph.append("**");
         }
 
@@ -1153,10 +1162,10 @@ public class MermaidGraphBuilderBase
             mermaidGraph.append(", label: \"*");
             mermaidGraph.append(addSpacesToTypeName(currentType));
             mermaidGraph.append("*\n");
-            if (currentDisplayName != null)
+            if ((currentDisplayName != null) && (! currentDisplayName.isBlank()))
             {
                 mermaidGraph.append("**");
-                mermaidGraph.append(removeDoubleSlash(currentDisplayName.trim()));
+                mermaidGraph.append(removeTroublesomeCharacters(currentDisplayName.trim()));
                 mermaidGraph.append("**");
             }
             mermaidGraph.append("\"}\n");
@@ -1214,7 +1223,7 @@ public class MermaidGraphBuilderBase
             mermaidGraph.append(", label: \"*");
             mermaidGraph.append(addSpacesToTypeName(currentType));
             mermaidGraph.append("*\n**");
-            mermaidGraph.append(removeDoubleSlash(currentDisplayName));
+            mermaidGraph.append(removeTroublesomeCharacters(currentDisplayName));
             mermaidGraph.append("**");
 
             if ((additionalProperties != null) && (! additionalProperties.isEmpty()))
@@ -1224,7 +1233,7 @@ public class MermaidGraphBuilderBase
                     mermaidGraph.append("\n");
                     mermaidGraph.append(propertyName);
                     mermaidGraph.append(": ");
-                    mermaidGraph.append(removeDoubleSlash(additionalProperties.get(propertyName)));
+                    mermaidGraph.append(removeTroublesomeCharacters(additionalProperties.get(propertyName)));
                 }
             }
             mermaidGraph.append("\"}\n");
@@ -1241,16 +1250,19 @@ public class MermaidGraphBuilderBase
      * rather than the display name.  This change puts a space between the two slashes to allow the display.
      * In addition, some display names include messages that have double quotes in their content.  This removes them
      * to avoid confusing mermaid.
+     * There also seems to be a problem wit the new placeholder properties
      *
      * @param displayName original display name
      * @return doctored display name
      */
-    private String removeDoubleSlash(String displayName)
+    private String removeTroublesomeCharacters(String displayName)
     {
         if (displayName != null)
         {
             String quotesGone = displayName.replaceAll("\"", "'");
-            return quotesGone.replaceAll("//", "/ /");
+            String doubleSlashGone = quotesGone.replaceAll("//", "/ /");
+            String placeholderStartGone = doubleSlashGone.replaceAll("~\\{", "~ {");
+            return placeholderStartGone.replaceAll("}~", "} ~");
         }
 
         return null;
@@ -1695,35 +1707,7 @@ public class MermaidGraphBuilderBase
      */
     protected String getNodeDisplayName(OpenMetadataRootElement openMetadataRootElement)
     {
-        String nodeDisplayName = null;
-
-        if (openMetadataRootElement.getProperties() instanceof ReferenceableProperties referenceableProperties)
-        {
-            nodeDisplayName = referenceableProperties.getDisplayName();
-
-            if (nodeDisplayName == null)
-            {
-                nodeDisplayName = referenceableProperties.getQualifiedName();
-            }
-        }
-        else if (openMetadataRootElement.getProperties() instanceof LikeProperties)
-        {
-            nodeDisplayName = openMetadataRootElement.getElementHeader().getVersions().getCreatedBy();
-        }
-
-        if (nodeDisplayName == null)
-        {
-            if (openMetadataRootElement.getElementHeader().getType().getTypeName().equals(OpenMetadataType.LIKE.typeName))
-            {
-                nodeDisplayName = openMetadataRootElement.getElementHeader().getVersions().getCreatedBy();
-            }
-            else
-            {
-                nodeDisplayName = openMetadataRootElement.getElementHeader().getGUID();
-            }
-        }
-
-        return nodeDisplayName;
+        return this.getNodeDisplayName(openMetadataRootElement.getElementHeader(), openMetadataRootElement.getProperties());
     }
 
 

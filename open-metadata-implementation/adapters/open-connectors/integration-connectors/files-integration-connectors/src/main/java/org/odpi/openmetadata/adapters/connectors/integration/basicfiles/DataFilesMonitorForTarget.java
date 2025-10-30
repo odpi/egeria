@@ -227,8 +227,8 @@ public class DataFilesMonitorForTarget extends DirectoryToMonitor
                 FileClassification fileClassification = fileClassifier.classifyFile(file);
 
                 OpenMetadataRootElement cataloguedElement = fileClient.getAssetByUniqueName(file.getCanonicalPath(),
-                                                                                 OpenMetadataProperty.PATH_NAME.name,
-                                                                                 fileClient.getGetOptions());
+                                                                                            OpenMetadataProperty.PATH_NAME.name,
+                                                                                            fileClient.getGetOptions());
 
                 if (cataloguedElement == null)
                 {
@@ -318,6 +318,7 @@ public class DataFilesMonitorForTarget extends DirectoryToMonitor
                         {
                             placeholderProperties.put(PlaceholderProperty.LAST_ACCESSED_DATE.getName(), "");
                         }
+                        placeholderProperties.put(PlaceholderProperty.VERSION_IDENTIFIER.getName(), null);
 
                         String newFileGUID = this.addDataFileViaTemplate(fileClassification.getAssetTypeName(),
                                                                          fileTemplateGUID,

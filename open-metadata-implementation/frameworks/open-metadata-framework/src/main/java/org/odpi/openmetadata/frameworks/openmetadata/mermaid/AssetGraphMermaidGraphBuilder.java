@@ -4,6 +4,7 @@
 package org.odpi.openmetadata.frameworks.openmetadata.mermaid;
 
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.AssetGraph;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.MetadataElementSummary;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.RelatedMetadataNodeSummary;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 
@@ -42,6 +43,18 @@ public class AssetGraphMermaidGraphBuilder extends MermaidGraphBuilderBase
 
         if (assetGraph.getAnchoredElements() != null)
         {
+            for (MetadataElementSummary anchoredElement : assetGraph.getAnchoredElements())
+            {
+                if (anchoredElement != null)
+                {
+                    appendNewMermaidNode(anchoredElement.getElementHeader().getGUID(),
+                                         getNodeDisplayName(anchoredElement),
+                                         anchoredElement.getElementHeader().getType().getTypeName(),
+                                         anchoredElement.getProperties(),
+                                         VisualStyle.ANCHORED_ELEMENT);
+                }
+            }
+
             for (RelatedMetadataNodeSummary line : assetGraph.getRelationships())
             {
                 if ((line != null) &&

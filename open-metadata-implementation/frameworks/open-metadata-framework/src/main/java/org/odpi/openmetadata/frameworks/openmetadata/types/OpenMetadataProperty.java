@@ -363,7 +363,7 @@ public enum OpenMetadataProperty
     /**
      * The request type used to call the service.
      */
-    REQUEST_TYPE("requestType", DataType.STRING, DataType.STRING.getName(), "The request type used to call the service.", null, "be22cf20-f704-459e-823f-bdd8f7ef003b"),
+    REQUEST_TYPE("requestType", DataType.STRING, DataType.STRING.getName(), "The request type used to call the governance service.", null, "be22cf20-f704-459e-823f-bdd8f7ef003b"),
 
     /**
      * The request type used to call the service.
@@ -2361,9 +2361,9 @@ public enum OpenMetadataProperty
     MANDATORY_GUARD("mandatoryGuard", DataType.BOOLEAN, DataType.BOOLEAN.getName(), "Is this guard mandatory for the next step to run.", "true", "bd5acc27-7b8f-4460-b75c-94453a5d93dd"),
 
     /**
-     * Governance engine responsible for executing this engine action.
+     * User identity of the governance engine running in the engine host server that has claimed responsibility for executing this engine action.
      */
-    PROCESSING_ENGINE_USER_ID("processingEngineUserId", DataType.STRING, DataType.STRING.getName(), "Governance engine responsible for executing this engine action.", null, "642a2571-bc8f-45f7-949a-72b0851e8ea2"),
+    PROCESSING_ENGINE_USER_ID("processingEngineUserId", DataType.STRING, DataType.STRING.getName(), "User identity of the governance engine running in the engine host server that has claimed responsibility for executing this engine action.", null, "642a2571-bc8f-45f7-949a-72b0851e8ea2"),
 
     /**
      * List of guards returned by the governance service.

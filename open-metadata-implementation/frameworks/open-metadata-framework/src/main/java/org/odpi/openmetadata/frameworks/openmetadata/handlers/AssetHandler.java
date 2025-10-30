@@ -2386,6 +2386,7 @@ public class AssetHandler extends OpenMetadataHandlerBase
              * elements are extracted, their relationships are added.
              */
             Map<String, RelatedMetadataElement> receivedRelationships = new HashMap<>();
+            Map<String, String> receivedRelationshipStartingElementGUIDs = new HashMap<>();
 
             /*
              * This list holds the qualified names of information supply chains listed in the lineage relationships.
@@ -2411,6 +2412,7 @@ public class AssetHandler extends OpenMetadataHandlerBase
                                 (! propertyHelper.isTypeOf(relationship, OpenMetadataType.REPORT_SUBJECT.typeName)))
                         {
                             receivedRelationships.put(relationship.getRelationshipGUID(), relationship);
+                            receivedRelationshipStartingElementGUIDs.put(relationship.getRelationshipGUID(), assetGUID);
                         }
 
                         /*
@@ -2462,7 +2464,7 @@ public class AssetHandler extends OpenMetadataHandlerBase
             searchClassifications.setConditions(classificationConditions);
 
             List<OpenMetadataElement> anchoredElements = openMetadataClient.findMetadataElements(userId,
-                                                                                                 searchProperties,
+                                                                                                 null,
                                                                                                  searchClassifications,
                                                                                                  queryOptions);
 
@@ -2490,8 +2492,7 @@ public class AssetHandler extends OpenMetadataHandlerBase
                                 if (relationship != null)
                                 {
                                     receivedRelationships.put(relationship.getRelationshipGUID(), relationship);
-
-
+                                    receivedRelationshipStartingElementGUIDs.put(relationship.getRelationshipGUID(), metadataElement.getElementGUID());
 
                                     String iscQualifiedName = propertyHelper.getStringProperty(localServiceName,
                                                                                                OpenMetadataProperty.ISC_QUALIFIED_NAME.name,
@@ -2520,7 +2521,8 @@ public class AssetHandler extends OpenMetadataHandlerBase
                 {
                     if (relationshipGUID != null)
                     {
-                        RelatedMetadataNodeSummary metadataRelationship = propertyHelper.getRelatedNodeSummary(relationshipGUID, receivedRelationships.get(relationshipGUID));
+                        RelatedMetadataNodeSummary metadataRelationship = propertyHelper.getRelatedNodeSummary(receivedRelationshipStartingElementGUIDs.get(relationshipGUID),
+                                                                                                               receivedRelationships.get(relationshipGUID));
 
                         metadataRelationships.add(metadataRelationship);
                     }
@@ -2563,7 +2565,7 @@ public class AssetHandler extends OpenMetadataHandlerBase
              */
             AssetGraphMermaidGraphBuilder graphBuilder = new AssetGraphMermaidGraphBuilder(assetGraph);
 
-            assetGraph.setMermaidGraph(graphBuilder.getMermaidGraph());
+            assetGraph.setAnchorMermaidGraph(graphBuilder.getMermaidGraph());
             assetGraph.setInformationSupplyChainMermaidGraph(graphBuilder.getInformationSupplyChainMermaidGraph());
             assetGraph.setFieldLevelLineageGraph(graphBuilder.getFieldLevelLineageGraph());
             assetGraph.setActionMermaidGraph(graphBuilder.getActionGraph());

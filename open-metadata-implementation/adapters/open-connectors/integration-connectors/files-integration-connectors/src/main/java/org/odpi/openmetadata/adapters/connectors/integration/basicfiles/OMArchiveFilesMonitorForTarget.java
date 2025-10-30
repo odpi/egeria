@@ -220,11 +220,13 @@ public class OMArchiveFilesMonitorForTarget extends DataFilesMonitorForTarget
                     archiveElementProperties = propertyHelper.addStringProperty(archiveElementProperties,
                                                                                 OpenMetadataProperty.DESCRIPTION.name,
                                                                                 properties.getArchiveDescription());
+                    archiveElementProperties = propertyHelper.addStringProperty(archiveElementProperties,
+                                                                                OpenMetadataProperty.VERSION_IDENTIFIER.name,
+                                                                                properties.getArchiveVersion());
 
                     Map<String, String> additionalProperties = new HashMap<>();
 
                     additionalProperties.put("archiveGUID", properties.getArchiveGUID());
-                    additionalProperties.put("archiveVersion", properties.getArchiveVersion());
                     if (properties.getArchiveType() != null)
                     {
                         additionalProperties.put("archiveType", properties.getArchiveType().getName());
