@@ -81,33 +81,6 @@ public class CommentClient extends ConnectorContextClientBase
 
 
     /**
-     * Adds a comment to the element.
-     *
-     * @param commentGUID     unique identifier for the comment to attach to.
-     * @param elementGUID     unique identifier for the anchor element.
-     * @param metadataSourceOptions  options to control access to open metadata
-     * @param initialClassifications map of classification names to classification properties to include in the entity creation request
-     * @param properties   properties of the comment
-     *
-     * @return guid of new comment.
-     *
-     * @throws InvalidParameterException one of the parameters is null or invalid.
-     * @throws PropertyServerException there is a problem adding the element properties to the property server.
-     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
-     */
-    public String addCommentReply(String                                elementGUID,
-                                  String                                commentGUID,
-                                  MetadataSourceOptions                 metadataSourceOptions,
-                                  Map<String, ClassificationProperties> initialClassifications,
-                                  CommentProperties                     properties) throws InvalidParameterException,
-                                                                                           PropertyServerException,
-                                                                                           UserNotAuthorizedException
-    {
-        return commentHandler.addCommentReply(connectorUserId, elementGUID, commentGUID, metadataSourceOptions, initialClassifications, properties);
-    }
-
-
-    /**
      * Update an existing comment.
      *
      * @param commentGUID   unique identifier for the comment to change.

@@ -27,6 +27,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
                 @JsonSubTypes.Type(value = AssetGraph.class, name = "AssetGraph"),
                 @JsonSubTypes.Type(value = AssetLineageGraphNode.class, name = "AssetLineageGraphNode"),
                 @JsonSubTypes.Type(value = AssetSearchMatches.class, name = "AssetSearchMatches"),
+                @JsonSubTypes.Type(value = InformationSupplyChainElement.class, name = "InformationSupplyChainElement"),
                 @JsonSubTypes.Type(value = OpenMetadataRootHierarchy.class, name = "OpenMetadataRootHierarchy"),
         })
 public class OpenMetadataRootElement extends AttributedMetadataElement

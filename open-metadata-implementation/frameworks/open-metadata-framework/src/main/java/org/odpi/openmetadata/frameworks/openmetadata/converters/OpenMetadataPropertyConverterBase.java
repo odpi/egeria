@@ -14400,6 +14400,10 @@ public class OpenMetadataPropertyConverterBase
 
                     ((MetadataRepositoryCohortProperties)beanProperties).setCohortTopics(this.removeCohortTopics(elementProperties));
                 }
+                else if (propertyHelper.isTypeOf(openMetadataElement, OpenMetadataType.NOTE_LOG.typeName))
+                {
+                    beanProperties = new NoteLogProperties();
+                }
                 else if (propertyHelper.isTypeOf(openMetadataElement, OpenMetadataType.PORT.typeName))
                 {
                     if (propertyHelper.isTypeOf(openMetadataElement, OpenMetadataType.PORT_ALIAS.typeName))

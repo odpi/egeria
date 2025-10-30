@@ -6,6 +6,7 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.ReferenceableProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 
 import java.util.Objects;
 
@@ -33,6 +34,7 @@ public class GovernanceEngineProperties extends ReferenceableProperties
     public GovernanceEngineProperties()
     {
         super();
+        super.setTypeName(OpenMetadataType.GOVERNANCE_ENGINE.typeName);
     }
 
 

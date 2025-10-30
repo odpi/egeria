@@ -44,39 +44,6 @@ public class FeedbackManagerResource
     {
     }
 
-    
-    /**
-     * Adds a reply to a comment.
-     *
-     * @param serverName    name of the server instances for this request.
-     * @param urlMarker  view service URL marker
-     * @param elementGUID        String - unique id for the anchor element.
-     * @param commentGUID   String - unique id for an existing comment.  Used to add a reply to a comment.
-     * @param requestBody   containing type of comment enum and the text of the comment.
-     *
-     * @return elementGUID for new comment object or
-     * InvalidParameterException one of the parameters is null or invalid or
-     * PropertyServerException There is a problem adding the element properties to
-     *                                   the metadata repository or
-     * UserNotAuthorizedException the requesting user is not authorized to issue this request.
-     */
-    @PostMapping(path = "/elements/{elementGUID}/comments/{commentGUID}/replies")
-    @SecurityRequirement(name = "BearerAuthorization")
-
-    @Operation(summary="addCommentReply",
-               description="Adds a reply to a comment.",
-               externalDocs=@ExternalDocumentation(description="Element Feedback",
-                                                   url="https://egeria-project.org/patterns/metadata-manager/overview/#asset-feedback"))
-
-    public GUIDResponse addCommentReply(@PathVariable String                         serverName,
-                                        @PathVariable String                         urlMarker,
-                                        @PathVariable String                         elementGUID,
-                                        @PathVariable String                         commentGUID,
-                                        @RequestBody(required = false) NewAttachmentRequestBody requestBody)
-    {
-        return restAPI.addCommentReply(serverName, urlMarker, elementGUID, commentGUID, requestBody);
-    }
-
 
     /**
      * Creates a comment and attaches it to an element.

@@ -15,9 +15,9 @@ public class AssetGraph extends OpenMetadataRootElement
 {
     private List<MetadataElementSummary>     anchoredElements                   = null;
     private List<RelatedMetadataNodeSummary> relationships                      = null;
-    private List<MetadataElementSummary> partOfInformationSupplyChains      = null;
-    private String                       anchorMermaidGraph                 = null;
-    private String                       informationSupplyChainMermaidGraph = null;
+    private List<MetadataElementSummary>     partOfInformationSupplyChains      = null;
+    private String                           anchorMermaidGraph                 = null;
+    private String                           informationSupplyChainMermaidGraph = null;
     private String                           fieldLevelLineageGraph             = null;
     private String                           actionMermaidGraph                 = null;
     private String                           localLineageGraph                  = null;
