@@ -62,7 +62,7 @@ ext {
     janusVersion = '0.6.4'
     javassistVersion = '3.29.2-GA'
     jaxbVersion = '2.3.1'
-    jenaVersion = '5.5.0'
+    jenaVersion = '5.6.0'
     jodatimeVersion = '2.13.0'
     jsonldVersion = '0.13.6'
     junitVersion = '4.13.2'
