@@ -66,7 +66,7 @@ ext {
     jodatimeVersion = '2.13.0'
     jsonldVersion = '0.13.6'
     junitVersion = '4.13.2'
-    junitjupiterVersion = '5.11.3'
+    junitjupiterVersion = '6.0.1'
     junitplatformVersion = '1.9.2'
     jwtVersion = '10.5'
     jwtApiVersion = '0.13.0'
