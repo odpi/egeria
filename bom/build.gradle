@@ -23,7 +23,7 @@ ext {
     // TODO: version 4 under new package name
     antlrVersion = '3.5.3'
     ST4Version = '4.3.4'
-    avroVersion = '1.12.0'
+    avroVersion = '1.12.1'
     xtdbVersion = '1.24.4'
     clojureVersion = '1.12.0'
 
