@@ -78,9 +78,9 @@ loadScripts(document, 'script');</script>
 <hr>
 <div class="type-signature"><span class="modifiers">public class </span><span class="element-name type-name-label">FilesListenerManager</span>
 <span class="extends-implements">extends <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a></span></div>
-<div class="block">FilesListenerManager uses the Apache Commons IO capabilities to support the ability for an Integration Connector to
- monitor changes in the file system.  The implementation is a thin wrapper around the Apache Commons IO to allow the
- implementation to be swapped for other types of file system monitors.</div>
+<div class="block">FilesListenerManager uses the Java WatchService capabilities to support the ability for an Integration Connector to
+ monitor changes in the file system.  Each listener that is registered is given its own watch service
+ running in its own thread.  The watch service blocks waiting for file/directory change events.</div>
 </section>
 <section class="summary">
 <ul class="summary-list">
@@ -117,7 +117,7 @@ loadScripts(document, 'script');</script>
 <div class="block">Shutdown file monitoring</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#registerDirectoryListener(org.odpi.openmetadata.frameworks.openmetadata.filelistener.FileDirectoryListenerInterface,java.io.File,java.io.FileFilter)" class="member-name-link">registerDirectoryListener</a><wbr>(<a href="FileDirectoryListenerInterface.html" title="interface in org.odpi.openmetadata.frameworks.openmetadata.filelistener">FileDirectoryListenerInterface</a>&nbsp;listener,
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#registerDirectoryListener(org.odpi.openmetadata.frameworks.openmetadata.filelistener.FileListenerInterface,java.io.File,java.io.FileFilter)" class="member-name-link">registerDirectoryListener</a><wbr>(<a href="FileListenerInterface.html" title="interface in org.odpi.openmetadata.frameworks.openmetadata.filelistener">FileListenerInterface</a>&nbsp;listener,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/io/File.html" title="class or interface in java.io" class="external-link">File</a>&nbsp;directoryToMonitor,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/io/FileFilter.html" title="class or interface in java.io" class="external-link">FileFilter</a>&nbsp;fileFilter)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
@@ -132,34 +132,29 @@ loadScripts(document, 'script');</script>
  and any of its subdirectories.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#registerFileListener(org.odpi.openmetadata.frameworks.openmetadata.filelistener.FileListenerInterface,java.io.File)" class="member-name-link">registerFileListener</a><wbr>(<a href="FileListenerInterface.html" title="interface in org.odpi.openmetadata.frameworks.openmetadata.filelistener">FileListenerInterface</a>&nbsp;listener,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/io/File.html" title="class or interface in java.io" class="external-link">File</a>&nbsp;fileToMonitor)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Register a listener object that will be called each time a specific file is created, changed or deleted.</div>
-</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#unregisterDirectoryListener(org.odpi.openmetadata.frameworks.openmetadata.filelistener.FileDirectoryListenerInterface,java.io.File)" class="member-name-link">unregisterDirectoryListener</a><wbr>(<a href="FileDirectoryListenerInterface.html" title="interface in org.odpi.openmetadata.frameworks.openmetadata.filelistener">FileDirectoryListenerInterface</a>&nbsp;listener,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/io/File.html" title="class or interface in java.io" class="external-link">File</a>&nbsp;directoryToMonitor)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Unregister a listener object for the directory.</div>
-</div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#unregisterDirectoryTreeListener(org.odpi.openmetadata.frameworks.openmetadata.filelistener.FileDirectoryListenerInterface,java.io.File)" class="member-name-link">unregisterDirectoryTreeListener</a><wbr>(<a href="FileDirectoryListenerInterface.html" title="interface in org.odpi.openmetadata.frameworks.openmetadata.filelistener">FileDirectoryListenerInterface</a>&nbsp;listener,
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#unregisterDirectoryListener(org.odpi.openmetadata.frameworks.openmetadata.filelistener.FileDirectoryListenerInterface,java.io.File)" class="member-name-link">unregisterDirectoryListener</a><wbr>(<a href="FileDirectoryListenerInterface.html" title="interface in org.odpi.openmetadata.frameworks.openmetadata.filelistener">FileDirectoryListenerInterface</a>&nbsp;listener,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/io/File.html" title="class or interface in java.io" class="external-link">File</a>&nbsp;directoryToMonitor)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Unregister a listener object for the directory.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#unregisterFileListener(org.odpi.openmetadata.frameworks.openmetadata.filelistener.FileListenerInterface,java.io.File)" class="member-name-link">unregisterFileListener</a><wbr>(<a href="FileListenerInterface.html" title="interface in org.odpi.openmetadata.frameworks.openmetadata.filelistener">FileListenerInterface</a>&nbsp;listener,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/io/File.html" title="class or interface in java.io" class="external-link">File</a>&nbsp;fileToMonitor)</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#unregisterDirectoryTreeListener(org.odpi.openmetadata.frameworks.openmetadata.filelistener.FileDirectoryListenerInterface,java.io.File)" class="member-name-link">unregisterDirectoryTreeListener</a><wbr>(<a href="FileDirectoryListenerInterface.html" title="interface in org.odpi.openmetadata.frameworks.openmetadata.filelistener">FileDirectoryListenerInterface</a>&nbsp;listener,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/io/File.html" title="class or interface in java.io" class="external-link">File</a>&nbsp;directoryToMonitor)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Unregister a listener object that will be called each time a specific file is created, changed or deleted.</div>
+<div class="block">Unregister a listener object for the directory.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#validateParameter(java.lang.Object,java.lang.String,java.lang.String)" class="member-name-link">validateParameter</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a>&nbsp;object,
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#validateIsDirectory(java.io.File,java.lang.String,java.lang.String)" class="member-name-link">validateIsDirectory</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/io/File.html" title="class or interface in java.io" class="external-link">File</a>&nbsp;directoryToMonitor,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;nameParameter,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;methodName)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Throw an exception if the supplied parameter is not a directory</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#validateParameter(java.lang.Object,java.lang.String,java.lang.String)" class="member-name-link">validateParameter</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a>&nbsp;object,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;nameParameter,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;methodName)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Throw an exception if the supplied parameter is null</div>
 </div>
 </div>
@@ -201,41 +196,9 @@ loadScripts(document, 'script');</script>
 <h2>Method Details</h2>
 <ul class="member-list">
 <li>
-<section class="detail" id="registerFileListener(org.odpi.openmetadata.frameworks.openmetadata.filelistener.FileListenerInterface,java.io.File)">
-<h3>registerFileListener</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">registerFileListener</span><wbr><span class="parameters">(<a href="FileListenerInterface.html" title="interface in org.odpi.openmetadata.frameworks.openmetadata.filelistener">FileListenerInterface</a>&nbsp;listener,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/io/File.html" title="class or interface in java.io" class="external-link">File</a>&nbsp;fileToMonitor)</span>
-                          throws <span class="exceptions"><a href="../ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">InvalidParameterException</a></span></div>
-<div class="block">Register a listener object that will be called each time a specific file is created, changed or deleted.</div>
-<dl class="notes">
-<dt>Parameters:</dt>
-<dd><code>listener</code> - listener object</dd>
-<dd><code>fileToMonitor</code> - name of the file to monitor</dd>
-<dt>Throws:</dt>
-<dd><code><a href="../ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">InvalidParameterException</a></code> - one of the parameters is null or invalid.</dd>
-</dl>
-</section>
-</li>
-<li>
-<section class="detail" id="unregisterFileListener(org.odpi.openmetadata.frameworks.openmetadata.filelistener.FileListenerInterface,java.io.File)">
-<h3>unregisterFileListener</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">unregisterFileListener</span><wbr><span class="parameters">(<a href="FileListenerInterface.html" title="interface in org.odpi.openmetadata.frameworks.openmetadata.filelistener">FileListenerInterface</a>&nbsp;listener,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/io/File.html" title="class or interface in java.io" class="external-link">File</a>&nbsp;fileToMonitor)</span>
-                            throws <span class="exceptions"><a href="../ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">InvalidParameterException</a></span></div>
-<div class="block">Unregister a listener object that will be called each time a specific file is created, changed or deleted.</div>
-<dl class="notes">
-<dt>Parameters:</dt>
-<dd><code>listener</code> - listener object</dd>
-<dd><code>fileToMonitor</code> - name of the file to unregister</dd>
-<dt>Throws:</dt>
-<dd><code><a href="../ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">InvalidParameterException</a></code> - one of the parameters is null or invalid.</dd>
-</dl>
-</section>
-</li>
-<li>
-<section class="detail" id="registerDirectoryListener(org.odpi.openmetadata.frameworks.openmetadata.filelistener.FileDirectoryListenerInterface,java.io.File,java.io.FileFilter)">
+<section class="detail" id="registerDirectoryListener(org.odpi.openmetadata.frameworks.openmetadata.filelistener.FileListenerInterface,java.io.File,java.io.FileFilter)">
 <h3>registerDirectoryListener</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">registerDirectoryListener</span><wbr><span class="parameters">(<a href="FileDirectoryListenerInterface.html" title="interface in org.odpi.openmetadata.frameworks.openmetadata.filelistener">FileDirectoryListenerInterface</a>&nbsp;listener,
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">registerDirectoryListener</span><wbr><span class="parameters">(<a href="FileListenerInterface.html" title="interface in org.odpi.openmetadata.frameworks.openmetadata.filelistener">FileListenerInterface</a>&nbsp;listener,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/io/File.html" title="class or interface in java.io" class="external-link">File</a>&nbsp;directoryToMonitor,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/io/FileFilter.html" title="class or interface in java.io" class="external-link">FileFilter</a>&nbsp;fileFilter)</span>
                                throws <span class="exceptions"><a href="../ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">InvalidParameterException</a></span></div>
@@ -307,6 +270,24 @@ loadScripts(document, 'script');</script>
 <h3>disconnect</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">disconnect</span>()</div>
 <div class="block">Shutdown file monitoring</div>
+</section>
+</li>
+<li>
+<section class="detail" id="validateIsDirectory(java.io.File,java.lang.String,java.lang.String)">
+<h3>validateIsDirectory</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">validateIsDirectory</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/io/File.html" title="class or interface in java.io" class="external-link">File</a>&nbsp;directoryToMonitor,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;nameParameter,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;methodName)</span>
+                         throws <span class="exceptions"><a href="../ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">InvalidParameterException</a></span></div>
+<div class="block">Throw an exception if the supplied parameter is not a directory</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>directoryToMonitor</code> - "file" to validate</dd>
+<dd><code>nameParameter</code> - name of the parameter that passed the object.</dd>
+<dd><code>methodName</code> - name of the method making the call.</dd>
+<dt>Throws:</dt>
+<dd><code><a href="../ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">InvalidParameterException</a></code> - the object is null</dd>
+</dl>
 </section>
 </li>
 <li>
