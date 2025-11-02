@@ -6,6 +6,7 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.OpenMetadataRootProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.ReferenceableProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 
 import java.util.Objects;
@@ -28,12 +29,8 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class InformalTagProperties extends OpenMetadataRootProperties
+public class InformalTagProperties extends ReferenceableProperties
 {
-    private String displayName = null;
-    private String description = null;
-
-
     /**
      * Default constructor
      */
@@ -52,59 +49,7 @@ public class InformalTagProperties extends OpenMetadataRootProperties
     public InformalTagProperties(InformalTagProperties template)
     {
         super(template);
-
-        if (template != null)
-        {
-            displayName = template.getDisplayName();
-            description = template.getDescription();
-        }
     }
-
-
-    /**
-     * Return the name of the tag.  It is not valid to have a tag with no name.  However, there is a point where
-     * the tag object is created and the tag name not yet set, so null is a possible response.
-     *
-     * @return String tag name
-     */
-    public String getDisplayName()
-    {
-        return displayName;
-    }
-
-
-    /**
-     * Set up the name of the tag.  It is not valid to have a tag with no name.  However, there is a point where
-     * the tag object is created and the tag name not yet set, so null is a possible response.
-     *
-     * @param displayName String tag name
-     */
-    public void setDisplayName(String displayName)
-    {
-        this.displayName = displayName;
-    }
-
-
-    /**
-     * Return the tag description null means no description is available.
-     *
-     * @return String tag description
-     */
-    public String getDescription()
-    {
-        return description;
-    }
-
-
-    /**
-     * Set up the tag description null means no description is available.
-     *
-     * @param tagDescription  tag description
-     */
-    public void setDescription(String tagDescription) {
-        this.description = tagDescription;
-    }
-
 
     /**
      * Standard toString method.
@@ -115,46 +60,6 @@ public class InformalTagProperties extends OpenMetadataRootProperties
     public String toString()
     {
         return "InformalTagProperties{" +
-                "displayName='" + displayName + '\'' +
-                ", description='" + description + '\'' +
                 "} " + super.toString();
-    }
-
-
-    /**
-     * Compare the values of the supplied object with those stored in the current object.
-     *
-     * @param objectToCompare supplied object
-     * @return boolean result of comparison
-     */
-    @Override
-    public boolean equals(Object objectToCompare)
-    {
-        if (this == objectToCompare)
-        {
-            return true;
-        }
-        if (!(objectToCompare instanceof InformalTagProperties that))
-        {
-            return false;
-        }
-        if (!super.equals(objectToCompare))
-        {
-            return false;
-        }
-        return Objects.equals(getDisplayName(), that.getDisplayName()) &&
-                Objects.equals(getDescription(), that.getDescription());
-    }
-
-
-    /**
-     * Return hash code for this object
-     *
-     * @return int hash code
-     */
-    @Override
-    public int hashCode()
-    {
-        return Objects.hash(super.hashCode(), displayName, description);
     }
 }

@@ -356,16 +356,6 @@ public class OpenMetadataElementBuilder
                                                                              schemaAnalysisAnnotationProperties.getSchemaType());
                     }
                 }
-                else if (properties instanceof InformalTagProperties informalTagProperties)
-                {
-                    elementProperties = propertyHelper.addStringProperty(elementProperties,
-                                                                         OpenMetadataProperty.DISPLAY_NAME.name,
-                                                                         informalTagProperties.getDisplayName());
-
-                    elementProperties = propertyHelper.addStringProperty(elementProperties,
-                                                                         OpenMetadataProperty.DESCRIPTION.name,
-                                                                         informalTagProperties.getDescription());
-                }
                 else if (properties instanceof LikeProperties likeProperties)
                 {
                     elementProperties = propertyHelper.addStringProperty(elementProperties,

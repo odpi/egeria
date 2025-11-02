@@ -13134,13 +13134,6 @@ public class OpenMetadataPropertyConverterBase
                 ((AnnotationProperties)beanProperties).setJsonProperties(this.removeJsonProperties(elementProperties));
                 ((AnnotationProperties)beanProperties).setAdditionalProperties(this.removeAdditionalProperties(elementProperties));
             }
-            else if (propertyHelper.isTypeOf(openMetadataElement, OpenMetadataType.INFORMAL_TAG.typeName))
-            {
-                beanProperties = new InformalTagProperties();
-
-                ((InformalTagProperties)beanProperties).setDisplayName(this.removeDisplayName(elementProperties));
-                ((InformalTagProperties)beanProperties).setDescription(this.removeDescription(elementProperties));
-            }
             else if (propertyHelper.isTypeOf(openMetadataElement, OpenMetadataType.LIKE.typeName))
             {
                 beanProperties = new LikeProperties();
@@ -14389,6 +14382,10 @@ public class OpenMetadataPropertyConverterBase
                     ((GovernanceDefinitionProperties)beanProperties).setOutcomes(this.removeOutcomes(elementProperties));
                     ((GovernanceDefinitionProperties)beanProperties).setResults(this.removeResults(elementProperties));
                     ((GovernanceDefinitionProperties)beanProperties).setUserDefinedStatus(this.removeUserDefinedStatus(elementProperties));
+                }
+                else if (propertyHelper.isTypeOf(openMetadataElement, OpenMetadataType.INFORMAL_TAG.typeName))
+                {
+                    beanProperties = new InformalTagProperties();
                 }
                 else if (propertyHelper.isTypeOf(openMetadataElement, OpenMetadataType.LOCATION.typeName))
                 {

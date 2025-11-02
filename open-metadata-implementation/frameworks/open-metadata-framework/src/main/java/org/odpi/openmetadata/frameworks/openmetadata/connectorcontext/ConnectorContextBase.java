@@ -1411,36 +1411,6 @@ public class ConnectorContextBase
 
 
     /**
-     * Register a listener object that will be called each time a specific file is created, changed or deleted.
-     *
-     * @param listener      listener object
-     * @param fileToMonitor name of the file to monitor
-     *
-     * @throws InvalidParameterException  one of the parameters is null or invalid.
-     */
-    public void registerFileListener(FileListenerInterface listener,
-                                     File fileToMonitor) throws InvalidParameterException
-    {
-        listenerManager.registerFileListener(listener, fileToMonitor);
-    }
-
-
-    /**
-     * Unregister a listener object that will be called each time a specific file is created, changed or deleted.
-     *
-     * @param listener      listener object
-     * @param fileToMonitor name of the file to unregister
-     *
-     * @throws InvalidParameterException  one of the parameters is null or invalid.
-     */
-    public void unregisterFileListener(FileListenerInterface listener,
-                                       File                  fileToMonitor) throws InvalidParameterException
-    {
-        listenerManager.unregisterFileListener(listener, fileToMonitor);
-    }
-
-
-    /**
      * Register a listener object that will be called each time a file is created, changed or deleted in a specific root directory.
      * The file filter lets you request that only certain types of files are returned.
      *
@@ -1452,7 +1422,7 @@ public class ConnectorContextBase
      */
     public void registerDirectoryListener(FileDirectoryListenerInterface listener,
                                           File                           directoryToMonitor,
-                                          FileFilter fileFilter) throws InvalidParameterException
+                                          FileFilter                     fileFilter) throws InvalidParameterException
     {
         listenerManager.registerDirectoryListener(listener, directoryToMonitor, fileFilter);
     }
