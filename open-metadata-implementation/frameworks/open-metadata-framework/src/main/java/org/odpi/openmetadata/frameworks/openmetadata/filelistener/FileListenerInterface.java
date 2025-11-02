@@ -6,7 +6,7 @@ package org.odpi.openmetadata.frameworks.openmetadata.filelistener;
 import java.io.File;
 
 /**
- * FileListenerInterface is the interface to implement is your connector wishes to monitor a single file
+ * FileListenerInterface is the interface to implement is your connector wishes to monitor
  * the changing files within a root directory.  The listener is registered with the connector's context object
  * that is passed to the connector just before start().
  */

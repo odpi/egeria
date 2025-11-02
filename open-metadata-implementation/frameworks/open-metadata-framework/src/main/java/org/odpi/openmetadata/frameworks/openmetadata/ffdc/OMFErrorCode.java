@@ -178,6 +178,15 @@ public enum OMFErrorCode implements ExceptionMessageSet
                   "Correct the code in the caller to provide a suitable type name, or use a different service."),
 
     /**
+     * OPEN-METADATA-400-027 - The {0} file passed on method {1} by connector {2} is not a directory
+     */
+    NOT_DIRECTORY(400, "OPEN-METADATA-400-027",
+                           "The {0} file passed on method {1} by connector {2} is not a directory",
+                           "The connector has passed a file rather than a directory when registering a file listener.",
+                           "Correct the code in the connector to provide a suitable directory, or use a different service."),
+
+
+    /**
      * OPEN-METADATA-400-028 - The search string passed on the {0} parameter of the {1} operation is invalid and results in a {2} exception when executed.  The error message is {3}
      */
     INVALID_SEARCH_STRING(400, "OPEN-METADATA-400-028",
@@ -188,17 +197,17 @@ public enum OMFErrorCode implements ExceptionMessageSet
     /**
      * OPEN-METADATA-0007 - The {0} connector can not retrieve the correlation information for {1} open metadata element {2} linked via metadata collection {3} to external element {4}
      */
-    MISSING_CORRELATION(404, "OPEN-METADATA-0007",
+    MISSING_CORRELATION(404, "OPEN-METADATA-404-007",
                         "The {0} connector can not retrieve the correlation information for {1} open metadata element {2} linked via metadata collection {3} to external element {4}",
                         "The correlation information that should be associated with the open metadata element is missing and the connector is not able to confidently synchronize it with the element from the external system.",
                         "Review the audit log to determine if there were errors detected when the open metadata entity was created.  The simplest resolution is to add the correlation information to the open metadata entity to allow the synchronization to continue."),
 
     /**
-     * OPEN-METADATA-500-001 - Unexpected {0} exception in service {1} of type {2} detected by method {3}.  The error message was {4}
+     * OPEN-METADATA-500-001 - Unexpected {0} exception in service {1} detected by method {2}.  The error message was {3}
      */
     UNEXPECTED_EXCEPTION(500, "OPEN-METADATA-500-001",
-                         "Unexpected {0} exception in service {1} of type {2} detected by method {3}.  The error message was {4}",
-                         "The governance action service failed during its operation.",
+                         "Unexpected {0} exception in service {1} detected by method {2}.  The error message was {3}",
+                         "The named service failed during its operation.",
                          "This may be a configuration or a code error.  Look for other error messages and review the code of the governance action service. " +
                                  "Once the cause is resolved, retry the governance request."),
 

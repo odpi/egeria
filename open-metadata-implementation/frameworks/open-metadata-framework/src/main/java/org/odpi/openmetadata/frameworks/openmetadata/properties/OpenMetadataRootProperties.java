@@ -3,7 +3,6 @@
 package org.odpi.openmetadata.frameworks.openmetadata.properties;
 
 import com.fasterxml.jackson.annotation.*;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.feedback.InformalTagProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.feedback.LikeProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.feedback.RatingProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.feedback.SearchKeywordProperties;
@@ -27,7 +26,6 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
         property = "class")
 @JsonSubTypes(
         {
-                @JsonSubTypes.Type(value = InformalTagProperties.class, name = "InformalTagProperties"),
                 @JsonSubTypes.Type(value = LikeProperties.class, name = "LikeProperties"),
                 @JsonSubTypes.Type(value = RatingProperties.class, name = "RatingProperties"),
                 @JsonSubTypes.Type(value = ReferenceableProperties.class, name = "ReferenceableProperties"),
