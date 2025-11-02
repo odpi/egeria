@@ -196,7 +196,7 @@ Content-Type: application/json
 ###
 # @name getAttachedLikes
 # Return the likes attached to an element.
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/feedback-manager/elements/{{elementGUID}}/likes/retrieve?startFrom=0&pageSize=10
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/feedback-manager/elements/{{elementGUID}}/likes/retrieve
 Authorization: Bearer {{token}}
 Content-Type: application/json
 
@@ -214,7 +214,7 @@ Content-Type: application/json
 # @name addRatingToElement
 # Adds or updates a star rating and optional review text to the element.
 
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/feedback-manager/elements/{{elementGUID}}/ratings?isPublic=true
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/feedback-manager/elements/{{elementGUID}}/ratings
 Authorization: Bearer {{token}}
 Content-Type: application/json
 
@@ -244,11 +244,9 @@ Content-Type: application/json
 ###
 # =====================================================================================================================
 # Informal tags are labels (with an optional description) that can be used to group elements together or mark
-# them as having a particular property.  Informal tags are maintained bythe consumers of the metadata elements.
-# They can be private to an individual user, or public. Multiple tags can have the same name.
-#
-# When a tag is attached to an element, the relationship can either be private to a user or public.  This means a user
-# can use public tags, but make their use of them private.
+# them as having a particular property.  Informal tags are maintained by the consumers of the metadata elements.
+# Multiple tags can have the same display name but not qualified name.
+# Tag visibility can be controlled using governance zones.
 #
 # Informal Tag:  https://egeria-project.org/concepts/informal-tag/
 
@@ -281,6 +279,7 @@ Content-Type: application/json
   "parentAtEnd1": false,
   "properties": {
     "class" : "InformalTagProperties",
+    "qualifiedName": "add unique name here",
     "displayName": "add short name here",
     "description": "add description here",
     "effectiveFrom": "{{$isoTimestamp}}",
@@ -296,7 +295,7 @@ Content-Type: application/json
 
 ###
 # @name updateTagDescription
-# Updates the description of an existing tag (either private or public).
+# Updates the description of an existing tag.
 
 POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/feedback-manager/tags/{{tagGUID}}/update
 Authorization: Bearer {{token}}
@@ -306,7 +305,6 @@ Content-Type: application/json
   "class" : "UpdateElementRequestBody",
   "properties": {
     "class" : "InformalTagProperties",
-    "displayName": "add short name here",
     "description": "add description here",
     "effectiveFrom": "{{$isoTimestamp}}",
     "effectiveTo": "{{$isoTimestamp}}"
@@ -323,8 +321,6 @@ Content-Type: application/json
 ###
 # @name deleteTag
 # Removes an informal tag from the repository.  All the tagging relationships to this informal tag are lost.
-# A private tag can be deleted by its creator and all the references are lost; a public tag can be deleted by anyone,
-# but only if it is not attached to any referenceable.
 #
 
 POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/feedback-manager/tags/{{tagGUID}}/remove
@@ -389,7 +385,11 @@ Content-Type: application/json
 
 ###
 # @name findMyTags
-#  Return the list of the calling user's tags containing the supplied string in either the name or description.  The search string is located in the request body and is interpreted as a plain string.  The request parameters, startsWith, endsWith and ignoreCase can be used to allow a fuzzy search.  The request body also supports the specification of an effective time to restrict the search to element that are/were effective at a particular time.
+#  Return the list of the calling user's tags containing the supplied string in either the name or description.
+# The search string is located in the request body and is interpreted as a plain string.
+# The request body fields, startsWith, endsWith and ignoreCase can be used to allow a fuzzy search.
+# The request body also supports the specification of an effective time to restrict the search to element
+# that are/were effective at a particular time.
 POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/feedback-manager/tags/private/by-search-string
 Authorization: Bearer {{token}}
 Content-Type: application/json
@@ -416,7 +416,7 @@ Content-Type: application/json
 # @name addTagToElement
 # Adds an informal tag to an element.
 #
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/feedback-manager/elements/{{elementGUID}}/tags/{{tagGUID}}?isPublic=true
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/feedback-manager/elements/{{elementGUID}}/tags/{{tagGUID}}
 Authorization: Bearer {{token}}
 Content-Type: application/json
 
@@ -426,18 +426,43 @@ Content-Type: application/json
 # @name getElementsByTag
 # Return the list of elements that are linked to a specific tag.
 
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/feedback-manager/elements/by-tag/{{tagGUID}}/retrieve?startFrom=0&pageSize=10
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/feedback-manager/elements/by-tag/{{tagGUID}}/retrieve
 Authorization: Bearer {{token}}
 Content-Type: application/json
+
+{
+  "class" : "ResultsRequestBody",
+  "startFrom" : 0,
+  "pageSize": 10,
+  "asOfTime" : "{{$isoTimestamp}}",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false,
+  "limitResultsByStatus" : ["ACTIVE"],
+  "sequencingOrder" : "PROPERTY_ASCENDING",
+  "sequencingProperty" : "qualifiedName"
+}
 
 
 ###
 # @name getAttachedTags
 # Return the informal tags attached to an element.
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/feedback-manager/elements/{{elementGUID}}/tags/retrieve?startFrom=0&pageSize=10
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/feedback-manager/elements/{{elementGUID}}/tags/retrieve
 Authorization: Bearer {{token}}
 Content-Type: application/json
 
+{
+  "class" : "ResultsRequestBody",
+  "startFrom" : 0,
+  "pageSize": 10,
+  "asOfTime" : "{{$isoTimestamp}}",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false,
+  "limitResultsByStatus" : ["ACTIVE"],
+  "sequencingOrder" : "PROPERTY_ASCENDING",
+  "sequencingProperty" : "qualifiedName"
+}
 
 ###
 # @name removeTagFromElement
