@@ -4172,55 +4172,6 @@ public enum OpenMetadataType
                                   RegulationCertificationTypeProperties.class),
 
 
-    /**
-     * An agreement between parties.
-     */
-    AGREEMENT("88886b53-c839-48fa-bcfa-83ebcf8abbb5",
-              "Agreement",
-              OpenMetadataWikiPages.MODEL_0484_AGREEMENTS,
-              "58fe2ef2-bbab-4bb1-8327-8325fb4f213c",
-              "An agreement between parties.",
-              AgreementProperties.class),
-
-
-    /**
-     * Defines an agreement concerned with the sharing of data between parties.
-     */
-    DATA_SHARING_AGREEMENT_CLASSIFICATION("bcaca488-9f71-42e8-b79c-11f321bb780a",
-                                          "DataSharingAgreement",
-                                          OpenMetadataWikiPages.MODEL_0484_AGREEMENTS,
-                                          "a2b65ea2-6dde-4271-84b9-e1094d2c5adc",
-                                          "Defines an agreement concerned with the sharing of data between parties."),
-
-    /**
-     * An actor identified in an agreement.
-     */
-    AGREEMENT_ACTOR_RELATIONSHIP("1c811d0b-e9ce-44af-b6ed-133e73322e32",
-                                 "AgreementActor",
-                                 OpenMetadataWikiPages.MODEL_0484_AGREEMENTS,
-                                 "0a124f2b-ce46-4138-bccd-e298fda475e4",
-                                 "An actor identified in an agreement.",
-                                 AgreementActorProperties.class),
-
-    /**
-     * An identified item in an agreement.
-     */
-    AGREEMENT_ITEM_RELATIONSHIP("a540c361-0ed1-45d6-b525-007592ae806d",
-                                "AgreementItem",
-                                OpenMetadataWikiPages.MODEL_0484_AGREEMENTS,
-                                "b467985d-4e68-4c9c-9f81-cfe62fc70ddc",
-                                "An identified item in an agreement.",
-                                AgreementItemProperties.class),
-
-    /**
-     * Link to the contract document.
-     */
-    CONTRACT_LINK_RELATIONSHIP("33937ece-5ab6-4cd3-a348-b8196ffc3b4e",
-                               "ContractLink",
-                               OpenMetadataWikiPages.MODEL_0484_AGREEMENTS,
-                               "cea41a7f-8fac-41f4-8426-d715e79d4b16",
-                               "Link to the contract document.",
-                               ContractLinkProperties.class),
 
 
     /**
@@ -5657,11 +5608,61 @@ public enum OpenMetadataType
 
 
     /**
+     * An agreement between parties.
+     */
+    AGREEMENT("88886b53-c839-48fa-bcfa-83ebcf8abbb5",
+              "Agreement",
+              OpenMetadataWikiPages.MODEL_0711_AGREEMENTS,
+              "58fe2ef2-bbab-4bb1-8327-8325fb4f213c",
+              "An agreement between parties.",
+              AgreementProperties.class),
+
+
+    /**
+     * Defines an agreement concerned with the sharing of data between parties.
+     */
+    DATA_SHARING_AGREEMENT_CLASSIFICATION("bcaca488-9f71-42e8-b79c-11f321bb780a",
+                                          "DataSharingAgreement",
+                                          OpenMetadataWikiPages.MODEL_0711_AGREEMENTS,
+                                          "a2b65ea2-6dde-4271-84b9-e1094d2c5adc",
+                                          "Defines an agreement concerned with the sharing of data between parties."),
+
+    /**
+     * An actor identified in an agreement.
+     */
+    AGREEMENT_ACTOR_RELATIONSHIP("1c811d0b-e9ce-44af-b6ed-133e73322e32",
+                                 "AgreementActor",
+                                 OpenMetadataWikiPages.MODEL_0711_AGREEMENTS,
+                                 "0a124f2b-ce46-4138-bccd-e298fda475e4",
+                                 "An actor identified in an agreement.",
+                                 AgreementActorProperties.class),
+
+    /**
+     * An identified item in an agreement.
+     */
+    AGREEMENT_ITEM_RELATIONSHIP("a540c361-0ed1-45d6-b525-007592ae806d",
+                                "AgreementItem",
+                                OpenMetadataWikiPages.MODEL_0711_AGREEMENTS,
+                                "b467985d-4e68-4c9c-9f81-cfe62fc70ddc",
+                                "An identified item in an agreement.",
+                                AgreementItemProperties.class),
+
+    /**
+     * Link to the contract document.
+     */
+    CONTRACT_LINK_RELATIONSHIP("33937ece-5ab6-4cd3-a348-b8196ffc3b4e",
+                               "ContractLink",
+                               OpenMetadataWikiPages.MODEL_0711_AGREEMENTS,
+                               "cea41a7f-8fac-41f4-8426-d715e79d4b16",
+                               "Link to the contract document.",
+                               ContractLinkProperties.class),
+
+    /**
      * A specialized agreement that represents a subscription to a digital service such as a digital product.
      */
     DIGITAL_SUBSCRIPTION("ad6ed361-af14-458f-8fb7-d4c11baa45d2",
                          "DigitalSubscription",
-                         OpenMetadataWikiPages.MODEL_0711_DIGITAL_SUBSCRIPTION,
+                         OpenMetadataWikiPages.MODEL_0712_DIGITAL_SUBSCRIPTION,
                          "71fe7c8b-d1de-4090-8b18-1855cb8f89b3",
                          "A specialized agreement that represents a subscription to a digital service such as a digital product.",
                          DigitalSubscriptionProperties.class),
@@ -5671,7 +5672,7 @@ public enum OpenMetadataType
      */
     DIGITAL_SUBSCRIBER_RELATIONSHIP("567cc4e7-ef89-4d36-af0d-3cb4fe9b8cf4",
                                     "DigitalSubscriber",
-                                    OpenMetadataWikiPages.MODEL_0711_DIGITAL_SUBSCRIPTION,
+                                    OpenMetadataWikiPages.MODEL_0712_DIGITAL_SUBSCRIPTION,
                                     "60dac0a2-8326-4321-ad88-92b343ef89d2",
                                     "The link between a digital subscriber and the subscription details.",
                                     DigitalSubscriberProperties.class),

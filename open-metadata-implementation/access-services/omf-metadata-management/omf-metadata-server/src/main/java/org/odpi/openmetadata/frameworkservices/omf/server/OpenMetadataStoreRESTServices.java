@@ -16,6 +16,7 @@ import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterExcept
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.frameworks.openmetadata.mermaid.OpenMetadataMermaidGraphBuilder;
+import org.odpi.openmetadata.frameworks.openmetadata.mermaid.SubtypesMermaidGraphBuilder;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.*;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.translations.TranslationDetailProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.search.PropertyHelper;
@@ -247,7 +248,10 @@ public class OpenMetadataStoreRESTServices
 
                 if (! openMetadataTypeDefList.isEmpty())
                 {
-                    response.setTypeDefs(openMetadataTypeDefList);
+                    TypeDefList typeDefList = new TypeDefList();
+
+                    typeDefList.setTypeDefs(openMetadataTypeDefList);
+                    response.setTypeDefList(typeDefList);
                 }
             }
         }
@@ -375,7 +379,10 @@ public class OpenMetadataStoreRESTServices
 
                 if (! openMetadataTypeDefList.isEmpty())
                 {
-                    response.setTypeDefs(openMetadataTypeDefList);
+                    TypeDefList typeDefList = new TypeDefList();
+
+                    typeDefList.setTypeDefs(openMetadataTypeDefList);
+                    response.setTypeDefList(typeDefList);
                 }
             }
         }
@@ -421,6 +428,11 @@ public class OpenMetadataStoreRESTServices
 
             invalidParameterHandler.validateName(typeName, parameterName, methodName);
 
+            TypeDef       typeDef = repositoryHelper.getTypeDefByName(instanceHandler.getServiceName(),
+                                                                      typeName);
+
+            OpenMetadataTypeDef superTypeDef = this.getOpenMetadataTypeDef(typeDef, repositoryHelper);
+
             List<String>  subTypeNames = repositoryHelper.getSubTypesOf(instanceHandler.getServiceName(),
                                                                         typeName);
 
@@ -441,7 +453,16 @@ public class OpenMetadataStoreRESTServices
 
                 if (! openMetadataTypeDefList.isEmpty())
                 {
-                    response.setTypeDefs(openMetadataTypeDefList);
+                    TypeDefList typeDefList = new TypeDefList();
+
+                    typeDefList.setTypeDefs(openMetadataTypeDefList);
+
+                    SubtypesMermaidGraphBuilder graphBuilder = new SubtypesMermaidGraphBuilder(superTypeDef,
+                                                                                               openMetadataTypeDefList);
+
+                    typeDefList.setMermaidGraph(graphBuilder.getMermaidGraph());
+
+                    response.setTypeDefList(typeDefList);
                 }
             }
         }

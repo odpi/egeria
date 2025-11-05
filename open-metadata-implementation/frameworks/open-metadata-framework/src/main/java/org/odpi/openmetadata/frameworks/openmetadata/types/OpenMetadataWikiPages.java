@@ -525,11 +525,6 @@ public class OpenMetadataWikiPages
     public static final String MODEL_0482_CERTIFICATIONS               = "https://egeria-project.org/types/4/0482-Certifications/";
 
     /**
-     * <a href="https://egeria-project.org/types/4/0484-Agreements/">...</a>
-     */
-    public static final String MODEL_0484_AGREEMENTS                   = "https://egeria-project.org/types/4/0484-Agreements/";
-
-    /**
      * <a href="https://egeria-project.org/types/4/0485-Data-Processing-Purposes/">...</a>
      */
     public static final String MODEL_0485_DATA_PROCESSING_PURPOSES     = "https://egeria-project.org/types/4/0485-Data-Processing-Purposes/";
@@ -723,14 +718,19 @@ public class OpenMetadataWikiPages
     public static final String MODEL_0690_REQUEST_FOR_ACTION           = "https://egeria-project.org/types/6/0690-Request-for-Action/";
 
     /**
-     * <a href="https://egeria-project.org/types/7/0710-Digital-Product/">...</a>
+     * <a href="https://egeria-project.org/types/7/0710-Digital-Products/">...</a>
      */
-    public static final String MODEL_0710_DIGITAL_PRODUCT               = "https://egeria-project.org/types/7/0710-Digital-Product/";
+    public static final String MODEL_0710_DIGITAL_PRODUCT               = "https://egeria-project.org/types/7/0710-Digital-Products/";
 
     /**
-     * <a href="https://egeria-project.org/types/7/0711-Digital-Subscription/">...</a>
+     * <a href="https://egeria-project.org/types/7/0711-Agreements/">...</a>
      */
-    public static final String MODEL_0711_DIGITAL_SUBSCRIPTION         = "https://egeria-project.org/types/7/0711-Digital-Subscription/";
+    public static final String MODEL_0711_AGREEMENTS = "https://egeria-project.org/types/7/0711-Agreements/";
+
+    /**
+     * <a href="https://egeria-project.org/types/7/0712-Digital-Subscription/">...</a>
+     */
+    public static final String MODEL_0712_DIGITAL_SUBSCRIPTION = "https://egeria-project.org/types/7/0712-Digital-Subscription/";
 
     /**
      * <a href="https://egeria-project.org/types/7/0715-Digital-Product-Management/">...</a>

@@ -68,7 +68,7 @@ Content-Type: application/json
 
 {
   "class" : "SearchStringRequestBody",
-  "searchString": "File",
+  "searchString": "and serch value here",
   "startsWith" : false,
   "endsWith" : false,
   "ignoreCase" : true,
@@ -83,6 +83,29 @@ Content-Type: application/json
   "sequencingProperty" : "qualifiedName"
 }
 
+###
+# @name findTechnologyTypes (File)
+# Retrieve the list of deployed implementation type metadata elements that contain the search string.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/automated-curation/technology-types/by-search-string
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "SearchStringRequestBody",
+  "searchString": "File",
+  "startsWith" : false,
+  "endsWith" : false,
+  "ignoreCase" : true,
+  "startFrom" : 0,
+  "pageSize": 0,
+  "asOfTime" : "{{$isoTimestamp}}",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false,
+  "limitResultsByStatus" : ["ACTIVE"],
+  "sequencingOrder" : "PROPERTY_ASCENDING",
+  "sequencingProperty" : "qualifiedName"
+}
 
 ###
 # @name findTechnologyTypes (PostgreSQL related technologies)
@@ -105,7 +128,7 @@ Content-Type: application/json
 
 {
   "class" : "FilterRequestBody",
-  "filter" : "Add name here",
+  "filter" : "add name here",
   "startFrom": 0,
   "pageSize": 10,
   "asOfTime" : "{{$isoTimestamp}}",
@@ -115,6 +138,19 @@ Content-Type: application/json
   "limitResultsByStatus" : ["ACTIVE"],
   "sequencingOrder" : "PROPERTY_ASCENDING",
   "sequencingProperty" : "qualifiedName"
+}
+
+
+###
+# @name getTechnologyTypeDetail
+# Retrieve the requested deployed implementation type metadata element. There are no wildcards allowed in the name.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/automated-curation/technology-types/by-name
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "FilterRequestBody",
+  "filter" : "CSV Data File"
 }
 
 
@@ -213,7 +249,7 @@ Content-Type: application/json
 
 {
   "class" : "FilterRequestBody",
-  "filter" : "Root Technology Type",
+  "filter" : "add technology type here",
   "startFrom": 0,
   "pageSize": 10,
   "asOfTime" : "{{$isoTimestamp}}",
@@ -223,6 +259,19 @@ Content-Type: application/json
   "limitResultsByStatus" : ["ACTIVE"],
   "sequencingOrder" : "PROPERTY_ASCENDING",
   "sequencingProperty" : "qualifiedName"
+}
+
+
+###
+# @name getTechnologyTypeHierarchy (All)
+# Retrieve the requested deployed implementation type metadata element and its subtypes.  A mermaid version if the hierarchy is also returned.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/automated-curation/technology-types/hierarchy
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "FilterRequestBody",
+  "filter" : "Root Technology Type"
 }
 
 
@@ -281,7 +330,8 @@ Content-Type: application/json
 
 {
   "filter" : "CSV Data File",
-  "pageSize": 10
+  "pageSize": 10,
+  "skipClassifiedElements": ["Template"]
 }
 
 
@@ -295,7 +345,8 @@ Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-  "filter" : "OMAG Server Platform"
+  "filter" : "OMAG Server Platform",
+  "skipClassifiedElements": ["Template"]
 }
 
 
@@ -310,7 +361,7 @@ Content-Type: application/json
 
 {
   "filter" : "File System Directory",
-  "skipClassifiedElements": ["Template"]
+  "includeOnlyClassifiedElements": ["Template"]
 }
 
 
@@ -324,7 +375,8 @@ Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-  "filter" : "CSV Data File"
+  "filter" : "CSV Data File",
+  "includeOnlyClassifiedElements": ["Template"]
 }
 
 

@@ -9,6 +9,9 @@ import org.odpi.openmetadata.commonservices.ffdc.RESTExceptionHandler;
 import org.odpi.openmetadata.commonservices.ffdc.rest.*;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.opengovernance.client.OpenGovernanceClient;
+import org.odpi.openmetadata.frameworks.opengovernance.properties.GovernanceActionProcessElement;
+import org.odpi.openmetadata.frameworks.openmetadata.client.OpenMetadataClient;
+import org.odpi.openmetadata.frameworks.openmetadata.mermaid.SpecificationMermaidGraphBuilder;
 import org.odpi.openmetadata.frameworkservices.gaf.rest.*;
 import org.odpi.openmetadata.frameworks.openmetadata.handlers.GovernanceDefinitionHandler;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.governance.*;
@@ -1317,6 +1320,30 @@ public class GovernanceOfficerRESTServices extends TokenController
             else
             {
                 response.setElement(handler.getGovernanceActionProcessGraph(userId, processGUID, new Date()));
+            }
+
+            if (response.getElement() != null)
+            {
+                GovernanceActionProcessElement governanceActionProcessElement = response.getElement().getGovernanceActionProcess();
+
+                if (governanceActionProcessElement != null)
+                {
+                    OpenMetadataClient openMetadataClient = instanceHandler.getOpenMetadataClient(userId, serverName, urlMarker, methodName);
+                    governanceActionProcessElement.setSpecification(openMetadataClient.getSpecification(userId, governanceActionProcessElement.getElementHeader().getGUID()));
+
+                    String displayName = governanceActionProcessElement.getProcessProperties().getQualifiedName();
+
+                    if (governanceActionProcessElement.getProcessProperties().getDisplayName() != null)
+                    {
+                        displayName = governanceActionProcessElement.getProcessProperties().getDisplayName();
+                    }
+
+                    SpecificationMermaidGraphBuilder graphBuilder = new SpecificationMermaidGraphBuilder(governanceActionProcessElement.getElementHeader(),
+                                                                                                         displayName,
+                                                                                                         governanceActionProcessElement.getSpecification());
+
+                    governanceActionProcessElement.setMermaidSpecification(graphBuilder.getMermaidGraph());
+                }
             }
         }
         catch (Throwable error)

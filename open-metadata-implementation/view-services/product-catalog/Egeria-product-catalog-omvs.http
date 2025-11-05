@@ -2,7 +2,7 @@
 # Supporting the use of digital product catalogs
 
 @baseURL=https://localhost:9443
-@viewServer=qs-view-server
+@viewServer=view-server
 
 ###
 # =====================================================================================================================

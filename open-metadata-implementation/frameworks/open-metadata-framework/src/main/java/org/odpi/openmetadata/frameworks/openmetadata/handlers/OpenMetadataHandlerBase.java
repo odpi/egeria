@@ -9,22 +9,23 @@ import org.odpi.openmetadata.frameworks.openmetadata.builders.OpenMetadataElemen
 import org.odpi.openmetadata.frameworks.openmetadata.builders.OpenMetadataRelationshipBuilder;
 import org.odpi.openmetadata.frameworks.openmetadata.client.OpenMetadataClient;
 import org.odpi.openmetadata.frameworks.openmetadata.converters.OpenMetadataRootConverter;
+import org.odpi.openmetadata.frameworks.openmetadata.converters.SpecificationPropertyConverter;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.ElementStatus;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.*;
 import org.odpi.openmetadata.frameworks.openmetadata.mermaid.OpenMetadataRootMermaidGraphBuilder;
 import org.odpi.openmetadata.frameworks.openmetadata.mermaid.SolutionBlueprintMermaidGraphBuilder;
 import org.odpi.openmetadata.frameworks.openmetadata.mermaid.SolutionComponentMermaidGraphBuilder;
 import org.odpi.openmetadata.frameworks.openmetadata.mermaid.SpecificationMermaidGraphBuilder;
-import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.*;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.OpenMetadataRootElement;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.RelatedMetadataElementSummary;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.RelatedMetadataHierarchySummary;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.*;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.validvalues.SpecificationPropertyAssignmentProperties;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.validvalues.ValidValueDefinitionProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.search.*;
+import org.odpi.openmetadata.frameworks.openmetadata.specificationproperties.SpecificationProperty;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -1097,45 +1098,11 @@ public class OpenMetadataHandlerBase
     {
         if (rootElement.getSpecificationProperties() != null)
         {
-            Map<String, List<Map<String, String>>> specification = new HashMap<>();
+            SpecificationPropertyConverter<SpecificationProperty> converter = new SpecificationPropertyConverter<>(propertyHelper,
+                                                                                                                   localServiceName,
+                                                                                                                   localServerName);
 
-            for (RelatedMetadataElementSummary refDataRelationship : rootElement.getSpecificationProperties())
-            {
-                if ((refDataRelationship != null) && (refDataRelationship.getRelationshipProperties() instanceof SpecificationPropertyAssignmentProperties specificationPropertyAssignmentProperties))
-                {
-                    if (specificationPropertyAssignmentProperties.getPropertyName() != null)
-                    {
-                        if (refDataRelationship.getRelatedElement().getProperties() instanceof ValidValueDefinitionProperties validValueDefinitionProperties)
-                        {
-                            Map<String, String> additionalProperties = validValueDefinitionProperties.getAdditionalProperties();
-
-                            if (additionalProperties == null)
-                            {
-                                additionalProperties = new HashMap<>();
-                            }
-
-                            additionalProperties.put(specificationPropertyAssignmentProperties.getPropertyName() + "Name",
-                                                     validValueDefinitionProperties.getPreferredValue());
-
-                            List<Map<String, String>> properties = specification.get(specificationPropertyAssignmentProperties.getPropertyName());
-
-                            if (properties == null)
-                            {
-                                properties = new ArrayList<>();
-                            }
-
-                            properties.add(additionalProperties);
-
-                            specification.put(specificationPropertyAssignmentProperties.getPropertyName(), properties);
-                        }
-                    }
-                }
-            }
-
-            if (! specification.isEmpty())
-            {
-                rootElement.setSpecification(specification);
-            }
+            rootElement.setSpecification(converter.getSpecification(rootElement.getSpecificationProperties()));
         }
     }
 

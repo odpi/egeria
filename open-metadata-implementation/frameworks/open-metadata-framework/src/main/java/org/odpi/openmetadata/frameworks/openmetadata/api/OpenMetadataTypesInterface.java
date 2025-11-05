@@ -5,11 +5,7 @@ package org.odpi.openmetadata.frameworks.openmetadata.api;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.OpenMetadataAttributeTypeDef;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.OpenMetadataAttributeTypeDefCategory;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.OpenMetadataTypeDef;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.OpenMetadataTypeDefCategory;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.OpenMetadataTypeDefGallery;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.*;
 
 import java.util.List;
 
@@ -45,10 +41,10 @@ public interface OpenMetadataTypesInterface
      * @throws PropertyServerException  there is a problem communicating with the metadata repository.
      * @throws UserNotAuthorizedException  the userId is not permitted to perform this operation.
      */
-    List<OpenMetadataTypeDef> findTypeDefsByCategory(String                      userId,
-                                                     OpenMetadataTypeDefCategory category) throws InvalidParameterException,
-                                                                                                  PropertyServerException,
-                                                                                                  UserNotAuthorizedException;
+    TypeDefList findTypeDefsByCategory(String                      userId,
+                                       OpenMetadataTypeDefCategory category) throws InvalidParameterException,
+                                                                                    PropertyServerException,
+                                                                                    UserNotAuthorizedException;
 
     /**
      * Returns all the AttributeTypeDefs for a specific category.
@@ -79,12 +75,12 @@ public interface OpenMetadataTypesInterface
      * @throws PropertyServerException  there is a problem communicating with the metadata repository.
      * @throws UserNotAuthorizedException  the userId is not permitted to perform this operation.
      */
-    List<OpenMetadataTypeDef> findTypesByExternalId(String    userId,
-                                                    String    standard,
-                                                    String    organization,
-                                                    String    identifier) throws InvalidParameterException,
-                                                                                 PropertyServerException,
-                                                                                 UserNotAuthorizedException;
+    TypeDefList findTypesByExternalId(String    userId,
+                                      String    standard,
+                                      String    organization,
+                                      String    identifier) throws InvalidParameterException,
+                                                                   PropertyServerException,
+                                                                   UserNotAuthorizedException;
 
 
     /**
@@ -118,10 +114,10 @@ public interface OpenMetadataTypesInterface
      * @throws PropertyServerException    there is a problem communicating with the metadata repository.
      * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
-    List<OpenMetadataTypeDef> getSubTypes(String userId,
-                                          String typeName) throws InvalidParameterException,
-                                                                  PropertyServerException,
-                                                                  UserNotAuthorizedException;
+    TypeDefList getSubTypes(String userId,
+                            String typeName) throws InvalidParameterException,
+                                                    PropertyServerException,
+                                                    UserNotAuthorizedException;
 
 
     /**

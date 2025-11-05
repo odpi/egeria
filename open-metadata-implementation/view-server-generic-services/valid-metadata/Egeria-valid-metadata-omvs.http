@@ -620,14 +620,14 @@ Content-Type: application/json
 ###
 # @name getSpecificationPropertyByType
 #  Return the list of specification properties containing the supplied type.
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/valid-metadata/specification-properties/by-type?specificationPropertyType=PRODUCED_GUARDS
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/valid-metadata/specification-properties/by-type?specificationPropertyType=PRODUCED_GUARD
 Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
   "class" : "ResultsRequestBody",
   "startFrom" : 0,
-  "pageSize": 10,
+  "pageSize": 1000,
   "asOfTime" : "{{$isoTimestamp}}",
   "effectiveTime" : "{{$isoTimestamp}}",
   "forLineage" : false,

@@ -1418,13 +1418,14 @@ public class ConnectorContextBase
      * @param directoryToMonitor details of the file directory to monitor
      * @param fileFilter         a file filter implementation that restricts the files/directories that will be returned to the listener
      *
+     * @return flag to indicate whether the listener was registered or not; it does not register if the directory does not exist.
      * @throws InvalidParameterException  one of the parameters is null or invalid.
      */
-    public void registerDirectoryListener(FileDirectoryListenerInterface listener,
-                                          File                           directoryToMonitor,
-                                          FileFilter                     fileFilter) throws InvalidParameterException
+    public boolean registerDirectoryListener(FileDirectoryListenerInterface listener,
+                                             File                           directoryToMonitor,
+                                             FileFilter                     fileFilter) throws InvalidParameterException
     {
-        listenerManager.registerDirectoryListener(listener, directoryToMonitor, fileFilter);
+        return listenerManager.registerDirectoryListener(listener, directoryToMonitor, fileFilter);
     }
 
 
@@ -1451,13 +1452,14 @@ public class ConnectorContextBase
      * @param directoryToMonitor details of the root file directory to monitor from
      * @param fileFilter         a file filter implementation that restricts the files/directories that will be returned to the listener
      *
+     * @return flag to indicate whether the listener was registered or not; it does not register if the directory does not exist.
      * @throws InvalidParameterException  one of the parameters is null or invalid.
      */
-    public void registerDirectoryTreeListener(FileDirectoryListenerInterface listener,
-                                              File                           directoryToMonitor,
-                                              FileFilter                     fileFilter) throws InvalidParameterException
+    public boolean registerDirectoryTreeListener(FileDirectoryListenerInterface listener,
+                                                 File                           directoryToMonitor,
+                                                 FileFilter                     fileFilter) throws InvalidParameterException
     {
-        listenerManager.registerDirectoryTreeListener(listener, directoryToMonitor, fileFilter);
+        return listenerManager.registerDirectoryTreeListener(listener, directoryToMonitor, fileFilter);
     }
 
 

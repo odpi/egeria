@@ -5,6 +5,7 @@ package org.odpi.openmetadata.frameworkservices.omf.client;
 import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
 import org.odpi.openmetadata.commonservices.ffdc.rest.*;
 import org.odpi.openmetadata.frameworks.openmetadata.builders.OpenMetadataRelationshipBuilder;
+import org.odpi.openmetadata.frameworks.openmetadata.converters.SpecificationPropertyConverter;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.ActivityStatus;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.DeleteMethod;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
@@ -21,6 +22,7 @@ import org.odpi.openmetadata.frameworks.openmetadata.properties.contextevents.Re
 import org.odpi.openmetadata.frameworks.openmetadata.properties.translations.TranslationDetailProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.refdata.AssignmentType;
 import org.odpi.openmetadata.frameworks.openmetadata.search.*;
+import org.odpi.openmetadata.frameworks.openmetadata.specificationproperties.SpecificationProperty;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 import org.odpi.openmetadata.frameworkservices.omf.client.rest.OMFRESTClient;
@@ -176,10 +178,10 @@ public abstract class OpenMetadataClientBase extends OpenMetadataClient
      * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
     @Override
-    public List<OpenMetadataTypeDef> findTypeDefsByCategory(String                      userId,
-                                                            OpenMetadataTypeDefCategory category) throws InvalidParameterException,
-                                                                                                         PropertyServerException,
-                                                                                                         UserNotAuthorizedException
+    public TypeDefList findTypeDefsByCategory(String                      userId,
+                                              OpenMetadataTypeDefCategory category) throws InvalidParameterException,
+                                                                                           PropertyServerException,
+                                                                                           UserNotAuthorizedException
     {
         final String methodName  = "findTypeDefsByCategory";
         final String categoryParameterName  = "category";
@@ -206,7 +208,7 @@ public abstract class OpenMetadataClientBase extends OpenMetadataClient
                                                                                serverName,
                                                                                userId);
 
-        return restResult.getTypeDefs();
+        return restResult.getTypeDefList();
     }
 
 
@@ -261,7 +263,7 @@ public abstract class OpenMetadataClientBase extends OpenMetadataClient
      * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
     @Override
-    public List<OpenMetadataTypeDef> findTypesByExternalId(String userId,
+    public TypeDefList findTypesByExternalId(String userId,
                                                            String standard,
                                                            String organization,
                                                            String identifier) throws InvalidParameterException,
@@ -281,8 +283,7 @@ public abstract class OpenMetadataClientBase extends OpenMetadataClient
                                                                                organization,
                                                                                identifier);
 
-
-        return restResult.getTypeDefs();
+        return restResult.getTypeDefList();
     }
 
 
@@ -301,10 +302,10 @@ public abstract class OpenMetadataClientBase extends OpenMetadataClient
      * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
     @Override
-    public List<OpenMetadataTypeDef> getSubTypes(String userId,
-                                                 String typeName) throws InvalidParameterException,
-                                                                         PropertyServerException,
-                                                                         UserNotAuthorizedException
+    public TypeDefList getSubTypes(String userId,
+                                   String typeName) throws InvalidParameterException,
+                                                           PropertyServerException,
+                                                           UserNotAuthorizedException
     {
         final String methodName  = "getSubTypes";
         final String parameterName = "typeName";
@@ -320,7 +321,7 @@ public abstract class OpenMetadataClientBase extends OpenMetadataClient
                                                                                typeName);
 
 
-        return restResult.getTypeDefs();
+        return restResult.getTypeDefList();
     }
 
 
@@ -3260,10 +3261,10 @@ public abstract class OpenMetadataClientBase extends OpenMetadataClient
      * @throws PropertyServerException repository error
      * @throws UserNotAuthorizedException authorization issue
      */
-    public Map<String, List<Map<String, String>>> getSpecification(String userId,
-                                                                   String elementGUID) throws InvalidParameterException,
-                                                                                              PropertyServerException,
-                                                                                              UserNotAuthorizedException
+    public Map<String, List<SpecificationProperty>> getSpecification(String userId,
+                                                                     String elementGUID) throws InvalidParameterException,
+                                                                                                PropertyServerException,
+                                                                                                UserNotAuthorizedException
     {
         final String methodName = "getSpecification";
 
@@ -3277,50 +3278,11 @@ public abstract class OpenMetadataClientBase extends OpenMetadataClient
 
         if ((refDataElements != null) && (refDataElements.getElementList() != null))
         {
-            for (RelatedMetadataElement refDataElement : refDataElements.getElementList())
-            {
-                if (refDataElement != null)
-                {
-                    String propertyType = propertyHelper.getStringProperty(serverName,
-                                                                           OpenMetadataProperty.PROPERTY_NAME.name,
-                                                                           refDataElement.getRelationshipProperties(),
-                                                                           methodName);
-                    if (propertyType != null)
-                    {
-                        Map<String, String> additionalProperties = propertyHelper.getStringMapFromProperty(serverName,
-                                                                                                           OpenMetadataProperty.ADDITIONAL_PROPERTIES.name,
-                                                                                                           refDataElement.getElement().getElementProperties(),
-                                                                                                           methodName);
+            SpecificationPropertyConverter<SpecificationProperty> converter = new SpecificationPropertyConverter<>(propertyHelper,
+                                                                                                                   "OMF",
+                                                                                                                   serverName);
 
-                        if (additionalProperties == null)
-                        {
-                            additionalProperties = new HashMap<>();
-                        }
-
-                        additionalProperties.put(propertyType + "Name",
-                                                 propertyHelper.getStringProperty(serverName,
-                                                                                  OpenMetadataProperty.PREFERRED_VALUE.name,
-                                                                                  refDataElement.getElement().getElementProperties(),
-                                                                                  methodName));
-
-                        List<Map<String, String>> properties = specification.get(propertyType);
-
-                        if (properties == null)
-                        {
-                            properties = new ArrayList<>();
-                        }
-
-                        properties.add(additionalProperties);
-
-                        specification.put(propertyType, properties);
-                    }
-                }
-            }
-        }
-
-        if (! specification.isEmpty())
-        {
-            return specification;
+            return converter.getSpecificationFromOMF(refDataElements.getElementList());
         }
 
         return null;

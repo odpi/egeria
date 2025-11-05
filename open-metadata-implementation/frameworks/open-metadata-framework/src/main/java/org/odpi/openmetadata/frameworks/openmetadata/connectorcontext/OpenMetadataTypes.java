@@ -4,16 +4,12 @@ package org.odpi.openmetadata.frameworks.openmetadata.connectorcontext;
 
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.openmetadata.client.OpenMetadataClient;
-import org.odpi.openmetadata.frameworks.openmetadata.enums.ElementStatus;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.*;
-import org.odpi.openmetadata.frameworks.openmetadata.search.*;
 
-import java.util.Date;
 import java.util.List;
-import java.util.Map;
 
 /**
  * OpenMetadataTypes provides access to the open metadata type definitions used in the metadata repositories.
@@ -85,9 +81,9 @@ public class OpenMetadataTypes extends ConnectorContextClientBase
      * @throws PropertyServerException    there is a problem communicating with the metadata repository.
      * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
-    public List<OpenMetadataTypeDef> findTypeDefsByCategory(OpenMetadataTypeDefCategory category) throws InvalidParameterException,
-                                                                                                         PropertyServerException,
-                                                                                                         UserNotAuthorizedException
+    public TypeDefList findTypeDefsByCategory(OpenMetadataTypeDefCategory category) throws InvalidParameterException,
+                                                                                           PropertyServerException,
+                                                                                           UserNotAuthorizedException
     {
         return openMetadataClient.findTypeDefsByCategory(connectorUserId, category);
     }
@@ -126,7 +122,7 @@ public class OpenMetadataTypes extends ConnectorContextClientBase
      * @throws PropertyServerException    there is a problem communicating with the metadata repository.
      * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
-    public List<OpenMetadataTypeDef> findTypesByExternalID(String standard,
+    public TypeDefList findTypesByExternalID(String standard,
                                                            String organization,
                                                            String identifier) throws InvalidParameterException,
                                                                                      PropertyServerException,
@@ -135,6 +131,27 @@ public class OpenMetadataTypes extends ConnectorContextClientBase
         return openMetadataClient.findTypesByExternalId(connectorUserId, standard, organization, identifier);
     }
 
+
+    /**
+     * Returns all the TypeDefs for a specific subtype.  If a null result is returned it means the
+     * type has no subtypes.
+     *
+     * @param typeName     name of the standard null means any.
+     *
+     * @return TypeDefs list  each entry in the list contains a TypeDef.  This is a structure
+     * describing the TypeDef's category and properties.  If null is returned as the TypeDef list it means the type
+     * has no known subtypes
+     *
+     * @throws InvalidParameterException  all attributes of the external id are null.
+     * @throws PropertyServerException    there is a problem communicating with the metadata repository.
+     * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
+     */
+    public TypeDefList getSubTypes(String typeName) throws InvalidParameterException,
+                                                           PropertyServerException,
+                                                           UserNotAuthorizedException
+    {
+        return openMetadataClient.getSubTypes(connectorUserId, typeName);
+    }
 
     /**
      * Return the TypeDef identified by the GUID.

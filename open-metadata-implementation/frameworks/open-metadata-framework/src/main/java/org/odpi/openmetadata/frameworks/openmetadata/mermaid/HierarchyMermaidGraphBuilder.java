@@ -27,6 +27,6 @@ public class HierarchyMermaidGraphBuilder extends MermaidGraphBuilderBase
         mermaidGraph.append(displayName);
         mermaidGraph.append(" [");
         mermaidGraph.append(startingGUID);
-        mermaidGraph.append("]\n---\nflowchart TD\n%%{init: {\"flowchart\": {\"htmlLabels\": false}} }%%\n\n");
+        mermaidGraph.append("]\n---\nflowchart LR\n%%{init: {\"flowchart\": {\"htmlLabels\": false}} }%%\n\n");
     }
 }

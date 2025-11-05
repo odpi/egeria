@@ -25,6 +25,8 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonSubTypes(
         {
                 @JsonSubTypes.Type(value = ActionTargetType.class, name = "ActionTargetType"),
+                @JsonSubTypes.Type(value = AnalysisStepType.class, name = "AnalysisStepType"),
+                @JsonSubTypes.Type(value = AnnotationTypeType.class, name = "AnnotationTypeType"),
                 @JsonSubTypes.Type(value = ConfigurationPropertyType.class, name = "ConfigurationPropertyType"),
                 @JsonSubTypes.Type(value = GuardType.class, name = "GuardType"),
                 @JsonSubTypes.Type(value = PlaceholderPropertyType.class, name = "PlaceholderPropertyType"),

@@ -793,12 +793,25 @@ public class MermaidGraphBuilderBase
         }
         if (propertyHelper.isTypeOf(elementControlHeader, OpenMetadataType.VALID_VALUE_DEFINITION.typeName))
         {
-            if (propertyHelper.isTypeOf(elementControlHeader, OpenMetadataType.VALID_VALUE_DEFINITION.typeName))
+            if (propertyHelper.isTypeOf(elementControlHeader, OpenMetadataType.VALID_METADATA_VALUE.typeName))
             {
-                return VisualStyle.VALID_VALUE_SET;
+                if (propertyHelper.isTypeOf(elementControlHeader, OpenMetadataType.TECHNOLOGY_TYPE.typeName))
+                {
+                    return VisualStyle.TECHNOLOGY_TYPE;
+                }
+
+                return VisualStyle.VALID_METADATA_VALUE;
+            }
+            else if (propertyHelper.isTypeOf(elementControlHeader, OpenMetadataType.REFERENCE_DATA_VALUE.typeName))
+            {
+                return VisualStyle.REFERENCE_DATA_VALUE;
+            }
+            else if (propertyHelper.isTypeOf(elementControlHeader, OpenMetadataType.SPECIFICATION_PROPERTY_VALUE.typeName))
+            {
+                return VisualStyle.SPECIFICATION_PROPERTY;
             }
 
-            return VisualStyle.VALID_VALUE;
+            return VisualStyle.VALID_VALUE_SET;
         }
         if (propertyHelper.isTypeOf(elementControlHeader, OpenMetadataType.ASSET.typeName))
         {
@@ -1120,6 +1133,33 @@ public class MermaidGraphBuilderBase
                                     currentDisplayName,
                                     currentType,
                                     new OpenMetadataRootProperties(), visualStyle);
+    }
+
+
+    /**
+     * Create a node in the mermaid graph.
+     *
+     * @param currentNodeName unique name/identifier
+     * @param currentDisplayName display name
+     * @param currentType type of element
+     * @param visualStyle mermaid defined shape and colour value
+     * @return whether a new node was created or not.
+     */
+    public boolean appendNewMermaidNode(String      currentNodeName,
+                                        String      currentDisplayName,
+                                        String      currentType,
+                                        String      url,
+                                        VisualStyle visualStyle)
+    {
+        ReferenceableProperties rootProperties = new ReferenceableProperties();
+
+        rootProperties.setURL(url);
+
+        return appendNewMermaidNode(currentNodeName,
+                                    currentDisplayName,
+                                    currentType,
+                                    rootProperties,
+                                    visualStyle);
     }
 
 
@@ -1543,6 +1583,7 @@ public class MermaidGraphBuilderBase
      *
      * @param subgraphName name of subgraph
      * @param visualStyle style of subgraph background
+     * @param direction direction of subgraph
      */
     public void startSubgraph(String      subgraphName,
                               VisualStyle visualStyle,
