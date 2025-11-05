@@ -12,20 +12,22 @@ import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedExcep
 import org.odpi.openmetadata.frameworks.openmetadata.handlers.OpenMetadataHandlerBase;
 import org.odpi.openmetadata.frameworks.openmetadata.mapper.OpenMetadataValidValues;
 import org.odpi.openmetadata.frameworks.openmetadata.mermaid.HierarchyMermaidGraphBuilder;
+import org.odpi.openmetadata.frameworks.openmetadata.mermaid.SpecificationMermaidGraphBuilder;
+import org.odpi.openmetadata.frameworks.openmetadata.mermaid.VisualStyle;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.OpenMetadataRootElement;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.RelatedMetadataElementSummary;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.OpenMetadataElement;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.ReferenceableProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.RelatedMetadataElement;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.RelatedMetadataElementList;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.resources.ResourceListProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.templates.TemplateProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.search.*;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 import org.odpi.openmetadata.viewservices.automatedcuration.converters.TechnologyTypeSummaryConverter;
-import org.odpi.openmetadata.viewservices.automatedcuration.properties.CatalogTemplate;
-import org.odpi.openmetadata.viewservices.automatedcuration.properties.TechnologyTypeHierarchy;
-import org.odpi.openmetadata.viewservices.automatedcuration.properties.TechnologyTypeReport;
-import org.odpi.openmetadata.viewservices.automatedcuration.properties.TechnologyTypeSummary;
+import org.odpi.openmetadata.viewservices.automatedcuration.mermaid.TechnologyTypeReportMermaidGraphBuilder;
+import org.odpi.openmetadata.viewservices.automatedcuration.properties.*;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -183,7 +185,7 @@ public class TechnologyTypeHandler extends OpenMetadataHandlerBase
         List<OpenMetadataElement> openMetadataElements = openMetadataClient.getMetadataElementsByPropertyValue(userId,
                                                                                                                OpenMetadataProperty.PREFERRED_VALUE.name,
                                                                                                                technologyTypeName,
-                                                                                                               queryOptions);
+                                                                                                               workingQueryOptions);
 
         if (openMetadataElements != null)
         {
@@ -206,9 +208,10 @@ public class TechnologyTypeHandler extends OpenMetadataHandlerBase
 
                     if ((relatedMetadataElementList != null) && (relatedMetadataElementList.getElementList() != null))
                     {
-                        List<RelatedMetadataElementSummary> resources = new ArrayList<>();
-                        List<CatalogTemplate>               catalogTemplates = new ArrayList<>();
-                        List<RelatedMetadataElementSummary> externalReferences = new ArrayList<>();
+                        List<ResourceDescription>           governanceActionProcesses = new ArrayList<>();
+                        List<ResourceDescription>           resources                 = new ArrayList<>();
+                        List<CatalogTemplate>               catalogTemplates          = new ArrayList<>();
+                        List<RelatedMetadataElementSummary> externalReferences        = new ArrayList<>();
 
                         for (RelatedMetadataElement relatedMetadataElement : relatedMetadataElementList.getElementList())
                         {
@@ -216,25 +219,50 @@ public class TechnologyTypeHandler extends OpenMetadataHandlerBase
                             {
                                 if (propertyHelper.isTypeOf(relatedMetadataElement, OpenMetadataType.RESOURCE_LIST_RELATIONSHIP.typeName))
                                 {
-                                    resources.add(propertyHelper.getRelatedElementSummary(relatedMetadataElement));
+                                    RelatedMetadataElementSummary resourceList = propertyHelper.getRelatedElementSummary(relatedMetadataElement);
+                                    ResourceDescription resourceDescription;
+
+                                    if (resourceList.getRelationshipProperties() instanceof ResourceListProperties resourceListProperties)
+                                    {
+                                        resourceDescription = new ResourceDescription(resourceListProperties);
+                                    }
+                                    else
+                                    {
+                                        resourceDescription = new ResourceDescription();
+                                    }
+
+                                    resourceDescription.setRelatedElement(resourceList.getRelatedElement());
+                                    resourceDescription.setSpecification(openMetadataClient.getSpecification(userId, resourceList.getRelatedElement().getElementHeader().getGUID()));
+                                    setUpSpecificationGraph(resourceDescription);
+
+                                    if (propertyHelper.isTypeOf(relatedMetadataElement.getElement(), OpenMetadataType.GOVERNANCE_ACTION_PROCESS.typeName))
+                                    {
+                                        governanceActionProcesses.add(resourceDescription);
+                                    }
+                                    else
+                                    {
+                                        resources.add(resourceDescription);
+                                    }
                                 }
                                 else if (propertyHelper.isTypeOf(relatedMetadataElement, OpenMetadataType.CATALOG_TEMPLATE_RELATIONSHIP.typeName))
                                 {
-                                    CatalogTemplate catalogTemplate = new CatalogTemplate();
+                                    RelatedMetadataElementSummary template = propertyHelper.getRelatedElementSummary(relatedMetadataElement);
 
-                                    catalogTemplate.setRelatedElement(propertyHelper.getMetadataElementSummary(relatedMetadataElement.getElement()));
+                                    CatalogTemplate catalogTemplate;
 
-                                    if (catalogTemplate.getRelatedElement().getElementHeader().getTemplate() != null)
+                                    if ((template.getRelatedElement().getElementHeader().getTemplate() != null) &&
+                                        (template.getRelatedElement().getElementHeader().getTemplate().getClassificationProperties() instanceof TemplateProperties templateProperties))
                                     {
-                                        if (catalogTemplate.getRelatedElement().getElementHeader().getTemplate().getClassificationProperties() instanceof TemplateProperties templateProperties)
-                                        {
-                                            catalogTemplate.setName(templateProperties.getDisplayName());
-                                            catalogTemplate.setDescription(templateProperties.getDescription());
-                                            catalogTemplate.setVersionIdentifier(templateProperties.getVersionIdentifier());
-                                        }
+                                        catalogTemplate = new CatalogTemplate(templateProperties);
+                                    }
+                                    else
+                                    {
+                                        catalogTemplate = new CatalogTemplate();
                                     }
 
+                                    catalogTemplate.setRelatedElement(propertyHelper.getMetadataElementSummary(relatedMetadataElement.getElement()));
                                     catalogTemplate.setSpecification(openMetadataClient.getSpecification(userId, relatedMetadataElement.getElement().getElementGUID()));
+                                    setUpSpecificationGraph(catalogTemplate);
 
                                     catalogTemplates.add(catalogTemplate);
                                 }
@@ -243,6 +271,11 @@ public class TechnologyTypeHandler extends OpenMetadataHandlerBase
                                     externalReferences.add(propertyHelper.getRelatedElementSummary(relatedMetadataElement));
                                 }
                             }
+                        }
+
+                        if (!governanceActionProcesses.isEmpty())
+                        {
+                            report.setGovernanceActionProcesses(governanceActionProcesses);
                         }
 
                         if (!resources.isEmpty())
@@ -259,6 +292,10 @@ public class TechnologyTypeHandler extends OpenMetadataHandlerBase
                         {
                             report.setExternalReferences(externalReferences);
                         }
+
+                        TechnologyTypeReportMermaidGraphBuilder graphBuilder = new TechnologyTypeReportMermaidGraphBuilder(report);
+
+                        report.setMermaidGraph(graphBuilder.getMermaidGraph());
                     }
                 }
             }
@@ -269,6 +306,37 @@ public class TechnologyTypeHandler extends OpenMetadataHandlerBase
         return null;
     }
 
+
+    /**
+     * Using the information already populated in the reference data object, create a mermaid graph of the specification.
+     *
+     * @param refDataElementBase reference dat object
+     */
+    private void setUpSpecificationGraph(RefDataElementBase refDataElementBase)
+    {
+        if ((refDataElementBase.getSpecification() != null) && (refDataElementBase.getRelatedElement() != null))
+        {
+            String elementDisplayName = refDataElementBase.getRelatedElement().getElementHeader().getType().getTypeName();
+
+            if (refDataElementBase.getRelatedElement().getProperties() instanceof ReferenceableProperties referenceableProperties)
+            {
+                if (referenceableProperties.getDisplayName() != null)
+                {
+                    elementDisplayName = referenceableProperties.getDisplayName();
+                }
+                else
+                {
+                    elementDisplayName = referenceableProperties.getQualifiedName();
+                }
+            }
+
+            SpecificationMermaidGraphBuilder graphBuilder = new SpecificationMermaidGraphBuilder(refDataElementBase.getRelatedElement().getElementHeader(),
+                                                                                                 elementDisplayName,
+                                                                                                 refDataElementBase.getSpecification());
+
+            refDataElementBase.setSpecificationMermaidGraph(graphBuilder.getMermaidGraph());
+        }
+    }
 
 
     /**
@@ -345,17 +413,18 @@ public class TechnologyTypeHandler extends OpenMetadataHandlerBase
 
             if (technologyTypeHierarchy.getCategory() != null)
             {
-                mermaidGraphBuilder.appendMermaidNode(technologyTypeHierarchy.getTechnologyTypeGUID(),
-                                                      technologyTypeHierarchy.getDisplayName(),
-                                                      technologyTypeHierarchy.getCategory());
+                mermaidGraphBuilder.appendNewMermaidNode(technologyTypeHierarchy.getTechnologyTypeGUID(),
+                                                         technologyTypeHierarchy.getDisplayName(),
+                                                         technologyTypeHierarchy.getCategory(),
+                                                         VisualStyle.TECHNOLOGY_TYPE);
             }
             else
             {
-                {
-                    mermaidGraphBuilder.appendMermaidNode(technologyTypeHierarchy.getTechnologyTypeGUID(),
-                                                          technologyTypeHierarchy.getDisplayName(),
-                                                          "TechnologyType");
-                }
+                mermaidGraphBuilder.appendNewMermaidNode(technologyTypeHierarchy.getTechnologyTypeGUID(),
+                                                         technologyTypeHierarchy.getDisplayName(),
+                                                         "TechnologyType",
+                                                         VisualStyle.TECHNOLOGY_TYPE);
+
             }
 
             this.addTechnologyTypeHierarchyNodesMermaidString(mermaidGraphBuilder,
@@ -396,9 +465,10 @@ public class TechnologyTypeHandler extends OpenMetadataHandlerBase
         {
             for (TechnologyTypeHierarchy technologyTypeHierarchy : technologyTypeHierarchies)
             {
-                mermaidGraphBuilder.appendMermaidNode(technologyTypeHierarchy.getTechnologyTypeGUID(),
-                                                      technologyTypeHierarchy.getDisplayName(),
-                                                      technologyTypeHierarchy.getCategory());
+                mermaidGraphBuilder.appendNewMermaidNode(technologyTypeHierarchy.getTechnologyTypeGUID(),
+                                                         technologyTypeHierarchy.getDisplayName(),
+                                                         technologyTypeHierarchy.getCategory(),
+                                                         VisualStyle.TECHNOLOGY_TYPE);
 
                 addTechnologyTypeHierarchyNodesMermaidString(mermaidGraphBuilder,
                                                              technologyTypeHierarchy.getSubTypes());
@@ -525,10 +595,17 @@ public class TechnologyTypeHandler extends OpenMetadataHandlerBase
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateName(technologyTypeName, parameterName, methodName);
 
+        QueryOptions workingQueryOptions = new QueryOptions(queryOptions);
+
+        if (workingQueryOptions.getMetadataElementTypeName() == null)
+        {
+            workingQueryOptions.setMetadataElementTypeName(OpenMetadataType.REFERENCEABLE.typeName);
+        }
+
         return super.getRootElementsByName(userId,
                                            technologyTypeName,
                                            Collections.singletonList(OpenMetadataProperty.DEPLOYED_IMPLEMENTATION_TYPE.name),
-                                           queryOptions,
+                                           workingQueryOptions,
                                            methodName);
     }
 

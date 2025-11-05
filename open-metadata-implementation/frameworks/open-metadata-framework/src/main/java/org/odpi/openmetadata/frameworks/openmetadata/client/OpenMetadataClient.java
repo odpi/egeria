@@ -9,6 +9,7 @@ import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedExcep
 import org.odpi.openmetadata.frameworks.openmetadata.enums.ElementStatus;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.*;
 import org.odpi.openmetadata.frameworks.openmetadata.search.*;
+import org.odpi.openmetadata.frameworks.openmetadata.specificationproperties.SpecificationProperty;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
 
 import java.util.*;
@@ -104,10 +105,10 @@ public abstract class OpenMetadataClient implements OpenMetadataTypesInterface,
      * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
     @Override
-    public abstract List<OpenMetadataTypeDef> findTypeDefsByCategory(String                      userId,
-                                                                     OpenMetadataTypeDefCategory category) throws InvalidParameterException,
-                                                                                                                  PropertyServerException,
-                                                                                                                  UserNotAuthorizedException;
+    public abstract TypeDefList findTypeDefsByCategory(String                      userId,
+                                                       OpenMetadataTypeDefCategory category) throws InvalidParameterException,
+                                                                                                    PropertyServerException,
+                                                                                                    UserNotAuthorizedException;
 
 
     /**
@@ -145,12 +146,12 @@ public abstract class OpenMetadataClient implements OpenMetadataTypesInterface,
      * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
     @Override
-    public abstract List<OpenMetadataTypeDef> findTypesByExternalId(String userId,
-                                                                    String standard,
-                                                                    String organization,
-                                                                    String identifier) throws InvalidParameterException,
-                                                                                              PropertyServerException,
-                                                                                              UserNotAuthorizedException;
+    public abstract TypeDefList findTypesByExternalId(String userId,
+                                                      String standard,
+                                                      String organization,
+                                                      String identifier) throws InvalidParameterException,
+                                                                                PropertyServerException,
+                                                                                UserNotAuthorizedException;
 
 
     /**
@@ -168,10 +169,10 @@ public abstract class OpenMetadataClient implements OpenMetadataTypesInterface,
      * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
     @Override
-    public abstract List<OpenMetadataTypeDef> getSubTypes(String userId,
-                                                          String typeName) throws InvalidParameterException,
-                                                                                  PropertyServerException,
-                                                                                  UserNotAuthorizedException;
+    public abstract TypeDefList getSubTypes(String userId,
+                                            String typeName) throws InvalidParameterException,
+                                                                    PropertyServerException,
+                                                                    UserNotAuthorizedException;
 
 
     /**
@@ -1823,10 +1824,10 @@ public abstract class OpenMetadataClient implements OpenMetadataTypesInterface,
      * @throws PropertyServerException repository error
      * @throws UserNotAuthorizedException authorization issue
      */
-    public abstract Map<String, List<Map<String, String>>> getSpecification(String userId,
-                                                                            String elementGUID) throws InvalidParameterException,
-                                                                                                       PropertyServerException,
-                                                                                                       UserNotAuthorizedException;
+    public abstract Map<String, List<SpecificationProperty>> getSpecification(String userId,
+                                                                              String elementGUID) throws InvalidParameterException,
+                                                                                                         PropertyServerException,
+                                                                                                         UserNotAuthorizedException;
 
 
     /**

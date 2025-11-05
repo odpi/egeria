@@ -21,8 +21,8 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class TechnologyTypeHierarchyResponse extends FFDCResponseBase
 {
-    private TechnologyTypeHierarchy element = null;
-    private String                  mermaidString = null;
+    private TechnologyTypeHierarchy element      = null;
+    private String                  mermaidGraph = null;
 
 
     /**
@@ -62,20 +62,20 @@ public class TechnologyTypeHierarchyResponse extends FFDCResponseBase
      *
      * @return mermaid string
      */
-    public String getMermaidString()
+    public String getMermaidGraph()
     {
-        return mermaidString;
+        return mermaidGraph;
     }
 
 
     /**
      * Set up the mermaid version of the hierarchy.
      *
-     * @param mermaidString mermaid string
+     * @param mermaidGraph mermaid string
      */
-    public void setMermaidString(String mermaidString)
+    public void setMermaidGraph(String mermaidGraph)
     {
-        this.mermaidString = mermaidString;
+        this.mermaidGraph = mermaidGraph;
     }
 
 
@@ -89,7 +89,7 @@ public class TechnologyTypeHierarchyResponse extends FFDCResponseBase
     {
         return "TechnologyTypeHierarchyResponse{" +
                 "element=" + element +
-                ", mermaidString='" + mermaidString + '\'' +
+                ", mermaidGraph='" + mermaidGraph + '\'' +
                 "} " + super.toString();
     }
 }

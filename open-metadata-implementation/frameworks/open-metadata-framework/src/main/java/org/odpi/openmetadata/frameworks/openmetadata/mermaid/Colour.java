@@ -91,6 +91,28 @@ public enum Colour
     /* Actors */
     DARK_ORANGE("#FF8c00"),
 
+    /* types */
+    REGAL_DARK_PURPLE("#492673"),
+    REGAL_PURPLE("#7940bf"),
+    REGAL_LILAC("#af8cd9"),
+    REGAL_LIGHT_LILAC("#e4d9f2"),
+
+    /* valid values */
+    BLACK_ROSE("#260d1b"),
+    VERY_DARK_ROSE("#732650"),
+    DARK_ROSE("#bf4086"),
+    ROSE("#d98cb6"),
+    PALE_ROSE("#f2d9e7"),
+
+    /* unallocated */
+    BLACK_PINK("#33001c"),
+    RED_PINK("#990054"),
+    HIGHLIGHTER_PINK("#ff008c"),
+    DARK_PINK("#ff66ba"),
+    PALE_PINK("#ffcce8"),
+
+
+
     MEDIUM_PURPLE("#9370db"),
     BLUE_VIOLET("#8a2be2"),
     DARK_MAGENTA("#8b008b"),

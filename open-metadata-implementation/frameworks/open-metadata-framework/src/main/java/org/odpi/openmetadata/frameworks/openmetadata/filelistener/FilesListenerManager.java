@@ -7,8 +7,6 @@ import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterExcept
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.OMFAuditCode;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.OMFErrorCode;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.io.File;
 import java.io.FileFilter;
@@ -24,7 +22,6 @@ import java.util.Map;
  */
 public class FilesListenerManager
 {
-    private static final Logger log = LoggerFactory.getLogger(FilesListenerManager.class);
     private final AuditLog auditLog;
     private final String   connectorName;
 
@@ -56,11 +53,12 @@ public class FilesListenerManager
      * @param directoryToMonitor details of the file directory to monitor
      * @param fileFilter         a file filter implementation that restricts the files/directories that will be returned to the listener
      *
+     * @return flag to indicate whether the listener was registered or not; it does not register if the directory does not exist.
      * @throws InvalidParameterException  one of the parameters is null or invalid.
      */
-    public void registerDirectoryListener(FileListenerInterface listener,
-                                          File                  directoryToMonitor,
-                                          FileFilter            fileFilter) throws InvalidParameterException
+    public boolean registerDirectoryListener(FileListenerInterface listener,
+                                             File                  directoryToMonitor,
+                                             FileFilter            fileFilter) throws InvalidParameterException
     {
         final String methodName = "registerDirectoryListener";
         final String listenerParameterName = "listener";
@@ -68,39 +66,47 @@ public class FilesListenerManager
 
         validateParameter(listener, listenerParameterName, methodName);
         validateParameter(directoryToMonitor, directoryParameterName, methodName);
-        validateIsDirectory(directoryToMonitor, directoryParameterName, methodName);
 
-        try
+        if (directoryToMonitor.exists())
         {
-            DirectoryWatcher directoryWatcher = new DirectoryWatcher(listener,
-                                                                     directoryToMonitor,
-                                                                     fileFilter,
-                                                                     auditLog,
-                                                                     connectorName);
+            validateIsDirectory(directoryToMonitor, directoryParameterName, methodName);
 
-            Thread thread = new Thread(directoryWatcher, "Watch " + directoryToMonitor.getName());
-            thread.start();
-
-            ActiveWatcher activeWatcher = new ActiveWatcher(directoryToMonitor, thread, directoryWatcher);
-
-            registeredDirectoryWatchers.put(directoryToMonitor.getCanonicalPath(), activeWatcher);
-
-            if (auditLog != null)
+            try
             {
-                auditLog.logMessage(methodName,
-                                    OMFAuditCode.DIRECTORY_MONITORING_STARTING.getMessageDefinition(connectorName,
-                                                                                                    directoryToMonitor.getCanonicalPath()));
+                DirectoryWatcher directoryWatcher = new DirectoryWatcher(listener,
+                                                                         directoryToMonitor,
+                                                                         fileFilter,
+                                                                         auditLog,
+                                                                         connectorName);
+
+                Thread thread = new Thread(directoryWatcher, "Watch " + directoryToMonitor.getName());
+                thread.start();
+
+                ActiveWatcher activeWatcher = new ActiveWatcher(directoryToMonitor, thread, directoryWatcher);
+
+                registeredDirectoryWatchers.put(directoryToMonitor.getCanonicalPath(), activeWatcher);
+
+                if (auditLog != null)
+                {
+                    auditLog.logMessage(methodName,
+                                        OMFAuditCode.DIRECTORY_MONITORING_STARTING.getMessageDefinition(connectorName,
+                                                                                                        directoryToMonitor.getCanonicalPath()));
+                }
+
+                return true;
+            }
+            catch (IOException exception)
+            {
+                throw new InvalidParameterException(OMFErrorCode.UNEXPECTED_IO_EXCEPTION.getMessageDefinition(directoryToMonitor.getName(),
+                                                                                                              exception.getMessage()),
+                                                    this.getClass().getName(),
+                                                    methodName,
+                                                    exception,
+                                                    OpenMetadataProperty.PATH_NAME.name);
             }
         }
-        catch (IOException exception)
-        {
-            throw new InvalidParameterException(OMFErrorCode.UNEXPECTED_IO_EXCEPTION.getMessageDefinition(directoryToMonitor.getName(),
-                                                                                                          exception.getMessage()),
-                                                this.getClass().getName(),
-                                                methodName,
-                                                exception,
-                                                OpenMetadataProperty.PATH_NAME.name);
-        }
+
+        return false;
     }
 
 
@@ -147,11 +153,12 @@ public class FilesListenerManager
      * @param directoryToMonitor details of the root file directory to monitor from
      * @param fileFilter         a file filter implementation that restricts the files/directories that will be returned to the listener
      *
+     * @return flag to indicate whether the listener was registered or not; it does not register if the directory does not exist.
      * @throws InvalidParameterException  one of the parameters is null or invalid.
      */
-    public void registerDirectoryTreeListener(FileDirectoryListenerInterface listener,
-                                              File                           directoryToMonitor,
-                                              FileFilter                     fileFilter) throws InvalidParameterException
+    public boolean registerDirectoryTreeListener(FileDirectoryListenerInterface listener,
+                                                 File                           directoryToMonitor,
+                                                 FileFilter                     fileFilter) throws InvalidParameterException
     {
         final String methodName = "registerDirectoryTreeListener";
         final String listenerParameterName = "listener";
@@ -159,39 +166,47 @@ public class FilesListenerManager
 
         validateParameter(listener, listenerParameterName, methodName);
         validateParameter(directoryToMonitor, directoryParameterName, methodName);
-        validateIsDirectory(directoryToMonitor, directoryParameterName, methodName);
 
-        try
+        if (directoryToMonitor.exists())
         {
-            DirectoryWatcher directoryWatcher = new DirectoryTreeWatcher(listener,
-                                                                         directoryToMonitor,
-                                                                         fileFilter,
-                                                                         auditLog,
-                                                                         connectorName);
+            validateIsDirectory(directoryToMonitor, directoryParameterName, methodName);
 
-            Thread thread = new Thread(directoryWatcher, "Watch " + directoryToMonitor.getName());
-            thread.start();
-
-            ActiveWatcher activeWatcher = new ActiveWatcher(directoryToMonitor, thread, directoryWatcher);
-
-            registeredDirectoryWatchers.put(directoryToMonitor.getCanonicalPath(), activeWatcher);
-
-            if (auditLog != null)
+            try
             {
-                auditLog.logMessage(methodName,
-                                    OMFAuditCode.DIRECTORY_MONITORING_STARTING.getMessageDefinition(connectorName,
-                                                                                                    directoryToMonitor.getCanonicalPath()));
+                DirectoryWatcher directoryWatcher = new DirectoryTreeWatcher(listener,
+                                                                             directoryToMonitor,
+                                                                             fileFilter,
+                                                                             auditLog,
+                                                                             connectorName);
+
+                Thread thread = new Thread(directoryWatcher, "Watch " + directoryToMonitor.getName());
+                thread.start();
+
+                ActiveWatcher activeWatcher = new ActiveWatcher(directoryToMonitor, thread, directoryWatcher);
+
+                registeredDirectoryWatchers.put(directoryToMonitor.getCanonicalPath(), activeWatcher);
+
+                if (auditLog != null)
+                {
+                    auditLog.logMessage(methodName,
+                                        OMFAuditCode.DIRECTORY_MONITORING_STARTING.getMessageDefinition(connectorName,
+                                                                                                        directoryToMonitor.getCanonicalPath()));
+                }
+
+                return true;
+            }
+            catch (IOException exception)
+            {
+                throw new InvalidParameterException(OMFErrorCode.UNEXPECTED_IO_EXCEPTION.getMessageDefinition(directoryToMonitor.getName(),
+                                                                                                              exception.getMessage()),
+                                                    this.getClass().getName(),
+                                                    methodName,
+                                                    exception,
+                                                    OpenMetadataProperty.PATH_NAME.name);
             }
         }
-        catch (IOException exception)
-        {
-            throw new InvalidParameterException(OMFErrorCode.UNEXPECTED_IO_EXCEPTION.getMessageDefinition(directoryToMonitor.getName(),
-                                                                                                          exception.getMessage()),
-                                                this.getClass().getName(),
-                                                methodName,
-                                                exception,
-                                                OpenMetadataProperty.PATH_NAME.name);
-        }
+
+        return false;
     }
 
 

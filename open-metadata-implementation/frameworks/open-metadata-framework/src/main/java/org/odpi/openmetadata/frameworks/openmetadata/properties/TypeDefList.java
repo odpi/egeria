@@ -1,12 +1,10 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 /* Copyright Contributors to the ODPi Egeria project. */
-package org.odpi.openmetadata.frameworkservices.omf.rest;
+package org.odpi.openmetadata.frameworks.openmetadata.properties;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.OpenMetadataTypeDef;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.TypeDefList;
 
 import java.util.List;
 import java.util.Objects;
@@ -15,21 +13,20 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
 /**
- * TypeDefListResponse provides a simple bean for returning a list of TypeDefs, mermaid graph (or information to create
- * a valid exception).
+ * TypeDefList provides a simple bean for returning a list of TypeDefs and an optional mermaid graph.
  */
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class TypeDefListResponse extends OMAGOMFAPIResponse
+public class TypeDefList
 {
-    private TypeDefList typeDefList  = null;
-
+    private List<OpenMetadataTypeDef> typeDefs = null;
+    private String                    mermaidGraph = null;
 
     /**
      * Default Constructor
      */
-    public TypeDefListResponse()
+    public TypeDefList()
     {
         super();
     }
@@ -40,36 +37,58 @@ public class TypeDefListResponse extends OMAGOMFAPIResponse
      *
      * @param template object to copy
      */
-    public TypeDefListResponse(TypeDefListResponse template)
+    public TypeDefList(TypeDefList template)
     {
-        super(template);
-
         if (template != null)
         {
-            typeDefList  = template.getTypeDefList();
+            typeDefs     = template.getTypeDefs();
+            mermaidGraph = template.getMermaidGraph();
         }
     }
 
 
     /**
-     * Return the list of typeDefs plus optional mermaid graph
+     * Return the list of typeDefs
      *
      * @return list of typeDefs
      */
-    public TypeDefList getTypeDefList()
+    public List<OpenMetadataTypeDef> getTypeDefs()
     {
-        return typeDefList;
+        return typeDefs;
     }
 
 
     /**
-     * Set up the list of typeDefs plus optional mermaid graph
+     * Set up the list of typeDefs
      *
-     * @param typeDefList list of typeDefs
+     * @param typeDefs list of typeDefs
      */
-    public void setTypeDefList(TypeDefList typeDefList)
+    public void setTypeDefs(List<OpenMetadataTypeDef> typeDefs)
     {
-        this.typeDefList = typeDefList;
+        this.typeDefs = typeDefs;
+    }
+
+
+
+    /**
+     * Return the mermaid representation of these types.
+     *
+     * @return string markdown
+     */
+    public String getMermaidGraph()
+    {
+        return mermaidGraph;
+    }
+
+
+    /**
+     * Set up the mermaid representation of these types.
+     *
+     * @param mermaidGraph markdown string
+     */
+    public void setMermaidGraph(String mermaidGraph)
+    {
+        this.mermaidGraph = mermaidGraph;
     }
 
 
@@ -81,8 +100,9 @@ public class TypeDefListResponse extends OMAGOMFAPIResponse
     @Override
     public String toString()
     {
-        return "TypeDefListResponse{" +
-                "typeDefs=" + typeDefList +
+        return "TypeDefList{" +
+                "typeDefs=" + typeDefs +
+                ", mermaidGraph='" + mermaidGraph + '\'' +
                 "} " + super.toString();
     }
 
@@ -100,15 +120,12 @@ public class TypeDefListResponse extends OMAGOMFAPIResponse
         {
             return true;
         }
-        if (!(objectToCompare instanceof TypeDefListResponse that))
+        if (!(objectToCompare instanceof TypeDefList that))
         {
             return false;
         }
-        if (!super.equals(objectToCompare))
-        {
-            return false;
-        }
-        return Objects.equals(typeDefList, that.typeDefList);
+        return Objects.equals(typeDefs, that.typeDefs) &&
+                Objects.equals(mermaidGraph, that.mermaidGraph);
 
     }
 
@@ -121,6 +138,6 @@ public class TypeDefListResponse extends OMAGOMFAPIResponse
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), typeDefList);
+        return Objects.hash(typeDefs, mermaidGraph);
     }
 }

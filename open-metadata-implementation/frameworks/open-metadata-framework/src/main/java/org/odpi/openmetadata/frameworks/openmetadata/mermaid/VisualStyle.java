@@ -8,6 +8,9 @@ package org.odpi.openmetadata.frameworks.openmetadata.mermaid;
  */
 public enum VisualStyle
 {
+    TYPE(Colour.REGAL_LIGHT_LILAC.getColourNumber(), Colour.REGAL_PURPLE.getColourNumber(), Colour.REGAL_LIGHT_LILAC.getColourNumber(), "rounded"),
+    SUBTYPE(Colour.REGAL_DARK_PURPLE.getColourNumber(), Colour.REGAL_LILAC.getColourNumber(), Colour.REGAL_DARK_PURPLE.getColourNumber(), "rounded"),
+
     DESCRIPTION(Colour.BLACK.getColourNumber(), Colour.SAND.getColourNumber(), Colour.LIGHT_GRAY.getColourNumber(), "text"),
     MORE_ELEMENTS(Colour.BLACK.getColourNumber(), Colour.SAND.getColourNumber(), Colour.LIGHT_GRAY.getColourNumber(), "stadium"),
 
@@ -16,8 +19,11 @@ public enum VisualStyle
     TAG(Colour.YELLOW_GREEN.getColourNumber(), Colour.DARK_MAGENTA.getColourNumber(), Colour.SLATE.getColourNumber(),"delay"),
     MEMENTO(Colour.SLATE.getColourNumber(), Colour.GHOST_WHITE.getColourNumber(), Colour.SLATE.getColourNumber(),"notch-pent"),
     TEMPLATE(Colour.SLATE.getColourNumber(), Colour.POWDER_BLUE.getColourNumber(), Colour.SLATE.getColourNumber(),"card"),
-    VALID_VALUE(Colour.SLATE.getColourNumber(), Colour.POWDER_BLUE.getColourNumber(), Colour.SLATE.getColourNumber(),"hex"),
-    VALID_VALUE_SET(Colour.WHITE.getColourNumber(), Colour.CADET_BLUE.getColourNumber(), Colour.SLATE.getColourNumber(),"hex"),
+    VALID_VALUE_SET(Colour.PALE_ROSE.getColourNumber(), Colour.BLACK_ROSE.getColourNumber(), Colour.PALE_ROSE.getColourNumber(),"hex"),
+    REFERENCE_DATA_VALUE(Colour.DARK_ROSE.getColourNumber(), Colour.PALE_ROSE.getColourNumber(), Colour.DARK_ROSE.getColourNumber(),"hex"),
+    SPECIFICATION_PROPERTY(Colour.BLACK_ROSE.getColourNumber(), Colour.ROSE.getColourNumber(), Colour.BLACK_ROSE.getColourNumber(),"hex"),
+    VALID_METADATA_VALUE(Colour.WHITE.getColourNumber(), Colour.DARK_ROSE.getColourNumber(), Colour.VERY_DARK_ROSE.getColourNumber(),"hex"),
+    TECHNOLOGY_TYPE(Colour.PALE_ROSE.getColourNumber(), Colour.VERY_DARK_ROSE.getColourNumber(), Colour.PALE_ROSE.getColourNumber(),"hex"),
 
     PRINCIPAL_ASSET(Colour.BLACK.getColourNumber(), Colour.MUSTARD.getColourNumber(), Colour.SLATE.getColourNumber(), "hex"),
     ASSET(Colour.BLACK.getColourNumber(), Colour.DARK_KHAKI.getColourNumber(), Colour.SLATE.getColourNumber(), "hex"),

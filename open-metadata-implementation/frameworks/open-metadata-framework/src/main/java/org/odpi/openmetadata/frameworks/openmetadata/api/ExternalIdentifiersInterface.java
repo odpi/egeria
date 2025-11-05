@@ -7,6 +7,7 @@ import org.odpi.openmetadata.frameworks.openmetadata.ffdc.PropertyServerExceptio
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.ExternalIdentifierProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.MetadataCorrelationHeader;
+import org.odpi.openmetadata.frameworks.openmetadata.specificationproperties.SpecificationProperty;
 
 import java.util.Date;
 import java.util.List;
@@ -147,8 +148,8 @@ public interface ExternalIdentifiersInterface
      * @throws PropertyServerException repository error
      * @throws UserNotAuthorizedException authorization issue
      */
-    Map<String, List<Map<String, String>>> getSpecification(String userId,
-                                                            String elementGUID) throws InvalidParameterException,
-                                                                                       PropertyServerException,
-                                                                                       UserNotAuthorizedException;
+    Map<String, List<SpecificationProperty>> getSpecification(String userId,
+                                                              String elementGUID) throws InvalidParameterException,
+                                                                                         PropertyServerException,
+                                                                                         UserNotAuthorizedException;
 }

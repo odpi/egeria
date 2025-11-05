@@ -5,6 +5,7 @@ package org.odpi.openmetadata.frameworks.openmetadata.metadataelements;
 
 import com.fasterxml.jackson.annotation.*;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.OpenMetadataRootProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.specificationproperties.SpecificationProperty;
 
 import java.util.List;
 import java.util.Map;
@@ -33,7 +34,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 public class OpenMetadataRootElement extends AttributedMetadataElement
 {
     private OpenMetadataRootProperties                 properties    = null;
-    private Map<String, List<Map<String, String>>>     specification = null;
+    private Map<String, List<SpecificationProperty>>   specification = null;
 
     /*
      * These are mermaid markdown version of the values from the properties and retrieved relationships.
@@ -100,7 +101,7 @@ public class OpenMetadataRootElement extends AttributedMetadataElement
      *
      * @return specification (attributeName, list[propertyName, propertyValue])
      */
-    public Map<String, List<Map<String, String>>> getSpecification()
+    public Map<String, List<SpecificationProperty>> getSpecification()
     {
         return specification;
     }
@@ -111,14 +112,14 @@ public class OpenMetadataRootElement extends AttributedMetadataElement
      *
      * @param specification specification
      */
-    public void setSpecification(Map<String, List<Map<String, String>>> specification)
+    public void setSpecification(Map<String, List<SpecificationProperty>> specification)
     {
         this.specification = specification;
     }
 
 
     /**
-     * Return the mermaid representation of this data structure.
+     * Return the mermaid representation of this element.
      *
      * @return string markdown
      */
@@ -129,7 +130,7 @@ public class OpenMetadataRootElement extends AttributedMetadataElement
 
 
     /**
-     * Set up the mermaid representation of this data structure.
+     * Set up the mermaid representation of this element.
      *
      * @param mermaidGraph markdown string
      */

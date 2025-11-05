@@ -7,6 +7,7 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.ElementHeader;
+import org.odpi.openmetadata.frameworks.openmetadata.specificationproperties.SpecificationProperty;
 
 import java.util.List;
 import java.util.Map;
@@ -23,12 +24,12 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class GovernanceActionProcessElement
 {
-    private ElementHeader                          elementHeader               = null;
-    private GovernanceActionProcessProperties      processProperties           = null;
-    private Map<String, List<Map<String, String>>> specification               = null;
-    private List<PredefinedActionTarget>           predefinedActionTargets     = null;
-    private Map<String, String>                    predefinedRequestParameters = null;
-    private String                                 mermaidSpecification        = null;
+    private ElementHeader                            elementHeader               = null;
+    private GovernanceActionProcessProperties        processProperties           = null;
+    private Map<String, List<SpecificationProperty>> specification               = null;
+    private List<PredefinedActionTarget>             predefinedActionTargets     = null;
+    private Map<String, String>                      predefinedRequestParameters = null;
+    private String                                   mermaidSpecification        = null;
 
 
     /**
@@ -151,7 +152,7 @@ public class GovernanceActionProcessElement
      *
      * @return specification map
      */
-    public Map<String, List<Map<String, String>>> getSpecification()
+    public Map<String, List<SpecificationProperty>> getSpecification()
     {
         return specification;
     }
@@ -162,7 +163,7 @@ public class GovernanceActionProcessElement
      *
      * @param specification specification map
      */
-    public void setSpecification(Map<String, List<Map<String, String>>> specification)
+    public void setSpecification(Map<String, List<SpecificationProperty>> specification)
     {
         this.specification = specification;
     }

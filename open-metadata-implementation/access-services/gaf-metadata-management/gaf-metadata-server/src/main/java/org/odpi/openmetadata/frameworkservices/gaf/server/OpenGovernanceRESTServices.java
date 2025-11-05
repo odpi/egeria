@@ -93,20 +93,6 @@ public class OpenGovernanceRESTServices
         {
             final String elementGUIDParameterName = "governanceActionProcessGUID";
 
-            element.setSpecification(handler.getSpecification(userId,
-                                                              element.getElementHeader().getGUID(),
-                                                              elementGUIDParameterName,
-                                                              OpenMetadataType.REFERENCEABLE.typeName,
-                                                              supportedZones));
-
-            if (element.getSpecification() != null)
-            {
-                SpecificationMermaidGraphBuilder specificationGraphBuilder = new SpecificationMermaidGraphBuilder(element.getElementHeader().getGUID(),
-                                                                                                                  element.getProcessProperties().getDisplayName(),
-                                                                                                                  element.getSpecification());
-                element.setMermaidSpecification(specificationGraphBuilder.getMermaidGraph());
-            }
-
             if (handler.getRepositoryHelper().isTypeOf(handler.getServiceName(),
                                                        element.getElementHeader().getType().getTypeName(),
                                                        OpenMetadataType.GOVERNANCE_ACTION_PROCESS.typeName))

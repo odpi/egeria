@@ -10,6 +10,7 @@ import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterExcept
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.frameworks.openmetadata.handlers.AssetHandler;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.TypeDefList;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.OpenMetadataTypeDef;
 import org.odpi.openmetadata.frameworkservices.omf.client.EgeriaOpenMetadataStoreClient;
@@ -149,11 +150,11 @@ public class AssetCatalogInstance extends OMVSServiceInstance
         {
             results.add(this.convertOpenMetadataType(openMetadataTypeDef));
 
-            List<OpenMetadataTypeDef> subTypes = openMetadataClient.getSubTypes(userId, typeName);
+            TypeDefList subTypes = openMetadataClient.getSubTypes(userId, typeName);
 
-            if (subTypes != null)
+            if ((subTypes != null) && (subTypes.getTypeDefs() != null))
             {
-                for (OpenMetadataTypeDef subType : subTypes)
+                for (OpenMetadataTypeDef subType : subTypes.getTypeDefs())
                 {
                     if (subType != null)
                     {

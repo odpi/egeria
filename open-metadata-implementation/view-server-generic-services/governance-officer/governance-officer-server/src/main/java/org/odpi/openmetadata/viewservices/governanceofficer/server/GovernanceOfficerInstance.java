@@ -7,10 +7,12 @@ import org.odpi.openmetadata.commonservices.multitenant.OMVSServiceInstance;
 import org.odpi.openmetadata.adminservices.configuration.registration.ViewServiceDescription;
 import org.odpi.openmetadata.commonservices.multitenant.ViewServiceClientMap;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
+import org.odpi.openmetadata.frameworks.openmetadata.client.OpenMetadataClient;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.openmetadata.handlers.GovernanceDefinitionHandler;
 import org.odpi.openmetadata.frameworkservices.gaf.client.EgeriaOpenGovernanceClient;
+import org.odpi.openmetadata.frameworkservices.omf.client.handlers.EgeriaOpenMetadataStoreHandler;
 
 import java.util.List;
 
@@ -24,7 +26,8 @@ public class GovernanceOfficerInstance extends OMVSServiceInstance
     private static final ViewServiceDescription myDescription = ViewServiceDescription.GOVERNANCE_OFFICER;
 
     private final ViewServiceClientMap<GovernanceDefinitionHandler> governanceDefinitionHandlerMap;
-    private final ViewServiceClientMap<EgeriaOpenGovernanceClient>        openGovernanceClientMap;
+    private final ViewServiceClientMap<EgeriaOpenGovernanceClient>     openGovernanceClientMap;
+    private final ViewServiceClientMap<EgeriaOpenMetadataStoreHandler> openMetadataClientMap;
 
 
 
@@ -77,6 +80,16 @@ public class GovernanceOfficerInstance extends OMVSServiceInstance
                                                                   myDescription.getViewServiceFullName(),
                                                                   myDescription.getViewServiceURLMarker(),
                                                                   maxPageSize);
+
+        this.openMetadataClientMap = new ViewServiceClientMap<>(EgeriaOpenMetadataStoreHandler.class,
+                                                                 serverName,
+                                                                 localServerUserId,
+                                                                 localServerUserPassword,
+                                                                 auditLog,
+                                                                 activeViewServices,
+                                                                 myDescription.getViewServiceFullName(),
+                                                                 myDescription.getViewServiceURLMarker(),
+                                                                 maxPageSize);
     }
 
 
@@ -113,5 +126,23 @@ public class GovernanceOfficerInstance extends OMVSServiceInstance
                                                                                         PropertyServerException
     {
         return openGovernanceClientMap.getClient(urlMarker, methodName);
+    }
+
+
+    /**
+     * Return the open governance client.  This client is from the Open Governance Framework (GAF) and is for
+     * working with automation services.
+     *
+     * @param urlMarker calling view service
+     * @param methodName calling operation
+     * @return client
+     * @throws InvalidParameterException bad client initialization
+     * @throws PropertyServerException bad client handler class
+     */
+    public OpenMetadataClient getOpenMetadataClient(String urlMarker,
+                                                    String methodName) throws InvalidParameterException,
+                                                                              PropertyServerException
+    {
+        return openMetadataClientMap.getClient(urlMarker, methodName);
     }
 }

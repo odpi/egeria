@@ -3,7 +3,7 @@
 #@ucURL=http://egeria.pdr-associates.com:8070
 
 @baseURL=https://localhost:9443
-@viewServer=qs-view-server
+@viewServer=view-server
 
 ###
 # =====================================================================================================================
@@ -59,14 +59,14 @@ Content-Type: application/json
 ###
 # @name Load CocoComboArchive.omarchive metadata archive file
 # Load a file that contains open metadata types and instances.
-POST {{baseURL}}/open-metadata/server-operations/users/{{adminUserId}}/servers/qs-metadata-store/instance/open-metadata-archives/file
+POST {{baseURL}}/open-metadata/server-operations/users/{{adminUserId}}/servers/metadata-store/instance/open-metadata-archives/file
 Content-Type: text/plain
 
 content-packs/CocoComboArchive.omarchive
 
 ###
 # Add the ClinicalTrials at CocoPharmaceuticals engine to engine-host
-POST {{baseURL}}/open-metadata/admin-services/users/{{adminUserId}}/servers/qs-engine-host/engine
+POST {{baseURL}}/open-metadata/admin-services/users/{{adminUserId}}/servers/engine-host/engine
 Content-Type: application/json
 
 {
@@ -79,7 +79,7 @@ Content-Type: application/json
 
 ###
 # Add the AssetQuality at CocoPharmaceuticals engine to engine-host
-POST {{baseURL}}/open-metadata/admin-services/users/{{adminUserId}}/servers/qs-engine-host/engine
+POST {{baseURL}}/open-metadata/admin-services/users/{{adminUserId}}/servers/engine-host/engine
 Content-Type: application/json
 
 {
@@ -91,5 +91,5 @@ Content-Type: application/json
 
 ###
 # Restart the engine-host  server on the OMAG Server Platform.
-POST {{baseURL}}/open-metadata/platform-services/users/{{adminUserId}}/server-platform/servers/qs-engine-host/instance
+POST {{baseURL}}/open-metadata/platform-services/users/{{adminUserId}}/server-platform/servers/engine-host/instance
 

@@ -21,9 +21,11 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class TechnologyTypeReport extends TechnologyTypeSummary
 {
-    private List<CatalogTemplate>               catalogTemplates    = null;
-    private List<RelatedMetadataElementSummary> resourceList        = null;
-    private List<RelatedMetadataElementSummary> externalReferences  = null;
+    private List<CatalogTemplate>               catalogTemplates          = null;
+    private List<ResourceDescription>           governanceActionProcesses = null;
+    private List<ResourceDescription>           resourceList              = null;
+    private List<RelatedMetadataElementSummary> externalReferences        = null;
+    private String                              mermaidGraph              = null;
 
     /**
      * Default constructor
@@ -64,13 +66,34 @@ public class TechnologyTypeReport extends TechnologyTypeSummary
         this.catalogTemplates = catalogTemplates;
     }
 
+    /**
+     * Return the list of governance action processes available for working with this technology type.
+     *
+     * @return list
+     */
+    public List<ResourceDescription> getGovernanceActionProcesses()
+    {
+        return governanceActionProcesses;
+    }
+
+
+    /**
+     * Set up the list of governance action processes for working with this technology type.
+     *
+     * @param resourceList list
+     */
+    public void setGovernanceActionProcesses(List<ResourceDescription> resourceList)
+    {
+        this.governanceActionProcesses = resourceList;
+    }
+
 
     /**
      * Return the list of resources available for working with this technology type.
      *
      * @return list
      */
-    public List<RelatedMetadataElementSummary> getResourceList()
+    public List<ResourceDescription> getResourceList()
     {
         return resourceList;
     }
@@ -81,7 +104,7 @@ public class TechnologyTypeReport extends TechnologyTypeSummary
      *
      * @param resourceList list
      */
-    public void setResourceList(List<RelatedMetadataElementSummary> resourceList)
+    public void setResourceList(List<ResourceDescription> resourceList)
     {
         this.resourceList = resourceList;
     }
@@ -108,6 +131,27 @@ public class TechnologyTypeReport extends TechnologyTypeSummary
         this.externalReferences = externalReferences;
     }
 
+    /**
+     * Return the mermaid representation of this element.
+     *
+     * @return string markdown
+     */
+    public String getMermaidGraph()
+    {
+        return mermaidGraph;
+    }
+
+
+    /**
+     * Set up the mermaid representation of this element.
+     *
+     * @param mermaidGraph markdown string
+     */
+    public void setMermaidGraph(String mermaidGraph)
+    {
+        this.mermaidGraph = mermaidGraph;
+    }
+
 
     /**
      * JSON-style toString
@@ -121,6 +165,7 @@ public class TechnologyTypeReport extends TechnologyTypeSummary
                 "catalogTemplates=" + catalogTemplates +
                 ", resourceList=" + resourceList +
                 ", externalReferences=" + externalReferences +
+                ", mermaidGraph='" + mermaidGraph + '\'' +
                 "} " + super.toString();
     }
 }

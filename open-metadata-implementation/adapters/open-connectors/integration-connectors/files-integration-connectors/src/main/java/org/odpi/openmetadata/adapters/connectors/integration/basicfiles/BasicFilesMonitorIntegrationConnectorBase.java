@@ -272,8 +272,10 @@ public abstract class BasicFilesMonitorIntegrationConnectorBase extends Integrat
 
                     if (! directoryToMonitor.isListening)
                     {
-                        integrationContext.registerDirectoryTreeListener(directoryToMonitor, directoryToMonitor.directoryFile, null);
-                        directoryToMonitor.isListening = true;
+                        if (integrationContext.registerDirectoryTreeListener(directoryToMonitor, directoryToMonitor.directoryFile, null))
+                        {
+                            directoryToMonitor.isListening = true;
+                        }
                     }
                 }
             }

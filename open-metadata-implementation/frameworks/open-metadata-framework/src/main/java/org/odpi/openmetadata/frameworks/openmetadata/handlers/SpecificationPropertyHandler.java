@@ -89,7 +89,6 @@ public class SpecificationPropertyHandler extends OpenMetadataHandlerBase
         }
         else if (specificationProperty instanceof AnalysisStepType analysisStepType)
         {
-
             specificationPropertyValueProperties.setPreferredValue(analysisStepType.getName());
         }
         else if (specificationProperty instanceof AnnotationTypeType annotationTypeType)

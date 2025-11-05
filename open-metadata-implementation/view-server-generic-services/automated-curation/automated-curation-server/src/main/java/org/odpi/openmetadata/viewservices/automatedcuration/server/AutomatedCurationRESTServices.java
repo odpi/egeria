@@ -272,7 +272,7 @@ public class AutomatedCurationRESTServices extends TokenController
                                                                            requestBody.getFilter(),
                                                                            requestBody));
 
-                    response.setMermaidString(handler.getTechnologyTypeHierarchyMermaidString(response.getElement()));
+                    response.setMermaidGraph(handler.getTechnologyTypeHierarchyMermaidString(response.getElement()));
                 }
                 else
                 {

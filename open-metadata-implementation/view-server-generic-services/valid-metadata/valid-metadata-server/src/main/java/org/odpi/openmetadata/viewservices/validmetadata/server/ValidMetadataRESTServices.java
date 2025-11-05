@@ -997,7 +997,7 @@ public class ValidMetadataRESTServices extends TokenController
 
             OpenMetadataClient client = instanceHandler.getOpenMetadataStoreClient(userId, serverName, urlMarker, methodName);
 
-            response.setTypeDefs(client.findTypeDefsByCategory(userId, category));
+            response.setTypeDefList(client.findTypeDefsByCategory(userId, category));
         }
         catch (Throwable error)
         {
@@ -1043,7 +1043,7 @@ public class ValidMetadataRESTServices extends TokenController
 
             OpenMetadataClient client = instanceHandler.getOpenMetadataStoreClient(userId, serverName, urlMarker, methodName);
 
-            response.setTypeDefs(client.getSubTypes(userId, typeName));
+            response.setTypeDefList(client.getSubTypes(userId, typeName));
         }
         catch (Throwable error)
         {
@@ -1094,13 +1094,13 @@ public class ValidMetadataRESTServices extends TokenController
             {
                 List<String> entityTypeNames = this.getEntityTypeNames(userId, entityDef, client);
 
-                List<OpenMetadataTypeDef> relationshipDefs = client.findTypeDefsByCategory(userId, OpenMetadataTypeDefCategory.RELATIONSHIP_DEF);
+                TypeDefList relationshipDefs = client.findTypeDefsByCategory(userId, OpenMetadataTypeDefCategory.RELATIONSHIP_DEF);
 
-                if (relationshipDefs != null)
+                if ((relationshipDefs != null) && (relationshipDefs.getTypeDefs() != null))
                 {
                     Map<String, OpenMetadataTypeDef> results = new HashMap<>();
 
-                    for (OpenMetadataTypeDef typeDef : relationshipDefs)
+                    for (OpenMetadataTypeDef typeDef : relationshipDefs.getTypeDefs())
                     {
                         if (typeDef instanceof OpenMetadataRelationshipDef relationshipDef)
                         {
@@ -1119,7 +1119,10 @@ public class ValidMetadataRESTServices extends TokenController
                         }
                     }
 
-                    response.setTypeDefs(new ArrayList<>(results.values()));
+                    TypeDefList typeDefList = new TypeDefList();
+
+                    typeDefList.setTypeDefs(new ArrayList<>(results.values()));
+                    response.setTypeDefList(typeDefList);
                 }
             }
 
@@ -1205,13 +1208,13 @@ public class ValidMetadataRESTServices extends TokenController
             {
                 List<String> entityTypeNames = this.getEntityTypeNames(userId, entityDef, client);
 
-                List<OpenMetadataTypeDef> classificationDefs = client.findTypeDefsByCategory(userId, OpenMetadataTypeDefCategory.CLASSIFICATION_DEF);
+                TypeDefList classificationDefs = client.findTypeDefsByCategory(userId, OpenMetadataTypeDefCategory.CLASSIFICATION_DEF);
 
-                if (classificationDefs != null)
+                if ((classificationDefs != null) && (classificationDefs.getTypeDefs() != null))
                 {
                     Map<String, OpenMetadataTypeDef> results = new HashMap<>();
 
-                    for (OpenMetadataTypeDef typeDef : classificationDefs)
+                    for (OpenMetadataTypeDef typeDef : classificationDefs.getTypeDefs())
                     {
                         if (typeDef instanceof OpenMetadataClassificationDef classificationDef)
                         {
@@ -1231,7 +1234,10 @@ public class ValidMetadataRESTServices extends TokenController
                         }
                     }
 
-                    response.setTypeDefs(new ArrayList<>(results.values()));
+                    TypeDefList typeDefList = new TypeDefList();
+
+                    typeDefList.setTypeDefs(new ArrayList<>(results.values()));
+                    response.setTypeDefList(typeDefList);
                 }
             }
 
