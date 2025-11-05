@@ -134,12 +134,12 @@ loadScripts(document, 'script');</script>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Returns all the AttributeTypeDefs for a specific category.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../properties/OpenMetadataTypeDef.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties">OpenMetadataTypeDef</a>&gt;</code></div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../properties/TypeDefList.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties">TypeDefList</a></code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#findTypeDefsByCategory(org.odpi.openmetadata.frameworks.openmetadata.properties.OpenMetadataTypeDefCategory)" class="member-name-link">findTypeDefsByCategory</a><wbr>(<a href="../properties/OpenMetadataTypeDefCategory.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.properties">OpenMetadataTypeDefCategory</a>&nbsp;category)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Returns all the TypeDefs for a specific category.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../properties/OpenMetadataTypeDef.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties">OpenMetadataTypeDef</a>&gt;</code></div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../properties/TypeDefList.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties">TypeDefList</a></code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#findTypesByExternalID(java.lang.String,java.lang.String,java.lang.String)" class="member-name-link">findTypesByExternalID</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;standard,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;organization,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;identifier)</code></div>
@@ -161,14 +161,19 @@ loadScripts(document, 'script');</script>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Return the AttributeTypeDef identified by the unique name.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../properties/OpenMetadataTypeDef.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties">OpenMetadataTypeDef</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getTypeDefByGUID(java.lang.String)" class="member-name-link">getTypeDefByGUID</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;guid)</code></div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../properties/TypeDefList.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties">TypeDefList</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getSubTypes(java.lang.String)" class="member-name-link">getSubTypes</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;typeName)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Return the TypeDef identified by the GUID.</div>
+<div class="block">Returns all the TypeDefs for a specific subtype.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../properties/OpenMetadataTypeDef.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties">OpenMetadataTypeDef</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getTypeDefByName(java.lang.String)" class="member-name-link">getTypeDefByName</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;name)</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getTypeDefByGUID(java.lang.String)" class="member-name-link">getTypeDefByGUID</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;guid)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Return the TypeDef identified by the GUID.</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../properties/OpenMetadataTypeDef.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties">OpenMetadataTypeDef</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getTypeDefByName(java.lang.String)" class="member-name-link">getTypeDefByName</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;name)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Return the TypeDef identified by the unique name.</div>
 </div>
 </div>
@@ -251,8 +256,8 @@ loadScripts(document, 'script');</script>
 <li>
 <section class="detail" id="findTypeDefsByCategory(org.odpi.openmetadata.frameworks.openmetadata.properties.OpenMetadataTypeDefCategory)">
 <h3>findTypeDefsByCategory</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../properties/OpenMetadataTypeDef.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties">OpenMetadataTypeDef</a>&gt;</span>&nbsp;<span class="element-name">findTypeDefsByCategory</span><wbr><span class="parameters">(<a href="../properties/OpenMetadataTypeDefCategory.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.properties">OpenMetadataTypeDefCategory</a>&nbsp;category)</span>
-                                                 throws <span class="exceptions"><a href="../ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">InvalidParameterException</a>,
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../properties/TypeDefList.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties">TypeDefList</a></span>&nbsp;<span class="element-name">findTypeDefsByCategory</span><wbr><span class="parameters">(<a href="../properties/OpenMetadataTypeDefCategory.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.properties">OpenMetadataTypeDefCategory</a>&nbsp;category)</span>
+                                   throws <span class="exceptions"><a href="../ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">InvalidParameterException</a>,
 <a href="../ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">PropertyServerException</a>,
 <a href="../ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">UserNotAuthorizedException</a></span></div>
 <div class="block">Returns all the TypeDefs for a specific category.</div>
@@ -291,10 +296,10 @@ loadScripts(document, 'script');</script>
 <li>
 <section class="detail" id="findTypesByExternalID(java.lang.String,java.lang.String,java.lang.String)">
 <h3>findTypesByExternalID</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../properties/OpenMetadataTypeDef.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties">OpenMetadataTypeDef</a>&gt;</span>&nbsp;<span class="element-name">findTypesByExternalID</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;standard,
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../properties/TypeDefList.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties">TypeDefList</a></span>&nbsp;<span class="element-name">findTypesByExternalID</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;standard,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;organization,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;identifier)</span>
-                                                throws <span class="exceptions"><a href="../ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">InvalidParameterException</a>,
+                                  throws <span class="exceptions"><a href="../ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">InvalidParameterException</a>,
 <a href="../ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">PropertyServerException</a>,
 <a href="../ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">UserNotAuthorizedException</a></span></div>
 <div class="block">Return the types that are linked to the elements from the specified standard.</div>
@@ -306,6 +311,29 @@ loadScripts(document, 'script');</script>
 <dt>Returns:</dt>
 <dd>TypeDefs list  each entry in the list contains a TypeDef.  This is a structure
  describing the TypeDef's category and properties.</dd>
+<dt>Throws:</dt>
+<dd><code><a href="../ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">InvalidParameterException</a></code> - all attributes of the external id are null.</dd>
+<dd><code><a href="../ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">PropertyServerException</a></code> - there is a problem communicating with the metadata repository.</dd>
+<dd><code><a href="../ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">UserNotAuthorizedException</a></code> - the userId is not permitted to perform this operation.</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="getSubTypes(java.lang.String)">
+<h3>getSubTypes</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../properties/TypeDefList.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties">TypeDefList</a></span>&nbsp;<span class="element-name">getSubTypes</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;typeName)</span>
+                        throws <span class="exceptions"><a href="../ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">InvalidParameterException</a>,
+<a href="../ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">PropertyServerException</a>,
+<a href="../ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">UserNotAuthorizedException</a></span></div>
+<div class="block">Returns all the TypeDefs for a specific subtype.  If a null result is returned it means the
+ type has no subtypes.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>typeName</code> - name of the standard null means any.</dd>
+<dt>Returns:</dt>
+<dd>TypeDefs list  each entry in the list contains a TypeDef.  This is a structure
+ describing the TypeDef's category and properties.  If null is returned as the TypeDef list it means the type
+ has no known subtypes</dd>
 <dt>Throws:</dt>
 <dd><code><a href="../ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">InvalidParameterException</a></code> - all attributes of the external id are null.</dd>
 <dd><code><a href="../ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">PropertyServerException</a></code> - there is a problem communicating with the metadata repository.</dd>

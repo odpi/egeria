@@ -529,6 +529,7 @@ org.odpi.openmetadata.viewservices.automatedcuration.admin
 org.odpi.openmetadata.viewservices.automatedcuration.converters
 org.odpi.openmetadata.viewservices.automatedcuration.ffdc
 org.odpi.openmetadata.viewservices.automatedcuration.handlers
+org.odpi.openmetadata.viewservices.automatedcuration.mermaid
 org.odpi.openmetadata.viewservices.automatedcuration.properties
 org.odpi.openmetadata.viewservices.automatedcuration.rest
 org.odpi.openmetadata.viewservices.automatedcuration.server

@@ -86,7 +86,7 @@ loadScripts(document, 'script');</script>
 <hr>
 <div class="type-signature"><span class="modifiers">public class </span><span class="element-name type-name-label">TypeDefListResponse</span>
 <span class="extends-implements">extends <a href="OMAGOMFAPIResponse.html" title="class in org.odpi.openmetadata.frameworkservices.omf.rest">OMAGOMFAPIResponse</a></span></div>
-<div class="block">TypeDefListResponse provides a simple bean for returning a list of TypeDefs (or information to create
+<div class="block">TypeDefListResponse provides a simple bean for returning a list of TypeDefs, mermaid graph (or information to create
  a valid exception).</div>
 </section>
 <section class="summary">
@@ -126,10 +126,10 @@ loadScripts(document, 'script');</script>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Compare the values of the supplied object with those stored in the current object.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../../../frameworks/openmetadata/properties/OpenMetadataTypeDef.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties">OpenMetadataTypeDef</a>&gt;</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getTypeDefs()" class="member-name-link">getTypeDefs</a>()</code></div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../frameworks/openmetadata/properties/TypeDefList.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties">TypeDefList</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getTypeDefList()" class="member-name-link">getTypeDefList</a>()</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Return the list of typeDefs</div>
+<div class="block">Return the list of typeDefs plus optional mermaid graph</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>int</code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#hashCode()" class="member-name-link">hashCode</a>()</code></div>
@@ -137,9 +137,9 @@ loadScripts(document, 'script');</script>
 <div class="block">Create a hash code for this element type.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setTypeDefs(java.util.List)" class="member-name-link">setTypeDefs</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../../../frameworks/openmetadata/properties/OpenMetadataTypeDef.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties">OpenMetadataTypeDef</a>&gt;&nbsp;typeDefs)</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setTypeDefList(org.odpi.openmetadata.frameworks.openmetadata.properties.TypeDefList)" class="member-name-link">setTypeDefList</a><wbr>(<a href="../../../frameworks/openmetadata/properties/TypeDefList.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties">TypeDefList</a>&nbsp;typeDefList)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Set up the list of typeDefs</div>
+<div class="block">Set up the list of typeDefs plus optional mermaid graph</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#toString()" class="member-name-link">toString</a>()</code></div>
@@ -193,10 +193,10 @@ loadScripts(document, 'script');</script>
 <h2>Method Details</h2>
 <ul class="member-list">
 <li>
-<section class="detail" id="getTypeDefs()">
-<h3>getTypeDefs</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../../../frameworks/openmetadata/properties/OpenMetadataTypeDef.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties">OpenMetadataTypeDef</a>&gt;</span>&nbsp;<span class="element-name">getTypeDefs</span>()</div>
-<div class="block">Return the list of typeDefs</div>
+<section class="detail" id="getTypeDefList()">
+<h3>getTypeDefList</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../../frameworks/openmetadata/properties/TypeDefList.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties">TypeDefList</a></span>&nbsp;<span class="element-name">getTypeDefList</span>()</div>
+<div class="block">Return the list of typeDefs plus optional mermaid graph</div>
 <dl class="notes">
 <dt>Returns:</dt>
 <dd>list of typeDefs</dd>
@@ -204,13 +204,13 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
-<section class="detail" id="setTypeDefs(java.util.List)">
-<h3>setTypeDefs</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">setTypeDefs</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../../../frameworks/openmetadata/properties/OpenMetadataTypeDef.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties">OpenMetadataTypeDef</a>&gt;&nbsp;typeDefs)</span></div>
-<div class="block">Set up the list of typeDefs</div>
+<section class="detail" id="setTypeDefList(org.odpi.openmetadata.frameworks.openmetadata.properties.TypeDefList)">
+<h3>setTypeDefList</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">setTypeDefList</span><wbr><span class="parameters">(<a href="../../../frameworks/openmetadata/properties/TypeDefList.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties">TypeDefList</a>&nbsp;typeDefList)</span></div>
+<div class="block">Set up the list of typeDefs plus optional mermaid graph</div>
 <dl class="notes">
 <dt>Parameters:</dt>
-<dd><code>typeDefs</code> - list of typeDefs</dd>
+<dd><code>typeDefList</code> - list of typeDefs</dd>
 </dl>
 </section>
 </li>

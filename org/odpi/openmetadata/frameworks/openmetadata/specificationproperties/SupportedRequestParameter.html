@@ -73,7 +73,7 @@ loadScripts(document, 'script');</script>
 </div>
 <div class="inheritance" title="Inheritance Tree"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">java.lang.Object</a>
 <div class="inheritance"><a href="SpecificationProperty.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.specificationproperties">org.odpi.openmetadata.frameworks.openmetadata.specificationproperties.SpecificationProperty</a>
-<div class="inheritance"><a href="ActionTargetType.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.specificationproperties">org.odpi.openmetadata.frameworks.openmetadata.specificationproperties.ActionTargetType</a>
+<div class="inheritance"><a href="RequestParameterType.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.specificationproperties">org.odpi.openmetadata.frameworks.openmetadata.specificationproperties.RequestParameterType</a>
 <div class="inheritance">org.odpi.openmetadata.frameworks.openmetadata.specificationproperties.SupportedRequestParameter</div>
 </div>
 </div>
@@ -81,7 +81,7 @@ loadScripts(document, 'script');</script>
 <section class="class-description" id="class-description">
 <hr>
 <div class="type-signature"><span class="modifiers">public class </span><span class="element-name type-name-label">SupportedRequestParameter</span>
-<span class="extends-implements">extends <a href="ActionTargetType.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.specificationproperties">ActionTargetType</a></span></div>
+<span class="extends-implements">extends <a href="RequestParameterType.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.specificationproperties">RequestParameterType</a></span></div>
 <div class="block">SupportedRequestParameter characterises one of the request parameters supported by a specific
  governance service or governance action.
  This enables the capability of a governance service/action to be correctly supplied with the
@@ -101,7 +101,7 @@ loadScripts(document, 'script');</script>
 <div class="col-last even-row-color">
 <div class="block">Default constructor</div>
 </div>
-<div class="col-constructor-name odd-row-color"><code><a href="#%3Cinit%3E(org.odpi.openmetadata.frameworks.openmetadata.specificationproperties.ActionTargetType)" class="member-name-link">SupportedRequestParameter</a><wbr>(<a href="ActionTargetType.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.specificationproperties">ActionTargetType</a>&nbsp;template)</code></div>
+<div class="col-constructor-name odd-row-color"><code><a href="#%3Cinit%3E(org.odpi.openmetadata.frameworks.openmetadata.specificationproperties.RequestParameterType)" class="member-name-link">SupportedRequestParameter</a><wbr>(<a href="RequestParameterType.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.specificationproperties">RequestParameterType</a>&nbsp;template)</code></div>
 <div class="col-last odd-row-color">
 <div class="block">Copy/clone constructor</div>
 </div>
@@ -128,8 +128,8 @@ loadScripts(document, 'script');</script>
 </div>
 </div>
 <div class="inherited-list">
-<h3 id="methods-inherited-from-class-org.odpi.openmetadata.frameworks.openmetadata.specificationproperties.ActionTargetType">Methods inherited from class&nbsp;org.odpi.openmetadata.frameworks.openmetadata.specificationproperties.<a href="ActionTargetType.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.specificationproperties">ActionTargetType</a></h3>
-<code><a href="ActionTargetType.html#equals(java.lang.Object)">equals</a>, <a href="ActionTargetType.html#getDeployedImplementationType()">getDeployedImplementationType</a>, <a href="ActionTargetType.html#getOpenMetadataTypeName()">getOpenMetadataTypeName</a>, <a href="ActionTargetType.html#getRequired()">getRequired</a>, <a href="ActionTargetType.html#hashCode()">hashCode</a>, <a href="ActionTargetType.html#setDeployedImplementationType(java.lang.String)">setDeployedImplementationType</a>, <a href="ActionTargetType.html#setOpenMetadataTypeName(java.lang.String)">setOpenMetadataTypeName</a>, <a href="ActionTargetType.html#setRequired(boolean)">setRequired</a></code></div>
+<h3 id="methods-inherited-from-class-org.odpi.openmetadata.frameworks.openmetadata.specificationproperties.RequestParameterType">Methods inherited from class&nbsp;org.odpi.openmetadata.frameworks.openmetadata.specificationproperties.<a href="RequestParameterType.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.specificationproperties">RequestParameterType</a></h3>
+<code><a href="RequestParameterType.html#equals(java.lang.Object)">equals</a>, <a href="RequestParameterType.html#getDataType()">getDataType</a>, <a href="RequestParameterType.html#getExample()">getExample</a>, <a href="RequestParameterType.html#getRequired()">getRequired</a>, <a href="RequestParameterType.html#hashCode()">hashCode</a>, <a href="RequestParameterType.html#setDataType(java.lang.String)">setDataType</a>, <a href="RequestParameterType.html#setExample(java.lang.String)">setExample</a>, <a href="RequestParameterType.html#setRequired(boolean)">setRequired</a></code></div>
 <div class="inherited-list">
 <h3 id="methods-inherited-from-class-org.odpi.openmetadata.frameworks.openmetadata.specificationproperties.SpecificationProperty">Methods inherited from class&nbsp;org.odpi.openmetadata.frameworks.openmetadata.specificationproperties.<a href="SpecificationProperty.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.specificationproperties">SpecificationProperty</a></h3>
 <code><a href="SpecificationProperty.html#getDescription()">getDescription</a>, <a href="SpecificationProperty.html#getName()">getName</a>, <a href="SpecificationProperty.html#getOtherPropertyValues()">getOtherPropertyValues</a>, <a href="SpecificationProperty.html#getSpecificationPropertyType()">getSpecificationPropertyType</a>, <a href="SpecificationProperty.html#setDescription(java.lang.String)">setDescription</a>, <a href="SpecificationProperty.html#setName(java.lang.String)">setName</a>, <a href="SpecificationProperty.html#setOtherPropertyValues(java.util.Map)">setOtherPropertyValues</a>, <a href="SpecificationProperty.html#setSpecificationPropertyType(org.odpi.openmetadata.frameworks.openmetadata.refdata.SpecificationPropertyType)">setSpecificationPropertyType</a></code></div>
@@ -155,9 +155,9 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
-<section class="detail" id="&lt;init&gt;(org.odpi.openmetadata.frameworks.openmetadata.specificationproperties.ActionTargetType)">
+<section class="detail" id="&lt;init&gt;(org.odpi.openmetadata.frameworks.openmetadata.specificationproperties.RequestParameterType)">
 <h3>SupportedRequestParameter</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="element-name">SupportedRequestParameter</span><wbr><span class="parameters">(<a href="ActionTargetType.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.specificationproperties">ActionTargetType</a>&nbsp;template)</span></div>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="element-name">SupportedRequestParameter</span><wbr><span class="parameters">(<a href="RequestParameterType.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.specificationproperties">RequestParameterType</a>&nbsp;template)</span></div>
 <div class="block">Copy/clone constructor</div>
 <dl class="notes">
 <dt>Parameters:</dt>
@@ -180,7 +180,7 @@ loadScripts(document, 'script');</script>
 <div class="block">JSON-style toString</div>
 <dl class="notes">
 <dt>Overrides:</dt>
-<dd><code><a href="ActionTargetType.html#toString()">toString</a></code>&nbsp;in class&nbsp;<code><a href="ActionTargetType.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.specificationproperties">ActionTargetType</a></code></dd>
+<dd><code><a href="RequestParameterType.html#toString()">toString</a></code>&nbsp;in class&nbsp;<code><a href="RequestParameterType.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.specificationproperties">RequestParameterType</a></code></dd>
 <dt>Returns:</dt>
 <dd>return string containing the property names and values</dd>
 </dl>

@@ -45,7 +45,7 @@ loadScripts(document, 'script');</script>
 <ul class="sub-nav-list">
 <li>Summary:&nbsp;</li>
 <li>Nested&nbsp;|&nbsp;</li>
-<li>Field&nbsp;|&nbsp;</li>
+<li><a href="#field-summary">Field</a>&nbsp;|&nbsp;</li>
 <li><a href="#constructor-summary">Constr</a>&nbsp;|&nbsp;</li>
 <li><a href="#method-summary">Method</a></li>
 </ul>
@@ -83,6 +83,15 @@ loadScripts(document, 'script');</script>
 </section>
 <section class="summary">
 <ul class="summary-list">
+<!-- =========== FIELD SUMMARY =========== -->
+<li>
+<section class="field-summary" id="field-summary">
+<h2>Field Summary</h2>
+<div class="inherited-list">
+<h3 id="fields-inherited-from-class-org.odpi.openmetadata.viewservices.automatedcuration.properties.RefDataElementBase">Fields inherited from class&nbsp;org.odpi.openmetadata.viewservices.automatedcuration.properties.<a href="RefDataElementBase.html" title="class in org.odpi.openmetadata.viewservices.automatedcuration.properties">RefDataElementBase</a></h3>
+<code><a href="RefDataElementBase.html#additionalProperties">additionalProperties</a>, <a href="RefDataElementBase.html#description">description</a>, <a href="RefDataElementBase.html#displayName">displayName</a></code></div>
+</section>
+</li>
 <!-- ======== CONSTRUCTOR SUMMARY ======== -->
 <li>
 <section class="constructor-summary" id="constructor-summary">
@@ -94,6 +103,14 @@ loadScripts(document, 'script');</script>
 <div class="col-constructor-name even-row-color"><code><a href="#%3Cinit%3E()" class="member-name-link">ResourceDescription</a>()</code></div>
 <div class="col-last even-row-color">
 <div class="block">Default constructor</div>
+</div>
+<div class="col-constructor-name odd-row-color"><code><a href="#%3Cinit%3E(org.odpi.openmetadata.frameworks.openmetadata.properties.resources.ResourceListProperties)" class="member-name-link">ResourceDescription</a><wbr>(<a href="../../../frameworks/openmetadata/properties/resources/ResourceListProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.resources">ResourceListProperties</a>&nbsp;template)</code></div>
+<div class="col-last odd-row-color">
+<div class="block">Copy/clone constructor</div>
+</div>
+<div class="col-constructor-name even-row-color"><code><a href="#%3Cinit%3E(org.odpi.openmetadata.viewservices.automatedcuration.properties.ResourceDescription)" class="member-name-link">ResourceDescription</a><wbr>(<a href="ResourceDescription.html" title="class in org.odpi.openmetadata.viewservices.automatedcuration.properties">ResourceDescription</a>&nbsp;template)</code></div>
+<div class="col-last even-row-color">
+<div class="block">Copy/clone constructor</div>
 </div>
 </div>
 </section>
@@ -109,32 +126,40 @@ loadScripts(document, 'script');</script>
 <div class="table-header col-first">Modifier and Type</div>
 <div class="table-header col-second">Method</div>
 <div class="table-header col-last">Description</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getResourceUse()" class="member-name-link">getResourceUse</a>()</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>boolean</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#equals(java.lang.Object)" class="member-name-link">equals</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a>&nbsp;objectToCompare)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Compare the values of the supplied object with those stored in the current object.</div>
+</div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getResourceUseDescription()" class="member-name-link">getResourceUseDescription</a>()</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setResourceUse(java.lang.String)" class="member-name-link">setResourceUse</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;resourceUse)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getResourceUse()" class="member-name-link">getResourceUse</a>()</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Return the identifier that describes the type of resource use.</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>int</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#hashCode()" class="member-name-link">hashCode</a>()</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Return hash code based on properties.</div>
+</div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setResourceUseDescription(java.lang.String)" class="member-name-link">setResourceUseDescription</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;resourceUseDescription)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setResourceUse(java.lang.String)" class="member-name-link">setResourceUse</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;resourceUse)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Set up identifier that describes the type of resource use.</div>
+</div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#toString()" class="member-name-link">toString</a>()</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Generate a string containing the properties.</div>
+<div class="block">JSON-style toString</div>
 </div>
 </div>
 </div>
 </div>
 <div class="inherited-list">
 <h3 id="methods-inherited-from-class-org.odpi.openmetadata.viewservices.automatedcuration.properties.RefDataElementBase">Methods inherited from class&nbsp;org.odpi.openmetadata.viewservices.automatedcuration.properties.<a href="RefDataElementBase.html" title="class in org.odpi.openmetadata.viewservices.automatedcuration.properties">RefDataElementBase</a></h3>
-<code><a href="RefDataElementBase.html#getRelatedElement()">getRelatedElement</a>, <a href="RefDataElementBase.html#getSpecification()">getSpecification</a>, <a href="RefDataElementBase.html#setRelatedElement(org.odpi.openmetadata.frameworks.openmetadata.metadataelements.MetadataElementSummary)">setRelatedElement</a>, <a href="RefDataElementBase.html#setSpecification(java.util.Map)">setSpecification</a></code></div>
+<code><a href="RefDataElementBase.html#getAdditionalProperties()">getAdditionalProperties</a>, <a href="RefDataElementBase.html#getDescription()">getDescription</a>, <a href="RefDataElementBase.html#getDisplayName()">getDisplayName</a>, <a href="RefDataElementBase.html#getRelatedElement()">getRelatedElement</a>, <a href="RefDataElementBase.html#getSpecification()">getSpecification</a>, <a href="RefDataElementBase.html#getSpecificationMermaidGraph()">getSpecificationMermaidGraph</a>, <a href="RefDataElementBase.html#setAdditionalProperties(java.util.Map)">setAdditionalProperties</a>, <a href="RefDataElementBase.html#setDescription(java.lang.String)">setDescription</a>, <a href="RefDataElementBase.html#setDisplayName(java.lang.String)">setDisplayName</a>, <a href="RefDataElementBase.html#setRelatedElement(org.odpi.openmetadata.frameworks.openmetadata.metadataelements.MetadataElementSummary)">setRelatedElement</a>, <a href="RefDataElementBase.html#setSpecification(java.util.Map)">setSpecification</a>, <a href="RefDataElementBase.html#setSpecificationMermaidGraph(java.lang.String)">setSpecificationMermaidGraph</a></code></div>
 <div class="inherited-list">
 <h3 id="methods-inherited-from-class-java.lang.Object">Methods inherited from class&nbsp;java.lang.<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a></h3>
-<code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#clone()" title="class or interface in java.lang" class="external-link">clone</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#equals(java.lang.Object)" title="class or interface in java.lang" class="external-link">equals</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#finalize()" title="class or interface in java.lang" class="external-link">finalize</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#getClass()" title="class or interface in java.lang" class="external-link">getClass</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#hashCode()" title="class or interface in java.lang" class="external-link">hashCode</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#notify()" title="class or interface in java.lang" class="external-link">notify</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#notifyAll()" title="class or interface in java.lang" class="external-link">notifyAll</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#wait()" title="class or interface in java.lang" class="external-link">wait</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#wait(long)" title="class or interface in java.lang" class="external-link">wait</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#wait(long,int)" title="class or interface in java.lang" class="external-link">wait</a></code></div>
+<code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#clone()" title="class or interface in java.lang" class="external-link">clone</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#finalize()" title="class or interface in java.lang" class="external-link">finalize</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#getClass()" title="class or interface in java.lang" class="external-link">getClass</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#notify()" title="class or interface in java.lang" class="external-link">notify</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#notifyAll()" title="class or interface in java.lang" class="external-link">notifyAll</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#wait()" title="class or interface in java.lang" class="external-link">wait</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#wait(long)" title="class or interface in java.lang" class="external-link">wait</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#wait(long,int)" title="class or interface in java.lang" class="external-link">wait</a></code></div>
 </section>
 </li>
 </ul>
@@ -153,6 +178,28 @@ loadScripts(document, 'script');</script>
 <div class="block">Default constructor</div>
 </section>
 </li>
+<li>
+<section class="detail" id="&lt;init&gt;(org.odpi.openmetadata.viewservices.automatedcuration.properties.ResourceDescription)">
+<h3>ResourceDescription</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="element-name">ResourceDescription</span><wbr><span class="parameters">(<a href="ResourceDescription.html" title="class in org.odpi.openmetadata.viewservices.automatedcuration.properties">ResourceDescription</a>&nbsp;template)</span></div>
+<div class="block">Copy/clone constructor</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>template</code> - object to copy</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="&lt;init&gt;(org.odpi.openmetadata.frameworks.openmetadata.properties.resources.ResourceListProperties)">
+<h3>ResourceDescription</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="element-name">ResourceDescription</span><wbr><span class="parameters">(<a href="../../../frameworks/openmetadata/properties/resources/ResourceListProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.resources">ResourceListProperties</a>&nbsp;template)</span></div>
+<div class="block">Copy/clone constructor</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>template</code> - object to copy</dd>
+</dl>
+</section>
+</li>
 </ul>
 </section>
 </li>
@@ -165,8 +212,10 @@ loadScripts(document, 'script');</script>
 <section class="detail" id="getResourceUse()">
 <h3>getResourceUse</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">getResourceUse</span>()</div>
+<div class="block">Return the identifier that describes the type of resource use. (Use ResourceUse enum in GAF).</div>
 <dl class="notes">
 <dt>Returns:</dt>
+<dd>string</dd>
 </dl>
 </section>
 </li>
@@ -174,30 +223,51 @@ loadScripts(document, 'script');</script>
 <section class="detail" id="setResourceUse(java.lang.String)">
 <h3>setResourceUse</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">setResourceUse</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;resourceUse)</span></div>
-</section>
-</li>
-<li>
-<section class="detail" id="getResourceUseDescription()">
-<h3>getResourceUseDescription</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">getResourceUseDescription</span>()</div>
-</section>
-</li>
-<li>
-<section class="detail" id="setResourceUseDescription(java.lang.String)">
-<h3>setResourceUseDescription</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">setResourceUseDescription</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;resourceUseDescription)</span></div>
+<div class="block">Set up identifier that describes the type of resource use. (Use ResourceUse enum in GAF).</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>resourceUse</code> - string</dd>
+</dl>
 </section>
 </li>
 <li>
 <section class="detail" id="toString()">
 <h3>toString</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">toString</span>()</div>
-<div class="block">Generate a string containing the properties.</div>
+<div class="block">JSON-style toString</div>
 <dl class="notes">
 <dt>Overrides:</dt>
 <dd><code><a href="RefDataElementBase.html#toString()">toString</a></code>&nbsp;in class&nbsp;<code><a href="RefDataElementBase.html" title="class in org.odpi.openmetadata.viewservices.automatedcuration.properties">RefDataElementBase</a></code></dd>
 <dt>Returns:</dt>
-<dd>string value</dd>
+<dd>return string containing the property names and values</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="equals(java.lang.Object)">
+<h3>equals</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">boolean</span>&nbsp;<span class="element-name">equals</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a>&nbsp;objectToCompare)</span></div>
+<div class="block">Compare the values of the supplied object with those stored in the current object.</div>
+<dl class="notes">
+<dt>Overrides:</dt>
+<dd><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#equals(java.lang.Object)" title="class or interface in java.lang" class="external-link">equals</a></code>&nbsp;in class&nbsp;<code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a></code></dd>
+<dt>Parameters:</dt>
+<dd><code>objectToCompare</code> - supplied object</dd>
+<dt>Returns:</dt>
+<dd>boolean result of comparison</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="hashCode()">
+<h3>hashCode</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">int</span>&nbsp;<span class="element-name">hashCode</span>()</div>
+<div class="block">Return hash code based on properties.</div>
+<dl class="notes">
+<dt>Overrides:</dt>
+<dd><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#hashCode()" title="class or interface in java.lang" class="external-link">hashCode</a></code>&nbsp;in class&nbsp;<code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a></code></dd>
+<dt>Returns:</dt>
+<dd>int</dd>
 </dl>
 </section>
 </li>
