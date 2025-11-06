@@ -88,7 +88,14 @@ loadScripts(document, 'script');</script>
 <hr>
 <div class="type-signature"><span class="modifiers">public class </span><span class="element-name type-name-label">FolderSurveyService</span>
 <span class="extends-implements">extends <a href="../../../../frameworks/opensurvey/SurveyActionServiceConnector.html" title="class in org.odpi.openmetadata.frameworks.opensurvey">SurveyActionServiceConnector</a></span></div>
-<div class="block">FolderSurveyService is a survey action service implementation for analysing the files nested in a folder.</div>
+<div class="block">FolderSurveyService is a survey action service implementation for analysing the files nested in a folder.
+ The depth of the survey is controlled by the analysisLevel request parameter.
+ <ul>
+     <li>The default value is 'TOP_LEVEL_ONLY' which produces summary statistics for the top-level directory only.</li>
+     <li>If it is set to 'ALL_FOLDERS' then there are statistics created for the top level directory, and all subdirectories.</li>
+     <li>If it set to 'TOP_LEVEL_AND_FILES' then statistics are created for the top-level directory and all files that are encountered.</li>
+     <li>Finally, if it is set to 'ALL_FOLDERS_AND_FILES' then statistics are created for all directories and files encountered.", "string", "myFile.csv".</li>
+ </ul></div>
 </section>
 <section class="summary">
 <ul class="summary-list">
