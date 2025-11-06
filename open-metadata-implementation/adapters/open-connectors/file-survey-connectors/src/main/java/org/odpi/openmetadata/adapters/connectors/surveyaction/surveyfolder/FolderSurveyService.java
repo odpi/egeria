@@ -32,6 +32,13 @@ import java.util.*;
 
 /**
  * FolderSurveyService is a survey action service implementation for analysing the files nested in a folder.
+ * The depth of the survey is controlled by the analysisLevel request parameter.
+ * <ul>
+ *     <li>The default value is 'TOP_LEVEL_ONLY' which produces summary statistics for the top-level directory only.</li>
+ *     <li>If it is set to 'ALL_FOLDERS' then there are statistics created for the top level directory, and all subdirectories.</li>
+ *     <li>If it set to 'TOP_LEVEL_AND_FILES' then statistics are created for the top-level directory and all files that are encountered.</li>
+ *     <li>Finally, if it is set to 'ALL_FOLDERS_AND_FILES' then statistics are created for all directories and files encountered.", "string", "myFile.csv".</li>
+ * </ul>
  */
 public class FolderSurveyService extends SurveyActionServiceConnector
 {
