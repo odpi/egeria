@@ -87,7 +87,7 @@ loadScripts(document, 'script');</script>
 <section class="class-description" id="class-description">
 <dl class="notes">
 <dt>Direct Known Subclasses:</dt>
-<dd><code><a href="../../../adapters/connectors/integration/kafkaaudit/AuditLogDestinationCatalogTargetProcessor.html" title="class in org.odpi.openmetadata.adapters.connectors.integration.kafkaaudit">AuditLogDestinationCatalogTargetProcessor</a></code>, <code><a href="../../../adapters/connectors/nannyconnectors/harvestopenmetadata/HarvestOpenMetadataCatalogTargetProcessor.html" title="class in org.odpi.openmetadata.adapters.connectors.nannyconnectors.harvestopenmetadata">HarvestOpenMetadataCatalogTargetProcessor</a></code>, <code><a href="../../../adapters/connectors/nannyconnectors/harvestsurveys/HarvestSurveysCatalogTargetProcessor.html" title="class in org.odpi.openmetadata.adapters.connectors.nannyconnectors.harvestsurveys">HarvestSurveysCatalogTargetProcessor</a></code>, <code><a href="../../../adapters/connectors/apachekafka/integration/KafkaTopicCatalogTargetProcessor.html" title="class in org.odpi.openmetadata.adapters.connectors.apachekafka.integration">KafkaTopicCatalogTargetProcessor</a></code>, <code><a href="../../../adapters/connectors/integration/kafkaaudit/KafkaTopicSourceCatalogTargetProcessor.html" title="class in org.odpi.openmetadata.adapters.connectors.integration.kafkaaudit">KafkaTopicSourceCatalogTargetProcessor</a></code>, <code><a href="../../../adapters/connectors/integration/openlineage/OpenLineageEventReceiverCatalogTargetProcessor.html" title="class in org.odpi.openmetadata.adapters.connectors.integration.openlineage">OpenLineageEventReceiverCatalogTargetProcessor</a></code>, <code><a href="../../../adapters/connectors/productmanager/OpenMetadataProductsHarvesterCatalogTargetProcessor.html" title="class in org.odpi.openmetadata.adapters.connectors.productmanager">OpenMetadataProductsHarvesterCatalogTargetProcessor</a></code></dd>
+<dd><code><a href="../../../adapters/connectors/integration/kafkaaudit/AuditLogDestinationCatalogTargetProcessor.html" title="class in org.odpi.openmetadata.adapters.connectors.integration.kafkaaudit">AuditLogDestinationCatalogTargetProcessor</a></code>, <code><a href="../../../adapters/connectors/nannyconnectors/harvestopenmetadata/HarvestOpenMetadataCatalogTargetProcessor.html" title="class in org.odpi.openmetadata.adapters.connectors.nannyconnectors.harvestopenmetadata">HarvestOpenMetadataCatalogTargetProcessor</a></code>, <code><a href="../../../adapters/connectors/nannyconnectors/harvestsurveys/HarvestSurveysCatalogTargetProcessor.html" title="class in org.odpi.openmetadata.adapters.connectors.nannyconnectors.harvestsurveys">HarvestSurveysCatalogTargetProcessor</a></code>, <code><a href="../../../adapters/connectors/integration/jdbc/JDBCIntegrationCatalogTargetProcessor.html" title="class in org.odpi.openmetadata.adapters.connectors.integration.jdbc">JDBCIntegrationCatalogTargetProcessor</a></code>, <code><a href="../../../adapters/connectors/apachekafka/integration/KafkaTopicCatalogTargetProcessor.html" title="class in org.odpi.openmetadata.adapters.connectors.apachekafka.integration">KafkaTopicCatalogTargetProcessor</a></code>, <code><a href="../../../adapters/connectors/integration/kafkaaudit/KafkaTopicSourceCatalogTargetProcessor.html" title="class in org.odpi.openmetadata.adapters.connectors.integration.kafkaaudit">KafkaTopicSourceCatalogTargetProcessor</a></code>, <code><a href="../../../adapters/connectors/integration/openlineage/OpenLineageEventReceiverCatalogTargetProcessor.html" title="class in org.odpi.openmetadata.adapters.connectors.integration.openlineage">OpenLineageEventReceiverCatalogTargetProcessor</a></code>, <code><a href="../../../adapters/connectors/productmanager/OpenMetadataProductsHarvesterCatalogTargetProcessor.html" title="class in org.odpi.openmetadata.adapters.connectors.productmanager">OpenMetadataProductsHarvesterCatalogTargetProcessor</a></code>, <code><a href="../../../adapters/connectors/unitycatalog/sync/OSSUnityCatalogInsideCatalogSyncCatalogTargetProcessor.html" title="class in org.odpi.openmetadata.adapters.connectors.unitycatalog.sync">OSSUnityCatalogInsideCatalogSyncCatalogTargetProcessor</a></code>, <code><a href="../../../adapters/connectors/unitycatalog/sync/OSSUnityCatalogServerSyncCatalogTargetProcessor.html" title="class in org.odpi.openmetadata.adapters.connectors.unitycatalog.sync">OSSUnityCatalogServerSyncCatalogTargetProcessor</a></code>, <code><a href="../../../adapters/connectors/postgres/catalog/PostgresServerCatalogTargetProcessor.html" title="class in org.odpi.openmetadata.adapters.connectors.postgres.catalog">PostgresServerCatalogTargetProcessor</a></code></dd>
 </dl>
 <hr>
 <div class="type-signature"><span class="modifiers">public abstract class </span><span class="element-name type-name-label">CatalogTargetProcessorBase</span>
@@ -114,6 +114,12 @@ loadScripts(document, 'script');</script>
 <div class="col-last even-row-color">&nbsp;</div>
 <div class="col-first odd-row-color"><code>protected final <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
 <div class="col-second odd-row-color"><code><a href="#connectorName" class="member-name-link">connectorName</a></code></div>
+<div class="col-last odd-row-color">&nbsp;</div>
+<div class="col-first even-row-color"><code>protected <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
+<div class="col-second even-row-color"><code><a href="#metadataCollectionGUID" class="member-name-link">metadataCollectionGUID</a></code></div>
+<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-first odd-row-color"><code>protected <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
+<div class="col-second odd-row-color"><code><a href="#metadataCollectionName" class="member-name-link">metadataCollectionName</a></code></div>
 <div class="col-last odd-row-color">&nbsp;</div>
 <div class="col-first even-row-color"><code>protected final <a href="../../openmetadata/search/PropertyHelper.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.search">PropertyHelper</a></code></div>
 <div class="col-second even-row-color"><code><a href="#propertyHelper" class="member-name-link">propertyHelper</a></code></div>
@@ -148,35 +154,140 @@ loadScripts(document, 'script');</script>
 <section class="method-summary" id="method-summary">
 <h2>Method Summary</h2>
 <div id="method-summary-table">
-<div class="table-tabs" role="tablist" aria-orientation="horizontal"><button id="method-summary-table-tab0" role="tab" aria-selected="true" aria-controls="method-summary-table.tabpanel" tabindex="0" onkeydown="switchTab(event)" onclick="show('method-summary-table', 'method-summary-table', 3)" class="active-table-tab">All Methods</button><button id="method-summary-table-tab2" role="tab" aria-selected="false" aria-controls="method-summary-table.tabpanel" tabindex="-1" onkeydown="switchTab(event)" onclick="show('method-summary-table', 'method-summary-table-tab2', 3)" class="table-tab">Instance Methods</button><button id="method-summary-table-tab3" role="tab" aria-selected="false" aria-controls="method-summary-table.tabpanel" tabindex="-1" onkeydown="switchTab(event)" onclick="show('method-summary-table', 'method-summary-table-tab3', 3)" class="table-tab">Abstract Methods</button><button id="method-summary-table-tab4" role="tab" aria-selected="false" aria-controls="method-summary-table.tabpanel" tabindex="-1" onkeydown="switchTab(event)" onclick="show('method-summary-table', 'method-summary-table-tab4', 3)" class="table-tab">Concrete Methods</button></div>
+<div class="table-tabs" role="tablist" aria-orientation="horizontal"><button id="method-summary-table-tab0" role="tab" aria-selected="true" aria-controls="method-summary-table.tabpanel" tabindex="0" onkeydown="switchTab(event)" onclick="show('method-summary-table', 'method-summary-table', 3)" class="active-table-tab">All Methods</button><button id="method-summary-table-tab2" role="tab" aria-selected="false" aria-controls="method-summary-table.tabpanel" tabindex="-1" onkeydown="switchTab(event)" onclick="show('method-summary-table', 'method-summary-table-tab2', 3)" class="table-tab">Instance Methods</button><button id="method-summary-table-tab4" role="tab" aria-selected="false" aria-controls="method-summary-table.tabpanel" tabindex="-1" onkeydown="switchTab(event)" onclick="show('method-summary-table', 'method-summary-table-tab4', 3)" class="table-tab">Concrete Methods</button></div>
 <div id="method-summary-table.tabpanel" role="tabpanel" aria-labelledby="method-summary-table-tab0">
 <div class="summary-table three-column-summary">
 <div class="table-header col-first">Modifier and Type</div>
 <div class="table-header col-second">Method</div>
 <div class="table-header col-last">Description</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>protected <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getDateConfigurationProperty(java.lang.String,java.util.Map)" class="member-name-link">getDateConfigurationProperty</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;propertyName,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>,<wbr><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a>&gt;&nbsp;configurationProperties)</code></div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#disconnect()" class="member-name-link">disconnect</a>()</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Retrieve a configuration property that is a string formatted date or null if not set.</div>
+<div class="block">Free up any resources held since the catalog target processor is no longer needed.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>protected <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getStringConfigurationProperty(java.lang.String,java.util.Map)" class="member-name-link">getStringConfigurationProperty</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;propertyName,
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>protected <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getArrayConfigurationProperty(java.lang.String,java.util.Map)" class="member-name-link">getArrayConfigurationProperty</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;propertyName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>,<wbr><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a>&gt;&nbsp;configurationProperties)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Retrieve a configuration property that is a comma-separated list of strings.</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>protected <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getArrayConfigurationProperty(java.lang.String,java.util.Map,java.lang.String)" class="member-name-link">getArrayConfigurationProperty</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;propertyName,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>,<wbr><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a>&gt;&nbsp;configurationProperties,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;defaultValue)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Retrieve a configuration property that is a comma-separated list of strings.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>protected <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getArrayConfigurationProperty(java.lang.String,java.util.Map,java.util.List)" class="member-name-link">getArrayConfigurationProperty</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;propertyName,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>,<wbr><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a>&gt;&nbsp;configurationProperties,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;&nbsp;defaultValue)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Retrieve a configuration property that is a comma-separated list of strings.</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>protected boolean</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getBooleanConfigurationProperty(java.lang.String,java.util.Map)" class="member-name-link">getBooleanConfigurationProperty</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;propertyName,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>,<wbr><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a>&gt;&nbsp;configurationProperties)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Retrieve a configuration property that is a boolean.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>protected <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getDateConfigurationProperty(java.lang.String,java.util.Map)" class="member-name-link">getDateConfigurationProperty</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;propertyName,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>,<wbr><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a>&gt;&nbsp;configurationProperties)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Retrieve a configuration property that is a string formatted date or null if not set.</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>protected <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getHostIdentifier(java.lang.String)" class="member-name-link">getHostIdentifier</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;networkAddress)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Extract the host identifier (eg coco.com) from the network address.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>protected int</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getIntConfigurationProperty(java.lang.String,java.util.Map)" class="member-name-link">getIntConfigurationProperty</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;propertyName,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>,<wbr><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a>&gt;&nbsp;configurationProperties)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Retrieve a configuration property that is an integer.</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>protected long</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getLongConfigurationProperty(java.lang.String,java.util.Map)" class="member-name-link">getLongConfigurationProperty</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;propertyName,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>,<wbr><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a>&gt;&nbsp;configurationProperties)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Retrieve a configuration property that is an integer.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>protected <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getPortNumber(java.lang.String)" class="member-name-link">getPortNumber</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;networkAddress)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Retrieves the port number from a network address string.</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>protected <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getStringConfigurationProperty(java.lang.String,java.util.Map)" class="member-name-link">getStringConfigurationProperty</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;propertyName,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>,<wbr><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a>&gt;&nbsp;configurationProperties)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Retrieve a configuration property that is a string or null if not set.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code>abstract void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#refresh()" class="member-name-link">refresh</a>()</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>protected <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>,<wbr><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getSuppliedPlaceholderProperties(java.util.Map)" class="member-name-link">getSuppliedPlaceholderProperties</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>,<wbr><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a>&gt;&nbsp;configurationProperties)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Pass the configuration properties as placeholder properties.</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#refresh()" class="member-name-link">refresh</a>()</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Requests that the connector does a comparison of the metadata in the third party technology and open metadata repositories.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>protected void</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setUpMetadataSource()" class="member-name-link">setUpMetadataSource</a>()</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Ensure that the metadata collection identifiers are properly set up.</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>protected <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setUpSoftwareCapability(java.lang.String)" class="member-name-link">setUpSoftwareCapability</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;softwareCapabilityTypeName)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Ensure that the named software capability type is properly set up.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#start()" class="member-name-link">start</a>()</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Indicates that the catalog target processor is completely configured and can begin processing.</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>protected void</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#throwBadBeanClass(org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType,java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.metadataelements.OpenMetadataRootElement)" class="member-name-link">throwBadBeanClass</a><wbr>(<a href="../../openmetadata/types/OpenMetadataType.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.types">OpenMetadataType</a>&nbsp;expectedType,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;methodName,
+ <a href="../../openmetadata/metadataelements/OpenMetadataRootElement.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.metadataelements">OpenMetadataRootElement</a>&nbsp;element)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Indicate that an element does not have properties of the expected bean class.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>protected void</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#throwMissingConnectionInfo(java.lang.String,java.lang.String)" class="member-name-link">throwMissingConnectionInfo</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;missingParameterName,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;methodName)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Log that the connector can not process the catalog target because of an incomplete connection.</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>protected void</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#throwMissingPropertyValue(java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.metadataelements.OpenMetadataRootElement)" class="member-name-link">throwMissingPropertyValue</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;missingPropertyName,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;methodName,
+ <a href="../../openmetadata/metadataelements/OpenMetadataRootElement.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.metadataelements">OpenMetadataRootElement</a>&nbsp;element)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Throw an exception because a necessary property is missing.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>protected void</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#throwWrongTypeOfCatalogTarget(java.lang.String,java.lang.String)" class="member-name-link">throwWrongTypeOfCatalogTarget</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;expectedTypeName,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;methodName)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Log that the connector can not process the type of catalog target it has been passed.</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>protected void</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#throwWrongTypeOfResourceConnector(java.lang.String,java.lang.String)" class="member-name-link">throwWrongTypeOfResourceConnector</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;expectedClassName,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;methodName)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Log that the connector can not process the type of catalog target it has been passed.</div>
 </div>
 </div>
 </div>
 </div>
 <div class="inherited-list">
 <h3 id="methods-inherited-from-class-org.odpi.openmetadata.frameworks.integration.properties.RequestedCatalogTarget">Methods inherited from class&nbsp;org.odpi.openmetadata.frameworks.integration.properties.<a href="../properties/RequestedCatalogTarget.html" title="class in org.odpi.openmetadata.frameworks.integration.properties">RequestedCatalogTarget</a></h3>
-<code><a href="../properties/RequestedCatalogTarget.html#equals(java.lang.Object)">equals</a>, <a href="../properties/RequestedCatalogTarget.html#getConnectorToTarget()">getConnectorToTarget</a>, <a href="../properties/RequestedCatalogTarget.html#getIntegrationContext()">getIntegrationContext</a>, <a href="../properties/RequestedCatalogTarget.html#hashCode()">hashCode</a>, <a href="../properties/RequestedCatalogTarget.html#toString()">toString</a></code></div>
+<code><a href="../properties/RequestedCatalogTarget.html#equals(java.lang.Object)">equals</a>, <a href="../properties/RequestedCatalogTarget.html#getConnectorToTarget()">getConnectorToTarget</a>, <a href="../properties/RequestedCatalogTarget.html#getIntegrationContext()">getIntegrationContext</a>, <a href="../properties/RequestedCatalogTarget.html#getNetworkAddress()">getNetworkAddress</a>, <a href="../properties/RequestedCatalogTarget.html#hashCode()">hashCode</a>, <a href="../properties/RequestedCatalogTarget.html#toString()">toString</a></code></div>
 <div class="inherited-list">
 <h3 id="methods-inherited-from-class-org.odpi.openmetadata.frameworks.opengovernance.properties.CatalogTarget">Methods inherited from class&nbsp;org.odpi.openmetadata.frameworks.opengovernance.properties.<a href="../../opengovernance/properties/CatalogTarget.html" title="class in org.odpi.openmetadata.frameworks.opengovernance.properties">CatalogTarget</a></h3>
 <code><a href="../../opengovernance/properties/CatalogTarget.html#getCatalogTargetElement()">getCatalogTargetElement</a>, <a href="../../opengovernance/properties/CatalogTarget.html#getRelationshipGUID()">getRelationshipGUID</a>, <a href="../../opengovernance/properties/CatalogTarget.html#getRelationshipVersions()">getRelationshipVersions</a>, <a href="../../opengovernance/properties/CatalogTarget.html#setCatalogTargetElement(org.odpi.openmetadata.frameworks.openmetadata.metadataelements.OpenMetadataRootElement)">setCatalogTargetElement</a>, <a href="../../opengovernance/properties/CatalogTarget.html#setRelationshipGUID(java.lang.String)">setRelationshipGUID</a>, <a href="../../opengovernance/properties/CatalogTarget.html#setRelationshipVersions(org.odpi.openmetadata.frameworks.openmetadata.metadataelements.ElementVersions)">setRelationshipVersions</a></code></div>
@@ -221,6 +332,18 @@ loadScripts(document, 'script');</script>
 <div class="member-signature"><span class="modifiers">protected final</span>&nbsp;<span class="return-type"><a href="../../openmetadata/search/PropertyHelper.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.search">PropertyHelper</a></span>&nbsp;<span class="element-name">propertyHelper</span></div>
 </section>
 </li>
+<li>
+<section class="detail" id="metadataCollectionGUID">
+<h3>metadataCollectionGUID</h3>
+<div class="member-signature"><span class="modifiers">protected</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">metadataCollectionGUID</span></div>
+</section>
+</li>
+<li>
+<section class="detail" id="metadataCollectionName">
+<h3>metadataCollectionName</h3>
+<div class="member-signature"><span class="modifiers">protected</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">metadataCollectionName</span></div>
+</section>
+</li>
 </ul>
 </section>
 </li>
@@ -257,16 +380,182 @@ loadScripts(document, 'script');</script>
 <h2>Method Details</h2>
 <ul class="member-list">
 <li>
+<section class="detail" id="start()">
+<h3>start</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">start</span>()
+           throws <span class="exceptions"><a href="../../connectors/ffdc/ConnectorCheckedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">ConnectorCheckedException</a>,
+<a href="../../openmetadata/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">UserNotAuthorizedException</a></span></div>
+<div class="block">Indicates that the catalog target processor is completely configured and can begin processing.
+ This call can be used to register with non-blocking services, or extract useful metadata
+ values from the catalog target element, connector etc.</div>
+<dl class="notes">
+<dt>Overrides:</dt>
+<dd><code><a href="../properties/RequestedCatalogTarget.html#start()">start</a></code>&nbsp;in class&nbsp;<code><a href="../properties/RequestedCatalogTarget.html" title="class in org.odpi.openmetadata.frameworks.integration.properties">RequestedCatalogTarget</a></code></dd>
+<dt>Throws:</dt>
+<dd><code><a href="../../connectors/ffdc/ConnectorCheckedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">ConnectorCheckedException</a></code> - there is a problem within the connector.</dd>
+<dd><code><a href="../../openmetadata/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">UserNotAuthorizedException</a></code> - the connector was disconnected before/during start</dd>
+</dl>
+</section>
+</li>
+<li>
 <section class="detail" id="refresh()">
 <h3>refresh</h3>
-<div class="member-signature"><span class="modifiers">public abstract</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">refresh</span>()
-                      throws <span class="exceptions"><a href="../../connectors/ffdc/ConnectorCheckedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">ConnectorCheckedException</a></span></div>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">refresh</span>()
+             throws <span class="exceptions"><a href="../../connectors/ffdc/ConnectorCheckedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">ConnectorCheckedException</a>,
+<a href="../../openmetadata/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">UserNotAuthorizedException</a></span></div>
 <div class="block">Requests that the connector does a comparison of the metadata in the third party technology and open metadata repositories.
  Refresh is called when the integration connector first starts and then at intervals defined in the connector's configuration
  as well as any external REST API calls to explicitly refresh the connector.</div>
 <dl class="notes">
 <dt>Throws:</dt>
 <dd><code><a href="../../connectors/ffdc/ConnectorCheckedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">ConnectorCheckedException</a></code> - there is a problem with the connector.  It is not able to refresh the metadata.</dd>
+<dd><code><a href="../../openmetadata/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">UserNotAuthorizedException</a></code> - the connector was disconnected so stop refresh processing</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="disconnect()">
+<h3>disconnect</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">disconnect</span>()
+                throws <span class="exceptions"><a href="../../connectors/ffdc/ConnectorCheckedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">ConnectorCheckedException</a></span></div>
+<div class="block">Free up any resources held since the catalog target processor is no longer needed.</div>
+<dl class="notes">
+<dt>Throws:</dt>
+<dd><code><a href="../../connectors/ffdc/ConnectorCheckedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">ConnectorCheckedException</a></code> - there is a problem within the connector.</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="setUpMetadataSource()">
+<h3>setUpMetadataSource</h3>
+<div class="member-signature"><span class="modifiers">protected</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">setUpMetadataSource</span>()
+                            throws <span class="exceptions"><a href="../../connectors/ffdc/ConnectorCheckedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">ConnectorCheckedException</a></span></div>
+<div class="block">Ensure that the metadata collection identifiers are properly set up.</div>
+<dl class="notes">
+<dt>Throws:</dt>
+<dd><code><a href="../../connectors/ffdc/ConnectorCheckedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">ConnectorCheckedException</a></code> - there is a problem retrieving the server definitions.</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="setUpSoftwareCapability(java.lang.String)">
+<h3>setUpSoftwareCapability</h3>
+<div class="member-signature"><span class="modifiers">protected</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">setUpSoftwareCapability</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;softwareCapabilityTypeName)</span>
+                                  throws <span class="exceptions"><a href="../../connectors/ffdc/ConnectorCheckedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">ConnectorCheckedException</a></span></div>
+<div class="block">Ensure that the named software capability type is properly set up.</div>
+<dl class="notes">
+<dt>Throws:</dt>
+<dd><code><a href="../../connectors/ffdc/ConnectorCheckedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">ConnectorCheckedException</a></code> - there is a problem retrieving the server definitions.</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="throwWrongTypeOfCatalogTarget(java.lang.String,java.lang.String)">
+<h3>throwWrongTypeOfCatalogTarget</h3>
+<div class="member-signature"><span class="modifiers">protected</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">throwWrongTypeOfCatalogTarget</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;expectedTypeName,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;methodName)</span>
+                                      throws <span class="exceptions"><a href="../../connectors/ffdc/ConnectorCheckedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">ConnectorCheckedException</a></span></div>
+<div class="block">Log that the connector can not process the type of catalog target it has been passed.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>expectedTypeName</code> - desired type of the catalog target</dd>
+<dd><code>methodName</code> - calling method</dd>
+<dt>Throws:</dt>
+<dd><code><a href="../../connectors/ffdc/ConnectorCheckedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">ConnectorCheckedException</a></code> - resulting exception</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="throwWrongTypeOfResourceConnector(java.lang.String,java.lang.String)">
+<h3>throwWrongTypeOfResourceConnector</h3>
+<div class="member-signature"><span class="modifiers">protected</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">throwWrongTypeOfResourceConnector</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;expectedClassName,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;methodName)</span>
+                                          throws <span class="exceptions"><a href="../../connectors/ffdc/ConnectorCheckedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">ConnectorCheckedException</a></span></div>
+<div class="block">Log that the connector can not process the type of catalog target it has been passed.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>expectedClassName</code> - desired class of the catalog target's resource connector</dd>
+<dd><code>methodName</code> - calling method</dd>
+<dt>Throws:</dt>
+<dd><code><a href="../../connectors/ffdc/ConnectorCheckedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">ConnectorCheckedException</a></code> - resulting exception</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="throwMissingConnectionInfo(java.lang.String,java.lang.String)">
+<h3>throwMissingConnectionInfo</h3>
+<div class="member-signature"><span class="modifiers">protected</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">throwMissingConnectionInfo</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;missingParameterName,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;methodName)</span>
+                                   throws <span class="exceptions"><a href="../../connectors/ffdc/ConnectorCheckedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">ConnectorCheckedException</a></span></div>
+<div class="block">Log that the connector can not process the catalog target because of an incomplete connection.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>missingParameterName</code> - desired type of the catalog target</dd>
+<dd><code>methodName</code> - calling method</dd>
+<dt>Throws:</dt>
+<dd><code><a href="../../connectors/ffdc/ConnectorCheckedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">ConnectorCheckedException</a></code> - resulting exception</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="throwMissingPropertyValue(java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.metadataelements.OpenMetadataRootElement)">
+<h3>throwMissingPropertyValue</h3>
+<div class="member-signature"><span class="modifiers">protected</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">throwMissingPropertyValue</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;missingPropertyName,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;methodName,
+ <a href="../../openmetadata/metadataelements/OpenMetadataRootElement.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.metadataelements">OpenMetadataRootElement</a>&nbsp;element)</span>
+                                  throws <span class="exceptions"><a href="../../connectors/ffdc/ConnectorCheckedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">ConnectorCheckedException</a></span></div>
+<div class="block">Throw an exception because a necessary property is missing.  The description portrays this a s logic error.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>missingPropertyName</code> - missing property name</dd>
+<dd><code>methodName</code> - calling method</dd>
+<dd><code>element</code> - element in error</dd>
+<dt>Throws:</dt>
+<dd><code><a href="../../connectors/ffdc/ConnectorCheckedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">ConnectorCheckedException</a></code> - resulting exception</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="throwBadBeanClass(org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType,java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.metadataelements.OpenMetadataRootElement)">
+<h3>throwBadBeanClass</h3>
+<div class="member-signature"><span class="modifiers">protected</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">throwBadBeanClass</span><wbr><span class="parameters">(<a href="../../openmetadata/types/OpenMetadataType.html" title="enum class in org.odpi.openmetadata.frameworks.openmetadata.types">OpenMetadataType</a>&nbsp;expectedType,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;methodName,
+ <a href="../../openmetadata/metadataelements/OpenMetadataRootElement.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.metadataelements">OpenMetadataRootElement</a>&nbsp;element)</span>
+                          throws <span class="exceptions"><a href="../../connectors/ffdc/ConnectorCheckedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">ConnectorCheckedException</a></span></div>
+<div class="block">Indicate that an element does not have properties of the expected bean class.  This is documented as a logic error.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>expectedType</code> - open metadata type information</dd>
+<dd><code>methodName</code> - calling method</dd>
+<dd><code>element</code> - element in error</dd>
+<dt>Throws:</dt>
+<dd><code><a href="../../connectors/ffdc/ConnectorCheckedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">ConnectorCheckedException</a></code> - resulting exception</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="getHostIdentifier(java.lang.String)">
+<h3>getHostIdentifier</h3>
+<div class="member-signature"><span class="modifiers">protected</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">getHostIdentifier</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;networkAddress)</span></div>
+<div class="block">Extract the host identifier (eg coco.com) from the network address.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>networkAddress</code> - network address from the endpoint</dd>
+<dt>Returns:</dt>
+<dd>host identifier</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="getPortNumber(java.lang.String)">
+<h3>getPortNumber</h3>
+<div class="member-signature"><span class="modifiers">protected</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">getPortNumber</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;networkAddress)</span></div>
+<div class="block">Retrieves the port number from a network address string.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>networkAddress</code> - the network address from the endpoint</dd>
+<dt>Returns:</dt>
+<dd>the port number extracted from the network address, or null if not found</dd>
 </dl>
 </section>
 </li>
@@ -300,6 +589,116 @@ loadScripts(document, 'script');</script>
 <dd>string value of property or null if not supplied</dd>
 <dt>Throws:</dt>
 <dd><code><a href="../../openmetadata/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">InvalidParameterException</a></code></dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="getSuppliedPlaceholderProperties(java.util.Map)">
+<h3>getSuppliedPlaceholderProperties</h3>
+<div class="member-signature"><span class="modifiers">protected</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>,<wbr><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;</span>&nbsp;<span class="element-name">getSuppliedPlaceholderProperties</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>,<wbr><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a>&gt;&nbsp;configurationProperties)</span></div>
+<div class="block">Pass the configuration properties as placeholder properties.  This allows the caller to supply additional
+ properties to a template beyond those envisaged in the connector implementation.
+ The templating process is not affected if properties not use in the template are supplied</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>configurationProperties</code> - supplied configuration properties</dd>
+<dt>Returns:</dt>
+<dd>placeholder properties map</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="getArrayConfigurationProperty(java.lang.String,java.util.Map,java.util.List)">
+<h3>getArrayConfigurationProperty</h3>
+<div class="member-signature"><span class="modifiers">protected</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;</span>&nbsp;<span class="element-name">getArrayConfigurationProperty</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;propertyName,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>,<wbr><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a>&gt;&nbsp;configurationProperties,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;&nbsp;defaultValue)</span></div>
+<div class="block">Retrieve a configuration property that is a comma-separated list of strings.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>propertyName</code> - name of property</dd>
+<dd><code>configurationProperties</code> - configuration properties</dd>
+<dd><code>defaultValue</code> - value to use if the property is not specified.</dd>
+<dt>Returns:</dt>
+<dd>list of strings or null if not set</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="getArrayConfigurationProperty(java.lang.String,java.util.Map,java.lang.String)">
+<h3>getArrayConfigurationProperty</h3>
+<div class="member-signature"><span class="modifiers">protected</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;</span>&nbsp;<span class="element-name">getArrayConfigurationProperty</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;propertyName,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>,<wbr><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a>&gt;&nbsp;configurationProperties,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;defaultValue)</span></div>
+<div class="block">Retrieve a configuration property that is a comma-separated list of strings.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>propertyName</code> - name of property</dd>
+<dd><code>configurationProperties</code> - configuration properties</dd>
+<dd><code>defaultValue</code> - value to use if the property is not specified.</dd>
+<dt>Returns:</dt>
+<dd>list of strings or null if not set</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="getArrayConfigurationProperty(java.lang.String,java.util.Map)">
+<h3>getArrayConfigurationProperty</h3>
+<div class="member-signature"><span class="modifiers">protected</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;</span>&nbsp;<span class="element-name">getArrayConfigurationProperty</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;propertyName,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>,<wbr><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a>&gt;&nbsp;configurationProperties)</span></div>
+<div class="block">Retrieve a configuration property that is a comma-separated list of strings.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>propertyName</code> - name of property</dd>
+<dd><code>configurationProperties</code> - configuration properties</dd>
+<dt>Returns:</dt>
+<dd>list of strings or null if not set</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="getBooleanConfigurationProperty(java.lang.String,java.util.Map)">
+<h3>getBooleanConfigurationProperty</h3>
+<div class="member-signature"><span class="modifiers">protected</span>&nbsp;<span class="return-type">boolean</span>&nbsp;<span class="element-name">getBooleanConfigurationProperty</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;propertyName,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>,<wbr><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a>&gt;&nbsp;configurationProperties)</span></div>
+<div class="block">Retrieve a configuration property that is a boolean.  If any non-null value is set it returns true unless
+ the value is set to FALSE, False or false.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>propertyName</code> - name of property</dd>
+<dd><code>configurationProperties</code> - configuration properties</dd>
+<dt>Returns:</dt>
+<dd>boolean flag or false if not set</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="getIntConfigurationProperty(java.lang.String,java.util.Map)">
+<h3>getIntConfigurationProperty</h3>
+<div class="member-signature"><span class="modifiers">protected</span>&nbsp;<span class="return-type">int</span>&nbsp;<span class="element-name">getIntConfigurationProperty</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;propertyName,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>,<wbr><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a>&gt;&nbsp;configurationProperties)</span></div>
+<div class="block">Retrieve a configuration property that is an integer.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>propertyName</code> - name of property</dd>
+<dd><code>configurationProperties</code> - configuration properties</dd>
+<dt>Returns:</dt>
+<dd>integer value or zero if not supplied</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="getLongConfigurationProperty(java.lang.String,java.util.Map)">
+<h3>getLongConfigurationProperty</h3>
+<div class="member-signature"><span class="modifiers">protected</span>&nbsp;<span class="return-type">long</span>&nbsp;<span class="element-name">getLongConfigurationProperty</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;propertyName,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>,<wbr><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a>&gt;&nbsp;configurationProperties)</span></div>
+<div class="block">Retrieve a configuration property that is an integer.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>propertyName</code> - name of property</dd>
+<dd><code>configurationProperties</code> - configuration properties</dd>
+<dt>Returns:</dt>
+<dd>integer value or zero if not supplied</dd>
 </dl>
 </section>
 </li>

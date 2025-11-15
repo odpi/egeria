@@ -123,21 +123,24 @@ implements <a href="SurveyActionService.html" title="interface in org.odpi.openm
 <div class="col-first odd-row-color"><code>protected <a href="../connectors/Connector.html" title="class in org.odpi.openmetadata.frameworks.connectors">Connector</a></code></div>
 <div class="col-second odd-row-color"><code><a href="#connector" class="member-name-link">connector</a></code></div>
 <div class="col-last odd-row-color">&nbsp;</div>
-<div class="col-first even-row-color"><code>protected <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../connectors/Connector.html" title="class in org.odpi.openmetadata.frameworks.connectors">Connector</a>&gt;</code></div>
-<div class="col-second even-row-color"><code><a href="#embeddedConnectors" class="member-name-link">embeddedConnectors</a></code></div>
+<div class="col-first even-row-color"><code>protected <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
+<div class="col-second even-row-color"><code><a href="#csvFileConnectorTypeGUID" class="member-name-link">csvFileConnectorTypeGUID</a></code></div>
 <div class="col-last even-row-color">&nbsp;</div>
-<div class="col-first odd-row-color"><code>protected static com.fasterxml.jackson.databind.ObjectMapper</code></div>
-<div class="col-second odd-row-color"><code><a href="#objectMapper" class="member-name-link">objectMapper</a></code></div>
+<div class="col-first odd-row-color"><code>protected <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../connectors/Connector.html" title="class in org.odpi.openmetadata.frameworks.connectors">Connector</a>&gt;</code></div>
+<div class="col-second odd-row-color"><code><a href="#embeddedConnectors" class="member-name-link">embeddedConnectors</a></code></div>
 <div class="col-last odd-row-color">&nbsp;</div>
-<div class="col-first even-row-color"><code>protected final <a href="../openmetadata/search/PropertyHelper.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.search">PropertyHelper</a></code></div>
-<div class="col-second even-row-color"><code><a href="#propertyHelper" class="member-name-link">propertyHelper</a></code></div>
+<div class="col-first even-row-color"><code>protected static com.fasterxml.jackson.databind.ObjectMapper</code></div>
+<div class="col-second even-row-color"><code><a href="#objectMapper" class="member-name-link">objectMapper</a></code></div>
 <div class="col-last even-row-color">&nbsp;</div>
-<div class="col-first odd-row-color"><code>protected <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second odd-row-color"><code><a href="#surveyActionServiceName" class="member-name-link">surveyActionServiceName</a></code></div>
+<div class="col-first odd-row-color"><code>protected final <a href="../openmetadata/search/PropertyHelper.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.search">PropertyHelper</a></code></div>
+<div class="col-second odd-row-color"><code><a href="#propertyHelper" class="member-name-link">propertyHelper</a></code></div>
 <div class="col-last odd-row-color">&nbsp;</div>
-<div class="col-first even-row-color"><code>protected <a href="SurveyContext.html" title="class in org.odpi.openmetadata.frameworks.opensurvey">SurveyContext</a></code></div>
-<div class="col-second even-row-color"><code><a href="#surveyContext" class="member-name-link">surveyContext</a></code></div>
+<div class="col-first even-row-color"><code>protected <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
+<div class="col-second even-row-color"><code><a href="#surveyActionServiceName" class="member-name-link">surveyActionServiceName</a></code></div>
 <div class="col-last even-row-color">&nbsp;</div>
+<div class="col-first odd-row-color"><code>protected <a href="SurveyContext.html" title="class in org.odpi.openmetadata.frameworks.opensurvey">SurveyContext</a></code></div>
+<div class="col-second odd-row-color"><code><a href="#surveyContext" class="member-name-link">surveyContext</a></code></div>
+<div class="col-last odd-row-color">&nbsp;</div>
 </div>
 <div class="inherited-list">
 <h3 id="fields-inherited-from-class-org.odpi.openmetadata.frameworks.connectors.ConnectorBase">Fields inherited from class&nbsp;org.odpi.openmetadata.frameworks.connectors.<a href="../connectors/ConnectorBase.html" title="class in org.odpi.openmetadata.frameworks.connectors">ConnectorBase</a></h3>
@@ -222,62 +225,67 @@ implements <a href="SurveyActionService.html" title="interface in org.odpi.openm
 <div class="block">Receive an audit log object that can be used to record audit log messages.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setSurveyActionServiceName(java.lang.String)" class="member-name-link">setSurveyActionServiceName</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;surveyActionServiceName)</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setCSVFileConnectorTypeGUID(java.lang.String)" class="member-name-link">setCSVFileConnectorTypeGUID</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;csvFileConnectorTypeGUID)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Set up the default connector type for CSV files created by the survey action service.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setSurveyActionServiceName(java.lang.String)" class="member-name-link">setSurveyActionServiceName</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;surveyActionServiceName)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Set up the survey action service name.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setSurveyContext(org.odpi.openmetadata.frameworks.opensurvey.SurveyContext)" class="member-name-link">setSurveyContext</a><wbr>(<a href="SurveyContext.html" title="class in org.odpi.openmetadata.frameworks.opensurvey">SurveyContext</a>&nbsp;surveyContext)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setSurveyContext(org.odpi.openmetadata.frameworks.opensurvey.SurveyContext)" class="member-name-link">setSurveyContext</a><wbr>(<a href="SurveyContext.html" title="class in org.odpi.openmetadata.frameworks.opensurvey">SurveyContext</a>&nbsp;surveyContext)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Set up details of the asset to analyze and the results of any previous analysis.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>protected void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setUpAnnotation(org.odpi.openmetadata.frameworks.openmetadata.properties.surveyreports.AnnotationProperties,org.odpi.openmetadata.frameworks.opensurvey.controls.AnnotationType)" class="member-name-link">setUpAnnotation</a><wbr>(<a href="../openmetadata/properties/surveyreports/AnnotationProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.surveyreports">AnnotationProperties</a>&nbsp;annotation,
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>protected void</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setUpAnnotation(org.odpi.openmetadata.frameworks.openmetadata.properties.surveyreports.AnnotationProperties,org.odpi.openmetadata.frameworks.opensurvey.controls.AnnotationType)" class="member-name-link">setUpAnnotation</a><wbr>(<a href="../openmetadata/properties/surveyreports/AnnotationProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.surveyreports">AnnotationProperties</a>&nbsp;annotation,
  <a href="controls/AnnotationType.html" title="interface in org.odpi.openmetadata.frameworks.opensurvey.controls">AnnotationType</a>&nbsp;annotationType)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Transfer common properties into an annotation.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#start()" class="member-name-link">start</a>()</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#start()" class="member-name-link">start</a>()</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Indicates that the survey action service is completely configured and can begin processing.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>protected void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#throwMissingSchemaType(java.lang.String)" class="member-name-link">throwMissingSchemaType</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;assetGUID)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>protected void</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#throwMissingSchemaType(java.lang.String)" class="member-name-link">throwMissingSchemaType</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;assetGUID)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Record that an asset does not have a schema.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>protected <a href="../openmetadata/properties/surveyreports/ResourceProfileLogAnnotationProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.surveyreports">ResourceProfileLogAnnotationProperties</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#writeNameCountInventory(org.odpi.openmetadata.frameworks.opensurvey.controls.AnnotationType,java.lang.String,java.util.Map,java.lang.String)" class="member-name-link">writeNameCountInventory</a><wbr>(<a href="controls/AnnotationType.html" title="interface in org.odpi.openmetadata.frameworks.opensurvey.controls">AnnotationType</a>&nbsp;annotationType,
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>protected <a href="../openmetadata/properties/surveyreports/ResourceProfileLogAnnotationProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.surveyreports">ResourceProfileLogAnnotationProperties</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#writeNameCountInventory(org.odpi.openmetadata.frameworks.opensurvey.controls.AnnotationType,java.lang.String,java.util.Map,java.lang.String)" class="member-name-link">writeNameCountInventory</a><wbr>(<a href="controls/AnnotationType.html" title="interface in org.odpi.openmetadata.frameworks.opensurvey.controls">AnnotationType</a>&nbsp;annotationType,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;inventoryName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>,<wbr><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Integer.html" title="class or interface in java.lang" class="external-link">Integer</a>&gt;&nbsp;nameCounts,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;surveyReportGUID)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Create an inventory in a CSV File.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>protected <a href="../openmetadata/properties/surveyreports/ResourceProfileLogAnnotationProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.surveyreports">ResourceProfileLogAnnotationProperties</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#writeNameDescriptionInventory(org.odpi.openmetadata.frameworks.opensurvey.controls.AnnotationType,java.lang.String,java.util.Map,java.lang.String)" class="member-name-link">writeNameDescriptionInventory</a><wbr>(<a href="controls/AnnotationType.html" title="interface in org.odpi.openmetadata.frameworks.opensurvey.controls">AnnotationType</a>&nbsp;annotationType,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;inventoryName,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>,<wbr><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;&nbsp;nameDescriptions,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;surveyReportGUID)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Create an inventory in a CSV File.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>protected <a href="../openmetadata/properties/surveyreports/ResourceProfileLogAnnotationProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.surveyreports">ResourceProfileLogAnnotationProperties</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#writeNameDescriptionInventory(org.odpi.openmetadata.frameworks.opensurvey.controls.AnnotationType,java.lang.String,java.util.Map,java.lang.String)" class="member-name-link">writeNameDescriptionInventory</a><wbr>(<a href="controls/AnnotationType.html" title="interface in org.odpi.openmetadata.frameworks.opensurvey.controls">AnnotationType</a>&nbsp;annotationType,
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#writeNameListInventory(org.odpi.openmetadata.frameworks.opensurvey.controls.AnnotationType,java.lang.String,java.util.List,java.lang.String)" class="member-name-link">writeNameListInventory</a><wbr>(<a href="controls/AnnotationType.html" title="interface in org.odpi.openmetadata.frameworks.opensurvey.controls">AnnotationType</a>&nbsp;annotationType,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;inventoryName,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>,<wbr><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;&nbsp;nameDescriptions,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;&nbsp;names,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;surveyReportGUID)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Create an inventory in a CSV File.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>protected <a href="../openmetadata/properties/surveyreports/ResourceProfileLogAnnotationProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.surveyreports">ResourceProfileLogAnnotationProperties</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#writeNameListInventory(org.odpi.openmetadata.frameworks.opensurvey.controls.AnnotationType,java.lang.String,java.util.List,java.lang.String)" class="member-name-link">writeNameListInventory</a><wbr>(<a href="controls/AnnotationType.html" title="interface in org.odpi.openmetadata.frameworks.opensurvey.controls">AnnotationType</a>&nbsp;annotationType,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;inventoryName,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;&nbsp;names,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;surveyReportGUID)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Create an inventory in a CSV File.</div>
-</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>protected <a href="../openmetadata/properties/surveyreports/ResourceProfileLogAnnotationProperties.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.properties.surveyreports">ResourceProfileLogAnnotationProperties</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#writePropertyListInventory(org.odpi.openmetadata.frameworks.opensurvey.controls.AnnotationType,java.lang.String,java.util.List,java.util.List,java.lang.String)" class="member-name-link">writePropertyListInventory</a><wbr>(<a href="controls/AnnotationType.html" title="interface in org.odpi.openmetadata.frameworks.opensurvey.controls">AnnotationType</a>&nbsp;annotationType,
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#writePropertyListInventory(org.odpi.openmetadata.frameworks.opensurvey.controls.AnnotationType,java.lang.String,java.util.List,java.util.List,java.lang.String)" class="member-name-link">writePropertyListInventory</a><wbr>(<a href="controls/AnnotationType.html" title="interface in org.odpi.openmetadata.frameworks.opensurvey.controls">AnnotationType</a>&nbsp;annotationType,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;inventoryName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;&nbsp;propertyNames,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>,<wbr><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;&gt;&nbsp;propertyList,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;surveyReportGUID)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Create an inventory in a CSV File.</div>
 </div>
 </div>
@@ -343,6 +351,12 @@ implements <a href="SurveyActionService.html" title="interface in org.odpi.openm
 <section class="detail" id="embeddedConnectors">
 <h3>embeddedConnectors</h3>
 <div class="member-signature"><span class="modifiers">protected</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../connectors/Connector.html" title="class in org.odpi.openmetadata.frameworks.connectors">Connector</a>&gt;</span>&nbsp;<span class="element-name">embeddedConnectors</span></div>
+</section>
+</li>
+<li>
+<section class="detail" id="csvFileConnectorTypeGUID">
+<h3>csvFileConnectorTypeGUID</h3>
+<div class="member-signature"><span class="modifiers">protected</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">csvFileConnectorTypeGUID</span></div>
 </section>
 </li>
 </ul>
@@ -432,6 +446,17 @@ implements <a href="SurveyActionService.html" title="interface in org.odpi.openm
 <dl class="notes">
 <dt>Parameters:</dt>
 <dd><code>surveyActionServiceName</code> - name of the survey action service</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="setCSVFileConnectorTypeGUID(java.lang.String)">
+<h3>setCSVFileConnectorTypeGUID</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">setCSVFileConnectorTypeGUID</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;csvFileConnectorTypeGUID)</span></div>
+<div class="block">Set up the default connector type for CSV files created by the survey action service.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>csvFileConnectorTypeGUID</code> - string</dd>
 </dl>
 </section>
 </li>

@@ -100,7 +100,7 @@ loadScripts(document, 'script');</script>
 <h2>Field Summary</h2>
 <div class="inherited-list">
 <h3 id="fields-inherited-from-class-org.odpi.openmetadata.frameworks.integration.connectors.CatalogTargetProcessorBase">Fields inherited from class&nbsp;org.odpi.openmetadata.frameworks.integration.connectors.<a href="../../../../frameworks/integration/connectors/CatalogTargetProcessorBase.html" title="class in org.odpi.openmetadata.frameworks.integration.connectors">CatalogTargetProcessorBase</a></h3>
-<code><a href="../../../../frameworks/integration/connectors/CatalogTargetProcessorBase.html#auditLog">auditLog</a>, <a href="../../../../frameworks/integration/connectors/CatalogTargetProcessorBase.html#connectorName">connectorName</a>, <a href="../../../../frameworks/integration/connectors/CatalogTargetProcessorBase.html#propertyHelper">propertyHelper</a></code></div>
+<code><a href="../../../../frameworks/integration/connectors/CatalogTargetProcessorBase.html#auditLog">auditLog</a>, <a href="../../../../frameworks/integration/connectors/CatalogTargetProcessorBase.html#connectorName">connectorName</a>, <a href="../../../../frameworks/integration/connectors/CatalogTargetProcessorBase.html#metadataCollectionGUID">metadataCollectionGUID</a>, <a href="../../../../frameworks/integration/connectors/CatalogTargetProcessorBase.html#metadataCollectionName">metadataCollectionName</a>, <a href="../../../../frameworks/integration/connectors/CatalogTargetProcessorBase.html#propertyHelper">propertyHelper</a></code></div>
 <div class="inherited-list">
 <h3 id="fields-inherited-from-class-org.odpi.openmetadata.frameworks.integration.properties.RequestedCatalogTarget">Fields inherited from class&nbsp;org.odpi.openmetadata.frameworks.integration.properties.<a href="../../../../frameworks/integration/properties/RequestedCatalogTarget.html" title="class in org.odpi.openmetadata.frameworks.integration.properties">RequestedCatalogTarget</a></h3>
 <code><a href="../../../../frameworks/integration/properties/RequestedCatalogTarget.html#connectorToTarget">connectorToTarget</a>, <a href="../../../../frameworks/integration/properties/RequestedCatalogTarget.html#integrationContext">integrationContext</a></code></div>
@@ -120,7 +120,7 @@ loadScripts(document, 'script');</script>
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;connectorName,
  <a href="../../../../frameworks/auditlog/AuditLog.html" title="class in org.odpi.openmetadata.frameworks.auditlog">AuditLog</a>&nbsp;auditLog)</code></div>
 <div class="col-last even-row-color">
-<div class="block">Copy/clone constructor</div>
+<div class="block">Primary constructor</div>
 </div>
 </div>
 </section>
@@ -142,21 +142,19 @@ loadScripts(document, 'script');</script>
 <div class="block">Requests that the connector does a comparison of the metadata in the third party technology and open metadata repositories.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#refreshEventBroker(java.lang.String,java.lang.String,java.lang.String)" class="member-name-link">refreshEventBroker</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;targetRootURL,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;templateGUID,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;templateQualifiedName)</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#start()" class="member-name-link">start</a>()</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Requests that the connector does a comparison of the metadata in the third party technology and open metadata repositories.</div>
+<div class="block">Indicates that the catalog target processor is completely configured and can begin processing.</div>
 </div>
 </div>
 </div>
 </div>
 <div class="inherited-list">
 <h3 id="methods-inherited-from-class-org.odpi.openmetadata.frameworks.integration.connectors.CatalogTargetProcessorBase">Methods inherited from class&nbsp;org.odpi.openmetadata.frameworks.integration.connectors.<a href="../../../../frameworks/integration/connectors/CatalogTargetProcessorBase.html" title="class in org.odpi.openmetadata.frameworks.integration.connectors">CatalogTargetProcessorBase</a></h3>
-<code><a href="../../../../frameworks/integration/connectors/CatalogTargetProcessorBase.html#getDateConfigurationProperty(java.lang.String,java.util.Map)">getDateConfigurationProperty</a>, <a href="../../../../frameworks/integration/connectors/CatalogTargetProcessorBase.html#getStringConfigurationProperty(java.lang.String,java.util.Map)">getStringConfigurationProperty</a></code></div>
+<code><a href="../../../../frameworks/integration/connectors/CatalogTargetProcessorBase.html#disconnect()">disconnect</a>, <a href="../../../../frameworks/integration/connectors/CatalogTargetProcessorBase.html#getArrayConfigurationProperty(java.lang.String,java.util.Map)">getArrayConfigurationProperty</a>, <a href="../../../../frameworks/integration/connectors/CatalogTargetProcessorBase.html#getArrayConfigurationProperty(java.lang.String,java.util.Map,java.lang.String)">getArrayConfigurationProperty</a>, <a href="../../../../frameworks/integration/connectors/CatalogTargetProcessorBase.html#getArrayConfigurationProperty(java.lang.String,java.util.Map,java.util.List)">getArrayConfigurationProperty</a>, <a href="../../../../frameworks/integration/connectors/CatalogTargetProcessorBase.html#getBooleanConfigurationProperty(java.lang.String,java.util.Map)">getBooleanConfigurationProperty</a>, <a href="../../../../frameworks/integration/connectors/CatalogTargetProcessorBase.html#getDateConfigurationProperty(java.lang.String,java.util.Map)">getDateConfigurationProperty</a>, <a href="../../../../frameworks/integration/connectors/CatalogTargetProcessorBase.html#getHostIdentifier(java.lang.String)">getHostIdentifier</a>, <a href="../../../../frameworks/integration/connectors/CatalogTargetProcessorBase.html#getIntConfigurationProperty(java.lang.String,java.util.Map)">getIntConfigurationProperty</a>, <a href="../../../../frameworks/integration/connectors/CatalogTargetProcessorBase.html#getLongConfigurationProperty(java.lang.String,java.util.Map)">getLongConfigurationProperty</a>, <a href="../../../../frameworks/integration/connectors/CatalogTargetProcessorBase.html#getPortNumber(java.lang.String)">getPortNumber</a>, <a href="../../../../frameworks/integration/connectors/CatalogTargetProcessorBase.html#getStringConfigurationProperty(java.lang.String,java.util.Map)">getStringConfigurationProperty</a>, <a href="../../../../frameworks/integration/connectors/CatalogTargetProcessorBase.html#getSuppliedPlaceholderProperties(java.util.Map)">getSuppliedPlaceholderProperties</a>, <a href="../../../../frameworks/integration/connectors/CatalogTargetProcessorBase.html#setUpMetadataSource()">setUpMetadataSource</a>, <a href="../../../../frameworks/integration/connectors/CatalogTargetProcessorBase.html#setUpSoftwareCapability(java.lang.String)">setUpSoftwareCapability</a>, <a href="../../../../frameworks/integration/connectors/CatalogTargetProcessorBase.html#throwBadBeanClass(org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType,java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.metadataelements.OpenMetadataRootElement)">throwBadBeanClass</a>, <a href="../../../../frameworks/integration/connectors/CatalogTargetProcessorBase.html#throwMissingConnectionInfo(java.lang.String,java.lang.String)">throwMissingConnectionInfo</a>, <a href="../../../../frameworks/integration/connectors/CatalogTargetProcessorBase.html#throwMissingPropertyValue(java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.metadataelements.OpenMetadataRootElement)">throwMissingPropertyValue</a>, <a href="../../../../frameworks/integration/connectors/CatalogTargetProcessorBase.html#throwWrongTypeOfCatalogTarget(java.lang.String,java.lang.String)">throwWrongTypeOfCatalogTarget</a>, <a href="../../../../frameworks/integration/connectors/CatalogTargetProcessorBase.html#throwWrongTypeOfResourceConnector(java.lang.String,java.lang.String)">throwWrongTypeOfResourceConnector</a></code></div>
 <div class="inherited-list">
 <h3 id="methods-inherited-from-class-org.odpi.openmetadata.frameworks.integration.properties.RequestedCatalogTarget">Methods inherited from class&nbsp;org.odpi.openmetadata.frameworks.integration.properties.<a href="../../../../frameworks/integration/properties/RequestedCatalogTarget.html" title="class in org.odpi.openmetadata.frameworks.integration.properties">RequestedCatalogTarget</a></h3>
-<code><a href="../../../../frameworks/integration/properties/RequestedCatalogTarget.html#equals(java.lang.Object)">equals</a>, <a href="../../../../frameworks/integration/properties/RequestedCatalogTarget.html#getConnectorToTarget()">getConnectorToTarget</a>, <a href="../../../../frameworks/integration/properties/RequestedCatalogTarget.html#getIntegrationContext()">getIntegrationContext</a>, <a href="../../../../frameworks/integration/properties/RequestedCatalogTarget.html#hashCode()">hashCode</a>, <a href="../../../../frameworks/integration/properties/RequestedCatalogTarget.html#toString()">toString</a></code></div>
+<code><a href="../../../../frameworks/integration/properties/RequestedCatalogTarget.html#equals(java.lang.Object)">equals</a>, <a href="../../../../frameworks/integration/properties/RequestedCatalogTarget.html#getConnectorToTarget()">getConnectorToTarget</a>, <a href="../../../../frameworks/integration/properties/RequestedCatalogTarget.html#getIntegrationContext()">getIntegrationContext</a>, <a href="../../../../frameworks/integration/properties/RequestedCatalogTarget.html#getNetworkAddress()">getNetworkAddress</a>, <a href="../../../../frameworks/integration/properties/RequestedCatalogTarget.html#hashCode()">hashCode</a>, <a href="../../../../frameworks/integration/properties/RequestedCatalogTarget.html#toString()">toString</a></code></div>
 <div class="inherited-list">
 <h3 id="methods-inherited-from-class-org.odpi.openmetadata.frameworks.opengovernance.properties.CatalogTarget">Methods inherited from class&nbsp;org.odpi.openmetadata.frameworks.opengovernance.properties.<a href="../../../../frameworks/opengovernance/properties/CatalogTarget.html" title="class in org.odpi.openmetadata.frameworks.opengovernance.properties">CatalogTarget</a></h3>
 <code><a href="../../../../frameworks/opengovernance/properties/CatalogTarget.html#getCatalogTargetElement()">getCatalogTargetElement</a>, <a href="../../../../frameworks/opengovernance/properties/CatalogTarget.html#getRelationshipGUID()">getRelationshipGUID</a>, <a href="../../../../frameworks/opengovernance/properties/CatalogTarget.html#getRelationshipVersions()">getRelationshipVersions</a>, <a href="../../../../frameworks/opengovernance/properties/CatalogTarget.html#setCatalogTargetElement(org.odpi.openmetadata.frameworks.openmetadata.metadataelements.OpenMetadataRootElement)">setCatalogTargetElement</a>, <a href="../../../../frameworks/opengovernance/properties/CatalogTarget.html#setRelationshipGUID(java.lang.String)">setRelationshipGUID</a>, <a href="../../../../frameworks/opengovernance/properties/CatalogTarget.html#setRelationshipVersions(org.odpi.openmetadata.frameworks.openmetadata.metadataelements.ElementVersions)">setRelationshipVersions</a></code></div>
@@ -190,10 +188,8 @@ loadScripts(document, 'script');</script>
  <a href="../../../../frameworks/integration/context/CatalogTargetContext.html" title="class in org.odpi.openmetadata.frameworks.integration.context">CatalogTargetContext</a>&nbsp;catalogTargetContext,
  <a href="../../../../frameworks/connectors/Connector.html" title="class in org.odpi.openmetadata.frameworks.connectors">Connector</a>&nbsp;connectorToTarget,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;connectorName,
- <a href="../../../../frameworks/auditlog/AuditLog.html" title="class in org.odpi.openmetadata.frameworks.auditlog">AuditLog</a>&nbsp;auditLog)</span>
-                                 throws <span class="exceptions"><a href="../../../../frameworks/connectors/ffdc/ConnectorCheckedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">ConnectorCheckedException</a>,
-<a href="../../../../frameworks/openmetadata/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">UserNotAuthorizedException</a></span></div>
-<div class="block">Copy/clone constructor</div>
+ <a href="../../../../frameworks/auditlog/AuditLog.html" title="class in org.odpi.openmetadata.frameworks.auditlog">AuditLog</a>&nbsp;auditLog)</span></div>
+<div class="block">Primary constructor</div>
 <dl class="notes">
 <dt>Parameters:</dt>
 <dd><code>template</code> - object to copy</dd>
@@ -201,9 +197,6 @@ loadScripts(document, 'script');</script>
 <dd><code>connectorToTarget</code> - connector to access the target resource</dd>
 <dd><code>connectorName</code> - name of this integration connector</dd>
 <dd><code>auditLog</code> - logging destination</dd>
-<dt>Throws:</dt>
-<dd><code><a href="../../../../frameworks/connectors/ffdc/ConnectorCheckedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">ConnectorCheckedException</a></code> - problem connecting to topic</dd>
-<dd><code><a href="../../../../frameworks/openmetadata/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">UserNotAuthorizedException</a></code> - the connector was disconnected before/during start</dd>
 </dl>
 </section>
 </li>
@@ -216,41 +209,37 @@ loadScripts(document, 'script');</script>
 <h2>Method Details</h2>
 <ul class="member-list">
 <li>
-<section class="detail" id="refresh()">
-<h3>refresh</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">refresh</span>()
-             throws <span class="exceptions"><a href="../../../../frameworks/connectors/ffdc/ConnectorCheckedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">ConnectorCheckedException</a></span></div>
-<div class="block">Requests that the connector does a comparison of the metadata in the third party technology and open metadata repositories.
- Refresh is called when the integration connector first starts and then at intervals defined in the connector's configuration
- as well as any external REST API calls to explicitly refresh the connector.</div>
+<section class="detail" id="start()">
+<h3>start</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">start</span>()
+           throws <span class="exceptions"><a href="../../../../frameworks/openmetadata/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">UserNotAuthorizedException</a>,
+<a href="../../../../frameworks/connectors/ffdc/ConnectorCheckedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">ConnectorCheckedException</a></span></div>
+<div class="block">Indicates that the catalog target processor is completely configured and can begin processing.
+ This call can be used to register with non-blocking services.</div>
 <dl class="notes">
-<dt>Specified by:</dt>
-<dd><code><a href="../../../../frameworks/integration/connectors/CatalogTargetProcessorBase.html#refresh()">refresh</a></code>&nbsp;in class&nbsp;<code><a href="../../../../frameworks/integration/connectors/CatalogTargetProcessorBase.html" title="class in org.odpi.openmetadata.frameworks.integration.connectors">CatalogTargetProcessorBase</a></code></dd>
+<dt>Overrides:</dt>
+<dd><code><a href="../../../../frameworks/integration/connectors/CatalogTargetProcessorBase.html#start()">start</a></code>&nbsp;in class&nbsp;<code><a href="../../../../frameworks/integration/connectors/CatalogTargetProcessorBase.html" title="class in org.odpi.openmetadata.frameworks.integration.connectors">CatalogTargetProcessorBase</a></code></dd>
 <dt>Throws:</dt>
-<dd><code><a href="../../../../frameworks/connectors/ffdc/ConnectorCheckedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">ConnectorCheckedException</a></code> - there is a problem with the connector.  It is not able to refresh the metadata.</dd>
+<dd><code><a href="../../../../frameworks/connectors/ffdc/ConnectorCheckedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">ConnectorCheckedException</a></code> - there is a problem within the connector.</dd>
+<dd><code><a href="../../../../frameworks/openmetadata/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">UserNotAuthorizedException</a></code> - the connector was disconnected before/during start</dd>
 </dl>
 </section>
 </li>
 <li>
-<section class="detail" id="refreshEventBroker(java.lang.String,java.lang.String,java.lang.String)">
-<h3>refreshEventBroker</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">refreshEventBroker</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;targetRootURL,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;templateGUID,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;templateQualifiedName)</span>
-                        throws <span class="exceptions"><a href="../../../../frameworks/connectors/ffdc/ConnectorCheckedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">ConnectorCheckedException</a></span></div>
+<section class="detail" id="refresh()">
+<h3>refresh</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">refresh</span>()
+             throws <span class="exceptions"><a href="../../../../frameworks/connectors/ffdc/ConnectorCheckedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">ConnectorCheckedException</a>,
+<a href="../../../../frameworks/openmetadata/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">UserNotAuthorizedException</a></span></div>
 <div class="block">Requests that the connector does a comparison of the metadata in the third party technology and open metadata repositories.
  Refresh is called when the integration connector first starts and then at intervals defined in the connector's configuration
- as well as any external REST API calls to explicitly refresh the connector.
- This method performs two sweeps. It first retrieves the topics from the event broker (Kafka) and validates that are in the
- catalog - adding or updating them if necessary. The second sweep is to ensure that all the topics catalogued
- actually exist in the event broker.</div>
+ as well as any external REST API calls to explicitly refresh the connector.</div>
 <dl class="notes">
-<dt>Parameters:</dt>
-<dd><code>targetRootURL</code> - URL to the Kafka Broker</dd>
-<dd><code>templateGUID</code> - optional template to use when creating new topics</dd>
-<dd><code>templateQualifiedName</code> - qualifiedName for template - only set if templateGUID is set</dd>
+<dt>Overrides:</dt>
+<dd><code><a href="../../../../frameworks/integration/connectors/CatalogTargetProcessorBase.html#refresh()">refresh</a></code>&nbsp;in class&nbsp;<code><a href="../../../../frameworks/integration/connectors/CatalogTargetProcessorBase.html" title="class in org.odpi.openmetadata.frameworks.integration.connectors">CatalogTargetProcessorBase</a></code></dd>
 <dt>Throws:</dt>
 <dd><code><a href="../../../../frameworks/connectors/ffdc/ConnectorCheckedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">ConnectorCheckedException</a></code> - there is a problem with the connector.  It is not able to refresh the metadata.</dd>
+<dd><code><a href="../../../../frameworks/openmetadata/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">UserNotAuthorizedException</a></code> - the connector was disconnected before/during start</dd>
 </dl>
 </section>
 </li>

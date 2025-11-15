@@ -108,6 +108,7 @@ org.odpi.openmetadata.adapters.connectors.secretsstore.yaml.secretsstore
 org.odpi.openmetadata.adapters.connectors.surveyaction.controls
 org.odpi.openmetadata.adapters.connectors.surveyaction.extractors
 org.odpi.openmetadata.adapters.connectors.surveyaction.ffdc
+org.odpi.openmetadata.adapters.connectors.surveyaction.solution
 org.odpi.openmetadata.adapters.connectors.surveyaction.surveycsv
 org.odpi.openmetadata.adapters.connectors.surveyaction.surveyfile
 org.odpi.openmetadata.adapters.connectors.surveyaction.surveyfolder

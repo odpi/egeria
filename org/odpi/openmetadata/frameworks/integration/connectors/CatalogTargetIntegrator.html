@@ -73,15 +73,16 @@ loadScripts(document, 'script');</script>
 </div>
 <section class="class-description" id="class-description">
 <dl class="notes">
+<dt>All Superinterfaces:</dt>
+<dd><code><a href="CatalogTargetFactory.html" title="interface in org.odpi.openmetadata.frameworks.integration.connectors">CatalogTargetFactory</a></code></dd>
+</dl>
+<dl class="notes">
 <dt>All Known Subinterfaces:</dt>
 <dd><code><a href="CatalogTargetEventProcessor.html" title="interface in org.odpi.openmetadata.frameworks.integration.connectors">CatalogTargetEventProcessor</a></code></dd>
 </dl>
-<dl class="notes">
-<dt>All Known Implementing Classes:</dt>
-<dd><code><a href="../../../adapters/connectors/integration/kafkaaudit/DistributeAuditEventsFromKafkaConnector.html" title="class in org.odpi.openmetadata.adapters.connectors.integration.kafkaaudit">DistributeAuditEventsFromKafkaConnector</a></code>, <code><a href="../../../adapters/connectors/nannyconnectors/harvestopenmetadata/HarvestOpenMetadataConnector.html" title="class in org.odpi.openmetadata.adapters.connectors.nannyconnectors.harvestopenmetadata">HarvestOpenMetadataConnector</a></code>, <code><a href="../../../adapters/connectors/nannyconnectors/harvestsurveys/HarvestSurveysConnector.html" title="class in org.odpi.openmetadata.adapters.connectors.nannyconnectors.harvestsurveys">HarvestSurveysConnector</a></code>, <code><a href="../../../adapters/connectors/integration/jdbc/JDBCIntegrationConnector.html" title="class in org.odpi.openmetadata.adapters.connectors.integration.jdbc">JDBCIntegrationConnector</a></code>, <code><a href="../../../adapters/connectors/apachekafka/integration/KafkaTopicIntegrationConnector.html" title="class in org.odpi.openmetadata.adapters.connectors.apachekafka.integration">KafkaTopicIntegrationConnector</a></code>, <code><a href="../../../adapters/connectors/integration/openlineage/OpenLineageEventReceiverIntegrationConnector.html" title="class in org.odpi.openmetadata.adapters.connectors.integration.openlineage">OpenLineageEventReceiverIntegrationConnector</a></code>, <code><a href="../../../adapters/connectors/productmanager/OpenMetadataProductsHarvesterConnector.html" title="class in org.odpi.openmetadata.adapters.connectors.productmanager">OpenMetadataProductsHarvesterConnector</a></code>, <code><a href="../../../adapters/connectors/unitycatalog/sync/OSSUnityCatalogInsideCatalogSyncConnector.html" title="class in org.odpi.openmetadata.adapters.connectors.unitycatalog.sync">OSSUnityCatalogInsideCatalogSyncConnector</a></code>, <code><a href="../../../adapters/connectors/unitycatalog/sync/OSSUnityCatalogServerSyncConnector.html" title="class in org.odpi.openmetadata.adapters.connectors.unitycatalog.sync">OSSUnityCatalogServerSyncConnector</a></code>, <code><a href="../../../adapters/connectors/postgres/catalog/PostgresServerIntegrationConnector.html" title="class in org.odpi.openmetadata.adapters.connectors.postgres.catalog">PostgresServerIntegrationConnector</a></code></dd>
-</dl>
 <hr>
-<div class="type-signature"><span class="modifiers">public interface </span><span class="element-name type-name-label">CatalogTargetIntegrator</span></div>
+<div class="type-signature"><span class="modifiers">public interface </span><span class="element-name type-name-label">CatalogTargetIntegrator</span><span class="extends-implements">
+extends <a href="CatalogTargetFactory.html" title="interface in org.odpi.openmetadata.frameworks.integration.connectors">CatalogTargetFactory</a></span></div>
 <div class="block">CatalogTargetIntegrator is an optional interface that an integration connector can implement to walk through
  the catalog targets assigned to the integration connector.</div>
 </section>
@@ -92,27 +93,23 @@ loadScripts(document, 'script');</script>
 <section class="method-summary" id="method-summary">
 <h2>Method Summary</h2>
 <div id="method-summary-table">
-<div class="table-tabs" role="tablist" aria-orientation="horizontal"><button id="method-summary-table-tab0" role="tab" aria-selected="true" aria-controls="method-summary-table.tabpanel" tabindex="0" onkeydown="switchTab(event)" onclick="show('method-summary-table', 'method-summary-table', 3)" class="active-table-tab">All Methods</button><button id="method-summary-table-tab2" role="tab" aria-selected="false" aria-controls="method-summary-table.tabpanel" tabindex="-1" onkeydown="switchTab(event)" onclick="show('method-summary-table', 'method-summary-table-tab2', 3)" class="table-tab">Instance Methods</button><button id="method-summary-table-tab3" role="tab" aria-selected="false" aria-controls="method-summary-table.tabpanel" tabindex="-1" onkeydown="switchTab(event)" onclick="show('method-summary-table', 'method-summary-table-tab3', 3)" class="table-tab">Abstract Methods</button><button id="method-summary-table-tab5" role="tab" aria-selected="false" aria-controls="method-summary-table.tabpanel" tabindex="-1" onkeydown="switchTab(event)" onclick="show('method-summary-table', 'method-summary-table-tab5', 3)" class="table-tab">Default Methods</button></div>
+<div class="table-tabs" role="tablist" aria-orientation="horizontal"><button id="method-summary-table-tab0" role="tab" aria-selected="true" aria-controls="method-summary-table.tabpanel" tabindex="0" onkeydown="switchTab(event)" onclick="show('method-summary-table', 'method-summary-table', 3)" class="active-table-tab">All Methods</button><button id="method-summary-table-tab2" role="tab" aria-selected="false" aria-controls="method-summary-table.tabpanel" tabindex="-1" onkeydown="switchTab(event)" onclick="show('method-summary-table', 'method-summary-table-tab2', 3)" class="table-tab">Instance Methods</button><button id="method-summary-table-tab3" role="tab" aria-selected="false" aria-controls="method-summary-table.tabpanel" tabindex="-1" onkeydown="switchTab(event)" onclick="show('method-summary-table', 'method-summary-table-tab3', 3)" class="table-tab">Abstract Methods</button></div>
 <div id="method-summary-table.tabpanel" role="tabpanel" aria-labelledby="method-summary-table-tab0">
 <div class="summary-table three-column-summary">
 <div class="table-header col-first">Modifier and Type</div>
 <div class="table-header col-second">Method</div>
 <div class="table-header col-last">Description</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab5"><code>default <a href="../properties/RequestedCatalogTarget.html" title="class in org.odpi.openmetadata.frameworks.integration.properties">RequestedCatalogTarget</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab5"><code><a href="#getNewRequestedCatalogTargetSkeleton(org.odpi.openmetadata.frameworks.opengovernance.properties.CatalogTarget,org.odpi.openmetadata.frameworks.integration.context.CatalogTargetContext,org.odpi.openmetadata.frameworks.connectors.Connector)" class="member-name-link">getNewRequestedCatalogTargetSkeleton</a><wbr>(<a href="../../opengovernance/properties/CatalogTarget.html" title="class in org.odpi.openmetadata.frameworks.opengovernance.properties">CatalogTarget</a>&nbsp;retrievedCatalogTarget,
- <a href="../context/CatalogTargetContext.html" title="class in org.odpi.openmetadata.frameworks.integration.context">CatalogTargetContext</a>&nbsp;catalogTargetContext,
- <a href="../../connectors/Connector.html" title="class in org.odpi.openmetadata.frameworks.connectors">Connector</a>&nbsp;connectorToTarget)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab5">
-<div class="block">Create a new catalog target processor (typically inherits from CatalogTargetProcessorBase).</div>
-</div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code>void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#integrateCatalogTarget(org.odpi.openmetadata.frameworks.integration.properties.RequestedCatalogTarget)" class="member-name-link">integrateCatalogTarget</a><wbr>(<a href="../properties/RequestedCatalogTarget.html" title="class in org.odpi.openmetadata.frameworks.integration.properties">RequestedCatalogTarget</a>&nbsp;requestedCatalogTarget)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code>void</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#integrateCatalogTarget(org.odpi.openmetadata.frameworks.integration.properties.RequestedCatalogTarget)" class="member-name-link">integrateCatalogTarget</a><wbr>(<a href="../properties/RequestedCatalogTarget.html" title="class in org.odpi.openmetadata.frameworks.integration.properties">RequestedCatalogTarget</a>&nbsp;requestedCatalogTarget)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">
 <div class="block">Perform the required integration logic for the assigned catalog target.</div>
 </div>
 </div>
 </div>
 </div>
+<div class="inherited-list">
+<h3 id="methods-inherited-from-class-org.odpi.openmetadata.frameworks.integration.connectors.CatalogTargetFactory">Methods inherited from interface&nbsp;org.odpi.openmetadata.frameworks.integration.connectors.<a href="CatalogTargetFactory.html" title="interface in org.odpi.openmetadata.frameworks.integration.connectors">CatalogTargetFactory</a></h3>
+<code><a href="CatalogTargetFactory.html#getNewRequestedCatalogTargetSkeleton(org.odpi.openmetadata.frameworks.opengovernance.properties.CatalogTarget,org.odpi.openmetadata.frameworks.integration.context.CatalogTargetContext,org.odpi.openmetadata.frameworks.connectors.Connector)">getNewRequestedCatalogTargetSkeleton</a></code></div>
 </section>
 </li>
 </ul>
@@ -135,28 +132,6 @@ loadScripts(document, 'script');</script>
 <dd><code>requestedCatalogTarget</code> - the catalog target</dd>
 <dt>Throws:</dt>
 <dd><code><a href="../../connectors/ffdc/ConnectorCheckedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">ConnectorCheckedException</a></code> - there is an unrecoverable error and the connector should stop processing.</dd>
-</dl>
-</section>
-</li>
-<li>
-<section class="detail" id="getNewRequestedCatalogTargetSkeleton(org.odpi.openmetadata.frameworks.opengovernance.properties.CatalogTarget,org.odpi.openmetadata.frameworks.integration.context.CatalogTargetContext,org.odpi.openmetadata.frameworks.connectors.Connector)">
-<h3>getNewRequestedCatalogTargetSkeleton</h3>
-<div class="member-signature"><span class="modifiers">default</span>&nbsp;<span class="return-type"><a href="../properties/RequestedCatalogTarget.html" title="class in org.odpi.openmetadata.frameworks.integration.properties">RequestedCatalogTarget</a></span>&nbsp;<span class="element-name">getNewRequestedCatalogTargetSkeleton</span><wbr><span class="parameters">(<a href="../../opengovernance/properties/CatalogTarget.html" title="class in org.odpi.openmetadata.frameworks.opengovernance.properties">CatalogTarget</a>&nbsp;retrievedCatalogTarget,
- <a href="../context/CatalogTargetContext.html" title="class in org.odpi.openmetadata.frameworks.integration.context">CatalogTargetContext</a>&nbsp;catalogTargetContext,
- <a href="../../connectors/Connector.html" title="class in org.odpi.openmetadata.frameworks.connectors">Connector</a>&nbsp;connectorToTarget)</span>
-                                                             throws <span class="exceptions"><a href="../../connectors/ffdc/ConnectorCheckedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">ConnectorCheckedException</a>,
-<a href="../../openmetadata/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">UserNotAuthorizedException</a></span></div>
-<div class="block">Create a new catalog target processor (typically inherits from CatalogTargetProcessorBase).</div>
-<dl class="notes">
-<dt>Parameters:</dt>
-<dd><code>retrievedCatalogTarget</code> - details of the open metadata elements describing the catalog target</dd>
-<dd><code>catalogTargetContext</code> - specialized context for this catalog target</dd>
-<dd><code>connectorToTarget</code> - connector to access the target resource</dd>
-<dt>Returns:</dt>
-<dd>new processor based on the catalog target information</dd>
-<dt>Throws:</dt>
-<dd><code><a href="../../connectors/ffdc/ConnectorCheckedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">ConnectorCheckedException</a></code> - problem setting up target</dd>
-<dd><code><a href="../../openmetadata/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">UserNotAuthorizedException</a></code> - the connector was disconnected before/during start</dd>
 </dl>
 </section>
 </li>

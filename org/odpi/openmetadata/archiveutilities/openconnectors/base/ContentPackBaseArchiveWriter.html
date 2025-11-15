@@ -145,7 +145,8 @@ loadScripts(document, 'script');</script>
 <div class="block">Loop through the server template definitions creating the specified templates.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>protected <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#addDeployedImplementationType(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.refdata.DeployedImplementationTypeDefinition)" class="member-name-link">addDeployedImplementationType</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;deployedImplementationType,
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#addDeployedImplementationType(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.refdata.DeployedImplementationTypeDefinition)" class="member-name-link">addDeployedImplementationType</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;guid,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;deployedImplementationType,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;associatedTypeName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;qualifiedName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;description,
@@ -879,9 +880,10 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
-<section class="detail" id="addDeployedImplementationType(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.refdata.DeployedImplementationTypeDefinition)">
+<section class="detail" id="addDeployedImplementationType(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.refdata.DeployedImplementationTypeDefinition)">
 <h3>addDeployedImplementationType</h3>
-<div class="member-signature"><span class="modifiers">protected</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">addDeployedImplementationType</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;deployedImplementationType,
+<div class="member-signature"><span class="modifiers">protected</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">addDeployedImplementationType</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;guid,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;deployedImplementationType,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;associatedTypeName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;qualifiedName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;description,
@@ -890,6 +892,7 @@ loadScripts(document, 'script');</script>
 <div class="block">Add a new valid values record for a deployed implementation type.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
+<dd><code>guid</code> - unique identifier of technology type (deployedImplementationType)</dd>
 <dd><code>deployedImplementationType</code> - preferred value</dd>
 <dd><code>associatedTypeName</code> - specific type name to tie it to (maybe null)</dd>
 <dd><code>qualifiedName</code> - qualifiedName for this value</dd>

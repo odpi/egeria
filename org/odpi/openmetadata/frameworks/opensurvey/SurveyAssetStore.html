@@ -115,12 +115,15 @@ loadScripts(document, 'script');</script>
 <div class="table-header col-second">Method</div>
 <div class="table-header col-last">Description</div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#addCSVFileToCatalog(java.lang.String,java.lang.String,java.lang.String,java.util.List,java.lang.Character,java.lang.Character)" class="member-name-link">addCSVFileToCatalog</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;displayName,
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#addCSVFileToCatalog(java.lang.String,java.lang.String,java.lang.String,java.util.List,java.lang.Character,java.lang.Character,java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.search.NewElementOptions)" class="member-name-link">addCSVFileToCatalog</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;displayName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;description,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;pathName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;&nbsp;columnHeaders,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Character.html" title="class or interface in java.lang" class="external-link">Character</a>&nbsp;delimiterCharacter,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Character.html" title="class or interface in java.lang" class="external-link">Character</a>&nbsp;quoteCharacter)</code></div>
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Character.html" title="class or interface in java.lang" class="external-link">Character</a>&nbsp;quoteCharacter,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;versionIdentifier,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;connectorTypeGUID,
+ <a href="../openmetadata/search/NewElementOptions.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.search">NewElementOptions</a>&nbsp;newElementOptions)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Add a simple asset description linked to a connection object for a CSV file.</div>
 </div>
@@ -285,14 +288,17 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
-<section class="detail" id="addCSVFileToCatalog(java.lang.String,java.lang.String,java.lang.String,java.util.List,java.lang.Character,java.lang.Character)">
+<section class="detail" id="addCSVFileToCatalog(java.lang.String,java.lang.String,java.lang.String,java.util.List,java.lang.Character,java.lang.Character,java.lang.String,java.lang.String,org.odpi.openmetadata.frameworks.openmetadata.search.NewElementOptions)">
 <h3>addCSVFileToCatalog</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">addCSVFileToCatalog</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;displayName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;description,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;pathName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;&nbsp;columnHeaders,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Character.html" title="class or interface in java.lang" class="external-link">Character</a>&nbsp;delimiterCharacter,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Character.html" title="class or interface in java.lang" class="external-link">Character</a>&nbsp;quoteCharacter)</span>
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Character.html" title="class or interface in java.lang" class="external-link">Character</a>&nbsp;quoteCharacter,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;versionIdentifier,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;connectorTypeGUID,
+ <a href="../openmetadata/search/NewElementOptions.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.search">NewElementOptions</a>&nbsp;newElementOptions)</span>
                            throws <span class="exceptions"><a href="../openmetadata/ffdc/InvalidParameterException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">InvalidParameterException</a>,
 <a href="../openmetadata/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">UserNotAuthorizedException</a>,
 <a href="../openmetadata/ffdc/PropertyServerException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">PropertyServerException</a></span></div>
@@ -305,6 +311,9 @@ loadScripts(document, 'script');</script>
 <dd><code>columnHeaders</code> - does the first line of the file contain the column names. If not pass the list of column headers.</dd>
 <dd><code>delimiterCharacter</code> - what is the delimiter character - null for default of comma</dd>
 <dd><code>quoteCharacter</code> - what is the character to group a field that contains delimiter characters</dd>
+<dd><code>versionIdentifier</code> - version identifier to use in the metadata elements</dd>
+<dd><code>connectorTypeGUID</code> - optional connector type to indicate that a connection should be created</dd>
+<dd><code>newElementOptions</code> - options to control the create process</dd>
 <dt>Returns:</dt>
 <dd>list of GUIDs from the top level to the root of the pathname</dd>
 <dt>Throws:</dt>

@@ -84,7 +84,8 @@ loadScripts(document, 'script');</script>
 <span class="extends-implements">extends <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a>
 implements <a href="CatalogTargetChangeListener.html" title="interface in org.odpi.openmetadata.frameworks.integration.connectors">CatalogTargetChangeListener</a></span></div>
 <div class="block">Manages the map of catalog targets that this integration connector is working with.  It is also responsible for
- keeping the list current.</div>
+ keeping the list current.  This is the OIF implementation of CatalogTargetChangeListener that is driven from
+ the connector base.  It is also possible for an integration connector to register itself as a listener with this class.</div>
 </section>
 <section class="summary">
 <ul class="summary-list">
@@ -119,33 +120,50 @@ implements <a href="CatalogTargetChangeListener.html" title="interface in org.od
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#disconnect()" class="member-name-link">disconnect</a>()</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Shutdown event monitoring</div>
+<div class="block">Shutdown metadata synchronization</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../properties/RequestedCatalogTarget.html" title="class in org.odpi.openmetadata.frameworks.integration.properties">RequestedCatalogTarget</a>&gt;</code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getRequestedCatalogTargets()" class="member-name-link">getRequestedCatalogTargets</a>()</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Return list of the current catalog targets</div>
+<div class="block">Return list of the current catalog targets - used in event processing for speed.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#newCatalogTarget(org.odpi.openmetadata.frameworks.integration.properties.RequestedCatalogTarget)" class="member-name-link">newCatalogTarget</a><wbr>(<a href="../properties/RequestedCatalogTarget.html" title="class in org.odpi.openmetadata.frameworks.integration.properties">RequestedCatalogTarget</a>&nbsp;catalogTarget)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">This catalog target has been created since the last refresh.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../properties/RequestedCatalogTarget.html" title="class in org.odpi.openmetadata.frameworks.integration.properties">RequestedCatalogTarget</a>&gt;</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#refreshKnownCatalogTargets(org.odpi.openmetadata.frameworks.integration.context.IntegrationContext,org.odpi.openmetadata.frameworks.integration.connectors.CatalogTargetIntegrator)" class="member-name-link">refreshKnownCatalogTargets</a><wbr>(<a href="../context/IntegrationContext.html" title="class in org.odpi.openmetadata.frameworks.integration.context">IntegrationContext</a>&nbsp;integrationContext,
- <a href="CatalogTargetIntegrator.html" title="interface in org.odpi.openmetadata.frameworks.integration.connectors">CatalogTargetIntegrator</a>&nbsp;catalogTargetIntegrator)</code></div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#passEventToCatalogTargets(org.odpi.openmetadata.frameworks.integration.context.IntegrationContext,org.odpi.openmetadata.frameworks.openmetadata.events.OpenMetadataOutTopicEvent)" class="member-name-link">passEventToCatalogTargets</a><wbr>(<a href="../context/IntegrationContext.html" title="class in org.odpi.openmetadata.frameworks.integration.context">IntegrationContext</a>&nbsp;integrationContext,
+ <a href="../../openmetadata/events/OpenMetadataOutTopicEvent.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.events">OpenMetadataOutTopicEvent</a>&nbsp;event)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Return a list of requested catalog targets for the connector.</div>
+<div class="block">Retrieve the latest list of catalog targets and call refresh on each one.</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#refreshCatalogTargets(org.odpi.openmetadata.frameworks.integration.context.IntegrationContext,org.odpi.openmetadata.frameworks.integration.connectors.CatalogTargetFactory)" class="member-name-link">refreshCatalogTargets</a><wbr>(<a href="../context/IntegrationContext.html" title="class in org.odpi.openmetadata.frameworks.integration.context">IntegrationContext</a>&nbsp;integrationContext,
+ <a href="CatalogTargetFactory.html" title="interface in org.odpi.openmetadata.frameworks.integration.connectors">CatalogTargetFactory</a>&nbsp;catalogTargetFactory)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Retrieve the latest list of catalog targets and call refresh on each one.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#registerCatalogTargetChangeListener(org.odpi.openmetadata.frameworks.integration.connectors.CatalogTargetChangeListener)" class="member-name-link">registerCatalogTargetChangeListener</a><wbr>(<a href="CatalogTargetChangeListener.html" title="interface in org.odpi.openmetadata.frameworks.integration.connectors">CatalogTargetChangeListener</a>&nbsp;listener)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Add a listener.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#removedCatalogTarget(org.odpi.openmetadata.frameworks.integration.properties.RequestedCatalogTarget)" class="member-name-link">removedCatalogTarget</a><wbr>(<a href="../properties/RequestedCatalogTarget.html" title="class in org.odpi.openmetadata.frameworks.integration.properties">RequestedCatalogTarget</a>&nbsp;catalogTarget)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">This catalog target has been removed from the connector.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#updatedCatalogTarget(org.odpi.openmetadata.frameworks.integration.properties.RequestedCatalogTarget,org.odpi.openmetadata.frameworks.integration.properties.RequestedCatalogTarget)" class="member-name-link">updatedCatalogTarget</a><wbr>(<a href="../properties/RequestedCatalogTarget.html" title="class in org.odpi.openmetadata.frameworks.integration.properties">RequestedCatalogTarget</a>&nbsp;oldCatalogTarget,
- <a href="../properties/RequestedCatalogTarget.html" title="class in org.odpi.openmetadata.frameworks.integration.properties">RequestedCatalogTarget</a>&nbsp;newCatalogTarget)</code></div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../properties/RequestedCatalogTarget.html" title="class in org.odpi.openmetadata.frameworks.integration.properties">RequestedCatalogTarget</a>&gt;</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#retrieveKnownCatalogTargets(org.odpi.openmetadata.frameworks.integration.context.IntegrationContext,org.odpi.openmetadata.frameworks.integration.connectors.CatalogTargetFactory)" class="member-name-link">retrieveKnownCatalogTargets</a><wbr>(<a href="../context/IntegrationContext.html" title="class in org.odpi.openmetadata.frameworks.integration.context">IntegrationContext</a>&nbsp;integrationContext,
+ <a href="CatalogTargetFactory.html" title="interface in org.odpi.openmetadata.frameworks.integration.connectors">CatalogTargetFactory</a>&nbsp;catalogTargetFactory)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Return a list of requested catalog targets for the connector.</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#updatedCatalogTarget(org.odpi.openmetadata.frameworks.integration.properties.RequestedCatalogTarget,org.odpi.openmetadata.frameworks.integration.properties.RequestedCatalogTarget)" class="member-name-link">updatedCatalogTarget</a><wbr>(<a href="../properties/RequestedCatalogTarget.html" title="class in org.odpi.openmetadata.frameworks.integration.properties">RequestedCatalogTarget</a>&nbsp;oldCatalogTarget,
+ <a href="../properties/RequestedCatalogTarget.html" title="class in org.odpi.openmetadata.frameworks.integration.properties">RequestedCatalogTarget</a>&nbsp;newCatalogTarget)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">This catalog target has new properties.</div>
 </div>
 </div>
@@ -189,18 +207,52 @@ implements <a href="CatalogTargetChangeListener.html" title="interface in org.od
 <h2>Method Details</h2>
 <ul class="member-list">
 <li>
-<section class="detail" id="refreshKnownCatalogTargets(org.odpi.openmetadata.frameworks.integration.context.IntegrationContext,org.odpi.openmetadata.frameworks.integration.connectors.CatalogTargetIntegrator)">
-<h3>refreshKnownCatalogTargets</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../properties/RequestedCatalogTarget.html" title="class in org.odpi.openmetadata.frameworks.integration.properties">RequestedCatalogTarget</a>&gt;</span>&nbsp;<span class="element-name">refreshKnownCatalogTargets</span><wbr><span class="parameters">(<a href="../context/IntegrationContext.html" title="class in org.odpi.openmetadata.frameworks.integration.context">IntegrationContext</a>&nbsp;integrationContext,
- <a href="CatalogTargetIntegrator.html" title="interface in org.odpi.openmetadata.frameworks.integration.connectors">CatalogTargetIntegrator</a>&nbsp;catalogTargetIntegrator)</span>
-                                                        throws <span class="exceptions"><a href="../../connectors/ffdc/ConnectorCheckedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">ConnectorCheckedException</a></span></div>
+<section class="detail" id="retrieveKnownCatalogTargets(org.odpi.openmetadata.frameworks.integration.context.IntegrationContext,org.odpi.openmetadata.frameworks.integration.connectors.CatalogTargetFactory)">
+<h3>retrieveKnownCatalogTargets</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../properties/RequestedCatalogTarget.html" title="class in org.odpi.openmetadata.frameworks.integration.properties">RequestedCatalogTarget</a>&gt;</span>&nbsp;<span class="element-name">retrieveKnownCatalogTargets</span><wbr><span class="parameters">(<a href="../context/IntegrationContext.html" title="class in org.odpi.openmetadata.frameworks.integration.context">IntegrationContext</a>&nbsp;integrationContext,
+ <a href="CatalogTargetFactory.html" title="interface in org.odpi.openmetadata.frameworks.integration.connectors">CatalogTargetFactory</a>&nbsp;catalogTargetFactory)</span>
+                                                         throws <span class="exceptions"><a href="../../connectors/ffdc/ConnectorCheckedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">ConnectorCheckedException</a></span></div>
 <div class="block">Return a list of requested catalog targets for the connector.  These are extracted from the metadata store.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
-<dd><code>integrationContext</code> - the integration component that will process each catalog target</dd>
-<dd><code>catalogTargetIntegrator</code> - subclass of connector implementation</dd>
+<dd><code>integrationContext</code> - the integration context for the parent connector</dd>
+<dd><code>catalogTargetFactory</code> - subclass of connector implementation that is able to create a catalog target processor</dd>
 <dt>Throws:</dt>
 <dd><code><a href="../../connectors/ffdc/ConnectorCheckedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">ConnectorCheckedException</a></code> - there is a problem with the connector.  It is not able to refresh the metadata.</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="refreshCatalogTargets(org.odpi.openmetadata.frameworks.integration.context.IntegrationContext,org.odpi.openmetadata.frameworks.integration.connectors.CatalogTargetFactory)">
+<h3>refreshCatalogTargets</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">refreshCatalogTargets</span><wbr><span class="parameters">(<a href="../context/IntegrationContext.html" title="class in org.odpi.openmetadata.frameworks.integration.context">IntegrationContext</a>&nbsp;integrationContext,
+ <a href="CatalogTargetFactory.html" title="interface in org.odpi.openmetadata.frameworks.integration.connectors">CatalogTargetFactory</a>&nbsp;catalogTargetFactory)</span>
+                           throws <span class="exceptions"><a href="../../connectors/ffdc/ConnectorCheckedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">ConnectorCheckedException</a>,
+<a href="../../openmetadata/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">UserNotAuthorizedException</a></span></div>
+<div class="block">Retrieve the latest list of catalog targets and call refresh on each one.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>integrationContext</code> - the integration context for the parent connector</dd>
+<dd><code>catalogTargetFactory</code> - subclass of connector implementation that is able to create a catalog target processor</dd>
+<dt>Throws:</dt>
+<dd><code><a href="../../connectors/ffdc/ConnectorCheckedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">ConnectorCheckedException</a></code> - there is a problem with the connector.  It is not able to refresh the metadata.</dd>
+<dd><code><a href="../../openmetadata/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">UserNotAuthorizedException</a></code> - connector has been shut down</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="passEventToCatalogTargets(org.odpi.openmetadata.frameworks.integration.context.IntegrationContext,org.odpi.openmetadata.frameworks.openmetadata.events.OpenMetadataOutTopicEvent)">
+<h3>passEventToCatalogTargets</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">passEventToCatalogTargets</span><wbr><span class="parameters">(<a href="../context/IntegrationContext.html" title="class in org.odpi.openmetadata.frameworks.integration.context">IntegrationContext</a>&nbsp;integrationContext,
+ <a href="../../openmetadata/events/OpenMetadataOutTopicEvent.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.events">OpenMetadataOutTopicEvent</a>&nbsp;event)</span>
+                               throws <span class="exceptions"><a href="../../openmetadata/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">UserNotAuthorizedException</a></span></div>
+<div class="block">Retrieve the latest list of catalog targets and call refresh on each one.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>integrationContext</code> - the integration context for the parent connector</dd>
+<dd><code>event</code> - event to pass on to each catalog target that is capable</dd>
+<dt>Throws:</dt>
+<dd><code><a href="../../openmetadata/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">UserNotAuthorizedException</a></code> - connector has been shut down</dd>
 </dl>
 </section>
 </li>
@@ -208,7 +260,7 @@ implements <a href="CatalogTargetChangeListener.html" title="interface in org.od
 <section class="detail" id="getRequestedCatalogTargets()">
 <h3>getRequestedCatalogTargets</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../properties/RequestedCatalogTarget.html" title="class in org.odpi.openmetadata.frameworks.integration.properties">RequestedCatalogTarget</a>&gt;</span>&nbsp;<span class="element-name">getRequestedCatalogTargets</span>()</div>
-<div class="block">Return list of the current catalog targets</div>
+<div class="block">Return list of the current catalog targets - used in event processing for speed.</div>
 <dl class="notes">
 <dt>Returns:</dt>
 <dd>list of the current catalog targets</dd>
@@ -216,15 +268,31 @@ implements <a href="CatalogTargetChangeListener.html" title="interface in org.od
 </section>
 </li>
 <li>
+<section class="detail" id="registerCatalogTargetChangeListener(org.odpi.openmetadata.frameworks.integration.connectors.CatalogTargetChangeListener)">
+<h3>registerCatalogTargetChangeListener</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">registerCatalogTargetChangeListener</span><wbr><span class="parameters">(<a href="CatalogTargetChangeListener.html" title="interface in org.odpi.openmetadata.frameworks.integration.connectors">CatalogTargetChangeListener</a>&nbsp;listener)</span></div>
+<div class="block">Add a listener.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>listener</code> - listener to register</dd>
+</dl>
+</section>
+</li>
+<li>
 <section class="detail" id="newCatalogTarget(org.odpi.openmetadata.frameworks.integration.properties.RequestedCatalogTarget)">
 <h3>newCatalogTarget</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">newCatalogTarget</span><wbr><span class="parameters">(<a href="../properties/RequestedCatalogTarget.html" title="class in org.odpi.openmetadata.frameworks.integration.properties">RequestedCatalogTarget</a>&nbsp;catalogTarget)</span></div>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">newCatalogTarget</span><wbr><span class="parameters">(<a href="../properties/RequestedCatalogTarget.html" title="class in org.odpi.openmetadata.frameworks.integration.properties">RequestedCatalogTarget</a>&nbsp;catalogTarget)</span>
+                      throws <span class="exceptions"><a href="../../openmetadata/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">UserNotAuthorizedException</a>,
+<a href="../../connectors/ffdc/ConnectorCheckedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">ConnectorCheckedException</a></span></div>
 <div class="block">This catalog target has been created since the last refresh.</div>
 <dl class="notes">
 <dt>Specified by:</dt>
 <dd><code><a href="CatalogTargetChangeListener.html#newCatalogTarget(org.odpi.openmetadata.frameworks.integration.properties.RequestedCatalogTarget)">newCatalogTarget</a></code>&nbsp;in interface&nbsp;<code><a href="CatalogTargetChangeListener.html" title="interface in org.odpi.openmetadata.frameworks.integration.connectors">CatalogTargetChangeListener</a></code></dd>
 <dt>Parameters:</dt>
 <dd><code>catalogTarget</code> - new catalog target</dd>
+<dt>Throws:</dt>
+<dd><code><a href="../../openmetadata/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">UserNotAuthorizedException</a></code> - parent connector has been disconnected</dd>
+<dd><code><a href="../../connectors/ffdc/ConnectorCheckedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">ConnectorCheckedException</a></code> - problem starting up</dd>
 </dl>
 </section>
 </li>
@@ -246,13 +314,16 @@ implements <a href="CatalogTargetChangeListener.html" title="interface in org.od
 <li>
 <section class="detail" id="removedCatalogTarget(org.odpi.openmetadata.frameworks.integration.properties.RequestedCatalogTarget)">
 <h3>removedCatalogTarget</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">removedCatalogTarget</span><wbr><span class="parameters">(<a href="../properties/RequestedCatalogTarget.html" title="class in org.odpi.openmetadata.frameworks.integration.properties">RequestedCatalogTarget</a>&nbsp;catalogTarget)</span></div>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">removedCatalogTarget</span><wbr><span class="parameters">(<a href="../properties/RequestedCatalogTarget.html" title="class in org.odpi.openmetadata.frameworks.integration.properties">RequestedCatalogTarget</a>&nbsp;catalogTarget)</span>
+                          throws <span class="exceptions"><a href="../../connectors/ffdc/ConnectorCheckedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">ConnectorCheckedException</a></span></div>
 <div class="block">This catalog target has been removed from the connector.</div>
 <dl class="notes">
 <dt>Specified by:</dt>
 <dd><code><a href="CatalogTargetChangeListener.html#removedCatalogTarget(org.odpi.openmetadata.frameworks.integration.properties.RequestedCatalogTarget)">removedCatalogTarget</a></code>&nbsp;in interface&nbsp;<code><a href="CatalogTargetChangeListener.html" title="interface in org.odpi.openmetadata.frameworks.integration.connectors">CatalogTargetChangeListener</a></code></dd>
 <dt>Parameters:</dt>
 <dd><code>catalogTarget</code> - removed relationship</dd>
+<dt>Throws:</dt>
+<dd><code><a href="../../connectors/ffdc/ConnectorCheckedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">ConnectorCheckedException</a></code> - problem disconnecting</dd>
 </dl>
 </section>
 </li>
@@ -261,7 +332,7 @@ implements <a href="CatalogTargetChangeListener.html" title="interface in org.od
 <h3>disconnect</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">disconnect</span>()
                 throws <span class="exceptions"><a href="../../connectors/ffdc/ConnectorCheckedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">ConnectorCheckedException</a></span></div>
-<div class="block">Shutdown event monitoring</div>
+<div class="block">Shutdown metadata synchronization</div>
 <dl class="notes">
 <dt>Throws:</dt>
 <dd><code><a href="../../connectors/ffdc/ConnectorCheckedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">ConnectorCheckedException</a></code> - something failed in the super class</dd>

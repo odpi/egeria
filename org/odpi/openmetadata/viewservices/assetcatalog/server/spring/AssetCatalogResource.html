@@ -131,9 +131,9 @@ loadScripts(document, 'script');</script>
 <div class="block">Return all the elements that are linked to an asset using lineage relationships.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../../commonservices/ffdc/rest/OpenMetadataRootElementsResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">OpenMetadataRootElementsResponse</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getAssetsByMetadataCollectionId(java.lang.String,java.lang.String,org.odpi.openmetadata.commonservices.ffdc.rest.FilterRequestBody)" class="member-name-link">getAssetsByMetadataCollectionId</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getAssetsByMetadataCollectionId(java.lang.String,java.lang.String,org.odpi.openmetadata.commonservices.ffdc.rest.ResultsRequestBody)" class="member-name-link">getAssetsByMetadataCollectionId</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;metadataCollectionId,
- <a href="../../../../commonservices/ffdc/rest/FilterRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">FilterRequestBody</a>&nbsp;requestBody)</code></div>
+ <a href="../../../../commonservices/ffdc/rest/ResultsRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">ResultsRequestBody</a>&nbsp;requestBody)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Return a list of assets that come from the requested metadata collection.</div>
 </div>
@@ -264,7 +264,7 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
-<section class="detail" id="getAssetsByMetadataCollectionId(java.lang.String,java.lang.String,org.odpi.openmetadata.commonservices.ffdc.rest.FilterRequestBody)">
+<section class="detail" id="getAssetsByMetadataCollectionId(java.lang.String,java.lang.String,org.odpi.openmetadata.commonservices.ffdc.rest.ResultsRequestBody)">
 <h3>getAssetsByMetadataCollectionId</h3>
 <div class="member-signature"><span class="annotations">@PostMapping(path="/assets/by-metadata-collection-id/{metadataCollectionId}")
 </span><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../../../commonservices/ffdc/rest/OpenMetadataRootElementsResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">OpenMetadataRootElementsResponse</a></span>&nbsp;<span class="element-name">getAssetsByMetadataCollectionId</span><wbr><span class="parameters">(@PathVariable
@@ -272,7 +272,7 @@ loadScripts(document, 'script');</script>
  @PathVariable
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;metadataCollectionId,
  @RequestBody(required=false)
- <a href="../../../../commonservices/ffdc/rest/FilterRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">FilterRequestBody</a>&nbsp;requestBody)</span></div>
+ <a href="../../../../commonservices/ffdc/rest/ResultsRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">ResultsRequestBody</a>&nbsp;requestBody)</span></div>
 <div class="block">Return a list of assets that come from the requested metadata collection.</div>
 <dl class="notes">
 <dt>Parameters:</dt>

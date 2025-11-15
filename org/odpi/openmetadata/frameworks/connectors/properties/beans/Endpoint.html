@@ -107,7 +107,7 @@ loadScripts(document, 'script');</script>
          description - A description for the endpoint.
      </li>
      <li>
-         address - The location of the asset.  For network connected resources, this is typically the
+         networkAddress - The location of the asset.  For network connected resources, this is typically the
          URL and port number (if needed) for the server where the asset is located
          (or at least accessible by the connector).  For file-based resources, this is typically the name of the file.
      </li>
@@ -140,10 +140,10 @@ loadScripts(document, 'script');</script>
 <div class="table-header col-second">Field</div>
 <div class="table-header col-last">Description</div>
 <div class="col-first even-row-color"><code>protected <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second even-row-color"><code><a href="#address" class="member-name-link">address</a></code></div>
+<div class="col-second even-row-color"><code><a href="#encryptionMethod" class="member-name-link">encryptionMethod</a></code></div>
 <div class="col-last even-row-color">&nbsp;</div>
 <div class="col-first odd-row-color"><code>protected <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second odd-row-color"><code><a href="#encryptionMethod" class="member-name-link">encryptionMethod</a></code></div>
+<div class="col-second odd-row-color"><code><a href="#networkAddress" class="member-name-link">networkAddress</a></code></div>
 <div class="col-last odd-row-color">&nbsp;</div>
 <div class="col-first even-row-color"><code>protected <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
 <div class="col-second even-row-color"><code><a href="#protocol" class="member-name-link">protocol</a></code></div>
@@ -193,19 +193,19 @@ loadScripts(document, 'script');</script>
 <div class="block">Compare the values of the supplied object with those stored in the current object.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getAddress()" class="member-name-link">getAddress</a>()</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getEncryptionMethod()" class="member-name-link">getEncryptionMethod</a>()</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Returns the stored address property for the endpoint.</div>
-</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getEncryptionMethod()" class="member-name-link">getEncryptionMethod</a>()</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Returns the stored encryptionMethod property for the endpoint.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static <a href="../../../openmetadata/metadataelements/ElementType.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.metadataelements">ElementType</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#getEndpointType()" class="member-name-link">getEndpointType</a>()</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
+<div class="col-first even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static <a href="../../../openmetadata/metadataelements/ElementType.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.metadataelements">ElementType</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#getEndpointType()" class="member-name-link">getEndpointType</a>()</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
 <div class="block">Return the standard type for an endpoint.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getNetworkAddress()" class="member-name-link">getNetworkAddress</a>()</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Returns the stored address property for the endpoint.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getProtocol()" class="member-name-link">getProtocol</a>()</code></div>
@@ -218,14 +218,14 @@ loadScripts(document, 'script');</script>
 <div class="block">Hash of properties</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setAddress(java.lang.String)" class="member-name-link">setAddress</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;address)</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setEncryptionMethod(java.lang.String)" class="member-name-link">setEncryptionMethod</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;encryptionMethod)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Set up the network address of the Endpoint.</div>
+<div class="block">Set up the encryption method used on this Endpoint.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setEncryptionMethod(java.lang.String)" class="member-name-link">setEncryptionMethod</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;encryptionMethod)</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setNetworkAddress(java.lang.String)" class="member-name-link">setNetworkAddress</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;networkAddress)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Set up the encryption method used on this Endpoint.</div>
+<div class="block">Set up the network address of the Endpoint.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setProtocol(java.lang.String)" class="member-name-link">setProtocol</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;protocol)</code></div>
@@ -264,9 +264,9 @@ loadScripts(document, 'script');</script>
 <h2>Field Details</h2>
 <ul class="member-list">
 <li>
-<section class="detail" id="address">
-<h3>address</h3>
-<div class="member-signature"><span class="modifiers">protected</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">address</span></div>
+<section class="detail" id="networkAddress">
+<h3>networkAddress</h3>
+<div class="member-signature"><span class="modifiers">protected</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">networkAddress</span></div>
 </section>
 </li>
 <li>
@@ -327,20 +327,20 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
-<section class="detail" id="setAddress(java.lang.String)">
-<h3>setAddress</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">setAddress</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;address)</span></div>
+<section class="detail" id="setNetworkAddress(java.lang.String)">
+<h3>setNetworkAddress</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">setNetworkAddress</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;networkAddress)</span></div>
 <div class="block">Set up the network address of the Endpoint.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
-<dd><code>address</code> - String resource name</dd>
+<dd><code>networkAddress</code> - String resource name</dd>
 </dl>
 </section>
 </li>
 <li>
-<section class="detail" id="getAddress()">
-<h3>getAddress</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">getAddress</span>()</div>
+<section class="detail" id="getNetworkAddress()">
+<h3>getNetworkAddress</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">getNetworkAddress</span>()</div>
 <div class="block">Returns the stored address property for the endpoint.
  If no network address is available then null is returned.</div>
 <dl class="notes">

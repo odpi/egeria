@@ -159,10 +159,20 @@ loadScripts(document, 'script');</script>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Return the integration context for this catalog target.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>int</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#hashCode()" class="member-name-link">hashCode</a>()</code></div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>protected <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getNetworkAddress()" class="member-name-link">getNetworkAddress</a>()</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Retrieve the endpoint from the asset connection.</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>int</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#hashCode()" class="member-name-link">hashCode</a>()</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Return hash code for this object</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#start()" class="member-name-link">start</a>()</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Indicates that the catalog target processor is completely configured and can begin processing.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#toString()" class="member-name-link">toString</a>()</code></div>
@@ -252,6 +262,21 @@ loadScripts(document, 'script');</script>
 <h2>Method Details</h2>
 <ul class="member-list">
 <li>
+<section class="detail" id="start()">
+<h3>start</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">start</span>()
+           throws <span class="exceptions"><a href="../../connectors/ffdc/ConnectorCheckedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">ConnectorCheckedException</a>,
+<a href="../../openmetadata/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">UserNotAuthorizedException</a></span></div>
+<div class="block">Indicates that the catalog target processor is completely configured and can begin processing.
+ This call can be used to register with non-blocking services.</div>
+<dl class="notes">
+<dt>Throws:</dt>
+<dd><code><a href="../../connectors/ffdc/ConnectorCheckedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">ConnectorCheckedException</a></code> - there is a problem within the connector.</dd>
+<dd><code><a href="../../openmetadata/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">UserNotAuthorizedException</a></code> - the connector was disconnected before/during start</dd>
+</dl>
+</section>
+</li>
+<li>
 <section class="detail" id="getConnectorToTarget()">
 <h3>getConnectorToTarget</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../connectors/Connector.html" title="class in org.odpi.openmetadata.frameworks.connectors">Connector</a></span>&nbsp;<span class="element-name">getConnectorToTarget</span>()</div>
@@ -259,6 +284,17 @@ loadScripts(document, 'script');</script>
 <dl class="notes">
 <dt>Returns:</dt>
 <dd>connector</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="getNetworkAddress()">
+<h3>getNetworkAddress</h3>
+<div class="member-signature"><span class="modifiers">protected</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">getNetworkAddress</span>()</div>
+<div class="block">Retrieve the endpoint from the asset connection.</div>
+<dl class="notes">
+<dt>Returns:</dt>
+<dd>endpoint or null</dd>
 </dl>
 </section>
 </li>

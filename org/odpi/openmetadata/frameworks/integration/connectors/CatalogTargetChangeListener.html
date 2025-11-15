@@ -129,11 +129,16 @@ loadScripts(document, 'script');</script>
 <li>
 <section class="detail" id="newCatalogTarget(org.odpi.openmetadata.frameworks.integration.properties.RequestedCatalogTarget)">
 <h3>newCatalogTarget</h3>
-<div class="member-signature"><span class="return-type">void</span>&nbsp;<span class="element-name">newCatalogTarget</span><wbr><span class="parameters">(<a href="../properties/RequestedCatalogTarget.html" title="class in org.odpi.openmetadata.frameworks.integration.properties">RequestedCatalogTarget</a>&nbsp;catalogTarget)</span></div>
+<div class="member-signature"><span class="return-type">void</span>&nbsp;<span class="element-name">newCatalogTarget</span><wbr><span class="parameters">(<a href="../properties/RequestedCatalogTarget.html" title="class in org.odpi.openmetadata.frameworks.integration.properties">RequestedCatalogTarget</a>&nbsp;catalogTarget)</span>
+               throws <span class="exceptions"><a href="../../openmetadata/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">UserNotAuthorizedException</a>,
+<a href="../../connectors/ffdc/ConnectorCheckedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">ConnectorCheckedException</a></span></div>
 <div class="block">This catalog target has been created since the last refresh.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
 <dd><code>catalogTarget</code> - new catalog target</dd>
+<dt>Throws:</dt>
+<dd><code><a href="../../connectors/ffdc/ConnectorCheckedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">ConnectorCheckedException</a></code> - problem starting up</dd>
+<dd><code><a href="../../openmetadata/ffdc/UserNotAuthorizedException.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.ffdc">UserNotAuthorizedException</a></code> - parent connector has been disconnected</dd>
 </dl>
 </section>
 </li>
@@ -153,11 +158,14 @@ loadScripts(document, 'script');</script>
 <li>
 <section class="detail" id="removedCatalogTarget(org.odpi.openmetadata.frameworks.integration.properties.RequestedCatalogTarget)">
 <h3>removedCatalogTarget</h3>
-<div class="member-signature"><span class="return-type">void</span>&nbsp;<span class="element-name">removedCatalogTarget</span><wbr><span class="parameters">(<a href="../properties/RequestedCatalogTarget.html" title="class in org.odpi.openmetadata.frameworks.integration.properties">RequestedCatalogTarget</a>&nbsp;catalogTarget)</span></div>
+<div class="member-signature"><span class="return-type">void</span>&nbsp;<span class="element-name">removedCatalogTarget</span><wbr><span class="parameters">(<a href="../properties/RequestedCatalogTarget.html" title="class in org.odpi.openmetadata.frameworks.integration.properties">RequestedCatalogTarget</a>&nbsp;catalogTarget)</span>
+                   throws <span class="exceptions"><a href="../../connectors/ffdc/ConnectorCheckedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">ConnectorCheckedException</a></span></div>
 <div class="block">This catalog target has been removed from the connector.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
 <dd><code>catalogTarget</code> - removed relationship</dd>
+<dt>Throws:</dt>
+<dd><code><a href="../../connectors/ffdc/ConnectorCheckedException.html" title="class in org.odpi.openmetadata.frameworks.connectors.ffdc">ConnectorCheckedException</a></code> - problem disconnecting</dd>
 </dl>
 </section>
 </li>

@@ -177,10 +177,10 @@ loadScripts(document, 'script');</script>
 <div class="block">Create a new metadata element to represent a collection using an existing metadata element as a template.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#deleteCollection(java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.commonservices.ffdc.rest.DeleteRelationshipRequestBody)" class="member-name-link">deleteCollection</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#deleteCollection(java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.commonservices.ffdc.rest.DeleteElementRequestBody)" class="member-name-link">deleteCollection</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;serverName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;urlMarker,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;collectionGUID,
- <a href="../../../../commonservices/ffdc/rest/DeleteRelationshipRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">DeleteRelationshipRequestBody</a>&nbsp;requestBody)</code></div>
+ <a href="../../../../commonservices/ffdc/rest/DeleteElementRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">DeleteElementRequestBody</a>&nbsp;requestBody)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Delete a collection.</div>
 </div>
@@ -1290,7 +1290,7 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
-<section class="detail" id="deleteCollection(java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.commonservices.ffdc.rest.DeleteRelationshipRequestBody)">
+<section class="detail" id="deleteCollection(java.lang.String,java.lang.String,java.lang.String,org.odpi.openmetadata.commonservices.ffdc.rest.DeleteElementRequestBody)">
 <h3>deleteCollection</h3>
 <div class="member-signature"><span class="annotations">@PostMapping(path="/collections/{collectionGUID}/delete")
 </span><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../../../commonservices/ffdc/rest/VoidResponse.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">VoidResponse</a></span>&nbsp;<span class="element-name">deleteCollection</span><wbr><span class="parameters">(@PathVariable
@@ -1300,7 +1300,7 @@ loadScripts(document, 'script');</script>
  @PathVariable
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;collectionGUID,
  @RequestBody(required=false)
- <a href="../../../../commonservices/ffdc/rest/DeleteRelationshipRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">DeleteRelationshipRequestBody</a>&nbsp;requestBody)</span></div>
+ <a href="../../../../commonservices/ffdc/rest/DeleteElementRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">DeleteElementRequestBody</a>&nbsp;requestBody)</span></div>
 <div class="block">Delete a collection.  It is detected from all parent elements.  If members are anchored to the collection
  then they are also deleted.</div>
 <dl class="notes">
@@ -1442,7 +1442,7 @@ loadScripts(document, 'script');</script>
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;collectionGUID,
  @PathVariable
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;elementGUID,
- @RequestBody
+ @RequestBody(required=false)
  <a href="../../../../commonservices/ffdc/rest/DeleteRelationshipRequestBody.html" title="class in org.odpi.openmetadata.commonservices.ffdc.rest">DeleteRelationshipRequestBody</a>&nbsp;requestBody)</span></div>
 <div class="block">Remove an element from a collection.</div>
 <dl class="notes">
