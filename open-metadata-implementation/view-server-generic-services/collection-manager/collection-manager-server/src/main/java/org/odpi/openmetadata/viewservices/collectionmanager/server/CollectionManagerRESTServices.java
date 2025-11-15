@@ -1875,7 +1875,7 @@ public class CollectionManagerRESTServices extends TokenController
     public VoidResponse deleteCollection(String            serverName,
                                          String            urlMarker,
                                          String            collectionGUID,
-                                         DeleteRelationshipRequestBody requestBody)
+                                         DeleteElementRequestBody requestBody)
     {
         final String methodName = "deleteCollection";
 

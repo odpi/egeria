@@ -25,11 +25,6 @@ import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterExcept
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.frameworks.openmetadata.handlers.AssetHandler;
-import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.OpenMetadataRootElement;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.metadatarepositories.MetadataCollectionProperties;
-import org.odpi.openmetadata.frameworks.openmetadata.search.NewElementOptions;
-import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
-import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -145,31 +140,12 @@ public abstract class IntegrationContextManager implements OpenLineageListenerMa
     {
         if ((assetHandler != null) && (metadataSourceQualifiedName != null))
         {
-            OpenMetadataRootElement metadataCollection = assetHandler.getAssetByUniqueName(localServerUserId, metadataSourceQualifiedName, OpenMetadataProperty.QUALIFIED_NAME.name, null);
-
-            if (metadataCollection == null)
-            {
-                NewElementOptions newElementOptions = new NewElementOptions();
-
-                newElementOptions.setIsOwnAnchor(true);
-
-                MetadataCollectionProperties metadataCollectionProperties = new MetadataCollectionProperties();
-
-                metadataCollectionProperties.setQualifiedName(OpenMetadataType.METADATA_COLLECTION.typeName + "::" +  connectorName + " [" + connectorId + "]");
-                metadataCollectionProperties.setDeployedImplementationType(ElementOriginCategory.EXTERNAL_SOURCE.getName());
-                metadataCollectionProperties.setDisplayName("Metadata collection for connector " + connectorName);
-                metadataCollectionProperties.setDescription("This is the metadata belonging to connector " + connectorName + " that is running with userId " + connectorUserId + ".");
-
-                return assetHandler.createAsset(localServerUserId,
-                                                newElementOptions,
-                                                null,
-                                                metadataCollectionProperties,
-                                                null);
-            }
-            else
-            {
-                return metadataCollection.getElementHeader().getGUID();
-            }
+            return assetHandler.setUpMetadataSource(localServerUserId,
+                                                    metadataSourceQualifiedName,
+                                                    connectorId,
+                                                    connectorName,
+                                                    connectorUserId,
+                                                    ElementOriginCategory.EXTERNAL_SOURCE);
         }
 
         return null;
@@ -208,9 +184,10 @@ public abstract class IntegrationContextManager implements OpenLineageListenerMa
         IntegrationContext integrationContext = null;
 
         String externalSourceGUID = this.setUpMetadataSource(metadataSourceQualifiedName,
-                                                             null,
-                                                             null,
-                                                             null);
+                                                             connectorId,
+                                                             connectorName,
+                                                             connectorUserId);
+
         String externalSourceName = metadataSourceQualifiedName;
 
         if (externalSourceGUID == null)
@@ -221,23 +198,23 @@ public abstract class IntegrationContextManager implements OpenLineageListenerMa
         if (openMetadataClient != null)
         {
             integrationContext = new IntegrationContext(localServerName,
-                                                         localServiceName,
-                                                         externalSourceGUID,
-                                                         externalSourceName,
-                                                         connectorId,
-                                                         connectorName,
-                                                         connectorUserId,
-                                                         integrationConnectorGUID,
-                                                         generateIntegrationReport,
-                                                         permittedSynchronization,
-                                                         openMetadataClient,
-                                                         this.createEventClient(connectorId),
-                                                         connectedAssetClient,
-                                                         this,
-                                                         governanceConfiguration,
-                                                         openGovernanceClient,
-                                                         auditLog,
-                                                         maxPageSize,
+                                                        localServiceName,
+                                                        externalSourceGUID,
+                                                        externalSourceName,
+                                                        connectorId,
+                                                        connectorName,
+                                                        connectorUserId,
+                                                        integrationConnectorGUID,
+                                                        generateIntegrationReport,
+                                                        permittedSynchronization,
+                                                        openMetadataClient,
+                                                        this.createEventClient(connectorId),
+                                                        connectedAssetClient,
+                                                        this,
+                                                        governanceConfiguration,
+                                                        openGovernanceClient,
+                                                        auditLog,
+                                                        maxPageSize,
                                                         deleteMethod);
         }
 

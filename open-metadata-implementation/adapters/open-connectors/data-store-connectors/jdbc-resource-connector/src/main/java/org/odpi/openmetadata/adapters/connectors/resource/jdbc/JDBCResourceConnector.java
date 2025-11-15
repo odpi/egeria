@@ -94,7 +94,7 @@ public class JDBCResourceConnector extends ConnectorBase implements AuditLogging
 
         if (endpoint != null)
         {
-            jdbcDatabaseURL = endpoint.getAddress();
+            jdbcDatabaseURL = endpoint.getNetworkAddress();
         }
 
         if (jdbcDatabaseURL == null)
@@ -1029,11 +1029,11 @@ public class JDBCResourceConnector extends ConnectorBase implements AuditLogging
                 {
                     if ((connectionBean.getUserId() == null) || (connectionBean.getClearPassword() == null))
                     {
-                        jdbcConnection = DriverManager.getConnection(connectionBean.getEndpoint().getAddress());
+                        jdbcConnection = DriverManager.getConnection(connectionBean.getEndpoint().getNetworkAddress());
                     }
                     else
                     {
-                        jdbcConnection = DriverManager.getConnection(connectionBean.getEndpoint().getAddress(),
+                        jdbcConnection = DriverManager.getConnection(connectionBean.getEndpoint().getNetworkAddress(),
                                                                      connectionBean.getUserId(),
                                                                      connectionBean.getClearPassword());
                     }
@@ -1090,7 +1090,7 @@ public class JDBCResourceConnector extends ConnectorBase implements AuditLogging
 
             try
             {
-                jdbcConnection = DriverManager.getConnection(connectionBean.getEndpoint().getAddress(), username, password);
+                jdbcConnection = DriverManager.getConnection(connectionBean.getEndpoint().getNetworkAddress(), username, password);
 
                 if (auditLog != null)
                 {

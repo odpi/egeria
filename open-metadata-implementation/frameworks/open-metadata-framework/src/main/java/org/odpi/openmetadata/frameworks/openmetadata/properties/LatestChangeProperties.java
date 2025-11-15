@@ -23,14 +23,14 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class LatestChangeProperties extends ClassificationBeanProperties
 {
-    private LatestChangeTarget latestChangeTarget = null;
-    private LatestChangeAction latestChangeAction = null;
-    private String             classificationName = null;
-    private String             attachmentGUID     = null;
-    private String             attachmentTypeName = null;
+    private LatestChangeTarget latestChangeTarget   = null;
+    private LatestChangeAction latestChangeAction   = null;
+    private String             classificationName   = null;
+    private String             attachmentGUID       = null;
+    private String             attachmentTypeName   = null;
     private String             relationshipTypeName = null;
-    private String             userId             = null;
-    private String             actionDescription  = null;
+    private String             userId               = null;
+    private String             description          = null;
 
 
     /**
@@ -60,8 +60,8 @@ public class LatestChangeProperties extends ClassificationBeanProperties
             attachmentGUID       = template.getAttachmentGUID();
             attachmentTypeName   = template.getAttachmentTypeName();
             relationshipTypeName = template.getRelationshipTypeName();
-            userId               = template.getUserId();
-            actionDescription    = template.getActionDescription();
+            userId      = template.getUserId();
+            description = template.getDescription();
         }
     }
 
@@ -224,20 +224,20 @@ public class LatestChangeProperties extends ClassificationBeanProperties
      *
      * @return text
      */
-    public String getActionDescription()
+    public String getDescription()
     {
-        return actionDescription;
+        return description;
     }
 
 
     /**
      * Set up the description of the change.
      *
-     * @param actionDescription text
+     * @param description text
      */
-    public void setActionDescription(String actionDescription)
+    public void setDescription(String description)
     {
-        this.actionDescription = actionDescription;
+        this.description = description;
     }
 
 
@@ -258,7 +258,7 @@ public class LatestChangeProperties extends ClassificationBeanProperties
                 ", attachmentTypeName='" + attachmentTypeName + '\'' +
                 ", relationshipTypeName='" + relationshipTypeName + '\'' +
                 ", userId='" + userId + '\'' +
-                ", actionDescription='" + actionDescription + '\'' +
+                ", actionDescription='" + description + '\'' +
                 "} " + super.toString();
     }
 
@@ -282,7 +282,7 @@ public class LatestChangeProperties extends ClassificationBeanProperties
                 Objects.equals(attachmentTypeName, that.attachmentTypeName) &&
                 Objects.equals(relationshipTypeName, that.relationshipTypeName) &&
                 Objects.equals(userId, that.userId) &&
-                Objects.equals(actionDescription, that.actionDescription);
+                Objects.equals(description, that.description);
     }
 
     /**
@@ -293,6 +293,6 @@ public class LatestChangeProperties extends ClassificationBeanProperties
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), latestChangeTarget, latestChangeAction, classificationName, attachmentGUID, attachmentTypeName, relationshipTypeName, userId, actionDescription);
+        return Objects.hash(super.hashCode(), latestChangeTarget, latestChangeAction, classificationName, attachmentGUID, attachmentTypeName, relationshipTypeName, userId, description);
     }
 }

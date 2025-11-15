@@ -1041,7 +1041,7 @@ public class EgeriaExtractor
 
             if (connection.getEndpoint() != null)
             {
-                connectorProperties.setNetworkAddress(connection.getEndpoint().getAddress());
+                connectorProperties.setNetworkAddress(connection.getEndpoint().getNetworkAddress());
             }
 
             if (connection instanceof VirtualConnection virtualConnection)

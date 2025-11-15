@@ -43,7 +43,8 @@ public class ApacheKafkaPackArchiveWriter extends ContentPackBaseArchiveWriter
          */
         for (KafkaDeployedImplementationType deployedImplementationType : KafkaDeployedImplementationType.values())
         {
-            this.addDeployedImplementationType(deployedImplementationType.getDeployedImplementationType(),
+            this.addDeployedImplementationType(deployedImplementationType.getGUID(),
+                                               deployedImplementationType.getDeployedImplementationType(),
                                                deployedImplementationType.getAssociatedTypeName(),
                                                deployedImplementationType.getQualifiedName(),
                                                deployedImplementationType.getDescription(),

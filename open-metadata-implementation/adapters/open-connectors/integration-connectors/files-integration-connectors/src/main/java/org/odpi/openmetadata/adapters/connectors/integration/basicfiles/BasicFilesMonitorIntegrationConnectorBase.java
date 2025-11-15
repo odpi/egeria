@@ -85,9 +85,9 @@ public abstract class BasicFilesMonitorIntegrationConnectorBase extends Integrat
          */
         Endpoint endpoint = connectionBean.getEndpoint();
 
-        if ((endpoint != null) && (endpoint.getAddress() != null))
+        if ((endpoint != null) && (endpoint.getNetworkAddress() != null))
         {
-            String endpointNetworkAddress = endpoint.getAddress();
+            String endpointNetworkAddress = endpoint.getNetworkAddress();
 
             for (DirectoryToMonitor directoryToMonitor : directoriesToMonitor)
             {
@@ -101,7 +101,7 @@ public abstract class BasicFilesMonitorIntegrationConnectorBase extends Integrat
             }
 
             DirectoryToMonitor directoryToMonitor = checkDirectoryToMonitor(OpenMetadataType.ENDPOINT.typeName + "::" + OpenMetadataProperty.NETWORK_ADDRESS.name,
-                                                                            endpoint.getAddress(),
+                                                                            endpoint.getNetworkAddress(),
                                                                             null,
                                                                             null,
                                                                             defaultTemplates,

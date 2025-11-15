@@ -279,6 +279,7 @@ public class CommentHandler extends OpenMetadataHandlerBase
                                             guidParameterName,
                                             1,
                                             OpenMetadataType.ATTACHED_COMMENT_RELATIONSHIP.typeName,
+                                            OpenMetadataType.COMMENT.typeName,
                                             queryOptions,
                                             methodName);
     }

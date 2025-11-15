@@ -542,7 +542,7 @@ public class RelationshipAccumulator
         {
             if (relationship != null)
             {
-                originalRelationships.add(relationship.getGUID());
+                originalRelationships.add(relationship.getGUID() + "[" + relationship.getCreatedBy() + "," + relationship.getType().getTypeDefName() + "]");
             }
         }
         auditLog.logMessage(methodName,

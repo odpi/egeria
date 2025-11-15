@@ -3,22 +3,14 @@
 package org.odpi.openmetadata.opentypes;
 
 
-import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
-import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 import org.odpi.openmetadata.repositoryservices.archiveutilities.OMRSArchiveBuilder;
 import org.odpi.openmetadata.repositoryservices.archiveutilities.OMRSArchiveHelper;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.archivestore.properties.OpenMetadataArchive;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.archivestore.properties.OpenMetadataArchiveType;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDefAttribute;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDefAttributeStatus;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDefPatch;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDefStatus;
 import org.odpi.openmetadata.repositoryservices.ffdc.OMRSErrorCode;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.OMRSLogicErrorException;
 
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 
 /**
  * OpenMetadataTypesArchive builds an open metadata archive containing all of the standard open metadata types.
@@ -160,60 +152,7 @@ public class OpenMetadataTypesArchive2_8
         /*
          * Calls for new and changed types go here
          */
-        update0025Locations();
     }
-
-
-    /*
-     * -------------------------------------------------------------------------------------------------------
-     */
-
-    private void update0025Locations()
-    {
-        this.archiveBuilder.addTypeDefPatch(updateFixedLocation());
-        this.archiveBuilder.addTypeDefPatch(updateCyberLocation());
-    }
-
-
-    private TypeDefPatch updateFixedLocation()
-    {
-         TypeDefPatch typeDefPatch = archiveBuilder.getPatchForType(OpenMetadataType.FIXED_LOCATION_CLASSIFICATION.typeName);
-
-        typeDefPatch.setUpdatedBy(originatorName);
-        typeDefPatch.setUpdateTime(creationDate);
-
-        /*
-         * Build the attributes
-         */
-        List<TypeDefAttribute> properties = new ArrayList<>();
-
-        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.POSTAL_ADDRESS));
-        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.MAP_PROJECTION));
-
-        typeDefPatch.setPropertyDefinitions(properties);
-
-        return typeDefPatch;
-    }
-
-    private TypeDefPatch updateCyberLocation()
-    {
-        TypeDefPatch typeDefPatch = archiveBuilder.getPatchForType(OpenMetadataType.CYBER_LOCATION_CLASSIFICATION.typeName);
-
-        typeDefPatch.setUpdatedBy(originatorName);
-        typeDefPatch.setUpdateTime(creationDate);
-
-        /*
-         * Build the attributes
-         */
-        List<TypeDefAttribute> properties = new ArrayList<>();
-
-        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.NETWORK_ADDRESS));
-
-        typeDefPatch.setPropertyDefinitions(properties);
-
-        return typeDefPatch;
-    }
-
 
 
     /*

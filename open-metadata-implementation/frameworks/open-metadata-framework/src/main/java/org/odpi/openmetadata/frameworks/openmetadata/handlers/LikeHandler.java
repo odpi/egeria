@@ -96,6 +96,7 @@ public class LikeHandler extends FeedbackHandler
         OpenMetadataRootElement existingLike = this.getFeedbackForUser(userId,
                                                                        elementGUID,
                                                                        OpenMetadataType.ATTACHED_LIKE_RELATIONSHIP.typeName,
+                                                                       OpenMetadataType.LIKE.typeName,
                                                                        new QueryOptions(metadataSourceOptions),
                                                                        methodName);
         if (existingLike != null)
@@ -139,6 +140,7 @@ public class LikeHandler extends FeedbackHandler
                                             guidParameterName,
                                             1,
                                             OpenMetadataType.ATTACHED_LIKE_RELATIONSHIP.typeName,
+                                            OpenMetadataType.LIKE.typeName,
                                             queryOptions,
                                             methodName);
     }

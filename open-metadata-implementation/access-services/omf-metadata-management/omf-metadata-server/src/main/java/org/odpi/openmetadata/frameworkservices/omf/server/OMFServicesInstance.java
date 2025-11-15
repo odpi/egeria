@@ -4,23 +4,15 @@ package org.odpi.openmetadata.frameworkservices.omf.server;
 
 
 import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceDescription;
-import org.odpi.openmetadata.commonservices.generichandlers.*;
-import org.odpi.openmetadata.commonservices.generichandlers.ElementHeaderConverter;
 import org.odpi.openmetadata.commonservices.multitenant.AccessServerServiceInstance;
+import org.odpi.openmetadata.commonservices.multitenant.ffdc.exceptions.NewInstanceException;
+import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
-import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.ElementHeader;
-import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.MetadataElementSummary;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.MetadataCorrelationHeader;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.OpenMetadataElement;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.validvalues.ValidMetadataValueProperties;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.ValidMetadataValueDetail;
 import org.odpi.openmetadata.frameworkservices.omf.connectors.outtopic.OMFOutTopicClientProvider;
-import org.odpi.openmetadata.frameworkservices.omf.converters.*;
 import org.odpi.openmetadata.frameworkservices.omf.converters.MetadataElementConverter;
 import org.odpi.openmetadata.frameworkservices.omf.ffdc.OMFServicesErrorCode;
 import org.odpi.openmetadata.frameworkservices.omf.handlers.MetadataElementHandler;
-import org.odpi.openmetadata.commonservices.multitenant.ffdc.exceptions.NewInstanceException;
-import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryConnector;
 
 /**
@@ -33,10 +25,6 @@ public class OMFServicesInstance extends AccessServerServiceInstance
     private final static AccessServiceDescription myDescription = AccessServiceDescription.OMF_METADATA_MANAGEMENT;
 
     private final MetadataElementHandler<OpenMetadataElement>      metadataElementHandler;
-    private final ValidValuesHandler<ValidMetadataValueProperties> validMetadataValuesHandler;
-    private final ValidValuesHandler<ValidMetadataValueDetail>     validMetadataValuesDetailHandler;
-    private final ExternalIdentifierHandler<MetadataCorrelationHeader, ElementHeader> externalIdentifierHandler;
-    private final ReferenceableHandler<MetadataElementSummary> metadataElementSummaryHandler;
 
 
     /**
@@ -84,65 +72,6 @@ public class OMFServicesInstance extends AccessServerServiceInstance
                                                                        defaultZones,
                                                                        publishZones,
                                                                        auditLog);
-
-            this.metadataElementSummaryHandler = new ReferenceableHandler<>(new MetadataElementConverter<>(repositoryHelper, serviceName, serverName),
-                                                                       MetadataElementSummary.class,
-                                                                       serviceName,
-                                                                       serverName,
-                                                                       invalidParameterHandler,
-                                                                       repositoryHandler,
-                                                                       repositoryHelper,
-                                                                       localServerUserId,
-                                                                       securityVerifier,
-                                                                       supportedZones,
-                                                                       defaultZones,
-                                                                       publishZones,
-                                                                       auditLog);
-
-            this.validMetadataValuesHandler = new ValidValuesHandler<>(new ValidMetadataValueConverter<>(repositoryHelper, serviceName, serverName),
-                                                                       ValidMetadataValueProperties.class,
-                                                                       serviceName,
-                                                                       serverName,
-                                                                       invalidParameterHandler,
-                                                                       repositoryHandler,
-                                                                       repositoryHelper,
-                                                                       localServerUserId,
-                                                                       securityVerifier,
-                                                                       supportedZones,
-                                                                       defaultZones,
-                                                                       publishZones,
-                                                                       auditLog);
-
-            this.validMetadataValuesDetailHandler = new ValidValuesHandler<>(new ValidMetadataValueConverter<>(repositoryHelper, serviceName, serverName),
-                                                                             ValidMetadataValueDetail.class,
-                                                                             serviceName,
-                                                                             serverName,
-                                                                             invalidParameterHandler,
-                                                                             repositoryHandler,
-                                                                             repositoryHelper,
-                                                                             localServerUserId,
-                                                                             securityVerifier,
-                                                                             supportedZones,
-                                                                             defaultZones,
-                                                                             publishZones,
-                                                                             auditLog);
-
-            this.externalIdentifierHandler = new ExternalIdentifierHandler<>(new ExternalIdentifierConverter<>(repositoryHelper, serviceName, serverName),
-                                                                             MetadataCorrelationHeader.class,
-                                                                             new ElementHeaderConverter<>(repositoryHelper, serviceName, serverName),
-                                                                             ElementHeader.class,
-                                                                             serviceName,
-                                                                             serverName,
-                                                                             invalidParameterHandler,
-                                                                             repositoryHandler,
-                                                                             repositoryHelper,
-                                                                             localServerUserId,
-                                                                             securityVerifier,
-                                                                             supportedZones,
-                                                                             defaultZones,
-                                                                             publishZones,
-                                                                             auditLog);
-
         }
         else
         {
@@ -161,47 +90,5 @@ public class OMFServicesInstance extends AccessServerServiceInstance
     public MetadataElementHandler<OpenMetadataElement> getMetadataElementHandler()
     {
         return metadataElementHandler;
-    }
-
-
-    /**
-     * Return the handler for open metadata store requests.
-     *
-     * @return handler object
-     */
-    public ReferenceableHandler<MetadataElementSummary> getMetadataElementSummaryHandler()
-    {
-        return metadataElementSummaryHandler;
-    }
-
-    /**
-     * Return the handler for open metadata store requests.
-     *
-     * @return handler object
-     */
-    public ValidValuesHandler<ValidMetadataValueProperties> getValidMetadataValuesHandler()
-    {
-        return validMetadataValuesHandler;
-    }
-
-    /**
-     * Return the handler for reference data requests.
-     *
-     * @return handler object
-     */
-    public ValidValuesHandler<ValidMetadataValueDetail> getValidMetadataValuesDetailHandler()
-    {
-        return validMetadataValuesDetailHandler;
-    }
-
-
-    /**
-     * Return the handler for external identifiers requests.
-     *
-     * @return handler object
-     */
-    public ExternalIdentifierHandler<MetadataCorrelationHeader, ElementHeader> getExternalIdentifierHandler()
-    {
-        return externalIdentifierHandler;
     }
 }

@@ -47,8 +47,9 @@ public class SearchKeywordHandler extends OpenMetadataHandlerBase
     /**
      * Adds a search keyword to the element.
      *
-     * @param userId        userId of user making request.
-     * @param elementGUID     unique identifier for the element.
+     * @param userId        userId of user making request
+     * @param elementGUID     unique identifier for the element
+     * @param metadataSourceOptions options for the request
      * @param initialClassifications map of classification names to classification properties to include in the entity creation request
      * @param properties   properties of the search keyword
      *

@@ -89,7 +89,7 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollection
 
             if (endpoint != null)
             {
-                endpointAddress = endpoint.getAddress();
+                endpointAddress = endpoint.getNetworkAddress();
             }
         }
 

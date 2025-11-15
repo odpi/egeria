@@ -201,7 +201,7 @@ public class OMArchiveFilesMonitorForTarget extends DataFilesMonitorForTarget
             connection.setConnectorType(provider.getConnectorType());
 
             Endpoint endpoint = new Endpoint();
-            endpoint.setAddress(pathName);
+            endpoint.setNetworkAddress(pathName);
             connection.setEndpoint(endpoint);
 
             FileBasedOpenMetadataArchiveStoreConnector connector = (FileBasedOpenMetadataArchiveStoreConnector)connectorBroker.getConnector(connection);

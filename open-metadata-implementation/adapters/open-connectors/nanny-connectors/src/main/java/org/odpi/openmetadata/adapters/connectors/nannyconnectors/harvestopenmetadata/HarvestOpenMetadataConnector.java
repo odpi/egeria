@@ -6,11 +6,10 @@ package org.odpi.openmetadata.adapters.connectors.nannyconnectors.harvestopenmet
 import org.odpi.openmetadata.adapters.connectors.nannyconnectors.harvestopenmetadata.ffdc.HarvestOpenMetadataErrorCode;
 import org.odpi.openmetadata.frameworks.connectors.Connector;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
-import org.odpi.openmetadata.frameworks.opengovernance.properties.CatalogTarget;
-import org.odpi.openmetadata.frameworks.integration.connectors.CatalogTargetIntegrator;
-import org.odpi.openmetadata.frameworks.integration.connectors.IntegrationConnectorBase;
+import org.odpi.openmetadata.frameworks.integration.connectors.DynamicIntegrationConnectorBase;
 import org.odpi.openmetadata.frameworks.integration.context.CatalogTargetContext;
 import org.odpi.openmetadata.frameworks.integration.properties.RequestedCatalogTarget;
+import org.odpi.openmetadata.frameworks.opengovernance.properties.CatalogTarget;
 
 
 /**
@@ -18,38 +17,8 @@ import org.odpi.openmetadata.frameworks.integration.properties.RequestedCatalogT
  * The open metadata ecosystem is the home copy so its values will be pushed to the database. The database design matches the
  * beans returned by the Open Metadata Store.
  */
-public class HarvestOpenMetadataConnector extends IntegrationConnectorBase implements CatalogTargetIntegrator
+public class HarvestOpenMetadataConnector extends DynamicIntegrationConnectorBase
 {
-    /**
-     * Requests that the connector does a comparison of the metadata in the third party technology and open metadata repositories.
-     * Refresh is called when the integration connector first starts and then at intervals defined in the connector's configuration
-     * as well as any external REST API calls to explicitly refresh the connector.
-     *
-     * @throws ConnectorCheckedException there is a problem with the connector.  It is not able to refresh the metadata.
-     */
-    @Override
-    public void refresh() throws ConnectorCheckedException
-    {
-        refreshCatalogTargets(this);
-    }
-
-
-    /**
-     * Perform the required integration logic for the assigned catalog target.
-     *
-     * @param requestedCatalogTarget the catalog target
-     * @throws ConnectorCheckedException there is an unrecoverable error and the connector should stop processing.
-     */
-    @Override
-    public void integrateCatalogTarget(RequestedCatalogTarget requestedCatalogTarget) throws ConnectorCheckedException
-    {
-        if (requestedCatalogTarget instanceof HarvestOpenMetadataCatalogTargetProcessor harvestSurveysCatalogTargetProcessor)
-        {
-            harvestSurveysCatalogTargetProcessor.refresh();
-        }
-    }
-
-
     /**
      * Create a new catalog target processor (typically inherits from CatalogTargetProcessorBase).
      *

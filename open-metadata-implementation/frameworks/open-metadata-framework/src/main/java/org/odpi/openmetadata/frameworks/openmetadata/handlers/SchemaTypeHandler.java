@@ -392,6 +392,7 @@ public class SchemaTypeHandler extends OpenMetadataHandlerBase
                                                                                      guidParameterName,
                                                                                      1,
                                                                                      OpenMetadataType.SCHEMA_RELATIONSHIP.typeName,
+                                                                                     OpenMetadataType.SCHEMA_TYPE.typeName,
                                                                                      new QueryOptions(getOptions),
                                                                                      methodName);
 

@@ -7,11 +7,10 @@ import org.odpi.openmetadata.adapters.connectors.integration.kafkaaudit.controls
 import org.odpi.openmetadata.adapters.connectors.integration.kafkaaudit.ffdc.DistributeKafkaAuditCode;
 import org.odpi.openmetadata.frameworks.connectors.Connector;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
-import org.odpi.openmetadata.frameworks.opengovernance.properties.CatalogTarget;
-import org.odpi.openmetadata.frameworks.integration.connectors.CatalogTargetIntegrator;
-import org.odpi.openmetadata.frameworks.integration.connectors.IntegrationConnectorBase;
+import org.odpi.openmetadata.frameworks.integration.connectors.DynamicIntegrationConnectorBase;
 import org.odpi.openmetadata.frameworks.integration.context.CatalogTargetContext;
 import org.odpi.openmetadata.frameworks.integration.properties.RequestedCatalogTarget;
+import org.odpi.openmetadata.frameworks.opengovernance.properties.CatalogTarget;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 import org.odpi.openmetadata.repositoryservices.connectors.openmetadatatopic.OpenMetadataTopicListener;
@@ -20,24 +19,9 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.auditlogstore.
 /**
  * Distributes audit log events from one or more embedded topic connectors to one or more embedded audit log destinations.
  */
-public class DistributeAuditEventsFromKafkaConnector extends IntegrationConnectorBase implements OpenMetadataTopicListener,
-                                                                                                 CatalogTargetIntegrator
+public class DistributeAuditEventsFromKafkaConnector extends DynamicIntegrationConnectorBase implements OpenMetadataTopicListener
 {
     private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
-
-
-    /**
-     * Requests that the connector does a comparison of the metadata in the third party technology and open metadata repositories.
-     * Refresh is called when the integration connector first starts and then at intervals defined in the connector's configuration
-     * as well as any external REST API calls to explicitly refresh the connector.
-     *
-     * @throws ConnectorCheckedException there is a problem with the connector.  It is not able to refresh the metadata.
-     */
-    @Override
-    public void refresh() throws ConnectorCheckedException
-    {
-        super.refreshCatalogTargets(this);
-    }
 
 
     /**
@@ -56,6 +40,10 @@ public class DistributeAuditEventsFromKafkaConnector extends IntegrationConnecto
             {
                 OMRSAuditLogRecord eventObject = OBJECT_MAPPER.readValue(event, OMRSAuditLogRecord.class);
 
+                /*
+                 * Just used existing known catalog targets rather than refreshing the list for each event.
+                 * The list of catalog targets is refreshed during the refresh call.
+                 */
                 for (RequestedCatalogTarget requestedCatalogTarget : catalogTargetsManager.getRequestedCatalogTargets())
                 {
                     if (requestedCatalogTarget instanceof AuditLogDestinationCatalogTargetProcessor auditLogDestination)
@@ -74,19 +62,6 @@ public class DistributeAuditEventsFromKafkaConnector extends IntegrationConnecto
                                       error);
             }
         }
-    }
-
-
-    /**
-     * Perform the required integration logic for the assigned catalog target.
-     *
-     * @param requestedCatalogTarget the catalog target
-     * @throws ConnectorCheckedException there is an unrecoverable error and the connector should stop processing.
-     */
-    @Override
-    public void integrateCatalogTarget(RequestedCatalogTarget requestedCatalogTarget) throws ConnectorCheckedException
-    {
-        // Nothing to do - this connector works entirely off of events
     }
 
 

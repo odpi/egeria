@@ -2793,6 +2793,7 @@ public class SimpleCatalogArchiveHelper
      * @param suppliedTypeName type of governance definition to add
      * @param qualifiedName unique name for the governance definition entity
      * @param identifier identifier for the governance definition
+     * @param displayName display name for the governance definition
      * @param summary short description for the governance definition
      * @param description description about the governance definition
      * @param scope scope where the governance definition is used
@@ -2810,6 +2811,7 @@ public class SimpleCatalogArchiveHelper
     public String addGovernanceDefinition(String               suppliedTypeName,
                                           String               qualifiedName,
                                           String               identifier,
+                                          String               displayName,
                                           String               summary,
                                           String               description,
                                           String               scope,
@@ -2833,6 +2835,7 @@ public class SimpleCatalogArchiveHelper
 
         InstanceProperties properties = archiveHelper.addStringPropertyToInstance(archiveRootName, null, OpenMetadataProperty.QUALIFIED_NAME.name, qualifiedName, methodName);
         properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.IDENTIFIER.name, identifier, methodName);
+        properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.DISPLAY_NAME.name, displayName, methodName);
         properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.SUMMARY.name, summary, methodName);
         properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.DESCRIPTION.name, description, methodName);
         properties = archiveHelper.addStringPropertyToInstance(archiveRootName, properties, OpenMetadataProperty.SCOPE.name, scope, methodName);
@@ -3342,7 +3345,7 @@ public class SimpleCatalogArchiveHelper
 
         classifications.add(this.getAnchorClassification(null,
                                                          OpenMetadataType.BUSINESS_CAPABILITY.typeName,
-                                                         OpenMetadataType.BUSINESS_CAPABILITY.typeName,
+                                                         OpenMetadataType.COLLECTION.typeName,
                                                          null,
                                                          methodName));
 
@@ -3429,7 +3432,7 @@ public class SimpleCatalogArchiveHelper
 
         List<Classification> entityClassifications = new ArrayList<>();
 
-        entityClassifications.add(this.getAnchorClassification(null, elementTypeName, OpenMetadataType.DESIGN_MODEL.typeName, null, methodName));
+        entityClassifications.add(this.getAnchorClassification(null, elementTypeName, OpenMetadataType.COLLECTION.typeName, null, methodName));
 
         if (classificationName != null)
         {
@@ -5829,7 +5832,7 @@ public class SimpleCatalogArchiveHelper
 
         Classification anchorClassification = this.getAnchorClassification(guid,
                                                                            OpenMetadataType.GLOSSARY.typeName,
-                                                                           OpenMetadataType.GLOSSARY.typeName,
+                                                                           OpenMetadataType.COLLECTION.typeName,
                                                                            null,
                                                                            methodName);
         classifications.add(anchorClassification);
@@ -7337,11 +7340,11 @@ public class SimpleCatalogArchiveHelper
 
         if ((parentInformationSupplyChainGUID != null) && (isParentAnchor))
         {
-            classifications.add(this.getAnchorClassification(parentInformationSupplyChainGUID, typeName, OpenMetadataType.INFORMATION_SUPPLY_CHAIN.typeName, anchorScopeGUID, methodName));
+            classifications.add(this.getAnchorClassification(parentInformationSupplyChainGUID, typeName, OpenMetadataType.COLLECTION.typeName, anchorScopeGUID, methodName));
         }
         else
         {
-            classifications.add(this.getAnchorClassification(null, typeName, OpenMetadataType.INFORMATION_SUPPLY_CHAIN.typeName, anchorScopeGUID, methodName));
+            classifications.add(this.getAnchorClassification(null, typeName, OpenMetadataType.COLLECTION.typeName, anchorScopeGUID, methodName));
         }
 
         if (owner != null)
@@ -7523,7 +7526,7 @@ public class SimpleCatalogArchiveHelper
 
         List<Classification> classifications = new ArrayList<>();
 
-        classifications.add(this.getAnchorClassification(null, typeName, OpenMetadataType.SOLUTION_BLUEPRINT.typeName, null, methodName));
+        classifications.add(this.getAnchorClassification(null, typeName, OpenMetadataType.COLLECTION.typeName, null, methodName));
 
         EntityDetail entity = archiveHelper.getEntityDetail(typeName,
                                                             idToGUIDMap.getGUID(qualifiedName),
@@ -7589,7 +7592,7 @@ public class SimpleCatalogArchiveHelper
 
         List<Classification> classifications = new ArrayList<>();
 
-        classifications.add(this.getAnchorClassification(null, typeName, OpenMetadataType.SOLUTION_COMPONENT.typeName, null, methodName));
+        classifications.add(this.getAnchorClassification(null, typeName, OpenMetadataType.DESIGN_MODEL_ELEMENT.typeName, null, methodName));
 
         EntityDetail entity = archiveHelper.getEntityDetail(typeName,
                                                             idToGUIDMap.getGUID(qualifiedName),

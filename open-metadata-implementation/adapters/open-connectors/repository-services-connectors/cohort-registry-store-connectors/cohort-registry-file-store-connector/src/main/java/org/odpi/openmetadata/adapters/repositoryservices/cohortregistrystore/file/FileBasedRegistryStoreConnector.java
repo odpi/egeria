@@ -66,7 +66,7 @@ public class FileBasedRegistryStoreConnector extends OMRSCohortRegistryStoreConn
 
         if (endpoint != null)
         {
-            registryStoreName = endpoint.getAddress();
+            registryStoreName = endpoint.getNetworkAddress();
 
             if (registryStoreName == null)
             {
@@ -499,7 +499,7 @@ public class FileBasedRegistryStoreConnector extends OMRSCohortRegistryStoreConn
 
                     if (endpoint != null)
                     {
-                        serverAddress = endpoint.getAddress();
+                        serverAddress = endpoint.getNetworkAddress();
                     }
 
                     if (serverAddress != null)

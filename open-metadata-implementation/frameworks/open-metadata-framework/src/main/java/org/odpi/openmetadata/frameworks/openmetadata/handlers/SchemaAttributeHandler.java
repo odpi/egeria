@@ -1137,6 +1137,7 @@ public class SchemaAttributeHandler extends OpenMetadataHandlerBase
                                             guidParameterName,
                                             1,
                                             OpenMetadataType.ATTRIBUTE_FOR_SCHEMA_RELATIONSHIP.typeName,
+                                            OpenMetadataType.SCHEMA_ATTRIBUTE.typeName,
                                             queryOptions,
                                             methodName);
     }
@@ -1167,6 +1168,7 @@ public class SchemaAttributeHandler extends OpenMetadataHandlerBase
                                             guidParameterName,
                                             1,
                                             OpenMetadataType.NESTED_SCHEMA_ATTRIBUTE_RELATIONSHIP.typeName,
+                                            OpenMetadataType.SCHEMA_ATTRIBUTE.typeName,
                                             queryOptions,
                                             methodName);
     }

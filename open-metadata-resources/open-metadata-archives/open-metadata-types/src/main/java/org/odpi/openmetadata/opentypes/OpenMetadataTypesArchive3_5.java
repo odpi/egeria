@@ -158,7 +158,6 @@ public class OpenMetadataTypesArchive3_5
          * Calls for new and changed types go here
          */
         update00420045SoftwareCapabilities();
-        extend0112Person();
     }
 
 
@@ -175,8 +174,6 @@ public class OpenMetadataTypesArchive3_5
         this.archiveBuilder.addEntityDef(addSourceControlLibrary());
         this.archiveBuilder.addEntityDef(addChangeManagementLibrary());
         this.archiveBuilder.addEntityDef(addSoftwareLibrary());
-        this.archiveBuilder.addTypeDefPatch(updateCloudServiceClassification());
-        this.archiveBuilder.addTypeDefPatch(updateServerAssetUseRelationship());
     }
 
 
@@ -288,113 +285,6 @@ public class OpenMetadataTypesArchive3_5
 
         return entityDef;
     }
-
-
-    private TypeDefPatch updateCloudServiceClassification()
-    {
-        /*
-         * Create the Patch
-         */
-        TypeDefPatch  typeDefPatch = archiveBuilder.getPatchForType(OpenMetadataType.CLOUD_SERVICE_CLASSIFICATION.typeName);
-
-        typeDefPatch.setUpdatedBy(originatorName);
-        typeDefPatch.setUpdateTime(creationDate);
-
-        List<TypeDefLink> validEntityDefs = new ArrayList<>();
-        validEntityDefs.add(new TypeDefLink(archiveBuilder.getTypeDefByName(OpenMetadataType.SOFTWARE_CAPABILITY.typeName)));
-
-        typeDefPatch.setValidEntityDefs(validEntityDefs);
-        return typeDefPatch;
-    }
-
-
-    private TypeDefPatch updateServerAssetUseRelationship()
-    {
-        /*
-         * Create the Patch
-         */
-        TypeDefPatch  typeDefPatch = archiveBuilder.getPatchForType(OpenMetadataType.CAPABILITY_ASSET_USE_RELATIONSHIP.typeName);
-
-        typeDefPatch.setUpdatedBy(originatorName);
-        typeDefPatch.setUpdateTime(creationDate);
-
-        RelationshipEndDef relationshipEndDef;
-
-        /*
-         * Set up end 1.
-         */
-        final String                     end1AttributeName            = "consumedBy";
-        final String                     end1AttributeDescription     = "Capability consuming this asset.";
-        final String                     end1AttributeDescriptionGUID = null;
-
-        relationshipEndDef = archiveHelper.getRelationshipEndDef(this.archiveBuilder.getEntityDef(OpenMetadataType.SOFTWARE_CAPABILITY.typeName),
-                                                                 end1AttributeName,
-                                                                 end1AttributeDescription,
-                                                                 end1AttributeDescriptionGUID,
-                                                                 RelationshipEndCardinality.ANY_NUMBER);
-        typeDefPatch.setEndDef1(relationshipEndDef);
-
-
-        /*
-         * Set up end 2.
-         */
-        final String                     end2AttributeName            = "consumedAsset";
-        final String                     end2AttributeDescription     = "Asset that this software capability is dependent on.";
-        final String                     end2AttributeDescriptionGUID = null;
-
-        relationshipEndDef = archiveHelper.getRelationshipEndDef(this.archiveBuilder.getEntityDef(OpenMetadataType.ASSET.typeName),
-                                                                 end2AttributeName,
-                                                                 end2AttributeDescription,
-                                                                 end2AttributeDescriptionGUID,
-                                                                 RelationshipEndCardinality.ANY_NUMBER);
-        typeDefPatch.setEndDef2(relationshipEndDef);
-
-        return typeDefPatch;
-    }
-
-
-
-    /*
-     * -------------------------------------------------------------------------------------------------------
-     */
-
-
-    /**
-     * Extend Person using the field definitions from LDAP
-     */
-    private void extend0112Person()
-    {
-        this.archiveBuilder.addTypeDefPatch(updatePersonEntity());
-    }
-
-    private TypeDefPatch updatePersonEntity()
-    {
-        /*
-         * Create the Patch
-         */
-        TypeDefPatch  typeDefPatch = archiveBuilder.getPatchForType(OpenMetadataType.PERSON.typeName);
-
-        typeDefPatch.setUpdatedBy(originatorName);
-        typeDefPatch.setUpdateTime(creationDate);
-
-        /*
-         * Build the attributes
-         */
-        List<TypeDefAttribute> properties = new ArrayList<>();
-
-        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.COURTESY_TITLE));
-        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.GIVEN_NAMES));
-        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.SURNAME));
-        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.EMPLOYEE_NUMBER));
-        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.EMPLOYEE_TYPE));
-        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.PREFERRED_LANGUAGE));
-        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.INITIALS));
-
-        typeDefPatch.setPropertyDefinitions(properties);
-
-        return typeDefPatch;
-    }
-
 
 
     /*

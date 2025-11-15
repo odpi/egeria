@@ -231,6 +231,23 @@ public enum UCAuditCode implements AuditLogMessageSet
                                     "or as part of a governance action process.  Then correct this approach so that the required placeholder properties are set up in the request parameters."),
 
 
+    /**
+     * UNITY-CATALOG-CONNECTOR-0023 - The {0} connector has detected a missing or invalid {1} property in method {2} - element is: {3}
+     */
+    BAD_OM_VALUE("UNITY-CATALOG-CONNECTOR-0023",
+                 AuditLogRecordSeverityLevel.ERROR,
+                 "The {0} connector has detected a missing or invalid {1} property in method {2} - element is: {3}",
+                 "The connector throws an exception to indicate that it should not continue.",
+                 "Check the templates that where used to create the element to be sure they include the correct value.  If the template is correct then check the element's history to discover which processing cleared the value, since this is where the problem was introduced.  Now decide if the test in the connector is incorrect, or the ."),
+
+    /**
+     * UNITY-CATALOG-CONNECTOR-0024 - The {0} connector has detected that element {1} which should be of type {2} has bean properties of {3} rather than {4} in method {5} - element is {6}
+     */
+    BAD_OM_PROPERTY_TYPE( "UNITY-CATALOG-CONNECTOR-0024",
+                          AuditLogRecordSeverityLevel.ERROR,
+                          "The {0} connector has detected that element {1} which should be of type {2} has bean properties of {3} rather than {4} in method {5} - element is {6}",
+                          "The connector throws an exception to indicate that it should not continue since something has gone very wrong with the connector or Open Metadata Framework since the connector is expecting an element of a certain type, with bean properties that match that type, but the OMF has returned something different.",
+                          "Check that the type of element is that which was expected.  If not, this may be a connector logic problem, or another process may have created additional metadata that has confused the connector. Compare the element retrieved through the OMF with its stored value.  If the stored value is correct, then the problem is in the OMF converters.  If the stored value is not correct then look at the element's history to understand which processing caused the problem."),
 
     ;
 

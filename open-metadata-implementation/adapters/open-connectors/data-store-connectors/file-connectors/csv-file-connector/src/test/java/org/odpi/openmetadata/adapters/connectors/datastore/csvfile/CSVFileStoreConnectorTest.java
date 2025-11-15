@@ -4,7 +4,7 @@ package org.odpi.openmetadata.adapters.connectors.datastore.csvfile;
 
 import org.odpi.openmetadata.adapters.connectors.datastore.basicfile.ffdc.exception.FileException;
 import org.odpi.openmetadata.adapters.connectors.datastore.basicfile.ffdc.exception.FileReadException;
-import org.odpi.openmetadata.adapters.connectors.datastore.csvfile.controls.CSVFileConfigurationProperty;
+import org.odpi.openmetadata.frameworks.openmetadata.controls.CSVFileConfigurationProperty;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.ConnectorType;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Endpoint;
@@ -44,7 +44,7 @@ public class CSVFileStoreConnectorTest
         endpoint.setQualifiedName(endpointName);
         endpoint.setDisplayName(endpointName);
         endpoint.setDescription(endpointDescription);
-        endpoint.setAddress(fileName);
+        endpoint.setNetworkAddress(fileName);
 
 
         final String connectorTypeDescription   = "CSVFileStore connector type.";

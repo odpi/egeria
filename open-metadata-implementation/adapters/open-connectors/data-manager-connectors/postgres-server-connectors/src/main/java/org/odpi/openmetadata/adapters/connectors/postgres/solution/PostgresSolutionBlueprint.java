@@ -21,9 +21,9 @@ public enum PostgresSolutionBlueprint implements SolutionBlueprintDefinition
      * Description of the processing used to create the content packs shipped with Egeria.
      */
     POSTGRES_SOLUTION_BLUEPRINT("1ad296ff-6be7-47de-b8a8-e2cee73cbb58",
-                               "OPEN-METADATA-CONTENT-PACK",
-                               "PostgreSQL Solution Blueprint",
-                               "PostgreSQL is an advanced open source relational database. Egeria's content pave for PostgreSQL provides templates for PostgreSQL services, databases and tables along with function to survey the contents of PostgreSQL databases and catalog their schemas.",
+                               "LEVERAGING-POSTGRES-101",
+                               "Leveraging PostgreSQL Solution Blueprint",
+                               "PostgreSQL is an advanced open source relational database. Egeria's content pack for PostgreSQL provides templates for PostgreSQL services, databases and tables along with function to survey the contents of PostgreSQL databases and catalog their schemas.",
                                new SolutionComponentDefinition[]{
                                        EgeriaSolutionComponent.POSTGRES_SERVER,
                                        EgeriaSolutionComponent.METADATA_ACCESS_STORE,

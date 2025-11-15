@@ -9,6 +9,14 @@ package org.odpi.openmetadata.frameworks.openmetadata.refdata;
 public interface DeployedImplementationTypeDefinition
 {
     /**
+     * Return the guid for the deployed technology type - can be null.
+     *
+     * @return string
+     */
+    String getGUID();
+
+
+    /**
      * Return preferred value for deployed implementation type.
      * 
      * @return string

@@ -7,7 +7,7 @@ package org.odpi.openmetadata.archiveutilities.openconnectors;
 import org.odpi.openmetadata.adapters.connectors.datastore.csvfile.CSVFileStoreProvider;
 import org.odpi.openmetadata.adapters.connectors.datastore.csvfile.CSVTabularDataSetCollectionProvider;
 import org.odpi.openmetadata.adapters.connectors.datastore.csvfile.CSVTabularDataSetProvider;
-import org.odpi.openmetadata.adapters.connectors.datastore.csvfile.controls.CSVFileConfigurationProperty;
+import org.odpi.openmetadata.frameworks.openmetadata.controls.CSVFileConfigurationProperty;
 import org.odpi.openmetadata.adapters.connectors.datastore.csvfile.controls.CSVFileTemplateType;
 import org.odpi.openmetadata.adapters.connectors.postgres.controls.PostgreSQLTemplateType;
 import org.odpi.openmetadata.adapters.connectors.postgres.controls.PostgresConfigurationProperty;

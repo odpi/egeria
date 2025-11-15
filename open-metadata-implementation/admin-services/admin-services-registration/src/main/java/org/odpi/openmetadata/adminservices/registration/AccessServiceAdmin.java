@@ -170,7 +170,7 @@ public abstract class AccessServiceAdmin
 
             if (topicEndpoint != null)
             {
-                topicName = topicEndpoint.getAddress();
+                topicName = topicEndpoint.getNetworkAddress();
             }
         }
 

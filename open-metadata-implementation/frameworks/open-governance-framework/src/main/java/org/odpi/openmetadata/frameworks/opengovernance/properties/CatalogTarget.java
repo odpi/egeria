@@ -26,9 +26,9 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class CatalogTarget extends CatalogTargetProperties
 {
-    private String              relationshipGUID            = null;
-    private ElementVersions     relationshipVersions        = null;
-    private OpenMetadataRootElement catalogTargetElement    = null;
+    private String                  relationshipGUID     = null;
+    private ElementVersions         relationshipVersions = null;
+    private OpenMetadataRootElement catalogTargetElement = null;
 
 
     /**

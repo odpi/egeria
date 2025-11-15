@@ -74,6 +74,23 @@ public class PropertyHelper
                                                 methodName,
                                                 guidParameter);
         }
+
+        /*
+         * Regex explanation:
+         *    ^ → start of string
+         *    [A-Za-z0-9-] → allowed characters: uppercase letters, lowercase letters, digits, dash, space
+         *    + → one or more allowed characters
+         *    $ → end of string
+         */
+        if (guid.matches("^[A-Za-z0-9\\- ]+$"))
+        {
+            return;
+        }
+
+        throw new InvalidParameterException(OMFErrorCode.INVALID_GUID.getMessageDefinition(guid, guidParameter, methodName),
+                                            this.getClass().getName(),
+                                            methodName,
+                                            guidParameter);
     }
 
 
@@ -575,6 +592,10 @@ public class PropertyHelper
                     else if (this.isTypeOf(attachedClassification, OpenMetadataType.DATA_SCOPE_CLASSIFICATION.typeName))
                     {
                         elementHeader.setDataScope(this.getElementClassification(attachedClassification));
+                    }
+                    else if (this.isTypeOf(attachedClassification, OpenMetadataType.DATA_ASSET_ENCODING_CLASSIFICATION.typeName))
+                    {
+                        elementHeader.setDataAssetEncoding(this.getElementClassification(attachedClassification));
                     }
                     else if (this.isTypeOf(attachedClassification, OpenMetadataType.CALCULATED_VALUE_CLASSIFICATION.typeName))
                     {
@@ -4061,7 +4082,7 @@ public class PropertyHelper
      *
      * @return search properties
      */
-    public SearchProperties getSearchPropertiesForMetadataCollectionName(String metadataCollectionQualifiedName)
+    public SearchProperties getSearchPropertiesForMetadataCollectionId(String metadataCollectionId)
     {
         SearchProperties           searchProperties       = new SearchProperties();
         List<PropertyCondition>    conditions             = new ArrayList<>();
@@ -4069,10 +4090,10 @@ public class PropertyHelper
         PrimitiveTypePropertyValue primitivePropertyValue = new PrimitiveTypePropertyValue();
 
         primitivePropertyValue.setPrimitiveTypeCategory(PrimitiveTypeCategory.OM_PRIMITIVE_TYPE_STRING);
-        primitivePropertyValue.setPrimitiveValue(metadataCollectionQualifiedName);
+        primitivePropertyValue.setPrimitiveValue(metadataCollectionId);
         primitivePropertyValue.setTypeName(PrimitiveTypeCategory.OM_PRIMITIVE_TYPE_STRING.getName());
 
-        condition.setProperty(OpenMetadataProperty.METADATA_COLLECTION_NAME.name);
+        condition.setProperty(OpenMetadataProperty.METADATA_COLLECTION_ID.name);
         condition.setOperator(PropertyComparisonOperator.EQ);
         condition.setValue(primitivePropertyValue);
 
@@ -4243,13 +4264,6 @@ public class PropertyHelper
             }
 
             classification = getClassification(elementHeader.getProjectRoles(), classificationName);
-
-            if (classification != null)
-            {
-                return classification;
-            }
-
-            classification = getClassification(elementHeader.getCollectionRoles(), classificationName);
 
             if (classification != null)
             {

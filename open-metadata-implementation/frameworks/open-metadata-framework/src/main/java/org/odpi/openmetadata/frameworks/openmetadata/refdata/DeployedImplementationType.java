@@ -1060,12 +1060,13 @@ public enum DeployedImplementationType implements DeployedImplementationTypeDefi
     }
 
 
-    private final String deployedImplementationType;
+    private final String                     guid;
+    private final String                     deployedImplementationType;
     private final DeployedImplementationType isATypeOf;
-    private final String associatedTypeName;
-    private final String associatedClassification;
-    private final String description;
-    private final String wikiLink;
+    private final String                     associatedTypeName;
+    private final String                     associatedClassification;
+    private final String                     description;
+    private final String                     wikiLink;
 
 
     /**
@@ -1085,12 +1086,54 @@ public enum DeployedImplementationType implements DeployedImplementationTypeDefi
                                String                     description,
                                String                     wikiLink)
     {
+        this.guid = null;
         this.deployedImplementationType = deployedImplementationType;
         this.isATypeOf = isATypeOf;
         this.associatedTypeName = associatedTypeName;
         this.associatedClassification = associatedClassification;
         this.description = description;
         this.wikiLink = wikiLink;
+    }
+
+
+    /**
+     * Constructor for individual enum value.
+     *
+     * @param guid unique identifier of technology type (deployedImplementationType)
+     * @param deployedImplementationType value for deployedImplementationType
+     * @param isATypeOf optional deployed implementation type that this type "inherits" from
+     * @param associatedTypeName the open metadata type where this value is used
+     * @param associatedClassification the open metadata classification where this value is used
+     * @param description description of the type
+     * @param wikiLink url link to more information (optional)
+     */
+    DeployedImplementationType(String                     guid,
+                               String                     deployedImplementationType,
+                               DeployedImplementationType isATypeOf,
+                               String                     associatedTypeName,
+                               String                     associatedClassification,
+                               String                     description,
+                               String                     wikiLink)
+    {
+        this.guid = guid;
+        this.deployedImplementationType = deployedImplementationType;
+        this.isATypeOf = isATypeOf;
+        this.associatedTypeName = associatedTypeName;
+        this.associatedClassification = associatedClassification;
+        this.description = description;
+        this.wikiLink = wikiLink;
+    }
+
+
+    /**
+     * Return the guid for the deployed technology type - can be null.
+     *
+     * @return string
+     */
+    @Override
+    public String getGUID()
+    {
+        return guid;
     }
 
 

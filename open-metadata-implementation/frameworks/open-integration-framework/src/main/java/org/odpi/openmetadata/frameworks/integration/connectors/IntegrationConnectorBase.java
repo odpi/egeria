@@ -125,22 +125,11 @@ public abstract class IntegrationConnectorBase extends ConnectorBase implements 
 
             if (endpointDetails != null)
             {
-                return endpointDetails.getAddress();
+                return endpointDetails.getNetworkAddress();
             }
         }
 
         return null;
-    }
-
-
-    /**
-     * Add a new listener for changes to this connector's catalog targets.
-     *
-     * @param listener listener to register
-     */
-    protected void registerCatalogTargetChangeListener(CatalogTargetChangeListener listener)
-    {
-        this.catalogTargetsManager.registerCatalogTargetChangeListener(listener);
     }
 
 
@@ -156,8 +145,8 @@ public abstract class IntegrationConnectorBase extends ConnectorBase implements 
     {
         final String methodName = "refreshCatalogTargets";
 
-        List<RequestedCatalogTarget> requestedCatalogTargets = catalogTargetsManager.refreshKnownCatalogTargets(integrationContext,
-                                                                                                                catalogTargetIntegrator);
+        List<RequestedCatalogTarget> requestedCatalogTargets = catalogTargetsManager.retrieveKnownCatalogTargets(integrationContext,
+                                                                                                                 catalogTargetIntegrator);
 
         if ((requestedCatalogTargets == null) || (requestedCatalogTargets.isEmpty()))
         {
@@ -217,8 +206,8 @@ public abstract class IntegrationConnectorBase extends ConnectorBase implements 
     {
         final String methodName = "passEventToCatalogTargets";
 
-        List<RequestedCatalogTarget> requestedCatalogTargets = catalogTargetsManager.refreshKnownCatalogTargets(integrationContext,
-                                                                                                                catalogTargetEventProcessor);
+        List<RequestedCatalogTarget> requestedCatalogTargets = catalogTargetsManager.retrieveKnownCatalogTargets(integrationContext,
+                                                                                                                 catalogTargetEventProcessor);
 
         if ((requestedCatalogTargets == null) || (requestedCatalogTargets.isEmpty()))
         {
@@ -297,9 +286,17 @@ public abstract class IntegrationConnectorBase extends ConnectorBase implements 
     @Override
     public void disconnect() throws ConnectorCheckedException
     {
+        final String methodName = "disconnect";
+
         if (catalogTargetsManager != null)
         {
             catalogTargetsManager.disconnect();
+        }
+
+        if (auditLog != null)
+        {
+            auditLog.logMessage(methodName,
+                                OIFAuditCode.CONNECTOR_STOPPING.getMessageDefinition(connectorName));
         }
 
         super.disconnect();

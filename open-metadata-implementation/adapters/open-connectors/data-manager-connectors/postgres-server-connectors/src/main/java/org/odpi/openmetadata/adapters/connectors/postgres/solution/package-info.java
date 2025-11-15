@@ -2,6 +2,6 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 
 /**
- * Provides the definition of the PostgreSQL solution blueprint ands its components.
+ * Provides the definition of the PostgreSQL solution blueprint and its components.
  */
 package org.odpi.openmetadata.adapters.connectors.postgres.solution;

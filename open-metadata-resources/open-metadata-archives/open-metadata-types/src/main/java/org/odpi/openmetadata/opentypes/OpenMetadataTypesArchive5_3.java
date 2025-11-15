@@ -157,47 +157,12 @@ public class OpenMetadataTypesArchive5_3
         /*
          * New types for this release
          */
-        this.update0330GlossaryTerms();
         this.add058xDataDictionaries();
         this.update0201Connections();
         this.update0205ConnectionLinkage();
         this.update0730SolutionComponents();
         this.update0770LineageMapping();
     }
-
-
-
-    /*
-     * -------------------------------------------------------------------------------------------------------
-     */
-
-    private void update0330GlossaryTerms()
-    {
-        this.archiveBuilder.addTypeDefPatch(updateGlossaryTerm());
-    }
-
-    private TypeDefPatch updateGlossaryTerm()
-    {
-        /*
-         * Create the Patch
-         */
-        TypeDefPatch typeDefPatch = archiveBuilder.getPatchForType(OpenMetadataType.GLOSSARY_TERM.typeName);
-
-        typeDefPatch.setUpdatedBy(originatorName);
-        typeDefPatch.setUpdateTime(creationDate);
-
-        /*
-         * Build the attributes
-         */
-        List<TypeDefAttribute> properties = new ArrayList<>();
-
-        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.ALIASES));
-
-        typeDefPatch.setPropertyDefinitions(properties);
-
-        return typeDefPatch;
-    }
-
 
 
     /*

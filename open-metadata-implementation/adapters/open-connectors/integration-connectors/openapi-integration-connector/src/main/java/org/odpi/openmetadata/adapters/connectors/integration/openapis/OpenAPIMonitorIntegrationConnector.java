@@ -74,7 +74,7 @@ public class OpenAPIMonitorIntegrationConnector extends IntegrationConnectorBase
 
         if (endpoint != null)
         {
-            targetRootURL = endpoint.getAddress();
+            targetRootURL = endpoint.getNetworkAddress();
         }
 
         Map<String, Object> configurationProperties = connectionBean.getConfigurationProperties();

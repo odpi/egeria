@@ -1,0 +1,77 @@
+# Egeria-load-content-packs
+# =====================================================================================================================
+# Egeria's content packs provide reference data, templates and connector/service configuration.  They are
+# organized around the solutions they enable.
+#
+# More information:
+# A content pack is a type of open metadata archive.
+# https://egeria-project.org/concepts/open-metadata-archives/
+
+@baseURL=https://localhost:9443
+@viewServer=view-server
+
+###
+# =====================================================================================================================
+# Manage the authentication token.  Run this request to create/refresh the token.
+
+# @name Token (RequestBody)
+POST {{baseURL}}/api/token
+Content-Type: application/json
+
+{
+  "userId" : "garygeeke",
+  "password" : "secret"
+}
+
+> {% client.global.set("token", response.body); %}
+
+
+###
+# =====================================================================================================================
+# Retrieve the unique identifier for the active metadata store.  This metadata element is catalogued automatically
+# by the OMAG Server Platform cataloguer.   This is an integration connector that queries each of the catalogued
+# OMAG Server Platforms and builds a metadata representation of the servers running on it.  These representations are
+# then used by the Runtime Manager API to target operation commands to the right OMAG Server.
+###
+# @name get the GUID for active-metadata-store
+# Retrieve the metadata element using its unique identifier.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/runtime-manager/metadata-elements/guid-by-unique-name
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "UniqueNameRequestBody",
+  "name" : "active-metadata-store",
+  "namePropertyName" : "displayName"
+}
+
+> {% client.global.set("activeMetadataStoreGUID", response.body.guid); %}
+
+
+
+###
+# =====================================================================================================================
+# @name Add CloudInformationModel
+# CloudInformationModel provides a large glossary based on the content of the Cloud Informaiton Model.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/runtime-manager/omag-servers/{{activeMetadataStoreGUID}}/instance/load/open-metadata-archives/file
+Authorization: Bearer {{token}}
+Content-Type: text/plain
+
+content-packs/CloudInformationModel.omarchive
+
+
+###
+# @name get the GUID for the CloudInformationModel Glossary
+# Retrieve the metadata element using its unique identifier.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/runtime-manager/metadata-elements/guid-by-unique-name
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "UniqueNameRequestBody",
+  "name" : "Glossary::CloudInformationModel",
+  "namePropertyName" : "qualifiedName"
+}
+
+> {% client.global.set("cimGlossaryGUID", response.body.guid); %}
+

@@ -59,9 +59,10 @@ public class SearchKeywordClient extends ConnectorContextClientBase
     /**
      * Adds a search keyword to the element.
      *
-     * @param elementGUID     unique identifier for the element.
+     * @param elementGUID     unique identifier for the element
+     * @param metadataSourceOptions options for the request.
      * @param initialClassifications map of classification names to classification properties to include in the entity creation request
-     * @param properties   properties of the comment
+     * @param properties   properties of the search keyword
      *
      * @return guid of new search keyword.
      *
@@ -72,9 +73,9 @@ public class SearchKeywordClient extends ConnectorContextClientBase
     public String addSearchKeywordToElement(String                                elementGUID,
                                             MetadataSourceOptions                 metadataSourceOptions,
                                             Map<String, ClassificationProperties> initialClassifications,
-                                            SearchKeywordProperties                     properties) throws InvalidParameterException,
-                                                                                                           PropertyServerException,
-                                                                                                           UserNotAuthorizedException
+                                            SearchKeywordProperties               properties) throws InvalidParameterException,
+                                                                                                     PropertyServerException,
+                                                                                                     UserNotAuthorizedException
     {
         return searchKeywordHandler.addSearchKeywordToElement(connectorUserId, elementGUID, metadataSourceOptions, initialClassifications, properties);
     }

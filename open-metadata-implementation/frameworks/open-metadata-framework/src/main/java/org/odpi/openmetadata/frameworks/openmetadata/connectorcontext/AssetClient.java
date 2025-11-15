@@ -5,6 +5,7 @@ package org.odpi.openmetadata.frameworks.openmetadata.connectorcontext;
 
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.openmetadata.client.OpenMetadataClient;
+import org.odpi.openmetadata.frameworks.openmetadata.enums.ElementOriginCategory;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.ElementStatus;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.PropertyServerException;
@@ -143,6 +144,33 @@ public class AssetClient extends ConnectorContextClientBase
         }
 
         return assetGUID;
+    }
+
+
+    /**
+     * Retrieve the metadata source's unique identifier (GUID) or if it is not defined, create the software server capability
+     * for this service.
+     *
+     * @param metadataSourceQualifiedName unique name of the software capability that represents this integration service
+     * @param ownerGUID unique identifier of the owner of the metadata collection
+     * @param ownerName name of owner from config
+     * @param ownerUserId userId for the owner
+     *
+     * @return unique identifier of the metadata source
+     *
+     * @throws InvalidParameterException one of the parameters passed (probably on initialize) is invalid
+     * @throws UserNotAuthorizedException the integration daemon's userId does not have access to the partner OMAS
+     * @throws PropertyServerException there is a problem in the remote server running the partner OMAS
+     */
+    public String setUpMetadataSource(String                metadataSourceQualifiedName,
+                                      String                ownerGUID,
+                                      String                ownerName,
+                                      String                ownerUserId,
+                                      ElementOriginCategory originCategory) throws InvalidParameterException,
+                                                                                   UserNotAuthorizedException,
+                                                                                   PropertyServerException
+    {
+        return assetHandler.setUpMetadataSource(connectorUserId, metadataSourceQualifiedName, ownerGUID, ownerName, ownerUserId, originCategory);
     }
 
 

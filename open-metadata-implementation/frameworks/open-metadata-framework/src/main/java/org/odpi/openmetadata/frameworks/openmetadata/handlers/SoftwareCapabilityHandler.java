@@ -375,36 +375,6 @@ public class SoftwareCapabilityHandler extends OpenMetadataHandlerBase
 
 
     /**
-     * Returns the list of softwareCapabilities linked to a particular itAssetGUID.
-     *
-     * @param userId                 userId of user making request
-     * @param itAssetGUID              unique identifier of the starting element
-     * @param queryOptions           multiple options to control the query
-     * @return a list of elements
-     * @throws InvalidParameterException  one of the parameters is null or invalid.
-     * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
-     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
-     */
-    public List<OpenMetadataRootElement> getSupportedSoftwareCapabilities(String       userId,
-                                                                          String       itAssetGUID,
-                                                                          QueryOptions queryOptions) throws InvalidParameterException,
-                                                                                                            PropertyServerException,
-                                                                                                            UserNotAuthorizedException
-    {
-        final String methodName = "getSupportedTSoftwareCapabilities";
-        final String guidPropertyName = "itAssetGUID";
-
-        return super.getRelatedRootElements(userId,
-                                            itAssetGUID,
-                                            guidPropertyName,
-                                            1,
-                                            OpenMetadataType.SUPPORTED_SOFTWARE_CAPABILITY_RELATIONSHIP.typeName,
-                                            queryOptions,
-                                            methodName);
-    }
-
-
-    /**
      * Returns the list of softwareCapabilities that are using a particular asset.
      *
      * @param userId                 userId of user making request
@@ -429,6 +399,7 @@ public class SoftwareCapabilityHandler extends OpenMetadataHandlerBase
                                             guidPropertyName,
                                             2,
                                             OpenMetadataType.CAPABILITY_ASSET_USE_RELATIONSHIP.typeName,
+                                            OpenMetadataType.SOFTWARE_CAPABILITY.typeName,
                                             queryOptions,
                                             methodName);
     }
@@ -459,6 +430,7 @@ public class SoftwareCapabilityHandler extends OpenMetadataHandlerBase
                                             guidPropertyName,
                                             2,
                                             OpenMetadataType.SUPPORTED_GOVERNANCE_SERVICE_RELATIONSHIP.typeName,
+                                            OpenMetadataType.GOVERNANCE_ENGINE.typeName,
                                             queryOptions,
                                             methodName);
     }
@@ -489,6 +461,7 @@ public class SoftwareCapabilityHandler extends OpenMetadataHandlerBase
                                             guidPropertyName,
                                             2,
                                             OpenMetadataType.REGISTERED_INTEGRATION_CONNECTOR_RELATIONSHIP.typeName,
+                                            OpenMetadataType.INTEGRATION_GROUP.typeName,
                                             queryOptions,
                                             methodName);
     }
@@ -547,6 +520,7 @@ public class SoftwareCapabilityHandler extends OpenMetadataHandlerBase
                                             parentGUIDParameterName,
                                             1,
                                             OpenMetadataType.SUPPORTED_SOFTWARE_CAPABILITY_RELATIONSHIP.typeName,
+                                            OpenMetadataType.SOFTWARE_CAPABILITY.typeName,
                                             queryOptions,
                                             methodName);
     }

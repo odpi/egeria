@@ -42,7 +42,8 @@ public class ApacheAtlasPackArchiveWriter extends ContentPackBaseArchiveWriter
          */
         for (AtlasDeployedImplementationType deployedImplementationType : AtlasDeployedImplementationType.values())
         {
-            this.addDeployedImplementationType(deployedImplementationType.getDeployedImplementationType(),
+            this.addDeployedImplementationType(deployedImplementationType.getGUID(),
+                                               deployedImplementationType.getDeployedImplementationType(),
                                                deployedImplementationType.getAssociatedTypeName(),
                                                deployedImplementationType.getQualifiedName(),
                                                deployedImplementationType.getDescription(),

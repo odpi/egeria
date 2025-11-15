@@ -113,9 +113,10 @@ public class SecurityConfig
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception
     {
-        return httpSecurity.cors().and()
-                .csrf(AbstractHttpConfigurer::disable)
-                .authorizeHttpRequests( auth -> auth
+        httpSecurity.cors(); // replaced by corsConfigurationSource in a later version of Spring
+
+        httpSecurity.csrf(AbstractHttpConfigurer::disable);
+        httpSecurity.authorizeHttpRequests( auth -> auth
                         .requestMatchers("/api/about").permitAll()
                         .requestMatchers("/api/token").permitAll()
                         .requestMatchers("/api/servers/*/token").permitAll()
@@ -124,11 +125,12 @@ public class SecurityConfig
                         .requestMatchers("/open-metadata/**").permitAll() // platform level services
                         .requestMatchers("/servers/*/open-metadata/**").permitAll() // OMAG Server services
                         .requestMatchers("/v3/api-docs/**").permitAll()
-                        .anyRequest().authenticated()
-                )
-                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-                .oauth2ResourceServer(OAuth2ResourceServerConfigurer::jwt)
-                .build();
+                        .anyRequest().authenticated());
+        httpSecurity.sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
+
+        httpSecurity.oauth2ResourceServer(OAuth2ResourceServerConfigurer::jwt); // replaced by jwtBearer in a later version of Spring
+
+        return httpSecurity.build();
     }
 }
 

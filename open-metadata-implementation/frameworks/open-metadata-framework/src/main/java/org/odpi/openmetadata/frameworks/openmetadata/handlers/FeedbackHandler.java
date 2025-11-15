@@ -67,6 +67,7 @@ public abstract class FeedbackHandler extends OpenMetadataHandlerBase
         OpenMetadataRootElement existingFeedback = this.getFeedbackForUser(userId,
                                                                            elementGUID,
                                                                            relationshipTypeName,
+                                                                           feedbackTypeName,
                                                                            new QueryOptions(metadataSourceOptions),
                                                                            methodName);
 
@@ -105,6 +106,7 @@ public abstract class FeedbackHandler extends OpenMetadataHandlerBase
      * @param userId      userId of user making request.
      * @param elementGUID   unique identifier for the element.
      * @param relationshipTypeName name of the relationship type
+     * @param attachmentEntityTypeName requested type name for retrieved entities
      * @param queryOptions  options to control access to open metadata
      * @param methodName calling method
      * @return relationship and entity
@@ -115,6 +117,7 @@ public abstract class FeedbackHandler extends OpenMetadataHandlerBase
     protected OpenMetadataRootElement getFeedbackForUser(String       userId,
                                                          String       elementGUID,
                                                          String       relationshipTypeName,
+                                                         String       attachmentEntityTypeName,
                                                          QueryOptions queryOptions,
                                                          String       methodName) throws InvalidParameterException,
                                                                                            PropertyServerException,
@@ -132,6 +135,7 @@ public abstract class FeedbackHandler extends OpenMetadataHandlerBase
                                                                                        guidParameterName,
                                                                                        1,
                                                                                        relationshipTypeName,
+                                                                                       attachmentEntityTypeName,
                                                                                        workingQueryOptions,
                                                                                        methodName);
 
@@ -157,6 +161,7 @@ public abstract class FeedbackHandler extends OpenMetadataHandlerBase
                                                              guidParameterName,
                                                              1,
                                                              relationshipTypeName,
+                                                             attachmentEntityTypeName,
                                                              workingQueryOptions,
                                                              methodName);;
         }

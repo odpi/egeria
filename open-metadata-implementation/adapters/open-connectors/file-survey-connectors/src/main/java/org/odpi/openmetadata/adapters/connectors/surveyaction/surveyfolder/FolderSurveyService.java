@@ -7,6 +7,7 @@ import org.odpi.openmetadata.adapters.connectors.datastore.basicfile.BasicFolder
 import org.odpi.openmetadata.adapters.connectors.surveyaction.controls.FolderRequestParameter;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.OpenMetadataRootElement;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.surveyreports.*;
+import org.odpi.openmetadata.frameworks.openmetadata.search.NewElementOptions;
 import org.odpi.openmetadata.frameworks.opensurvey.controls.SurveyFolderAnnotationType;
 import org.odpi.openmetadata.adapters.connectors.surveyaction.extractors.FileStatsExtractor;
 import org.odpi.openmetadata.adapters.connectors.surveyaction.ffdc.SurveyServiceAuditCode;
@@ -690,12 +691,22 @@ public class FolderSurveyService extends SurveyActionServiceConnector
                 FileUtils.writeStringToFile(logFile, "FileName,FileExtension,PathName,FileType,AssetTypeName,DeployedImplementationType,Encoding\n", (String)null, false);
             }
 
+            NewElementOptions newElementOptions = new NewElementOptions();
+
+            newElementOptions.setIsOwnAnchor(true);
+            newElementOptions.setParentGUID(surveyContext.getConnectorGUID());
+            newElementOptions.setParentAtEnd1(true);
+            newElementOptions.setParentRelationshipTypeName(OpenMetadataType.DATA_FLOW_RELATIONSHIP.typeName);
+
             String assetGUID = surveyAssetStore.addCSVFileToCatalog("Missing reference data for survey report " + surveyReportGUID,
                                                                     "Shows the files that could not be correctly classified from the reference data.",
                                                                     logFile.getCanonicalPath(),
                                                                     null,
                                                                     ',',
-                                                                    '"');
+                                                                    '"',
+                                                                    surveyContext.getEgeriaRelease(),
+                                                                    csvFileConnectorTypeGUID,
+                                                                    newElementOptions);
 
 
             if (newLogFile)
@@ -772,12 +783,22 @@ public class FolderSurveyService extends SurveyActionServiceConnector
                 FileUtils.writeStringToFile(logFile, "FileName,Exception,Message\n", (String)null, false);
             }
 
+            NewElementOptions newElementOptions = new NewElementOptions();
+
+            newElementOptions.setIsOwnAnchor(true);
+            newElementOptions.setParentGUID(surveyContext.getConnectorGUID());
+            newElementOptions.setParentAtEnd1(true);
+            newElementOptions.setParentRelationshipTypeName(OpenMetadataType.DATA_FLOW_RELATIONSHIP.typeName);
+
             String assetGUID = surveyAssetStore.addCSVFileToCatalog("Inaccessible files detected by " + surveyReportGUID,
                                                                     "Shows the files that could not be accessed.",
                                                                     logFile.getCanonicalPath(),
                                                                     null,
                                                                     ',',
-                                                                    '"');
+                                                                    '"',
+                                                                    surveyContext.getEgeriaRelease(),
+                                                                    csvFileConnectorTypeGUID,
+                                                                    newElementOptions);
 
 
             if (newLogFile)

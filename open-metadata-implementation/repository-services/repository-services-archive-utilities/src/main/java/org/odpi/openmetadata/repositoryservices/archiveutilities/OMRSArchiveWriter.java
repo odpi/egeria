@@ -7,8 +7,6 @@ import org.odpi.openmetadata.adapters.repositoryservices.archiveconnector.file.F
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.ConnectorProvider;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.*;
-import org.odpi.openmetadata.frameworks.openmetadata.enums.ElementOriginCategory;
-import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.ElementOrigin;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.odpi.openmetadata.frameworks.connectors.Connector;
@@ -45,7 +43,7 @@ public class OMRSArchiveWriter
     {
         Endpoint endpoint = new Endpoint();
 
-        endpoint.setAddress(fileName);
+        endpoint.setNetworkAddress(fileName);
 
         Connection connection = new Connection();
 

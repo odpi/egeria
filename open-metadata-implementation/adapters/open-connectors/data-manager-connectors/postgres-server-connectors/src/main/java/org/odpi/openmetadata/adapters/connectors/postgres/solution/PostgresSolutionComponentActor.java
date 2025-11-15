@@ -3,7 +3,10 @@
 
 package org.odpi.openmetadata.adapters.connectors.postgres.solution;
 
-import org.odpi.openmetadata.frameworks.openmetadata.definitions.*;
+import org.odpi.openmetadata.frameworks.openmetadata.definitions.ActorRoleDefinition;
+import org.odpi.openmetadata.frameworks.openmetadata.definitions.EgeriaRoleDefinition;
+import org.odpi.openmetadata.frameworks.openmetadata.definitions.SolutionComponentActorDefinition;
+import org.odpi.openmetadata.frameworks.openmetadata.definitions.SolutionComponentDefinition;
 
 /**
  * Define the relationship between the solution roles and the solution components

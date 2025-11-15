@@ -102,7 +102,7 @@ public class OSSUnityCatalogResourceConnector extends ConnectorBase implements A
 
         if (endpoint != null)
         {
-            targetRootURL = endpoint.getAddress();
+            targetRootURL = endpoint.getNetworkAddress();
         }
 
         if (targetRootURL == null)

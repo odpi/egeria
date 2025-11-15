@@ -56,7 +56,7 @@ public class FileBasedAuditLogStoreConnector extends OMRSAuditLogStoreConnectorB
 
         if (endpoint != null)
         {
-            logStoreTemplateName = endpoint.getAddress();
+            logStoreTemplateName = endpoint.getNetworkAddress();
         }
 
         if (logStoreTemplateName == null)

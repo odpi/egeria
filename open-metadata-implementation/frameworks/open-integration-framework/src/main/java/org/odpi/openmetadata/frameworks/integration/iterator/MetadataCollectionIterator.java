@@ -4,11 +4,15 @@
 package org.odpi.openmetadata.frameworks.integration.iterator;
 
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
-import org.odpi.openmetadata.frameworks.openmetadata.connectorcontext.OpenMetadataStore;
+import org.odpi.openmetadata.frameworks.integration.context.IntegrationContext;
+import org.odpi.openmetadata.frameworks.openmetadata.connectorcontext.ClassificationManagerClient;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.PermittedSynchronization;
+import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
+
+import java.util.Collections;
 
 
 /**
@@ -16,42 +20,33 @@ import org.odpi.openmetadata.frameworks.openmetadata.enums.PermittedSynchronizat
  */
 public class MetadataCollectionIterator extends IntegrationIterator
 {
-
     /**
      * Create the iterator.
      *
      * @param metadataCollectionGUID unique identifier of the metadata collection
-     * @param metadataCollectionQualifiedName unique name of the metadata collection
-     * @param externalScopeGUID unique identifier for the owning scope (typically a catalog)
-     * @param externalScopeName unique name for the owning scope (typically a catalog)
      * @param catalogTargetName name of target
      * @param connectorName name of the calling connector
      * @param metadataTypeName type of element to receive
-     * @param openMetadataStore client to access metadata
+     * @param integrationContext clients to access metadata
      * @param targetPermittedSynchronization the synchronization policy for this target
      * @param maxPageSize max page size for the server
      * @param auditLog logging destination
+     * @throws UserNotAuthorizedException connector has disconnected
      */
     public MetadataCollectionIterator(String                   metadataCollectionGUID,
-                                      String                   metadataCollectionQualifiedName,
-                                      String                   externalScopeGUID,
-                                      String                   externalScopeName,
                                       String                   catalogTargetName,
                                       String                   connectorName,
                                       String                   metadataTypeName,
-                                      OpenMetadataStore        openMetadataStore,
+                                      IntegrationContext       integrationContext,
                                       PermittedSynchronization targetPermittedSynchronization,
                                       int                      maxPageSize,
-                                      AuditLog                 auditLog)
+                                      AuditLog                 auditLog) throws UserNotAuthorizedException
     {
         super(metadataCollectionGUID,
-              metadataCollectionQualifiedName,
-              externalScopeGUID,
-              externalScopeName,
               catalogTargetName,
               connectorName,
               metadataTypeName,
-              openMetadataStore,
+              integrationContext,
               targetPermittedSynchronization,
               maxPageSize,
               auditLog);
@@ -71,11 +66,16 @@ public class MetadataCollectionIterator extends IntegrationIterator
                                          PropertyServerException,
                                          UserNotAuthorizedException
     {
+        final String methodName = "fillCache";
+
         if ((elementCache == null) || (elementCache.isEmpty()))
         {
-            elementCache = openMetadataStore.findMetadataElements(propertyHelper.getSearchPropertiesForMetadataCollectionName(metadataCollectionQualifiedName),
-                                                                  null,
-                                                                  openMetadataStore.getQueryOptions(metadataTypeName, null, startFrom, maxPageSize));
+            ClassificationManagerClient classificationManagerClient = integrationContext.getClassificationManagerClient(metadataTypeName);
+
+            elementCache = classificationManagerClient.getRootElementsByName(metadataCollectionGUID,
+                                                                             Collections.singletonList(OpenMetadataProperty.METADATA_COLLECTION_ID.name),
+                                                                             classificationManagerClient.getQueryOptions(startFrom, maxPageSize),
+                                                                             methodName);
             startFrom = startFrom + maxPageSize;
         }
 

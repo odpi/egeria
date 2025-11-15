@@ -290,7 +290,7 @@ public class EgeriaReport
             }
             else
             {
-                printReportLine(detailIndentLevel + 1, "Location", connection.getEndpoint().getAddress());
+                printReportLine(detailIndentLevel + 1, "Location", connection.getEndpoint().getNetworkAddress());
             }
 
             if (connection.getConfigurationProperties() != null)

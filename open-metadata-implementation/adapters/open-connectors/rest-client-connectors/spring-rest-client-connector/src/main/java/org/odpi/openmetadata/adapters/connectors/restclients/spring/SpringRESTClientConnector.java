@@ -104,7 +104,7 @@ public class SpringRESTClientConnector extends RESTClientConnector
 
         if (endpoint != null)
         {
-            this.serverPlatformURLRoot = endpoint.getAddress();
+            this.serverPlatformURLRoot = endpoint.getNetworkAddress();
             this.serverName = endpoint.getDisplayName();
         }
         else

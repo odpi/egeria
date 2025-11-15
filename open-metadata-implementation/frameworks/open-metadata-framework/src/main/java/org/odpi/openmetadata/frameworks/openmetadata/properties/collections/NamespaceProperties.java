@@ -7,19 +7,18 @@ package org.odpi.openmetadata.frameworks.openmetadata.properties.collections;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.ClassificationBeanProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
 /**
- * NamespaceProperties is a java bean used to classify a collection.
+ * NamespaceProperties is a java bean used to define a collection that represents elements in a namespace.
  */
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class NamespaceProperties extends ClassificationBeanProperties
+public class NamespaceProperties extends CollectionProperties
 {
     /**
      * Default constructor
@@ -27,7 +26,7 @@ public class NamespaceProperties extends ClassificationBeanProperties
     public NamespaceProperties()
     {
         super();
-        super.setTypeName(OpenMetadataType.NAMESPACE_COLLECTION_CLASSIFICATION.typeName);
+        super.setTypeName(OpenMetadataType.NAMESPACE_COLLECTION.typeName);
     }
 
 
@@ -36,7 +35,7 @@ public class NamespaceProperties extends ClassificationBeanProperties
      *
      * @param template object to copy
      */
-    public NamespaceProperties(ClassificationBeanProperties template)
+    public NamespaceProperties(CollectionProperties template)
     {
         super(template);
     }

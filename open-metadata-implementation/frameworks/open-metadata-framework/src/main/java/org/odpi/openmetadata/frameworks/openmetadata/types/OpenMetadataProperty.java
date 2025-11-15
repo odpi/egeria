@@ -314,11 +314,6 @@ public enum OpenMetadataProperty
     USER_ID("userId", DataType.STRING, DataType.STRING.getName(), "The user identifier for the person/system executing the request.", null, "c65a21dc-d1ae-4a8f-ba33-58ec401c1b42"),
 
     /**
-     * Description of the activity.
-     */
-    ACTION_DESCRIPTION("actionDescription", DataType.STRING, DataType.STRING.getName(), "Description of the activity.", null, "2f0a4467-7b72-4dba-a345-d80959d8a3d5"),
-
-    /**
      * The version number of the template element when the copy was created.
      */
     SOURCE_VERSION_NUMBER("sourceVersionNumber", DataType.LONG, DataType.LONG.getName(), "The version number of the template element when the copy was created.", null, "4729488f-2e42-4801-bc17-9dfad508c1fa"),
@@ -2793,11 +2788,11 @@ public enum OpenMetadataProperty
                   "0b015138-0870-4604-9df1-5bda47101d74"),
 
     /**
-     * Expression used to filter data values passing through port.
+     * Expression used to filter data values passing through element.
      */
     FILTER_EXPRESSION("filterExpression",
                       DataType.STRING, DataType.STRING.getName(),
-                      "Expression used to filter data values passing through port.",
+                      "Expression used to filter data values passing through element.",
                       null,
                       "67403964-08fc-4d7e-bf60-3e95a4fc15bb"),
 

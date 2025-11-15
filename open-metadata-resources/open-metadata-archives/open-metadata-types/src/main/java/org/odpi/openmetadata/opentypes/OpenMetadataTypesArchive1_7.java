@@ -260,6 +260,7 @@ public class OpenMetadataTypesArchive1_7
 
         properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.DISPLAY_NAME));
         properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.DESCRIPTION));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.POINT_TYPE));
 
         classificationDef.setPropertiesDefinition(properties);
 
@@ -281,6 +282,7 @@ public class OpenMetadataTypesArchive1_7
 
         properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.DISPLAY_NAME));
         properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.DESCRIPTION));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.POINT_TYPE));
 
         classificationDef.setPropertiesDefinition(properties);
 
@@ -299,6 +301,7 @@ public class OpenMetadataTypesArchive1_7
          */
         List<TypeDefAttribute> properties = new ArrayList<>();
 
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.POINT_TYPE));
         properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.DISPLAY_NAME));
         properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.DESCRIPTION));
 
@@ -320,6 +323,7 @@ public class OpenMetadataTypesArchive1_7
          */
         List<TypeDefAttribute> properties = new ArrayList<>();
 
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.POINT_TYPE));
         properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.DISPLAY_NAME));
         properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.DESCRIPTION));
 
@@ -341,6 +345,7 @@ public class OpenMetadataTypesArchive1_7
          */
         List<TypeDefAttribute> properties = new ArrayList<>();
 
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.POINT_TYPE));
         properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.DISPLAY_NAME));
         properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.DESCRIPTION));
 
@@ -358,8 +363,6 @@ public class OpenMetadataTypesArchive1_7
     private void update0438NamingStandards()
     {
         this.archiveBuilder.addClassificationDef(getModifierClassification());
-        this.archiveBuilder.addTypeDefPatch(updatePrimeWordClassification());
-        this.archiveBuilder.addTypeDefPatch(updateClassWordClassification());
     }
 
     private ClassificationDef getModifierClassification()
@@ -368,43 +371,6 @@ public class OpenMetadataTypesArchive1_7
                                                   null,
                                                   this.archiveBuilder.getEntityDef(OpenMetadataType.REFERENCEABLE.typeName),
                                                   false);
-    }
-
-    private TypeDefPatch updatePrimeWordClassification()
-    {
-        /*
-         * Create the Patch
-         */
-        TypeDefPatch  typeDefPatch = archiveBuilder.getPatchForType(OpenMetadataType.PRIME_WORD_CLASSIFICATION.typeName);
-
-        typeDefPatch.setUpdatedBy(originatorName);
-        typeDefPatch.setUpdateTime(creationDate);
-
-        List<TypeDefLink> validEntityDefs = new ArrayList<>();
-        validEntityDefs.add(new TypeDefLink(archiveBuilder.getTypeDefByName(OpenMetadataType.REFERENCEABLE.typeName)));
-
-        typeDefPatch.setValidEntityDefs(validEntityDefs);
-
-        return typeDefPatch;
-    }
-
-
-    private TypeDefPatch updateClassWordClassification()
-    {
-        /*
-         * Create the Patch
-         */
-        TypeDefPatch  typeDefPatch = archiveBuilder.getPatchForType(OpenMetadataType.CLASS_WORD_CLASSIFICATION.typeName);
-
-        typeDefPatch.setUpdatedBy(originatorName);
-        typeDefPatch.setUpdateTime(creationDate);
-
-        List<TypeDefLink> validEntityDefs = new ArrayList<>();
-        validEntityDefs.add(new TypeDefLink(archiveBuilder.getTypeDefByName(OpenMetadataType.REFERENCEABLE.typeName)));
-
-        typeDefPatch.setValidEntityDefs(validEntityDefs);
-
-        return typeDefPatch;
     }
 
 

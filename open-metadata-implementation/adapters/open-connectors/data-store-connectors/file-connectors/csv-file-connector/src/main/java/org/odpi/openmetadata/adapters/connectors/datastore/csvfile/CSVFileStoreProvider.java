@@ -3,7 +3,7 @@
 
 package org.odpi.openmetadata.adapters.connectors.datastore.csvfile;
 
-import org.odpi.openmetadata.adapters.connectors.datastore.csvfile.controls.CSVFileConfigurationProperty;
+import org.odpi.openmetadata.frameworks.openmetadata.controls.CSVFileConfigurationProperty;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLogReportingComponent;
 import org.odpi.openmetadata.frameworks.auditlog.ComponentDevelopmentStatus;
 import org.odpi.openmetadata.frameworks.connectors.ConnectorProviderBase;

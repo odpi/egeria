@@ -37,7 +37,7 @@ public class TestFileBasedRegistryStoreConnector
         endpoint.setQualifiedName(endpointName);
         endpoint.setDisplayName(endpointName);
         endpoint.setDescription(endpointDescription);
-        endpoint.setAddress(endpointAddress);
+        endpoint.setNetworkAddress(endpointAddress);
 
 
         final String connectorTypeDescription   = "OMRS default cohort registry connector type.";
@@ -76,7 +76,7 @@ public class TestFileBasedRegistryStoreConnector
         Connection  connection = getGoodConnection();
         Endpoint    endpoint   = connection.getEndpoint();
 
-        endpoint.setAddress(null);
+        endpoint.setNetworkAddress(null);
         connection.setEndpoint(endpoint);
 
         return connection;

@@ -119,7 +119,7 @@ public class ApacheAtlasIntegrationConnector extends IntegrationConnectorBase im
 
         if (endpoint != null)
         {
-            targetRootURL = endpoint.getAddress();
+            targetRootURL = endpoint.getNetworkAddress();
         }
 
         if (targetRootURL == null)

@@ -57,7 +57,8 @@ public class UnityCatalogPackArchiveWriter extends ContentPackBaseArchiveWriter
          */
         for (UnityCatalogDeployedImplementationType deployedImplementationType : UnityCatalogDeployedImplementationType.values())
         {
-            this.addDeployedImplementationType(deployedImplementationType.getDeployedImplementationType(),
+            this.addDeployedImplementationType(deployedImplementationType.getGUID(),
+                                               deployedImplementationType.getDeployedImplementationType(),
                                                deployedImplementationType.getAssociatedTypeName(),
                                                deployedImplementationType.getQualifiedName(),
                                                deployedImplementationType.getDescription(),
@@ -268,7 +269,10 @@ public class UnityCatalogPackArchiveWriter extends ContentPackBaseArchiveWriter
         DeployedImplementationTypeDefinition deployedImplementationType = UnityCatalogDeployedImplementationType.OSS_UC_CATALOG;
 
         String               qualifiedName      = deployedImplementationType.getDeployedImplementationType() + "::" + PlaceholderProperty.SERVER_NETWORK_ADDRESS.getPlaceholder() + "::" + UnityCatalogPlaceholderProperty.CATALOG_NAME.getPlaceholder();
+        Map<String, Object>  extendedProperties = new HashMap<>();
         List<Classification> classifications    = new ArrayList<>();
+
+        extendedProperties.put(OpenMetadataProperty.RESOURCE_NAME.name, UnityCatalogPlaceholderProperty.CATALOG_NAME.getPlaceholder());
 
         classifications.add(archiveHelper.getTemplateClassification(deployedImplementationType.getDeployedImplementationType() + " template",
                                                                     UnityCatalogTemplateType.OSS_UC_CATALOG_TEMPLATE.getTemplateDescription(),
@@ -276,30 +280,24 @@ public class UnityCatalogPackArchiveWriter extends ContentPackBaseArchiveWriter
                                                                     null, methodName));
 
         archiveHelper.setGUID(qualifiedName, guid);
-        String capabilityGUID = archiveHelper.addSoftwareCapability(deployedImplementationType.getAssociatedTypeName(),
-                                                                    qualifiedName,
-                                                                    UnityCatalogPlaceholderProperty.CATALOG_NAME.getPlaceholder(),
-                                                                    PlaceholderProperty.DESCRIPTION.getPlaceholder(),
-                                                                    deployedImplementationType.getDeployedImplementationType(),
-                                                                    PlaceholderProperty.VERSION_IDENTIFIER.getPlaceholder(),
-                                                                    null,
-                                                                    null,
-                                                                    null,
-                                                                    null,
-                                                                    classifications,
-                                                                    null,
-                                                                    deployedImplementationType.getAssociatedTypeName(),
-                                                                    OpenMetadataType.SOFTWARE_CAPABILITY.typeName,
-                                                                    null);
-        assert(guid.equals(capabilityGUID));
+        String assetGUID = archiveHelper.addAsset(deployedImplementationType.getAssociatedTypeName(),
+                                                  qualifiedName,
+                                                  UnityCatalogPlaceholderProperty.CATALOG_NAME.getPlaceholder(),
+                                                  deployedImplementationType.getDeployedImplementationType(),
+                                                  PlaceholderProperty.VERSION_IDENTIFIER.getPlaceholder(),
+                                                  PlaceholderProperty.DESCRIPTION.getPlaceholder(),
+                                                  null,
+                                                  extendedProperties,
+                                                  classifications);
+        assert(guid.equals(assetGUID));
 
         String deployedImplementationTypeGUID = archiveHelper.getGUID(deployedImplementationType.getQualifiedName());
 
-        archiveHelper.addCatalogTemplateRelationship(deployedImplementationTypeGUID, capabilityGUID);
+        archiveHelper.addCatalogTemplateRelationship(deployedImplementationTypeGUID, assetGUID);
 
-        archiveHelper.addPlaceholderProperties(capabilityGUID,
+        archiveHelper.addPlaceholderProperties(assetGUID,
                                                deployedImplementationType.getAssociatedTypeName(),
-                                               capabilityGUID,
+                                               assetGUID,
                                                deployedImplementationType.getAssociatedTypeName(),
                                                OpenMetadataType.SOFTWARE_CAPABILITY.typeName,
                                                null,

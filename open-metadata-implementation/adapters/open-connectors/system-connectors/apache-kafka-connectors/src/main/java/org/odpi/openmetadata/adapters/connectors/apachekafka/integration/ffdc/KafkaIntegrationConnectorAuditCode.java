@@ -26,9 +26,8 @@ public enum KafkaIntegrationConnectorAuditCode implements AuditLogMessageSet
      */
     CONNECTOR_CONFIGURATION("APACHE-KAFKA-INTEGRATION-CONNECTOR-0001",
                             AuditLogRecordSeverityLevel.INFO,
-                            "The {0} integration connector is cataloguing event broker at URL {1} with templateQualifiedName={2}",
-                            "The connector monitors changes to the topics managed by the event broker.  " +
-                                    "If the templateQualifiedName is set, it identifies a template entity to use.",
+                            "The {0} integration connector is cataloguing event broker {1} at URL {2} with template={3}",
+                            "The connector monitors changes to the topics managed by the event broker and catalogs them in open metadata.",
                             "No specific action is required.  This message is to confirm the configuration for a specific catalog target."),
 
     /**
@@ -65,15 +64,6 @@ public enum KafkaIntegrationConnectorAuditCode implements AuditLogMessageSet
                      "The {0} integration connector has retrieved {2} topics from {1}",
                      "The connector will maintain these topics as assets.",
                      "No action is required unless there are errors that follow indicating that the topics can not be maintained."),
-
-    /**
-     * APACHE-KAFKA-INTEGRATION-CONNECTOR-0009 - The {0} integration connector has stopped its topic monitoring and is shutting down
-     */
-    CONNECTOR_STOPPING("APACHE-KAFKA-INTEGRATION-CONNECTOR-0009",
-                       AuditLogRecordSeverityLevel.INFO,
-                       "The {0} integration connector has stopped its topic monitoring and is shutting down",
-                       "The connector is disconnecting.",
-                       "No action is required unless there are errors that follow indicating that there were problems shutting down."),
 
     /**
      * APACHE-KAFKA-INTEGRATION-CONNECTOR-0014 - An unexpected {0} exception was returned to the {1} integration connector when it tried to update the

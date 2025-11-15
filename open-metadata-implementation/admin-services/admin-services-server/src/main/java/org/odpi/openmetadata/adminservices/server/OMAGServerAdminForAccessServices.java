@@ -878,7 +878,7 @@ public class OMAGServerAdminForAccessServices
                                     (accessServiceConfig.getAccessServiceOutTopic().getEndpoint() != null))
                             {
                                 topicNames.put(accessServiceConfig.getAccessServiceName() + " " + defaultOutTopicName,
-                                               accessServiceConfig.getAccessServiceOutTopic().getEndpoint().getAddress());
+                                               accessServiceConfig.getAccessServiceOutTopic().getEndpoint().getNetworkAddress());
                             }
 
                             response.setStringMap(topicNames);
@@ -948,7 +948,7 @@ public class OMAGServerAdminForAccessServices
                                 (accessServiceConfig.getAccessServiceOutTopic().getEndpoint() != null))
                         {
                             topicNames.put(accessServiceConfig.getAccessServiceName() + " " + defaultOutTopicName,
-                                           accessServiceConfig.getAccessServiceOutTopic().getEndpoint().getAddress());
+                                           accessServiceConfig.getAccessServiceOutTopic().getEndpoint().getNetworkAddress());
                         }
                     }
                 }
@@ -1032,7 +1032,7 @@ public class OMAGServerAdminForAccessServices
 
                                 if (endpoint != null)
                                 {
-                                    endpoint.setAddress(topicName);
+                                    endpoint.setNetworkAddress(topicName);
                                     connection.setEndpoint(endpoint);
                                     accessServiceConfig.setAccessServiceOutTopic(connection);
                                     setAccessServicesConfig(userId, serverName, configuredAccessServices);

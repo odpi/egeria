@@ -11,16 +11,16 @@ import org.odpi.openmetadata.frameworks.openmetadata.ffdc.PropertyServerExceptio
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.frameworks.openmetadata.handlers.StewardshipManagementHandler;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.MetadataElementSummary;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.OpenMetadataRootElement;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.RelatedMetadataElementSummaryList;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.RelatedMetadataElementList;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.governance.*;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.resources.MoreInformationProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.resources.ResourceListProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.security.SecurityTagsProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.security.ZoneMembershipProperties;
-import org.odpi.openmetadata.frameworks.openmetadata.search.DeleteOptions;
-import org.odpi.openmetadata.frameworks.openmetadata.search.MetadataSourceOptions;
-import org.odpi.openmetadata.frameworks.openmetadata.search.QueryOptions;
-import org.odpi.openmetadata.frameworks.openmetadata.search.UpdateOptions;
+import org.odpi.openmetadata.frameworks.openmetadata.search.*;
+import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 
 import java.util.List;
 import java.util.Map;
@@ -78,6 +78,124 @@ public class ClassificationManagerClient extends ConnectorContextClientBase
         this.stewardshipManagementHandler = new StewardshipManagementHandler(template.stewardshipManagementHandler, specificTypeName);
     }
 
+
+    /**
+     * Retrieve the metadata element using its unique name (typically the qualified name).
+     *
+     * @param uniqueName unique name for the metadata element
+     * @param uniquePropertyName name of property name to test in the open metadata element - if null "qualifiedName" is used
+     * @param getOptions multiple options to control the query
+     *
+     * @return metadata element properties or null if not found
+     * @throws InvalidParameterException the unique identifier is null.
+     * @throws UserNotAuthorizedException the governance action service is not able to access the element
+     * @throws PropertyServerException there is a problem accessing the metadata store
+     */
+    public OpenMetadataRootElement getRootElementByUniqueName(String     uniqueName,
+                                                              String     uniquePropertyName,
+                                                              GetOptions getOptions) throws InvalidParameterException,
+                                                                                            UserNotAuthorizedException,
+                                                                                            PropertyServerException
+    {
+        return stewardshipManagementHandler.getRootElementByUniqueName(connectorUserId, uniqueName, uniquePropertyName, getOptions);
+    }
+
+
+    /**
+     * Returns the list of elements of the appropriate type with a particular name.
+     * Caller responsible for mermaid graph.
+     *
+     * @param name                     name of the element to return - match is full text match in qualifiedName or name
+     * @param propertyNames            list of property names to consider
+     * @param queryOptions             multiple options to control the query
+     * @param methodName               calling method
+     * @return a list of elements
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public List<OpenMetadataRootElement> getRootElementsByName(String       name,
+                                                               List<String> propertyNames,
+                                                               QueryOptions queryOptions,
+                                                               String       methodName) throws InvalidParameterException,
+                                                                                               PropertyServerException,
+                                                                                               UserNotAuthorizedException
+    {
+        return stewardshipManagementHandler.getRootElementsByName(connectorUserId, name, propertyNames, queryOptions, methodName);
+    }
+
+
+    /**
+     * Retrieve the metadata element using its unique name (typically the qualified name).
+     *
+     * @param uniqueName unique name for the metadata element
+     * @param uniquePropertyName name of property name to test in the open metadata element - if null "qualifiedName" is used
+     * @param getOptions options to control the retrieve
+     *
+     * @return metadata element properties or null if not found
+     * @throws InvalidParameterException the unique identifier is null.
+     * @throws UserNotAuthorizedException the governance action service is not able to access the element
+     * @throws PropertyServerException there is a problem accessing the metadata store
+     */
+    public OpenMetadataRootElement getLineageElementByUniqueName(String     uniqueName,
+                                                                 String     uniquePropertyName,
+                                                                 GetOptions getOptions) throws InvalidParameterException,
+                                                                                               UserNotAuthorizedException,
+                                                                                               PropertyServerException
+    {
+        return stewardshipManagementHandler.getLineageElementByUniqueName(connectorUserId, uniqueName, uniquePropertyName, getOptions);
+    }
+
+
+    /**
+     * Retrieve the metadata element using its unique name (typically the qualified name) and the DELETED status.
+     * This method assumes all effective dates, and forLineage and forDuplicateProcessing are false,
+     * to cast the widest net.
+     *
+     * @param uniqueName unique name for the metadata element
+     * @param uniquePropertyName name of property name to test in the open metadata element - if null "qualifiedName" is used
+     * @param getOptions options to control the retrieve
+     *
+     * @return metadata element properties or null if not found
+     * @throws InvalidParameterException the unique identifier is null.
+     * @throws UserNotAuthorizedException the governance action service is not able to access the element
+     * @throws PropertyServerException there is a problem accessing the metadata store
+     */
+    public OpenMetadataRootElement getDeletedElementByUniqueName(String     uniqueName,
+                                                                 String     uniquePropertyName,
+                                                                 GetOptions getOptions) throws InvalidParameterException,
+                                                                                                       UserNotAuthorizedException,
+                                                                                                       PropertyServerException
+    {
+        return stewardshipManagementHandler.getDeletedElementByUniqueName(connectorUserId, uniqueName, uniquePropertyName, getOptions);
+    }
+
+
+    /**
+     * Returns the list of elements of the appropriate type with a particular name.
+     * Caller responsible for mermaid graph.
+     *
+     * @param elementGUID unique identifier for the starting metadata element
+     * @param startingAtEnd indicates which end to retrieve from (0 is "either end"; 1 is end1; 2 is end 2)
+     * @param relationshipTypeName type name of relationships to follow (or null for all)
+     * @param queryOptions            multiple options to control the query
+     * @return a list of elements
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public List<OpenMetadataRootElement> getRelatedRootElements(String       elementGUID,
+                                                                int          startingAtEnd,
+                                                                String       relationshipTypeName,
+                                                                QueryOptions queryOptions) throws InvalidParameterException,
+                                                                                                  PropertyServerException,
+                                                                                                  UserNotAuthorizedException
+    {
+        final String methodName = "getRelatedRootElements";
+        final String guidPropertyName = "elementGUID";
+
+        return stewardshipManagementHandler.getRelatedRootElements(connectorUserId, elementGUID, guidPropertyName, startingAtEnd, relationshipTypeName, OpenMetadataType.OPEN_METADATA_ROOT.typeName, queryOptions, methodName);
+    }
 
     /**
      * Return information about the elements classified with the confidence classification.

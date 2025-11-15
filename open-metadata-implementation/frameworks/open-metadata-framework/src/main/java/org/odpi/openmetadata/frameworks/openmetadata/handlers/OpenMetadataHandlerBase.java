@@ -11,6 +11,7 @@ import org.odpi.openmetadata.frameworks.openmetadata.client.OpenMetadataClient;
 import org.odpi.openmetadata.frameworks.openmetadata.converters.OpenMetadataRootConverter;
 import org.odpi.openmetadata.frameworks.openmetadata.converters.SpecificationPropertyConverter;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.ElementStatus;
+import org.odpi.openmetadata.frameworks.openmetadata.enums.SequencingOrder;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.*;
 import org.odpi.openmetadata.frameworks.openmetadata.mermaid.OpenMetadataRootMermaidGraphBuilder;
 import org.odpi.openmetadata.frameworks.openmetadata.mermaid.SolutionBlueprintMermaidGraphBuilder;
@@ -26,6 +27,7 @@ import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
@@ -1482,6 +1484,7 @@ public class OpenMetadataHandlerBase
      * @param guidPropertyName name of unique identifier for the starting metadata element
      * @param startingAtEnd indicates which end to retrieve from (0 is "either end"; 1 is end1; 2 is end 2)
      * @param relationshipTypeName type name of relationships to follow (or null for all)
+     * @param attachmentEntityTypeName requested type name for retrieved entities
      * @param suppliedQueryOptions             multiple options to control the query
      * @param methodName               calling method
      * @return a list of elements
@@ -1494,6 +1497,7 @@ public class OpenMetadataHandlerBase
                                                                 String       guidPropertyName,
                                                                 int          startingAtEnd,
                                                                 String       relationshipTypeName,
+                                                                String       attachmentEntityTypeName,
                                                                 QueryOptions suppliedQueryOptions,
                                                                 String       methodName) throws InvalidParameterException,
                                                                                                 PropertyServerException,
@@ -1513,7 +1517,7 @@ public class OpenMetadataHandlerBase
 
         if (queryOptions.getMetadataElementTypeName() == null)
         {
-            queryOptions.setMetadataElementTypeName(metadataElementTypeName);
+            queryOptions.setMetadataElementTypeName(attachmentEntityTypeName);
         }
 
         RelatedMetadataElementList relatedMetadataElementList = openMetadataClient.getRelatedMetadataElements(userId,
@@ -1526,9 +1530,114 @@ public class OpenMetadataHandlerBase
     }
 
 
+
+    /**
+     * Retrieve the metadata element using its unique name (typically the qualified name).
+     *
+     * @param userId                   userId of user making request
+     * @param uniqueName unique name for the metadata element
+     * @param uniquePropertyName name of property name to test in the open metadata element - if null "qualifiedName" is used
+     * @param getOptions multiple options to control the query
+     *
+     * @return metadata element properties or null if not found
+     * @throws InvalidParameterException the unique identifier is null.
+     * @throws UserNotAuthorizedException the governance action service is not able to access the element
+     * @throws PropertyServerException there is a problem accessing the metadata store
+     */
+    public OpenMetadataRootElement getRootElementByUniqueName(String     userId,
+                                                              String     uniqueName,
+                                                              String     uniquePropertyName,
+                                                              GetOptions getOptions) throws InvalidParameterException,
+                                                                                            UserNotAuthorizedException,
+                                                                                            PropertyServerException
+    {
+        final String methodName = "getRootElementByUniqueName";
+
+        OpenMetadataElement openMetadataElement = openMetadataClient.getMetadataElementByUniqueName(userId,
+                                                                                                    uniqueName,
+                                                                                                    uniquePropertyName,
+                                                                                                    getOptions);
+
+        return convertRootElement(userId, openMetadataElement, new QueryOptions(getOptions), methodName);
+    }
+
+
+    /**
+     * Retrieve the metadata element using its unique name (typically the qualified name).
+     *
+     * @param userId                   userId of user making request
+     * @param uniqueName unique name for the metadata element
+     * @param uniquePropertyName name of property name to test in the open metadata element - if null "qualifiedName" is used
+     * @param suppliedGetOptions options to control the retrieve
+     *
+     * @return metadata element properties or null if not found
+     * @throws InvalidParameterException the unique identifier is null.
+     * @throws UserNotAuthorizedException the governance action service is not able to access the element
+     * @throws PropertyServerException there is a problem accessing the metadata store
+     */
+    public OpenMetadataRootElement getLineageElementByUniqueName(String     userId,
+                                                                 String     uniqueName,
+                                                                 String     uniquePropertyName,
+                                                                 GetOptions suppliedGetOptions) throws InvalidParameterException,
+                                                                                                       UserNotAuthorizedException,
+                                                                                                       PropertyServerException
+    {
+        GetOptions getOptions = new GetOptions(suppliedGetOptions);
+
+        getOptions.setForLineage(true);
+
+        return this.getRootElementByUniqueName(userId, uniqueName, uniquePropertyName, getOptions);
+    }
+
+
+    /**
+     * Retrieve the metadata element using its unique name (typically the qualified name) and the DELETED status.
+     * This method assumes all effective dates, and forLineage and forDuplicateProcessing are false,
+     * to cast the widest net.
+     *
+     * @param userId                   userId of user making request
+     * @param uniqueName unique name for the metadata element
+     * @param uniquePropertyName name of property name to test in the open metadata element - if null "qualifiedName" is used
+     * @param suppliedGetOptions options to control the retrieve
+     *
+     * @return metadata element properties or null if not found
+     * @throws InvalidParameterException the unique identifier is null.
+     * @throws UserNotAuthorizedException the governance action service is not able to access the element
+     * @throws PropertyServerException there is a problem accessing the metadata store
+     */
+    public OpenMetadataRootElement getDeletedElementByUniqueName(String     userId,
+                                                                 String     uniqueName,
+                                                                 String     uniquePropertyName,
+                                                                 GetOptions suppliedGetOptions) throws InvalidParameterException,
+                                                                                                       UserNotAuthorizedException,
+                                                                                                       PropertyServerException
+    {
+        final String methodName = "getDeletedElementByUniqueName";
+
+        QueryOptions queryOptions = new QueryOptions(suppliedGetOptions);
+
+        queryOptions.setLimitResultsByStatus(Collections.singletonList(ElementStatus.DELETED));
+        queryOptions.setSequencingOrder(SequencingOrder.LAST_UPDATE_RECENT);
+
+        List<OpenMetadataRootElement> openMetadataRootElements = this.getRootElementsByName(userId, uniqueName, Collections.singletonList(uniquePropertyName), queryOptions, methodName);
+
+        if (openMetadataRootElements != null)
+        {
+            for (OpenMetadataRootElement openMetadataRootElement : openMetadataRootElements)
+            {
+                if (openMetadataRootElement != null)
+                {
+                    return openMetadataRootElement;
+                }
+            }
+        }
+
+        return null;
+    }
+
+
     /**
      * Returns the list of elements of the appropriate type with a particular name.
-     * Caller responsible for mermaid graph.
      *
      * @param userId                   userId of user making request
      * @param name                     name of the element to return - match is full text match in qualifiedName or name
@@ -1568,7 +1677,7 @@ public class OpenMetadataHandlerBase
 
         return convertRootElements(userId,
                                    openMetadataElements,
-                                   suppliedQueryOptions,
+                                   queryOptions,
                                    methodName);
     }
 

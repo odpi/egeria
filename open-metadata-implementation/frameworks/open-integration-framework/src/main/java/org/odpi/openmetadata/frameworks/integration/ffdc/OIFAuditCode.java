@@ -166,6 +166,32 @@ public enum OIFAuditCode implements AuditLogMessageSet
                                  "Use the message in the unexpected exception to determine the root cause of the error. Once this is " +
                                          "resolved, follow the instructions to prepare the integration connector for the next refresh."),
 
+    /**
+     * OIF-CONNECTOR-0016 - The {0} integration connector encountered an {1} exception when registering a listener to the open metadata ecosystem.  The exception message included was {2}
+     */
+    UNABLE_TO_REGISTER_LISTENER("OIF-CONNECTOR-0016",
+                                AuditLogRecordSeverityLevel.EXCEPTION,
+                                "The {0} integration connector encountered an {1} exception when registering a listener to the open metadata ecosystem.  The exception message included was {2}",
+                                "The connector continues to scan and synchronize metadata as configured.  Without the listener, updates to open metadata elements with only be synchronized to the third party during a refresh scan.",
+                                "The likely cause of this error is that the OMF in the metadata access server used by the integration daemon is not configured to support topics.  This can be changed by reconfiguring the metadata access server to support topics.  A less likely cause is that the metadata access server has stopped running"),
+
+    /**
+     * OIF-CONNECTOR-0018 - The {0} connector has detected a missing or invalid {1} property in method {2} - element is: {3}
+     */
+    BAD_OM_VALUE("OIF-CONNECTOR-0017",
+                 AuditLogRecordSeverityLevel.ERROR,
+                 "The {0} connector has detected a missing or invalid {1} property in method {2} - element is: {3}",
+                 "The connector throws an exception to indicate that it should not continue.",
+                 "Check the templates that where used to create the element to be sure they include the correct value.  If the template is correct then check the element's history to discover which processing cleared the value, since this is where the problem was introduced.  Now decide if the test in the connector is incorrect, or the ."),
+
+    /**
+     * OIF-CONNECTOR-0018 - The {0} connector has detected that element {1} which should be of type {2} has bean properties of {3} rather than {4} in method {5} - element is {6}
+     */
+    BAD_OM_PROPERTY_TYPE( "OIF-CONNECTOR-0018",
+                          AuditLogRecordSeverityLevel.ERROR,
+                          "The {0} connector has detected that element {1} which should be of type {2} has bean properties of {3} rather than {4} in method {5} - element is {6}",
+                         "The connector throws an exception to indicate that it should not continue since something has gone very wrong with the connector or Open Metadata Framework since the connector is expecting an element of a certain type, with bean properties that match that type, but the OMF has returned something different.",
+                         "Check that the type of element is that which was expected.  If not, this may be a connector logic problem, or another process may have created additional metadata that has confused the connector. Compare the element retrieved through the OMF with its stored value.  If the stored value is correct, then the problem is in the OMF converters.  If the stored value is not correct then look at the element's history to understand which processing caused the problem."),
 
     ;
 

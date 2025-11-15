@@ -354,6 +354,7 @@ public class EndpointHandler extends OpenMetadataHandlerBase
                                             parentGUIDParameterName,
                                             1,
                                             OpenMetadataType.SERVER_ENDPOINT_RELATIONSHIP.typeName,
+                                            OpenMetadataType.ENDPOINT.typeName,
                                             queryOptions,
                                             methodName);
     }

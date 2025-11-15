@@ -32,6 +32,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
                 @JsonSubTypes.Type(value = AgreementProperties.class, name = "AgreementProperties"),
                 @JsonSubTypes.Type(value = BusinessCapabilityProperties.class, name = "BusinessCapabilityProperties"),
                 @JsonSubTypes.Type(value = CollectionFolderProperties.class, name = "CollectionFolderProperties"),
+                @JsonSubTypes.Type(value = ContextEventCollectionProperties.class, name = "ContextEventCollectionProperties"),
                 @JsonSubTypes.Type(value = DataDictionaryProperties.class, name = "DataDictionaryProperties"),
                 @JsonSubTypes.Type(value = DataSpecProperties.class, name = "DataSpecProperties"),
                 @JsonSubTypes.Type(value = DesignModelProperties.class, name = "DesignModelProperties"),
@@ -39,9 +40,15 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
                 @JsonSubTypes.Type(value = DigitalProductCatalogProperties.class, name = "DigitalProductCatalogProperties"),
                 @JsonSubTypes.Type(value = EventSetProperties.class, name = "EventSetProperties"),
                 @JsonSubTypes.Type(value = GlossaryProperties.class, name = "GlossaryProperties"),
+                @JsonSubTypes.Type(value = HomeCollectionProperties.class, name = "HomeCollectionProperties"),
                 @JsonSubTypes.Type(value = InformationSupplyChainProperties.class, name = "InformationSupplyChainProperties"),
+                @JsonSubTypes.Type(value = NamespaceProperties.class, name = "NamespaceProperties"),
                 @JsonSubTypes.Type(value = NamingStandardRuleSetProperties.class, name = "NamingStandardRuleSetProperties"),
+                @JsonSubTypes.Type(value = RecentAccessProperties.class, name = "RecentAccessProperties"),
+                @JsonSubTypes.Type(value = ResultsSetProperties.class, name = "ResultsSetProperties"),
                 @JsonSubTypes.Type(value = RootCollectionProperties.class, name = "RootCollectionProperties"),
+                @JsonSubTypes.Type(value = SoftwareArchiveProperties.class, name = "SoftwareArchiveProperties"),
+                @JsonSubTypes.Type(value = WorkItemListProperties.class, name = "WorkItemListProperties"),
         })
 public class CollectionProperties extends ReferenceableProperties
 {

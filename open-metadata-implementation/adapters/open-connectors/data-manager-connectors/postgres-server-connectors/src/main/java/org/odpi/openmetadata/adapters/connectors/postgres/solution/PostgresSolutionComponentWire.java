@@ -16,8 +16,8 @@ public enum PostgresSolutionComponentWire implements SolutionComponentWireDefini
 {
     TABULAR_DATA_SET_TO_POSTGRES(PostgresSolutionComponent.POSTGRES_TABULAR_DATA_SET,
                                  EgeriaSolutionComponent.POSTGRES_SERVER,
-                     "manages data",
-                     "The PostgreSQL Tabular data set connector is able to define a PostSQL database table and manage data in it."),
+                                 "manages data",
+                                 "The PostgreSQL Tabular data set connector is able to define a PostSQL database table and manage data in it."),
 
     SURVEY_SERVER_TO_POSTGRES(PostgresSolutionComponent.SURVEY_POSTGRES_SERVER,
                                  EgeriaSolutionComponent.POSTGRES_SERVER,

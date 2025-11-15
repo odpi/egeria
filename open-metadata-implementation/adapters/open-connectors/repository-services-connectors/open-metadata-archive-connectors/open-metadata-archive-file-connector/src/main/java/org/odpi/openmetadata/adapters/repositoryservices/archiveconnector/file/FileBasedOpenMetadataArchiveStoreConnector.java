@@ -68,7 +68,7 @@ public class FileBasedOpenMetadataArchiveStoreConnector extends OpenMetadataArch
 
         if (endpoint != null)
         {
-            archiveStoreName = endpoint.getAddress();
+            archiveStoreName = endpoint.getNetworkAddress();
         }
 
         if (archiveStoreName == null)

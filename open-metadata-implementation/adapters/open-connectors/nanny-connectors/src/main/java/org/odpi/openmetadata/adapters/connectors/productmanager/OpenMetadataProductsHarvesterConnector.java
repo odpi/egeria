@@ -16,8 +16,7 @@ import org.odpi.openmetadata.frameworks.connectors.Connector;
 import org.odpi.openmetadata.frameworks.connectors.ConnectorProvider;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.ConnectorType;
-import org.odpi.openmetadata.frameworks.integration.connectors.CatalogTargetIntegrator;
-import org.odpi.openmetadata.frameworks.integration.connectors.IntegrationConnectorBase;
+import org.odpi.openmetadata.frameworks.integration.connectors.DynamicIntegrationConnectorBase;
 import org.odpi.openmetadata.frameworks.integration.context.CatalogTargetContext;
 import org.odpi.openmetadata.frameworks.integration.properties.RequestedCatalogTarget;
 import org.odpi.openmetadata.frameworks.opengovernance.controls.ActionTarget;
@@ -33,7 +32,8 @@ import org.odpi.openmetadata.frameworks.openmetadata.ffdc.PropertyServerExceptio
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.OpenMetadataRootElement;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.RelatedMetadataElementSummary;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.*;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.ClassificationProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.NewActionTarget;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.actors.ActorRoleProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.actors.SolutionActorRoleProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.processes.connectors.CatalogTargetProperties;
@@ -78,7 +78,7 @@ import java.util.*;
  * is scanned for changes.  These changes are recorded in the asset's GovernanceMeasurement classification.
  * This triggers the notification watchdog to send the new data to the subscribers via the provisioning pipelines.
  */
-public class OpenMetadataProductsHarvesterConnector extends IntegrationConnectorBase implements CatalogTargetIntegrator
+public class OpenMetadataProductsHarvesterConnector extends DynamicIntegrationConnectorBase
 {
     private static final String validValueSetListCatalogTargetName = "ValidValueSetList";
 
@@ -166,15 +166,16 @@ public class OpenMetadataProductsHarvesterConnector extends IntegrationConnector
      * Then process each catalog target.  It will record details of any changes to the catalog target's data.
      *
      * @throws ConnectorCheckedException there is a problem with the connector.  It is not able to refresh the metadata.
+     * @throws UserNotAuthorizedException the connector has been disconnected
      */
     @Override
-    public void refresh() throws ConnectorCheckedException
+    public void refresh() throws ConnectorCheckedException, UserNotAuthorizedException
     {
         /*
          * Determine the existing catalog targets - these are tabular data sources that are set up.
          */
-        List<RequestedCatalogTarget> requestedCatalogTargets = catalogTargetsManager.refreshKnownCatalogTargets(integrationContext,
-                                                                                                                this);
+        List<RequestedCatalogTarget> requestedCatalogTargets = catalogTargetsManager.retrieveKnownCatalogTargets(integrationContext,
+                                                                                                                 this);
 
         Map<String, RequestedCatalogTarget> existingDataSources = new HashMap<>();
 
@@ -194,7 +195,7 @@ public class OpenMetadataProductsHarvesterConnector extends IntegrationConnector
         /*
          * Refresh all of the harvested tabular data sources, looking for data changes.
          */
-        refreshCatalogTargets(this);
+        super.refresh();
     }
 
 
@@ -1176,22 +1177,6 @@ public class OpenMetadataProductsHarvesterConnector extends IntegrationConnector
         }
 
         return null;
-    }
-
-
-    /**
-     * Perform the required integration logic for the assigned catalog target.
-     *
-     * @param requestedCatalogTarget the catalog target
-     * @throws ConnectorCheckedException there is an unrecoverable error and the connector should stop processing.
-     */
-    @Override
-    public void integrateCatalogTarget(RequestedCatalogTarget requestedCatalogTarget) throws ConnectorCheckedException
-    {
-        if (requestedCatalogTarget instanceof OpenMetadataProductsHarvesterCatalogTargetProcessor catalogTargetProcessor)
-        {
-            catalogTargetProcessor.refresh();
-        }
     }
 
 

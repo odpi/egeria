@@ -13,7 +13,8 @@ import org.odpi.openmetadata.frameworks.openmetadata.events.OpenMetadataOutTopic
 public interface CatalogTargetEventProcessor extends CatalogTargetIntegrator
 {
     /**
-     * Perform the required integration logic for the assigned catalog target.
+     * Perform the required integration logic for the assigned catalog target.  When an event is received,
+     * this method is called for each catalog target.
      *
      * @param requestedCatalogTarget the catalog target
      * @param event event to process

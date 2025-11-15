@@ -238,7 +238,7 @@ public abstract class OpenMetadataTopicConnector extends ConnectorBase implement
 
                 if (endpoint != null)
                 {
-                    topicName = endpoint.getAddress();
+                    topicName = endpoint.getNetworkAddress();
                 }
             }
 
@@ -272,7 +272,7 @@ public abstract class OpenMetadataTopicConnector extends ConnectorBase implement
 
             if (endpoint != null)
             {
-                topicName = endpoint.getAddress();
+                topicName = endpoint.getNetworkAddress();
                 listenerThreadName = defaultThreadName + ": " + topicName;
             }
 

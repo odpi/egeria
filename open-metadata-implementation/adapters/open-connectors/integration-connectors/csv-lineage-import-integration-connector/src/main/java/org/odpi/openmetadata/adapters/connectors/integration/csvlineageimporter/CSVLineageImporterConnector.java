@@ -59,7 +59,7 @@ public class CSVLineageImporterConnector extends IntegrationConnectorBase
 
         if (endpoint != null)
         {
-            fileName = endpoint.getAddress();
+            fileName = endpoint.getNetworkAddress();
         }
 
         openMetadataStore = integrationContext.getOpenMetadataStore();
@@ -332,7 +332,7 @@ public class CSVLineageImporterConnector extends IntegrationConnectorBase
         endpoint.setQualifiedName(endpointName);
         endpoint.setDisplayName(endpointName);
         endpoint.setDescription(endpointDescription);
-        endpoint.setAddress(fileName);
+        endpoint.setNetworkAddress(fileName);
 
 
         final String connectorTypeDescription   = "CSVFileStore connector type.";

@@ -123,7 +123,7 @@ public class OMAGServerPlatformConnector extends ConnectorBase implements AuditL
 
         if (endpoint != null)
         {
-            targetRootURL = endpoint.getAddress();
+            targetRootURL = endpoint.getNetworkAddress();
         }
 
         if (targetRootURL == null)

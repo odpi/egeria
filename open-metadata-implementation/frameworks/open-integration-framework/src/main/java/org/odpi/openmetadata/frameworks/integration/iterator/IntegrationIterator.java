@@ -4,80 +4,65 @@
 package org.odpi.openmetadata.frameworks.integration.iterator;
 
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
-import org.odpi.openmetadata.frameworks.openmetadata.connectorcontext.OpenMetadataStore;
+import org.odpi.openmetadata.frameworks.integration.context.IntegrationContext;
+import org.odpi.openmetadata.frameworks.openmetadata.connectorcontext.ClassificationManagerClient;
+import org.odpi.openmetadata.frameworks.openmetadata.enums.PermittedSynchronization;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.MetadataCorrelationHeader;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.OpenMetadataElement;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.RelatedMetadataElement;
-import org.odpi.openmetadata.frameworks.openmetadata.search.GetOptions;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.OpenMetadataRootElement;
 import org.odpi.openmetadata.frameworks.openmetadata.search.PropertyHelper;
-import org.odpi.openmetadata.frameworks.openmetadata.enums.PermittedSynchronization;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
-import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 /**
- * IntegrationIterator provides the common logic for an integration iterator.
+ * IntegrationIterator provides the common logic for an iterator that is comparing the elements in
+ * open metadata and the elements a third party to identify where synchronization is needed.
  */
 public abstract class IntegrationIterator
 {
     protected final PropertyHelper           propertyHelper = new PropertyHelper();
     protected final String                   metadataCollectionGUID;
-    protected final String                   metadataCollectionQualifiedName;
-    protected final String                   externalScopeGUID;
-    protected final String                   externalScopeName;
     protected final String                   catalogTargetName;
     protected final String                   connectorName;
     protected final String                   metadataTypeName;
-    protected final OpenMetadataStore        openMetadataStore;
+    protected final IntegrationContext       integrationContext;
     protected final PermittedSynchronization targetPermittedSynchronization;
     protected final int                      maxPageSize;
     protected final AuditLog                 auditLog;
 
-    protected List<OpenMetadataElement> elementCache = null;
-    protected int                       startFrom    = 0;
+    protected List<OpenMetadataRootElement> elementCache = null;
+    protected int                           startFrom    = 0;
 
 
     /**
      * Create the iterator.
      *
      * @param metadataCollectionGUID unique identifier of the metadata collection
-     * @param metadataCollectionQualifiedName unique name of the metadata collection
-     * @param externalScopeGUID unique identifier for the owning scope (typically a catalog)
-     * @param externalScopeName unique name for the owning scope (typically a catalog)
      * @param catalogTargetName name of target
      * @param connectorName name of the calling connector
      * @param metadataTypeName type of element to receive
-     * @param openMetadataStore client to access metadata
+     * @param integrationContext clients to access metadata
      * @param targetPermittedSynchronization the synchronization policy for this target
      * @param maxPageSize max page size for the server
      * @param auditLog logging destination
+     * @throws UserNotAuthorizedException the connector has been disconnected
      */
     public IntegrationIterator(String                   metadataCollectionGUID,
-                               String                   metadataCollectionQualifiedName,
-                               String                   externalScopeGUID,
-                               String                   externalScopeName,
                                String                   catalogTargetName,
                                String                   connectorName,
                                String                   metadataTypeName,
-                               OpenMetadataStore        openMetadataStore,
+                               IntegrationContext       integrationContext,
                                PermittedSynchronization targetPermittedSynchronization,
                                int                      maxPageSize,
-                               AuditLog                 auditLog)
+                               AuditLog                 auditLog) throws UserNotAuthorizedException
     {
         this.metadataCollectionGUID          = metadataCollectionGUID;
-        this.metadataCollectionQualifiedName = metadataCollectionQualifiedName;
-        this.externalScopeGUID               = externalScopeGUID;
-        this.externalScopeName               = externalScopeName;
         this.catalogTargetName               = catalogTargetName;
         this.connectorName                   = connectorName;
         this.metadataTypeName                = metadataTypeName;
-        this.openMetadataStore               = openMetadataStore;
+        this.integrationContext              = integrationContext;
         this.targetPermittedSynchronization  = targetPermittedSynchronization;
         this.maxPageSize                     = maxPageSize;
         this.auditLog                        = auditLog;
@@ -126,7 +111,7 @@ public abstract class IntegrationIterator
                                                 PropertyServerException,
                                                 UserNotAuthorizedException
     {
-        OpenMetadataElement element =  elementCache.remove(0);
+        OpenMetadataRootElement element =  elementCache.remove(0);
 
         return this.fillOutMemberElement(element, true);
     }
@@ -148,20 +133,28 @@ public abstract class IntegrationIterator
                                                                                PropertyServerException,
                                                                                UserNotAuthorizedException
     {
-        OpenMetadataElement element = openMetadataStore.getMetadataElementByUniqueName(qualifiedName, OpenMetadataProperty.QUALIFIED_NAME.name);
+        ClassificationManagerClient classificationManagerClient = integrationContext.getClassificationManagerClient();
+
+        OpenMetadataRootElement element = classificationManagerClient.getRootElementByUniqueName(qualifiedName,
+                                                                                                 OpenMetadataProperty.QUALIFIED_NAME.name,
+                                                                                                 classificationManagerClient.getQueryOptions());
 
         if (element != null)
         {
             return this.fillOutMemberElement(element, true);
         }
 
-        element = openMetadataStore.getLineageElementByUniqueName(qualifiedName, OpenMetadataProperty.QUALIFIED_NAME.name);
+        element = classificationManagerClient.getLineageElementByUniqueName(qualifiedName,
+                                                                            OpenMetadataProperty.QUALIFIED_NAME.name,
+                                                                            classificationManagerClient.getGetOptions());
         if (element != null)
         {
             return this.fillOutMemberElement(element, false);
         }
 
-        element = openMetadataStore.getDeletedElementByUniqueName(qualifiedName, OpenMetadataProperty.QUALIFIED_NAME.name);
+        element = classificationManagerClient.getDeletedElementByUniqueName(qualifiedName,
+                                                                            OpenMetadataProperty.QUALIFIED_NAME.name,
+                                                                            classificationManagerClient.getGetOptions());
 
         return this.fillOutMemberElement(element, false);
     }
@@ -174,68 +167,14 @@ public abstract class IntegrationIterator
      * @param isElementActive is the element retrieved either archived or deleted (false) or still actively available (true)
      *
      * @return member element
-     * @throws InvalidParameterException problem with a parameter value
-     * @throws PropertyServerException repository not working properly
-     * @throws UserNotAuthorizedException permissions problem
      */
-    private MemberElement fillOutMemberElement(OpenMetadataElement element,
-                                               boolean             isElementActive) throws InvalidParameterException,
-                                                                                           PropertyServerException,
-                                                                                           UserNotAuthorizedException
+    private MemberElement fillOutMemberElement(OpenMetadataRootElement element,
+                                               boolean                 isElementActive)
     {
-        final String methodName = "fillOutMemberElement";
-
-        List<MetadataCorrelationHeader>    correlationHeaders = null;
-        RelatedMetadataElement             rootSchemaType     = null;
-        Map<String, Map<String, String>>   vendorProperties   = null;
-
-        if (isElementActive)
-        {
-            if (externalScopeGUID == null)
-            {
-                correlationHeaders = openMetadataStore.getExternalIdentifiers(element.getElementGUID(),
-                                                                              propertyHelper.getStringProperty(element.getElementGUID(),
-                                                                                                                       OpenMetadataProperty.QUALIFIED_NAME.name,
-                                                                                                                       element.getElementProperties(),
-                                                                                                                       methodName),
-                                                                              element.getElementGUID(),
-                                                                              element.getType().getTypeName(),
-                                                                              0,
-                                                                              0);
-            }
-            else
-            {
-                correlationHeaders = openMetadataStore.getExternalIdentifiers(externalScopeGUID,
-                                                                              externalScopeName,
-                                                                              element.getElementGUID(),
-                                                                              element.getType().getTypeName(),
-                                                                              0,
-                                                                              0);
-            }
-
-            vendorProperties = openMetadataStore.getVendorProperties(element.getElementGUID(),
-                                                                     element.getType().getTypeName());
-
-
-
-            rootSchemaType = openMetadataStore.getRelatedMetadataElement(element.getElementGUID(),
-                                                                         1,
-                                                                         OpenMetadataType.SCHEMA_RELATIONSHIP.typeName,
-                                                                         new GetOptions(this.openMetadataStore.getGetOptions()));
-        }
-
-        if (vendorProperties == null)
-        {
-            vendorProperties = new HashMap<>();
-        }
-
-        if (externalScopeGUID != null)
+        if (metadataCollectionGUID != null)
         {
             return new MemberElement(element,
-                                     rootSchemaType,
-                                     correlationHeaders,
-                                     externalScopeGUID,
-                                     vendorProperties,
+                                     metadataCollectionGUID,
                                      isElementActive,
                                      catalogTargetName,
                                      connectorName,
@@ -245,10 +184,7 @@ public abstract class IntegrationIterator
         else if (element != null)
         {
             return new MemberElement(element,
-                                     rootSchemaType,
-                                     correlationHeaders,
-                                     element.getElementGUID(),
-                                     vendorProperties,
+                                     element.getElementHeader().getGUID(),
                                      isElementActive,
                                      catalogTargetName,
                                      connectorName,
@@ -257,11 +193,8 @@ public abstract class IntegrationIterator
         }
         else
         {
-            return new MemberElement(element,
-                                     rootSchemaType,
-                                     correlationHeaders,
+            return new MemberElement(null,
                                      null,
-                                     vendorProperties,
                                      isElementActive,
                                      catalogTargetName,
                                      connectorName,

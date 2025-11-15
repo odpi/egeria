@@ -78,7 +78,7 @@ public class OpenLineageEventReceiverCatalogTargetProcessor extends CatalogTarge
             {
                 auditLog.logMessage(methodName,
                                     OpenLineageIntegrationConnectorAuditCode.KAFKA_RECEIVER_CONFIGURATION.getMessageDefinition(connectorName,
-                                                                                                                               endpoint.getAddress(),
+                                                                                                                               endpoint.getNetworkAddress(),
                                                                                                                                connectionDetails.getDisplayName()));
             }
 

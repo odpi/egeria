@@ -444,6 +444,7 @@ public class ProjectHandler extends OpenMetadataHandlerBase
                                                                                     parentGUIDParameterName,
                                                                                     1,
                                                                                     null,
+                                                                                    OpenMetadataType.PROJECT.typeName,
                                                                                     queryOptions,
                                                                                     methodName);
 
@@ -698,8 +699,8 @@ public class ProjectHandler extends OpenMetadataHandlerBase
      * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    public OpenMetadataRootHierarchy getProjectHierarchy(String userId,
-                                                         String projectGUID,
+    public OpenMetadataRootHierarchy getProjectHierarchy(String       userId,
+                                                         String       projectGUID,
                                                          QueryOptions queryOptions) throws InvalidParameterException,
                                                                                              PropertyServerException,
                                                                                              UserNotAuthorizedException
@@ -811,6 +812,7 @@ public class ProjectHandler extends OpenMetadataHandlerBase
                                                                                   parentGUIDParameterName,
                                                                                   2,
                                                                                   OpenMetadataType.ASSIGNMENT_SCOPE_RELATIONSHIP.typeName,
+                                                                                  OpenMetadataType.ACTOR.typeName,
                                                                                   queryOptions,
                                                                                   methodName);
 
@@ -823,7 +825,7 @@ public class ProjectHandler extends OpenMetadataHandlerBase
              */
             for (OpenMetadataRootElement linkedActor : linkedActors)
             {
-                if ((teamRole == null) || (linkedActor == null))
+                if ((teamRole == null) || (teamRole.isBlank()) || (linkedActor == null))
                 {
                     teamMembers.add(linkedActor);
                 }

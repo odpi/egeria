@@ -375,6 +375,7 @@ public class ExternalIdHandler extends OpenMetadataHandlerBase
                                             parentGUIDParameterName,
                                             1,
                                             OpenMetadataType.EXTERNAL_ID_LINK_RELATIONSHIP.typeName,
+                                            OpenMetadataType.EXTERNAL_ID.typeName,
                                             queryOptions,
                                             methodName);
     }

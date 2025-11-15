@@ -162,11 +162,9 @@ public class OpenMetadataTypesArchive2_4
          */
         update0011ManagingReferenceables();
         update0012SearchKeywords();
-        update0030HostsAndPlatforms();
         update0215SoftwareComponents();
         update04xxGovernanceEnums();
         update05xxSchemaAttributes();
-        updateClashingControlProperties();
     }
 
 
@@ -272,7 +270,7 @@ public class OpenMetadataTypesArchive2_4
         properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.ATTACHMENT_TYPE));
         properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.RELATIONSHIP_TYPE));
         properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.USER));
-        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.ACTION_DESCRIPTION));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.DESCRIPTION));
 
         classificationDef.setPropertiesDefinition(properties);
 
@@ -320,7 +318,7 @@ public class OpenMetadataTypesArchive2_4
                                                                  end1AttributeName,
                                                                  end1AttributeDescription,
                                                                  end1AttributeDescriptionGUID,
-                                                                 RelationshipEndCardinality.AT_MOST_ONE);
+                                                                 RelationshipEndCardinality.ANY_NUMBER);
         relationshipDef.setEndDef1(relationshipEndDef);
 
 
@@ -335,8 +333,17 @@ public class OpenMetadataTypesArchive2_4
                                                                  end2AttributeName,
                                                                  end2AttributeDescription,
                                                                  end2AttributeDescriptionGUID,
-                                                                 RelationshipEndCardinality.ANY_NUMBER);
+                                                                 RelationshipEndCardinality.AT_MOST_ONE);
         relationshipDef.setEndDef2(relationshipEndDef);
+
+        /*
+         * Build the attributes
+         */
+        List<TypeDefAttribute> properties = new ArrayList<>();
+
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.SOURCE_VERSION_NUMBER));
+
+        relationshipDef.setPropertiesDefinition(properties);
 
         return relationshipDef;
     }
@@ -420,41 +427,6 @@ public class OpenMetadataTypesArchive2_4
         return relationshipDef;
     }
 
-    /*
-     * -------------------------------------------------------------------------------------------------------
-     */
-
-
-    /**
-     * 0030 Hosts and Platforms - correct the type of the endianness property.
-     */
-    private void update0030HostsAndPlatforms()
-    {
-        this.archiveBuilder.addTypeDefPatch(correctOperatingPlatformEntity());
-    }
-
-
-    private TypeDefPatch correctOperatingPlatformEntity()
-    {
-        /*
-         * Create the Patch
-         */
-        TypeDefPatch  typeDefPatch = archiveBuilder.getPatchForType(OpenMetadataType.OPERATING_PLATFORM.typeName);
-
-        typeDefPatch.setUpdatedBy(originatorName);
-        typeDefPatch.setUpdateTime(creationDate);
-
-        /*
-         * Build the attributes
-         */
-        List<TypeDefAttribute> properties = new ArrayList<>();
-
-        properties.add(archiveHelper.getEnumTypeDefAttribute(OpenMetadataProperty.BYTE_ORDERING));
-
-        typeDefPatch.setPropertyDefinitions(properties);
-        return typeDefPatch;
-    }
-
 
 
     /*
@@ -489,12 +461,8 @@ public class OpenMetadataTypesArchive2_4
     private void update04xxGovernanceEnums()
     {
         archiveBuilder.addRelationshipDef(getGovernedByRelationship());
-
-        archiveBuilder.addTypeDefPatch(updateCriticalityClassification());
-        archiveBuilder.addTypeDefPatch(updateRetentionClassification());
-        archiveBuilder.addTypeDefPatch(updateConfidenceClassification());
-        archiveBuilder.addTypeDefPatch(updateConfidentialityClassification());
     }
+
 
     private RelationshipDef getGovernedByRelationship()
     {
@@ -547,90 +515,6 @@ public class OpenMetadataTypesArchive2_4
     }
 
 
-    private TypeDefPatch updateCriticalityClassification()
-    {
-        /*
-         * Create the Patch
-         */
-        TypeDefPatch  typeDefPatch = archiveBuilder.getPatchForType(OpenMetadataType.CRITICALITY_CLASSIFICATION.typeName);
-
-        typeDefPatch.setUpdatedBy(originatorName);
-        typeDefPatch.setUpdateTime(creationDate);
-
-        /*
-         * Build the attributes
-         */
-        List<TypeDefAttribute> properties = new ArrayList<>();
-
-        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.CRITICALITY_LEVEL_IDENTIFIER));
-
-        typeDefPatch.setPropertyDefinitions(properties);
-        return typeDefPatch;
-    }
-
-    private TypeDefPatch updateRetentionClassification()
-    {
-        /*
-         * Create the Patch
-         */
-        TypeDefPatch  typeDefPatch = archiveBuilder.getPatchForType(OpenMetadataType.RETENTION_CLASSIFICATION.typeName);
-
-        typeDefPatch.setUpdatedBy(originatorName);
-        typeDefPatch.setUpdateTime(creationDate);
-
-        /*
-         * Build the attributes
-         */
-        List<TypeDefAttribute> properties = new ArrayList<>();
-
-        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.RETENTION_BASIS_IDENTIFIER));
-
-        typeDefPatch.setPropertyDefinitions(properties);
-        return typeDefPatch;
-    }
-
-    private TypeDefPatch updateConfidenceClassification()
-    {
-        /*
-         * Create the Patch
-         */
-        TypeDefPatch  typeDefPatch = archiveBuilder.getPatchForType(OpenMetadataType.CONFIDENCE_CLASSIFICATION.typeName);
-
-        typeDefPatch.setUpdatedBy(originatorName);
-        typeDefPatch.setUpdateTime(creationDate);
-
-        /*
-         * Build the attributes
-         */
-        List<TypeDefAttribute> properties = new ArrayList<>();
-
-        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.CONFIDENCE_LEVEL_IDENTIFIER));
-
-        typeDefPatch.setPropertyDefinitions(properties);
-        return typeDefPatch;
-    }
-
-    private TypeDefPatch updateConfidentialityClassification()
-    {
-        /*
-         * Create the Patch
-         */
-        TypeDefPatch  typeDefPatch = archiveBuilder.getPatchForType(OpenMetadataType.CONFIDENTIALITY_CLASSIFICATION.typeName);
-
-        typeDefPatch.setUpdatedBy(originatorName);
-        typeDefPatch.setUpdateTime(creationDate);
-
-        /*
-         * Build the attributes
-         */
-        List<TypeDefAttribute> properties = new ArrayList<>();
-
-        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.CONFIDENTIALITY_LEVEL_IDENTIFIER));
-
-        typeDefPatch.setPropertyDefinitions(properties);
-        return typeDefPatch;
-    }
-
 
     /*
      * -------------------------------------------------------------------------------------------------------
@@ -642,44 +526,20 @@ public class OpenMetadataTypesArchive2_4
      */
     private void update05xxSchemaAttributes()
     {
-        this.archiveBuilder.addTypeDefPatch(addPrecisionToSchemaAttributeEntity());
         this.archiveBuilder.addClassificationDef(getCalculatedValueClassification());
+
         this.archiveBuilder.addEntityDef(getExternalSchemaTypeEntity());
-        this.archiveBuilder.addTypeDefPatch(updateMapFromElementTypeRelationship());
-        this.archiveBuilder.addTypeDefPatch(updateMapToElementTypeRelationship());
-        this.archiveBuilder.addTypeDefPatch(updateSchemaTypeOptionRelationship());
+
         this.archiveBuilder.addRelationshipDef(getDerivedSchemaTypeQueryTargetRelationship());
         this.archiveBuilder.addRelationshipDef(getLinkedExternalSchemaTypeRelationship());
     }
 
 
-    private TypeDefPatch addPrecisionToSchemaAttributeEntity()
-    {
-        /*
-         * Create the Patch
-         */
-        TypeDefPatch  typeDefPatch = archiveBuilder.getPatchForType(OpenMetadataType.SCHEMA_ATTRIBUTE.typeName);
-
-        typeDefPatch.setUpdatedBy(originatorName);
-        typeDefPatch.setUpdateTime(creationDate);
-
-        /*
-         * Build the attributes
-         */
-        List<TypeDefAttribute> properties = new ArrayList<>();
-
-        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.PRECISION));
-
-        typeDefPatch.setPropertyDefinitions(properties);
-
-        return typeDefPatch;
-    }
-
     private ClassificationDef getCalculatedValueClassification()
     {
         ClassificationDef classificationDef =  archiveHelper.getClassificationDef(OpenMetadataType.CALCULATED_VALUE_CLASSIFICATION,
                                                                                   null,
-                                                                                  this.archiveBuilder.getEntityDef(OpenMetadataType.SCHEMA_TYPE.typeName),
+                                                                                  this.archiveBuilder.getEntityDef(OpenMetadataType.SCHEMA_ELEMENT.typeName),
                                                                                   false);
         /*
          * Build the attributes
@@ -687,6 +547,7 @@ public class OpenMetadataTypesArchive2_4
         List<TypeDefAttribute> properties = new ArrayList<>();
 
         properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.FORMULA));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.FORMULA_TYPE));
 
         classificationDef.setPropertiesDefinition(properties);
 
@@ -793,239 +654,8 @@ public class OpenMetadataTypesArchive2_4
     }
 
 
-    private TypeDefPatch updateSchemaTypeOptionRelationship()
-    {
-        /*
-         * Create the Patch
-         */
-        TypeDefPatch  typeDefPatch = archiveBuilder.getPatchForType(OpenMetadataType.SCHEMA_TYPE_OPTION_RELATIONSHIP.typeName);
-
-        typeDefPatch.setUpdatedBy(originatorName);
-        typeDefPatch.setUpdateTime(creationDate);
-
-        /*
-         * Set up end 1.
-         */
-        final String                     end1AttributeName            = "schemaOptionalUses";
-        final String                     end1AttributeDescription     = "Schema where this schema type is reused.";
-        final String                     end1AttributeDescriptionGUID = null;
-
-        RelationshipEndDef relationshipEndDef = archiveHelper.getRelationshipEndDef(this.archiveBuilder.getEntityDef(OpenMetadataType.SCHEMA_ELEMENT.typeName),
-                                                                                    end1AttributeName,
-                                                                                    end1AttributeDescription,
-                                                                                    end1AttributeDescriptionGUID,
-                                                                                    RelationshipEndCardinality.ANY_NUMBER);
-        typeDefPatch.setEndDef2(relationshipEndDef);
-
-        return typeDefPatch;
-    }
-
-
-    private TypeDefPatch updateMapFromElementTypeRelationship()
-    {
-        /*
-         * Create the Patch
-         */
-        TypeDefPatch  typeDefPatch = archiveBuilder.getPatchForType(OpenMetadataType.MAP_FROM_ELEMENT_TYPE_RELATIONSHIP.typeName);
-
-        typeDefPatch.setUpdatedBy(originatorName);
-        typeDefPatch.setUpdateTime(creationDate);
-
-        /*
-         * Set up end 1.
-         */
-        final String                     end1AttributeName            = "parentMapFrom";
-        final String                     end1AttributeDescription     = "Used in map to describe the domain (value mapped from).";
-        final String                     end1AttributeDescriptionGUID = null;
-
-        RelationshipEndDef relationshipEndDef = archiveHelper.getRelationshipEndDef(this.archiveBuilder.getEntityDef(OpenMetadataType.SCHEMA_ELEMENT.typeName),
-                                                                                    end1AttributeName,
-                                                                                    end1AttributeDescription,
-                                                                                    end1AttributeDescriptionGUID,
-                                                                                    RelationshipEndCardinality.ANY_NUMBER);
-        typeDefPatch.setEndDef2(relationshipEndDef);
-
-        return typeDefPatch;
-    }
-
-
-    private TypeDefPatch updateMapToElementTypeRelationship()
-    {
-        /*
-         * Create the Patch
-         */
-        TypeDefPatch  typeDefPatch = archiveBuilder.getPatchForType(OpenMetadataType.MAP_TO_ELEMENT_TYPE_RELATIONSHIP.typeName);
-
-        typeDefPatch.setUpdatedBy(originatorName);
-        typeDefPatch.setUpdateTime(creationDate);
-
-        /*
-         * Set up end 1.
-         */
-        final String                     end1AttributeName            = "parentMapTo";
-        final String                     end1AttributeDescription     = "Used in map to describe the range (value mapped to).";
-        final String                     end1AttributeDescriptionGUID = null;
-
-        RelationshipEndDef relationshipEndDef = archiveHelper.getRelationshipEndDef(this.archiveBuilder.getEntityDef(OpenMetadataType.SCHEMA_ELEMENT.typeName),
-                                                                                    end1AttributeName,
-                                                                                    end1AttributeDescription,
-                                                                                    end1AttributeDescriptionGUID,
-                                                                                    RelationshipEndCardinality.ANY_NUMBER);
-        typeDefPatch.setEndDef2(relationshipEndDef);
-
-        return typeDefPatch;
-    }
-
-
     /*
      * -------------------------------------------------------------------------------------------------------
      */
-
-
-    /**
-     * A number of types have attributes whose names clash with header (control) attributes. It is not possible to
-     * patch an attribute to change its name for compatibility reasons. These patches deprecate the old (clashing)
-     * property names, and introduce new (non-clashing) properties to replace them.
-     */
-    private void updateClashingControlProperties()
-    {
-        // Comment entity's clashing properties are updated as part of other updates to Comment above
-        this.archiveBuilder.addTypeDefPatch(updatePolicyAdministrationPointClassification());
-        this.archiveBuilder.addTypeDefPatch(updatePolicyDecisionPointClassification());
-        this.archiveBuilder.addTypeDefPatch(updatePolicyEnforcementPointClassification());
-        this.archiveBuilder.addTypeDefPatch(updatePolicyInformationPointClassification());
-        this.archiveBuilder.addTypeDefPatch(updatePolicyRetrievalPointClassification());
-    }
-
-
-    /**
-     * Deprecate clashing properties and add new ones to replace them.
-     * @return the type def patch
-     */
-    private TypeDefPatch updatePolicyAdministrationPointClassification()
-    {
-        /*
-         * Create the Patch
-         */
-        TypeDefPatch  typeDefPatch = archiveBuilder.getPatchForType(OpenMetadataType.POLICY_ADMINISTRATION_POINT_CLASSIFICATION.typeName);
-
-        typeDefPatch.setUpdatedBy(originatorName);
-        typeDefPatch.setUpdateTime(creationDate);
-
-        /*
-         * Build the attributes
-         */
-        List<TypeDefAttribute> properties = new ArrayList<>();
-
-        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.POINT_TYPE));
-
-        typeDefPatch.setPropertyDefinitions(properties);
-        return typeDefPatch;
-    }
-
-
-    /**
-     * Deprecate clashing properties and add new ones to replace them.
-     * @return the type def patch
-     */
-    private TypeDefPatch updatePolicyDecisionPointClassification()
-    {
-        /*
-         * Create the Patch
-         */
-        TypeDefPatch  typeDefPatch = archiveBuilder.getPatchForType(OpenMetadataType.POLICY_DECISION_POINT_CLASSIFICATION.typeName);
-
-        typeDefPatch.setUpdatedBy(originatorName);
-        typeDefPatch.setUpdateTime(creationDate);
-
-        /*
-         * Build the attributes
-         */
-        List<TypeDefAttribute> properties = new ArrayList<>();
-
-        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.POINT_TYPE));
-
-        typeDefPatch.setPropertyDefinitions(properties);
-        return typeDefPatch;
-    }
-
-
-    /**
-     * Deprecate clashing properties and add new ones to replace them.
-     * @return the type def patch
-     */
-    private TypeDefPatch updatePolicyEnforcementPointClassification()
-    {
-        /*
-         * Create the Patch
-         */
-        TypeDefPatch  typeDefPatch = archiveBuilder.getPatchForType(OpenMetadataType.POLICY_ENFORCEMENT_POINT_CLASSIFICATION.typeName);
-
-        typeDefPatch.setUpdatedBy(originatorName);
-        typeDefPatch.setUpdateTime(creationDate);
-
-        /*
-         * Build the attributes
-         */
-        List<TypeDefAttribute> properties = new ArrayList<>();
-
-        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.POINT_TYPE));
-
-        typeDefPatch.setPropertyDefinitions(properties);
-        return typeDefPatch;
-    }
-
-
-    /**
-     * Deprecate clashing properties and add new ones to replace them.
-     * @return the type def patch
-     */
-    private TypeDefPatch updatePolicyInformationPointClassification()
-    {
-        /*
-         * Create the Patch
-         */
-        TypeDefPatch  typeDefPatch = archiveBuilder.getPatchForType(OpenMetadataType.POLICY_INFORMATION_POINT_CLASSIFICATION.typeName);
-
-        typeDefPatch.setUpdatedBy(originatorName);
-        typeDefPatch.setUpdateTime(creationDate);
-
-        /*
-         * Build the attributes
-         */
-        List<TypeDefAttribute> properties = new ArrayList<>();
-
-        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.POINT_TYPE));
-
-        typeDefPatch.setPropertyDefinitions(properties);
-        return typeDefPatch;
-    }
-
-
-    /**
-     * Deprecate clashing properties and add new ones to replace them.
-     * @return the type def patch
-     */
-    private TypeDefPatch updatePolicyRetrievalPointClassification()
-    {
-        /*
-         * Create the Patch
-         */
-        TypeDefPatch  typeDefPatch = archiveBuilder.getPatchForType(OpenMetadataType.POLICY_RETRIEVAL_POINT_CLASSIFICATION.typeName);
-
-        typeDefPatch.setUpdatedBy(originatorName);
-        typeDefPatch.setUpdateTime(creationDate);
-
-        /*
-         * Build the attributes
-         */
-        List<TypeDefAttribute> properties = new ArrayList<>();
-
-        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.POINT_TYPE));
-
-        typeDefPatch.setPropertyDefinitions(properties);
-        return typeDefPatch;
-    }
-
 }
 

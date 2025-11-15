@@ -7,7 +7,6 @@ package org.odpi.openmetadata.frameworks.openmetadata.properties.collections;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.ClassificationBeanProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
@@ -19,7 +18,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class ResultsSetProperties extends ClassificationBeanProperties
+public class ResultsSetProperties extends CollectionProperties
 {
     /**
      * Default constructor
@@ -27,7 +26,7 @@ public class ResultsSetProperties extends ClassificationBeanProperties
     public ResultsSetProperties()
     {
         super();
-        super.setTypeName(OpenMetadataType.RESULTS_SET_CLASSIFICATION.typeName);
+        super.setTypeName(OpenMetadataType.RESULTS_SET_COLLECTION.typeName);
     }
 
 
@@ -36,7 +35,7 @@ public class ResultsSetProperties extends ClassificationBeanProperties
      *
      * @param template object to copy
      */
-    public ResultsSetProperties(ClassificationBeanProperties template)
+    public ResultsSetProperties(CollectionProperties template)
     {
         super(template);
     }

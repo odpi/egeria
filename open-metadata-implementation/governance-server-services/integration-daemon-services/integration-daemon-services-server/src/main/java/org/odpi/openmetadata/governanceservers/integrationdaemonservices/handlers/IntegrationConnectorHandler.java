@@ -553,7 +553,7 @@ public class IntegrationConnectorHandler
 
             if (endpoint != null)
             {
-                endpoint.setAddress(networkAddress);
+                endpoint.setNetworkAddress(networkAddress);
 
                 connection.setEndpoint(endpoint);
 
