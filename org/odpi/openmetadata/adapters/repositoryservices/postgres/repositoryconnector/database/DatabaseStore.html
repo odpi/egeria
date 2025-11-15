@@ -137,6 +137,22 @@ loadScripts(document, 'script');</script>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Retrieve details about an entity from the store.</div>
 </div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../mappers/ClassificationMapper.html" title="class in org.odpi.openmetadata.adapters.repositoryservices.postgres.repositoryconnector.mappers">ClassificationMapper</a>&gt;</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getClassificationHistoryFromStore(java.lang.String,java.lang.String,java.util.Date,java.util.Date,boolean)" class="member-name-link">getClassificationHistoryFromStore</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;guid,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;classificationName,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a>&nbsp;fromTime,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a>&nbsp;toTime,
+ boolean&nbsp;oldestFirst)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Return the list of versions for an entity's classification.</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../mappers/ClassificationMapper.html" title="class in org.odpi.openmetadata.adapters.repositoryservices.postgres.repositoryconnector.mappers">ClassificationMapper</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getCompleteClassificationFromStore(java.lang.String,java.lang.String,java.util.Map)" class="member-name-link">getCompleteClassificationFromStore</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;guid,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;classificationName,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>,<wbr><a href="../../../../connectors/resource/jdbc/properties/JDBCDataValue.html" title="class in org.odpi.openmetadata.adapters.connectors.resource.jdbc.properties">JDBCDataValue</a>&gt;&nbsp;classificationRow)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Retrieve the related information for an entity's classification.</div>
+</div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../mappers/EntityMapper.html" title="class in org.odpi.openmetadata.adapters.repositoryservices.postgres.repositoryconnector.mappers">EntityMapper</a></code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getCompleteEntityFromStore(java.lang.String,java.util.Map,java.util.Date)" class="member-name-link">getCompleteEntityFromStore</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;guid,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>,<wbr><a href="../../../../connectors/resource/jdbc/properties/JDBCDataValue.html" title="class in org.odpi.openmetadata.adapters.connectors.resource.jdbc.properties">JDBCDataValue</a>&gt;&nbsp;entityRow,
@@ -508,6 +524,26 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
+<section class="detail" id="getCompleteClassificationFromStore(java.lang.String,java.lang.String,java.util.Map)">
+<h3>getCompleteClassificationFromStore</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../mappers/ClassificationMapper.html" title="class in org.odpi.openmetadata.adapters.repositoryservices.postgres.repositoryconnector.mappers">ClassificationMapper</a></span>&nbsp;<span class="element-name">getCompleteClassificationFromStore</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;guid,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;classificationName,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Map.html" title="class or interface in java.util" class="external-link">Map</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>,<wbr><a href="../../../../connectors/resource/jdbc/properties/JDBCDataValue.html" title="class in org.odpi.openmetadata.adapters.connectors.resource.jdbc.properties">JDBCDataValue</a>&gt;&nbsp;classificationRow)</span>
+                                                        throws <span class="exceptions"><a href="../../../../../repositoryservices/ffdc/exception/RepositoryErrorException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">RepositoryErrorException</a></span></div>
+<div class="block">Retrieve the related information for an entity's classification.
+ Null is returned if there were no active instance.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>guid</code> - unique identifier of the entity</dd>
+<dd><code>classificationRow</code> - appropriate row from table</dd>
+<dt>Returns:</dt>
+<dd>entity mapper</dd>
+<dt>Throws:</dt>
+<dd><code><a href="../../../../../repositoryservices/ffdc/exception/RepositoryErrorException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">RepositoryErrorException</a></code> - problem communicating with the database, or mapping the values returned</dd>
+</dl>
+</section>
+</li>
+<li>
 <section class="detail" id="getCompleteEntityFromStore(java.lang.String,java.util.Map,java.util.Date)">
 <h3>getCompleteEntityFromStore</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../mappers/EntityMapper.html" title="class in org.odpi.openmetadata.adapters.repositoryservices.postgres.repositoryconnector.mappers">EntityMapper</a></span>&nbsp;<span class="element-name">getCompleteEntityFromStore</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;guid,
@@ -561,6 +597,30 @@ loadScripts(document, 'script');</script>
 <dl class="notes">
 <dt>Parameters:</dt>
 <dd><code>guid</code> - unique identifier of the instance</dd>
+<dd><code>fromTime</code> - starting time</dd>
+<dd><code>toTime</code> - ending time</dd>
+<dd><code>oldestFirst</code> - ordering</dd>
+<dt>Returns:</dt>
+<dd>list of instance versions</dd>
+<dt>Throws:</dt>
+<dd><code><a href="../../../../../repositoryservices/ffdc/exception/RepositoryErrorException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">RepositoryErrorException</a></code> - problem communicating with the database</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="getClassificationHistoryFromStore(java.lang.String,java.lang.String,java.util.Date,java.util.Date,boolean)">
+<h3>getClassificationHistoryFromStore</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../mappers/ClassificationMapper.html" title="class in org.odpi.openmetadata.adapters.repositoryservices.postgres.repositoryconnector.mappers">ClassificationMapper</a>&gt;</span>&nbsp;<span class="element-name">getClassificationHistoryFromStore</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;guid,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;classificationName,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a>&nbsp;fromTime,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Date.html" title="class or interface in java.util" class="external-link">Date</a>&nbsp;toTime,
+ boolean&nbsp;oldestFirst)</span>
+                                                             throws <span class="exceptions"><a href="../../../../../repositoryservices/ffdc/exception/RepositoryErrorException.html" title="class in org.odpi.openmetadata.repositoryservices.ffdc.exception">RepositoryErrorException</a></span></div>
+<div class="block">Return the list of versions for an entity's classification.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>guid</code> - unique identifier of the instance</dd>
+<dd><code>classificationName</code> - name of the classification within entity</dd>
 <dd><code>fromTime</code> - starting time</dd>
 <dd><code>toTime</code> - ending time</dd>
 <dd><code>oldestFirst</code> - ordering</dd>
