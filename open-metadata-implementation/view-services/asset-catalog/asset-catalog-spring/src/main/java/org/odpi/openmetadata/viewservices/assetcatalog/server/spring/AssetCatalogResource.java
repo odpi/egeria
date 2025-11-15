@@ -122,9 +122,9 @@ public class AssetCatalogResource
                     url="https://egeria-project.org/features/lineage-management/overview/"))
 
     public OpenMetadataRootElementResponse getAssetLineageGraph(@PathVariable String serverName,
-                                                          @PathVariable String assetGUID,
-                                                          @RequestBody(required = false)
-                                                              AssetLineageGraphRequestBody requestBody)
+                                                                @PathVariable String assetGUID,
+                                                                @RequestBody(required = false)
+                                                                    AssetLineageGraphRequestBody requestBody)
     {
         return restAPI.getAssetLineageGraph(serverName, assetGUID, requestBody);
     }
@@ -172,13 +172,13 @@ public class AssetCatalogResource
     @SecurityRequirement(name = "BearerAuthorization")
 
     @Operation(summary="getAssetsByMetadataCollectionId",
-            description="Return a list of assets that come from the requested metadata collection. The filter in the request body is optional. If specified it is a type name to limit the results passed back.",
+            description="Return a list of assets that come from the requested metadata collection.",
             externalDocs=@ExternalDocumentation(description="Assets",
                     url="https://egeria-project.org/concepts/asset/"))
 
     public OpenMetadataRootElementsResponse getAssetsByMetadataCollectionId(@PathVariable String          serverName,
                                                           @PathVariable String          metadataCollectionId,
-                                                          @RequestBody(required = false) FilterRequestBody requestBody)
+                                                          @RequestBody(required = false) ResultsRequestBody requestBody)
     {
         return restAPI.getAssetsByMetadataCollectionId(serverName, metadataCollectionId, requestBody);
     }

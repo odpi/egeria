@@ -15,6 +15,7 @@ public enum CertificationTypeDefinition
      * Approved clinical trial
      */
     APPROVED_CLINICAL_TRIAL("28ee93d2-f5a5-4352-bcad-0674aae2b2a6",
+                            "CT_APPROVED",
                             "Approved clinical trial",
                             "The clinical trial is approved by the board of directors and the regulators",
                             "This certification gives permission for resources to be deployed as part of the linked clinical trial project.",
@@ -28,6 +29,7 @@ public enum CertificationTypeDefinition
      * Participating Hospital for the ~{clinicalTrialId}~ approved Clinical Trial
      */
     CLINICAL_TRIAL_APPROVED_HOSPITAL("5acc69bf-dfbb-4e4a-b47b-19d610f2cb06",
+                                     "CT_APPROVED_HOSPITAL::~{clinicalTrialId}~",
                                      "Participating Hospital for the ~{clinicalTrialId}~ approved Clinical Trial",
                                      "The hospital is participating in the associated Clinical Trial.",
                                      "This certification is started when the hospital completes the necessary preparations for the clinical trail.",
@@ -42,6 +44,7 @@ public enum CertificationTypeDefinition
      * The data in this file matches the specification for the ~{clinicalTrialId}~ Clinical Trial.
      */
     WEEKLY_MEASUREMENTS_APPROVED_DATA("8a921039-ad5f-454d-ae17-e5a5b69f9333",
+                                      "CT_APPROVED_WEEKLY_MEASUREMENTS::~{clinicalTrialId}~",
                                       "Valid weekly measurements data for the ~{clinicalTrialId}~ Clinical Trial",
                                       "The data in this file matches the specification for the associated Clinical Trial.",
                                       "This certification is awarded when the data matches both the schema and the data specification.",
@@ -56,7 +59,8 @@ public enum CertificationTypeDefinition
 
 
     private final String          guid;
-    private final String          title;
+    private final String          identifier;
+    private final String          displayName;
     private final String          summary;
     private final String          description;
     private final String          details;
@@ -69,14 +73,16 @@ public enum CertificationTypeDefinition
      * The constructor creates an instance of the enum
      *
      * @param guid            unique id for the enum
-     * @param title          title the enum
+     * @param identifier          identifier of the enum
+     * @param displayName          title of the enum
      * @param summary        short description for the enum
      * @param description   description of the use of this value
      * @param details qualifying details
      * @param scope usage scope
      */
     CertificationTypeDefinition(String          guid,
-                                String          title,
+                                String          identifier,
+                                String          displayName,
                                 String          summary,
                                 String          description,
                                 String          details,
@@ -86,7 +92,8 @@ public enum CertificationTypeDefinition
                                 String          templateDescription)
     {
         this.guid                = guid;
-        this.title               = title;
+        this.identifier          = identifier;
+        this.displayName         = displayName;
         this.summary             = summary;
         this.description         = description;
         this.details             = details;
@@ -103,7 +110,7 @@ public enum CertificationTypeDefinition
      */
     public String getQualifiedName()
     {
-        return "CertificationType:: " + title;
+        return "CertificationType:: " + identifier + ":: " + displayName;
     }
 
 
@@ -119,11 +126,21 @@ public enum CertificationTypeDefinition
 
 
     /**
+     * Return the identifier for the certification type.
+     *
+     * @return string
+     */
+    public String getIdentifier()
+    {
+        return identifier;
+    }
+
+    /**
      * Return the title of the certification type.
      *
      * @return string
      */
-    public String getTitle() { return title; }
+    public String getDisplayName() { return displayName; }
 
     /**
      * Return the summary of the certification type.
@@ -152,6 +169,7 @@ public enum CertificationTypeDefinition
      * @return string
      */
     public String getDetails() { return details; }
+
 
     /**
      * Return the scope of usage for this information supply chain.

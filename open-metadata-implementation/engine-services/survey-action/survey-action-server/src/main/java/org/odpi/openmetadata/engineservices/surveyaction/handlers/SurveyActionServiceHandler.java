@@ -2,6 +2,7 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.engineservices.surveyaction.handlers;
 
+import org.odpi.openmetadata.adapters.connectors.datastore.csvfile.CSVFileStoreProvider;
 import org.odpi.openmetadata.engineservices.surveyaction.ffdc.SurveyActionErrorCode;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.engineservices.surveyaction.ffdc.SurveyActionAuditCode;
@@ -141,6 +142,7 @@ public class SurveyActionServiceHandler extends GovernanceServiceHandler
 
             surveyActionService.setSurveyContext(surveyContext);
             surveyActionService.setSurveyActionServiceName(governanceServiceName);
+            surveyActionService.setCSVFileConnectorTypeGUID(new CSVFileStoreProvider().getConnectorType().getGUID());
 
             startTime = new Date();
             surveyActionService.start();

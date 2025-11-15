@@ -20,6 +20,7 @@ import java.util.Map;
 public class ConnectorContextClientBase
 {
     protected final PropertyHelper propertyHelper = new PropertyHelper();
+    protected final String         egeriaRelease  = "6.0-SNAPSHOT";
 
     protected final ConnectorContextBase parentContext;
     protected final String               localServerName;
@@ -27,9 +28,9 @@ public class ConnectorContextClientBase
     protected final String               connectorUserId;
     protected final String               connectorGUID;
 
-    protected final String               externalSourceGUID;
-    protected final String               externalSourceName;
-    protected final AuditLog             auditLog;
+    protected       String   externalSourceGUID;
+    protected       String   externalSourceName;
+    protected final AuditLog auditLog;
     protected final int                  maxPageSize;
 
     /*
@@ -114,6 +115,38 @@ public class ConnectorContextClientBase
 
 
     /* ========================================================
+     * Return the current Egeria release
+     */
+
+    /**
+     * Return the current release of egeria that is running.  This can be used to set up the versionIdentifier attribute
+     * or other release related values.
+     *
+     * @return string release name
+     */
+    public String getEgeriaRelease()
+    {
+        return egeriaRelease;
+    }
+
+
+
+    /* ========================================================
+     * Return the connectorGUID for setting up lineage relationships
+     */
+
+    /**
+     * Return the unique identifier of this connector.
+     *
+     * @return string guid
+     */
+    public String getConnectorGUID()
+    {
+        return connectorGUID;
+    }
+
+
+    /* ========================================================
      * Set up the forLineage flag
      */
 
@@ -177,6 +210,13 @@ public class ConnectorContextClientBase
     public void setExternalSourceIsHome(boolean externalSourceIsHome)
     {
         this.externalSourceIsHome = externalSourceIsHome;
+    }
+
+    public void setExternalSource(String externalSourceGUID,
+                                  String externalSourceName)
+    {
+        this.externalSourceGUID = externalSourceGUID;
+        this.externalSourceName = externalSourceName;
     }
 
 
@@ -404,15 +444,19 @@ public class ConnectorContextClientBase
      */
     public MetadataSourceOptions getMetadataSourceOptions()
     {
-        MetadataSourceOptions getOptions = new MetadataSourceOptions();
+        MetadataSourceOptions metadataSourceOptions = new MetadataSourceOptions();
 
-        getOptions.setForLineage(forLineage);
-        getOptions.setForDuplicateProcessing(forDuplicateProcessing);
-        getOptions.setEffectiveTime(getEffectiveTime());
-        getOptions.setExternalSourceGUID(externalSourceGUID);
-        getOptions.setExternalSourceName(externalSourceName);
+        metadataSourceOptions.setForLineage(forLineage);
+        metadataSourceOptions.setForDuplicateProcessing(forDuplicateProcessing);
+        metadataSourceOptions.setEffectiveTime(getEffectiveTime());
 
-        return getOptions;
+        if (externalSourceIsHome)
+        {
+            metadataSourceOptions.setExternalSourceGUID(externalSourceGUID);
+            metadataSourceOptions.setExternalSourceName(externalSourceName);
+        }
+
+        return metadataSourceOptions;
     }
 
 

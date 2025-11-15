@@ -2727,7 +2727,7 @@ public class OMAGServerAdminServices
 
                     if (endpoint != null)
                     {
-                        return endpoint.getAddress();
+                        return endpoint.getNetworkAddress();
                     }
                 }
             }
@@ -3082,7 +3082,7 @@ public class OMAGServerAdminServices
 
                     if (endpoint != null)
                     {
-                        endpoint.setAddress(topicName);
+                        endpoint.setNetworkAddress(topicName);
                         connection.setEndpoint(endpoint);
                         embeddedConnection.setEmbeddedConnection(connection);
                         embeddedConnections = new ArrayList<>();
@@ -4073,7 +4073,7 @@ public class OMAGServerAdminServices
 
                         if (endpoint != null)
                         {
-                            endpoint.setAddress(urlRoot);
+                            endpoint.setNetworkAddress(urlRoot);
                             localRepositoryRemoteConnection.setEndpoint(endpoint);
                             localRepositoryConfig.setLocalRepositoryLocalConnection(localRepositoryRemoteConnection);
                             repositoryServicesConfig.setLocalRepositoryConfig(localRepositoryConfig);

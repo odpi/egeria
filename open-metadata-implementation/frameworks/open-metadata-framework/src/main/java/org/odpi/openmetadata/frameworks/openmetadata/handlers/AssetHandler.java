@@ -5,7 +5,9 @@ package org.odpi.openmetadata.frameworks.openmetadata.handlers;
 
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.openmetadata.client.OpenMetadataClient;
+import org.odpi.openmetadata.frameworks.openmetadata.controls.CSVFileConfigurationProperty;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.ActivityStatus;
+import org.odpi.openmetadata.frameworks.openmetadata.enums.ElementOriginCategory;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.ElementStatus;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.*;
 import org.odpi.openmetadata.frameworks.openmetadata.mermaid.AssetGraphMermaidGraphBuilder;
@@ -14,19 +16,28 @@ import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.*;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.*;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.actors.AssignmentScopeProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.apis.APIEndpointProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.filesandfolders.CSVFileProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.filesandfolders.FolderHierarchyProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.filesandfolders.NestedFileProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.infrastructure.DeployedOnProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.*;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.metadatarepositories.MetadataCollectionProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.processes.ProcessHierarchyProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.processes.ProcessProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.processes.actions.ActionProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.processes.actions.ActionRequesterProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.processes.actions.ActionTargetProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.processes.connectors.CatalogTargetProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.connections.ConnectionProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.connections.EndpointProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.lineage.LineageRelationshipProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.schema.TypeEmbeddedAttributeProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.schema.tabular.TabularFileColumnProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.schema.tabular.TabularSchemaTypeProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.refdata.AssignmentType;
+import org.odpi.openmetadata.frameworks.openmetadata.refdata.FileType;
 import org.odpi.openmetadata.frameworks.openmetadata.search.*;
+import org.odpi.openmetadata.frameworks.openmetadata.types.DataType;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 
@@ -37,6 +48,15 @@ import java.util.*;
  */
 public class AssetHandler extends OpenMetadataHandlerBase
 {
+    private final ConnectionHandler      connectionHandler;
+    private final EndpointHandler        endpointHandler;
+    private final SchemaTypeHandler      schemaTypeHandler;
+    private final SchemaAttributeHandler schemaAttributeHandler;
+
+    private final static String folderDivider = "/";
+    private final static String fileSystemDivider    = "://";
+    private final static String fileExtensionDivider = "\\.";
+
     /**
      * Create a new handler.
      *
@@ -55,6 +75,11 @@ public class AssetHandler extends OpenMetadataHandlerBase
               localServiceName,
               openMetadataClient,
               OpenMetadataType.ASSET.typeName);
+
+        connectionHandler      = new ConnectionHandler(localServerName, auditLog, localServiceName, openMetadataClient);
+        endpointHandler        = new EndpointHandler(localServerName, auditLog, localServiceName, openMetadataClient);
+        schemaTypeHandler      = new SchemaTypeHandler(localServerName, auditLog, localServiceName, openMetadataClient);
+        schemaAttributeHandler = new SchemaAttributeHandler(localServerName, auditLog, localServiceName, openMetadataClient);
     }
 
 
@@ -78,6 +103,11 @@ public class AssetHandler extends OpenMetadataHandlerBase
               localServiceName,
               openMetadataClient,
               assetTypeName);
+
+        connectionHandler      = new ConnectionHandler(localServerName, auditLog, localServiceName, openMetadataClient);
+        endpointHandler        = new EndpointHandler(localServerName, auditLog, localServiceName, openMetadataClient);
+        schemaTypeHandler      = new SchemaTypeHandler(localServerName, auditLog, localServiceName, openMetadataClient);
+        schemaAttributeHandler = new SchemaAttributeHandler(localServerName, auditLog, localServiceName, openMetadataClient);
     }
 
 
@@ -91,6 +121,11 @@ public class AssetHandler extends OpenMetadataHandlerBase
                         String       specificTypeName)
     {
         super(template, specificTypeName);
+
+        connectionHandler      = new ConnectionHandler(localServerName, auditLog, localServiceName, openMetadataClient);
+        endpointHandler        = new EndpointHandler(localServerName, auditLog, localServiceName, openMetadataClient);
+        schemaTypeHandler      = new SchemaTypeHandler(localServerName, auditLog, localServiceName, openMetadataClient);
+        schemaAttributeHandler = new SchemaAttributeHandler(localServerName, auditLog, localServiceName, openMetadataClient);
     }
 
 
@@ -129,12 +164,16 @@ public class AssetHandler extends OpenMetadataHandlerBase
     /**
      * Add a simple asset description linked to a connection object for a CSV file.
      *
+     * @param userId calling user
      * @param displayName display name for the file in the catalog
      * @param description description of the file in the catalog
      * @param pathName full path of the file - used to access the file through the connector
      * @param columnHeaders does the first line of the file contain the column names. If not pass the list of column headers.
      * @param delimiterCharacter what is the delimiter character - null for default of comma
      * @param quoteCharacter what is the character to group a field that contains delimiter characters
+     * @param versionIdentifier version identifier to use in the metadata elements
+     * @param connectorTypeGUID optional connector type to indicate that a connection should be created
+     * @param newElementOptions options to control the create process
      *
      * @return list of GUIDs from the top level to the root of the pathname
      *
@@ -142,19 +181,350 @@ public class AssetHandler extends OpenMetadataHandlerBase
      * @throws PropertyServerException problem accessing property server
      * @throws UserNotAuthorizedException security access problem
      */
-    public  String  addCSVFileToCatalog(String       userId,
-                                        String       displayName,
-                                        String       description,
-                                        String       pathName,
-                                        List<String> columnHeaders,
-                                        Character    delimiterCharacter,
-                                        Character    quoteCharacter) throws InvalidParameterException,
-                                                                            UserNotAuthorizedException,
-                                                                            PropertyServerException
+    public  String  addCSVFileToCatalog(String            userId,
+                                        String            displayName,
+                                        String            description,
+                                        String            pathName,
+                                        List<String>      columnHeaders,
+                                        Character         delimiterCharacter,
+                                        Character         quoteCharacter,
+                                        String            versionIdentifier,
+                                        String            connectorTypeGUID,
+                                        NewElementOptions newElementOptions) throws InvalidParameterException,
+                                                                                    UserNotAuthorizedException,
+                                                                                    PropertyServerException
     {
-        // todo
+        final String methodName = "addCSVFileToCatalog";
+
+        final String pathParameterName = "pathName";
+
+        propertyHelper.validateUserId(userId, methodName);
+        propertyHelper.validateMandatoryName(pathName, pathParameterName, methodName);
+
+        String fileType = FileType.CSV_FILE.getFileTypeName();
+        String fileName = this.getFileName(pathName);
+        String fileExtension = this.getFileExtension(pathName);
+
+        if (delimiterCharacter == null)
+        {
+            delimiterCharacter = ',';
+        }
+
+        if (quoteCharacter == null)
+        {
+            quoteCharacter = '\"';
+        }
+
+        CSVFileProperties csvFileProperties = new CSVFileProperties();
+
+        csvFileProperties.setQualifiedName(this.createFileQualifiedName(OpenMetadataType.CSV_FILE.typeName,
+                                                                        null,
+                                                                        pathName,
+                                                                        "V1.0"));
+        csvFileProperties.setDisplayName(displayName);
+        csvFileProperties.setDescription(description);
+        csvFileProperties.setResourceName(pathName);
+        csvFileProperties.setVersionIdentifier(versionIdentifier);
+        csvFileProperties.setPathName(pathName);
+        csvFileProperties.setFileName(fileName);
+        csvFileProperties.setFileExtension(fileExtension);
+        csvFileProperties.setFileType(fileType);
+        csvFileProperties.setDelimiterCharacter(delimiterCharacter.toString());
+        csvFileProperties.setQuoteCharacter(quoteCharacter.toString());
+
+
+        String fileAssetGUID = this.createAsset(userId,
+                                                newElementOptions,
+                                                null,
+                                                csvFileProperties,
+                                                null);
+
+        NewElementOptions newRelatedElementOptions = new NewElementOptions(newElementOptions);
+
+        newRelatedElementOptions.setIsOwnAnchor(false);
+        if (newRelatedElementOptions.getAnchorGUID() == null)
+        {
+            newRelatedElementOptions.setAnchorGUID(fileAssetGUID);
+        }
+
+
+        if (connectorTypeGUID != null)
+        {
+            newRelatedElementOptions.setParentGUID(fileAssetGUID);
+            newRelatedElementOptions.setParentAtEnd1(true);
+            newRelatedElementOptions.setParentRelationshipTypeName(OpenMetadataType.ASSET_CONNECTION_RELATIONSHIP.typeName);
+
+            ConnectionProperties connectionProperties = new ConnectionProperties();
+
+            connectionProperties.setQualifiedName(csvFileProperties.getQualifiedName() + "_connection");
+            connectionProperties.setDisplayName("Connection for CSV File: " + displayName);
+            connectionProperties.setVersionIdentifier(versionIdentifier);
+
+            Map<String, Object>  configurationProperties = new HashMap<>();
+
+            configurationProperties.put(CSVFileConfigurationProperty.DELIMITER_CHARACTER.getName(), delimiterCharacter);
+            configurationProperties.put(CSVFileConfigurationProperty.QUOTE_CHARACTER.getName(), quoteCharacter);
+
+            if (columnHeaders != null)
+            {
+                configurationProperties.put(CSVFileConfigurationProperty.COLUMN_NAMES.getName(), columnHeaders);
+            }
+
+            connectionProperties.setConfigurationProperties(configurationProperties);
+
+            String connectionGUID = connectionHandler.createConnection(userId,
+                                                                       newRelatedElementOptions,
+                                                                       null,
+                                                                       connectionProperties,
+                                                                       null);
+
+            connectionHandler.linkConnectionConnectorType(userId,
+                                                          connectionGUID,
+                                                          connectorTypeGUID,
+                                                          newRelatedElementOptions,
+                                                          null);
+
+            newRelatedElementOptions.setParentGUID(connectionGUID);
+            newRelatedElementOptions.setParentAtEnd1(true);
+            newRelatedElementOptions.setParentRelationshipTypeName(OpenMetadataType.CONNECT_TO_ENDPOINT_RELATIONSHIP.typeName);
+
+            EndpointProperties endpointProperties = new EndpointProperties();
+
+            endpointProperties.setQualifiedName(csvFileProperties.getQualifiedName() + "_endpoint");
+            endpointProperties.setDisplayName("Endpoint for CSV File: " + displayName);
+            endpointProperties.setVersionIdentifier(versionIdentifier);
+            endpointProperties.setNetworkAddress(pathName);
+
+            endpointHandler.createEndpoint(userId,
+                                           newRelatedElementOptions,
+                                           null,
+                                           endpointProperties,
+                                           null);
+        }
+
+        if ((columnHeaders != null) && (! columnHeaders.isEmpty()))
+        {
+            newRelatedElementOptions.setParentGUID(fileAssetGUID);
+            newRelatedElementOptions.setParentAtEnd1(true);
+            newRelatedElementOptions.setParentRelationshipTypeName(OpenMetadataType.SCHEMA_RELATIONSHIP.typeName);
+
+            TabularSchemaTypeProperties rootSchemaTypeProperties = new TabularSchemaTypeProperties();
+
+            rootSchemaTypeProperties.setQualifiedName(csvFileProperties.getQualifiedName() + "_schemaType");
+            rootSchemaTypeProperties.setDisplayName("SchemaType for CSV File: " + displayName);
+            rootSchemaTypeProperties.setVersionIdentifier(versionIdentifier);
+
+            String rootSchemaTypeGUID = schemaTypeHandler.createSchemaType(userId,
+                                                                           newRelatedElementOptions,
+                                                                           null,
+                                                                           rootSchemaTypeProperties,
+                                                                           null);
+
+            newRelatedElementOptions.setParentGUID(rootSchemaTypeGUID);
+            newRelatedElementOptions.setParentAtEnd1(true);
+            newRelatedElementOptions.setParentRelationshipTypeName(OpenMetadataType.ATTRIBUTE_FOR_SCHEMA_RELATIONSHIP.typeName);
+
+            int columnCount = 0;
+            for (String columnName : columnHeaders)
+            {
+                if (columnName != null)
+                {
+                    String columnQualifiedName = pathName + "::" + columnName + "::" + columnCount;
+                    String columnDisplayName = columnName + "::" + columnCount;
+
+                    TabularFileColumnProperties columnProperties = new TabularFileColumnProperties();
+
+                    columnProperties.setQualifiedName(columnQualifiedName);
+                    columnProperties.setDisplayName(columnDisplayName);
+                    columnProperties.setVersionIdentifier(versionIdentifier);
+
+                    TypeEmbeddedAttributeProperties columnType = new TypeEmbeddedAttributeProperties();
+
+                    columnType.setQualifiedName(columnQualifiedName + ":columnType");
+                    columnType.setSchemaTypeName(OpenMetadataType.PRIMITIVE_SCHEMA_TYPE.typeName);
+                    columnType.setDataType(DataType.STRING.getName());
+
+                    Map<String, ClassificationProperties> initialClassifications = new HashMap<>();
+
+                    initialClassifications.put(OpenMetadataType.TYPE_EMBEDDED_ATTRIBUTE_CLASSIFICATION.typeName, columnType);
+
+
+
+                    schemaAttributeHandler.createSchemaAttribute(userId,
+                                                                 newRelatedElementOptions,
+                                                                 initialClassifications,
+                                                                 columnProperties,
+                                                                 null);
+
+                    columnCount ++;
+                }
+            }
+        }
+
+        return fileAssetGUID;
+    }
+
+
+    /**
+     * Construct the qualified name for a file resource.
+     *
+     * @param typeName type of element
+     * @param qualifiedName supplied qualified name
+     * @param pathName pathname in file system
+     * @param versionIdentifier version identifier
+     * @return qualified name
+     */
+    private String createFileQualifiedName(String typeName,
+                                           String qualifiedName,
+                                           String pathName,
+                                           String versionIdentifier)
+    {
+        if (qualifiedName != null)
+        {
+            return qualifiedName;
+        }
+
+        if (versionIdentifier == null)
+        {
+            return typeName + ":" + pathName;
+        }
+        else
+        {
+            return typeName + ":" + pathName + ":" + versionIdentifier;
+        }
+    }
+
+
+    /**
+     * Return the file extension of the file from the path name.
+     *
+     * @param pathName path name of a file
+     * @return file type or null if no file type
+     */
+    private String getFileExtension(String pathName)
+    {
+        String result = null;
+
+        if ((pathName != null) && (! pathName.isEmpty()))
+        {
+            String[] tokens = pathName.split(fileExtensionDivider);
+
+            if (tokens.length > 1)
+            {
+                result = tokens[tokens.length - 1];
+            }
+        }
+
+        return result;
+    }
+
+
+
+    /**
+     * Return the name of the file from the path name.
+     *
+     * @param pathName path name of a file
+     * @return file name (with type) or null
+     */
+    private String getFileName(String pathName)
+    {
+        String result = null;
+
+        if ((pathName != null) && (! pathName.isEmpty()))
+        {
+            String[] tokens = pathName.split(folderDivider);
+
+            result = tokens[tokens.length - 1];
+        }
+
+        return result;
+    }
+
+
+    /**
+     * Retrieve the metadata source's unique identifier (GUID) or if it is not defined, create the software server capability
+     * for this service.
+     *
+     * @param userId                    calling user
+     * @param metadataSourceQualifiedName unique name of the software capability that represents this integration service
+     * @param ownerGUID unique identifier of the owner of the metadata collection
+     * @param ownerName name of owner from config
+     * @param ownerUserId userId for the owner
+     *
+     * @return unique identifier of the metadata source
+     *
+     * @throws InvalidParameterException one of the parameters passed (probably on initialize) is invalid
+     * @throws UserNotAuthorizedException the integration daemon's userId does not have access to the partner OMAS
+     * @throws PropertyServerException there is a problem in the remote server running the partner OMAS
+     */
+    public String setUpMetadataSource(String                userId,
+                                      String                metadataSourceQualifiedName,
+                                      String                ownerGUID,
+                                      String                ownerName,
+                                      String                ownerUserId,
+                                      ElementOriginCategory originCategory) throws InvalidParameterException,
+                                                                                   UserNotAuthorizedException,
+                                                                                   PropertyServerException
+    {
+        if (metadataSourceQualifiedName != null)
+        {
+            final String methodName = "setUpMetadataSource";
+            final String ownerGUIDParameterName = "ownerGUID";
+            final String ownerNameParameterName = "ownerName";
+
+            propertyHelper.validateGUID(ownerGUID, ownerGUIDParameterName, methodName);
+            propertyHelper.validateMandatoryName(ownerGUID, ownerNameParameterName, methodName);
+
+            GetOptions getOptions = new GetOptions();
+
+            getOptions.setMetadataElementTypeName(OpenMetadataType.METADATA_COLLECTION.typeName);
+
+            OpenMetadataRootElement metadataCollection = this.getAssetByUniqueName(userId, metadataSourceQualifiedName, OpenMetadataProperty.QUALIFIED_NAME.name, getOptions);
+
+            if (metadataCollection == null)
+            {
+                NewElementOptions newElementOptions = new NewElementOptions();
+
+                newElementOptions.setIsOwnAnchor(true);
+
+                MetadataCollectionProperties metadataCollectionProperties = new MetadataCollectionProperties();
+
+                metadataCollectionProperties.setQualifiedName(OpenMetadataType.METADATA_COLLECTION.typeName + "::" +  ownerName + " [" + ownerGUID + "]");
+                if (originCategory != null)
+                {
+                    metadataCollectionProperties.setDeployedImplementationType(originCategory.getName());
+                }
+                else
+                {
+                    metadataCollectionProperties.setDeployedImplementationType(ElementOriginCategory.EXTERNAL_SOURCE.getName());
+                }
+
+                metadataCollectionProperties.setDisplayName("Metadata collection for " + ownerName);
+
+                if (ownerUserId != null)
+                {
+                    metadataCollectionProperties.setDescription("This is the metadata belonging to connector " + ownerName + " that is running with userId " + ownerUserId + ".");
+                }
+                else
+                {
+                    metadataCollectionProperties.setDescription("This is the metadata belonging to connector " + ownerName + ".");
+                }
+
+                return this.createAsset(userId,
+                                        newElementOptions,
+                                        null,
+                                        metadataCollectionProperties,
+                                        null);
+            }
+            else
+            {
+                return metadataCollection.getElementHeader().getGUID();
+            }
+        }
+
         return null;
     }
+
 
 
     /**
@@ -661,7 +1031,7 @@ public class AssetHandler extends OpenMetadataHandlerBase
                                                                                                 PropertyServerException,
                                                                                                 UserNotAuthorizedException
     {
-        final String methodName                  = "getCatalogTargets";
+        final String methodName             = "getCatalogTargets";
         final String assetGUIDParameterName = "integrationConnectorGUID";
 
         propertyHelper.validateUserId(userId, methodName);
@@ -673,6 +1043,7 @@ public class AssetHandler extends OpenMetadataHandlerBase
                                             assetGUIDParameterName,
                                             1,
                                             OpenMetadataType.CATALOG_TARGET_RELATIONSHIP.typeName,
+                                            OpenMetadataType.OPEN_METADATA_ROOT.typeName,
                                             queryOptions,
                                             methodName);
     }
@@ -1324,7 +1695,7 @@ public class AssetHandler extends OpenMetadataHandlerBase
      * @param relationshipTypeName relationship to query
      * @param startingAtEnd retrieval end
      * @param activityStatus optional activity status
-     * @param requestedQueryOptions           multiple options to control the query
+     * @param queryOptions           multiple options to control the query
      * @param methodName calling method
      * @return list of action beans
      * @throws InvalidParameterException  a parameter is invalid
@@ -1337,24 +1708,18 @@ public class AssetHandler extends OpenMetadataHandlerBase
                                                              ActivityStatus activityStatus,
                                                              String         relationshipTypeName,
                                                              int            startingAtEnd,
-                                                             QueryOptions   requestedQueryOptions,
+                                                             QueryOptions   queryOptions,
                                                              String         methodName) throws InvalidParameterException,
                                                                                                PropertyServerException,
                                                                                                UserNotAuthorizedException
     {
-        QueryOptions queryOptions = new QueryOptions(requestedQueryOptions);
-
-        if (queryOptions.getMetadataElementTypeName() == null)
-        {
-            queryOptions.setMetadataElementTypeName(OpenMetadataType.ACTION.typeName);
-        }
-
         List<OpenMetadataRootElement> relatedMetadataElements = super.getRelatedRootElements(userId,
                                                                                              elementGUID,
                                                                                              guidParameterName,
                                                                                              startingAtEnd,
                                                                                              relationshipTypeName,
-                                                                                             requestedQueryOptions,
+                                                                                             OpenMetadataType.ACTION.typeName,
+                                                                                             queryOptions,
                                                                                              methodName);
 
         return this.filterProcesses(relatedMetadataElements, activityStatus);
@@ -1476,12 +1841,13 @@ public class AssetHandler extends OpenMetadataHandlerBase
         final String guidPropertyName = "assetGUID";
 
         return super.getRelatedRootElements(userId,
-                                           assetGUID,
-                                           guidPropertyName,
-                                           1,
-                                           OpenMetadataType.DEPLOYED_ON_RELATIONSHIP.typeName,
-                                           queryOptions,
-                                           methodName);
+                                            assetGUID,
+                                            guidPropertyName,
+                                            1,
+                                            OpenMetadataType.DEPLOYED_ON_RELATIONSHIP.typeName,
+                                            OpenMetadataType.ASSET.typeName,
+                                            queryOptions,
+                                            methodName);
     }
 
 
@@ -1511,6 +1877,7 @@ public class AssetHandler extends OpenMetadataHandlerBase
                                             guidPropertyName,
                                             1,
                                             OpenMetadataType.DATA_SET_CONTENT_RELATIONSHIP.typeName,
+                                            OpenMetadataType.REFERENCEABLE.typeName,
                                             queryOptions,
                                             methodName);
     }
@@ -1541,6 +1908,7 @@ public class AssetHandler extends OpenMetadataHandlerBase
                                             guidPropertyName,
                                             2,
                                             OpenMetadataType.DATA_SET_CONTENT_RELATIONSHIP.typeName,
+                                            OpenMetadataType.ASSET.typeName,
                                             queryOptions,
                                             methodName);
     }
@@ -1572,6 +1940,7 @@ public class AssetHandler extends OpenMetadataHandlerBase
                                             guidPropertyName,
                                             1,
                                             OpenMetadataType.NESTED_FILE_RELATIONSHIP.typeName,
+                                            OpenMetadataType.DATA_FILE.typeName,
                                             queryOptions,
                                             methodName);
     }

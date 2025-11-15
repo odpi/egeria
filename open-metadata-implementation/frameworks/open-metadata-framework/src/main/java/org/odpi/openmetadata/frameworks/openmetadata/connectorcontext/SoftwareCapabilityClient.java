@@ -12,8 +12,10 @@ import org.odpi.openmetadata.frameworks.openmetadata.handlers.SoftwareCapability
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.OpenMetadataRootElement;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.ClassificationProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.RelationshipProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.infrastructure.CapabilityAssetUseProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.softwarecapabilities.SoftwareCapabilityProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.search.*;
+import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 
 import java.util.List;
 import java.util.Map;
@@ -158,6 +160,49 @@ public class SoftwareCapabilityClient extends ConnectorContextClientBase
         {
             parentContext.getIntegrationReportWriter().reportElementUpdate(softwareCapabilityGUID);
         }
+    }
+
+
+    /**
+     * Create a relationship that represents the use of an asset (typically a data or process asset) by
+     * a softwareCapability.
+     *
+     * @param softwareCapabilityGUID       unique identifier of the softwareCapability
+     * @param assetGUID           unique identifier of the destination softwareCapability
+     * @param metadataSourceOptions  options to control access to open metadata
+     * @param relationshipProperties description of the relationship.
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public void addAssetUse(String                       softwareCapabilityGUID,
+                            String                       assetGUID,
+                            MetadataSourceOptions        metadataSourceOptions,
+                            CapabilityAssetUseProperties relationshipProperties) throws InvalidParameterException,
+                                                                                        PropertyServerException,
+                                                                                        UserNotAuthorizedException
+    {
+        softwareCapabilityHandler.addAssetUse(connectorUserId, softwareCapabilityGUID, assetGUID, metadataSourceOptions, relationshipProperties);
+    }
+
+
+    /**
+     * Remove a CapabilityAssetUse relationship.
+     *
+     * @param softwareCapabilityGUID       unique identifier of the softwareCapability
+     * @param assetGUID           unique identifier of the destination softwareCapability
+     * @param deleteOptions  options to control access to open metadata
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public void detachAssetUse(String        softwareCapabilityGUID,
+                               String        assetGUID,
+                               DeleteOptions deleteOptions) throws InvalidParameterException,
+                                                                   PropertyServerException,
+                                                                   UserNotAuthorizedException
+    {
+        softwareCapabilityHandler.detachAssetUse(connectorUserId, softwareCapabilityGUID, assetGUID, deleteOptions);
     }
 
 

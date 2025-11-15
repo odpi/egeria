@@ -3,7 +3,6 @@
 package org.odpi.openmetadata.frameworks.openmetadata.properties.assets.processes.actions;
 
 import com.fasterxml.jackson.annotation.*;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.processes.EmbeddedProcessProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.processes.ProcessProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 

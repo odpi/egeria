@@ -88,13 +88,13 @@ public class ConnectorConfigurationFactory
     public Connection getServerConfigConnection(String    serverName)
     {
         Endpoint   endpoint = new Endpoint();
-        endpoint.setAddress("data/servers/" + serverName + "/config/" + serverName + ".config");
+        endpoint.setNetworkAddress("data/servers/" + serverName + "/config/" + serverName + ".config");
 
         Connection connection = new Connection();
         connection.setDisplayName("File Config Store Connection");
         connection.setEndpoint(endpoint);
         connection.setConnectorType(getConnectorType(FILE_BASED_SERVER_CONFIG_STORE_PROVIDER));
-        connection.setQualifiedName(endpoint.getAddress());
+        connection.setQualifiedName(endpoint.getNetworkAddress());
 
         return connection;
     }
@@ -208,7 +208,7 @@ public class ConnectorConfigurationFactory
 
         Endpoint endpoint = new Endpoint();
 
-        endpoint.setAddress(endpointAddress);
+        endpoint.setNetworkAddress(endpointAddress);
 
         Connection connection = new Connection();
 
@@ -237,11 +237,11 @@ public class ConnectorConfigurationFactory
 
         if (storageProperties.containsKey(JDBCConfigurationProperty.SECRETS_STORE.getName()))
         {
-            endpoint.setAddress(storageProperties.get(JDBCConfigurationProperty.SECRETS_STORE.getName()).toString());
+            endpoint.setNetworkAddress(storageProperties.get(JDBCConfigurationProperty.SECRETS_STORE.getName()).toString());
         }
         else
         {
-            endpoint.setAddress(JDBCConfigurationProperty.SECRETS_STORE.getExample());
+            endpoint.setNetworkAddress(JDBCConfigurationProperty.SECRETS_STORE.getExample());
         }
 
         secretsStoreConnection.setEndpoint(endpoint);
@@ -264,11 +264,11 @@ public class ConnectorConfigurationFactory
 
         if (storageProperties.containsKey(JDBCConfigurationProperty.DATABASE_URL.getName()))
         {
-            endpoint.setAddress(storageProperties.get(JDBCConfigurationProperty.DATABASE_URL.getName()).toString());
+            endpoint.setNetworkAddress(storageProperties.get(JDBCConfigurationProperty.DATABASE_URL.getName()).toString());
         }
         else
         {
-            endpoint.setAddress(JDBCConfigurationProperty.DATABASE_URL.getExample());
+            endpoint.setNetworkAddress(JDBCConfigurationProperty.DATABASE_URL.getExample());
         }
         jdbcResourceConnection.setEndpoint(endpoint);
 
@@ -373,7 +373,7 @@ public class ConnectorConfigurationFactory
 
         Endpoint endpoint = new Endpoint();
 
-        endpoint.setAddress(fileName);
+        endpoint.setNetworkAddress(fileName);
 
         Connection connection = new Connection();
 
@@ -398,7 +398,7 @@ public class ConnectorConfigurationFactory
 
         Endpoint endpoint = new Endpoint();
 
-        endpoint.setAddress(endpointAddress);
+        endpoint.setNetworkAddress(endpointAddress);
 
         Connection connection = new Connection();
 
@@ -436,7 +436,7 @@ public class ConnectorConfigurationFactory
     {
         Endpoint endpoint = new Endpoint();
 
-        endpoint.setAddress(localServerURL + "/servers/" + localServerName);
+        endpoint.setNetworkAddress(localServerURL + "/servers/" + localServerName);
 
         Connection connection = new Connection();
 
@@ -464,11 +464,11 @@ public class ConnectorConfigurationFactory
 
         if (storageProperties.containsKey(PostgresConfigurationProperty.SECRETS_STORE.getName()))
         {
-            endpoint.setAddress(storageProperties.get(PostgresConfigurationProperty.SECRETS_STORE.getName()).toString());
+            endpoint.setNetworkAddress(storageProperties.get(PostgresConfigurationProperty.SECRETS_STORE.getName()).toString());
         }
         else
         {
-            endpoint.setAddress(PostgresConfigurationProperty.SECRETS_STORE.getExample());
+            endpoint.setNetworkAddress(PostgresConfigurationProperty.SECRETS_STORE.getExample());
         }
 
         secretsStoreConnection.setEndpoint(endpoint);
@@ -491,11 +491,11 @@ public class ConnectorConfigurationFactory
 
         if (storageProperties.containsKey(PostgresConfigurationProperty.DATABASE_URL.getName()))
         {
-            endpoint.setAddress(storageProperties.get(PostgresConfigurationProperty.DATABASE_URL.getName()).toString());
+            endpoint.setNetworkAddress(storageProperties.get(PostgresConfigurationProperty.DATABASE_URL.getName()).toString());
         }
         else
         {
-            endpoint.setAddress(PostgresConfigurationProperty.DATABASE_URL.getExample());
+            endpoint.setNetworkAddress(PostgresConfigurationProperty.DATABASE_URL.getExample());
         }
         jdbcResourceConnection.setEndpoint(endpoint);
 
@@ -570,7 +570,7 @@ public class ConnectorConfigurationFactory
     {
         Endpoint endpoint = new Endpoint();
 
-        endpoint.setAddress(url);
+        endpoint.setNetworkAddress(url);
 
         Connection connection = new Connection();
 
@@ -661,11 +661,11 @@ public class ConnectorConfigurationFactory
 
             if (topicURLRoot == null)
             {
-                endpoint.setAddress(topicName);
+                endpoint.setNetworkAddress(topicName);
             }
             else
             {
-                endpoint.setAddress(topicURLRoot + "." + topicName);
+                endpoint.setNetworkAddress(topicURLRoot + "." + topicName);
             }
 
 
@@ -962,7 +962,7 @@ public class ConnectorConfigurationFactory
     {
         Endpoint endpoint = new Endpoint();
 
-        endpoint.setAddress(eventSource);
+        endpoint.setNetworkAddress(eventSource);
 
         Connection connection = new Connection();
 

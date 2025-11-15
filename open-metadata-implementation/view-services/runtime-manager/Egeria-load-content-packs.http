@@ -60,6 +60,7 @@ Content-Type: text/plain
 content-packs/CocoComboArchive.omarchive
 
 ###
+# =====================================================================================================================
 # @name get the GUID for the Sustainability Glossary
 # Retrieve the metadata element using its unique identifier.
 POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/metadata-expert/metadata-elements/guid-by-unique-name
@@ -162,31 +163,4 @@ Authorization: Bearer {{token}}
 Content-Type: text/plain
 
 content-packs/ObservabilityContentPack.omarchive
-
-
-###
-# =====================================================================================================================
-# @name Add CloudInformationModel
-# CloudInformationModel provides a large glossary based on the content of the Cloud Informaiton Model.
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/runtime-manager/omag-servers/{{activeMetadataStoreGUID}}/instance/load/open-metadata-archives/file
-Authorization: Bearer {{token}}
-Content-Type: text/plain
-
-content-packs/CloudInformationModel.omarchive
-
-
-###
-# @name get the GUID for the CloudInformationModel Glossary
-# Retrieve the metadata element using its unique identifier.
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/runtime-manager/metadata-elements/guid-by-unique-name
-Authorization: Bearer {{token}}
-Content-Type: application/json
-
-{
-  "class" : "UniqueNameRequestBody",
-  "name" : "Glossary::CloudInformationModel",
-  "namePropertyName" : "qualifiedName"
-}
-
-> {% client.global.set("cimGlossaryGUID", response.body.guid); %}
 

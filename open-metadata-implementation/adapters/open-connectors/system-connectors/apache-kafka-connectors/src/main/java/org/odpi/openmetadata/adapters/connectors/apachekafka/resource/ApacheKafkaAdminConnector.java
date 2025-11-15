@@ -101,7 +101,7 @@ public class ApacheKafkaAdminConnector extends ConnectorBase implements AuditLog
 
         if (endpoint != null)
         {
-            targetRootURL = endpoint.getAddress();
+            targetRootURL = endpoint.getNetworkAddress();
         }
 
         if (targetRootURL == null)

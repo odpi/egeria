@@ -4,6 +4,7 @@
 package org.odpi.openmetadata.adapters.connectors.apacheatlas.integration.modules;
 
 
+import org.odpi.openmetadata.adapters.connectors.apacheatlas.controls.AtlasDeployedImplementationType;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
 import org.odpi.openmetadata.frameworks.integration.context.IntegrationContext;
 import org.odpi.openmetadata.frameworks.openmetadata.connectorcontext.CollectionClient;
@@ -948,6 +949,7 @@ public class AtlasGlossaryIntegrationModule extends AtlasRegisteredIntegrationMo
                                                                                        PermittedSynchronization.TO_THIRD_PARTY);
 
             externalIdClient.createExternalId(egeriaGlossary.getElementHeader().getGUID(),
+                                              AtlasDeployedImplementationType.APACHE_ATLAS_SERVER.getGUID(),
                                               externalIdLinkProperties,
                                               externalIdentifierProperties);
 
@@ -1136,6 +1138,7 @@ public class AtlasGlossaryIntegrationModule extends AtlasRegisteredIntegrationMo
                                                                                    PermittedSynchronization.TO_THIRD_PARTY);
 
         externalIdClient.createExternalId(egeriaGlossaryTerm.getElementHeader().getGUID(),
+                                          AtlasDeployedImplementationType.APACHE_ATLAS_SERVER.getGUID(),
                                           externalIdLinkProperties,
                                           externalIdentifierProperties);
 
@@ -1198,7 +1201,6 @@ public class AtlasGlossaryIntegrationModule extends AtlasRegisteredIntegrationMo
             else
             {
                 externalIdClient.confirmSynchronization(egeriaGlossaryTerm,
-                                                        myContext.getMetadataSourceGUID(),
                                                         atlasGlossaryTerm.getEntity().getGuid());
             }
         }
@@ -1316,7 +1318,10 @@ public class AtlasGlossaryIntegrationModule extends AtlasRegisteredIntegrationMo
                                                                             glossaryProperties,
                                                                             null);
 
-                externalIdClient.createExternalId(egeriaGlossaryGUID, externalIdLinkProperties, externalIdentifierProperties);
+                externalIdClient.createExternalId(egeriaGlossaryGUID,
+                                                  AtlasDeployedImplementationType.APACHE_ATLAS_SERVER.getGUID(),
+                                                  externalIdLinkProperties,
+                                                  externalIdentifierProperties);
 
                 auditLog.logMessage(methodName,
                                     AtlasIntegrationAuditCode.CREATING_EGERIA_ENTITY.getMessageDefinition(connectorName,
@@ -1429,6 +1434,7 @@ public class AtlasGlossaryIntegrationModule extends AtlasRegisteredIntegrationMo
                                                                               glossaryTermProperties);
 
                 externalIdClient.createExternalId(egeriaTermGUID,
+                                                  AtlasDeployedImplementationType.APACHE_ATLAS_SERVER.getGUID(),
                                                   externalIdLinkProperties,
                                                   externalIdentifierProperties);
 
@@ -1702,7 +1708,10 @@ public class AtlasGlossaryIntegrationModule extends AtlasRegisteredIntegrationMo
                                                                             glossaryCategoryProperties,
                                                                             null);
 
-                externalIdClient.createExternalId(egeriaCategoryGUID, externalIdLinkProperties, externalIdentifierProperties);
+                externalIdClient.createExternalId(egeriaCategoryGUID,
+                                                  AtlasDeployedImplementationType.APACHE_ATLAS_SERVER.getGUID(),
+                                                  externalIdLinkProperties,
+                                                  externalIdentifierProperties);
 
                 auditLog.logMessage(methodName,
                                     AtlasIntegrationAuditCode.CREATING_EGERIA_ENTITY.getMessageDefinition(connectorName,

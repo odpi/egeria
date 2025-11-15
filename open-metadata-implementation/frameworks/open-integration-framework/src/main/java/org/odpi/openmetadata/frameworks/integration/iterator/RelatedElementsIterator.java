@@ -4,21 +4,16 @@
 package org.odpi.openmetadata.frameworks.integration.iterator;
 
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
-import org.odpi.openmetadata.frameworks.openmetadata.connectorcontext.OpenMetadataStore;
+import org.odpi.openmetadata.frameworks.integration.context.IntegrationContext;
+import org.odpi.openmetadata.frameworks.openmetadata.connectorcontext.ClassificationManagerClient;
+import org.odpi.openmetadata.frameworks.openmetadata.enums.PermittedSynchronization;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.OpenMetadataElement;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.RelatedMetadataElement;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.RelatedMetadataElementList;
-import org.odpi.openmetadata.frameworks.openmetadata.enums.PermittedSynchronization;
-
-import java.util.ArrayList;
-import java.util.List;
 
 
 /**
- * MetadataCollectionIterator is ued to iterate through the elements of a particular type within a metadata collection.
+ * RelatedElementsIterator is used to iterate through the related elements of a particular type within a metadata collection.
  */
 public class RelatedElementsIterator extends IntegrationIterator
 {
@@ -30,43 +25,35 @@ public class RelatedElementsIterator extends IntegrationIterator
      * Create the iterator.
      *
      * @param metadataCollectionGUID unique identifier of the metadata collection
-     * @param metadataCollectionQualifiedName unique name of the metadata collection
-     * @param externalScopeGUID unique identifier for the owning scope (typically a catalog)
-     * @param externalScopeName unique name for the owning scope (typically a catalog)
      * @param catalogTargetName name of target
      * @param connectorName name of the calling connector
      * @param parentGUID unique identifier of element that the desired results are linked to
      * @param parentRelationshipTypeName type of relationship - may be null
      * @param parentAtEnd which end of the relationship to start from: 0 (either); 1 or 2
-     * @param metadataTypeName type of element to receive
-     * @param openMetadataStore client to access metadata
+     * @param attachmentEntityTypeName type of element to receive
+     * @param integrationContext clients to access metadata
      * @param targetPermittedSynchronization the synchronization policy for this target
      * @param maxPageSize max page size for the server
      * @param auditLog logging destination
+     * @throws UserNotAuthorizedException connector has disconnected
      */
     public RelatedElementsIterator(String                   metadataCollectionGUID,
-                                   String                   metadataCollectionQualifiedName,
-                                   String                   externalScopeGUID,
-                                   String                   externalScopeName,
                                    String                   catalogTargetName,
                                    String                   connectorName,
                                    String                   parentGUID,
                                    String                   parentRelationshipTypeName,
                                    int                      parentAtEnd,
-                                   String                   metadataTypeName,
-                                   OpenMetadataStore        openMetadataStore,
+                                   String                   attachmentEntityTypeName,
+                                   IntegrationContext       integrationContext,
                                    PermittedSynchronization targetPermittedSynchronization,
                                    int                      maxPageSize,
-                                   AuditLog                 auditLog)
+                                   AuditLog                 auditLog) throws UserNotAuthorizedException
     {
         super(metadataCollectionGUID,
-              metadataCollectionQualifiedName,
-              externalScopeGUID,
-              externalScopeName,
               catalogTargetName,
               connectorName,
-              metadataTypeName,
-              openMetadataStore,
+              attachmentEntityTypeName,
+              integrationContext,
               targetPermittedSynchronization,
               maxPageSize,
               auditLog);
@@ -92,50 +79,16 @@ public class RelatedElementsIterator extends IntegrationIterator
     {
         if ((elementCache == null) || (elementCache.isEmpty()))
         {
-            RelatedMetadataElementList relatedMetadataElementList = openMetadataStore.getRelatedMetadataElements(parentGUID,
-                                                                                                                 parentAtEnd,
-                                                                                                                 parentRelationshipTypeName,
-                                                                                                                 startFrom,
-                                                                                                                 maxPageSize);
-            if ((relatedMetadataElementList != null) && (relatedMetadataElementList.getElementList() != null))
-            {
-                elementCache = this.getElementCache(relatedMetadataElementList.getElementList());
-            }
-            else
-            {
-                elementCache = null;
-            }
+            ClassificationManagerClient classificationManagerClient = integrationContext.getClassificationManagerClient(metadataTypeName);
+
+            elementCache = classificationManagerClient.getRelatedRootElements(parentGUID,
+                                                                              parentAtEnd,
+                                                                              parentRelationshipTypeName,
+                                                                              classificationManagerClient.getQueryOptions(startFrom, maxPageSize));
 
             startFrom = startFrom + maxPageSize;
         }
 
         return (elementCache != null);
-    }
-
-
-    /**
-     * Convert a list of OpenMetadataRelationship into a list of OpenMetadataElements.
-     *
-     * @param relatedMetadataElementList related elements retrieved from the open metadata
-     * @return results
-     */
-    private List<OpenMetadataElement> getElementCache(List<RelatedMetadataElement> relatedMetadataElementList)
-    {
-        if (relatedMetadataElementList != null)
-        {
-            List<OpenMetadataElement> results = new ArrayList<>();
-
-            for (RelatedMetadataElement relatedMetadataElement : relatedMetadataElementList)
-            {
-                if (relatedMetadataElement != null)
-                {
-                    results.add(relatedMetadataElement.getElement());
-                }
-            }
-
-            return results;
-        }
-
-        return null;
     }
 }

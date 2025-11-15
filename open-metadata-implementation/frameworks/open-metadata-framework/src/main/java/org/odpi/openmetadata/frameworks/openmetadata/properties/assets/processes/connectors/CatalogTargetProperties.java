@@ -10,6 +10,7 @@ import org.odpi.openmetadata.frameworks.openmetadata.enums.PermittedSynchronizat
 import org.odpi.openmetadata.frameworks.openmetadata.properties.RelationshipBeanProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 
@@ -153,6 +154,11 @@ public class CatalogTargetProperties extends RelationshipBeanProperties
      */
     public Map<String, String> getTemplates()
     {
+        if (templates == null)
+        {
+            return new HashMap<>();
+        }
+
         return templates;
     }
 

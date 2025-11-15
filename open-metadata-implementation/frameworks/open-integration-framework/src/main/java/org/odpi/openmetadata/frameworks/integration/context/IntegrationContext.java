@@ -5,26 +5,26 @@ package org.odpi.openmetadata.frameworks.integration.context;
 
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.frameworks.connectors.client.ConnectedAssetClient;
-import org.odpi.openmetadata.frameworks.opengovernance.client.GovernanceConfiguration;
-import org.odpi.openmetadata.frameworks.opengovernance.client.OpenGovernanceClient;
-import org.odpi.openmetadata.frameworks.opengovernance.connectorcontext.ConnectorConfigClient;
-import org.odpi.openmetadata.frameworks.opengovernance.connectorcontext.StewardshipAction;
-import org.odpi.openmetadata.frameworks.opengovernance.properties.CatalogTarget;
 import org.odpi.openmetadata.frameworks.integration.openlineage.OpenLineageEventListener;
 import org.odpi.openmetadata.frameworks.integration.openlineage.OpenLineageListenerManager;
 import org.odpi.openmetadata.frameworks.integration.openlineage.OpenLineageRunEvent;
+import org.odpi.openmetadata.frameworks.opengovernance.client.GovernanceConfiguration;
+import org.odpi.openmetadata.frameworks.opengovernance.client.OpenGovernanceClient;
+import org.odpi.openmetadata.frameworks.opengovernance.connectorcontext.StewardshipAction;
+import org.odpi.openmetadata.frameworks.opengovernance.properties.CatalogTarget;
 import org.odpi.openmetadata.frameworks.openmetadata.client.OpenMetadataClient;
+import org.odpi.openmetadata.frameworks.openmetadata.connectorcontext.AssetClient;
 import org.odpi.openmetadata.frameworks.openmetadata.connectorcontext.ConnectorContextBase;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.DeleteMethod;
+import org.odpi.openmetadata.frameworks.openmetadata.enums.ElementOriginCategory;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.PermittedSynchronization;
 import org.odpi.openmetadata.frameworks.openmetadata.events.OpenMetadataEventClient;
 import org.odpi.openmetadata.frameworks.openmetadata.events.OpenMetadataEventListener;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.processes.connectors.CatalogTargetProperties;
-import org.odpi.openmetadata.frameworks.openmetadata.search.GetOptions;
-import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.OpenMetadataRootElement;
+import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 
 import java.util.HashMap;
 import java.util.List;
@@ -143,14 +143,24 @@ public class IntegrationContext extends ConnectorContextBase
      * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    public CatalogTargetContext getCatalogTargetContext(CatalogTargetProperties requestedCatalogTarget) throws InvalidParameterException,
+    public CatalogTargetContext getCatalogTargetContext(CatalogTarget requestedCatalogTarget) throws InvalidParameterException,
                                                                                                                PropertyServerException,
                                                                                                                UserNotAuthorizedException
     {
+        String metadataSourceName = requestedCatalogTarget.getMetadataSourceQualifiedName();
+
+        if (metadataSourceName == null)
+        {
+            metadataSourceName = externalSourceName; // default to the value set up for the connector in RegisteredIntegrationConnector
+        }
+
+        String metadataSourceGUID = getMetadataSourceGUID(metadataSourceName,
+                                                          requestedCatalogTarget.getCatalogTargetElement());
+
         return new CatalogTargetContext(localServerName,
                                         localServiceName,
-                                        this.getMetadataSourceGUID(requestedCatalogTarget.getMetadataSourceQualifiedName()),
-                                        requestedCatalogTarget.getMetadataSourceQualifiedName(),
+                                        metadataSourceGUID,
+                                        metadataSourceName,
                                         connectorId,
                                         connectorName,
                                         connectorUserId,
@@ -373,9 +383,10 @@ public class IntegrationContext extends ConnectorContextBase
      * @throws UserNotAuthorizedException the caller's userId is not able to access the element
      * @throws PropertyServerException there is a problem accessing the metadata store
      */
-    public String getMetadataSourceGUID(String metadataSourceQualifiedName) throws InvalidParameterException,
-                                                                                   UserNotAuthorizedException,
-                                                                                   PropertyServerException
+    private String getMetadataSourceGUID(String                  metadataSourceQualifiedName,
+                                         OpenMetadataRootElement catalogTargetElement) throws InvalidParameterException,
+                                                                                              UserNotAuthorizedException,
+                                                                                              PropertyServerException
     {
         if (metadataSourceQualifiedName != null)
         {
@@ -385,10 +396,13 @@ public class IntegrationContext extends ConnectorContextBase
             }
             else
             {
-                String metadataSourceGUID = openMetadataClient.getMetadataElementGUIDByUniqueName(connectorUserId,
-                                                                                                  metadataSourceQualifiedName,
-                                                                                                  OpenMetadataProperty.QUALIFIED_NAME.name,
-                                                                                                  new GetOptions());
+                AssetClient assetClient = this.getAssetClient(OpenMetadataType.METADATA_COLLECTION.typeName);
+
+                String metadataSourceGUID = assetClient.setUpMetadataSource(metadataSourceQualifiedName,
+                                                                            catalogTargetElement.getElementHeader().getGUID(),
+                                                                            connectorName,
+                                                                            connectorUserId,
+                                                                            ElementOriginCategory.EXTERNAL_SOURCE);
 
                 if (metadataSourceGUID != null)
                 {

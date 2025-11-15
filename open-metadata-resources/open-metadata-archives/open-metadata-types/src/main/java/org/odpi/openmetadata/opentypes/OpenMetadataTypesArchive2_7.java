@@ -158,9 +158,6 @@ public class OpenMetadataTypesArchive2_7
          * Calls for new and changed types go here
          */
         update0045ServersAndAssets();
-        update0210DataStores();
-        update0462GovernanceActionProcesses();
-        update0512CalculatedValue();
     }
 
 
@@ -188,7 +185,7 @@ public class OpenMetadataTypesArchive2_7
         /*
          * Set up end 1.
          */
-        final String                     end1AttributeName            = "consumedIn";
+        final String                     end1AttributeName            = "consumedBy";
         final String                     end1AttributeDescription     = "Capability consuming this asset.";
         final String                     end1AttributeDescriptionGUID = null;
 
@@ -221,104 +218,13 @@ public class OpenMetadataTypesArchive2_7
 
         properties.add(archiveHelper.getEnumTypeDefAttribute(OpenMetadataProperty.USE_TYPE));
         properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.DESCRIPTION));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.MINIMUM_INSTANCES));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.MAXIMUM_INSTANCES));
 
         relationshipDef.setPropertiesDefinition(properties);
 
         return relationshipDef;
     }
-
-    /*
-     * -------------------------------------------------------------------------------------------------------
-     */
-
-    /**
-     * 0210 Add pathname to a data store.
-     */
-    private void update0210DataStores()
-    {
-        this.archiveBuilder.addTypeDefPatch(updateDataStore());
-    }
-
-    private TypeDefPatch updateDataStore()
-    {
-        TypeDefPatch typeDefPatch = archiveBuilder.getPatchForType(OpenMetadataType.DATA_STORE.typeName);
-
-        typeDefPatch.setUpdatedBy(originatorName);
-        typeDefPatch.setUpdateTime(creationDate);
-        /*
-         * Build the attributes
-         */
-        List<TypeDefAttribute> properties = new ArrayList<>();
-
-        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.PATH_NAME));
-
-        typeDefPatch.setPropertyDefinitions(properties);
-
-        return typeDefPatch;
-    }
-
-
-
-
-    /*
-     * -------------------------------------------------------------------------------------------------------
-     */
-
-    /**
-     * 0462 Update the GovernanceActionProcessFlow relationship with guard property
-     */
-    private void update0462GovernanceActionProcesses()
-    {
-        this.archiveBuilder.addTypeDefPatch(updateGovernanceActionProcessFlowRelationship());
-    }
-
-    private TypeDefPatch updateGovernanceActionProcessFlowRelationship()
-    {
-        TypeDefPatch typeDefPatch = archiveBuilder.getPatchForType(OpenMetadataType.GOVERNANCE_ACTION_PROCESS_FLOW_RELATIONSHIP.typeName);
-
-        typeDefPatch.setUpdatedBy(originatorName);
-        typeDefPatch.setUpdateTime(creationDate);
-
-        /*
-         * Build the attributes
-         */
-        List<TypeDefAttribute> properties = new ArrayList<>();
-
-        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.GUARD));
-
-        typeDefPatch.setPropertyDefinitions(properties);
-
-        return typeDefPatch;
-    }
-
-
-    /*
-     * -------------------------------------------------------------------------------------------------------
-     */
-
-    /**
-     * 0512 Update the CalculatedValue classification to link to SchemaElement
-     */
-    private void update0512CalculatedValue()
-    {
-        this.archiveBuilder.addTypeDefPatch(updateCalculatedValueClassification());
-    }
-
-    private TypeDefPatch updateCalculatedValueClassification()
-    {
-        final List<TypeDefLink> linkedToEntities = new ArrayList<>();
-
-        linkedToEntities.add(this.archiveBuilder.getEntityDef(OpenMetadataType.SCHEMA_ELEMENT.typeName));
-
-        TypeDefPatch typeDefPatch = archiveBuilder.getPatchForType(OpenMetadataType.CALCULATED_VALUE_CLASSIFICATION.typeName);
-
-        typeDefPatch.setUpdatedBy(originatorName);
-        typeDefPatch.setUpdateTime(creationDate);
-        typeDefPatch.setValidEntityDefs(linkedToEntities);
-
-        return typeDefPatch;
-    }
-
 
     /*
      * -------------------------------------------------------------------------------------------------------

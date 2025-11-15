@@ -273,7 +273,7 @@ public class OMAGServerPlatformCatalogConnector extends IntegrationConnectorBase
                         platformDetails.platformGUID        = elementHeader.getGUID();
                         platformDetails.platformConnector   = omagServerPlatformConnector;
                         platformDetails.platformDisplayName = displayName;
-                        platformDetails.platformRootURL     = omagServerPlatformConnector.getConnection().getEndpoint().getAddress();
+                        platformDetails.platformRootURL     = omagServerPlatformConnector.getConnection().getEndpoint().getNetworkAddress();
 
                         monitoredPlatforms.add(platformDetails);
                     }

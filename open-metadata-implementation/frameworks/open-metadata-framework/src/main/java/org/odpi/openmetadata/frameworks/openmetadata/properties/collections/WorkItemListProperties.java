@@ -7,7 +7,6 @@ package org.odpi.openmetadata.frameworks.openmetadata.properties.collections;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.ClassificationBeanProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
@@ -19,7 +18,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class WorkItemListProperties extends ClassificationBeanProperties
+public class WorkItemListProperties extends CollectionProperties
 {
     /**
      * Default constructor
@@ -27,7 +26,7 @@ public class WorkItemListProperties extends ClassificationBeanProperties
     public WorkItemListProperties()
     {
         super();
-        super.setTypeName(OpenMetadataType.WORK_ITEM_LIST_COLLECTION_CLASSIFICATION.typeName);
+        super.setTypeName(OpenMetadataType.WORK_ITEM_LIST_COLLECTION.typeName);
     }
 
 
@@ -36,7 +35,7 @@ public class WorkItemListProperties extends ClassificationBeanProperties
      *
      * @param template object to copy
      */
-    public WorkItemListProperties(ClassificationBeanProperties template)
+    public WorkItemListProperties(CollectionProperties template)
     {
         super(template);
     }

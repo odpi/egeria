@@ -209,7 +209,7 @@ public enum OCFErrorCode implements ExceptionMessageSet
     /**
      * OCF-CONNECTOR-400-005 - Asset {0} is of type {1} but the {2} connector only supports the following asset type(s): {3}
      */
-    INVALID_ASSET_TYPE(400, "SURVEY-ACTION-SERVICE-400-005",
+    INVALID_ASSET_TYPE(400, "OCF-CONNECTOR-400-005",
                        "Asset {0} is of type {1} but the {2} connector only supports the following asset type(s): {3}",
                        "The connector terminates.",
                        "The caller has requested a connector work with the wrong type of asset.  It should be reconfigured with the correct type of asset and rerun."),

@@ -5,8 +5,12 @@ package org.odpi.openmetadata.frameworks.integration.properties;
 
 
 import org.odpi.openmetadata.frameworks.connectors.Connector;
+import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.Endpoint;
 import org.odpi.openmetadata.frameworks.opengovernance.properties.CatalogTarget;
 import org.odpi.openmetadata.frameworks.integration.context.CatalogTargetContext;
+import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.processes.connectors.CatalogTargetProperties;
 
 import java.util.Objects;
@@ -60,6 +64,22 @@ public class RequestedCatalogTarget extends CatalogTarget
 
 
     /**
+     * Indicates that the catalog target processor is completely configured and can begin processing.
+     * This call can be used to register with non-blocking services.
+     *
+     * @throws ConnectorCheckedException there is a problem within the connector.
+     * @throws UserNotAuthorizedException the connector was disconnected before/during start
+     */
+    public void start() throws ConnectorCheckedException, UserNotAuthorizedException
+    {
+        if (connectorToTarget != null)
+        {
+            connectorToTarget.start();
+        }
+    }
+
+
+    /**
      * Return the connector to access the catalog target.
      *
      * @return connector
@@ -67,6 +87,30 @@ public class RequestedCatalogTarget extends CatalogTarget
     public Connector getConnectorToTarget()
     {
         return connectorToTarget;
+    }
+
+
+
+    /**
+     * Retrieve the endpoint from the asset connection.
+     *
+     * @return endpoint or null
+     */
+    protected String getNetworkAddress()
+    {
+        Connection assetConnection = connectorToTarget.getConnection();
+
+        if (assetConnection != null)
+        {
+            Endpoint endpointDetails = assetConnection.getEndpoint();
+
+            if (endpointDetails != null)
+            {
+                return endpointDetails.getNetworkAddress();
+            }
+        }
+
+        return null;
     }
 
 

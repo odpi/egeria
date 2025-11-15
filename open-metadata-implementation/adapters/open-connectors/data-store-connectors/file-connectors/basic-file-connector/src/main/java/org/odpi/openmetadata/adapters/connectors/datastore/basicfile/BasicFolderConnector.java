@@ -48,17 +48,17 @@ public class BasicFolderConnector extends ConnectorBase implements BasicFileStor
 
         if (endpoint != null)
         {
-            if (endpoint.getAddress() == null)
+            if (endpoint.getNetworkAddress() == null)
             {
                 log.error("Null endpoint address");
             }
-            else if (endpoint.getAddress().startsWith("file://"))
+            else if (endpoint.getNetworkAddress().startsWith("file://"))
             {
-                folderName = endpoint.getAddress().substring(7);
+                folderName = endpoint.getNetworkAddress().substring(7);
             }
             else
             {
-                folderName = endpoint.getAddress();
+                folderName = endpoint.getNetworkAddress();
             }
         }
         else

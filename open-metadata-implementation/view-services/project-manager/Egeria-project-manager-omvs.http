@@ -30,7 +30,7 @@ Content-Type: application/json
 # Returns the list of projects that are linked off of the supplied element.  Any relationship will do.
 # The request body is optional, but if supplied acts as a filter on project status.
 
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/project-manager/metadata-elements/{{parentGUID}}/projects?startFrom=0&pageSize=0
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/project-manager/metadata-elements/{{parentGUID}}/projects
 Authorization: Bearer {{token}}
 Content-Type: application/json
 
@@ -44,7 +44,7 @@ Content-Type: application/json
 # Returns the list of projects with a particular classification.  The name of the classification is supplied in the request body.
 # Examples of these classifications include "StudyProject", "PersonalProject", "Campaign" or "Task".
 # There is also "GlossaryProject" and "GovernanceProject".
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/project-manager/projects/by-classifications?startFrom=0&pageSize=0
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/project-manager/projects/by-classifications
 Authorization: Bearer {{token}}
 Content-Type: application/json
 
@@ -55,15 +55,16 @@ Content-Type: application/json
 ###
 # @name getProjectTeam
 # Returns the list of actors that are linked off of the project.  This includes the project managers.
-# The optional request body allows a teamRole to be specified as a filter.  To filter out the project managers,
-# specify "ProjectManagement" as the team role.
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/project-manager/projects/{{projectGUID}}/team?startFrom=0&pageSize=0
+# The optional request body allows a teamRole to be specified as a filter.  To retrieve the project managers,
+# specify "Leader" as the filter.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/project-manager/projects/{{projectGUID}}/team
 Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
   "filter" : ""
 }
+
 
 ###
 # @name findProjects

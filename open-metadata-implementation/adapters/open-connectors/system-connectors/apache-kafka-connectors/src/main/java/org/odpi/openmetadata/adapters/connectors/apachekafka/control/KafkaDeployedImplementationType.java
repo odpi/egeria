@@ -18,7 +18,8 @@ public enum KafkaDeployedImplementationType implements DeployedImplementationTyp
     /**
      * A software capability that enables high speed, reliable topic-based event exchange.
      */
-    APACHE_KAFKA_EVENT_BROKER("Apache Kafka Event Broker",
+    APACHE_KAFKA_EVENT_BROKER("511259bb-1f67-407a-88e2-e6ce1098a80f",
+                              "Apache Kafka Event Broker",
                               DeployedImplementationType.SOFTWARE_CAPABILITY,
                               OpenMetadataType.EVENT_BROKER.typeName,
                               null,
@@ -28,7 +29,8 @@ public enum KafkaDeployedImplementationType implements DeployedImplementationTyp
     /**
      * A software server supporting an event broker that enables high speed, reliable topic-based event exchange.
      */
-    APACHE_KAFKA_SERVER("Apache Kafka Server",
+    APACHE_KAFKA_SERVER("47ab900d-7507-4a52-8b1e-f1692dcb97e0",
+                        "Apache Kafka Server",
                         DeployedImplementationType.INTEGRATION_SERVER,
                         OpenMetadataType.SOFTWARE_SERVER.typeName,
                         null,
@@ -61,6 +63,7 @@ public enum KafkaDeployedImplementationType implements DeployedImplementationTyp
     }
 
 
+    private final String                               guid;
     private final String                               deployedImplementationType;
     private final DeployedImplementationTypeDefinition isATypeOf;
     private final String                               associatedTypeName;
@@ -72,6 +75,7 @@ public enum KafkaDeployedImplementationType implements DeployedImplementationTyp
     /**
      * Constructor for individual enum value.
      *
+     * @param guid unique identifier of technology type (deployedImplementationType)
      * @param deployedImplementationType value for deployedImplementationType
      * @param isATypeOf optional deployed implementation type that this type "inherits" from
      * @param associatedTypeName the open metadata type where this value is used
@@ -79,13 +83,15 @@ public enum KafkaDeployedImplementationType implements DeployedImplementationTyp
      * @param description description of the type
      * @param wikiLink url link to more information (optional)
      */
-    KafkaDeployedImplementationType(String                               deployedImplementationType,
+    KafkaDeployedImplementationType(String                               guid,
+                                    String                               deployedImplementationType,
                                     DeployedImplementationTypeDefinition isATypeOf,
                                     String                               associatedTypeName,
                                     String                               associatedClassification,
                                     String                               description,
                                     String                               wikiLink)
     {
+        this.guid = guid;
         this.deployedImplementationType = deployedImplementationType;
         this.isATypeOf = isATypeOf;
         this.associatedTypeName = associatedTypeName;
@@ -94,6 +100,18 @@ public enum KafkaDeployedImplementationType implements DeployedImplementationTyp
         this.wikiLink = wikiLink;
     }
 
+
+    /**
+     * Return the guid for the deployed technology type - can be null.
+     *
+     * @return string
+     */
+    @Override
+    public String getGUID()
+    {
+        return guid;
+    }
+    
 
     /**
      * Return preferred value for deployed implementation type.

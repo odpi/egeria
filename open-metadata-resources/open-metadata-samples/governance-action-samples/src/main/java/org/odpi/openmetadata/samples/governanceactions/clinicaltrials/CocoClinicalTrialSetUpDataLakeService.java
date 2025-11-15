@@ -8,19 +8,20 @@ import org.odpi.openmetadata.adapters.connectors.governanceactions.provisioning.
 import org.odpi.openmetadata.adapters.connectors.unitycatalog.controls.UnityCatalogDeployedImplementationType;
 import org.odpi.openmetadata.adapters.connectors.unitycatalog.controls.UnityCatalogPlaceholderProperty;
 import org.odpi.openmetadata.frameworks.auditlog.messagesets.AuditLogMessageDefinition;
-import org.odpi.openmetadata.frameworks.connectors.ffdc.*;
+import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
+import org.odpi.openmetadata.frameworks.opengovernance.properties.ActionTargetElement;
 import org.odpi.openmetadata.frameworks.openmetadata.connectorcontext.OpenMetadataStore;
 import org.odpi.openmetadata.frameworks.openmetadata.controls.PlaceholderProperty;
-import org.odpi.openmetadata.frameworks.opengovernance.properties.*;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.CapabilityAssetUseType;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.CompletionStatus;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.OMFCheckedExceptionBase;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.MetadataCorrelationHeader;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.OpenMetadataRootElement;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.RelatedMetadataElement;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.processes.connectors.CatalogTargetProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.externalidentifiers.ExternalIdLinkProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.search.NewElementProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.search.TemplateOptions;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
@@ -31,7 +32,10 @@ import org.odpi.openmetadata.samples.governanceactions.ffdc.GovernanceActionSamp
 
 import java.io.File;
 import java.io.IOException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Responsible for setting up the mechanisms that support the smooth operation of a clinical trial.
@@ -124,23 +128,23 @@ public class CocoClinicalTrialSetUpDataLakeService extends CocoClinicalTrialBase
                                                                                             OpenMetadataProperty.QUALIFIED_NAME.name,
                                                                                             actionTargetElement.getTargetElement().getElementProperties(),
                                                                                             methodName);
+                            String dataLakeMetadataCollectionId = actionTargetElement.getTargetElement().getOrigin().getHomeMetadataCollectionId();
 
-                            List<MetadataCorrelationHeader> externalIdentifiers = governanceContext.getOpenMetadataStore().getExternalIdentifiers(dataLakeCatalogQualifiedGUID,
-                                                                                                                                                  dataLakeCatalogQualifiedName,
-                                                                                                                                                  actionTargetElement.getTargetElement().getElementGUID(),
-                                                                                                                                                  actionTargetElement.getTargetElement().getType().getTypeName(),
-                                                                                                                                                  0,
-                                                                                                                                                  0);
+                            List<OpenMetadataRootElement> externalIdentifiers = governanceContext.getExternalIdClient().getExternalIdsForElement(dataLakeCatalogQualifiedGUID,
+                                                                                                                                                 null);
                             if (externalIdentifiers != null)
                             {
-                                for (MetadataCorrelationHeader externalIdentifier : externalIdentifiers)
+                                for (OpenMetadataRootElement externalIdentifier : externalIdentifiers)
                                 {
-                                    if (externalIdentifier != null)
+                                    if ((externalIdentifier != null) &&
+                                            (externalIdentifier.getElementHeader().getOrigin().getHomeMetadataCollectionId().equals(dataLakeMetadataCollectionId)) &&
+                                            (externalIdentifier.getRelatedBy() != null) &&
+                                            (externalIdentifier.getRelatedBy().getRelationshipProperties() instanceof ExternalIdLinkProperties externalIdLinkProperties))
                                     {
-                                        if (externalIdentifier.getMappingProperties() != null)
+                                        if (externalIdLinkProperties.getMappingProperties() != null)
                                         {
-                                            dataLakeCatalogName = externalIdentifier.getMappingProperties().get(UnityCatalogPlaceholderProperty.CATALOG_NAME.getName());
-                                            serverNetworkAddress  = externalIdentifier.getMappingProperties().get(PlaceholderProperty.SERVER_NETWORK_ADDRESS.getName());
+                                            dataLakeCatalogName = externalIdLinkProperties.getMappingProperties().get(UnityCatalogPlaceholderProperty.CATALOG_NAME.getName());
+                                            serverNetworkAddress  = externalIdLinkProperties.getMappingProperties().get(PlaceholderProperty.SERVER_NETWORK_ADDRESS.getName());
 
                                             break;
                                         }

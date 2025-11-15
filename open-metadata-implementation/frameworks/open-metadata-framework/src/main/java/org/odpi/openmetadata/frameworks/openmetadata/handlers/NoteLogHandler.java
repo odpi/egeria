@@ -296,6 +296,7 @@ public class NoteLogHandler extends OpenMetadataHandlerBase
                                             guidParameterName,
                                             1,
                                             OpenMetadataType.ATTACHED_NOTE_LOG_RELATIONSHIP.typeName,
+                                            OpenMetadataType.NOTE_LOG.typeName,
                                             queryOptions,
                                             methodName);
     }
@@ -353,6 +354,7 @@ public class NoteLogHandler extends OpenMetadataHandlerBase
                                             guidParameterName,
                                             1,
                                             OpenMetadataType.ATTACHED_NOTE_LOG_ENTRY_RELATIONSHIP.typeName,
+                                            OpenMetadataType.NOTIFICATION.typeName,
                                             queryOptions,
                                             methodName);
     }

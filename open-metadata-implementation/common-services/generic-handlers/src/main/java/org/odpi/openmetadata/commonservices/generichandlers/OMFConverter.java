@@ -501,7 +501,7 @@ public abstract class OMFConverter<B> extends OpenMetadataAPIGenericConverter<B>
         endpoint.setDisplayName(this.removeName(instanceProperties));
         endpoint.setDescription(this.removeDescription(instanceProperties));
         endpoint.setVersionIdentifier(this.removeVersionIdentifier(instanceProperties));
-        endpoint.setAddress(this.removeNetworkAddress(instanceProperties));
+        endpoint.setNetworkAddress(this.removeNetworkAddress(instanceProperties));
         endpoint.setProtocol(this.removeProtocol(instanceProperties));
         endpoint.setEncryptionMethod(this.removeEncryptionMethod(instanceProperties));
 

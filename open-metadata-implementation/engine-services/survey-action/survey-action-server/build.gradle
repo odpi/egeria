@@ -23,6 +23,7 @@ dependencies {
     implementation 'org.slf4j:slf4j-api'
     implementation project(':open-metadata-implementation:engine-services:survey-action:survey-action-api')
     implementation project(':open-metadata-implementation:common-services:multi-tenant')
+    implementation project(':open-metadata-implementation:adapters:open-connectors:data-store-connectors:file-connectors:csv-file-connector')
     compileOnly 'com.fasterxml.jackson.core:jackson-annotations'
 }
 

@@ -41,7 +41,7 @@ public class DataFolderConnectorTest
         endpoint.setQualifiedName(endpointName);
         endpoint.setDisplayName(endpointName);
         endpoint.setDescription(endpointDescription);
-        endpoint.setAddress(fileName);
+        endpoint.setNetworkAddress(fileName);
 
 
         final String connectorTypeDescription   = "DataFolder connector type.";

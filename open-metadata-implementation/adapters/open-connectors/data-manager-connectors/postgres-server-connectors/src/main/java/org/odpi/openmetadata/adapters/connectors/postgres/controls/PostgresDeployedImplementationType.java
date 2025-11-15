@@ -20,7 +20,8 @@ public enum PostgresDeployedImplementationType implements DeployedImplementation
     /**
      * A database hosted on a PostgreSQL server.
      */
-    POSTGRESQL_DATABASE("PostgreSQL Relational Database",
+    POSTGRESQL_DATABASE("ff56fc56-c4a1-469e-8040-472e8fe54694",
+                        "PostgreSQL Relational Database",
                         DeployedImplementationType.JDBC_RELATIONAL_DATABASE,
                         OpenMetadataType.RELATIONAL_DATABASE.typeName,
                         null,
@@ -31,7 +32,8 @@ public enum PostgresDeployedImplementationType implements DeployedImplementation
     /**
      * A database schema hosted on a relational PostgreSQL database server capable of being called through a JDBC Driver.
      */
-    POSTGRESQL_DATABASE_SCHEMA("PostgreSQL Relational Database Schema",
+    POSTGRESQL_DATABASE_SCHEMA("e46811ac-8b86-42c3-aaea-2fe55f474044",
+                               "PostgreSQL Relational Database Schema",
                                DeployedImplementationType.JDBC_RELATIONAL_DATABASE_SCHEMA,
                                OpenMetadataType.DEPLOYED_DATABASE_SCHEMA.typeName,
                                null,
@@ -42,25 +44,31 @@ public enum PostgresDeployedImplementationType implements DeployedImplementation
     /**
      * A database table hosted on a PostgreSQL relational database server capable of being called as a tabular data set.
      */
-    POSTGRESQL_TABULAR_DATA_SET("PostgreSQL Tabular Data Set",
+    POSTGRESQL_TABULAR_DATA_SET("aa50ce4c-917d-4880-a987-d6c771b822b2",
+                                "PostgreSQL Tabular Data Set",
                                 DeployedImplementationType.TABULAR_DATA_SET,
                                 OpenMetadataType.TABULAR_DATA_SET.typeName,
                                 null,
                                 "A database table hosted on a PostgreSQL relational database server capable of being called as a tabular data set.",
                                 "https://www.postgresql.org/"),
 
-    POSTGRESQL_TABULAR_DATA_SET_COLLECTION("PostgreSQL Tabular Data Set Collection",
-                                DeployedImplementationType.TABULAR_DATA_SET_COLLECTION,
-                                OpenMetadataType.TABULAR_DATA_SET_COLLECTION.typeName,
-                                null,
-                                "A database schema hosted on a PostgreSQL relational database server capable of being called as a tabular data set collection.",
-                                "https://www.postgresql.org/"),
+    /**
+     * A database schema hosted on a PostgreSQL relational database server capable of being called as a tabular data set collection.
+     */
+    POSTGRESQL_TABULAR_DATA_SET_COLLECTION("c113b127-ae8d-417f-90f2-92108c141270",
+                                           "PostgreSQL Tabular Data Set Collection",
+                                           DeployedImplementationType.TABULAR_DATA_SET_COLLECTION,
+                                           OpenMetadataType.TABULAR_DATA_SET_COLLECTION.typeName,
+                                           null,
+                                           "A database schema hosted on a PostgreSQL relational database server capable of being called as a tabular data set collection.",
+                                           "https://www.postgresql.org/"),
 
 
     /**
      * A database server running the PostgreSQL software.
      */
-    POSTGRESQL_SERVER("PostgreSQL Server",
+    POSTGRESQL_SERVER("d3ea92d0-c53b-4cc8-84d8-764648323d26",
+                      "PostgreSQL Server",
                       DeployedImplementationType.DATABASE_SERVER,
                       OpenMetadataType.SOFTWARE_SERVER.typeName,
                       null,
@@ -70,13 +78,13 @@ public enum PostgresDeployedImplementationType implements DeployedImplementation
     /**
      * A system that manages collections of data called relational databases which in turn are organized into a tabular format and accessed via the Structured Query Language (SQL).
      */
-    POSTGRESQL_DATABASE_MANAGER("PostgreSQL database manager (RDBMS)",
+    POSTGRESQL_DATABASE_MANAGER("cdfedb9c-8020-422d-b89e-40c57df22bd0",
+                                "PostgreSQL database manager (RDBMS)",
                                 DeployedImplementationType.RELATIONAL_DATABASE_MANAGER,
                                 OpenMetadataType.DATABASE_MANAGER.typeName,
                                 null,
                                 "The PostgreSQL capability that manages collections of data called relational databases which in turn are organized into a tabular format and accessed via the Structured Query Language (SQL).",
                                 OpenMetadataWikiPages.MODEL_0050_APPS_AND_PROCESSES),
-
 
     ;
 
@@ -104,6 +112,7 @@ public enum PostgresDeployedImplementationType implements DeployedImplementation
     }
 
 
+    private final String                               guid;
     private final String                               deployedImplementationType;
     private final DeployedImplementationTypeDefinition isATypeOf;
     private final String                               associatedTypeName;
@@ -115,6 +124,7 @@ public enum PostgresDeployedImplementationType implements DeployedImplementation
     /**
      * Constructor for individual enum value.
      *
+     * @param guid unique identifier of technology type (deployedImplementationType)
      * @param deployedImplementationType value for deployedImplementationType
      * @param isATypeOf optional deployed implementation type that this type "inherits" from
      * @param associatedTypeName the open metadata type where this value is used
@@ -122,13 +132,15 @@ public enum PostgresDeployedImplementationType implements DeployedImplementation
      * @param description description of the type
      * @param wikiLink url link to more information (optional)
      */
-    PostgresDeployedImplementationType(String                               deployedImplementationType,
+    PostgresDeployedImplementationType(String                               guid,
+                                       String                               deployedImplementationType,
                                        DeployedImplementationTypeDefinition isATypeOf,
                                        String                               associatedTypeName,
                                        String                               associatedClassification,
                                        String                               description,
                                        String                               wikiLink)
     {
+        this.guid = guid;
         this.deployedImplementationType = deployedImplementationType;
         this.isATypeOf = isATypeOf;
         this.associatedTypeName = associatedTypeName;
@@ -139,8 +151,20 @@ public enum PostgresDeployedImplementationType implements DeployedImplementation
 
 
     /**
+     * Return the guid for the deployed technology type - can be null.
+     *
+     * @return string
+     */
+    @Override
+    public String getGUID()
+    {
+        return guid;
+    }
+
+
+    /**
      * Return preferred value for deployed implementation type.
-     * 
+     *
      * @return string
      */
     @Override
@@ -163,7 +187,7 @@ public enum PostgresDeployedImplementationType implements DeployedImplementation
 
     /**
      * Return the type name that this deployed implementation type is associated with.
-     * 
+     *
      * @return string
      */
     @Override
@@ -202,7 +226,7 @@ public enum PostgresDeployedImplementationType implements DeployedImplementation
 
     /**
      * Return the description for this value.
-     * 
+     *
      * @return string
      */
     @Override

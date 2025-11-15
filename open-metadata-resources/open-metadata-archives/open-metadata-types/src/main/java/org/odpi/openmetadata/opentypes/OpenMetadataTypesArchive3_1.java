@@ -3,26 +3,16 @@
 package org.odpi.openmetadata.opentypes;
 
 
-import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 import org.odpi.openmetadata.repositoryservices.archiveutilities.OMRSArchiveBuilder;
 import org.odpi.openmetadata.repositoryservices.archiveutilities.OMRSArchiveHelper;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.archivestore.properties.OpenMetadataArchive;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.archivestore.properties.OpenMetadataArchiveType;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.ClassificationDef;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.ClassificationPropagationRule;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.EntityDef;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.RelationshipDef;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.RelationshipEndCardinality;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.RelationshipEndDef;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDefAttribute;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDefPatch;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.*;
 import org.odpi.openmetadata.repositoryservices.ffdc.OMRSErrorCode;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.OMRSLogicErrorException;
 
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 
 /**
  * OpenMetadataTypesArchive builds an open metadata archive containing all of the standard open metadata types.
@@ -167,10 +157,7 @@ public class OpenMetadataTypesArchive3_1
         update0030HostsAndOperatingPlatforms();
         update0035ComplexHosts();
         update0036Storage();
-        update0040SoftwareServers();
-        update0045ServersAndAssets();
         update0050ApplicationsAndProcesses();
-        update0201Connections();
         add0485DataProcessingPurposes();
     }
 
@@ -185,38 +172,16 @@ public class OpenMetadataTypesArchive3_1
      */
     private void update0030HostsAndOperatingPlatforms()
     {
-        this.archiveBuilder.addTypeDefPatch(updateOperatingPlatformEntity());
         this.archiveBuilder.addClassificationDef(addSoftwarePackageManifestClassification());
         this.archiveBuilder.addRelationshipDef(addOperatingPlatformManifestRelationship());
-    }
-
-    private TypeDefPatch updateOperatingPlatformEntity()
-    {
-        /*
-         * Create the Patch
-         */
-        TypeDefPatch  typeDefPatch = archiveBuilder.getPatchForType(OpenMetadataType.OPERATING_PLATFORM.typeName);
-
-        typeDefPatch.setUpdatedBy(originatorName);
-        typeDefPatch.setUpdateTime(creationDate);
-
-        /*
-         * Build the attributes
-         */
-        List<TypeDefAttribute> properties = new ArrayList<>();
-
-        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.OPERATING_SYSTEM_PATCH_LEVEL));
-
-        typeDefPatch.setPropertyDefinitions(properties);
-        return typeDefPatch;
     }
 
 
     private ClassificationDef addSoftwarePackageManifestClassification()
     {
         return archiveHelper.getClassificationDef(OpenMetadataType.SOFTWARE_PACKAGE_MANIFEST_CLASSIFICATION,
-                                                  this.archiveBuilder.getClassificationDef(OpenMetadataType.COLLECTION_ROLE_CLASSIFICATION.typeName),
-                                                  this.archiveBuilder.getEntityDef(OpenMetadataType.COLLECTION.typeName),
+                                                  null,
+                                                  this.archiveBuilder.getEntityDef(OpenMetadataType.REFERENCEABLE.typeName),
                                                   false);
     }
 
@@ -357,87 +322,6 @@ public class OpenMetadataTypesArchive3_1
     }
 
 
-    /*
-     * -------------------------------------------------------------------------------------------------------
-     */
-
-    /**
-     * New properties added to ServerAssetUse.
-     */
-    private void update0045ServersAndAssets()
-    {
-        this.archiveBuilder.addTypeDefPatch(updateServerAssetUseRelationship());
-    }
-
-
-    private TypeDefPatch updateServerAssetUseRelationship()
-    {
-        /*
-         * Create the Patch
-         */
-        TypeDefPatch  typeDefPatch = archiveBuilder.getPatchForType(OpenMetadataType.CAPABILITY_ASSET_USE_RELATIONSHIP.typeName);
-
-        typeDefPatch.setUpdatedBy(originatorName);
-        typeDefPatch.setUpdateTime(creationDate);
-
-        /*
-         * Build the attributes
-         */
-        List<TypeDefAttribute> properties = new ArrayList<>();
-
-        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.MINIMUM_INSTANCES));
-        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.MAXIMUM_INSTANCES));
-
-        typeDefPatch.setPropertyDefinitions(properties);
-        return typeDefPatch;
-    }
-
-
-    /*
-     * -------------------------------------------------------------------------------------------------------
-     */
-
-
-    /**
-     * The ServerEndpoint relationship used to be between an Endpoint and a SoftwareServer.  It is changed to connect
-     * an Endpoint with an ITInfrastructure element to allow SoftwareServerPlatforms (like the OMAGServerPlatform)
-     * to support endpoints (and hence APIs).
-     */
-    private void update0040SoftwareServers()
-    {
-        this.archiveBuilder.addTypeDefPatch(updateServerEndpointRelationship());
-    }
-
-
-    private TypeDefPatch updateServerEndpointRelationship()
-    {
-        /*
-         * Create the Patch
-         */
-        TypeDefPatch  typeDefPatch = archiveBuilder.getPatchForType(OpenMetadataType.SERVER_ENDPOINT_RELATIONSHIP.typeName);
-
-        typeDefPatch.setUpdatedBy(originatorName);
-        typeDefPatch.setUpdateTime(creationDate);
-
-        /*
-         * Update end 1.
-         */
-        final String                     end1AttributeName            = "servers";
-        final String                     end1AttributeDescription     = "Server supporting this endpoint.";
-        final String                     end1AttributeDescriptionGUID = null;
-
-
-        RelationshipEndDef relationshipEndDef = archiveHelper.getRelationshipEndDef(this.archiveBuilder.getEntityDef(OpenMetadataType.IT_INFRASTRUCTURE.typeName),
-                                                                                    end1AttributeName,
-                                                                                    end1AttributeDescription,
-                                                                                    end1AttributeDescriptionGUID,
-                                                                                    RelationshipEndCardinality.ANY_NUMBER);
-        typeDefPatch.setEndDef2(relationshipEndDef);
-
-        return typeDefPatch;
-    }
-
-
 
     /*
      * -------------------------------------------------------------------------------------------------------
@@ -454,48 +338,6 @@ public class OpenMetadataTypesArchive3_1
         return archiveHelper.getDefaultEntityDef(OpenMetadataType.INVENTORY_CATALOG,
                                                  this.archiveBuilder.getEntityDef(OpenMetadataType.SOFTWARE_CAPABILITY.typeName));
     }
-
-
-
-    /*
-     * -------------------------------------------------------------------------------------------------------
-     */
-
-    private void update0201Connections()
-    {
-        this.archiveBuilder.addTypeDefPatch(updateConnectorTypeEntity());
-    }
-
-
-    private TypeDefPatch updateConnectorTypeEntity()
-    {
-        /*
-         * Create the Patch
-         */
-        TypeDefPatch  typeDefPatch = archiveBuilder.getPatchForType(OpenMetadataType.CONNECTOR_TYPE.typeName);
-
-        typeDefPatch.setUpdatedBy(originatorName);
-        typeDefPatch.setUpdateTime(creationDate);
-
-        /*
-         * Build the attributes
-         */
-        List<TypeDefAttribute> properties = new ArrayList<>();
-
-        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.SUPPORTED_ASSET_TYPE_NAME));
-        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.EXPECTED_DATA_FORMAT));
-        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.CONNECTOR_FRAMEWORK_NAME));
-        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.CONNECTOR_INTERFACE_LANGUAGE));
-        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.CONNECTOR_INTERFACES));
-        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.TARGET_TECHNOLOGY_SOURCE));
-        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.TARGET_TECHNOLOGY_NAME));
-        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.TARGET_TECHNOLOGY_INTERFACES));
-        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.TARGET_TECHNOLOGY_VERSIONS));
-
-        typeDefPatch.setPropertyDefinitions(properties);
-        return typeDefPatch;
-    }
-
 
 
     /*

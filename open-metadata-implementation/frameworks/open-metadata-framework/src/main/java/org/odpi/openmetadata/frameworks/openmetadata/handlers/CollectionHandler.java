@@ -103,7 +103,7 @@ public class CollectionHandler extends OpenMetadataHandlerBase
                                                                                                   PropertyServerException,
                                                                                                   UserNotAuthorizedException
     {
-        final String methodName              = "getLinkedCollections";
+        final String methodName              = "getAttachedCollections";
         final String parentGUIDParameterName = "parentGUID";
 
         propertyHelper.validateUserId(userId, methodName);
@@ -114,6 +114,7 @@ public class CollectionHandler extends OpenMetadataHandlerBase
                                            parentGUIDParameterName,
                                            1,
                                            OpenMetadataType.RESOURCE_LIST_RELATIONSHIP.typeName,
+                                           OpenMetadataType.COLLECTION.typeName,
                                            queryOptions,
                                            methodName);
     }
@@ -1278,6 +1279,7 @@ public class CollectionHandler extends OpenMetadataHandlerBase
                                             collectionGUIDParameterName,
                                             1,
                                             OpenMetadataType.COLLECTION_MEMBERSHIP_RELATIONSHIP.typeName,
+                                            OpenMetadataType.REFERENCEABLE.typeName,
                                             queryOptions,
                                             methodName);
     }

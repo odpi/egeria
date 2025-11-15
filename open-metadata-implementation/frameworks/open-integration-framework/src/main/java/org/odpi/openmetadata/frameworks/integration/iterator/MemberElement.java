@@ -5,14 +5,15 @@ package org.odpi.openmetadata.frameworks.integration.iterator;
 
 
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.MetadataCorrelationHeader;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.OpenMetadataElement;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.RelatedMetadataElement;
 import org.odpi.openmetadata.frameworks.integration.ffdc.OIFAuditCode;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.PermittedSynchronization;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.OpenMetadataRootElement;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.RelatedMetadataElementSummary;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.externalidentifiers.ExternalIdLinkProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.propertyfacets.PropertyFacetProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.propertyfacets.ReferenceableFacetProperties;
 
 import java.util.Date;
-import java.util.List;
 import java.util.Map;
 
 
@@ -24,46 +25,36 @@ import java.util.Map;
  */
 public class MemberElement
 {
-    private final OpenMetadataElement              element;
-    private final RelatedMetadataElement           rootSchemaType;
-    private       MetadataCorrelationHeader        externalIdentifier = null;
-    private final Map<String, Map<String, String>> vendorProperties;
-    private final String                           catalogTargetName;
-    private final String                           connectorName;
-    private final boolean                          isElementActive;
-    private final PermittedSynchronization         targetPermittedSynchronization;
-    private final AuditLog                         auditLog;
-    private PermittedSynchronization               instanceSyncDirection = null;
+    private final OpenMetadataRootElement       element;
+    private       RelatedMetadataElementSummary externalIdentifier = null;
+    private final String                        catalogTargetName;
+    private final String                        connectorName;
+    private final boolean                       isElementActive;
+    private final PermittedSynchronization      targetPermittedSynchronization;
+    private final AuditLog                      auditLog;
+    private       PermittedSynchronization      instanceSyncDirection = null;
 
 
     /**
      * Create a member element.
      *
      * @param element open metadata element
-     * @param rootSchemaType the schema type element or the root of the schema (if exists)
-     * @param externalIdentifiers external identifiers for this element from the third party system
      * @param externalScopeGUID unique identifier for the owning scope (typically a catalog)
-     * @param vendorProperties additional properties related to the particular technology deployment.
      * @param isElementActive is the element retrieved either archived or deleted (false) or still actively available (true)
      * @param catalogTargetName name of target
      * @param connectorName name of the connector
      * @param targetPermittedSynchronization direction of metadata flow policy
      * @param auditLog logging destination
      */
-    MemberElement(OpenMetadataElement              element,
-                  RelatedMetadataElement           rootSchemaType,
-                  List<MetadataCorrelationHeader>  externalIdentifiers,
-                  String                           externalScopeGUID,
-                  Map<String, Map<String, String>> vendorProperties,
-                  boolean                          isElementActive,
-                  String                           catalogTargetName,
-                  String                           connectorName,
-                  PermittedSynchronization         targetPermittedSynchronization,
-                  AuditLog                         auditLog)
+    MemberElement(OpenMetadataRootElement  element,
+                  String                   externalScopeGUID,
+                  boolean                  isElementActive,
+                  String                   catalogTargetName,
+                  String                   connectorName,
+                  PermittedSynchronization targetPermittedSynchronization,
+                  AuditLog                 auditLog)
     {
         this.element                        = element;
-        this.rootSchemaType                 = rootSchemaType;
-        this.vendorProperties               = vendorProperties;
         this.isElementActive                = isElementActive;
         this.catalogTargetName              = catalogTargetName;
         this.connectorName                  = connectorName;
@@ -74,17 +65,25 @@ public class MemberElement
         {
             this.instanceSyncDirection = PermittedSynchronization.FROM_THIRD_PARTY;
         }
-
-        if ((externalIdentifiers != null) && (externalScopeGUID != null))
+        else if (externalScopeGUID != null)
         {
-            for (MetadataCorrelationHeader externalIdentifier : externalIdentifiers)
+            if (element.getAlsoKnownAs() != null)
             {
-                if ((externalIdentifier != null) && (externalScopeGUID.equals(externalIdentifier.getExternalScopeGUID())))
+                for (RelatedMetadataElementSummary externalIdentifier : element.getAlsoKnownAs())
                 {
-                    this.externalIdentifier = externalIdentifier;
-                    if (externalIdentifier.getSynchronizationDirection() != null)
+                    if ((externalIdentifier != null) && (externalScopeGUID.equals(externalIdentifier.getRelatedElement().getElementHeader().getOrigin().getHomeMetadataCollectionId())))
                     {
-                        this.instanceSyncDirection = externalIdentifier.getSynchronizationDirection();
+                        this.externalIdentifier = externalIdentifier;
+
+                        if (externalIdentifier.getRelationshipProperties() instanceof ExternalIdLinkProperties externalIdLinkProperties)
+                        {
+                            if (externalIdLinkProperties.getPermittedSynchronization() != null)
+                            {
+                                this.instanceSyncDirection = externalIdLinkProperties.getPermittedSynchronization();
+                            }
+                        }
+
+                        break;
                     }
                 }
             }
@@ -102,7 +101,7 @@ public class MemberElement
      *
      * @return open metadata element
      */
-    public OpenMetadataElement getElement()
+    public OpenMetadataRootElement getElement()
     {
         return element;
     }
@@ -114,9 +113,14 @@ public class MemberElement
      *
      * @return related metadata element
      */
-    public RelatedMetadataElement getRootSchemaType()
+    public RelatedMetadataElementSummary getRootSchemaType()
     {
-        return rootSchemaType;
+        if (element != null)
+        {
+            return element.getSchemaType();
+        }
+
+        return null;
     }
 
 
@@ -125,7 +129,7 @@ public class MemberElement
      *
      * @return selected external identifier
      */
-    public MetadataCorrelationHeader getExternalIdentifier()
+    public RelatedMetadataElementSummary getExternalIdentifier()
     {
         return externalIdentifier;
     }
@@ -138,7 +142,23 @@ public class MemberElement
      */
     public Map<String, String> getVendorProperties(String vendorIdentifier)
     {
-        return vendorProperties.get(vendorIdentifier);
+        if ((element != null) && (element.getPropertyFacets() != null))
+        {
+            for (RelatedMetadataElementSummary propertyFacet : element.getPropertyFacets())
+            {
+                if ((propertyFacet != null) &&
+                        (propertyFacet.getRelationshipProperties() instanceof ReferenceableFacetProperties referenceableFacetProperties) &&
+                        (vendorIdentifier.equals(referenceableFacetProperties.getSource())))
+                {
+                    if (propertyFacet.getRelatedElement().getProperties() instanceof PropertyFacetProperties propertyFacetProperties)
+                    {
+                        return propertyFacetProperties.getProperties();
+                    }
+                }
+            }
+        }
+
+        return null;
     }
 
 
@@ -173,10 +193,10 @@ public class MemberElement
                         {
                             auditLog.logMessage(methodName,
                                                 OIFAuditCode.IGNORED_EGERIA_ELEMENT.getMessageDefinition(connectorName,
-                                                                                                         element.getType().getTypeName(),
-                                                                                                         element.getElementGUID(),
-                                                                                                         element.getOrigin().getHomeMetadataCollectionName(),
-                                                                                                         element.getOrigin().getHomeMetadataCollectionId(),
+                                                                                                         element.getElementHeader().getType().getTypeName(),
+                                                                                                         element.getElementHeader().getGUID(),
+                                                                                                         element.getElementHeader().getOrigin().getHomeMetadataCollectionName(),
+                                                                                                         element.getElementHeader().getOrigin().getHomeMetadataCollectionId(),
                                                                                                          catalogTargetName,
                                                                                                          targetPermittedSynchronization.getName()));
 
@@ -309,8 +329,8 @@ public class MemberElement
     private DateComparison compareAges(Date thirdPartyElementCreationTime,
                                        Date thirdPartyElementLastUpdateTime)
     {
-        Date elementComparisonDate = getLastChangeToElement(element.getVersions().getCreateTime(),
-                                                            element.getVersions().getUpdateTime());
+        Date elementComparisonDate = getLastChangeToElement(element.getElementHeader().getVersions().getCreateTime(),
+                                                            element.getElementHeader().getVersions().getUpdateTime());
 
         Date thirdPartyComparisonDate = getLastChangeToElement(thirdPartyElementCreationTime,
                                                                thirdPartyElementLastUpdateTime);
@@ -320,9 +340,9 @@ public class MemberElement
             /*
              * Third party has the latest copy - was the change before the last synchronization time
              */
-            if (externalIdentifier != null)
+            if ((externalIdentifier != null) && (externalIdentifier.getRelationshipProperties() instanceof ExternalIdLinkProperties externalIdLinkProperties))
             {
-                if ((externalIdentifier.getLastSynchronized() != null) && (thirdPartyComparisonDate.after(externalIdentifier.getLastSynchronized())))
+                if ((externalIdLinkProperties.getLastSynchronized() != null) && (thirdPartyComparisonDate.after(externalIdLinkProperties.getLastSynchronized())))
                 {
                     return DateComparison.THIRD_PARTY_COPY_NEWEST;
                 }
@@ -341,9 +361,9 @@ public class MemberElement
              * Egeria has the newest copy - has it been updated since the last
              * synchronization date?
              */
-            if (externalIdentifier != null)
+            if ((externalIdentifier != null) && (externalIdentifier.getRelationshipProperties() instanceof ExternalIdLinkProperties externalIdLinkProperties))
             {
-                if ((externalIdentifier.getLastSynchronized() != null) && (externalIdentifier.getLastSynchronized().before(elementComparisonDate)))
+                if ((externalIdLinkProperties.getLastSynchronized() != null) && (externalIdLinkProperties.getLastSynchronized().before(elementComparisonDate)))
                 {
                     return DateComparison.EGERIA_COPY_NEWEST;
                 }
@@ -372,7 +392,7 @@ public class MemberElement
 
         if (element != null)
         {
-            elementGUID = element.getElementGUID();
+            elementGUID = element.getElementHeader().getGUID();
         }
 
         return "MemberElement{" +

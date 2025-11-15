@@ -168,7 +168,8 @@ public class CocoSustainabilityArchiveWriter extends EgeriaBaseArchiveWriter
             archiveHelper.setGUID(governanceDefinition.getQualifiedName(), governanceDefinition.getGUID());
             String governanceDefinitionGUID = archiveHelper.addGovernanceDefinition(governanceDefinition.getType(),
                                                                                     governanceDefinition.getQualifiedName(),
-                                                                                    governanceDefinition.getTitle(),
+                                                                                    governanceDefinition.getIdentifier(),
+                                                                                    governanceDefinition.getDisplayName(),
                                                                                     governanceDefinition.getSummary(),
                                                                                     governanceDefinition.getDescription(),
                                                                                     governanceDefinition.getScope().getPreferredValue(),

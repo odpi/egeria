@@ -240,31 +240,8 @@ public class OpenMetadataTypesArchive4_1
     private void update0011ManagingReferenceables()
     {
         this.archiveBuilder.addClassificationDef(getTemplateSubstituteClassification());
-        this.archiveBuilder.addTypeDefPatch(updateSourcedFromRelationship());
     }
 
-
-    private TypeDefPatch updateSourcedFromRelationship()
-    {
-        /*
-         * Create the Patch
-         */
-        TypeDefPatch typeDefPatch = archiveBuilder.getPatchForType(OpenMetadataType.SOURCED_FROM_RELATIONSHIP.typeName);
-
-        typeDefPatch.setUpdatedBy(originatorName);
-        typeDefPatch.setUpdateTime(creationDate);
-
-        /*
-         * Build the attributes
-         */
-        List<TypeDefAttribute> properties = new ArrayList<>();
-
-        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.SOURCE_VERSION_NUMBER));
-
-        typeDefPatch.setPropertyDefinitions(properties);
-
-        return typeDefPatch;
-    }
 
     private ClassificationDef getTemplateSubstituteClassification()
     {
@@ -354,31 +331,7 @@ public class OpenMetadataTypesArchive4_1
 
     private void update0423SecurityAccessControl()
     {
-        this.archiveBuilder.addTypeDefPatch(updateSecurityTagsClassification());
         this.archiveBuilder.addRelationshipDef(addAssociatedGroupRelationship());
-    }
-
-
-    private TypeDefPatch updateSecurityTagsClassification()
-    {
-        /*
-         * Create the Patch
-         */
-        TypeDefPatch typeDefPatch = archiveBuilder.getPatchForType(OpenMetadataType.SECURITY_TAGS_CLASSIFICATION.typeName);
-
-        typeDefPatch.setUpdatedBy(originatorName);
-        typeDefPatch.setUpdateTime(creationDate);
-
-        /*
-         * Build the attributes
-         */
-        List<TypeDefAttribute> properties = new ArrayList<>();
-
-        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.ACCESS_GROUPS));
-
-        typeDefPatch.setPropertyDefinitions(properties);
-
-        return typeDefPatch;
     }
 
 

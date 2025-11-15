@@ -3,7 +3,10 @@
 package org.odpi.openmetadata.opentypes;
 
 
-import org.odpi.openmetadata.frameworks.openmetadata.enums.*;
+import org.odpi.openmetadata.frameworks.openmetadata.enums.CriticalityLevel;
+import org.odpi.openmetadata.frameworks.openmetadata.enums.DeleteMethod;
+import org.odpi.openmetadata.frameworks.openmetadata.enums.ImpactSeverity;
+import org.odpi.openmetadata.frameworks.openmetadata.enums.IncidentReportStatus;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 import org.odpi.openmetadata.repositoryservices.archiveutilities.OMRSArchiveBuilder;
@@ -161,7 +164,6 @@ public class OpenMetadataTypesArchive2_6
         update0010ManagingMemento();
         update0215MoreProcessTypes();
         update0422GovernanceActionClassifications();
-        update0460GovernanceExecutionPoints();
         add0461GovernanceActionEngines();
         add0462GovernanceActionProcesses();
         add0463EngineActions();
@@ -213,12 +215,13 @@ public class OpenMetadataTypesArchive2_6
      */
 
     /**
-     * 0010 Add the EmbeddedProcess and TransientEmbeddedProcess entities
+     * 0010 Add the EmbeddedProcess, TransientEmbeddedProcess and FunctionCall entities
      */
     private void update0215MoreProcessTypes()
     {
         this.archiveBuilder.addEntityDef(addEmbeddedProcessEntity());
         this.archiveBuilder.addEntityDef(addTransientEmbeddedProcessEntity());
+        this.archiveBuilder.addEntityDef(addFunctionCallEntity());
     }
 
 
@@ -233,6 +236,13 @@ public class OpenMetadataTypesArchive2_6
     {
         return archiveHelper.getDefaultEntityDef(OpenMetadataType.TRANSIENT_EMBEDDED_PROCESS,
                                                  this.archiveBuilder.getEntityDef(OpenMetadataType.EMBEDDED_PROCESS.typeName));
+    }
+
+
+    private EntityDef addFunctionCallEntity()
+    {
+        return archiveHelper.getDefaultEntityDef(OpenMetadataType.FUNCTION_CALL,
+                                                 this.archiveBuilder.getEntityDef(OpenMetadataType.TRANSIENT_EMBEDDED_PROCESS.typeName));
     }
 
 
@@ -294,85 +304,16 @@ public class OpenMetadataTypesArchive2_6
 
         properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.CONFIDENCE));
         properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.STEWARD));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.STATUS_IDENTIFIER));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.SEVERITY_IDENTIFIER));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.STEWARD_TYPE_NAME));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.STEWARD_PROPERTY_NAME));
         properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.SOURCE));
         properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.NOTES));
 
         classificationDef.setPropertiesDefinition(properties);
 
         return classificationDef;
-    }
-
-
-    /*
-     * -------------------------------------------------------------------------------------------------------
-     */
-
-
-    public void update0460GovernanceExecutionPoints()
-    {
-
-
-        this.archiveBuilder.addTypeDefPatch(updateControlPointClassification());
-        this.archiveBuilder.addTypeDefPatch(updateVerificationPointClassification());
-        this.archiveBuilder.addTypeDefPatch(updateEnforcementPointClassification());
-
-    }
-
-    private TypeDefPatch updateControlPointClassification()
-    {
-        TypeDefPatch typeDefPatch = archiveBuilder.getPatchForType(OpenMetadataType.CONTROL_POINT_CLASSIFICATION.typeName);
-
-        typeDefPatch.setUpdatedBy(originatorName);
-        typeDefPatch.setUpdateTime(creationDate);
-
-        /*
-         * Build the attributes
-         */
-        List<TypeDefAttribute> properties = new ArrayList<>();
-
-        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.QUALIFIED_NAME));
-
-        typeDefPatch.setPropertyDefinitions(properties);
-
-        return typeDefPatch;
-    }
-
-    private TypeDefPatch updateVerificationPointClassification()
-    {
-        TypeDefPatch typeDefPatch = archiveBuilder.getPatchForType(OpenMetadataType.VERIFICATION_POINT_CLASSIFICATION.typeName);
-
-        typeDefPatch.setUpdatedBy(originatorName);
-        typeDefPatch.setUpdateTime(creationDate);
-
-        /*
-         * Build the attributes
-         */
-        List<TypeDefAttribute> properties = new ArrayList<>();
-
-        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.QUALIFIED_NAME));
-
-        typeDefPatch.setPropertyDefinitions(properties);
-
-        return typeDefPatch;
-    }
-
-    private TypeDefPatch updateEnforcementPointClassification()
-    {
-        TypeDefPatch typeDefPatch = archiveBuilder.getPatchForType(OpenMetadataType.ENFORCEMENT_POINT_CLASSIFICATION.typeName);
-
-        typeDefPatch.setUpdatedBy(originatorName);
-        typeDefPatch.setUpdateTime(creationDate);
-
-        /*
-         * Build the attributes
-         */
-        List<TypeDefAttribute> properties = new ArrayList<>();
-
-        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.QUALIFIED_NAME));
-
-        typeDefPatch.setPropertyDefinitions(properties);
-
-        return typeDefPatch;
     }
 
 
@@ -550,6 +491,7 @@ public class OpenMetadataTypesArchive2_6
         List<TypeDefAttribute> properties = new ArrayList<>();
 
         properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.WAIT_TIME));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.PRODUCED_GUARDS));
 
         entityDef.setPropertiesDefinition(properties);
 
@@ -613,6 +555,16 @@ public class OpenMetadataTypesArchive2_6
                                                                  RelationshipEndCardinality.AT_MOST_ONE);
         relationshipDef.setEndDef2(relationshipEndDef);
 
+        /*
+         * Build the attributes
+         */
+        List<TypeDefAttribute> properties = new ArrayList<>();
+
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.GUARD));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.REQUEST_PARAMETERS));
+
+        relationshipDef.setPropertiesDefinition(properties);
+
         return relationshipDef;
     }
 
@@ -621,6 +573,8 @@ public class OpenMetadataTypesArchive2_6
         RelationshipDef relationshipDef = archiveHelper.getBasicRelationshipDef(OpenMetadataType.NEXT_GOVERNANCE_ACTION_PROCESS_STEP_RELATIONSHIP,
                                                                                 null,
                                                                                 ClassificationPropagationRule.NONE);
+
+        relationshipDef.setMultiLink(true);
 
         RelationshipEndDef relationshipEndDef;
 
@@ -711,6 +665,10 @@ public class OpenMetadataTypesArchive2_6
 
         properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.REQUEST_TYPE));
         properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.REQUEST_PARAMETERS));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.REQUEST_PARAMETER_FILTER));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.REQUEST_PARAMETER_MAP));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.ACTION_TARGET_FILTER));
+        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.ACTION_TARGET_MAP));
 
         relationshipDef.setPropertiesDefinition(properties);
 

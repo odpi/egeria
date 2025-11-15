@@ -8,6 +8,8 @@ import org.odpi.openmetadata.frameworks.connectors.Connector;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.*;
 import org.odpi.openmetadata.frameworks.opengovernance.properties.CatalogTarget;
 import org.odpi.openmetadata.frameworks.openmetadata.connectorcontext.AssetClient;
+import org.odpi.openmetadata.frameworks.openmetadata.events.OpenMetadataEventListener;
+import org.odpi.openmetadata.frameworks.openmetadata.events.OpenMetadataOutTopicEvent;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.OpenMetadataRootElement;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.processes.connectors.CatalogTargetProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.search.PropertyHelper;
@@ -26,7 +28,8 @@ import java.util.Map;
 
 /**
  * Manages the map of catalog targets that this integration connector is working with.  It is also responsible for
- * keeping the list current.
+ * keeping the list current.  This is the OIF implementation of CatalogTargetChangeListener that is driven from
+ * the connector base.  It is also possible for an integration connector to register itself as a listener with this class.
  */
 public class RequestedCatalogTargetsManager implements CatalogTargetChangeListener
 {
@@ -36,7 +39,7 @@ public class RequestedCatalogTargetsManager implements CatalogTargetChangeListen
      */
     private final CatalogTargetMap currentCatalogTargetMap = new CatalogTargetMap();
 
-    private final List<CatalogTargetChangeListener>   registeredChangeListeners = new ArrayList<>();
+    private final List<CatalogTargetChangeListener>  registeredChangeListeners = new ArrayList<>();
 
     private final PropertyHelper propertyHelper = new PropertyHelper();
 
@@ -97,14 +100,14 @@ public class RequestedCatalogTargetsManager implements CatalogTargetChangeListen
     /**
      * Return a list of requested catalog targets for the connector.  These are extracted from the metadata store.
      *
-     * @param integrationContext the integration component that will process each catalog target
-     * @param catalogTargetIntegrator subclass of connector implementation
+     * @param integrationContext the integration context for the parent connector
+     * @param catalogTargetFactory subclass of connector implementation that is able to create a catalog target processor
      * @throws ConnectorCheckedException there is a problem with the connector.  It is not able to refresh the metadata.
      */
-    public List<RequestedCatalogTarget> refreshKnownCatalogTargets(IntegrationContext      integrationContext,
-                                                                   CatalogTargetIntegrator catalogTargetIntegrator) throws ConnectorCheckedException
+    public List<RequestedCatalogTarget> retrieveKnownCatalogTargets(IntegrationContext   integrationContext,
+                                                                    CatalogTargetFactory catalogTargetFactory) throws ConnectorCheckedException
     {
-        final String methodName = "refreshKnownCatalogTargets";
+        final String methodName = "retrieveKnownCatalogTargets";
 
         try
         {
@@ -129,7 +132,7 @@ public class RequestedCatalogTargetsManager implements CatalogTargetChangeListen
                             /*
                              * This is a new catalog target.
                              */
-                            knownCatalogTarget = setUpNewRequestedCatalogTarget(catalogTargetIntegrator,
+                            knownCatalogTarget = setUpNewRequestedCatalogTarget(catalogTargetFactory,
                                                                                 newCatalogTarget,
                                                                                 integrationContext);
 
@@ -140,7 +143,7 @@ public class RequestedCatalogTargetsManager implements CatalogTargetChangeListen
                             RequestedCatalogTarget oldCatalogTarget = knownCatalogTarget;
                             CatalogTarget newCatalogTarget = new CatalogTarget(catalogTargetProperties, catalogTarget);
 
-                            knownCatalogTarget = setUpNewRequestedCatalogTarget(catalogTargetIntegrator,
+                            knownCatalogTarget = setUpNewRequestedCatalogTarget(catalogTargetFactory,
                                                                                 newCatalogTarget,
                                                                                 integrationContext);
 
@@ -174,9 +177,129 @@ public class RequestedCatalogTargetsManager implements CatalogTargetChangeListen
 
 
     /**
+     * Retrieve the latest list of catalog targets and call refresh on each one.
+     *
+     * @param integrationContext the integration context for the parent connector
+     * @param catalogTargetFactory subclass of connector implementation that is able to create a catalog target processor
+     * @throws ConnectorCheckedException there is a problem with the connector.  It is not able to refresh the metadata.
+     * @throws UserNotAuthorizedException connector has been shut down
+     */
+    public void refreshCatalogTargets(IntegrationContext   integrationContext,
+                                      CatalogTargetFactory catalogTargetFactory) throws ConnectorCheckedException,
+                                                                                        UserNotAuthorizedException
+    {
+        final String methodName = "refreshCatalogTargets";
+
+        integrationContext.validateIsActive(methodName);
+
+        List<RequestedCatalogTarget> requestedCatalogTargets = this.retrieveKnownCatalogTargets(integrationContext,
+                                                                                                catalogTargetFactory);
+
+        if ((requestedCatalogTargets == null) || (requestedCatalogTargets.isEmpty()))
+        {
+            auditLog.logMessage(methodName, OIFAuditCode.NO_CATALOG_TARGETS.getMessageDefinition(connectorName));
+        }
+        else
+        {
+            try
+            {
+                for (RequestedCatalogTarget requestedCatalogTarget : requestedCatalogTargets)
+                {
+
+                    if (requestedCatalogTarget instanceof CatalogTargetProcessorBase catalogTargetProcessorBase)
+                    {
+                        try
+                        {
+                            auditLog.logMessage(methodName,
+                                                OIFAuditCode.REFRESHING_CATALOG_TARGET.getMessageDefinition(connectorName,
+                                                                                                            requestedCatalogTarget.getCatalogTargetName()));
+                            catalogTargetProcessorBase.refresh();
+                        }
+                        catch (Exception error)
+                        {
+                            auditLog.logMessage(methodName,
+                                                OIFAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(connectorName,
+                                                                                                       error.getClass().getName(),
+                                                                                                       methodName + "::" + requestedCatalogTarget.getCatalogTargetName(),
+                                                                                                       error.getMessage()));
+                        }
+                    }
+                }
+            }
+            catch (Exception error)
+            {
+                auditLog.logMessage(methodName,
+                                    OIFAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(connectorName,
+                                                                                           error.getClass().getName(),
+                                                                                           methodName,
+                                                                                           error.getMessage()));
+            }
+
+            auditLog.logMessage(methodName, OIFAuditCode.REFRESHED_CATALOG_TARGETS.getMessageDefinition(connectorName,
+                                                                                                        Integer.toString(requestedCatalogTargets.size())));
+        }
+    }
+
+
+    /**
+     * Retrieve the latest list of catalog targets and call refresh on each one.
+     *
+     * @param integrationContext the integration context for the parent connector
+     * @param event event to pass on to each catalog target that is capable
+     * @throws UserNotAuthorizedException connector has been shut down
+     */
+    public void passEventToCatalogTargets(IntegrationContext        integrationContext,
+                                          OpenMetadataOutTopicEvent event) throws UserNotAuthorizedException
+    {
+        final String methodName = "passEventToCatalogTargets";
+
+        integrationContext.validateIsActive(methodName);
+
+        /*
+         * just use the current list of catalog targets - the catalog target list is refreshed during the standard
+         * refresh process. this is a performance optimization.
+         */
+        List<RequestedCatalogTarget> requestedCatalogTargets = this.getRequestedCatalogTargets();
+
+        if (requestedCatalogTargets != null)
+        {
+            try
+            {
+                for (RequestedCatalogTarget requestedCatalogTarget : requestedCatalogTargets)
+                {
+                    if (requestedCatalogTarget instanceof OpenMetadataEventListener openMetadataEventListener)
+                    {
+                        try
+                        {
+                            openMetadataEventListener.processEvent(event);
+                        }
+                        catch (Exception error)
+                        {
+                            auditLog.logMessage(methodName,
+                                                OIFAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(connectorName,
+                                                                                                       error.getClass().getName(),
+                                                                                                       methodName + "::" + requestedCatalogTarget.getCatalogTargetName(),
+                                                                                                       error.getMessage()));
+                        }
+                    }
+                }
+            }
+            catch (Exception error)
+            {
+                auditLog.logMessage(methodName,
+                                    OIFAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(connectorName,
+                                                                                           error.getClass().getName(),
+                                                                                           methodName,
+                                                                                           error.getMessage()));
+            }
+        }
+    }
+
+
+    /**
      * Set up a new processor for the catalog target.
      *
-     * @param catalogTargetIntegrator connector
+     * @param catalogTargetFactory connector
      * @param retrievedCatalogTarget target relationship from the open metadata repository
      * @param integrationContext connector's context
      * @return filled out catalog target processor
@@ -189,13 +312,13 @@ public class RequestedCatalogTargetsManager implements CatalogTargetChangeListen
      *                                    create the connector.
      * @throws PropertyServerException there was a problem in the store whether the asset/connection properties are kept.
      */
-    private RequestedCatalogTarget setUpNewRequestedCatalogTarget(CatalogTargetIntegrator catalogTargetIntegrator,
-                                                                  CatalogTarget           retrievedCatalogTarget,
-                                                                  IntegrationContext      integrationContext) throws ConnectorCheckedException,
-                                                                                                                     InvalidParameterException,
-                                                                                                                     PropertyServerException,
-                                                                                                                     ConnectionCheckedException,
-                                                                                                                     UserNotAuthorizedException
+    private RequestedCatalogTarget setUpNewRequestedCatalogTarget(CatalogTargetFactory catalogTargetFactory,
+                                                                  CatalogTarget        retrievedCatalogTarget,
+                                                                  IntegrationContext   integrationContext) throws ConnectorCheckedException,
+                                                                                                                  InvalidParameterException,
+                                                                                                                  PropertyServerException,
+                                                                                                                  ConnectionCheckedException,
+                                                                                                                  UserNotAuthorizedException
     {
         Connector connectorToTarget = null;
 
@@ -204,17 +327,28 @@ public class RequestedCatalogTargetsManager implements CatalogTargetChangeListen
             connectorToTarget = integrationContext.getConnectedAssetContext().getConnectorForAsset(retrievedCatalogTarget.getCatalogTargetElement().getElementHeader().getGUID(), auditLog);
         }
 
-        RequestedCatalogTarget newRequestedCatalogTarget = catalogTargetIntegrator.getNewRequestedCatalogTargetSkeleton(retrievedCatalogTarget,
-                                                                                                                        integrationContext.getCatalogTargetContext(retrievedCatalogTarget),
-                                                                                                                        connectorToTarget);
+        RequestedCatalogTarget newRequestedCatalogTarget = catalogTargetFactory.getNewRequestedCatalogTargetSkeleton(retrievedCatalogTarget,
+                                                                                                                     integrationContext.getCatalogTargetContext(retrievedCatalogTarget),
+                                                                                                                     connectorToTarget);
+        /*
+         * Ensure that the catalog target sees all of the configuration properties.
+         */
         newRequestedCatalogTarget.setConfigurationProperties(this.getCombinedConfigurationProperties(retrievedCatalogTarget.getConfigurationProperties()));
+
+        /*
+         * Ensure the catalog target honours the connector's permitted synchronization unless it has been explicitly set.
+         */
+        if (newRequestedCatalogTarget.getPermittedSynchronization() == null)
+        {
+            newRequestedCatalogTarget.setPermittedSynchronization(integrationContext.getPermittedSynchronization());
+        }
 
         return newRequestedCatalogTarget;
     }
 
 
     /**
-     * Return list of the current catalog targets
+     * Return list of the current catalog targets - used in event processing for speed.
      *
      * @return list of the current catalog targets
      */
@@ -229,7 +363,7 @@ public class RequestedCatalogTargetsManager implements CatalogTargetChangeListen
      *
      * @param listener listener to register
      */
-    void registerCatalogTargetChangeListener(CatalogTargetChangeListener listener)
+    public void registerCatalogTargetChangeListener(CatalogTargetChangeListener listener)
     {
         if (listener != null)
         {
@@ -244,7 +378,7 @@ public class RequestedCatalogTargetsManager implements CatalogTargetChangeListen
      * @param catalogTarget new catalog target
      */
     @Override
-    public void newCatalogTarget(RequestedCatalogTarget catalogTarget)
+    public void newCatalogTarget(RequestedCatalogTarget catalogTarget) throws UserNotAuthorizedException, ConnectorCheckedException
     {
         final String methodName = "newCatalogTarget";
 
@@ -256,6 +390,11 @@ public class RequestedCatalogTargetsManager implements CatalogTargetChangeListen
         }
 
         startConnector(catalogTarget, methodName);
+
+        if (catalogTarget instanceof CatalogTargetProcessorBase catalogTargetProcessor)
+        {
+            catalogTargetProcessor.start();
+        }
     }
 
 
@@ -288,9 +427,10 @@ public class RequestedCatalogTargetsManager implements CatalogTargetChangeListen
      * This catalog target has been removed from the connector.
      *
      * @param catalogTarget removed relationship
+     * @throws ConnectorCheckedException problem disconnecting
      */
     @Override
-    public void removedCatalogTarget(RequestedCatalogTarget catalogTarget)
+    public void removedCatalogTarget(RequestedCatalogTarget catalogTarget) throws ConnectorCheckedException
     {
         final String methodName = "removedCatalogTarget";
 
@@ -302,11 +442,16 @@ public class RequestedCatalogTargetsManager implements CatalogTargetChangeListen
         {
             listener.removedCatalogTarget(catalogTarget);
         }
+
+        if (catalogTarget instanceof CatalogTargetProcessorBase catalogTargetProcessor)
+        {
+            catalogTargetProcessor.disconnect();
+        }
     }
 
 
     /**
-     * Start the connector to the catalog target
+     * Start the resource connector to the catalog target
      *
      * @param catalogTarget details of the target
      * @param methodName calling method
@@ -333,7 +478,7 @@ public class RequestedCatalogTargetsManager implements CatalogTargetChangeListen
 
 
     /**
-     * Disconnect the connector to a catalog target.  If it fails, an audit log message is produced, but the
+     * Disconnect the resource connector for a catalog target.  If it fails, an audit log message is produced, but the
      * integration connector continues,
      *
      * @param catalogTarget details of the target
@@ -360,7 +505,7 @@ public class RequestedCatalogTargetsManager implements CatalogTargetChangeListen
     }
 
     /**
-     * Shutdown event monitoring
+     * Shutdown metadata synchronization
      *
      * @throws ConnectorCheckedException something failed in the super class
      */

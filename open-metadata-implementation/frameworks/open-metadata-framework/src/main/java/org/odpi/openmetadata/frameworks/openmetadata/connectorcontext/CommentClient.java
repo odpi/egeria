@@ -59,7 +59,8 @@ public class CommentClient extends ConnectorContextClientBase
     /**
      * Adds a comment to the element.
      *
-     * @param elementGUID     unique identifier for the element.
+     * @param elementGUID     unique identifier for the element
+     * @param metadataSourceOptions options for the request
      * @param initialClassifications map of classification names to classification properties to include in the entity creation request
      * @param properties   properties of the comment
      *

@@ -121,6 +121,14 @@ public enum OMFErrorCode implements ExceptionMessageSet
 
 
     /**
+     * OPEN-METADATA-400-012 - The unique identifier (guid) passed on the {0} parameter of the {1} operation is null
+     */
+    INVALID_GUID(400, "OPEN-METADATA-400-012",
+              "The unique identifier (guid) passed on the {0} parameter of the {1} operation contains invalid characters",
+              "The system is unable to process the request with this guid.",
+              "Correct the code in the caller to provide the correct guid.  GUIDs are of this form '1a27f402-4638-4002-8e5c-74143661ebb4'."),
+
+    /**
      * OPEN-METADATA-400-020 - The user identifier (user id) passed on the {0} operation is null
      */
     NULL_USER_ID(400, "OPEN-METADATA-400-020",

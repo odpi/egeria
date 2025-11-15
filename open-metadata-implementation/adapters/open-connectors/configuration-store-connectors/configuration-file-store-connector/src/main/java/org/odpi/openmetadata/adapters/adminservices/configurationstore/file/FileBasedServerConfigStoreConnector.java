@@ -94,7 +94,7 @@ public class FileBasedServerConfigStoreConnector extends OMAGServerConfigStoreCo
         String configStoreTemplateName = null;
         if (endpoint != null)
         {
-            configStoreTemplateName = endpoint.getAddress();
+            configStoreTemplateName = endpoint.getNetworkAddress();
         }
         if (configStoreTemplateName == null)
         {

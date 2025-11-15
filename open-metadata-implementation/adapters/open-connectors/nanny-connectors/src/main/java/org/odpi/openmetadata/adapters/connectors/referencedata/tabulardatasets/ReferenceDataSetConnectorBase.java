@@ -130,7 +130,7 @@ public abstract class ReferenceDataSetConnectorBase extends ConnectorBase implem
 
         if (endpoint != null)
         {
-            targetRootURL = endpoint.getAddress();
+            targetRootURL = endpoint.getNetworkAddress();
         }
 
         if (targetRootURL == null)

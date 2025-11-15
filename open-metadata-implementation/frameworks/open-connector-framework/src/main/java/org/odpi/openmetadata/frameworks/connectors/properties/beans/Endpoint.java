@@ -37,7 +37,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
  *         description - A description for the endpoint.
  *     </li>
  *     <li>
- *         address - The location of the asset.  For network connected resources, this is typically the
+ *         networkAddress - The location of the asset.  For network connected resources, this is typically the
  *         URL and port number (if needed) for the server where the asset is located
  *         (or at least accessible by the connector).  For file-based resources, this is typically the name of the file.
  *     </li>
@@ -66,9 +66,9 @@ public class Endpoint extends Referenceable
     /*
      * Properties of an Endpoint
      */
-    protected   String                 address          = null;
-    protected   String                 protocol         = null;
-    protected   String                 encryptionMethod = null;
+    protected String networkAddress   = null;
+    protected String protocol         = null;
+    protected String encryptionMethod = null;
 
     /**
      * Return the standard type for an endpoint.
@@ -114,8 +114,8 @@ public class Endpoint extends Referenceable
 
         if (templateEndpoint != null)
         {
-            address          = templateEndpoint.getAddress();
-            protocol         = templateEndpoint.getProtocol();
+            networkAddress = templateEndpoint.getNetworkAddress();
+            protocol       = templateEndpoint.getProtocol();
             encryptionMethod = templateEndpoint.getEncryptionMethod();
         }
     }
@@ -124,11 +124,11 @@ public class Endpoint extends Referenceable
     /**
      * Set up the network address of the Endpoint.
      *
-     * @param address String resource name
+     * @param networkAddress String resource name
      */
-    public void setAddress(String address)
+    public void setNetworkAddress(String networkAddress)
     {
-        this.address = address;
+        this.networkAddress = networkAddress;
     }
 
 
@@ -138,9 +138,9 @@ public class Endpoint extends Referenceable
      *
      * @return address
      */
-    public String getAddress()
+    public String getNetworkAddress()
     {
-        return address;
+        return networkAddress;
     }
 
 
@@ -201,7 +201,7 @@ public class Endpoint extends Referenceable
     public String toString()
     {
         return "Endpoint{" +
-                "address='" + address + '\'' +
+                "address='" + networkAddress + '\'' +
                 ", protocol='" + protocol + '\'' +
                 ", encryptionMethod='" + encryptionMethod + '\'' +
                 "} " + super.toString();
@@ -230,7 +230,7 @@ public class Endpoint extends Referenceable
             return false;
         }
         Endpoint endpoint = (Endpoint) objectToCompare;
-        return Objects.equals(getAddress(), endpoint.getAddress()) &&
+        return Objects.equals(getNetworkAddress(), endpoint.getNetworkAddress()) &&
                        Objects.equals(getProtocol(), endpoint.getProtocol()) &&
                        Objects.equals(getEncryptionMethod(), endpoint.getEncryptionMethod());
     }
@@ -244,6 +244,6 @@ public class Endpoint extends Referenceable
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), getAddress(), getProtocol(), getEncryptionMethod());
+        return Objects.hash(super.hashCode(), getNetworkAddress(), getProtocol(), getEncryptionMethod());
     }
 }

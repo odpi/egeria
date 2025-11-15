@@ -50,17 +50,17 @@ public class BasicFileStoreConnector extends ConnectorBase implements BasicFileS
 
         if (endpoint != null)
         {
-            if (endpoint.getAddress() == null)
+            if (endpoint.getNetworkAddress() == null)
             {
                 log.info("Null endpoint address");
             }
-            else if (endpoint.getAddress().startsWith("file://"))
+            else if (endpoint.getNetworkAddress().startsWith("file://"))
             {
-                fileStoreName = endpoint.getAddress().substring(7);
+                fileStoreName = endpoint.getNetworkAddress().substring(7);
             }
             else
             {
-                fileStoreName = endpoint.getAddress();
+                fileStoreName = endpoint.getNetworkAddress();
             }
         }
         else

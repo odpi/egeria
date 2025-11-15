@@ -14,6 +14,7 @@ import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedExcep
 import org.odpi.openmetadata.frameworks.openmetadata.handlers.AssetHandler;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.OpenMetadataRootElement;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.AssetProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.search.NewElementOptions;
 
 import java.util.List;
 
@@ -155,21 +156,26 @@ public class SurveyAssetStore
      * @param columnHeaders does the first line of the file contain the column names. If not pass the list of column headers.
      * @param delimiterCharacter what is the delimiter character - null for default of comma
      * @param quoteCharacter what is the character to group a field that contains delimiter characters
-     *
+     * @param versionIdentifier version identifier to use in the metadata elements
+     * @param connectorTypeGUID optional connector type to indicate that a connection should be created
+     * @param newElementOptions options to control the create process
      * @return list of GUIDs from the top level to the root of the pathname
      *
      * @throws InvalidParameterException full path or userId is null
      * @throws PropertyServerException problem accessing property server
      * @throws UserNotAuthorizedException security access problem
      */
-    public  String  addCSVFileToCatalog(String       displayName,
-                                        String       description,
-                                        String       pathName,
-                                        List<String> columnHeaders,
-                                        Character    delimiterCharacter,
-                                        Character    quoteCharacter) throws InvalidParameterException,
-                                                                            UserNotAuthorizedException,
-                                                                            PropertyServerException
+    public  String  addCSVFileToCatalog(String            displayName,
+                                        String            description,
+                                        String            pathName,
+                                        List<String>      columnHeaders,
+                                        Character         delimiterCharacter,
+                                        Character         quoteCharacter,
+                                        String            versionIdentifier,
+                                        String            connectorTypeGUID,
+                                        NewElementOptions newElementOptions) throws InvalidParameterException,
+                                                                                    UserNotAuthorizedException,
+                                                                                    PropertyServerException
     {
         return assetHandler.addCSVFileToCatalog(userId,
                                                 displayName,
@@ -177,6 +183,9 @@ public class SurveyAssetStore
                                                 pathName,
                                                 columnHeaders,
                                                 delimiterCharacter,
-                                                quoteCharacter);
+                                                quoteCharacter,
+                                                versionIdentifier,
+                                                connectorTypeGUID,
+                                                newElementOptions);
     }
 }

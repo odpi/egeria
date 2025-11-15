@@ -53,6 +53,7 @@ public class ElementHeader extends ElementControlHeader
     private ElementClassification       template                 = null;
     private ElementClassification       schemaType               = null; // TypeEmbeddedAttribute
     private ElementClassification       dataScope                = null;
+    private ElementClassification       dataAssetEncoding        = null;
     private ElementClassification       calculatedValue          = null;
     private ElementClassification       primaryKey               = null;
     private List<ElementClassification> collectionRoles          = null;
@@ -98,6 +99,7 @@ public class ElementHeader extends ElementControlHeader
             this.template                 = template.getTemplate();
             this.schemaType               = template.getSchemaType();
             this.dataScope                = template.getDataScope();
+            this.dataAssetEncoding        = template.getDataAssetEncoding();
             this.calculatedValue          = template.getCalculatedValue();
             this.primaryKey               = template.getPrimaryKey();
             this.collectionRoles          = template.getCollectionRoles();
@@ -535,6 +537,29 @@ public class ElementHeader extends ElementControlHeader
         this.dataScope = dataScope;
     }
 
+
+    /**
+     * Return the DataAssetEncoding classification that describes the encoding used in the associated digital resource.
+     *
+     * @return classification
+     */
+    public ElementClassification getDataAssetEncoding()
+    {
+        return dataAssetEncoding;
+    }
+
+
+    /**
+     * Set up the DataAssetEncoding classification that describes the encoding used in the associated digital resource.
+     *
+     * @param dataAssetEncoding classification
+     */
+    public void setDataAssetEncoding(ElementClassification dataAssetEncoding)
+    {
+        this.dataAssetEncoding = dataAssetEncoding;
+    }
+
+
     /**
      * Return the CalculatedValue classification - only attached to a SchemaAttribute.
      *
@@ -672,11 +697,14 @@ public class ElementHeader extends ElementControlHeader
                 ", memento=" + memento +
                 ", template=" + template +
                 ", schemaType=" + schemaType +
+                ", dataScope=" + dataScope +
+                ", dataAssetEncoding=" + dataAssetEncoding +
                 ", calculatedValue=" + calculatedValue +
                 ", primaryKey=" + primaryKey +
                 ", collectionCategories=" + collectionRoles +
-                ", projectCategories=" + projectRoles +
+                ", projectRoles=" + projectRoles +
                 ", otherClassifications=" + otherClassifications +
+                ", GUID='" + getGUID() + '\'' +
                 "} " + super.toString();
     }
 
@@ -708,6 +736,8 @@ public class ElementHeader extends ElementControlHeader
                 Objects.equals(executionPoints, that.executionPoints) &&
                 Objects.equals(duplicateClassifications, that.duplicateClassifications) &&
                 Objects.equals(digitalResourceOrigin, that.digitalResourceOrigin) &&
+                Objects.equals(dataScope, that.dataScope) &&
+                Objects.equals(dataAssetEncoding, that.dataAssetEncoding) &&
                 Objects.equals(ownership, that.ownership) &&
                 Objects.equals(memento, that.memento) &&
                 Objects.equals(template, that.template) &&
@@ -731,6 +761,8 @@ public class ElementHeader extends ElementControlHeader
         return Objects.hash(super.hashCode(), guid, anchor, zoneMembership, subjectArea, impact, criticality,
                             confidentiality, confidence, retention, governanceExpectations, governanceMeasurements,
                             executionPoints, duplicateClassifications, ownership, digitalResourceOrigin, memento,
-                            template, schemaType, calculatedValue, primaryKey, collectionRoles, projectRoles, otherClassifications);
+                            dataScope, dataAssetEncoding,
+                            template, schemaType, calculatedValue, primaryKey, collectionRoles,
+                            projectRoles, otherClassifications);
     }
 }

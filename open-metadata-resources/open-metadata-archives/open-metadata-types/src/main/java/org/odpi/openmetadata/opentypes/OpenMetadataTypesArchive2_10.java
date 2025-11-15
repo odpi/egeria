@@ -157,56 +157,9 @@ public class OpenMetadataTypesArchive2_10
         /*
          * Calls for new and changed types go here
          */
-        update0360Contexts();
         update04xxGovernanceDefinitions();
     }
 
-
-    /*
-     * -------------------------------------------------------------------------------------------------------
-     */
-
-
-    /**
-     * Enable contexts to be more than just a Glossary term
-     */
-    private void update0360Contexts()
-    {
-        this.archiveBuilder.addTypeDefPatch(updateUsedInContextRelationship());
-    }
-
-
-
-    /**
-     * This changes End 2
-     *
-     * @return patched type
-     */
-    private TypeDefPatch updateUsedInContextRelationship()
-    {
-        TypeDefPatch typeDefPatch = archiveBuilder.getPatchForType(OpenMetadataType.USED_IN_CONTEXT_RELATIONSHIP.typeName);
-
-        typeDefPatch.setUpdatedBy(originatorName);
-        typeDefPatch.setUpdateTime(creationDate);
-
-        RelationshipEndDef relationshipEndDef;
-
-        /*
-         * Set up end 2.
-         */
-        final String                     end2AttributeName            = "usedInContexts";
-        final String                     end2AttributeDescription     = "Elements describing the contexts where this term is used.";
-        final String                     end2AttributeDescriptionGUID = null;
-
-        relationshipEndDef = archiveHelper.getRelationshipEndDef(this.archiveBuilder.getEntityDef(OpenMetadataType.REFERENCEABLE.typeName),
-                                                                 end2AttributeName,
-                                                                 end2AttributeDescription,
-                                                                 end2AttributeDescriptionGUID,
-                                                                 RelationshipEndCardinality.ANY_NUMBER);
-        typeDefPatch.setEndDef2(relationshipEndDef);
-
-        return typeDefPatch;
-    }
 
 
     /*
@@ -225,9 +178,6 @@ public class OpenMetadataTypesArchive2_10
         this.archiveBuilder.addEntityDef(addRegulationArticleEntity());
         this.archiveBuilder.addEntityDef(addBusinessImperativeEntity());
         this.archiveBuilder.addRelationshipDef(addGovernanceDriverLinkRelationship());
-
-        this.archiveBuilder.addTypeDefPatch(updateCertification());
-        this.archiveBuilder.addTypeDefPatch(updateLicense());
     }
 
 
@@ -361,63 +311,5 @@ public class OpenMetadataTypesArchive2_10
     }
 
 
-    /**
-     * Add properties so it is possible to specific whether involved parties are userIds, roles or profiles.
-     *
-     * @return typeDef patch
-     */
-    private TypeDefPatch updateCertification()
-    {
-        TypeDefPatch typeDefPatch = archiveBuilder.getPatchForType(OpenMetadataType.CERTIFICATION_RELATIONSHIP.typeName);
-
-        typeDefPatch.setUpdatedBy(originatorName);
-        typeDefPatch.setUpdateTime(creationDate);
-
-        /*
-         * Build the attributes
-         */
-        List<TypeDefAttribute> properties = new ArrayList<>();
-
-        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.CERTIFIED_BY_TYPE_NAME));
-        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.CERTIFIED_BY_PROPERTY_NAME));
-        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.CUSTODIAN_TYPE_NAME));
-        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.CUSTODIAN_PROPERTY_NAME));
-        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.RECIPIENT_TYPE_NAME));
-        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.RECIPIENT_PROPERTY_NAME));
-
-        typeDefPatch.setPropertyDefinitions(properties);
-
-        return typeDefPatch;
-    }
-
-
-    /**
-     * Add properties so it is possible to specific whether involved parties are userIds, roles or profiles.
-     *
-     * @return typeDef patch
-     */
-    private TypeDefPatch updateLicense()
-    {
-        TypeDefPatch typeDefPatch = archiveBuilder.getPatchForType(OpenMetadataType.LICENSE_RELATIONSHIP.typeName);
-
-        typeDefPatch.setUpdatedBy(originatorName);
-        typeDefPatch.setUpdateTime(creationDate);
-
-        /*
-         * Build the attributes
-         */
-        List<TypeDefAttribute> properties = new ArrayList<>();
-
-        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.LICENSED_BY_TYPE_NAME));
-        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.LICENSED_BY_PROPERTY_NAME));
-        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.CUSTODIAN_TYPE_NAME));
-        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.CUSTODIAN_PROPERTY_NAME));
-        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.LICENSEE_TYPE_NAME));
-        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.LICENSEE_PROPERTY_NAME));
-
-        typeDefPatch.setPropertyDefinitions(properties);
-
-        return typeDefPatch;
-    }
 }
 

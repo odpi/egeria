@@ -97,9 +97,17 @@ public enum PlaceholderProperty
      * The string version identifier for the element.  This is typically of the form Vx.y.z where x is the major version number, y is the minor version number, and z is an option patch identifier.
      */
     VERSION_IDENTIFIER ("versionIdentifier",
-                 "The string version identifier for the element.  This is typically of the form Vx.y.z where x is the major version number, y is the minor version number, and z is an option patch identifier.",
-                 DataType.STRING.getName(),
-                 "V1.0"),
+                        "The string version identifier for the element.  This is typically of the form Vx.y.z where x is the major version number, y is the minor version number, and z is an option patch identifier.",
+                        DataType.STRING.getName(),
+                        "6.0-SNAPSHOT"),
+
+    /**
+     * The unique identifier of the home metadata collection for associated elements.
+     */
+    MANAGED_METADATA_COLLECTION_ID("managedMetadataCollectionId",
+                                   "The unique identifier of the home metadata collection for associated elements.",
+                                   DataType.STRING.getName(),
+                                   "cde571c8-aaee-46d8-b802-0eb1982e1a3e"),
 
     /**
      * What is the scope of influence of this element?

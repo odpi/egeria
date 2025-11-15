@@ -15,10 +15,12 @@ import org.odpi.openmetadata.frameworks.openmetadata.connectorcontext.AssetClien
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.OpenMetadataRootElement;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.RelatedMetadataElementSummary;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.surveyreports.ResourceProfileLogAnnotationProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.search.NewElementOptions;
 import org.odpi.openmetadata.frameworks.openmetadata.search.PropertyHelper;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
+import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 import org.odpi.openmetadata.frameworks.opensurvey.controls.AnalysisStep;
 import org.odpi.openmetadata.frameworks.opensurvey.controls.AnnotationType;
 import org.odpi.openmetadata.frameworks.opensurvey.controls.SurveyActionGuard;
@@ -47,10 +49,11 @@ public abstract class SurveyActionServiceConnector extends ConnectorBase impleme
 
     protected static ObjectMapper objectMapper = new ObjectMapper();
 
-    protected String          surveyActionServiceName = "<Unknown>";
-    protected SurveyContext   surveyContext           = null;
-    protected AuditLog        auditLog                = null;
-    protected List<Connector> embeddedConnectors      = null;
+    protected String          surveyActionServiceName  = "<Unknown>";
+    protected SurveyContext   surveyContext            = null;
+    protected AuditLog        auditLog                 = null;
+    protected List<Connector> embeddedConnectors       = null;
+    protected String          csvFileConnectorTypeGUID = null;
 
 
     /**
@@ -133,6 +136,17 @@ public abstract class SurveyActionServiceConnector extends ConnectorBase impleme
     public void setSurveyActionServiceName(String surveyActionServiceName)
     {
         this.surveyActionServiceName = surveyActionServiceName;
+    }
+
+
+    /**
+     * Set up the default connector type for CSV files created by the survey action service.
+     *
+     * @param csvFileConnectorTypeGUID string
+     */
+    public void setCSVFileConnectorTypeGUID(String csvFileConnectorTypeGUID)
+    {
+        this.csvFileConnectorTypeGUID = csvFileConnectorTypeGUID;
     }
 
 
@@ -469,7 +483,10 @@ public abstract class SurveyActionServiceConnector extends ConnectorBase impleme
                                                                     logFile.getCanonicalPath(),
                                                                     null,
                                                                     ',',
-                                                                    '"');
+                                                                    '"',
+                                                                    surveyContext.getEgeriaRelease(),
+                                                                    csvFileConnectorTypeGUID,
+                                                                    null);
 
             if (newLogFile)
             {
@@ -590,12 +607,22 @@ public abstract class SurveyActionServiceConnector extends ConnectorBase impleme
 
         SurveyAssetStore surveyAssetStore = surveyContext.getAssetStore();
 
+        NewElementOptions newElementOptions = new NewElementOptions();
+
+        newElementOptions.setIsOwnAnchor(true);
+        newElementOptions.setParentGUID(surveyContext.getConnectorGUID());
+        newElementOptions.setParentAtEnd1(true);
+        newElementOptions.setParentRelationshipTypeName(OpenMetadataType.DATA_FLOW_RELATIONSHIP.typeName);
+
         String assetGUID = surveyAssetStore.addCSVFileToCatalog(inventoryName + " for survey report " + surveyReportGUID,
                                                                 "Provides an inventory of the resources discovered during the survey.",
                                                                 logFile.getCanonicalPath(),
                                                                 null,
                                                                 ',',
-                                                                '"');
+                                                                '"',
+                                                                surveyContext.getEgeriaRelease(),
+                                                                csvFileConnectorTypeGUID,
+                                                                newElementOptions);
 
         if (newLogFile)
         {
@@ -695,12 +722,22 @@ public abstract class SurveyActionServiceConnector extends ConnectorBase impleme
 
         SurveyAssetStore surveyAssetStore = surveyContext.getAssetStore();
 
+        NewElementOptions newElementOptions = new NewElementOptions();
+
+        newElementOptions.setIsOwnAnchor(true);
+        newElementOptions.setParentGUID(surveyContext.getConnectorGUID());
+        newElementOptions.setParentAtEnd1(true);
+        newElementOptions.setParentRelationshipTypeName(OpenMetadataType.DATA_FLOW_RELATIONSHIP.typeName);
+
         String assetGUID = surveyAssetStore.addCSVFileToCatalog(inventoryName + " for survey report " + surveyReportGUID,
                                                                 "Provides an inventory of the resources discovered during the survey.",
                                                                 logFile.getCanonicalPath(),
                                                                 null,
                                                                 ',',
-                                                                '"');
+                                                                '"',
+                                                                surveyContext.getEgeriaRelease(),
+                                                                csvFileConnectorTypeGUID,
+                                                                newElementOptions);
 
         if (newLogFile)
         {
@@ -800,12 +837,22 @@ public abstract class SurveyActionServiceConnector extends ConnectorBase impleme
 
         SurveyAssetStore surveyAssetStore = surveyContext.getAssetStore();
 
+        NewElementOptions newElementOptions = new NewElementOptions();
+
+        newElementOptions.setIsOwnAnchor(true);
+        newElementOptions.setParentGUID(surveyContext.getConnectorGUID());
+        newElementOptions.setParentAtEnd1(true);
+        newElementOptions.setParentRelationshipTypeName(OpenMetadataType.DATA_FLOW_RELATIONSHIP.typeName);
+
         String assetGUID = surveyAssetStore.addCSVFileToCatalog(inventoryName + " for survey report " + surveyReportGUID,
                                                                 "Provides an inventory of the resources discovered during the survey.",
                                                                 logFile.getCanonicalPath(),
                                                                 null,
                                                                 ',',
-                                                                '"');
+                                                                '"',
+                                                                surveyContext.getEgeriaRelease(),
+                                                                csvFileConnectorTypeGUID,
+                                                                newElementOptions);
 
         if (newLogFile)
         {

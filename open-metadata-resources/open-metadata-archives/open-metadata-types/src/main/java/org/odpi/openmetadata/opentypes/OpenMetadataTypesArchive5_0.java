@@ -168,7 +168,6 @@ public class OpenMetadataTypesArchive5_0
         update0280SoftwareArtifacts();
         update0461GovernanceEngines();
         update0545ReferenceData();
-        update0462GovernanceActionTypes();
         add00475ContextEvents();
         add0603SurveyReports();
         update0690RequestForAction();
@@ -185,9 +184,9 @@ public class OpenMetadataTypesArchive5_0
     {
         this.archiveBuilder.addEntityDef(getRootCollectionEntity());
         this.archiveBuilder.addEntityDef(getCollectionFolderEntity());
-        this.archiveBuilder.addClassificationDef(getHomeCollectionClassification());
-        this.archiveBuilder.addClassificationDef(getRecentAccessClassification());
-        this.archiveBuilder.addClassificationDef(getWorkItemListClassification());
+        this.archiveBuilder.addEntityDef(getHomeCollection());
+        this.archiveBuilder.addEntityDef(getRecentAccess());
+        this.archiveBuilder.addEntityDef(getWorkItemList());
     }
 
 
@@ -205,30 +204,24 @@ public class OpenMetadataTypesArchive5_0
     }
 
 
-    private ClassificationDef getHomeCollectionClassification()
+    private EntityDef getHomeCollection()
     {
-        return archiveHelper.getClassificationDef(OpenMetadataType.HOME_COLLECTION_CLASSIFICATION,
-                                                  this.archiveBuilder.getClassificationDef(OpenMetadataType.COLLECTION_ROLE_CLASSIFICATION.typeName),
-                                                  this.archiveBuilder.getEntityDef(OpenMetadataType.COLLECTION.typeName),
-                                                  false);
+        return archiveHelper.getDefaultEntityDef(OpenMetadataType.HOME_COLLECTION,
+                                                 this.archiveBuilder.getEntityDef(OpenMetadataType.COLLECTION.typeName));
     }
 
 
-    private ClassificationDef getRecentAccessClassification()
+    private EntityDef getRecentAccess()
     {
-        return archiveHelper.getClassificationDef(OpenMetadataType.RECENT_ACCESS_COLLECTION_CLASSIFICATION,
-                                                  this.archiveBuilder.getClassificationDef(OpenMetadataType.COLLECTION_ROLE_CLASSIFICATION.typeName),
-                                                  this.archiveBuilder.getEntityDef(OpenMetadataType.COLLECTION.typeName),
-                                                  false);
+        return archiveHelper.getDefaultEntityDef(OpenMetadataType.RECENT_ACCESS_COLLECTION,
+                                                 this.archiveBuilder.getEntityDef(OpenMetadataType.COLLECTION.typeName));
     }
 
 
-    private ClassificationDef getWorkItemListClassification()
+    private EntityDef getWorkItemList()
     {
-        return archiveHelper.getClassificationDef(OpenMetadataType.WORK_ITEM_LIST_COLLECTION_CLASSIFICATION,
-                                                  this.archiveBuilder.getClassificationDef(OpenMetadataType.COLLECTION_ROLE_CLASSIFICATION.typeName),
-                                                  this.archiveBuilder.getEntityDef(OpenMetadataType.COLLECTION.typeName),
-                                                  false);
+        return archiveHelper.getDefaultEntityDef(OpenMetadataType.WORK_ITEM_LIST_COLLECTION,
+                                                 this.archiveBuilder.getEntityDef(OpenMetadataType.COLLECTION.typeName));
     }
 
 
@@ -294,36 +287,8 @@ public class OpenMetadataTypesArchive5_0
      */
     private void update0130Projects()
     {
-        this.archiveBuilder.addTypeDefPatch(updateProject());
         this.archiveBuilder.addClassificationDef(getPersonalProjectClassification());
         this.archiveBuilder.addClassificationDef(getStudyProjectClassification());
-    }
-
-
-    private TypeDefPatch updateProject()
-    {
-        /*
-         * Create the Patch
-         */
-        TypeDefPatch typeDefPatch = archiveBuilder.getPatchForType(OpenMetadataType.PROJECT.typeName);
-
-        typeDefPatch.setUpdatedBy(originatorName);
-        typeDefPatch.setUpdateTime(creationDate);
-
-        /*
-         * Build the attributes
-         */
-        List<TypeDefAttribute> properties = new ArrayList<>();
-
-        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.PROJECT_HEALTH));
-        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.PRIORITY));
-        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.PROJECT_PHASE));
-        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.MISSION));
-        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.PURPOSES));
-
-        typeDefPatch.setPropertyDefinitions(properties);
-
-        return typeDefPatch;
     }
 
 
@@ -367,7 +332,6 @@ public class OpenMetadataTypesArchive5_0
     private void update0011UpdateTemplates()
     {
         this.archiveBuilder.addRelationshipDef(addCatalogTemplateRelationship());
-        this.archiveBuilder.addTypeDefPatch(updateTemplateClassification());
     }
 
 
@@ -426,36 +390,6 @@ public class OpenMetadataTypesArchive5_0
         return relationshipDef;
 
     }
-
-
-    /**
-     * Add new properties to TemplateClassification to describe the replacement properties and the
-     * placeholder properties.
-     *
-     * @return  patch
-     */
-    private TypeDefPatch updateTemplateClassification()
-    {
-        /*
-         * Create the Patch
-         */
-        TypeDefPatch typeDefPatch = archiveBuilder.getPatchForType(OpenMetadataType.TEMPLATE_CLASSIFICATION.typeName);
-
-        typeDefPatch.setUpdatedBy(originatorName);
-        typeDefPatch.setUpdateTime(creationDate);
-
-        /*
-         * Build the attributes
-         */
-        List<TypeDefAttribute> properties = new ArrayList<>();
-
-        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.VERSION_IDENTIFIER));
-
-        typeDefPatch.setPropertyDefinitions(properties);
-
-        return typeDefPatch;
-    }
-
 
 
     /*
@@ -809,12 +743,12 @@ public class OpenMetadataTypesArchive5_0
     private void add00475ContextEvents()
     {
         this.archiveBuilder.addEntityDef(addContextEventEntity());
+        this.archiveBuilder.addEntityDef(getContextEventCollection());
         this.archiveBuilder.addRelationshipDef(addContextEventEvidenceRelationship());
         this.archiveBuilder.addRelationshipDef(addContextEventForTimelineEffectsRelationship());
         this.archiveBuilder.addRelationshipDef(addContextEventImpactRelationship());
         this.archiveBuilder.addRelationshipDef(addDependentContextEventRelationship());
         this.archiveBuilder.addRelationshipDef(addRelatedContextEventRelationship());
-        this.archiveBuilder.addClassificationDef(getContextEventCollectionClassification());
     }
 
     private EntityDef addContextEventEntity()
@@ -997,12 +931,10 @@ public class OpenMetadataTypesArchive5_0
         return relationshipDef;
     }
 
-    private ClassificationDef getContextEventCollectionClassification()
+    private EntityDef getContextEventCollection()
     {
-        return archiveHelper.getClassificationDef(OpenMetadataType.CONTEXT_EVENT_COLLECTION_CLASSIFICATION,
-                                                  this.archiveBuilder.getClassificationDef(OpenMetadataType.COLLECTION_ROLE_CLASSIFICATION.typeName),
-                                                  this.archiveBuilder.getEntityDef(OpenMetadataType.COLLECTION.typeName),
-                                                  false);
+        return archiveHelper.getDefaultEntityDef(OpenMetadataType.CONTEXT_EVENT_COLLECTION,
+                                                 this.archiveBuilder.getEntityDef(OpenMetadataType.COLLECTION.typeName));
     }
 
     private RelationshipDef addDependentContextEventRelationship()
@@ -1267,39 +1199,6 @@ public class OpenMetadataTypesArchive5_0
         relationshipDef.setPropertiesDefinition(properties);
 
         return relationshipDef;
-    }
-
-
-
-    /*
-     * -------------------------------------------------------------------------------------------------------
-     */
-
-    private void update0462GovernanceActionTypes()
-    {
-        this.archiveBuilder.addTypeDefPatch(updateGovernanceActionType());
-    }
-
-    private TypeDefPatch updateGovernanceActionType()
-    {
-        /*
-         * Create the Patch
-         */
-        TypeDefPatch typeDefPatch = archiveBuilder.getPatchForType(OpenMetadataType.GOVERNANCE_ACTION_TYPE.typeName);
-
-        typeDefPatch.setUpdatedBy(originatorName);
-        typeDefPatch.setUpdateTime(creationDate);
-
-        /*
-         * Build the attributes
-         */
-        List<TypeDefAttribute> properties = new ArrayList<>();
-
-        properties.add(archiveHelper.getTypeDefAttribute(OpenMetadataProperty.PRODUCED_GUARDS));
-
-        typeDefPatch.setPropertyDefinitions(properties);
-
-        return typeDefPatch;
     }
 
 

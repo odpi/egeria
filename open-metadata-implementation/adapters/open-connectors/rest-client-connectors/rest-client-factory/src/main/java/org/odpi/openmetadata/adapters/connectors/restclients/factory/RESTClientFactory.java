@@ -10,8 +10,6 @@ import org.odpi.openmetadata.frameworks.connectors.ConnectorBroker;
 import org.odpi.openmetadata.frameworks.connectors.ConnectorProvider;
 import org.odpi.openmetadata.frameworks.connectors.SecretsStoreConnector;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.*;
-import org.odpi.openmetadata.frameworks.openmetadata.enums.ElementOriginCategory;
-import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.ElementOrigin;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -114,13 +112,13 @@ public class RESTClientFactory
 
         Endpoint endpoint = new Endpoint();
 
-        endpoint.setAddress(serverPlatformURLRoot);
+        endpoint.setNetworkAddress(serverPlatformURLRoot);
         endpoint.setDisplayName(serverName);
         endpoint.setQualifiedName(serverName);
 
         connection.setEndpoint(endpoint);
         connection.setConnectorType(getConnectorType(SpringRESTClientConnectorProvider.class.getName()));
-        connection.setQualifiedName(endpoint.getAddress());
+        connection.setQualifiedName(endpoint.getNetworkAddress());
 
         connection.setUserId(userId);
         connection.setClearPassword(password);

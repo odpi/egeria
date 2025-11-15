@@ -18,7 +18,8 @@ public enum AtlasDeployedImplementationType implements DeployedImplementationTyp
     /**
      * A data catalog for the Hadoop ecosystem.
      */
-    APACHE_ATLAS_SERVER("Apache Atlas Server",
+    APACHE_ATLAS_SERVER("234a0b86-fb96-409a-92df-e550a4c089d5",
+                        "Apache Atlas Server",
                         DeployedImplementationType.METADATA_SERVER,
                         OpenMetadataType.SOFTWARE_SERVER.typeName,
                         null,
@@ -51,6 +52,7 @@ public enum AtlasDeployedImplementationType implements DeployedImplementationTyp
     }
 
 
+    private final String                               guid;
     private final String                               deployedImplementationType;
     private final DeployedImplementationTypeDefinition isATypeOf;
     private final String                               associatedTypeName;
@@ -62,6 +64,7 @@ public enum AtlasDeployedImplementationType implements DeployedImplementationTyp
     /**
      * Constructor for individual enum value.
      *
+     * @param guid unique identifier of technology type (deployedImplementationType)
      * @param deployedImplementationType value for deployedImplementationType
      * @param isATypeOf optional deployed implementation type that this type "inherits" from
      * @param associatedTypeName the open metadata type where this value is used
@@ -69,19 +72,32 @@ public enum AtlasDeployedImplementationType implements DeployedImplementationTyp
      * @param description description of the type
      * @param wikiLink url link to more information (optional)
      */
-    AtlasDeployedImplementationType(String                               deployedImplementationType,
+    AtlasDeployedImplementationType(String                               guid,
+                                    String                               deployedImplementationType,
                                     DeployedImplementationTypeDefinition isATypeOf,
                                     String                               associatedTypeName,
                                     String                               associatedClassification,
                                     String                               description,
                                     String                               wikiLink)
     {
+        this.guid = guid;
         this.deployedImplementationType = deployedImplementationType;
         this.isATypeOf = isATypeOf;
         this.associatedTypeName = associatedTypeName;
         this.associatedClassification = associatedClassification;
         this.description = description;
         this.wikiLink = wikiLink;
+    }
+
+    /**
+     * Return the guid for the deployed technology type - can be null.
+     *
+     * @return string
+     */
+    @Override
+    public String getGUID()
+    {
+        return guid;
     }
 
 

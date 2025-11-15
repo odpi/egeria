@@ -11,7 +11,6 @@ import org.odpi.openmetadata.frameworks.openmetadata.enums.ElementStatus;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.*;
 import org.odpi.openmetadata.frameworks.openmetadata.fileclassifier.FileClassifier;
 import org.odpi.openmetadata.frameworks.openmetadata.filelistener.FileDirectoryListenerInterface;
-import org.odpi.openmetadata.frameworks.openmetadata.filelistener.FileListenerInterface;
 import org.odpi.openmetadata.frameworks.openmetadata.filelistener.FilesListenerManager;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.ElementClassification;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.ElementHeader;
@@ -42,6 +41,7 @@ import java.util.Map;
 public class ConnectorContextBase
 {
     protected final PropertyHelper          propertyHelper = new PropertyHelper();
+    protected final String                  egeriaRelease  = "6.0-SNAPSHOT";
 
     protected final OpenMetadataClient      openMetadataClient;
 
@@ -90,6 +90,7 @@ public class ConnectorContextBase
     private final   MultiLanguageClient         multiLanguageClient;
     private final   NoteLogClient               noteLogClient;
     private final   ProjectClient               projectClient;
+    private final   PropertyFacetClient         propertyFacetClient;
     private final   RatingClient                ratingClient;
     private final   SchemaAttributeClient       schemaAttributeClient;
     private final   SchemaTypeClient            schemaTypeClient;
@@ -451,6 +452,17 @@ public class ConnectorContextBase
                                                auditLog,
                                                maxPageSize);
 
+        this.propertyFacetClient = new PropertyFacetClient(this,
+                                                           localServerName,
+                                                           localServiceName,
+                                                           connectorUserId,
+                                                           connectorGUID,
+                                                           externalSourceGUID,
+                                                           externalSourceName,
+                                                           openMetadataClient,
+                                                           auditLog,
+                                                           maxPageSize);
+
         this.ratingClient = new RatingClient(this,
                                              localServerName,
                                              localServiceName,
@@ -594,6 +606,37 @@ public class ConnectorContextBase
             this.connectorActivityReportWriter = null;
         }
     }
+
+    /* ========================================================
+     * Return the current Egeria release
+     */
+
+    /**
+     * Return the current release of egeria that is running.  This can be used to set up the versionIdentifier attribute
+     * or other release related values.
+     *
+     * @return string release name
+     */
+    public String getEgeriaRelease()
+    {
+        return egeriaRelease;
+    }
+
+
+    /* ========================================================
+     * Return the connectorGUID for setting up lineage relationships
+     */
+
+    /**
+     * Return the unique identifier of this connector.
+     *
+     * @return string guid
+     */
+    public String getConnectorGUID()
+    {
+        return connectorGUID;
+    }
+
 
     /*=========================
      * Return details of the metadata store that this connector is talking to
@@ -1012,6 +1055,17 @@ public class ConnectorContextBase
     public ProjectClient getProjectClient()
     {
         return projectClient;
+    }
+
+
+    /**
+     * Return the client for managing property facets.
+     *
+     * @return connector context client
+     */
+    public PropertyFacetClient getPropertyFacetClient()
+    {
+        return propertyFacetClient;
     }
 
 

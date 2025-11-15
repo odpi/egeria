@@ -4,7 +4,9 @@
 package org.odpi.openmetadata.frameworks.integration.connectors;
 
 
+import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
 import org.odpi.openmetadata.frameworks.integration.properties.RequestedCatalogTarget;
+import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
 
 /**
  * An optional interface for an integration connector to implement if it needs to know
@@ -18,8 +20,12 @@ public interface CatalogTargetChangeListener
      * This catalog target has been created since the last refresh.
      *
      * @param catalogTarget new catalog target
+     * @throws ConnectorCheckedException problem starting up
+     * @throws UserNotAuthorizedException parent connector has been disconnected
      */
-    void newCatalogTarget(RequestedCatalogTarget catalogTarget);
+    void newCatalogTarget(RequestedCatalogTarget catalogTarget) throws UserNotAuthorizedException,
+                                                                       ConnectorCheckedException;
+
 
     /**
      * This catalog target has new properties.
@@ -30,10 +36,12 @@ public interface CatalogTargetChangeListener
     void updatedCatalogTarget(RequestedCatalogTarget oldCatalogTarget,
                               RequestedCatalogTarget newCatalogTarget);
 
+
     /**
      * This catalog target has been removed from the connector.
      *
      * @param catalogTarget removed relationship
+     * @throws ConnectorCheckedException problem disconnecting
      */
-    void removedCatalogTarget(RequestedCatalogTarget catalogTarget);
+    void removedCatalogTarget(RequestedCatalogTarget catalogTarget) throws ConnectorCheckedException;
 }

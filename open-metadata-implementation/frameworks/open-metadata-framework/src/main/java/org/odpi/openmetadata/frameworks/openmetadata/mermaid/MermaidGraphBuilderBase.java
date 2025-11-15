@@ -183,22 +183,6 @@ public class MermaidGraphBuilderBase
             {
                 return VisualStyle.DATA_SHARING_AGREEMENT;
             }
-            else if (OpenMetadataType.HOME_COLLECTION_CLASSIFICATION.typeName.equals(classificationName))
-            {
-                return VisualStyle.HOME_COLLECTION;
-            }
-            else if (OpenMetadataType.RESULTS_SET_CLASSIFICATION.typeName.equals(classificationName))
-            {
-                return VisualStyle.RESULTS_SET;
-            }
-            else if (OpenMetadataType.RECENT_ACCESS_COLLECTION_CLASSIFICATION.typeName.equals(classificationName))
-            {
-                return VisualStyle.RECENT_ACCESS;
-            }
-            else if (OpenMetadataType.WORK_ITEM_LIST_COLLECTION_CLASSIFICATION.typeName.equals(classificationName))
-            {
-                return VisualStyle.WORK_ITEM_LIST;
-            }
         }
 
         return null;
@@ -231,36 +215,7 @@ public class MermaidGraphBuilderBase
             {
                 return true;
             }
-            else if (OpenMetadataType.OBJECT_IDENTIFIER_CLASSIFICATION.typeName.equals(classificationName))
-            {
-                return true;
-            }
-            else if (OpenMetadataType.HOME_COLLECTION_CLASSIFICATION.typeName.equals(classificationName))
-            {
-                return true;
-            }
-            else if (OpenMetadataType.RESULTS_SET_CLASSIFICATION.typeName.equals(classificationName))
-            {
-                return true;
-            }
-            else if (OpenMetadataType.RECENT_ACCESS_COLLECTION_CLASSIFICATION.typeName.equals(classificationName))
-            {
-                return true;
-            }
-            else if (OpenMetadataType.WORK_ITEM_LIST_COLLECTION_CLASSIFICATION.typeName.equals(classificationName))
-            {
-                return true;
-            }
-            else if (OpenMetadataType.NAMESPACE_COLLECTION_CLASSIFICATION.typeName.equals(classificationName))
-            {
-                return true;
-            }
-            else if (OpenMetadataType.EVENT_SET_COLLECTION.typeName.equals(classificationName))
-            {
-                return true;
-            }
-
-            else return OpenMetadataType.CONTEXT_EVENT_COLLECTION_CLASSIFICATION.typeName.equals(classificationName);
+            else return  (OpenMetadataType.OBJECT_IDENTIFIER_CLASSIFICATION.typeName.equals(classificationName));
         }
 
         return false;
@@ -880,6 +835,22 @@ public class MermaidGraphBuilderBase
         if (propertyHelper.isTypeOf(elementControlHeader, OpenMetadataType.INFORMATION_SUPPLY_CHAIN.typeName))
         {
             return VisualStyle.INFORMATION_SUPPLY_CHAIN;
+        }
+        else if (propertyHelper.isTypeOf(elementControlHeader, OpenMetadataType.HOME_COLLECTION.typeName))
+        {
+            return VisualStyle.HOME_COLLECTION;
+        }
+        else if (propertyHelper.isTypeOf(elementControlHeader, OpenMetadataType.RESULTS_SET_COLLECTION.typeName))
+        {
+            return VisualStyle.RESULTS_SET;
+        }
+        else if (propertyHelper.isTypeOf(elementControlHeader, OpenMetadataType.RECENT_ACCESS_COLLECTION.typeName))
+        {
+            return VisualStyle.RECENT_ACCESS;
+        }
+        else if (propertyHelper.isTypeOf(elementControlHeader, OpenMetadataType.WORK_ITEM_LIST_COLLECTION.typeName))
+        {
+            return VisualStyle.WORK_ITEM_LIST;
         }
         if (propertyHelper.isTypeOf(elementControlHeader, OpenMetadataType.SOLUTION_BLUEPRINT.typeName))
         {

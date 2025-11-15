@@ -1264,6 +1264,7 @@ public abstract class ContentPackBaseArchiveWriter extends EgeriaBaseArchiveWrit
     /**
      * Add a new valid values record for a deployed implementation type.
      *
+     * @param guid unique identifier of technology type (deployedImplementationType)
      * @param deployedImplementationType preferred value
      * @param associatedTypeName         specific type name to tie it to (maybe null)
      * @param qualifiedName              qualifiedName for this value
@@ -1272,7 +1273,8 @@ public abstract class ContentPackBaseArchiveWriter extends EgeriaBaseArchiveWrit
      * @param isATypeOf                  superType
      * @return unique identifier of the deployedImplementationType
      */
-    protected String addDeployedImplementationType(String                               deployedImplementationType,
+    protected String addDeployedImplementationType(String                               guid,
+                                                   String                               deployedImplementationType,
                                                    String                               associatedTypeName,
                                                    String                               qualifiedName,
                                                    String                               description,
@@ -1287,6 +1289,15 @@ public abstract class ContentPackBaseArchiveWriter extends EgeriaBaseArchiveWrit
         Map<String, String> additionalProperties = new HashMap<>();
 
         additionalProperties.put(OpenMetadataProperty.OPEN_METADATA_TYPE_NAME.name, associatedTypeName);
+
+        /*
+         * Not all deployed implementation types have fixed guids. The GUID is typically fixed to use it, say,
+         *  for anchorScopeGUID.
+         */
+        if (guid != null)
+        {
+            archiveHelper.setGUID(qualifiedName, guid);
+        }
 
         String validValueGUID = this.archiveHelper.addValidValue(null,
                                                                  parentSetGUID,

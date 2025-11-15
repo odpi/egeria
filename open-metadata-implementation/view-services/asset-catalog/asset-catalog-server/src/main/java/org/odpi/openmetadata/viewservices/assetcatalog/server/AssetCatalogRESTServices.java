@@ -210,9 +210,9 @@ public class AssetCatalogRESTServices extends TokenController
      * PropertyServerException there is a problem access in the property server or
      * UserNotAuthorizedException the user does not have access to the properties
      */
-    public OpenMetadataRootElementsResponse getAssetsByMetadataCollectionId(String            serverName,
-                                                                            String            metadataCollectionId,
-                                                                            FilterRequestBody requestBody)
+    public OpenMetadataRootElementsResponse getAssetsByMetadataCollectionId(String             serverName,
+                                                                            String             metadataCollectionId,
+                                                                            ResultsRequestBody requestBody)
     {
         final String methodName = "getAssetsByMetadataCollectionId";
 

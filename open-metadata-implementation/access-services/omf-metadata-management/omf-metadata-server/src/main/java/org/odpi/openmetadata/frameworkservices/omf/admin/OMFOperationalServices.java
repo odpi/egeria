@@ -86,7 +86,7 @@ public class OMFOperationalServices extends AccessServiceAdmin
                                                                                             AccessServiceDescription.OMF_METADATA_MANAGEMENT.getServiceName(),
                                                                                             actionDescription);
                 eventPublisher = new OpenMetadataOutTopicPublisher(outTopicServerConnector,
-                                                                   endpoint.getAddress(),
+                                                                   endpoint.getNetworkAddress(),
                                                                    outTopicAuditLog,
                                                                    enterpriseOMRSRepositoryConnector.getRepositoryHelper(),
                                                                    AccessServiceDescription.OMF_METADATA_MANAGEMENT.getServiceName(),

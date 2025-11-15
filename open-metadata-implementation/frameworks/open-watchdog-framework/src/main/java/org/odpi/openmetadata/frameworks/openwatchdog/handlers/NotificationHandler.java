@@ -78,6 +78,7 @@ public class NotificationHandler extends GovernanceDefinitionHandler
                                             guidParameterName,
                                             1,
                                             OpenMetadataType.MONITORED_RESOURCE_RELATIONSHIP.typeName,
+                                            OpenMetadataType.REFERENCEABLE.typeName,
                                             queryOptions,
                                             methodName);
     }
@@ -299,6 +300,7 @@ public class NotificationHandler extends GovernanceDefinitionHandler
                                             guidParameterName,
                                             1,
                                             OpenMetadataType.NOTIFICATION_SUBSCRIBER_RELATIONSHIP.typeName,
+                                            OpenMetadataType.REFERENCEABLE.typeName,
                                             queryOptions,
                                             methodName);
     }

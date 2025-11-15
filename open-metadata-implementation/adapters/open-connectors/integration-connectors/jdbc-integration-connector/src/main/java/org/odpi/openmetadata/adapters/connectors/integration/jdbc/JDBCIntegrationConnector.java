@@ -2,278 +2,38 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.adapters.connectors.integration.jdbc;
 
-import org.odpi.openmetadata.adapters.connectors.integration.jdbc.ffdc.JDBCIntegrationConnectorAuditCode;
-import org.odpi.openmetadata.adapters.connectors.integration.jdbc.transfer.JdbcMetadata;
-import org.odpi.openmetadata.adapters.connectors.integration.jdbc.transfer.JdbcMetadataTransfer;
-import org.odpi.openmetadata.adapters.connectors.integration.jdbc.transfer.customization.TransferCustomizations;
-import org.odpi.openmetadata.adapters.connectors.resource.jdbc.JDBCResourceConnector;
 import org.odpi.openmetadata.frameworks.connectors.Connector;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
-import org.odpi.openmetadata.frameworks.integration.connectors.CatalogTargetIntegrator;
-import org.odpi.openmetadata.frameworks.integration.connectors.IntegrationConnectorBase;
+import org.odpi.openmetadata.frameworks.integration.connectors.DynamicIntegrationConnectorBase;
+import org.odpi.openmetadata.frameworks.integration.context.CatalogTargetContext;
 import org.odpi.openmetadata.frameworks.integration.properties.RequestedCatalogTarget;
-import org.odpi.openmetadata.frameworks.openmetadata.connectorcontext.AssetClient;
-import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.OpenMetadataRootElement;
-import org.odpi.openmetadata.frameworks.openmetadata.properties.ReferenceableProperties;
-import org.odpi.openmetadata.frameworks.openmetadata.search.PropertyHelper;
-import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
-
-import java.sql.Connection;
-import java.sql.DatabaseMetaData;
-import java.sql.SQLException;
-import java.util.Map;
+import org.odpi.openmetadata.frameworks.opengovernance.properties.CatalogTarget;
+import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
 
 
 
 /**
  * JDBCIntegrationConnector supports the cataloguing of database schema via the JDBC interface.
  */
-public class JDBCIntegrationConnector extends IntegrationConnectorBase implements CatalogTargetIntegrator
+public class JDBCIntegrationConnector extends DynamicIntegrationConnectorBase
 {
-    final PropertyHelper propertyHelper = new PropertyHelper();
-
     /**
-     * Requests that the connector does a comparison of the metadata in the third party technology and open metadata repositories.
-     * Refresh is called when the integration connector first starts and then at intervals defined in the connector's configuration
-     * as well as any external REST API calls to explicitly refresh the connector.
-     * @throws ConnectorCheckedException there is a problem within the connector.
+     * Create a new catalog target processor (typically inherits from CatalogTargetProcessorBase).
+     *
+     * @param retrievedCatalogTarget details of the open metadata elements describing the catalog target
+     * @param catalogTargetContext   specialized context for this catalog target
+     * @param connectorToTarget      connector to access the target resource
+     * @return new processor based on the catalog target information
+     * @throws ConnectorCheckedException  there is a problem with setting up the catalog target.
+     * @throws UserNotAuthorizedException the connector has been disconnected
      */
     @Override
-    public void refresh() throws ConnectorCheckedException
+    public RequestedCatalogTarget getNewRequestedCatalogTargetSkeleton(CatalogTarget retrievedCatalogTarget, CatalogTargetContext catalogTargetContext, Connector connectorToTarget) throws ConnectorCheckedException, UserNotAuthorizedException
     {
-        final String methodName = "refresh";
-
-        if ((embeddedConnectors != null) && (!embeddedConnectors.isEmpty()))
-        {
-            for (Connector embeddedConnector : embeddedConnectors)
-            {
-                if (embeddedConnector instanceof JDBCResourceConnector jdbcResourceConnector)
-                {
-                    try
-                    {
-                        refreshDatabase(jdbcResourceConnector,
-                                        jdbcResourceConnector.getConnection().getDisplayName(),
-                                        null,
-                                        connectionBean.getConfigurationProperties());
-                    }
-                    catch (ConnectorCheckedException exception)
-                    {
-                        throw exception;
-                    }
-                    catch (Exception exception)
-                    {
-                        auditLog.logException(methodName,
-                                              JDBCIntegrationConnectorAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(connectorName,
-                                                                                                                          exception.getClass().getName(),
-                                                                                                                          methodName,
-                                                                                                                          jdbcResourceConnector.getConnection().getDisplayName(),
-                                                                                                                          exception.getMessage()),
-                                              exception);
-                    }
-                }
-            }
-        }
-
-        this.refreshCatalogTargets(this);
-    }
-
-
-    /**
-     * Perform the required integration logic for the assigned catalog target.
-     *
-     * @param requestedCatalogTarget the catalog target
-     * @throws ConnectorCheckedException there is an unrecoverable error and the connector should stop processing.
-     */
-    @Override
-    public void integrateCatalogTarget(RequestedCatalogTarget requestedCatalogTarget) throws ConnectorCheckedException
-    {
-        final String methodName = "integrateCatalogTarget";
-
-        if (propertyHelper.isTypeOf(requestedCatalogTarget.getCatalogTargetElement().getElementHeader(), OpenMetadataType.RELATIONAL_DATABASE.typeName))
-        {
-            String databaseGUID = requestedCatalogTarget.getCatalogTargetElement().getElementHeader().getGUID();
-            String databaseName = null;
-
-            if (requestedCatalogTarget.getCatalogTargetElement().getProperties() instanceof ReferenceableProperties referenceableProperties)
-            {
-                databaseName = referenceableProperties.getQualifiedName();
-            }
-
-            try
-            {
-                AssetClient     databaseClient = integrationContext.getAssetClient(OpenMetadataType.DATABASE.typeName);
-
-                OpenMetadataRootElement databaseElement = databaseClient.getAssetByGUID(databaseGUID, databaseClient.getGetOptions());
-
-                Connector connector = integrationContext.getConnectedAssetContext().getConnectorForAsset(databaseGUID, auditLog);
-
-                JDBCResourceConnector assetConnector = (JDBCResourceConnector)connector;
-
-                assetConnector.start();
-
-                refreshDatabase(assetConnector,
-                                databaseName,
-                                databaseElement,
-                                requestedCatalogTarget.getConfigurationProperties());
-            }
-            catch (Exception exception)
-            {
-                auditLog.logException(methodName,
-                                      JDBCIntegrationConnectorAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(connectorName,
-                                                                                                                  exception.getClass().getName(),
-                                                                                                                  methodName,
-                                                                                                                  exception.getMessage()),
-                                      exception);
-            }
-        }
-        else
-        {
-            super.throwWrongTypeOfAsset(requestedCatalogTarget.getCatalogTargetElement().getElementHeader().getGUID(),
-                                        requestedCatalogTarget.getCatalogTargetElement().getElementHeader().getType().getTypeName(),
-                                        OpenMetadataType.RELATIONAL_DATABASE.typeName,
-                                        connectorName,
-                                        methodName);
-        }
-    }
-
-
-    /**
-     * Refresh a single database.
-     *
-     * @param jdbcResourceConnector connector to the database
-     * @param databaseName qualified name of the database
-     * @param configurationProperties configuration properties for the database
-     */
-    public void refreshDatabase(JDBCResourceConnector jdbcResourceConnector,
-                                String                databaseName,
-                                OpenMetadataRootElement          databaseElement,
-                                Map<String, Object>   configurationProperties) throws ConnectorCheckedException
-    {
-        final String methodName = "JDBCIntegrationConnector.refresh";
-
-        auditLog.logMessage(methodName,
-                            JDBCIntegrationConnectorAuditCode.STARTING_METADATA_TRANSFER.getMessageDefinition(connectorName,
-                                                                                                              databaseName));
-
-        Connection connection = this.connectToDatabase(databaseName, jdbcResourceConnector);
-
-        if (connection != null)
-        {
-            try
-            {
-                /*
-                 * This object gives access to the metadata catalog.
-                 */
-                DatabaseMetaData databaseMetaData = connection.getMetaData();
-
-                /*
-                 * This method checks that the catalog is accessible.
-                 * The aim is to force an error before going much further.
-                 */
-                databaseMetaData.getCatalogs();
-
-                /*
-                 * Extract the meaningful values from the configuration properties.
-                 */
-                TransferCustomizations transferCustomizations = new TransferCustomizations(configurationProperties);
-
-                /*
-                 * Create the object that does all the work.
-                 */
-                String address = jdbcResourceConnector.getConnection().getEndpoint().getAddress();
-                String catalog = "";
-
-                if (configurationProperties.get("catalog") != null)
-                {
-                    catalog = configurationProperties.get("catalog").toString();
-                }
-
-                JdbcMetadataTransfer jdbcMetadataTransfer = new JdbcMetadataTransfer(new JdbcMetadata(databaseMetaData),
-                                                                                     integrationContext,
-                                                                                     databaseElement,
-                                                                                     address,
-                                                                                     catalog,
-                                                                                     transferCustomizations,
-                                                                                     auditLog);
-
-                /*
-                 * Extract metadata.
-                 */
-                jdbcMetadataTransfer.execute();
-
-                auditLog.logMessage(methodName, JDBCIntegrationConnectorAuditCode.EXITING_ON_COMPLETE.getMessageDefinition(connectorName, databaseName));
-            }
-            catch (SQLException sqlException)
-            {
-                auditLog.logException(methodName,
-                                      JDBCIntegrationConnectorAuditCode.EXCEPTION_READING_JDBC.getMessageDefinition(methodName, sqlException.getMessage()),
-                                      sqlException);
-            }
-            catch (Exception exception)
-            {
-                auditLog.logException(methodName,
-                                      JDBCIntegrationConnectorAuditCode.UNEXPECTED_EXCEPTION.getMessageDefinition(connectorName,
-                                                                                                                  exception.getClass().getName(),
-                                                                                                                  methodName,
-                                                                                                                  databaseName,
-                                                                                                                  exception.getMessage()),
-                                      exception);
-            }
-
-            close(connection);
-        }
-    }
-
-
-    /**
-     * Connect to the database.
-     *
-     * @param jdbcResourceConnector connector to the database
-     * @return JDBC database connection
-     */
-    private Connection connectToDatabase(String                databaseName,
-                                         JDBCResourceConnector jdbcResourceConnector)
-    {
-        final String methodName = "connectToDatabase";
-
-        try
-        {
-            return jdbcResourceConnector.getDataSource().getConnection();
-        }
-        catch (SQLException sqlException)
-        {
-            auditLog.logException(methodName,
-                                  JDBCIntegrationConnectorAuditCode.CONNECTION_FAILED.getMessageDefinition(connectorName,
-                                                                                                           databaseName,
-                                                                                                           sqlException.getClass().getName(),
-                                                                                                           sqlException.getMessage()),
-                                  sqlException);
-        }
-
-        return null;
-    }
-
-
-    /**
-     * Work has completed, close the database connection.
-     *
-     * @param connection database connection
-     */
-    public void close(Connection connection)
-    {
-        String methodName = "close";
-        try
-        {
-            connection.commit();
-            if (!connection.isClosed())
-            {
-                connection.close();
-            }
-        }
-        catch (SQLException sqlException)
-        {
-            auditLog.logException("Closing connection to database server",
-                                  JDBCIntegrationConnectorAuditCode.EXCEPTION_READING_JDBC.getMessageDefinition(methodName, sqlException.getMessage()), sqlException);
-        }
+        return new JDBCIntegrationCatalogTargetProcessor(retrievedCatalogTarget,
+                                                         catalogTargetContext,
+                                                         connectorToTarget,
+                                                         connectorName,
+                                                         auditLog);
     }
 }

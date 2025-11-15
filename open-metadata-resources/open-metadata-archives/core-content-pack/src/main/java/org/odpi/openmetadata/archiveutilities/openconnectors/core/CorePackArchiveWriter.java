@@ -387,7 +387,8 @@ public class CorePackArchiveWriter extends ContentPackBaseArchiveWriter
          */
         for (DeployedImplementationType deployedImplementationType : DeployedImplementationType.values())
         {
-            this.addDeployedImplementationType(deployedImplementationType.getDeployedImplementationType(),
+            this.addDeployedImplementationType(deployedImplementationType.getGUID(),
+                                               deployedImplementationType.getDeployedImplementationType(),
                                                deployedImplementationType.getAssociatedTypeName(),
                                                deployedImplementationType.getQualifiedName(),
                                                deployedImplementationType.getDescription(),
@@ -402,7 +403,8 @@ public class CorePackArchiveWriter extends ContentPackBaseArchiveWriter
          */
         for (EgeriaDeployedImplementationType deployedImplementationType : EgeriaDeployedImplementationType.values())
         {
-            this.addDeployedImplementationType(deployedImplementationType.getDeployedImplementationType(),
+            this.addDeployedImplementationType(deployedImplementationType.getGUID(),
+                                               deployedImplementationType.getDeployedImplementationType(),
                                                deployedImplementationType.getAssociatedTypeName(),
                                                deployedImplementationType.getQualifiedName(),
                                                deployedImplementationType.getDescription(),
@@ -422,7 +424,8 @@ public class CorePackArchiveWriter extends ContentPackBaseArchiveWriter
         {
             if (commonServicesDescription.getServiceDevelopmentStatus() != ComponentDevelopmentStatus.DEPRECATED)
             {
-                String guid = this.addDeployedImplementationType(commonServicesDescription.getServiceName(),
+                String guid = this.addDeployedImplementationType(null,
+                                                                 commonServicesDescription.getServiceName(),
                                                                  OpenMetadataType.SOFTWARE_SERVICE.typeName,
                                                                  commonServicesDescription.getServiceDescription(),
                                                                  commonServicesDescription.getServiceWiki());
@@ -438,7 +441,8 @@ public class CorePackArchiveWriter extends ContentPackBaseArchiveWriter
         {
             if (governanceServicesDescription.getServiceDevelopmentStatus() != ComponentDevelopmentStatus.DEPRECATED)
             {
-                String guid = this.addDeployedImplementationType(governanceServicesDescription.getServiceName(),
+                String guid = this.addDeployedImplementationType(null,
+                                                                 governanceServicesDescription.getServiceName(),
                                                                  OpenMetadataType.SOFTWARE_SERVICE.typeName,
                                                                  governanceServicesDescription.getServiceDescription(),
                                                                  governanceServicesDescription.getServiceWiki());
@@ -456,7 +460,8 @@ public class CorePackArchiveWriter extends ContentPackBaseArchiveWriter
         {
             if (accessServiceDescription.getServiceDevelopmentStatus() != ComponentDevelopmentStatus.DEPRECATED)
             {
-                String guid = this.addDeployedImplementationType(accessServiceDescription.getServiceName(),
+                String guid = this.addDeployedImplementationType(null,
+                                                                 accessServiceDescription.getServiceName(),
                                                                  OpenMetadataType.SOFTWARE_SERVICE.typeName,
                                                                  accessServiceDescription.getServiceDescription(),
                                                                  accessServiceDescription.getServiceWiki());
@@ -479,7 +484,8 @@ public class CorePackArchiveWriter extends ContentPackBaseArchiveWriter
         {
             if (viewServiceDescription.getViewServiceDevelopmentStatus() != ComponentDevelopmentStatus.DEPRECATED)
             {
-                String guid = this.addDeployedImplementationType(viewServiceDescription.getViewServiceFullName(),
+                String guid = this.addDeployedImplementationType(null,
+                                                                 viewServiceDescription.getViewServiceFullName(),
                                                                  OpenMetadataType.SOFTWARE_SERVICE.typeName,
                                                                  viewServiceDescription.getViewServiceDescription(),
                                                                  viewServiceDescription.getViewServiceWiki());
@@ -506,7 +512,8 @@ public class CorePackArchiveWriter extends ContentPackBaseArchiveWriter
         {
             if (engineServiceDescription.getEngineServiceDevelopmentStatus() != ComponentDevelopmentStatus.DEPRECATED)
             {
-                String guid = this.addDeployedImplementationType(engineServiceDescription.getEngineServiceFullName(),
+                String guid = this.addDeployedImplementationType(null,
+                                                                 engineServiceDescription.getEngineServiceFullName(),
                                                                  OpenMetadataType.SOFTWARE_SERVICE.typeName,
                                                                  engineServiceDescription.getEngineServiceDescription(),
                                                                  engineServiceDescription.getEngineServiceWiki());
@@ -1004,13 +1011,15 @@ public class CorePackArchiveWriter extends ContentPackBaseArchiveWriter
     /**
      * Add a new valid values record for a deployed implementation type.
      *
+     * @param guid unique identifier of technology type (deployedImplementationType)
      * @param deployedImplementationType preferred value
      * @param associatedTypeName         specific type name to tie it to (maybe null)
      * @param description                description of this value
      * @param wikiLink                   optional URL link to more information
      * @return unique identifier of the deployedImplementationType
      */
-    private String addDeployedImplementationType(String deployedImplementationType,
+    private String addDeployedImplementationType(String guid,
+                                                 String deployedImplementationType,
                                                  String associatedTypeName,
                                                  String description,
                                                  String wikiLink)
@@ -1020,7 +1029,7 @@ public class CorePackArchiveWriter extends ContentPackBaseArchiveWriter
                                                                 null,
                                                                 deployedImplementationType);
 
-        return super.addDeployedImplementationType(deployedImplementationType, associatedTypeName, qualifiedName, description, wikiLink, null);
+        return super.addDeployedImplementationType(guid, deployedImplementationType, associatedTypeName, qualifiedName, description, wikiLink, null);
     }
 
 

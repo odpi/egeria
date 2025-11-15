@@ -3,6 +3,7 @@
 package org.odpi.openmetadata.adapters.connectors.apacheatlas.integration.modules;
 
 
+import org.odpi.openmetadata.adapters.connectors.apacheatlas.controls.AtlasDeployedImplementationType;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
 import org.odpi.openmetadata.frameworks.integration.context.IntegrationContext;
 import org.odpi.openmetadata.frameworks.openmetadata.events.OpenMetadataOutTopicEvent;
@@ -351,7 +352,10 @@ public abstract class DatabaseIntegrationModuleBase extends AtlasRegisteredInteg
                                                                         dataAssetProperties,
                                                                         null);
 
-                externalIdClient.createExternalId(egeriaDatabaseGUID, externalIdLinkProperties, externalIdentifierProperties);
+                externalIdClient.createExternalId(egeriaDatabaseGUID,
+                                                  AtlasDeployedImplementationType.APACHE_ATLAS_SERVER.getGUID(),
+                                                  externalIdLinkProperties,
+                                                  externalIdentifierProperties);
 
                 auditLog.logMessage(methodName,
                                     AtlasIntegrationAuditCode.CREATING_EGERIA_ENTITY.getMessageDefinition(connectorName,
@@ -570,7 +574,10 @@ public abstract class DatabaseIntegrationModuleBase extends AtlasRegisteredInteg
                                                                                                  schemaAttributeProperties,
                                                                                                  null);
 
-                    externalIdClient.createExternalId(egeriaDatabaseTableGUID, externalIdLinkProperties, externalIdentifierProperties);
+                    externalIdClient.createExternalId(egeriaDatabaseTableGUID,
+                                                      AtlasDeployedImplementationType.APACHE_ATLAS_SERVER.getGUID(),
+                                                      externalIdLinkProperties,
+                                                      externalIdentifierProperties);
 
                     auditLog.logMessage(methodName,
                                         AtlasIntegrationAuditCode.CREATING_EGERIA_ENTITY.getMessageDefinition(connectorName,
@@ -842,7 +849,10 @@ public abstract class DatabaseIntegrationModuleBase extends AtlasRegisteredInteg
                                                                                               schemaAttributeProperties,
                                                                                               null);
 
-                externalIdClient.createExternalId(egeriaDatabaseColumnGUID, externalIdLinkProperties, externalIdentifierProperties);
+                externalIdClient.createExternalId(egeriaDatabaseColumnGUID,
+                                                  AtlasDeployedImplementationType.APACHE_ATLAS_SERVER.getGUID(),
+                                                  externalIdLinkProperties,
+                                                  externalIdentifierProperties);
 
                 auditLog.logMessage(methodName,
                                     AtlasIntegrationAuditCode.CREATING_EGERIA_ENTITY.getMessageDefinition(connectorName,

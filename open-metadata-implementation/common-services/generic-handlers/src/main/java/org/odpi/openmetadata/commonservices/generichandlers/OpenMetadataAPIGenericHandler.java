@@ -1953,7 +1953,7 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIAnchorHandl
                                                                   methodName);
         properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                   properties,
-                                                                  OpenMetadataProperty.ACTION_DESCRIPTION.name,
+                                                                  OpenMetadataProperty.DESCRIPTION.name,
                                                                   actionDescription,
                                                                   methodName);
 

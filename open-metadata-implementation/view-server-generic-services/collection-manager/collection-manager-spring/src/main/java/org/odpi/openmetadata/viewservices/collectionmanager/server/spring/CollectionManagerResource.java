@@ -1061,7 +1061,7 @@ public class CollectionManagerResource
                                          @PathVariable String             urlMarker,
                                          @PathVariable String          collectionGUID,
                                          @RequestBody(required = false)
-                                             DeleteRelationshipRequestBody requestBody)
+                                             DeleteElementRequestBody requestBody)
     {
         return restAPI.deleteCollection(serverName, urlMarker, collectionGUID, requestBody);
     }
@@ -1220,7 +1220,8 @@ public class CollectionManagerResource
                                              @PathVariable String                    urlMarker,
                                              @PathVariable String                    collectionGUID,
                                              @PathVariable String                    elementGUID,
-                                             @RequestBody DeleteRelationshipRequestBody requestBody)
+                                             @RequestBody(required = false)
+                                                 DeleteRelationshipRequestBody requestBody)
     {
         return restAPI.removeFromCollection(serverName, urlMarker, collectionGUID, elementGUID, requestBody);
     }

@@ -66,6 +66,7 @@ public class ExternalIdClient extends ConnectorContextClientBase
      * Create a new externalId.  It is linked to its scope as long as externalSourceGUID is not null.
      *
      * @param elementGUID element that the external id is for
+     * @param anchorScopeGUID broad search scope - typically server technology type GUID
      * @param externalIdLinkProperties properties for the relationship
      * @param externalIdProperties properties for the external Id itself.
      *
@@ -74,6 +75,7 @@ public class ExternalIdClient extends ConnectorContextClientBase
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public void createExternalId(String                   elementGUID,
+                                 String                   anchorScopeGUID,
                                  ExternalIdLinkProperties externalIdLinkProperties,
                                  ExternalIdProperties     externalIdProperties) throws InvalidParameterException,
                                                                                        PropertyServerException,
@@ -83,6 +85,7 @@ public class ExternalIdClient extends ConnectorContextClientBase
 
         newElementOptions.setIsOwnAnchor(false);
         newElementOptions.setAnchorGUID(elementGUID);
+        newElementOptions.setAnchorScopeGUID(anchorScopeGUID);
         newElementOptions.setParentGUID(elementGUID);
         newElementOptions.setParentAtEnd1(true);
         newElementOptions.setParentRelationshipTypeName(OpenMetadataType.EXTERNAL_ID_LINK_RELATIONSHIP.typeName);
@@ -323,6 +326,24 @@ public class ExternalIdClient extends ConnectorContextClientBase
         }
 
         return null;
+    }
+
+    /**
+     * Confirm that this element has been synchronized at this time.
+     *
+     * @param metadataElement starting element
+     * @param externalKey unique identifier of the external element
+     *
+     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * @throws PropertyServerException    there is a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public void confirmSynchronization(OpenMetadataRootElement metadataElement,
+                                       String                  externalKey) throws InvalidParameterException,
+                                                                                   PropertyServerException,
+                                                                                   UserNotAuthorizedException
+    {
+        this.confirmSynchronization(metadataElement, externalSourceGUID, externalKey);
     }
 
 

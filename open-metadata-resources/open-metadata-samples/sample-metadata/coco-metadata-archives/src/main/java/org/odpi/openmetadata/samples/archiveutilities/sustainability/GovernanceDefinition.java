@@ -17,6 +17,7 @@ public enum GovernanceDefinition
 {
     SUSTAINABILITY_TREAT("4552f777-65d6-4706-b4bf-e9177660de88",
                          OpenMetadataType.THREAT.typeName,
+                         "SUSTAINABILITY_01",
                          "The price of ignoring sustainability",
                          "A poor record of sustainable operations will affect Coco Pharmaceuticals credit rating",
                          "Increasingly, financial institutions are viewing organizations with a lack of focus in sustainability as a poor risk for the future.",
@@ -30,6 +31,7 @@ public enum GovernanceDefinition
 
     CSRD_REGULATION("2ba17e3c-825a-409b-928f-d0e46e741c11",
                     OpenMetadataType.REGULATION.typeName,
+                    "SUSTAINABILITY_02",
                     "Corporate Sustainability Reporting Directive (CSRD)",
                     "Details of the types of reporting that organizations must produce.",
                     null,
@@ -43,6 +45,7 @@ public enum GovernanceDefinition
 
     SUSTAINABILITY_STRATEGY("667c6480-a90a-4fd4-9022-8da646e203d2",
                             OpenMetadataType.GOVERNANCE_STRATEGY.typeName,
+                            "SUSTAINABILITY_03",
                             "Operate Coco Pharmaceuticals in an increasingly sustainable way",
                             "Create a company wide sustainability initiative with rewards.",
                             "Use sustainability regulations to develop a program of education and initiatives that are designed to improve Coco's sustainability measurements with rewards for effective actions.",
@@ -61,6 +64,7 @@ public enum GovernanceDefinition
 
     GREENHOUSE_GASES_APPROACH("a68bd5ca-ec15-4f16-9cdc-b76735c35281",
                               OpenMetadataType.GOVERNANCE_APPROACH.typeName,
+                              "SUSTAINABILITY_04",
                               "Measure harmful emissions",
                               "Use the greenhouse gas protocol to measure and manage harmful emissions.",
                               "The greenhouse gas protocol (GHG) provides a staged approach to assessing the level of harmful emission caused by Coco's operations.  This allows the organization to understand its contribution to climate change and identify where the best place to focus on reducing the effect.",
@@ -74,6 +78,7 @@ public enum GovernanceDefinition
 
     AVOID_HARMFUL_MATERIALS("ed004f39-ab6e-47d7-bdc3-4fbaca213a07",
                             OpenMetadataType.GOVERNANCE_PRINCIPLE.typeName,
+                            "SUSTAINABILITY_05",
                             "Avoid using harmful materials",
                             "Avoid using materials that are known to be harmful to environment",
                             "Locate harmful materials, seek alternatives and switch.",
@@ -87,6 +92,7 @@ public enum GovernanceDefinition
 
     NEW_SUSTAINABILITY_DOMAIN("334fc1df-692a-4960-bbff-343bf7c486d2",
                               OpenMetadataType.GOVERNANCE_APPROACH.typeName,
+                              "SUSTAINABILITY_06",
                               "New Sustainability Governance Domain",
                               "Set up a new governance domain for sustainability to educate and drive action.",
                               "The new governance domain would provide a focal point for education, initiatives and awards that improve the sustainability of Coco Pharmaceuticals. particularly where cross-organizational collaboration is required.  It will include a leader, a community of advocates and location leaders to help drive initiatives across the organization",
@@ -100,6 +106,7 @@ public enum GovernanceDefinition
 
     SUSTAINABILITY_LEADER_RESPONSIBILITY("27646717-3f23-496e-b35c-2772de3adfff",
                                          OpenMetadataType.GOVERNANCE_RESPONSIBILITY.typeName,
+                                         "SUSTAINABILITY_07",
                                          "Sustainability leadership",
                                          "Lead the sustainability governance domain",
                                          "Lead the community of people who are identified as having responsibility for an aspect of sustainability.  Identify new initiatives and help to get them funded and underway.  Encourage an open conversation about sustainability at all levels of the company.",
@@ -113,6 +120,7 @@ public enum GovernanceDefinition
 
     SUSTAINABILITY_CHAMPION_RESPONSIBILITY("b73fb3aa-f964-4118-9797-81e222a858ce",
                                            OpenMetadataType.GOVERNANCE_RESPONSIBILITY.typeName,
+                                           "SUSTAINABILITY_08",
                                            "Sustainability Champion",
                                            "Lead the local team(s) on their sustainability events and initiatives.",
                                            "Provide education and guidance to the people from the assigned business area on improving the sustainability of its operation.",
@@ -126,6 +134,7 @@ public enum GovernanceDefinition
 
     SUSTAINABILITY_TECHNOLOGY_LEAD_RESPONSIBILITY("13a8b144-5f86-4197-9ea0-5aae95dc793e",
                                                   OpenMetadataType.GOVERNANCE_RESPONSIBILITY.typeName,
+                                                  "SUSTAINABILITY_09",
                                                   "Deliver Sustainability Reporting Capability",
                                                   "Operate an information supply chain to measure and monitor Coco Pharmaceuticals' operations for sustainability.",
                                                   null,
@@ -139,6 +148,7 @@ public enum GovernanceDefinition
 
     REMOVE_BAD_COOLING_UNITS("c4635d92-2082-4e01-a92a-f3714ff7a65f",
                              OpenMetadataType.GOVERNANCE_RESPONSIBILITY.typeName,
+                             "SUSTAINABILITY_10",
                              "Eliminate CFC/HFC Cooling Units",
                              "Identify and Replace cooling units using CFCs and HFCs.",
                              null,
@@ -156,7 +166,8 @@ public enum GovernanceDefinition
 
     private final String          guid;
     private final String          type;
-    private final String          title;
+    private final String          identifier;
+    private final String          displayName;
     private final String          summary;
     private final String          description;
     private final String          importance;
@@ -173,7 +184,8 @@ public enum GovernanceDefinition
      *
      * @param guid            unique id for the enum
      * @param type           governance definition type
-     * @param title          title the enum
+     * @param identifier          identifier of the enum
+     * @param displayName          title  of the enum
      * @param summary        short description for the enum
      * @param description description of this definition
      * @param importance importance of this definition
@@ -186,7 +198,8 @@ public enum GovernanceDefinition
      */
     GovernanceDefinition(String          guid,
                          String          type,
-                         String          title,
+                         String          identifier,
+                         String          displayName,
                          String          summary,
                          String          description,
                          String          importance,
@@ -199,7 +212,8 @@ public enum GovernanceDefinition
     {
         this.guid         = guid;
         this.type         = type;
-        this.title        = title;
+        this.identifier   = identifier;
+        this.displayName  = displayName;
         this.summary      = summary;
         this.description  = description;
         this.importance   = importance;
@@ -213,7 +227,7 @@ public enum GovernanceDefinition
 
     public String getQualifiedName()
     {
-        return type + "::" + title;
+        return type + "::" + displayName;
     }
 
 
@@ -227,7 +241,12 @@ public enum GovernanceDefinition
         return type;
     }
 
-    public String getTitle() { return title;
+    public String getIdentifier()
+    {
+        return identifier;
+    }
+
+    public String getDisplayName() { return displayName;
     }
     public String getSummary()
     {

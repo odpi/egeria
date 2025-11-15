@@ -27,12 +27,22 @@ import org.odpi.openmetadata.frameworks.auditlog.messagesets.ExceptionMessageSet
 public enum KafkaIntegrationConnectorErrorCode implements ExceptionMessageSet
 {
     /**
+     * APACHE-KAFKA-INTEGRATION-CONNECTOR-400-001 - The {0} integration connector is unable to proceed processing catalog target {0} ({1}) because it has no event broker capability attached.
+     */
+    MISSING_EVENT_BROKER(400, "APACHE-KAFKA-INTEGRATION-CONNECTOR-400-001",
+                         "The {0} integration connector is unable to proceed processing catalog target {0} ({1}) because it has no event broker capability attached.",
+                         "The connector is unable to catalog one or more topics because it has no event broker to connect it to.",
+                         "Add an event broker to the server definition."),
+
+
+    /**
      * APACHE-KAFKA-INTEGRATION-CONNECTOR-500-001 - The {0} integration connector received an unexpected exception {1} when cataloguing topics; the error message was: {2}
      */
     UNEXPECTED_EXCEPTION(500, "APACHE-KAFKA-INTEGRATION-CONNECTOR-500-001",
              "The {0} integration connector received an unexpected exception {1} when cataloguing topics; the error message was: {2}",
              "The connector is unable to catalog one or more topics.",
              "Use the details from the error message to determine the cause of the error and retry the request once it is resolved."),
+
     ;
 
 

@@ -18,28 +18,20 @@ public enum EgeriaDeployedImplementationType implements DeployedImplementationTy
     /**
      * An Open Metadata and Governance (OMAG) platform for running one to many OMAG Servers.
      */
-    OMAG_SERVER_PLATFORM("OMAG Server Platform",
+    OMAG_SERVER_PLATFORM("e76e450d-9533-4e98-b83d-c3ea7f8b0a08",
+                         "OMAG Server Platform",
                          DeployedImplementationType.SOFTWARE_SERVER,
                          OpenMetadataType.SOFTWARE_SERVER_PLATFORM.typeName,
                          null,
                          "An Open Metadata and Governance (OMAG) runtime for running one to many OMAG Servers.",
                          "https://egeria-project.org/concepts/omag-server-platform/"),
 
-    /**
-     * An Open Metadata and Governance (OMAG) runtime for running a single OMAG Server.
-     */
-    OMAG_SERVER_RUNTIME("OMAG Server Runtime",
-                        DeployedImplementationType.SOFTWARE_SERVER,
-                        OpenMetadataType.SOFTWARE_SERVER_PLATFORM.typeName,
-                        null,
-                        "An Open Metadata and Governance (OMAG) runtime for running a single OMAG Server.",
-                        "https://egeria-project.org/concepts/omag-server-runtime/"),
-
 
     /**
      * An Open Metadata and Governance (OMAG) Server.
      */
-    OMAG_SERVER("OMAG Server",
+    OMAG_SERVER("91abf546-f8f3-4d51-aa37-8839582a3ddc",
+                "OMAG Server",
                 DeployedImplementationType.SOFTWARE_SERVER,
                 OpenMetadataType.SOFTWARE_SERVER.typeName,
                 null,
@@ -49,7 +41,8 @@ public enum EgeriaDeployedImplementationType implements DeployedImplementationTy
     /**
      * A server that runs governance engines.
      */
-    ENGINE_HOST("Engine Host",
+    ENGINE_HOST("5cd74a31-9a1f-40c6-8ce2-f0d803b76db8",
+                "Engine Host",
                 EgeriaDeployedImplementationType.OMAG_SERVER,
                 OpenMetadataType.SOFTWARE_SERVER.typeName,
                 null,
@@ -59,7 +52,8 @@ public enum EgeriaDeployedImplementationType implements DeployedImplementationTy
     /**
      * A server that runs integration connectors that synchronize metadata between different types of technologies.
      */
-    INTEGRATION_DAEMON("Integration Daemon",
+    INTEGRATION_DAEMON("b2d8d57f-df68-4280-9a41-3df830c3444f",
+                       "Integration Daemon",
                        EgeriaDeployedImplementationType.OMAG_SERVER,
                        OpenMetadataType.SOFTWARE_SERVER.typeName,
                        null,
@@ -69,7 +63,8 @@ public enum EgeriaDeployedImplementationType implements DeployedImplementationTy
     /**
      * A server that provides access to one or more open metadata repositories.
      */
-    METADATA_ACCESS_SERVER("Metadata Access Server",
+    METADATA_ACCESS_SERVER("940dda2a-e86d-4ba2-b889-500431d47f70",
+                           "Metadata Access Server",
                            EgeriaDeployedImplementationType.OMAG_SERVER,
                            OpenMetadataType.SOFTWARE_SERVER.typeName,
                            null,
@@ -79,7 +74,8 @@ public enum EgeriaDeployedImplementationType implements DeployedImplementationTy
     /**
      * A server that provides access to end user open metadata and governance services.
      */
-    VIEW_SERVER("View Server",
+    VIEW_SERVER("aa29cd35-c14a-4998-ab53-acc09a363d4b",
+                "View Server",
                 EgeriaDeployedImplementationType.OMAG_SERVER,
                 OpenMetadataType.SOFTWARE_SERVER.typeName,
                 null,
@@ -112,6 +108,7 @@ public enum EgeriaDeployedImplementationType implements DeployedImplementationTy
     }
 
 
+    private final String                               guid;
     private final String                               deployedImplementationType;
     private final DeployedImplementationTypeDefinition isATypeOf;
     private final String                               associatedTypeName;
@@ -123,6 +120,7 @@ public enum EgeriaDeployedImplementationType implements DeployedImplementationTy
     /**
      * Constructor for individual enum value.
      *
+     * @param guid unique identifier of technology type (deployedImplementationType)
      * @param deployedImplementationType value for deployedImplementationType
      * @param isATypeOf optional deployed implementation type that this type "inherits" from
      * @param associatedTypeName the open metadata type where this value is used
@@ -130,19 +128,33 @@ public enum EgeriaDeployedImplementationType implements DeployedImplementationTy
      * @param description description of the type
      * @param wikiLink url link to more information (optional)
      */
-    EgeriaDeployedImplementationType(String                               deployedImplementationType,
+    EgeriaDeployedImplementationType(String                               guid,
+                                     String                               deployedImplementationType,
                                      DeployedImplementationTypeDefinition isATypeOf,
                                      String                               associatedTypeName,
                                      String                               associatedClassification,
                                      String                               description,
                                      String                               wikiLink)
     {
+        this.guid = guid;
         this.deployedImplementationType = deployedImplementationType;
         this.isATypeOf = isATypeOf;
         this.associatedTypeName = associatedTypeName;
         this.associatedClassification = associatedClassification;
         this.description = description;
         this.wikiLink = wikiLink;
+    }
+
+
+    /**
+     * Return the guid for the deployed technology type - can be null.
+     *
+     * @return string
+     */
+    @Override
+    public String getGUID()
+    {
+        return guid;
     }
 
 

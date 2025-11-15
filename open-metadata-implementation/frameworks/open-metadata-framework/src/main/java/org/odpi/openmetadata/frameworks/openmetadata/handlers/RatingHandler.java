@@ -102,6 +102,7 @@ public class RatingHandler extends FeedbackHandler
         OpenMetadataRootElement existingRating = this.getFeedbackForUser(userId,
                                                                          elementGUID,
                                                                          OpenMetadataType.ATTACHED_RATING_RELATIONSHIP.typeName,
+                                                                         OpenMetadataType.RATING.typeName,
                                                                          new QueryOptions(metadataSourceOptions),
                                                                          methodName);
 
@@ -146,6 +147,7 @@ public class RatingHandler extends FeedbackHandler
                                             guidParameterName,
                                             1,
                                             OpenMetadataType.ATTACHED_RATING_RELATIONSHIP.typeName,
+                                            OpenMetadataType.RATING.typeName,
                                             queryOptions,
                                             methodName);
     }

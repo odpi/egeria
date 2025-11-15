@@ -161,10 +161,10 @@ public abstract class OpenLineageLogStoreConnectorBase extends IntegrationConnec
 
         Endpoint endpoint = connectionBean.getEndpoint();
 
-        if ((endpoint != null) && (endpoint.getAddress() != null))
+        if ((endpoint != null) && (endpoint.getNetworkAddress() != null))
         {
-            destinationAddresses.add(endpoint.getAddress());
-            this.newDestinationIdentified(endpoint.getAddress());
+            destinationAddresses.add(endpoint.getNetworkAddress());
+            this.newDestinationIdentified(endpoint.getNetworkAddress());
         }
 
         myContext = integrationContext;

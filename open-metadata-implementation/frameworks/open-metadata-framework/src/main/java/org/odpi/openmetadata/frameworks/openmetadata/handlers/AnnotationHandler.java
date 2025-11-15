@@ -799,6 +799,7 @@ public class AnnotationHandler extends OpenMetadataHandlerBase
                                             guidPropertyName,
                                             1,
                                             OpenMetadataType.REPORTED_ANNOTATION_RELATIONSHIP.typeName,
+                                            OpenMetadataType.ANNOTATION.typeName,
                                             queryOptions,
                                             methodName);
     }
@@ -829,6 +830,7 @@ public class AnnotationHandler extends OpenMetadataHandlerBase
                                             guidPropertyName,
                                             1,
                                             OpenMetadataType.ASSOCIATED_ANNOTATION_RELATIONSHIP.typeName,
+                                            OpenMetadataType.ANNOTATION.typeName,
                                             queryOptions,
                                             methodName);
     }
@@ -859,6 +861,7 @@ public class AnnotationHandler extends OpenMetadataHandlerBase
                                             guidPropertyName,
                                             1,
                                             OpenMetadataType.ANNOTATION_EXTENSION_RELATIONSHIP.typeName,
+                                            OpenMetadataType.ANNOTATION.typeName,
                                             queryOptions,
                                             methodName);
     }
@@ -889,6 +892,7 @@ public class AnnotationHandler extends OpenMetadataHandlerBase
                                             guidPropertyName,
                                             2,
                                             OpenMetadataType.ANNOTATION_EXTENSION_RELATIONSHIP.typeName,
+                                            OpenMetadataType.ANNOTATION.typeName,
                                             queryOptions,
                                             methodName);
     }

@@ -35,6 +35,7 @@ public interface IntegrationConnector
      * This call can be used to register with non-blocking services.
      *
      * @throws ConnectorCheckedException there is a problem within the connector.
+     * @throws UserNotAuthorizedException the connector has been disconnected
      */
     void start() throws ConnectorCheckedException, UserNotAuthorizedException;
 
@@ -57,8 +58,9 @@ public interface IntegrationConnector
      * as well as any external REST API calls to explicitly refresh the connector.
      *
      * @throws ConnectorCheckedException there is a problem with the connector.  It is not able to refresh the metadata.
+     * @throws UserNotAuthorizedException the connector has been disconnected
      */
-    void refresh() throws ConnectorCheckedException;
+    void refresh() throws ConnectorCheckedException, UserNotAuthorizedException;
 
 
     /**

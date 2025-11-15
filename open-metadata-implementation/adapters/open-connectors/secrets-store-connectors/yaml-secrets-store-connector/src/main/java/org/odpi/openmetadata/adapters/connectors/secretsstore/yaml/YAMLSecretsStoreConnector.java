@@ -485,9 +485,9 @@ public class YAMLSecretsStoreConnector extends SecretsStoreConnector
 
         if (secretsStoreFile == null)
         {
-            if (connectionBean.getEndpoint().getAddress() != null)
+            if (connectionBean.getEndpoint().getNetworkAddress() != null)
             {
-                secretsStoreFile = new File(connectionBean.getEndpoint().getAddress());
+                secretsStoreFile = new File(connectionBean.getEndpoint().getNetworkAddress());
             }
             else
             {

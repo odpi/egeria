@@ -5,10 +5,10 @@ package org.odpi.openmetadata.archiveutilities.openconnectors.postgres;
 import org.odpi.openmetadata.adapters.connectors.postgres.catalog.PostgresServerIntegrationProvider;
 import org.odpi.openmetadata.adapters.connectors.postgres.controls.PostgreSQLTemplateType;
 import org.odpi.openmetadata.adapters.connectors.postgres.controls.PostgresDeployedImplementationType;
-import org.odpi.openmetadata.adapters.connectors.postgres.solution.PostgresSolutionBlueprint;
-import org.odpi.openmetadata.adapters.connectors.postgres.solution.PostgresSolutionComponent;
-import org.odpi.openmetadata.adapters.connectors.postgres.solution.PostgresSolutionComponentActor;
-import org.odpi.openmetadata.adapters.connectors.postgres.solution.PostgresSolutionComponentWire;
+import org.odpi.openmetadata.adapters.connectors.surveyaction.solution.FilesSolutionBlueprint;
+import org.odpi.openmetadata.adapters.connectors.surveyaction.solution.FilesSolutionComponent;
+import org.odpi.openmetadata.adapters.connectors.surveyaction.solution.FilesSolutionComponentActor;
+import org.odpi.openmetadata.adapters.connectors.surveyaction.solution.FilesSolutionComponentWire;
 import org.odpi.openmetadata.adapters.connectors.postgres.tabulardatasource.PostgresTabularDataSetCollectionProvider;
 import org.odpi.openmetadata.adapters.connectors.postgres.tabulardatasource.PostgresTabularDataSetProvider;
 import org.odpi.openmetadata.archiveutilities.openconnectors.*;
@@ -49,7 +49,8 @@ public class PostgresPackArchiveWriter extends ContentPackBaseArchiveWriter
          */
         for (PostgresDeployedImplementationType deployedImplementationType : PostgresDeployedImplementationType.values())
         {
-            this.addDeployedImplementationType(deployedImplementationType.getDeployedImplementationType(),
+            this.addDeployedImplementationType(deployedImplementationType.getGUID(),
+                                               deployedImplementationType.getDeployedImplementationType(),
                                                deployedImplementationType.getAssociatedTypeName(),
                                                deployedImplementationType.getQualifiedName(),
                                                deployedImplementationType.getDescription(),
@@ -60,10 +61,10 @@ public class PostgresPackArchiveWriter extends ContentPackBaseArchiveWriter
         /*
          * Add Egeria's common solution definitions
          */
-        archiveHelper.addSolutionComponents(List.of(PostgresSolutionComponent.values()));
-        archiveHelper.addSolutionComponentActors(List.of(PostgresSolutionComponentActor.values()));
-        archiveHelper.addSolutionComponentWires(List.of(PostgresSolutionComponentWire.values()));
-        archiveHelper.addSolutionBlueprints(List.of(PostgresSolutionBlueprint.values()));
+        archiveHelper.addSolutionComponents(List.of(FilesSolutionComponent.values()));
+        archiveHelper.addSolutionComponentActors(List.of(FilesSolutionComponentActor.values()));
+        archiveHelper.addSolutionComponentWires(List.of(FilesSolutionComponentWire.values()));
+        archiveHelper.addSolutionBlueprints(List.of(FilesSolutionBlueprint.values()));
 
 
         /*

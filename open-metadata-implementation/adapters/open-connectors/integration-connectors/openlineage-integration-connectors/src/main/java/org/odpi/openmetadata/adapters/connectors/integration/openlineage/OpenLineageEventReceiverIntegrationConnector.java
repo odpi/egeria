@@ -6,6 +6,7 @@ package org.odpi.openmetadata.adapters.connectors.integration.openlineage;
 import org.odpi.openmetadata.adapters.connectors.integration.openlineage.ffdc.OpenLineageIntegrationConnectorAuditCode;
 import org.odpi.openmetadata.frameworks.connectors.Connector;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
+import org.odpi.openmetadata.frameworks.integration.connectors.DynamicIntegrationConnectorBase;
 import org.odpi.openmetadata.frameworks.opengovernance.properties.CatalogTarget;
 import org.odpi.openmetadata.frameworks.integration.connectors.CatalogTargetIntegrator;
 import org.odpi.openmetadata.frameworks.integration.connectors.IntegrationConnectorBase;
@@ -21,8 +22,7 @@ import org.odpi.openmetadata.repositoryservices.connectors.openmetadatatopic.Ope
  * OpenLineageEventReceiverIntegrationConnector receives open lineage events from an event broker such as an Apache Kafka topic.
  * It publishes them to other listening lineage integration connectors.
  */
-public class OpenLineageEventReceiverIntegrationConnector extends IntegrationConnectorBase implements OpenMetadataTopicListener,
-                                                                                                      CatalogTargetIntegrator
+public class OpenLineageEventReceiverIntegrationConnector extends DynamicIntegrationConnectorBase implements OpenMetadataTopicListener
 {
     /**
      * Default constructor
@@ -58,33 +58,6 @@ public class OpenLineageEventReceiverIntegrationConnector extends IntegrationCon
                                                                                                                    methodName,
                                                                                                                    error.getMessage()));
         }
-    }
-
-
-    /**
-     * Requests that the connector does a comparison of the metadata in the third party technology and open metadata repositories.
-     * Refresh is called when the integration connector first starts and then at intervals defined in the connector's configuration
-     * as well as any external REST API calls to explicitly refresh the connector.
-     *
-     * @throws ConnectorCheckedException there is a problem with the connector.  It is not able to refresh the metadata.
-     */
-    @Override
-    public void refresh() throws ConnectorCheckedException
-    {
-        super.refreshCatalogTargets(this);
-    }
-
-
-    /**
-     * Perform the required integration logic for the assigned catalog target.
-     *
-     * @param requestedCatalogTarget the catalog target
-     * @throws ConnectorCheckedException there is an unrecoverable error and the connector should stop processing.
-     */
-    @Override
-    public void integrateCatalogTarget(RequestedCatalogTarget requestedCatalogTarget) throws ConnectorCheckedException
-    {
-        // Nothing to do
     }
 
 

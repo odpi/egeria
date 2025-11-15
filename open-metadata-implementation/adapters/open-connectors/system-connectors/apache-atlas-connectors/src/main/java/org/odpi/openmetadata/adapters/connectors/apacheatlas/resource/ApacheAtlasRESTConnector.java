@@ -123,7 +123,7 @@ public class ApacheAtlasRESTConnector extends ConnectorBase implements AuditLogg
 
         if (endpoint != null)
         {
-            targetRootURL = endpoint.getAddress();
+            targetRootURL = endpoint.getNetworkAddress();
         }
 
         if (targetRootURL == null)

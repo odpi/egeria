@@ -151,7 +151,7 @@ public class KafkaOpenMetadataTopicConnector extends OpenMetadataTopicConnector
         Endpoint endpoint = connectionBean.getEndpoint();
         if (endpoint != null)
         {
-            topicName = endpoint.getAddress();
+            topicName = endpoint.getNetworkAddress();
 
             Map<String, Object> configurationProperties = connectionBean.getConfigurationProperties();
             if (configurationProperties != null)

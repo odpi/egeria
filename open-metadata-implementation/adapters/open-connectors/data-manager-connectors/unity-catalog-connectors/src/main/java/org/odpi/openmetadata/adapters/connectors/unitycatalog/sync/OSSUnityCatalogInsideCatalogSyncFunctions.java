@@ -9,17 +9,17 @@ import org.odpi.openmetadata.adapters.connectors.unitycatalog.ffdc.UCAuditCode;
 import org.odpi.openmetadata.adapters.connectors.unitycatalog.properties.*;
 import org.odpi.openmetadata.adapters.connectors.unitycatalog.resource.OSSUnityCatalogResourceConnector;
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
+import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
 import org.odpi.openmetadata.frameworks.integration.context.IntegrationContext;
+import org.odpi.openmetadata.frameworks.integration.iterator.*;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.ElementStatus;
 import org.odpi.openmetadata.frameworks.openmetadata.controls.PlaceholderProperty;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.RelationshipBeanProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.AssetProperties;
 import org.odpi.openmetadata.frameworks.openmetadata.search.*;
-import org.odpi.openmetadata.frameworks.integration.iterator.IntegrationIterator;
-import org.odpi.openmetadata.frameworks.integration.iterator.MemberAction;
-import org.odpi.openmetadata.frameworks.integration.iterator.MemberElement;
-import org.odpi.openmetadata.frameworks.integration.iterator.MetadataCollectionIterator;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.PermittedSynchronization;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
@@ -33,11 +33,6 @@ import java.util.Map;
  */
 public class OSSUnityCatalogInsideCatalogSyncFunctions extends OSSUnityCatalogInsideCatalogSyncBase
 {
-    private final String entityTypeName = OpenMetadataType.DEPLOYED_API.typeName;
-
-    private String templateGUID = null;
-
-
     /**
      * Set up the function synchronizer.
      *
@@ -56,6 +51,7 @@ public class OSSUnityCatalogInsideCatalogSyncFunctions extends OSSUnityCatalogIn
      * @param includeNames list of catalogs to include (and ignore all others) - overrides excludeCatalogs
      * @param auditLog logging destination
      * @throws UserNotAuthorizedException connector disconnected
+     * @throws InvalidParameterException missing template
      */
     public OSSUnityCatalogInsideCatalogSyncFunctions(String                           connectorName,
                                                      IntegrationContext               context,
@@ -70,7 +66,8 @@ public class OSSUnityCatalogInsideCatalogSyncFunctions extends OSSUnityCatalogIn
                                                      Map<String, Object>              configurationProperties,
                                                      List<String>                     excludeNames,
                                                      List<String>                     includeNames,
-                                                     AuditLog                         auditLog) throws UserNotAuthorizedException
+                                                     AuditLog                         auditLog) throws UserNotAuthorizedException,
+                                                                                                       InvalidParameterException
     {
         super(connectorName,
               context,
@@ -81,17 +78,13 @@ public class OSSUnityCatalogInsideCatalogSyncFunctions extends OSSUnityCatalogIn
               targetPermittedSynchronization,
               ucConnector,
               ucServerEndpoint,
+              OpenMetadataType.DEPLOYED_API.typeName,
               UnityCatalogDeployedImplementationType.OSS_UC_FUNCTION,
               templates,
               configurationProperties,
               excludeNames,
               includeNames,
               auditLog);
-
-        if (templates != null)
-        {
-            this.templateGUID = templates.get(deployedImplementationType.getDeployedImplementationType());
-        }
     }
 
 
@@ -99,57 +92,54 @@ public class OSSUnityCatalogInsideCatalogSyncFunctions extends OSSUnityCatalogIn
     /**
      * Review all the functions stored in Egeria.
      *
-     * @return MetadataCollectionIterator
+     * @param parentGUID unique identifier of the parent
+     * @param parentRelationshipTypeName relationship type between parent and elements to iterate through
+     * @param relationshipProperties optional properties for the relationship
+     * @return iterator
      * @throws InvalidParameterException parameter error
      * @throws PropertyServerException repository error
      * @throws UserNotAuthorizedException security error
+     * @throws ConnectorCheckedException logic error in properties
      */
-    protected IntegrationIterator refreshEgeria() throws InvalidParameterException,
-                                                         PropertyServerException,
-                                                         UserNotAuthorizedException
+    protected IntegrationIterator refreshEgeria(String                     parentGUID,
+                                                String                     parentRelationshipTypeName,
+                                                RelationshipBeanProperties relationshipProperties) throws InvalidParameterException,
+                                                                                                          PropertyServerException,
+                                                                                                          UserNotAuthorizedException,
+                                                                                                          ConnectorCheckedException
     {
         final String methodName = "refreshEgeriaFunctions";
 
-        MetadataCollectionIterator functionIterator = new MetadataCollectionIterator(catalogGUID,
-                                                                                     catalogQualifiedName,
-                                                                                     catalogGUID,
-                                                                                     catalogQualifiedName,
-                                                                                     catalogName,
-                                                                                     connectorName,
-                                                                                     entityTypeName,
-                                                                                     openMetadataStore,
-                                                                                     targetPermittedSynchronization,
-                                                                                     context.getMaxPageSize(),
-                                                                                     auditLog);
+        RelatedElementsIterator functionIterator = new RelatedElementsIterator(context.getMetadataSourceGUID(),
+                                                                               catalogTargetName,
+                                                                               connectorName,
+                                                                               parentGUID,
+                                                                               parentRelationshipTypeName,
+                                                                               1,
+                                                                               entityTypeName,
+                                                                               context,
+                                                                               targetPermittedSynchronization,
+                                                                               context.getMaxPageSize(),
+                                                                               auditLog);
 
         while (functionIterator.moreToReceive())
         {
             MemberElement nextElement = functionIterator.getNextMember();
 
-            if (nextElement != null)
+            if ((nextElement != null) && (nextElement.getElement() != null) && (nextElement.getElement().getProperties() instanceof AssetProperties assetProperties))
             {
                 /*
                  * Check that this is a UC Function.
                  */
-                String deployedImplementationType = propertyHelper.getStringProperty(catalogName,
-                                                                                     OpenMetadataProperty.DEPLOYED_IMPLEMENTATION_TYPE.name,
-                                                                                     nextElement.getElement().getElementProperties(),
-                                                                                     methodName);
-
-                if (UnityCatalogDeployedImplementationType.OSS_UC_FUNCTION.getDeployedImplementationType().equals(deployedImplementationType))
+                if (UnityCatalogDeployedImplementationType.OSS_UC_FUNCTION.getDeployedImplementationType().equals(assetProperties.getDeployedImplementationType()))
                 {
                     FunctionInfo functionInfo = null;
 
-                    String functionName = propertyHelper.getStringProperty(catalogName,
-                                                                           OpenMetadataProperty.RESOURCE_NAME.name,
-                                                                           nextElement.getElement().getElementProperties(),
-                                                                           methodName);
-
-                    if (context.elementShouldBeCatalogued(functionName, excludeNames, includeNames))
+                    if (context.elementShouldBeCatalogued(assetProperties.getResourceName(), excludeNames, includeNames))
                     {
                         try
                         {
-                            functionInfo = ucConnector.getFunction(functionName);
+                            functionInfo = ucConnector.getFunction(assetProperties.getResourceName());
                         }
                         catch (Exception missing)
                         {
@@ -167,7 +157,7 @@ public class OSSUnityCatalogInsideCatalogSyncFunctions extends OSSUnityCatalogIn
                                                                        this.getDateFromLong(functionInfo.getUpdated_at()));
                         }
 
-                        this.takeAction(context.getAnchorGUID(nextElement.getElement()),
+                        this.takeAction(parentGUID,
                                         super.getUCSchemaFromMember(nextElement),
                                         memberAction,
                                         nextElement,
@@ -185,17 +175,25 @@ public class OSSUnityCatalogInsideCatalogSyncFunctions extends OSSUnityCatalogIn
     /**
      * Review all the functions stored in UC.
      *
-     * @param iterator  Metadata collection iterator
+     * @param parentGUID unique identifier of the parent
+     * @param parentRelationshipTypeName relationship type between parent and elements to iterate through
+     * @param relationshipProperties optional properties for the relationship
+     * @param iterator  iterator
      *
      * @throws InvalidParameterException parameter error
      * @throws PropertyServerException repository error
      * @throws UserNotAuthorizedException security error
+     * @throws ConnectorCheckedException problem with properties
      */
-    protected void refreshUnityCatalog(IntegrationIterator iterator) throws InvalidParameterException,
-                                                                            PropertyServerException,
-                                                                            UserNotAuthorizedException
+    protected void refreshUnityCatalog(String                     parentGUID,
+                                       String                     parentRelationshipTypeName,
+                                       RelationshipBeanProperties relationshipProperties,
+                                       IntegrationIterator        iterator) throws InvalidParameterException,
+                                                                                   PropertyServerException,
+                                                                                   UserNotAuthorizedException,
+                                                                                   ConnectorCheckedException
     {
-        List<SchemaInfo> ucSchemaList = ucConnector.listSchemas(catalogName);
+        List<SchemaInfo> ucSchemaList = ucConnector.listSchemas(catalogTargetName);
 
         if (ucSchemaList != null)
         {
@@ -207,7 +205,7 @@ public class OSSUnityCatalogInsideCatalogSyncFunctions extends OSSUnityCatalogIn
 
                     if (schemaGUID != null)
                     {
-                        List<FunctionInfo> ucFunctionList = ucConnector.listFunctions(catalogName, schemaInfo.getName());
+                        List<FunctionInfo> ucFunctionList = ucConnector.listFunctions(catalogTargetName, schemaInfo.getName());
 
                         if (ucFunctionList != null)
                         {
@@ -252,7 +250,8 @@ public class OSSUnityCatalogInsideCatalogSyncFunctions extends OSSUnityCatalogIn
                             MemberElement memberElement,
                             FunctionInfo  functionInfo) throws InvalidParameterException,
                                                                PropertyServerException,
-                                                               UserNotAuthorizedException
+                                                               UserNotAuthorizedException,
+                                                               ConnectorCheckedException
     {
         switch (memberAction)
         {
@@ -282,67 +281,30 @@ public class OSSUnityCatalogInsideCatalogSyncFunctions extends OSSUnityCatalogIn
         final String parentLinkTypeName = OpenMetadataType.DATA_SET_CONTENT_RELATIONSHIP.typeName;
         final boolean parentAtEnd1 = true;
 
-        String ucFunctionGUID;
+        TemplateOptions templateOptions = new TemplateOptions(assetClient.getMetadataSourceOptions());
 
-        if (templateGUID != null)
-        {
-            TemplateOptions templateOptions = new TemplateOptions(super.getMetadataSourceOptions());
+        templateOptions.setAnchorGUID(schemaGUID);
+        templateOptions.setIsOwnAnchor(false);
+        templateOptions.setAnchorScopeGUID(UnityCatalogDeployedImplementationType.OSS_UNITY_CATALOG_SERVER.getGUID());
 
-            templateOptions.setAnchorGUID(schemaGUID);
-            templateOptions.setIsOwnAnchor(false);
-            templateOptions.setAnchorScopeGUID(catalogGUID);
+        templateOptions.setParentGUID(schemaGUID);
+        templateOptions.setParentAtEnd1(parentAtEnd1);
+        templateOptions.setParentRelationshipTypeName(parentLinkTypeName);
 
-            templateOptions.setParentGUID(schemaGUID);
-            templateOptions.setParentAtEnd1(parentAtEnd1);
-            templateOptions.setParentRelationshipTypeName(parentLinkTypeName);
+        String ucFunctionGUID = openMetadataStore.createMetadataElementFromTemplate(deployedImplementationType.getAssociatedTypeName(),
+                                                                                    templateOptions,
+                                                                                    templateGUID,
+                                                                                    null,
+                                                                                    this.getPlaceholderProperties(functionInfo),
+                                                                                    null);
 
-            ucFunctionGUID = openMetadataStore.createMetadataElementFromTemplate(deployedImplementationType.getAssociatedTypeName(),
-                                                                                 templateOptions,
-                                                                                 templateGUID,
-                                                                                 null,
-                                                                                 this.getPlaceholderProperties(functionInfo),
-                                                                                 null);
-        }
-        else
-        {
-            String qualifiedName = super.getQualifiedName(functionInfo.getFull_name());
-
-            NewElementOptions newElementOptions = new NewElementOptions(super.getMetadataSourceOptions());
-
-            newElementOptions.setInitialStatus(ElementStatus.ACTIVE);
-
-            newElementOptions.setAnchorGUID(schemaGUID);
-            newElementOptions.setIsOwnAnchor(false);
-            newElementOptions.setAnchorScopeGUID(catalogGUID);
-
-            newElementOptions.setParentGUID(schemaGUID);
-            newElementOptions.setParentAtEnd1(parentAtEnd1);
-            newElementOptions.setParentRelationshipTypeName(parentLinkTypeName);
-
-            ucFunctionGUID = openMetadataStore.createMetadataElementInStore(deployedImplementationType.getAssociatedTypeName(),
-                                                                            newElementOptions,
-                                                                            null,
-                                                                            new NewElementProperties(this.getElementProperties(qualifiedName, functionInfo)),
-                                                                            null);
-
-            Map<String, String> facetProperties = new HashMap<>();
-
-            facetProperties.put("parameterStyle", functionInfo.getParameter_style());
-
-            super.addPropertyFacet(ucFunctionGUID, qualifiedName, functionInfo, facetProperties);
-        }
-
-        openMetadataStore.addExternalIdentifier(catalogGUID,
-                                      catalogQualifiedName,
-                                      catalogTypeName,
-                                      ucFunctionGUID,
-                                      deployedImplementationType.getAssociatedTypeName(),
-                                      this.getExternalIdentifierProperties(functionInfo,
-                                                                           functionInfo.getSchema_name(),
-                                                                           UnityCatalogPlaceholderProperty.FUNCTION_NAME.getName(),
-                                                                           "function",
-                                                                           functionInfo.getFunction_id(),
-                                                                           PermittedSynchronization.FROM_THIRD_PARTY));
+        super.addExternalIdentifier(ucFunctionGUID,
+                                    functionInfo,
+                                    functionInfo.getSchema_name(),
+                                    UnityCatalogPlaceholderProperty.FUNCTION_NAME.getName(),
+                                    "function",
+                                    functionInfo.getFunction_id(),
+                                    PermittedSynchronization.FROM_THIRD_PARTY);
 
         this.createSchemaAttributesForUCFunction(ucFunctionGUID, functionInfo);
 
@@ -364,11 +326,9 @@ public class OSSUnityCatalogInsideCatalogSyncFunctions extends OSSUnityCatalogIn
                                                                            PropertyServerException,
                                                                            UserNotAuthorizedException
     {
-        String egeriaFunctionGUID = memberElement.getElement().getElementGUID();
+        String egeriaFunctionGUID = memberElement.getElement().getElementHeader().getGUID();
 
-        UpdateOptions updateOptions = new UpdateOptions(super.getMetadataSourceOptions());
-
-        updateOptions.setMergeUpdate(true);
+        UpdateOptions updateOptions = new UpdateOptions(assetClient.getUpdateOptions(true));
 
         openMetadataStore.updateMetadataElementInStore(egeriaFunctionGUID,
                                                        updateOptions,
@@ -376,11 +336,8 @@ public class OSSUnityCatalogInsideCatalogSyncFunctions extends OSSUnityCatalogIn
 
         this.updateSchemaAttributesForUCFunction(memberElement, functionInfo);
 
-        openMetadataStore.confirmSynchronization(catalogGUID,
-                                       catalogQualifiedName,
-                                       egeriaFunctionGUID,
-                                       entityTypeName,
-                                       functionInfo.getFunction_id());
+        externalIdClient.confirmSynchronization(memberElement.getElement(),
+                                                functionInfo.getFunction_id());
     }
 
 
@@ -391,15 +348,17 @@ public class OSSUnityCatalogInsideCatalogSyncFunctions extends OSSUnityCatalogIn
      * @throws InvalidParameterException parameter error
      * @throws PropertyServerException repository error or problem communicating with UC
      * @throws UserNotAuthorizedException authorization error
+     * @throws ConnectorCheckedException missing property
      */
     private void createElementInThirdParty(String        schemaName,
                                            MemberElement memberElement) throws PropertyServerException,
                                                                                InvalidParameterException,
-                                                                               UserNotAuthorizedException
+                                                                               UserNotAuthorizedException,
+                                                                               ConnectorCheckedException
     {
         FunctionProperties functionProperties = new FunctionProperties();
 
-        functionProperties.setCatalog_name(catalogName);
+        functionProperties.setCatalog_name(catalogTargetName);
         functionProperties.setSchema_name(schemaName);
         functionProperties.setName(super.getUCNameFromMember(memberElement));
 
@@ -408,25 +367,17 @@ public class OSSUnityCatalogInsideCatalogSyncFunctions extends OSSUnityCatalogIn
 
         if (memberElement.getExternalIdentifier() == null)
         {
-            openMetadataStore.addExternalIdentifier(catalogGUID,
-                                          catalogName,
-                                          catalogTypeName,
-                                          memberElement.getElement().getElementGUID(),
-                                          deployedImplementationType.getAssociatedTypeName(),
-                                          this.getExternalIdentifierProperties(functionInfo,
-                                                                               functionInfo.getSchema_name(),
-                                                                               UnityCatalogPlaceholderProperty.FUNCTION_NAME.getName(),
-                                                                               "function",
-                                                                               functionInfo.getFunction_id(),
-                                                                               PermittedSynchronization.TO_THIRD_PARTY));
+            super.addExternalIdentifier(memberElement.getElement().getElementHeader().getGUID(),
+                                        functionInfo,
+                                        functionInfo.getSchema_name(),
+                                        UnityCatalogPlaceholderProperty.FUNCTION_NAME.getName(),
+                                        "function",
+                                        functionInfo.getFunction_id(),
+                                        PermittedSynchronization.TO_THIRD_PARTY);
         }
         else
         {
-            openMetadataStore.confirmSynchronization(catalogGUID,
-                                           catalogQualifiedName,
-                                           memberElement.getElement().getElementGUID(),
-                                           deployedImplementationType.getAssociatedTypeName(),
-                                           functionInfo.getFunction_id());
+            externalIdClient.confirmSynchronization(memberElement.getElement(), functionInfo.getFunction_id());
         }
     }
 
@@ -451,15 +402,11 @@ public class OSSUnityCatalogInsideCatalogSyncFunctions extends OSSUnityCatalogIn
 
         auditLog.logMessage(methodName,
                             UCAuditCode.FUNCTION_UPDATE.getMessageDefinition(connectorName,
-                                                                          memberElement.getElement().getElementGUID(),
+                                                                          memberElement.getElement().getElementHeader().getGUID(),
                                                                           functionInfo.getCatalog_name() + "." + functionInfo.getSchema_name() + "." + functionInfo.getName(),
                                                                           ucServerEndpoint));
 
-        openMetadataStore.confirmSynchronization(catalogGUID,
-                                       catalogQualifiedName,
-                                       memberElement.getElement().getElementGUID(),
-                                       deployedImplementationType.getAssociatedTypeName(),
-                                       functionInfo.getFunction_id());
+        externalIdClient.confirmSynchronization(memberElement.getElement(), functionInfo.getFunction_id());
     }
 
 
@@ -580,13 +527,13 @@ public class OSSUnityCatalogInsideCatalogSyncFunctions extends OSSUnityCatalogIn
          * Create the root schema type.
          */
 
-        NewElementOptions newElementOptions = new NewElementOptions(super.getMetadataSourceOptions());
+        NewElementOptions newElementOptions = new NewElementOptions(assetClient.getMetadataSourceOptions());
 
         newElementOptions.setInitialStatus(ElementStatus.ACTIVE);
 
         newElementOptions.setAnchorGUID(functionGUID);
         newElementOptions.setIsOwnAnchor(false);
-        newElementOptions.setAnchorScopeGUID(catalogGUID);
+        newElementOptions.setAnchorScopeGUID(UnityCatalogDeployedImplementationType.OSS_UNITY_CATALOG_SERVER.getGUID());
 
         newElementOptions.setParentGUID(functionGUID);
         newElementOptions.setParentAtEnd1(true);
@@ -617,9 +564,9 @@ public class OSSUnityCatalogInsideCatalogSyncFunctions extends OSSUnityCatalogIn
      * @throws UserNotAuthorizedException authorization error
      */
     private void updateSchemaAttributesForUCFunction(MemberElement memberElement,
-                                                  FunctionInfo     functionInfo) throws InvalidParameterException,
-                                                                                  PropertyServerException,
-                                                                                  UserNotAuthorizedException
+                                                     FunctionInfo  functionInfo) throws InvalidParameterException,
+                                                                                        PropertyServerException,
+                                                                                        UserNotAuthorizedException
     {
         final String methodName = "updateSchemaAttributesForUCFunction";
 

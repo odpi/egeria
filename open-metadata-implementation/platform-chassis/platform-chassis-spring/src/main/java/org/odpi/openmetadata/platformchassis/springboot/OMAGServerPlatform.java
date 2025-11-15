@@ -267,7 +267,7 @@ public class OMAGServerPlatform
                     if (configStoreEndpoint != null)
                     {
                         Endpoint endpoint = new Endpoint();
-                        endpoint.setAddress(configStoreEndpoint);
+                        endpoint.setNetworkAddress(configStoreEndpoint);
 
                         configStoreConnection.setEndpoint(endpoint);
                     }
@@ -299,7 +299,7 @@ public class OMAGServerPlatform
 
                         Connection secretsConnection = new Connection();
                         Endpoint   secretsEndpoint   = new Endpoint();
-                        secretsEndpoint.setAddress(platformSecuritySecretsLocation);
+                        secretsEndpoint.setNetworkAddress(platformSecuritySecretsLocation);
                         secretsConnection.setEndpoint(secretsEndpoint);
                         ConnectorType secretsConnectorType = new ConnectorType();
                         secretsConnectorType.setConnectorProviderClassName(platformSecuritySecretsProvider);

@@ -390,6 +390,7 @@ public class InformalTagHandler extends OpenMetadataHandlerBase
                                             guidParameterName,
                                             2,
                                             OpenMetadataType.ATTACHED_TAG_RELATIONSHIP.typeName,
+                                            OpenMetadataType.OPEN_METADATA_ROOT.typeName,
                                             queryOptions,
                                             methodName);
     }
@@ -421,6 +422,7 @@ public class InformalTagHandler extends OpenMetadataHandlerBase
                                             guidParameterName,
                                             1,
                                             OpenMetadataType.ATTACHED_TAG_RELATIONSHIP.typeName,
+                                            OpenMetadataType.INFORMAL_TAG.typeName,
                                             queryOptions,
                                             methodName);
     }

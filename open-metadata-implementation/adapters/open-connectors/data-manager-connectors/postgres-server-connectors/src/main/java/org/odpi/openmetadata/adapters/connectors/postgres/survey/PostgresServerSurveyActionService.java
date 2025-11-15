@@ -175,13 +175,13 @@ public class PostgresServerSurveyActionService extends SurveyActionServiceConnec
 
         try
         {
-            String serverNetworkAddress = serverConnector.getConnection().getEndpoint().getAddress();
+            String serverNetworkAddress = serverConnector.getConnection().getEndpoint().getNetworkAddress();
             String databaseSpecificURL  = serverNetworkAddress.replace("/postgres", "/" + databaseName);
 
             org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection databaseConnectionDetails =
                     new org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection(serverConnector.getConnection());
 
-            databaseConnectionDetails.getEndpoint().setAddress(databaseSpecificURL);
+            databaseConnectionDetails.getEndpoint().setNetworkAddress(databaseSpecificURL);
 
             ConnectorBroker connectorBroker = new ConnectorBroker(auditLog);
 

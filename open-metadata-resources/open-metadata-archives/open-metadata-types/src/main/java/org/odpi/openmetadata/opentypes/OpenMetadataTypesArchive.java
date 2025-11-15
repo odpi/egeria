@@ -348,26 +348,22 @@ public class OpenMetadataTypesArchive
      */
     private void update0021Collections()
     {
-        this.archiveBuilder.addClassificationDef(getNamespaceClassification());
-        this.archiveBuilder.addClassificationDef(getReferenceListClassification());
+        this.archiveBuilder.addEntityDef(getNamespace());
+        this.archiveBuilder.addEntityDef(getReferenceList());
     }
 
-    private ClassificationDef getNamespaceClassification()
+    private EntityDef getNamespace()
     {
-        return archiveHelper.getClassificationDef(OpenMetadataType.NAMESPACE_COLLECTION_CLASSIFICATION,
-                                                  this.archiveBuilder.getClassificationDef(OpenMetadataType.COLLECTION_ROLE_CLASSIFICATION.typeName),
-                                                  this.archiveBuilder.getEntityDef(OpenMetadataType.COLLECTION.typeName),
-                                                  false);
+        return archiveHelper.getDefaultEntityDef(OpenMetadataType.NAMESPACE_COLLECTION,
+                                                 this.archiveBuilder.getEntityDef(OpenMetadataType.COLLECTION.typeName));
 
     }
 
 
-    private ClassificationDef getReferenceListClassification()
+    private EntityDef getReferenceList()
     {
-        return archiveHelper.getClassificationDef(OpenMetadataType.REFERENCE_LIST_CLASSIFICATION,
-                                                  this.archiveBuilder.getClassificationDef(OpenMetadataType.COLLECTION_ROLE_CLASSIFICATION.typeName),
-                                                  this.archiveBuilder.getEntityDef(OpenMetadataType.COLLECTION.typeName),
-                                                  false);
+        return archiveHelper.getDefaultEntityDef(OpenMetadataType.REFERENCE_LIST_COLLECTION,
+                                                  this.archiveBuilder.getEntityDef(OpenMetadataType.COLLECTION.typeName));
     }
 
 
