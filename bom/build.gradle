@@ -127,7 +127,7 @@ ext {
 dependencies {
     // Only use this to bring in platforms, which are *constraints*
     dependencies {
-        api(platform('net.openhft:chronicle-bom:2.27ea81'))
+        api(platform('net.openhft:chronicle-bom:2.27ea90'))
     }
     constraints {
         api("ch.qos.logback:logback-classic:${logbackVersion}")
