@@ -505,6 +505,61 @@ public class DatabaseStore
 
 
     /**
+     * Retrieve the related information for an entity's classification.
+     * Null is returned if there were no active instance.
+     *
+     * @param guid unique identifier of the entity
+     * @param classificationRow appropriate row from table
+     * @return entity mapper
+     * @throws RepositoryErrorException problem communicating with the database, or mapping the values returned
+     */
+    public ClassificationMapper getCompleteClassificationFromStore(String                     guid,
+                                                                   String                     classificationName,
+                                                                   Map<String, JDBCDataValue> classificationRow) throws RepositoryErrorException
+    {
+        final String methodName = "getCompleteClassificationFromStore";
+
+        try
+        {
+            if (classificationRow != null)
+            {
+                Object versionObject = classificationRow.get(RepositoryColumn.VERSION.getColumnName()).getDataValue();
+
+                if (versionObject != null)
+                {
+                    String whereClause = RepositoryColumn.INSTANCE_GUID.getColumnName() + " = '" + guid + "' and " +
+                            RepositoryColumn.CLASSIFICATION_NAME.getColumnName() + " = '" + classificationName + "' and " +
+                            RepositoryColumn.VERSION.getColumnName() + " = " + versionObject;
+
+                    List<Map<String, JDBCDataValue>> matchingRows = jdbcResourceConnector.getMatchingRows(jdbcConnection,
+                                                                                                          RepositoryTable.CLASSIFICATION_ATTRIBUTE_VALUE.getTableName(),
+                                                                                                          whereClause,
+                                                                                                          RepositoryTable.CLASSIFICATION_ATTRIBUTE_VALUE.getColumnNameTypeMap());
+
+
+                    return new ClassificationMapper(classificationRow,
+                                                    matchingRows,
+                                                    repositoryHelper,
+                                                    repositoryName);
+                }
+            }
+        }
+        catch (PropertyServerException sqlException)
+        {
+            throw new RepositoryErrorException(PostgresErrorCode.UNEXPECTED_EXCEPTION.getMessageDefinition(repositoryName,
+                                                                                                           sqlException.getClass().getName(),
+                                                                                                           methodName,
+                                                                                                           sqlException.getMessage()),
+                                               this.getClass().getName(),
+                                               methodName,
+                                               sqlException);
+        }
+
+        return null;
+    }
+
+
+    /**
      * Retrieve the related information for an entity.
      * Null is returned if there were no active instance.
      *
@@ -1130,6 +1185,64 @@ public class DatabaseStore
         if (! entityMappers.isEmpty())
         {
             return entityMappers;
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Return the list of versions for an entity's classification.
+     *
+     * @param guid unique identifier of the instance
+     * @param classificationName name of the classification within entity
+     * @param fromTime starting time
+     * @param toTime ending time
+     * @param oldestFirst ordering
+     * @return list of instance versions
+     * @throws RepositoryErrorException problem communicating with the database
+     */
+    public List<ClassificationMapper> getClassificationHistoryFromStore(String  guid,
+                                                                        String  classificationName,
+                                                                        Date    fromTime,
+                                                                        Date    toTime,
+                                                                        boolean oldestFirst) throws RepositoryErrorException
+    {
+        final String methodName = "getClassificationHistoryFromStore";
+
+        List<ClassificationMapper> classificationMappers = new ArrayList<>();
+
+        try
+        {
+            List<Map<String, JDBCDataValue>> matchingRows = jdbcResourceConnector.getMatchingRows(jdbcConnection,
+                                                                                                RepositoryTable.CLASSIFICATION.getTableName(),
+                                                                                                RepositoryColumn.INSTANCE_GUID.getColumnName() + " = '" + guid + "'" +
+                                                                                                        RepositoryColumn.CLASSIFICATION_NAME.getColumnName() + " = '" + classificationName + "'" +
+                                                                                                        getDateRangeClause(fromTime, toTime, oldestFirst),
+                                                                                                RepositoryTable.CLASSIFICATION.getColumnNameTypeMap());
+
+            if (matchingRows != null)
+            {
+                for (Map<String, JDBCDataValue> classificationRow : matchingRows)
+                {
+                    classificationMappers.add(this.getCompleteClassificationFromStore(guid, classificationName, classificationRow));
+                }
+            }
+        }
+        catch (PropertyServerException sqlException)
+        {
+            throw new RepositoryErrorException(PostgresErrorCode.UNEXPECTED_EXCEPTION.getMessageDefinition(repositoryName,
+                                                                                                           sqlException.getClass().getName(),
+                                                                                                           methodName,
+                                                                                                           sqlException.getMessage()),
+                                               this.getClass().getName(),
+                                               methodName,
+                                               sqlException);
+        }
+
+        if (! classificationMappers.isEmpty())
+        {
+            return classificationMappers;
         }
 
         return null;

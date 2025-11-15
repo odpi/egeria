@@ -18,7 +18,6 @@ import java.util.Map;
 /**
  * EntityHistoryAccumulator accumulates and validates historical versions of entities received from a collection of open metadata
  * repositories.  It removes duplicates from the list but preserves one instance of each version.
- *
  * This class may be called simultaneously from different threads, so it must be thread-safe.
  */
 public class EntityHistoryAccumulator extends EntitiesAccumulator
@@ -244,12 +243,13 @@ public class EntityHistoryAccumulator extends EntitiesAccumulator
      * supplied to this accumulator.  It should be called once all the executors have completed processing
      * their request(s).
      *
+     * @param oldestFirst ordering of results
      * @param repositoryConnector enterprise connector
      * @param metadataCollection enterprise metadata collection
      * @return list of entities
      */
-    @Override
-    public synchronized List<EntityDetail> getResults(EnterpriseOMRSRepositoryConnector repositoryConnector,
+    public synchronized List<EntityDetail> getResults(boolean                           oldestFirst,
+                                                      EnterpriseOMRSRepositoryConnector repositoryConnector,
                                                       OMRSMetadataCollection            metadataCollection)
     {
         if ((accumulatedEntities == null) || (accumulatedEntities.isEmpty()))
@@ -264,14 +264,24 @@ public class EntityHistoryAccumulator extends EntitiesAccumulator
 
             if (metadataCollection != null)
             {
-                for (EntityDetail accumulatedEntity : accumulatedEntities.values())
+                for (Long version : accumulatedEntities.keySet())
                 {
-                    if (accumulatedEntity != null)
+                    EntityDetail resultEntity = new EntityDetail(accumulatedEntities.get(version));
+
+                    resultEntity.setClassifications(accumulatedClassifications.get(resultEntity.getGUID()));
+
+                    if (oldestFirst)
                     {
-                        EntityDetail resultEntity = new EntityDetail(accumulatedEntity);
-
-                        resultEntity.setClassifications(accumulatedClassifications.get(accumulatedEntity.getGUID()));
-
+                        /*
+                         * Add to the front
+                         */
+                        results.add(0, resultEntity);
+                    }
+                    else
+                    {
+                        /*
+                         * Add to the back
+                         */
                         results.add(resultEntity);
                     }
                 }

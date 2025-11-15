@@ -1317,6 +1317,69 @@ public abstract class MetadataCollectionServicesClient implements AuditLoggingCo
 
 
     /**
+     * Return all historical versions of an entity's classification within the bounds of the provided timestamps.
+     * To retrieve all historical versions of an entity's classification, set both the 'fromTime' and 'toTime' to null.
+     *
+     * @param userId unique identifier for requesting user.
+     * @param guid String unique identifier for the entity.
+     * @param classificationName name of the classification within entity
+     * @param fromTime the earliest point in time from which to retrieve historical versions of the entity (inclusive)
+     * @param toTime the latest point in time from which to retrieve historical versions of the entity (exclusive)
+     * @param startFromElement the starting element number of the historical versions to return. This is used when retrieving
+     *                         versions beyond the first page of results. Zero means start from the first element.
+     * @param pageSize the maximum number of result versions that can be returned on this request. Zero means unrestricted
+     *                 return results size.
+     * @param sequencingOrder Enum defining how the results should be ordered.
+     * @return {@code List<Classification>} of each historical version of the entity's classification within the bounds, and in the order requested.
+     * @throws InvalidParameterException the guid or date is null or fromTime is after the toTime
+     * @throws RepositoryErrorException there is a problem communicating with the metadata repository where the metadata collection is stored.
+     * @throws EntityNotKnownException the requested entity instance is not active in the metadata collection at the time requested.
+     * @throws EntityProxyOnlyException the requested entity instance is only a proxy in the metadata collection.
+     * @throws FunctionNotSupportedException the repository does not support history.
+     * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
+     */
+    public List<Classification> getClassificationHistory(String                 userId,
+                                                         String                 guid,
+                                                         String                 classificationName,
+                                                         Date                   fromTime,
+                                                         Date                   toTime,
+                                                         int                    startFromElement,
+                                                         int                    pageSize,
+                                                         HistorySequencingOrder sequencingOrder) throws InvalidParameterException,
+                                                                                                        RepositoryErrorException,
+                                                                                                        EntityNotKnownException,
+                                                                                                        EntityProxyOnlyException,
+                                                                                                        FunctionNotSupportedException,
+                                                                                                        UserNotAuthorizedException
+    {
+        final String  methodName = "getClassificationHistory";
+        final String operationSpecificURL = "instances/entity/{1}/classification/{2}/history/all";
+
+        HistoryRangeRequest requestBody = new HistoryRangeRequest();
+        requestBody.setFromTime(fromTime);
+        requestBody.setToTime(toTime);
+        requestBody.setOffset(startFromElement);
+        requestBody.setPageSize(pageSize);
+        requestBody.setSequencingOrder(sequencingOrder);
+        ClassificationListResponse restResult = this.callClassificationListPostRESTCall(methodName,
+                                                                                        restURLRoot + rootServiceNameInURL + userIdInURL + serviceURLMarker + operationSpecificURL,
+                                                                                        requestBody,
+                                                                                        userId,
+                                                                                        guid,
+                                                                                        classificationName);
+
+        this.detectAndThrowInvalidParameterException(methodName, restResult);
+        this.detectAndThrowFunctionNotSupportedException(methodName, restResult);
+        this.detectAndThrowEntityNotKnownException(methodName, restResult);
+        this.detectAndThrowEntityProxyOnlyException(methodName, restResult);
+        this.detectAndThrowUserNotAuthorizedException(methodName, restResult);
+        this.detectAndThrowRepositoryErrorException(methodName, restResult);
+
+        return restResult.getClassifications();
+    }
+
+
+    /**
      * Return the relationships for a specific entity.
      *
      * @param userId                  unique identifier for requesting user.

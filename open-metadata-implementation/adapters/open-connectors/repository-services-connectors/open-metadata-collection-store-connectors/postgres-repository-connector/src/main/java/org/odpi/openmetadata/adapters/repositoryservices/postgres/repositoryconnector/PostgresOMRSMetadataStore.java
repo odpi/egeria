@@ -1095,6 +1095,46 @@ class PostgresOMRSMetadataStore
      * Return the versions of the instance that where active between the "from" and "to" times.
      *
      * @param guid unique identifier of the instance
+     * @param classificationName name of the classification within entity
+     * @param fromTime starting time
+     * @param toTime ending time
+     * @param oldestFirst ordering
+     * @return list of instance versions
+     * @throws RepositoryErrorException problem communicating with the database
+     */
+    List<Classification> getClassificationHistory(String  guid,
+                                                  String  classificationName,
+                                                  Date    fromTime,
+                                                  Date    toTime,
+                                                  boolean oldestFirst) throws RepositoryErrorException
+    {
+        DatabaseStore databaseStore = new DatabaseStore(jdbcResourceConnector, repositoryName, repositoryHelper);
+        List<ClassificationMapper> classificationMappers = databaseStore.getClassificationHistoryFromStore(guid, classificationName, fromTime, toTime, oldestFirst);
+        databaseStore.disconnect();
+
+        if (classificationMappers != null)
+        {
+            List<Classification> historyResults = new ArrayList<>();
+
+            for (ClassificationMapper classificationMapper : classificationMappers)
+            {
+                if (classificationMapper != null)
+                {
+                    historyResults.add(classificationMapper.getClassification());
+                }
+            }
+
+            return historyResults;
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Return the versions of the instance that where active between the "from" and "to" times.
+     *
+     * @param guid unique identifier of the instance
      * @param fromTime starting time
      * @param toTime ending time
      * @param oldestFirst ordering

@@ -2094,6 +2094,96 @@ public class OMRSRepositoryRESTServices
 
 
     /**
+     * Return all historical versions of an entity's classification within the bounds of the provided timestamps.
+     * To retrieve all historical versions of an entity's classification, set both the 'fromTime' and 'toTime' to null.
+     *
+     * @param serverName unique identifier for requested server.
+     * @param userId unique identifier for requesting user.
+     * @param guid String unique identifier for the entity.
+     * @param classificationName name of the classification within entity
+     * @param historyRangeRequest detailing the range of times and paging for the results
+     * @return {@code List<Classification>} of each historical version of the entity's classification within the bounds, and in the order requested or
+     * InvalidParameterException the guid or date is null or fromTime is after the toTime
+     * RepositoryErrorException there is a problem communicating with the metadata repository where the metadata collection is stored.
+     * EntityNotKnownException the requested entity instance is not active in the metadata collection at the time requested.
+     * EntityProxyOnlyException the requested entity instance is only a proxy in the metadata collection.
+     * FunctionNotSupportedException the repository does not support history.
+     * UserNotAuthorizedException the userId is not permitted to perform this operation.
+     */
+    public ClassificationListResponse getClassificationHistory(String              serverName,
+                                                               String              userId,
+                                                               String              guid,
+                                                               String              classificationName,
+                                                               HistoryRangeRequest historyRangeRequest)
+    {
+        final String methodName = "getClassificationHistory";
+
+        log.debug("Calling method: " + methodName);
+
+        ClassificationListResponse response = new ClassificationListResponse();
+
+        try
+        {
+            OMRSMetadataCollection metadataCollection = validateRepository(userId, serverName, methodName);
+
+            if (historyRangeRequest != null)
+            {
+                response.setClassifications(metadataCollection.getClassificationHistory(userId,
+                                                                               guid,
+                                                                               classificationName,
+                                                                               historyRangeRequest.getFromTime(),
+                                                                               historyRangeRequest.getToTime(),
+                                                                               historyRangeRequest.getOffset(),
+                                                                               historyRangeRequest.getPageSize(),
+                                                                               historyRangeRequest.getSequencingOrder()));
+            }
+            else
+            {
+                response.setClassifications(metadataCollection.getClassificationHistory(userId,
+                                                                                        guid,
+                                                                                        classificationName,
+                                                                                        null,
+                                                                                        null,
+                                                                                        0,
+                                                                                        0,
+                                                                                        HistorySequencingOrder.BACKWARDS));
+            }
+        }
+        catch (RepositoryErrorException  error)
+        {
+            captureRepositoryErrorException(response, error);
+        }
+        catch (FunctionNotSupportedException  error)
+        {
+            captureFunctionNotSupportedException(response, error);
+        }
+        catch (UserNotAuthorizedException error)
+        {
+            captureUserNotAuthorizedException(response, error);
+        }
+        catch (InvalidParameterException error)
+        {
+            captureInvalidParameterException(response, error);
+        }
+        catch (EntityNotKnownException error)
+        {
+            captureEntityNotKnownException(response, error);
+        }
+        catch (EntityProxyOnlyException error)
+        {
+            captureEntityProxyOnlyException(response, error);
+        }
+        catch (Exception error)
+        {
+            captureGenericException(response, error, userId, serverName, methodName);
+        }
+
+        log.debug("Returning from method: " + methodName + " with response: " + response);
+
+        return response;
+    }
+
+    /**
      * Return the relationships for a specific entity.
      *
      * @param serverName unique identifier for requested server.

@@ -456,6 +456,64 @@ public class EnterpriseRepositoryServicesResource
 
 
     /**
+     * Return all historical versions of an entity within the bounds of the provided timestamps. To retrieve all historical
+     * versions of an entity, set both the 'fromTime' and 'toTime' to null.
+     *
+     * @param serverName unique identifier for requested server.
+     * @param userId unique identifier for requesting user.
+     * @param guid String unique identifier for the entity.
+     * @param historyRangeRequest detailing the range of times and paging for the results
+     * @return EntityList structure or
+     * InvalidParameterException the guid or date is null or fromTime is after the toTime
+     * RepositoryErrorException there is a problem communicating with the metadata repository where
+     *                                 the metadata collection is stored.
+     * EntityNotKnownException the requested entity instance is not known in the metadata collection
+     *                                   at the time requested.
+     * EntityProxyOnlyException the requested entity instance is only a proxy in the metadata collection.
+     * FunctionNotSupportedException the repository does not support history.
+     * UserNotAuthorizedException the userId is not permitted to perform this operation.
+     */
+    @PostMapping(path = "/instances/entity/{guid}/history/all")
+    public  EntityListResponse getEntityDetailHistory(@PathVariable String              serverName,
+                                                      @PathVariable String              userId,
+                                                      @PathVariable String              guid,
+                                                      @RequestBody(required = false)  HistoryRangeRequest historyRangeRequest)
+    {
+        return restAPI.getEntityDetailHistory(serverName, userId, guid, historyRangeRequest);
+    }
+
+
+    /**
+     * Return all historical versions of an entity's classification within the bounds of the provided timestamps. To retrieve all historical
+     * versions of an entity's classification, set both the 'fromTime' and 'toTime' to null.
+     *
+     * @param serverName unique identifier for requested server.
+     * @param userId unique identifier for requesting user.
+     * @param guid String unique identifier for the entity.
+     * @param classificationName name of the classification within entity
+     * @param historyRangeRequest detailing the range of times and paging for the results
+     * @return EntityList structure or
+     * InvalidParameterException the guid or date is null or fromTime is after the toTime
+     * RepositoryErrorException there is a problem communicating with the metadata repository where
+     *                                 the metadata collection is stored.
+     * EntityNotKnownException the requested entity instance is not known in the metadata collection
+     *                                   at the time requested.
+     * EntityProxyOnlyException the requested entity instance is only a proxy in the metadata collection.
+     * FunctionNotSupportedException the repository does not support history.
+     * UserNotAuthorizedException the userId is not permitted to perform this operation.
+     */
+    @PostMapping(path = "/instances/entity/{guid}/classification/{classificationName}/history/all")
+    public  ClassificationListResponse getClassificationHistory(@PathVariable String              serverName,
+                                                                @PathVariable String              userId,
+                                                                @PathVariable String              guid,
+                                                                @PathVariable String              classificationName,
+                                                                @RequestBody(required = false)  HistoryRangeRequest historyRangeRequest)
+    {
+        return restAPI.getClassificationHistory(serverName, userId, guid, classificationName, historyRangeRequest);
+    }
+
+
+    /**
      * Return a historical version of an entity includes the header, classifications and properties of the entity.
      *
      * @param serverName unique identifier for requested server.
@@ -865,6 +923,34 @@ public class EnterpriseRepositoryServicesResource
                                                  @RequestBody  HistoryRequest asOfTime)
     {
         return restAPI.getRelationship(serverName, userId, guid, asOfTime);
+    }
+
+
+    /**
+     * Return all historical versions of a relationship within the bounds of the provided timestamps. To retrieve all
+     * historical versions of a relationship, set both the 'fromTime' and 'toTime' to null.
+     *
+     * @param serverName unique identifier for requested server.
+     * @param userId unique identifier for requesting user.
+     * @param guid String unique identifier for the relationship.
+     * @param historyRangeRequest detailing the range of times and paging for the results
+     * @return RelationshipList structure or
+     * InvalidParameterException the guid or date is null or fromTime is after the toTime
+     * RepositoryErrorException there is a problem communicating with the metadata repository where
+     *                                 the metadata collection is stored.
+     * RelationshipNotKnownException the requested relationship instance is not known in the metadata collection
+     *                                   at the time requested.
+     * FunctionNotSupportedException the repository does not support history.
+     * UserNotAuthorizedException the userId is not permitted to perform this operation.
+     */
+    @PostMapping(path = "/instances/relationship/{guid}/history/all")
+    public  RelationshipListResponse getRelationshipHistory(@PathVariable String              serverName,
+                                                            @PathVariable String              userId,
+                                                            @PathVariable String              guid,
+                                                            @RequestBody(required = false)
+                                                            HistoryRangeRequest historyRangeRequest)
+    {
+        return restAPI.getRelationshipHistory(serverName, userId, guid, historyRangeRequest);
     }
 
 
