@@ -4,9 +4,6 @@ package org.odpi.openmetadata.repositoryservices.enterprise.repositoryconnector.
 
 
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.OMRSMetadataCollection;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Classification;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryValidator;
 import org.odpi.openmetadata.repositoryservices.enterprise.repositoryconnector.EnterpriseOMRSRepositoryConnector;
@@ -126,11 +123,12 @@ public class RelationshipHistoryAccumulator extends RelationshipsAccumulator
      * supplied to this accumulator.  It should be called once all the executors have completed processing
      * their request(s).
      *
+     * @param oldestFirst ordering of results
      * @param repositoryConnector enterprise connector
      * @return list of entities
      */
-    @Override
-    public synchronized List<Relationship> getResults(EnterpriseOMRSRepositoryConnector repositoryConnector)
+    public synchronized List<Relationship> getResults(boolean                           oldestFirst,
+                                                      EnterpriseOMRSRepositoryConnector repositoryConnector)
     {
         if ((accumulatedRelationships == null) || (accumulatedRelationships.isEmpty()))
         {
@@ -142,12 +140,22 @@ public class RelationshipHistoryAccumulator extends RelationshipsAccumulator
 
             List<Relationship>  results = new ArrayList<>();
 
-            for (Relationship accumulatedRelationship : accumulatedRelationships.values())
+            for (Long version : accumulatedRelationships.keySet())
             {
-                if (accumulatedRelationship != null)
-                {
-                    Relationship resultRelationship = new Relationship(accumulatedRelationship);
+                Relationship resultRelationship = new Relationship(accumulatedRelationships.get(version));
 
+                if (oldestFirst)
+                {
+                    /*
+                     * Add to the front
+                     */
+                    results.add(0, resultRelationship);
+                }
+                else
+                {
+                    /*
+                     * Add to the back
+                     */
                     results.add(resultRelationship);
                 }
             }

@@ -5,27 +5,27 @@ package org.odpi.openmetadata.repositoryservices.enterprise.repositoryconnector.
 import org.odpi.openmetadata.frameworks.auditlog.AuditLog;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.OMRSMetadataCollection;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.HistorySequencingOrder;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Classification;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryValidator;
-import org.odpi.openmetadata.repositoryservices.enterprise.repositoryconnector.EnterpriseOMRSRepositoryConnector;
-import org.odpi.openmetadata.repositoryservices.enterprise.repositoryconnector.accumulators.RelationshipHistoryAccumulator;
+import org.odpi.openmetadata.repositoryservices.enterprise.repositoryconnector.accumulators.ClassificationHistoryAccumulator;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.*;
 
 import java.util.Date;
 import java.util.List;
 
 /**
- * GetRelationshipHistoryExecutor is the executor for the getRelationshipHistory request.
+ * GetEntityDetailHistoryExecutor is the executor for the findEntitiesByPropertyValue request.
  * This request can be issued in parallel - the call to each request potentially running in a different thread.
  */
-public class GetRelationshipHistoryExecutor extends PageableRepositoryExecutorBase
+public class GetClassificationHistoryExecutor extends PageableRepositoryExecutorBase
 {
     private final String                 guid;
+    private final String                 classificationName;
     private final Date                   fromTime;
     private final Date                   toTime;
     private final HistorySequencingOrder historySequencingOrder;
 
-    private final RelationshipHistoryAccumulator historyAccumulator;
+    private final ClassificationHistoryAccumulator historyAccumulator;
 
 
     /**
@@ -34,6 +34,7 @@ public class GetRelationshipHistoryExecutor extends PageableRepositoryExecutorBa
      *
      * @param userId unique identifier for requesting user.
      * @param guid String unique identifier for the entity.
+     * @param classificationName name of classification to retrieve
      * @param fromTime the earliest point in time from which to retrieve historical versions of the entity (inclusive)
      * @param toTime the latest point in time from which to retrieve historical versions of the entity (exclusive)
      * @param startFromElement the starting element number of the historical versions to return. This is used when retrieving
@@ -46,26 +47,28 @@ public class GetRelationshipHistoryExecutor extends PageableRepositoryExecutorBa
      * @param repositoryValidator validator for resulting relationships
      * @param methodName calling method
      */
-    public GetRelationshipHistoryExecutor(String                  userId,
-                                          String                  guid,
-                                          Date                    fromTime,
-                                          Date                    toTime,
-                                          int                     startFromElement,
-                                          int                     pageSize,
-                                          HistorySequencingOrder  sequencingOrder,
-                                          String                  localMetadataCollectionId,
-                                          AuditLog                auditLog,
-                                          OMRSRepositoryValidator repositoryValidator,
-                                          String                  methodName)
+    public GetClassificationHistoryExecutor(String                  userId,
+                                            String                  guid,
+                                            String                  classificationName,
+                                            Date                    fromTime,
+                                            Date                    toTime,
+                                            int                     startFromElement,
+                                            int                     pageSize,
+                                            HistorySequencingOrder  sequencingOrder,
+                                            String                  localMetadataCollectionId,
+                                            AuditLog                auditLog,
+                                            OMRSRepositoryValidator repositoryValidator,
+                                            String                  methodName)
     {
         this(userId,
              guid,
+             classificationName,
              fromTime,
              toTime,
              startFromElement,
              pageSize,
              sequencingOrder,
-             new RelationshipHistoryAccumulator(localMetadataCollectionId, auditLog, repositoryValidator),
+             new ClassificationHistoryAccumulator(localMetadataCollectionId, auditLog, repositoryValidator),
              methodName);
     }
 
@@ -76,6 +79,7 @@ public class GetRelationshipHistoryExecutor extends PageableRepositoryExecutorBa
      *
      * @param userId unique identifier for requesting user.
      * @param guid String unique identifier for the entity.
+     * @param classificationName name of classification to retrieve
      * @param fromTime the earliest point in time from which to retrieve historical versions of the entity (inclusive)
      * @param toTime the latest point in time from which to retrieve historical versions of the entity (exclusive)
      * @param startFromElement the starting element number of the historical versions to return. This is used when retrieving
@@ -86,15 +90,16 @@ public class GetRelationshipHistoryExecutor extends PageableRepositoryExecutorBa
      * @param accumulator location for results and returned exceptions
      * @param methodName calling method
      */
-    private GetRelationshipHistoryExecutor(String                         userId,
-                                           String                         guid,
-                                           Date                           fromTime,
-                                           Date                           toTime,
-                                           int                            startFromElement,
-                                           int                            pageSize,
-                                           HistorySequencingOrder         sequencingOrder,
-                                           RelationshipHistoryAccumulator accumulator,
-                                           String                         methodName)
+    private GetClassificationHistoryExecutor(String                           userId,
+                                             String                           guid,
+                                             String                           classificationName,
+                                             Date                             fromTime,
+                                             Date                             toTime,
+                                             int                              startFromElement,
+                                             int                              pageSize,
+                                             HistorySequencingOrder           sequencingOrder,
+                                             ClassificationHistoryAccumulator accumulator,
+                                             String                           methodName)
     {
         super(userId,
               null,
@@ -108,6 +113,7 @@ public class GetRelationshipHistoryExecutor extends PageableRepositoryExecutorBa
               methodName);
 
         this.guid = guid;
+        this.classificationName = classificationName;
         this.fromTime = fromTime;
         this.toTime = toTime;
         this.historySequencingOrder = sequencingOrder;
@@ -125,15 +131,16 @@ public class GetRelationshipHistoryExecutor extends PageableRepositoryExecutorBa
     @Override
     public CloneableRepositoryExecutor getClone()
     {
-        return new GetRelationshipHistoryExecutor(userId,
-                                                  guid,
-                                                  fromTime,
-                                                  toTime,
-                                                  startingElement,
-                                                  pageSize,
-                                                  historySequencingOrder,
-                                                  historyAccumulator,
-                                                  methodName);
+        return new GetClassificationHistoryExecutor(userId,
+                                                    guid,
+                                                    classificationName,
+                                                    fromTime,
+                                                    toTime,
+                                                    startingElement,
+                                                    pageSize,
+                                                    historySequencingOrder,
+                                                    historyAccumulator,
+                                                    methodName);
     }
 
 
@@ -153,15 +160,16 @@ public class GetRelationshipHistoryExecutor extends PageableRepositoryExecutorBa
             /*
              * Issue the request
              */
-            List<Relationship> results = metadataCollection.getRelationshipHistory(userId,
-                                                                                   guid,
-                                                                                   fromTime,
-                                                                                   toTime,
-                                                                                   startingElement,
-                                                                                   pageSize,
-                                                                                   historySequencingOrder);
+            List<Classification> results = metadataCollection.getClassificationHistory(userId,
+                                                                                       guid,
+                                                                                       classificationName,
+                                                                                       fromTime,
+                                                                                       toTime,
+                                                                                       startingElement,
+                                                                                       pageSize,
+                                                                                       historySequencingOrder);
 
-            historyAccumulator.addRelationships(results, metadataCollectionId);
+            historyAccumulator.saveClassifications(results, metadataCollectionId);
         }
         catch (InvalidParameterException error)
         {
@@ -179,7 +187,11 @@ public class GetRelationshipHistoryExecutor extends PageableRepositoryExecutorBa
         {
             historyAccumulator.captureException(metadataCollectionId, error);
         }
-        catch (RelationshipNotKnownException error)
+        catch (EntityNotKnownException error)
+        {
+            historyAccumulator.captureException(metadataCollectionId, error);
+        }
+        catch (EntityProxyOnlyException error)
         {
             historyAccumulator.captureException(metadataCollectionId, error);
         }
@@ -195,7 +207,7 @@ public class GetRelationshipHistoryExecutor extends PageableRepositoryExecutorBa
     /**
      * Return the results or exception.
      *
-     * @param repositoryConnector enterprise connector
+     * @param metadataCollection enterprise metadata collection
      *
      * @return a list of entities matching the supplied criteria; null means no matching entities in the metadata
      * collection.
@@ -204,28 +216,32 @@ public class GetRelationshipHistoryExecutor extends PageableRepositoryExecutorBa
      *                                    the metadata collection is stored.
      * @throws FunctionNotSupportedException the repository does not support the asOfTime parameter.
      * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
-     * @throws RelationshipNotKnownException the requested relationship instance is not known in the metadata collection at the time requested.
+     * @throws EntityNotKnownException the requested entity instance is not known in the metadata collection at the time requested.
+     * @throws EntityProxyOnlyException the requested entity instance is only a proxy in the metadata collection.
      */
-    public List<Relationship> getHistoryResults(EnterpriseOMRSRepositoryConnector repositoryConnector) throws InvalidParameterException,
-                                                                                                              RepositoryErrorException,
-                                                                                                              RelationshipNotKnownException,
-                                                                                                              FunctionNotSupportedException,
-                                                                                                              UserNotAuthorizedException
+    public List<Classification> getHistoryResults(OMRSMetadataCollection metadataCollection) throws InvalidParameterException,
+                                                                                                    RepositoryErrorException,
+                                                                                                    EntityNotKnownException,
+                                                                                                    EntityProxyOnlyException,
+                                                                                                    FunctionNotSupportedException,
+                                                                                                    UserNotAuthorizedException
     {
         if (historyAccumulator.resultsReturned())
         {
             if (historySequencingOrder == HistorySequencingOrder.BACKWARDS)
             {
-                return historyAccumulator.getResults(false, repositoryConnector);
+                return historyAccumulator.getResults(false, metadataCollection);
             }
             else
             {
-                return historyAccumulator.getResults(true, repositoryConnector);
-            }        }
+                return historyAccumulator.getResults(true, metadataCollection);
+            }
+        }
 
         historyAccumulator.throwCapturedUserNotAuthorizedException();
         historyAccumulator.throwCapturedRepositoryErrorException();
-        historyAccumulator.throwCapturedRelationshipNotKnownException();
+        historyAccumulator.throwCapturedEntityNotKnownException();
+        historyAccumulator.throwCapturedEntityProxyOnlyException();
         historyAccumulator.throwCapturedGenericException(methodName);
         historyAccumulator.throwCapturedInvalidParameterException();
         historyAccumulator.throwCapturedFunctionNotSupportedException();

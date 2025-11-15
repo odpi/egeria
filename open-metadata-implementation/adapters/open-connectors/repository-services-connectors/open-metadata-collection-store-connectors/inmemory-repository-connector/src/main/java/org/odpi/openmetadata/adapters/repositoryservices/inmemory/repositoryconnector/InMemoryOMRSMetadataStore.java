@@ -3,12 +3,7 @@
 package org.odpi.openmetadata.adapters.repositoryservices.inmemory.repositoryconnector;
 
 
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Classification;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityProxy;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntitySummary;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceHeader;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.*;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.RepositoryErrorException;
 import org.slf4j.Logger;
@@ -32,6 +27,50 @@ class InMemoryOMRSMetadataStore
 
 
     /**
+     * Determine which classifications were active between the from and to date.
+     *
+     * @param fromTime starting time
+     * @param toTime ending time
+     * @param classifications instance version
+     * @param versionEndTime time when this version was superseded
+     * @return boolean flag - true means it is valid
+     */
+    static synchronized List<Classification> getClassificationsForInclusiveDate(String               classificationName,
+                                                                                Date                 fromTime,
+                                                                                Date                 toTime,
+                                                                                List<Classification> classifications,
+                                                                                Date                 versionEndTime)
+    {
+        if ((classifications != null) && (! classifications.isEmpty()))
+        {
+            List<Classification> results = new ArrayList<>();
+
+            for (Classification classification : classifications)
+            {
+                if ((classification != null) && (classification.getName().equals(classificationName)))
+                {
+                    if (checkInclusiveDate(fromTime,
+                                           toTime,
+                                           classification,
+                                           versionEndTime))
+                    {
+                        results.add(classification);
+                    }
+                }
+            }
+
+            if (! results.isEmpty())
+            {
+                return results;
+            }
+        }
+
+        return null;
+    }
+
+
+
+    /**
      * Determine is an instance was active between the from and to date.
      *
      * @param fromTime starting time
@@ -40,10 +79,10 @@ class InMemoryOMRSMetadataStore
      * @param versionEndTime time when this version was superseded
      * @return boolean flag - true means it is valid
      */
-    static synchronized boolean checkInclusiveDate(Date           fromTime,
-                                                   Date           toTime,
-                                                   InstanceHeader instanceHeader,
-                                                   Date           versionEndTime)
+    static synchronized boolean checkInclusiveDate(Date                fromTime,
+                                                   Date                toTime,
+                                                   InstanceAuditHeader instanceHeader,
+                                                   Date                versionEndTime)
     {
         Date versionStartTime = instanceHeader.getUpdateTime();
 
@@ -540,6 +579,33 @@ class InMemoryOMRSMetadataStore
         }
 
         return storedEntity.getEntityHistory(fromTime, toTime, oldestFirst);
+    }
+
+
+    /**
+     * Return the versions of the instance that where active between the "from" and "to" times.
+     *
+     * @param guid unique identifier of the instance
+     * @param classificationName name of the classification history to retrieve
+     * @param fromTime starting time
+     * @param toTime ending time
+     * @param oldestFirst ordering
+     * @return list of instance versions
+     */
+    synchronized List<Classification> getClassificationHistory(String  guid,
+                                                               String  classificationName,
+                                                               Date    fromTime,
+                                                               Date    toTime,
+                                                               boolean oldestFirst)
+    {
+        StoredEntity storedEntity = entityStore.get(guid);
+
+        if (storedEntity == null)
+        {
+            return null;
+        }
+
+        return storedEntity.getClassificationHistory(classificationName, fromTime, toTime, oldestFirst);
     }
 
 
@@ -1143,6 +1209,112 @@ class InMemoryOMRSMetadataStore
 
 
         /**
+         * Return the instances that match the history.
+         *
+         * @param classificationName name of the classification history to retrieve
+         * @param fromTime starting time
+         * @param toTime ending time
+         * @param oldestFirst ordering of results
+         * @return list of versions of this relationship
+         */
+        synchronized List<Classification> getClassificationHistory(String  classificationName,
+                                                                   Date    fromTime,
+                                                                   Date    toTime,
+                                                                   boolean oldestFirst)
+        {
+            /*
+             * Do not have a full entity
+             */
+            if (this.entity == null)
+            {
+                return null;
+            }
+
+            if ((toTime != null) && (toTime.before(this.entity.getCreateTime())))
+            {
+                /*
+                 * The entity is known - but the query time is from before the instance existed.
+                 */
+                return null;
+            }
+
+            /*
+             * The current version of the entity is in range.
+             */
+            Map<Long, Classification> historyMap = new HashMap<>();
+
+            List<Classification> matches = getClassificationsForInclusiveDate(classificationName,
+                                                                              fromTime,
+                                                                              toTime,
+                                                                              this.entity.getClassifications(),
+                                                                              null);
+
+            if (matches != null)
+            {
+                for (Classification match : matches)
+                {
+                    historyMap.put(match.getVersion(), match);
+                }
+            }
+
+            if (! this.entityHistory.isEmpty())
+            {
+                /*
+                 * The period when an instance is active is from its updateTime to the updateTime of the next element.
+                 * The entityHistory has the latest version first.
+                 */
+                Date followingUpdateTime = this.entity.getUpdateTime();
+
+                for (EntityDetail historicalInstance : this.entityHistory)
+                {
+                    matches = getClassificationsForInclusiveDate(classificationName,
+                                                                 fromTime,
+                                                                 toTime,
+                                                                 this.entity.getClassifications(),
+                                                                 followingUpdateTime);
+
+                    if (matches != null)
+                    {
+                        for (Classification match : matches)
+                        {
+                            historyMap.put(match.getVersion(), match);
+                        }
+                    }
+
+                    followingUpdateTime = historicalInstance.getUpdateTime();
+                }
+            }
+
+            if (! historyMap.isEmpty())
+            {
+                List<Classification> historyResults = new ArrayList<>();
+
+                for (Long version : historyMap.keySet())
+                {
+                    if (oldestFirst)
+                    {
+                        /*
+                         * Add to the front
+                         */
+                        historyResults.add(0, historyMap.get(version));
+                    }
+                    else
+                    {
+                        /*
+                         * Add to the back
+                         */
+                        historyResults.add(historyMap.get(version));
+                    }
+                }
+
+                return historyResults;
+            }
+
+            return null;
+        }
+
+
+        /**
          * Retrieve the previous version of the instance.
          *
          * @return first element in the history
@@ -1161,7 +1333,7 @@ class InMemoryOMRSMetadataStore
         /**
          * Class used to store and manage a single home classification.
          */
-        private class HomeClassification
+        private static class HomeClassification
         {
             volatile Classification latestClassification;
             volatile long           deletedVersionNumber = 0;

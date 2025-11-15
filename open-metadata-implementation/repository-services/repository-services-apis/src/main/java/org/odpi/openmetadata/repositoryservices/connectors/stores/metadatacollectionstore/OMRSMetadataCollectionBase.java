@@ -23,7 +23,6 @@ import java.util.*;
  *     Within a metadata collection are the type definitions (TypeDefs) and metadata instances (Entities and
  *     Relationships).  OMRSMetadataCollectionBase provides empty implementation of the abstract methods of
  *     OMRSMetadataInstanceStore.
- *
  *     The methods on OMRSMetadataInstanceStore are in the following major groups:
  * </p>
  * <ul>
@@ -1847,9 +1846,9 @@ public abstract class OMRSMetadataCollectionBase extends OMRSMetadataCollection
      * Validate the parameters for a retrieve multiple historical versions of an instance.
      *
      * @param userId unique identifier for requesting user.
-     * @param guid String unique identifier for the relationship.
-     * @param fromTime the earliest point in time from which to retrieve historical versions of the entity (inclusive)
-     * @param toTime the latest point in time from which to retrieve historical versions of the entity (exclusive)
+     * @param guid String unique identifier for the instance.
+     * @param fromTime the earliest point in time from which to retrieve historical versions of the instance (inclusive)
+     * @param toTime the latest point in time from which to retrieve historical versions of the instance (exclusive)
      * @param methodName name of calling method.
      * @throws InvalidParameterException the guid is null or the 'fromTime' is after the 'toTime'
      * @throws RepositoryErrorException there is a problem communicating with the metadata repository where
@@ -1871,6 +1870,41 @@ public abstract class OMRSMetadataCollectionBase extends OMRSMetadataCollection
         super.basicRequestValidation(userId, methodName);
         repositoryValidator.validateGUID(repositoryName, guidParameterName, guid, methodName);
         repositoryValidator.validateDateRange(repositoryName, timeRangeParameterNames, fromTime, toTime, methodName);
+    }
+
+
+
+    /**
+     * Validate the parameters for a retrieve multiple historical versions of an instance.
+     *
+     * @param userId unique identifier for requesting user.
+     * @param guid String unique identifier for the relationship.
+     * @param fromTime the earliest point in time from which to retrieve historical versions of the entity (inclusive)
+     * @param toTime the latest point in time from which to retrieve historical versions of the entity (exclusive)
+     * @param methodName name of calling method.
+     * @throws InvalidParameterException the guid is null or the 'fromTime' is after the 'toTime'
+     * @throws RepositoryErrorException there is a problem communicating with the metadata repository where
+     *                                 the metadata collection is stored.
+     */
+    protected  void getInstanceHistoryParameterValidation(String    userId,
+                                                          String    classificationName,
+                                                          String    guid,
+                                                          Date      fromTime,
+                                                          Date      toTime,
+                                                          String    methodName) throws InvalidParameterException,
+                                                                                       RepositoryErrorException
+    {
+        final String  guidParameterName = "guid";
+        final String  timeRangeParameterNames = "fromTime/toTime";
+        final String  classificationNameParameterName = "classificationName";
+
+        /*
+         * Validate parameters
+         */
+        super.basicRequestValidation(userId, methodName);
+        repositoryValidator.validateGUID(repositoryName, guidParameterName, guid, methodName);
+        repositoryValidator.validateDateRange(repositoryName, timeRangeParameterNames, fromTime, toTime, methodName);
+        repositoryValidator.validateClassificationName(repositoryName, classificationNameParameterName, classificationName, methodName);
     }
 
 
@@ -2808,12 +2842,63 @@ public abstract class OMRSMetadataCollectionBase extends OMRSMetadataCollection
                                                                                                     FunctionNotSupportedException,
                                                                                                     UserNotAuthorizedException
     {
-        final String  methodName        = "getEntityDetailHistory";
+        final String  methodName = "getEntityDetailHistory";
 
         /*
          * Validate parameters
          */
         this.getInstanceHistoryParameterValidation(userId, guid, fromTime, toTime, methodName);
+
+        /*
+         * Perform operation
+         */
+        reportUnsupportedOptionalFunction(methodName);
+        return null;
+    }
+
+
+    /**
+     * Return all historical versions of an entity's classification within the bounds of the provided timestamps.
+     * To retrieve all historical versions of an entity's classification, set both the 'fromTime' and 'toTime' to null.
+     *
+     * @param userId unique identifier for requesting user.
+     * @param guid String unique identifier for the entity.
+     * @param classificationName name of the classification within entity
+     * @param fromTime the earliest point in time from which to retrieve historical versions of the entity (inclusive)
+     * @param toTime the latest point in time from which to retrieve historical versions of the entity (exclusive)
+     * @param startFromElement the starting element number of the historical versions to return. This is used when retrieving
+     *                         versions beyond the first page of results. Zero means start from the first element.
+     * @param pageSize the maximum number of result versions that can be returned on this request. Zero means unrestricted
+     *                 return results size.
+     * @param sequencingOrder Enum defining how the results should be ordered.
+     * @return {@code List<Classification>} of each historical version of the entity's classification within the bounds, and in the order requested.
+     * @throws InvalidParameterException the guid or date is null or fromTime is after the toTime
+     * @throws RepositoryErrorException there is a problem communicating with the metadata repository where the metadata collection is stored.
+     * @throws EntityNotKnownException the requested entity instance is not active in the metadata collection at the time requested.
+     * @throws EntityProxyOnlyException the requested entity instance is only a proxy in the metadata collection.
+     * @throws FunctionNotSupportedException the repository does not support history.
+     * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
+     */
+    public List<Classification> getClassificationHistory(String                 userId,
+                                                         String                 guid,
+                                                         String                 classificationName,
+                                                         Date                   fromTime,
+                                                         Date                   toTime,
+                                                         int                    startFromElement,
+                                                         int                    pageSize,
+                                                         HistorySequencingOrder sequencingOrder) throws InvalidParameterException,
+                                                                                                        RepositoryErrorException,
+                                                                                                        EntityNotKnownException,
+                                                                                                        EntityProxyOnlyException,
+                                                                                                        FunctionNotSupportedException,
+                                                                                                        UserNotAuthorizedException
+    {
+        final String  methodName = "getClassificationHistory";
+
+        /*
+         * Validate parameters
+         */
+        this.getInstanceHistoryParameterValidation(userId, classificationName, guid, fromTime, toTime, methodName);
 
         /*
          * Perform operation

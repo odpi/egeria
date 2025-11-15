@@ -25,7 +25,7 @@ public class GetEntityDetailHistoryExecutor extends PageableEntityRepositoryExec
     private final Date                   toTime;
     private final HistorySequencingOrder historySequencingOrder;
 
-    private EntityHistoryAccumulator     historyAccumulator;
+    private final EntityHistoryAccumulator historyAccumulator;
 
 
     /**
@@ -145,7 +145,6 @@ public class GetEntityDetailHistoryExecutor extends PageableEntityRepositoryExec
      * @return boolean true means that the required results have been achieved
      */
     @Override
-
     public boolean issueRequestToRepository(String                 metadataCollectionId,
                                             OMRSMetadataCollection metadataCollection)
     {
@@ -221,9 +220,16 @@ public class GetEntityDetailHistoryExecutor extends PageableEntityRepositoryExec
                                                                                                              FunctionNotSupportedException,
                                                                                                              UserNotAuthorizedException
     {
-        if (accumulator.resultsReturned())
+        if (historyAccumulator.resultsReturned())
         {
-            return accumulator.getResults(repositoryConnector, metadataCollection);
+            if (historySequencingOrder == HistorySequencingOrder.BACKWARDS)
+            {
+                return historyAccumulator.getResults(false, repositoryConnector, metadataCollection);
+            }
+            else
+            {
+                return historyAccumulator.getResults(true, repositoryConnector, metadataCollection);
+            }
         }
 
         accumulator.throwCapturedUserNotAuthorizedException();
