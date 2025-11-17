@@ -106,6 +106,10 @@ loadScripts(document, 'script');</script>
          the local user community.
      </li>
      <li>
+         GOVERNANCE_ZONES means that the local repository process reference copies of metadata based on the
+         governance zones of the elements.
+     </li>
+     <li>
          ALL means send/receive all types of metadata that are supported by the local repository.
      </li>
  </ul></div>
@@ -137,21 +141,25 @@ loadScripts(document, 'script');</script>
 <div class="col-last odd-row-color">
 <div class="block">Registration plus all type definitions (TypeDefs) and metadata instances (Entities and Relationships) NOT listed in selected types.</div>
 </div>
-<div class="col-first even-row-color"><code><a href="#JUST_TYPEDEFS" class="member-name-link">JUST_TYPEDEFS</a></code></div>
+<div class="col-first even-row-color"><code><a href="#GOVERNANCE_ZONES" class="member-name-link">GOVERNANCE_ZONES</a></code></div>
 <div class="col-last even-row-color">
+<div class="block">Registration plus all type definitions (TypeDefs) and metadata instances (Entities and Relationships) NOT listed in selected types.</div>
+</div>
+<div class="col-first odd-row-color"><code><a href="#JUST_TYPEDEFS" class="member-name-link">JUST_TYPEDEFS</a></code></div>
+<div class="col-last odd-row-color">
 <div class="block">Only registration and type definitions (TypeDefs) exchange.</div>
 </div>
-<div class="col-first odd-row-color"><code><a href="#LEARNED_TYPES" class="member-name-link">LEARNED_TYPES</a></code></div>
-<div class="col-last odd-row-color">
+<div class="col-first even-row-color"><code><a href="#LEARNED_TYPES" class="member-name-link">LEARNED_TYPES</a></code></div>
+<div class="col-last even-row-color">
 <div class="block">Registration plus all type definitions (TypeDefs) and metadata instances (Entities and Relationships) of types
  requested by local users to this server.</div>
 </div>
-<div class="col-first even-row-color"><code><a href="#REGISTRATION_ONLY" class="member-name-link">REGISTRATION_ONLY</a></code></div>
-<div class="col-last even-row-color">
+<div class="col-first odd-row-color"><code><a href="#REGISTRATION_ONLY" class="member-name-link">REGISTRATION_ONLY</a></code></div>
+<div class="col-last odd-row-color">
 <div class="block">Only registration exchange; no TypeDefs or metadata instances.</div>
 </div>
-<div class="col-first odd-row-color"><code><a href="#SELECTED_TYPES" class="member-name-link">SELECTED_TYPES</a></code></div>
-<div class="col-last odd-row-color">
+<div class="col-first even-row-color"><code><a href="#SELECTED_TYPES" class="member-name-link">SELECTED_TYPES</a></code></div>
+<div class="col-last even-row-color">
 <div class="block">Registration plus all type definitions (TypeDefs) and metadata instances (Entities and Relationships) of selected types.</div>
 </div>
 </div>
@@ -252,6 +260,13 @@ the order they are declared.</div>
 <section class="detail" id="DESELECTED_TYPES">
 <h3>DESELECTED_TYPES</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OpenMetadataExchangeRule.html" title="enum class in org.odpi.openmetadata.adminservices.configuration.properties">OpenMetadataExchangeRule</a></span>&nbsp;<span class="element-name">DESELECTED_TYPES</span></div>
+<div class="block">Registration plus all type definitions (TypeDefs) and metadata instances (Entities and Relationships) NOT listed in selected types.</div>
+</section>
+</li>
+<li>
+<section class="detail" id="GOVERNANCE_ZONES">
+<h3>GOVERNANCE_ZONES</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OpenMetadataExchangeRule.html" title="enum class in org.odpi.openmetadata.adminservices.configuration.properties">OpenMetadataExchangeRule</a></span>&nbsp;<span class="element-name">GOVERNANCE_ZONES</span></div>
 <div class="block">Registration plus all type definitions (TypeDefs) and metadata instances (Entities and Relationships) NOT listed in selected types.</div>
 </section>
 </li>

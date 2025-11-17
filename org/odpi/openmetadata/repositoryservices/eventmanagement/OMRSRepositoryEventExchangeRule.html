@@ -90,8 +90,12 @@ loadScripts(document, 'script');</script>
 <div class="summary-table two-column-summary">
 <div class="table-header col-first">Constructor</div>
 <div class="table-header col-last">Description</div>
-<div class="col-constructor-name even-row-color"><code><a href="#%3Cinit%3E(org.odpi.openmetadata.adminservices.configuration.properties.OpenMetadataExchangeRule,java.util.List)" class="member-name-link">OMRSRepositoryEventExchangeRule</a><wbr>(<a href="../../adminservices/configuration/properties/OpenMetadataExchangeRule.html" title="enum class in org.odpi.openmetadata.adminservices.configuration.properties">OpenMetadataExchangeRule</a>&nbsp;exchangeRule,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../connectors/stores/metadatacollectionstore/properties/typedefs/TypeDefSummary.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs">TypeDefSummary</a>&gt;&nbsp;selectedTypesToProcess)</code></div>
+<div class="col-constructor-name even-row-color"><code><a href="#%3Cinit%3E(org.odpi.openmetadata.adminservices.configuration.properties.OpenMetadataExchangeRule,java.util.List,java.util.List,java.util.List,org.odpi.openmetadata.repositoryservices.localrepository.OMRSLocalRepository,java.lang.String)" class="member-name-link">OMRSRepositoryEventExchangeRule</a><wbr>(<a href="../../adminservices/configuration/properties/OpenMetadataExchangeRule.html" title="enum class in org.odpi.openmetadata.adminservices.configuration.properties">OpenMetadataExchangeRule</a>&nbsp;exchangeRule,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../connectors/stores/metadatacollectionstore/properties/typedefs/TypeDefSummary.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs">TypeDefSummary</a>&gt;&nbsp;selectedTypesToProcess,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;&nbsp;excludedZones,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;&nbsp;includedZones,
+ <a href="../localrepository/OMRSLocalRepository.html" title="interface in org.odpi.openmetadata.repositoryservices.localrepository">OMRSLocalRepository</a>&nbsp;localRepository,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;sourceName)</code></div>
 <div class="col-last even-row-color">
 <div class="block">Constructor provides all the objects used in the event exchange decision.</div>
 </div>
@@ -154,15 +158,22 @@ loadScripts(document, 'script');</script>
 <h2>Constructor Details</h2>
 <ul class="member-list">
 <li>
-<section class="detail" id="&lt;init&gt;(org.odpi.openmetadata.adminservices.configuration.properties.OpenMetadataExchangeRule,java.util.List)">
+<section class="detail" id="&lt;init&gt;(org.odpi.openmetadata.adminservices.configuration.properties.OpenMetadataExchangeRule,java.util.List,java.util.List,java.util.List,org.odpi.openmetadata.repositoryservices.localrepository.OMRSLocalRepository,java.lang.String)">
 <h3>OMRSRepositoryEventExchangeRule</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="element-name">OMRSRepositoryEventExchangeRule</span><wbr><span class="parameters">(<a href="../../adminservices/configuration/properties/OpenMetadataExchangeRule.html" title="enum class in org.odpi.openmetadata.adminservices.configuration.properties">OpenMetadataExchangeRule</a>&nbsp;exchangeRule,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../connectors/stores/metadatacollectionstore/properties/typedefs/TypeDefSummary.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs">TypeDefSummary</a>&gt;&nbsp;selectedTypesToProcess)</span></div>
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../connectors/stores/metadatacollectionstore/properties/typedefs/TypeDefSummary.html" title="class in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs">TypeDefSummary</a>&gt;&nbsp;selectedTypesToProcess,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;&nbsp;excludedZones,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;&nbsp;includedZones,
+ <a href="../localrepository/OMRSLocalRepository.html" title="interface in org.odpi.openmetadata.repositoryservices.localrepository">OMRSLocalRepository</a>&nbsp;localRepository,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;sourceName)</span></div>
 <div class="block">Constructor provides all the objects used in the event exchange decision.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
 <dd><code>exchangeRule</code> - enum detailing the types of events to process.</dd>
 <dd><code>selectedTypesToProcess</code> - supplementary list to support selective processing of events.</dd>
+<dd><code>excludedZones</code> - governance zones to ignore</dd>
+<dd><code>includedZones</code> - governance zones to send/receive</dd>
+<dd><code>localRepository</code> - work with properties</dd>
 </dl>
 </section>
 </li>
@@ -234,7 +245,6 @@ loadScripts(document, 'script');</script>
 <div class="block">If the rule is in learning mode, determine if the type of the instance should be added to the list
  of types being processed.  For this to happen, the instance header must include a valid type, the type
  must be an active type for this server and not already included in the list.
-
  Any errors discovered in the types, of this rule's set up result in a false result.  No diagnostics are
  created because this method is called very frequently and the errors will be trapped and logged elsewhere.</div>
 <dl class="notes">

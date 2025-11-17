@@ -147,15 +147,20 @@ extends <a href="../connectors/stores/metadatacollectionstore/repositoryconnecto
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">
 <div class="block">Return the event manager that the local repository uses to</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code>boolean</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#isActiveCohortMember(java.lang.String)" class="member-name-link">isActiveCohortMember</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;metadataCollectionId)</code></div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="../connectors/stores/metadatacollectionstore/repositoryconnector/OMRSRepositoryHelper.html" title="interface in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector">OMRSRepositoryHelper</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#getRepositoryHelper()" class="member-name-link">getRepositoryHelper</a>()</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">
+<div class="block">Returns the repository helper for this repository.</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code>boolean</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#isActiveCohortMember(java.lang.String)" class="member-name-link">isActiveCohortMember</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;metadataCollectionId)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">
 <div class="block">Is the metadata collection id for an active member of the cohort.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code>void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#setRemoteCohortMetadataCollectionIds(java.lang.String,java.util.List)" class="member-name-link">setRemoteCohortMetadataCollectionIds</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;cohortName,
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code>void</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#setRemoteCohortMetadataCollectionIds(java.lang.String,java.util.List)" class="member-name-link">setRemoteCohortMetadataCollectionIds</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;cohortName,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;&nbsp;remoteCohortMetadataCollectionIds)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">
 <div class="block">Set up the list of metadata collection identifiers from the remote members of a connected cohort.</div>
 </div>
 </div>
@@ -196,6 +201,17 @@ extends <a href="../connectors/stores/metadatacollectionstore/repositoryconnecto
 <dl class="notes">
 <dt>Returns:</dt>
 <dd>String guid</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="getRepositoryHelper()">
+<h3>getRepositoryHelper</h3>
+<div class="member-signature"><span class="return-type"><a href="../connectors/stores/metadatacollectionstore/repositoryconnector/OMRSRepositoryHelper.html" title="interface in org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector">OMRSRepositoryHelper</a></span>&nbsp;<span class="element-name">getRepositoryHelper</span>()</div>
+<div class="block">Returns the repository helper for this repository.</div>
+<dl class="notes">
+<dt>Returns:</dt>
+<dd>repository helper</dd>
 </dl>
 </section>
 </li>

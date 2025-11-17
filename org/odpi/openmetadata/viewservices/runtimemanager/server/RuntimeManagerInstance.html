@@ -141,19 +141,24 @@ loadScripts(document, 'script');</script>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Return the connected asset client.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../frameworks/openmetadata/client/OpenMetadataClient.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.client">OpenMetadataClient</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getOpenMetadataClient()" class="member-name-link">getOpenMetadataClient</a>()</code></div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../frameworks/openmetadata/handlers/MetadataRepositoryCohortHandler.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.handlers">MetadataRepositoryCohortHandler</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getMetadataRepositoryCohortHandler()" class="member-name-link">getMetadataRepositoryCohortHandler</a>()</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Return the cohort manager client.</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../frameworks/openmetadata/client/OpenMetadataClient.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.client">OpenMetadataClient</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getOpenMetadataClient()" class="member-name-link">getOpenMetadataClient</a>()</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Return the open metadata store client.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../frameworks/openmetadata/handlers/AssetHandler.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.handlers">AssetHandler</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getSoftwarePlatformHandler()" class="member-name-link">getSoftwarePlatformHandler</a>()</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../frameworks/openmetadata/handlers/AssetHandler.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.handlers">AssetHandler</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getSoftwarePlatformHandler()" class="member-name-link">getSoftwarePlatformHandler</a>()</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Return the platform manager client.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../frameworks/openmetadata/handlers/AssetHandler.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.handlers">AssetHandler</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getSoftwareServerHandler()" class="member-name-link">getSoftwareServerHandler</a>()</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../frameworks/openmetadata/handlers/AssetHandler.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.handlers">AssetHandler</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getSoftwareServerHandler()" class="member-name-link">getSoftwareServerHandler</a>()</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Return the server manager client.</div>
 </div>
 </div>
@@ -220,7 +225,7 @@ loadScripts(document, 'script');</script>
 <section class="detail" id="getSoftwarePlatformHandler()">
 <h3>getSoftwarePlatformHandler</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../../frameworks/openmetadata/handlers/AssetHandler.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.handlers">AssetHandler</a></span>&nbsp;<span class="element-name">getSoftwarePlatformHandler</span>()</div>
-<div class="block">Return the platform manager client.  This client is from IT Infrastructure OMAS and is for maintaining server platforms.</div>
+<div class="block">Return the platform manager client.  This client is from the Open Metadata Framework (OMF).</div>
 <dl class="notes">
 <dt>Returns:</dt>
 <dd>client</dd>
@@ -231,7 +236,18 @@ loadScripts(document, 'script');</script>
 <section class="detail" id="getSoftwareServerHandler()">
 <h3>getSoftwareServerHandler</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../../frameworks/openmetadata/handlers/AssetHandler.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.handlers">AssetHandler</a></span>&nbsp;<span class="element-name">getSoftwareServerHandler</span>()</div>
-<div class="block">Return the server manager client.  This client is from IT Infrastructure OMAS and is for maintaining servers.</div>
+<div class="block">Return the server manager client. This client is from the Open Metadata Framework (OMF).</div>
+<dl class="notes">
+<dt>Returns:</dt>
+<dd>client</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="getMetadataRepositoryCohortHandler()">
+<h3>getMetadataRepositoryCohortHandler</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../../frameworks/openmetadata/handlers/MetadataRepositoryCohortHandler.html" title="class in org.odpi.openmetadata.frameworks.openmetadata.handlers">MetadataRepositoryCohortHandler</a></span>&nbsp;<span class="element-name">getMetadataRepositoryCohortHandler</span>()</div>
+<div class="block">Return the cohort manager client. This client is from the Open Metadata Framework (OMF).</div>
 <dl class="notes">
 <dt>Returns:</dt>
 <dd>client</dd>

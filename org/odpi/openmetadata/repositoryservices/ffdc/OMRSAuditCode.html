@@ -302,9 +302,17 @@ implements <a href="../../frameworks/auditlog/messagesets/AuditLogMessageSet.htm
 <div class="col-last odd-row-color">
 <div class="block">OMRS-AUDIT-0013 - Unable to start processing in the local repository due to error {0}</div>
 </div>
-<div class="col-first even-row-color"><code><a href="#LOCAL_REPOSITORY_INITIALIZING" class="member-name-link">LOCAL_REPOSITORY_INITIALIZING</a></code></div>
+<div class="col-first even-row-color"><code><a href="#LOCAL_REPOSITORY_INITIALIZED" class="member-name-link">LOCAL_REPOSITORY_INITIALIZED</a></code></div>
 <div class="col-last even-row-color">
+<div class="block">OMRS-AUDIT-0049 - The local repository has initialized the metadata collection named {0} with an id of {1}</div>
+</div>
+<div class="col-first odd-row-color"><code><a href="#LOCAL_REPOSITORY_INITIALIZING" class="member-name-link">LOCAL_REPOSITORY_INITIALIZING</a></code></div>
+<div class="col-last odd-row-color">
 <div class="block">OMRS-AUDIT-0003 - The local repository is initializing the metadata collection named {0} with an id of {1}</div>
+</div>
+<div class="col-first even-row-color"><code><a href="#LOCAL_REPOSITORY_INITIALIZING_NULL_ID" class="member-name-link">LOCAL_REPOSITORY_INITIALIZING_NULL_ID</a></code></div>
+<div class="col-last even-row-color">
+<div class="block">OMRS-AUDIT-0048 - The local repository has initialized the metadata collection named {0} with an id of {1}</div>
 </div>
 <div class="col-first odd-row-color"><code><a href="#MEMBER_LEFT_COHORT" class="member-name-link">MEMBER_LEFT_COHORT</a></code></div>
 <div class="col-last odd-row-color">
@@ -1100,6 +1108,20 @@ the order they are declared.</div>
 <h3>STARTED_REAL_CONNECTOR</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OMRSAuditCode.html" title="enum class in org.odpi.openmetadata.repositoryservices.ffdc">OMRSAuditCode</a></span>&nbsp;<span class="element-name">STARTED_REAL_CONNECTOR</span></div>
 <div class="block">OMRS-AUDIT-0047 - The connector for the local repository has been started</div>
+</section>
+</li>
+<li>
+<section class="detail" id="LOCAL_REPOSITORY_INITIALIZING_NULL_ID">
+<h3>LOCAL_REPOSITORY_INITIALIZING_NULL_ID</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OMRSAuditCode.html" title="enum class in org.odpi.openmetadata.repositoryservices.ffdc">OMRSAuditCode</a></span>&nbsp;<span class="element-name">LOCAL_REPOSITORY_INITIALIZING_NULL_ID</span></div>
+<div class="block">OMRS-AUDIT-0048 - The local repository has initialized the metadata collection named {0} with an id of {1}</div>
+</section>
+</li>
+<li>
+<section class="detail" id="LOCAL_REPOSITORY_INITIALIZED">
+<h3>LOCAL_REPOSITORY_INITIALIZED</h3>
+<div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="OMRSAuditCode.html" title="enum class in org.odpi.openmetadata.repositoryservices.ffdc">OMRSAuditCode</a></span>&nbsp;<span class="element-name">LOCAL_REPOSITORY_INITIALIZED</span></div>
+<div class="block">OMRS-AUDIT-0049 - The local repository has initialized the metadata collection named {0} with an id of {1}</div>
 </section>
 </li>
 <li>
