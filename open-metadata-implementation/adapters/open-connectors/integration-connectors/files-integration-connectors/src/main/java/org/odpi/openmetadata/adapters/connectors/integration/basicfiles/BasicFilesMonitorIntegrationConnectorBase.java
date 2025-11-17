@@ -430,7 +430,7 @@ public abstract class BasicFilesMonitorIntegrationConnectorBase extends Integrat
             try
             {
                 String      pathName         = dataFolderFile.getCanonicalPath();
-                AssetClient fileFolderClient = integrationContext.getAssetClient(OpenMetadataType.FILE_FOLDER.typeName);
+                AssetClient fileFolderClient = integrationContext.getAssetClient(assetTypeName);
 
                 OpenMetadataRootElement folderElement = fileFolderClient.getAssetByUniqueName(pathName, 
                                                                                               OpenMetadataProperty.PATH_NAME.name, 

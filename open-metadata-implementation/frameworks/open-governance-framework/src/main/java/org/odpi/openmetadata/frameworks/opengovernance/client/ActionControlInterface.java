@@ -180,47 +180,4 @@ public interface ActionControlInterface
                                                      int    pageSize) throws InvalidParameterException,
                                                                              UserNotAuthorizedException,
                                                                              PropertyServerException;
-
-
-
-    /**
-     * Retrieve the list of engine action metadata elements that contain the search string.
-     * The search string is treated as a regular expression.
-     *
-     * @param userId calling user
-     * @param searchString string to find in the properties
-     * @param searchOptions additional options for the search
-     *
-     * @return list of matching metadata elements
-     *
-     * @throws InvalidParameterException  one of the parameters is invalid
-     * @throws UserNotAuthorizedException the user is not authorized to issue this request
-     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
-     */
-    List<EngineActionElement> findEngineActions(String        userId,
-                                                String        searchString,
-                                                SearchOptions searchOptions) throws InvalidParameterException,
-                                                                                    UserNotAuthorizedException,
-                                                                                    PropertyServerException;
-
-
-    /**
-     * Retrieve the list of engine action metadata elements with a matching qualified or display name.
-     * There are no wildcards supported on this request.
-     *
-     * @param userId calling user
-     * @param name name to search for
-     * @param queryOptions additional options to control the results of the query
-     *
-     * @return list of matching metadata elements
-     *
-     * @throws InvalidParameterException  one of the parameters is invalid
-     * @throws UserNotAuthorizedException the user is not authorized to issue this request
-     * @throws PropertyServerException    there is a problem reported in the open metadata server(s)
-     */
-    List<EngineActionElement> getEngineActionsByName(String       userId,
-                                                     String       name,
-                                                     QueryOptions queryOptions) throws InvalidParameterException,
-                                                                                       UserNotAuthorizedException,
-                                                                                       PropertyServerException;
 }

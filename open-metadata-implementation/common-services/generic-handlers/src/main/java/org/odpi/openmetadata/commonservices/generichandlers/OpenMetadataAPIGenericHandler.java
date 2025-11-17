@@ -12,6 +12,7 @@ import org.odpi.openmetadata.frameworks.openmetadata.ffdc.PropertyServerExceptio
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.LatestChangeAction;
 import org.odpi.openmetadata.frameworks.openmetadata.enums.LatestChangeTarget;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.AttachedClassification;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 import org.odpi.openmetadata.metadataobservability.ffdc.OpenMetadataObservabilityAuditCode;
@@ -8064,8 +8065,7 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIAnchorHandl
 
 
     /**
-     * Classify an entity in the repository to show that its asset/artifact counterpart in the real world has either
-     * been deleted or archived. Note, this method is designed to work only on anchor entities or entities with no anchor.
+     * Retrieve the version history for an entity.
      *
      * @param userId calling user
      * @param guid unique identifier of object to update
@@ -8144,6 +8144,78 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIAnchorHandl
         }
 
         return null;
+    }
+
+
+    /**
+     * Retrieve the version history for an entity's classification.
+     *
+     * @param userId calling user
+     * @param guid unique identifier of object to update
+     * @param guidParameterName name of parameter supplying the GUID
+     * @param fromTime starting time
+     * @param toTime ending time
+     * @param entityTypeName unique name of the entity's type
+     * @param classificationName name of the desired classification
+     * @param startingFrom paging start point
+     * @param pageSize maximum results that can be returned
+     * @param sequencingOrder order of the results
+     * @param forLineage the request is to support lineage retrieval this means entities with the Memento classification can be returned
+     * @param forDuplicateProcessing the request is for duplicate processing and so must not deduplicate
+     * @param serviceSupportedZones supported zones for calling service
+     * @param effectiveTime the time that the retrieved elements must be effective for (null for any time, new Date() for now)
+     * @param methodName calling method
+     * @return list of beans
+     *
+     * @throws InvalidParameterException one of the parameters is null or invalid.
+     * @throws PropertyServerException there is a problem removing the properties from the repositories.
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public List<AttachedClassification> getClassificationHistory(String                 userId,
+                                                                 String                 guid,
+                                                                 String                 guidParameterName,
+                                                                 String                 entityTypeName,
+                                                                 String                 classificationName,
+                                                                 Date                   fromTime,
+                                                                 Date                   toTime,
+                                                                 int                    startingFrom,
+                                                                 int                    pageSize,
+                                                                 HistorySequencingOrder sequencingOrder,
+                                                                 boolean                forLineage,
+                                                                 boolean                forDuplicateProcessing,
+                                                                 List<String>           serviceSupportedZones,
+                                                                 Date                   effectiveTime,
+                                                                 String                 methodName) throws InvalidParameterException,
+                                                                                                           PropertyServerException,
+                                                                                                           UserNotAuthorizedException
+    {
+        final String classificationParameterName = "classificationName";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(guid, guidParameterName, methodName);
+        invalidParameterHandler.validateName(classificationName, classificationParameterName, methodName);
+
+        this.validateEntityAndAnchorForRead(userId,
+                                            guid,
+                                            guidParameterName,
+                                            entityTypeName,
+                                            true,
+                                            true,
+                                            forLineage,
+                                            forDuplicateProcessing,
+                                            serviceSupportedZones,
+                                            effectiveTime,
+                                            methodName);
+
+        return converter.getAttachedClassifications(repositoryHandler.getClassificationHistory(userId,
+                                                                                               guid,
+                                                                                               classificationName,
+                                                                                               fromTime,
+                                                                                               toTime,
+                                                                                               startingFrom,
+                                                                                               pageSize,
+                                                                                               sequencingOrder,
+                                                                                               methodName));
     }
 
 
@@ -9035,19 +9107,12 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIAnchorHandl
             limitResultsByClassifications.add(requiredClassificationName);
         }
 
-        String searchValue = value;
-
-        if (exactValueMatch)
-        {
-            searchValue = repositoryHelper.getExactMatchRegex(value, caseInsensitive);
-        }
-
         List<EntityDetail> retrievedEntities;
 
         if ((specificMatchPropertyNames == null) || (specificMatchPropertyNames.isEmpty()))
         {
             retrievedEntities = repositoryHandler.getEntitiesByValue(userId,
-                                                                     searchValue,
+                                                                     value,
                                                                      resultTypeGUID,
                                                                      limitResultsByStatus,
                                                                      limitResultsByClassifications,
@@ -9064,7 +9129,7 @@ public class OpenMetadataAPIGenericHandler<B> extends OpenMetadataAPIAnchorHandl
         else
         {
             retrievedEntities = repositoryHandler.getEntitiesByName(userId,
-                                                                    this.getSearchInstanceProperties(searchValue, specificMatchPropertyNames, methodName),
+                                                                    this.getSearchInstanceProperties(value, specificMatchPropertyNames, methodName),
                                                                     resultTypeGUID,
                                                                     limitResultsByStatus,
                                                                     limitResultsByClassifications,

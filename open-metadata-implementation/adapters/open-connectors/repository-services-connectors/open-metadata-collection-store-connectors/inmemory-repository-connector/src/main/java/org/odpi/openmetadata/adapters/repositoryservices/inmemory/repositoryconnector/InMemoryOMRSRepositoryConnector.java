@@ -5,6 +5,8 @@ package org.odpi.openmetadata.adapters.repositoryservices.inmemory.repositorycon
 
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryConnector;
 
+import java.util.UUID;
+
 /**
  * The InMemoryOMRSRepositoryConnector is a connector to a local in memory repository.  It is used for test,
  * small scale fixed or temporary repositories where the initial content comes from open metadata archives and
@@ -29,20 +31,24 @@ public class InMemoryOMRSRepositoryConnector extends OMRSRepositoryConnector
      * @param metadataCollectionId - String unique Id
      */
     @Override
-    public void setMetadataCollectionId(String     metadataCollectionId)
+    public void setMetadataCollectionId(String metadataCollectionId)
     {
-        super.metadataCollectionId = metadataCollectionId;
-
-        if (metadataCollectionId != null)
+        if (metadataCollectionId == null)
         {
-            /*
-             * Initialize the metadata collection only once the connector is properly set up.
-             */
-            super.metadataCollection = new InMemoryOMRSMetadataCollection(this,
-                                                                          super.serverName,
-                                                                          repositoryHelper,
-                                                                          repositoryValidator,
-                                                                          metadataCollectionId);
+            super.metadataCollectionId = UUID.randomUUID().toString();
         }
+        else
+        {
+            super.metadataCollectionId = metadataCollectionId;
+        }
+
+        /*
+         * Initialize the metadata collection only once the connector is properly set up.
+         */
+        super.metadataCollection = new InMemoryOMRSMetadataCollection(this,
+                                                                      super.serverName,
+                                                                      repositoryHelper,
+                                                                      repositoryValidator,
+                                                                      super.metadataCollectionId);
     }
 }

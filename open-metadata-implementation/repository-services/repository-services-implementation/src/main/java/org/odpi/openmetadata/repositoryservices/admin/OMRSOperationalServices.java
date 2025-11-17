@@ -374,9 +374,17 @@ public class OMRSOperationalServices
                 localMetadataCollectionName = localServerName;
             }
 
-            auditLog.logMessage(actionDescription,
-                                OMRSAuditCode.LOCAL_REPOSITORY_INITIALIZING.getMessageDefinition(localMetadataCollectionName,
-                                                                                                 localMetadataCollectionId));
+            if (localMetadataCollectionId == null)
+            {
+                auditLog.logMessage(actionDescription,
+                                    OMRSAuditCode.LOCAL_REPOSITORY_INITIALIZING_NULL_ID.getMessageDefinition());
+            }
+            else
+            {
+                auditLog.logMessage(actionDescription,
+                                    OMRSAuditCode.LOCAL_REPOSITORY_INITIALIZING.getMessageDefinition(localMetadataCollectionName,
+                                                                                                     localMetadataCollectionId));
+            }
 
             /*
              * Supports outbound events from the local repository
@@ -384,7 +392,11 @@ public class OMRSOperationalServices
             localRepositoryEventManager =
                     new OMRSRepositoryEventManager("local repository outbound",
                                                    new OMRSRepositoryEventExchangeRule(localRepositoryConfig.getEventsToSendRule(),
-                                                                                       localRepositoryConfig.getSelectedTypesToSend()),
+                                                                                       localRepositoryConfig.getSelectedTypesToSend(),
+                                                                                       localRepositoryConfig.getExcludedZonesToSend(),
+                                                                                       localRepositoryConfig.getIncludedZonesToSend(),
+                                                                                       localRepositoryConnector,
+                                                                                       "local repository outbound"),
                                                    new OMRSRepositoryContentValidator(localRepositoryContentManager),
                                                    auditLog.createNewAuditLog(OMRSAuditingComponent.REPOSITORY_EVENT_MANAGER));
 
@@ -417,11 +429,17 @@ public class OMRSOperationalServices
             }
 
             /*
-             * Pass the local metadata collectionId to the AuditLog
+             * Pass the local metadata collectionId to the AuditLog (twice in case set up by local repository).
              */
             auditLogDestination.setLocalMetadataCollectionId(localMetadataCollectionId);
 
-            localRepositoryConnector = initializeLocalRepository(localRepositoryConfig);
+            localRepositoryConnector = initializeLocalRepository(localRepositoryConfig); // This is where the repository connector is initialized
+            localMetadataCollectionId = localRepositoryConnector.getMetadataCollectionId();
+
+            auditLogDestination.setLocalMetadataCollectionId(localMetadataCollectionId);
+            auditLog.logMessage(actionDescription,
+                                OMRSAuditCode.LOCAL_REPOSITORY_INITIALIZED.getMessageDefinition(localMetadataCollectionName,
+                                                                                                localMetadataCollectionId));
 
             /*
              * Start processing of events for the local repository.
@@ -794,7 +812,11 @@ public class OMRSOperationalServices
                                                    localRepositoryEventManager,
                                                    localRepositoryContentManager,
                                                    new OMRSRepositoryEventExchangeRule(localRepositoryConfig.getEventsToSaveRule(),
-                                                                                       localRepositoryConfig.getSelectedTypesToSave()),
+                                                                                       localRepositoryConfig.getSelectedTypesToSave(),
+                                                                                       localRepositoryConfig.getExcludedZonesToSave(),
+                                                                                       localRepositoryConfig.getIncludedZonesToSave(),
+                                                                                       localRepositoryConnector,
+                                                                                       "local repository"),
                                                    auditLog);
 
 

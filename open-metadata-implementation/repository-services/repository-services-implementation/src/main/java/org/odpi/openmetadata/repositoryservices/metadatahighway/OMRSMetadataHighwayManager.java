@@ -226,7 +226,11 @@ public class OMRSMetadataHighwayManager
 
             OMRSRepositoryEventExchangeRule inboundEventExchangeRule
                     = new OMRSRepositoryEventExchangeRule(cohortConfig.getEventsToProcessRule(),
-                                                          cohortConfig.getSelectedTypesToProcess());
+                                                          cohortConfig.getSelectedTypesToProcess(),
+                                                          cohortConfig.getExcludedZones(),
+                                                          cohortConfig.getIncludedZones(),
+                                                          localRepository,
+                                                          cohortConfig.getCohortName());
 
             cohortManager.initialize(cohortConfig.getCohortName(),
                                      localMetadataCollectionId,

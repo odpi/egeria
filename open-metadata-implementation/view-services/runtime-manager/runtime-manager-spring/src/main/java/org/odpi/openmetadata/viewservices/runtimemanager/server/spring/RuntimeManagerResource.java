@@ -22,7 +22,7 @@ import org.springframework.web.bind.annotation.*;
 
 /**
  * The RuntimeManagerResource provides part of the server-side implementation of the Runtime Manager OMVS.
-= */
+ = */
 @RestController
 @RequestMapping("/servers/{serverName}/api/open-metadata/runtime-manager")
 @SecurityScheme(
@@ -67,8 +67,8 @@ public class RuntimeManagerResource
                     url = "https://egeria-project.org/types/0/0037-Software-Server-Platforms/"))
 
     public OpenMetadataRootElementsResponse getPlatformsByName(@PathVariable String serverName,
-                                                              @RequestBody (required = false)
-                                                                     FilterRequestBody requestBody)
+                                                               @RequestBody (required = false)
+                                                               FilterRequestBody requestBody)
     {
         return restAPI.getPlatformsByName(serverName, requestBody);
     }
@@ -94,9 +94,9 @@ public class RuntimeManagerResource
                     url = "https://egeria-project.org/types/0/0037-Software-Server-Platforms/"))
 
     public OpenMetadataRootElementsResponse getPlatformsByDeployedImplType(@PathVariable String serverName,
-                                                                          @RequestParam (required = false, defaultValue = "false") boolean getTemplates,
-                                                                          @RequestBody (required = false)
-                                                                                 FilterRequestBody requestBody)
+                                                                           @RequestParam (required = false, defaultValue = "false") boolean getTemplates,
+                                                                           @RequestBody (required = false)
+                                                                           FilterRequestBody requestBody)
     {
         return restAPI.getPlatformsByDeployedImplType(serverName, getTemplates, requestBody);
     }
@@ -122,9 +122,9 @@ public class RuntimeManagerResource
                     url = "https://egeria-project.org/types/0/0037-Software-Server-Platforms/"))
 
     public OpenMetadataRootElementResponse getPlatformByGUID(@PathVariable String serverName,
-                                                            @PathVariable String platformGUID,
-                                                            @RequestBody(required = false)
-                                                                 GetRequestBody requestBody)
+                                                             @PathVariable String platformGUID,
+                                                             @RequestBody(required = false)
+                                                             GetRequestBody requestBody)
     {
         return restAPI.getPlatformByGUID(serverName, platformGUID, requestBody);
     }
@@ -174,8 +174,8 @@ public class RuntimeManagerResource
                     url = "https://egeria-project.org/types/0/0040-Software-Servers/"))
 
     public OpenMetadataRootElementsResponse getServersByName(@PathVariable String serverName,
-                                                    @RequestBody(required = false)
-                                                           FilterRequestBody requestBody)
+                                                             @RequestBody(required = false)
+                                                             FilterRequestBody requestBody)
     {
         return restAPI.getServersByName(serverName, requestBody);
     }
@@ -201,8 +201,8 @@ public class RuntimeManagerResource
                     url = "https://egeria-project.org/types/0/0040-Software-Servers/"))
 
     public OpenMetadataRootElementsResponse getServersByDeployedImplType(@PathVariable String serverName,
-                                                                @RequestParam (required = false, defaultValue = "false") boolean getTemplates,
-                                                                @RequestBody(required = false) FilterRequestBody requestBody)
+                                                                         @RequestParam (required = false, defaultValue = "false") boolean getTemplates,
+                                                                         @RequestBody(required = false) FilterRequestBody requestBody)
     {
         return restAPI.getServersByDeployedImplType(serverName, getTemplates, requestBody);
     }
@@ -229,9 +229,9 @@ public class RuntimeManagerResource
                     url = "https://egeria-project.org/types/0/0040-Software-Servers/"))
 
     public OpenMetadataRootElementResponse getServerByGUID(@PathVariable String serverName,
-                                                  @PathVariable String serverGUID,
-                                                  @RequestBody(required = false)
-                                                               GetRequestBody requestBody)
+                                                           @PathVariable String serverGUID,
+                                                           @RequestBody(required = false)
+                                                           GetRequestBody requestBody)
     {
         return restAPI.getServerByGUID(serverName, serverGUID, requestBody);
     }
@@ -340,6 +340,284 @@ public class RuntimeManagerResource
 
     /*
      * =============================================================
+     * Open Metadata Repository Cohorts
+     */
+
+    /**
+     * Create an open metadata repository cohort.
+     *
+     * @param serverName                 name of called server.
+     * @param requestBody             properties for the cohort.
+     *
+     * @return unique identifier of the newly created element
+     *  InvalidParameterException  one of the parameters is invalid.
+     *  PropertyServerException    there is a problem retrieving information from the property server(s).
+     *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    @PostMapping(path = "/metadata-repository-cohorts")
+    @SecurityRequirement(name = "BearerAuthorization")
+
+    @Operation(summary="createMetadataRepositoryCohort",
+            description="Create an open metadata repository cohort.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/concepts/cohort-member"))
+
+    public GUIDResponse createMetadataRepositoryCohort(@PathVariable String                               serverName,
+                                                       @RequestBody (required = false)
+                                                       NewElementRequestBody requestBody)
+    {
+        return restAPI.createMetadataRepositoryCohort(serverName, requestBody);
+    }
+
+
+    /**
+     * Create a new metadata element to represent an open metadata repository cohort using an existing metadata element as a template.
+     * The template defines additional classifications and relationships that should be added to the new element.
+     *
+     * @param serverName             calling user
+     * @param requestBody properties that override the template
+     *
+     * @return unique identifier of the new metadata element
+     *  InvalidParameterException  one of the parameters is invalid
+     *  UserNotAuthorizedException the user is not authorized to issue this request
+     *  PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    @PostMapping(path = "/metadata-repository-cohorts/from-template")
+    @SecurityRequirement(name = "BearerAuthorization")
+
+    @Operation(summary="createMetadataRepositoryCohortFromTemplate",
+            description="Create a new metadata element to represent an open metadata repository cohort using an existing metadata element as a template.  The template defines additional classifications and relationships that should be added to the new element.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/concepts/cohort-member"))
+
+    public GUIDResponse createMetadataRepositoryCohortFromTemplate(@PathVariable
+                                                                   String              serverName,
+                                                                   @RequestBody (required = false)
+                                                                   TemplateRequestBody requestBody)
+    {
+        return restAPI.createMetadataRepositoryCohortFromTemplate(serverName, requestBody);
+    }
+
+
+    /**
+     * Update the properties of an open metadata repository cohort.
+     *
+     * @param serverName         name of called server.
+     * @param metadataRepositoryCohortGUID unique identifier of the cohort (returned from create)
+     * @param requestBody     properties for the new element.
+     *
+     * @return void or
+     *  InvalidParameterException  one of the parameters is invalid.
+     *  PropertyServerException    there is a problem retrieving information from the property server(s).
+     *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    @PostMapping(path = "/metadata-repository-cohorts/{metadataRepositoryCohortGUID}/update")
+    @SecurityRequirement(name = "BearerAuthorization")
+
+    @Operation(summary="updateMetadataRepositoryCohort",
+            description="Update the properties of an open metadata repository cohort.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/concepts/cohort-member"))
+
+    public VoidResponse updateMetadataRepositoryCohort(@PathVariable
+                                                       String                                  serverName,
+                                                       @PathVariable
+                                                       String                                  metadataRepositoryCohortGUID,
+                                                       @RequestBody (required = false)
+                                                       UpdateElementRequestBody requestBody)
+    {
+        return restAPI.updateMetadataRepositoryCohort(serverName, metadataRepositoryCohortGUID, requestBody);
+    }
+
+
+    /**
+     * Delete an open metadata repository cohort.
+     *
+     * @param serverName         name of called server
+     * @param metadataRepositoryCohortGUID  unique identifier of the element to delete
+     * @param requestBody  description of the relationship.
+     *
+     * @return void or
+     *  InvalidParameterException  one of the parameters is null or invalid.
+     *  PropertyServerException    there is a problem retrieving information from the property server(s).
+     *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    @PostMapping(path = "/metadata-repository-cohorts/{metadataRepositoryCohortGUID}/delete")
+    @SecurityRequirement(name = "BearerAuthorization")
+
+    @Operation(summary="deleteMetadataRepositoryCohort",
+            description="Delete an open metadata repository cohort.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/concepts/cohort-member"))
+
+    public VoidResponse deleteMetadataRepositoryCohort(@PathVariable
+                                                       String                    serverName,
+                                                       @PathVariable
+                                                       String                    metadataRepositoryCohortGUID,
+                                                       @RequestBody (required = false)
+                                                       DeleteElementRequestBody requestBody)
+    {
+        return restAPI.deleteMetadataRepositoryCohort(serverName, metadataRepositoryCohortGUID, requestBody);
+    }
+
+
+    /**
+     * Returns the list of cohorts with a particular name.
+     *
+     * @param serverName name of the service to route the request to
+     * @param requestBody string to find in the properties
+     *
+     * @return list of matching metadata elements or
+     *  InvalidParameterException  one of the parameters is invalid
+     *  UserNotAuthorizedException the user is not authorized to issue this request
+     *  PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    @PostMapping(path = "/metadata-repository-cohorts/by-name")
+    @SecurityRequirement(name = "BearerAuthorization")
+
+    @Operation(summary="getMetadataRepositoryCohortsByName",
+            description="Returns the list of cohorts with a particular name.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/concepts/cohort-member"))
+
+    public OpenMetadataRootElementsResponse getMetadataRepositoryCohortsByName(@PathVariable
+                                                                               String            serverName,
+                                                                               @RequestBody (required = false)
+                                                                               FilterRequestBody requestBody)
+    {
+        return restAPI.getMetadataRepositoryCohortsByName(serverName, requestBody);
+    }
+
+
+    /**
+     * Retrieve the list of cohort metadata elements that contain the search string.
+     *
+     * @param serverName name of the service to route the request to
+     * @param requestBody string to find in the properties
+     *
+     * @return list of matching metadata elements or
+     *  InvalidParameterException  one of the parameters is invalid
+     *  UserNotAuthorizedException the user is not authorized to issue this request
+     *  PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    @PostMapping(path = "/metadata-repository-cohorts/by-search-string")
+    @SecurityRequirement(name = "BearerAuthorization")
+
+    @Operation(summary="findMetadataRepositoryCohorts",
+            description="Retrieve the list of cohort metadata elements that contain the search string.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/concepts/cohort-member"))
+
+    public OpenMetadataRootElementsResponse findMetadataRepositoryCohorts(@PathVariable
+                                                                          String                  serverName,
+                                                                          @RequestBody (required = false)
+                                                                          SearchStringRequestBody requestBody)
+    {
+        return restAPI.findMetadataRepositoryCohorts(serverName, requestBody);
+    }
+
+
+    /**
+     * Return the properties of a specific cohort.
+     *
+     * @param serverName name of the service to route the request to
+     * @param metadataRepositoryCohortGUID    unique identifier of the required element
+     * @param requestBody string to find in the properties
+     *
+     * @return list of matching metadata elements or
+     *  InvalidParameterException  one of the parameters is invalid
+     *  UserNotAuthorizedException the user is not authorized to issue this request
+     *  PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    @PostMapping(path = "/metadata-repository-cohorts/{metadataRepositoryCohortGUID}/retrieve")
+    @SecurityRequirement(name = "BearerAuthorization")
+
+    @Operation(summary="getMetadataRepositoryCohortByGUID",
+            description="Return the properties of a specific cohort.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/concepts/cohort-member"))
+
+    public OpenMetadataRootElementResponse getMetadataRepositoryCohortByGUID(@PathVariable
+                                                                             String             serverName,
+                                                                             @PathVariable
+                                                                             String             metadataRepositoryCohortGUID,
+                                                                             @RequestBody (required = false)
+                                                                             GetRequestBody requestBody)
+    {
+        return restAPI.getMetadataRepositoryCohortByGUID(serverName, metadataRepositoryCohortGUID, requestBody);
+    }
+
+
+    /**
+     * Attach a member to a cohort.
+     *
+     * @param serverName         name of called server
+     * @param cohortGUID  unique identifier of the first subject area definition
+     * @param cohortMemberGUID      unique identifier of the second subject area definition
+     * @param requestBody  description of the relationship.
+     *
+     * @return void or
+     *  InvalidParameterException  one of the parameters is null or invalid.
+     *  PropertyServerException    there is a problem retrieving information from the property server(s).
+     *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    @PostMapping(path = "/metadata-repository-cohorts/{cohortGUID}/cohort-members/{cohortMemberGUID}/attach")
+    @SecurityRequirement(name = "BearerAuthorization")
+
+    @Operation(summary="linkCohortMember",
+            description="Attach a member to a cohort.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/concepts/cohort-member"))
+
+    public VoidResponse linkCohortMember(@PathVariable
+                                         String                  serverName,
+                                         @PathVariable
+                                         String                  cohortGUID,
+                                         @PathVariable
+                                         String                  cohortMemberGUID,
+                                         @RequestBody (required = false)
+                                         NewRelationshipRequestBody requestBody)
+    {
+        return restAPI.linkCohortMember(serverName, cohortGUID, cohortMemberGUID, requestBody);
+    }
+
+
+    /**
+     * Detach a member from a cohort.
+     *
+     * @param serverName         name of called server
+     * @param cohortGUID  unique identifier of the cohort definition
+     * @param cohortMemberGUID      unique identifier of the cohort member definition
+     * @param requestBody  description of the relationship.
+     *
+     * @return void or
+     *  InvalidParameterException  one of the parameters is null or invalid.
+     *  PropertyServerException    there is a problem retrieving information from the property server(s).
+     *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    @PostMapping(path = "/metadata-repository-cohorts/{cohortGUID}/cohort-members/{cohortMemberGUID}/detach")
+    @SecurityRequirement(name = "BearerAuthorization")
+
+    @Operation(summary="detachCohortMember",
+            description="Detach a member from a cohort.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/concepts/cohort-member"))
+
+    public VoidResponse detachCohortMember(@PathVariable
+                                           String                    serverName,
+                                           @PathVariable
+                                           String cohortGUID,
+                                           @PathVariable
+                                           String cohortMemberGUID,
+                                           @RequestBody (required = false)
+                                           DeleteRelationshipRequestBody requestBody)
+    {
+        return restAPI.detachCohortMember(serverName, cohortGUID, cohortMemberGUID, requestBody);
+    }
+
+
+    /*
+     * =============================================================
      * Open Metadata Archives
      */
 
@@ -384,7 +662,7 @@ public class RuntimeManagerResource
      * OMAGInvalidParameterException invalid serverName or openMetadataArchive parameter.
      */
     @PostMapping(path = {"/omag-servers/{serverGUID}/instance/load/open-metadata-archives/archive-content",
-                         "/metadata-access-stores/{serverGUID}/instance/load/open-metadata-archives/archive-content"})
+            "/metadata-access-stores/{serverGUID}/instance/load/open-metadata-archives/archive-content"})
     @SecurityRequirement(name = "BearerAuthorization")
 
     @Operation(summary="addOpenMetadataArchiveContent",
@@ -781,7 +1059,7 @@ public class RuntimeManagerResource
                                                @PathVariable String          serverGUID,
                                                @PathVariable String          cohortName,
                                                @RequestBody (required = false)
-                                                             NullRequestBody requestBody)
+                                               NullRequestBody requestBody)
     {
         return restAPI.connectToCohort(serverName, serverGUID, cohortName, requestBody);
     }
@@ -832,7 +1110,7 @@ public class RuntimeManagerResource
                                                     @PathVariable String          serverGUID,
                                                     @PathVariable String          cohortName,
                                                     @RequestBody (required = false)
-                                                                  NullRequestBody requestBody)
+                                                    NullRequestBody requestBody)
     {
         return restAPI.disconnectFromCohort(serverName, serverGUID, cohortName, requestBody);
     }
@@ -883,7 +1161,7 @@ public class RuntimeManagerResource
                                                     @PathVariable String          serverGUID,
                                                     @PathVariable String          cohortName,
                                                     @RequestBody (required = false)
-                                                                  NullRequestBody requestBody)
+                                                    NullRequestBody requestBody)
     {
         return restAPI.unregisterFromCohort(serverName, serverGUID, cohortName, requestBody);
     }

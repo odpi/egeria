@@ -9,6 +9,7 @@ import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedExcep
 import org.odpi.openmetadata.metadatasecurity.server.OpenMetadataServerSecurityVerifier;
 import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLog;
 import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditingComponent;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 import org.odpi.openmetadata.repositoryservices.events.OMRSTypeDefEventProcessor;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.OMRSMetadataCollection;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryConnector;
@@ -437,20 +438,32 @@ public class LocalOMRSRepositoryConnector extends OMRSRepositoryConnector implem
     {
         final String methodName = "setMetadataCollectionId";
 
-        super.setMetadataCollectionId(metadataCollectionId);
-
         try
         {
             /*
              * This is typically where the metadata collection for the real repository is created.  This object issues the requests to the
              * storage (or remote metadata system) and this may be the first point of contact for the real connector.
              * Configuration errors are likely to emerge at this point.
+             *
+             * If the metadata collection id is null, the real metadata connector sets one up.  It is handled at this late stage
+             * to provide a different local metadata collection id for each deployed instance of the default/quickstart connectors.
+             * It also means that the real repository owns the metadata collection id and is not affected by re-creation of the docker
+             * container instance.
              */
             realLocalConnector.setMetadataCollectionId(metadataCollectionId);
 
+            if (realLocalConnector.getMetadataCollectionId() == null)
+            {
+                throw new OMRSLogicErrorException(OMRSErrorCode.NULL_METADATA_COLLECTION_ID.getMessageDefinition(repositoryName),
+                                                  this.getClass().getName(),
+                                                  methodName);
+            }
+
+            super.setMetadataCollectionId(realLocalConnector.getMetadataCollectionId());
+
             if (realEventMapper != null)
             {
-                realEventMapper.setMetadataCollectionId(metadataCollectionId);
+                realEventMapper.setMetadataCollectionId(realLocalConnector.getMetadataCollectionId());
             }
 
             /*
@@ -460,7 +473,7 @@ public class LocalOMRSRepositoryConnector extends OMRSRepositoryConnector implem
                                                                  super.serverName,
                                                                  super.repositoryHelper,
                                                                  super.repositoryValidator,
-                                                                 metadataCollectionId,
+                                                                 super.metadataCollectionId,
                                                                  this.getLocalServerName(),
                                                                  this.getLocalServerType(),
                                                                  this.getOrganizationName(),
@@ -470,7 +483,7 @@ public class LocalOMRSRepositoryConnector extends OMRSRepositoryConnector implem
                                                                  typeDefManager);
 
             LocalOMRSInstanceEventProcessor  localOMRSInstanceEventProcessor
-                    = new LocalOMRSInstanceEventProcessor(metadataCollectionId,
+                    = new LocalOMRSInstanceEventProcessor(super.metadataCollectionId,
                                                           super.serverName,
                                                           this,
                                                           super.repositoryHelper,
@@ -546,6 +559,18 @@ public class LocalOMRSRepositoryConnector extends OMRSRepositoryConnector implem
     public String getMetadataCollectionId()
     {
         return super.metadataCollectionId;
+    }
+
+
+    /**
+     * Returns the repository helper for this repository.
+     *
+     * @return repository helper
+     */
+    @Override
+    public OMRSRepositoryHelper getRepositoryHelper()
+    {
+        return realLocalConnector.getRepositoryHelper();
     }
 
 

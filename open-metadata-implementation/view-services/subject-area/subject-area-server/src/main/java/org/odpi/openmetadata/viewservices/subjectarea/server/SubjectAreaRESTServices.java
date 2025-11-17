@@ -113,7 +113,7 @@ public class SubjectAreaRESTServices extends TokenController
 
 
     /**
-     * Detach subject area definitions from their hierarchical relationship..
+     * Detach subject area definitions from their hierarchical relationship.
      *
      * @param serverName         name of called server
      * @param subjectAreaGUID    unique identifier of the parent subject area.

@@ -165,16 +165,16 @@ Content-Type: application/json
 
 {
   "class" : "NewRelationshipRequestBody",
+  "properties": {
+    "class": "SubjectAreaHierarchyProperties",
+    "effectiveFrom": "{{$isoTimestamp}}",
+    "effectiveTo": "{{$isoTimestamp}}"
+  },
   "externalSourceGUID": "add guid here",
   "externalSourceName": "add qualified name here",
   "effectiveTime" : "{{$isoTimestamp}}",
   "forLineage" : false,
-  "forDuplicateProcessing" : false,
-  "properties": {
-    "class": "RelationshipProperties",
-    "effectiveFrom": "{{$isoTimestamp}}",
-    "effectiveTo": "{{$isoTimestamp}}"
-  }
+  "forDuplicateProcessing" : false
 }
 
 

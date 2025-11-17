@@ -573,6 +573,28 @@ public class OpenMetadataStore extends ConnectorContextClientBase
 
 
     /**
+     * Return each of the versions of a metadata element's classification.
+     *
+     * @param elementGUID            unique identifier for the metadata element
+     * @param classificationName name of the classification to retrieve
+     * @param queryOptions multiple options to control the query
+     *
+     * @return a list of classifications matching the supplied criteria; null means no matching elements in the metadata store.
+     * @throws InvalidParameterException one of the search parameters are is invalid
+     * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
+     * @throws PropertyServerException there is a problem accessing the metadata store
+     */
+    public  List<AttachedClassification> getClassificationHistory(String                 elementGUID,
+                                                                  String                 classificationName,
+                                                                  HistoricalQueryOptions queryOptions) throws InvalidParameterException,
+                                                                                                              UserNotAuthorizedException,
+                                                                                                              PropertyServerException
+    {
+        return openMetadataClient.getClassificationHistory(connectorUserId, elementGUID, classificationName, queryOptions);
+    }
+
+
+    /**
      * Retrieve the relationships linking to the supplied elements.
      *
      * @param metadataElementAtEnd1GUID unique identifier of the metadata element at end 1 of the relationship

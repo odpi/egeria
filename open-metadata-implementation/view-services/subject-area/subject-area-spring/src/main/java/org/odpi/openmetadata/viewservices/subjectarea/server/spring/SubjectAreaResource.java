@@ -81,7 +81,7 @@ public class SubjectAreaResource
      *
      * @param serverName         name of called server
      * @param parentSubjectAreaGUID  unique identifier of the first subject area definition
-     * @param memberDataFieldGUID      unique identifier of the second subject area definition
+     * @param nestedSubjectAreaGUID      unique identifier of the second subject area definition
      * @param requestBody  description of the relationship.
      *
      * @return void or
@@ -89,7 +89,7 @@ public class SubjectAreaResource
      *  PropertyServerException    there is a problem retrieving information from the property server(s).
      *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    @PostMapping(path = "/subject-areas/{parentSubjectAreaGUID}/subject-area-hierarchies/{memberDataFieldGUID}/detach")
+    @PostMapping(path = "/subject-areas/{parentSubjectAreaGUID}/subject-area-hierarchies/{nestedSubjectAreaGUID}/detach")
     @SecurityRequirement(name = "BearerAuthorization")
 
     @Operation(summary="detachSubjectAreas",
@@ -102,11 +102,11 @@ public class SubjectAreaResource
                                            @PathVariable
                                            String parentSubjectAreaGUID,
                                            @PathVariable
-                                           String memberDataFieldGUID,
+                                           String nestedSubjectAreaGUID,
                                            @RequestBody (required = false)
                                                DeleteRelationshipRequestBody requestBody)
     {
-        return restAPI.detachSubjectAreas(serverName, parentSubjectAreaGUID, memberDataFieldGUID, requestBody);
+        return restAPI.detachSubjectAreas(serverName, parentSubjectAreaGUID, nestedSubjectAreaGUID, requestBody);
     }
 
 

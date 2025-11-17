@@ -30,7 +30,7 @@ Content-Type: application/json
 
 ###
 # This guid is the valid value set for the resourceUse property from the ResourceUse relationship.
-@elementGUID=81969abe-0140-4001-85cd-5c44668961ea
+@elementGUID=add guid here
 
 ###
 # @name getMetadataElementByGUID
@@ -122,6 +122,24 @@ Content-Type: application/json
 # @name getMetadataElementHistory
 # Retrieve all the versions of an element.
 POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/metadata-explorer/metadata-elements/{{elementGUID}}/history
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "HistoryRequestBody",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "oldestFirst": false
+}
+
+
+###
+
+@classificationName=GovernanceMeasurements
+
+###
+# @name getClassificationHistory
+# Retrieve all the versions of an element.
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/metadata-explorer/metadata-elements/{{elementGUID}}/classifications/{{classificationName}}/history
 Authorization: Bearer {{token}}
 Content-Type: application/json
 
@@ -277,7 +295,7 @@ Content-Type: application/json
 # Return a list of elements with the requested search string in their (display, resource)name, qualified name,
 # title, text, summary, identifier or description.  The search string is interpreted as a regular expression (RegEx).
 # The breadth of the search is determined by the supplied anchorGUID.
-POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/metadata-explorer/metadata-elements/by-search-string/for-anchor/{{cimGlossaryGUID}}
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/metadata-explorer/metadata-elements/by-search-string/for-anchor/{{susGlossaryGUID}}
 Authorization: Bearer {{token}}
 Content-Type: application/json
 

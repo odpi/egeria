@@ -80,7 +80,7 @@ public class OMAGServerConfig extends AdminServicesConfigHeader
     /*
      * Values in use by this server.
      */
-    private String                          localServerId                   = UUID.randomUUID().toString();
+    private String                          localServerId                   = null; // set on first server startup
     private String                          localServerName                 = null;
     private String                          localServerDescription          = null;
     private String                          localServerType                 = null;

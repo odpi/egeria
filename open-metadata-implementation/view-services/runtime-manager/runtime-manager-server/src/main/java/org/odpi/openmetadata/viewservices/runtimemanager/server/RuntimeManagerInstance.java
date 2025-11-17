@@ -9,6 +9,7 @@ import org.odpi.openmetadata.frameworks.connectors.client.ConnectedAssetClient;
 import org.odpi.openmetadata.frameworks.openmetadata.client.OpenMetadataClient;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.openmetadata.handlers.AssetHandler;
+import org.odpi.openmetadata.frameworks.openmetadata.handlers.MetadataRepositoryCohortHandler;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
 import org.odpi.openmetadata.frameworkservices.ocf.metadatamanagement.client.EgeriaConnectedAssetClient;
 import org.odpi.openmetadata.frameworkservices.omf.client.EgeriaOpenMetadataStoreClient;
@@ -23,10 +24,12 @@ public class RuntimeManagerInstance extends OMVSServiceInstance
     private static final ViewServiceDescription myDescription = ViewServiceDescription.RUNTIME_MANAGER;
 
 
-    private final ConnectedAssetClient connectedAssetClient;
-    private final OpenMetadataClient   openMetadataClient;
-    private final AssetHandler         softwarePlatformHandler;
-    private final AssetHandler         softwareServerHandler;
+    private final ConnectedAssetClient            connectedAssetClient;
+    private final OpenMetadataClient              openMetadataClient;
+    private final AssetHandler                    softwarePlatformHandler;
+    private final AssetHandler                    softwareServerHandler;
+    private final MetadataRepositoryCohortHandler metadataRepositoryCohortHandler;
+
 
     /**
      * Set up the Runtime Manager OMVS instance
@@ -84,12 +87,17 @@ public class RuntimeManagerInstance extends OMVSServiceInstance
                                                  myDescription.getViewServiceFullName(),
                                                  openMetadataClient,
                                                  OpenMetadataType.SOFTWARE_SERVER.typeName);
+
+        metadataRepositoryCohortHandler = new MetadataRepositoryCohortHandler(serverName,
+                                                                              auditLog,
+                                                                              myDescription.getViewServiceFullName(),
+                                                                              openMetadataClient);
     }
 
 
 
     /**
-     * Return the platform manager client.  This client is from IT Infrastructure OMAS and is for maintaining server platforms.
+     * Return the platform manager client.  This client is from the Open Metadata Framework (OMF).
      *
      * @return client
      */
@@ -100,13 +108,23 @@ public class RuntimeManagerInstance extends OMVSServiceInstance
 
 
     /**
-     * Return the server manager client.  This client is from IT Infrastructure OMAS and is for maintaining servers.
+     * Return the server manager client. This client is from the Open Metadata Framework (OMF).
      *
      * @return client
      */
     public AssetHandler getSoftwareServerHandler()
     {
         return softwareServerHandler;
+    }
+
+    /**
+     * Return the cohort manager client. This client is from the Open Metadata Framework (OMF).
+     *
+     * @return client
+     */
+    public MetadataRepositoryCohortHandler getMetadataRepositoryCohortHandler()
+    {
+        return metadataRepositoryCohortHandler;
     }
 
 

@@ -17,9 +17,12 @@ import org.odpi.openmetadata.frameworks.connectors.Connector;
 import org.odpi.openmetadata.frameworks.connectors.client.ConnectedAssetClient;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
 import org.odpi.openmetadata.frameworks.openmetadata.handlers.AssetHandler;
+import org.odpi.openmetadata.frameworks.openmetadata.handlers.MetadataRepositoryCohortHandler;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.ElementHeader;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.OpenMetadataRootElement;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.assets.AssetProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.softwarecapabilities.MetadataRepositoryCohortProperties;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.softwarecapabilities.MetadataCohortPeerProperties;
 import org.odpi.openmetadata.governanceservers.integrationdaemonservices.rest.ConnectorConfigPropertiesRequestBody;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.archivestore.properties.OpenMetadataArchive;
 import org.odpi.openmetadata.serveroperations.rest.SuccessMessageResponse;
@@ -136,7 +139,15 @@ public class RuntimeManagerRESTServices extends TokenController
 
             AssetHandler handler = instanceHandler.getSoftwarePlatformHandler(userId, serverName, methodName);
 
-            List<OpenMetadataRootElement> platforms = handler.getAssetsByDeployedImplementationType(userId, requestBody.getFilter(), requestBody);
+            List<OpenMetadataRootElement> platforms;
+            if (requestBody != null)
+            {
+                platforms = handler.getAssetsByDeployedImplementationType(userId, requestBody.getFilter(), requestBody);
+            }
+            else
+            {
+                platforms = handler.getAssetsByDeployedImplementationType(userId, null, null);
+            }
 
             if (platforms != null)
             {
@@ -421,10 +432,9 @@ public class RuntimeManagerRESTServices extends TokenController
      * PropertyServerException    there is a problem retrieving information from the property server(s).
      * UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    @SuppressWarnings(value = "unused")
 
-    public OpenMetadataRootElementResponse getServerByGUID(String             serverName,
-                                                           String             serverGUID,
+    public OpenMetadataRootElementResponse getServerByGUID(String         serverName,
+                                                           String         serverGUID,
                                                            GetRequestBody requestBody)
     {
         final String methodName = "getServerByGUID";
@@ -444,7 +454,7 @@ public class RuntimeManagerRESTServices extends TokenController
 
             AssetHandler handler = instanceHandler.getSoftwareServerHandler(userId, serverName, methodName);
 
-            response.setElement(handler.getAssetByGUID(userId, serverGUID, null));
+            response.setElement(handler.getAssetByGUID(userId, serverGUID, requestBody));
         }
         catch (Throwable error)
         {
@@ -686,6 +696,502 @@ public class RuntimeManagerRESTServices extends TokenController
         return response;
     }
 
+    /*
+     * =============================================================
+     * Open Metadata Repository Cohorts
+     */
+
+    /**
+     * Create an open metadata repository cohort.
+     *
+     * @param serverName                 name of called server.
+     * @param requestBody             properties for the cohort.
+     *
+     * @return unique identifier of the newly created element
+     *  InvalidParameterException  one of the parameters is invalid.
+     *  PropertyServerException    there is a problem retrieving information from the property server(s).
+     *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public GUIDResponse createMetadataRepositoryCohort(String                serverName,
+                                                       NewElementRequestBody requestBody)
+    {
+        final String methodName = "createMetadataRepositoryCohort";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
+
+        GUIDResponse response = new GUIDResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            if (requestBody != null)
+            {
+                MetadataRepositoryCohortHandler handler = instanceHandler.getMetadataRepositoryCohortHandler(userId, serverName, methodName);
+
+                if (requestBody.getProperties() instanceof MetadataRepositoryCohortProperties cohortProperties)
+                {
+                    response.setGUID(handler.createMetadataRepositoryCohort(userId,
+                                                                            requestBody,
+                                                                            requestBody.getInitialClassifications(),
+                                                                            cohortProperties,
+                                                                            requestBody.getParentRelationshipProperties()));
+                }
+                else
+                {
+                    restExceptionHandler.handleInvalidPropertiesObject(MetadataRepositoryCohortProperties.class.getName(), methodName);
+                }
+            }
+            else
+            {
+                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
+            }
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+        return response;
+    }
+
+
+    /**
+     * Create a new metadata element to represent an open metadata repository cohort using an existing metadata element as a template.
+     * The template defines additional classifications and relationships that should be added to the new element.
+     *
+     * @param serverName             calling user
+     * @param requestBody properties that override the template
+     *
+     * @return unique identifier of the new metadata element
+     *  InvalidParameterException  one of the parameters is invalid
+     *  UserNotAuthorizedException the user is not authorized to issue this request
+     *  PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public GUIDResponse createMetadataRepositoryCohortFromTemplate(String              serverName,
+                                                                   TemplateRequestBody requestBody)
+    {
+        final String methodName = "createMetadataRepositoryCohortFromTemplate";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
+
+        GUIDResponse response = new GUIDResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            if (requestBody != null)
+            {
+                MetadataRepositoryCohortHandler handler = instanceHandler.getMetadataRepositoryCohortHandler(userId, serverName, methodName);
+
+                response.setGUID(handler.createMetadataRepositoryCohortFromTemplate(userId,
+                                                                                    requestBody,
+                                                                                    requestBody.getTemplateGUID(),
+                                                                                    requestBody.getReplacementProperties(),
+                                                                                    requestBody.getPlaceholderPropertyValues(),
+                                                                                    requestBody.getParentRelationshipProperties()));
+            }
+            else
+            {
+                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
+            }
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+        return response;
+    }
+
+
+    /**
+     * Update the properties of an open metadata repository cohort.
+     *
+     * @param serverName         name of called server.
+     * @param metadataRepositoryCohortGUID unique identifier of the cohort (returned from create)
+     * @param requestBody     properties for the new element.
+     *
+     * @return void or
+     *  InvalidParameterException  one of the parameters is invalid.
+     *  PropertyServerException    there is a problem retrieving information from the property server(s).
+     *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public VoidResponse updateMetadataRepositoryCohort(String                   serverName,
+                                                       String                   metadataRepositoryCohortGUID,
+                                                       UpdateElementRequestBody requestBody)
+    {
+        final String methodName = "updateMetadataRepositoryCohort";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
+
+        VoidResponse response = new VoidResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            if (requestBody != null)
+            {
+                MetadataRepositoryCohortHandler handler = instanceHandler.getMetadataRepositoryCohortHandler(userId, serverName, methodName);
+
+                if (requestBody.getProperties() instanceof MetadataRepositoryCohortProperties cohortProperties)
+                {
+                    handler.updateMetadataRepositoryCohort(userId,
+                                                           metadataRepositoryCohortGUID,
+                                                           requestBody,
+                                                           cohortProperties);
+                }
+                else
+                {
+                    restExceptionHandler.handleInvalidPropertiesObject(MetadataRepositoryCohortProperties.class.getName(), methodName);
+                }
+            }
+            else
+            {
+                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
+            }
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+        return response;
+    }
+
+
+    /**
+     * Delete an open metadata repository cohort.
+     *
+     * @param serverName         name of called server
+     * @param metadataRepositoryCohortGUID  unique identifier of the element to delete
+     * @param requestBody  description of the relationship.
+     *
+     * @return void or
+     *  InvalidParameterException  one of the parameters is null or invalid.
+     *  PropertyServerException    there is a problem retrieving information from the property server(s).
+     *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public VoidResponse deleteMetadataRepositoryCohort(String                   serverName,
+                                                       String                   metadataRepositoryCohortGUID,
+                                                       DeleteElementRequestBody requestBody)
+    {
+        final String methodName = "deleteMetadataRepositoryCohort";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
+
+        VoidResponse response = new VoidResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            MetadataRepositoryCohortHandler handler = instanceHandler.getMetadataRepositoryCohortHandler(userId, serverName, methodName);
+
+            handler.deleteMetadataRepositoryCohort(userId, metadataRepositoryCohortGUID, requestBody);
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+        return response;
+    }
+
+
+    /**
+     * Retrieve the list of cohort metadata elements that contain the search string.
+     *
+     * @param serverName name of the service to route the request to
+     * @param requestBody string to find in the properties
+     *
+     * @return list of matching metadata elements or
+     *  InvalidParameterException  one of the parameters is invalid
+     *  UserNotAuthorizedException the user is not authorized to issue this request
+     *  PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public OpenMetadataRootElementsResponse getMetadataRepositoryCohortsByName(String            serverName,
+                                                                               FilterRequestBody requestBody)
+    {
+        final String methodName = "getMetadataRepositoryCohortsByName";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
+
+        OpenMetadataRootElementsResponse response = new OpenMetadataRootElementsResponse();
+        AuditLog                         auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            MetadataRepositoryCohortHandler handler = instanceHandler.getMetadataRepositoryCohortHandler(userId, serverName, methodName);
+
+            if (requestBody != null)
+            {
+                response.setElements(handler.getMetadataRepositoryCohortsByName(userId, requestBody.getFilter(), requestBody));
+            }
+            else
+            {
+                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
+            }
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+        return response;
+    }
+
+
+    /**
+     * Retrieve the list of cohort metadata elements that contain the search string.
+     *
+     * @param serverName name of the service to route the request to
+     * @param metadataRepositoryCohortGUID    unique identifier of the required element
+     * @param requestBody string to find in the properties
+     *
+     * @return list of matching metadata elements or
+     *  InvalidParameterException  one of the parameters is invalid
+     *  UserNotAuthorizedException the user is not authorized to issue this request
+     *  PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public OpenMetadataRootElementResponse getMetadataRepositoryCohortByGUID(String         serverName,
+                                                                             String         metadataRepositoryCohortGUID,
+                                                                             GetRequestBody requestBody)
+    {
+        final String methodName = "getMetadataRepositoryCohortByGUID";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
+
+        OpenMetadataRootElementResponse response = new OpenMetadataRootElementResponse();
+        AuditLog                         auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            MetadataRepositoryCohortHandler handler = instanceHandler.getMetadataRepositoryCohortHandler(userId, serverName, methodName);
+
+            response.setElement(handler.getMetadataRepositoryCohortByGUID(userId, metadataRepositoryCohortGUID, requestBody));
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+        return response;
+    }
+
+
+    /**
+     * Retrieve the list of cohort metadata elements that contain the search string.
+     *
+     * @param serverName name of the service to route the request to
+     * @param requestBody string to find in the properties
+     *
+     * @return list of matching metadata elements or
+     *  InvalidParameterException  one of the parameters is invalid
+     *  UserNotAuthorizedException the user is not authorized to issue this request
+     *  PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public OpenMetadataRootElementsResponse findMetadataRepositoryCohorts(String                  serverName,
+                                                                          SearchStringRequestBody requestBody)
+    {
+        final String methodName = "findMetadataRepositoryCohorts";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
+
+        OpenMetadataRootElementsResponse response = new OpenMetadataRootElementsResponse();
+        AuditLog                         auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            MetadataRepositoryCohortHandler handler = instanceHandler.getMetadataRepositoryCohortHandler(userId, serverName, methodName);
+
+            if (requestBody != null)
+            {
+                response.setElements(handler.findMetadataRepositoryCohorts(userId, requestBody.getSearchString(), requestBody));
+            }
+            else
+            {
+                response.setElements(handler.findMetadataRepositoryCohorts(userId, null, null));
+            }
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+        return response;
+    }
+
+
+    /**
+     * Link cohort to one of its members.
+     *
+     * @param serverName         name of called server
+     * @param cohortGUID    unique identifier of the cohort.
+     * @param cohortMemberGUID    unique identifier of the cohort member.
+     * @param requestBody  description of the relationship.
+     *
+     * @return void or
+     *  InvalidParameterException  one of the parameters is null or invalid.
+     *  PropertyServerException    there is a problem retrieving information from the property server(s).
+     *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public VoidResponse linkCohortMember(String                     serverName,
+                                         String                     cohortGUID,
+                                         String                     cohortMemberGUID,
+                                         NewRelationshipRequestBody requestBody)
+    {
+        final String methodName = "linkCohortMember";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
+
+        VoidResponse response = new VoidResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+            MetadataRepositoryCohortHandler handler = instanceHandler.getMetadataRepositoryCohortHandler(userId, serverName, methodName);
+
+            if (requestBody != null)
+            {
+                if (requestBody.getProperties() instanceof MetadataCohortPeerProperties metadataCohortPeerProperties)
+                {
+                    handler.linkCohortToMember(userId,
+                                               cohortGUID,
+                                               cohortMemberGUID,
+                                               requestBody,
+                                               metadataCohortPeerProperties);
+                }
+                else if (requestBody.getProperties() == null)
+                {
+                    handler.linkCohortToMember(userId,
+                                               cohortGUID,
+                                               cohortMemberGUID,
+                                               requestBody,
+                                               null);
+                }
+                else
+                {
+                    restExceptionHandler.handleInvalidPropertiesObject(MetadataCohortPeerProperties.class.getName(), methodName);
+                }
+            }
+            else
+            {
+                handler.linkCohortToMember(userId,
+                                           cohortGUID,
+                                           cohortMemberGUID,
+                                           null,
+                                           null);
+            }
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+        return response;
+    }
+
+
+    /**
+     * Detach a member form a cohort.
+     *
+     * @param serverName         name of called server
+     * @param cohortGUID    unique identifier of the parent subject area.
+     * @param cohortMemberGUID    unique identifier of the nested subject area.
+     * @param requestBody  description of the relationship.
+     *
+     * @return void or
+     *  InvalidParameterException  one of the parameters is null or invalid.
+     *  PropertyServerException    there is a problem retrieving information from the property server(s).
+     *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public VoidResponse detachCohortMember(String                        serverName,
+                                           String                        cohortGUID,
+                                           String                        cohortMemberGUID,
+                                           DeleteRelationshipRequestBody requestBody)
+    {
+        final String methodName = "detachCohortMember";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
+
+        VoidResponse response = new VoidResponse();
+        AuditLog     auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            MetadataRepositoryCohortHandler handler = instanceHandler.getMetadataRepositoryCohortHandler(userId, serverName, methodName);
+
+            handler.detachCohortFromMember(userId, cohortGUID, cohortMemberGUID, requestBody);
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+        return response;
+    }
+
 
     /*
      * =============================================================
@@ -808,7 +1314,7 @@ public class RuntimeManagerRESTServices extends TokenController
         restCallLogger.logRESTCallReturn(token, response.toString());
         return response;
     }
-    
+
 
     /*
      * =============================================================

@@ -19,6 +19,7 @@ import org.odpi.openmetadata.repositoryservices.ffdc.exception.OMRSRuntimeExcept
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.RepositoryErrorException;
 
 import java.util.Date;
+import java.util.UUID;
 
 /**
  * The PostgresOMRSRepositoryConnector is a connector to a local PostgreSQL repository.  Each repository has the same
@@ -144,6 +145,11 @@ public class PostgresOMRSRepositoryConnector extends OMRSRepositoryConnector
 
             if (controlMapper == null)
             {
+                if (metadataCollectionId == null)
+                {
+                    metadataCollectionId = UUID.randomUUID().toString();
+                }
+
                 controlMapper = new ControlMapper(repositoryName, serverName, metadataCollectionId, supportedSchemaVersion);
 
                 databaseStore.saveControlTable(controlMapper);
@@ -156,20 +162,24 @@ public class PostgresOMRSRepositoryConnector extends OMRSRepositoryConnector
                                                    this.getClass().getName(),
                                                    methodName);
             }
+            else if (! supportedSchemaVersion.equals(controlMapper.getSchemaVersion()))
+            {
+                throw new RepositoryErrorException(PostgresErrorCode.CONTROL_SCHEMA_VERSION_MISMATCH.getMessageDefinition(repositoryName,
+                                                                                                                          schemaName,
+                                                                                                                          controlMapper.getSchemaVersion()),
+                                                   this.getClass().getName(),
+                                                   methodName);
+            }
+            else if (metadataCollectionId == null)
+            {
+                metadataCollectionId = controlMapper.getLocalMetadataCollectionGUID();
+            }
             else if (! metadataCollectionId.equals(controlMapper.getLocalMetadataCollectionGUID()))
             {
                 throw new RepositoryErrorException(PostgresErrorCode.CONTROL_MC_ID_MISMATCH.getMessageDefinition(repositoryName,
                                                                                                                  schemaName,
                                                                                                                  controlMapper.getLocalMetadataCollectionGUID(),
                                                                                                                  metadataCollectionId),
-                                                   this.getClass().getName(),
-                                                   methodName);
-            }
-            else if (! supportedSchemaVersion.equals(controlMapper.getSchemaVersion()))
-            {
-                throw new RepositoryErrorException(PostgresErrorCode.CONTROL_SCHEMA_VERSION_MISMATCH.getMessageDefinition(repositoryName,
-                                                                                                                          schemaName,
-                                                                                                                          controlMapper.getSchemaVersion()),
                                                    this.getClass().getName(),
                                                    methodName);
             }

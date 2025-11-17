@@ -3,14 +3,20 @@
 package org.odpi.openmetadata.repositoryservices.eventmanagement;
 
 import org.odpi.openmetadata.adminservices.configuration.properties.OpenMetadataExchangeRule;
+import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;
+import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataType;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Classification;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntitySummary;
 import org.odpi.openmetadata.repositoryservices.ffdc.OMRSErrorCode;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.OMRSLogicErrorException;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceHeader;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceType;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDefSummary;
+import org.odpi.openmetadata.repositoryservices.localrepository.OMRSLocalRepository;
 
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -20,6 +26,10 @@ public class OMRSRepositoryEventExchangeRule
 {
     private final OpenMetadataExchangeRule           exchangeRule;
     private final List<String>                       selectedTypesToProcess = new ArrayList<>();
+    private final List<String>                       excludedZones;
+    private final List<String>                       includedZones;
+    private final OMRSLocalRepository                localRepository;
+    private final String                             cohortName;
 
 
     /**
@@ -27,9 +37,16 @@ public class OMRSRepositoryEventExchangeRule
      *
      * @param exchangeRule enum detailing the types of events to process.
      * @param selectedTypesToProcess supplementary list to support selective processing of events.
+     * @param excludedZones governance zones to ignore
+     * @param includedZones governance zones to send/receive
+     * @param localRepository work with properties
      */
     public OMRSRepositoryEventExchangeRule(OpenMetadataExchangeRule     exchangeRule,
-                                           List<TypeDefSummary>         selectedTypesToProcess)
+                                           List<TypeDefSummary>         selectedTypesToProcess,
+                                           List<String>                 excludedZones,
+                                           List<String>                 includedZones,
+                                           OMRSLocalRepository          localRepository,
+                                           String                       sourceName)
     {
         final String  methodName = "OMRSRepositoryEventExchangeRule constructor";
 
@@ -38,7 +55,8 @@ public class OMRSRepositoryEventExchangeRule
          */
         if (exchangeRule == null)
         {
-            throw new OMRSLogicErrorException(OMRSErrorCode.NULL_EXCHANGE_RULE.getMessageDefinition(methodName),
+            throw new OMRSLogicErrorException(OMRSErrorCode.NULL_EXCHANGE_RULE.getMessageDefinition(methodName,
+                                                                                                    sourceName),
                                               this.getClass().getName(),
                                               methodName);
         }
@@ -63,6 +81,20 @@ public class OMRSRepositoryEventExchangeRule
                 }
             }
         }
+
+        if (exchangeRule == OpenMetadataExchangeRule.GOVERNANCE_ZONES)
+        {
+            this.excludedZones = excludedZones;
+            this.includedZones = includedZones;
+        }
+        else
+        {
+            this.excludedZones = null;
+            this.includedZones = null;
+        }
+
+        this.localRepository = localRepository;
+        this.cohortName = sourceName;
     }
 
 
@@ -126,7 +158,6 @@ public class OMRSRepositoryEventExchangeRule
                  */
                 return selectedTypesToProcess.contains(typeDefGUID);
             }
-
         }
     }
 
@@ -158,6 +189,8 @@ public class OMRSRepositoryEventExchangeRule
      */
     public boolean processInstanceEvent(InstanceHeader instance)
     {
+        final String methodName = "processInstanceEvent";
+
         if (instance == null)
         {
             return false;
@@ -170,10 +203,40 @@ public class OMRSRepositoryEventExchangeRule
             {
                 return false;
             }
-            else
+            else if ((excludedZones != null || includedZones != null) && (instance instanceof EntitySummary entitySummary))
             {
-                return this.processInstanceEvent(type.getTypeDefGUID(), type.getTypeDefName());
+                if (entitySummary.getClassifications() != null)
+                {
+                    for (Classification classification : entitySummary.getClassifications())
+                    {
+                        if ((classification != null) && (OpenMetadataType.ZONE_MEMBERSHIP_CLASSIFICATION.typeName.equals(classification.getName())))
+                        {
+                            List<String> zoneMembership = localRepository.getRepositoryHelper().getStringArrayProperty(cohortName,
+                                                                                                                       OpenMetadataProperty.ZONE_MEMBERSHIP.name,
+                                                                                                                       classification.getProperties(),
+                                                                                                                       methodName);
+
+                            if (zoneMembership != null)
+                            {
+                                if (includedZones != null)
+                                {
+                                    return ! Collections.disjoint(zoneMembership, includedZones);
+                                }
+                                else
+                                {
+                                    return Collections.disjoint(zoneMembership, excludedZones);
+                                }
+                            }
+                            else
+                            {
+                                return excludedZones != null;
+                            }
+                        }
+                    }
+                }
             }
+
+            return this.processInstanceEvent(type.getTypeDefGUID(), type.getTypeDefName());
         }
     }
 
@@ -182,7 +245,6 @@ public class OMRSRepositoryEventExchangeRule
      * If the rule is in learning mode, determine if the type of the instance should be added to the list
      * of types being processed.  For this to happen, the instance header must include a valid type, the type
      * must be an active type for this server and not already included in the list.
-     *
      * Any errors discovered in the types, of this rule's set up result in a false result.  No diagnostics are
      * created because this method is called very frequently and the errors will be trapped and logged elsewhere.
      *

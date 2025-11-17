@@ -12,7 +12,6 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDefSummary;
 
-import java.io.Serial;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -72,8 +71,12 @@ public class LocalRepositoryConfig extends AdminServicesConfigHeader
     private Connection               localRepositoryRemoteConnection = null;
     private OpenMetadataExchangeRule eventsToSaveRule                = null;
     private List<TypeDefSummary>     selectedTypesToSave             = null;
+    private List<String>             excludedZonesToSave             = null;
+    private List<String>             includedZonesToSave             = null;
     private OpenMetadataExchangeRule eventsToSendRule                = null;
     private List<TypeDefSummary>     selectedTypesToSend             = null;
+    private List<String>             excludedZonesToSend             = null;
+    private List<String>             includedZonesToSend             = null;
     private Connection               eventMapperConnection           = null;
 
 
@@ -105,8 +108,12 @@ public class LocalRepositoryConfig extends AdminServicesConfigHeader
             this.localRepositoryRemoteConnection = template.getLocalRepositoryRemoteConnection();
             this.eventsToSaveRule = template.getEventsToSaveRule();
             this.selectedTypesToSave = template.getSelectedTypesToSave();
+            this.excludedZonesToSave = template.getExcludedZonesToSave();
+            this.includedZonesToSave = template.getIncludedZonesToSave();
             this.eventsToSendRule = template.getEventsToSendRule();
             this.selectedTypesToSend = template.getSelectedTypesToSend();
+            this.excludedZonesToSend = template.getExcludedZonesToSend();
+            this.includedZonesToSend = template.getIncludedZonesToSend();
             this.eventMapperConnection = template.getEventMapperConnection();
         }
     }
@@ -296,6 +303,49 @@ public class LocalRepositoryConfig extends AdminServicesConfigHeader
 
 
     /**
+     * Return the zones that are not saved.
+     *
+     * @return list
+     */
+    public List<String> getExcludedZonesToSave()
+    {
+        return excludedZonesToSave;
+    }
+
+
+    /**
+     * Set up the zones that are not saved.
+     *
+     * @param excludedZonesToSave list
+     */
+    public void setExcludedZonesToSave(List<String> excludedZonesToSave)
+    {
+        this.excludedZonesToSave = excludedZonesToSave;
+    }
+
+    /**
+     * Return the zones that are the only ones to be saved.
+     *
+     * @return list
+     */
+    public List<String> getIncludedZonesToSave()
+    {
+        return includedZonesToSave;
+    }
+
+
+    /**
+     * set up the zones that are the only ones to be saved.
+     *
+     * @param includedZonesToSave list
+     */
+    public void setIncludedZonesToSave(List<String> includedZonesToSave)
+    {
+        this.includedZonesToSave = includedZonesToSave;
+    }
+
+
+    /**
      * Return the enumeration describing which open metadata repository events should be sent from
      * the local repository.
      *
@@ -363,6 +413,50 @@ public class LocalRepositoryConfig extends AdminServicesConfigHeader
 
 
     /**
+     * Return the zones not to send.
+     *
+     * @return list
+     */
+    public List<String> getExcludedZonesToSend()
+    {
+        return excludedZonesToSend;
+    }
+
+
+    /**
+     * Set up the zones not to send.
+     *
+     * @param excludedZonesToSend list
+     */
+    public void setExcludedZonesToSend(List<String> excludedZonesToSend)
+    {
+        this.excludedZonesToSend = excludedZonesToSend;
+    }
+
+
+    /**
+     * Return the zones that are the only ones to be sent.
+     *
+     * @return list
+     */
+    public List<String> getIncludedZonesToSend()
+    {
+        return includedZonesToSend;
+    }
+
+
+    /**
+     * Set up the zones that are the only ones to be sent.
+     *
+     * @param includedZonesToSend list
+     */
+    public void setIncludedZonesToSend(List<String> includedZonesToSend)
+    {
+        this.includedZonesToSend = includedZonesToSend;
+    }
+
+
+    /**
      * Return the connection properties for the event mapper for the local repository.  The event mapper is an
      * optional component used when the local repository has proprietary external APIs that can change metadata
      * in the repository without going through the OMRS interfaces.  It maps the proprietary events from
@@ -406,10 +500,14 @@ public class LocalRepositoryConfig extends AdminServicesConfigHeader
                 ", localRepositoryRemoteConnection=" + localRepositoryRemoteConnection +
                 ", eventsToSaveRule=" + eventsToSaveRule +
                 ", selectedTypesToSave=" + selectedTypesToSave +
+                ", excludedZonesToSave=" + excludedZonesToSave +
+                ", includedZonesToSave=" + includedZonesToSave +
                 ", eventsToSendRule=" + eventsToSendRule +
                 ", selectedTypesToSend=" + selectedTypesToSend +
+                ", excludedZonesToSend=" + excludedZonesToSend +
+                ", includedZonesToSend=" + includedZonesToSend +
                 ", eventMapperConnection=" + eventMapperConnection +
-                '}';
+                "} " + super.toString();
     }
 
 
@@ -438,8 +536,12 @@ public class LocalRepositoryConfig extends AdminServicesConfigHeader
                 Objects.equals(localRepositoryRemoteConnection, that.localRepositoryRemoteConnection) &&
                 eventsToSaveRule == that.eventsToSaveRule &&
                 Objects.equals(selectedTypesToSave, that.selectedTypesToSave) &&
+                Objects.equals(excludedZonesToSave, that.excludedZonesToSave) &&
+                Objects.equals(includedZonesToSave, that.includedZonesToSave) &&
                 eventsToSendRule == that.eventsToSendRule &&
                 Objects.equals(selectedTypesToSend, that.selectedTypesToSend) &&
+                Objects.equals(excludedZonesToSend, that.excludedZonesToSend) &&
+                Objects.equals(includedZonesToSend, that.includedZonesToSend) &&
                 Objects.equals(eventMapperConnection, that.eventMapperConnection);
     }
 
@@ -452,9 +554,9 @@ public class LocalRepositoryConfig extends AdminServicesConfigHeader
     @Override
     public int hashCode()
     {
-        return Objects.hash(getMetadataCollectionId(), getMetadataCollectionName(), getLocalRepositoryMode(),
-                            getLocalRepositoryLocalConnection(), getLocalRepositoryRemoteConnection(),
-                            getEventsToSaveRule(), getSelectedTypesToSave(),
-                            getEventsToSendRule(), getSelectedTypesToSend(), getEventMapperConnection());
+        return Objects.hash(metadataCollectionId, metadataCollectionName, localRepositoryMode,
+                            localRepositoryLocalConnection, localRepositoryRemoteConnection, eventsToSaveRule,
+                            selectedTypesToSave, excludedZonesToSave, includedZonesToSave, eventsToSendRule,
+                            selectedTypesToSend, excludedZonesToSend, includedZonesToSend, eventMapperConnection);
     }
 }

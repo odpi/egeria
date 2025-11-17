@@ -16,10 +16,10 @@ Content-Type: application/json
 
 {
     "producer": {
-        "bootstrap.servers": "{{kafkaep}}"
+        "bootstrap.servers": "~{kafkaEndpoint}~"
     },
     "consumer":{
-        "bootstrap.servers": "{{kafkaep}}"
+        "bootstrap.servers": "~{kafkaEndpoint}~"
     }
 }
 
@@ -32,9 +32,78 @@ POST {{baseURL}}/open-metadata/admin-services/users/{{adminUserId}}/servers/simp
 # ---------------------------------------------
 # Metadata Access Store: active-metadata-store
 #
-##
+
+###
+# Set up the description of this server.
+POST {{baseURL}}/open-metadata/admin-services/users/{{adminUserId}}/servers/active-metadata-store/server-description
+Content-Type: text/plain
+
+A metadata store that supports Open Metadata Access Services (OMASs) with event notifications.  It provides metadata to the cohort, engine-host and integration-daemon.
+
+###
 # Add the server to the cohort.
 POST {{baseURL}}/open-metadata/admin-services/users/{{adminUserId}}/servers/active-metadata-store/cohorts/{{cohort}}
+
+
+###
+# ---------------------------------------------
+# Metadata Access Point: metadata-access-point
+#
+###
+# Set up the user Id that this server should use on open metadata requests when it is processing events (and consequently there is no end user id to use).
+POST {{baseURL}}/open-metadata/admin-services/users/{{adminUserId}}/servers/metadata-access-point/server-user-id?id=activenpa
+
+###
+# Set up the description of this server.
+POST {{baseURL}}/open-metadata/admin-services/users/{{adminUserId}}/servers/metadata-access-point/server-description
+Content-Type: text/plain
+
+A metadata access point that supports Open Metadata Access Services (OMASs) with event notifications.  It provides metadata to view-server via the cohort.
+
+
+###
+# Set up the common properties needed to call your event bus.  The value of ~{kafkaEndpoint}~ is resolved in the
+# application.properties file using the `platform.placeholder.variables` property.
+POST {{baseURL}}/open-metadata/admin-services/users/{{adminUserId}}/servers/metadata-access-point/event-bus
+Content-Type: application/json
+
+{
+  "producer":
+  {
+    "bootstrap.servers":"~{kafkaEndpoint}~"
+  },
+  "consumer":
+  {
+    "bootstrap.servers":"~{kafkaEndpoint}~"
+  }
+}
+
+###
+# Add the server to the cohort.
+POST {{baseURL}}/open-metadata/admin-services/users/{{adminUserId}}/servers/metadata-access-point/cohorts/{{cohort}}
+
+
+###
+# Set up all of the registered, undeprecated Open Metadata Access Services (OMASs) with kafka notifications enabled.
+POST {{baseURL}}/open-metadata/admin-services/users/{{adminUserId}}/servers/metadata-access-point/access-services
+Content-Type: application/json
+
+
+###
+# -------------------------
+# View Server: view-server
+#
+
+###
+# Point the view server at the metadata-access-point
+POST {{baseURL}}/open-metadata/admin-services/users/{{adminUserId}}/servers/view-server/view-services
+Content-Type: application/json
+
+{
+  "class": "ViewServiceRequestBody",
+  "omagserverName": "metadata-access-point",
+  "omagserverPlatformRootURL": "~{egeriaEndpoint}~"
+}
 
 
 ###

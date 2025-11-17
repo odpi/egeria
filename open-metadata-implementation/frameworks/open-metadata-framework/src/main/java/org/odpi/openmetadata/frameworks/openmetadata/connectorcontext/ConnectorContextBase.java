@@ -63,45 +63,46 @@ public class ConnectorContextBase
     private   final FilesListenerManager listenerManager;
 
 
-    protected final OpenMetadataStore           openMetadataStore;
-    protected final OpenMetadataTypes           openMetadataTypes;
-    private final   ActorProfileClient          actorProfileClient;
-    private final   ActorRoleClient             actorRoleClient;
-    private final   AnnotationClient            annotationClient;
-    private final   AssetClient                 assetClient;
-    private final   ClassificationManagerClient classificationManagerClient;
-    private final   CollectionClient            collectionClient;
-    private final   CommentClient               commentClient;
-    private final   CommunityClient             communityClient;
-    private final   ConnectionClient            connectionClient;
-    private final   ConnectorTypeClient         connectorTypeClient;
-    private final   DataClassClient             dataClassClient;
-    private final   DataFieldClient             dataFieldClient;
-    private final   DataStructureClient         dataStructureClient;
-    private final   EndpointClient              endpointClient;
-    private final   ExternalIdClient            externalIdClient;
-    private final   ExternalReferenceClient     externalReferenceClient;
-    private final   GlossaryTermClient          glossaryTermClient;
-    protected final GovernanceDefinitionClient  governanceDefinitionClient;
-    private final   InformalTagClient           informalTagClient;
-    private final   LikeClient                  likeClient;
-    private final   LineageClient               lineageClient;
-    private final   LocationClient              locationClient;
-    private final   MultiLanguageClient         multiLanguageClient;
-    private final   NoteLogClient               noteLogClient;
-    private final   ProjectClient               projectClient;
-    private final   PropertyFacetClient         propertyFacetClient;
-    private final   RatingClient                ratingClient;
-    private final   SchemaAttributeClient       schemaAttributeClient;
-    private final   SchemaTypeClient            schemaTypeClient;
-    private final   SearchKeywordClient         searchKeywordClient;
-    private final   SoftwareCapabilityClient    softwareCapabilityClient;
-    private final   SolutionBlueprintClient     solutionBlueprintClient;
-    private final   SolutionComponentClient     solutionComponentClient;
-    private final   SpecificationPropertyClient specificationPropertyClient;
-    private final   UserIdentityClient          userIdentityClient;
-    private final   ValidMetadataValuesClient   validMetadataValuesClient;
-    private final   ValidValueDefinitionClient  validValueDefinitionClient;
+    protected final OpenMetadataStore              openMetadataStore;
+    protected final OpenMetadataTypes              openMetadataTypes;
+    private final   ActorProfileClient             actorProfileClient;
+    private final   ActorRoleClient                actorRoleClient;
+    private final   AnnotationClient               annotationClient;
+    private final   AssetClient                    assetClient;
+    private final   ClassificationManagerClient    classificationManagerClient;
+    private final   CollectionClient               collectionClient;
+    private final   CommentClient                  commentClient;
+    private final   CommunityClient                communityClient;
+    private final   ConnectionClient               connectionClient;
+    private final   ConnectorTypeClient            connectorTypeClient;
+    private final   DataClassClient                dataClassClient;
+    private final   DataFieldClient                dataFieldClient;
+    private final   DataStructureClient            dataStructureClient;
+    private final   EndpointClient                 endpointClient;
+    private final   ExternalIdClient               externalIdClient;
+    private final   ExternalReferenceClient        externalReferenceClient;
+    private final   GlossaryTermClient             glossaryTermClient;
+    protected final GovernanceDefinitionClient     governanceDefinitionClient;
+    private final   InformalTagClient              informalTagClient;
+    private final   LikeClient                     likeClient;
+    private final   LineageClient                  lineageClient;
+    private final   LocationClient                 locationClient;
+    private final   MetadataRepositoryCohortClient metadataRepositoryCohortClient;
+    private final   MultiLanguageClient            multiLanguageClient;
+    private final   NoteLogClient                  noteLogClient;
+    private final   ProjectClient                  projectClient;
+    private final   PropertyFacetClient            propertyFacetClient;
+    private final   RatingClient                   ratingClient;
+    private final   SchemaAttributeClient          schemaAttributeClient;
+    private final   SchemaTypeClient               schemaTypeClient;
+    private final   SearchKeywordClient            searchKeywordClient;
+    private final   SoftwareCapabilityClient       softwareCapabilityClient;
+    private final   SolutionBlueprintClient        solutionBlueprintClient;
+    private final   SolutionComponentClient        solutionComponentClient;
+    private final   SpecificationPropertyClient    specificationPropertyClient;
+    private final   UserIdentityClient             userIdentityClient;
+    private final   ValidMetadataValuesClient      validMetadataValuesClient;
+    private final   ValidValueDefinitionClient     validValueDefinitionClient;
 
 
     private boolean isActive = true;
@@ -418,6 +419,17 @@ public class ConnectorContextBase
                                                  openMetadataClient,
                                                  auditLog,
                                                  maxPageSize);
+
+        this.metadataRepositoryCohortClient = new MetadataRepositoryCohortClient(this,
+                                                                                 localServerName,
+                                                                                 localServiceName,
+                                                                                 connectorUserId,
+                                                                                 connectorGUID,
+                                                                                 externalSourceGUID,
+                                                                                 externalSourceName,
+                                                                                 openMetadataClient,
+                                                                                 auditLog,
+                                                                                 maxPageSize);
 
         this.multiLanguageClient = new MultiLanguageClient(this,
                                                            localServerName,
@@ -1021,6 +1033,17 @@ public class ConnectorContextBase
     public LocationClient getLocationClient()
     {
         return locationClient;
+    }
+
+
+    /**
+     * Return the client for managing properties about cohorts.
+     *
+     * @return connector context client
+     */
+    public MetadataRepositoryCohortClient getMetadataRepositoryCohortClient()
+    {
+        return metadataRepositoryCohortClient;
     }
 
 

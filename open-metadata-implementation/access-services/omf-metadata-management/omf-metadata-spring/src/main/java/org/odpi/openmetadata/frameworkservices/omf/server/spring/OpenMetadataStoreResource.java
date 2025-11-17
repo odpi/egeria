@@ -492,6 +492,37 @@ public class OpenMetadataStoreResource
 
 
     /**
+     * Retrieve all the versions of an element's classification.
+     *
+     * @param serverName name of the server to route the request to
+     * @param userId calling user
+     * @param elementGUID unique identifier of object to retrieve
+     * @param classificationName name of classification to retrieve
+     * @param requestBody the time window required
+     * @return list of classifications or
+     *  InvalidParameterException one of the parameters is null or invalid.
+     *  PropertyServerException there is a problem removing the properties from the repositories.
+     *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    @PostMapping(path = "/metadata-elements/{elementGUID}/classifications/{classificationName}/history")
+
+    @Operation(summary="getClassificationHistory",
+            description="Retrieve all the versions of an element's classification.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/services/omf-metadata-management/"))
+
+    public AttachedClassificationsResponse getClassificationHistory(@PathVariable String                 serverName,
+                                                                  @PathVariable String                 userId,
+                                                                 @PathVariable String                 elementGUID,
+                                                                 @PathVariable String                 classificationName,
+                                                                  @RequestBody(required = false)
+                                                                  HistoryRequestBody     requestBody)
+    {
+        return restAPI.getClassificationHistory(serverName, userId, elementGUID, classificationName, requestBody);
+    }
+
+
+    /**
      * Retrieve the metadata elements that contain the requested string.
      *
      * @param serverName     name of server instance to route request to

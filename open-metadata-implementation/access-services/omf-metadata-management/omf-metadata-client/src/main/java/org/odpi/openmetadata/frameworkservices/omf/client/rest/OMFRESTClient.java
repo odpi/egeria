@@ -322,6 +322,37 @@ public class OMFRESTClient extends FFDCRESTClient
 
 
     /**
+     * Issue a POST REST call that returns a AttachedClassificationsResponse object.
+     *
+     * @param methodName  name of the method being called.
+     * @param urlTemplate template of the URL for the REST API call, with place-holders for the parameters.
+     * @param requestBody object that passes additional parameters
+     * @param params      a list of parameters that are slotted into the url template.
+     *
+     * @return response object
+     * @throws InvalidParameterException one of the parameters is invalid.
+     * @throws UserNotAuthorizedException the user is not authorized to make this request.
+     * @throws PropertyServerException the repository is not available or not working properly.
+     */
+    public AttachedClassificationsResponse callAttachedClassificationsPostRESTCall(String    methodName,
+                                                                                   String    urlTemplate,
+                                                                                   Object    requestBody,
+                                                                                   Object... params) throws InvalidParameterException,
+                                                                                                            UserNotAuthorizedException,
+                                                                                                            PropertyServerException
+    {
+        AttachedClassificationsResponse restResult = this.callPostRESTCall(methodName,
+                                                                           AttachedClassificationsResponse.class,
+                                                                           urlTemplate,
+                                                                           requestBody,
+                                                                           params);
+
+        exceptionHandler.detectAndThrowStandardExceptions(methodName, restResult);
+        return restResult;
+    }
+
+
+    /**
      * Issue a POST REST call that returns a OpenMetadataElementResponse object.
      *
      * @param methodName  name of the method being called.

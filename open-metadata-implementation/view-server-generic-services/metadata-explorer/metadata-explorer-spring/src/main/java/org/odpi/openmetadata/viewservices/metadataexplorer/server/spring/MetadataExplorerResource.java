@@ -151,12 +151,42 @@ public class MetadataExplorerResource
                     url="https://egeria-project.org/services/omvs/metadata-explorer/overview/"))
 
     public OpenMetadataElementsResponse getMetadataElementHistory(@PathVariable String                 serverName,
-                                                                  @PathVariable String                 elementGUID,
                                                                   @PathVariable String                 urlMarker,
+                                                                  @PathVariable String                 elementGUID,
                                                                   @RequestBody(required = false)
                                                                   HistoryRequestBody     requestBody)
     {
-        return restAPI.getMetadataElementHistory(serverName, elementGUID, urlMarker, requestBody);
+        return restAPI.getMetadataElementHistory(serverName, urlMarker, elementGUID, requestBody);
+    }
+
+
+    /**
+     * Retrieve all the versions of an element's classification.
+     *
+     * @param serverName name of the server to route the request to
+     * @param elementGUID unique identifier of object to retrieve
+     * @param classificationName name of classification to retrieve
+     * @param requestBody the time window required
+     * @return list of classifications or
+     *  InvalidParameterException one of the parameters is null or invalid.
+     *  PropertyServerException there is a problem removing the properties from the repositories.
+     *  UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    @PostMapping(path = "/metadata-elements/{elementGUID}/classifications/{classificationName}/history")
+
+    @Operation(summary="getClassificationHistory",
+            description="Retrieve all the versions of an element's classification.",
+            externalDocs=@ExternalDocumentation(description="Further Information",
+                    url="https://egeria-project.org/services/omf-metadata-management/"))
+
+    public AttachedClassificationsResponse getClassificationHistory(@PathVariable String                 serverName,
+                                                                    @PathVariable String             urlMarker,
+                                                                    @PathVariable String                 elementGUID,
+                                                                    @PathVariable String                 classificationName,
+                                                                    @RequestBody(required = false)
+                                                                    HistoryRequestBody     requestBody)
+    {
+        return restAPI.getClassificationHistory(serverName, urlMarker, elementGUID, classificationName, requestBody);
     }
 
 
@@ -587,14 +617,14 @@ public class MetadataExplorerResource
                     url="https://egeria-project.org/services/omvs/metadata-explorer/overview/"))
 
     public OpenMetadataRelationshipListResponse getRelationshipHistory(@PathVariable String                 serverName,
-                                                                       @PathVariable String                 relationshipGUID,
                                                                        @PathVariable String                 urlMarker,
+                                                                       @PathVariable String                 relationshipGUID,
                                                                        @RequestBody(required = false)
                                                                        HistoryRequestBody     requestBody)
     {
         return restAPI.getRelationshipHistory(serverName,
-                                              relationshipGUID,
                                               urlMarker,
+                                              relationshipGUID,
                                               requestBody);
     }
 }

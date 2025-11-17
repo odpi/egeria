@@ -1457,7 +1457,8 @@ public class RepositoryHandler
                                                      int                    pageSize,
                                                      HistorySequencingOrder sequencingOrder,
                                                      String                 methodName) throws UserNotAuthorizedException,
-                                                                                               PropertyServerException, InvalidParameterException
+                                                                                               PropertyServerException,
+                                                                                               InvalidParameterException
     {
         final String localMethodName = "getEntityDetailHistory";
         final String guidParameterName = "entityGUID";
@@ -1471,6 +1472,70 @@ public class RepositoryHandler
                                                              startingFrom,
                                                              pageSize,
                                                              sequencingOrder);
+        }
+        catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException error)
+        {
+            errorHandler.handleUnauthorizedUser(userId, methodName);
+        }
+        catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.EntityNotKnownException error)
+        {
+            errorHandler.handleUnknownEntity(error, guid, null, methodName, guidParameterName);
+        }
+        catch (Exception error)
+        {
+            errorHandler.handleRepositoryError(error, methodName, localMethodName);
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Return all historical versions of an entity's classification within the bounds of the provided timestamps.
+     * To retrieve all historical versions of an entity's classification, set both the 'fromTime' and 'toTime' to null.
+     *
+     * @param userId             unique identifier for requesting user.
+     * @param guid String unique identifier for the entity.
+     * @param classificationName name of the classification
+     * @param fromTime the earliest point in time from which to retrieve historical versions of the entity (inclusive)
+     * @param toTime the latest point in time from which to retrieve historical versions of the entity (exclusive)
+     * @param startingFrom the starting element number of the historical versions to return. This is used when retrieving
+     *                         versions beyond the first page of results. Zero means start from the first element.
+     * @param pageSize the maximum number of result versions that can be returned on this request. Zero means unrestricted
+     *                 return results size.
+     * @param sequencingOrder Enum defining how the results should be ordered.
+     * @param methodName         name of calling method
+     * @return list of versions of an entity
+     *
+     * @throws PropertyServerException    problem accessing property server
+     * @throws UserNotAuthorizedException security access problem
+     * @throws InvalidParameterException bad guid
+     */
+    public List<Classification> getClassificationHistory(String                 userId,
+                                                         String                 guid,
+                                                         String                 classificationName,
+                                                         Date                   fromTime,
+                                                         Date                   toTime,
+                                                         int                    startingFrom,
+                                                         int                    pageSize,
+                                                         HistorySequencingOrder sequencingOrder,
+                                                         String                 methodName) throws UserNotAuthorizedException,
+                                                                                                   PropertyServerException,
+                                                                                                   InvalidParameterException
+    {
+        final String localMethodName = "getClassificationHistory";
+        final String guidParameterName = "entityGUID";
+
+        try
+        {
+            return metadataCollection.getClassificationHistory(userId,
+                                                               guid,
+                                                               classificationName,
+                                                               fromTime,
+                                                               toTime,
+                                                               startingFrom,
+                                                               pageSize,
+                                                               sequencingOrder);
         }
         catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException error)
         {

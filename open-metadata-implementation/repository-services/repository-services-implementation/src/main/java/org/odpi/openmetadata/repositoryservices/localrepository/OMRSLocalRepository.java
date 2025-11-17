@@ -4,6 +4,7 @@ package org.odpi.openmetadata.repositoryservices.localrepository;
 
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSMetadataCollectionManager;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 import org.odpi.openmetadata.repositoryservices.events.OMRSTypeDefEventProcessor;
 import org.odpi.openmetadata.repositoryservices.eventmanagement.OMRSRepositoryEventManager;
 import org.odpi.openmetadata.repositoryservices.localrepository.repositoryconnector.LocalOMRSInstanceEventProcessor;
@@ -31,6 +32,14 @@ public interface OMRSLocalRepository extends OMRSMetadataCollectionManager
      * @return String guid
      */
     String getMetadataCollectionName();
+
+
+    /**
+     * Returns the repository helper for this repository.
+     *
+     * @return repository helper
+     */
+    OMRSRepositoryHelper getRepositoryHelper();
 
 
     /**

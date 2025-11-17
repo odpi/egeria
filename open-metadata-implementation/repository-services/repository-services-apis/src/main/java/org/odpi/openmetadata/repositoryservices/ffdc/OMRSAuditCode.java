@@ -527,6 +527,36 @@ public enum OMRSAuditCode implements AuditLogMessageSet
                        "Verify that the repository connector started without error."),
 
     /**
+     * OMRS-AUDIT-0048 - The local repository has initialized the metadata collection named {0} with an id of {1}
+     */
+    LOCAL_REPOSITORY_INITIALIZING_NULL_ID("OMRS-AUDIT-0048",
+                                  AuditLogRecordSeverityLevel.STARTUP,
+                                  "The local repository has started to initialize the local metadata collection which owns the metadata collection id",
+                                  "The local server is about to initialize the local repository subsystem.  " +
+                                          "This subsystem supports a metadata repository that supports the open metadata " +
+                                          "repository interfaces through the OMRSRepositoryConnector.  The physical repository may " +
+                                          "support these interfaces natively, or have a connector that supports these interfaces " +
+                                          "and translates between the open metadata interfaces and the real repository's interfaces.  The repository connector is responsible for setting the metadata collection id.",
+                                  "Check that the metadata collection id is properly set up by the local repository.  If so, no action is required if this server is to support a local repository.  If this feature is not " +
+                                          "required then it can be disabled by removing the local repository services configuration " +
+                                          "from this server's configuration document."),
+
+    /**
+     * OMRS-AUDIT-0049 - The local repository has initialized the metadata collection named {0} with an id of {1}
+     */
+    LOCAL_REPOSITORY_INITIALIZED("OMRS-AUDIT-0049",
+                                 AuditLogRecordSeverityLevel.STARTUP,
+                                 "The local repository has initialized the metadata collection named {0} with an id of {1}",
+                                 "The local server has initialized the local repository subsystem with a unique identifier for the local metadata collection.  " +
+                                         "This subsystem supports a metadata repository that supports the open metadata " +
+                                         "repository interfaces through the OMRSRepositoryConnector.  The physical repository may " +
+                                         "support these interfaces natively, or have a connector that supports these interfaces " +
+                                         "and translates between the open metadata interfaces and the real repository's interfaces.",
+                                 "No action is required if this server is to support a local repository. Check that the metadata collection is the correct one.  If this feature is not " +
+                                         "required then it can be disabled by removing the local repository services configuration " +
+                                         "from this server's configuration document."),
+
+    /**
      * OMRS-AUDIT-0050 - The Open Metadata Repository Services (OMRS) is about to process open metadata archive {0}
      */
     PROCESSING_ARCHIVE("OMRS-AUDIT-0050",

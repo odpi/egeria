@@ -115,17 +115,6 @@ public class LocalOMRSConnectorProvider extends ConnectorProvider
     {
         String methodName = "getConnector";
 
-        if (localMetadataCollectionId == null)
-        {
-            /*
-             * Throw checked exception to indicate that the local repository is not available.  This
-             * is likely to be a configuration error.
-             */
-            throw new ConnectorCheckedException(OMRSErrorCode.LOCAL_REPOSITORY_CONFIGURATION_ERROR.getMessageDefinition(),
-                                                this.getClass().getName(),
-                                                methodName);
-        }
-
         /*
          * Only create one instance of the connector
          */

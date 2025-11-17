@@ -10,7 +10,6 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDefSummary;
 
-import java.io.Serial;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -30,7 +29,6 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
  *         cohortRegistryConnection is the connection properties necessary to create the connector to the
  *         cohort registry store.  This is the store where the cohort registry keeps information about its
  *         local metadata collection identifier and details of other repositories in the cohort.
- *
  *         The default value is to use a local file called "cohort.registry" that is stored in the server's
  *         home directory.
  *     </li>
@@ -49,6 +47,12 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
  *         selectedTypesToProcess - list of TypeDefs used if the eventsToProcess rule (above) says
  *         "SELECTED_TYPES" - otherwise it is set to null.
  *     </li>
+ *     <li>
+ *         excluded zones defines the governance zones that indicate that an element should not be sent over the cohort.
+ *     </li>
+ *     <li>
+ *         includedZones indicates the zones that an element must be in to be sent over the cohort.
+ *     </li>
  * </ul>
  */
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
@@ -65,6 +69,8 @@ public class CohortConfig extends AdminServicesConfigHeader
     private OpenMetadataEventProtocolVersion cohortOMRSTopicProtocolVersion        = null;
     private OpenMetadataExchangeRule         eventsToProcessRule                   = null;
     private List<TypeDefSummary>             selectedTypesToProcess                = null;
+    private List<String>                     excludedZones                         = List.of("local-only");
+    private List<String>                     includedZones                         = null;
 
 
 
@@ -96,6 +102,8 @@ public class CohortConfig extends AdminServicesConfigHeader
             cohortOMRSTopicProtocolVersion = template.getCohortOMRSTopicProtocolVersion();
             eventsToProcessRule = template.getEventsToProcessRule();
             selectedTypesToProcess = template.getSelectedTypesToProcess();
+            excludedZones = template.getExcludedZones();
+            includedZones = template.getIncludedZones();
         }
     }
 
@@ -324,6 +332,50 @@ public class CohortConfig extends AdminServicesConfigHeader
 
 
     /**
+     * Return the list of zones to exclude when sending elements on the cohort.
+     *
+     * @return list
+     */
+    public List<String> getExcludedZones()
+    {
+        return excludedZones;
+    }
+
+
+    /**
+     * Set up the list of zones to exclude when sending elements on the cohort.
+     *
+     * @param excludedZones list
+     */
+    public void setExcludedZones(List<String> excludedZones)
+    {
+        this.excludedZones = excludedZones;
+    }
+
+
+    /**
+     * Return the list of zones to include when sending elements on the cohort.
+     *
+     * @return list
+     */
+    public List<String> getIncludedZones()
+    {
+        return includedZones;
+    }
+
+
+    /**
+     * Set up the list of zones to include when sending elements on the cohort.
+     *
+     * @param includedZones list
+     */
+    public void setIncludedZones(List<String> includedZones)
+    {
+        this.includedZones = includedZones;
+    }
+
+
+    /**
      * Standard toString method.
      *
      * @return JSON style description of variables.
@@ -341,6 +393,8 @@ public class CohortConfig extends AdminServicesConfigHeader
                        ", cohortOMRSTopicProtocolVersion=" + cohortOMRSTopicProtocolVersion +
                        ", eventsToProcessRule=" + eventsToProcessRule +
                        ", selectedTypesToProcess=" + selectedTypesToProcess +
+                       ", excludedZones=" + excludedZones +
+                       ", includedZones=" + includedZones +
                        '}';
     }
 
@@ -371,7 +425,9 @@ public class CohortConfig extends AdminServicesConfigHeader
                        Objects.equals(cohortOMRSInstancesTopicConnection, that.cohortOMRSInstancesTopicConnection) &&
                        cohortOMRSTopicProtocolVersion == that.cohortOMRSTopicProtocolVersion &&
                        eventsToProcessRule == that.eventsToProcessRule &&
-                       Objects.equals(selectedTypesToProcess, that.selectedTypesToProcess);
+                       Objects.equals(selectedTypesToProcess, that.selectedTypesToProcess) &&
+                       Objects.equals(excludedZones, that.excludedZones) &&
+                       Objects.equals(includedZones, that.includedZones);
     }
 
 
@@ -385,6 +441,6 @@ public class CohortConfig extends AdminServicesConfigHeader
     {
         return Objects.hash(cohortName, cohortRegistryConnection, cohortOMRSTopicConnection, cohortOMRSRegistrationTopicConnection,
                             cohortOMRSTypesTopicConnection, cohortOMRSInstancesTopicConnection, cohortOMRSTopicProtocolVersion, eventsToProcessRule,
-                            selectedTypesToProcess);
+                            selectedTypesToProcess, excludedZones, includedZones);
     }
 }

@@ -139,7 +139,10 @@ public class OMRSConfigurationFactory
     {
         LocalRepositoryConfig localRepositoryConfig = new LocalRepositoryConfig();
 
-        localRepositoryConfig.setMetadataCollectionId(UUID.randomUUID().toString());
+        /*
+         * Metadata collection id set on first server start up.
+         */
+        localRepositoryConfig.setMetadataCollectionId(null);
         localRepositoryConfig.setLocalRepositoryMode(LocalRepositoryMode.NO_REPOSITORY);
         localRepositoryConfig.setLocalRepositoryLocalConnection(connectorConfigurationFactory.getDefaultLocalRepositoryLocalConnection());
         localRepositoryConfig.setLocalRepositoryRemoteConnection(connectorConfigurationFactory.getDefaultLocalRepositoryRemoteConnection(localServerName,
