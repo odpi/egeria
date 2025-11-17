@@ -34,6 +34,10 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
  *         the local user community.
  *     </li>
  *     <li>
+ *         GOVERNANCE_ZONES means that the local repository process reference copies of metadata based on the
+ *         governance zones of the elements.
+ *     </li>
+ *     <li>
  *         ALL means send/receive all types of metadata that are supported by the local repository.
  *     </li>
  * </ul>
@@ -72,6 +76,12 @@ public enum OpenMetadataExchangeRule
      */
     DESELECTED_TYPES  (4,  "Deselected Types",  "Registration plus all type definitions (TypeDefs) and metadata " +
                                                 "instances (Entities and Relationships) NOT listed in selected types."),
+
+    /**
+     * Registration plus all type definitions (TypeDefs) and metadata instances (Entities and Relationships) NOT listed in selected types.
+     */
+    GOVERNANCE_ZONES  (5,  "Governance Zones",  "Registration plus all type definitions (TypeDefs) and metadata " +
+            "instances (Entities and Relationships) that conform to the listed governance zones."),
 
     /**
      * Registration plus all type definitions (TypeDefs) and metadata instances (Entities, Classifications and Relationships).

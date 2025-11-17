@@ -167,6 +167,10 @@ public class AttributedElementConverterBase<B> extends OpenMetadataConverterBase
             attributedMetadataElement.setHostedByDeployedITInfrastructure(super.getRelatedElements(OpenMetadataType.SUPPORTED_SOFTWARE_CAPABILITY_RELATIONSHIP.typeName, relatedMetadataElements, true));
             processedRelationshipTypes.add(OpenMetadataType.SUPPORTED_SOFTWARE_CAPABILITY_RELATIONSHIP.typeName);
 
+            attributedMetadataElement.setRegisteredWithCohorts(super.getRelatedElements(OpenMetadataType.METADATA_COHORT_PEER_RELATIONSHIP.typeName, relatedMetadataElements, false));
+            attributedMetadataElement.setCohortMembership(super.getRelatedElements(OpenMetadataType.METADATA_COHORT_PEER_RELATIONSHIP.typeName, relatedMetadataElements, true));
+            processedRelationshipTypes.add(OpenMetadataType.METADATA_COHORT_PEER_RELATIONSHIP.typeName);
+
             attributedMetadataElement.setVisibleInNetworks(super.getRelatedElements(OpenMetadataType.VISIBLE_ENDPOINT.typeName, relatedMetadataElements, false));
             attributedMetadataElement.setVisibleEndpoints(super.getRelatedElements(OpenMetadataType.VISIBLE_ENDPOINT.typeName, relatedMetadataElements, true));
             processedRelationshipTypes.add(OpenMetadataType.VISIBLE_ENDPOINT.typeName);

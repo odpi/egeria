@@ -24,6 +24,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 public class OpenMetadataRootElementsResponse extends FFDCResponseBase
 {
     private List<OpenMetadataRootElement> elements = null;
+    private String                        mermaidGraph = null;
 
 
     /**
@@ -47,6 +48,7 @@ public class OpenMetadataRootElementsResponse extends FFDCResponseBase
         if (template != null)
         {
             this.elements = template.getElements();
+            this.mermaidGraph = template.getMermaidGraph();
         }
     }
 
@@ -74,6 +76,27 @@ public class OpenMetadataRootElementsResponse extends FFDCResponseBase
 
 
     /**
+     * Return mermaid graph for the list.
+     *
+     * @return string
+     */
+    public String getMermaidGraph()
+    {
+        return mermaidGraph;
+    }
+
+
+    /**
+     * Set up mermaid graph for the list.
+     *
+     * @param mermaidGraph string
+     */
+    public void setMermaidGraph(String mermaidGraph)
+    {
+        this.mermaidGraph = mermaidGraph;
+    }
+
+    /**
      * JSON-style toString
      *
      * @return return string containing the property names and values
@@ -83,6 +106,7 @@ public class OpenMetadataRootElementsResponse extends FFDCResponseBase
     {
         return "OpenMetadataRootElementsResponse{" +
                 "elements=" + elements +
+                ", mermaidGraph='" + mermaidGraph + '\'' +
                 "} " + super.toString();
     }
 
@@ -108,7 +132,8 @@ public class OpenMetadataRootElementsResponse extends FFDCResponseBase
         {
             return false;
         }
-        return Objects.equals(getElements(), that.getElements());
+        return Objects.equals(elements, that.elements) &&
+                Objects.equals(this.mermaidGraph, that.mermaidGraph);
     }
 
 
@@ -120,6 +145,6 @@ public class OpenMetadataRootElementsResponse extends FFDCResponseBase
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), elements);
+        return Objects.hash(super.hashCode(), elements, mermaidGraph);
     }
 }

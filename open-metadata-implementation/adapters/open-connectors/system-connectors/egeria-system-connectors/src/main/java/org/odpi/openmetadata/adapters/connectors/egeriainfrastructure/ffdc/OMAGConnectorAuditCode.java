@@ -67,6 +67,15 @@ public enum OMAGConnectorAuditCode implements AuditLogMessageSet
                        "The connector is has catalogued a new server.",
                        "No action is required unless there are errors that follow indicating that there were problems with the new definition."),
 
+    /**
+     * The {0} integration connector has detected that the {1} server of type {2} has no metadata collection id
+     */
+    NULL_METADATA_COLLECTION_ID("OMAG-CONNECTORS-0006",
+               AuditLogRecordSeverityLevel.INFO,
+               "The {0} integration connector has detected that the {1} server of type {2} has no metadata collection id",
+               "No metadata collection asset nor inventory catalog software capability is connected to the server.",
+               "This is only ok if the server is a metadata access point."),
+
     ;
 
     private final String                      logMessageId;

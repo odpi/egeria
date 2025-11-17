@@ -6,19 +6,11 @@ import io.swagger.v3.oas.annotations.ExternalDocumentation;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.odpi.openmetadata.commonservices.ffdc.rest.*;
-import org.odpi.openmetadata.frameworks.opengovernance.properties.GovernanceActionProcessStepProperties;
-import org.odpi.openmetadata.frameworks.opengovernance.properties.GovernanceActionTypeProperties;
 import org.odpi.openmetadata.frameworkservices.gaf.rest.*;
 import org.odpi.openmetadata.frameworkservices.gaf.server.OpenGovernanceRESTServices;
 import org.odpi.openmetadata.frameworkservices.omf.rest.ConsolidatedDuplicatesRequestBody;
 import org.odpi.openmetadata.frameworkservices.omf.rest.PeerDuplicatesRequestBody;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 /**
  * OpenGovernanceResource supports the REST APIs for common governance functions.

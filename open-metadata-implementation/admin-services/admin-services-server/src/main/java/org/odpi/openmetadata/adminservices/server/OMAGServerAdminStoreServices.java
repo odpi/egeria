@@ -627,7 +627,6 @@ public class OMAGServerAdminStoreServices
             serverConfig = new OMAGServerConfig(this.getDefaultServerConfig());
             serverConfig.setVersionId(OMAGServerConfig.VERSION_TWO);
             serverConfig.setLocalServerType(OMAGServerConfig.defaultLocalServerType);
-            serverConfig.setLocalServerId(UUID.randomUUID().toString());
         }
         else
         {
@@ -785,9 +784,18 @@ public class OMAGServerAdminStoreServices
             throw new OMAGNotAuthorizedException(error.getReportedErrorMessage(), error);
         }
 
-
         serverConfig.setLocalServerName(serverName);
 
+        /*
+         * The default configurations used in the docker containers do not specify the local serverId UUIDs.
+         * They are set up the first time the server starts so that they are unique for each container instance
+         * (in case the containers are connected).
+         */
+        if (serverConfig.getLocalServerId() == null)
+        {
+            serverConfig.setLocalServerId(UUID.randomUUID().toString());
+            serverConfigStore.saveServerConfig(serverConfig);
+        }
 
         return serverConfig;
     }

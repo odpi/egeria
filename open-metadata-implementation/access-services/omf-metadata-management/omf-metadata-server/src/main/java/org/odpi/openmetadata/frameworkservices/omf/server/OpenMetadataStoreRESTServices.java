@@ -928,6 +928,95 @@ public class OpenMetadataStoreRESTServices
 
 
     /**
+     * Retrieve all the versions of an element.
+     *
+     * @param serverName     name of server instance to route request to
+     * @param userId caller's userId
+     * @param elementGUID unique identifier for the metadata element
+     * @param classificationName classification name to retrieve
+     * @param requestBody the time window required
+     *
+     * @return list of matching classifications (or null if no elements match the name) or
+     *  InvalidParameterException the qualified name is null
+     *  UserNotAuthorizedException the governance action service is not able to access the element
+     *  PropertyServerException there is a problem accessing the metadata store
+     */
+    public AttachedClassificationsResponse getClassificationHistory(String             serverName,
+                                                                    String             userId,
+                                                                    String             elementGUID,
+                                                                    String             classificationName,
+                                                                    HistoryRequestBody requestBody)
+    {
+        final String methodName = "getClassificationHistory";
+        final String guidParameterName  = "elementGUID";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, userId, methodName);
+
+        AuditLog auditLog = null;
+        AttachedClassificationsResponse response = new AttachedClassificationsResponse();
+
+        try
+        {
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            MetadataElementHandler<OpenMetadataElement> handler = instanceHandler.getMetadataElementHandler(userId, serverName, methodName);
+
+            HistorySequencingOrder sequencingOrder = HistorySequencingOrder.BACKWARDS;
+
+            if (requestBody != null)
+            {
+                if (requestBody.getOldestFirst())
+                {
+                    sequencingOrder = HistorySequencingOrder.FORWARDS;
+                }
+
+                response.setClassifications(handler.getClassificationHistory(userId,
+                                                                             elementGUID,
+                                                                             guidParameterName,
+                                                                             OpenMetadataType.OPEN_METADATA_ROOT.typeName,
+                                                                             classificationName,
+                                                                             requestBody.getFromTime(),
+                                                                             requestBody.getToTime(),
+                                                                             requestBody.getStartFrom(),
+                                                                             requestBody.getPageSize(),
+                                                                             sequencingOrder,
+                                                                             requestBody.getForLineage(),
+                                                                             requestBody.getForDuplicateProcessing(),
+                                                                             requestBody.getGovernanceZoneFilter(),
+                                                                             requestBody.getEffectiveTime(),
+                                                                             methodName));
+            }
+            else
+            {
+                response.setClassifications(handler.getClassificationHistory(userId,
+                                                                             elementGUID,
+                                                                             guidParameterName,
+                                                                             OpenMetadataType.OPEN_METADATA_ROOT.typeName,
+                                                                             classificationName,
+                                                                             null,
+                                                                             null,
+                                                                             0,
+                                                                             0,
+                                                                             sequencingOrder,
+                                                                             false,
+                                                                             false,
+                                                                             null,
+                                                                             new Date(),
+                                                                             methodName));
+            }
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+        return response;
+    }
+
+
+
+    /**
      * Retrieve the metadata elements that contain the requested string.
      *
      * @param serverName     name of server instance to route request to

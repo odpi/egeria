@@ -4954,11 +4954,11 @@ public class OpenMetadataTypesArchive1_2
         /*
          * Set up end 1.
          */
-        final String                     end1AttributeName            = "registeredWithCohorts";
-        final String                     end1AttributeDescription     = "Identifies which cohorts this cohort member is registered with.";
+        final String                     end1AttributeName            = "cohortMembership";
+        final String                     end1AttributeDescription     = "Members of this cohort.";
         final String                     end1AttributeDescriptionGUID = null;
 
-        relationshipEndDef = archiveHelper.getRelationshipEndDef(this.archiveBuilder.getEntityDef(OpenMetadataType.METADATA_REPOSITORY_COHORT.typeName),
+        relationshipEndDef = archiveHelper.getRelationshipEndDef(this.archiveBuilder.getEntityDef(OpenMetadataType.COHORT_MEMBER.typeName),
                                                                  end1AttributeName,
                                                                  end1AttributeDescription,
                                                                  end1AttributeDescriptionGUID,
@@ -4969,11 +4969,11 @@ public class OpenMetadataTypesArchive1_2
         /*
          * Set up end 2.
          */
-        final String                     end2AttributeName            = "cohortMembership";
-        final String                     end2AttributeDescription     = "Members of this cohort.";
+        final String                     end2AttributeName            = "registeredWithCohorts";
+        final String                     end2AttributeDescription     = "Identifies which cohorts this cohort member is registered with.";
         final String                     end2AttributeDescriptionGUID = null;
 
-        relationshipEndDef = archiveHelper.getRelationshipEndDef(this.archiveBuilder.getEntityDef(OpenMetadataType.COHORT_MEMBER.typeName),
+        relationshipEndDef = archiveHelper.getRelationshipEndDef(this.archiveBuilder.getEntityDef(OpenMetadataType.METADATA_REPOSITORY_COHORT.typeName),
                                                                  end2AttributeName,
                                                                  end2AttributeDescription,
                                                                  end2AttributeDescriptionGUID,

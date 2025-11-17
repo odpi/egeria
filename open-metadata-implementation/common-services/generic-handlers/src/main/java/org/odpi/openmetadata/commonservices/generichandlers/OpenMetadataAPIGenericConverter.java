@@ -824,7 +824,7 @@ public abstract class OpenMetadataAPIGenericConverter<B>
      * @param entityClassifications classifications direct from the entity
      * @return list of bean classifications
      */
-    protected List<AttachedClassification> getAttachedClassifications(List<Classification> entityClassifications)
+    public List<AttachedClassification> getAttachedClassifications(List<Classification> entityClassifications)
     {
         List<AttachedClassification> beanClassifications = null;
 

@@ -6,6 +6,8 @@ package org.odpi.openmetadata.frameworks.openmetadata.mermaid;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.OpenMetadataRootElement;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.ReferenceableProperties;
 
+import java.util.List;
+
 
 /**
  * Creates a mermaid graph rendering of the Open Metadata Framework's attributed
@@ -54,6 +56,32 @@ public class OpenMetadataRootMermaidGraphBuilder extends MermaidGraphBuilderBase
          * Add the graph content
          */
         this.addElementToMermaidGraph(openMetadataRootElement);
+    }
+
+
+    /**
+     * Construct a mermaid markdown graph.
+     *
+     * @param openMetadataRootElements content
+     */
+    public OpenMetadataRootMermaidGraphBuilder(String         searchString,
+                                               List<OpenMetadataRootElement> openMetadataRootElements)
+    {
+        /*
+         * Add the graph title
+         */
+        mermaidGraph.append("---\n");
+        mermaidGraph.append("title: Results matching: ");
+        mermaidGraph.append(searchString);
+        mermaidGraph.append("\n---\nflowchart LR\n%%{init: {\"flowchart\": {\"htmlLabels\": false}} }%%\n\n");
+
+        /*
+         * Add the graph content
+         */
+        for (OpenMetadataRootElement openMetadataRootElement : openMetadataRootElements)
+        {
+            this.addElementToMermaidGraph(openMetadataRootElement);
+        }
     }
 
 
@@ -138,6 +166,9 @@ public class OpenMetadataRootMermaidGraphBuilder extends MermaidGraphBuilderBase
 
         super.addRelatedElementSummaries(openMetadataRootElement.getCapabilities(), VisualStyle.LINKED_ELEMENT, openMetadataRootElement.getElementHeader().getGUID());
         super.addRelatedElementSummaries(openMetadataRootElement.getHostedByDeployedITInfrastructure(), VisualStyle.LINKED_ELEMENT, openMetadataRootElement.getElementHeader().getGUID());
+
+        super.addRelatedElementSummaries(openMetadataRootElement.getCohortMembership(), VisualStyle.LINKED_ELEMENT, openMetadataRootElement.getElementHeader().getGUID());
+        super.addRelatedElementSummaries(openMetadataRootElement.getRegisteredWithCohorts(), VisualStyle.LINKED_ELEMENT, openMetadataRootElement.getElementHeader().getGUID());
 
         super.addRelatedElementSummaries(openMetadataRootElement.getVisibleInNetworks(), VisualStyle.LINKED_ELEMENT, openMetadataRootElement.getElementHeader().getGUID());
         super.addRelatedElementSummaries(openMetadataRootElement.getVisibleEndpoints(), VisualStyle.LINKED_ELEMENT, openMetadataRootElement.getElementHeader().getGUID());

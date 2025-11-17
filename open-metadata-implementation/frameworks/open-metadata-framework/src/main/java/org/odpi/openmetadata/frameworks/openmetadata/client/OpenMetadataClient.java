@@ -1053,6 +1053,27 @@ public abstract class OpenMetadataClient implements OpenMetadataTypesInterface,
 
 
     /**
+     * Return each of the versions of a metadata element's classification.
+     *
+     * @param userId caller's userId
+     * @param elementGUID            unique identifier for the metadata element
+     * @param classificationName name of the classification to retrieve
+     * @param queryOptions multiple options to control the query
+     *
+     * @return a list of classifications matching the supplied criteria; null means no matching elements in the metadata store.
+     * @throws InvalidParameterException one of the search parameters are is invalid
+     * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
+     * @throws PropertyServerException there is a problem accessing the metadata store
+     */
+    @Override
+    public abstract List<AttachedClassification> getClassificationHistory(String                 userId,
+                                                                          String                 elementGUID,
+                                                                          String                 classificationName,
+                                                                          HistoricalQueryOptions queryOptions) throws InvalidParameterException,
+                                                                                                                      UserNotAuthorizedException,
+                                                                                                                      PropertyServerException;
+
+    /**
      * Retrieve the relationships linking to the supplied elements.
      *
      * @param userId caller's userId

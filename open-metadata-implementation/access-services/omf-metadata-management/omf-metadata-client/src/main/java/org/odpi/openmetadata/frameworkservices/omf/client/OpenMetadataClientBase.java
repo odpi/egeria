@@ -1015,7 +1015,7 @@ public abstract class OpenMetadataClientBase extends OpenMetadataClient
      * @param elementGUID            unique identifier for the metadata element
      * @param queryOptions multiple options to control the query
      *
-     * @return a list of elements matching the supplied criteria; null means no matching elements in the metadata store.
+     * @return a list of classifications matching the supplied criteria; null means no matching elements in the metadata store.
      * @throws InvalidParameterException one of the search parameters are is invalid
      * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
      * @throws PropertyServerException there is a problem accessing the metadata store
@@ -1042,6 +1042,47 @@ public abstract class OpenMetadataClientBase extends OpenMetadataClient
                                                                                                   elementGUID);
 
         return restResult.getElementList();
+    }
+
+
+
+    /**
+     * Return each of the versions of a metadata element's classification.
+     *
+     * @param userId caller's userId
+     * @param elementGUID            unique identifier for the metadata element
+     * @param classificationName name of the classification to retrieve
+     * @param queryOptions multiple options to control the query
+     *
+     * @return a list of elements matching the supplied criteria; null means no matching elements in the metadata store.
+     * @throws InvalidParameterException one of the search parameters are is invalid
+     * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
+     * @throws PropertyServerException there is a problem accessing the metadata store
+     */
+    @Override
+    public  List<AttachedClassification> getClassificationHistory(String                 userId,
+                                                                  String                 elementGUID,
+                                                                  String                 classificationName,
+                                                                  HistoricalQueryOptions queryOptions) throws InvalidParameterException,
+                                                                                                              UserNotAuthorizedException,
+                                                                                                              PropertyServerException
+    {
+        final String methodName = "getClassificationHistory";
+        final String urlTemplate = serverPlatformURLRoot + "/servers/{0}/open-metadata/access-services/open-metadata-store/users/{1}/metadata-elements/{2}/classifications/{3}/history";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+
+        HistoryRequestBody requestBody = new HistoryRequestBody(queryOptions);
+
+        AttachedClassificationsResponse restResult = restClient.callAttachedClassificationsPostRESTCall(methodName,
+                                                                                                        urlTemplate,
+                                                                                                        requestBody,
+                                                                                                        serverName,
+                                                                                                        userId,
+                                                                                                        elementGUID,
+                                                                                                        classificationName);
+
+        return restResult.getClassifications();
     }
 
 

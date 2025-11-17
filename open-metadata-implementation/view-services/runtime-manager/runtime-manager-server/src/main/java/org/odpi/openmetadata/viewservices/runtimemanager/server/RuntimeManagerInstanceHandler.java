@@ -11,6 +11,7 @@ import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterExcept
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.frameworks.openmetadata.handlers.AssetHandler;
+import org.odpi.openmetadata.frameworks.openmetadata.handlers.MetadataRepositoryCohortHandler;
 
 
 /**
@@ -83,6 +84,34 @@ public class RuntimeManagerInstanceHandler extends OMVSServiceInstanceHandler
         if (instance != null)
         {
             return instance.getSoftwareServerHandler();
+        }
+
+        return null;
+    }
+
+
+    /**
+     * This method returns the object for the tenant to use to work with cohorts.
+     *
+     * @param serverName           name of the server that the request is for
+     * @param userId               local server userid
+     * @param serviceOperationName service operation - usually the top level rest call
+     * @return client
+     * @throws InvalidParameterException unknown server/service
+     * @throws UserNotAuthorizedException User not authorized to call this service
+     * @throws PropertyServerException internal error
+     */
+    public MetadataRepositoryCohortHandler getMetadataRepositoryCohortHandler(String userId,
+                                                                              String serverName,
+                                                                              String serviceOperationName) throws InvalidParameterException,
+                                                                                                                  PropertyServerException,
+                                                                                                                  UserNotAuthorizedException
+    {
+        RuntimeManagerInstance instance = (RuntimeManagerInstance) getServerServiceInstance(userId, serverName, serviceOperationName);
+
+        if (instance != null)
+        {
+            return instance.getMetadataRepositoryCohortHandler();
         }
 
         return null;

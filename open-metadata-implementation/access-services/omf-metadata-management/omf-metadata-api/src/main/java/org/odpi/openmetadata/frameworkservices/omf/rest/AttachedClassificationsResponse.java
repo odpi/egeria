@@ -1,11 +1,12 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 /* Copyright Contributors to the ODPi Egeria project. */
-package org.odpi.openmetadata.commonservices.ffdc.rest;
+
+package org.odpi.openmetadata.frameworkservices.omf.rest;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.MetadataElementSummary;
+import org.odpi.openmetadata.frameworks.openmetadata.properties.AttachedClassification;
 
 import java.util.List;
 import java.util.Objects;
@@ -13,25 +14,23 @@ import java.util.Objects;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
-
 /**
- * MetadataElementSummariesResponse is the response structure used on the OMAS REST API calls that return a
- * list of element identifiers as a response.
+ * The response object for passing back a list of omf AttachedClassifications
+ * or an exception if the request failed.
  */
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class MetadataElementSummariesResponse extends FFDCResponseBase
+public class AttachedClassificationsResponse extends OMAGOMFAPIResponse
 {
-    private List<MetadataElementSummary> elements = null;
+    private List<AttachedClassification> classifications = null;
 
 
     /**
      * Default constructor
      */
-    public MetadataElementSummariesResponse()
+    public AttachedClassificationsResponse()
     {
-        super();
     }
 
 
@@ -40,36 +39,36 @@ public class MetadataElementSummariesResponse extends FFDCResponseBase
      *
      * @param template object to copy
      */
-    public MetadataElementSummariesResponse(MetadataElementSummariesResponse template)
+    public AttachedClassificationsResponse(AttachedClassificationsResponse template)
     {
         super(template);
 
         if (template != null)
         {
-            this.elements = template.getElements();
+            classifications = template.getClassifications();
         }
     }
 
 
     /**
-     * Return the list of element identifiers.
+     * Return the list of metadata elements.
      *
-     * @return list of objects or null
+     * @return result object
      */
-    public List<MetadataElementSummary> getElements()
+    public List<AttachedClassification> getClassifications()
     {
-        return elements;
+        return classifications;
     }
 
 
     /**
-     * Set up the list of element identifiers.
+     * Set up the metadata element to return.
      *
-     * @param elements - list of objects or null
+     * @param classifications result object
      */
-    public void setElements(List<MetadataElementSummary> elements)
+    public void setClassifications(List<AttachedClassification> classifications)
     {
-        this.elements = elements;
+        this.classifications = classifications;
     }
 
 
@@ -81,8 +80,8 @@ public class MetadataElementSummariesResponse extends FFDCResponseBase
     @Override
     public String toString()
     {
-        return "MetadataElementSummariesResponse{" +
-                "elements=" + elements +
+        return "AttachedClassificationsResponse{" +
+                "classifications=" + classifications +
                 "} " + super.toString();
     }
 
@@ -100,7 +99,7 @@ public class MetadataElementSummariesResponse extends FFDCResponseBase
         {
             return true;
         }
-        if (!(objectToCompare instanceof MetadataElementSummariesResponse that))
+        if (objectToCompare == null || getClass() != objectToCompare.getClass())
         {
             return false;
         }
@@ -108,7 +107,8 @@ public class MetadataElementSummariesResponse extends FFDCResponseBase
         {
             return false;
         }
-        return Objects.equals(this.elements, that.elements);
+        AttachedClassificationsResponse that = (AttachedClassificationsResponse) objectToCompare;
+        return Objects.equals(classifications, that.classifications);
     }
 
 
@@ -120,6 +120,6 @@ public class MetadataElementSummariesResponse extends FFDCResponseBase
     @Override
     public int hashCode()
     {
-        return Objects.hash(elements, super.hashCode());
+        return Objects.hash(super.hashCode(), classifications);
     }
 }

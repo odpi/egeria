@@ -2881,6 +2881,7 @@ public class InMemoryOMRSMetadataCollection extends OMRSDynamicTypeMetadataColle
          * Validate parameters
          */
         this.getInstanceHistoryParameterValidation(userId, classificationName, guid, fromTime, toTime, methodName);
+        repositoryValidator.validateEntityFromStore(repositoryName, guid, repositoryStore.getEntity(guid), methodName);
 
         /*
          * Perform operation
@@ -2888,11 +2889,7 @@ public class InMemoryOMRSMetadataCollection extends OMRSDynamicTypeMetadataColle
         boolean oldestFirst = (sequencingOrder == HistorySequencingOrder.FORWARDS);
         List<Classification> classificationHistory = repositoryStore.getClassificationHistory(guid, classificationName, fromTime, toTime, oldestFirst);
 
-        if (classificationHistory == null)
-        {
-            repositoryValidator.validateEntityFromStore(repositoryName, guid, null, methodName);
-        }
-        else
+        if (classificationHistory != null)
         {
             if (classificationHistory.isEmpty())
             {

@@ -5,6 +5,8 @@ package org.odpi.openmetadata.adapters.repositoryservices.readonly.repositorycon
 
 import org.odpi.openmetadata.adapters.repositoryservices.inmemory.repositoryconnector.InMemoryOMRSRepositoryConnector;
 
+import java.util.UUID;
+
 /**
  * The ReadOnlyOMRSRepositoryConnector is a connector to a local in memory repository.  It is used for test,
  * small scale fixed or temporary repositories where the initial content comes from open metadata archives and
@@ -31,18 +33,22 @@ public class ReadOnlyOMRSRepositoryConnector extends InMemoryOMRSRepositoryConne
     @Override
     public void setMetadataCollectionId(String     metadataCollectionId)
     {
-        super.metadataCollectionId = metadataCollectionId;
-
-        if (metadataCollectionId != null)
+        if (metadataCollectionId == null)
         {
-            /*
-             * Initialize the metadata collection only once the connector is properly set up.
-             */
-            super.metadataCollection = new ReadOnlyOMRSMetadataCollection(this,
-                                                                          super.serverName,
-                                                                          repositoryHelper,
-                                                                          repositoryValidator,
-                                                                          metadataCollectionId);
+            super.metadataCollectionId = UUID.randomUUID().toString();
         }
+        else
+        {
+            super.metadataCollectionId = metadataCollectionId;
+        }
+
+        /*
+         * Initialize the metadata collection only once the connector is properly set up.
+         */
+        super.metadataCollection = new ReadOnlyOMRSMetadataCollection(this,
+                                                                      super.serverName,
+                                                                      repositoryHelper,
+                                                                      repositoryValidator,
+                                                                      metadataCollectionId);
     }
 }

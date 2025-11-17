@@ -219,7 +219,7 @@ public class ExternalIdHandler extends OpenMetadataHandlerBase
                                                                                 PropertyServerException,
                                                                                 UserNotAuthorizedException
     {
-        final String methodName = "detachExternalIdFromITAsset";
+        final String methodName = "detachExternalIdFromElement";
 
         final String end2GUIDParameterName = "externalIdGUID";
         final String end1GUIDParameterName = "elementGUID";

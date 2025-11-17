@@ -207,7 +207,7 @@ public enum RepositoryHandlerErrorCode implements ExceptionMessageSet
      */
     UNKNOWN_ENTITY(404, "OMAG-REPOSITORY-HANDLER-404-007",
             "The {0} entity with unique identifier {1} is not found for method {2} of access service {3} in open metadata server {4}, error message was: {5}",
-            "The system is unable to update information associated with the entity because none of the connected open metadata repositories recognize the entity's unique identifier.",
+            "The system is unable to retrieve information associated with the entity because none of the connected open metadata repositories recognize the entity's unique identifier.",
             "The unique identifier of the entity is supplied by the caller.  Verify that the caller's logic is correct, and that there are no errors being reported by the open metadata repository. Once all errors have been resolved, retry the request."),
 
     /**

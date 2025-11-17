@@ -1540,10 +1540,10 @@ public enum OMRSErrorCode implements ExceptionMessageSet
             "Raise a Github issue this can be investigated."),
 
     /**
-     * OMRS-EVENT-MANAGEMENT-500-001 - A null exchange rule has been passed to one of the event management components on method {0}
+     * OMRS-EVENT-MANAGEMENT-500-001 - A null exchange rule has been passed to one of the event management components on method {0} for cohort {1}
      */
     NULL_EXCHANGE_RULE(500, "OMRS-EVENT-MANAGEMENT-500-001",
-            "A null exchange rule has been passed to one of the event management components on method {0}",
+            "A null exchange rule has been passed to one of the event management components on method {0} for cohort {1}",
             "There is an internal error within the OMRS initialization code.",
             "Open a Github issue so this can be fixed."),
 

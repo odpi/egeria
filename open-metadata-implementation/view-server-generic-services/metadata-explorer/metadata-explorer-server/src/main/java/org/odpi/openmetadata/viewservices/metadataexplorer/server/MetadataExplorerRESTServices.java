@@ -210,8 +210,8 @@ public class MetadataExplorerRESTServices extends TokenController
      *  PropertyServerException there is a problem accessing the metadata store
      */
     public OpenMetadataElementsResponse getMetadataElementHistory(String             serverName,
-                                                                  String             elementGUID,
                                                                   String             urlMarker,
+                                                                  String             elementGUID,
                                                                   HistoryRequestBody requestBody)
     {
         final String methodName = "getMetadataElementHistory";
@@ -232,6 +232,55 @@ public class MetadataExplorerRESTServices extends TokenController
             OpenMetadataClient handler = instanceHandler.getOpenMetadataHandler(userId, serverName, urlMarker, methodName);
 
             response.setElementList(handler.getMetadataElementHistory(userId, elementGUID, requestBody));
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+        return response;
+    }
+
+
+    /**
+     * Retrieve all the versions of an element's classification.
+     *
+     * @param serverName     name of server instance to route request to
+     * @param elementGUID unique identifier for the metadata element
+     * @param classificationName name of the classification to retrieve
+     * @param urlMarker  view service URL marker
+     * @param requestBody the time window required
+     *
+     * @return list of matching classifications (or null if no elements match the name) or
+     *  InvalidParameterException the qualified name is null
+     *  UserNotAuthorizedException the governance action service is not able to access the element
+     *  PropertyServerException there is a problem accessing the metadata store
+     */
+    public AttachedClassificationsResponse getClassificationHistory(String             serverName,
+                                                                    String             urlMarker,
+                                                                    String             elementGUID,
+                                                                    String             classificationName,
+                                                                    HistoryRequestBody requestBody)
+    {
+        final String methodName = "getMetadataElementHistory";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
+
+        AuditLog auditLog = null;
+        AttachedClassificationsResponse response = new AttachedClassificationsResponse();
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            OpenMetadataClient handler = instanceHandler.getOpenMetadataHandler(userId, serverName, urlMarker, methodName);
+
+            response.setClassifications(handler.getClassificationHistory(userId, elementGUID, classificationName, requestBody));
         }
         catch (Throwable error)
         {
@@ -809,8 +858,8 @@ public class MetadataExplorerRESTServices extends TokenController
      *  PropertyServerException there is a problem accessing the metadata store
      */
     public OpenMetadataRelationshipListResponse getRelationshipHistory(String             serverName,
-                                                                       String             relationshipGUID,
                                                                        String             urlMarker,
+                                                                       String             relationshipGUID,
                                                                        HistoryRequestBody requestBody)
     {
         final String methodName = "getRelationshipHistory";

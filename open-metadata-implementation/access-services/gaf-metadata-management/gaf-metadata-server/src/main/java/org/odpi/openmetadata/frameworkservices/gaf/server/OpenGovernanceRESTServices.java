@@ -20,7 +20,6 @@ import org.odpi.openmetadata.frameworks.openmetadata.enums.ActivityStatus;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.openmetadata.ffdc.UserNotAuthorizedException;
-import org.odpi.openmetadata.frameworks.openmetadata.mermaid.SpecificationMermaidGraphBuilder;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.OpenMetadataElement;
 import org.odpi.openmetadata.frameworks.openmetadata.properties.OpenMetadataElementStub;
 import org.odpi.openmetadata.frameworks.openmetadata.types.OpenMetadataProperty;

@@ -679,6 +679,33 @@ Content-Type: application/json
 }
 
 ###
+# @name getElementsByCategory
+# Retrieve elements by a value found in the category property.  The value must match exactly.
+# An open metadata type name may be supplied to restrict the results.
+# A mermaidGraph of the results is also supplied.
+#
+# https://egeria-project.org/types/
+
+POST {{baseURL}}/servers/{{viewServer}}/api/open-metadata/classification-explorer/elements/by-category
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "class" : "FilterRequestBody",
+  "filter" : "Add category here",
+  "startFrom" : 0,
+  "pageSize": 10,
+  "asOfTime" : "{{$isoTimestamp}}",
+  "effectiveTime" : "{{$isoTimestamp}}",
+  "forLineage" : false,
+  "forDuplicateProcessing" : false,
+  "limitResultsByStatus" : ["ACTIVE"],
+  "sequencingOrder" : "PROPERTY_ASCENDING",
+  "sequencingProperty" : "qualifiedName"
+}
+
+
+###
 
 @classificationName=GovernanceProject
 

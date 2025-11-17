@@ -1343,6 +1343,35 @@ public class ClassificationExplorerResource
      * PropertyServerException - there is a problem retrieving information from the property server(s) or
      * UserNotAuthorizedException - the requesting user is not authorized to issue this request.
      */
+    @PostMapping(path = "/elements/by-category")
+    @SecurityRequirement(name = "BearerAuthorization")
+
+    @Operation(summary="getElementsByCategory",
+            description="Return the list of elements with the supplied category - also a composite mermaid graph is returned.",
+            externalDocs=@ExternalDocumentation(description="Search Keywords",
+                    url="https://egeria-project.org/types/"))
+
+    public OpenMetadataRootElementsResponse getElementsByCategory(@PathVariable String                  serverName,
+                                                               @PathVariable String                        urlMarker,
+                                                               @RequestBody  (required = false)
+                                                               FilterRequestBody              requestBody)
+    {
+        return restAPI.getElementsByCategory(serverName, urlMarker, requestBody);
+    }
+
+
+    /**
+     * Return the list of search keywords containing the supplied string.
+     *
+     * @param serverName name of the server instances for this request.
+     * @param urlMarker  view service URL marker
+     * @param requestBody search string and effective time.
+     *
+     * @return list of search keyword objects or
+     * InvalidParameterException - one of the parameters is invalid or
+     * PropertyServerException - there is a problem retrieving information from the property server(s) or
+     * UserNotAuthorizedException - the requesting user is not authorized to issue this request.
+     */
     @PostMapping(path = "/search-keywords/by-search-string")
     @SecurityRequirement(name = "BearerAuthorization")
 

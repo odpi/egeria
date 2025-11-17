@@ -2612,6 +2612,66 @@ public class ClassificationExplorerRESTServices extends TokenController
     }
 
 
+
+    /**
+     * Retrieve the list of elements with the named category.
+     *
+     * @param serverName name of the server to route the request to
+     * @param urlMarker  view service URL marker
+     * @param requestBody string to find in the properties
+     *
+     * @return list of matching metadata elements or
+     *  InvalidParameterException  one of the parameters is invalid
+     *  UserNotAuthorizedException the user is not authorized to issue this request
+     *  PropertyServerException    there is a problem reported in the open metadata server(s)
+     */
+    public OpenMetadataRootElementsResponse getElementsByCategory(String            serverName,
+                                                                  String            urlMarker,
+                                                                  FilterRequestBody requestBody)
+    {
+        final String methodName = "getElementsByCategory";
+
+        RESTCallToken token = restCallLogger.logRESTCall(serverName, methodName);
+
+        OpenMetadataRootElementsResponse response = new OpenMetadataRootElementsResponse();
+        AuditLog                auditLog = null;
+
+        try
+        {
+            String userId = super.getUser(instanceHandler.getServiceName(), methodName);
+
+            restCallLogger.setUserId(token, userId);
+
+            StewardshipManagementHandler handler = instanceHandler.getStewardshipManagementHandler(userId, serverName, urlMarker, methodName);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            if (requestBody != null)
+            {
+                response.setElements(handler.getRootElementsByName(userId,
+                                                                   requestBody.getFilter(),
+                                                                   Collections.singletonList(OpenMetadataProperty.CATEGORY.name),
+                                                                   requestBody,
+                                                                   methodName));
+
+                response.setMermaidGraph(handler.getMermaidGraph(requestBody.getFilter(), response.getElements()));
+            }
+            else
+            {
+                restExceptionHandler.handleNoRequestBody(userId, methodName, FilterRequestBody.class.getName());
+            }
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureRuntimeExceptions(response, error, methodName, auditLog);
+        }
+
+        restCallLogger.logRESTCallReturn(token, response.toString());
+        return response;
+    }
+
+
+
     /**
      * Return the requested search keyword.
      *
@@ -2656,8 +2716,6 @@ public class ClassificationExplorerRESTServices extends TokenController
         restCallLogger.logRESTCallReturn(token, response.toString());
         return response;
     }
-
-
 
 
     /**

@@ -17,6 +17,7 @@ import org.odpi.openmetadata.frameworks.openmetadata.mermaid.OpenMetadataRootMer
 import org.odpi.openmetadata.frameworks.openmetadata.mermaid.SolutionBlueprintMermaidGraphBuilder;
 import org.odpi.openmetadata.frameworks.openmetadata.mermaid.SolutionComponentMermaidGraphBuilder;
 import org.odpi.openmetadata.frameworks.openmetadata.mermaid.SpecificationMermaidGraphBuilder;
+import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.MetadataElementSummary;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.OpenMetadataRootElement;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.RelatedMetadataElementSummary;
 import org.odpi.openmetadata.frameworks.openmetadata.metadataelements.RelatedMetadataHierarchySummary;
@@ -1157,6 +1158,27 @@ public class OpenMetadataHandlerBase
         }
 
         return rootElement;
+    }
+
+
+    /**
+     * Create a composite mermaid graph from the returned elements.
+     *
+     * @param searchString string used to create list - used in title of the mermaid graph
+     * @param elements elements returned from the query
+     * @return mermaid string
+     */
+    public String getMermaidGraph(String                        searchString,
+                                  List<OpenMetadataRootElement> elements)
+    {
+        if (elements != null)
+        {
+            OpenMetadataRootMermaidGraphBuilder graphBuilder = new OpenMetadataRootMermaidGraphBuilder(searchString, elements);
+
+            return graphBuilder.getMermaidGraph();
+        }
+
+        return null;
     }
 
 
